@@ -146,8 +146,14 @@ namespace Catch
             m_factories.insert( std::make_pair( name, new ReporterFactory<T>() ) );
         }
         
-//    private: // !TBD
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
+
+        const FactoryMap& getFactories() const
+        {
+            return m_factories;
+        }
+
+    private:
         FactoryMap m_factories;
     };
     

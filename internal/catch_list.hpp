@@ -22,8 +22,8 @@ namespace Catch
         if( config.listWhat() & RunnerConfig::listReports )
         {
             std::cout << "Available reports:\n";
-            ReporterRegistry::FactoryMap::const_iterator it = ReporterRegistry::instance().m_factories.begin();
-            ReporterRegistry::FactoryMap::const_iterator itEnd = ReporterRegistry::instance().m_factories.end();
+            ReporterRegistry::FactoryMap::const_iterator it = ReporterRegistry::instance().getFactories().begin();
+            ReporterRegistry::FactoryMap::const_iterator itEnd = ReporterRegistry::instance().getFactories().end();
             for(; it != itEnd; ++it )
             {
                 // !TBD: consider listAs()
