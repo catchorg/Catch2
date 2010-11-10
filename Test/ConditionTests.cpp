@@ -155,6 +155,12 @@ TEST_CASE( "failing/conditions/ordered", "Ordering comparison checks that should
 }
 
 // Not (!) tests
+// The problem with the ! operator is that it has right-to-left associativity.
+// This means we can't isolate it when we decompose. The simple CHECK( !false ) form, therefore,
+// cannot have the operand value extracted. The test will work correctly, and the situation
+// is detected and a warning issued.
+// An alternative form of the macros (CHECK_NOT and EXPECT_NOT) can be used instead to capture
+// the operand value.
 TEST_CASE( "succeeding/conditions/not", "'Not' checks that should succeed" )
 {
     bool falseValue = false;
