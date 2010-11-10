@@ -32,33 +32,33 @@
 
 //////
 
-#define EXPECT( pred ) _CATCH_TEST( pred, false, true, "EXPECT" )
-#define EXPECT_NOT( pred ) _CATCH_TEST( pred, true, true, "EXPECT_NOT" )
+#define EXPECT( expr ) INTERNAL_CATCH_TEST( expr, false, true, "EXPECT" )
+#define EXPECT_NOT( expr ) INTERNAL_CATCH_TEST( expr, true, true, "EXPECT_NOT" )
 
-#define EXPECT_THROWS( expr ) _CATCH_THROWS( expr, ..., false, true, "EXPECT_THROWS" )
-#define EXPECT_THROWS_AS( expr, exceptionType ) _CATCH_THROWS_AS( expr, exceptionType, false, true, "EXPECT_THROWS_AS" )
+#define EXPECT_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., false, true, "EXPECT_THROWS" )
+#define EXPECT_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, true, "EXPECT_THROWS_AS" )
 
-#define CHECK( pred ) _CATCH_TEST( pred, false, false, "CHECK" )
-#define CHECK_NOT( pred ) _CATCH_TEST( pred, true, false, "CHECK_NOT" )
+#define CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CHECK" )
+#define CHECK_NOT( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CHECK_NOT" )
 
-#define CHECK_THROWS( expr )  _CATCH_THROWS( expr, ..., false. false, "CHECK_THROWS" )
-#define CHECK_THROWS_AS( expr, exceptionType ) _CATCH_THROWS_AS( expr, exceptionType, false, false, "CHECK_THROWS_AS" )
-#define CHECK_NOTHROW( expr ) _CATCH_THROWS_AS( expr, Catch::DummyExceptionType_DontUse, true, false, "CHECK_NOTHROW" )
+#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false. false, "CHECK_THROWS" )
+#define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, false, "CHECK_THROWS_AS" )
+#define CHECK_NOTHROW( expr ) INTERNAL_CATCH_THROWS_AS( expr, Catch::DummyExceptionType_DontUse, true, false, "CHECK_NOTHROW" )
 
-#define INFO( reason ) _CATCH_MSG( reason, Catch::ResultWas::Info, false, "INFO" )
-#define WARN( reason ) _CATCH_MSG( reason, Catch::ResultWas::Warning, false, "WARN" )
-#define FAIL( reason ) _CATCH_MSG( reason, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
+#define INFO( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::Info, false, "INFO" )
+#define WARN( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::Warning, false, "WARN" )
+#define FAIL( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
 
 #define SECTION( name, description ) CATCH_SECTION( name, description )
 
-#define TEST_CASE( name, description ) CATCH_TEST_CASE( name, description )
+#define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
 #define METHOD_AS_TEST_CASE( method, name, description ) CATCH_METHOD_AS_TEST_CASE( method, name, description )
 
 #define REGISTER_REPORTER( name, reporterType ) CATCH_REGISTER_REPORTER( name, reporterType )
 
 ///////////////
 // Still to be implemented
-#define CHECK_NOFAIL( pred ) // !TBD - reports violation, but doesn't fail Test
+#define CHECK_NOFAIL( expr ) // !TBD - reports violation, but doesn't fail Test
 
 using Catch::Approx;
 

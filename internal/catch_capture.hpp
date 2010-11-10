@@ -247,11 +247,11 @@ inline std::string toString<Approx>( const Approx& value )
     
 } // end namespace Catch
 
-#define _CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
     Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
     Catch::ResultsCapture::acceptResult( expr, stopOnFailure );
 
-#define _CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
     Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, false, __FILE__, __LINE__, macroName ) ); \
     try \
     { \
@@ -263,14 +263,14 @@ inline std::string toString<Approx>( const Approx& value )
         Catch::ResultsCapture::acceptResult( !(nothrow), stopOnFailure ); \
     }
 
-#define _CATCH_THROWS_AS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
-_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
+INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
 catch( ... ) \
 { \
     Catch::ResultsCapture::acceptResult( false, stopOnFailure ); \
 }
 
-#define _CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
     Catch::ResultsCapture::acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
     Catch::ResultsCapture::acceptMessage( reason ); \
     Catch::ResultsCapture::acceptResult( resultType, stopOnFailure );

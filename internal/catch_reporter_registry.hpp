@@ -161,6 +161,6 @@ namespace Catch
     };    
 }
 
-#define CATCH_REGISTER_REPORTER( name, reporterType ) Catch::ReporterRegistrar<reporterType> _CATCH_UNIQUE_NAME( __catchReporterReg )( name );
+#define CATCH_REGISTER_REPORTER( name, reporterType ) Catch::ReporterRegistrar<reporterType> INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_ReporterReg )( name );
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRY_HPP_INCLUDED

@@ -105,12 +105,12 @@ struct AutoReg
     
 } // end namespace Catch
 
-#define CATCH_TEST_CASE( Name, Desc ) \
-    static void _CATCH_UNIQUE_NAME( __catchTestFunction )(); \
-    namespace{ Catch::AutoReg _CATCH_UNIQUE_NAME( autoRegistrar )( &_CATCH_UNIQUE_NAME( __catchTestFunction ), Name, Desc ); }\
-    static void _CATCH_UNIQUE_NAME( __catchTestFunction )()
+#define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
+    static void INTERNAL_CATCH_UNIQUE_NAME( catch_internal_TestFunction )(); \
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc ); }\
+    static void INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction )()
 
 #define CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
-    namespace{ Catch::AutoReg _CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc ); }
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc ); }
 
 #endif // TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED

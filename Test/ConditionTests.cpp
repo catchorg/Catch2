@@ -120,7 +120,7 @@ TEST_CASE( "succeeding/conditions/ordered", "Ordering comparison checks that sho
     CHECK( data.str_hello >= "hello" );
     
     CHECK( data.str_hello < "hellp" );
-    CHECK( data.str_hello < "z" );
+    CHECK( data.str_hello < "zebra" );
     CHECK( data.str_hello > "hellm" );
     CHECK( data.str_hello > "a" );
 }
