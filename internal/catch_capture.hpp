@@ -59,6 +59,14 @@ public:
     {
         m_message = message;
     }
+
+    template<typename RhsT>
+    MutableResultInfo& operator ||( const RhsT& rhs )
+    {
+        // !TBD: set message to say we haven't captured all parts
+        return *this;
+    }
+    
     
 private:
     friend class ResultBuilder;
@@ -118,6 +126,7 @@ public:
     {
         return m_result.setRhs( ">=", toString( rhs ) );
     }    
+
     operator MutableResultInfo&()
     {
         return m_result;
