@@ -14,7 +14,7 @@
 #define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
 
 #include "catch_commandline.hpp"
-
+#include <limits>
 namespace Catch
 {
     inline int List( const RunnerConfig& config )

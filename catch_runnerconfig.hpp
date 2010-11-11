@@ -15,6 +15,7 @@
 
 #include "catch_reporter_registry.hpp"
 
+#include <memory>
 #include <vector>
 #include <string>
 
