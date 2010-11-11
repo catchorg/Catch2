@@ -48,9 +48,8 @@ namespace Catch
         
         TestCaseInfo& operator = ( const TestCaseInfo& other )
         {
-            test = other.test->clone();
-            name = other.name;
-            description = description;
+            TestCaseInfo temp( other );
+            swap( temp );
             return *this;
         }
         
@@ -71,6 +70,13 @@ namespace Catch
         const std::string& getDescription() const
         {
             return description;
+        }
+        
+        void swap( TestCaseInfo& other )
+        {
+            std::swap( test, other.test );
+            name.swap( other.name );
+            description.swap( other.description );
         }
         
     private:

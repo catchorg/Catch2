@@ -41,3 +41,11 @@ TEST_CASE( "succeeding/Tricky/complex lhs", "Where the LHS is not a simple value
     // This only captures part of the expression, but issues a warning about the rest
     EXPECT( a == 2 || b == 2 );
 }
+
+TEST_CASE( "succeeding/Tricky/complex lhs/2", "Where the LHS is not a simple value" )
+{
+    int a = 1;
+    
+    // This only captures part of the expression, but issues a warning about the rest
+//    EXPECT( a + 1 == 2);
+}

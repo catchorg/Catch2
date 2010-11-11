@@ -66,8 +66,7 @@ public:
         m_expressionIncomplete = true;
         return *this;
     }
-    
-    
+        
 private:
     friend class ResultBuilder;
     void setLhs( const std::string& lhs )
