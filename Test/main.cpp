@@ -17,6 +17,10 @@
 int main (int argc, char * const argv[])
 {
     using namespace Catch;
+    
+    bool showAllResults = false;
+    if( argc > 1 && ( std::string( argv[1] ) == "-s" || std::string( argv[1] ) == "--success" ) )
+        showAllResults = true;
         
     ReporterConfig reporterConfig( ReporterConfig::Include::SuccessfulResults );
     BasicReporter reporter (reporterConfig );
@@ -39,10 +43,18 @@ int main (int argc, char * const argv[])
         std::cerr << "Some tests that should have succeeded failed:\n\n" << succeedingResults;
         result = 1;
     }
+    else if( showAllResults )
+    {
+        std::cout << succeedingResults << "\n\n";
+    }
     if( failingResults.find( "succeeded" ) != std::string::npos )
     {
         std::cerr << "Some tests that should have failed succeeded:\n\n" << failingResults;
         result = 1;
+    }
+    else if( showAllResults )
+    {
+        std::cout << failingResults << "\n\n";
     }
     
     if( result == 0 )
