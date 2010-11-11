@@ -44,7 +44,7 @@ namespace Catch
             m_expressionIncomplete( false )
         {}
         
-        ResultInfo( const std::string& expr, ResultWas::OfType result, bool isNot, const std::string& filename, size_t line, const std::string& macroName )
+        ResultInfo( const std::string& expr, ResultWas::OfType result, bool isNot, const std::string& filename, std::size_t line, const std::string& macroName )
         :   m_expr( expr ),
             m_result( result ),
             m_isNot( isNot ),
@@ -95,7 +95,7 @@ namespace Catch
             return m_filename;
         }
         
-        size_t getLine() const
+        std::size_t getLine() const
         {
             return m_line;
         }
@@ -119,7 +119,7 @@ namespace Catch
     protected:
         std::string m_macroName;
         std::string m_filename;
-        size_t m_line;
+        std::size_t m_line;
         std::string m_expr, m_lhs, m_rhs, m_op;
         std::string m_message;
         ResultWas::OfType m_result;

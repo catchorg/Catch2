@@ -44,7 +44,7 @@ namespace Catch
         :   m_mode( modeNone ),
             m_config( config )
         {
-            for(size_t i=1; i < argc; ++i )
+            for( int i=1; i < argc; ++i )
             {
                 if( argv[i][0] == '-' )
                 {

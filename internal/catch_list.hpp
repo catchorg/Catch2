@@ -15,6 +15,7 @@
 
 #include "catch_commandline.hpp"
 #include <limits>
+
 namespace Catch
 {
     inline int List( const RunnerConfig& config )

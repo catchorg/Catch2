@@ -63,19 +63,19 @@ namespace Catch
         void runAll()
         {
             std::vector<TestCaseInfo> allTests = TestRegistry::instance().getAllTests();
-            for( size_t i=0; i < allTests.size(); ++i )
+            for( std::size_t i=0; i < allTests.size(); ++i )
             {
                 runTest( allTests[i] );
             }
         }
         
-        size_t runMatching( const std::string& rawTestSpec )
+        std::size_t runMatching( const std::string& rawTestSpec )
         {
             TestSpec testSpec( rawTestSpec );
             
             std::vector<TestCaseInfo> allTests = TestRegistry::instance().getAllTests();
-            size_t testsRun = 0;
-            for( size_t i=0; i < allTests.size(); ++i )
+            std::size_t testsRun = 0;
+            for( std::size_t i=0; i < allTests.size(); ++i )
             {
                 if( testSpec.matches( allTests[i].getName() ) )
                 {
@@ -114,11 +114,11 @@ namespace Catch
             ResultsCapture::setListener( prevListener );
         }
         
-        size_t getSuccessCount() const
+        std::size_t getSuccessCount() const
         {
             return m_successes;
         }
-        size_t getFailures() const
+       std:: size_t getFailures() const
         {
             return m_failures;
         }
@@ -136,8 +136,8 @@ namespace Catch
         }
         
     private:
-        size_t m_successes;
-        size_t m_failures;
+        std::size_t m_successes;
+        std::size_t m_failures;
         ITestReporter* m_reporter;
     };
 }

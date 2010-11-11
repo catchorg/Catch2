@@ -14,7 +14,7 @@
 
 #include "catch_resultinfo.hpp"
 #include <sstream>
-#include "math.h"
+#include <cmath>
 
 namespace Catch
 {
@@ -41,7 +41,7 @@ public:
     MutableResultInfo()
     {}
     
-    MutableResultInfo( const std::string& expr, bool isNot, const std::string& filename, size_t line, const std::string& macroName )
+    MutableResultInfo( const std::string& expr, bool isNot, const std::string& filename, std::size_t line, const std::string& macroName )
     : ResultInfo( ( isNot ? "!" : "" ) + expr, ResultWas::Unknown, isNot, filename, line, macroName )
     {
     }
@@ -84,7 +84,7 @@ private:
 class ResultBuilder
 {
 public:
-    ResultBuilder( const char* expr, bool isNot, const std::string& filename, size_t line, const std::string& macroName )
+    ResultBuilder( const char* expr, bool isNot, const std::string& filename, std::size_t line, const std::string& macroName )
     : m_result( expr, isNot, filename, line, macroName )
     {}
     
