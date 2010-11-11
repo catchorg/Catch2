@@ -38,6 +38,6 @@ TEST_CASE( "succeeding/Tricky/complex lhs", "Where the LHS is not a simple value
     int a = 1;
     int b = 2;
 
-    // !TBD: This only captures part of the expression
-    EXPECT( a == 2 || b == 2 );
+    // This only captures part of the expression, but issues a warning about the rest
+    EXPECT( a == 2 || b == 1 );
 }

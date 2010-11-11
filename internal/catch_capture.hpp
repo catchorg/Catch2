@@ -63,7 +63,7 @@ public:
     template<typename RhsT>
     MutableResultInfo& operator ||( const RhsT& rhs )
     {
-        // !TBD: set message to say we haven't captured all parts
+        m_expressionIncomplete = true;
         return *this;
     }
     
