@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4AFC340C128099F5003A0C29 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC340B128099F5003A0C29 /* main.cpp */; };
+		4A3BFFB9128DCF06005609E3 /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A3BFFB8128DCF06005609E3 /* TestMain.cpp */; };
 		4AFC38CD12887D80003A0C29 /* ConditionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC38CC12887D80003A0C29 /* ConditionTests.cpp */; };
 		4AFC3A9912893C56003A0C29 /* ExceptionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC3A9812893C56003A0C29 /* ExceptionTests.cpp */; };
 		4AFC3AA912893E54003A0C29 /* MessageTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC3AA812893E54003A0C29 /* MessageTests.cpp */; };
@@ -30,7 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4AFC340B128099F5003A0C29 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4A3BFFB8128DCF06005609E3 /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMain.cpp; sourceTree = "<group>"; };
 		4AFC341512809A36003A0C29 /* catch_capture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_capture.hpp; path = ../internal/catch_capture.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341612809A36003A0C29 /* catch_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_common.h; path = ../internal/catch_common.h; sourceTree = SOURCE_ROOT; };
 		4AFC341712809A36003A0C29 /* catch_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_registry.hpp; path = ../internal/catch_registry.hpp; sourceTree = SOURCE_ROOT; };
@@ -80,8 +80,8 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4A3BFFB8128DCF06005609E3 /* TestMain.cpp */,
 				4AFC341312809A12003A0C29 /* Catch */,
-				4AFC340B128099F5003A0C29 /* main.cpp */,
 				4AFC38CC12887D80003A0C29 /* ConditionTests.cpp */,
 				4AFC3A9812893C56003A0C29 /* ExceptionTests.cpp */,
 				4AFC3AA812893E54003A0C29 /* MessageTests.cpp */,
@@ -181,12 +181,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4AFC340C128099F5003A0C29 /* main.cpp in Sources */,
 				4AFC38CD12887D80003A0C29 /* ConditionTests.cpp in Sources */,
 				4AFC3A9912893C56003A0C29 /* ExceptionTests.cpp in Sources */,
 				4AFC3AA912893E54003A0C29 /* MessageTests.cpp in Sources */,
 				4AFC3B0B12894114003A0C29 /* ClassTests.cpp in Sources */,
 				4AFC3B671289C7E3003A0C29 /* TrickyTests.cpp in Sources */,
+				4A3BFFB9128DCF06005609E3 /* TestMain.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
