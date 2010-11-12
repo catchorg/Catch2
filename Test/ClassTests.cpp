@@ -10,7 +10,7 @@
  *
  */
 
-#include "catch.hpp"
+#include "../catch.hpp"
 
 namespace
 {

@@ -10,7 +10,7 @@
  *
  */
 
-#include "catch.hpp"
+#include "../catch.hpp"
 
 TEST_CASE( "succeeding/message", "INFO and WARN do not abort tests" )
 {

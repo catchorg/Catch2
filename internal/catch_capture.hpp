@@ -218,6 +218,11 @@ private:
 #define CATCH_absTol 1e-10
 #define CATCH_relTol 1e-10
 
+inline double catch_max( double x, double y )
+{
+    return x > y ? x : y;
+}
+    
 class Approx
 {
 public:
@@ -232,7 +237,7 @@ public:
         // !TBD Use proper tolerance
         // From: http://realtimecollisiondetection.net/blog/?p=89
         // see also: http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
-        return fabs( lhs - rhs.m_d ) <= std::max( CATCH_absTol, CATCH_relTol * std::max( fabs(lhs), fabs(rhs.m_d) ) );
+        return fabs( lhs - rhs.m_d ) <= catch_max( CATCH_absTol, CATCH_relTol * catch_max( fabs(lhs), fabs(rhs.m_d) ) );
     }
     
     template<typename T>

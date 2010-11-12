@@ -10,8 +10,8 @@
  *
  */
 
-#include "catch.hpp"
-#include "catch_runner.hpp"
+#include "../catch.hpp"
+#include "../catch_runner.hpp"
 
 // This code runs the meta tests and verifies that the failing ones failed and the successful ones succeeded
 int main (int argc, char * const argv[])
