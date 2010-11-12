@@ -95,7 +95,7 @@ namespace Catch
             {
                 testInfo.invoke();
             }
-            catch( TestFailureException& ex )
+            catch( TestFailureException& )
             {
                 // This just means the test was aborted due to failure
             }
@@ -118,7 +118,7 @@ namespace Catch
         {
             return m_successes;
         }
-       std:: size_t getFailures() const
+       std:: size_t getFailureCount() const
         {
             return m_failures;
         }

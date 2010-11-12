@@ -59,7 +59,7 @@ int main (int argc, char * const argv[])
     
     if( result == 0 )
     {
-        std::cout << "All tests completed successfully" << std::endl;
+        std::cout << "All " << runner.getSuccessCount() + runner.getFailureCount() << " tests completed successfully" << std::endl;
     }
     return result;
 }

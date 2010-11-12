@@ -22,7 +22,7 @@ namespace Catch
     public:
         Section( const std::string& name, const std::string& description )
         {
-            // !TBD notify the runner
+			(name, description); // !TBD notify the runner
         }
         
         operator bool()

@@ -25,7 +25,7 @@ namespace Catch
     // -r --report <type>
     // -o --output filename to write to
     // -s --success report successful cases too
-    class ArgParser
+	class ArgParser : NonCopyable
     {
         enum Mode
         {

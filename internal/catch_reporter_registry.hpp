@@ -75,7 +75,7 @@ namespace Catch
         mutable std::ostream m_os;
     };
     
-    struct ITestReporter
+	struct ITestReporter : NonCopyable
     {
         virtual ~ITestReporter(){}
         

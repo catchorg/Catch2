@@ -82,7 +82,7 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const Catch::TestCaseInfo& testInfo )
+        virtual void EndTestCase( const Catch::TestCaseInfo& )
         {
             m_config.stream() << "\t<OverallResult success='" << (m_currentTestSuccess ? "true" : "false" ) << "/>\n";
             m_config.stream() << "</TestCase>" << std::endl;

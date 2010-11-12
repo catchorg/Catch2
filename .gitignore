@@ -1,3 +1,8 @@
 Test/build
 *.pbxuser
 *.mode1v3
+*.ncb
+*.suo
+Debug
+Release
+*.user

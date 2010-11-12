@@ -61,7 +61,7 @@ public:
     }
 
     template<typename RhsT>
-    MutableResultInfo& operator ||( const RhsT& rhs )
+    MutableResultInfo& operator ||( const RhsT& )
     {
         m_expressionIncomplete = true;
         return *this;

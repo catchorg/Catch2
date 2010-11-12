@@ -74,7 +74,7 @@ namespace Catch
                 }
             }
         }
-        return runner.getFailures();
+        return runner.getFailureCount();
     }
     
 } // end namespace Catch

@@ -17,4 +17,15 @@
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
 #define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __LINE__ )
 
+namespace Catch
+{
+	class NonCopyable
+	{
+		NonCopyable( const NonCopyable& );
+		void operator = ( const NonCopyable& );
+	protected:
+		NonCopyable(){}
+	};
+}
+
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
