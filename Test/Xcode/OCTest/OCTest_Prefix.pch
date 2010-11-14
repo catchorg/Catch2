@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'OCTest' target in the 'OCTest' project.
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

@@ -52,6 +52,7 @@
 		4A59538C128E93E1009DC1B9 /* catch_runnerconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runnerconfig.hpp; path = ../../internal/catch_runnerconfig.hpp; sourceTree = SOURCE_ROOT; };
 		4A59538D128E93E1009DC1B9 /* catch_section.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_section.hpp; path = ../../internal/catch_section.hpp; sourceTree = SOURCE_ROOT; };
 		4A59538E128E93E1009DC1B9 /* catch_testcaseinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_testcaseinfo.hpp; path = ../../internal/catch_testcaseinfo.hpp; sourceTree = SOURCE_ROOT; };
+		4A5955C412909CCC009DC1B9 /* catch_objc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc.hpp; path = ../../catch_objc.hpp; sourceTree = SOURCE_ROOT; };
 		8DD76F6C0486A84900D96B5E /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* Test.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Test.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,6 +111,7 @@
 		4AFC341312809A12003A0C29 /* Catch */ = {
 			isa = PBXGroup;
 			children = (
+				4A5955C412909CCC009DC1B9 /* catch_objc.hpp */,
 				4A59537F128E93CA009DC1B9 /* catch_default_main.hpp */,
 				4A595380128E93CA009DC1B9 /* catch_reporter_basic.hpp */,
 				4A595381128E93CA009DC1B9 /* catch_reporter_xml.hpp */,

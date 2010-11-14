@@ -16,7 +16,10 @@
 #include "catch_common.h"
 
 #include <vector>
+#include <set>
 #include <stdexcept>
+
+#include <iostream>
 
 namespace Catch
 {
@@ -32,17 +35,22 @@ public:
     
     void registerTest( const TestCaseInfo& testInfo )
     {
-        m_functions.push_back( testInfo );
+        if( m_functions.find( testInfo ) == m_functions.end() )
+        {
+            m_functions.insert( testInfo );
+            m_functionsInOrder.push_back( testInfo );
+        }
     }
         
     std::vector<TestCaseInfo> getAllTests() const
     {
-        return m_functions;
+        return m_functionsInOrder;
     }
         
 private:
         
-    std::vector<TestCaseInfo> m_functions;
+    std::set<TestCaseInfo> m_functions;
+    std::vector<TestCaseInfo> m_functionsInOrder;
 };
 
 typedef void(*TestFunction)();
@@ -63,6 +71,18 @@ struct FreeFunctionTestCase : TestCase
         return new FreeFunctionTestCase( fun );
     }
 
+    virtual bool operator == ( const TestCase& other ) const
+    {
+        const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
+        return ffOther && fun == ffOther->fun;
+    }
+    
+    virtual bool operator < ( const TestCase& other ) const
+    {
+        const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
+        return ffOther && fun < ffOther->fun;
+    }
+    
 private:
     TestFunction fun;
 };
@@ -83,6 +103,18 @@ struct MethodTestCase : TestCase
     virtual TestCase* clone() const
     {
         return new MethodTestCase<C>( method );
+    }
+
+    virtual bool operator == ( const TestCase& other ) const
+    {
+        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
+        return mtOther && method == mtOther->method;
+    }
+    
+    virtual bool operator < ( const TestCase& other ) const
+    {
+        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
+        return mtOther && &method < &mtOther->method;
     }
     
 private:
