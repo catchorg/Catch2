@@ -59,7 +59,7 @@ int main (int argc, char * const argv[])
     
     if( result == 0 )
     {
-        const size_t expectedTestCaseCount = 97; // !TBD factor this out
+        const size_t expectedTestCaseCount = 99; // !TBD factor this out
         size_t testCaseCount = runner.getSuccessCount() + runner.getFailureCount();
         std::cout << "All " << testCaseCount << " tests completed successfully" << std::endl;
         if( testCaseCount != expectedTestCaseCount )

@@ -47,7 +47,7 @@ struct Opaque
     int val;
     bool operator ==( const Opaque& o )
     {
-        return val = o.val;
+        return val == o.val;
     }
 };
 
