@@ -11,14 +11,9 @@
 #import <Cocoa/Cocoa.h>
 #import "TestObj.h"
 
-@interface TestFixture : NSObject
+@interface TestFixture : NSObject <OcFixture>
 {
     TestObj* obj;
 }
 
 @end
-
-
-
-CATCH_REGISTER_CLASS( TestFixture )
-

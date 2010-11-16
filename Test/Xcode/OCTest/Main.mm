@@ -3,9 +3,12 @@
 
 #import "CatchOCTestCase.h"
 
+
 int main (int argc, const char * argv[]) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
+    Catch::registerTestMethods();
+    
     // insert code here...
     int result = Catch::Main( argc, (char* const*)argv );
     

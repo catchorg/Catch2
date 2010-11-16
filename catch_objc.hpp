@@ -17,27 +17,44 @@
 #include <string>
 #include "catch.hpp"
 
+@protocol OcFixture
+
+@optional
+
+-(void) setUp;
+-(void) tearDown;
+
+@end
+
 namespace Catch 
 {
-    template<typename T>
     class OcMethod : public TestCase
     {
     public:
-        OcMethod( SEL sel ) : m_sel( sel )
+        OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel )
         {
         }
         
         virtual void invoke() const
         {
-            T* obj = [[T alloc] init];
+            id obj = class_createInstance( m_cls, 0 );
+            obj = [obj init];
+            
+            if( [obj respondsToSelector: @selector(setUp) ] )
+                [obj performSelector: @selector(setUp)];
+
             if( [obj respondsToSelector: m_sel] )
                 [obj performSelector: m_sel];
+
+            if( [obj respondsToSelector: @selector(tearDown) ] )
+                [obj performSelector: @selector(tearDown)];
+            
             [obj release];
         }
         
         virtual TestCase* clone() const
         {
-            return new OcMethod<T>( m_sel );
+            return new OcMethod( m_cls, m_sel );
         }
         
         virtual bool operator == ( const TestCase& other ) const
@@ -53,55 +70,64 @@ namespace Catch
         }
         
     private:
-        
+        Class m_cls;
         SEL m_sel;
     };
     
-    template<typename T>
-    struct OcAutoReg
+    namespace Detail
     {
-        OcAutoReg()
-        {
-            u_int count;
-            Method* methods = class_copyMethodList([T class], &count);        
-            
-            for( int i = 0; i < count ; i++ )
-            {
-                SEL selector = method_getName(methods[i]);
-                std::string methodName = sel_getName(selector);
-                if( startsWith( methodName, "Catch_TestCase_" ) )
-                {
-                    std::string testCaseName = methodName.substr( 15 );
-                    std::string name = getAnnotation( "Name", testCaseName );
-                    std::string desc = getAnnotation( "Description", testCaseName );
-                    
-                    TestRegistry::instance().registerTest( TestCaseInfo( new OcMethod<T>( selector ), name, desc ) );
-                    
-                }
-            }
-            free(methods);
-        }
-        
-    private:
-        bool startsWith( const std::string& str, const std::string& sub )
+    
+        inline bool startsWith( const std::string& str, const std::string& sub )
         {
             return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
         }
         
-        const char* getAnnotation( const std::string& annotationName, const std::string& testCaseName )
+        inline const char* getAnnotation( Class cls, const std::string& annotationName, const std::string& testCaseName )
         {
             NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
             SEL sel = NSSelectorFromString( selStr );
             [selStr release];
-            if( [[T class] respondsToSelector: sel] )
-                return (const char*)[[T class] performSelector: sel];
+            if( [cls respondsToSelector: sel] )
+                return (const char*)[cls performSelector: sel];
             return "";
         }        
+    }
+    
+    inline size_t registerTestMethods()
+    {
+        size_t noTestMethods = 0;
+        int noClasses = objc_getClassList( NULL, 0 );
         
-    };    
+        std::vector<Class> classes( noClasses );
+        objc_getClassList( &classes[0], noClasses );
+        
+        for( int c = 0; c < noClasses; c++ )
+        {
+            Class cls = classes[c];
+            {
+                u_int count;
+                Method* methods = class_copyMethodList( cls, &count );
+                for( int m = 0; m < count ; m++ )
+                {
+                    SEL selector = method_getName(methods[m]);
+                    std::string methodName = sel_getName(selector);
+                    if( Detail::startsWith( methodName, "Catch_TestCase_" ) )
+                    {
+                        std::string testCaseName = methodName.substr( 15 );
+                        std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
+                        std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
+                        
+                        TestRegistry::instance().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name, desc ) );
+                        noTestMethods++;
+                        
+                    }
+                }
+                free(methods);              
+            }
+        }
+        return noTestMethods;
+    }  
 }
-
-#define CATCH_REGISTER_CLASS( className ) namespace{ Catch::OcAutoReg<className> reg; }
 
 #define OC_TEST_CASE( name, desc )\
 +(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \

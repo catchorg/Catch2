@@ -12,20 +12,14 @@
 @implementation TestFixture
 
 
-- (id) init
+-(void) setUp
 {
-    self = [super init];
-    if (self != nil) 
-    {
-        obj = [[TestObj alloc] init];
-    }
-    return self;
+    obj = [[TestObj alloc] init];    
 }
 
-- (void) dealloc
+-(void) tearDown
 {
     [obj release];
-    [super dealloc];
 }
 
 OC_TEST_CASE( "OCTest/test1", "This is a test case" )
