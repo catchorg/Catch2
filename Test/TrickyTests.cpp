@@ -41,3 +41,23 @@ TEST_CASE( "succeeding/Tricky/complex lhs", "Where the LHS is not a simple value
     // This only captures part of the expression, but issues a warning about the rest
     EXPECT( a == 2 || b == 2 );
 }
+
+struct Opaque
+{
+    int val;
+    bool operator ==( const Opaque& o )
+    {
+        return val = o.val;
+    }
+};
+
+TEST_CASE( "failing/Tricky/non streamable type", "A failing expression with a non streamable type is still captured" )
+{
+    
+    Opaque o1, o2;
+    o1.val = 7;
+    o2.val = 8;
+  
+    CHECK( &o1 == &o2 );
+    CHECK( o1 == o2 );
+}
