@@ -21,15 +21,25 @@ namespace Catch
     {
     public:
         Section( const std::string& name, const std::string& description )
+        : m_name( name ), m_description( description )
         {
-			(name, description); // !TBD notify the runner
+            ResultsCapture::acceptSectionStart( name, description );
         }
         
+        ~Section()
+        {
+            ResultsCapture::acceptSectionEnd( m_name );
+        }
+        
+        // This returns whether the section should be included or not
         operator bool()
         {
             // !TBD get this from runner
             return true;
         }
+    private:
+        std::string m_name;
+        std::string m_description;
     };
     
 } // end namespace Catch

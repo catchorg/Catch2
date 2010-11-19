@@ -261,6 +261,13 @@ public:
     {
         instance().currentResult.setMessage( msg );
     }
+    static void acceptSectionStart( const std::string& name, const std::string& description )
+    {
+    }
+    
+    static void acceptSectionEnd( const std::string& name )
+    {
+    }
     
 private:
     MutableResultInfo currentResult;
