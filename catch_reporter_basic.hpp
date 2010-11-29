@@ -32,12 +32,80 @@ namespace Catch
             return "Reports test results as lines of text";
         }
         
+    private:
+        
+        ///////////////////////////////////////////////////////////////////////////
+        void ReportCounts( std::size_t succeeded, std::size_t failed )
+        {
+            if( failed + succeeded == 0 )
+                m_config.stream() << "No tests ran";
+            else if( failed == 0 )
+                m_config.stream() << "All " << succeeded << " test(s) succeeded";
+            else if( succeeded == 0 )
+                m_config.stream() << "All " << failed << " test(s) failed";
+            else
+                m_config.stream() << succeeded << " test(s) passed but " << failed << " test(s) failed";
+        }
+        
     private: // ITestReporter
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void StartTesting()
+        {
+            m_config.stream() << "[Started testing]" << std::endl;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void EndTesting( std::size_t succeeded, std::size_t failed )
+        {
+            m_config.stream() << "[Testing completed. ";
+            ReportCounts( succeeded, failed );
+            m_config.stream() << "]" << std::endl;
+            (succeeded, failed);
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void StartGroup( const std::string& groupName )
+        {
+            if( !groupName.empty() )
+                m_config.stream() << "[Started group: '" << groupName << "']" << std::endl;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void EndGroup( const std::string& groupName, std::size_t succeeded, std::size_t failed )
+        {
+            if( !groupName.empty() )
+            {
+                m_config.stream() << "[End of group: '" << groupName << "'. ";
+                ReportCounts( succeeded, failed );
+                m_config.stream() << "]\n" << std::endl;
+            }
+        }
         
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTestCase( const TestCaseInfo& testInfo )
         {
             m_config.stream() << std::endl << "[Running: " << testInfo.getName() << "]" << std::endl;
+            m_firstSectionInTestCase = true;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void StartSection( const std::string& sectionName, const std::string /*description*/ )
+        {
+            if( m_firstSectionInTestCase )
+            {
+                m_config.stream() << "\n";
+                m_firstSectionInTestCase = false;
+            }
+            m_config.stream() << "[Started section: '" << sectionName << "']" << std::endl;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void EndSection( const std::string& sectionName, std::size_t succeeded, std::size_t failed )
+        {
+            m_config.stream() << "[End of section: '" << sectionName << "'. ";
+            ReportCounts( succeeded, failed );
+            m_config.stream() << "]\n" << std::endl;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -92,6 +160,7 @@ namespace Catch
         
     private:
         const ReporterConfig& m_config;
+        bool m_firstSectionInTestCase;
     };
     
 } // end namespace Catch

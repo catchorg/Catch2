@@ -20,13 +20,15 @@ namespace Catch
         {
             Unknown = -1,
             Ok = 0,
-            ExpressionFailed = 1,
+            Info = 1,
+            Warning = 2,
+
+            FailureBit = 0x10,
             
-            Info = 2,
-            Warning = 3,
-            ExplicitFailure = 4,
+            ExpressionFailed = FailureBit | 1,
+            ExplicitFailure = FailureBit | 2,
             
-            Exception = 0x100,
+            Exception = 0x110,
             
             ThrewException = Exception | 1,
             DidntThrowException = Exception | 2
@@ -58,7 +60,7 @@ namespace Catch
         
         bool ok() const
         {
-            return m_result == ResultWas::Ok;
+            return ( m_result & ResultWas::FailureBit ) != ResultWas::FailureBit;
         }
         
         ResultWas::OfType getResultType() const

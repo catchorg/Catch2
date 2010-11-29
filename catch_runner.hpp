@@ -17,6 +17,7 @@
 #include "internal/catch_list.hpp"
 #include "catch_reporter_basic.hpp"
 #include "catch_reporter_xml.hpp"
+#include "catch_reporter_junit.hpp"
 
 namespace Catch
 {
@@ -24,6 +25,7 @@ namespace Catch
     {
         ReporterRegistry::instance().registerReporter<BasicReporter>( "basic" );
         ReporterRegistry::instance().registerReporter<XmlReporter>( "xml" );
+        ReporterRegistry::instance().registerReporter<JunitReporter>( "junit" );
 
         RunnerConfig config;
         ArgParser( argc, argv, config );     
@@ -51,13 +53,14 @@ namespace Catch
             config.getReporterConfig().setStreamBuf( ofs.rdbuf() );
         }
 
-        Runner runner;
-        runner.setReporter( config.getReporter() );
+        Runner runner( config.getReporter() );
 
         // Run test specs specified on the command line - or default to all
         if( config.m_testSpecs.size() == 0 )
         {
+            config.getReporter()->StartGroup( "" );
             runner.runAll();
+            config.getReporter()->EndGroup( "", runner.getSuccessCount(), runner.getFailureCount() );
         }
         else
         {
@@ -67,11 +70,15 @@ namespace Catch
             std::vector<std::string>::const_iterator itEnd = config.m_testSpecs.end();
             for(; it != itEnd; ++it )
             {
+                size_t prevSuccess = runner.getSuccessCount();
+                size_t prevFail = runner.getFailureCount();
+                config.getReporter()->StartGroup( *it );
                 if( runner.runMatching( *it ) == 0 )
                 {
                     // Use reporter?
                     std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
                 }
+                config.getReporter()->EndGroup( *it, runner.getSuccessCount()-prevSuccess, runner.getFailureCount()-prevFail );
             }
         }
         return runner.getFailureCount();

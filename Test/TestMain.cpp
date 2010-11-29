@@ -14,6 +14,7 @@
 #include "../catch_runner.hpp"
 
 // This code runs the meta tests and verifies that the failing ones failed and the successful ones succeeded
+/*
 int main (int argc, char * const argv[])
 {
     using namespace Catch;
@@ -22,17 +23,18 @@ int main (int argc, char * const argv[])
     if( argc > 1 && ( std::string( argv[1] ) == "-s" || std::string( argv[1] ) == "--success" ) )
         showAllResults = true;
         
+    std::ostringstream ossSucceeding;
+    std::ostringstream ossFailing;
+
     ReporterConfig reporterConfig( ReporterConfig::Include::SuccessfulResults );
     BasicReporter reporter (reporterConfig );
-    Runner runner;
-    runner.setReporter( &reporter );
 
-    std::ostringstream ossSucceeding;
+    Runner runner( &reporter );
+
     reporterConfig.setStreamBuf( ossSucceeding.rdbuf() );
     runner.runMatching( "succeeding/*" );
     std::string succeedingResults = ossSucceeding.str();
     
-    std::ostringstream ossFailing;
     reporterConfig.setStreamBuf( ossFailing.rdbuf() );
     runner.runMatching( "failing/*" );
     std::string failingResults = ossFailing.str();
@@ -56,10 +58,12 @@ int main (int argc, char * const argv[])
     {
         std::cout << failingResults << "\n\n";
     }
-    
+
     if( result == 0 )
     {
         std::cout << "All " << runner.getSuccessCount() + runner.getFailureCount() << " tests completed successfully" << std::endl;
     }
     return result;
 }
+*/
+#include "catch_default_main.hpp"

@@ -142,6 +142,8 @@ struct IResultListener
 {
     virtual ~IResultListener(){}
     virtual void testEnded( const ResultInfo& result ) = 0;
+    virtual bool sectionStarted( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures ) = 0;
+    virtual void sectionEnded( const std::string& name, std::size_t successes, std::size_t failures ) = 0;
 };
     
 class ResultsCapture
@@ -207,6 +209,16 @@ public:
     static void acceptMessage( const std::string& msg )
     {
         instance().currentResult.setMessage( msg );
+    }
+    
+    static bool acceptSectionStart( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures )
+    {
+        return instance().m_listener->sectionStarted( name, description, successes, failures );
+    }
+    
+    static void acceptSectionEnd( const std::string& name, std::size_t successes, std::size_t failures )
+    {
+        instance().m_listener->sectionEnded( name, successes, failures );
     }
     
 private:
