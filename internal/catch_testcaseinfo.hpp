@@ -23,6 +23,8 @@ namespace Catch
         virtual ~TestCase(){}
         virtual void invoke() const = 0;
         virtual TestCase* clone() const = 0;
+        virtual bool operator == ( const TestCase& other ) const = 0;
+        virtual bool operator < ( const TestCase& other ) const = 0;
     };
     
     class TestCaseInfo
@@ -77,6 +79,21 @@ namespace Catch
             std::swap( test, other.test );
             name.swap( other.name );
             description.swap( other.description );
+        }
+        
+        bool operator == ( const TestCaseInfo& other ) const
+        {
+            return *test == *other.test && name == other.name && description == other.description;            
+        }
+        
+        bool operator < ( const TestCaseInfo& other ) const
+        {
+            if( name < other.name )
+                return true;
+            if( name > other.name )
+                return false;
+
+            return *test < *other.test;
         }
         
     private:

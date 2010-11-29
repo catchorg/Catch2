@@ -18,13 +18,66 @@
 
 namespace Catch
 {
+namespace Detail
+{
+    // The following code, contributed by Sam Partington, allows us to choose an implementation
+    // of toString() depending on whether a << overload is available
+    
+    struct NonStreamable
+    {
+        // allow construction from anything...
+        template<typename Anything> 
+        NonStreamable(Anything)
+        {}
+    };
+    
+    // a local operator<<  which may be called if there isn't a better one elsewhere...
+    inline NonStreamable operator << ( std::ostream&, const NonStreamable& ns )
+    {
+        return ns;
+    }
+
+    template<typename T>
+    struct IsStreamable
+    {
+        static NoType Deduce( const NonStreamable& );
+        static YesType Deduce( std::ostream& );
+
+        enum
+        {
+            value = sizeof( Deduce( Synth<std::ostream&>() << Synth<const T&>() ) ) 
+                        == sizeof( YesType )
+        };
+    };
+    
+    // << is available, so use it with ostringstream to make the string
+    template<typename T, bool streamable>
+    struct StringMaker
+    {
+        static std::string apply( const T& value )
+        {
+            std::ostringstream oss;
+            oss << value;
+            return oss.str();
+        }
+    };
+      
+    // << not available - use a default string
+    template<typename T>
+    struct StringMaker<T, false>
+    {
+        static std::string apply( const T& value )
+        {
+            return "{?}";
+        }
+    };
+
+}// end namespace Detail
 
 template<typename T>
 std::string toString( const T& value )
 {
-    std::ostringstream oss;
-    oss << value;
-    return oss.str();
+    return Detail::StringMaker<T, Detail::IsStreamable<T>::value>::apply( value );
 }
 
 class TestFailureException

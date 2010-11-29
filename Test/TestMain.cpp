@@ -61,7 +61,17 @@ int main (int argc, char * const argv[])
 
     if( result == 0 )
     {
-        std::cout << "All " << runner.getSuccessCount() + runner.getFailureCount() << " tests completed successfully" << std::endl;
+        const size_t expectedTestCaseCount = 99; // !TBD factor this out
+        size_t testCaseCount = runner.getSuccessCount() + runner.getFailureCount();
+        std::cout << "All " << testCaseCount << " tests completed successfully" << std::endl;
+        if( testCaseCount != expectedTestCaseCount )
+        {
+            std::cerr   << "- but we were expecting " << expectedTestCaseCount
+                        << " test to run. Where some added or removed, or were they not compiled in?" 
+                        << std::endl;
+            return 1;
+        }        
+        
     }
     return result;
 }

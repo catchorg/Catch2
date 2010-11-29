@@ -1,0 +1,364 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+<<<<<<< HEAD:Test/Test.xcodeproj/project.pbxproj
+		4A3BFFB9128DCF06005609E3 /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A3BFFB8128DCF06005609E3 /* TestMain.cpp */; };
+		4AA7EA9212A438C7005A0B97 /* MiscTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */; };
+		4AFC38CD12887D80003A0C29 /* ConditionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC38CC12887D80003A0C29 /* ConditionTests.cpp */; };
+		4AFC3A9912893C56003A0C29 /* ExceptionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC3A9812893C56003A0C29 /* ExceptionTests.cpp */; };
+		4AFC3AA912893E54003A0C29 /* MessageTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC3AA812893E54003A0C29 /* MessageTests.cpp */; };
+		4AFC3B0B12894114003A0C29 /* ClassTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC3B0A12894114003A0C29 /* ClassTests.cpp */; };
+		4AFC3B671289C7E3003A0C29 /* TrickyTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC3B661289C7E3003A0C29 /* TrickyTests.cpp */; };
+=======
+		4A595364128E920B009DC1B9 /* ClassTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A59535F128E920B009DC1B9 /* ClassTests.cpp */; };
+		4A595365128E920B009DC1B9 /* ConditionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A595360128E920B009DC1B9 /* ConditionTests.cpp */; };
+		4A595366128E920B009DC1B9 /* ExceptionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A595361128E920B009DC1B9 /* ExceptionTests.cpp */; };
+		4A595367128E920B009DC1B9 /* MessageTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A595362128E920B009DC1B9 /* MessageTests.cpp */; };
+		4A595368128E920B009DC1B9 /* TrickyTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A595363128E920B009DC1B9 /* TrickyTests.cpp */; };
+		4A59537A128E9354009DC1B9 /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A595379128E9354009DC1B9 /* TestMain.cpp */; };
+>>>>>>> 5f43a43662c8b9feca25aeccc79d1c7db664c9a0:Test/Xcode/Test.xcodeproj/project.pbxproj
+		8DD76F6A0486A84900D96B5E /* Test.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* Test.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76F690486A84900D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				8DD76F6A0486A84900D96B5E /* Test.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+<<<<<<< HEAD:Test/Test.xcodeproj/project.pbxproj
+		4A3BFFB8128DCF06005609E3 /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMain.cpp; sourceTree = "<group>"; };
+		4A3BFFF0128DD23C005609E3 /* catch_runnerconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runnerconfig.hpp; path = ../internal/catch_runnerconfig.hpp; sourceTree = SOURCE_ROOT; };
+		4AA7E968129FA1DF005A0B97 /* catch_reporter_junit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_junit.hpp; path = ../../../Lib/Catch/catch_reporter_junit.hpp; sourceTree = SOURCE_ROOT; };
+		4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscTests.cpp; sourceTree = "<group>"; };
+		4AFC341512809A36003A0C29 /* catch_capture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_capture.hpp; path = ../internal/catch_capture.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341612809A36003A0C29 /* catch_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_common.h; path = ../internal/catch_common.h; sourceTree = SOURCE_ROOT; };
+		4AFC341712809A36003A0C29 /* catch_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_registry.hpp; path = ../internal/catch_registry.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341812809A36003A0C29 /* catch_reporter_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_registry.hpp; path = ../internal/catch_reporter_registry.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341912809A36003A0C29 /* catch_resultinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_resultinfo.hpp; path = ../internal/catch_resultinfo.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341A12809A36003A0C29 /* catch_runner_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runner_impl.hpp; path = ../internal/catch_runner_impl.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341B12809A36003A0C29 /* catch_testcaseinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_testcaseinfo.hpp; path = ../internal/catch_testcaseinfo.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341C12809A45003A0C29 /* catch_default_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_default_main.hpp; path = ../catch_default_main.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341D12809A45003A0C29 /* catch_reporter_basic.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_basic.hpp; path = ../catch_reporter_basic.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341E12809A45003A0C29 /* catch_reporter_xml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_xml.hpp; path = ../catch_reporter_xml.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341F12809A45003A0C29 /* catch_list.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_list.hpp; path = ../internal/catch_list.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC342012809A45003A0C29 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../catch.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC346412809D41003A0C29 /* catch_commandline.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_commandline.hpp; path = ../internal/catch_commandline.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC359B1281F00B003A0C29 /* catch_section.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_section.hpp; path = ../internal/catch_section.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC38161284B387003A0C29 /* catch_runner.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runner.hpp; path = ../catch_runner.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC38CC12887D80003A0C29 /* ConditionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConditionTests.cpp; sourceTree = "<group>"; };
+		4AFC3A9812893C56003A0C29 /* ExceptionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExceptionTests.cpp; sourceTree = "<group>"; };
+		4AFC3AA812893E54003A0C29 /* MessageTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageTests.cpp; sourceTree = "<group>"; };
+		4AFC3B0A12894114003A0C29 /* ClassTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClassTests.cpp; sourceTree = "<group>"; };
+		4AFC3B661289C7E3003A0C29 /* TrickyTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrickyTests.cpp; sourceTree = "<group>"; };
+=======
+		4A59535F128E920B009DC1B9 /* ClassTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClassTests.cpp; path = ../ClassTests.cpp; sourceTree = SOURCE_ROOT; };
+		4A595360128E920B009DC1B9 /* ConditionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConditionTests.cpp; path = ../ConditionTests.cpp; sourceTree = SOURCE_ROOT; };
+		4A595361128E920B009DC1B9 /* ExceptionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExceptionTests.cpp; path = ../ExceptionTests.cpp; sourceTree = SOURCE_ROOT; };
+		4A595362128E920B009DC1B9 /* MessageTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MessageTests.cpp; path = ../MessageTests.cpp; sourceTree = SOURCE_ROOT; };
+		4A595363128E920B009DC1B9 /* TrickyTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrickyTests.cpp; path = ../TrickyTests.cpp; sourceTree = SOURCE_ROOT; };
+		4A595379128E9354009DC1B9 /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestMain.cpp; path = ../TestMain.cpp; sourceTree = SOURCE_ROOT; };
+		4A59537F128E93CA009DC1B9 /* catch_default_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_default_main.hpp; path = ../../catch_default_main.hpp; sourceTree = SOURCE_ROOT; };
+		4A595380128E93CA009DC1B9 /* catch_reporter_basic.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_basic.hpp; path = ../../catch_reporter_basic.hpp; sourceTree = SOURCE_ROOT; };
+		4A595381128E93CA009DC1B9 /* catch_reporter_xml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_xml.hpp; path = ../../catch_reporter_xml.hpp; sourceTree = SOURCE_ROOT; };
+		4A595382128E93CA009DC1B9 /* catch_runner.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runner.hpp; path = ../../catch_runner.hpp; sourceTree = SOURCE_ROOT; };
+		4A595383128E93CA009DC1B9 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../../catch.hpp; sourceTree = SOURCE_ROOT; };
+		4A595384128E93E0009DC1B9 /* catch_capture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_capture.hpp; path = ../../internal/catch_capture.hpp; sourceTree = SOURCE_ROOT; };
+		4A595385128E93E1009DC1B9 /* catch_commandline.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_commandline.hpp; path = ../../internal/catch_commandline.hpp; sourceTree = SOURCE_ROOT; };
+		4A595386128E93E1009DC1B9 /* catch_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_common.h; path = ../../internal/catch_common.h; sourceTree = SOURCE_ROOT; };
+		4A595387128E93E1009DC1B9 /* catch_list.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_list.hpp; path = ../../internal/catch_list.hpp; sourceTree = SOURCE_ROOT; };
+		4A595388128E93E1009DC1B9 /* catch_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_registry.hpp; path = ../../internal/catch_registry.hpp; sourceTree = SOURCE_ROOT; };
+		4A595389128E93E1009DC1B9 /* catch_reporter_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_registry.hpp; path = ../../internal/catch_reporter_registry.hpp; sourceTree = SOURCE_ROOT; };
+		4A59538A128E93E1009DC1B9 /* catch_resultinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_resultinfo.hpp; path = ../../internal/catch_resultinfo.hpp; sourceTree = SOURCE_ROOT; };
+		4A59538B128E93E1009DC1B9 /* catch_runner_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runner_impl.hpp; path = ../../internal/catch_runner_impl.hpp; sourceTree = SOURCE_ROOT; };
+		4A59538C128E93E1009DC1B9 /* catch_runnerconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runnerconfig.hpp; path = ../../internal/catch_runnerconfig.hpp; sourceTree = SOURCE_ROOT; };
+		4A59538D128E93E1009DC1B9 /* catch_section.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_section.hpp; path = ../../internal/catch_section.hpp; sourceTree = SOURCE_ROOT; };
+		4A59538E128E93E1009DC1B9 /* catch_testcaseinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_testcaseinfo.hpp; path = ../../internal/catch_testcaseinfo.hpp; sourceTree = SOURCE_ROOT; };
+		4A5955C412909CCC009DC1B9 /* catch_objc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc.hpp; path = ../../catch_objc.hpp; sourceTree = SOURCE_ROOT; };
+>>>>>>> 5f43a43662c8b9feca25aeccc79d1c7db664c9a0:Test/Xcode/Test.xcodeproj/project.pbxproj
+		8DD76F6C0486A84900D96B5E /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6859E8B029090EE04C91782 /* Test.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Test.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F660486A84900D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = Test;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+<<<<<<< HEAD:Test/Test.xcodeproj/project.pbxproj
+				4AA7E96C129FA2A0005A0B97 /* Tests */,
+				4A3BFFB8128DCF06005609E3 /* TestMain.cpp */,
+=======
+				4A595379128E9354009DC1B9 /* TestMain.cpp */,
+				4A59535E128E91FA009DC1B9 /* Test Cases */,
+>>>>>>> 5f43a43662c8b9feca25aeccc79d1c7db664c9a0:Test/Xcode/Test.xcodeproj/project.pbxproj
+				4AFC341312809A12003A0C29 /* Catch */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76F6C0486A84900D96B5E /* Test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+<<<<<<< HEAD:Test/Test.xcodeproj/project.pbxproj
+		4AA7E96B129FA282005A0B97 /* Reporters */ = {
+			isa = PBXGroup;
+			children = (
+				4AFC341D12809A45003A0C29 /* catch_reporter_basic.hpp */,
+				4AFC341E12809A45003A0C29 /* catch_reporter_xml.hpp */,
+				4AA7E968129FA1DF005A0B97 /* catch_reporter_junit.hpp */,
+			);
+			name = Reporters;
+			sourceTree = "<group>";
+		};
+		4AA7E96C129FA2A0005A0B97 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */,
+				4AFC38CC12887D80003A0C29 /* ConditionTests.cpp */,
+				4AFC3A9812893C56003A0C29 /* ExceptionTests.cpp */,
+				4AFC3AA812893E54003A0C29 /* MessageTests.cpp */,
+				4AFC3B0A12894114003A0C29 /* ClassTests.cpp */,
+				4AFC3B661289C7E3003A0C29 /* TrickyTests.cpp */,
+			);
+			name = Tests;
+=======
+		4A59535E128E91FA009DC1B9 /* Test Cases */ = {
+			isa = PBXGroup;
+			children = (
+				4A59535F128E920B009DC1B9 /* ClassTests.cpp */,
+				4A595360128E920B009DC1B9 /* ConditionTests.cpp */,
+				4A595361128E920B009DC1B9 /* ExceptionTests.cpp */,
+				4A595362128E920B009DC1B9 /* MessageTests.cpp */,
+				4A595363128E920B009DC1B9 /* TrickyTests.cpp */,
+			);
+			name = "Test Cases";
+>>>>>>> 5f43a43662c8b9feca25aeccc79d1c7db664c9a0:Test/Xcode/Test.xcodeproj/project.pbxproj
+			sourceTree = "<group>";
+		};
+		4AFC341312809A12003A0C29 /* Catch */ = {
+			isa = PBXGroup;
+			children = (
+<<<<<<< HEAD:Test/Test.xcodeproj/project.pbxproj
+				4AFC342012809A45003A0C29 /* catch.hpp */,
+				4AFC341C12809A45003A0C29 /* catch_default_main.hpp */,
+				4AFC38161284B387003A0C29 /* catch_runner.hpp */,
+				4AA7E96B129FA282005A0B97 /* Reporters */,
+=======
+				4A5955C412909CCC009DC1B9 /* catch_objc.hpp */,
+				4A59537F128E93CA009DC1B9 /* catch_default_main.hpp */,
+				4A595380128E93CA009DC1B9 /* catch_reporter_basic.hpp */,
+				4A595381128E93CA009DC1B9 /* catch_reporter_xml.hpp */,
+				4A595382128E93CA009DC1B9 /* catch_runner.hpp */,
+				4A595383128E93CA009DC1B9 /* catch.hpp */,
+>>>>>>> 5f43a43662c8b9feca25aeccc79d1c7db664c9a0:Test/Xcode/Test.xcodeproj/project.pbxproj
+				4AFC341412809A1B003A0C29 /* Internal */,
+			);
+			name = Catch;
+			sourceTree = "<group>";
+		};
+		4AFC341412809A1B003A0C29 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				4A595384128E93E0009DC1B9 /* catch_capture.hpp */,
+				4A595385128E93E1009DC1B9 /* catch_commandline.hpp */,
+				4A595386128E93E1009DC1B9 /* catch_common.h */,
+				4A595387128E93E1009DC1B9 /* catch_list.hpp */,
+				4A595388128E93E1009DC1B9 /* catch_registry.hpp */,
+				4A595389128E93E1009DC1B9 /* catch_reporter_registry.hpp */,
+				4A59538A128E93E1009DC1B9 /* catch_resultinfo.hpp */,
+				4A59538B128E93E1009DC1B9 /* catch_runner_impl.hpp */,
+				4A59538C128E93E1009DC1B9 /* catch_runnerconfig.hpp */,
+				4A59538D128E93E1009DC1B9 /* catch_section.hpp */,
+				4A59538E128E93E1009DC1B9 /* catch_testcaseinfo.hpp */,
+			);
+			name = Internal;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				C6859E8B029090EE04C91782 /* Test.1 */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F620486A84900D96B5E /* Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "Test" */;
+			buildPhases = (
+				8DD76F640486A84900D96B5E /* Sources */,
+				8DD76F660486A84900D96B5E /* Frameworks */,
+				8DD76F690486A84900D96B5E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Test;
+			productInstallPath = "$(HOME)/bin";
+			productName = Test;
+			productReference = 8DD76F6C0486A84900D96B5E /* Test */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "Test" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* Test */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD76F620486A84900D96B5E /* Test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F640486A84900D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+<<<<<<< HEAD:Test/Test.xcodeproj/project.pbxproj
+				4AFC38CD12887D80003A0C29 /* ConditionTests.cpp in Sources */,
+				4AFC3A9912893C56003A0C29 /* ExceptionTests.cpp in Sources */,
+				4AFC3AA912893E54003A0C29 /* MessageTests.cpp in Sources */,
+				4AFC3B0B12894114003A0C29 /* ClassTests.cpp in Sources */,
+				4AFC3B671289C7E3003A0C29 /* TrickyTests.cpp in Sources */,
+				4A3BFFB9128DCF06005609E3 /* TestMain.cpp in Sources */,
+				4AA7EA9212A438C7005A0B97 /* MiscTests.cpp in Sources */,
+=======
+				4A595364128E920B009DC1B9 /* ClassTests.cpp in Sources */,
+				4A595365128E920B009DC1B9 /* ConditionTests.cpp in Sources */,
+				4A595366128E920B009DC1B9 /* ExceptionTests.cpp in Sources */,
+				4A595367128E920B009DC1B9 /* MessageTests.cpp in Sources */,
+				4A595368128E920B009DC1B9 /* TrickyTests.cpp in Sources */,
+				4A59537A128E9354009DC1B9 /* TestMain.cpp in Sources */,
+>>>>>>> 5f43a43662c8b9feca25aeccc79d1c7db664c9a0:Test/Xcode/Test.xcodeproj/project.pbxproj
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923208733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = Test;
+			};
+			name = Debug;
+		};
+		1DEB923308733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = Test;
+			};
+			name = Release;
+		};
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923208733DC60010E9CD /* Debug */,
+				1DEB923308733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

@@ -1,4 +1,4 @@
-Test/build
+*.build
 *.pbxuser
 *.mode1v3
 *.ncb
