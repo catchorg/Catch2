@@ -13,6 +13,8 @@
 #ifndef TWOBLUECUBES_CATCH_SECTION_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_SECTION_HPP_INCLUDED
 
+#include "catch_capture.hpp"
+
 #include <string>
 
 namespace Catch
@@ -21,25 +23,27 @@ namespace Catch
     {
     public:
         Section( const std::string& name, const std::string& description )
-        : m_name( name ), m_description( description )
+        :   m_name( name ),
+            m_sectionIncluded( ResultsCapture::acceptSectionStart( name, description, m_successes, m_failures ) )
         {
-            ResultsCapture::acceptSectionStart( name, description );
         }
         
         ~Section()
         {
-            ResultsCapture::acceptSectionEnd( m_name );
+            ResultsCapture::acceptSectionEnd( m_name, m_successes, m_failures );
         }
         
-        // This returns whether the section should be included or not
+        // This indicates whether the section should be executed or not
         operator bool()
         {
-            // !TBD get this from runner
-            return true;
+            return m_sectionIncluded;
         }
+
     private:
         std::string m_name;
-        std::string m_description;
+        std::size_t m_successes;
+        std::size_t m_failures;
+        bool m_sectionIncluded;
     };
     
 } // end namespace Catch

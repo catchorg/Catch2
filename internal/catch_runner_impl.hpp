@@ -48,16 +48,17 @@ namespace Catch
     class Runner : public IResultListener
     {
     public:
-        Runner()
+        explicit Runner( ITestReporter* reporter )
         :   m_successes( 0 ),
             m_failures( 0 ),
-            m_reporter( 0 )
+            m_reporter( reporter )
         {
+            m_reporter->StartTesting();
         }
         
-        void setReporter( ITestReporter* reporter )
+        ~Runner()
         {
-            m_reporter = reporter;
+            m_reporter->EndTesting( m_successes, m_failures );
         }
         
         void runAll()
@@ -133,6 +134,19 @@ namespace Catch
                 m_failures++;
             
             m_reporter->Result( result );
+        }
+
+        virtual bool sectionStarted( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures )
+        {
+            m_reporter->StartSection( name, description );
+            successes = m_successes;
+            failures = m_failures;
+            return true;
+        }
+        
+        virtual void sectionEnded( const std::string& name, std::size_t prevSuccesses, std::size_t prevFailures )
+        {
+            m_reporter->EndSection( name, m_successes - prevSuccesses, m_failures - prevFailures );
         }
         
     private:

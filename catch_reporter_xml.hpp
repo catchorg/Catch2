@@ -35,6 +35,15 @@ namespace Catch
         
     private: // ITestReporter
 
+        virtual void StartTesting(){}
+        virtual void EndTesting( std::size_t succeeded, std::size_t failed ){(succeeded, failed);}
+        
+        virtual void StartGroup( const std::string& groupName ){(groupName);}
+        virtual void EndGroup( const std::string& groupName, std::size_t succeeded, std::size_t failed ){(groupName, succeeded, failed);}
+        
+        virtual void StartSection( const std::string& sectionName, const std::string description ){(sectionName,description);}
+        virtual void EndSection( const std::string& sectionName, std::size_t succeeded, std::size_t failed ){(sectionName, succeeded, failed);}
+        
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo )
         {

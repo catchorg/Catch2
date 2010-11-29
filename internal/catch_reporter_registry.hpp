@@ -79,16 +79,19 @@ namespace Catch
     {
         virtual ~ITestReporter(){}
         
-        // !TBD
-        // StartTesting
-        // EndTesting
-        // StartGroup
-        // EndGroup
-        // StartSection
-        // EndSection
+        virtual void StartTesting() = 0;
+        virtual void EndTesting( std::size_t succeeded, std::size_t failed ) = 0;
+
+        virtual void StartGroup( const std::string& groupName ) = 0;
+        virtual void EndGroup( const std::string& groupName, std::size_t succeeded, std::size_t failed ) = 0;
+        
+        virtual void StartSection( const std::string& sectionName, const std::string description ) = 0;
+        virtual void EndSection( const std::string& sectionName, std::size_t succeeded, std::size_t failed ) = 0;
+        
         virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;
-        virtual void Result( const ResultInfo& result ) = 0;
         virtual void EndTestCase( const TestCaseInfo& testInfo ) = 0;
+
+        virtual void Result( const ResultInfo& result ) = 0;
     };
         
     struct IReporterFactory
