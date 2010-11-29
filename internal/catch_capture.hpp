@@ -263,14 +263,7 @@ public:
     {
         instance().currentResult.setMessage( msg );
     }
-    static void acceptSectionStart( const std::string& name, const std::string& description )
-    {
-    }
-    
-    static void acceptSectionEnd( const std::string& name )
-    {
-    }
-    
+
     static bool acceptSectionStart( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures )
     {
         return instance().m_listener->sectionStarted( name, description, successes, failures );

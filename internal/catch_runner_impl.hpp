@@ -141,6 +141,8 @@ namespace Catch
             m_reporter->StartSection( name, description );
             successes = m_successes;
             failures = m_failures;
+            
+            // !TBD look up whether we should execute this section or not
             return true;
         }
         
