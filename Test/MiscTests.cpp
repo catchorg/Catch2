@@ -22,10 +22,16 @@ TEST_CASE( "succeeding/Misc/Sections", "random SECTION tests" )
         EXPECT( a != b );
         EXPECT( b != a );
     }
-    
+
     SECTION( "s2", "not equal" )
     {
         EXPECT_NOT( a == b);
     }
+}
+
+TEST_CASE( "succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr" )
+{
+    std::cout << "Some information";
     
+    std::cerr << "An error";
 }

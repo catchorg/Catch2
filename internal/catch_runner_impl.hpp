@@ -45,6 +45,30 @@ namespace Catch
         bool m_isWildcarded;
     };
     
+    class StreamRedirect
+    {
+    public:
+        StreamRedirect( std::ostream& stream, std::string& targetString )
+        :   m_stream( stream ),
+        m_prevBuf( stream.rdbuf() ),
+        m_targetString( targetString )
+        {            
+            stream.rdbuf( m_oss.rdbuf() );
+        }
+        
+        ~StreamRedirect()
+        {
+            m_targetString = m_oss.str();
+            m_stream.rdbuf( m_prevBuf );
+        }
+        
+    private:
+        std::ostream& m_stream;
+        std::streambuf* m_prevBuf;
+        std::ostringstream m_oss;
+        std::string& m_targetString;
+    };
+    
     class Runner : public IResultListener
     {
     public:
@@ -92,9 +116,14 @@ namespace Catch
             IResultListener* prevListener = ResultsCapture::setListener( this );
             m_reporter->StartTestCase( testInfo );
             
+            std::string redirectedCout;
+            std::string redirectedCerr;
+
             try
             {
-                testInfo.invoke();
+                StreamRedirect coutRedir( std::cout, redirectedCout );
+                StreamRedirect cerrRedir( std::cerr, redirectedCerr );
+                testInfo.invoke();                
             }
             catch( TestFailureException& )
             {
@@ -111,7 +140,7 @@ namespace Catch
                 ResultsCapture::acceptResult( ResultWas::ThrewException );
             }
 
-            m_reporter->EndTestCase( testInfo );
+            m_reporter->EndTestCase( testInfo, redirectedCout, redirectedCerr );
             ResultsCapture::setListener( prevListener );
         }
         

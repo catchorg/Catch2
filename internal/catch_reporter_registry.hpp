@@ -89,7 +89,7 @@ namespace Catch
         virtual void EndSection( const std::string& sectionName, std::size_t succeeded, std::size_t failed ) = 0;
         
         virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;
-        virtual void EndTestCase( const TestCaseInfo& testInfo ) = 0;
+        virtual void EndTestCase( const TestCaseInfo& testInfo, const std::string& stdOut, const std::string& stdErr ) = 0;
 
         virtual void Result( const ResultInfo& result ) = 0;
     };

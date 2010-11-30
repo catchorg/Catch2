@@ -153,8 +153,14 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const TestCaseInfo& testInfo )
+        virtual void EndTestCase( const TestCaseInfo& testInfo, const std::string& stdOut, const std::string& stdErr )
         {
+            if( !stdOut.empty() )
+                m_config.stream() << "[stdout: " << stdOut << "]\n";
+
+            if( !stdErr.empty() )
+                m_config.stream() << "[stderr: " << stdErr << "]\n";
+            
             m_config.stream() << "[Finished: " << testInfo.getName() << "]" << std::endl;
         }    
         
