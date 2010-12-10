@@ -108,6 +108,16 @@ namespace Catch
             return *this;
         }
         
+        template<typename T>
+        XmlWriter& writeAttribute( const std::string& name, const T& attribute )
+        {
+            if( !name.empty() )
+            {
+                m_os << " " << name << "=\"" << attribute << "\"";
+            }
+            return *this;
+        }
+        
         XmlWriter& writeText( const std::string& text )
         {
             if( !text.empty() )

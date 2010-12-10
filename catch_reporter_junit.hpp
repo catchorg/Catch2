@@ -21,28 +21,6 @@ namespace Catch
 {
     class JunitReporter : public Catch::ITestReporter
     {
-        struct Indenter
-        {
-            Indenter& operator ++()
-            {
-                m_indent += "\t";
-                return *this;
-            }
-            Indenter& operator --()
-            {
-                m_indent = m_indent.substr( 0, m_indent.length()-1 );
-                return *this;
-            }
-            
-            friend std::ostream& operator << ( std::ostream& os, const Indenter& indent )
-            {
-                os << indent.m_indent;
-                return os;
-            }
-            
-            std::string m_indent;
-        };
-        
         struct TestStats
         {
             std::string element;
@@ -113,19 +91,14 @@ namespace Catch
         virtual void StartGroup( const std::string& groupName )
         {
             
-//            m_config.stream() << "\t<testsuite>\n";
-//            if( !groupName.empty() )
-            {
-                m_statsForSuites.push_back( Stats( groupName ) );
-                m_currentStats = &m_statsForSuites.back();
-            }
+            m_statsForSuites.push_back( Stats( groupName ) );
+            m_currentStats = &m_statsForSuites.back();
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndGroup( const std::string& groupName, std::size_t succeeded, std::size_t failed )
+        virtual void EndGroup( const std::string&, std::size_t succeeded, std::size_t failed )
         {
-//            m_config.stream() << "\t</testsuite>\n";
-            (groupName, succeeded, failed);
+            m_currentStats->testsCount = failed+succeeded;
             m_currentStats = &m_testSuiteStats;
         }
         
@@ -135,8 +108,6 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo )
         {
-//            m_config.stream() << "\t\t<testcase name='" << testInfo.getName() << "'>\n";
-  //          m_currentTestSuccess = true;
             m_currentStats->testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );
             
         }
@@ -161,6 +132,7 @@ namespace Catch
                 {
                     case ResultWas::ThrewException:
                         stats.element = "error";
+                        m_currentStats->errorsCount++;
                         break;
                     case ResultWas::Info:
                         stats.element = "info"; // !TBD ?
@@ -170,9 +142,11 @@ namespace Catch
                         break;
                     case ResultWas::ExplicitFailure:
                         stats.element = "failure";
+                        m_currentStats->failuresCount++;
                         break;
                     case ResultWas::ExpressionFailed:
                         stats.element = "failure";
+                        m_currentStats->failuresCount++;
                         break;
                     case ResultWas::Ok:
                         stats.element = "success";
@@ -220,6 +194,12 @@ namespace Catch
                 {
                     XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
                     xml.writeAttribute( "name", it->name );
+                    xml.writeAttribute( "errors", it->errorsCount );
+                    xml.writeAttribute( "failures", it->failuresCount );
+                    xml.writeAttribute( "tests", it->testsCount );
+                    xml.writeAttribute( "hostname", "tbd" );
+                    xml.writeAttribute( "time", "tbd" );
+                    xml.writeAttribute( "timestamp", "tbd" );
                     
                     OutputTestCases( xml, *it );
                 }
@@ -277,8 +257,6 @@ namespace Catch
         std::vector<Stats> m_statsForSuites;
         std::ostringstream m_stdOut;
         std::ostringstream m_stdErr;
-
-        Indenter m_indent;
     };
     
 } // end namespace Catch
