@@ -11,6 +11,10 @@
 #ifndef TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
+#include <sstream>
+#include <string>
+#include <vector>
+
 namespace Catch
 {
     class XmlWriter
@@ -42,15 +46,28 @@ namespace Catch
                 m_writer->writeText( text );
                 return *this;
             }
+            template<typename T>
+            ScopedElement& writeAttribute( const std::string& name, const T& attribute )
+            {
+                m_writer->writeAttribute( name, attribute );
+                return *this;
+            }
             
         private:
             mutable XmlWriter* m_writer;
         };
         
+        XmlWriter()
+        :   m_tagIsOpen( false ),
+            m_needsNewline( false ),
+            m_os( &std::cout )
+        {
+        }
+
         XmlWriter( std::ostream& os)
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
-            m_os( os )
+            m_os( &os )
         {
         }
         
@@ -61,12 +78,28 @@ namespace Catch
                 endElement();
             }
         }
+
+        XmlWriter& operator = ( const XmlWriter& other )
+        {
+            XmlWriter temp( other );
+            swap( temp );
+            return *this;
+        }
+        
+        void swap( XmlWriter& other )
+        {
+            std::swap( m_tagIsOpen, other.m_tagIsOpen );
+            std::swap( m_needsNewline, other.m_needsNewline );
+            std::swap( m_tags, other.m_tags );
+            std::swap( m_indent, other.m_indent );
+            std::swap( m_os, other.m_os );
+        }
         
         XmlWriter& startElement( const std::string& name )
         {
             ensureTagClosed();
             newlineIfNecessary();
-            m_os << m_indent << "<" << name;
+            stream() << m_indent << "<" << name;
             m_tags.push_back( name );
             m_indent += "  ";
             m_tagIsOpen = true;
@@ -86,12 +119,12 @@ namespace Catch
             m_indent = m_indent.substr( 0, m_indent.size()-2 );
             if( m_tagIsOpen )
             {
-                m_os << "/>\n";
+                stream() << "/>\n";
                 m_tagIsOpen = false;
             }
             else
             {
-                m_os << m_indent << "</" << m_tags.back() << ">\n";
+                stream() << m_indent << "</" << m_tags.back() << ">\n";
             } 
             m_tags.pop_back();
             return *this;
@@ -101,10 +134,15 @@ namespace Catch
         {
             if( !name.empty() && !attribute.empty() )
             {
-                m_os << " " << name << "=\"";
+                stream() << " " << name << "=\"";
                 writeEncodedText( attribute );
-                m_os << "\"";
+                stream() << "\"";
             }
+            return *this;
+        }
+        XmlWriter& writeAttribute( const std::string& name, bool attribute )
+        {
+            stream() << " " << name << "=\"" << ( attribute ? "true" : "false" ) << "\"";
             return *this;
         }
         
@@ -113,7 +151,7 @@ namespace Catch
         {
             if( !name.empty() )
             {
-                m_os << " " << name << "=\"" << attribute << "\"";
+                stream() << " " << name << "=\"" << attribute << "\"";
             }
             return *this;
         }
@@ -125,7 +163,7 @@ namespace Catch
                 bool tagWasOpen = m_tagIsOpen;
                 ensureTagClosed();
                 if( tagWasOpen )
-                    m_os << m_indent;
+                    stream() << m_indent;
                 writeEncodedText( text );
                 m_needsNewline = true;
             }
@@ -135,7 +173,7 @@ namespace Catch
         XmlWriter& writeComment( const std::string& text )
         {
             ensureTagClosed();
-            m_os << m_indent << "<!--" << text << "-->";
+            stream() << m_indent << "<!--" << text << "-->";
             m_needsNewline = true;
             return *this;
         }
@@ -143,17 +181,22 @@ namespace Catch
         XmlWriter& writeBlankLine()
         {
             ensureTagClosed();
-            m_os << "\n";
+            stream() << "\n";
             return *this;
         }
         
     private:
         
+        std::ostream& stream()
+        {
+            return *m_os;
+        }
+        
         void ensureTagClosed()
         {
             if( m_tagIsOpen )
             {
-                m_os << ">\n";
+                stream() << ">\n";
                 m_tagIsOpen = false;
             }
         }
@@ -162,7 +205,7 @@ namespace Catch
         {
             if( m_needsNewline )
             {
-                m_os << "\n";
+                stream() << "\n";
                 m_needsNewline = false;
             }
         }
@@ -174,7 +217,7 @@ namespace Catch
                !findReplaceableString( text, "&", "&amp;" ) &&
                !findReplaceableString( text, "\"", "&quote;" ) )
             {
-                m_os << text;
+                stream() << text;
             }
         }
         
@@ -183,7 +226,7 @@ namespace Catch
             std::string::size_type pos = text.find_first_of( replaceWhat );
             if( pos != std::string::npos )
             {
-                m_os << text.substr( 0, pos ) << replaceWith;
+                stream() << text.substr( 0, pos ) << replaceWith;
                 writeEncodedText( text.substr( pos+1 ) );
                 return true;
             }
@@ -194,7 +237,7 @@ namespace Catch
         bool m_needsNewline;
         std::vector<std::string> m_tags;
         std::string m_indent;
-        std::ostream& m_os;
+        std::ostream* m_os;
     };
     
 }

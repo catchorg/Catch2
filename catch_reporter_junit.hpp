@@ -15,7 +15,6 @@
 #include "internal/catch_capture.hpp"
 #include "internal/catch_reporter_registry.hpp"
 #include "internal/catch_xmlwriter.hpp"
-#include <iostream>
 
 namespace Catch
 {
