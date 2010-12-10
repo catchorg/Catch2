@@ -82,6 +82,9 @@ namespace Catch
         }
         std::string getExpandedExpression() const
         {
+            if( !hasExpression() )
+                return "";
+            
             return m_expressionIncomplete
                 ? getExpandedExpressionInternal() + " {can't expand the rest of the expression - consider rewriting it}"
                 : getExpandedExpressionInternal();

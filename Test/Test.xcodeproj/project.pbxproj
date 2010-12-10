@@ -33,7 +33,8 @@
 /* Begin PBXFileReference section */
 		4A3BFFB8128DCF06005609E3 /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMain.cpp; sourceTree = "<group>"; };
 		4A3BFFF0128DD23C005609E3 /* catch_runnerconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runnerconfig.hpp; path = ../internal/catch_runnerconfig.hpp; sourceTree = SOURCE_ROOT; };
-		4AA7E968129FA1DF005A0B97 /* catch_reporter_junit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_junit.hpp; path = ../../../Lib/Catch/catch_reporter_junit.hpp; sourceTree = SOURCE_ROOT; };
+		4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_xmlwriter.hpp; path = ../internal/catch_xmlwriter.hpp; sourceTree = SOURCE_ROOT; };
+		4A992A6612B21582002B7B66 /* catch_reporter_junit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_junit.hpp; path = ../catch_reporter_junit.hpp; sourceTree = SOURCE_ROOT; };
 		4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscTests.cpp; sourceTree = "<group>"; };
 		4AFC341512809A36003A0C29 /* catch_capture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_capture.hpp; path = ../internal/catch_capture.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341612809A36003A0C29 /* catch_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_common.h; path = ../internal/catch_common.h; sourceTree = SOURCE_ROOT; };
@@ -101,9 +102,9 @@
 		4AA7E96B129FA282005A0B97 /* Reporters */ = {
 			isa = PBXGroup;
 			children = (
+				4A992A6612B21582002B7B66 /* catch_reporter_junit.hpp */,
 				4AFC341D12809A45003A0C29 /* catch_reporter_basic.hpp */,
 				4AFC341E12809A45003A0C29 /* catch_reporter_xml.hpp */,
-				4AA7E968129FA1DF005A0B97 /* catch_reporter_junit.hpp */,
 			);
 			name = Reporters;
 			sourceTree = "<group>";
@@ -136,6 +137,7 @@
 		4AFC341412809A1B003A0C29 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */,
 				4A3BFFF0128DD23C005609E3 /* catch_runnerconfig.hpp */,
 				4AFC341F12809A45003A0C29 /* catch_list.hpp */,
 				4AFC359B1281F00B003A0C29 /* catch_section.hpp */,
