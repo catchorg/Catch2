@@ -168,14 +168,6 @@ namespace Catch
                 m_stdErr << stdErr << "\n";
         }    
 
-        static std::string trim( const std::string& str )
-        {
-            std::string::size_type start = str.find_first_not_of( "\n\r\t " );
-            std::string::size_type end = str.find_last_not_of( "\n\r\t " );
-            
-            return start < end ? str.substr( start, 1+end-start ) : "";
-        }
-        
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndTesting( std::size_t /* succeeded */, std::size_t /* failed */ )
         {

@@ -32,7 +32,7 @@ namespace Catch
 
     // create a T for use in sizeof expressions
     template<typename T> T Synth();
-    
+
 }
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED

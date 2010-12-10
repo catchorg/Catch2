@@ -22,6 +22,16 @@
 
 namespace Catch
 {
+    ///////////////////////////////////////////////////////////////////////////
+    static std::string trim( const std::string& str )
+    {
+        std::string::size_type start = str.find_first_not_of( "\n\r\t " );
+        std::string::size_type end = str.find_last_not_of( "\n\r\t " );
+        
+        return start < end ? str.substr( start, 1+end-start ) : "";
+    }
+    
+        
     class ReporterConfig
     {
     private:
@@ -167,7 +177,7 @@ namespace Catch
         {
             ReporterRegistry::instance().registerReporter<T>( name );
         }
-    };    
+    }; 
 }
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) Catch::ReporterRegistrar<reporterType> INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_ReporterReg )( name );

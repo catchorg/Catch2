@@ -61,7 +61,6 @@ namespace Catch
             m_config.stream() << "[Testing completed. ";
             ReportCounts( succeeded, failed );
             m_config.stream() << "]" << std::endl;
-            (succeeded, failed);
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -156,10 +155,10 @@ namespace Catch
         virtual void EndTestCase( const TestCaseInfo& testInfo, const std::string& stdOut, const std::string& stdErr )
         {
             if( !stdOut.empty() )
-                m_config.stream() << "[stdout: " << stdOut << "]\n";
+                m_config.stream() << "[stdout: " << trim( stdOut ) << "]\n";
 
             if( !stdErr.empty() )
-                m_config.stream() << "[stderr: " << stdErr << "]\n";
+                m_config.stream() << "[stderr: " << trim( stdErr ) << "]\n";
             
             m_config.stream() << "[Finished: " << testInfo.getName() << "]" << std::endl;
         }    
