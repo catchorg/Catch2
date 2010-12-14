@@ -29,7 +29,7 @@ TEST_CASE( "succeeding/Tricky/std::pair", "Parsing a std::pair" )
     std::pair<int, int> aNicePair( 1, 2 );
 
     // !TBD: would be nice if this could compile without the extra parentheses
-    EXPECT( (std::pair<int, int>( 1, 2 )) == aNicePair );
+    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );
     
 }
 
@@ -39,7 +39,7 @@ TEST_CASE( "succeeding/Tricky/complex lhs", "Where the LHS is not a simple value
     int b = 2;
 
     // This only captures part of the expression, but issues a warning about the rest
-    EXPECT( a == 2 || b == 2 );
+    REQUIRE( a == 2 || b == 2 );
 }
 
 struct Opaque

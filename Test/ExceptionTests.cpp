@@ -29,9 +29,9 @@ namespace
 
 TEST_CASE( "succeeding/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )
 {
-    CHECK_THROWS_AS( thisThrows(), std::domain_error );
-    CHECK_NOTHROW( thisDoesntThrow() );
-    EXPECT_THROWS( thisThrows() );
+    REQUIRE_THROWS_AS( thisThrows(), std::domain_error );
+    REQUIRE_NOTHROW( thisDoesntThrow() );
+    REQUIRE_THROWS( thisThrows() );
 }
 
 TEST_CASE( "failing/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )

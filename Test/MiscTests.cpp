@@ -19,13 +19,13 @@ TEST_CASE( "succeeding/Misc/Sections", "random SECTION tests" )
     
     SECTION( "s1", "doesn't equal" )
     {
-        EXPECT( a != b );
-        EXPECT( b != a );
+        REQUIRE( a != b );
+        REQUIRE( b != a );
     }
 
     SECTION( "s2", "not equal" )
     {
-        EXPECT_NOT( a == b);
+        REQUIRE_FALSE( a == b);
     }
 }
 

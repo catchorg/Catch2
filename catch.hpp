@@ -32,14 +32,15 @@
 
 //////
 
-#define EXPECT( expr ) INTERNAL_CATCH_TEST( expr, false, true, "EXPECT" )
-#define EXPECT_NOT( expr ) INTERNAL_CATCH_TEST( expr, true, true, "EXPECT_NOT" )
+#define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "REQUIRE" )
+#define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, true, "REQUIRE_FALSE" )
 
-#define EXPECT_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., false, true, "EXPECT_THROWS" )
-#define EXPECT_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, true, "EXPECT_THROWS_AS" )
+#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., false, true, "REQUIRE_THROWS" )
+#define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, true, "REQUIRE_THROWS_AS" )
+#define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_THROWS_AS( expr, Catch::DummyExceptionType_DontUse, true, true, "REQUIRE_NOTHROW" )
 
 #define CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CHECK" )
-#define CHECK_NOT( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CHECK_NOT" )
+#define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CHECK_FALSE" )
 
 #define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false. false, "CHECK_THROWS" )
 #define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, false, "CHECK_THROWS_AS" )

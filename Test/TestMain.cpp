@@ -14,7 +14,7 @@
 #include "../catch_runner.hpp"
 
 // This code runs the meta tests and verifies that the failing ones failed and the successful ones succeeded
-/*
+///*
 int main (int argc, char * const argv[])
 {
     using namespace Catch;
@@ -61,13 +61,13 @@ int main (int argc, char * const argv[])
 
     if( result == 0 )
     {
-        const size_t expectedTestCaseCount = 99; // !TBD factor this out
+        const size_t expectedTestCaseCount = 102; // !TBD factor this out
         size_t testCaseCount = runner.getSuccessCount() + runner.getFailureCount();
         std::cout << "All " << testCaseCount << " tests completed successfully" << std::endl;
         if( testCaseCount != expectedTestCaseCount )
         {
             std::cerr   << "- but we were expecting " << expectedTestCaseCount
-                        << " test to run. Where some added or removed, or were they not compiled in?" 
+                        << " test to run. Were some added or removed, or were they not compiled in?" 
                         << std::endl;
             return 1;
         }        
@@ -75,5 +75,5 @@ int main (int argc, char * const argv[])
     }
     return result;
 }
-*/
-#include "catch_default_main.hpp"
+//*/
+//#include "catch_default_main.hpp"

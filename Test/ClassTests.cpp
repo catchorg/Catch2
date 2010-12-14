@@ -25,11 +25,11 @@ namespace
         
         void succeedingCase()
         {            
-            EXPECT( s == "hello" );
+            REQUIRE( s == "hello" );
         }
         void failingCase()
         {            
-            EXPECT( s == "world" );
+            REQUIRE( s == "world" );
         }
     };
 }
