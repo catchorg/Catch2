@@ -155,7 +155,7 @@ TEST_CASE( "failing/conditions/ordered", "Ordering comparison checks that should
 
 // Not (!) tests
 // The problem with the ! operator is that it has right-to-left associativity.
-// This means we can't isolate it when we decompose. The simple CHECK( !false ) form, therefore,
+// This means we can't isolate it when we decompose. The simple REQUIRE( !false ) form, therefore,
 // cannot have the operand value extracted. The test will work correctly, and the situation
 // is detected and a warning issued.
 // An alternative form of the macros (CHECK_FALSE and REQUIRE_FALSE) can be used instead to capture
