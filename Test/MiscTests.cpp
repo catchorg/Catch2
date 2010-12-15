@@ -29,6 +29,23 @@ TEST_CASE( "succeeding/Misc/Sections", "random SECTION tests" )
     }
 }
 
+TEST_CASE( "succeeding/Misc/Sections/nested", "nested SECTION tests" )
+{
+    int a = 1;
+    int b = 2;
+    
+    SECTION( "s1", "doesn't equal" )
+    {
+        REQUIRE( a != b );
+        REQUIRE( b != a );
+
+        SECTION( "s2", "not equal" )
+        {
+            REQUIRE_FALSE( a == b);
+        }
+    }
+}
+
 TEST_CASE( "succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr" )
 {
     std::cout << "Some information";
