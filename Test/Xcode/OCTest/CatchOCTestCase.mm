@@ -24,20 +24,20 @@
 
 OC_TEST_CASE( "OCTest/test1", "This is a test case" )
 {
-    EXPECT( obj.int_val == 0 );
+    REQUIRE( obj.int_val == 0 );
     
     obj.int_val = 1;
     
-    EXPECT( obj.int_val == 1 );
+    REQUIRE( obj.int_val == 1 );
 }
 
 OC_TEST_CASE( "OCTest/test2", "This is another test case" )
 {
-    EXPECT( obj.int_val == 0 );
+    REQUIRE( obj.int_val == 0 );
     
     obj.int_val = 2;
     
-    EXPECT( obj.int_val == 2 );
+    REQUIRE( obj.int_val == 2 );
 }
 
 @end
