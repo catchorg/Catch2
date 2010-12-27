@@ -110,7 +110,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void Result( const ResultInfo& resultInfo )
         {
-            if( !m_config.includeSuccessfulResults() && resultInfo.ok() )
+            if( !m_config.includeSuccessfulResults() && resultInfo.getResultType() == ResultWas::Ok )
                 return;
             
             if( !resultInfo.getFilename().empty() )

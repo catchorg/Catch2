@@ -114,7 +114,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void Result( const Catch::ResultInfo& resultInfo )
         {
-            if( !resultInfo.ok() || m_config.includeSuccessfulResults() )
+            if( resultInfo.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults() )
             {
                 TestCaseStats& testCaseStats = m_currentStats->testCaseStats.back();
                 TestStats stats;

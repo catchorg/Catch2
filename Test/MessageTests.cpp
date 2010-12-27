@@ -14,11 +14,30 @@
 
 TEST_CASE( "succeeding/message", "INFO and WARN do not abort tests" )
 {
-    INFO( "this is a " << "message" );    // This should output the message but continue
-    WARN( "this is a " << "warning" );    // This should output the message but continue
+    INFO( "this is a " << "message" );    // This should output the message if a failure occurs
+    WARN( "this is a " << "warning" );    // This should always output the message but then continue
 }
 
-TEST_CASE( "failing/message", "FAIL aborts the test" )
+TEST_CASE( "failing/message/info/1", "INFO gets logged on failure" )
+{
+    INFO( "this message should be logged" );
+    int a = 2;
+    REQUIRE( a == 1 );
+}
+
+TEST_CASE( "failing/message/info/2", "INFO gets logged on failure" )
+{
+    INFO( "this message should not be logged" );
+    int a = 2;
+    REQUIRE( a == 2 );
+
+    INFO( "this message should be logged" );
+    INFO( "so should this" );
+    
+    REQUIRE( a == 1 );
+}
+
+TEST_CASE( "failing/message/fail", "FAIL aborts the test" )
 {
     FAIL( "This is a " << "failure" );    // This should output the message and abort
 }

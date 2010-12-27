@@ -164,7 +164,22 @@ namespace Catch
             else if( !result.ok() )
                 m_failures++;
             
-            m_reporter->Result( result );
+            if( !result.ok() )
+            {
+                std::vector<ResultInfo>::const_iterator it = m_info.begin();
+                std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
+                for(; it != itEnd; ++it )
+                    m_reporter->Result( *it );
+            }
+            if( result.getResultType() == ResultWas::Info )
+            {
+                m_info.push_back( result );
+            }
+            else
+            {
+                m_info.clear();
+                m_reporter->Result( result );
+            }
         }
 
         virtual bool sectionStarted( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures )
@@ -202,6 +217,7 @@ namespace Catch
         std::size_t m_failures;
         ITestReporter* m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
+        std::vector<ResultInfo> m_info;
     };
 }
 

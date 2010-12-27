@@ -93,7 +93,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void Result( const Catch::ResultInfo& resultInfo )
         {
-            if( !m_config.includeSuccessfulResults() && resultInfo.ok() )
+            if( !m_config.includeSuccessfulResults() && resultInfo.getResultType() == ResultWas::Ok )
                 return;
 
             if( resultInfo.hasExpression() )
