@@ -141,7 +141,7 @@ namespace Catch
                 ResultsCapture::acceptMessage( "unknown exception" );
                 ResultsCapture::acceptResult( ResultWas::ThrewException );
             }
-
+            m_info.clear();
             m_reporter->EndTestCase( testInfo, redirectedCout, redirectedCerr );
             ResultsCapture::setListener( prevListener );
         }
@@ -160,26 +160,24 @@ namespace Catch
         virtual void testEnded( const ResultInfo& result )
         { 
             if( result.getResultType() == ResultWas::Ok )
-                m_successes++;
-            else if( !result.ok() )
-                m_failures++;
-            
-            if( !result.ok() )
             {
+                m_successes++;
+            }
+            else if( !result.ok() )
+            {
+                m_failures++;
+
                 std::vector<ResultInfo>::const_iterator it = m_info.begin();
                 std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
                 for(; it != itEnd; ++it )
                     m_reporter->Result( *it );
-            }
-            if( result.getResultType() == ResultWas::Info )
-            {
-                m_info.push_back( result );
-            }
-            else
-            {
                 m_info.clear();
-                m_reporter->Result( result );
             }
+            
+            if( result.getResultType() == ResultWas::Info )
+                m_info.push_back( result );
+            else
+                m_reporter->Result( result );
         }
 
         virtual bool sectionStarted( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures )

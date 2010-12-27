@@ -21,20 +21,28 @@ TEST_CASE( "succeeding/message", "INFO and WARN do not abort tests" )
 TEST_CASE( "failing/message/info/1", "INFO gets logged on failure" )
 {
     INFO( "this message should be logged" );
+    INFO( "so should this" );
     int a = 2;
     REQUIRE( a == 1 );
 }
 
 TEST_CASE( "failing/message/info/2", "INFO gets logged on failure" )
 {
-    INFO( "this message should not be logged" );
-    int a = 2;
-    REQUIRE( a == 2 );
-
     INFO( "this message should be logged" );
-    INFO( "so should this" );
+    int a = 2;
+    CHECK( a == 2 );
+
+    INFO( "this message should be logged, too" );
     
-    REQUIRE( a == 1 );
+    CHECK( a == 1 );
+
+    INFO( "and this, but later" );
+
+    CHECK( a == 0 );
+
+    INFO( "but not this" );
+
+    CHECK( a == 2 );
 }
 
 TEST_CASE( "failing/message/fail", "FAIL aborts the test" )
