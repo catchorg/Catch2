@@ -25,6 +25,7 @@ namespace Catch
     // -r --report <type>
     // -o --output filename to write to
     // -s --success report successful cases too
+    // -b --break breaks into debugger on test failure
 	class ArgParser : NonCopyable
     {
         enum Mode
@@ -35,6 +36,7 @@ namespace Catch
             modeReport,
             modeOutput,
             modeSuccess,
+            modeBreak,
 
             modeError
         };
@@ -59,6 +61,8 @@ namespace Catch
                         changeMode( cmd, modeOutput );
                     else if( cmd == "-s" || cmd == "--success" )
                         changeMode( cmd, modeSuccess );
+                    else if( cmd == "-b" || cmd == "--break" )
+                        changeMode( cmd, modeBreak );
                 }
                 else
                 {
@@ -147,6 +151,11 @@ namespace Catch
                     if( m_args.size() != 0 )
                         return setErrorMode( m_command + " does not accept arguments" );
                     m_config.setIncludeAll( true );
+                    break;
+                case modeBreak:
+                    if( m_args.size() != 0 )
+                        return setErrorMode( m_command + " does not accept arguments" );
+                    m_config.setShouldDebugBreak( true );
                     break;
             }
             m_args.clear();

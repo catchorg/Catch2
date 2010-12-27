@@ -13,6 +13,7 @@
 #define TWOBLUECUBES_INTERNAL_CATCH_RUNNER_HPP_INCLUDED
 
 #include "catch_reporter_registry.hpp"
+#include "catch_runnerconfig.hpp"
 #include "catch_registry.hpp"
 #include "catch_capture.hpp"
 
@@ -72,10 +73,11 @@ namespace Catch
     class Runner : public IResultListener
     {
     public:
-        explicit Runner( ITestReporter* reporter )
+        explicit Runner( const RunnerConfig& config )
         :   m_successes( 0 ),
             m_failures( 0 ),
-            m_reporter( reporter )
+            m_config( config ),
+            m_reporter( m_config.getReporter() )
         {
             m_reporter->StartTesting();
         }
@@ -189,8 +191,13 @@ namespace Catch
             if( m_scopedInfos.back() == scopedInfo )
                 m_scopedInfos.pop_back();
         }
+        virtual bool shouldDebugBreak() const
+        {
+            return m_config.shouldDebugBreak();
+        }
         
     private:
+        const RunnerConfig& m_config;
         std::size_t m_successes;
         std::size_t m_failures;
         ITestReporter* m_reporter;

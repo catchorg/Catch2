@@ -13,6 +13,7 @@
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 
 #include "catch_resultinfo.hpp"
+#include "catch_debugger.hpp"
 #include <sstream>
 #include <cmath>
 
@@ -200,8 +201,20 @@ struct IResultListener
     virtual void sectionEnded( const std::string& name, std::size_t successes, std::size_t failures ) = 0;
     virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0;
     virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
+    virtual bool shouldDebugBreak() const = 0;
 };
+  
+    struct ResultAction
+    {
+        enum Value
+        {
+            None,
+            Failed = 1,     // Failure - but no debug break if Debug bit not set
+            DebugFailed = 3 // Indicates that the debugger should break, if possible
+        };
         
+    };
+    
 class ResultsCapture
 {
 private:
@@ -230,20 +243,12 @@ public:
         instance().currentResult = resultInfo;
     }
 
-    static void acceptResult( bool result, bool stopOnFail )
+    static ResultAction::Value acceptResult( bool result )
     {
-        acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed, stopOnFail );
+        return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
     }
     
-    static void acceptResult( ResultWas::OfType result, bool stopOnFail )
-    {
-        if( !acceptResult( result ) && stopOnFail )
-        {
-            throw TestFailureException();
-        }
-    }
-    
-    static bool acceptResult( ResultWas::OfType result )
+    static ResultAction::Value acceptResult( ResultWas::OfType result )
     {
         MutableResultInfo& currentResult = instance().currentResult;
         currentResult.setResultType( result );
@@ -254,14 +259,14 @@ public:
         }
         bool ok = currentResult.ok();
         instance().currentResult = MutableResultInfo();
-        return ok;
+        if( ok )
+            return ResultAction::None;
+        else if( instance().m_listener->shouldDebugBreak() )
+            return ResultAction::DebugFailed;
+        else
+            return ResultAction::Failed;
     }
 
-    static bool acceptResult( bool expressionResult )
-    {
-        return acceptResult( expressionResult ? ResultWas::Ok : ResultWas::ExpressionFailed );
-    }
-    
     static void acceptMessage( const std::string& msg )
     {
         instance().currentResult.setMessage( msg );
@@ -367,27 +372,34 @@ inline std::string toString<Approx>( const Approx& value )
     
 } // end namespace Catch
 
+#define INTERNAL_CATCH_ACCEPT_RESULT( result, stopOnFailure ) \
+    if( Catch::ResultAction::Value action = Catch::ResultsCapture::acceptResult( result )  ) \
+    { \
+        if( action == Catch::ResultAction::DebugFailed ) DebugBreak(); \
+        if( stopOnFailure ) throw Catch::TestFailureException(); \
+    }
+
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
     Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
-    Catch::ResultsCapture::acceptResult( expr, stopOnFailure );
+    INTERNAL_CATCH_ACCEPT_RESULT( expr, stopOnFailure )
 
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
     Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, false, __FILE__, __LINE__, macroName ) ); \
     try \
     { \
         expr; \
-        Catch::ResultsCapture::acceptResult( nothrow, stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_RESULT( nothrow, stopOnFailure ) \
     } \
     catch( exceptionType ) \
     { \
-        Catch::ResultsCapture::acceptResult( !(nothrow), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_RESULT( !(nothrow), stopOnFailure ) \
     }
 
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
 INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
 catch( ... ) \
 { \
-    Catch::ResultsCapture::acceptResult( false, stopOnFailure ); \
+    INTERNAL_CATCH_ACCEPT_RESULT( false, stopOnFailure ) \
 }
 
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
@@ -395,7 +407,7 @@ catch( ... ) \
     INTERNAL_CATCH_UNIQUE_NAME( strm ) << reason; \
     Catch::ResultsCapture::acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
     Catch::ResultsCapture::acceptMessage( INTERNAL_CATCH_UNIQUE_NAME( strm ).str() ); \
-    Catch::ResultsCapture::acceptResult( resultType, stopOnFailure );
+    INTERNAL_CATCH_ACCEPT_RESULT( resultType, stopOnFailure ) \
 
 #define INTERNAL_CATCH_SCOPED_INFO( log ) Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 

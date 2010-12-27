@@ -53,7 +53,7 @@ namespace Catch
             config.getReporterConfig().setStreamBuf( ofs.rdbuf() );
         }
 
-        Runner runner( config.getReporter() );
+        Runner runner( config );
 
         // Run test specs specified on the command line - or default to all
         if( config.m_testSpecs.size() == 0 )

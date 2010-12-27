@@ -44,7 +44,8 @@ namespace Catch
         
         RunnerConfig()
         :   m_listSpec( listNone ),
-            m_reporter( NULL )
+            m_reporter( NULL ),
+            m_shouldDebugBreak( false )
         {}
         
         void setReporterInfo( const std::string& reporterName )
@@ -90,7 +91,7 @@ namespace Catch
             return m_reporter.get();
         }
         
-        const ITestReporter* getReporter() const
+        ITestReporter* getReporter() const
         {
             return const_cast<RunnerConfig*>( this )->getReporter();
         }
@@ -113,6 +114,14 @@ namespace Catch
         {
             m_reporterConfig.setIncludeWhat( includeAll ? ReporterConfig::Include::SuccessfulResults : ReporterConfig::Include::FailedOnly );
         }
+        void setShouldDebugBreak( bool shouldDebugBreak )
+        {
+            m_shouldDebugBreak = shouldDebugBreak;
+        }
+        bool shouldDebugBreak() const
+        {
+            return m_shouldDebugBreak;
+        }
         
         std::auto_ptr<ITestReporter> m_reporter;
         std::string m_filename;
@@ -120,6 +129,7 @@ namespace Catch
         std::string m_message;
         ListInfo m_listSpec;
         std::vector<std::string> m_testSpecs;
+        bool m_shouldDebugBreak;
     };
     
 } // end namespace Catch
