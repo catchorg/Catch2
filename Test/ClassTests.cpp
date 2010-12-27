@@ -33,5 +33,25 @@ namespace
         }
     };
 }
+
+
 METHOD_AS_TEST_CASE( TestClass::succeedingCase, "succeeding/TestClass/succeedingCase", "A method based test run that succeeds" );
 METHOD_AS_TEST_CASE( TestClass::failingCase, "failing/TestClass/failingCase", "A method based test run that fails" );
+
+
+struct Fixture
+{
+    Fixture() : m_a( 1 ) {}
+    
+    int m_a;
+};
+
+TEST_CASE_METHOD( Fixture, "succeeding/Fixture/succeedingCase", "A method based test run that succeeds" )
+{   
+    REQUIRE( m_a == 1 );        
+}
+
+TEST_CASE_METHOD( Fixture, "succeeding/Fixture/failingCase", "A method based test run that fails" )
+{   
+    REQUIRE( m_a == 2 );        
+}

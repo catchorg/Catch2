@@ -134,6 +134,9 @@ struct AutoReg
         TestRegistry::instance().registerTest( TestCaseInfo( new MethodTestCase<C>( method ), name, description ) );
     }
 };
+
+template<typename T, size_t>
+struct FixtureWrapper{};
     
 } // end namespace Catch
 
@@ -144,5 +147,13 @@ struct AutoReg
 
 #define CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
     namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc ); }
+
+#define TEST_CASE_METHOD( ClassName, TestName, Desc )\
+    namespace Catch{ template<> struct FixtureWrapper<ClassName, __LINE__> : ClassName \
+    { \
+        void test(); \
+    }; }\
+    namespace { Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &Catch::FixtureWrapper<ClassName, __LINE__>::test, TestName, Desc ); } \
+    void Catch::FixtureWrapper<ClassName, __LINE__>::test()
 
 #endif // TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
