@@ -76,7 +76,7 @@ namespace Catch
                 if( runner.runMatching( *it ) == 0 )
                 {
                     // Use reporter?
-                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
+//                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
                 }
                 config.getReporter()->EndGroup( *it, runner.getSuccessCount()-prevSuccess, runner.getFailureCount()-prevFail );
             }

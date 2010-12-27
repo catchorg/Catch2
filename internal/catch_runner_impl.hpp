@@ -157,9 +157,9 @@ namespace Catch
         
         virtual void testEnded( const ResultInfo& result )
         { 
-            if( result.ok() )
+            if( result.getResultType() == ResultWas::Ok )
                 m_successes++;
-            else
+            else if( !result.ok() )
                 m_failures++;
             
             m_reporter->Result( result );
@@ -179,11 +179,22 @@ namespace Catch
         {
             m_reporter->EndSection( name, m_successes - prevSuccesses, m_failures - prevFailures );
         }
+
+        virtual void pushScopedInfo( ScopedInfo* scopedInfo )
+        {
+            m_scopedInfos.push_back( scopedInfo );
+        }
+        virtual void popScopedInfo( ScopedInfo* scopedInfo )
+        {
+            if( m_scopedInfos.back() == scopedInfo )
+                m_scopedInfos.pop_back();
+        }
         
     private:
         std::size_t m_successes;
         std::size_t m_failures;
         ITestReporter* m_reporter;
+        std::vector<ScopedInfo*> m_scopedInfos;
     };
 }
 

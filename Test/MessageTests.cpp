@@ -14,11 +14,11 @@
 
 TEST_CASE( "succeeding/message", "INFO and WARN do not abort tests" )
 {
-    INFO( "this is a message" );    // This should output the message but continue
-    WARN( "this is a warning" );    // This should output the message but continue
+    INFO( "this is a " << "message" );    // This should output the message but continue
+    WARN( "this is a " << "warning" );    // This should output the message but continue
 }
 
 TEST_CASE( "failing/message", "FAIL aborts the test" )
 {
-    FAIL( "This is a failure" );    // This should output the message and abort
+    FAIL( "This is a " << "failure" );    // This should output the message and abort
 }

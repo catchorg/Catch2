@@ -190,6 +190,7 @@ private:
 };
 
 class TestCaseInfo;
+class ScopedInfo;
     
 struct IResultListener
 {
@@ -197,8 +198,10 @@ struct IResultListener
     virtual void testEnded( const ResultInfo& result ) = 0;
     virtual bool sectionStarted( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures ) = 0;
     virtual void sectionEnded( const std::string& name, std::size_t successes, std::size_t failures ) = 0;
+    virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0;
+    virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
 };
-    
+        
 class ResultsCapture
 {
 private:
@@ -274,11 +277,50 @@ public:
         instance().m_listener->sectionEnded( name, successes, failures );
     }
     
+    static void pushScopedInfo( ScopedInfo* scopedInfo )
+    {
+        instance().m_listener->pushScopedInfo( scopedInfo );
+    }
+    static void popScopedInfo( ScopedInfo* scopedInfo )
+    {
+        instance().m_listener->popScopedInfo( scopedInfo );
+    }
+    
 private:
     MutableResultInfo currentResult;
     IResultListener* m_listener;
+
 };
 
+class ScopedInfo
+{
+public:
+    ScopedInfo()
+    {
+        ResultsCapture::pushScopedInfo( this );
+    }
+    
+    ~ScopedInfo()
+    {
+        ResultsCapture::popScopedInfo( this );
+    }
+    
+    ScopedInfo& operator << ( const char* str )
+    {
+        m_oss << str;
+        return *this; 
+    }
+    
+    std::string getInfo() const
+    {
+        return m_oss.str();
+    }
+    
+private:
+    std::ostringstream m_oss;
+};
+    
+    
 // !TBD Need to clean this all up
 #define CATCH_absTol 1e-10
 #define CATCH_relTol 1e-10
@@ -349,9 +391,12 @@ catch( ... ) \
 }
 
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
+    std::ostringstream INTERNAL_CATCH_UNIQUE_NAME( strm ); \
+    INTERNAL_CATCH_UNIQUE_NAME( strm ) << reason; \
     Catch::ResultsCapture::acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
-    Catch::ResultsCapture::acceptMessage( reason ); \
+    Catch::ResultsCapture::acceptMessage( INTERNAL_CATCH_UNIQUE_NAME( strm ).str() ); \
     Catch::ResultsCapture::acceptResult( resultType, stopOnFailure );
 
+#define INTERNAL_CATCH_SCOPED_INFO( log ) Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED

@@ -49,6 +49,7 @@
 #define INFO( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::Info, false, "INFO" )
 #define WARN( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::Warning, false, "WARN" )
 #define FAIL( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
+#define SCOPED_INFO( log ) INTERNAL_CATCH_SCOPED_INFO( log )
 
 #define SECTION( name, description ) CATCH_SECTION( name, description )
 
