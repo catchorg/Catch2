@@ -43,8 +43,8 @@ namespace Catch
         
         
         RunnerConfig()
-        :   m_listSpec( listNone ),
-            m_reporter( NULL ),
+        :   m_reporter( NULL ),
+            m_listSpec( listNone ),
             m_shouldDebugBreak( false )
         {}
         

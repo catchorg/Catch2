@@ -74,9 +74,9 @@ namespace Catch
     {
     public:
         explicit Runner( const RunnerConfig& config )
-        :   m_successes( 0 ),
+        :   m_config( config ),
+            m_successes( 0 ),
             m_failures( 0 ),
-            m_config( config ),
             m_reporter( m_config.getReporter() )
         {
             m_reporter->StartTesting();

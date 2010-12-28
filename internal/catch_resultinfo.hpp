@@ -40,20 +40,20 @@ namespace Catch
     public:
         
         ResultInfo()
-        :   m_result( ResultWas::Unknown ),
+        :   m_line( 0 ),
+            m_result( ResultWas::Unknown ),
             m_isNot( false ),
-            m_line( 0 ),
             m_expressionIncomplete( false )
         {}
         
         ResultInfo( const std::string& expr, ResultWas::OfType result, bool isNot, const std::string& filename, std::size_t line, const std::string& macroName )
-        :   m_expr( expr ),
+        :   m_macroName( macroName ),
+            m_filename( filename ),
+            m_line( line ),
+            m_expr( expr ),
+            m_op( m_expr[0] == '!' ? "!" : "" ),
             m_result( result ),
             m_isNot( isNot ),
-            m_op( m_expr[0] == '!' ? "!" : "" ),
-            m_filename( filename ),
-            m_line( line ), 
-            m_macroName( macroName ),
             m_expressionIncomplete( false )
         {
         }
