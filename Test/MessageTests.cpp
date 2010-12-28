@@ -26,7 +26,7 @@ TEST_CASE( "failing/message/info/1", "INFO gets logged on failure" )
     REQUIRE( a == 1 );
 }
 
-TEST_CASE( "failing/message/info/2", "INFO gets logged on failure" )
+TEST_CASE( "mixed/message/info/2", "INFO gets logged on failure" )
 {
     INFO( "this message should be logged" );
     int a = 2;

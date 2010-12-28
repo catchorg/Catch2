@@ -36,13 +36,39 @@ TEST_CASE( "succeeding/Misc/Sections/nested", "nested SECTION tests" )
     
     SECTION( "s1", "doesn't equal" )
     {
-        REQUIRE( a != b );
+        REQUIRE( a != b ) "a should not equal b";
         REQUIRE( b != a );
 
         SECTION( "s2", "not equal" )
         {
             REQUIRE_FALSE( a == b);
         }
+    }
+}
+
+TEST_CASE( "mixed/Misc/Sections/loops", "looped SECTION tests" )
+{
+    int a = 1;
+    
+    for( int b = 0; b < 10; ++b )
+    {
+        std::ostringstream oss;
+        oss << "b is currently: " << b;
+        SECTION( "s1", oss.str() )
+        {
+            CHECK( b > a );            
+        }
+    }
+}
+
+TEST_CASE( "mixed/Misc/loops", "looped tests" )
+{
+    static const int fib[]  = { 1, 1, 2, 3, 5, 8, 13, 21 };
+    
+    for( size_t i=0; i < sizeof(fib)/sizeof(int); ++i )
+    {
+        INFO( "Testing if fib[" << i << "] (" << fib[i] << ") is even" );
+        CHECK( ( fib[i] % 2 ) == 0 );                
     }
 }
 

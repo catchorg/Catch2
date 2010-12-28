@@ -26,10 +26,11 @@ int main (int argc, char * const argv[])
     std::ostringstream ossSucceeding;
     std::ostringstream ossFailing;
 
-    ReporterConfig reporterConfig( ReporterConfig::Include::SuccessfulResults );
-    BasicReporter reporter (reporterConfig );
-
-    Runner runner( &reporter );
+    RunnerConfig config;
+    ReporterConfig& reporterConfig = config.getReporterConfig();
+    config.setReporter( new BasicReporter(reporterConfig ) );
+    reporterConfig.setIncludeWhat( ReporterConfig::Include::SuccessfulResults );
+    Runner runner( config );
 
     reporterConfig.setStreamBuf( ossSucceeding.rdbuf() );
     runner.runMatching( "succeeding/*" );
@@ -61,7 +62,7 @@ int main (int argc, char * const argv[])
 
     if( result == 0 )
     {
-        const size_t expectedTestCaseCount = 102; // !TBD factor this out
+        const size_t expectedTestCaseCount = 106; // !TBD factor this out
         size_t testCaseCount = runner.getSuccessCount() + runner.getFailureCount();
         std::cout << "All " << testCaseCount << " tests completed successfully" << std::endl;
         if( testCaseCount != expectedTestCaseCount )
