@@ -157,6 +157,8 @@ namespace Catch
                         return setErrorMode( m_command + " does not accept arguments" );
                     m_config.setShouldDebugBreak( true );
                     break;
+            default:
+                break;
             }
             m_args.clear();
             m_mode = mode;

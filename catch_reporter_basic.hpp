@@ -142,6 +142,8 @@ namespace Catch
                 case ResultWas::ExplicitFailure:
                     m_config.stream() << "failed with message: '" << resultInfo.getMessage() << "'";
                     break;
+                default:
+                    break;
             }
             
             if( resultInfo.hasExpression() )
