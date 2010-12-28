@@ -42,7 +42,7 @@ public:
         }
     }
         
-    std::vector<TestCaseInfo> getAllTests() const
+    const std::vector<TestCaseInfo>& getAllTests() const
     {
         return m_functionsInOrder;
     }

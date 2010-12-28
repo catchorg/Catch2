@@ -28,7 +28,7 @@ namespace Catch
             for(; it != itEnd; ++it )
             {
                 // !TBD: consider listAs()
-                std::cout << "\t" << it->first << " '" << it->second->getDescription() << "'\n";
+                std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
             }
             std::cout << std::endl;
         }
@@ -40,7 +40,7 @@ namespace Catch
             for(; it != itEnd; ++it )
             {
                 // !TBD: consider listAs()
-                std::cout << "\t" << it->getName() << " '" << it->getDescription() << "'\n";
+                std::cout << "\t" << it->getName() << "\n\t\t '" << it->getDescription() << "'\n";
             }
             std::cout << std::endl;
         }
