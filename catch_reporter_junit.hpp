@@ -101,11 +101,11 @@ namespace Catch
             m_currentStats = &m_testSuiteStats;
         }
         
-        virtual void StartSection( const std::string& sectionName, const std::string description )
+        virtual void StartSection( const std::string& /*sectionName*/, const std::string /*description*/ )
         {
         }
 
-        virtual void EndSection( const std::string& sectionName, std::size_t succeeded, std::size_t failed )
+        virtual void EndSection( const std::string& /*sectionName*/, std::size_t /*succeeded*/, std::size_t /*failed*/ )
         {
         }
         

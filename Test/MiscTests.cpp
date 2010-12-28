@@ -36,7 +36,7 @@ TEST_CASE( "succeeding/Misc/Sections/nested", "nested SECTION tests" )
     
     SECTION( "s1", "doesn't equal" )
     {
-        REQUIRE( a != b ) "a should not equal b";
+        REQUIRE( a != b );
         REQUIRE( b != a );
 
         SECTION( "s2", "not equal" )

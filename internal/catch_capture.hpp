@@ -67,7 +67,7 @@ namespace Detail
     template<typename T>
     struct StringMaker<T, false>
     {
-        static std::string apply( const T& value )
+        static std::string apply( const T& )
         {
             return "{?}";
         }
