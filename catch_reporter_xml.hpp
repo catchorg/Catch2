@@ -130,6 +130,8 @@ namespace Catch
                         .writeText( resultInfo.getMessage() );
                     m_currentTestSuccess = false;
                     break;
+                default:
+                    break;
             }            
             if( resultInfo.hasExpression() )
                 m_xml.endElement();
