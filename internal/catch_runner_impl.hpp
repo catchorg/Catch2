@@ -72,6 +72,9 @@ namespace Catch
     
     class Runner : public IResultListener
     {
+        Runner( const Runner& );
+        void operator =( const Runner& );
+        
     public:
         explicit Runner( const RunnerConfig& config )
         :   m_config( config ),
