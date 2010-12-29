@@ -369,6 +369,11 @@ inline std::string toString<Approx>( const Approx& value )
     return oss.str();
 }
 
+// This is just here to avoid compiler warnings with macro constants
+inline bool isTrue( bool value )
+{
+    return value;
+}
     
 } // end namespace Catch
 
@@ -376,12 +381,14 @@ inline std::string toString<Approx>( const Approx& value )
     if( Catch::ResultAction::Value action = Catch::ResultsCapture::acceptResult( result )  ) \
     { \
         if( action == Catch::ResultAction::DebugFailed ) DebugBreak(); \
-        if( stopOnFailure ) throw Catch::TestFailureException(); \
+        if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
     }
 
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
-    Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
-    INTERNAL_CATCH_ACCEPT_RESULT( expr, stopOnFailure )
+    { \
+        Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
+        INTERNAL_CATCH_ACCEPT_RESULT( expr, stopOnFailure ) \
+    }
 
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
     Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, false, __FILE__, __LINE__, macroName ) ); \
@@ -403,11 +410,13 @@ catch( ... ) \
 }
 
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    std::ostringstream INTERNAL_CATCH_UNIQUE_NAME( strm ); \
-    INTERNAL_CATCH_UNIQUE_NAME( strm ) << reason; \
-    Catch::ResultsCapture::acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
-    Catch::ResultsCapture::acceptMessage( INTERNAL_CATCH_UNIQUE_NAME( strm ).str() ); \
-    INTERNAL_CATCH_ACCEPT_RESULT( resultType, stopOnFailure ) \
+    { \
+        std::ostringstream INTERNAL_CATCH_UNIQUE_NAME( strm ); \
+        INTERNAL_CATCH_UNIQUE_NAME( strm ) << reason; \
+        Catch::ResultsCapture::acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
+        Catch::ResultsCapture::acceptMessage( INTERNAL_CATCH_UNIQUE_NAME( strm ).str() ); \
+        INTERNAL_CATCH_ACCEPT_RESULT( resultType, stopOnFailure ) \
+    }
 
 #define INTERNAL_CATCH_SCOPED_INFO( log ) Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 

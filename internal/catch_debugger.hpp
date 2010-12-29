@@ -80,7 +80,7 @@
 #endif
 
 #ifndef DebugBreak
-    #define DebugBreak()
+    inline void DebugBreak(){}
 #endif
 
 
