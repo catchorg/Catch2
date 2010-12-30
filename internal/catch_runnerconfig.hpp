@@ -45,7 +45,8 @@ namespace Catch
         RunnerConfig()
         :   m_reporter( NULL ),
             m_listSpec( listNone ),
-            m_shouldDebugBreak( false )
+            m_shouldDebugBreak( false ),
+            m_showHelp( false )
         {}
         
         void setReporterInfo( const std::string& reporterName )
@@ -122,6 +123,15 @@ namespace Catch
         {
             return m_shouldDebugBreak;
         }
+        void setShowHelp( bool showHelp )
+        {
+            m_showHelp = showHelp;
+        }
+        bool showHelp() const
+        {
+            return m_showHelp;
+        }
+        
         
         std::auto_ptr<ITestReporter> m_reporter;
         std::string m_filename;
@@ -130,6 +140,7 @@ namespace Catch
         ListInfo m_listSpec;
         std::vector<std::string> m_testSpecs;
         bool m_shouldDebugBreak;
+        bool m_showHelp;
     };
     
 } // end namespace Catch

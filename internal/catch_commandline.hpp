@@ -19,10 +19,10 @@
 namespace Catch
 {
     // -l, --list tests [xml] lists available tests (optionally in xml)
-    // -l, --list reports [xml] lists available reports (optionally in xml)
+    // -l, --list reporters [xml] lists available reports (optionally in xml)
     // -l, --list all [xml] lists available tests and reports (optionally in xml)
     // -t, --test "testspec" ["testspec", ...]
-    // -r, --report <type>
+    // -r, --reporter <type>
     // -o, --out filename to write to
     // -s, --success report successful cases too
     // -b, --break breaks into debugger on test failure
@@ -37,6 +37,7 @@ namespace Catch
             modeOutput,
             modeSuccess,
             modeBreak,
+            modeHelp,
 
             modeError
         };
@@ -55,7 +56,7 @@ namespace Catch
                         changeMode( cmd, modeList );
                     else if( cmd == "-t" || cmd == "--test" )
                         changeMode( cmd, modeTest );
-                    else if( cmd == "-r" || cmd == "--report" )
+                    else if( cmd == "-r" || cmd == "--reporter" )
                         changeMode( cmd, modeReport );
                     else if( cmd == "-o" || cmd == "--out" )
                         changeMode( cmd, modeOutput );
@@ -63,6 +64,8 @@ namespace Catch
                         changeMode( cmd, modeSuccess );
                     else if( cmd == "-b" || cmd == "--break" )
                         changeMode( cmd, modeBreak );
+                    else if( cmd == "-h" || cmd == "-?" || cmd == "--help" )
+                        changeMode( cmd, modeHelp );
                 }
                 else
                 {
@@ -157,7 +160,12 @@ namespace Catch
                         return setErrorMode( m_command + " does not accept arguments" );
                     m_config.setShouldDebugBreak( true );
                     break;
-            default:
+                case modeHelp:
+                    if( m_args.size() != 0 )
+                        return setErrorMode( m_command + " does not accept arguments" );
+                    m_config.setShowHelp( true );
+                    break;
+                default:
                 break;
             }
             m_args.clear();
