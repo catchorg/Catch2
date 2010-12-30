@@ -110,10 +110,10 @@ namespace Catch
                         {
                             if( m_args[0] == "tests" )
                                 listSpec = RunnerConfig::listTests;
-                            else if( m_args[0] == "reports" )
+                            else if( m_args[0] == "reporters" )
                                 listSpec = RunnerConfig::listReports;
                             else
-                                return setErrorMode( m_command + " expected [tests] or [reports] but recieved: [" + m_args[0] + "]" );                        
+                                return setErrorMode( m_command + " expected [tests] or [reporters] but recieved: [" + m_args[0] + "]" );                        
                         }
                         if( m_args.size() >= 2 )
                         {
