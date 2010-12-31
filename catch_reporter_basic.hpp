@@ -17,11 +17,11 @@
 
 namespace Catch
 {
-    class BasicReporter : public ITestReporter
+    class BasicReporter : public IReporter
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
-        BasicReporter( const ReporterConfig& config )
+        BasicReporter( const IReporterConfig& config )
         :   m_config( config )
         {
         }
@@ -47,7 +47,7 @@ namespace Catch
                 m_config.stream() << succeeded << " test(s) passed but " << failed << " test(s) failed";
         }
         
-    private: // ITestReporter
+    private: // IReporter
 
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting()
@@ -166,7 +166,7 @@ namespace Catch
         }    
         
     private:
-        const ReporterConfig& m_config;
+        const IReporterConfig& m_config;
         bool m_firstSectionInTestCase;
     };
 

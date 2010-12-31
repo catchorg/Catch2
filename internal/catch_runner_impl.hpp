@@ -251,7 +251,7 @@ namespace Catch
         const RunnerConfig& m_config;
         std::size_t m_successes;
         std::size_t m_failures;
-        ITestReporter* m_reporter;
+        IReporter* m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
         std::vector<ResultInfo> m_info;
     };

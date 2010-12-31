@@ -18,11 +18,11 @@
 
 namespace Catch
 {
-    class XmlReporter : public Catch::ITestReporter
+    class XmlReporter : public Catch::IReporter
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
-        XmlReporter( const ReporterConfig& config = ReporterConfig() )
+        XmlReporter( const IReporterConfig& config )
         :   m_config( config )
         {
         }        
@@ -33,7 +33,7 @@ namespace Catch
             return "Reports test results as an XML document";
         }
         
-    private: // ITestReporter
+    private: // IReporter
 
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting()
@@ -145,7 +145,7 @@ namespace Catch
         }    
                 
     private:
-        const ReporterConfig& m_config;
+        const IReporterConfig& m_config;
         bool m_currentTestSuccess;
         XmlWriter m_xml;
     };

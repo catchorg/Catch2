@@ -218,8 +218,7 @@ struct IResultListener
     virtual void acceptExpression( const MutableResultInfo& resultInfo ) = 0;
     virtual void acceptMessage( const std::string& msg ) = 0;
     
-};
-  
+};    
     
 class ResultsCapture
 {
@@ -249,7 +248,6 @@ public:
     }
 
 private:
-    MutableResultInfo currentResult;
     IResultListener* m_listener;
 
 };

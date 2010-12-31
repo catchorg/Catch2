@@ -18,7 +18,7 @@
 
 namespace Catch
 {
-    class JunitReporter : public Catch::ITestReporter
+    class JunitReporter : public Catch::IReporter
     {
         struct TestStats
         {
@@ -66,7 +66,7 @@ namespace Catch
         
     public:
         ///////////////////////////////////////////////////////////////////////////
-        JunitReporter( const ReporterConfig& config = ReporterConfig() )
+        JunitReporter( const IReporterConfig& config )
         :   m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
@@ -79,7 +79,7 @@ namespace Catch
             return "Reports test results in an XML format that looks like Ant's junitreport target";
         }
         
-    private: // ITestReporter
+    private: // IReporter
         
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting()
@@ -245,7 +245,7 @@ namespace Catch
         }
         
     private:
-        const ReporterConfig& m_config;
+        const IReporterConfig& m_config;
         bool m_currentTestSuccess;
         
         Stats m_testSuiteStats;

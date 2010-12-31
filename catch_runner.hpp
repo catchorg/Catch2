@@ -19,6 +19,8 @@
 #include "catch_reporter_xml.hpp"
 #include "catch_reporter_junit.hpp"
 
+#include <fstream>
+
 namespace Catch
 {
     inline int Main( int argc, char * const argv[] )

@@ -21,6 +21,59 @@
 
 namespace Catch
 {
+    class ReporterConfig : public IReporterConfig
+    {
+    private:
+        ReporterConfig( const ReporterConfig& other );
+        ReporterConfig& operator = ( const ReporterConfig& other );
+        
+    public:
+        
+        struct Include { enum What
+            {
+                FailedOnly, 
+                SuccessfulResults
+            }; };
+        
+    public:
+        
+        ///////////////////////////////////////////////////////////////////////////
+        explicit ReporterConfig( Include::What includeWhat = Include::FailedOnly )
+        :   m_includeWhat( includeWhat ),
+        m_os( std::cout.rdbuf() )
+        {
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool includeSuccessfulResults() const
+        {
+            return m_includeWhat == Include::SuccessfulResults;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        void setIncludeWhat(Include::What includeWhat )
+        {
+            m_includeWhat = includeWhat;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        virtual std::ostream& stream() const
+        {
+            return m_os;
+        }        
+        
+        ///////////////////////////////////////////////////////////////////////////
+        void setStreamBuf( std::streambuf* buf )
+        {
+            m_os.rdbuf( buf );
+        }        
+        
+    private:
+        Include::What m_includeWhat;
+        
+        mutable std::ostream m_os;
+    };
+
     class RunnerConfig
     {
     public:
@@ -80,19 +133,19 @@ namespace Catch
             m_message = errorMessage + "\n\n" + "Usage: ...";
         }
         
-        void setReporter( ITestReporter* reporter )
+        void setReporter( IReporter* reporter )
         {
-            m_reporter = std::auto_ptr<ITestReporter>( reporter );
+            m_reporter = std::auto_ptr<IReporter>( reporter );
         }
         
-        ITestReporter* getReporter()
+        IReporter* getReporter()
         {
             if( !m_reporter.get() )
                 setReporter( ReporterRegistry::instance().create( "basic", m_reporterConfig ) );
             return m_reporter.get();
         }
         
-        ITestReporter* getReporter() const
+        IReporter* getReporter() const
         {
             return const_cast<RunnerConfig*>( this )->getReporter();
         }
@@ -133,7 +186,7 @@ namespace Catch
         }
         
         
-        std::auto_ptr<ITestReporter> m_reporter;
+        std::auto_ptr<IReporter> m_reporter;
         std::string m_filename;
         ReporterConfig m_reporterConfig;
         std::string m_message;
