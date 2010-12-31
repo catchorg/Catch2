@@ -12,18 +12,19 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_REGISTRY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRY_HPP_INCLUDED
 
-#include "catch_ireporterregistry.h"
+#include "catch_interfaces_reporter.h"
 
 #include <map>
 
 namespace Catch
 {
-                
     class ReporterRegistry : public IReporterRegistry
     {
     public:
         
-        ~ReporterRegistry()
+        ///////////////////////////////////////////////////////////////////////
+        ~ReporterRegistry
+        ()
         {
             FactoryMap::const_iterator it =  m_factories.begin();
             FactoryMap::const_iterator itEnd =  m_factories.end();
@@ -33,7 +34,13 @@ namespace Catch
             }        
         }
         
-        virtual IReporter* create( const std::string& name, const IReporterConfig& config ) const
+        ///////////////////////////////////////////////////////////////////////
+        virtual IReporter* create
+        (
+            const std::string& name, 
+            const IReporterConfig& config 
+        )
+        const
         {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
@@ -41,12 +48,20 @@ namespace Catch
             return it->second->create( config );
         }
         
-        void registerReporter( const std::string& name, IReporterFactory* factory )
+        ///////////////////////////////////////////////////////////////////////
+        void registerReporter
+        (
+            const std::string& name, 
+            IReporterFactory* factory 
+        )
         {
             m_factories.insert( std::make_pair( name, factory ) );
         }        
 
-        const FactoryMap& getFactories() const
+        ///////////////////////////////////////////////////////////////////////
+        const FactoryMap& getFactories
+        ()
+        const
         {
             return m_factories;
         }
@@ -54,30 +69,6 @@ namespace Catch
     private:
         FactoryMap m_factories;
     };
-    
-    template<typename T>
-    class ReporterFactory : public IReporterFactory
-    {
-        virtual IReporter* create( const IReporterConfig& config ) const
-        {
-            return new T( config );
-        }
-        virtual std::string getDescription() const
-        {
-            return T::getDescription();
-        }
-    };
-    
-    template<typename T>
-    struct ReporterRegistrar
-    {
-        ReporterRegistrar( const std::string& name )
-        {
-            Hub::getReporterRegistry().registerReporter( name, new ReporterFactory<T>() );
-        }
-    }; 
 }
-
-#define CATCH_REGISTER_REPORTER( name, reporterType ) Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRY_HPP_INCLUDED

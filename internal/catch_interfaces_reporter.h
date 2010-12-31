@@ -1,5 +1,5 @@
 /*
- *  catch_ireporterregistry.h
+ *  catch_interfaces_reporter.h
  *  Test
  *
  *  Created by Phil on 31/12/2010.

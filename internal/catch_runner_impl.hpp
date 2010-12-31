@@ -12,7 +12,7 @@
 #ifndef TWOBLUECUBES_INTERNAL_CATCH_RUNNER_HPP_INCLUDED
 #define TWOBLUECUBES_INTERNAL_CATCH_RUNNER_HPP_INCLUDED
 
-#include "catch_reporter_registry.hpp"
+#include "catch_interfaces_reporter.h"
 #include "catch_runnerconfig.hpp"
 #include "catch_registry.hpp"
 #include "catch_capture.hpp"
