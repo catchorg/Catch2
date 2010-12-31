@@ -12,7 +12,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
-#include "catch_hub.hpp"
+#include "catch_hub.h"
 
 namespace Catch
 {    

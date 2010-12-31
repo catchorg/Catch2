@@ -1,5 +1,5 @@
 /*
- *  catch_hub.hpp
+ *  catch_hub.h
  *  Test
  *
  *  Created by Phil on 31/12/2010.
@@ -9,8 +9,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
-#ifndef TWOBLUECUBES_CATCH_HUB_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_HUB_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_HUB_H_INCLUDED
+#define TWOBLUECUBES_CATCH_HUB_H_INCLUDED
 
 #include <memory>
 
@@ -38,22 +38,5 @@ namespace Catch
         std::auto_ptr<IReporterRegistry> m_reporterRegistry;
     };
 }
-    
-    ////// -- new file --
 
-#include "catch_reporter_registry.hpp"
-    
-namespace Catch
-{
-    inline Hub::Hub()
-    : m_reporterRegistry( new ReporterRegistry )
-    {
-    }
-
-    inline IReporterRegistry& Hub::getReporterRegistry()
-    {
-        return *me().m_reporterRegistry.get();
-    }
-}
-
-#endif // TWOBLUECUBES_CATCH_HUB_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_HUB_H_INCLUDED
