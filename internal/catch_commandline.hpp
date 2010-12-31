@@ -18,6 +18,10 @@
 
 namespace Catch
 {
+    // !TBD: This could be refactored to be more "declarative"
+    //       have a table up front that relates the mode, option strings, # arguments, names of arguments
+    //       - may not be worth it at this scale
+    
     // -l, --list tests [xml] lists available tests (optionally in xml)
     // -l, --list reporters [xml] lists available reports (optionally in xml)
     // -l, --list all [xml] lists available tests and reports (optionally in xml)

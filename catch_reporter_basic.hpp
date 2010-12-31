@@ -169,6 +169,8 @@ namespace Catch
         const ReporterConfig& m_config;
         bool m_firstSectionInTestCase;
     };
+
+    CATCH_REGISTER_REPORTER( "basic", BasicReporter );
     
 } // end namespace Catch
     

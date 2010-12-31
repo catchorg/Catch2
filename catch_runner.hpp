@@ -23,10 +23,6 @@ namespace Catch
 {
     inline int Main( int argc, char * const argv[] )
     {
-        ReporterRegistry::instance().registerReporter<BasicReporter>( "basic" );
-        ReporterRegistry::instance().registerReporter<XmlReporter>( "xml" );
-        ReporterRegistry::instance().registerReporter<JunitReporter>( "junit" );
-
         RunnerConfig config;
         ArgParser( argc, argv, config );     
         
