@@ -22,12 +22,17 @@ namespace Catch
 
     class Hub
     {
-    public:
         Hub();
+        static Hub& me()
+        {
+            static Hub hub;
+            return hub;
+        }
+    public:
         
-        static IResultListener* getListener();
-        static IReporterRegistry* getReporterRegistry();
-        static ITestCaseRegistry* getTestCaseRegistry();
+        static IResultListener& getListener();
+        static IReporterRegistry& getReporterRegistry();
+        static ITestCaseRegistry& getTestCaseRegistry();
         
     private:
         std::auto_ptr<IReporterRegistry> m_reporterRegistry;
@@ -43,6 +48,11 @@ namespace Catch
     inline Hub::Hub()
     : m_reporterRegistry( new ReporterRegistry )
     {
+    }
+
+    inline IReporterRegistry& Hub::getReporterRegistry()
+    {
+        return *me().m_reporterRegistry.get();
     }
 }
 

@@ -106,7 +106,7 @@ namespace Catch
         {
             if( m_reporter.get() )
                 return setError( "Only one reporter may be specified" );
-            setReporter( ReporterRegistry::instance().create( reporterName, m_reporterConfig ) );
+            setReporter( Hub::getReporterRegistry().create( reporterName, m_reporterConfig ) );
         }
         
         void addTestSpec( const std::string& testSpec )
@@ -141,7 +141,7 @@ namespace Catch
         IReporter* getReporter()
         {
             if( !m_reporter.get() )
-                setReporter( ReporterRegistry::instance().create( "basic", m_reporterConfig ) );
+                setReporter( Hub::getReporterRegistry().create( "basic", m_reporterConfig ) );
             return m_reporter.get();
         }
         

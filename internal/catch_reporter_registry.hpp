@@ -23,12 +23,6 @@ namespace Catch
     {
     public:
         
-        static ReporterRegistry& instance()
-        {
-            static ReporterRegistry instance;
-            return instance;
-        }
-        
         ~ReporterRegistry()
         {
             FactoryMap::const_iterator it =  m_factories.begin();
@@ -50,9 +44,7 @@ namespace Catch
         void registerReporter( const std::string& name, IReporterFactory* factory )
         {
             m_factories.insert( std::make_pair( name, factory ) );
-        }
-        
-        typedef std::map<std::string, IReporterFactory*> FactoryMap;
+        }        
 
         const FactoryMap& getFactories() const
         {
@@ -81,7 +73,7 @@ namespace Catch
     {
         ReporterRegistrar( const std::string& name )
         {
-            ReporterRegistry::instance().registerReporter( name, new ReporterFactory<T>() );
+            Hub::getReporterRegistry().registerReporter( name, new ReporterFactory<T>() );
         }
     }; 
 }

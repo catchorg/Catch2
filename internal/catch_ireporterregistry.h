@@ -17,6 +17,7 @@
 
 #include <string>
 #include <ostream>
+#include <map>
 
 namespace Catch
 {
@@ -100,6 +101,8 @@ namespace Catch
     ///////////////////////////////////////////////////////////////////////////
     struct IReporterRegistry
     {
+        typedef std::map<std::string, IReporterFactory*> FactoryMap;
+
         virtual ~IReporterRegistry
             (){}
 
@@ -111,7 +114,11 @@ namespace Catch
         virtual void registerReporter
             (   const std::string& name, 
                 IReporterFactory* factory 
-            ) = 0;        
+            ) = 0;
+        
+        virtual const FactoryMap& getFactories
+            () const = 0;
+
     };
     
     ///////////////////////////////////////////////////////////////////////////
