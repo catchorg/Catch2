@@ -24,13 +24,13 @@ namespace Catch
     public:
         Section( const std::string& name, const std::string& description )
         :   m_name( name ),
-            m_sectionIncluded( ResultsCapture::acceptSectionStart( name, description, m_successes, m_failures ) )
+            m_sectionIncluded( ResultsCapture::getListener().sectionStarted( name, description, m_successes, m_failures ) )
         {
         }
         
         ~Section()
         {
-            ResultsCapture::acceptSectionEnd( m_name, m_successes, m_failures );
+            ResultsCapture::getListener().sectionEnded( m_name, m_successes, m_failures );
         }
         
         // This indicates whether the section should be executed or not

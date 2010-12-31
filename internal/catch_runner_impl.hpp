@@ -136,13 +136,13 @@ namespace Catch
             }
             catch( std::exception& ex )
             {
-                ResultsCapture::acceptMessage( ex.what() );
-                ResultsCapture::acceptResult( ResultWas::ThrewException );
+                acceptMessage( ex.what() );
+                acceptResult( ResultWas::ThrewException );
             }
             catch(...)
             {
-                ResultsCapture::acceptMessage( "unknown exception" );
-                ResultsCapture::acceptResult( ResultWas::ThrewException );
+                acceptMessage( "unknown exception" );
+                acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();
             m_reporter->EndTestCase( testInfo, redirectedCout, redirectedCerr );
@@ -159,6 +159,39 @@ namespace Catch
         }
 
     private: // IResultListener
+
+        virtual ResultAction::Value acceptResult( bool result )
+        {
+            return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        }
+
+        virtual ResultAction::Value acceptResult( ResultWas::OfType result )
+        {
+            m_currentResult.setResultType( result );            
+            testEnded( m_currentResult );
+
+            bool ok = m_currentResult.ok();
+            m_currentResult = MutableResultInfo();
+            if( ok )
+                return ResultAction::None;
+            else if( shouldDebugBreak() )
+                return ResultAction::DebugFailed;
+            else
+                return ResultAction::Failed;
+            
+        }
+
+        virtual void acceptExpression( const MutableResultInfo& resultInfo )
+        {
+            m_currentResult = resultInfo;
+        }
+
+        virtual void acceptMessage( const std::string& msg )
+        {
+            m_currentResult.setMessage( msg );
+        }
+        
+        ///
         
         virtual void testEnded( const ResultInfo& result )
         { 
@@ -213,6 +246,8 @@ namespace Catch
         }
         
     private:
+        MutableResultInfo m_currentResult;
+
         const RunnerConfig& m_config;
         std::size_t m_successes;
         std::size_t m_failures;

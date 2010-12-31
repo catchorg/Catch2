@@ -190,9 +190,19 @@ private:
     
 };
 
+struct ResultAction
+{
+    enum Value
+    {
+        None,
+        Failed = 1,     // Failure - but no debug break if Debug bit not set
+        DebugFailed = 3 // Indicates that the debugger should break, if possible
+    };    
+};
+    
 class TestCaseInfo;
 class ScopedInfo;
-    
+
 struct IResultListener
 {
     virtual ~IResultListener(){}
@@ -202,18 +212,14 @@ struct IResultListener
     virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0;
     virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
     virtual bool shouldDebugBreak() const = 0;
+    
+    virtual ResultAction::Value acceptResult( bool result ) = 0;
+    virtual ResultAction::Value acceptResult( ResultWas::OfType result ) = 0;
+    virtual void acceptExpression( const MutableResultInfo& resultInfo ) = 0;
+    virtual void acceptMessage( const std::string& msg ) = 0;
+    
 };
   
-    struct ResultAction
-    {
-        enum Value
-        {
-            None,
-            Failed = 1,     // Failure - but no debug break if Debug bit not set
-            DebugFailed = 3 // Indicates that the debugger should break, if possible
-        };
-        
-    };
     
 class ResultsCapture
 {
@@ -237,60 +243,11 @@ public:
         instance().m_listener = listener;
         return prevListener;
     }
-
-    static void acceptExpression( const MutableResultInfo& resultInfo )
+    static IResultListener& getListener()
     {
-        instance().currentResult = resultInfo;
+        return *instance().m_listener;
     }
 
-    static ResultAction::Value acceptResult( bool result )
-    {
-        return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
-    }
-    
-    static ResultAction::Value acceptResult( ResultWas::OfType result )
-    {
-        MutableResultInfo& currentResult = instance().currentResult;
-        currentResult.setResultType( result );
-        
-        if( instance().m_listener )
-        {
-            instance().m_listener->testEnded( currentResult );
-        }
-        bool ok = currentResult.ok();
-        instance().currentResult = MutableResultInfo();
-        if( ok )
-            return ResultAction::None;
-        else if( instance().m_listener->shouldDebugBreak() )
-            return ResultAction::DebugFailed;
-        else
-            return ResultAction::Failed;
-    }
-
-    static void acceptMessage( const std::string& msg )
-    {
-        instance().currentResult.setMessage( msg );
-    }
-
-    static bool acceptSectionStart( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures )
-    {
-        return instance().m_listener->sectionStarted( name, description, successes, failures );
-    }
-    
-    static void acceptSectionEnd( const std::string& name, std::size_t successes, std::size_t failures )
-    {
-        instance().m_listener->sectionEnded( name, successes, failures );
-    }
-    
-    static void pushScopedInfo( ScopedInfo* scopedInfo )
-    {
-        instance().m_listener->pushScopedInfo( scopedInfo );
-    }
-    static void popScopedInfo( ScopedInfo* scopedInfo )
-    {
-        instance().m_listener->popScopedInfo( scopedInfo );
-    }
-    
 private:
     MutableResultInfo currentResult;
     IResultListener* m_listener;
@@ -302,12 +259,12 @@ class ScopedInfo
 public:
     ScopedInfo()
     {
-        ResultsCapture::pushScopedInfo( this );
+        ResultsCapture::getListener().pushScopedInfo( this );
     }
     
     ~ScopedInfo()
     {
-        ResultsCapture::popScopedInfo( this );
+        ResultsCapture::getListener().popScopedInfo( this );
     }
     
     ScopedInfo& operator << ( const char* str )
@@ -378,7 +335,7 @@ inline bool isTrue( bool value )
 } // end namespace Catch
 
 #define INTERNAL_CATCH_ACCEPT_RESULT( result, stopOnFailure ) \
-    if( Catch::ResultAction::Value action = Catch::ResultsCapture::acceptResult( result )  ) \
+    if( Catch::ResultAction::Value action = Catch::ResultsCapture::getListener().acceptResult( result )  ) \
     { \
         if( action == Catch::ResultAction::DebugFailed ) DebugBreak(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
@@ -386,12 +343,12 @@ inline bool isTrue( bool value )
 
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
     { \
-        Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
+        Catch::ResultsCapture::getListener().acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
         INTERNAL_CATCH_ACCEPT_RESULT( expr, stopOnFailure ) \
     }
 
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
-    Catch::ResultsCapture::acceptExpression( Catch::ResultBuilder( #expr, false, __FILE__, __LINE__, macroName ) ); \
+    Catch::ResultsCapture::getListener().acceptExpression( Catch::ResultBuilder( #expr, false, __FILE__, __LINE__, macroName ) ); \
     try \
     { \
         expr; \
@@ -413,8 +370,8 @@ catch( ... ) \
     { \
         std::ostringstream INTERNAL_CATCH_UNIQUE_NAME( strm ); \
         INTERNAL_CATCH_UNIQUE_NAME( strm ) << reason; \
-        Catch::ResultsCapture::acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
-        Catch::ResultsCapture::acceptMessage( INTERNAL_CATCH_UNIQUE_NAME( strm ).str() ); \
+        Catch::ResultsCapture::getListener().acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
+        Catch::ResultsCapture::getListener().acceptMessage( INTERNAL_CATCH_UNIQUE_NAME( strm ).str() ); \
         INTERNAL_CATCH_ACCEPT_RESULT( resultType, stopOnFailure ) \
     }
 
