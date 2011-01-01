@@ -57,7 +57,7 @@ namespace Catch
         }
         
         // Handle list request
-        if( config.listWhat() != Config::listNone )
+        if( config.listWhat() != Config::List::None )
             return List( config );
         
         // Open output file, if specified

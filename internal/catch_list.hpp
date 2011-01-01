@@ -20,7 +20,7 @@ namespace Catch
 {
     inline int List( const Config& config )
     {
-        if( config.listWhat() & Config::listReports )
+        if( config.listWhat() & Config::List::Reports )
         {
             std::cout << "Available reports:\n";
             IReporterRegistry::FactoryMap::const_iterator it = Hub::getReporterRegistry().getFactories().begin();
@@ -32,7 +32,7 @@ namespace Catch
             }
             std::cout << std::endl;
         }
-        if( config.listWhat() & Config::listTests )
+        if( config.listWhat() & Config::List::Tests )
         {
             std::cout << "Available tests:\n";
             std::vector<TestCaseInfo>::const_iterator it = TestRegistry::instance().getAllTests().begin();
@@ -44,7 +44,7 @@ namespace Catch
             }
             std::cout << std::endl;
         }
-        if( ( config.listWhat() & Config::listAll ) == 0 )
+        if( ( config.listWhat() & Config::List::All ) == 0 )
         {
             std::cerr << "Unknown list type" << std::endl;
             return std::numeric_limits<int>::max();

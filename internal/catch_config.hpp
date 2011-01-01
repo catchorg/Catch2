@@ -34,26 +34,26 @@ namespace Catch
             SuccessfulResults
         }; };
 
-        enum ListInfo
+        struct List{ enum What
         {
-            listNone = 0,
+            None = 0,
             
-            listReports = 1,
-            listTests = 2,
-            listAll = 3,
+            Reports = 1,
+            Tests = 2,
+            All = 3,
             
-            listWhatMask = 0xf,
+            WhatMask = 0xf,
             
-            listAsText = 0x10,
-            listAsXml = 0x11,
+            AsText = 0x10,
+            AsXml = 0x11,
             
-            listAsMask = 0xf0
-        };
+            AsMask = 0xf0
+        }; };
         
         
         Config()
         :   m_reporter( NULL ),
-            m_listSpec( listNone ),
+            m_listSpec( List::None ),
             m_shouldDebugBreak( false ),
             m_showHelp( false ),
             m_os( std::cout.rdbuf() ),
@@ -71,7 +71,7 @@ namespace Catch
         {
             m_testSpecs.push_back( testSpec );
         }
-        void setListSpec( ListInfo listSpec )
+        void setListSpec( List::What listSpec )
         {
             m_listSpec = listSpec;
         }
@@ -108,14 +108,14 @@ namespace Catch
             return const_cast<Config*>( this )->getReporter();
         }
         
-        ListInfo listWhat() const
+        List::What listWhat() const
         {
-            return (ListInfo)( m_listSpec & listWhatMask );
+            return (List::What)( m_listSpec & List::WhatMask );
         }
         
-        ListInfo listAs() const
+        List::What listAs() const
         {
-            return (ListInfo)( m_listSpec & listAsMask );
+            return (List::What)( m_listSpec & List::AsMask );
         }        
         
         void setIncludeWhat( Include::What includeWhat )
@@ -162,7 +162,7 @@ namespace Catch
         std::auto_ptr<IReporter> m_reporter;
         std::string m_filename;
         std::string m_message;
-        ListInfo m_listSpec;
+        List::What m_listSpec;
         std::vector<std::string> m_testSpecs;
         bool m_shouldDebugBreak;
         bool m_showHelp;

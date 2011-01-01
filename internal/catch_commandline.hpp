@@ -112,26 +112,26 @@ namespace Catch
                     }
                     else
                     {
-                        Config::ListInfo listSpec = Config::listAll;
+                        Config::List::What listSpec = Config::List::All;
                         if( m_args.size() >= 1 )
                         {
                             if( m_args[0] == "tests" )
-                                listSpec = Config::listTests;
+                                listSpec = Config::List::Tests;
                             else if( m_args[0] == "reporters" )
-                                listSpec = Config::listReports;
+                                listSpec = Config::List::Reports;
                             else
                                 return setErrorMode( m_command + " expected [tests] or [reporters] but recieved: [" + m_args[0] + "]" );                        
                         }
                         if( m_args.size() >= 2 )
                         {
                             if( m_args[1] == "xml" )
-                                listSpec = (Config::ListInfo)( listSpec | Config::listAsXml );
+                                listSpec = (Config::List::What)( listSpec | Config::List::AsXml );
                             else if( m_args[1] == "text" )
-                                listSpec = (Config::ListInfo)( listSpec | Config::listAsText );
+                                listSpec = (Config::List::What)( listSpec | Config::List::AsText );
                             else
                                 return setErrorMode( m_command + " expected [xml] or [text] but recieved: [" + m_args[1] + "]" );                        
                         }
-                        m_config.m_listSpec = (Config::ListInfo)( m_config.m_listSpec | listSpec );
+                        m_config.m_listSpec = (Config::List::What)( m_config.m_listSpec | listSpec );
                     }
                     break;
                 case modeTest:
