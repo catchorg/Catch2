@@ -1,5 +1,5 @@
 /*
- *  catch_runnerconfig.hpp
+ *  catch_config.hpp
  *  Catch
  *
  *  Created by Phil on 08/11/2010.
