@@ -21,63 +21,19 @@
 
 namespace Catch
 {
-    class ReporterConfig : public IReporterConfig
+    class RunnerConfig : public IReporterConfig
     {
     private:
-        ReporterConfig( const ReporterConfig& other );
-        ReporterConfig& operator = ( const ReporterConfig& other );
-        
+        RunnerConfig( const RunnerConfig& other );
+        RunnerConfig& operator = ( const RunnerConfig& other );
     public:
         
         struct Include { enum What
-            {
-                FailedOnly, 
-                SuccessfulResults
-            }; };
-        
-    public:
-        
-        ///////////////////////////////////////////////////////////////////////////
-        explicit ReporterConfig( Include::What includeWhat = Include::FailedOnly )
-        :   m_includeWhat( includeWhat ),
-        m_os( std::cout.rdbuf() )
         {
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        virtual bool includeSuccessfulResults() const
-        {
-            return m_includeWhat == Include::SuccessfulResults;
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        void setIncludeWhat(Include::What includeWhat )
-        {
-            m_includeWhat = includeWhat;
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        virtual std::ostream& stream() const
-        {
-            return m_os;
-        }        
-        
-        ///////////////////////////////////////////////////////////////////////////
-        void setStreamBuf( std::streambuf* buf )
-        {
-            m_os.rdbuf( buf );
-        }        
-        
-    private:
-        Include::What m_includeWhat;
-        
-        mutable std::ostream m_os;
-    };
+            FailedOnly, 
+            SuccessfulResults
+        }; };
 
-    class RunnerConfig
-    {
-    public:
-        
         enum ListInfo
         {
             listNone = 0,
@@ -99,14 +55,16 @@ namespace Catch
         :   m_reporter( NULL ),
             m_listSpec( listNone ),
             m_shouldDebugBreak( false ),
-            m_showHelp( false )
+            m_showHelp( false ),
+            m_os( std::cout.rdbuf() ),
+            m_includeWhat( Include::FailedOnly )
         {}
         
         void setReporterInfo( const std::string& reporterName )
         {
             if( m_reporter.get() )
                 return setError( "Only one reporter may be specified" );
-            setReporter( Hub::getReporterRegistry().create( reporterName, m_reporterConfig ) );
+            setReporter( Hub::getReporterRegistry().create( reporterName, *this ) );
         }
         
         void addTestSpec( const std::string& testSpec )
@@ -141,7 +99,7 @@ namespace Catch
         IReporter* getReporter()
         {
             if( !m_reporter.get() )
-                setReporter( Hub::getReporterRegistry().create( "basic", m_reporterConfig ) );
+                setReporter( Hub::getReporterRegistry().create( "basic", *this ) );
             return m_reporter.get();
         }
         
@@ -160,13 +118,9 @@ namespace Catch
             return (ListInfo)( m_listSpec & listAsMask );
         }        
         
-        ReporterConfig& getReporterConfig()
+        void setIncludeWhat( Include::What includeWhat )
         {
-            return m_reporterConfig;
-        }
-        void setIncludeAll( bool includeAll )
-        {
-            m_reporterConfig.setIncludeWhat( includeAll ? ReporterConfig::Include::SuccessfulResults : ReporterConfig::Include::FailedOnly );
+            m_includeWhat = includeWhat;
         }
         void setShouldDebugBreak( bool shouldDebugBreak )
         {
@@ -184,16 +138,36 @@ namespace Catch
         {
             return m_showHelp;
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual std::ostream& stream() const
+        {
+            return m_os;
+        }        
+        
+        ///////////////////////////////////////////////////////////////////////////
+        void setStreamBuf( std::streambuf* buf )
+        {
+            m_os.rdbuf( buf );
+        }        
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool includeSuccessfulResults() const
+        {
+            return m_includeWhat == Include::SuccessfulResults;
+        }
+        
         
         
         std::auto_ptr<IReporter> m_reporter;
         std::string m_filename;
-        ReporterConfig m_reporterConfig;
         std::string m_message;
         ListInfo m_listSpec;
         std::vector<std::string> m_testSpecs;
         bool m_shouldDebugBreak;
         bool m_showHelp;
+        mutable std::ostream m_os;
+        Include::What m_includeWhat;        
     };
     
 } // end namespace Catch

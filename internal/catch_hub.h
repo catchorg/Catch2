@@ -13,11 +13,11 @@
 #define TWOBLUECUBES_CATCH_HUB_H_INCLUDED
 
 #include <memory>
+#include "catch_interfaces_reporter.h"
 
 namespace Catch
 {
     struct IResultListener;
-    struct IReporterRegistry;
     struct ITestCaseRegistry;
 
     class Hub

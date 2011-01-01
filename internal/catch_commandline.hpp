@@ -157,7 +157,7 @@ namespace Catch
                 case modeSuccess:
                     if( m_args.size() != 0 )
                         return setErrorMode( m_command + " does not accept arguments" );
-                    m_config.setIncludeAll( true );
+                    m_config.setIncludeWhat( RunnerConfig::Include::SuccessfulResults );
                     break;
                 case modeBreak:
                     if( m_args.size() != 0 )

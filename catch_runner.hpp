@@ -70,7 +70,7 @@ namespace Catch
                 std::cerr << "Unable to open file: '" << config.getFilename() << "'" << std::endl;
                 return std::numeric_limits<int>::max();
             }
-            config.getReporterConfig().setStreamBuf( ofs.rdbuf() );
+            config.setStreamBuf( ofs.rdbuf() );
         }
 
         Runner runner( config );
