@@ -76,7 +76,7 @@ namespace Catch
         void operator =( const Runner& );
         
     public:
-        explicit Runner( const RunnerConfig& config )
+        explicit Runner( const Config& config )
         :   m_config( config ),
             m_successes( 0 ),
             m_failures( 0 ),
@@ -248,7 +248,7 @@ namespace Catch
     private:
         MutableResultInfo m_currentResult;
 
-        const RunnerConfig& m_config;
+        const Config& m_config;
         std::size_t m_successes;
         std::size_t m_failures;
         IReporter* m_reporter;

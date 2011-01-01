@@ -21,11 +21,11 @@
 
 namespace Catch
 {
-    class RunnerConfig : public IReporterConfig
+    class Config : public IReporterConfig
     {
     private:
-        RunnerConfig( const RunnerConfig& other );
-        RunnerConfig& operator = ( const RunnerConfig& other );
+        Config( const Config& other );
+        Config& operator = ( const Config& other );
     public:
         
         struct Include { enum What
@@ -51,7 +51,7 @@ namespace Catch
         };
         
         
-        RunnerConfig()
+        Config()
         :   m_reporter( NULL ),
             m_listSpec( listNone ),
             m_shouldDebugBreak( false ),
@@ -105,7 +105,7 @@ namespace Catch
         
         IReporter* getReporter() const
         {
-            return const_cast<RunnerConfig*>( this )->getReporter();
+            return const_cast<Config*>( this )->getReporter();
         }
         
         ListInfo listWhat() const

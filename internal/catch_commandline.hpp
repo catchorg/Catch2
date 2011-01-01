@@ -47,7 +47,7 @@ namespace Catch
         };
         
     public:
-        ArgParser( int argc, char * const argv[], RunnerConfig& config )
+        ArgParser( int argc, char * const argv[], Config& config )
         :   m_mode( modeNone ),
             m_config( config )
         {
@@ -112,26 +112,26 @@ namespace Catch
                     }
                     else
                     {
-                        RunnerConfig::ListInfo listSpec = RunnerConfig::listAll;
+                        Config::ListInfo listSpec = Config::listAll;
                         if( m_args.size() >= 1 )
                         {
                             if( m_args[0] == "tests" )
-                                listSpec = RunnerConfig::listTests;
+                                listSpec = Config::listTests;
                             else if( m_args[0] == "reporters" )
-                                listSpec = RunnerConfig::listReports;
+                                listSpec = Config::listReports;
                             else
                                 return setErrorMode( m_command + " expected [tests] or [reporters] but recieved: [" + m_args[0] + "]" );                        
                         }
                         if( m_args.size() >= 2 )
                         {
                             if( m_args[1] == "xml" )
-                                listSpec = (RunnerConfig::ListInfo)( listSpec | RunnerConfig::listAsXml );
+                                listSpec = (Config::ListInfo)( listSpec | Config::listAsXml );
                             else if( m_args[1] == "text" )
-                                listSpec = (RunnerConfig::ListInfo)( listSpec | RunnerConfig::listAsText );
+                                listSpec = (Config::ListInfo)( listSpec | Config::listAsText );
                             else
                                 return setErrorMode( m_command + " expected [xml] or [text] but recieved: [" + m_args[1] + "]" );                        
                         }
-                        m_config.m_listSpec = (RunnerConfig::ListInfo)( m_config.m_listSpec | listSpec );
+                        m_config.m_listSpec = (Config::ListInfo)( m_config.m_listSpec | listSpec );
                     }
                     break;
                 case modeTest:
@@ -157,7 +157,7 @@ namespace Catch
                 case modeSuccess:
                     if( m_args.size() != 0 )
                         return setErrorMode( m_command + " does not accept arguments" );
-                    m_config.setIncludeWhat( RunnerConfig::Include::SuccessfulResults );
+                    m_config.setIncludeWhat( Config::Include::SuccessfulResults );
                     break;
                 case modeBreak:
                     if( m_args.size() != 0 )
@@ -188,7 +188,7 @@ namespace Catch
         Mode m_mode;
         std::string m_command;
         std::vector<std::string> m_args;
-        RunnerConfig& m_config;
+        Config& m_config;
     };
     
     

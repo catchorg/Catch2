@@ -26,7 +26,7 @@ namespace Catch
 {
     inline int Main( int argc, char * const argv[] )
     {
-        RunnerConfig config;
+        Config config;
         ArgParser( argc, argv, config );     
         
         if( !config.m_message.empty() )
@@ -57,7 +57,7 @@ namespace Catch
         }
         
         // Handle list request
-        if( config.listWhat() != RunnerConfig::listNone )
+        if( config.listWhat() != Config::listNone )
             return List( config );
         
         // Open output file, if specified
