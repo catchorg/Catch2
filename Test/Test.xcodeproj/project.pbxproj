@@ -31,8 +31,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A33BCE512CE7F500052A211 /* catch_hub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_hub.h; path = ../internal/catch_hub.h; sourceTree = SOURCE_ROOT; };
+		4A33BCF912CE80EC0052A211 /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_reporter.h; path = ../internal/catch_interfaces_reporter.h; sourceTree = SOURCE_ROOT; };
+		4A33BDC312CE909A0052A211 /* catch_reporter_registrars.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_registrars.hpp; path = ../internal/catch_reporter_registrars.hpp; sourceTree = SOURCE_ROOT; };
+		4A33BF0D12CEAC0C0052A211 /* catch_hub_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_hub_impl.hpp; path = ../internal/catch_hub_impl.hpp; sourceTree = SOURCE_ROOT; };
 		4A3BFFB8128DCF06005609E3 /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMain.cpp; sourceTree = "<group>"; };
-		4A3BFFF0128DD23C005609E3 /* catch_runnerconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runnerconfig.hpp; path = ../internal/catch_runnerconfig.hpp; sourceTree = SOURCE_ROOT; };
+		4A3BFFF0128DD23C005609E3 /* catch_config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_config.hpp; path = ../internal/catch_config.hpp; sourceTree = SOURCE_ROOT; };
 		4A6D514B12C8A547008F0415 /* catch_debugger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_debugger.hpp; path = ../internal/catch_debugger.hpp; sourceTree = SOURCE_ROOT; };
 		4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_xmlwriter.hpp; path = ../internal/catch_xmlwriter.hpp; sourceTree = SOURCE_ROOT; };
 		4A992A6612B21582002B7B66 /* catch_reporter_junit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_junit.hpp; path = ../catch_reporter_junit.hpp; sourceTree = SOURCE_ROOT; };
@@ -100,6 +104,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4A33BE0C12CE93380052A211 /* reporting */ = {
+			isa = PBXGroup;
+			children = (
+				4AFC341812809A36003A0C29 /* catch_reporter_registry.hpp */,
+				4A33BCF912CE80EC0052A211 /* catch_interfaces_reporter.h */,
+				4A33BDC312CE909A0052A211 /* catch_reporter_registrars.hpp */,
+			);
+			name = reporting;
+			sourceTree = "<group>";
+		};
+		4A33BE0F12CE936C0052A211 /* support */ = {
+			isa = PBXGroup;
+			children = (
+				4AFC346412809D41003A0C29 /* catch_commandline.hpp */,
+				4A6D514B12C8A547008F0415 /* catch_debugger.hpp */,
+				4AFC341612809A36003A0C29 /* catch_common.h */,
+				4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */,
+			);
+			name = support;
+			sourceTree = "<group>";
+		};
 		4AA7E96B129FA282005A0B97 /* Reporters */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,19 +163,18 @@
 		4AFC341412809A1B003A0C29 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */,
-				4A3BFFF0128DD23C005609E3 /* catch_runnerconfig.hpp */,
+				4A33BE0F12CE936C0052A211 /* support */,
+				4A33BE0C12CE93380052A211 /* reporting */,
+				4A3BFFF0128DD23C005609E3 /* catch_config.hpp */,
 				4AFC341F12809A45003A0C29 /* catch_list.hpp */,
 				4AFC359B1281F00B003A0C29 /* catch_section.hpp */,
-				4AFC346412809D41003A0C29 /* catch_commandline.hpp */,
 				4AFC341512809A36003A0C29 /* catch_capture.hpp */,
-				4AFC341612809A36003A0C29 /* catch_common.h */,
 				4AFC341712809A36003A0C29 /* catch_registry.hpp */,
-				4AFC341812809A36003A0C29 /* catch_reporter_registry.hpp */,
 				4AFC341912809A36003A0C29 /* catch_resultinfo.hpp */,
 				4AFC341A12809A36003A0C29 /* catch_runner_impl.hpp */,
 				4AFC341B12809A36003A0C29 /* catch_testcaseinfo.hpp */,
-				4A6D514B12C8A547008F0415 /* catch_debugger.hpp */,
+				4A33BCE512CE7F500052A211 /* catch_hub.h */,
+				4A33BF0D12CEAC0C0052A211 /* catch_hub_impl.hpp */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
@@ -256,6 +280,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = (
+					"-Wextra",
+					"-Wall",
+				);
 			};
 			name = Debug;
 		};
