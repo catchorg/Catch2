@@ -1,5 +1,5 @@
 /*
- *  catch_registry.hpp
+ *  catch_test_registry.hpp
  *  Catch
  *
  *  Created by Phil on 18/10/2010.

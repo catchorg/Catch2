@@ -14,7 +14,7 @@
 
 #include "catch_interfaces_reporter.h"
 #include "catch_config.hpp"
-#include "catch_registry.hpp"
+#include "catch_test_registry.hpp"
 #include "catch_capture.hpp"
 
 namespace Catch

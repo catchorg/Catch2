@@ -44,7 +44,7 @@
 		4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscTests.cpp; sourceTree = "<group>"; };
 		4AFC341512809A36003A0C29 /* catch_capture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_capture.hpp; path = ../internal/catch_capture.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341612809A36003A0C29 /* catch_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_common.h; path = ../internal/catch_common.h; sourceTree = SOURCE_ROOT; };
-		4AFC341712809A36003A0C29 /* catch_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_registry.hpp; path = ../internal/catch_registry.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341712809A36003A0C29 /* catch_test_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_test_registry.hpp; path = ../internal/catch_test_registry.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341812809A36003A0C29 /* catch_reporter_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_registry.hpp; path = ../internal/catch_reporter_registry.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341912809A36003A0C29 /* catch_resultinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_resultinfo.hpp; path = ../internal/catch_resultinfo.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341A12809A36003A0C29 /* catch_runner_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runner_impl.hpp; path = ../internal/catch_runner_impl.hpp; sourceTree = SOURCE_ROOT; };
@@ -109,7 +109,7 @@
 			children = (
 				4AFC359B1281F00B003A0C29 /* catch_section.hpp */,
 				4AFC341512809A36003A0C29 /* catch_capture.hpp */,
-				4AFC341712809A36003A0C29 /* catch_registry.hpp */,
+				4AFC341712809A36003A0C29 /* catch_test_registry.hpp */,
 				4AFC341B12809A36003A0C29 /* catch_testcase.hpp */,
 			);
 			name = "TestCase registration";

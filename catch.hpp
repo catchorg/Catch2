@@ -27,7 +27,7 @@
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
 #include "internal/catch_hub.h"
-#include "internal/catch_registry.hpp"
+#include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.hpp"
 

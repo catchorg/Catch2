@@ -1,5 +1,5 @@
 /*
- *  catch_registry.hpp
+ *  catch_reporter_registry.hpp
  *  Catch
  *
  *  Created by Phil on 29/10/2010.
