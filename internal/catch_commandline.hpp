@@ -147,7 +147,7 @@ namespace Catch
                 case modeReport:
                     if( m_args.size() != 1 )
                         return setErrorMode( m_command + " expected one argument, recieved: " +  argsAsString() );
-                    m_config.setReporterInfo( m_args[0] );
+                    m_config.setReporter( m_args[0] );
                     break;
                 case modeOutput:
                     if( m_args.size() == 0 )

@@ -62,7 +62,7 @@ namespace Catch
             m_includeWhat( Include::FailedOnly )
         {}
         
-        void setReporterInfo( const std::string& reporterName )
+        void setReporter( const std::string& reporterName )
         {
             if( m_reporter.get() )
                 return setError( "Only one reporter may be specified" );

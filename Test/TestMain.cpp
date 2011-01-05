@@ -14,7 +14,6 @@
 #include "../catch_runner.hpp"
 
 // This code runs the meta tests and verifies that the failing ones failed and the successful ones succeeded
-///*
 int main (int argc, char * const argv[])
 {
     using namespace Catch;
@@ -26,17 +25,16 @@ int main (int argc, char * const argv[])
     std::ostringstream ossSucceeding;
     std::ostringstream ossFailing;
 
-    RunnerConfig config;
-    ReporterConfig& reporterConfig = config.getReporterConfig();
-    config.setReporter( new BasicReporter(reporterConfig ) );
-    reporterConfig.setIncludeWhat( ReporterConfig::Include::SuccessfulResults );
+    Config config;
+    config.setReporter( "Basic" );
+    config.setIncludeWhat( Config::Include::SuccessfulResults );
     Runner runner( config );
 
-    reporterConfig.setStreamBuf( ossSucceeding.rdbuf() );
+    config.setStreamBuf( ossSucceeding.rdbuf() );
     runner.runMatching( "succeeding/*" );
     std::string succeedingResults = ossSucceeding.str();
     
-    reporterConfig.setStreamBuf( ossFailing.rdbuf() );
+    config.setStreamBuf( ossFailing.rdbuf() );
     runner.runMatching( "failing/*" );
     std::string failingResults = ossFailing.str();
 
@@ -64,7 +62,7 @@ int main (int argc, char * const argv[])
     {
         const size_t expectedTestCaseCount = 106; // !TBD factor this out
         size_t testCaseCount = runner.getSuccessCount() + runner.getFailureCount();
-        std::cout << "All " << testCaseCount << " tests completed successfully" << std::endl;
+        std::cout << "All " << testCaseCount << " test(s) completed successfully" << std::endl;
         if( testCaseCount != expectedTestCaseCount )
         {
             std::cerr   << "- but we were expecting " << expectedTestCaseCount
@@ -76,5 +74,3 @@ int main (int argc, char * const argv[])
     }
     return result;
 }
-//*/
-//#include "catch_default_main.hpp"
