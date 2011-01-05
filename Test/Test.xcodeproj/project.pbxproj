@@ -31,6 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A302DE312D5114900C84B67 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../catch.hpp; sourceTree = SOURCE_ROOT; };
 		4A33BCE512CE7F500052A211 /* catch_hub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_hub.h; path = ../internal/catch_hub.h; sourceTree = SOURCE_ROOT; };
 		4A33BCF912CE80EC0052A211 /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_reporter.h; path = ../internal/catch_interfaces_reporter.h; sourceTree = SOURCE_ROOT; };
 		4A33BDC312CE909A0052A211 /* catch_reporter_registrars.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_registrars.hpp; path = ../internal/catch_reporter_registrars.hpp; sourceTree = SOURCE_ROOT; };
@@ -47,12 +48,11 @@
 		4AFC341812809A36003A0C29 /* catch_reporter_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_registry.hpp; path = ../internal/catch_reporter_registry.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341912809A36003A0C29 /* catch_resultinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_resultinfo.hpp; path = ../internal/catch_resultinfo.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341A12809A36003A0C29 /* catch_runner_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runner_impl.hpp; path = ../internal/catch_runner_impl.hpp; sourceTree = SOURCE_ROOT; };
-		4AFC341B12809A36003A0C29 /* catch_testcaseinfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_testcaseinfo.hpp; path = ../internal/catch_testcaseinfo.hpp; sourceTree = SOURCE_ROOT; };
+		4AFC341B12809A36003A0C29 /* catch_testcase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_testcase.hpp; path = ../internal/catch_testcase.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341C12809A45003A0C29 /* catch_default_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_default_main.hpp; path = ../catch_default_main.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341D12809A45003A0C29 /* catch_reporter_basic.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_basic.hpp; path = ../catch_reporter_basic.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341E12809A45003A0C29 /* catch_reporter_xml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_xml.hpp; path = ../catch_reporter_xml.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341F12809A45003A0C29 /* catch_list.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_list.hpp; path = ../internal/catch_list.hpp; sourceTree = SOURCE_ROOT; };
-		4AFC342012809A45003A0C29 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../catch.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC346412809D41003A0C29 /* catch_commandline.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_commandline.hpp; path = ../internal/catch_commandline.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC359B1281F00B003A0C29 /* catch_section.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_section.hpp; path = ../internal/catch_section.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC38161284B387003A0C29 /* catch_runner.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_runner.hpp; path = ../catch_runner.hpp; sourceTree = SOURCE_ROOT; };
@@ -104,9 +104,40 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4A302E3712D515B700C84B67 /* TestCase registration */ = {
+			isa = PBXGroup;
+			children = (
+				4AFC359B1281F00B003A0C29 /* catch_section.hpp */,
+				4AFC341512809A36003A0C29 /* catch_capture.hpp */,
+				4AFC341712809A36003A0C29 /* catch_registry.hpp */,
+				4AFC341B12809A36003A0C29 /* catch_testcase.hpp */,
+			);
+			name = "TestCase registration";
+			sourceTree = "<group>";
+		};
+		4A302E3812D515DF00C84B67 /* Running & Results */ = {
+			isa = PBXGroup;
+			children = (
+				4A3BFFF0128DD23C005609E3 /* catch_config.hpp */,
+				4AFC341912809A36003A0C29 /* catch_resultinfo.hpp */,
+				4AFC341A12809A36003A0C29 /* catch_runner_impl.hpp */,
+			);
+			name = "Running & Results";
+			sourceTree = "<group>";
+		};
+		4A302E3912D5160400C84B67 /* Hub */ = {
+			isa = PBXGroup;
+			children = (
+				4A33BCE512CE7F500052A211 /* catch_hub.h */,
+				4A33BF0D12CEAC0C0052A211 /* catch_hub_impl.hpp */,
+			);
+			name = Hub;
+			sourceTree = "<group>";
+		};
 		4A33BE0C12CE93380052A211 /* reporting */ = {
 			isa = PBXGroup;
 			children = (
+				4AFC341F12809A45003A0C29 /* catch_list.hpp */,
 				4AFC341812809A36003A0C29 /* catch_reporter_registry.hpp */,
 				4A33BCF912CE80EC0052A211 /* catch_interfaces_reporter.h */,
 				4A33BDC312CE909A0052A211 /* catch_reporter_registrars.hpp */,
@@ -151,7 +182,7 @@
 		4AFC341312809A12003A0C29 /* Catch */ = {
 			isa = PBXGroup;
 			children = (
-				4AFC342012809A45003A0C29 /* catch.hpp */,
+				4A302DE312D5114900C84B67 /* catch.hpp */,
 				4AFC341C12809A45003A0C29 /* catch_default_main.hpp */,
 				4AFC38161284B387003A0C29 /* catch_runner.hpp */,
 				4AA7E96B129FA282005A0B97 /* Reporters */,
@@ -163,18 +194,11 @@
 		4AFC341412809A1B003A0C29 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				4A302E3912D5160400C84B67 /* Hub */,
+				4A302E3812D515DF00C84B67 /* Running & Results */,
+				4A302E3712D515B700C84B67 /* TestCase registration */,
 				4A33BE0F12CE936C0052A211 /* support */,
 				4A33BE0C12CE93380052A211 /* reporting */,
-				4A3BFFF0128DD23C005609E3 /* catch_config.hpp */,
-				4AFC341F12809A45003A0C29 /* catch_list.hpp */,
-				4AFC359B1281F00B003A0C29 /* catch_section.hpp */,
-				4AFC341512809A36003A0C29 /* catch_capture.hpp */,
-				4AFC341712809A36003A0C29 /* catch_registry.hpp */,
-				4AFC341912809A36003A0C29 /* catch_resultinfo.hpp */,
-				4AFC341A12809A36003A0C29 /* catch_runner_impl.hpp */,
-				4AFC341B12809A36003A0C29 /* catch_testcaseinfo.hpp */,
-				4A33BCE512CE7F500052A211 /* catch_hub.h */,
-				4A33BF0D12CEAC0C0052A211 /* catch_hub_impl.hpp */,
 			);
 			name = Internal;
 			sourceTree = "<group>";

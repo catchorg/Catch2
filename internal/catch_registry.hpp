@@ -12,7 +12,7 @@
 #ifndef TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
 
-#include "catch_testcaseinfo.hpp"
+#include "catch_testcase.hpp"
 #include "catch_common.h"
 
 #include <vector>

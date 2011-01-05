@@ -1,5 +1,5 @@
 /*
- *  catch_testcaseinfo.hpp
+ *  catch_testcase.hpp
  *  Catch
  *
  *  Created by Phil on 29/10/2010.
