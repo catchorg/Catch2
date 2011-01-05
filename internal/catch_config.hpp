@@ -14,10 +14,12 @@
 #define TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
 
 #include "catch_interfaces_reporter.h"
+#include "catch_hub.h"
 
 #include <memory>
 #include <vector>
 #include <string>
+#include <iostream>
 
 namespace Catch
 {
