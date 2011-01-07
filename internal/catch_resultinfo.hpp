@@ -46,7 +46,7 @@ namespace Catch
             m_expressionIncomplete( false )
         {}
         
-        ResultInfo( const std::string& expr, ResultWas::OfType result, bool isNot, const std::string& filename, std::size_t line, const std::string& macroName )
+        ResultInfo( const char* expr, ResultWas::OfType result, bool isNot, const char* filename, std::size_t line, const char* macroName )
         :   m_macroName( macroName ),
             m_filename( filename ),
             m_line( line ),
@@ -56,6 +56,8 @@ namespace Catch
             m_isNot( isNot ),
             m_expressionIncomplete( false )
         {
+            if( isNot )
+                m_expr = "!" + m_expr;
         }
         
         bool ok() const

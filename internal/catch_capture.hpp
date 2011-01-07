@@ -95,8 +95,8 @@ public:
     MutableResultInfo()
     {}
     
-    MutableResultInfo( const std::string& expr, bool isNot, const std::string& filename, std::size_t line, const std::string& macroName )
-    : ResultInfo( ( isNot ? "!" : "" ) + expr, ResultWas::Unknown, isNot, filename, line, macroName )
+    MutableResultInfo( const char* expr, bool isNot, const char* filename, std::size_t line, const char* macroName )
+    : ResultInfo( expr, ResultWas::Unknown, isNot, filename, line, macroName )
     {
     }
     void setResultType( ResultWas::OfType result )
@@ -138,7 +138,7 @@ private:
 class ResultBuilder
 {
 public:
-    ResultBuilder( const char* expr, bool isNot, const std::string& filename, std::size_t line, const std::string& macroName )
+    ResultBuilder( const char* expr, bool isNot, const char* filename, std::size_t line, const char* macroName )
     : m_result( expr, isNot, filename, line, macroName )
     {}
     

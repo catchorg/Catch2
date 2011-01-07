@@ -18,19 +18,19 @@
 
 namespace Catch
 {
-    struct TestCase
+    struct ITestCase
     {
-        virtual ~TestCase(){}
+        virtual ~ITestCase(){}
         virtual void invoke() const = 0;
-        virtual TestCase* clone() const = 0;
-        virtual bool operator == ( const TestCase& other ) const = 0;
-        virtual bool operator < ( const TestCase& other ) const = 0;
+        virtual ITestCase* clone() const = 0;
+        virtual bool operator == ( const ITestCase& other ) const = 0;
+        virtual bool operator < ( const ITestCase& other ) const = 0;
     };
     
     class TestCaseInfo
     {
     public:
-        TestCaseInfo( TestCase* testCase, const std::string& name, const std::string& description )
+        TestCaseInfo( ITestCase* testCase, const char* name, const char* description )
         :   test( testCase ),
             name( name ),
             description( description )
@@ -97,7 +97,7 @@ namespace Catch
         }
         
     private:
-        TestCase* test;
+        ITestCase* test;
         std::string name;
         std::string description;
     };

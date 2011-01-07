@@ -55,7 +55,7 @@ private:
 
 typedef void(*TestFunction)();
     
-struct FreeFunctionTestCase : TestCase
+struct FreeFunctionTestCase : ITestCase
 {
     FreeFunctionTestCase( TestFunction fun )
     : fun( fun )
@@ -66,18 +66,18 @@ struct FreeFunctionTestCase : TestCase
         fun();
     }
     
-    virtual TestCase* clone() const
+    virtual ITestCase* clone() const
     {
         return new FreeFunctionTestCase( fun );
     }
 
-    virtual bool operator == ( const TestCase& other ) const
+    virtual bool operator == ( const ITestCase& other ) const
     {
         const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
         return ffOther && fun == ffOther->fun;
     }
     
-    virtual bool operator < ( const TestCase& other ) const
+    virtual bool operator < ( const ITestCase& other ) const
     {
         const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
         return ffOther && fun < ffOther->fun;
@@ -88,7 +88,7 @@ private:
 };
 
 template<typename C>
-struct MethodTestCase : TestCase
+struct MethodTestCase : ITestCase
 {
     MethodTestCase( void (C::*method)() )
     : method( method )
@@ -100,18 +100,18 @@ struct MethodTestCase : TestCase
         (obj.*method)();
     }
     
-    virtual TestCase* clone() const
+    virtual ITestCase* clone() const
     {
         return new MethodTestCase<C>( method );
     }
 
-    virtual bool operator == ( const TestCase& other ) const
+    virtual bool operator == ( const ITestCase& other ) const
     {
         const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
         return mtOther && method == mtOther->method;
     }
     
-    virtual bool operator < ( const TestCase& other ) const
+    virtual bool operator < ( const ITestCase& other ) const
     {
         const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
         return mtOther && &method < &mtOther->method;
@@ -123,13 +123,13 @@ private:
     
 struct AutoReg
 {
-    AutoReg( TestFunction function, const std::string& name, const std::string& description )
+    AutoReg( TestFunction function, const char* name, const char* description )
     {
         TestRegistry::instance().registerTest( TestCaseInfo( new FreeFunctionTestCase( function ), name, description ) );
     }
     
     template<typename C>
-    AutoReg( void (C::*method)(), const std::string& name, const std::string& description )
+    AutoReg( void (C::*method)(), const char* name, const char* description )
     {
         TestRegistry::instance().registerTest( TestCaseInfo( new MethodTestCase<C>( method ), name, description ) );
     }
