@@ -12,12 +12,11 @@
 #ifndef TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
 
-#include "catch_testcase.hpp"
 #include "catch_common.h"
+#include "catch_interfaces_testcase.h"
 
 namespace Catch
 {
-typedef void(*TestFunction)();
     
 template<typename C>
 struct MethodTestCase : ITestCase
@@ -52,6 +51,8 @@ struct MethodTestCase : ITestCase
 private:
     void (C::*method)();
 };
+
+typedef void(*TestFunction)();
     
 struct AutoReg
 {

@@ -11,6 +11,7 @@
  */
 
 #include "catch_test_registry.hpp"
+#include "catch_test_case_info.hpp"
 #include "catch_hub.h"
 
 #include <vector>
@@ -41,8 +42,6 @@ namespace Catch
         std::set<TestCaseInfo> m_functions;
         std::vector<TestCaseInfo> m_functionsInOrder;
     };
-    
-    typedef void(*TestFunction)();
     
     struct FreeFunctionTestCase : ITestCase
     {
