@@ -35,8 +35,8 @@ namespace Catch
         if( config.listWhat() & Config::List::Tests )
         {
             std::cout << "Available tests:\n";
-            std::vector<TestCaseInfo>::const_iterator it = TestRegistry::instance().getAllTests().begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = TestRegistry::instance().getAllTests().end();
+            std::vector<TestCaseInfo>::const_iterator it = Hub::getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = Hub::getTestCaseRegistry().getAllTests().end();
             for(; it != itEnd; ++it )
             {
                 // !TBD: consider listAs()

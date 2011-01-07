@@ -23,17 +23,11 @@
 
 namespace Catch
 {
-class TestRegistry
+    class TestRegistry : public ITestCaseRegistry
 {
 public:
     
-    static TestRegistry& instance()
-    {
-        static TestRegistry reg;
-        return reg;
-    }
-    
-    void registerTest( const TestCaseInfo& testInfo )
+    virtual void registerTest( const TestCaseInfo& testInfo )
     {
         if( m_functions.find( testInfo ) == m_functions.end() )
         {
@@ -42,7 +36,7 @@ public:
         }
     }
         
-    const std::vector<TestCaseInfo>& getAllTests() const
+    virtual const std::vector<TestCaseInfo>& getAllTests() const
     {
         return m_functionsInOrder;
     }
@@ -123,16 +117,19 @@ private:
     
 struct AutoReg
 {
-    AutoReg( TestFunction function, const char* name, const char* description )
-    {
-        TestRegistry::instance().registerTest( TestCaseInfo( new FreeFunctionTestCase( function ), name, description ) );
-    }
+    AutoReg( TestFunction function, const char* name, const char* description );
     
     template<typename C>
     AutoReg( void (C::*method)(), const char* name, const char* description )
     {
-        TestRegistry::instance().registerTest( TestCaseInfo( new MethodTestCase<C>( method ), name, description ) );
+        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new MethodTestCase<C>( method ), name, description ) );
     }
+    
+    ~AutoReg();
+    
+private:
+    AutoReg( const AutoReg& );
+    void operator=( const AutoReg& );
 };
 
 template<typename T, size_t>

@@ -92,7 +92,7 @@ namespace Catch
         
         void runAll()
         {
-            std::vector<TestCaseInfo> allTests = TestRegistry::instance().getAllTests();
+            std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i )
             {
                 runTest( allTests[i] );
@@ -103,7 +103,7 @@ namespace Catch
         {
             TestSpec testSpec( rawTestSpec );
             
-            std::vector<TestCaseInfo> allTests = TestRegistry::instance().getAllTests();
+            std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
             std::size_t testsRun = 0;
             for( std::size_t i=0; i < allTests.size(); ++i )
             {

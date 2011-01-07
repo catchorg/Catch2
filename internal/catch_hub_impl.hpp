@@ -17,14 +17,36 @@
 
 namespace Catch
 {
-    inline Hub::Hub()
-    : m_reporterRegistry( new ReporterRegistry )
+    ///////////////////////////////////////////////////////////////////////////
+    Hub::Hub()
+    :   m_reporterRegistry( new ReporterRegistry ),
+        m_testCaseRegistry( new TestRegistry )
     {
     }
     
-    inline IReporterRegistry& Hub::getReporterRegistry()
+    Hub& Hub::me()
+    {
+        static Hub hub;
+        return hub;
+    }
+
+    IReporterRegistry& Hub::getReporterRegistry()
     {
         return *me().m_reporterRegistry.get();
+    }
+
+    ITestCaseRegistry& Hub::getTestCaseRegistry()
+    {
+        return *me().m_testCaseRegistry.get();
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    AutoReg::AutoReg( TestFunction function, const char* name, const char* description )
+    {
+        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new FreeFunctionTestCase( function ), name, description ) );
+    }    
+    AutoReg::~AutoReg()
+    {
     }
 }
 

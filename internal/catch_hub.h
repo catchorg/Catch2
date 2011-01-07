@@ -13,21 +13,31 @@
 #define TWOBLUECUBES_CATCH_HUB_H_INCLUDED
 
 #include <memory>
+#include <vector>
+
 #include "catch_interfaces_reporter.h"
 
 namespace Catch
 {
+    struct TestCaseInfo;
     struct IResultListener;
-    struct ITestCaseRegistry;
+    struct ITestCaseRegistry
+    {
+    public:
+        
+        virtual void registerTest
+            ( const TestCaseInfo& testInfo 
+            ) = 0;
 
+        virtual const std::vector<TestCaseInfo>& getAllTests
+            () const = 0;
+    };
+    
     class Hub
     {
         Hub();
-        static Hub& me()
-        {
-            static Hub hub;
-            return hub;
-        }
+        static Hub& me();
+        
     public:
         
         static IResultListener& getListener();
@@ -36,6 +46,7 @@ namespace Catch
         
     private:
         std::auto_ptr<IReporterRegistry> m_reporterRegistry;
+        std::auto_ptr<ITestCaseRegistry> m_testCaseRegistry;
     };
 }
 
