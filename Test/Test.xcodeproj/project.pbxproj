@@ -42,6 +42,7 @@
 		4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_xmlwriter.hpp; path = ../internal/catch_xmlwriter.hpp; sourceTree = SOURCE_ROOT; };
 		4A992A6612B21582002B7B66 /* catch_reporter_junit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_junit.hpp; path = ../catch_reporter_junit.hpp; sourceTree = SOURCE_ROOT; };
 		4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscTests.cpp; sourceTree = "<group>"; };
+		4AD6775912D71DA0005AAF59 /* catch_test_case_registry_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_test_case_registry_impl.hpp; path = ../internal/catch_test_case_registry_impl.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341512809A36003A0C29 /* catch_capture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_capture.hpp; path = ../internal/catch_capture.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341612809A36003A0C29 /* catch_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_common.h; path = ../internal/catch_common.h; sourceTree = SOURCE_ROOT; };
 		4AFC341712809A36003A0C29 /* catch_test_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_test_registry.hpp; path = ../internal/catch_test_registry.hpp; sourceTree = SOURCE_ROOT; };
@@ -128,6 +129,7 @@
 		4A302E3912D5160400C84B67 /* Hub */ = {
 			isa = PBXGroup;
 			children = (
+				4AD6775912D71DA0005AAF59 /* catch_test_case_registry_impl.hpp */,
 				4A33BCE512CE7F500052A211 /* catch_hub.h */,
 				4A33BF0D12CEAC0C0052A211 /* catch_hub_impl.hpp */,
 			);

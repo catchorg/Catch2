@@ -13,6 +13,7 @@
 #include "../catch.hpp"
 
 #include <string>
+#include <stdexcept>
 
 namespace
 {

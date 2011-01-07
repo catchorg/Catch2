@@ -15,72 +15,10 @@
 #include "catch_testcase.hpp"
 #include "catch_common.h"
 
-#include <vector>
-#include <set>
-#include <stdexcept>
-
-#include <iostream>
-
 namespace Catch
 {
-    class TestRegistry : public ITestCaseRegistry
-{
-public:
-    
-    virtual void registerTest( const TestCaseInfo& testInfo )
-    {
-        if( m_functions.find( testInfo ) == m_functions.end() )
-        {
-            m_functions.insert( testInfo );
-            m_functionsInOrder.push_back( testInfo );
-        }
-    }
-        
-    virtual const std::vector<TestCaseInfo>& getAllTests() const
-    {
-        return m_functionsInOrder;
-    }
-        
-private:
-        
-    std::set<TestCaseInfo> m_functions;
-    std::vector<TestCaseInfo> m_functionsInOrder;
-};
-
 typedef void(*TestFunction)();
     
-struct FreeFunctionTestCase : ITestCase
-{
-    FreeFunctionTestCase( TestFunction fun )
-    : fun( fun )
-    {}
-    
-    virtual void invoke() const
-    {
-        fun();
-    }
-    
-    virtual ITestCase* clone() const
-    {
-        return new FreeFunctionTestCase( fun );
-    }
-
-    virtual bool operator == ( const ITestCase& other ) const
-    {
-        const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-        return ffOther && fun == ffOther->fun;
-    }
-    
-    virtual bool operator < ( const ITestCase& other ) const
-    {
-        const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-        return ffOther && fun < ffOther->fun;
-    }
-    
-private:
-    TestFunction fun;
-};
-
 template<typename C>
 struct MethodTestCase : ITestCase
 {
@@ -122,8 +60,10 @@ struct AutoReg
     template<typename C>
     AutoReg( void (C::*method)(), const char* name, const char* description )
     {
-        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new MethodTestCase<C>( method ), name, description ) );
+        registerTestCase( new MethodTestCase<C>( method ), name, description );
     }
+    
+    void registerTestCase( ITestCase* testCase, const char* name, const char* description );
     
     ~AutoReg();
     

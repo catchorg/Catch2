@@ -9,45 +9,39 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
-#ifndef TWOBLUECUBES_CATCH_HUB_IMPL_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_HUB_IMPL_HPP_INCLUDED
-
 #include "catch_hub.h"
-#include "catch_reporter_registry.hpp"a
+#include "catch_reporter_registry.hpp"
+#include "catch_test_case_registry_impl.hpp"
 
 namespace Catch
 {
     ///////////////////////////////////////////////////////////////////////////
-    Hub::Hub()
+    Hub::Hub
+    ()
     :   m_reporterRegistry( new ReporterRegistry ),
         m_testCaseRegistry( new TestRegistry )
     {
     }
     
-    Hub& Hub::me()
+    ///////////////////////////////////////////////////////////////////////////
+    Hub& Hub::me
+    ()
     {
         static Hub hub;
         return hub;
     }
 
-    IReporterRegistry& Hub::getReporterRegistry()
+    ///////////////////////////////////////////////////////////////////////////
+    IReporterRegistry& Hub::getReporterRegistry
+    ()
     {
         return *me().m_reporterRegistry.get();
     }
 
-    ITestCaseRegistry& Hub::getTestCaseRegistry()
+    ///////////////////////////////////////////////////////////////////////////
+    ITestCaseRegistry& Hub::getTestCaseRegistry
+    ()
     {
         return *me().m_testCaseRegistry.get();
     }
-    
-    ///////////////////////////////////////////////////////////////////////////
-    AutoReg::AutoReg( TestFunction function, const char* name, const char* description )
-    {
-        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new FreeFunctionTestCase( function ), name, description ) );
-    }    
-    AutoReg::~AutoReg()
-    {
-    }
 }
-
-#endif // TWOBLUECUBES_CATCH_HUB_IMPL_HPP_INCLUDED

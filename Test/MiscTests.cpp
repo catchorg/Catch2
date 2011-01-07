@@ -11,6 +11,7 @@
  */
 
 #include "../catch.hpp"
+#include <iostream>
 
 TEST_CASE( "succeeding/Misc/Sections", "random SECTION tests" )
 {
