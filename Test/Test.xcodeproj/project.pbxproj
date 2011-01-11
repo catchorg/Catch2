@@ -44,6 +44,9 @@
 		4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscTests.cpp; sourceTree = "<group>"; };
 		4AD6775912D71DA0005AAF59 /* catch_test_case_registry_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_test_case_registry_impl.hpp; path = ../internal/catch_test_case_registry_impl.hpp; sourceTree = SOURCE_ROOT; };
 		4AD677B212D7A53E005AAF59 /* catch_interfaces_testcase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_testcase.h; path = ../internal/catch_interfaces_testcase.h; sourceTree = SOURCE_ROOT; };
+		4AD6781D12D7A88E005AAF59 /* catch_interfaces_capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_capture.h; path = ../internal/catch_interfaces_capture.h; sourceTree = SOURCE_ROOT; };
+		4AD6781F12D7A952005AAF59 /* catch_result_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_result_type.h; path = ../internal/catch_result_type.h; sourceTree = SOURCE_ROOT; };
+		4AD6783212D7ABB3005AAF59 /* catch_interfaces_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_runner.h; path = ../internal/catch_interfaces_runner.h; sourceTree = SOURCE_ROOT; };
 		4AFC341512809A36003A0C29 /* catch_capture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_capture.hpp; path = ../internal/catch_capture.hpp; sourceTree = SOURCE_ROOT; };
 		4AFC341612809A36003A0C29 /* catch_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_common.h; path = ../internal/catch_common.h; sourceTree = SOURCE_ROOT; };
 		4AFC341712809A36003A0C29 /* catch_test_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_test_registry.hpp; path = ../internal/catch_test_registry.hpp; sourceTree = SOURCE_ROOT; };
@@ -114,6 +117,8 @@
 				4AFC341712809A36003A0C29 /* catch_test_registry.hpp */,
 				4AFC341B12809A36003A0C29 /* catch_test_case_info.hpp */,
 				4AD677B212D7A53E005AAF59 /* catch_interfaces_testcase.h */,
+				4AD6781D12D7A88E005AAF59 /* catch_interfaces_capture.h */,
+				4AD6781F12D7A952005AAF59 /* catch_result_type.h */,
 			);
 			name = "TestCase registration";
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 				4A3BFFF0128DD23C005609E3 /* catch_config.hpp */,
 				4AFC341912809A36003A0C29 /* catch_resultinfo.hpp */,
 				4AFC341A12809A36003A0C29 /* catch_runner_impl.hpp */,
+				4AD6783212D7ABB3005AAF59 /* catch_interfaces_runner.h */,
 			);
 			name = "Running & Results";
 			sourceTree = "<group>";

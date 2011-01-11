@@ -1,6 +1,6 @@
 /*
  *  catch_hub.h
- *  Test
+ *  Catch
  *
  *  Created by Phil on 31/12/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
@@ -20,18 +20,9 @@
 namespace Catch
 {
     struct TestCaseInfo;
-    struct IResultListener;
-    struct ITestCaseRegistry
-    {
-    public:
-        
-        virtual void registerTest
-            ( const TestCaseInfo& testInfo 
-            ) = 0;
-
-        virtual const std::vector<TestCaseInfo>& getAllTests
-            () const = 0;
-    };
+    struct IResultCapture;
+    struct ITestCaseRegistry;
+    struct IRunner;
     
     class Hub
     {
@@ -40,13 +31,19 @@ namespace Catch
         
     public:
         
-        static IResultListener& getListener();
+        static void setRunner( IRunner* runner );
+        static void setResultCapture( IResultCapture* resultCapture );
+
+        static IResultCapture& getResultCapture();
         static IReporterRegistry& getReporterRegistry();
         static ITestCaseRegistry& getTestCaseRegistry();
+        static IRunner& getRunner();
         
     private:
         std::auto_ptr<IReporterRegistry> m_reporterRegistry;
         std::auto_ptr<ITestCaseRegistry> m_testCaseRegistry;
+        IRunner* m_runner;
+        IResultCapture* m_resultCapture;
     };
 }
 

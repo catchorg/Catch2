@@ -98,10 +98,10 @@ namespace Catch
     ///////////////////////////////////////////////////////////////////////////
     void AutoReg::registerTestCase
     (
-     ITestCase* testCase, 
-     const char* name, 
-     const char* description 
-     )
+        ITestCase* testCase, 
+        const char* name, 
+        const char* description 
+    )
     {
         Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description ) );
     }

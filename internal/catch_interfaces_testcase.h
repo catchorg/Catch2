@@ -1,6 +1,6 @@
 /*
  *  catch_interfaces_testcase.h
- *  Test
+ *  Catch
  *
  *  Created by Phil on 07/01/2011.
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
@@ -12,6 +12,8 @@
 
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
+
+#include <vector>
 
 namespace Catch
 {
@@ -35,6 +37,16 @@ namespace Catch
             ( const ITestCase& other 
             ) const = 0;
     };
+    
+    class TestCaseInfo;
 
+    struct ITestCaseRegistry
+    {
+        virtual void registerTest( const TestCaseInfo& testInfo ) = 0;
+        virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
+    };
 }
+
+
+
 #endif // TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED

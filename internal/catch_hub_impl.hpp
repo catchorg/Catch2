@@ -1,6 +1,6 @@
 /*
  *  catch_hub_impl.hpp
- *  Test
+ *  Catch
  *
  *  Created by Phil on 31/12/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 #include "catch_hub.h"
 #include "catch_reporter_registry.hpp"
 #include "catch_test_case_registry_impl.hpp"
+#include "catch_runner_impl.hpp"
 
 namespace Catch
 {
@@ -22,7 +23,7 @@ namespace Catch
         m_testCaseRegistry( new TestRegistry )
     {
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
     Hub& Hub::me
     ()
@@ -31,6 +32,31 @@ namespace Catch
         return hub;
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    void Hub::setRunner( IRunner* runner )
+    {
+        me().m_runner = runner;
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    void Hub::setResultCapture( IResultCapture* resultCapture )
+    {
+        me().m_resultCapture = resultCapture;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    IResultCapture& Hub::getResultCapture
+    ()
+    {
+        return *me().m_resultCapture;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    IRunner& Hub::getRunner
+    ()
+    {
+        return *me().m_runner;
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     IReporterRegistry& Hub::getReporterRegistry
     ()

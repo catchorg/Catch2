@@ -13,28 +13,10 @@
 #define TWOBLUECUBES_CATCH_RESULT_INFO_HPP_INCLUDED
 
 #include <string>
+#include "catch_result_type.h"
 
 namespace Catch
 {    
-    struct ResultWas{ enum OfType
-        {
-            Unknown = -1,
-            Ok = 0,
-            Info = 1,
-            Warning = 2,
-
-            FailureBit = 0x10,
-            
-            ExpressionFailed = FailureBit | 1,
-            ExplicitFailure = FailureBit | 2,
-            
-            Exception = 0x110,
-            
-            ThrewException = Exception | 1,
-            DidntThrowException = Exception | 2
-            
-        }; };
-    
     class ResultInfo
     {
     public:

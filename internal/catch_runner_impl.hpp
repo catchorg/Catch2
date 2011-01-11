@@ -12,6 +12,7 @@
 #ifndef TWOBLUECUBES_INTERNAL_CATCH_RUNNER_HPP_INCLUDED
 #define TWOBLUECUBES_INTERNAL_CATCH_RUNNER_HPP_INCLUDED
 
+#include "catch_interfaces_runner.h"
 #include "catch_interfaces_reporter.h"
 #include "catch_config.hpp"
 #include "catch_test_registry.hpp"
@@ -70,7 +71,7 @@ namespace Catch
         std::string& m_targetString;
     };
     
-    class Runner : public IResultListener
+    class Runner : public IResultCapture, public IRunner
     {
         Runner( const Runner& );
         void operator =( const Runner& );
@@ -82,15 +83,19 @@ namespace Catch
             m_failures( 0 ),
             m_reporter( m_config.getReporter() )
         {
+            Hub::setRunner( this );
+            Hub::setResultCapture( this );
             m_reporter->StartTesting();
         }
         
         ~Runner()
         {
             m_reporter->EndTesting( m_successes, m_failures );
+            Hub::setRunner( NULL );
+            Hub::setResultCapture( NULL );
         }
         
-        void runAll()
+        virtual void runAll()
         {
             std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i )
@@ -99,7 +104,7 @@ namespace Catch
             }
         }
         
-        std::size_t runMatching( const std::string& rawTestSpec )
+        virtual std::size_t runMatching( const std::string& rawTestSpec )
         {
             TestSpec testSpec( rawTestSpec );
             
@@ -118,7 +123,6 @@ namespace Catch
         
         void runTest( const TestCaseInfo& testInfo )
         {
-            IResultListener* prevListener = ResultsCapture::setListener( this );
             m_reporter->StartTestCase( testInfo );
             
             std::string redirectedCout;
@@ -146,19 +150,19 @@ namespace Catch
             }
             m_info.clear();
             m_reporter->EndTestCase( testInfo, redirectedCout, redirectedCerr );
-            ResultsCapture::setListener( prevListener );
         }
         
-        std::size_t getSuccessCount() const
+        virtual std::size_t getSuccessCount() const
         {
             return m_successes;
         }
-       std:: size_t getFailureCount() const
+        
+        virtual std:: size_t getFailureCount() const
         {
             return m_failures;
         }
 
-    private: // IResultListener
+    private: // IResultCapture
 
         virtual ResultAction::Value acceptResult( bool result )
         {
