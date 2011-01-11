@@ -83,6 +83,28 @@ std::string toString( const T& value )
     return Detail::StringMaker<T, Detail::IsStreamable<T>::value>::apply( value );
 }
 
+template<>
+inline std::string toString<std::string>( const std::string& value )
+{
+    return value;
+}
+
+template<>
+inline std::string toString<int>( const int& value )
+{
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+    
+template<>
+inline std::string toString<double>( const double& value )
+{
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}    
+    
 class TestFailureException
 {
 };
