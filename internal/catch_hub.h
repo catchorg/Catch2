@@ -19,7 +19,7 @@
 
 namespace Catch
 {
-    struct TestCaseInfo;
+    class TestCaseInfo;
     struct IResultCapture;
     struct ITestCaseRegistry;
     struct IRunner;
@@ -27,17 +27,30 @@ namespace Catch
     class Hub
     {
         Hub();
+        
         static Hub& me();
         
     public:
         
-        static void setRunner( IRunner* runner );
-        static void setResultCapture( IResultCapture* resultCapture );
-
-        static IResultCapture& getResultCapture();
-        static IReporterRegistry& getReporterRegistry();
-        static ITestCaseRegistry& getTestCaseRegistry();
-        static IRunner& getRunner();
+        static void setRunner
+            ( IRunner* runner 
+            );
+        
+        static void setResultCapture
+            ( IResultCapture* resultCapture 
+            );
+        
+        static IResultCapture& getResultCapture
+            ();
+        
+        static IReporterRegistry& getReporterRegistry
+            ();
+        
+        static ITestCaseRegistry& getTestCaseRegistry
+            ();
+        
+        static IRunner& getRunner
+            ();
         
     private:
         std::auto_ptr<IReporterRegistry> m_reporterRegistry;

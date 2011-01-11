@@ -82,23 +82,23 @@ std::string toString( const T& value )
 {
     return Detail::StringMaker<T, Detail::IsStreamable<T>::value>::apply( value );
 }
-
-template<>
-inline std::string toString<std::string>( const std::string& value )
+    
+// Shortcut overloads
+inline std::string toString( const std::string& value )
 {
     return value;
 }
-
-template<>
-inline std::string toString<int>( const int& value )
+inline std::string toString( const char* value )
+{
+    return value;
+}    
+inline std::string toString( int value )
 {
     std::ostringstream oss;
     oss << value;
     return oss.str();
 }
-    
-template<>
-inline std::string toString<double>( const double& value )
+inline std::string toString( const double value )
 {
     std::ostringstream oss;
     oss << value;

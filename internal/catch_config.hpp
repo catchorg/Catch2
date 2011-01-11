@@ -53,6 +53,7 @@ namespace Catch
         }; };
         
         
+        ///////////////////////////////////////////////////////////////////////////
         Config()
         :   m_reporter( NULL ),
             m_listSpec( List::None ),
@@ -62,6 +63,7 @@ namespace Catch
             m_includeWhat( Include::FailedOnly )
         {}
         
+        ///////////////////////////////////////////////////////////////////////////
         void setReporter( const std::string& reporterName )
         {
             if( m_reporter.get() )
@@ -69,73 +71,93 @@ namespace Catch
             setReporter( Hub::getReporterRegistry().create( reporterName, *this ) );
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         void addTestSpec( const std::string& testSpec )
         {
             m_testSpecs.push_back( testSpec );
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         void setListSpec( List::What listSpec )
         {
             m_listSpec = listSpec;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         void setFilename( const std::string& filename )
         {
             m_filename = filename;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         std::string getFilename()
         {
             return m_filename;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         void setError( const std::string& errorMessage )
         {
             m_message = errorMessage + "\n\n" + "Usage: ...";
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         void setReporter( IReporter* reporter )
         {
             m_reporter = std::auto_ptr<IReporter>( reporter );
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         IReporter* getReporter()
         {
             if( !m_reporter.get() )
                 setReporter( Hub::getReporterRegistry().create( "basic", *this ) );
             return m_reporter.get();
         }
-        
+                
+        ///////////////////////////////////////////////////////////////////////////
         IReporter* getReporter() const
         {
             return const_cast<Config*>( this )->getReporter();
-        }
+        }        
         
+        ///////////////////////////////////////////////////////////////////////////
         List::What listWhat() const
         {
             return (List::What)( m_listSpec & List::WhatMask );
-        }
+        }        
         
+        ///////////////////////////////////////////////////////////////////////////
         List::What listAs() const
         {
             return (List::What)( m_listSpec & List::AsMask );
         }        
         
+        ///////////////////////////////////////////////////////////////////////////
         void setIncludeWhat( Include::What includeWhat )
         {
             m_includeWhat = includeWhat;
         }
+        
+        ///////////////////////////////////////////////////////////////////////////
         void setShouldDebugBreak( bool shouldDebugBreak )
         {
             m_shouldDebugBreak = shouldDebugBreak;
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         bool shouldDebugBreak() const
         {
             return m_shouldDebugBreak;
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         void setShowHelp( bool showHelp )
         {
             m_showHelp = showHelp;
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         bool showHelp() const
         {
             return m_showHelp;
@@ -159,8 +181,7 @@ namespace Catch
             return m_includeWhat == Include::SuccessfulResults;
         }
         
-        
-        
+                
         std::auto_ptr<IReporter> m_reporter;
         std::string m_filename;
         std::string m_message;

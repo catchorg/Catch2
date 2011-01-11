@@ -21,6 +21,7 @@ namespace Catch
     {
     public:
         
+        ///////////////////////////////////////////////////////////////////////////
         ResultInfo()
         :   m_line( 0 ),
             m_result( ResultWas::Unknown ),
@@ -28,7 +29,16 @@ namespace Catch
             m_expressionIncomplete( false )
         {}
         
-        ResultInfo( const char* expr, ResultWas::OfType result, bool isNot, const char* filename, std::size_t line, const char* macroName )
+        ///////////////////////////////////////////////////////////////////////////
+        ResultInfo
+        (
+            const char* expr, 
+            ResultWas::OfType result, 
+            bool isNot, 
+            const char* filename, 
+            std::size_t line, 
+            const char* macroName 
+        )
         :   m_macroName( macroName ),
             m_filename( filename ),
             m_line( line ),
@@ -42,28 +52,37 @@ namespace Catch
                 m_expr = "!" + m_expr;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         bool ok() const
         {
             return ( m_result & ResultWas::FailureBit ) != ResultWas::FailureBit;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         ResultWas::OfType getResultType() const
         {
             return m_result;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         bool hasExpression() const
         {
             return !m_expr.empty();
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         bool hasMessage() const
         {
             return !m_message.empty();
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         std::string getExpression() const
         {
             return m_expr;
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         std::string getExpandedExpression() const
         {
             if( !hasExpression() )
@@ -74,27 +93,33 @@ namespace Catch
                 : getExpandedExpressionInternal();
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         std::string getMessage() const
         {
             return m_message;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         std::string getFilename() const
         {
             return m_filename;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         std::size_t getLine() const
         {
             return m_line;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         std::string getTestMacroName() const
         {
             return m_macroName;
         }
 
     protected:
+
+        ///////////////////////////////////////////////////////////////////////////
         std::string getExpandedExpressionInternal() const
         {
             if( m_op == "" || m_isNot )

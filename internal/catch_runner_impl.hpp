@@ -71,13 +71,19 @@ namespace Catch
         std::string& m_targetString;
     };
     
+
     class Runner : public IResultCapture, public IRunner
     {
         Runner( const Runner& );
         void operator =( const Runner& );
         
     public:
-        explicit Runner( const Config& config )
+
+        ///////////////////////////////////////////////////////////////////////////
+        explicit Runner
+        (
+            const Config& config 
+        )
         :   m_config( config ),
             m_successes( 0 ),
             m_failures( 0 ),
@@ -88,14 +94,18 @@ namespace Catch
             m_reporter->StartTesting();
         }
         
-        ~Runner()
+        ///////////////////////////////////////////////////////////////////////////
+        ~Runner
+        ()
         {
             m_reporter->EndTesting( m_successes, m_failures );
             Hub::setRunner( NULL );
             Hub::setResultCapture( NULL );
         }
         
-        virtual void runAll()
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void runAll
+        ()
         {
             std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i )
@@ -104,7 +114,11 @@ namespace Catch
             }
         }
         
-        virtual std::size_t runMatching( const std::string& rawTestSpec )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual std::size_t runMatching
+        (
+            const std::string& rawTestSpec
+        )
         {
             TestSpec testSpec( rawTestSpec );
             
@@ -121,7 +135,11 @@ namespace Catch
             return testsRun;
         }
         
-        void runTest( const TestCaseInfo& testInfo )
+        ///////////////////////////////////////////////////////////////////////////
+        void runTest
+        (
+            const TestCaseInfo& testInfo
+        )
         {
             m_reporter->StartTestCase( testInfo );
             
@@ -152,24 +170,38 @@ namespace Catch
             m_reporter->EndTestCase( testInfo, redirectedCout, redirectedCerr );
         }
         
-        virtual std::size_t getSuccessCount() const
+        ///////////////////////////////////////////////////////////////////////////
+        virtual std::size_t getSuccessCount
+        ()
+        const
         {
             return m_successes;
         }
         
-        virtual std:: size_t getFailureCount() const
+        ///////////////////////////////////////////////////////////////////////////
+        virtual std:: size_t getFailureCount
+        ()
+        const
         {
             return m_failures;
         }
 
     private: // IResultCapture
 
-        virtual ResultAction::Value acceptResult( bool result )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual ResultAction::Value acceptResult
+        (
+            bool result
+        )
         {
             return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
         }
 
-        virtual ResultAction::Value acceptResult( ResultWas::OfType result )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual ResultAction::Value acceptResult
+        (
+            ResultWas::OfType result
+        )
         {
             m_currentResult.setResultType( result );            
             testEnded( m_currentResult );
@@ -185,19 +217,29 @@ namespace Catch
             
         }
 
-        virtual void acceptExpression( const MutableResultInfo& resultInfo )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void acceptExpression
+        (
+            const MutableResultInfo& resultInfo
+        )
         {
             m_currentResult = resultInfo;
         }
 
-        virtual void acceptMessage( const std::string& msg )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void acceptMessage
+        (
+            const std::string& msg
+        )
         {
             m_currentResult.setMessage( msg );
         }
-        
-        ///
-        
-        virtual void testEnded( const ResultInfo& result )
+                
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void testEnded
+        (
+            const ResultInfo& result        
+        )
         { 
             if( result.getResultType() == ResultWas::Ok )
             {
@@ -220,7 +262,14 @@ namespace Catch
                 m_reporter->Result( result );
         }
 
-        virtual bool sectionStarted( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool sectionStarted
+        (
+            const std::string& name, 
+            const std::string& description, 
+            std::size_t& successes, \
+            std::size_t& failures 
+        )
         {
             m_reporter->StartSection( name, description );
             successes = m_successes;
@@ -230,21 +279,40 @@ namespace Catch
             return true;
         }
         
-        virtual void sectionEnded( const std::string& name, std::size_t prevSuccesses, std::size_t prevFailures )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void sectionEnded
+        (
+            const std::string& name, 
+            std::size_t prevSuccesses, 
+            std::size_t prevFailures 
+        )
         {
             m_reporter->EndSection( name, m_successes - prevSuccesses, m_failures - prevFailures );
         }
 
-        virtual void pushScopedInfo( ScopedInfo* scopedInfo )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void pushScopedInfo
+        (
+            ScopedInfo* scopedInfo 
+        )
         {
             m_scopedInfos.push_back( scopedInfo );
         }
-        virtual void popScopedInfo( ScopedInfo* scopedInfo )
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void popScopedInfo
+        (
+            ScopedInfo* scopedInfo
+        )
         {
             if( m_scopedInfos.back() == scopedInfo )
                 m_scopedInfos.pop_back();
         }
-        virtual bool shouldDebugBreak() const
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool shouldDebugBreak
+        () 
+        const
         {
             return m_config.shouldDebugBreak();
         }
