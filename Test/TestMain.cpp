@@ -10,67 +10,60 @@
  *
  */
 
-#include "../catch.hpp"
-#include "../catch_runner.hpp"
+#include "../internal/catch_self_test.hpp"
+#include "../catch_default_main.hpp"
 
-// This code runs the meta tests and verifies that the failing ones failed and the successful ones succeeded
-int main (int argc, char * const argv[])
+TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" )
 {
     using namespace Catch;
     
-    bool showAllResults = false;
-    if( argc > 1 && ( std::string( argv[1] ) == "-s" || std::string( argv[1] ) == "--success" ) )
-        showAllResults = true;
+    {
+        EmbeddedRunner runner;
+        runner.runMatching( "succeeding/*" );
+        CHECK( runner.getReporter().getSucceeded() == 53 );
+        CHECK( runner.getReporter().getFailed() == 0 );
+    }
+    {
+        EmbeddedRunner runner;
+        runner.runMatching( "failing/*" );
         
-    std::ostringstream ossSucceeding;
-    std::ostringstream ossFailing;
+        CHECK( runner.getReporter().getSucceeded() == 0 );
+        CHECK( runner.getReporter().getFailed() == 53 );
+    }
+}
 
-    Config config;
-    config.setReporter( "Basic" );
-    config.setIncludeWhat( Config::Include::SuccessfulResults );
-    Runner runner( config );
-
-    config.setStreamBuf( ossSucceeding.rdbuf() );
-    runner.runMatching( "succeeding/*" );
-    std::string succeedingResults = ossSucceeding.str();
+TEST_CASE( "selftest/succeeding", "Runs all Catch self tests that should succeed and checks their results" )
+{
+    using namespace Catch;
     
-    config.setStreamBuf( ossFailing.rdbuf() );
-    runner.runMatching( "failing/*" );
-    std::string failingResults = ossFailing.str();
-
-    int result = 0;
-    if( succeedingResults.find( "failed" ) != std::string::npos )
+    // Run a nested Runner - we scope it here so it restores our runner
+    // at the end of scope
     {
-        std::cerr << "Some tests that should have succeeded failed:\n\n" << succeedingResults;
-        result = 1;
-    }
-    else if( showAllResults )
-    {
-        std::cout << succeedingResults << "\n\n";
-    }
-    if( failingResults.find( "succeeded" ) != std::string::npos )
-    {
-        std::cerr << "Some tests that should have failed succeeded:\n\n" << failingResults;
-        result = 1;
-    }
-    else if( showAllResults )
-    {
-        std::cout << failingResults << "\n\n";
-    }
-
-    if( result == 0 )
-    {
-        const size_t expectedTestCaseCount = 106; // !TBD factor this out
-        size_t testCaseCount = runner.getSuccessCount() + runner.getFailureCount();
-        std::cout << "All " << testCaseCount << " test(s) completed successfully" << std::endl;
-        if( testCaseCount != expectedTestCaseCount )
+        SelfTestConfig config;
         {
-            std::cerr   << "- but we were expecting " << expectedTestCaseCount
-                        << " test to run. Were some added or removed, or were they not compiled in?" 
-                        << std::endl;
-            return 1;
-        }        
+            Runner runner( config );
+            runner.runMatching( "succeeding/*" );
+        }
         
+        CHECK( config.getReporter().getSucceeded() == 53 );
+        CHECK( config.getReporter().getFailed() == 0 );
     }
-    return result;
+}
+
+TEST_CASE( "selftest/failing", "Runs all Catch self tests that should fail and checks their results" )
+{
+    using namespace Catch;
+    
+    // Run a nested Runner - we scope it here so it restores our runner
+    // at the end of scope
+    {
+        SelfTestConfig config;
+        {
+            Runner runner( config );
+            runner.runMatching( "failing/*" );
+        }
+        
+        CHECK( config.getReporter().getSucceeded() == 0 );
+        CHECK( config.getReporter().getFailed() == 53 );
+    }
 }
