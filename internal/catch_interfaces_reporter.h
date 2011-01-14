@@ -75,6 +75,8 @@ namespace Catch
         
         virtual void EndTestCase
             (   const TestCaseInfo& testInfo, 
+                std::size_t succeeded, 
+                std::size_t failed,
                 const std::string& stdOut, 
                 const std::string& stdErr 
             ) = 0;

@@ -139,7 +139,7 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const Catch::TestCaseInfo&, const std::string& /*stdOut*/, const std::string& /*stdErr*/ )
+        virtual void EndTestCase( const Catch::TestCaseInfo&, std::size_t /* succeeded */, std::size_t /* failed */, const std::string& /*stdOut*/, const std::string& /*stdErr*/ )
         {
             m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );
             m_xml.endElement();

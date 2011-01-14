@@ -16,6 +16,7 @@
 #include "catch_interfaces_reporter.h"
 #include "catch_config.hpp"
 #include "catch_test_registry.hpp"
+#include "catch_test_case_info.hpp"
 #include "catch_capture.hpp"
 
 namespace Catch
@@ -87,7 +88,9 @@ namespace Catch
         :   m_config( config ),
             m_successes( 0 ),
             m_failures( 0 ),
-            m_reporter( m_config.getReporter() )
+            m_reporter( m_config.getReporter() ),
+            m_prevRunner( &Hub::getRunner() ),
+            m_prevResultCapture( &Hub::getResultCapture() )
         {
             Hub::setRunner( this );
             Hub::setResultCapture( this );
@@ -99,8 +102,8 @@ namespace Catch
         ()
         {
             m_reporter->EndTesting( m_successes, m_failures );
-            Hub::setRunner( NULL );
-            Hub::setResultCapture( NULL );
+            Hub::setRunner( m_prevRunner );
+            Hub::setResultCapture( m_prevResultCapture );
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -141,6 +144,9 @@ namespace Catch
             const TestCaseInfo& testInfo
         )
         {
+            std::size_t prevSuccessCount = m_successes;
+            std::size_t prevFailureCount = m_failures;
+            
             m_reporter->StartTestCase( testInfo );
             
             std::string redirectedCout;
@@ -167,7 +173,7 @@ namespace Catch
                 acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();
-            m_reporter->EndTestCase( testInfo, redirectedCout, redirectedCerr );
+            m_reporter->EndTestCase( testInfo, m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -326,6 +332,8 @@ namespace Catch
         IReporter* m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
         std::vector<ResultInfo> m_info;
+        IRunner* m_prevRunner;
+        IResultCapture* m_prevResultCapture;
     };
 }
 
