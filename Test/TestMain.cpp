@@ -17,53 +17,14 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
 {
     using namespace Catch;
     
-    {
-        EmbeddedRunner runner;
-        runner.runMatching( "./succeeding/*" );
-        CHECK( runner.getReporter().getSucceeded() == 53 );
-        CHECK( runner.getReporter().getFailed() == 0 );
-    }
-    {
-        EmbeddedRunner runner;
-        runner.runMatching( "./failing/*" );
-        
-        CHECK( runner.getReporter().getSucceeded() == 0 );
-        CHECK( runner.getReporter().getFailed() == 53 );
-    }
-}
+    EmbeddedRunner runner;
 
-TEST_CASE( "selftest/succeeding", "Runs all Catch self tests that should succeed and checks their results" )
-{
-    using namespace Catch;
-    
-    // Run a nested Runner - we scope it here so it restores our runner
-    // at the end of scope
-    {
-        SelfTestConfig config;
-        {
-            Runner runner( config );
-            runner.runMatching( "./succeeding/*" );
-        }
-        
-        CHECK( config.getReporter().getSucceeded() == 53 );
-        CHECK( config.getReporter().getFailed() == 0 );
-    }
-}
+    runner.runMatching( "./succeeding/*" );
+    CHECK( runner.getReporter().getSucceeded() == 53 );
+    CHECK( runner.getReporter().getFailed() == 0 );
 
-TEST_CASE( "selftest/failing", "Runs all Catch self tests that should fail and checks their results" )
-{
-    using namespace Catch;
-    
-    // Run a nested Runner - we scope it here so it restores our runner
-    // at the end of scope
-    {
-        SelfTestConfig config;
-        {
-            Runner runner( config );
-            runner.runMatching( "./failing/*" );
-        }
+    runner.runMatching( "./failing/*" );
         
-        CHECK( config.getReporter().getSucceeded() == 0 );
-        CHECK( config.getReporter().getFailed() == 53 );
-    }
+    CHECK( runner.getReporter().getSucceeded() == 0 );
+    CHECK( runner.getReporter().getFailed() == 53 );
 }

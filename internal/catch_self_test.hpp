@@ -45,6 +45,13 @@ namespace Catch
             return m_failed;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
+        void reset()
+        {
+            m_succeeded = 0;
+            m_failed = 0;
+        }
+        
     private: // IReporter
         
         ///////////////////////////////////////////////////////////////////////////
@@ -75,6 +82,7 @@ namespace Catch
     class SelfTestConfig : public Config
     {
     public:
+        ///////////////////////////////////////////////////////////////////////////
         SelfTestConfig()
         : m_reporter( new SelfTestReporter() )
         {
@@ -82,6 +90,8 @@ namespace Catch
             setReporter( m_reporter );
             setStreamBuf( m_oss.rdbuf() );    
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         SelfTestReporter& getReporter()
         {
             return *m_reporter;
@@ -96,20 +106,25 @@ namespace Catch
     class EmbeddedRunner
     {
     public:
+        ///////////////////////////////////////////////////////////////////////////
         EmbeddedRunner()
         {
         }
         
+        ///////////////////////////////////////////////////////////////////////////
         std::size_t runMatching
         (
-         const std::string& rawTestSpec
-         )
+            const std::string& rawTestSpec
+        )
         {
             std::size_t result;
             Runner runner( m_config );
+            m_config.getReporter().reset();
             result = runner.runMatching( rawTestSpec );
             return result;
         }
+
+        ///////////////////////////////////////////////////////////////////////////
         SelfTestReporter& getReporter()
         {
             return m_config.getReporter();
