@@ -28,26 +28,26 @@ namespace
     }
 }
 
-TEST_CASE( "succeeding/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )
+TEST_CASE( "./succeeding/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )
 {
     REQUIRE_THROWS_AS( thisThrows(), std::domain_error );
     REQUIRE_NOTHROW( thisDoesntThrow() );
     REQUIRE_THROWS( thisThrows() );
 }
 
-TEST_CASE( "failing/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )
+TEST_CASE( "./failing/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )
 {
     CHECK_THROWS_AS( thisThrows(), std::string );
     CHECK_THROWS_AS( thisDoesntThrow(), std::domain_error );
     CHECK_NOTHROW( thisThrows() );
 }
 
-TEST_CASE( "failing/exceptions/implicit", "When unchecked exceptions are thrown they are always failures" )
+TEST_CASE( "./failing/exceptions/implicit", "When unchecked exceptions are thrown they are always failures" )
 {
     throw std::domain_error( "unexpected exception" );
 }
 
-TEST_CASE( "succeeding/exceptions/implicit", "When unchecked exceptions are thrown, but caught, they do not affect the test" )
+TEST_CASE( "./succeeding/exceptions/implicit", "When unchecked exceptions are thrown, but caught, they do not affect the test" )
 {
     try
     {

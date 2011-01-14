@@ -113,7 +113,8 @@ namespace Catch
             std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i )
             {
-                runTest( allTests[i] );
+                if( !allTests[i].isHidden() )
+                   runTest( allTests[i] );
             }
         }
         

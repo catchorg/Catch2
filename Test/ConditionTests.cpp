@@ -33,7 +33,7 @@ struct TestData
 // This allows us to see all results, even if an earlier check fails
 
 // Equality tests
-TEST_CASE( "succeeding/conditions/equality", "Equality checks that should succeed" )
+TEST_CASE( "./succeeding/conditions/equality", "Equality checks that should succeed" )
 {
     TestData data;
     
@@ -47,7 +47,7 @@ TEST_CASE( "succeeding/conditions/equality", "Equality checks that should succee
     REQUIRE( x == Approx( 1.3 ) );
 }
 
-TEST_CASE( "failing/conditions/equality", "Equality checks that should fail" )
+TEST_CASE( "./failing/conditions/equality", "Equality checks that should fail" )
 {
     TestData data;
     
@@ -68,7 +68,7 @@ TEST_CASE( "failing/conditions/equality", "Equality checks that should fail" )
     CHECK( x == Approx( 1.301 ) );
 }
 
-TEST_CASE( "succeeding/conditions/inequality", "Inequality checks that should succeed" )
+TEST_CASE( "./succeeding/conditions/inequality", "Inequality checks that should succeed" )
 {
     TestData data;
     
@@ -85,7 +85,7 @@ TEST_CASE( "succeeding/conditions/inequality", "Inequality checks that should su
     REQUIRE( data.str_hello.size() != 6 );
 }
 
-TEST_CASE( "failing/conditions/inequality", "Inequality checks that should fails" )
+TEST_CASE( "./failing/conditions/inequality", "Inequality checks that should fails" )
 {
     TestData data;
     
@@ -97,7 +97,7 @@ TEST_CASE( "failing/conditions/inequality", "Inequality checks that should fails
 }
 
 // Ordering comparison tests
-TEST_CASE( "succeeding/conditions/ordered", "Ordering comparison checks that should succeed" )
+TEST_CASE( "./succeeding/conditions/ordered", "Ordering comparison checks that should succeed" )
 {
     TestData data;
     
@@ -124,7 +124,7 @@ TEST_CASE( "succeeding/conditions/ordered", "Ordering comparison checks that sho
     REQUIRE( data.str_hello > "a" );
 }
 
-TEST_CASE( "failing/conditions/ordered", "Ordering comparison checks that should fail" )
+TEST_CASE( "./failing/conditions/ordered", "Ordering comparison checks that should fail" )
 {
     TestData data;
     
@@ -160,7 +160,7 @@ TEST_CASE( "failing/conditions/ordered", "Ordering comparison checks that should
 // is detected and a warning issued.
 // An alternative form of the macros (CHECK_FALSE and REQUIRE_FALSE) can be used instead to capture
 // the operand value.
-TEST_CASE( "succeeding/conditions/not", "'Not' checks that should succeed" )
+TEST_CASE( "./succeeding/conditions/not", "'Not' checks that should succeed" )
 {
     bool falseValue = false;
     
@@ -174,7 +174,7 @@ TEST_CASE( "succeeding/conditions/not", "'Not' checks that should succeed" )
     REQUIRE_FALSE( 1 == 2 );
 }
 
-TEST_CASE( "failing/conditions/not", "'Not' checks that should fail" )
+TEST_CASE( "./failing/conditions/not", "'Not' checks that should fail" )
 {
     bool trueValue = true;
     

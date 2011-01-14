@@ -13,7 +13,7 @@
 #include "../catch.hpp"
 #include <iostream>
 
-TEST_CASE( "succeeding/Misc/Sections", "random SECTION tests" )
+TEST_CASE( "./succeeding/Misc/Sections", "random SECTION tests" )
 {
     int a = 1;
     int b = 2;
@@ -30,7 +30,7 @@ TEST_CASE( "succeeding/Misc/Sections", "random SECTION tests" )
     }
 }
 
-TEST_CASE( "succeeding/Misc/Sections/nested", "nested SECTION tests" )
+TEST_CASE( "./succeeding/Misc/Sections/nested", "nested SECTION tests" )
 {
     int a = 1;
     int b = 2;
@@ -47,7 +47,7 @@ TEST_CASE( "succeeding/Misc/Sections/nested", "nested SECTION tests" )
     }
 }
 
-TEST_CASE( "mixed/Misc/Sections/loops", "looped SECTION tests" )
+TEST_CASE( "./mixed/Misc/Sections/loops", "looped SECTION tests" )
 {
     int a = 1;
     
@@ -62,7 +62,7 @@ TEST_CASE( "mixed/Misc/Sections/loops", "looped SECTION tests" )
     }
 }
 
-TEST_CASE( "mixed/Misc/loops", "looped tests" )
+TEST_CASE( "./mixed/Misc/loops", "looped tests" )
 {
     static const int fib[]  = { 1, 1, 2, 3, 5, 8, 13, 21 };
     
@@ -73,7 +73,7 @@ TEST_CASE( "mixed/Misc/loops", "looped tests" )
     }
 }
 
-TEST_CASE( "succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr" )
+TEST_CASE( "./succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr" )
 {
     std::cout << "Some information";
     

@@ -19,13 +19,13 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
     
     {
         EmbeddedRunner runner;
-        runner.runMatching( "succeeding/*" );
+        runner.runMatching( "./succeeding/*" );
         CHECK( runner.getReporter().getSucceeded() == 53 );
         CHECK( runner.getReporter().getFailed() == 0 );
     }
     {
         EmbeddedRunner runner;
-        runner.runMatching( "failing/*" );
+        runner.runMatching( "./failing/*" );
         
         CHECK( runner.getReporter().getSucceeded() == 0 );
         CHECK( runner.getReporter().getFailed() == 53 );
@@ -42,7 +42,7 @@ TEST_CASE( "selftest/succeeding", "Runs all Catch self tests that should succeed
         SelfTestConfig config;
         {
             Runner runner( config );
-            runner.runMatching( "succeeding/*" );
+            runner.runMatching( "./succeeding/*" );
         }
         
         CHECK( config.getReporter().getSucceeded() == 53 );
@@ -60,7 +60,7 @@ TEST_CASE( "selftest/failing", "Runs all Catch self tests that should fail and c
         SelfTestConfig config;
         {
             Runner runner( config );
-            runner.runMatching( "failing/*" );
+            runner.runMatching( "./failing/*" );
         }
         
         CHECK( config.getReporter().getSucceeded() == 0 );

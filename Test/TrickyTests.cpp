@@ -24,7 +24,7 @@ namespace Catch
     }
 }
 
-TEST_CASE( "succeeding/Tricky/std::pair", "Parsing a std::pair" )
+TEST_CASE( "./succeeding/Tricky/std::pair", "Parsing a std::pair" )
 {
     std::pair<int, int> aNicePair( 1, 2 );
 
@@ -33,7 +33,7 @@ TEST_CASE( "succeeding/Tricky/std::pair", "Parsing a std::pair" )
     
 }
 
-TEST_CASE( "succeeding/Tricky/complex lhs", "Where the LHS is not a simple value" )
+TEST_CASE( "./succeeding/Tricky/complex lhs", "Where the LHS is not a simple value" )
 {
     int a = 1;
     int b = 2;
@@ -51,7 +51,7 @@ struct Opaque
     }
 };
 
-TEST_CASE( "failing/Tricky/non streamable type", "A failing expression with a non streamable type is still captured" )
+TEST_CASE( "./failing/Tricky/non streamable type", "A failing expression with a non streamable type is still captured" )
 {
     
     Opaque o1, o2;
