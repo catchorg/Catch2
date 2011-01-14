@@ -31,6 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A15D2B712E0418F0005EB03 /* catch_self_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_self_test.hpp; path = ../internal/catch_self_test.hpp; sourceTree = SOURCE_ROOT; };
 		4A302DE312D5114900C84B67 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../catch.hpp; sourceTree = SOURCE_ROOT; };
 		4A33BCE512CE7F500052A211 /* catch_hub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_hub.h; path = ../internal/catch_hub.h; sourceTree = SOURCE_ROOT; };
 		4A33BCF912CE80EC0052A211 /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_reporter.h; path = ../internal/catch_interfaces_reporter.h; sourceTree = SOURCE_ROOT; };
@@ -209,6 +210,7 @@
 				4A302E3712D515B700C84B67 /* TestCase registration */,
 				4A33BE0F12CE936C0052A211 /* support */,
 				4A33BE0C12CE93380052A211 /* reporting */,
+				4A15D2B712E0418F0005EB03 /* catch_self_test.hpp */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
