@@ -52,6 +52,7 @@
 #define SECTION( name, description ) CATCH_SECTION( name, description )
 
 #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "anon", "Anonymous test case" )
 #define METHOD_AS_TEST_CASE( method, name, description ) CATCH_METHOD_AS_TEST_CASE( method, name, description )
 
 #define REGISTER_REPORTER( name, reporterType ) CATCH_REGISTER_REPORTER( name, reporterType )
