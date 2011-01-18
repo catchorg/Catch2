@@ -13,9 +13,10 @@
 #include "catch_reporter_registry.hpp"
 #include "catch_test_case_registry_impl.hpp"
 #include "catch_runner_impl.hpp"
+#include "catch_stream.hpp"
 
 namespace Catch
-{
+{    
     ///////////////////////////////////////////////////////////////////////////
     Hub::Hub
     ()
@@ -70,4 +71,18 @@ namespace Catch
     {
         return *me().m_testCaseRegistry.get();
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    std::streambuf* Hub::createStreamBuf
+    (
+        const std::string& streamName
+    )
+    {
+        if( streamName == "stdout" ) return std::cout.rdbuf();
+        if( streamName == "stderr" ) return std::cerr.rdbuf();
+        if( streamName == "debug" ) return new StreamBufImpl<OutputDebugWriter>;
+        
+        throw std::domain_error( "Unknown stream: " + streamName );
+    }
+    
 }

@@ -23,8 +23,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
     CHECK( runner.getReporter().getSucceeded() == 53 );
     CHECK( runner.getReporter().getFailed() == 0 );
 
-    runner.runMatching( "./failing/*" );
-        
+    runner.runMatching( "./failing/*" );        
     CHECK( runner.getReporter().getSucceeded() == 0 );
     CHECK( runner.getReporter().getFailed() == 53 );
 }

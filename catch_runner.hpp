@@ -50,7 +50,7 @@ namespace Catch
                         << "\t-l, --list <tests | reporters> [xml]\n"
                         << "\t-t, --test <testspec> [<testspec>...]\n"
                         << "\t-r, --reporter <reporter name>\n"
-                        << "\t-o, --out <file name>\n"
+                        << "\t-o, --out <file name>|<%stream name>\n"
                         << "\t-s, --success\n"
                         << "\t-b, --break\n\n"
                         << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;

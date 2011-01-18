@@ -23,6 +23,10 @@ namespace Catch
     struct IResultCapture;
     struct ITestCaseRegistry;
     struct IRunner;
+
+    class StreamBufBase : public std::streambuf
+    {
+    };
     
     class Hub
     {
@@ -48,6 +52,10 @@ namespace Catch
         
         static ITestCaseRegistry& getTestCaseRegistry
             ();
+        
+        static std::streambuf* createStreamBuf
+            ( const std::string& streamName
+            );
         
         static IRunner& getRunner
             ();

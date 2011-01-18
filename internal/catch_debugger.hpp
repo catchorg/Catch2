@@ -15,6 +15,8 @@
 #ifndef TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 
+#include <iostream>
+
 #if defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
 
     #include <assert.h>
@@ -83,5 +85,14 @@
     inline void DebugBreak(){}
 #endif
 
+inline void writeToDebugConsole( const std::string& text )
+{
+#ifdef _WIN32
+    ::OutputDebugStringA( text.get() );    
+#else
+    // !TBD: Need a version for Mac/ XCode and other IDEs
+    std::cout << text;
+#endif
+}
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED

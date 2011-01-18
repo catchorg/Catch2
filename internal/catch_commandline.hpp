@@ -152,7 +152,10 @@ namespace Catch
                 case modeOutput:
                     if( m_args.size() == 0 )
                         return setErrorMode( m_command + " expected filename" );
-                    m_config.setFilename( m_args[0] );
+                    if( m_args[0][0] == '%' )
+                        m_config.useStream( m_args[0].substr( 1 ) );
+                    else
+                        m_config.setFilename( m_args[0] );
                     break;
                 case modeSuccess:
                     if( m_args.size() != 0 )

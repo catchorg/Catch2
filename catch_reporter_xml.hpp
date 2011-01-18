@@ -23,13 +23,17 @@ namespace Catch
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
-        XmlReporter( const IReporterConfig& config )
-        :   m_config( config )
+        XmlReporter
+        (
+            const IReporterConfig& config
+        )
+        : m_config( config )
         {
         }        
 
         ///////////////////////////////////////////////////////////////////////////
-        static std::string getDescription()
+        static std::string getDescription
+        ()
         {
             return "Reports test results as an XML document";
         }
@@ -37,14 +41,19 @@ namespace Catch
     private: // IReporter
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void StartTesting()
+        virtual void StartTesting
+        ()
         {
             m_xml = XmlWriter( m_config.stream() );
             m_xml.startElement( "AllTests" );
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTesting( std::size_t succeeded, std::size_t failed )
+        virtual void EndTesting
+        (
+            std::size_t succeeded, 
+            std::size_t failed
+        )
         {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", succeeded )
@@ -52,14 +61,22 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void StartGroup( const std::string& groupName )
+        virtual void StartGroup
+        (
+            const std::string& groupName
+        )
         {
             m_xml.startElement( "Group" )
                 .writeAttribute( "name", groupName );
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndGroup( const std::string& /*groupName*/, std::size_t succeeded, std::size_t failed )
+        virtual void EndGroup
+        (
+            const std::string& /*groupName*/, 
+            std::size_t succeeded, 
+            std::size_t failed 
+        )
         {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", succeeded )

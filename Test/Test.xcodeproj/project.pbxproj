@@ -32,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		4A15D2B712E0418F0005EB03 /* catch_self_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_self_test.hpp; path = ../internal/catch_self_test.hpp; sourceTree = SOURCE_ROOT; };
+		4A15D4A812E4DF0D0005EB03 /* catch_stream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_stream.hpp; path = ../internal/catch_stream.hpp; sourceTree = SOURCE_ROOT; };
 		4A302DE312D5114900C84B67 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../catch.hpp; sourceTree = SOURCE_ROOT; };
 		4A33BCE512CE7F500052A211 /* catch_hub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_hub.h; path = ../internal/catch_hub.h; sourceTree = SOURCE_ROOT; };
 		4A33BCF912CE80EC0052A211 /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_reporter.h; path = ../internal/catch_interfaces_reporter.h; sourceTree = SOURCE_ROOT; };
@@ -163,6 +164,7 @@
 				4A6D514B12C8A547008F0415 /* catch_debugger.hpp */,
 				4AFC341612809A36003A0C29 /* catch_common.h */,
 				4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */,
+				4A15D4A812E4DF0D0005EB03 /* catch_stream.hpp */,
 			);
 			name = support;
 			sourceTree = "<group>";

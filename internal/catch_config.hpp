@@ -23,6 +23,7 @@
 
 namespace Catch
 {
+    
     class Config : public IReporterConfig
     {
     private:
@@ -59,9 +60,16 @@ namespace Catch
             m_listSpec( List::None ),
             m_shouldDebugBreak( false ),
             m_showHelp( false ),
-            m_os( std::cout.rdbuf() ),
+            m_streambuf( std::cout.rdbuf() ),
+            m_os( m_streambuf ),
             m_includeWhat( Include::FailedOnly )
         {}
+        
+        ///////////////////////////////////////////////////////////////////////////
+        ~Config()
+        {
+            setStreamBuf( NULL );
+        }
         
         ///////////////////////////////////////////////////////////////////////////
         void setReporter( const std::string& reporterName )
@@ -167,14 +175,25 @@ namespace Catch
         virtual std::ostream& stream() const
         {
             return m_os;
-        }        
+        }
         
         ///////////////////////////////////////////////////////////////////////////
         void setStreamBuf( std::streambuf* buf )
         {
-            m_os.rdbuf( buf );
+            // Delete previous stream buf if we own it
+            if( m_streambuf && dynamic_cast<StreamBufBase*>( m_streambuf ) )
+                delete m_streambuf;
+
+            m_streambuf = buf;
+            m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
         }        
 
+        ///////////////////////////////////////////////////////////////////////////
+        void useStream( const std::string& streamName )
+        {
+            setStreamBuf( Hub::createStreamBuf( streamName ) );
+        }        
+        
         ///////////////////////////////////////////////////////////////////////////
         virtual bool includeSuccessfulResults() const
         {
@@ -189,6 +208,7 @@ namespace Catch
         std::vector<std::string> m_testSpecs;
         bool m_shouldDebugBreak;
         bool m_showHelp;
+        std::streambuf* m_streambuf;
         mutable std::ostream m_os;
         Include::What m_includeWhat;        
     };
