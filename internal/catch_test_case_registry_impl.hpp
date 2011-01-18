@@ -16,15 +16,26 @@
 
 #include <vector>
 #include <set>
+#include <sstream>
 
 namespace Catch
 {
     class TestRegistry : public ITestCaseRegistry
     {
     public:
+        TestRegistry()
+        : m_unnamedCount( 0 )
+        {
+        }
         
         virtual void registerTest( const TestCaseInfo& testInfo )
         {
+            if( testInfo.getName() == "" )
+            {
+                std::ostringstream oss;
+                oss << testInfo.getName() << "unnamed/" << ++m_unnamedCount;
+                return registerTest( TestCaseInfo( testInfo, oss.str() ) );
+            }
             if( m_functions.find( testInfo ) == m_functions.end() )
             {
                 m_functions.insert( testInfo );
@@ -41,6 +52,7 @@ namespace Catch
         
         std::set<TestCaseInfo> m_functions;
         std::vector<TestCaseInfo> m_functionsInOrder;
+        size_t m_unnamedCount;
     };
     
     struct FreeFunctionTestCase : ITestCase

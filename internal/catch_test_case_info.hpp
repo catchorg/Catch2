@@ -54,6 +54,18 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////
+        TestCaseInfo
+        (
+            const TestCaseInfo& other,
+            const std::string& name
+        )
+        :   m_test( other.m_test->clone() ),
+            m_name( name ),
+            m_description( other.m_description )
+        {
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
         TestCaseInfo& operator = 
         (
             const TestCaseInfo& other 
