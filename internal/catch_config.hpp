@@ -84,6 +84,24 @@ namespace Catch
         {
             m_testSpecs.push_back( testSpec );
         }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        bool testsSpecified() const
+        {
+            return !m_testSpecs.empty();
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        const std::vector<std::string>& getTestSpecs() const
+        {
+            return m_testSpecs;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        List::What getListSpec( void ) const
+        {
+            return m_listSpec;
+        }
 
         ///////////////////////////////////////////////////////////////////////////
         void setListSpec( List::What listSpec )
@@ -98,9 +116,15 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        std::string getFilename()
+        const std::string& getFilename() const
         {
             return m_filename;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        const std::string& getMessage() const
+        {
+            return m_message;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -116,19 +140,13 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        IReporter* getReporter()
+        IReporter* getReporter() const
         {
             if( !m_reporter.get() )
-                setReporter( Hub::getReporterRegistry().create( "basic", *this ) );
+                const_cast<Config*>( this )->setReporter( Hub::getReporterRegistry().create( "basic", *this ) );
             return m_reporter.get();
         }
                 
-        ///////////////////////////////////////////////////////////////////////////
-        IReporter* getReporter() const
-        {
-            return const_cast<Config*>( this )->getReporter();
-        }        
-        
         ///////////////////////////////////////////////////////////////////////////
         List::What listWhat() const
         {
@@ -200,7 +218,7 @@ namespace Catch
             return m_includeWhat == Include::SuccessfulResults;
         }
         
-                
+    private:
         std::auto_ptr<IReporter> m_reporter;
         std::string m_filename;
         std::string m_message;

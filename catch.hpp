@@ -16,11 +16,8 @@
 
  Later:
     Finish command line parser (list as xml, specify FP tolerance)
-    INFO() stores messages until next result
     Revisit Approx()
-    Extra reports
     Tags?
-    Detect caught "Catch" exception, offer continuation based iteration instead
     Finish macros, listed here, later (just CHECK_NOFAIL now)
  */
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED

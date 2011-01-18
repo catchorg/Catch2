@@ -54,7 +54,7 @@ namespace Catch
         {
             std::cerr << "Reporters ignored when listing" << std::endl;
         }
-        if( config.m_testSpecs.size() == 0 )
+        if( !config.testsSpecified() )
         {
             std::cerr << "Test specs ignored when listing" << std::endl;
         }

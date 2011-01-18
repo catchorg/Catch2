@@ -30,9 +30,9 @@ namespace Catch
         Config config;
         ArgParser( argc, argv, config );     
         
-        if( !config.m_message.empty() )
+        if( !config.getMessage().empty() )
         {
-            std::cerr << config.m_message << std::endl;
+            std::cerr << config.getMessage() << std::endl;
             return std::numeric_limits<int>::max();
         }
         
@@ -77,7 +77,7 @@ namespace Catch
         Runner runner( config );
 
         // Run test specs specified on the command line - or default to all
-        if( config.m_testSpecs.size() == 0 )
+        if( !config.testsSpecified() )
         {
             config.getReporter()->StartGroup( "" );
             runner.runAll();
@@ -87,8 +87,8 @@ namespace Catch
         {
             // !TBD We should get all the testcases upfront, report any missing,
             // then just run them
-            std::vector<std::string>::const_iterator it = config.m_testSpecs.begin();
-            std::vector<std::string>::const_iterator itEnd = config.m_testSpecs.end();
+            std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
+            std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
             for(; it != itEnd; ++it )
             {
                 size_t prevSuccess = runner.getSuccessCount();

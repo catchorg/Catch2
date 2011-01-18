@@ -131,7 +131,7 @@ namespace Catch
                             else
                                 return setErrorMode( m_command + " expected [xml] or [text] but recieved: [" + m_args[1] + "]" );                        
                         }
-                        m_config.m_listSpec = (Config::List::What)( m_config.m_listSpec | listSpec );
+                        m_config.setListSpec( (Config::List::What)( m_config.getListSpec() | listSpec ) );
                     }
                     break;
                 case modeTest:
