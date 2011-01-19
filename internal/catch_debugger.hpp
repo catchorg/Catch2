@@ -87,9 +87,11 @@
 
 inline void writeToDebugConsole( const std::string& text )
 {
-#ifdef _WIN32
-    ::OutputDebugStringA( text.get() );    
-#else
+    // !TBD: Get Windows version working
+    // - need to declare OutputDebugStringA without Windows.h
+//#ifdef _WIN32
+//    ::OutputDebugStringA( text.c_str() );    
+//#else
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
 #endif
