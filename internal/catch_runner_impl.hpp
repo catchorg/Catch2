@@ -187,16 +187,26 @@ namespace Catch
             const TestCaseInfo& testInfo
         )
         {
+            std::size_t prevSuccessCount = m_successes;
+            std::size_t prevFailureCount = m_failures;
+
+            std::string redirectedCout;
+            std::string redirectedCerr;
+            
+            m_reporter->StartTestCase( testInfo );
+            
             m_runningTest = RunningTest( &testInfo );
 
             do
             {
                 m_runningTest.resetSectionSeen();
-                runCurrentTest();
+                runCurrentTest( redirectedCout, redirectedCerr );
             }
             while( m_runningTest.wasSectionSeen() );
 
             m_runningTest = RunningTest();
+
+            m_reporter->EndTestCase( testInfo, m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -352,16 +362,11 @@ namespace Catch
         
         ///////////////////////////////////////////////////////////////////////////
         void runCurrentTest
-        ()
-        {
-            std::size_t prevSuccessCount = m_successes;
-            std::size_t prevFailureCount = m_failures;
-            
-            m_reporter->StartTestCase( m_runningTest.getTestCaseInfo() );
-            
-            std::string redirectedCout;
-            std::string redirectedCerr;
-            
+        (
+            std::string& redirectedCout,
+            std::string& redirectedCerr
+        )
+        {            
             try
             {
                 StreamRedirect coutRedir( std::cout, redirectedCout );
@@ -383,7 +388,6 @@ namespace Catch
                 acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();
-            m_reporter->EndTestCase( m_runningTest.getTestCaseInfo(), m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
         }
         
     private:
