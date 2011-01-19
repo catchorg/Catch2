@@ -94,7 +94,7 @@ inline void writeToDebugConsole( const std::string& text )
 //#else
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
-#endif
+//#endif
 }
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
