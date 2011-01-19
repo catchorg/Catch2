@@ -30,7 +30,8 @@ namespace Catch
         
         ~Section()
         {
-            Hub::getResultCapture().sectionEnded( m_name, m_successes, m_failures );
+            if( m_sectionIncluded )
+                Hub::getResultCapture().sectionEnded( m_name, m_successes, m_failures );
         }
         
         // This indicates whether the section should be executed or not

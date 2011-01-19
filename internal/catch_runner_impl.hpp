@@ -48,6 +48,48 @@ namespace Catch
         bool m_isWildcarded;
     };
     
+    class RunningTest
+    {
+    public:
+        explicit RunningTest( const TestCaseInfo* info = NULL )
+        :   m_info( info ),
+            m_sectionSeen( false )
+        {
+        }
+        
+        size_t sectionsSeenCount() const
+        {
+            return m_sectionsSeen.size();
+        }
+        
+        bool wasSectionSeen() const
+        {
+            return m_sectionSeen;
+        }
+        void resetSectionSeen()
+        {
+            m_sectionSeen = false;
+        }
+        
+        bool addSection( const std::string& name )
+        {
+            if( m_sectionsSeen.find( name ) != m_sectionsSeen.end() )
+                return false;
+            m_sectionsSeen.insert( name );
+            return m_sectionSeen = true;
+        }
+        const TestCaseInfo& getTestCaseInfo() const
+        {
+            return *m_info;
+        }
+        
+    private:
+        const TestCaseInfo* m_info;
+        bool m_sectionSeen;
+        std::set<std::string> m_sectionsSeen;
+        
+    };
+    
     class StreamRedirect
     {
     public:
@@ -145,36 +187,16 @@ namespace Catch
             const TestCaseInfo& testInfo
         )
         {
-            std::size_t prevSuccessCount = m_successes;
-            std::size_t prevFailureCount = m_failures;
-            
-            m_reporter->StartTestCase( testInfo );
-            
-            std::string redirectedCout;
-            std::string redirectedCerr;
+            m_runningTest = RunningTest( &testInfo );
 
-            try
+            do
             {
-                StreamRedirect coutRedir( std::cout, redirectedCout );
-                StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                testInfo.invoke();                
+                m_runningTest.resetSectionSeen();
+                runCurrentTest();
             }
-            catch( TestFailureException& )
-            {
-                // This just means the test was aborted due to failure
-            }
-            catch( std::exception& ex )
-            {
-                acceptMessage( ex.what() );
-                acceptResult( ResultWas::ThrewException );
-            }
-            catch(...)
-            {
-                acceptMessage( "unknown exception" );
-                acceptResult( ResultWas::ThrewException );
-            }
-            m_info.clear();
-            m_reporter->EndTestCase( testInfo, m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
+            while( m_runningTest.wasSectionSeen() );
+
+            m_runningTest = RunningTest();
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -278,6 +300,9 @@ namespace Catch
             std::size_t& failures 
         )
         {
+            if( m_runningTest.wasSectionSeen() || !m_runningTest.addSection( name ) )
+                return false;
+
             m_reporter->StartSection( name, description );
             successes = m_successes;
             failures = m_failures;
@@ -323,8 +348,46 @@ namespace Catch
         {
             return m_config.shouldDebugBreak();
         }
+    private:
+        
+        ///////////////////////////////////////////////////////////////////////////
+        void runCurrentTest
+        ()
+        {
+            std::size_t prevSuccessCount = m_successes;
+            std::size_t prevFailureCount = m_failures;
+            
+            m_reporter->StartTestCase( m_runningTest.getTestCaseInfo() );
+            
+            std::string redirectedCout;
+            std::string redirectedCerr;
+            
+            try
+            {
+                StreamRedirect coutRedir( std::cout, redirectedCout );
+                StreamRedirect cerrRedir( std::cerr, redirectedCerr );
+                m_runningTest.getTestCaseInfo().invoke();                
+            }
+            catch( TestFailureException& )
+            {
+                // This just means the test was aborted due to failure
+            }
+            catch( std::exception& ex )
+            {
+                acceptMessage( ex.what() );
+                acceptResult( ResultWas::ThrewException );
+            }
+            catch(...)
+            {
+                acceptMessage( "unknown exception" );
+                acceptResult( ResultWas::ThrewException );
+            }
+            m_info.clear();
+            m_reporter->EndTestCase( m_runningTest.getTestCaseInfo(), m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
+        }
         
     private:
+        RunningTest m_runningTest;
         MutableResultInfo m_currentResult;
 
         const Config& m_config;

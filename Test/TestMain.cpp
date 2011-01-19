@@ -10,8 +10,9 @@
  *
  */
 
-#include "../internal/catch_self_test.hpp"
 #include "../catch_with_main.hpp"
+
+#include "../internal/catch_self_test.hpp"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" )
 {
