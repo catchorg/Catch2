@@ -23,18 +23,49 @@ namespace Catch
 
     struct IResultCapture
     {
-        virtual ~IResultCapture(){}
-        virtual void testEnded( const ResultInfo& result ) = 0;
-        virtual bool sectionStarted( const std::string& name, const std::string& description, std::size_t& successes, std::size_t& failures ) = 0;
-        virtual void sectionEnded( const std::string& name, std::size_t successes, std::size_t failures ) = 0;
-        virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0;
-        virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
-        virtual bool shouldDebugBreak() const = 0;
+        virtual ~IResultCapture
+        ()
+        {}
         
-        virtual ResultAction::Value acceptResult( bool result ) = 0;
-        virtual ResultAction::Value acceptResult( ResultWas::OfType result ) = 0;
-        virtual void acceptExpression( const MutableResultInfo& resultInfo ) = 0;
-        virtual void acceptMessage( const std::string& msg ) = 0;
+        virtual void testEnded
+            (   const ResultInfo& result 
+            ) = 0;
+        virtual bool sectionStarted
+            (   const std::string& name, 
+                const std::string& description, 
+                std::size_t& successes, 
+                std::size_t& failures 
+            ) = 0;
+        virtual void sectionEnded
+            (   const std::string& name, 
+                std::size_t successes, 
+                std::size_t failures 
+            ) = 0;
+        virtual void pushScopedInfo
+            (   ScopedInfo* scopedInfo 
+            ) = 0;
+        virtual void popScopedInfo
+            (   ScopedInfo* scopedInfo 
+            ) = 0;
+        virtual bool shouldDebugBreak
+            () const = 0;
+        
+        virtual ResultAction::Value acceptResult
+            (   bool result 
+            ) = 0;
+        virtual ResultAction::Value acceptResult
+            (   ResultWas::OfType result
+            ) = 0;
+        virtual void acceptExpression
+            (   const MutableResultInfo& resultInfo 
+            ) = 0;
+        virtual void acceptMessage
+            (   const std::string& msg 
+            ) = 0;
+        
+        virtual std::string getCurrentTestName
+            () const = 0;
+        
     };
 }
 

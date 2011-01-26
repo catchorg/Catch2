@@ -27,7 +27,7 @@ namespace Catch
             m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, m_successes, m_failures ) )
         {
         }
-        
+
         ~Section()
         {
             if( m_sectionIncluded )

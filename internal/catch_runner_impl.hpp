@@ -199,10 +199,14 @@ namespace Catch
 
             do
             {
-                m_runningTest.resetSectionSeen();
-                runCurrentTest( redirectedCout, redirectedCerr );
+                do
+                {
+                    m_runningTest.resetSectionSeen();
+                    runCurrentTest( redirectedCout, redirectedCerr );
+                }
+                while( m_runningTest.wasSectionSeen() );
             }
-            while( m_runningTest.wasSectionSeen() );
+            while( Hub::advanceGeneratorsForCurrentTest() );
 
             m_runningTest = RunningTest();
 
@@ -358,6 +362,15 @@ namespace Catch
         {
             return m_config.shouldDebugBreak();
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual std::string getCurrentTestName
+        () 
+        const
+        {
+            return m_runningTest.getTestCaseInfo().getName();
+        }
+        
     private:
         
         ///////////////////////////////////////////////////////////////////////////

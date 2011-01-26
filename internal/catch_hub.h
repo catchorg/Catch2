@@ -23,6 +23,7 @@ namespace Catch
     struct IResultCapture;
     struct ITestCaseRegistry;
     struct IRunner;
+    class GeneratorsForTest;
 
     class StreamBufBase : public std::streambuf
     {
@@ -60,11 +61,24 @@ namespace Catch
         static IRunner& getRunner
             ();
         
+        static size_t getGeneratorIndex
+            (   const std::string& fileInfo, 
+                size_t totalSize 
+            );
+        static bool advanceGeneratorsForCurrentTest
+        ();
+        
     private:
+        GeneratorsForTest* findGeneratorsForCurrentTest
+            ();
+        GeneratorsForTest& getGeneratorsForCurrentTest
+            ();
+        
         std::auto_ptr<IReporterRegistry> m_reporterRegistry;
         std::auto_ptr<ITestCaseRegistry> m_testCaseRegistry;
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
+        std::map<std::string, GeneratorsForTest*> m_generatorsByTestName;
     };
 }
 

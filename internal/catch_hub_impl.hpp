@@ -84,5 +84,153 @@ namespace Catch
         
         throw std::domain_error( "Unknown stream: " + streamName );
     }
+
+    struct GeneratorInfo
+    {
+        GeneratorInfo
+        ( 
+            std::size_t size
+        )
+        :   m_size( size ),
+            m_currentIndex( 0 )
+        {
+        }
+        
+        void reset
+        ()
+        {
+            m_currentIndex = 0;
+        }
+        
+        bool moveNext
+        ()
+        {
+            if( ++m_currentIndex == m_size )
+            {
+                reset();
+                return false;
+            }
+            return true;
+        }
+        
+        std::size_t getCurrentIndex
+        ()
+        const
+        {
+            return m_currentIndex;
+        }
+        
+        std::size_t m_size;
+        std::size_t m_currentIndex;
+    };
+
+    class GeneratorsForTest
+    {
+
+    public:
+        GeneratorsForTest
+        ()
+        :  m_currentGenerator( 0 )
+        {
+        }
+        
+        ~GeneratorsForTest
+        ()
+        {
+            deleteAll( m_generatorsInOrder );
+        }
+        
+        GeneratorInfo& getGeneratorInfo
+        (
+            const std::string& fileInfo,
+            std::size_t size
+        )
+        {
+            std::map<std::string, GeneratorInfo*>::const_iterator it = m_generatorsByName.find( fileInfo );
+            if( it == m_generatorsByName.end() )
+            {
+                GeneratorInfo* info = new GeneratorInfo( size );
+                m_generatorsByName.insert( std::make_pair( fileInfo, info ) );
+                m_generatorsInOrder.push_back( info );
+                return *info;
+            }
+            return *it->second;
+        }
+        
+        void reset
+        ()
+        {
+            std::vector<GeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
+            std::vector<GeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.begin();
+            for(; it != itEnd; ++it )
+            {
+                (*it)->reset();
+            }
+        }
+        
+        bool moveNext
+        ()
+        {
+            if( !m_generatorsInOrder[m_currentGenerator]->moveNext() )
+            {
+                if( ++m_currentGenerator == m_generatorsInOrder.size() )
+                {
+                    m_currentGenerator = 0;
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+    private:
+        std::map<std::string, GeneratorInfo*> m_generatorsByName;
+        std::vector<GeneratorInfo*> m_generatorsInOrder;
+        std::size_t m_currentGenerator;
+    };
     
+    ///////////////////////////////////////////////////////////////////////////
+    GeneratorsForTest* Hub::findGeneratorsForCurrentTest
+    ()
+    {
+        std::string testName = getResultCapture().getCurrentTestName();
+        
+        std::map<std::string, GeneratorsForTest*>::const_iterator it = 
+            m_generatorsByTestName.find( testName );
+        return it != m_generatorsByTestName.end()
+            ? it->second
+            : NULL;
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    GeneratorsForTest& Hub::getGeneratorsForCurrentTest
+    ()
+    {
+        GeneratorsForTest* generators = findGeneratorsForCurrentTest();
+        if( !generators )
+        {
+            std::string testName = getResultCapture().getCurrentTestName();
+            generators = new GeneratorsForTest();
+            m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
+        }
+        return *generators;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    size_t Hub::getGeneratorIndex
+    (
+        const std::string& fileInfo, 
+        size_t totalSize 
+    )
+    {
+        return me().getGeneratorsForCurrentTest()
+            .getGeneratorInfo( fileInfo, totalSize )
+            .getCurrentIndex();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    bool Hub::advanceGeneratorsForCurrentTest
+    ()
+    {
+        GeneratorsForTest* generators = me().findGeneratorsForCurrentTest();
+        return generators && generators->moveNext();
+    }
 }

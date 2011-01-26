@@ -26,12 +26,7 @@ namespace Catch
         ~ReporterRegistry
         ()
         {
-            FactoryMap::const_iterator it =  m_factories.begin();
-            FactoryMap::const_iterator itEnd =  m_factories.end();
-            for(; it != itEnd; ++it )
-            {
-                delete it->second;
-            }        
+            deleteAllValues( m_factories );
         }
         
         ///////////////////////////////////////////////////////////////////////

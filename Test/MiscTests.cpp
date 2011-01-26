@@ -79,3 +79,16 @@ TEST_CASE( "./succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr"
     
     std::cerr << "An error";
 }
+
+// An unnamed test case. A name, of the form, "unnamed/#" is generated, where
+// # is an incrementing integer
+ANON_TEST_CASE()
+{
+    int i = 7;
+    REQUIRE( i == 7 );
+}
+ANON_TEST_CASE()
+{
+    int i = 7;
+    REQUIRE( i == 8 );
+}
