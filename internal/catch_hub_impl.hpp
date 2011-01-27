@@ -96,18 +96,12 @@ namespace Catch
         {
         }
         
-        void reset
-        ()
-        {
-            m_currentIndex = 0;
-        }
-        
         bool moveNext
         ()
         {
             if( ++m_currentIndex == m_size )
             {
-                reset();
+                m_currentIndex = 0;
                 return false;
             }
             return true;
@@ -157,20 +151,19 @@ namespace Catch
             return *it->second;
         }
         
-        void reset
-        ()
-        {
-            std::vector<GeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
-            std::vector<GeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.begin();
-            for(; it != itEnd; ++it )
-            {
-                (*it)->reset();
-            }
-        }
-        
         bool moveNext
         ()
         {
+            std::vector<GeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
+            std::vector<GeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
+            for(; it != itEnd; ++it )
+            {
+                if( (*it)->moveNext() )
+                    return true;
+            }
+            return false;
+
+            /*
             if( !m_generatorsInOrder[m_currentGenerator]->moveNext() )
             {
                 if( ++m_currentGenerator == m_generatorsInOrder.size() )
@@ -180,6 +173,7 @@ namespace Catch
                 }
             }
             return true;
+             */
         }
         
     private:

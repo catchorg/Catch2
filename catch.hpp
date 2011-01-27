@@ -27,6 +27,7 @@
 #include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.hpp"
+#include "internal/catch_generators.hpp"
 
 //////
 
@@ -49,13 +50,15 @@
 #define FAIL( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
 #define SCOPED_INFO( log ) INTERNAL_CATCH_SCOPED_INFO( log )
 
-#define SECTION( name, description ) CATCH_SECTION( name, description )
+#define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
 
 #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
 #define METHOD_AS_TEST_CASE( method, name, description ) CATCH_METHOD_AS_TEST_CASE( method, name, description )
 
-#define REGISTER_REPORTER( name, reporterType ) CATCH_REGISTER_REPORTER( name, reporterType )
+#define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
+
+#define GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
 ///////////////
 // Still to be implemented

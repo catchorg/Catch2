@@ -52,7 +52,7 @@ namespace Catch
     }; 
 }
 
-#define CATCH_REGISTER_REPORTER( name, reporterType ) \
+#define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
     Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED

@@ -80,6 +80,24 @@ TEST_CASE( "./succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr"
     std::cerr << "An error";
 }
 
+size_t multiply( int a, int b )
+{
+    return a*b;
+}
+
+
+TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
+{
+    using namespace Catch::Generators;
+    
+    size_t i = GENERATE( between( 1, 5 ).then( values( 15, 20, 21 ).then( 36 ) ) );
+    size_t j = GENERATE( between( 100, 107 ) );
+    
+    REQUIRE( multiply( i, 2 ) == i*2 );
+    REQUIRE( multiply( j, 2 ) == j*2 );
+}
+
+
 // An unnamed test case. A name, of the form, "unnamed/#" is generated, where
 // # is an incrementing integer
 ANON_TEST_CASE()
