@@ -13,6 +13,7 @@
 #include "catch_reporter_registry.hpp"
 #include "catch_test_case_registry_impl.hpp"
 #include "catch_runner_impl.hpp"
+#include "catch_generators_impl.hpp"
 #include "catch_stream.hpp"
 
 namespace Catch
@@ -85,84 +86,6 @@ namespace Catch
         throw std::domain_error( "Unknown stream: " + streamName );
     }
 
-    struct GeneratorInfo
-    {
-        GeneratorInfo
-        ( 
-            std::size_t size
-        )
-        :   m_size( size ),
-            m_currentIndex( 0 )
-        {
-        }
-        
-        bool moveNext
-        ()
-        {
-            if( ++m_currentIndex == m_size )
-            {
-                m_currentIndex = 0;
-                return false;
-            }
-            return true;
-        }
-        
-        std::size_t getCurrentIndex
-        ()
-        const
-        {
-            return m_currentIndex;
-        }
-        
-        std::size_t m_size;
-        std::size_t m_currentIndex;
-    };
-
-    class GeneratorsForTest
-    {
-
-    public:
-        ~GeneratorsForTest
-        ()
-        {
-            deleteAll( m_generatorsInOrder );
-        }
-        
-        GeneratorInfo& getGeneratorInfo
-        (
-            const std::string& fileInfo,
-            std::size_t size
-        )
-        {
-            std::map<std::string, GeneratorInfo*>::const_iterator it = m_generatorsByName.find( fileInfo );
-            if( it == m_generatorsByName.end() )
-            {
-                GeneratorInfo* info = new GeneratorInfo( size );
-                m_generatorsByName.insert( std::make_pair( fileInfo, info ) );
-                m_generatorsInOrder.push_back( info );
-                return *info;
-            }
-            return *it->second;
-        }
-        
-        bool moveNext
-        ()
-        {
-            std::vector<GeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
-            std::vector<GeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
-            for(; it != itEnd; ++it )
-            {
-                if( (*it)->moveNext() )
-                    return true;
-            }
-            return false;
-        }
-        
-    private:
-        std::map<std::string, GeneratorInfo*> m_generatorsByName;
-        std::vector<GeneratorInfo*> m_generatorsInOrder;
-    };
-    
     ///////////////////////////////////////////////////////////////////////////
     GeneratorsForTest* Hub::findGeneratorsForCurrentTest
     ()
