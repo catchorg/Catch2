@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4A3BFFB9128DCF06005609E3 /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A3BFFB8128DCF06005609E3 /* TestMain.cpp */; };
+		4A8A69C612F2D1C600ACED26 /* GeneratorTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A8A69C512F2D1C600ACED26 /* GeneratorTests.cpp */; };
 		4AA7EA9212A438C7005A0B97 /* MiscTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */; };
 		4AFC38CD12887D80003A0C29 /* ConditionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC38CC12887D80003A0C29 /* ConditionTests.cpp */; };
 		4AFC3A9912893C56003A0C29 /* ExceptionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFC3A9812893C56003A0C29 /* ExceptionTests.cpp */; };
@@ -43,6 +44,7 @@
 		4A6D514B12C8A547008F0415 /* catch_debugger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_debugger.hpp; path = ../internal/catch_debugger.hpp; sourceTree = SOURCE_ROOT; };
 		4A8A68FF12F1F75100ACED26 /* catch_generators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_generators.hpp; path = ../internal/catch_generators.hpp; sourceTree = SOURCE_ROOT; };
 		4A8A698812F2CDA100ACED26 /* catch_generators_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_generators_impl.hpp; path = ../internal/catch_generators_impl.hpp; sourceTree = SOURCE_ROOT; };
+		4A8A69C512F2D1C600ACED26 /* GeneratorTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeneratorTests.cpp; sourceTree = "<group>"; };
 		4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_xmlwriter.hpp; path = ../internal/catch_xmlwriter.hpp; sourceTree = SOURCE_ROOT; };
 		4A992A6612B21582002B7B66 /* catch_reporter_junit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_junit.hpp; path = ../catch_reporter_junit.hpp; sourceTree = SOURCE_ROOT; };
 		4AA7EA9112A438C7005A0B97 /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiscTests.cpp; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				4AFC3AA812893E54003A0C29 /* MessageTests.cpp */,
 				4AFC3B0A12894114003A0C29 /* ClassTests.cpp */,
 				4AFC3B661289C7E3003A0C29 /* TrickyTests.cpp */,
+				4A8A69C512F2D1C600ACED26 /* GeneratorTests.cpp */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				4AFC3B671289C7E3003A0C29 /* TrickyTests.cpp in Sources */,
 				4A3BFFB9128DCF06005609E3 /* TestMain.cpp in Sources */,
 				4AA7EA9212A438C7005A0B97 /* MiscTests.cpp in Sources */,
+				4A8A69C612F2D1C600ACED26 /* GeneratorTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
