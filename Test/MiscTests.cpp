@@ -96,17 +96,3 @@ TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
     REQUIRE( multiply( i, 2 ) == i*2 );
     REQUIRE( multiply( j, 2 ) == j*2 );
 }
-
-
-// An unnamed test case. A name, of the form, "unnamed/#" is generated, where
-// # is an incrementing integer
-ANON_TEST_CASE()
-{
-    int i = 7;
-    REQUIRE( i == 7 );
-}
-ANON_TEST_CASE()
-{
-    int i = 7;
-    REQUIRE( i == 8 );
-}

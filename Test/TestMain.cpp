@@ -21,7 +21,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
     EmbeddedRunner runner;
 
     runner.runMatching( "./succeeding/*" );
-    CHECK( runner.getReporter().getSucceeded() == 53 );
+    CHECK( runner.getReporter().getSucceeded() == 196 );
     CHECK( runner.getReporter().getFailed() == 0 );
 
     runner.runMatching( "./failing/*" );        
