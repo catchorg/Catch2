@@ -122,12 +122,6 @@ namespace Catch
     {
 
     public:
-        GeneratorsForTest
-        ()
-        :  m_currentGenerator( 0 )
-        {
-        }
-        
         ~GeneratorsForTest
         ()
         {
@@ -162,24 +156,11 @@ namespace Catch
                     return true;
             }
             return false;
-
-            /*
-            if( !m_generatorsInOrder[m_currentGenerator]->moveNext() )
-            {
-                if( ++m_currentGenerator == m_generatorsInOrder.size() )
-                {
-                    m_currentGenerator = 0;
-                    return false;
-                }
-            }
-            return true;
-             */
         }
         
     private:
         std::map<std::string, GeneratorInfo*> m_generatorsByName;
         std::vector<GeneratorInfo*> m_generatorsInOrder;
-        std::size_t m_currentGenerator;
     };
     
     ///////////////////////////////////////////////////////////////////////////
