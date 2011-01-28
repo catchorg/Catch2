@@ -21,9 +21,9 @@
 
 namespace Catch
 {
-
     struct GeneratorInfo
     {
+        ///////////////////////////////////////////////////////////////////////        
         GeneratorInfo
         ( 
             std::size_t size
@@ -33,6 +33,7 @@ namespace Catch
         {
         }
         
+        ///////////////////////////////////////////////////////////////////////        
         bool moveNext
         ()
         {
@@ -44,6 +45,7 @@ namespace Catch
             return true;
         }
         
+        ///////////////////////////////////////////////////////////////////////        
         std::size_t getCurrentIndex
         ()
         const
@@ -55,16 +57,21 @@ namespace Catch
         std::size_t m_currentIndex;
     };
     
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    
     class GeneratorsForTest
     {
         
     public:
+        ///////////////////////////////////////////////////////////////////////        
         ~GeneratorsForTest
         ()
         {
             deleteAll( m_generatorsInOrder );
         }
         
+        ///////////////////////////////////////////////////////////////////////        
         GeneratorInfo& getGeneratorInfo
         (
             const std::string& fileInfo,
@@ -82,6 +89,7 @@ namespace Catch
             return *it->second;
         }
         
+        ///////////////////////////////////////////////////////////////////////        
         bool moveNext
         ()
         {

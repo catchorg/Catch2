@@ -24,7 +24,11 @@ namespace Catch
     class TestSpec
     {
     public:
-        TestSpec( const std::string& rawSpec )
+        ///////////////////////////////////////////////////////////////////////        
+        TestSpec
+        (
+            const std::string& rawSpec
+        )
         :   m_rawSpec( rawSpec ),
             m_isWildcarded( false )
         {
@@ -35,7 +39,12 @@ namespace Catch
             }
         }
         
-        bool matches( const std::string& testName ) const
+        ///////////////////////////////////////////////////////////////////////        
+        bool matches
+        (
+            const std::string& testName
+        )
+        const
         {
             if( !m_isWildcarded )
                 return m_rawSpec == testName;
@@ -48,37 +57,60 @@ namespace Catch
         bool m_isWildcarded;
     };
     
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////    
+    
     class RunningTest
     {
     public:
-        explicit RunningTest( const TestCaseInfo* info = NULL )
+        ///////////////////////////////////////////////////////////////////////        
+        explicit RunningTest
+        (
+            const TestCaseInfo* info = NULL 
+        )
         :   m_info( info ),
             m_sectionSeen( false )
         {
         }
         
-        size_t sectionsSeenCount() const
+        ///////////////////////////////////////////////////////////////////////        
+        size_t sectionsSeenCount
+        ()
+        const
         {
             return m_sectionsSeen.size();
         }
         
-        bool wasSectionSeen() const
+        ///////////////////////////////////////////////////////////////////////        
+        bool wasSectionSeen
+        ()
+        const
         {
             return m_sectionSeen;
         }
-        void resetSectionSeen()
+
+        ///////////////////////////////////////////////////////////////////////        
+        void resetSectionSeen
+        ()
         {
             m_sectionSeen = false;
         }
         
-        bool addSection( const std::string& name )
+        ///////////////////////////////////////////////////////////////////////        
+        bool addSection
+        (
+            const std::string& name
+        )
         {
             if( m_sectionsSeen.find( name ) != m_sectionsSeen.end() )
                 return false;
             m_sectionsSeen.insert( name );
             return m_sectionSeen = true;
         }
-        const TestCaseInfo& getTestCaseInfo() const
+        ///////////////////////////////////////////////////////////////////////        
+        const TestCaseInfo& getTestCaseInfo
+        ()
+        const
         {
             return *m_info;
         }
@@ -90,18 +122,28 @@ namespace Catch
         
     };
     
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////    
+    
     class StreamRedirect
     {
     public:
-        StreamRedirect( std::ostream& stream, std::string& targetString )
+        ///////////////////////////////////////////////////////////////////////        
+        StreamRedirect
+        (
+            std::ostream& stream, 
+            std::string& targetString
+        )
         :   m_stream( stream ),
-        m_prevBuf( stream.rdbuf() ),
-        m_targetString( targetString )
+            m_prevBuf( stream.rdbuf() ),
+            m_targetString( targetString )
         {            
             stream.rdbuf( m_oss.rdbuf() );
         }
         
-        ~StreamRedirect()
+        ///////////////////////////////////////////////////////////////////////        
+        ~StreamRedirect
+        ()
         {
             m_targetString = m_oss.str();
             m_stream.rdbuf( m_prevBuf );
@@ -114,6 +156,8 @@ namespace Catch
         std::string& m_targetString;
     };
     
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////    
 
     class Runner : public IResultCapture, public IRunner
     {

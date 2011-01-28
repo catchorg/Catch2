@@ -65,12 +65,14 @@ namespace Catch
             (   const std::string& fileInfo, 
                 size_t totalSize 
             );
+        
         static bool advanceGeneratorsForCurrentTest
-        ();
+            ();
         
     private:
         GeneratorsForTest* findGeneratorsForCurrentTest
             ();
+        
         GeneratorsForTest& getGeneratorsForCurrentTest
             ();
         

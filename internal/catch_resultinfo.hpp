@@ -22,7 +22,8 @@ namespace Catch
     public:
         
         ///////////////////////////////////////////////////////////////////////////
-        ResultInfo()
+        ResultInfo
+        ()
         :   m_line( 0 ),
             m_result( ResultWas::Unknown ),
             m_isNot( false ),
@@ -53,37 +54,49 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        bool ok() const
+        bool ok
+        ()
+        const
         {
             return ( m_result & ResultWas::FailureBit ) != ResultWas::FailureBit;
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        ResultWas::OfType getResultType() const
+        ResultWas::OfType getResultType
+        ()
+        const
         {
             return m_result;
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        bool hasExpression() const
+        bool hasExpression
+        ()
+        const
         {
             return !m_expr.empty();
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        bool hasMessage() const
+        bool hasMessage
+        ()
+        const
         {
             return !m_message.empty();
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        std::string getExpression() const
+        std::string getExpression
+        ()
+        const
         {
             return m_expr;
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        std::string getExpandedExpression() const
+        std::string getExpandedExpression
+        ()
+        const
         {
             if( !hasExpression() )
                 return "";
@@ -94,25 +107,33 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        std::string getMessage() const
+        std::string getMessage
+        ()
+        const
         {
             return m_message;
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        std::string getFilename() const
+        std::string getFilename
+        ()
+        const
         {
             return m_filename;
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        std::size_t getLine() const
+        std::size_t getLine
+        ()
+        const
         {
             return m_line;
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        std::string getTestMacroName() const
+        std::string getTestMacroName
+        ()
+        const
         {
             return m_macroName;
         }
@@ -120,7 +141,9 @@ namespace Catch
     protected:
 
         ///////////////////////////////////////////////////////////////////////////
-        std::string getExpandedExpressionInternal() const
+        std::string getExpandedExpressionInternal
+        ()
+        const
         {
             if( m_op == "" || m_isNot )
                 return m_lhs.empty() ? m_expr : m_op + m_lhs;

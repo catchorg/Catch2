@@ -23,12 +23,18 @@ namespace Catch
     class TestRegistry : public ITestCaseRegistry
     {
     public:
-        TestRegistry()
+        ///////////////////////////////////////////////////////////////////////////
+        TestRegistry
+        ()
         : m_unnamedCount( 0 )
         {
         }
         
-        virtual void registerTest( const TestCaseInfo& testInfo )
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void registerTest
+        (
+            const TestCaseInfo& testInfo
+        )
         {
             if( testInfo.getName() == "" )
             {
@@ -43,7 +49,10 @@ namespace Catch
             }
         }
         
-        virtual const std::vector<TestCaseInfo>& getAllTests() const
+        ///////////////////////////////////////////////////////////////////////////
+        virtual const std::vector<TestCaseInfo>& getAllTests
+        ()
+        const
         {
             return m_functionsInOrder;
         }
@@ -54,30 +63,54 @@ namespace Catch
         std::vector<TestCaseInfo> m_functionsInOrder;
         size_t m_unnamedCount;
     };
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    
     
     struct FreeFunctionTestCase : ITestCase
     {
-        FreeFunctionTestCase( TestFunction fun )
+        ///////////////////////////////////////////////////////////////////////////
+        FreeFunctionTestCase
+        (
+            TestFunction fun
+        )
         : fun( fun )
         {}
         
-        virtual void invoke() const
+        ///////////////////////////////////////////////////////////////////////////
+        virtual void invoke
+        ()
+        const
         {
             fun();
         }
         
-        virtual ITestCase* clone() const
+        ///////////////////////////////////////////////////////////////////////////
+        virtual ITestCase* clone
+        ()
+        const
         {
             return new FreeFunctionTestCase( fun );
         }
         
-        virtual bool operator == ( const ITestCase& other ) const
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool operator == 
+        (
+            const ITestCase& other 
+        )
+        const
         {
             const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
             return ffOther && fun == ffOther->fun;
         }
         
-        virtual bool operator < ( const ITestCase& other ) const
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool operator <
+        (
+            const ITestCase& other 
+        )
+        const
         {
             const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
             return ffOther && fun < ffOther->fun;
@@ -93,10 +126,10 @@ namespace Catch
     ///////////////////////////////////////////////////////////////////////////
     AutoReg::AutoReg
     (
-     TestFunction function, 
-     const char* name,
-     const char* description
-     )
+        TestFunction function, 
+        const char* name,
+        const char* description
+    )
     {
         registerTestCase( new FreeFunctionTestCase( function ), name, description );
     }    

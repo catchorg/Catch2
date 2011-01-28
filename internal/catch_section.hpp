@@ -22,20 +22,29 @@ namespace Catch
     class Section
     {
     public:
-        Section( const std::string& name, const std::string& description )
+        ///////////////////////////////////////////////////////////////////////        
+        Section
+        (
+            const std::string& name, 
+            const std::string& description
+        )
         :   m_name( name ),
             m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, m_successes, m_failures ) )
         {
         }
 
-        ~Section()
+        ///////////////////////////////////////////////////////////////////////        
+        ~Section
+        ()
         {
             if( m_sectionIncluded )
                 Hub::getResultCapture().sectionEnded( m_name, m_successes, m_failures );
         }
         
+        ///////////////////////////////////////////////////////////////////////        
         // This indicates whether the section should be executed or not
-        operator bool()
+        operator bool
+        ()
         {
             return m_sectionIncluded;
         }
