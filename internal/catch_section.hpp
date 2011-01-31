@@ -58,6 +58,6 @@ namespace Catch
     
 } // end namespace Catch
 
-#define INTERNAL_CATCH_SECTION( name, desc ) if( Catch::Section catch_internal_Section = Catch::Section( name, desc ) )
+#define INTERNAL_CATCH_SECTION( name, desc ) if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc ) )
 
 #endif // TWOBLUECUBES_CATCH_SECTION_HPP_INCLUDED

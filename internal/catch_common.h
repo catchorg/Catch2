@@ -55,5 +55,10 @@ namespace Catch
     }
     
 }
+#ifdef __GNUC__
+#define ATTRIBUTE_NORETURN __attribute__ ((noreturn))
+#else
+#define ATTRIBUTE_NORETURN
+#endif
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED

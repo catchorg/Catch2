@@ -17,9 +17,13 @@
 
 namespace
 {
+    ATTRIBUTE_NORETURN
+    int thisThrows();
+    
     int thisThrows()
     {
         throw std::domain_error( "expected exception" );
+        /*NOTREACHED*/    
     }
 
     int thisDoesntThrow()
@@ -42,9 +46,10 @@ TEST_CASE( "./failing/exceptions/explicit", "When checked exceptions are thrown 
     CHECK_NOTHROW( thisThrows() );
 }
 
-TEST_CASE( "./failing/exceptions/implicit", "When unchecked exceptions are thrown they are always failures" )
+INTERNAL_CATCH_TESTCASE_NORETURN( "./failing/exceptions/implicit", "When unchecked exceptions are thrown they are always failures" )
 {
     throw std::domain_error( "unexpected exception" );
+    /*NOTREACHED*/    
 }
 
 TEST_CASE( "./succeeding/exceptions/implicit", "When unchecked exceptions are thrown, but caught, they do not affect the test" )

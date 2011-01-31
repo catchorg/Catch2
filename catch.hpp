@@ -53,6 +53,7 @@
 #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
 
 #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+#define TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
 #define METHOD_AS_TEST_CASE( method, name, description ) CATCH_METHOD_AS_TEST_CASE( method, name, description )
 

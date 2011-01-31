@@ -83,6 +83,11 @@ struct FixtureWrapper{};
     namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc ); }\
     static void INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction )()
 
+#define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
+    static void INTERNAL_CATCH_UNIQUE_NAME( catch_internal_TestFunction )() ATTRIBUTE_NORETURN; \
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc ); }\
+    static void INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction )()
+
 #define CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
     namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc ); }
 
