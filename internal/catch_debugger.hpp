@@ -67,7 +67,7 @@
     // The following code snippet taken from:
     // http://cocoawithlove.com/2008/03/break-into-debugger.html
     #ifdef DEBUG
-        #if __ppc64__ || __ppc__
+        #if defined(__ppc64__) || defined(__ppc__)
             #define DebugBreak() \
             if( Catch::AmIBeingDebugged() ) \
             { \

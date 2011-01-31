@@ -18,6 +18,10 @@ namespace Catch
 {
     struct IRunner
     {
+        virtual ~IRunner
+        ()
+        {}
+        
         virtual void runAll
             () = 0;
         

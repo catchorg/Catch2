@@ -75,7 +75,7 @@ namespace Catch
         (
             TestFunction fun
         )
-        : fun( fun )
+        : m_fun( fun )
         {}
         
         ///////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ namespace Catch
         ()
         const
         {
-            fun();
+            m_fun();
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ namespace Catch
         ()
         const
         {
-            return new FreeFunctionTestCase( fun );
+            return new FreeFunctionTestCase( m_fun );
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ namespace Catch
         const
         {
             const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && fun == ffOther->fun;
+            return ffOther && m_fun == ffOther->m_fun;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -113,11 +113,11 @@ namespace Catch
         const
         {
             const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && fun < ffOther->fun;
+            return ffOther && m_fun < ffOther->m_fun;
         }
         
     private:
-        TestFunction fun;
+        TestFunction m_fun;
     };
         
     ///////////////////////////////////////////////////////////////////////////

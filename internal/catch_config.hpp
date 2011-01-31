@@ -150,13 +150,13 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         List::What listWhat() const
         {
-            return (List::What)( m_listSpec & List::WhatMask );
+            return static_cast<List::What>( m_listSpec & List::WhatMask );
         }        
         
         ///////////////////////////////////////////////////////////////////////////
         List::What listAs() const
         {
-            return (List::What)( m_listSpec & List::AsMask );
+            return static_cast<List::What>( m_listSpec & List::AsMask );
         }        
         
         ///////////////////////////////////////////////////////////////////////////
@@ -166,9 +166,9 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        void setShouldDebugBreak( bool shouldDebugBreak )
+        void setShouldDebugBreak( bool shouldDebugBreakFlag )
         {
-            m_shouldDebugBreak = shouldDebugBreak;
+            m_shouldDebugBreak = shouldDebugBreakFlag;
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -178,9 +178,9 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        void setShowHelp( bool showHelp )
+        void setShowHelp( bool showHelpFlag )
         {
-            m_showHelp = showHelp;
+            m_showHelp = showHelpFlag;
         }
 
         ///////////////////////////////////////////////////////////////////////////

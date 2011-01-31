@@ -22,34 +22,34 @@ template<typename C>
 struct MethodTestCase : ITestCase
 {
     MethodTestCase( void (C::*method)() )
-    : method( method )
+    : m_method( method )
     {}
     
     virtual void invoke() const
     {
         C obj;
-        (obj.*method)();
+        (obj.*m_method)();
     }
     
     virtual ITestCase* clone() const
     {
-        return new MethodTestCase<C>( method );
+        return new MethodTestCase<C>( m_method );
     }
 
     virtual bool operator == ( const ITestCase& other ) const
     {
         const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && method == mtOther->method;
+        return mtOther && m_method == mtOther->m_method;
     }
     
     virtual bool operator < ( const ITestCase& other ) const
     {
         const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && &method < &mtOther->method;
+        return mtOther && &m_method < &mtOther->m_method;
     }
     
 private:
-    void (C::*method)();
+    void (C::*m_method)();
 };
 
 typedef void(*TestFunction)();

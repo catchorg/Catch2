@@ -125,13 +125,13 @@ namespace Catch
                         if( m_args.size() >= 2 )
                         {
                             if( m_args[1] == "xml" )
-                                listSpec = (Config::List::What)( listSpec | Config::List::AsXml );
+                                listSpec = static_cast<Config::List::What>( listSpec | Config::List::AsXml );
                             else if( m_args[1] == "text" )
-                                listSpec = (Config::List::What)( listSpec | Config::List::AsText );
+                                listSpec = static_cast<Config::List::What>( listSpec | Config::List::AsText );
                             else
                                 return setErrorMode( m_command + " expected [xml] or [text] but recieved: [" + m_args[1] + "]" );                        
                         }
-                        m_config.setListSpec( (Config::List::What)( m_config.getListSpec() | listSpec ) );
+                        m_config.setListSpec( static_cast<Config::List::What>( m_config.getListSpec() | listSpec ) );
                     }
                     break;
                 case modeTest:

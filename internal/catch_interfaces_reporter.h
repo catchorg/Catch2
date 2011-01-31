@@ -24,6 +24,10 @@ namespace Catch
     ///////////////////////////////////////////////////////////////////////////
     struct IReporterConfig
     {
+        virtual ~IReporterConfig
+        ()
+        {}
+        
         virtual std::ostream& stream
             () const = 0;
         

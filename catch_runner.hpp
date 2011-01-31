@@ -28,7 +28,7 @@ namespace Catch
     inline int Main( int argc, char * const argv[] )
     {
         Config config;
-        ArgParser( argc, argv, config );     
+        ArgParser( argc, argv, config );
         
         if( !config.getMessage().empty() )
         {

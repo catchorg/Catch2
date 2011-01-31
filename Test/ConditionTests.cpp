@@ -56,8 +56,8 @@ TEST_CASE( "./failing/conditions/equality", "Equality checks that should fail" )
     CHECK( data.int_seven == 0 );
     CHECK( data.float_nine_point_one == Approx( 9.11f ) );
     CHECK( data.float_nine_point_one == Approx( 9.0f ) );
-    CHECK( data.float_nine_point_one == 1 );
-    CHECK( data.float_nine_point_one == 0 );
+    CHECK( data.float_nine_point_one == Approx( 1 ) );
+    CHECK( data.float_nine_point_one == Approx( 0 ) );
     CHECK( data.double_pi == Approx( 3.1415 ) );
     CHECK( data.str_hello == "goodbye" );
     CHECK( data.str_hello == "hell" );
@@ -76,8 +76,8 @@ TEST_CASE( "./succeeding/conditions/inequality", "Inequality checks that should 
     REQUIRE( data.int_seven != 8 );
     REQUIRE( data.float_nine_point_one != Approx( 9.11f ) );
     REQUIRE( data.float_nine_point_one != Approx( 9.0f ) );
-    REQUIRE( data.float_nine_point_one != 1 );
-    REQUIRE( data.float_nine_point_one != 0 );
+    REQUIRE( data.float_nine_point_one != Approx( 1 ) );
+    REQUIRE( data.float_nine_point_one != Approx( 0 ) );
     REQUIRE( data.double_pi != Approx( 3.1415 ) );
     REQUIRE( data.str_hello != "goodbye" );
     REQUIRE( data.str_hello != "hell" );

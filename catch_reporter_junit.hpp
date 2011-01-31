@@ -23,46 +23,46 @@ namespace Catch
     {
         struct TestStats
         {
-            std::string element;
-            std::string resultType;
-            std::string message;
-            std::string content;
+            std::string m_element;
+            std::string m_resultType;
+            std::string m_message;
+            std::string m_content;
         };
         
         struct TestCaseStats
         {
             TestCaseStats( const std::string& name = std::string() )
-            :   name( name )
+            :   m_name( name )
             {
             }
             
-            double      timeInSeconds;
-            std::string status;
-            std::string className;
-            std::string name;
-            std::vector<TestStats> testStats;
+            double      m_timeInSeconds;
+            std::string m_status;
+            std::string m_className;
+            std::string m_name;
+            std::vector<TestStats> m_testStats;
         };
         
         struct Stats
         {
             Stats( const std::string& name = std::string() )
-            :   testsCount( 0 ),
-                failuresCount( 0 ),
-                disabledCount( 0 ),
-                errorsCount( 0 ),
-                timeInSeconds( 0 ),
-                name( name )
+            :   m_testsCount( 0 ),
+                m_failuresCount( 0 ),
+                m_disabledCount( 0 ),
+                m_errorsCount( 0 ),
+                m_timeInSeconds( 0 ),
+                m_name( name )
             {
             }
             
-            std::size_t testsCount;
-            std::size_t failuresCount;
-            std::size_t disabledCount;
-            std::size_t errorsCount;
-            double      timeInSeconds;
-            std::string name;
+            std::size_t m_testsCount;
+            std::size_t m_failuresCount;
+            std::size_t m_disabledCount;
+            std::size_t m_errorsCount;
+            double      m_timeInSeconds;
+            std::string m_name;
             
-            std::vector<TestCaseStats> testCaseStats;
+            std::vector<TestCaseStats> m_testCaseStats;
         };
         
     public:
@@ -98,7 +98,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndGroup( const std::string&, std::size_t succeeded, std::size_t failed )
         {
-            m_currentStats->testsCount = failed+succeeded;
+            m_currentStats->m_testsCount = failed+succeeded;
             m_currentStats = &m_testSuiteStats;
         }
         
@@ -113,7 +113,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo )
         {
-            m_currentStats->testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );
+            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );
             
         }
         
@@ -122,7 +122,7 @@ namespace Catch
         {
             if( resultInfo.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults() )
             {
-                TestCaseStats& testCaseStats = m_currentStats->testCaseStats.back();
+                TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
                 if( !resultInfo.getMessage().empty() )
@@ -130,37 +130,37 @@ namespace Catch
                     oss << resultInfo.getMessage() << " at ";
                 }
                 oss << resultInfo.getFilename() << ":" << resultInfo.getLine();
-                stats.content = oss.str();
-                stats.message = resultInfo.getExpandedExpression();
-                stats.resultType = resultInfo.getTestMacroName();
+                stats.m_content = oss.str();
+                stats.m_message = resultInfo.getExpandedExpression();
+                stats.m_resultType = resultInfo.getTestMacroName();
                 switch( resultInfo.getResultType() )
                 {
                     case ResultWas::ThrewException:
-                        stats.element = "error";
-                        m_currentStats->errorsCount++;
+                        stats.m_element = "error";
+                        m_currentStats->m_errorsCount++;
                         break;
                     case ResultWas::Info:
-                        stats.element = "info"; // !TBD ?
+                        stats.m_element = "info"; // !TBD ?
                         break;
                     case ResultWas::Warning:
-                        stats.element = "warning"; // !TBD ?
+                        stats.m_element = "warning"; // !TBD ?
                         break;
                     case ResultWas::ExplicitFailure:
-                        stats.element = "failure";
-                        m_currentStats->failuresCount++;
+                        stats.m_element = "failure";
+                        m_currentStats->m_failuresCount++;
                         break;
                     case ResultWas::ExpressionFailed:
-                        stats.element = "failure";
-                        m_currentStats->failuresCount++;
+                        stats.m_element = "failure";
+                        m_currentStats->m_failuresCount++;
                         break;
                     case ResultWas::Ok:
-                        stats.element = "success";
+                        stats.m_element = "success";
                         break;
                     default:
-                        stats.element = "unknown";
+                        stats.m_element = "unknown";
                         break;
                 }
-                testCaseStats.testStats.push_back( stats );
+                testCaseStats.m_testStats.push_back( stats );
                 
             }
         }
@@ -190,10 +190,10 @@ namespace Catch
                 for(; it != itEnd; ++it )
                 {
                     XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
-                    xml.writeAttribute( "name", it->name );
-                    xml.writeAttribute( "errors", it->errorsCount );
-                    xml.writeAttribute( "failures", it->failuresCount );
-                    xml.writeAttribute( "tests", it->testsCount );
+                    xml.writeAttribute( "name", it->m_name );
+                    xml.writeAttribute( "errors", it->m_errorsCount );
+                    xml.writeAttribute( "failures", it->m_failuresCount );
+                    xml.writeAttribute( "tests", it->m_testsCount );
                     xml.writeAttribute( "hostname", "tbd" );
                     xml.writeAttribute( "time", "tbd" );
                     xml.writeAttribute( "timestamp", "tbd" );
@@ -209,16 +209,16 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void OutputTestCases( XmlWriter& xml, const Stats& stats )
         {
-            std::vector<TestCaseStats>::const_iterator it = stats.testCaseStats.begin();
-            std::vector<TestCaseStats>::const_iterator itEnd = stats.testCaseStats.end();
+            std::vector<TestCaseStats>::const_iterator it = stats.m_testCaseStats.begin();
+            std::vector<TestCaseStats>::const_iterator itEnd = stats.m_testCaseStats.end();
             for(; it != itEnd; ++it )
             {
                 xml.writeBlankLine();
                 xml.writeComment( "Test case" );
                 
                 XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
-                xml.writeAttribute( "classname", it->className );
-                xml.writeAttribute( "name", it->name );
+                xml.writeAttribute( "classname", it->m_className );
+                xml.writeAttribute( "name", it->m_name );
                 xml.writeAttribute( "time", "tbd" );
 
                 OutputTestResult( xml, *it );
@@ -229,18 +229,18 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void OutputTestResult( XmlWriter& xml, const TestCaseStats& stats )
         {
-            std::vector<TestStats>::const_iterator it = stats.testStats.begin();
-            std::vector<TestStats>::const_iterator itEnd = stats.testStats.end();
+            std::vector<TestStats>::const_iterator it = stats.m_testStats.begin();
+            std::vector<TestStats>::const_iterator itEnd = stats.m_testStats.end();
             for(; it != itEnd; ++it )
             {
-                if( it->element != "success" )
+                if( it->m_element != "success" )
                 {
-                    XmlWriter::ScopedElement e = xml.scopedElement( it->element );
+                    XmlWriter::ScopedElement e = xml.scopedElement( it->m_element );
                     
-                    xml.writeAttribute( "message", it->message );
-                    xml.writeAttribute( "type", it->resultType );
-                    if( !it->content.empty() )
-                        xml.writeText( it->content );
+                    xml.writeAttribute( "message", it->m_message );
+                    xml.writeAttribute( "type", it->m_resultType );
+                    if( !it->m_content.empty() )
+                        xml.writeText( it->m_content );
                 }
             }
         }

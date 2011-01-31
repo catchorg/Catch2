@@ -41,7 +41,7 @@ namespace Catch
             if( c != EOF )
             {
                 if( pbase() == epptr() )
-                    m_writer( std::string( 1, (char)c ) );
+                    m_writer( std::string( 1, static_cast<char>( c ) ) );
                 else
                     sputc( c );
             }            

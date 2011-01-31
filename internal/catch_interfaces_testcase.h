@@ -42,8 +42,16 @@ namespace Catch
 
     struct ITestCaseRegistry
     {
-        virtual void registerTest( const TestCaseInfo& testInfo ) = 0;
-        virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
+        virtual ~ITestCaseRegistry
+        ()
+        {}
+
+        virtual void registerTest
+            ( const TestCaseInfo& testInfo 
+            ) = 0;
+        
+        virtual const std::vector<TestCaseInfo>& getAllTests
+            () const = 0;
     };
 }
 
