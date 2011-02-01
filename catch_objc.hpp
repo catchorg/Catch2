@@ -16,6 +16,7 @@
 #import <objc/runtime.h>
 #include <string>
 #include "catch.hpp"
+#include "internal/catch_test_case_info.hpp"
 
 @protocol OcFixture
 
@@ -28,7 +29,7 @@
 
 namespace Catch 
 {
-    class OcMethod : public TestCase
+    class OcMethod : public ITestCase
     {
     public:
         OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel )
@@ -52,18 +53,18 @@ namespace Catch
             [obj release];
         }
         
-        virtual TestCase* clone() const
+        virtual ITestCase* clone() const
         {
             return new OcMethod( m_cls, m_sel );
         }
         
-        virtual bool operator == ( const TestCase& other ) const
+        virtual bool operator == ( const ITestCase& other ) const
         {
             const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
             return ocmOther && ocmOther->m_sel == m_sel;
         }
         
-        virtual bool operator < ( const TestCase& other ) const
+        virtual bool operator < ( const ITestCase& other ) const
         {
             const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
             return ocmOther && ocmOther->m_sel < m_sel;
@@ -114,10 +115,10 @@ namespace Catch
                     if( Detail::startsWith( methodName, "Catch_TestCase_" ) )
                     {
                         std::string testCaseName = methodName.substr( 15 );
-                        std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
-                        std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
+                        const char* name = Detail::getAnnotation( cls, "Name", testCaseName );
+                        const char* desc = Detail::getAnnotation( cls, "Description", testCaseName );
                         
-                        TestRegistry::instance().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name, desc ) );
+                        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name, desc ) );
                         noTestMethods++;
                         
                     }
