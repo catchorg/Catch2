@@ -14,6 +14,7 @@
 #define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
 #include <stdexcept>
+#include <cstdio>
 
 namespace Catch
 {    
