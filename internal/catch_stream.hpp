@@ -25,17 +25,26 @@ namespace Catch
         WriterF m_writer;
         
     public:
-        StreamBufImpl()
+        ///////////////////////////////////////////////////////////////////////
+        StreamBufImpl
+        ()
         {
             setp( data, data + sizeof(data) );
         }
-        ~StreamBufImpl() 
+
+        ///////////////////////////////////////////////////////////////////////
+        ~StreamBufImpl
+        ()
         {
             sync();
         }
         
     private:
-        int	overflow( int c )
+        ///////////////////////////////////////////////////////////////////////
+        int	overflow
+        (
+            int c
+        )
         {
             sync();
             
@@ -49,7 +58,9 @@ namespace Catch
             return 0;
         }
         
-        int	sync()
+        ///////////////////////////////////////////////////////////////////////
+        int	sync
+        ()
         {
             if( pbase() != pptr() )
             {
@@ -60,9 +71,16 @@ namespace Catch
         }
     };
     
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
     struct OutputDebugWriter
     {
-        void operator()( const std::string &str )
+        ///////////////////////////////////////////////////////////////////////
+        void operator()
+        (
+            const std::string &str
+        )
         {
             writeToDebugConsole( str );
         }

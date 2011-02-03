@@ -21,26 +21,32 @@ namespace Catch
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
-        SelfTestReporter()
+        SelfTestReporter
+        ()
         :   m_succeeded( 0 ),
             m_failed( 0 )
         {
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        static std::string getDescription()
+        static std::string getDescription
+        ()
         {
             return "Captures results for self test purposes";
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        size_t getSucceeded() const
+        size_t getSucceeded
+        ()
+        const
         {
             return m_succeeded;
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        size_t getFailed() const
+        size_t getFailed
+        ()
+        const
         {
             return m_failed;
         }
@@ -55,16 +61,23 @@ namespace Catch
     private: // IReporter
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void StartTesting(){}
+        virtual void StartTesting
+        ()
+        {}
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTesting( std::size_t succeeded, std::size_t failed )
+        virtual void EndTesting
+        (
+            std::size_t succeeded, 
+            std::size_t failed
+        )
         {
             m_succeeded = succeeded;
             m_failed = failed;
         }
         
         ///////////////////////////////////////////////////////////////////////////
+        // Deliberately unimplemented:
         virtual void StartGroup( const std::string& ){}
         virtual void EndGroup( const std::string&, std::size_t, std::size_t ){}
         virtual void StartTestCase( const TestCaseInfo& ){}
@@ -83,7 +96,8 @@ namespace Catch
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
-        SelfTestConfig()
+        SelfTestConfig
+        ()
         : m_reporter( new SelfTestReporter() )
         {
             // reporter will be deleted by the base config class
@@ -92,7 +106,8 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        SelfTestReporter& getReporter()
+        SelfTestReporter& getReporter
+        ()
         {
             return *m_reporter;
         }
@@ -107,7 +122,8 @@ namespace Catch
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
-        EmbeddedRunner()
+        EmbeddedRunner
+        ()
         {
         }
         
@@ -125,7 +141,8 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        SelfTestReporter& getReporter()
+        SelfTestReporter& getReporter
+        ()
         {
             return m_config.getReporter();
         }

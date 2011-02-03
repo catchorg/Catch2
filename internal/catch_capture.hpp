@@ -57,7 +57,11 @@ namespace Detail
     template<typename T, bool streamable>
     struct StringMaker
     {
-        static std::string apply( const T& value )
+        ///////////////////////////////////////////////////////////////////////
+        static std::string apply
+        (
+            const T& value
+        )
         {
             std::ostringstream oss;
             oss << value;
@@ -69,7 +73,11 @@ namespace Detail
     template<typename T>
     struct StringMaker<T, false>
     {
-        static std::string apply( const T& )
+        ///////////////////////////////////////////////////////////////////////
+        static std::string apply
+        (
+            const T&
+        )
         {
             return "{?}";
         }
@@ -77,28 +85,52 @@ namespace Detail
 
 }// end namespace Detail
 
+///////////////////////////////////////////////////////////////////////////////
 template<typename T>
-std::string toString( const T& value )
+std::string toString
+(
+    const T& value
+)
 {
     return Detail::StringMaker<T, Detail::IsStreamable<T>::value>::apply( value );
 }
     
 // Shortcut overloads
-inline std::string toString( const std::string& value )
+
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    const std::string& value
+)
 {
     return value;
 }
-inline std::string toString( const char* value )
+
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    const char* value
+)
 {
     return value;
 }    
-inline std::string toString( int value )
+
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    int value
+)
 {
     std::ostringstream oss;
     oss << value;
     return oss.str();
 }
-inline std::string toString( const double value )
+
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    const double value 
+)
 {
     std::ostringstream oss;
     oss << value;
@@ -116,14 +148,29 @@ class MutableResultInfo : public ResultInfo
 {
 public:
     
-    MutableResultInfo()
+    ///////////////////////////////////////////////////////////////////////////
+    MutableResultInfo
+    ()
     {}
     
-    MutableResultInfo( const char* expr, bool isNot, const char* filename, std::size_t line, const char* macroName )
+    ///////////////////////////////////////////////////////////////////////////
+    MutableResultInfo
+    (
+        const char* expr, 
+        bool isNot, 
+        const char* filename, 
+        std::size_t line, 
+        const char* macroName 
+    )
     : ResultInfo( expr, ResultWas::Unknown, isNot, filename, line, macroName )
     {
     }
-    void setResultType( ResultWas::OfType result )
+
+    ///////////////////////////////////////////////////////////////////////////
+    void setResultType
+    (
+        ResultWas::OfType result
+    )
     {
         // Flip bool results if isNot is set
         if( m_isNot && result == ResultWas::Ok )
@@ -133,13 +180,22 @@ public:
         else
             m_result = result;        
     }
-    void setMessage( const std::string& message )
+
+    ///////////////////////////////////////////////////////////////////////////
+    void setMessage
+    (
+        const std::string& message
+    )
     {
         m_message = message;
     }
 
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator ||( const RhsT& )
+    MutableResultInfo& operator ||
+    (
+        const RhsT&
+    )
     {
         m_expressionIncomplete = true;
         return *this;
@@ -147,11 +203,22 @@ public:
         
 private:
     friend class ResultBuilder;
-    void setLhs( const std::string& lhs )
+
+    ///////////////////////////////////////////////////////////////////////////
+    void setLhs
+    (
+        const std::string& lhs
+    )
     {
         m_lhs = lhs;
     }    
-    MutableResultInfo& setRhs( const std::string& op, const std::string& rhs )
+
+    ///////////////////////////////////////////////////////////////////////////
+    MutableResultInfo& setRhs
+    (
+        const std::string& op, 
+        const std::string& rhs 
+    )
     {
         m_op = op;
         m_rhs = rhs;
@@ -162,49 +229,93 @@ private:
 class ResultBuilder
 {
 public:
-    ResultBuilder( const char* expr, bool isNot, const char* filename, std::size_t line, const char* macroName )
+
+    ///////////////////////////////////////////////////////////////////////////
+    ResultBuilder
+    (
+        const char* expr, 
+        bool isNot, 
+        const char* filename, 
+        std::size_t line, 
+        const char* macroName
+    )
     : m_result( expr, isNot, filename, line, macroName )
     {}
     
+    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    ResultBuilder& operator->*(const T & operand)
+    ResultBuilder& operator->*
+    (
+        const T & operand
+    )
     {
         m_result.setLhs( toString( operand ) );
         return *this;
     }
     
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator == ( const RhsT& rhs )
+    MutableResultInfo& operator == 
+    (
+        const RhsT& rhs
+    )
     {
         return m_result.setRhs( "==", toString( rhs ) );
     }    
+
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator != ( const RhsT& rhs )
+    MutableResultInfo& operator != 
+    (
+        const RhsT& rhs
+    )
     {
         return m_result.setRhs( "!=", toString( rhs ) );
     }    
+
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator < ( const RhsT& rhs )
+    MutableResultInfo& operator < 
+    (
+        const RhsT& rhs
+    )
     {
         return m_result.setRhs( "<", toString( rhs ) );
     }    
+
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator > ( const RhsT& rhs )
+    MutableResultInfo& operator > 
+    (
+        const RhsT& rhs 
+    )
     {
         return m_result.setRhs( ">", toString( rhs ) );
     }    
+
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator <= ( const RhsT& rhs )
+    MutableResultInfo& operator <= 
+    (
+        const RhsT& rhs
+    )
     {
         return m_result.setRhs( "<=", toString( rhs ) );
     }    
+
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator >= ( const RhsT& rhs )
+    MutableResultInfo& operator >= 
+    (
+        const RhsT& rhs
+    )
     {
         return m_result.setRhs( ">=", toString( rhs ) );
     }    
 
-    operator MutableResultInfo&()
+    ///////////////////////////////////////////////////////////////////////////
+    operator MutableResultInfo&
+    ()
     {
         return m_result;
     }
@@ -217,23 +328,34 @@ private:
 class ScopedInfo
 {
 public:
-    ScopedInfo()
+    ///////////////////////////////////////////////////////////////////////////
+    ScopedInfo
+    ()
     {
         Hub::getResultCapture().pushScopedInfo( this );
     }
     
-    ~ScopedInfo()
+    ///////////////////////////////////////////////////////////////////////////
+    ~ScopedInfo
+    ()
     {
         Hub::getResultCapture().popScopedInfo( this );
     }
     
-    ScopedInfo& operator << ( const char* str )
+    ///////////////////////////////////////////////////////////////////////////
+    ScopedInfo& operator << 
+    (
+        const char* str
+    )
     {
         m_oss << str;
         return *this; 
     }
     
-    std::string getInfo() const
+    ///////////////////////////////////////////////////////////////////////////
+    std::string getInfo
+    ()
+    const
     {
         return m_oss.str();
     }
@@ -255,13 +377,23 @@ inline double catch_max( double x, double y )
 class Approx
 {
 public:
+    ///////////////////////////////////////////////////////////////////////////
     // !TBD more generic
-    Approx( double d )
+    Approx
+    (
+        double d
+    )
     : m_d( d )
     {
     }
+
+    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    friend bool operator == ( const T& lhs, const Approx& rhs )
+    friend bool operator == 
+    (
+        const T& lhs, 
+        const Approx& rhs
+    )
     {
         // !TBD Use proper tolerance
         // From: http://realtimecollisiondetection.net/blog/?p=89
@@ -269,8 +401,13 @@ public:
         return fabs( lhs - rhs.m_d ) <= catch_max( CATCH_absTol, CATCH_relTol * catch_max( fabs(lhs), fabs(rhs.m_d) ) );
     }
     
+    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    friend bool operator != ( const T& lhs, const Approx& rhs )
+    friend bool operator != 
+    (
+        const T& lhs, 
+        const Approx& rhs
+    )
     {
         return ! operator==( lhs, rhs );
     }
@@ -278,22 +415,31 @@ public:
     double m_d;
 };
 
+///////////////////////////////////////////////////////////////////////////////
 template<>
-inline std::string toString<Approx>( const Approx& value )
+inline std::string toString<Approx>
+(
+    const Approx& value
+)
 {
     std::ostringstream oss;
     oss << "Approx( " << value.m_d << ")";
     return oss.str();
 }
 
+///////////////////////////////////////////////////////////////////////////////
 // This is just here to avoid compiler warnings with macro constants
-inline bool isTrue( bool value )
+inline bool isTrue
+(
+    bool value
+)
 {
     return value;
 }
     
 } // end namespace Catch
 
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_RESULT( result, stopOnFailure ) \
     if( Catch::ResultAction::Value action = Catch::Hub::getResultCapture().acceptResult( result )  ) \
     { \
@@ -301,12 +447,14 @@ inline bool isTrue( bool value )
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
     }
 
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
     { \
         Catch::Hub::getResultCapture().acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
         INTERNAL_CATCH_ACCEPT_RESULT( expr, stopOnFailure ) \
     }
 
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
     Catch::Hub::getResultCapture().acceptExpression( Catch::ResultBuilder( #expr, false, __FILE__, __LINE__, macroName ) ); \
     try \
@@ -319,6 +467,7 @@ inline bool isTrue( bool value )
         INTERNAL_CATCH_ACCEPT_RESULT( !(nothrow), stopOnFailure ) \
     }
 
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
 INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
 catch( ... ) \
@@ -326,6 +475,7 @@ catch( ... ) \
     INTERNAL_CATCH_ACCEPT_RESULT( false, stopOnFailure ) \
 }
 
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
     { \
         std::ostringstream INTERNAL_CATCH_UNIQUE_NAME( strm ); \
@@ -335,6 +485,7 @@ catch( ... ) \
         INTERNAL_CATCH_ACCEPT_RESULT( resultType, stopOnFailure ) \
     }
 
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log ) Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED

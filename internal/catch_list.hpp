@@ -18,7 +18,11 @@
 
 namespace Catch
 {
-    inline int List( const Config& config )
+    ///////////////////////////////////////////////////////////////////////////
+    inline int List
+    (
+        const Config& config
+    )
     {
         if( config.listWhat() & Config::List::Reports )
         {

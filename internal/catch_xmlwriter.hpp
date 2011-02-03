@@ -24,30 +24,50 @@ namespace Catch
         class ScopedElement
         {
         public:
-            ScopedElement( XmlWriter* writer )
+            ///////////////////////////////////////////////////////////////////
+            ScopedElement
+            (
+                XmlWriter* writer
+            )
             :   m_writer( writer )
             {
             }
             
-            ScopedElement( const ScopedElement& other )
+            ///////////////////////////////////////////////////////////////////
+            ScopedElement
+            (
+                const ScopedElement& other
+            )
             :   m_writer( other.m_writer )
             {
                 other.m_writer = NULL;
             }
             
-            ~ScopedElement()
+            ///////////////////////////////////////////////////////////////////
+            ~ScopedElement
+            ()
             {
                 if( m_writer )
                     m_writer->endElement();
             }
 
-            ScopedElement& writeText( const std::string& text )
+            ///////////////////////////////////////////////////////////////////
+            ScopedElement& writeText
+            (
+                const std::string& text
+            )
             {
                 m_writer->writeText( text );
                 return *this;
             }
+
+            ///////////////////////////////////////////////////////////////////
             template<typename T>
-            ScopedElement& writeAttribute( const std::string& name, const T& attribute )
+            ScopedElement& writeAttribute
+            (
+                const std::string& name,
+                const T& attribute
+            )
             {
                 m_writer->writeAttribute( name, attribute );
                 return *this;
@@ -57,21 +77,29 @@ namespace Catch
             mutable XmlWriter* m_writer;
         };
         
-        XmlWriter()
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter
+        ()
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
             m_os( &std::cout )
         {
         }
 
-        XmlWriter( std::ostream& os)
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter
+        (
+            std::ostream& os
+        )
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
             m_os( &os )
         {
         }
         
-        ~XmlWriter()
+        ///////////////////////////////////////////////////////////////////////
+        ~XmlWriter
+        ()
         {
             while( !m_tags.empty() )
             {
@@ -79,14 +107,22 @@ namespace Catch
             }
         }
 
-        XmlWriter& operator = ( const XmlWriter& other )
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& operator = 
+        (
+            const XmlWriter& other
+        )
         {
             XmlWriter temp( other );
             swap( temp );
             return *this;
         }
         
-        void swap( XmlWriter& other )
+        ///////////////////////////////////////////////////////////////////////
+        void swap
+        (
+            XmlWriter& other
+        )
         {
             std::swap( m_tagIsOpen, other.m_tagIsOpen );
             std::swap( m_needsNewline, other.m_needsNewline );
@@ -95,7 +131,11 @@ namespace Catch
             std::swap( m_os, other.m_os );
         }
         
-        XmlWriter& startElement( const std::string& name )
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& startElement
+        (
+            const std::string& name
+        )
         {
             ensureTagClosed();
             newlineIfNecessary();
@@ -106,14 +146,20 @@ namespace Catch
             return *this;
         }
 
-        ScopedElement scopedElement( const std::string& name )
+        ///////////////////////////////////////////////////////////////////////
+        ScopedElement scopedElement
+        (
+            const std::string& name
+        )
         {
             ScopedElement scoped( this );
             startElement( name );
             return scoped;
         }
 
-        XmlWriter& endElement()
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& endElement
+        ()
         {
             newlineIfNecessary();
             m_indent = m_indent.substr( 0, m_indent.size()-2 );
@@ -130,7 +176,12 @@ namespace Catch
             return *this;
         }
         
-        XmlWriter& writeAttribute( const std::string& name, const std::string& attribute )
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& writeAttribute
+        (
+            const std::string& name, 
+            const std::string& attribute
+        )
         {
             if( !name.empty() && !attribute.empty() )
             {
@@ -140,14 +191,25 @@ namespace Catch
             }
             return *this;
         }
-        XmlWriter& writeAttribute( const std::string& name, bool attribute )
+
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& writeAttribute
+        (
+            const std::string& name, 
+            bool attribute
+        )
         {
             stream() << " " << name << "=\"" << ( attribute ? "true" : "false" ) << "\"";
             return *this;
         }
         
+        ///////////////////////////////////////////////////////////////////////
         template<typename T>
-        XmlWriter& writeAttribute( const std::string& name, const T& attribute )
+        XmlWriter& writeAttribute
+        (
+            const std::string& name, 
+            const T& attribute
+        )
         {
             if( !name.empty() )
             {
@@ -156,7 +218,11 @@ namespace Catch
             return *this;
         }
         
-        XmlWriter& writeText( const std::string& text )
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& writeText
+        (
+            const std::string& text
+        )
         {
             if( !text.empty() )
             {
@@ -170,7 +236,11 @@ namespace Catch
             return *this;
         }
         
-        XmlWriter& writeComment( const std::string& text )
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& writeComment
+        (
+            const std::string& text 
+        )
         {
             ensureTagClosed();
             stream() << m_indent << "<!--" << text << "-->";
@@ -178,7 +248,9 @@ namespace Catch
             return *this;
         }
         
-        XmlWriter& writeBlankLine()
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& writeBlankLine
+        ()
         {
             ensureTagClosed();
             stream() << "\n";
@@ -187,12 +259,16 @@ namespace Catch
         
     private:
         
-        std::ostream& stream()
+        ///////////////////////////////////////////////////////////////////////
+        std::ostream& stream
+        ()
         {
             return *m_os;
         }
         
-        void ensureTagClosed()
+        ///////////////////////////////////////////////////////////////////////
+        void ensureTagClosed
+        ()
         {
             if( m_tagIsOpen )
             {
@@ -201,7 +277,9 @@ namespace Catch
             }
         }
         
-        void newlineIfNecessary()
+        ///////////////////////////////////////////////////////////////////////
+        void newlineIfNecessary
+        ()
         {
             if( m_needsNewline )
             {
@@ -210,7 +288,11 @@ namespace Catch
             }
         }
         
-        void writeEncodedText( const std::string& text )
+        ///////////////////////////////////////////////////////////////////////
+        void writeEncodedText
+        (
+            const std::string& text
+        )
         {
             // !TBD finish this
             if( !findReplaceableString( text, "<", "&lt;" ) &&
@@ -221,7 +303,13 @@ namespace Catch
             }
         }
         
-        bool findReplaceableString( const std::string& text, const std::string& replaceWhat, const std::string& replaceWith )
+        ///////////////////////////////////////////////////////////////////////
+        bool findReplaceableString
+        (
+            const std::string& text, 
+            const std::string& replaceWhat, 
+            const std::string& replaceWith
+        )
         {
             std::string::size_type pos = text.find_first_of( replaceWhat );
             if( pos != std::string::npos )

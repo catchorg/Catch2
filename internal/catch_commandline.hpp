@@ -47,7 +47,13 @@ namespace Catch
         };
         
     public:
-        ArgParser( int argc, char * const argv[], Config& config )
+        ///////////////////////////////////////////////////////////////////////
+        ArgParser
+        (
+            int argc, 
+            char * const argv[], 
+            Config& config
+        )
         :   m_mode( modeNone ),
             m_config( config )
         {
@@ -82,7 +88,9 @@ namespace Catch
         }
         
     private:
-        std::string argsAsString()
+        ///////////////////////////////////////////////////////////////////////
+        std::string argsAsString
+        ()
         {
             std::ostringstream oss;
             std::vector<std::string>::const_iterator it = m_args.begin();
@@ -96,7 +104,12 @@ namespace Catch
             return oss.str();
         }
         
-        void changeMode( const std::string& cmd, Mode mode )
+        ///////////////////////////////////////////////////////////////////////
+        void changeMode
+        (
+            const std::string& cmd, 
+            Mode mode
+        )
         {
             m_command = cmd;
             switch( m_mode )
@@ -179,7 +192,11 @@ namespace Catch
             m_mode = mode;
         }
         
-        void setErrorMode( const std::string& errorMessage )
+        ///////////////////////////////////////////////////////////////////////
+        void setErrorMode
+        (
+            const std::string& errorMessage
+        )
         {
             m_mode = modeError;
             m_command = "";
