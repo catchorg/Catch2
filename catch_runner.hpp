@@ -22,6 +22,7 @@
 #include "catch_reporter_junit.hpp"
 
 #include <fstream>
+#include <stdlib.h>
 
 namespace Catch
 {

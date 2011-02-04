@@ -12,10 +12,11 @@
 #ifndef TWOBLUECUBES_CATCH_HUB_H_INCLUDED
 #define TWOBLUECUBES_CATCH_HUB_H_INCLUDED
 
+#include "catch_interfaces_reporter.h"
+
 #include <memory>
 #include <vector>
-
-#include "catch_interfaces_reporter.h"
+#include <stdlib.h>
 
 namespace Catch
 {

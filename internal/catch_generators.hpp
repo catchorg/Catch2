@@ -15,8 +15,10 @@
 
 #include "catch_hub.h"
 
+#include <iterator>
 #include <vector>
 #include <string>
+#include <stdlib.h>
 
 namespace Catch
 {
