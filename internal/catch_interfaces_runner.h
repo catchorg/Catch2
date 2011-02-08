@@ -23,7 +23,8 @@ namespace Catch
         {}
         
         virtual void runAll
-            () = 0;
+            (   bool runHiddenTests = false
+            ) = 0;
         
         virtual std::size_t runMatching
             ( const std::string& rawTestSpec 

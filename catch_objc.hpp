@@ -1,6 +1,6 @@
 /*
  *  catch_objc.hpp
- *  Test
+ *  Catch
  *
  *  Created by Phil on 14/11/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
@@ -18,6 +18,9 @@
 #include "catch.hpp"
 #include "internal/catch_test_case_info.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+// This protocol is really only here for (self) documenting purposes, since
+// all its methods are optional.
 @protocol OcFixture
 
 @optional
@@ -32,11 +35,21 @@ namespace Catch
     class OcMethod : public ITestCase
     {
     public:
-        OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel )
+        ///////////////////////////////////////////////////////////////////////
+        OcMethod
+        (
+            Class cls, 
+            SEL sel
+        )
+        :   m_cls( cls ), 
+            m_sel( sel )
         {
         }
         
-        virtual void invoke() const
+        ///////////////////////////////////////////////////////////////////////
+        virtual void invoke
+        ()
+        const
         {
             id obj = class_createInstance( m_cls, 0 );
             obj = [obj init];
@@ -53,18 +66,31 @@ namespace Catch
             [obj release];
         }
         
-        virtual ITestCase* clone() const
+        ///////////////////////////////////////////////////////////////////////
+        virtual ITestCase* clone
+        ()
+        const
         {
             return new OcMethod( m_cls, m_sel );
         }
         
-        virtual bool operator == ( const ITestCase& other ) const
+        ///////////////////////////////////////////////////////////////////////
+        virtual bool operator == 
+        (
+            const ITestCase& other
+        )
+        const
         {
             const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
             return ocmOther && ocmOther->m_sel == m_sel;
         }
         
-        virtual bool operator < ( const ITestCase& other ) const
+        ///////////////////////////////////////////////////////////////////////
+        virtual bool operator < 
+        (
+            const ITestCase& other
+        )
+        const
         {
             const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
             return ocmOther && ocmOther->m_sel < m_sel;
@@ -78,12 +104,23 @@ namespace Catch
     namespace Detail
     {
     
-        inline bool startsWith( const std::string& str, const std::string& sub )
+        ///////////////////////////////////////////////////////////////////////
+        inline bool startsWith
+        (
+            const std::string& str, 
+            const std::string& sub
+        )
         {
             return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
         }
         
-        inline const char* getAnnotation( Class cls, const std::string& annotationName, const std::string& testCaseName )
+        ///////////////////////////////////////////////////////////////////////
+        inline const char* getAnnotation
+        (
+            Class cls, 
+            const std::string& annotationName, 
+            const std::string& testCaseName
+        )
         {
             NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
             SEL sel = NSSelectorFromString( selStr );
@@ -94,7 +131,9 @@ namespace Catch
         }        
     }
     
-    inline size_t registerTestMethods()
+    ///////////////////////////////////////////////////////////////////////////
+    inline size_t registerTestMethods
+    ()
     {
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( NULL, 0 );
@@ -130,6 +169,7 @@ namespace Catch
     }  
 }
 
+///////////////////////////////////////////////////////////////////////////////
 #define OC_TEST_CASE( name, desc )\
 +(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \
 {\

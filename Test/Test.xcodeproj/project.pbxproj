@@ -327,6 +327,26 @@
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 				WARNING_CFLAGS = (
+					"-Wfloat-equal",
+					"-Wundef",
+					"-Wshadow",
+					"-Wpointer-arith",
+					"-Wcast-qual",
+					"-Wcast-align",
+					"-Wwrite-strings",
+					"-Wconversion",
+					"-Wsign-compare",
+					"-Wmissing-noreturn",
+					"-Wmissing-format-attribute",
+					"-Wpacked",
+					"-Winline",
+					"-Wdisabled-optimization",
+					"-Wctor-dtor-privacy",
+					"-Wnon-virtual-dtor",
+					"-Wreorder",
+					"-Wold-style-cast",
+					"-Woverloaded-virtual",
+					"-ffor-scope",
 					"-Wextra",
 					"-Wall",
 				);

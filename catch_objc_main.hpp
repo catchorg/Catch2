@@ -1,6 +1,6 @@
 /*
  *  catch_objc_main.hpp
- *  OCTest
+ *  Catch
  *
  *  Created by Phil on 28/12/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.

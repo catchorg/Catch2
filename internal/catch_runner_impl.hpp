@@ -19,6 +19,9 @@
 #include "catch_test_case_info.hpp"
 #include "catch_capture.hpp"
 
+#include <set>
+#include <string>
+
 namespace Catch
 {
     class TestSpec
@@ -194,12 +197,14 @@ namespace Catch
         
         ///////////////////////////////////////////////////////////////////////////
         virtual void runAll
-        ()
+        (
+            bool runHiddenTests = false
+        )
         {
             std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i )
             {
-                if( !allTests[i].isHidden() )
+                if( runHiddenTests || !allTests[i].isHidden() )
                    runTest( allTests[i] );
             }
         }
