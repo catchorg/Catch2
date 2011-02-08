@@ -41,11 +41,7 @@
         [appName.textColor release];
         appName.textAlignment = UITextAlignmentCenter;
         
-        NSString* appNameStr = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-        if( [appNameStr isEqualToString:@"iTchRunner"] )
-            appName.text = @"iTchRunner self-tests";
-        else
-            appName.text = [NSString stringWithFormat:@"CATCH tests for %@", appNameStr];
+        appName.text = [NSString stringWithFormat:@"CATCH tests"];
 
     
         UIActionSheet* menu = [[UIActionSheet alloc] initWithTitle:@"Options"
@@ -77,6 +73,17 @@
     config.getReporter()->StartGroup( "" );
     runner.runAll( true );
     config.getReporter()->EndGroup( "", runner.getSuccessCount(), runner.getFailureCount() );
+
+    if( runner.getFailureCount() == 0 )
+    {
+        NSLog( @"%d", runner.getFailureCount() );
+        if( runner.getSuccessCount() > 0 )
+            appName.textColor = [[UIColor alloc] initWithRed:0.35 green:1 blue:0.35 alpha:1];
+    }
+    else
+    {
+        appName.textColor = [[UIColor alloc] initWithRed:1 green:0.35 blue:0.35 alpha:1];
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
