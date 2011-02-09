@@ -17,107 +17,7 @@
 
 namespace Catch
 {
-    class SelfTestReporter : public IReporter
-    {
-    public:
-        ///////////////////////////////////////////////////////////////////////////
-        SelfTestReporter
-        ()
-        :   m_succeeded( 0 ),
-            m_failed( 0 )
-        {
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        static std::string getDescription
-        ()
-        {
-            return "Captures results for self test purposes";
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        size_t getSucceeded
-        ()
-        const
-        {
-            return m_succeeded;
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        size_t getFailed
-        ()
-        const
-        {
-            return m_failed;
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        void reset()
-        {
-            m_succeeded = 0;
-            m_failed = 0;
-        }
-        
-    private: // IReporter
-        
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartTesting
-        ()
-        {}
-        
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTesting
-        (
-            std::size_t succeeded, 
-            std::size_t failed
-        )
-        {
-            m_succeeded = succeeded;
-            m_failed = failed;
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        // Deliberately unimplemented:
-        virtual void StartGroup( const std::string& ){}
-        virtual void EndGroup( const std::string&, std::size_t, std::size_t ){}
-        virtual void StartTestCase( const TestCaseInfo& ){}
-        virtual void StartSection( const std::string&, const std::string ){}
-        virtual void EndSection( const std::string&, std::size_t, std::size_t ){}
-        virtual void Result( const ResultInfo& ){}
-        virtual void EndTestCase( const TestCaseInfo&, std::size_t, std::size_t, const std::string&, const std::string& ){}
-        
-    private:
-        size_t m_succeeded;
-        size_t m_failed;
-    };
-    
-    
-    class SelfTestConfig : public Config
-    {
-    public:
-        ///////////////////////////////////////////////////////////////////////////
-        SelfTestConfig
-        ()
-        : m_reporter( new SelfTestReporter() )
-        {
-            // reporter will be deleted by the base config class
-            setReporter( m_reporter );
-            setStreamBuf( m_oss.rdbuf() );    
-        }
 
-        ///////////////////////////////////////////////////////////////////////////
-        SelfTestReporter& getReporter
-        ()
-        {
-            return *m_reporter;
-        }
-        
-    private:
-        std::ostringstream m_oss;
-        SelfTestReporter* m_reporter;
-        
-    };
-    
     class EmbeddedRunner
     {
     public:
@@ -133,22 +33,47 @@ namespace Catch
             const std::string& rawTestSpec
         )
         {
+            std::ostringstream oss;
+            Config config;
+            config.setStreamBuf( oss.rdbuf() );
+            config.setReporter( "basic" );
+
             std::size_t result;
-            Runner runner( m_config );
-            m_config.getReporter().reset();
+            Runner runner( config );
             result = runner.runMatching( rawTestSpec );
+            m_successes = runner.getSuccessCount();
+            m_failures = runner.getFailureCount();
+            m_output = oss.str();
             return result;
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        SelfTestReporter& getReporter
+        std::string getOutput
         ()
         {
-            return m_config.getReporter();
+            return m_output;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
+        std::size_t getSuccessCount
+        ()
+        const
+        {
+            return m_successes;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        std:: size_t getFailureCount
+        ()
+        const
+        {
+            return m_failures;
+        }
+
     private:
-        SelfTestConfig m_config;
+        std::size_t m_successes;
+        std::size_t m_failures;
+        std::string m_output;
     };
 }
 

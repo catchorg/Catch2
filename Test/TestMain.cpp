@@ -21,10 +21,11 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
     EmbeddedRunner runner;
 
     runner.runMatching( "./succeeding/*" );
-    CHECK( runner.getReporter().getSucceeded() == 196 );
-    CHECK( runner.getReporter().getFailed() == 0 );
+    INFO( runner.getOutput() );
+    CHECK( runner.getSuccessCount() == 196 );
+    CHECK( runner.getFailureCount() == 0 );
 
     runner.runMatching( "./failing/*" );        
-    CHECK( runner.getReporter().getSucceeded() == 0 );
-    CHECK( runner.getReporter().getFailed() == 53 );
+    CHECK( runner.getSuccessCount() == 0 );
+    CHECK( runner.getFailureCount() == 53 );
 }
