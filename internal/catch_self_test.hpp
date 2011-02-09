@@ -39,10 +39,14 @@ namespace Catch
             config.setReporter( "basic" );
 
             std::size_t result;
-            Runner runner( config );
-            result = runner.runMatching( rawTestSpec );
-            m_successes = runner.getSuccessCount();
-            m_failures = runner.getFailureCount();
+            
+            // Scoped because Runner doesn't report EndTesting until its destructor
+            {
+                Runner runner( config );
+                result = runner.runMatching( rawTestSpec );
+                m_successes = runner.getSuccessCount();
+                m_failures = runner.getFailureCount();
+            }
             m_output = oss.str();
             return result;
         }

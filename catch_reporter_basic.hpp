@@ -20,6 +20,26 @@ namespace Catch
 {
     class BasicReporter : public IReporter
     {
+        struct SpanInfo
+        {
+            SpanInfo() 
+            :   emitted( false )
+            {}
+            
+            SpanInfo( const std::string& spanName ) 
+            :   name( spanName ),
+                emitted( false )
+            {}
+            
+            SpanInfo( const SpanInfo& other ) 
+            :   name( other.name ),
+                emitted( other.emitted )
+            {}
+            
+            std::string name;
+            bool emitted;
+        };
+        
     public:
         ///////////////////////////////////////////////////////////////////////////
         BasicReporter
@@ -62,7 +82,7 @@ namespace Catch
         virtual void StartTesting
         ()
         {
-            m_config.stream() << "[Started testing]" << std::endl;
+            m_testingSpan = SpanInfo();
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -72,9 +92,12 @@ namespace Catch
             std::size_t failed
         )
         {
-            m_config.stream() << "[Testing completed. ";
-            ReportCounts( succeeded, failed );
-            m_config.stream() << "]" << std::endl;
+            if( m_testingSpan.emitted )
+            {
+                m_config.stream() << "[Testing completed. ";
+                ReportCounts( succeeded, failed );
+                m_config.stream() << "]" << std::endl;
+            }
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -83,8 +106,7 @@ namespace Catch
             const std::string& groupName
         )
         {
-            if( !groupName.empty() )
-                m_config.stream() << "[Started group: '" << groupName << "']" << std::endl;
+            m_groupSpan = groupName;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -95,11 +117,12 @@ namespace Catch
             std::size_t failed 
         )
         {
-            if( !groupName.empty() )
+            if( m_groupSpan.emitted && !groupName.empty() )
             {
                 m_config.stream() << "[End of group: '" << groupName << "'. ";
                 ReportCounts( succeeded, failed );
                 m_config.stream() << "]\n" << std::endl;
+                m_groupSpan = SpanInfo();
             }
         }
         
@@ -109,8 +132,7 @@ namespace Catch
             const TestCaseInfo& testInfo
         )
         {
-            m_config.stream() << std::endl << "[Running: " << testInfo.getName() << "]" << std::endl;
-            m_firstSectionInTestCase = true;
+            m_testSpan = testInfo.getName();
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -120,12 +142,7 @@ namespace Catch
             const std::string /*description*/ 
         )
         {
-            if( m_firstSectionInTestCase )
-            {
-                m_config.stream() << "\n";
-                m_firstSectionInTestCase = false;
-            }
-            m_config.stream() << "[Started section: '" << sectionName << "']" << std::endl;
+            m_sectionSpan = sectionName;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -136,9 +153,13 @@ namespace Catch
             std::size_t failed
         )
         {
-            m_config.stream() << "[End of section: '" << sectionName << "'. ";
-            ReportCounts( succeeded, failed );
-            m_config.stream() << "]\n" << std::endl;
+            if( m_sectionSpan.emitted && !m_sectionSpan.name.empty() )
+            {
+                m_config.stream() << "[End of section: '" << sectionName << "'. ";
+                ReportCounts( succeeded, failed );
+                m_config.stream() << "]\n" << std::endl;
+                m_sectionSpan = SpanInfo();
+            }
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -149,6 +170,8 @@ namespace Catch
         {
             if( !m_config.includeSuccessfulResults() && resultInfo.getResultType() == ResultWas::Ok )
                 return;
+            
+            StartSpansLazily();
             
             if( !resultInfo.getFilename().empty() )
                 m_config.stream() << resultInfo.getFilename() << "(" << resultInfo.getLine() << "): ";
@@ -200,20 +223,63 @@ namespace Catch
             const std::string& stdErr
         )
         {
-            if( !stdOut.empty() )
-                m_config.stream() << "[stdout: " << trim( stdOut ) << "]\n";
+            if( m_testSpan.emitted )
+            {
+                if( !stdOut.empty() )
+                    m_config.stream() << "[stdout: " << trim( stdOut ) << "]\n";
 
-            if( !stdErr.empty() )
-                m_config.stream() << "[stderr: " << trim( stdErr ) << "]\n";
-            
-            m_config.stream() << "[Finished: " << testInfo.getName() << " ";
-            ReportCounts( succeeded, failed );
-            m_config.stream() << "]" << std::endl;
+                if( !stdErr.empty() )
+                    m_config.stream() << "[stderr: " << trim( stdErr ) << "]\n";
+                
+                m_config.stream() << "[Finished: " << testInfo.getName() << " ";
+                ReportCounts( succeeded, failed );
+                m_config.stream() << "]" << std::endl;
+            }
         }    
+
+    private: // helpers
+        
+        ///////////////////////////////////////////////////////////////////////////
+        void StartSpansLazily()
+        {
+            if( !m_testingSpan.emitted )
+            {
+                m_config.stream() << "[Started testing]" << std::endl;
+                m_testingSpan.emitted = true;
+            }
+            
+            if( !m_groupSpan.emitted && !m_groupSpan.name.empty() )
+            {
+                m_config.stream() << "[Started group: '" << m_groupSpan.name << "']" << std::endl;
+                m_groupSpan.emitted = true;
+            }
+            
+            if( !m_testSpan.emitted )
+            {
+                m_config.stream() << std::endl << "[Running: " << m_testSpan.name << "]" << std::endl;
+                m_testSpan.emitted = true;
+            }
+            
+            if( !m_sectionSpan.emitted && !m_sectionSpan.name.empty() )
+            {
+                if( m_firstSectionInTestCase )
+                {
+                    m_config.stream() << "\n";
+                    m_firstSectionInTestCase = false;
+                }
+                m_config.stream() << "[Started section: '" << m_sectionSpan.name << "']" << std::endl;
+                m_sectionSpan.emitted = true;
+            }        
+        }
         
     private:
         const IReporterConfig& m_config;
         bool m_firstSectionInTestCase;
+
+        SpanInfo m_testingSpan;
+        SpanInfo m_groupSpan;
+        SpanInfo m_sectionSpan;
+        SpanInfo m_testSpan;
     };
 
     INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter );
