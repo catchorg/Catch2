@@ -53,7 +53,7 @@ namespace Catch
                 if( pbase() == epptr() )
                     m_writer( std::string( 1, static_cast<char>( c ) ) );
                 else
-                    sputc( c );
+                    sputc( static_cast<char>( c ) );
             }            
             return 0;
         }

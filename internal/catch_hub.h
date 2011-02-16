@@ -36,6 +36,9 @@ namespace Catch
         
         static Hub& me();
         
+        Hub( const Hub& );
+        void operator=( const Hub& );
+        
     public:
         
         static void setRunner

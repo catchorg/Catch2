@@ -35,8 +35,8 @@ namespace
 }
 
 
-METHOD_AS_TEST_CASE( TestClass::succeedingCase, "./succeeding/TestClass/succeedingCase", "A method based test run that succeeds" );
-METHOD_AS_TEST_CASE( TestClass::failingCase, "./failing/TestClass/failingCase", "A method based test run that fails" );
+METHOD_AS_TEST_CASE( TestClass::succeedingCase, "./succeeding/TestClass/succeedingCase", "A method based test run that succeeds" )
+METHOD_AS_TEST_CASE( TestClass::failingCase, "./failing/TestClass/failingCase", "A method based test run that fails" )
 
 
 struct Fixture

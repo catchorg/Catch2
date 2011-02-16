@@ -12,7 +12,7 @@
 
 #include "../catch.hpp"
 
-size_t multiply( int a, int b )
+size_t multiply( size_t a, size_t b )
 {
     return a*b;
 }

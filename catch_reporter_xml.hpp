@@ -168,7 +168,7 @@ namespace Catch
         XmlWriter m_xml;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter );
+    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 
 } // end namespace Catch
 

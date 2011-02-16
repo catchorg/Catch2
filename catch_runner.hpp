@@ -34,7 +34,7 @@ namespace Catch
         if( !config.getMessage().empty() )
         {
             std::cerr << config.getMessage() << std::endl;
-            return std::numeric_limits<int>::max();
+            return (std::numeric_limits<int>::max)();
         }
         
         // Handle help
@@ -70,7 +70,7 @@ namespace Catch
             if( ofs.fail() )
             {
                 std::cerr << "Unable to open file: '" << config.getFilename() << "'" << std::endl;
-                return std::numeric_limits<int>::max();
+                return (std::numeric_limits<int>::max)();
             }
             config.setStreamBuf( ofs.rdbuf() );
         }
@@ -103,7 +103,7 @@ namespace Catch
                 config.getReporter()->EndGroup( *it, runner.getSuccessCount()-prevSuccess, runner.getFailureCount()-prevFail );
             }
         }
-        return runner.getFailureCount();
+        return static_cast<int>( runner.getFailureCount() );
     }
     
 } // end namespace Catch

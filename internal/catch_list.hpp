@@ -51,7 +51,7 @@ namespace Catch
         if( ( config.listWhat() & Config::List::All ) == 0 )
         {
             std::cerr << "Unknown list type" << std::endl;
-            return std::numeric_limits<int>::max();
+            return (std::numeric_limits<int>::max)();
         }
         
         if( config.getReporter() )

@@ -282,7 +282,7 @@ namespace Catch
         SpanInfo m_testSpan;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter );
+    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
     
 } // end namespace Catch
     
