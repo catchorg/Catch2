@@ -79,6 +79,7 @@
     #endif
 
 #elif defined(__WIN32__) && defined(_MSC_VER)
+// Thanks to jalfd for the following:
    extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
 #else
