@@ -443,7 +443,7 @@ inline bool isTrue
 #define INTERNAL_CATCH_ACCEPT_RESULT( result, stopOnFailure ) \
     if( Catch::ResultAction::Value action = Catch::Hub::getResultCapture().acceptResult( result )  ) \
     { \
-        if( action == Catch::ResultAction::DebugFailed ) DebugBreak(); \
+        if( action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
     }
 

@@ -8,8 +8,7 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
- * Provides a DebugBreak() macro for platforms other than Windows
- * (currently only Macs are supported)
+ * Provides a BreakIntoDebugger() macro for Windows and Mac (so far)
  */
 
 #ifndef TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
@@ -68,21 +67,22 @@
     // http://cocoawithlove.com/2008/03/break-into-debugger.html
     #ifdef DEBUG
         #if defined(__ppc64__) || defined(__ppc__)
-            #define DebugBreak() \
+            #define BreakIntoDebugger() \
             if( Catch::AmIBeingDebugged() ) \
             { \
             __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
             : : : "memory","r0","r3","r4" ); \
             }
         #else
-            #define DebugBreak() if( Catch::AmIBeingDebugged() ) {__asm__("int $3\n" : : );}
+            #define BreakIntoDebugger() if( Catch::AmIBeingDebugged() ) {__asm__("int $3\n" : : );}
         #endif
     #endif
 
-#endif
-
-#ifndef DebugBreak
-    inline void DebugBreak(){}
+#elif defined(__WIN32__) && defined(_MSC_VER)
+   extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
+   #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
+#else
+	   inline void BreakIntoDebugger(){}
 #endif
 
 inline void writeToDebugConsole( const std::string& text )
