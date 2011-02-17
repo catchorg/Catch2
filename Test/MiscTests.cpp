@@ -26,7 +26,7 @@ TEST_CASE( "./succeeding/Misc/Sections", "random SECTION tests" )
 
     SECTION( "s2", "not equal" )
     {
-        REQUIRE_FALSE( a == b);
+        REQUIRE( a != b);
     }
 }
 
@@ -42,7 +42,29 @@ TEST_CASE( "./succeeding/Misc/Sections/nested", "nested SECTION tests" )
 
         SECTION( "s2", "not equal" )
         {
-            REQUIRE_FALSE( a == b);
+            REQUIRE( a != b);
+        }
+    }
+}
+
+TEST_CASE( "./succeeding/Misc/Sections/nested2", "nested SECTION tests" )
+{
+    int a = 1;
+    int b = 2;
+    
+    SECTION( "s1", "doesn't equal" )
+    {
+        REQUIRE( a != b );
+        REQUIRE( b != a );
+        
+        SECTION( "s2", "equal" )
+        {
+            REQUIRE( a == b);
+        }
+
+        SECTION( "s3", "not equal" )
+        {
+            REQUIRE( a != b);
         }
     }
 }

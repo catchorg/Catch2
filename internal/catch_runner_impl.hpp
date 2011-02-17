@@ -72,7 +72,8 @@ namespace Catch
             const TestCaseInfo* info = NULL 
         )
         :   m_info( info ),
-            m_sectionSeen( false )
+            m_sectionSeen( false ),
+            m_isLeaf( true )
         {
         }
         
@@ -105,8 +106,11 @@ namespace Catch
             const std::string& name
         )
         {
-            if( m_sectionsSeen.find( name ) != m_sectionsSeen.end() )
+            m_isLeaf = true;
+            std::string qualifiedSection = m_sectionPath + "\\" + name;
+            if( m_sectionsSeen.find( qualifiedSection ) != m_sectionsSeen.end() )
                 return false;
+            m_sectionPath = qualifiedSection;
             return true;
         }
 
@@ -116,7 +120,10 @@ namespace Catch
             const std::string& name
         )
         {
-            m_sectionsSeen.insert( name );
+            if( m_isLeaf )
+                m_sectionsSeen.insert( m_sectionPath );
+            m_isLeaf = false;
+            m_sectionPath = m_sectionPath.substr( 0, m_sectionPath.length()-name.length()-1 );
             m_sectionSeen = true;
         }
 
@@ -131,7 +138,9 @@ namespace Catch
     private:
         const TestCaseInfo* m_info;
         bool m_sectionSeen;
+        std::string m_sectionPath;
         std::set<std::string> m_sectionsSeen;
+        bool m_isLeaf;
         
     };
     
@@ -369,7 +378,7 @@ namespace Catch
         (
             const std::string& name, 
             const std::string& description, 
-            std::size_t& successes, \
+            std::size_t& successes,
             std::size_t& failures 
         )
         {
