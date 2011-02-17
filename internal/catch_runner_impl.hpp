@@ -107,9 +107,19 @@ namespace Catch
         {
             if( m_sectionsSeen.find( name ) != m_sectionsSeen.end() )
                 return false;
-            m_sectionsSeen.insert( name );
-            return m_sectionSeen = true;
+            return true;
         }
+
+        ///////////////////////////////////////////////////////////////////////        
+        void endSection
+        (
+            const std::string& name
+        )
+        {
+            m_sectionsSeen.insert( name );
+            m_sectionSeen = true;
+        }
+
         ///////////////////////////////////////////////////////////////////////        
         const TestCaseInfo& getTestCaseInfo
         ()
@@ -382,6 +392,7 @@ namespace Catch
             std::size_t prevFailures 
         )
         {
+            m_runningTest.endSection( name );
             m_reporter->EndSection( name, m_successes - prevSuccesses, m_failures - prevFailures );
         }
 
