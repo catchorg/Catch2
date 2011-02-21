@@ -47,7 +47,7 @@ TEST_CASE( "./succeeding/Misc/Sections/nested", "nested SECTION tests" )
     }
 }
 
-TEST_CASE( "./succeeding/Misc/Sections/nested2", "nested SECTION tests" )
+TEST_CASE( "./mixed/Misc/Sections/nested2", "nested SECTION tests" )
 {
     int a = 1;
     int b = 2;
