@@ -59,12 +59,16 @@ TEST_CASE( "./succeeding/Misc/Sections/nested2", "nested SECTION tests" )
         
         SECTION( "s2", "equal" )
         {
-            REQUIRE( a == b);
+            REQUIRE( a == b );
         }
 
         SECTION( "s3", "not equal" )
         {
-            REQUIRE( a != b);
+            REQUIRE( a != b );
+        }
+        SECTION( "s4", "less than" )
+        {
+            REQUIRE( b < a );
         }
     }
 }

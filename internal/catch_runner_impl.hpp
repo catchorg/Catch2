@@ -24,6 +24,41 @@
 
 namespace Catch
 {
+    
+    class StreamRedirect
+    {
+    public:
+        ///////////////////////////////////////////////////////////////////////        
+        StreamRedirect
+        (
+            std::ostream& stream, 
+            std::string& targetString
+        )
+        :   m_stream( stream ),
+            m_prevBuf( stream.rdbuf() ),
+            m_targetString( targetString )
+        {            
+            stream.rdbuf( m_oss.rdbuf() );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////        
+        ~StreamRedirect
+        ()
+        {
+            m_targetString = m_oss.str();
+            m_stream.rdbuf( m_prevBuf );
+        }
+        
+    private:
+        std::ostream& m_stream;
+        std::streambuf* m_prevBuf;
+        std::ostringstream m_oss;
+        std::string& m_targetString;
+    };
+    
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////    
+    
     class TestSpec
     {
     public:
@@ -62,9 +97,124 @@ namespace Catch
     
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////    
+    class SectionInfo
+    {
+    public:
+        enum Status
+        {
+            Root,
+            Unknown,
+            NonLeaf,
+            UntestedLeaf,
+            TestedLeaf
+        };
+        
+        ///////////////////////////////////////////////////////////////////////        
+        SectionInfo
+        (
+            SectionInfo* parent
+        )
+        :   m_status( Unknown ),
+            m_parent( parent )
+        {
+        }
+
+        ///////////////////////////////////////////////////////////////////////        
+        SectionInfo
+        ()
+        :   m_status( Root ),
+            m_parent( NULL )
+        {
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+        ~SectionInfo
+        ()
+        {
+            deleteAllValues( m_subSections );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+        bool shouldRun
+        ()
+        const
+        {
+            return m_status != TestedLeaf;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+        bool ran
+        ()
+        {
+            if( m_status != NonLeaf )
+            {
+                m_status = TestedLeaf;
+                return true;
+            }
+            return false;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+        SectionInfo* getSubSection
+        (
+            const std::string& name
+        )
+        {
+            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
+            if( it != m_subSections.end() )
+                return it->second;
+            
+            SectionInfo* subSection = new SectionInfo( this );
+            m_subSections.insert( std::make_pair( name, subSection ) );
+            m_status = NonLeaf;
+            return subSection;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+        SectionInfo* getParent
+        ()
+        {
+            return m_parent;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////        
+        bool hasUntestedSections
+        ()
+        const
+        {
+            if( m_status == Unknown || m_status == UntestedLeaf )
+                return true;
+            
+            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.begin();
+            std::map<std::string, SectionInfo*>::const_iterator itEnd = m_subSections.end();
+            for(; it != itEnd; ++it )
+            {
+                if( it->second->hasUntestedSections() )
+                    return true;
+            }
+            return false;
+        }
     
+    private:
+        Status m_status;
+        std::map<std::string, SectionInfo*> m_subSections;
+        SectionInfo* m_parent;
+    };
+    
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
     class RunningTest
     {
+        enum RunStatus
+        {
+            NothingRun,
+            EncounteredASection,
+            RanAtLeastOneSection,
+            RanToCompletionWithSections,
+            RanToCompletionWithNoSections
+        };
+        
     public:
         ///////////////////////////////////////////////////////////////////////        
         explicit RunningTest
@@ -72,17 +222,9 @@ namespace Catch
             const TestCaseInfo* info = NULL 
         )
         :   m_info( info ),
-            m_sectionSeen( false ),
-            m_isLeaf( true )
+            m_runStatus( RanAtLeastOneSection ),
+            m_currentSection( &m_rootSection )
         {
-        }
-        
-        ///////////////////////////////////////////////////////////////////////        
-        size_t sectionsSeenCount
-        ()
-        const
-        {
-            return m_sectionsSeen.size();
         }
         
         ///////////////////////////////////////////////////////////////////////        
@@ -90,14 +232,25 @@ namespace Catch
         ()
         const
         {
-            return m_sectionSeen;
+            return  m_runStatus == RanAtLeastOneSection || 
+                    m_runStatus == RanToCompletionWithSections;
         }
 
         ///////////////////////////////////////////////////////////////////////        
-        void resetSectionSeen
+        void reset
         ()
         {
-            m_sectionSeen = false;
+            m_runStatus = NothingRun;
+        }
+
+        ///////////////////////////////////////////////////////////////////////        
+        void ranToCompletion
+        ()
+        {
+            m_runStatus =   m_runStatus == RanAtLeastOneSection ||
+                            m_runStatus == EncounteredASection
+                ? RanToCompletionWithSections
+                : RanToCompletionWithNoSections;
         }
         
         ///////////////////////////////////////////////////////////////////////        
@@ -106,25 +259,28 @@ namespace Catch
             const std::string& name
         )
         {
-            m_isLeaf = true;
-            std::string qualifiedSection = m_sectionPath + "\\" + name;
-            if( m_sectionsSeen.find( qualifiedSection ) != m_sectionsSeen.end() )
-                return false;
-            m_sectionPath = qualifiedSection;
-            return true;
+            if( m_runStatus == NothingRun )
+                m_runStatus = EncounteredASection;
+            
+            SectionInfo* thisSection = m_currentSection->getSubSection( name );
+            
+            if( !wasSectionSeen() && thisSection->shouldRun() )
+            {
+                m_currentSection = thisSection;
+                return true;
+            }
+            return false;
         }
 
         ///////////////////////////////////////////////////////////////////////        
         void endSection
         (
-            const std::string& name
+            const std::string&
         )
         {
-            if( m_isLeaf )
-                m_sectionsSeen.insert( m_sectionPath );
-            m_isLeaf = false;
-            m_sectionPath = m_sectionPath.substr( 0, m_sectionPath.length()-name.length()-1 );
-            m_sectionSeen = true;
+            if( m_currentSection->ran() )
+                m_runStatus = RanAtLeastOneSection;
+            m_currentSection = m_currentSection->getParent();
         }
 
         ///////////////////////////////////////////////////////////////////////        
@@ -135,52 +291,24 @@ namespace Catch
             return *m_info;
         }
         
+        ///////////////////////////////////////////////////////////////////////        
+        bool hasUntestedSections
+        ()
+        const
+        {
+            return  m_rootSection.hasUntestedSections() ||
+                    m_runStatus != RanToCompletionWithSections;
+        }
+        
     private:
         const TestCaseInfo* m_info;
-        bool m_sectionSeen;
-        std::string m_sectionPath;
-        std::set<std::string> m_sectionsSeen;
-        bool m_isLeaf;
-        
+        RunStatus m_runStatus;
+        SectionInfo m_rootSection;
+        SectionInfo* m_currentSection;
     };
     
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////    
-    
-    class StreamRedirect
-    {
-    public:
-        ///////////////////////////////////////////////////////////////////////        
-        StreamRedirect
-        (
-            std::ostream& stream, 
-            std::string& targetString
-        )
-        :   m_stream( stream ),
-            m_prevBuf( stream.rdbuf() ),
-            m_targetString( targetString )
-        {            
-            stream.rdbuf( m_oss.rdbuf() );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////        
-        ~StreamRedirect
-        ()
-        {
-            m_targetString = m_oss.str();
-            m_stream.rdbuf( m_prevBuf );
-        }
-        
-    private:
-        std::ostream& m_stream;
-        std::streambuf* m_prevBuf;
-        std::ostringstream m_oss;
-        std::string& m_targetString;
-    };
-    
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////    
-
     class Runner : public IResultCapture, public IRunner
     {
         Runner( const Runner& );
@@ -193,7 +321,8 @@ namespace Catch
         (
             const Config& config 
         )
-        :   m_config( config ),
+        :   m_runningTest( NULL ),
+            m_config( config ),
             m_successes( 0 ),
             m_failures( 0 ),
             m_reporter( m_config.getReporter() ),
@@ -263,20 +392,20 @@ namespace Catch
             
             m_reporter->StartTestCase( testInfo );
             
-            m_runningTest = RunningTest( &testInfo );
+            m_runningTest = new RunningTest( &testInfo );
 
             do
             {
                 do
                 {
-                    m_runningTest.resetSectionSeen();
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
-                while( m_runningTest.wasSectionSeen() );
+                while( m_runningTest->hasUntestedSections() );
             }
             while( Hub::advanceGeneratorsForCurrentTest() );
 
-            m_runningTest = RunningTest();
+            delete m_runningTest;
+            m_runningTest = NULL;
 
             m_reporter->EndTestCase( testInfo, m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
         }
@@ -382,14 +511,13 @@ namespace Catch
             std::size_t& failures 
         )
         {
-            if( m_runningTest.wasSectionSeen() || !m_runningTest.addSection( name ) )
+            if( !m_runningTest->addSection( name ) )
                 return false;
 
             m_reporter->StartSection( name, description );
             successes = m_successes;
             failures = m_failures;
             
-            // !TBD look up whether we should execute this section or not
             return true;
         }
         
@@ -401,7 +529,7 @@ namespace Catch
             std::size_t prevFailures 
         )
         {
-            m_runningTest.endSection( name );
+            m_runningTest->endSection( name );
             m_reporter->EndSection( name, m_successes - prevSuccesses, m_failures - prevFailures );
         }
 
@@ -437,7 +565,9 @@ namespace Catch
         () 
         const
         {
-            return m_runningTest.getTestCaseInfo().getName();
+            return m_runningTest
+                ? m_runningTest->getTestCaseInfo().getName()
+                : "";
         }
         
     private:
@@ -451,9 +581,11 @@ namespace Catch
         {            
             try
             {
+                m_runningTest->reset();
                 StreamRedirect coutRedir( std::cout, redirectedCout );
                 StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                m_runningTest.getTestCaseInfo().invoke();                
+                m_runningTest->getTestCaseInfo().invoke();
+                m_runningTest->ranToCompletion();
             }
             catch( TestFailureException& )
             {
@@ -473,7 +605,7 @@ namespace Catch
         }
         
     private:
-        RunningTest m_runningTest;
+        RunningTest* m_runningTest;
         MutableResultInfo m_currentResult;
 
         const Config& m_config;
