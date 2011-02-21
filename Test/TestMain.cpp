@@ -16,9 +16,7 @@
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" )
 {
-    using namespace Catch;
-    
-    EmbeddedRunner runner;
+    Catch::EmbeddedRunner runner;
 
     runner.runMatching( "./succeeding/*" );
     INFO( runner.getOutput() );
@@ -29,4 +27,14 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
     INFO( runner.getOutput() );
     CHECK( runner.getSuccessCount() == 0 );
     CHECK( runner.getFailureCount() == 53 );
+}
+
+TEST_CASE( "meta/Misc/Sections", "looped tests" )
+{
+    Catch::EmbeddedRunner runner;
+    
+    runner.runMatching( "./succeeding/Misc/Sections/nested2" );
+    CHECK( runner.getSuccessCount() == 9 );
+    CHECK( runner.getFailureCount() == 2 );
+    
 }

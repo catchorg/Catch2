@@ -297,7 +297,7 @@ namespace Catch
         const
         {
             return  m_rootSection.hasUntestedSections() ||
-                    m_runStatus != RanToCompletionWithSections;
+                    m_runStatus == RanAtLeastOneSection;
         }
         
     private:
