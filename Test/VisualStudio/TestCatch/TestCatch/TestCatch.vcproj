@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="\\psf\Host\TwoBlueCubes\Dev\GitHub\Catch"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -203,7 +204,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\GeneratorTests.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\MessageTests.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\MiscTests.cpp"
 				>
 			</File>
 			<File

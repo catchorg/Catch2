@@ -130,6 +130,15 @@ public:
     }
     
     ///////////////////////////////////////////////////////////////////////////
+	// *** Move semantics, similar to auto_ptr ***
+    CompositeGenerator( CompositeGenerator& other )
+	:	m_fileInfo( other.m_fileInfo ),
+		m_totalSize( 0 )
+    {
+		move( other );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
     CompositeGenerator& setFileInfo
     (
         const char* fileInfo
@@ -164,7 +173,7 @@ public:
             }
             index += generator->size();
         }
-        throw "this should never happen!";
+        CATCH_INTERNAL_ERROR( "Indexed past end of generated range" );
     }
     
     ///////////////////////////////////////////////////////////////////////////

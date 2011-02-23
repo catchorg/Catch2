@@ -596,6 +596,16 @@ namespace Catch
                 acceptMessage( ex.what() );
                 acceptResult( ResultWas::ThrewException );
             }
+            catch( std::string& msg )
+            {
+                acceptMessage( msg );
+                acceptResult( ResultWas::ThrewException );
+            }
+            catch( const char* msg )
+            {
+                acceptMessage( msg );
+                acceptResult( ResultWas::ThrewException );
+            }
             catch(...)
             {
                 acceptMessage( "unknown exception" );

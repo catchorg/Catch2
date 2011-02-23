@@ -17,6 +17,15 @@
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
 #define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __LINE__ )
 
+#ifdef __GNUC__
+#define ATTRIBUTE_NORETURN __attribute__ ((noreturn))
+#else
+#define ATTRIBUTE_NORETURN
+#endif
+
+#include <sstream>
+#include <stdexcept>
+
 namespace Catch
 {
 	class NonCopyable
@@ -53,13 +62,17 @@ namespace Catch
             delete it->second;
         }
     }
-
+    
+    ATTRIBUTE_NORETURN
+    inline void throwLogicError( const std::string& message, const std::string& file, long line )
+    {
+        std::ostringstream oss;
+        oss << "Internal Catch error: '" << message << "' at: " << file << "(" << line << ")";
+        throw std::logic_error( oss.str() );
+    }
 }
-#ifdef __GNUC__
-#define ATTRIBUTE_NORETURN __attribute__ ((noreturn))
-#else
-#define ATTRIBUTE_NORETURN
-#endif
+
+#define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
