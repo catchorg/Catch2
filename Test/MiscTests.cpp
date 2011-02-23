@@ -105,3 +105,14 @@ TEST_CASE( "./succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr"
     
     std::cerr << "An error";
 }
+
+const char* makeString( bool makeNull ) 
+{
+    return makeNull ? NULL : "valid string";
+}
+
+TEST_CASE( "./succeeding/Misc/null strings", "" )
+{
+    REQUIRE( makeString( false ) != static_cast<char*>(NULL));
+    REQUIRE( makeString( true ) == static_cast<char*>(NULL));
+}
