@@ -77,7 +77,7 @@
             #define BreakIntoDebugger() if( Catch::AmIBeingDebugged() ) {__asm__("int $3\n" : : );}
         #endif
     #else
-        #define BreakIntoDebugger()
+        inline void BreakIntoDebugger(){}
     #endif
 
 #elif defined(__WIN32__) && defined(_MSC_VER)
