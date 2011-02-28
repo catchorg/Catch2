@@ -20,7 +20,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
 
     runner.runMatching( "./succeeding/*" );
     INFO( runner.getOutput() );
-    CHECK( runner.getSuccessCount() == 197 );
+    CHECK( runner.getSuccessCount() == 199 );
     CHECK( runner.getFailureCount() == 0 );
 
     runner.runMatching( "./failing/*" );        
@@ -34,7 +34,7 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" )
     Catch::EmbeddedRunner runner;
     
     runner.runMatching( "./mixed/Misc/Sections/nested2" );
-    CHECK( runner.getSuccessCount() == 9 );
-    CHECK( runner.getFailureCount() == 2 );
+    CHECK( runner.getSuccessCount() == 2 );
+    CHECK( runner.getFailureCount() == 1 );
     
 }

@@ -142,7 +142,7 @@ namespace Catch
             const std::string /*description*/ 
         )
         {
-            m_sectionSpan = sectionName;
+            m_sectionSpans.push_back( SpanInfo( sectionName ) );
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -153,13 +153,14 @@ namespace Catch
             std::size_t failed
         )
         {
-            if( m_sectionSpan.emitted && !m_sectionSpan.name.empty() )
+            SpanInfo& sectionSpan = m_sectionSpans.back();
+            if( sectionSpan.emitted && !sectionSpan.name.empty() )
             {
                 m_config.stream() << "[End of section: '" << sectionName << "'. ";
                 ReportCounts( succeeded, failed );
                 m_config.stream() << "]\n" << std::endl;
-                m_sectionSpan = SpanInfo();
             }
+            m_sectionSpans.pop_back();
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -260,16 +261,29 @@ namespace Catch
                 m_testSpan.emitted = true;
             }
             
-            if( !m_sectionSpan.emitted && !m_sectionSpan.name.empty() )
+            if( !m_sectionSpans.empty() )
             {
-                if( m_firstSectionInTestCase )
+                SpanInfo& sectionSpan = m_sectionSpans.back();
+                if( !sectionSpan.emitted && !sectionSpan.name.empty() )
                 {
-                    m_config.stream() << "\n";
-                    m_firstSectionInTestCase = false;
+                    if( m_firstSectionInTestCase )
+                    {
+                        m_config.stream() << "\n";
+                        m_firstSectionInTestCase = false;
+                    }
+                    std::vector<SpanInfo>::iterator it = m_sectionSpans.begin();
+                    std::vector<SpanInfo>::iterator itEnd = m_sectionSpans.end();
+                    for(; it != itEnd; ++it )
+                    {
+                        SpanInfo& prevSpan = *it;
+                        if( !prevSpan.emitted && !prevSpan.name.empty() )
+                        {
+                            m_config.stream() << "[Started section: '" << prevSpan.name << "']" << std::endl;
+                            prevSpan.emitted = true;
+                        }                        
+                    }
                 }
-                m_config.stream() << "[Started section: '" << m_sectionSpan.name << "']" << std::endl;
-                m_sectionSpan.emitted = true;
-            }        
+            }
         }
         
     private:
@@ -278,8 +292,8 @@ namespace Catch
 
         SpanInfo m_testingSpan;
         SpanInfo m_groupSpan;
-        SpanInfo m_sectionSpan;
         SpanInfo m_testSpan;
+        std::vector<SpanInfo> m_sectionSpans;
     };
 
     INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
