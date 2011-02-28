@@ -45,10 +45,11 @@
 #define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, false, "CHECK_THROWS_AS" )
 #define CHECK_NOTHROW( expr ) INTERNAL_CATCH_THROWS_AS( expr, Catch::DummyExceptionType_DontUse, true, false, "CHECK_NOTHROW" )
 
-#define INFO( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::Info, false, "INFO" )
-#define WARN( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::Warning, false, "WARN" )
-#define FAIL( reason ) INTERNAL_CATCH_MSG( reason, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
-#define SCOPED_INFO( log ) INTERNAL_CATCH_SCOPED_INFO( log )
+#define INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, false, "INFO" )
+#define WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, false, "WARN" )
+#define FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
+#define SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg )
+#define CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, false, "CAPTURE" )
 
 #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
 
