@@ -44,7 +44,7 @@ namespace Catch
             m_filename( filename ),
             m_line( line ),
             m_expr( expr ),
-            m_op( m_expr[0] == '!' ? "!" : "" ),
+            m_op( isNotExpression( expr ) ? "!" : "" ),
             m_result( result ),
             m_isNot( isNot ),
             m_expressionIncomplete( false )
@@ -152,6 +152,15 @@ namespace Catch
             else
                 return "{can't expand - use " + m_macroName + "_NOT( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+        bool isNotExpression
+        (
+            const char* expr
+        )
+        {
+            return expr && expr[0] == '!';
+        }        
         
     protected:
         std::string m_macroName;
