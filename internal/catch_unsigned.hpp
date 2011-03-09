@@ -17,89 +17,129 @@
 
 namespace Catch
 {
-    template<typename T>
-    struct SignTraits{};
-    
-    template<>
-    struct SignTraits<int>
+    enum Operator
     {
-        typedef int SignedType;
-        typedef unsigned int UnsignedType;
-    };
-    template<>
-    struct SignTraits<unsigned int> : SignTraits<int>{};
-    
-    template<>
-    struct SignTraits<long>
-    {
-        typedef long SignedType;
-        typedef unsigned long UnsignedType;
-    };
-    template<>
-    struct SignTraits<unsigned long> : SignTraits<long>{};
-    
-    template<>
-    struct SignTraits<char>
-    {
-        typedef char SignedType;
-        typedef unsigned char UnsignedType;
-    };
-    template<>
-    struct SignTraits<unsigned char> : SignTraits<char>{};
-    
-    template<typename ActualT, typename TestT>
-    struct IsType
-    {
-        enum{ result = false };
+        IsEqualTo,
+        IsNotEqualTo,
+        IsLessThan,
+        IsGreaterThan,
+        IsLessThanOrEqualTo,
+        IsGreaterThanOrEqualTo
     };
     
-    template<typename T>
-    struct IsType<T, T>
-    {
-        enum{ result = true };
-    };
-    
-    template<typename T1, typename T2, bool>
-    struct MatchedSigns
-    {
-        static const T1& castLhs( const T1& lhs )
-        {
-            return lhs;
-        }
-        static const T2& castRhs( const T2& rhs )
-        {
-            return rhs;
-        }
-    };
+    template<typename T1, typename T2, Operator Op>
+    class Evaluator{};
     
     template<typename T1, typename T2>
-    struct MatchedSigns<T1, T2, false>
+    struct Evaluator<T1, T2, IsEqualTo>
     {
-        typedef typename SignTraits<T1>::SignedType Type1;
-        typedef typename SignTraits<T2>::SignedType Type2;
-        
-        static Type1 castLhs( T1 lhs )
+        static bool evaluate( const T1& lhs, const T2& rhs )
         {
-            return static_cast<Type1>( lhs );
+            return lhs == rhs;
         }
-        static Type2 castRhs( T2 rhs )
+    };
+    template<typename T1, typename T2>
+    struct Evaluator<T1, T2, IsNotEqualTo>
+    {
+        static bool evaluate( const T1& lhs, const T2& rhs )
         {
-            return static_cast<Type2>( rhs );
+            return lhs != rhs;
+        }
+    };
+    template<typename T1, typename T2>
+    struct Evaluator<T1, T2, IsLessThan>
+    {
+        static bool evaluate( const T1& lhs, const T2& rhs )
+        {
+            return lhs < rhs;
+        }
+    };
+    template<typename T1, typename T2>
+    struct Evaluator<T1, T2, IsGreaterThan>
+    {
+        static bool evaluate( const T1& lhs, const T2& rhs )
+        {
+            return lhs > rhs;
+        }
+    };
+    template<typename T1, typename T2>
+    struct Evaluator<T1, T2, IsGreaterThanOrEqualTo>
+    {
+        static bool evaluate( const T1& lhs, const T2& rhs )
+        {
+            return lhs >= rhs;
+        }
+    };
+    template<typename T1, typename T2>
+    struct Evaluator<T1, T2, IsLessThanOrEqualTo>
+    {
+        static bool evaluate( const T1& lhs, const T2& rhs )
+        {
+            return lhs <= rhs;
         }
     };
     
-    template<typename T1, typename T2>
-    struct MatchSign 
-        : MatchedSigns< T1, T2, 
-            (   !IsType<T1, int>::result && 
-                !IsType<T1, long>::result && 
-                !IsType<T2, int>::result && 
-                !IsType<T2, long>::result ) ||
-                !std::numeric_limits<T1>::is_integer || 
-                !std::numeric_limits<T2>::is_integer ||
-                std::numeric_limits<T1>::is_signed == std::numeric_limits<T2>::is_signed >
+    template<Operator Op, typename T1, typename T2>
+    bool compare( const T1& lhs, const T2& rhs )
     {
-    };
+        return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
+    }
+    
+    // unsigned X to int
+    template<Operator Op> bool compare( unsigned int lhs, int rhs )
+    {
+        return Evaluator<unsigned int, unsigned int, Op>::evaluate( lhs, static_cast<unsigned int>( rhs ) );
+    }
+    template<Operator Op> bool compare( unsigned long lhs, int rhs )
+    {
+        return Evaluator<unsigned long, unsigned int, Op>::evaluate( lhs, static_cast<unsigned int>( rhs ) );
+    }
+    template<Operator Op> bool compare( unsigned char lhs, int rhs )
+    {
+        return Evaluator<unsigned char, unsigned int, Op>::evaluate( lhs, static_cast<unsigned int>( rhs ) );
+    }
+    
+    // unsigned X to long
+    template<Operator Op> bool compare( unsigned int lhs, long rhs )
+    {
+        return Evaluator<unsigned int, unsigned long, Op>::evaluate( lhs, static_cast<unsigned long>( rhs ) );
+    }
+    template<Operator Op> bool compare( unsigned long lhs, long rhs )
+    {
+        return Evaluator<unsigned long, unsigned long, Op>::evaluate( lhs, static_cast<unsigned long>( rhs ) );
+    }
+    template<Operator Op> bool compare( unsigned char lhs, long rhs )
+    {
+        return Evaluator<unsigned char, unsigned long, Op>::evaluate( lhs, static_cast<unsigned long>( rhs ) );
+    }
+    
+    // int to unsigned X
+    template<Operator Op> bool compare( int lhs, unsigned int rhs )
+    {
+        return Evaluator<unsigned int, unsigned int, Op>::evaluate( static_cast<unsigned int>( lhs ), rhs );
+    }
+    template<Operator Op> bool compare( int lhs, unsigned long rhs )
+    {
+        return Evaluator<unsigned int, unsigned long, Op>::evaluate( static_cast<unsigned int>( lhs ), rhs );
+    }
+    template<Operator Op> bool compare( int lhs, unsigned char rhs )
+    {
+        return Evaluator<unsigned int, unsigned char, Op>::evaluate( static_cast<unsigned int>( lhs ), rhs );
+    }
+    
+    // long to unsigned X
+    template<Operator Op> bool compare( long lhs, unsigned int rhs )
+    {
+        return Evaluator<unsigned long, unsigned int, Op>::evaluate( static_cast<unsigned long>( lhs ), rhs );
+    }
+    template<Operator Op> bool compare( long lhs, unsigned long rhs )
+    {
+        return Evaluator<unsigned long, unsigned long, Op>::evaluate( static_cast<unsigned long>( lhs ), rhs );
+    }
+    template<Operator Op> bool compare( long lhs, unsigned char rhs )
+    {
+        return Evaluator<unsigned long, unsigned char, Op>::evaluate( static_cast<unsigned long>( lhs ), rhs );
+    }
 }
 
 #endif // TWOBLUECUBES_CATCH_UNSIGNED_HPP_INCLUDED
