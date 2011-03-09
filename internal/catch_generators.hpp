@@ -60,7 +60,7 @@ public:
     )
     const
     {
-        return m_from+index;
+        return m_from+static_cast<T>( index );
     }
     
     ///////////////////////////////////////////////////////////////////////////

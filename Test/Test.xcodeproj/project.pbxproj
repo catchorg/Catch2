@@ -42,6 +42,7 @@
 		4A3BFFB8128DCF06005609E3 /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMain.cpp; sourceTree = "<group>"; };
 		4A3BFFF0128DD23C005609E3 /* catch_config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_config.hpp; path = ../internal/catch_config.hpp; sourceTree = SOURCE_ROOT; };
 		4A6D514B12C8A547008F0415 /* catch_debugger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_debugger.hpp; path = ../internal/catch_debugger.hpp; sourceTree = SOURCE_ROOT; };
+		4A72A6FE13217CB70008EC53 /* catch_evaluate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_evaluate.hpp; path = ../internal/catch_evaluate.hpp; sourceTree = SOURCE_ROOT; };
 		4A8A68FF12F1F75100ACED26 /* catch_generators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_generators.hpp; path = ../internal/catch_generators.hpp; sourceTree = SOURCE_ROOT; };
 		4A8A698812F2CDA100ACED26 /* catch_generators_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_generators_impl.hpp; path = ../internal/catch_generators_impl.hpp; sourceTree = SOURCE_ROOT; };
 		4A8A69C512F2D1C600ACED26 /* GeneratorTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeneratorTests.cpp; sourceTree = "<group>"; };
@@ -171,6 +172,7 @@
 				4AFC341612809A36003A0C29 /* catch_common.h */,
 				4A992A6512B2156C002B7B66 /* catch_xmlwriter.hpp */,
 				4A15D4A812E4DF0D0005EB03 /* catch_stream.hpp */,
+				4A72A6FE13217CB70008EC53 /* catch_evaluate.hpp */,
 			);
 			name = support;
 			sourceTree = "<group>";

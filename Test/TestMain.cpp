@@ -20,13 +20,13 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
 
     runner.runMatching( "./succeeding/*" );
     INFO( runner.getOutput() );
-    CHECK( runner.getSuccessCount() == 199 );
+    CHECK( runner.getSuccessCount() == 212 );
     CHECK( runner.getFailureCount() == 0 );
 
     runner.runMatching( "./failing/*" );        
     INFO( runner.getOutput() );
     CHECK( runner.getSuccessCount() == 0 );
-    CHECK( runner.getFailureCount() == 53 );
+    CHECK( runner.getFailureCount() == 54 );
 }
 
 TEST_CASE( "meta/Misc/Sections", "looped tests" )

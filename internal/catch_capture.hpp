@@ -16,6 +16,7 @@
 #include "catch_result_type.h"
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.hpp"
+#include "catch_evaluate.hpp"
 #include <sstream>
 #include <cmath>
 
@@ -211,6 +212,8 @@ public:
         
 private:
     friend class ResultBuilder;
+    template<typename T>
+    friend class Expression;
 
     ///////////////////////////////////////////////////////////////////////////
     void setLhs
@@ -232,7 +235,108 @@ private:
         m_rhs = rhs;
         return *this;
     }    
+
+    ///////////////////////////////////////////////////////////////////////////
+    template<Operator Op, typename T1, typename T2>    
+    MutableResultInfo& setExpressionComponents
+    (
+        const T1& lhs, 
+        const T2& rhs
+    )
+    {
+        setResultType( compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        m_rhs = toString( rhs );
+        m_op = OperatorTraits<Op>::getName();
+        return *this;
+    }    
 };
+
+    template<typename T>
+    class Expression
+    {
+    public:
+        ///////////////////////////////////////////////////////////////////////////
+        Expression
+        (
+            MutableResultInfo& result, 
+            const T& lhs 
+        )
+        :   m_result( result ),
+            m_lhs( lhs )
+        {
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator == 
+        (
+            const RhsT& rhs
+        )
+        {
+            return m_result.setExpressionComponents<IsEqualTo>( m_lhs, rhs );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator != 
+        (
+            const RhsT& rhs
+        )
+        {
+            return m_result.setExpressionComponents<IsEqualTo>( m_lhs, rhs );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator <
+        (
+            const RhsT& rhs
+        )
+        {
+            return m_result.setExpressionComponents<IsLessThan>( m_lhs, rhs );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator >
+        (
+            const RhsT& rhs
+        )
+        {
+            return m_result.setExpressionComponents<IsGreaterThan>( m_lhs, rhs );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator <= 
+        (
+            const RhsT& rhs
+        )
+        {
+            return m_result.setExpressionComponents<IsLessThanOrEqualTo>( m_lhs, rhs );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator >= 
+        (
+            const RhsT& rhs
+        )
+        {
+            return m_result.setExpressionComponents<IsGreaterThanOrEqualTo>( m_lhs, rhs );
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        operator MutableResultInfo&
+        ()
+        {
+            return m_result;
+        }
+        
+    private:
+        MutableResultInfo& m_result;
+        const T& m_lhs;
+    };
     
 class ResultBuilder
 {
@@ -252,15 +356,28 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    ResultBuilder& operator->*
+    Expression<T> operator->*
     (
         const T & operand
     )
     {
+        Expression<T> expr( m_result, operand );
+        
+        m_result.setLhs( toString( operand ) );
+        return expr;
+    }
+/*
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename T>
+    ResultBuilder& operator->*
+    (
+     const T & operand
+     )
+    {
         m_result.setLhs( toString( operand ) );
         return *this;
     }
-    
+ */   
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
     MutableResultInfo& operator == 
@@ -329,7 +446,7 @@ public:
     }
     
 private:
-    MutableResultInfo m_result;
+    MutableResultInfo m_result;    
     
 };
 

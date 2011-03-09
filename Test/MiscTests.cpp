@@ -113,3 +113,11 @@ TEST_CASE( "./succeeding/Misc/null strings", "" )
     REQUIRE( makeString( false ) != static_cast<char*>(NULL));
     REQUIRE( makeString( true ) == static_cast<char*>(NULL));
 }
+
+TEST_CASE( "./failing/info", "sends information to INFO" )
+{
+    INFO( "hi" );
+    int i = 7;
+    CAPTURE( i );
+    REQUIRE( false );
+}

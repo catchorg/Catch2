@@ -153,6 +153,33 @@ TEST_CASE( "./failing/conditions/ordered", "Ordering comparison checks that shou
     CHECK( data.str_hello <= "a" );
 }
 
+// Comparisons with int literals
+TEST_CASE( "./succeeding/conditions/int literals", "Comparisons with int literals don't warn when mixing signed/ unsigned" )
+{
+    int i = 1;
+    unsigned int ui = 2;
+    long l = 3;
+    unsigned long ul = 4;
+    char c = 5;
+    unsigned char uc = 6;
+    
+    REQUIRE( i == 1 );
+    REQUIRE( ui == 2 );
+    REQUIRE( l == 3 );
+    REQUIRE( ul == 4 );
+    REQUIRE( c == 5 );
+    REQUIRE( uc == 6 );
+
+    REQUIRE( 1 == i );
+    REQUIRE( 2 == ui );
+    REQUIRE( 3 == l );
+    REQUIRE( 4 == ul );
+    REQUIRE( 5 == c );
+    REQUIRE( 6 == uc );
+
+    REQUIRE( 62270208023445 > ul );
+}
+
 // Not (!) tests
 // The problem with the ! operator is that it has right-to-left associativity.
 // This means we can't isolate it when we decompose. The simple REQUIRE( !false ) form, therefore,
