@@ -1,5 +1,5 @@
 /*
- *  catch_unsigned.hpp
+ *  catch_evaluate.hpp
  *  Catch
  *
  *  Created by Phil on 04/03/2011.
@@ -10,10 +10,8 @@
  *
  */
 
-#ifndef TWOBLUECUBES_CATCH_UNSIGNED_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_UNSIGNED_HPP_INCLUDED
-
-#include <limits>
+#ifndef TWOBLUECUBES_CATCH_EVALUATE_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_EVALUATE_HPP_INCLUDED
 
 namespace Catch
 {
@@ -26,7 +24,7 @@ namespace Catch
         IsLessThanOrEqualTo,
         IsGreaterThanOrEqualTo
     };
-    
+
     template<typename T1, typename T2, Operator Op>
     class Evaluator{};
     
@@ -142,4 +140,4 @@ namespace Catch
     }
 }
 
-#endif // TWOBLUECUBES_CATCH_UNSIGNED_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_EVALUATE_HPP_INCLUDED
