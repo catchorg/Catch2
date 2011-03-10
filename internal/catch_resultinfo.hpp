@@ -26,8 +26,7 @@ namespace Catch
         ()
         :   m_line( 0 ),
             m_result( ResultWas::Unknown ),
-            m_isNot( false ),
-            m_expressionIncomplete( false )
+            m_isNot( false )
         {}
         
         ///////////////////////////////////////////////////////////////////////////
@@ -48,8 +47,7 @@ namespace Catch
             m_op( isNotExpression( expr ) ? "!" : "" ),
             m_message( message ),
             m_result( result ),
-            m_isNot( isNot ),
-            m_expressionIncomplete( false )
+            m_isNot( isNot )
         {
             if( isNot )
                 m_expr = "!" + m_expr;
@@ -103,8 +101,8 @@ namespace Catch
             if( !hasExpression() )
                 return "";
             
-            return m_expressionIncomplete
-                ? getExpandedExpressionInternal() + " {can't expand the rest of the expression - consider rewriting it}"
+            return m_result == ResultWas::ExpressionTooComplex
+                ? getExpandedExpressionInternal() + " {couldn't fully decompose the expression to evaluate it - please rewrite as a binary comparison}"
                 : getExpandedExpressionInternal();
         }
         
@@ -172,7 +170,6 @@ namespace Catch
         std::string m_message;
         ResultWas::OfType m_result;
         bool m_isNot;
-        bool m_expressionIncomplete;
     };
     
 } // end namespace Catch

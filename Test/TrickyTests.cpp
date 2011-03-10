@@ -41,15 +41,32 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./inprogress/succeeding/Tricky/complex lhs", 
+    "./inprogress/failing/Tricky/complex lhs", 
     "Where the LHS is not a simple value"
 )
 {
+    /*
     int a = 1;
     int b = 2;
 
     // This only captures part of the expression, but issues a warning about the rest
     REQUIRE( a == 2 || b == 2 );
+     */
+}
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+    "./inprogress/failing/Tricky/complex 2", 
+    "Where the LHS is not a simple value"
+)
+{
+    /*
+    int a = 1;
+    int b = 2;
+    
+    // This only captures part of the expression, but issues a warning about the rest
+    REQUIRE( a+1 == b-1 );
+    */
 }
 
 struct Opaque

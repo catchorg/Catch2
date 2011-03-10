@@ -155,12 +155,13 @@ inline std::string toString
     return value ? "true" : "false";
 }
     
-class TestFailureException
+struct TestFailureException
 {
 };
-class DummyExceptionType_DontUse
+struct DummyExceptionType_DontUse
 {
 };
+struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
 class MutableResultInfo : public ResultInfo
 {
@@ -208,18 +209,21 @@ public:
     {
         m_message = message;
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator ||
+    (
+        const RhsT&
+    );
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator ||
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator &&
     (
         const RhsT&
-    )
-    {
-        m_expressionIncomplete = true;
-        return *this;
-    }
-        
+    );
+    
 private:
     friend class ResultBuilder;
     template<typename T>
@@ -250,7 +254,8 @@ private:
         m_rhs = toString( rhs );
         m_op = OperatorTraits<Op>::getName();
         return *this;
-    }    
+    }
+    
 };
 
 template<typename T>
@@ -335,6 +340,20 @@ public:
         return m_result.captureBoolExpression( m_lhs );
     }
     
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator +
+    (
+        const RhsT&
+    );
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator -
+    (
+        const RhsT&
+    );
+
 private:
     MutableResultInfo& m_result;
     const T& m_lhs;
