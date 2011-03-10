@@ -20,7 +20,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
 
     runner.runMatching( "./succeeding/*" );
     INFO( runner.getOutput() );
-    CHECK( runner.getSuccessCount() == 212 );
+    CHECK( runner.getSuccessCount() == 213 );
     CHECK( runner.getFailureCount() == 0 );
 
     runner.runMatching( "./failing/*" );        

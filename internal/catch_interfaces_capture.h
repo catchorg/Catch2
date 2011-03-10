@@ -56,7 +56,7 @@ namespace Catch
         virtual ResultAction::Value acceptResult
             (   ResultWas::OfType result
             ) = 0;
-        virtual void acceptExpression
+        virtual ResultAction::Value acceptExpression
             (   const MutableResultInfo& resultInfo 
             ) = 0;
         virtual void acceptMessage

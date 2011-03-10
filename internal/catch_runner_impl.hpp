@@ -458,12 +458,22 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void acceptExpression
+        virtual ResultAction::Value acceptExpression
         (
             const MutableResultInfo& resultInfo
         )
         {
             m_currentResult = resultInfo;
+            testEnded( m_currentResult );
+            
+            bool ok = m_currentResult.ok();
+            m_currentResult = MutableResultInfo();
+            if( ok )
+                return ResultAction::None;
+            else if( shouldDebugBreak() )
+                return ResultAction::DebugFailed;
+            else
+                return ResultAction::Failed;
         }
 
         ///////////////////////////////////////////////////////////////////////////

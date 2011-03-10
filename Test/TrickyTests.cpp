@@ -24,7 +24,12 @@ namespace Catch
     }
 }
 
-TEST_CASE( "./succeeding/Tricky/std::pair", "Parsing a std::pair" )
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+    "./succeeding/Tricky/std::pair", 
+    "Parsing a std::pair"
+)
 {
     std::pair<int, int> aNicePair( 1, 2 );
 
@@ -33,7 +38,12 @@ TEST_CASE( "./succeeding/Tricky/std::pair", "Parsing a std::pair" )
     
 }
 
-TEST_CASE( "./succeeding/Tricky/complex lhs", "Where the LHS is not a simple value" )
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+    "./inprogress/succeeding/Tricky/complex lhs", 
+    "Where the LHS is not a simple value"
+)
 {
     int a = 1;
     int b = 2;
@@ -45,13 +55,18 @@ TEST_CASE( "./succeeding/Tricky/complex lhs", "Where the LHS is not a simple val
 struct Opaque
 {
     int val;
-    bool operator ==( const Opaque& o )
+    bool operator ==( const Opaque& o ) const
     {
         return val == o.val;
     }
 };
 
-TEST_CASE( "./failing/Tricky/non streamable type", "A failing expression with a non streamable type is still captured" )
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+    "./failing/Tricky/non streamable type", 
+    "A failing expression with a non streamable type is still captured" 
+)
 {
     
     Opaque o1, o2;
@@ -60,4 +75,29 @@ TEST_CASE( "./failing/Tricky/non streamable type", "A failing expression with a 
   
     CHECK( &o1 == &o2 );
     CHECK( o1 == o2 );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(   
+    "./failing/string literals", 
+    "string literals of different sizes can be compared" 
+)
+{
+    REQUIRE( std::string( "first" ) == "second" );
+    
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(   
+    "./succeeding/side-effects", 
+    "An expression with side-effects should only be evaluated once" 
+)
+{
+    int i = 7;
+    
+    REQUIRE( i++ == 7 );
+    REQUIRE( i++ == 8 );
+    
 }

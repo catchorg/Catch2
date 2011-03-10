@@ -38,13 +38,15 @@ namespace Catch
             bool isNot, 
             const char* filename, 
             std::size_t line, 
-            const char* macroName 
+            const char* macroName,
+            const char* message
         )
         :   m_macroName( macroName ),
             m_filename( filename ),
             m_line( line ),
             m_expr( expr ),
             m_op( isNotExpression( expr ) ? "!" : "" ),
+            m_message( message ),
             m_result( result ),
             m_isNot( isNot ),
             m_expressionIncomplete( false )

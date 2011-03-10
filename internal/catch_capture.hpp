@@ -145,6 +145,15 @@ inline std::string toString
     oss << value;
     return oss.str();
 }    
+
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    bool value
+)
+{
+    return value ? "true" : "false";
+}
     
 class TestFailureException
 {
@@ -169,9 +178,10 @@ public:
         bool isNot, 
         const char* filename, 
         std::size_t line, 
-        const char* macroName 
+        const char* macroName,
+        const char* message = ""
     )
-    : ResultInfo( expr, ResultWas::Unknown, isNot, filename, line, macroName )
+    : ResultInfo( expr, ResultWas::Unknown, isNot, filename, line, macroName, message )
     {
     }
 
@@ -216,127 +226,119 @@ private:
     friend class Expression;
 
     ///////////////////////////////////////////////////////////////////////////
-    void setLhs
+    MutableResultInfo& captureBoolExpression
     (
-        const std::string& lhs
+        bool result
     )
     {
-        m_lhs = lhs;
-    }    
-
-    ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo& setRhs
-    (
-        const std::string& op, 
-        const std::string& rhs 
-    )
-    {
-        m_op = op;
-        m_rhs = rhs;
+        m_lhs = toString( result );
+        m_op = m_isNot ? "!" : "";
+        setResultType( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }    
 
     ///////////////////////////////////////////////////////////////////////////
     template<Operator Op, typename T1, typename T2>    
-    MutableResultInfo& setExpressionComponents
+    MutableResultInfo& captureExpression
     (
         const T1& lhs, 
         const T2& rhs
     )
     {
         setResultType( compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        m_lhs = toString( lhs );
         m_rhs = toString( rhs );
         m_op = OperatorTraits<Op>::getName();
         return *this;
     }    
 };
 
-    template<typename T>
-    class Expression
+template<typename T>
+class Expression
+{
+public:
+    ///////////////////////////////////////////////////////////////////////////
+    Expression
+    (
+        MutableResultInfo& result, 
+        const T& lhs 
+    )
+    :   m_result( result ),
+        m_lhs( lhs )
     {
-    public:
-        ///////////////////////////////////////////////////////////////////////////
-        Expression
-        (
-            MutableResultInfo& result, 
-            const T& lhs 
-        )
-        :   m_result( result ),
-            m_lhs( lhs )
-        {
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator == 
-        (
-            const RhsT& rhs
-        )
-        {
-            return m_result.setExpressionComponents<IsEqualTo>( m_lhs, rhs );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator != 
-        (
-            const RhsT& rhs
-        )
-        {
-            return m_result.setExpressionComponents<IsEqualTo>( m_lhs, rhs );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator <
-        (
-            const RhsT& rhs
-        )
-        {
-            return m_result.setExpressionComponents<IsLessThan>( m_lhs, rhs );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator >
-        (
-            const RhsT& rhs
-        )
-        {
-            return m_result.setExpressionComponents<IsGreaterThan>( m_lhs, rhs );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator <= 
-        (
-            const RhsT& rhs
-        )
-        {
-            return m_result.setExpressionComponents<IsLessThanOrEqualTo>( m_lhs, rhs );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator >= 
-        (
-            const RhsT& rhs
-        )
-        {
-            return m_result.setExpressionComponents<IsGreaterThanOrEqualTo>( m_lhs, rhs );
-        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator == 
+    (
+        const RhsT& rhs
+    )
+    {
+        return m_result.captureExpression<IsEqualTo>( m_lhs, rhs );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator != 
+    (
+        const RhsT& rhs
+    )
+    {
+        return m_result.captureExpression<IsNotEqualTo>( m_lhs, rhs );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator <
+    (
+        const RhsT& rhs
+    )
+    {
+        return m_result.captureExpression<IsLessThan>( m_lhs, rhs );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator >
+    (
+        const RhsT& rhs
+    )
+    {
+        return m_result.captureExpression<IsGreaterThan>( m_lhs, rhs );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator <= 
+    (
+        const RhsT& rhs
+    )
+    {
+        return m_result.captureExpression<IsLessThanOrEqualTo>( m_lhs, rhs );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator >= 
+    (
+        const RhsT& rhs
+    )
+    {
+        return m_result.captureExpression<IsGreaterThanOrEqualTo>( m_lhs, rhs );
+    }
 
-        ///////////////////////////////////////////////////////////////////////////
-        operator MutableResultInfo&
-        ()
-        {
-            return m_result;
-        }
-        
-    private:
-        MutableResultInfo& m_result;
-        const T& m_lhs;
-    };
+    ///////////////////////////////////////////////////////////////////////////
+    operator MutableResultInfo&
+    ()
+    {
+        return m_result.captureBoolExpression( m_lhs );
+    }
+    
+private:
+    MutableResultInfo& m_result;
+    const T& m_lhs;
+};
     
 class ResultBuilder
 {
@@ -345,11 +347,11 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     ResultBuilder
     (
-        const char* expr, 
-        bool isNot, 
         const char* filename, 
         std::size_t line, 
-        const char* macroName
+        const char* macroName,
+        const char* expr = "",
+        bool isNot = false
     )
     : m_result( expr, isNot, filename, line, macroName )
     {}
@@ -363,90 +365,41 @@ public:
     {
         Expression<T> expr( m_result, operand );
         
-        m_result.setLhs( toString( operand ) );
         return expr;
     }
-/*
+
     ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    ResultBuilder& operator->*
+    ResultBuilder& operator <<
     (
-     const T & operand
-     )
+        const T & value
+    )
     {
-        m_result.setLhs( toString( operand ) );
+        m_messageStream << value;
         return *this;
     }
- */   
+    
     ///////////////////////////////////////////////////////////////////////////
-    template<typename RhsT>
-    MutableResultInfo& operator == 
+    ResultBuilder& setResultType
     (
-        const RhsT& rhs
+        ResultWas::OfType resultType
     )
     {
-        return m_result.setRhs( "==", toString( rhs ) );
-    }    
-
-    ///////////////////////////////////////////////////////////////////////////
-    template<typename RhsT>
-    MutableResultInfo& operator != 
-    (
-        const RhsT& rhs
-    )
-    {
-        return m_result.setRhs( "!=", toString( rhs ) );
-    }    
-
-    ///////////////////////////////////////////////////////////////////////////
-    template<typename RhsT>
-    MutableResultInfo& operator < 
-    (
-        const RhsT& rhs
-    )
-    {
-        return m_result.setRhs( "<", toString( rhs ) );
-    }    
-
-    ///////////////////////////////////////////////////////////////////////////
-    template<typename RhsT>
-    MutableResultInfo& operator > 
-    (
-        const RhsT& rhs 
-    )
-    {
-        return m_result.setRhs( ">", toString( rhs ) );
-    }    
-
-    ///////////////////////////////////////////////////////////////////////////
-    template<typename RhsT>
-    MutableResultInfo& operator <= 
-    (
-        const RhsT& rhs
-    )
-    {
-        return m_result.setRhs( "<=", toString( rhs ) );
-    }    
-
-    ///////////////////////////////////////////////////////////////////////////
-    template<typename RhsT>
-    MutableResultInfo& operator >= 
-    (
-        const RhsT& rhs
-    )
-    {
-        return m_result.setRhs( ">=", toString( rhs ) );
-    }    
-
+        m_result.setResultType( resultType );
+        return *this;
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     operator MutableResultInfo&
     ()
     {
+        m_result.setMessage( m_messageStream.str() );
         return m_result;
     }
     
 private:
-    MutableResultInfo m_result;    
+    MutableResultInfo m_result;
+    std::ostringstream m_messageStream;
     
 };
 
@@ -565,7 +518,7 @@ inline bool isTrue
 } // end namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_RESULT( result, stopOnFailure ) \
+#define INTERNAL_CATCH_ACCEPT_RESULT2( result, stopOnFailure ) \
     if( Catch::ResultAction::Value action = Catch::Hub::getResultCapture().acceptResult( result )  ) \
     { \
         if( action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
@@ -574,22 +527,22 @@ inline bool isTrue
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
-    { \
-        Catch::Hub::getResultCapture().acceptExpression( Catch::ResultBuilder( #expr, isNot, __FILE__, __LINE__, macroName )->*expr ); \
-        INTERNAL_CATCH_ACCEPT_RESULT( expr, stopOnFailure ) \
-    }
+    Catch::Hub::getResultCapture().acceptExpression( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
-    Catch::Hub::getResultCapture().acceptExpression( Catch::ResultBuilder( #expr, false, __FILE__, __LINE__, macroName ) ); \
     try \
     { \
+        using namespace Catch; \
         expr; \
-        INTERNAL_CATCH_ACCEPT_RESULT( nothrow, stopOnFailure ) \
+        ResultWas::OfType resultType = ( nothrow ) ? ResultWas::Ok : ResultWas::DidntThrowException; \
+        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( resultType ) ); \
     } \
     catch( exceptionType ) \
     { \
-        INTERNAL_CATCH_ACCEPT_RESULT( !(nothrow), stopOnFailure ) \
+        using namespace Catch; \
+        ResultWas::OfType resultType = ( nothrow ) ? ResultWas::ThrewException : ResultWas::Ok; \
+        Hub::getResultCapture().acceptExpression( ResultBuilder(  __FILE__, __LINE__, macroName, #expr ).setResultType( resultType ) ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -597,20 +550,18 @@ inline bool isTrue
 INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
 catch( ... ) \
 { \
-    INTERNAL_CATCH_ACCEPT_RESULT( false, stopOnFailure ) \
+    using namespace Catch; \
+    ResultWas::OfType resultType = ( nothrow ) ? ResultWas::ThrewException : ResultWas::Ok; \
+    Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( resultType ) ); \
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    { \
-        std::ostringstream INTERNAL_CATCH_UNIQUE_NAME( strm ); \
-        INTERNAL_CATCH_UNIQUE_NAME( strm ) << reason; \
-        Catch::Hub::getResultCapture().acceptExpression( Catch::MutableResultInfo( "", false, __FILE__, __LINE__, macroName ) ); \
-        Catch::Hub::getResultCapture().acceptMessage( INTERNAL_CATCH_UNIQUE_NAME( strm ).str() ); \
-        INTERNAL_CATCH_ACCEPT_RESULT( resultType, stopOnFailure ) \
-    }
+    Catch::Hub::getResultCapture().acceptExpression( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName ) << reason ).setResultType( resultType ) );
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_SCOPED_INFO( log ) Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); INTERNAL_CATCH_UNIQUE_NAME( info ) << log
+#define INTERNAL_CATCH_SCOPED_INFO( log ) \
+    Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
+    INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
