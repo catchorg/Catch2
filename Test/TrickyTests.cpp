@@ -41,8 +41,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./inprogress/failing/Tricky/complex lhs", 
-    "Where the LHS is not a simple value"
+    "./inprogress/failing/Tricky/trailing expression", 
+    "Where the is more to the expression after the RHS"
 )
 {
     /*
@@ -52,11 +52,12 @@ TEST_CASE
     // This only captures part of the expression, but issues a warning about the rest
     REQUIRE( a == 2 || b == 2 );
      */
+    WARN( "Uncomment the code in this test to check that it gives a sensible compiler error" );
 }
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./inprogress/failing/Tricky/complex 2", 
+    "./inprogress/failing/Tricky/compound lhs", 
     "Where the LHS is not a simple value"
 )
 {
@@ -67,6 +68,7 @@ TEST_CASE
     // This only captures part of the expression, but issues a warning about the rest
     REQUIRE( a+1 == b-1 );
     */
+    WARN( "Uncomment the code in this test to check that it gives a sensible compiler error" );
 }
 
 struct Opaque
