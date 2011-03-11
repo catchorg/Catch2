@@ -50,7 +50,7 @@ namespace Catch
             m_output = oss.str();
             return result;
         }
-
+        
         ///////////////////////////////////////////////////////////////////////////
         std::string getOutput
         ()
@@ -79,6 +79,76 @@ namespace Catch
         std::size_t m_failures;
         std::string m_output;
     };
+
+    class MetaTestRunner
+    {
+    public:
+        struct Expected
+        {
+            enum Result
+            {
+                ToSucceed,
+                ToFail
+            };
+        };
+        
+        ///////////////////////////////////////////////////////////////////////////
+        static void runMatching
+        (
+            const std::string& testSpec, 
+            Expected::Result expectedResult
+        )
+        {
+            forEach(    Hub::getTestCaseRegistry().getMatchingTestCases( testSpec ), 
+                        MetaTestRunner( expectedResult ) );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        MetaTestRunner
+        (
+            Expected::Result expectedResult
+        )
+        : m_expectedResult( expectedResult )
+        {        
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        void operator()
+        (
+            const TestCaseInfo& testCase
+        )
+        {
+            EmbeddedRunner runner;
+            runner.runMatching( testCase.getName() );
+            switch( m_expectedResult )
+            {
+                case Expected::ToSucceed:
+                    if( runner.getFailureCount() > 0 )
+                    {
+                        INFO( runner.getOutput() );
+                        FAIL( "Expected test case '" 
+                             << testCase.getName() 
+                             << "' to succeed but there was/ were " 
+                             << runner.getFailureCount() << " failure(s)" );
+                    }
+                    break;
+                case Expected::ToFail:
+                    if( runner.getSuccessCount() > 0 )
+                    {
+                        INFO( runner.getOutput() );
+                        FAIL( "Expected test case '" 
+                             << testCase.getName() 
+                             << "' to fail but there was/ were " 
+                             << runner.getSuccessCount() << " success(es)" );
+                    }
+                    break;
+            }        
+        };
+        
+    private:
+        Expected::Result m_expectedResult;
+    };
+    
 }
 
 #endif // TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED

@@ -16,6 +16,8 @@
 
 namespace Catch
 {
+    class TestCaseInfo;
+    
     struct IRunner
     {
         virtual ~IRunner

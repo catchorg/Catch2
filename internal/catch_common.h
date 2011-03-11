@@ -63,6 +63,18 @@ namespace Catch
         }
     }
     
+    template<typename ContainerT, typename Function>
+    inline void forEach( ContainerT& container, Function function )
+    {
+        std::for_each( container.begin(), container.end(), function );
+    }
+    
+    template<typename ContainerT, typename Function>
+    inline void forEach( const ContainerT& container, Function function )
+    {
+        std::for_each( container.begin(), container.end(), function );
+    }
+    
     ATTRIBUTE_NORETURN
     inline void throwLogicError( const std::string& message, const std::string& file, long line )
     {

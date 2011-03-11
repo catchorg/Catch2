@@ -56,44 +56,6 @@ namespace Catch
         std::string& m_targetString;
     };
     
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////    
-    
-    class TestSpec
-    {
-    public:
-        ///////////////////////////////////////////////////////////////////////        
-        TestSpec
-        (
-            const std::string& rawSpec
-        )
-        :   m_rawSpec( rawSpec ),
-            m_isWildcarded( false )
-        {
-            if( m_rawSpec[m_rawSpec.size()-1] == '*' )
-            {
-                m_rawSpec = m_rawSpec.substr( 0, m_rawSpec.size()-1 );
-                m_isWildcarded = true;
-            }
-        }
-        
-        ///////////////////////////////////////////////////////////////////////        
-        bool matches
-        (
-            const std::string& testName
-        )
-        const
-        {
-            if( !m_isWildcarded )
-                return m_rawSpec == testName;
-            else
-                return testName.size() >= m_rawSpec.size() && testName.substr( 0, m_rawSpec.size() ) == m_rawSpec;            
-        }
-        
-    private:
-        std::string m_rawSpec;
-        bool m_isWildcarded;
-    };
     
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////    

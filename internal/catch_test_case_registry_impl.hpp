@@ -18,6 +18,7 @@
 #include <set>
 #include <sstream>
 
+#include <iostream> // !TBD DBG
 namespace Catch
 {
     class TestRegistry : public ITestCaseRegistry
@@ -55,6 +56,28 @@ namespace Catch
         const
         {
             return m_functionsInOrder;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual std::vector<TestCaseInfo> getMatchingTestCases
+        ( 
+            const std::string& rawTestSpec 
+        )
+        {
+            TestSpec testSpec( rawTestSpec );
+            
+            std::vector<TestCaseInfo> testList;
+            std::vector<TestCaseInfo>::const_iterator it = m_functionsInOrder.begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = m_functionsInOrder.end();
+            for(; it != itEnd; ++it )
+            {
+                if( testSpec.matches( it->getName() ) )
+                {
+                    testList.push_back( *it );
+                    std::cout << it->getName() << std::endl;
+                }
+            }
+            return testList;
         }
         
     private:

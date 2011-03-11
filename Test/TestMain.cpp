@@ -11,22 +11,51 @@
  */
 
 #include "../catch_with_main.hpp"
-
 #include "../internal/catch_self_test.hpp"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" )
 {
-    Catch::EmbeddedRunner runner;
+    using namespace Catch;
+    
+    ///////////////////////////////////////////////////////////////////////////
+    SECTION(    "selftest/expected result",
+                "Tests do what they claim" )
+    {
+        SECTION(    "selftest/expected result/failing tests", 
+                    "Tests in the 'failing' branch fail" )
+        {
+            MetaTestRunner::runMatching( "./failing/*",  MetaTestRunner::Expected::ToFail );
+        }
+        
+        SECTION(    "selftest/expected result/succeeding tests", 
+                    "Tests in the 'succeeding' branch succeed" )
+        {
+            MetaTestRunner::runMatching( "./succeeding/*",  MetaTestRunner::Expected::ToSucceed );
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    SECTION(    "selftest/test counts", 
+                "Number of test cases that run is fixed" )
+    {
+        EmbeddedRunner runner;
+        
+        SECTION(    "selftest/test counts/succeeding tests", 
+                    "Number of 'succeeding' tests is fixed" )
+        {
+            runner.runMatching( "./succeeding/*" );
+            CHECK( runner.getSuccessCount() == 213 );
+            CHECK( runner.getFailureCount() == 0 );
+        }
 
-    runner.runMatching( "./succeeding/*" );
-    INFO( runner.getOutput() );
-    CHECK( runner.getSuccessCount() == 213 );
-    CHECK( runner.getFailureCount() == 0 );
-
-    runner.runMatching( "./failing/*" );        
-    INFO( runner.getOutput() );
-    CHECK( runner.getSuccessCount() == 0 );
-    CHECK( runner.getFailureCount() == 54 );
+        SECTION(    "selftest/test counts/failing tests", 
+                    "Number of 'failing' tests is fixed" )
+        {
+            runner.runMatching( "./failing/*" );        
+            CHECK( runner.getSuccessCount() == 0 );
+            CHECK( runner.getFailureCount() == 54 );
+        }
+    }
 }
 
 TEST_CASE( "meta/Misc/Sections", "looped tests" )
