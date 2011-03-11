@@ -98,12 +98,7 @@ namespace Catch
         ()
         const
         {
-            if( !hasExpression() )
-                return "";
-            
-            return m_result == ResultWas::ExpressionTooComplex
-                ? getExpandedExpressionInternal() + " {couldn't fully decompose the expression to evaluate it - please rewrite as a binary comparison}"
-                : getExpandedExpressionInternal();
+            return hasExpression() ? getExpandedExpressionInternal() : "";
         }
         
         ///////////////////////////////////////////////////////////////////////////
