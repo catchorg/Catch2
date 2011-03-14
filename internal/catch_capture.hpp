@@ -563,7 +563,7 @@ inline bool isTrue
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     try \
     { \
         using namespace Catch; \
@@ -577,8 +577,8 @@ inline bool isTrue
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     catch( ... ) \
     { \
         using namespace Catch; \
