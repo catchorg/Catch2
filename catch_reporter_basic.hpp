@@ -195,10 +195,10 @@ namespace Catch
                     m_config.stream() << " exception with message: '" << resultInfo.getMessage() << "'";
                     break;
                 case ResultWas::Info:
-                    m_config.stream() << "info: '" << resultInfo.getMessage() << "'";
+                    m_config.stream() << "info:\n'" << resultInfo.getMessage() << "'";
                     break;
                 case ResultWas::Warning:
-                    m_config.stream() << "warning: '" << resultInfo.getMessage() << "'";
+                    m_config.stream() << "warning:\n'" << resultInfo.getMessage() << "'";
                     break;
                 case ResultWas::ExplicitFailure:
                     m_config.stream() << "failed with message: '" << resultInfo.getMessage() << "'";
@@ -224,14 +224,14 @@ namespace Catch
             const std::string& stdErr
         )
         {
+            if( !stdOut.empty() )
+                m_config.stream() << "[stdout: " << trim( stdOut ) << "]\n";
+
+            if( !stdErr.empty() )
+                m_config.stream() << "[stderr: " << trim( stdErr ) << "]\n";
+                
             if( m_testSpan.emitted )
             {
-                if( !stdOut.empty() )
-                    m_config.stream() << "[stdout: " << trim( stdOut ) << "]\n";
-
-                if( !stdErr.empty() )
-                    m_config.stream() << "[stderr: " << trim( stdErr ) << "]\n";
-                
                 m_config.stream() << "[Finished: " << testInfo.getName() << " ";
                 ReportCounts( succeeded, failed );
                 m_config.stream() << "]" << std::endl;
