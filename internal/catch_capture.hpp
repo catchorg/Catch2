@@ -537,8 +537,8 @@ inline bool isTrue
 } // end namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_RESULT2( result, stopOnFailure ) \
-    if( Catch::ResultAction::Value action = Catch::Hub::getResultCapture().acceptResult( result )  ) \
+#define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure ) \
+    if( Catch::ResultAction::Value action = Catch::Hub::getResultCapture().acceptExpression( expr )  ) \
     { \
         if( action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
@@ -546,34 +546,34 @@ inline bool isTrue
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
-    Catch::Hub::getResultCapture().acceptExpression( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr );
+    INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr ), stopOnFailure );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
     try \
     { \
-        using namespace Catch; \
         expr; \
-        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::Ok ) ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure ); \
     } \
     catch( ... ) \
     { \
-        using namespace Catch; \
-        Hub::getResultCapture().acceptExpression( ResultBuilder(  __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::ThrewException ) ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     try \
     { \
-        using namespace Catch; \
         expr; \
-        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::DidntThrowException ) ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::DidntThrowException ), stopOnFailure ); \
+    } \
+    catch( Catch::TestFailureException& ) \
+    { \
+        throw; \
     } \
     catch( exceptionType ) \
     { \
-        using namespace Catch; \
-        Hub::getResultCapture().acceptExpression( ResultBuilder(  __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::Ok ) ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -581,8 +581,7 @@ inline bool isTrue
     INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     catch( ... ) \
     { \
-        using namespace Catch; \
-        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::ThrewException ) ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////

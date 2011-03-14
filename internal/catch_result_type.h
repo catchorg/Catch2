@@ -28,7 +28,7 @@ struct ResultWas{ enum OfType
         ExpressionFailed = FailureBit | 1,
         ExplicitFailure = FailureBit | 2,
         
-        Exception = 0x110,
+        Exception = 0x100 | FailureBit,
         
         ThrewException = Exception | 1,
         DidntThrowException = Exception | 2

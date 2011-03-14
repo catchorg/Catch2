@@ -194,6 +194,12 @@ namespace Catch
                         m_config.stream() << "Unexpected";
                     m_config.stream() << " exception with message: '" << resultInfo.getMessage() << "'";
                     break;
+                case ResultWas::DidntThrowException:
+                    if( resultInfo.hasExpression() )
+                        m_config.stream() << " because no exception was thrown where one was expected";
+                    else
+                        m_config.stream() << "No exception thrown where one was expected";
+                    break;
                 case ResultWas::Info:
                     m_config.stream() << "info:\n'" << resultInfo.getMessage() << "'";
                     break;
@@ -204,6 +210,13 @@ namespace Catch
                     m_config.stream() << "failed with message: '" << resultInfo.getMessage() << "'";
                     break;
                 default:
+                    if( !resultInfo.hasExpression() )
+                    {
+                        if( resultInfo.ok() )
+                            m_config.stream() << " succeeded";
+                        else
+                            m_config.stream() << " failed";
+                    }
                     break;
             }
             
