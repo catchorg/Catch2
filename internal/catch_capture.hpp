@@ -549,30 +549,41 @@ inline bool isTrue
     Catch::Hub::getResultCapture().acceptExpression( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr );
 
 ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
+    try \
+    { \
+        using namespace Catch; \
+        expr; \
+        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::Ok ) ); \
+    } \
+    catch( ... ) \
+    { \
+        using namespace Catch; \
+        Hub::getResultCapture().acceptExpression( ResultBuilder(  __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::ThrewException ) ); \
+    }
+
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
     try \
     { \
         using namespace Catch; \
         expr; \
-        ResultWas::OfType resultType = ( nothrow ) ? ResultWas::Ok : ResultWas::DidntThrowException; \
-        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( resultType ) ); \
+        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::DidntThrowException ) ); \
     } \
     catch( exceptionType ) \
     { \
         using namespace Catch; \
-        ResultWas::OfType resultType = ( nothrow ) ? ResultWas::ThrewException : ResultWas::Ok; \
-        Hub::getResultCapture().acceptExpression( ResultBuilder(  __FILE__, __LINE__, macroName, #expr ).setResultType( resultType ) ); \
+        Hub::getResultCapture().acceptExpression( ResultBuilder(  __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::Ok ) ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
-INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
-catch( ... ) \
-{ \
-    using namespace Catch; \
-    ResultWas::OfType resultType = ( nothrow ) ? ResultWas::ThrewException : ResultWas::Ok; \
-    Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( resultType ) ); \
-}
+    INTERNAL_CATCH_THROWS( expr, exceptionType, nothrow, stopOnFailure, macroName ) \
+    catch( ... ) \
+    { \
+        using namespace Catch; \
+        Hub::getResultCapture().acceptExpression( ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( ResultWas::ThrewException ) ); \
+    }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
