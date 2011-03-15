@@ -23,6 +23,7 @@
 
 #include <fstream>
 #include <stdlib.h>
+#include <limits>
 
 namespace Catch
 {
