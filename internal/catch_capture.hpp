@@ -242,17 +242,17 @@ private:
     }    
 
     ///////////////////////////////////////////////////////////////////////////
-    template<Operator Op, typename T1, typename T2>    
+    template<Internal::Operator Op, typename T1, typename T2>    
     MutableResultInfo& captureExpression
     (
         const T1& lhs, 
         const T2& rhs
     )
     {
-        setResultType( compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         m_lhs = toString( lhs );
         m_rhs = toString( rhs );
-        m_op = OperatorTraits<Op>::getName();
+        m_op = Internal::OperatorTraits<Op>::getName();
         return *this;
     }
     
@@ -282,7 +282,7 @@ public:
         const RhsT& rhs
     )
     {
-        return m_result.captureExpression<IsEqualTo>( m_lhs, rhs );
+        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -292,7 +292,7 @@ public:
         const RhsT& rhs
     )
     {
-        return m_result.captureExpression<IsNotEqualTo>( m_lhs, rhs );
+        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -302,7 +302,7 @@ public:
         const RhsT& rhs
     )
     {
-        return m_result.captureExpression<IsLessThan>( m_lhs, rhs );
+        return m_result.captureExpression<Internal::IsLessThan>( m_lhs, rhs );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -312,7 +312,7 @@ public:
         const RhsT& rhs
     )
     {
-        return m_result.captureExpression<IsGreaterThan>( m_lhs, rhs );
+        return m_result.captureExpression<Internal::IsGreaterThan>( m_lhs, rhs );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -322,7 +322,7 @@ public:
         const RhsT& rhs
     )
     {
-        return m_result.captureExpression<IsLessThanOrEqualTo>( m_lhs, rhs );
+        return m_result.captureExpression<Internal::IsLessThanOrEqualTo>( m_lhs, rhs );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -332,7 +332,7 @@ public:
         const RhsT& rhs
     )
     {
-        return m_result.captureExpression<IsGreaterThanOrEqualTo>( m_lhs, rhs );
+        return m_result.captureExpression<Internal::IsGreaterThanOrEqualTo>( m_lhs, rhs );
     }
 
     ///////////////////////////////////////////////////////////////////////////

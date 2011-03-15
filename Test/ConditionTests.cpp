@@ -180,6 +180,39 @@ TEST_CASE( "./succeeding/conditions/int literals", "Comparisons with int literal
     REQUIRE( 62270208023445 > ul );
 }
 
+// Because we have to do some conversions when comparing certain signed/ unsigned types (to avoid
+// spurious warnings when comparing integer literals with unsigned integers), we have a set of tests
+// here to confirm that the behaviour is correct at the boundaries
+TEST_CASE( "./succeeding/conditions/unsigned-negative", "Comparisons between negative signed and unsigned ints, expected to succeed" )
+{
+    using namespace Catch::Generators;
+
+    int negative = GENERATE( values( -1, -2, (std::numeric_limits<int>::min)() ) );
+    unsigned int ui = GENERATE( values( 0u, 1u, 2u, (std::numeric_limits<unsigned int>::max)() ) );
+    
+    CHECK( ui > negative );
+    CHECK( negative < ui );
+    CHECK( ui >= negative );
+    CHECK( negative <= ui );
+    CHECK( ui != negative );
+    CHECK( negative != ui );
+}
+
+TEST_CASE( "./failing/conditions/unsigned-negative", "Comparisons between negative signed and unsigned ints, expected to fail" )
+{
+    using namespace Catch::Generators;
+    
+    int negative = GENERATE( values( -1, -2, (std::numeric_limits<int>::min)() ) );
+    unsigned int ui = GENERATE( values( 0u, 1u, 2u, (std::numeric_limits<unsigned int>::max)() ) );
+    
+    CHECK( ui < negative );
+    CHECK( negative > ui );
+    CHECK( ui <= negative );
+    CHECK( negative >= ui );
+    CHECK( ui == negative );
+    CHECK( negative == ui );
+}
+
 // Not (!) tests
 // The problem with the ! operator is that it has right-to-left associativity.
 // This means we can't isolate it when we decompose. The simple REQUIRE( !false ) form, therefore,
