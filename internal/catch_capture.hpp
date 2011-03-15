@@ -261,6 +261,8 @@ private:
 template<typename T>
 class Expression
 {
+	void operator = ( const Expression& );
+
 public:
     ///////////////////////////////////////////////////////////////////////////
     Expression

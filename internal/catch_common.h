@@ -25,6 +25,7 @@
 
 #include <sstream>
 #include <stdexcept>
+#include <algorithm>
 
 namespace Catch
 {
