@@ -236,10 +236,16 @@ namespace Catch
         )
         {
             if( !stdOut.empty() )
+            {
+                StartSpansLazily();
                 m_config.stream() << "[stdout: " << trim( stdOut ) << "]\n";
+            }
 
             if( !stdErr.empty() )
+            {
+                StartSpansLazily();
                 m_config.stream() << "[stderr: " << trim( stdErr ) << "]\n";
+            }
                 
             if( m_testSpan.emitted )
             {
