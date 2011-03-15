@@ -92,12 +92,10 @@ namespace Catch
             std::size_t failed
         )
         {
-            if( m_testingSpan.emitted )
-            {
-                m_config.stream() << "[Testing completed. ";
-                ReportCounts( succeeded, failed );
-                m_config.stream() << "]" << std::endl;
-            }
+            // Output the overall test results even if "Started Testing" was not emitted
+            m_config.stream() << "[Testing completed. ";
+            ReportCounts( succeeded, failed );
+            m_config.stream() << "]" << std::endl;
         }
         
         ///////////////////////////////////////////////////////////////////////////
