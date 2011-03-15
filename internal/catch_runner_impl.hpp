@@ -406,17 +406,7 @@ namespace Catch
         )
         {
             m_currentResult.setResultType( result );            
-            testEnded( m_currentResult );
-
-            bool ok = m_currentResult.ok();
-            m_currentResult = MutableResultInfo();
-            if( ok )
-                return ResultAction::None;
-            else if( shouldDebugBreak() )
-                return ResultAction::DebugFailed;
-            else
-                return ResultAction::Failed;
-            
+            return actOnCurrentResult();
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -426,16 +416,7 @@ namespace Catch
         )
         {
             m_currentResult = resultInfo;
-            testEnded( m_currentResult );
-            
-            bool ok = m_currentResult.ok();
-            m_currentResult = MutableResultInfo();
-            if( ok )
-                return ResultAction::None;
-            else if( shouldDebugBreak() )
-                return ResultAction::DebugFailed;
-            else
-                return ResultAction::Failed;
+            return actOnCurrentResult();
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -544,6 +525,22 @@ namespace Catch
         
     private:
         
+        ///////////////////////////////////////////////////////////////////////////
+        ResultAction::Value actOnCurrentResult
+        ()
+        {
+            testEnded( m_currentResult );
+            
+            bool ok = m_currentResult.ok();
+            m_currentResult = MutableResultInfo();
+            if( ok )
+                return ResultAction::None;
+            else if( shouldDebugBreak() )
+                return ResultAction::DebugFailed;
+            else
+                return ResultAction::Failed;
+        }
+
         ///////////////////////////////////////////////////////////////////////////
         void runCurrentTest
         (
