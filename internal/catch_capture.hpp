@@ -154,6 +154,39 @@ inline std::string toString
 {
     return value ? "true" : "false";
 }
+
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    void* p
+)
+{
+    if( !p )
+        return INTERNAL_CATCH_STRINGIFY( NULL );
+    std::ostringstream oss;
+    oss << p;
+    return oss.str();
+}
+    
+///////////////////////////////////////////////////////////////////////////////
+template<typename T>
+inline std::string toString
+(
+    T* p
+)
+{
+    return toString( static_cast<void*>( p ) );
+}
+    
+///////////////////////////////////////////////////////////////////////////////
+template<typename T>
+inline std::string toString
+(
+    const T* p
+)
+{
+    return toString( static_cast<void*>( const_cast<T*>( p ) ) );
+}
     
 struct TestFailureException
 {
@@ -226,8 +259,9 @@ public:
     
 private:
     friend class ResultBuilder;
-    template<typename T>
-    friend class Expression;
+    template<typename T> friend class Expression;
+
+    template<typename T> friend class PtrExpression;
 
     ///////////////////////////////////////////////////////////////////////////
     MutableResultInfo& captureBoolExpression
@@ -361,6 +395,66 @@ private:
     const T& m_lhs;
 };
     
+    template<typename LhsT> 
+    class PtrExpression
+    {
+    public:
+
+        ///////////////////////////////////////////////////////////////////////////
+        PtrExpression
+        (
+            MutableResultInfo& result, 
+            const LhsT* lhs 
+        )
+        :   m_result( result ),
+            m_lhs( lhs )
+        {}
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator == 
+        (
+            const RhsT* rhs
+        )
+        {
+            return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        // This catches NULL
+        MutableResultInfo& operator == 
+        (
+            LhsT* rhs
+        )
+        {
+            return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename RhsT>
+        MutableResultInfo& operator != 
+        (
+            const RhsT* rhs
+        )
+        {
+            return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        // This catches NULL
+        MutableResultInfo& operator != 
+        (
+            LhsT* rhs
+        )
+        {
+            return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        }
+        
+    private:
+        MutableResultInfo& m_result;
+        const LhsT* m_lhs;
+    };
+    
 class ResultBuilder
 {
 public:
@@ -389,6 +483,30 @@ public:
         return expr;
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename T>
+    PtrExpression<T> operator->*
+    (
+        const T* operand
+    )
+    {
+        PtrExpression<T> expr( m_result, operand );
+        
+        return expr;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename T>
+    PtrExpression<T> operator->*
+    (
+        T* operand
+    )
+    {
+        PtrExpression<T> expr( m_result, operand );
+        
+        return expr;
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     template<typename T>
     ResultBuilder& operator <<
@@ -478,7 +596,7 @@ class Approx
 public:
     ///////////////////////////////////////////////////////////////////////////
     // !TBD more generic
-    Approx
+    explicit Approx
     (
         double d
     )

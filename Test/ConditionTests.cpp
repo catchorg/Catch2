@@ -214,6 +214,19 @@ TEST_CASE( "./failing/conditions/unsigned-negative", "Comparisons between negati
     CHECK( negative == ui );
 }
 
+TEST_CASE( "./succeeding/conditions/ptr", "Pointers can be compared to null" )
+{
+    TestData* p = NULL;
+    TestData* pNULL = NULL;
+    
+    REQUIRE( p == NULL );
+    REQUIRE( p == pNULL );
+    
+    TestData data;
+    p = &data;
+    REQUIRE( p != NULL );
+}
+
 // Not (!) tests
 // The problem with the ! operator is that it has right-to-left associativity.
 // This means we can't isolate it when we decompose. The simple REQUIRE( !false ) form, therefore,
