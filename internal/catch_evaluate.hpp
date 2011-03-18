@@ -216,6 +216,20 @@ namespace Internal
     {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs, testLhsSign( lhs ) );
     }
+
+    template<Operator Op, typename T>
+    bool compare( long lhs, const T* rhs )
+    {
+        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( NULL ), rhs );
+
+    }
+    
+    template<Operator Op, typename T>
+    bool compare( long lhs, T* rhs )
+    {
+        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
+        
+    }
     
 } // end of namespace Internal
 } // end of namespace Catch

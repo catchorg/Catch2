@@ -224,7 +224,16 @@ TEST_CASE( "./succeeding/conditions/ptr", "Pointers can be compared to null" )
     
     TestData data;
     p = &data;
+    
     REQUIRE( p != NULL );
+
+    const TestData* cp = p;
+    REQUIRE( cp != NULL );
+
+    const TestData* const cpc = p;
+    REQUIRE( cpc != NULL );
+
+//    REQUIRE( NULL != p ); // gives warning, but should compile and run ok
 }
 
 // Not (!) tests

@@ -395,65 +395,65 @@ private:
     const T& m_lhs;
 };
     
-    template<typename LhsT> 
-    class PtrExpression
+template<typename LhsT> 
+class PtrExpression
+{
+public:
+
+    ///////////////////////////////////////////////////////////////////////////
+    PtrExpression
+    (
+        MutableResultInfo& result, 
+        const LhsT* lhs 
+    )
+    :   m_result( result ),
+        m_lhs( lhs )
+    {}
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator == 
+    (
+        const RhsT* rhs
+    )
     {
-    public:
+        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+    }
 
-        ///////////////////////////////////////////////////////////////////////////
-        PtrExpression
-        (
-            MutableResultInfo& result, 
-            const LhsT* lhs 
-        )
-        :   m_result( result ),
-            m_lhs( lhs )
-        {}
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator == 
-        (
-            const RhsT* rhs
-        )
-        {
-            return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
-        }
-
-        ///////////////////////////////////////////////////////////////////////////
-        // This catches NULL
-        MutableResultInfo& operator == 
-        (
-            LhsT* rhs
-        )
-        {
-            return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename RhsT>
-        MutableResultInfo& operator != 
-        (
-            const RhsT* rhs
-        )
-        {
-            return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////
-        // This catches NULL
-        MutableResultInfo& operator != 
-        (
-            LhsT* rhs
-        )
-        {
-            return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
-        }
-        
-    private:
-        MutableResultInfo& m_result;
-        const LhsT* m_lhs;
-    };
+    ///////////////////////////////////////////////////////////////////////////
+    // This catches NULL
+    MutableResultInfo& operator == 
+    (
+        LhsT* rhs
+    )
+    {
+        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename RhsT>
+    MutableResultInfo& operator != 
+    (
+        const RhsT* rhs
+    )
+    {
+        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // This catches NULL
+    MutableResultInfo& operator != 
+    (
+        LhsT* rhs
+    )
+    {
+        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+    }
+    
+private:
+    MutableResultInfo& m_result;
+    const LhsT* m_lhs;
+};
     
 class ResultBuilder
 {
