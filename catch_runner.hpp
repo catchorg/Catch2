@@ -27,38 +27,12 @@
 
 namespace Catch
 {
-    inline int Main( int argc, char * const argv[] )
-    {
-        Config config;
-        ArgParser( argc, argv, config );
-        
-        if( !config.getMessage().empty() )
-        {
-            std::cerr << config.getMessage() << std::endl;
-            return (std::numeric_limits<int>::max)();
-        }
-        
-        // Handle help
-        if( config.showHelp() )
-        {
-            std::string exeName( argv[0] );
-            std::string::size_type pos = exeName.find_last_of( "/\\" );
-            if( pos != std::string::npos )
-            {
-                exeName = exeName.substr( pos+1 );
-            }
-            
-            std::cout   << exeName << " is a CATCH host application. Options are as follows:\n\n"
-                        << "\t-l, --list <tests | reporters> [xml]\n"
-                        << "\t-t, --test <testspec> [<testspec>...]\n"
-                        << "\t-r, --reporter <reporter name>\n"
-                        << "\t-o, --out <file name>|<%stream name>\n"
-                        << "\t-s, --success\n"
-                        << "\t-b, --break\n\n"
-                        << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
-            return 0;
-        }
-        
+    //////////////////////////////////////////////////////////////////////////
+    inline int Main
+    (
+        Config& config
+    )
+    {        
         // Handle list request
         if( config.listWhat() != Config::List::None )
             return List( config );
@@ -105,6 +79,57 @@ namespace Catch
             }
         }
         return static_cast<int>( runner.getFailureCount() );
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    inline int Main
+    (
+        int argc, 
+        char* const argv[],
+        Config& config
+    )
+    {
+        ArgParser( argc, argv, config );
+        
+        if( !config.getMessage().empty() )
+        {
+            std::cerr << config.getMessage() << std::endl;
+            return (std::numeric_limits<int>::max)();
+        }
+        
+        // Handle help
+        if( config.showHelp() )
+        {
+            std::string exeName( argv[0] );
+            std::string::size_type pos = exeName.find_last_of( "/\\" );
+            if( pos != std::string::npos )
+            {
+                exeName = exeName.substr( pos+1 );
+            }
+            
+            std::cout   << exeName << " is a CATCH host application. Options are as follows:\n\n"
+            << "\t-l, --list <tests | reporters> [xml]\n"
+            << "\t-t, --test <testspec> [<testspec>...]\n"
+            << "\t-r, --reporter <reporter name>\n"
+            << "\t-o, --out <file name>|<%stream name>\n"
+            << "\t-s, --success\n"
+            << "\t-b, --break\n\n"
+            << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
+            return 0;
+        }
+        
+        return Main( config );
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    inline int Main
+    (
+        int argc, 
+        char* const argv[]
+    )
+    {
+        Config config;
+        return Main( argc, argv, config );
     }
     
 } // end namespace Catch
