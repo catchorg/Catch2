@@ -17,6 +17,12 @@
 #include <iostream>
 
 #if defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
+#define CATCH_PLATFORM_MAC
+#elif defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
+#define CATCH_PLATFORM_WINDOWS
+#endif
+
+#ifdef CATCH_PLATFORM_MAC
 
     #include <assert.h>
     #include <stdbool.h>
@@ -80,9 +86,9 @@
         inline void BreakIntoDebugger(){}
     #endif
 
-#elif defined(__WIN32__) && defined(_MSC_VER)
-// Thanks to jalfd for the following:
-   extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
+#elif defined(CATCH_PLATFORM_WINDOWS)
+    extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
+    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
 #else
 	   inline void BreakIntoDebugger(){}
@@ -90,14 +96,12 @@
 
 inline void writeToDebugConsole( const std::string& text )
 {
-    // !TBD: Get Windows version working
-    // - need to declare OutputDebugStringA without Windows.h
-//#ifdef _WIN32
-//    ::OutputDebugStringA( text.c_str() );    
-//#else
+#ifdef CATCH_PLATFORM_WINDOWS
+    ::OutputDebugStringA( text.c_str() );    
+#else
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
-//#endif
+#endif
 }
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
