@@ -178,7 +178,7 @@ TEST_CASE( "./succeeding/conditions/int literals", "Comparisons with int literal
     REQUIRE( 5 == c );
     REQUIRE( 6 == uc );
 
-    REQUIRE( 62270208023445 > ul );
+    REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul );
 }
 
 // Because we have to do some conversions when comparing certain signed/ unsigned types (to avoid
