@@ -406,7 +406,7 @@ public:
         MutableResultInfo& result, 
         const LhsT* lhs 
     )
-    :   m_result( result ),
+    :   m_result( &result ),
         m_lhs( lhs )
     {}
     
@@ -417,7 +417,7 @@ public:
         const RhsT* rhs
     )
     {
-        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -427,7 +427,7 @@ public:
         LhsT* rhs
     )
     {
-        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -437,7 +437,7 @@ public:
         const RhsT* rhs
     )
     {
-        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -447,11 +447,11 @@ public:
         LhsT* rhs
     )
     {
-        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
     
 private:
-    MutableResultInfo& m_result;
+    MutableResultInfo* m_result;
     const LhsT* m_lhs;
 };
     
