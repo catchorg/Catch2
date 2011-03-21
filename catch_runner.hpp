@@ -80,6 +80,28 @@ namespace Catch
         }
         return static_cast<int>( runner.getFailureCount() );
     }
+
+    //////////////////////////////////////////////////////////////////////////
+    void showHelp
+    (
+        std::string exeName
+    )
+    {
+        std::string::size_type pos = exeName.find_last_of( "/\\" );
+        if( pos != std::string::npos )
+        {
+            exeName = exeName.substr( pos+1 );
+        }
+        
+        std::cout   << exeName << " is a CATCH host application. Options are as follows:\n\n"
+        << "\t-l, --list <tests | reporters> [xml]\n"
+        << "\t-t, --test <testspec> [<testspec>...]\n"
+        << "\t-r, --reporter <reporter name>\n"
+        << "\t-o, --out <file name>|<%stream name>\n"
+        << "\t-s, --success\n"
+        << "\t-b, --break\n\n"
+        << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
+    }
     
     //////////////////////////////////////////////////////////////////////////
     inline int Main
@@ -100,21 +122,7 @@ namespace Catch
         // Handle help
         if( config.showHelp() )
         {
-            std::string exeName( argv[0] );
-            std::string::size_type pos = exeName.find_last_of( "/\\" );
-            if( pos != std::string::npos )
-            {
-                exeName = exeName.substr( pos+1 );
-            }
-            
-            std::cout   << exeName << " is a CATCH host application. Options are as follows:\n\n"
-            << "\t-l, --list <tests | reporters> [xml]\n"
-            << "\t-t, --test <testspec> [<testspec>...]\n"
-            << "\t-r, --reporter <reporter name>\n"
-            << "\t-o, --out <file name>|<%stream name>\n"
-            << "\t-s, --success\n"
-            << "\t-b, --break\n\n"
-            << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
+            showHelp( argv[0] );
             return 0;
         }
         
