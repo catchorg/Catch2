@@ -120,3 +120,47 @@ TEST_CASE
     REQUIRE( i++ == 8 );
     
 }
+
+template<typename T1, typename T2>
+void comp( T1 v1, T2 v2 )
+{
+
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(   
+    "investigation/neg comp", 
+    "from Malcolm Noyes" 
+)
+{
+    int negative_value = std::numeric_limits<int>::min();
+
+    bool ok = (negative_value == 2147483648);    // VC doesn't warn, gcc does
+    REQUIRE(ok);
+    CHECK(negative_value == 2147483648);    // doesn't warn, fails
+    
+    
+    {
+    enum Bits {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
+        bit30 = 0x40000000, bit31 = 0x80000000,
+        bit30and31 = 0xc0000000};
+
+    ok = (0xc0000000 == (bit30 | bit31));    // doesn't warn
+    REQUIRE(ok);
+    CHECK(0xc0000000 == (bit30 | bit31));     
+    }
+    {
+        enum Bits2 {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
+            bit30 = 0x40000000, bit31 = 0x80000000,
+            bit30and31 = 0xc0000000};
+        
+        Bits2 b = bit0;
+        ok = (b == bit0);
+        REQUIRE(ok);
+        comp( 0x0001, bit0 | bit0 );
+//        REQUIRE(b == bit0);    // gcc 4.4 doesn't compile this    
+    }
+}
