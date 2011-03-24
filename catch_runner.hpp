@@ -137,6 +137,8 @@ namespace Catch
     )
     {
         Config config;
+        if( isDebuggerActive() )
+            config.useStream( "debug" );
         return Main( argc, argv, config );
     }
     

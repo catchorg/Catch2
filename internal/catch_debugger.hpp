@@ -35,7 +35,7 @@
         // The following function is taken directly from the following technical note:
         // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html
             
-        inline bool AmIBeingDebugged(void)
+        inline bool isDebuggerActive()
         // Returns true if the current process is being debugged (either
         // running under the debugger or has a debugger attached post facto).
         {
@@ -74,13 +74,13 @@
     #ifdef DEBUG
         #if defined(__ppc64__) || defined(__ppc__)
             #define BreakIntoDebugger() \
-            if( Catch::AmIBeingDebugged() ) \
+            if( Catch::isDebuggerActive() ) \
             { \
             __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
             : : : "memory","r0","r3","r4" ); \
             }
         #else
-            #define BreakIntoDebugger() if( Catch::AmIBeingDebugged() ) {__asm__("int $3\n" : : );}
+            #define BreakIntoDebugger() if( Catch::isDebuggerActive() ) {__asm__("int $3\n" : : );}
         #endif
     #else
         inline void BreakIntoDebugger(){}
@@ -89,7 +89,11 @@
 #elif defined(CATCH_PLATFORM_WINDOWS)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
-   #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
+    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
+    inline bool isDebuggerActive()
+    {
+        return IsDebuggerPresent();
+    }
 #else
 	   inline void BreakIntoDebugger(){}
 #endif
