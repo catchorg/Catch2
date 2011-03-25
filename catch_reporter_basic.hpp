@@ -95,7 +95,7 @@ namespace Catch
             // Output the overall test results even if "Started Testing" was not emitted
             m_config.stream() << "[Testing completed. ";
             ReportCounts( succeeded, failed );
-            m_config.stream() << "]" << std::endl;
+            m_config.stream() << "]\n" << std::endl;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -238,7 +238,16 @@ namespace Catch
             if( !stdOut.empty() )
             {
                 StartSpansLazily();
-                m_config.stream() << "[stdout: " << trim( stdOut ) << "]\n";
+                std::string stdOutTrimmed = trim( stdOut );
+                if( stdOutTrimmed.find_first_of( "\r\n" ) == std::string::npos )
+                {
+                    m_config.stream() << "[stdout: " << stdOutTrimmed << "]\n";
+                }
+                else 
+                {
+                    m_config.stream() << "[stdout] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << stdOutTrimmed << "\n[end of stdout] <<<<<<<<<<<<<<<<<<<<<<<\n";
+                }
+
             }
 
             if( !stdErr.empty() )
