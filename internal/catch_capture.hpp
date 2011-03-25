@@ -104,16 +104,17 @@ inline std::string toString
     const std::string& value
 )
 {
-    return value;
+    return "\"" + value + "\"";
 }
+
 ///////////////////////////////////////////////////////////////////////////////
 inline std::string toString
 (
     const char* const value
 )
 {
-    return value ? "'" + std::string( value ) + "'" : std::string( "{null string}" );
-}    
+    return value ? toString( std::string( value ) ) : std::string( "{null string}" );
+}   
 
 ///////////////////////////////////////////////////////////////////////////////
 inline std::string toString
