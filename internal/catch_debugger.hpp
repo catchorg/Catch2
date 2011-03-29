@@ -96,6 +96,7 @@
     }
 #else
 	   inline void BreakIntoDebugger(){}
+	   inline bool isDebuggerActive() { return false; }
 #endif
 
 inline void writeToDebugConsole( const std::string& text )
