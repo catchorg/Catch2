@@ -76,12 +76,13 @@
 
     if( runner.getFailureCount() == 0 )
     {
-        NSLog( @"%d", runner.getFailureCount() );
+        NSLog( @"no failures" );
         if( runner.getSuccessCount() > 0 )
             appName.textColor = [[UIColor alloc] initWithRed:0.35 green:1 blue:0.35 alpha:1];
     }
     else
     {
+        NSLog( @"%d failures", runner.getFailureCount() );
         appName.textColor = [[UIColor alloc] initWithRed:1 green:0.35 blue:0.35 alpha:1];
     }
 }

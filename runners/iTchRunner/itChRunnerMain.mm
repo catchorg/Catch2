@@ -7,11 +7,13 @@
 //
 
 #import "internal/iTchRunnerAppDelegate.h"
+#include "catch_objc.hpp"
 
 int main(int argc, char *argv[]) 
-{
-    
+{    
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+    Catch::registerTestMethods();
     int retVal = UIApplicationMain(argc, argv, nil, @"iTchRunnerAppDelegate");
     [pool release];
     return retVal;
