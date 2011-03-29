@@ -92,7 +92,7 @@
     #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
     inline bool isDebuggerActive()
     {
-        return IsDebuggerPresent();
+        return IsDebuggerPresent() != 0;
     }
 #else
 	   inline void BreakIntoDebugger(){}
