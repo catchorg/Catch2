@@ -34,7 +34,8 @@ struct TestData
 // This allows us to see all results, even if an earlier check fails
 
 // Equality tests
-TEST_CASE( "./succeeding/conditions/equality", "Equality checks that should succeed" )
+TEST_CASE(  "./succeeding/conditions/equality", 
+            "Equality checks that should succeed" )
 {
     TestData data;
     
@@ -48,7 +49,8 @@ TEST_CASE( "./succeeding/conditions/equality", "Equality checks that should succ
     REQUIRE( x == Approx( 1.3 ) );
 }
 
-TEST_CASE( "./failing/conditions/equality", "Equality checks that should fail" )
+TEST_CASE(  "./failing/conditions/equality", 
+            "Equality checks that should fail" )
 {
     TestData data;
     
@@ -69,7 +71,8 @@ TEST_CASE( "./failing/conditions/equality", "Equality checks that should fail" )
     CHECK( x == Approx( 1.301 ) );
 }
 
-TEST_CASE( "./succeeding/conditions/inequality", "Inequality checks that should succeed" )
+TEST_CASE(  "./succeeding/conditions/inequality", 
+            "Inequality checks that should succeed" )
 {
     TestData data;
     
@@ -86,7 +89,8 @@ TEST_CASE( "./succeeding/conditions/inequality", "Inequality checks that should 
     REQUIRE( data.str_hello.size() != 6 );
 }
 
-TEST_CASE( "./failing/conditions/inequality", "Inequality checks that should fails" )
+TEST_CASE(  "./failing/conditions/inequality", 
+            "Inequality checks that should fails" )
 {
     TestData data;
     
@@ -98,7 +102,8 @@ TEST_CASE( "./failing/conditions/inequality", "Inequality checks that should fai
 }
 
 // Ordering comparison tests
-TEST_CASE( "./succeeding/conditions/ordered", "Ordering comparison checks that should succeed" )
+TEST_CASE(  "./succeeding/conditions/ordered", 
+            "Ordering comparison checks that should succeed" )
 {
     TestData data;
     
@@ -125,7 +130,8 @@ TEST_CASE( "./succeeding/conditions/ordered", "Ordering comparison checks that s
     REQUIRE( data.str_hello > "a" );
 }
 
-TEST_CASE( "./failing/conditions/ordered", "Ordering comparison checks that should fail" )
+TEST_CASE(  "./failing/conditions/ordered", 
+            "Ordering comparison checks that should fail" )
 {
     TestData data;
     
@@ -155,7 +161,8 @@ TEST_CASE( "./failing/conditions/ordered", "Ordering comparison checks that shou
 }
 
 // Comparisons with int literals
-TEST_CASE( "./succeeding/conditions/int literals", "Comparisons with int literals don't warn when mixing signed/ unsigned" )
+TEST_CASE(  "./succeeding/conditions/int literals", 
+            "Comparisons with int literals don't warn when mixing signed/ unsigned" )
 {
     int i = 1;
     unsigned int ui = 2;
@@ -181,40 +188,25 @@ TEST_CASE( "./succeeding/conditions/int literals", "Comparisons with int literal
     REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul );
 }
 
-// Because we have to do some conversions when comparing certain signed/ unsigned types (to avoid
-// spurious warnings when comparing integer literals with unsigned integers), we have a set of tests
-// here to confirm that the behaviour is correct at the boundaries
-TEST_CASE( "./succeeding/conditions/unsigned-negative", "Comparisons between negative signed and unsigned ints, expected to succeed" )
+// These are not built normally to avoid warnings about signed/ unsigned
+#ifdef ALLOW_TESTS_THAT_WARN
+TEST_CASE(  "succeeding/conditions/negative ints", 
+            "Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" )
 {
-    using namespace Catch::Generators;
+    CHECK( ( -1 > 2u ) );
+    CHECK( -1 > 2u );
 
-    int negative = GENERATE( values( -1, -2, (std::numeric_limits<int>::min)() ) );
-    unsigned int ui = GENERATE( values( 0u, 1u, 2u, (std::numeric_limits<unsigned int>::max)() ) );
-    
-    CHECK( ui > negative );
-    CHECK( negative < ui );
-    CHECK( ui >= negative );
-    CHECK( negative <= ui );
-    CHECK( ui != negative );
-    CHECK( negative != ui );
+    CHECK( ( 2u < -1 ) );
+    CHECK( 2u < -1 );
+
+    const int minInt = (std::numeric_limits<int>::min)();
+    CHECK( ( minInt > 2u ) );
+    CHECK( minInt > 2u );
 }
+#endif
 
-TEST_CASE( "./failing/conditions/unsigned-negative", "Comparisons between negative signed and unsigned ints, expected to fail" )
-{
-    using namespace Catch::Generators;
-    
-    int negative = GENERATE( values( -1, -2, (std::numeric_limits<int>::min)() ) );
-    unsigned int ui = GENERATE( values( 0u, 1u, 2u, (std::numeric_limits<unsigned int>::max)() ) );
-    
-    CHECK( ui < negative );
-    CHECK( negative > ui );
-    CHECK( ui <= negative );
-    CHECK( negative >= ui );
-    CHECK( ui == negative );
-    CHECK( negative == ui );
-}
-
-TEST_CASE( "./succeeding/conditions/ptr", "Pointers can be compared to null" )
+TEST_CASE(  "./succeeding/conditions/ptr", 
+            "Pointers can be compared to null" )
 {
     TestData* p = NULL;
     TestData* pNULL = NULL;
@@ -243,7 +235,8 @@ TEST_CASE( "./succeeding/conditions/ptr", "Pointers can be compared to null" )
 // is detected and a warning issued.
 // An alternative form of the macros (CHECK_FALSE and REQUIRE_FALSE) can be used instead to capture
 // the operand value.
-TEST_CASE( "./succeeding/conditions/not", "'Not' checks that should succeed" )
+TEST_CASE(  "./succeeding/conditions/not", 
+            "'Not' checks that should succeed" )
 {
     bool falseValue = false;
     
@@ -257,7 +250,8 @@ TEST_CASE( "./succeeding/conditions/not", "'Not' checks that should succeed" )
     REQUIRE_FALSE( 1 == 2 );
 }
 
-TEST_CASE( "./failing/conditions/not", "'Not' checks that should fail" )
+TEST_CASE(  "./failing/conditions/not", 
+            "'Not' checks that should fail" )
 {
     bool trueValue = true;
     
