@@ -667,7 +667,8 @@ inline bool isTrue
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr ), stopOnFailure );
+    INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr ), stopOnFailure ); \
+    if( Catch::isTrue( false ) ){ bool dummyResult = ( expr ); Catch::isTrue( dummyResult ); }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
