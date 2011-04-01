@@ -10,8 +10,14 @@
  *
  */
 
-#include "../catch_with_main.hpp"
+//#include "../catch_with_main.hpp"
 #include "../internal/catch_self_test.hpp"
+
+#include "catch_runner.hpp"
+int main (int argc, char * const argv[])
+{
+    return Catch::Main( argc, argv );
+}
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" )
 {
@@ -44,7 +50,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
                     "Number of 'succeeding' tests is fixed" )
         {
             runner.runMatching( "./succeeding/*" );
-            CHECK( runner.getSuccessCount() == 290 );
+            CHECK( runner.getSuccessCount() == 218 );
             CHECK( runner.getFailureCount() == 0 );
         }
 
@@ -53,7 +59,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
         {
             runner.runMatching( "./failing/*" );        
             CHECK( runner.getSuccessCount() == 0 );
-            CHECK( runner.getFailureCount() == 127 );
+            CHECK( runner.getFailureCount() == 55 );
         }
     }
 }
