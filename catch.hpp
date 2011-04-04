@@ -66,6 +66,6 @@
 // Still to be implemented
 #define CHECK_NOFAIL( expr ) // !TBD - reports violation, but doesn't fail Test
 
-using Catch::Approx;
+using Catch::Detail::Approx;
 
 #endif // TWOBLUECUBES_CATCH_HPP_INCLUDED

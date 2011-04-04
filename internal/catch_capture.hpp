@@ -591,53 +591,55 @@ inline double catch_max( double x, double y )
 {
     return x > y ? x : y;
 }
-    
-class Approx
+namespace Detail
 {
-public:
-    ///////////////////////////////////////////////////////////////////////////
-    // !TBD more generic
-    explicit Approx
-    (
-        double d
-    )
-    : m_d( d )
+    class Approx
     {
-    }
+    public:
+        ///////////////////////////////////////////////////////////////////////////
+        // !TBD more generic
+        explicit Approx
+        (
+            double d
+        )
+        : m_d( d )
+        {
+        }
 
-    ///////////////////////////////////////////////////////////////////////////
-    template<typename T>
-    friend bool operator == 
-    (
-        const T& lhs, 
-        const Approx& rhs
-    )
-    {
-        // !TBD Use proper tolerance
-        // From: http://realtimecollisiondetection.net/blog/?p=89
-        // see also: http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
-        return fabs( lhs - rhs.m_d ) <= catch_max( CATCH_absTol, CATCH_relTol * catch_max( fabs(lhs), fabs(rhs.m_d) ) );
-    }
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename T>
+        friend bool operator == 
+        (
+            const T& lhs, 
+            const Approx& rhs
+        )
+        {
+            // !TBD Use proper tolerance
+            // From: http://realtimecollisiondetection.net/blog/?p=89
+            // see also: http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
+            return fabs( lhs - rhs.m_d ) <= catch_max( CATCH_absTol, CATCH_relTol * catch_max( fabs(lhs), fabs(rhs.m_d) ) );
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
+        template<typename T>
+        friend bool operator != 
+        (
+            const T& lhs, 
+            const Approx& rhs
+        )
+        {
+            return ! operator==( lhs, rhs );
+        }
+        
+        double m_d;
+    };
+}
     
-    ///////////////////////////////////////////////////////////////////////////
-    template<typename T>
-    friend bool operator != 
-    (
-        const T& lhs, 
-        const Approx& rhs
-    )
-    {
-        return ! operator==( lhs, rhs );
-    }
-    
-    double m_d;
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 template<>
-inline std::string toString<Approx>
+    inline std::string toString<Detail::Approx>
 (
-    const Approx& value
+    const Detail::Approx& value
 )
 {
     std::ostringstream oss;
