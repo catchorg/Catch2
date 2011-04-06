@@ -50,7 +50,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
                     "Number of 'succeeding' tests is fixed" )
         {
             runner.runMatching( "./succeeding/*" );
-            CHECK( runner.getSuccessCount() == 218 );
+            CHECK( runner.getSuccessCount() == 224 );
             CHECK( runner.getFailureCount() == 0 );
         }
 

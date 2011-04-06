@@ -120,3 +120,111 @@ TEST_CASE
     REQUIRE( i++ == 8 );
     
 }
+
+namespace A {
+    struct X
+    {
+        X() : a(4), b(2), c(7) {}
+        X(int v) : a(v), b(2), c(7) {}
+        int a;
+        int b;
+        int c;
+    };
+}
+
+namespace B {
+    struct Y
+    {
+        Y() : a(4), b(2), c(7) {}
+        Y(int v) : a(v), b(2), c(7) {}
+        int a;
+        int b;
+        int c;
+    };
+}
+bool operator==(const A::X& lhs, const B::Y& rhs)
+{
+    return (lhs.a == rhs.a);
+}
+
+bool operator==(const B::Y& lhs, const A::X& rhs)
+{
+    return (lhs.a == rhs.a);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+    "./succeeding/koenig",
+    "Operators at different namespace levels not hijacked by Koenig lookup"
+)
+{
+    A::X x;
+    B::Y y;
+    REQUIRE( x == y );
+}
+
+
+namespace ObjectWithConversions
+{    
+    struct Object 
+    {
+        operator unsigned int() {return 0xc0000000;}
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////
+    TEST_CASE
+    (
+        "./succeeding/koenig",
+        "Operators at different namespace levels not hijacked by Koenig lookup"
+    )
+    {
+        
+        Object o;
+        
+        bool ok = (0xc0000000 == o); // ok
+        REQUIRE(ok);
+        REQUIRE(0xc0000000 == o );	// doesn't compile (VC or GCC)
+    }
+}
+
+namespace ObjectWithNonConstEqualityOperator 
+{
+    struct Test
+    {
+        Test( unsigned int v )
+        : m_value(v) 
+        {}
+        
+        bool operator==( const Test&rhs )
+        { 
+            return (m_value == rhs.m_value);
+        }
+        bool operator==( const Test&rhs ) const
+        { 
+            return (m_value != rhs.m_value);
+        }
+        unsigned int m_value;
+    };
+    
+    TEST_CASE("./succeeding/non-const==", "Demonstrate that a non-const == is not used")
+    {
+        Test t( 1 );
+        
+        bool ok = (t == 1); // ok
+        REQUIRE(ok);	
+        REQUIRE( t == 1 );	// doesn't compile (VC or GCC)
+    }
+}
+
+namespace EnumBitFieldTests
+{
+    enum Bits {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
+        bit30 = 0x40000000, bit31 = 0x80000000,
+        bit30and31 = 0xc0000000};
+
+    TEST_CASE("./succeeding/enum/bits", "Test enum bit values")
+    {
+        REQUIRE( 0xc0000000 == bit30and31 );
+    }
+}

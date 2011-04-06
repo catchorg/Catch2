@@ -110,6 +110,20 @@ inline std::string toString
 ///////////////////////////////////////////////////////////////////////////////
 inline std::string toString
 (
+    const std::wstring& value
+)
+{
+    std::ostringstream oss;
+    oss << "\"";
+    for(size_t i = 0; i < value.size(); ++i )
+        oss << static_cast<char>( value[i] <= 0xff ? value[i] : '?');
+    oss << "\"";
+    return oss.str();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
     const char* const value
 )
 {
@@ -136,6 +150,34 @@ inline std::string toString
     return oss.str();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    unsigned int value
+)
+{
+    std::ostringstream oss;
+    if( value > 8192 )
+        oss << "0x" << std::hex << value;
+    else
+        oss << value;
+    return oss.str();
+}
+    
+///////////////////////////////////////////////////////////////////////////////
+inline std::string toString
+(
+    unsigned long value
+)
+{
+    std::ostringstream oss;
+    if( value > 8192 )
+        oss << "0x" << std::hex << value;
+    else
+        oss << value;
+    return oss.str();
+}
+    
 ///////////////////////////////////////////////////////////////////////////////
 inline std::string toString
 (
