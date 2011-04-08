@@ -492,6 +492,14 @@ public:
     {
         return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    operator MutableResultInfo&
+    ()
+    {
+        return m_result->captureBoolExpression( m_lhs );
+    }
+    
     
 private:
     MutableResultInfo* m_result;
