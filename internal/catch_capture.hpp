@@ -729,6 +729,10 @@ inline bool isTrue
         expr; \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure ); \
     } \
+    catch( std::exception& ex ) \
+    { \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << ex.what() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
+    } \
     catch( ... ) \
     { \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
