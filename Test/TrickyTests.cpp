@@ -178,13 +178,9 @@ namespace ObjectWithConversions
         "./succeeding/koenig",
         "Operators at different namespace levels not hijacked by Koenig lookup"
     )
-    {
-        
-        Object o;
-        
-        bool ok = (0xc0000000 == o); // ok
-        REQUIRE(ok);
-        REQUIRE(0xc0000000 == o );	// doesn't compile (VC or GCC)
+    {        
+        Object o;        
+        REQUIRE(0xc0000000 == o );
     }
 }
 
@@ -210,10 +206,7 @@ namespace ObjectWithNonConstEqualityOperator
     TEST_CASE("./succeeding/non-const==", "Demonstrate that a non-const == is not used")
     {
         Test t( 1 );
-        
-        bool ok = (t == 1); // ok
-        REQUIRE(ok);	
-        REQUIRE( t == 1 );	// doesn't compile (VC or GCC)
+        REQUIRE( t == 1 );
     }
 }
 
@@ -227,4 +220,18 @@ namespace EnumBitFieldTests
     {
         REQUIRE( 0xc0000000 == bit30and31 );
     }
+}
+
+struct Obj
+{
+    Obj():prop(&p){}
+    
+    int p;
+    int* prop;
+};
+
+TEST_CASE("./succeeding/boolean member", "")
+{
+    Obj obj;
+    REQUIRE( obj.prop );
 }
