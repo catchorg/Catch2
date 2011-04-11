@@ -173,7 +173,11 @@ namespace Catch
             StartSpansLazily();
             
             if( !resultInfo.getFilename().empty() )
+#ifndef __GNUG__
                 m_config.stream() << resultInfo.getFilename() << "(" << resultInfo.getLine() << "): ";
+#else                
+                m_config.stream() << resultInfo.getFilename() << ":" << resultInfo.getLine() << ": ";            
+#endif            
             
             if( resultInfo.hasExpression() )
             {
@@ -199,7 +203,7 @@ namespace Catch
                         m_config.stream() << "No exception thrown where one was expected";
                     break;
                 case ResultWas::Info:
-                    m_config.stream() << "info:\n'" << resultInfo.getMessage() << "'";
+                    streamVariableLengthText( "info", resultInfo.getMessage() );
                     break;
                 case ResultWas::Warning:
                     m_config.stream() << "warning:\n'" << resultInfo.getMessage() << "'";
@@ -238,22 +242,13 @@ namespace Catch
             if( !stdOut.empty() )
             {
                 StartSpansLazily();
-                std::string stdOutTrimmed = trim( stdOut );
-                if( stdOutTrimmed.find_first_of( "\r\n" ) == std::string::npos )
-                {
-                    m_config.stream() << "[stdout: " << stdOutTrimmed << "]\n";
-                }
-                else 
-                {
-                    m_config.stream() << "[stdout] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << stdOutTrimmed << "\n[end of stdout] <<<<<<<<<<<<<<<<<<<<<<<\n";
-                }
-
+                streamVariableLengthText( "stdout", stdOut );
             }
 
             if( !stdErr.empty() )
             {
                 StartSpansLazily();
-                m_config.stream() << "[stderr: " << trim( stdErr ) << "]\n";
+                streamVariableLengthText( "stderr", stdErr );
             }
                 
             if( m_testSpan.emitted )
@@ -309,6 +304,25 @@ namespace Catch
                         }                        
                     }
                 }
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        void streamVariableLengthText
+        (
+            const std::string& prefix,
+            const std::string& text
+        )
+        {
+            std::string trimmed = trim( text );
+            if( trimmed.find_first_of( "\r\n" ) == std::string::npos )
+            {
+                m_config.stream() << "[" << prefix << ": " << trimmed << "]\n";
+            }
+            else 
+            {
+                m_config.stream()   << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 
+                                    << "\n[end of " << prefix << "] <<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
         }
         
