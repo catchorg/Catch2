@@ -33,6 +33,9 @@ namespace Catch
         
         virtual bool includeSuccessfulResults
             () const = 0;
+
+        virtual std::string getName
+            () const = 0;
     };
     
     class TestCaseInfo;

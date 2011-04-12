@@ -30,6 +30,7 @@ namespace Catch
     // -o, --out filename to write to
     // -s, --success report successful cases too
     // -b, --break breaks into debugger on test failure
+    // -n, --name specifies an optional name for the test run
 	class ArgParser : NonCopyable
     {
         enum Mode
@@ -41,6 +42,7 @@ namespace Catch
             modeOutput,
             modeSuccess,
             modeBreak,
+            modeName,
             modeHelp,
 
             modeError
@@ -74,6 +76,8 @@ namespace Catch
                         changeMode( cmd, modeSuccess );
                     else if( cmd == "-b" || cmd == "--break" )
                         changeMode( cmd, modeBreak );
+                    else if( cmd == "-n" || cmd == "--name" )
+                        changeMode( cmd, modeName );
                     else if( cmd == "-h" || cmd == "-?" || cmd == "--help" )
                         changeMode( cmd, modeHelp );
                 }
@@ -179,6 +183,10 @@ namespace Catch
                     if( m_args.size() != 0 )
                         return setErrorMode( m_command + " does not accept arguments" );
                     m_config.setShouldDebugBreak( true );
+                case modeName:
+                    if( m_args.size() != 1 )
+                        return setErrorMode( m_command + " requires exactly one argument (a name)" );
+                    m_config.setName( m_args[0] );
                     break;
                 case modeHelp:
                     if( m_args.size() != 0 )

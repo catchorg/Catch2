@@ -266,7 +266,10 @@ namespace Catch
         {
             if( !m_testingSpan.emitted )
             {
-                m_config.stream() << "[Started testing]" << std::endl;
+                if( m_config.getName().empty() )
+                    m_config.stream() << "[Started testing]" << std::endl;
+                else
+                    m_config.stream() << "[Started testing: " << m_config.getName() << "]" << std::endl;
                 m_testingSpan.emitted = true;
             }
             

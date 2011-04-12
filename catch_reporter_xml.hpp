@@ -46,6 +46,8 @@ namespace Catch
         {
             m_xml = XmlWriter( m_config.stream() );
             m_xml.startElement( "Catch" );
+            if( !m_config.getName().empty() )
+                m_xml.writeAttribute( "name", m_config.getName() );
         }
         
         ///////////////////////////////////////////////////////////////////////////

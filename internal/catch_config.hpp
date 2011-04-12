@@ -172,6 +172,18 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
+        void setName( const std::string& name )
+        {
+            m_name = name;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        std::string getName() const
+        {
+            return m_name;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
         bool shouldDebugBreak() const
         {
             return m_shouldDebugBreak;
@@ -228,7 +240,9 @@ namespace Catch
         bool m_showHelp;
         std::streambuf* m_streambuf;
         mutable std::ostream m_os;
-        Include::What m_includeWhat;        
+        Include::What m_includeWhat;
+        std::string m_name;
+        
     };
     
 } // end namespace Catch
