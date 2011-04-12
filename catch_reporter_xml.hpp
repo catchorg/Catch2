@@ -45,7 +45,7 @@ namespace Catch
         ()
         {
             m_xml = XmlWriter( m_config.stream() );
-            m_xml.startElement( "AllTests" );
+            m_xml.startElement( "Catch" );
         }
         
         ///////////////////////////////////////////////////////////////////////////
