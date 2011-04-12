@@ -58,6 +58,7 @@ namespace Catch
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", succeeded )
                 .writeAttribute( "failures", failed );
+            m_xml.endElement();
         }
         
         ///////////////////////////////////////////////////////////////////////////
