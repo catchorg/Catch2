@@ -51,7 +51,11 @@ TEST_CASE_METHOD( Fixture, "./succeeding/Fixture/succeedingCase", "A method base
     REQUIRE( m_a == 1 );        
 }
 
-TEST_CASE_METHOD( Fixture, "./failing/Fixture/failingCase", "A method based test run that fails" )
-{   
-    REQUIRE( m_a == 2 );        
+// We should be able to write our tests within a different namespace
+namespace Inner
+{
+    TEST_CASE_METHOD( Fixture, "./failing/Fixture/failingCase", "A method based test run that fails" )
+    {   
+        REQUIRE( m_a == 2 );        
+    }
 }

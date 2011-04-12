@@ -112,9 +112,6 @@ private:
     void operator=
         ( const AutoReg& );
 };
-
-template<typename T, size_t>
-struct FixtureWrapper{};
     
 } // end namespace Catch
 
@@ -136,11 +133,11 @@ struct FixtureWrapper{};
 
 ///////////////////////////////////////////////////////////////////////////////
 #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
-    namespace Catch{ template<> struct FixtureWrapper<ClassName, __LINE__> : ClassName \
+    struct INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper ) : ClassName \
     { \
         void test(); \
-    }; }\
-    namespace { Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &Catch::FixtureWrapper<ClassName, __LINE__>::test, TestName, Desc ); } \
-    void Catch::FixtureWrapper<ClassName, __LINE__>::test()
+    }; \
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test, TestName, Desc ); } \
+    void INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test()
 
 #endif // TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
