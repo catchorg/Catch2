@@ -128,7 +128,7 @@ namespace Catch
                     .writeText( resultInfo.getExpression() );
                 m_xml.scopedElement( "Expanded" )
                     .writeText( resultInfo.getExpandedExpression() );
-                m_currentTestSuccess |= resultInfo.ok();
+                m_currentTestSuccess &= resultInfo.ok();
             }
             
             switch( resultInfo.getResultType() )
