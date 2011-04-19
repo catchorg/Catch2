@@ -99,7 +99,8 @@ namespace Catch
         << "\t-r, --reporter <reporter name>\n"
         << "\t-o, --out <file name>|<%stream name>\n"
         << "\t-s, --success\n"
-        << "\t-b, --break\n\n"
+        << "\t-b, --break\n"
+        << "\t-n, --name <name>\n\n"
         << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
     }
     
