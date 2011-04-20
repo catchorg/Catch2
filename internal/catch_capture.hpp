@@ -127,7 +127,7 @@ inline std::string toString
     const char* const value
 )
 {
-    return value ? toString( std::string( value ) ) : std::string( "{null string}" );
+    return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
 }   
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -136,7 +136,7 @@ inline std::string toString
     char* const value
 )
 {
-    return toString( static_cast<const char* const>( value ) );
+    return Catch::toString( static_cast<const char* const>( value ) );
 }        
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -218,7 +218,7 @@ inline std::string toString
     T* p
 )
 {
-    return toString( static_cast<void*>( p ) );
+    return Catch::toString( static_cast<void*>( p ) );
 }
     
 ///////////////////////////////////////////////////////////////////////////////
@@ -228,7 +228,7 @@ inline std::string toString
     const T* p
 )
 {
-    return toString( static_cast<void*>( const_cast<T*>( p ) ) );
+    return Catch::toString( static_cast<void*>( const_cast<T*>( p ) ) );
 }
     
 struct TestFailureException
@@ -312,7 +312,7 @@ private:
         bool result
     )
     {
-        m_lhs = toString( result );
+        m_lhs = Catch::toString( result );
         m_op = m_isNot ? "!" : "";
         setResultType( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
@@ -327,8 +327,8 @@ private:
     )
     {
         setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
-        m_lhs = toString( lhs );
-        m_rhs = toString( rhs );
+        m_lhs = Catch::toString( lhs );
+        m_rhs = Catch::toString( rhs );
         m_op = Internal::OperatorTraits<Op>::getName();
         return *this;
     }
