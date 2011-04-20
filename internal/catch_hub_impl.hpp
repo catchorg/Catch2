@@ -12,6 +12,7 @@
 #include "catch_hub.h"
 #include "catch_reporter_registry.hpp"
 #include "catch_test_case_registry_impl.hpp"
+#include "catch_exception_translator_registry.hpp"
 #include "catch_runner_impl.hpp"
 #include "catch_generators_impl.hpp"
 #include "catch_stream.hpp"
@@ -22,7 +23,8 @@ namespace Catch
     Hub::Hub
     ()
     :   m_reporterRegistry( new ReporterRegistry ),
-        m_testCaseRegistry( new TestRegistry )
+        m_testCaseRegistry( new TestRegistry ),
+        m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry )
     {
     }
 
@@ -71,6 +73,13 @@ namespace Catch
     ()
     {
         return *me().m_testCaseRegistry.get();
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    IExceptionTranslatorRegistry& Hub::getExceptionTranslatorRegistry
+    ()
+    {
+        return *me().m_exceptionTranslatorRegistry.get();
     }
     
     ///////////////////////////////////////////////////////////////////////////

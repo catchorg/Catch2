@@ -28,6 +28,7 @@
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.hpp"
 #include "internal/catch_generators.hpp"
+#include "internal/catch_interfaces_exception.h"
 
 //////
 

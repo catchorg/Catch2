@@ -32,6 +32,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A13FF93135EBF0000EC5928 /* catch_exception_translator_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_exception_translator_registry.hpp; path = ../internal/catch_exception_translator_registry.hpp; sourceTree = SOURCE_ROOT; };
+		4A13FF94135EBF2600EC5928 /* catch_interfaces_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = catch_interfaces_exception.h; path = ../internal/catch_interfaces_exception.h; sourceTree = SOURCE_ROOT; };
 		4A15D2B712E0418F0005EB03 /* catch_self_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_self_test.hpp; path = ../internal/catch_self_test.hpp; sourceTree = SOURCE_ROOT; };
 		4A15D4A812E4DF0D0005EB03 /* catch_stream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_stream.hpp; path = ../internal/catch_stream.hpp; sourceTree = SOURCE_ROOT; };
 		4A302DE312D5114900C84B67 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../catch.hpp; sourceTree = SOURCE_ROOT; };
@@ -114,6 +116,15 @@
 				8DD76F6C0486A84900D96B5E /* Test */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4A13FF92135EBED500EC5928 /* Exceptions */ = {
+			isa = PBXGroup;
+			children = (
+				4A13FF93135EBF0000EC5928 /* catch_exception_translator_registry.hpp */,
+				4A13FF94135EBF2600EC5928 /* catch_interfaces_exception.h */,
+			);
+			name = Exceptions;
 			sourceTree = "<group>";
 		};
 		4A302E3712D515B700C84B67 /* TestCase registration */ = {
@@ -216,6 +227,7 @@
 		4AFC341412809A1B003A0C29 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				4A13FF92135EBED500EC5928 /* Exceptions */,
 				4A302E3912D5160400C84B67 /* Hub */,
 				4A302E3812D515DF00C84B67 /* Running & Results */,
 				4A302E3712D515B700C84B67 /* TestCase registration */,

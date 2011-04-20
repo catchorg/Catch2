@@ -24,6 +24,7 @@ namespace Catch
     struct IResultCapture;
     struct ITestCaseRegistry;
     struct IRunner;
+    struct IExceptionTranslatorRegistry;
     class GeneratorsForTest;
 
     class StreamBufBase : public std::streambuf
@@ -58,6 +59,9 @@ namespace Catch
         static ITestCaseRegistry& getTestCaseRegistry
             ();
         
+        static IExceptionTranslatorRegistry& getExceptionTranslatorRegistry
+            ();
+        
         static std::streambuf* createStreamBuf
             ( const std::string& streamName
             );
@@ -82,6 +86,7 @@ namespace Catch
         
         std::auto_ptr<IReporterRegistry> m_reporterRegistry;
         std::auto_ptr<ITestCaseRegistry> m_testCaseRegistry;
+        std::auto_ptr<IExceptionTranslatorRegistry> m_exceptionTranslatorRegistry;
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
         std::map<std::string, GeneratorsForTest*> m_generatorsByTestName;

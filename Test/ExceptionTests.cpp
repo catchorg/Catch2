@@ -62,3 +62,36 @@ TEST_CASE( "./succeeding/exceptions/implicit", "When unchecked exceptions are th
     {
     }
 }
+
+class CustomException
+{
+public:
+    CustomException( const std::string& msg )
+    : m_msg( msg )
+    {}
+    
+    std::string getMessage() const
+    {
+        return m_msg;
+    }
+    
+private:
+    std::string m_msg;
+};
+
+
+namespace Catch
+{
+    ExceptionTranslator<CustomException> translator;
+
+    template<>
+    std::string ExceptionTranslator<CustomException>::translate( CustomException& ex ) const
+    {
+        return ex.getMessage();
+    }
+}
+
+TEST_CASE_NORETURN( "./succeeding/exceptions/custom", "" )
+{
+    throw CustomException( "custom exception" );
+}

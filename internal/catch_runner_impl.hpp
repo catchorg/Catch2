@@ -577,7 +577,7 @@ namespace Catch
             }
             catch(...)
             {
-                acceptMessage( "unknown exception" );
+                acceptMessage( Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() );
                 acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();
