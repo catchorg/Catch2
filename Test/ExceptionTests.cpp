@@ -79,19 +79,33 @@ private:
     std::string m_msg;
 };
 
-
-namespace Catch
+CATCH_TRANSLATE_EXCEPTION( CustomException& ex )
 {
-    ExceptionTranslator<CustomException> translator;
-
-    template<>
-    std::string ExceptionTranslator<CustomException>::translate( CustomException& ex ) const
-    {
-        return ex.getMessage();
-    }
+    return ex.getMessage();
 }
 
-TEST_CASE_NORETURN( "./succeeding/exceptions/custom", "" )
+CATCH_TRANSLATE_EXCEPTION( double& ex )
+{
+    return Catch::toString( ex );
+}
+
+TEST_CASE_NORETURN( "./failing/exceptions/custom", "Unexpected custom exceptions can be translated" )
 {
     throw CustomException( "custom exception" );
+}
+
+TEST_CASE( "./failing/exceptions/custom/nothrow", "Custom exceptions can be translated when testing for nothrow" )
+{
+    REQUIRE_NOTHROW( throw CustomException( "unexpected custom exception" ) );
+}
+
+TEST_CASE( "./failing/exceptions/custom/throw", "Custom exceptions can be translated when testing for throwing as something else" )
+{
+    REQUIRE_THROWS_AS( throw CustomException( "custom exception - not std" ), std::exception );
+}
+
+
+TEST_CASE_NORETURN( "./failing/exceptions/custom/double", "Unexpected custom exceptions can be translated"  )
+{
+    throw double( 3.14 );
 }

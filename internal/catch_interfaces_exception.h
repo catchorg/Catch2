@@ -38,30 +38,55 @@ namespace Catch
         
     };
 
-    template<typename T>
-    class ExceptionTranslator : public IExceptionTranslator
+    class ExceptionTranslatorRegistrar
     {
+        template<typename T>
+        class ExceptionTranslator : public IExceptionTranslator
+        {
+        public:
+            
+            ExceptionTranslator
+            (
+                std::string(*translateFunction)( T& ) 
+            )
+            : m_translateFunction( translateFunction )
+            {}
+            
+            virtual std::string translate
+            ()
+            const
+            {
+                try
+                {
+                    throw;
+                }
+                catch( T& ex )
+                {
+                    return m_translateFunction( ex );
+                }
+            }
+            
+        protected:
+            std::string(*m_translateFunction)( T& );
+        };
+        
     public:
-        ExceptionTranslator()
+        template<typename T>
+        ExceptionTranslatorRegistrar
+        (
+            std::string(*translateFunction)( T& ) 
+        )
         {
-            Catch::Hub::getExceptionTranslatorRegistry().registerTranslator( this );
+            Catch::Hub::getExceptionTranslatorRegistry().registerTranslator
+                ( new ExceptionTranslator<T>( translateFunction ) );
         }
-        
-        virtual std::string translate() const
-        {
-            try
-            {
-                throw;
-            }
-            catch( T& ex )
-            {
-                return translate( ex );
-            }
-        }
-        
-    protected:
-        std::string translate( T& ex ) const;
     };
 }
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature ) \
+    static std::string INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator )( signature ); \
+    namespace{ Catch::ExceptionTranslatorRegistrar INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator ) ); }\
+    static std::string INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_ExceptionTranslator )( signature )
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
