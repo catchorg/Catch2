@@ -33,6 +33,8 @@ namespace Catch
         virtual bool sectionStarted
             (   const std::string& name, 
                 const std::string& description, 
+                const std::string& filename,
+                std::size_t line,
                 std::size_t& successes, 
                 std::size_t& failures 
             ) = 0;

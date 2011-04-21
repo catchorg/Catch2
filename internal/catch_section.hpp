@@ -26,10 +26,12 @@ namespace Catch
         Section
         (
             const std::string& name, 
-            const std::string& description
+            const std::string& description,
+            const std::string& filename,
+            std::size_t line
         )
         :   m_name( name ),
-            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, m_successes, m_failures ) )
+            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_successes, m_failures ) )
         {
         }
 
@@ -50,6 +52,7 @@ namespace Catch
         }
 
     private:
+        
         std::string m_name;
         std::size_t m_successes;
         std::size_t m_failures;
@@ -58,6 +61,7 @@ namespace Catch
     
 } // end namespace Catch
 
-#define INTERNAL_CATCH_SECTION( name, desc ) if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc ) )
+#define INTERNAL_CATCH_SECTION( name, desc ) \
+    if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc, __FILE__, __LINE__ ) )
 
 #endif // TWOBLUECUBES_CATCH_SECTION_HPP_INCLUDED

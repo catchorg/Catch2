@@ -109,3 +109,14 @@ TEST_CASE_NORETURN( "./failing/exceptions/custom/double", "Unexpected custom exc
 {
     throw double( 3.14 );
 }
+
+TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections report file/ line or section" )
+{
+    SECTION( "the section", "" )
+    {
+        SECTION( "the section2", "" )
+        {
+            throw std::domain_error( "Exception from section" );
+        }
+    }
+}

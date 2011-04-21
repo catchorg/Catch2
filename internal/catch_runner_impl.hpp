@@ -360,6 +360,8 @@ namespace Catch
             {
                 do
                 {
+                    m_currentResult.setFileAndLine( m_runningTest->getTestCaseInfo().getFilename(), 
+                                                    m_runningTest->getTestCaseInfo().getLine() );
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
                 while( m_runningTest->hasUntestedSections() );
@@ -459,14 +461,20 @@ namespace Catch
         virtual bool sectionStarted
         (
             const std::string& name, 
-            const std::string& description, 
+            const std::string& description,
+            const std::string& filename,
+            std::size_t line,
             std::size_t& successes,
             std::size_t& failures 
         )
         {
-            if( !m_runningTest->addSection( name ) )
+            std::ostringstream oss;
+            oss << filename << ":" << line;
+
+            if( !m_runningTest->addSection( oss.str() ) )
                 return false;
 
+            m_currentResult.setFileAndLine( filename, line );
             m_reporter->StartSection( name, description );
             successes = m_successes;
             failures = m_failures;
@@ -553,8 +561,6 @@ namespace Catch
                 m_runningTest->reset();
                 StreamRedirect coutRedir( std::cout, redirectedCout );
                 StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                m_currentResult.setFileAndLine( m_runningTest->getTestCaseInfo().getFilename(), 
-                                                m_runningTest->getTestCaseInfo().getLine() );
                 m_runningTest->getTestCaseInfo().invoke();
                 m_runningTest->ranToCompletion();
             }
