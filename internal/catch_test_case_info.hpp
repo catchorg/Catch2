@@ -27,11 +27,15 @@ namespace Catch
         (
             ITestCase* testCase, 
             const char* name, 
-            const char* description 
+            const char* description,
+            const char* filename,
+            std::size_t line
         )
         :   m_test( testCase ),
             m_name( name ),
-            m_description( description )
+            m_description( description ),
+            m_filename( filename ),
+            m_line( line )
         {
         }
 
@@ -49,7 +53,9 @@ namespace Catch
         )
         :   m_test( other.m_test->clone() ),
             m_name( other.m_name ),
-            m_description( other.m_description )
+            m_description( other.m_description ),
+            m_filename( other.m_filename ),
+            m_line( other.m_line )
         {
         }
         
@@ -61,7 +67,9 @@ namespace Catch
         )
         :   m_test( other.m_test->clone() ),
             m_name( name ),
-            m_description( other.m_description )
+            m_description( other.m_description ),
+            m_filename( other.m_filename ),
+            m_line( other.m_line )
         {
         }
         
@@ -107,6 +115,22 @@ namespace Catch
             return m_description;
         }
 
+        ///////////////////////////////////////////////////////////////////////
+        const std::string& getFilename
+        ()
+        const
+        {
+            return m_filename;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        std::size_t getLine
+        ()
+        const
+        {
+            return m_line;
+        }
+        
         ///////////////////////////////////////////////////////////////////////
         bool isHidden
         ()
@@ -155,6 +179,9 @@ namespace Catch
         ITestCase* m_test;
         std::string m_name;
         std::string m_description;
+        std::string m_filename;
+        std::size_t m_line;
+        
     };
     
     ///////////////////////////////////////////////////////////////////////////

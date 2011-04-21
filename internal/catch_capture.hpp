@@ -287,6 +287,17 @@ public:
     }
     
     ///////////////////////////////////////////////////////////////////////////
+    void setFileAndLine
+    (
+        const std::string& filename,
+        std::size_t line
+    )
+    {
+        m_filename = filename;
+        m_line = line;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator ||
     (

@@ -151,10 +151,12 @@ namespace Catch
     (
         TestFunction function, 
         const char* name,
-        const char* description
+        const char* description,
+        const char* filename,
+        std::size_t line
     )
     {
-        registerTestCase( new FreeFunctionTestCase( function ), name, description );
+        registerTestCase( new FreeFunctionTestCase( function ), name, description, filename, line );
     }    
     
     ///////////////////////////////////////////////////////////////////////////
@@ -168,10 +170,12 @@ namespace Catch
     (
         ITestCase* testCase, 
         const char* name, 
-        const char* description 
+        const char* description,
+        const char* filename,
+        std::size_t line
     )
     {
-        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description ) );
+        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, filename, line ) );
     }
     
 } // end namespace Catch
