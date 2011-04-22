@@ -135,6 +135,8 @@ namespace Catch
             {
                 case ResultWas::ThrewException:
                     m_xml.scopedElement( "Exception" )
+                        .writeAttribute( "filename", resultInfo.getFilename() )
+                        .writeAttribute( "line", resultInfo.getLine() )
                         .writeText( resultInfo.getMessage() );
                     m_currentTestSuccess = false;
                     break;
