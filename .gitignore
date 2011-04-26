@@ -6,4 +6,5 @@
 Debug
 Release
 *.user
+*.xcuserstate
 /Test/Test.xcodeproj/xcuserdata/
