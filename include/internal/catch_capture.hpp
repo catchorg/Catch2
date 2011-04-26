@@ -508,7 +508,7 @@ public:
     operator MutableResultInfo&
     ()
     {
-        return m_result->captureBoolExpression( (bool)m_lhs );
+        return m_result->captureBoolExpression( m_lhs );
     }
     
     
