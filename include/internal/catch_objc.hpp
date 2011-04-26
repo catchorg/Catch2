@@ -16,7 +16,6 @@
 #import <objc/runtime.h>
 #include <string>
 
-#include "catch.hpp"
 #include "internal/catch_test_case_info.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////

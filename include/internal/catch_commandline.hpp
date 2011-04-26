@@ -183,6 +183,7 @@ namespace Catch
                     if( m_args.size() != 0 )
                         return setErrorMode( m_command + " does not accept arguments" );
                     m_config.setShouldDebugBreak( true );
+                    break;
                 case modeName:
                     if( m_args.size() != 1 )
                         return setErrorMode( m_command + " requires exactly one argument (a name)" );

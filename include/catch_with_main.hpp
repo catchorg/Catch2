@@ -17,7 +17,22 @@
 
 int main (int argc, char * const argv[])
 {
+#ifdef __OBJC__
+
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    
+    Catch::registerTestMethods();
+    
+    int result = Catch::Main( argc, (char* const*)argv );
+    
+    [pool drain];
+    return result;
+
+#else
+
     return Catch::Main( argc, argv );
+
+#endif
 }
 
 #endif // TWOBLUECUBES_CATCH_WITH_MAIN_HPP_INCLUDED

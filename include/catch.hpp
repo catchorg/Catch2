@@ -30,6 +30,10 @@
 #include "internal/catch_generators.hpp"
 #include "internal/catch_interfaces_exception.h"
 
+#ifdef __OBJC__
+#include "internal/catch_objc.hpp"
+#endif
+
 //////
 
 #define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "REQUIRE" )

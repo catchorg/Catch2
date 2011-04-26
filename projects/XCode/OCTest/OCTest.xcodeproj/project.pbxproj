@@ -37,8 +37,9 @@
 		4A5953B6128E95D6009DC1B9 /* OCTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCTest.mm; sourceTree = "<group>"; };
 		4A5953EF128E9A61009DC1B9 /* CatchOCTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatchOCTestCase.h; sourceTree = "<group>"; };
 		4A5953F0128E9A61009DC1B9 /* CatchOCTestCase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CatchOCTestCase.mm; sourceTree = "<group>"; };
-		4ADB5B8913655AA4001EB00B /* catch_objc_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc_main.hpp; path = ../../../include/catch_objc_main.hpp; sourceTree = SOURCE_ROOT; };
-		4ADB5B8A13655AA4001EB00B /* catch_objc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc.hpp; path = ../../../include/catch_objc.hpp; sourceTree = SOURCE_ROOT; };
+		4A97DB2813673E3100C8087C /* catch_objc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc.hpp; path = ../../../include/internal/catch_objc.hpp; sourceTree = SOURCE_ROOT; };
+		4A97DB2B13673E4700C8087C /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../../../include/catch.hpp; sourceTree = SOURCE_ROOT; };
+		4A97DB3613673EA300C8087C /* catch_with_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_with_main.hpp; path = ../../../include/catch_with_main.hpp; sourceTree = SOURCE_ROOT; };
 		8DD76FA10486AA7600D96B5E /* OCTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OCTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859EA3029092ED04C91782 /* OCTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = OCTest.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,8 +70,6 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				4ADB5B8913655AA4001EB00B /* catch_objc_main.hpp */,
-				4ADB5B8A13655AA4001EB00B /* catch_objc.hpp */,
 				4AFDF58212CA9E2800F15202 /* Catch */,
 				32A70AAB03705E1F00C91783 /* OCTest_Prefix.pch */,
 				08FB7796FE84155DC02AAC07 /* Main.mm */,
@@ -102,6 +101,9 @@
 		4AFDF58212CA9E2800F15202 /* Catch */ = {
 			isa = PBXGroup;
 			children = (
+				4A97DB3613673EA300C8087C /* catch_with_main.hpp */,
+				4A97DB2B13673E4700C8087C /* catch.hpp */,
+				4A97DB2813673E3100C8087C /* catch_objc.hpp */,
 			);
 			name = Catch;
 			sourceTree = "<group>";
