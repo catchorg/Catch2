@@ -75,6 +75,7 @@
 		4A060D14136203B800BBA8F8 /* catch_reporter_registrars.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_reporter_registrars.hpp; path = ../../include/internal/catch_reporter_registrars.hpp; sourceTree = SOURCE_ROOT; };
 		4A060D15136203B800BBA8F8 /* catch_xmlwriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_xmlwriter.hpp; path = ../../include/internal/catch_xmlwriter.hpp; sourceTree = SOURCE_ROOT; };
 		4A060D16136203B800BBA8F8 /* catch_generators_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_generators_impl.hpp; path = ../../include/internal/catch_generators_impl.hpp; sourceTree = SOURCE_ROOT; };
+		4A1A22AF136946E0002FDDE0 /* catch_approx.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_approx.hpp; path = ../../include/internal/catch_approx.hpp; sourceTree = SOURCE_ROOT; };
 		8DD76F6C0486A84900D96B5E /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* Test.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Test.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,6 +150,7 @@
 				4A060CFD136203B800BBA8F8 /* catch_runner_impl.hpp */,
 				4A060D0C136203B800BBA8F8 /* catch_interfaces_runner.h */,
 				4A060D0D136203B800BBA8F8 /* catch_generators.hpp */,
+				4A1A22AF136946E0002FDDE0 /* catch_approx.hpp */,
 			);
 			name = "Running & Results";
 			sourceTree = "<group>";
@@ -274,7 +276,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "CatchSelfTest" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* Test */;
 			projectDirPath = "";
 			projectRoot = "";

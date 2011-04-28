@@ -17,8 +17,9 @@
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.hpp"
 #include "catch_evaluate.hpp"
+#include "catch_hub.h"
+#include "catch_common.h"
 #include <sstream>
-#include <cmath>
 
 namespace Catch
 {
@@ -642,72 +643,7 @@ public:
 private:
     std::ostringstream m_oss;
 };
-    
-    
-// !TBD Need to clean this all up
-#define CATCH_absTol 1e-10
-#define CATCH_relTol 1e-10
-
-inline double catch_max( double x, double y )
-{
-    return x > y ? x : y;
-}
-namespace Detail
-{
-    class Approx
-    {
-    public:
-        ///////////////////////////////////////////////////////////////////////////
-        // !TBD more generic
-        explicit Approx
-        (
-            double d
-        )
-        : m_d( d )
-        {
-        }
-
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename T>
-        friend bool operator == 
-        (
-            const T& lhs, 
-            const Approx& rhs
-        )
-        {
-            // !TBD Use proper tolerance
-            // From: http://realtimecollisiondetection.net/blog/?p=89
-            // see also: http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
-            return fabs( lhs - rhs.m_d ) <= catch_max( CATCH_absTol, CATCH_relTol * catch_max( fabs(lhs), fabs(rhs.m_d) ) );
-        }
         
-        ///////////////////////////////////////////////////////////////////////////
-        template<typename T>
-        friend bool operator != 
-        (
-            const T& lhs, 
-            const Approx& rhs
-        )
-        {
-            return ! operator==( lhs, rhs );
-        }
-        
-        double m_d;
-    };
-}
-    
-///////////////////////////////////////////////////////////////////////////////
-template<>
-    inline std::string toString<Detail::Approx>
-(
-    const Detail::Approx& value
-)
-{
-    std::ostringstream oss;
-    oss << "Approx( " << value.m_d << ")";
-    return oss.str();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 // This is just here to avoid compiler warnings with macro constants
 inline bool isTrue
