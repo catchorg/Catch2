@@ -18,27 +18,19 @@
 
 namespace Catch
 {
-    
-    // !TBD Need to clean this all up
-#define CATCH_absTol 1e-10
-#define CATCH_relTol 1e-10
-    
-    inline double catch_max( double x, double y )
-    {
-        return x > y ? x : y;
-    }
     namespace Detail
     {
         class Approx
         {
         public:
             ///////////////////////////////////////////////////////////////////////////
-            // !TBD more generic
             explicit Approx
             (
-             double d
-             )
-            : m_d( d )
+                double d
+            )
+            :   m_epsilon( 1e-10 ),
+                m_scale( 1.0 ),
+                m_d( d )
             {
             }
             
@@ -46,27 +38,27 @@ namespace Catch
             template<typename T>
             friend bool operator == 
             (
-             const T& lhs, 
-             const Approx& rhs
-             )
+                const T& lhs, 
+                const Approx& rhs
+            )
             {
-                // !TBD Use proper tolerance
-                // From: http://realtimecollisiondetection.net/blog/?p=89
-                // see also: http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
-                return fabs( lhs - rhs.m_d ) <= catch_max( CATCH_absTol, CATCH_relTol * catch_max( fabs(lhs), fabs(rhs.m_d) ) );
+                // Thanks to Richard Harris for his help refining this formula
+                return fabs( lhs - rhs.m_d ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_d) ) );
             }
             
             ///////////////////////////////////////////////////////////////////////////
             template<typename T>
             friend bool operator != 
             (
-             const T& lhs, 
-             const Approx& rhs
-             )
+                const T& lhs, 
+                const Approx& rhs
+            )
             {
-                return ! operator==( lhs, rhs );
+                return !operator==( lhs, rhs );
             }
             
+            double m_epsilon;
+            double m_scale;
             double m_d;
         };
     }
