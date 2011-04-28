@@ -15,6 +15,7 @@
 #include "catch_capture.hpp"
 
 #include <cmath>
+#include <limits>
 
 namespace Catch
 {
@@ -28,7 +29,7 @@ namespace Catch
             (
                 double d
             )
-            :   m_epsilon( 1e-10 ),
+            :   m_epsilon( std::numeric_limits<double>::epsilon() ),
                 m_scale( 1.0 ),
                 m_d( d )
             {
@@ -56,7 +57,37 @@ namespace Catch
             {
                 return !operator==( lhs, rhs );
             }
+
+
+            ///////////////////////////////////////////////////////////////////////////
+            Approx& epsilon
+            (
+                double newEpsilon
+            )
+            {
+                m_epsilon = newEpsilon;
+                return *this;
+            }
             
+            ///////////////////////////////////////////////////////////////////////////
+            Approx& scale
+            (
+                double newScale
+            )
+            {
+                m_scale = newScale;
+                return *this;
+            }
+            
+            ///////////////////////////////////////////////////////////////////////////
+            std::string toString() const
+            {
+                std::ostringstream oss;
+                oss << "Approx( " << m_d << ")";
+                return oss.str();
+            }
+            
+        private:
             double m_epsilon;
             double m_scale;
             double m_d;
@@ -70,9 +101,7 @@ namespace Catch
         const Detail::Approx& value
     )
     {
-        std::ostringstream oss;
-        oss << "Approx( " << value.m_d << ")";
-        return oss.str();
+        return value.toString();
     }
     
 } // end namespace Catch
