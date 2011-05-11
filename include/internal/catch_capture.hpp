@@ -577,7 +577,7 @@ public:
         const T & value
     )
     {
-        m_messageStream << value;
+        m_messageStream << Catch::toString( value );        
         return *this;
     }
     
