@@ -12,8 +12,7 @@
 #ifndef TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
 
-#include "../catch.hpp"
-#include "catch_runner_impl.hpp"
+#include "catch.hpp"
 
 namespace Catch
 {

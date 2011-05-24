@@ -17,7 +17,7 @@ TEST_CASE
 (
     "./succeeding/Approx/simple", 
     "Some simple comparisons between doubles"
- )
+)
 {
     double d = 1.23;
     
@@ -28,4 +28,18 @@ TEST_CASE
     REQUIRE( Approx( d ) == 1.23 );
     REQUIRE( Approx( d ) != 1.22 );
     REQUIRE( Approx( d ) != 1.24 );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+    "./succeeding/Approx/epsilon", 
+    "Approximate comparisons with different epsilons"
+ )
+{
+    double d = 1.23;
+    
+    REQUIRE( d != Approx( 1.231 ) );
+    REQUIRE( d == Approx( 1.231 ).epsilon( 0.1 ) );
+//    REQUIRE( d != Approx( 1.232 ).epsilon( 0.1 ) );
 }

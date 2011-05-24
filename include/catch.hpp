@@ -22,7 +22,6 @@
  */
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
-
 #include "internal/catch_hub.h"
 #include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
@@ -30,6 +29,14 @@
 #include "internal/catch_generators.hpp"
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
+
+#if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
+#include "catch_runner.hpp"
+#endif
+
+#ifdef CATCH_CONFIG_MAIN
+#include "internal/catch_default_main.hpp"
+#endif
 
 #ifdef __OBJC__
 #include "internal/catch_objc.hpp"

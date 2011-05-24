@@ -6,8 +6,8 @@
 //  Copyright Two Blue Cubes Ltd 2011. All rights reserved.
 //
 
+#include "catch.hpp"
 #import "internal/iTchRunnerAppDelegate.h"
-#include "catch_objc.hpp"
 
 int main(int argc, char *argv[]) 
 {    

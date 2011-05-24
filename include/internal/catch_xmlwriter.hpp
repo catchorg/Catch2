@@ -329,4 +329,4 @@ namespace Catch
     };
     
 }
-#endif
+#endif // TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
