@@ -16,7 +16,6 @@
 
  Later:
     Finish command line parser (list as xml, specify FP tolerance)
-    Revisit Approx()
     Tags?
     Finish macros, listed here, later (just CHECK_NOFAIL now)
  */

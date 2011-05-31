@@ -20,7 +20,6 @@
 
  Later:
     Finish command line parser (list as xml, specify FP tolerance)
-    Revisit Approx()
     Tags?
     Finish macros, listed here, later (just CHECK_NOFAIL now)
  */
@@ -3163,15 +3162,16 @@ namespace Catch
             m_listSpec( List::None ),
             m_shouldDebugBreak( false ),
             m_showHelp( false ),
-            m_streambuf( std::cout.rdbuf() ),
-            m_os( m_streambuf ),
+            m_streambuf( NULL ),
+            m_os( std::cout.rdbuf() ),
             m_includeWhat( Include::FailedOnly )
         {}
 
         ///////////////////////////////////////////////////////////////////////////
         ~Config()
         {
-            setStreamBuf( NULL );
+            m_os.rdbuf( std::cout.rdbuf() );
+            delete m_streambuf;
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -3313,18 +3313,16 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void setStreamBuf( std::streambuf* buf )
         {
-            // Delete previous stream buf if we own it
-            if( m_streambuf && dynamic_cast<StreamBufBase*>( m_streambuf ) )
-                delete m_streambuf;
-
-            m_streambuf = buf;
             m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
         }
 
         ///////////////////////////////////////////////////////////////////////////
         void useStream( const std::string& streamName )
         {
-            setStreamBuf( Hub::createStreamBuf( streamName ) );
+            std::streambuf* newBuf = Hub::createStreamBuf( streamName );
+            setStreamBuf( newBuf );
+            delete m_streambuf;
+            m_streambuf = newBuf;
         }
 
         ///////////////////////////////////////////////////////////////////////////
