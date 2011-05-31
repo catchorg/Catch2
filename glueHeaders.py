@@ -36,8 +36,6 @@ print "// This file has been merged from multiple headers. Please don't edit it 
 print
 print '#ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED'
 print '#define TWOBLUECUBES_CATCH_HPP_INCLUDED'
-
 parseFile( rootPath, 'catch.hpp' )
-
 print '#endif // TWOBLUECUBES_CATCH_HPP_INCLUDED'
 print

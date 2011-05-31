@@ -36,10 +36,9 @@ namespace Catch
             }
             
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator == 
             (
-                const T& lhs, 
+                double lhs,
                 const Approx& rhs
             )
             {
@@ -48,21 +47,19 @@ namespace Catch
             }
             
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator == 
             (
                 const Approx& lhs,
-                const T& rhs
+                double rhs
             )
             {
                 return operator==( rhs, lhs );
             }
             
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator != 
             (
-                const T& lhs, 
+                double lhs, 
                 const Approx& rhs
             )
             {
@@ -70,11 +67,10 @@ namespace Catch
             }
 
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator != 
             (
                 const Approx& lhs,
-                const T& rhs
+                double rhs
             )
             {
                 return !operator==( rhs, lhs );

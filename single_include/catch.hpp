@@ -25,7 +25,6 @@
     Finish macros, listed here, later (just CHECK_NOFAIL now)
  */
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
-
 // #included from: internal/catch_hub.h
 
 /*
@@ -2388,10 +2387,9 @@ namespace Catch
             }
 
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator ==
             (
-                const T& lhs,
+                double lhs,
                 const Approx& rhs
             )
             {
@@ -2400,21 +2398,19 @@ namespace Catch
             }
 
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator ==
             (
                 const Approx& lhs,
-                const T& rhs
+                double rhs
             )
             {
                 return operator==( rhs, lhs );
             }
 
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator !=
             (
-                const T& lhs,
+                double lhs,
                 const Approx& rhs
             )
             {
@@ -2422,11 +2418,10 @@ namespace Catch
             }
 
             ///////////////////////////////////////////////////////////////////////////
-            template<typename T>
             friend bool operator !=
             (
                 const Approx& lhs,
-                const T& rhs
+                double rhs
             )
             {
                 return !operator==( rhs, lhs );
@@ -5925,6 +5920,9 @@ int main (int argc, char * const argv[])
 #import <objc/runtime.h>
 #include <string>
 
+// NB. Any general catch headers included here must be included
+// in catch.hpp first to make sure they are included by the single
+// header for non obj-usage
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
