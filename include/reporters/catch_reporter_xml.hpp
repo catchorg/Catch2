@@ -12,10 +12,10 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED
 
-#include "internal/catch_capture.hpp"
-#include "internal/catch_interfaces_reporter.h"
-#include "internal/catch_reporter_registrars.hpp"
-#include "internal/catch_xmlwriter.hpp"
+#include "../internal/catch_capture.hpp"
+#include "../internal/catch_interfaces_reporter.h"
+#include "../internal/catch_reporter_registrars.hpp"
+#include "../internal/catch_xmlwriter.hpp"
 
 namespace Catch
 {
