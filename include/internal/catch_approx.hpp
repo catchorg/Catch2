@@ -29,7 +29,7 @@ namespace Catch
             (
                 double d
             )
-            :   m_epsilon( std::numeric_limits<double>::epsilon() ),
+            :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
                 m_scale( 1.0 ),
                 m_d( d )
             {
