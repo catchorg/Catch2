@@ -82,3 +82,26 @@ TEST_CASE
     REQUIRE( 1.234f == Approx( dMedium ) );
     REQUIRE( dMedium == Approx( 1.234f ) );
 }
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+    "./succeeding/Approx/custom", 
+    "Use a custom approx"
+)
+{
+    double d = 1.23;
+    
+    Approx approx = Approx::custom().epsilon( 0.005 );
+    
+    REQUIRE( d == approx( 1.23 ) );
+    REQUIRE( d == approx( 1.22 ) );
+    REQUIRE( d == approx( 1.24 ) );
+    REQUIRE( d != approx( 1.25 ) );
+    
+    REQUIRE( approx( d ) == 1.23 );
+    REQUIRE( approx( d ) == 1.22 );
+    REQUIRE( approx( d ) == 1.24 );
+    REQUIRE( approx( d ) != 1.25 );
+}
+
