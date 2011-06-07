@@ -2377,12 +2377,42 @@ namespace Catch
             ///////////////////////////////////////////////////////////////////////////
             explicit Approx
             (
-                double d
+                double value
             )
-            :   m_epsilon( std::numeric_limits<double>::epsilon() ),
+            :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
                 m_scale( 1.0 ),
-                m_d( d )
+                m_value( value )
             {
+            }
+
+            ///////////////////////////////////////////////////////////////////////////
+            Approx
+            (
+                const Approx& other
+            )
+            :   m_epsilon( other.m_epsilon ),
+                m_scale( other.m_scale ),
+                m_value( other.m_value )
+            {
+            }
+
+            ///////////////////////////////////////////////////////////////////////////
+            static Approx custom
+            ()
+            {
+                return Approx( 0 );
+            }
+
+            ///////////////////////////////////////////////////////////////////////////
+            Approx operator()
+            (
+                double value
+            )
+            {
+                Approx approx( value );
+                approx.epsilon( m_epsilon );
+                approx.scale( m_scale );
+                return approx;
             }
 
             ///////////////////////////////////////////////////////////////////////////
@@ -2393,7 +2423,7 @@ namespace Catch
             )
             {
                 // Thanks to Richard Harris for his help refining this formula
-                return fabs( lhs - rhs.m_d ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_d) ) );
+                return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
             }
 
             ///////////////////////////////////////////////////////////////////////////
@@ -2451,14 +2481,14 @@ namespace Catch
             std::string toString() const
             {
                 std::ostringstream oss;
-                oss << "Approx( " << m_d << ")";
+                oss << "Approx( " << m_value << ")";
                 return oss.str();
             }
 
         private:
             double m_epsilon;
             double m_scale;
-            double m_d;
+            double m_value;
         };
     }
 
@@ -4578,7 +4608,7 @@ namespace Catch
  */
 #define TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED
 
-// #included from: internal/catch_reporter_registrars.hpp
+// #included from: ../internal/catch_reporter_registrars.hpp
 
 /*
  *  catch_reporter_registrars.hpp
@@ -4979,7 +5009,7 @@ namespace Catch
  */
 #define TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED
 
-// #included from: internal/catch_xmlwriter.hpp
+// #included from: ../internal/catch_xmlwriter.hpp
 
 /*
  *  catch_xmlwriter.hpp
