@@ -67,7 +67,6 @@ namespace Catch
             Root,
             Unknown,
             NonLeaf,
-            UntestedLeaf,
             TestedLeaf
         };
         
@@ -117,15 +116,23 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////
-        SectionInfo* getSubSection
+        SectionInfo* findSubSection
         (
             const std::string& name
         )
         {
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
-            if( it != m_subSections.end() )
-                return it->second;
-            
+            return it != m_subSections.end()
+                ? it->second
+                : NULL;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+        SectionInfo* addSubSection
+        (
+            const std::string& name
+        )
+        {
             SectionInfo* subSection = new SectionInfo( this );
             m_subSections.insert( std::make_pair( name, subSection ) );
             m_status = NonLeaf;
@@ -144,7 +151,7 @@ namespace Catch
         ()
         const
         {
-            if( m_status == Unknown || m_status == UntestedLeaf )
+            if( m_status == Unknown )
                 return true;
             
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.begin();
@@ -185,7 +192,8 @@ namespace Catch
         )
         :   m_info( info ),
             m_runStatus( RanAtLeastOneSection ),
-            m_currentSection( &m_rootSection )
+            m_currentSection( &m_rootSection ),
+            m_changed( false )
         {
         }
         
@@ -203,6 +211,7 @@ namespace Catch
         ()
         {
             m_runStatus = NothingRun;
+            m_changed = false;
         }
 
         ///////////////////////////////////////////////////////////////////////        
@@ -224,7 +233,12 @@ namespace Catch
             if( m_runStatus == NothingRun )
                 m_runStatus = EncounteredASection;
             
-            SectionInfo* thisSection = m_currentSection->getSubSection( name );
+            SectionInfo* thisSection = m_currentSection->findSubSection( name );
+            if( !thisSection )
+            {
+                thisSection = m_currentSection->addSubSection( name );
+                m_changed = true;
+            }
             
             if( !wasSectionSeen() && thisSection->shouldRun() )
             {
@@ -241,7 +255,10 @@ namespace Catch
         )
         {
             if( m_currentSection->ran() )
+            {
                 m_runStatus = RanAtLeastOneSection;
+                m_changed = true;
+            }
             m_currentSection = m_currentSection->getParent();
         }
 
@@ -258,8 +275,8 @@ namespace Catch
         ()
         const
         {
-            return  m_rootSection.hasUntestedSections() ||
-                    m_runStatus == RanAtLeastOneSection;
+            return  m_runStatus == RanAtLeastOneSection ||
+                    ( m_rootSection.hasUntestedSections() && m_changed );
         }
         
     private:
@@ -267,6 +284,7 @@ namespace Catch
         RunStatus m_runStatus;
         SectionInfo m_rootSection;
         SectionInfo* m_currentSection;
+        bool m_changed;
     };
     
     ///////////////////////////////////////////////////////////////////////////
