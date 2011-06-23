@@ -436,6 +436,61 @@ namespace Catch
 
 
 
+// #included from: catch_descriptor.hpp
+
+/*
+ *  catch_descriptor.hpp
+ *  Catch
+ *
+ *  Created by Phil on 16/06/2011.
+ *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+
+#define TWOBLUECUBES_CATCH_DESCRIPTOR_HPP_INCLUDED
+
+namespace Catch
+{
+
+    class Descriptor
+    {
+    public:
+        Descriptor()
+        : Anon( *this )
+        {
+        }
+
+        Descriptor& Name( const char* name )
+        {
+            m_name = name;
+            return *this;
+        }
+        Descriptor& Desc( const char* desc )
+        {
+            m_desc = desc;
+            return *this;
+        }
+        Descriptor& Tag( const char* tag )
+        {
+            m_tags.push_back( tag );
+            return *this;
+        }
+
+        Descriptor& Anon;
+
+    private:
+
+        const char* m_name;
+        const char* m_desc;
+        std::vector<const char*> m_tags;
+    };
+
+}
+
+
 
 namespace Catch
 {
@@ -505,6 +560,13 @@ struct AutoReg
             const char* filename,
             std::size_t line
         );
+
+    AutoReg
+        (   TestFunction function,
+            const Descriptor& descriptor,
+            const char* filename,
+            std::size_t line
+         );
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename C>
@@ -1821,16 +1883,16 @@ inline bool isTrue
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure ) \
-    if( Catch::ResultAction::Value action = Catch::Hub::getResultCapture().acceptExpression( expr )  ) \
+    if( Catch::ResultAction::Value internal_catch_action = Catch::Hub::getResultCapture().acceptExpression( expr )  ) \
     { \
-        if( action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
+        if( internal_catch_action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
     INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr ), stopOnFailure ); \
-    if( Catch::isTrue( false ) ){ bool dummyResult = ( expr ); Catch::isTrue( dummyResult ); }
+    if( Catch::isTrue( false ) ){ bool internal_catch_dummyResult = ( expr ); Catch::isTrue( internal_catch_dummyResult ); }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
@@ -1839,9 +1901,9 @@ inline bool isTrue
         expr; \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure ); \
     } \
-    catch( std::exception& ex ) \
+    catch( std::exception& internal_catch_exception ) \
     { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << ex.what() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << internal_catch_exception.what() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
     } \
     catch( ... ) \
     { \
@@ -2990,6 +3052,18 @@ namespace Catch
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    AutoReg::AutoReg
+    (
+        TestFunction function,
+        const Descriptor& descriptor,
+        const char* filename,
+        std::size_t line
+    )
+    {
+        registerTestCase( new FreeFunctionTestCase( function ), "tbd", "tbd", filename, line );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     AutoReg::~AutoReg
     ()
     {
@@ -3427,7 +3501,6 @@ namespace Catch
             Root,
             Unknown,
             NonLeaf,
-            UntestedLeaf,
             TestedLeaf
         };
 
@@ -3477,15 +3550,23 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////
-        SectionInfo* getSubSection
+        SectionInfo* findSubSection
         (
             const std::string& name
         )
         {
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
-            if( it != m_subSections.end() )
-                return it->second;
+            return it != m_subSections.end()
+                ? it->second
+                : NULL;
+        }
 
+        ///////////////////////////////////////////////////////////////////////
+        SectionInfo* addSubSection
+        (
+            const std::string& name
+        )
+        {
             SectionInfo* subSection = new SectionInfo( this );
             m_subSections.insert( std::make_pair( name, subSection ) );
             m_status = NonLeaf;
@@ -3504,7 +3585,7 @@ namespace Catch
         ()
         const
         {
-            if( m_status == Unknown || m_status == UntestedLeaf )
+            if( m_status == Unknown )
                 return true;
 
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.begin();
@@ -3545,7 +3626,8 @@ namespace Catch
         )
         :   m_info( info ),
             m_runStatus( RanAtLeastOneSection ),
-            m_currentSection( &m_rootSection )
+            m_currentSection( &m_rootSection ),
+            m_changed( false )
         {
         }
 
@@ -3563,6 +3645,7 @@ namespace Catch
         ()
         {
             m_runStatus = NothingRun;
+            m_changed = false;
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -3584,7 +3667,12 @@ namespace Catch
             if( m_runStatus == NothingRun )
                 m_runStatus = EncounteredASection;
 
-            SectionInfo* thisSection = m_currentSection->getSubSection( name );
+            SectionInfo* thisSection = m_currentSection->findSubSection( name );
+            if( !thisSection )
+            {
+                thisSection = m_currentSection->addSubSection( name );
+                m_changed = true;
+            }
 
             if( !wasSectionSeen() && thisSection->shouldRun() )
             {
@@ -3601,7 +3689,10 @@ namespace Catch
         )
         {
             if( m_currentSection->ran() )
+            {
                 m_runStatus = RanAtLeastOneSection;
+                m_changed = true;
+            }
             m_currentSection = m_currentSection->getParent();
         }
 
@@ -3618,8 +3709,8 @@ namespace Catch
         ()
         const
         {
-            return  m_rootSection.hasUntestedSections() ||
-                    m_runStatus == RanAtLeastOneSection;
+            return  m_runStatus == RanAtLeastOneSection ||
+                    ( m_rootSection.hasUntestedSections() && m_changed );
         }
 
     private:
@@ -3627,6 +3718,7 @@ namespace Catch
         RunStatus m_runStatus;
         SectionInfo m_rootSection;
         SectionInfo* m_currentSection;
+        bool m_changed;
     };
 
     ///////////////////////////////////////////////////////////////////////////
