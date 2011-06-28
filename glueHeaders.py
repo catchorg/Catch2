@@ -1,12 +1,12 @@
 import os
+import sys
 import re
-from sets import Set
 
 includesParser = re.compile( r'\s*#include\s*"(.*)"' )
 guardParser = re.compile( r'\s*#.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')
-seenHeaders = Set([])
-rootPath = '/TwoBlueCubes/Dev/GitHub/Catch/include/'
+seenHeaders = set([])
+rootPath = os.path.join( os.path.realpath(os.path.dirname(sys.argv[0])), 'include/' )
 
 def parseFile( path, filename ):
 	f = open( path + filename, 'r' )

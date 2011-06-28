@@ -436,61 +436,6 @@ namespace Catch
 
 
 
-// #included from: catch_descriptor.hpp
-
-/*
- *  catch_descriptor.hpp
- *  Catch
- *
- *  Created by Phil on 16/06/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_DESCRIPTOR_HPP_INCLUDED
-
-namespace Catch
-{
-
-    class Descriptor
-    {
-    public:
-        Descriptor()
-        : Anon( *this )
-        {
-        }
-
-        Descriptor& Name( const char* name )
-        {
-            m_name = name;
-            return *this;
-        }
-        Descriptor& Desc( const char* desc )
-        {
-            m_desc = desc;
-            return *this;
-        }
-        Descriptor& Tag( const char* tag )
-        {
-            m_tags.push_back( tag );
-            return *this;
-        }
-
-        Descriptor& Anon;
-
-    private:
-
-        const char* m_name;
-        const char* m_desc;
-        std::vector<const char*> m_tags;
-    };
-
-}
-
-
 
 namespace Catch
 {
@@ -560,13 +505,6 @@ struct AutoReg
             const char* filename,
             std::size_t line
         );
-
-    AutoReg
-        (   TestFunction function,
-            const Descriptor& descriptor,
-            const char* filename,
-            std::size_t line
-         );
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename C>
@@ -3049,18 +2987,6 @@ namespace Catch
     )
     {
         registerTestCase( new FreeFunctionTestCase( function ), name, description, filename, line );
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    AutoReg::AutoReg
-    (
-        TestFunction function,
-        const Descriptor& descriptor,
-        const char* filename,
-        std::size_t line
-    )
-    {
-        registerTestCase( new FreeFunctionTestCase( function ), "tbd", "tbd", filename, line );
     }
 
     ///////////////////////////////////////////////////////////////////////////
