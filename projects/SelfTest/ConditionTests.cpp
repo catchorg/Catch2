@@ -43,6 +43,7 @@ TEST_CASE(  "./succeeding/conditions/equality",
     REQUIRE( data.float_nine_point_one == Approx( 9.1f ) );
     REQUIRE( data.double_pi == Approx( 3.1415926535 ) );
     REQUIRE( data.str_hello == "hello" );
+    REQUIRE( "hello" == data.str_hello );    
     REQUIRE( data.str_hello.size() == 5 );
 
     double x = 1.1 + 0.1 + 0.1;

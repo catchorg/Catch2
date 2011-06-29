@@ -15,7 +15,7 @@
  Next:
 
  Later:
-    Finish command line parser (list as xml, specify FP tolerance)
+    Finish command line parser (list as xml)
     Tags?
     Finish macros, listed here, later (just CHECK_NOFAIL now)
  */

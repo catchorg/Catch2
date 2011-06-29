@@ -547,6 +547,17 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    Expression<const char*> operator->*
+    (
+        const char* operand
+     )
+    {
+        Expression<const char*> expr( m_result, operand );
+        
+        return expr;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
     PtrExpression<T> operator->*
     (
