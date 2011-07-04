@@ -86,7 +86,7 @@
         inline void BreakIntoDebugger(){}
     #endif
 
-#elif defined(CATCH_PLATFORM_WINDOWS)
+#elif defined(_MSC_VER)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
     #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
