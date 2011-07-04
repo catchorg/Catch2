@@ -19,7 +19,7 @@
  Next:
 
  Later:
-    Finish command line parser (list as xml, specify FP tolerance)
+    Finish command line parser (list as xml)
     Tags?
     Finish macros, listed here, later (just CHECK_NOFAIL now)
  */
@@ -1705,6 +1705,17 @@ public:
     )
     {
         Expression<T> expr( m_result, operand );
+
+        return expr;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    Expression<const char*> operator->*
+    (
+        const char* operand
+     )
+    {
+        Expression<const char*> expr( m_result, operand );
 
         return expr;
     }
