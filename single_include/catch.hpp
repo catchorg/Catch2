@@ -1508,6 +1508,16 @@ private:
         return *this;
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    template<Internal::Operator Op, typename T>
+    MutableResultInfo& captureExpression
+    (
+        const T* lhs,
+        int rhs
+    )
+    {
+        return captureExpression<Op>( lhs, reinterpret_cast<const T*>( rhs ) );
+    }
 };
 
 template<typename T>
@@ -1712,7 +1722,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     Expression<const char*> operator->*
     (
-        const char* operand
+        const char* const& operand
      )
     {
         Expression<const char*> expr( m_result, operand );
