@@ -235,3 +235,46 @@ TEST_CASE("./succeeding/boolean member", "")
     Obj obj;
     REQUIRE( obj.prop != NULL );
 }
+
+// Tests for a problem submitted by Ralph McArdell
+//
+// The static bool value should not need to be defined outside the
+// struct it is declared in - but when evaluating it in a deduced
+// context it appears to require the extra definition.
+// The issue was fixed by adding bool overloads to bypass the
+// templates that were deduce it.
+template <bool B>
+struct is_true
+{
+    static const bool value = B;
+};
+
+TEST_CASE( "./succeeding/unimplemented static bool", "static bools can be evaluated" )
+{
+    SECTION("compare to true","")
+    {
+        REQUIRE( is_true<true>::value == true );
+        REQUIRE( true == is_true<true>::value );
+    }
+    SECTION("compare to false","")
+    {
+        REQUIRE( is_true<false>::value == false );
+        REQUIRE( false == is_true<false>::value );
+    }
+
+    SECTION("negation", "")
+    {
+        REQUIRE( !is_true<false>::value );
+    }
+
+    SECTION("double negation","")
+    {
+        REQUIRE( !!is_true<true>::value );
+    }
+
+    SECTION("direct","")
+    {
+        REQUIRE( is_true<true>::value );
+        REQUIRE_FALSE( is_true<false>::value );
+    }
+}
