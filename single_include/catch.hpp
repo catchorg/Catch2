@@ -1598,6 +1598,24 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    MutableResultInfo& operator ==
+    (
+        bool rhs
+    )
+    {
+        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    MutableResultInfo& operator !=
+    (
+        bool rhs
+    )
+    {
+        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     operator MutableResultInfo&
     ()
     {
@@ -1751,6 +1769,16 @@ public:
     {
         PtrExpression<T> expr( m_result, operand );
 
+        return expr;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    Expression<bool> operator->*
+    (
+        bool value
+    )
+    {
+        Expression<bool> expr( m_result, value );
         return expr;
     }
 
