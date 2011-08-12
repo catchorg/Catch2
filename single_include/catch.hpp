@@ -2554,14 +2554,14 @@ namespace Catch
 } // end namespace Catch
 
 
-#if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
-// #included from: catch_runner.hpp
+#ifdef __OBJC__
+// #included from: internal/catch_objc.hpp
 
 /*
- *  catch_runner.hpp
+ *  catch_objc.hpp
  *  Catch
  *
- *  Created by Phil on 31/10/2010.
+ *  Created by Phil on 14/11/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -2569,104 +2569,15 @@ namespace Catch
  *
  */
 
-#define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 
-// #included from: internal/catch_hub_impl.hpp
+#import <objc/runtime.h>
+#include <string>
 
-/*
- *  catch_hub_impl.hpp
- *  Catch
- *
- *  Created by Phil on 31/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-// #included from: catch_reporter_registry.hpp
-
-/*
- *  catch_reporter_registry.hpp
- *  Catch
- *
- *  Created by Phil on 29/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_REPORTER_REGISTRY_HPP_INCLUDED
-
-
-#include <map>
-
-namespace Catch
-{
-    class ReporterRegistry : public IReporterRegistry
-    {
-    public:
-
-        ///////////////////////////////////////////////////////////////////////
-        ~ReporterRegistry
-        ()
-        {
-            deleteAllValues( m_factories );
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        virtual IReporter* create
-        (
-            const std::string& name,
-            const IReporterConfig& config
-        )
-        const
-        {
-            FactoryMap::const_iterator it =  m_factories.find( name );
-            if( it == m_factories.end() )
-                return NULL;
-            return it->second->create( config );
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        void registerReporter
-        (
-            const std::string& name,
-            IReporterFactory* factory
-        )
-        {
-            m_factories.insert( std::make_pair( name, factory ) );
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        const FactoryMap& getFactories
-        ()
-        const
-        {
-            return m_factories;
-        }
-
-    private:
-        FactoryMap m_factories;
-    };
-}
-
-// #included from: catch_test_case_registry_impl.hpp
-
-/*
- *  catch_test_case_registry_impl.hpp
- *  Catch
- *
- *  Created by Phil on 7/1/2011
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-// #included from: catch_test_case_info.hpp
+// NB. Any general catch headers included here must be included
+// in catch.hpp first to make sure they are included by the single
+// header for non obj-usage
+// #included from: internal/catch_test_case_info.hpp
 
 /*
  *  catch_test_case_info.hpp
@@ -2891,6 +2802,284 @@ namespace Catch
         bool m_isWildcarded;
     };
 }
+
+
+///////////////////////////////////////////////////////////////////////////////
+// This protocol is really only here for (self) documenting purposes, since
+// all its methods are optional.
+@protocol OcFixture
+
+@optional
+
+-(void) setUp;
+-(void) tearDown;
+
+@end
+
+namespace Catch
+{
+    class OcMethod : public ITestCase
+    {
+    public:
+        ///////////////////////////////////////////////////////////////////////
+        OcMethod
+        (
+            Class cls,
+            SEL sel
+        )
+        :   m_cls( cls ),
+            m_sel( sel )
+        {
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        virtual void invoke
+        ()
+        const
+        {
+            id obj = class_createInstance( m_cls, 0 );
+            obj = [obj init];
+
+            if( [obj respondsToSelector: @selector(setUp) ] )
+                [obj performSelector: @selector(setUp)];
+
+            if( [obj respondsToSelector: m_sel] )
+                [obj performSelector: m_sel];
+
+            if( [obj respondsToSelector: @selector(tearDown) ] )
+                [obj performSelector: @selector(tearDown)];
+
+            [obj release];
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        virtual ITestCase* clone
+        ()
+        const
+        {
+            return new OcMethod( m_cls, m_sel );
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        virtual bool operator ==
+        (
+            const ITestCase& other
+        )
+        const
+        {
+            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
+            return ocmOther && ocmOther->m_sel == m_sel;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        virtual bool operator <
+        (
+            const ITestCase& other
+        )
+        const
+        {
+            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
+            return ocmOther && ocmOther->m_sel < m_sel;
+        }
+
+    private:
+        Class m_cls;
+        SEL m_sel;
+    };
+
+    namespace Detail
+    {
+
+        ///////////////////////////////////////////////////////////////////////
+        inline bool startsWith
+        (
+            const std::string& str,
+            const std::string& sub
+        )
+        {
+            return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        inline const char* getAnnotation
+        (
+            Class cls,
+            const std::string& annotationName,
+            const std::string& testCaseName
+        )
+        {
+            NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
+            SEL sel = NSSelectorFromString( selStr );
+            [selStr release];
+            if( [cls respondsToSelector: sel] )
+                return (const char*)[cls performSelector: sel];
+            return "";
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    inline size_t registerTestMethods
+    ()
+    {
+        size_t noTestMethods = 0;
+        int noClasses = objc_getClassList( NULL, 0 );
+
+        std::vector<Class> classes( noClasses );
+        objc_getClassList( &classes[0], noClasses );
+
+        for( int c = 0; c < noClasses; c++ )
+        {
+            Class cls = classes[c];
+            {
+                u_int count;
+                Method* methods = class_copyMethodList( cls, &count );
+                for( int m = 0; m < count ; m++ )
+                {
+                    SEL selector = method_getName(methods[m]);
+                    std::string methodName = sel_getName(selector);
+                    if( Detail::startsWith( methodName, "Catch_TestCase_" ) )
+                    {
+                        std::string testCaseName = methodName.substr( 15 );
+                        const char* name = Detail::getAnnotation( cls, "Name", testCaseName );
+                        const char* desc = Detail::getAnnotation( cls, "Description", testCaseName );
+
+                        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name, desc, "", 0 ) );
+                        noTestMethods++;
+
+                    }
+                }
+                free(methods);
+            }
+        }
+        return noTestMethods;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+#define OC_TEST_CASE( name, desc )\
++(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \
+{\
+return name; \
+}\
++(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Description_test ) \
+{ \
+return desc; \
+} \
+-(void) INTERNAL_CATCH_UNIQUE_NAME( Catch_TestCase_test )
+
+#endif
+
+#if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
+// #included from: catch_runner.hpp
+
+/*
+ *  catch_runner.hpp
+ *  Catch
+ *
+ *  Created by Phil on 31/10/2010.
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+
+#define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
+
+// #included from: internal/catch_hub_impl.hpp
+
+/*
+ *  catch_hub_impl.hpp
+ *  Catch
+ *
+ *  Created by Phil on 31/12/2010.
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+// #included from: catch_reporter_registry.hpp
+
+/*
+ *  catch_reporter_registry.hpp
+ *  Catch
+ *
+ *  Created by Phil on 29/10/2010.
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+#define TWOBLUECUBES_CATCH_REPORTER_REGISTRY_HPP_INCLUDED
+
+
+#include <map>
+
+namespace Catch
+{
+    class ReporterRegistry : public IReporterRegistry
+    {
+    public:
+
+        ///////////////////////////////////////////////////////////////////////
+        ~ReporterRegistry
+        ()
+        {
+            deleteAllValues( m_factories );
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        virtual IReporter* create
+        (
+            const std::string& name,
+            const IReporterConfig& config
+        )
+        const
+        {
+            FactoryMap::const_iterator it =  m_factories.find( name );
+            if( it == m_factories.end() )
+                return NULL;
+            return it->second->create( config );
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        void registerReporter
+        (
+            const std::string& name,
+            IReporterFactory* factory
+        )
+        {
+            m_factories.insert( std::make_pair( name, factory ) );
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        const FactoryMap& getFactories
+        ()
+        const
+        {
+            return m_factories;
+        }
+
+    private:
+        FactoryMap m_factories;
+    };
+}
+
+// #included from: catch_test_case_registry_impl.hpp
+
+/*
+ *  catch_test_case_registry_impl.hpp
+ *  Catch
+ *
+ *  Created by Phil on 7/1/2011
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
 
 
 #include <vector>
@@ -5992,195 +6181,6 @@ int main (int argc, char * const argv[])
 #endif
 }
 
-
-#endif
-
-#ifdef __OBJC__
-// #included from: internal/catch_objc.hpp
-
-/*
- *  catch_objc.hpp
- *  Catch
- *
- *  Created by Phil on 14/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
-
-#import <objc/runtime.h>
-#include <string>
-
-// NB. Any general catch headers included here must be included
-// in catch.hpp first to make sure they are included by the single
-// header for non obj-usage
-
-///////////////////////////////////////////////////////////////////////////////
-// This protocol is really only here for (self) documenting purposes, since
-// all its methods are optional.
-@protocol OcFixture
-
-@optional
-
--(void) setUp;
--(void) tearDown;
-
-@end
-
-namespace Catch
-{
-    class OcMethod : public ITestCase
-    {
-    public:
-        ///////////////////////////////////////////////////////////////////////
-        OcMethod
-        (
-            Class cls,
-            SEL sel
-        )
-        :   m_cls( cls ),
-            m_sel( sel )
-        {
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        virtual void invoke
-        ()
-        const
-        {
-            id obj = class_createInstance( m_cls, 0 );
-            obj = [obj init];
-
-            if( [obj respondsToSelector: @selector(setUp) ] )
-                [obj performSelector: @selector(setUp)];
-
-            if( [obj respondsToSelector: m_sel] )
-                [obj performSelector: m_sel];
-
-            if( [obj respondsToSelector: @selector(tearDown) ] )
-                [obj performSelector: @selector(tearDown)];
-
-            [obj release];
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        virtual ITestCase* clone
-        ()
-        const
-        {
-            return new OcMethod( m_cls, m_sel );
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        virtual bool operator ==
-        (
-            const ITestCase& other
-        )
-        const
-        {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel == m_sel;
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        virtual bool operator <
-        (
-            const ITestCase& other
-        )
-        const
-        {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel < m_sel;
-        }
-
-    private:
-        Class m_cls;
-        SEL m_sel;
-    };
-
-    namespace Detail
-    {
-
-        ///////////////////////////////////////////////////////////////////////
-        inline bool startsWith
-        (
-            const std::string& str,
-            const std::string& sub
-        )
-        {
-            return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        inline const char* getAnnotation
-        (
-            Class cls,
-            const std::string& annotationName,
-            const std::string& testCaseName
-        )
-        {
-            NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
-            SEL sel = NSSelectorFromString( selStr );
-            [selStr release];
-            if( [cls respondsToSelector: sel] )
-                return (const char*)[cls performSelector: sel];
-            return "";
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    inline size_t registerTestMethods
-    ()
-    {
-        size_t noTestMethods = 0;
-        int noClasses = objc_getClassList( NULL, 0 );
-
-        std::vector<Class> classes( noClasses );
-        objc_getClassList( &classes[0], noClasses );
-
-        for( int c = 0; c < noClasses; c++ )
-        {
-            Class cls = classes[c];
-            {
-                u_int count;
-                Method* methods = class_copyMethodList( cls, &count );
-                for( int m = 0; m < count ; m++ )
-                {
-                    SEL selector = method_getName(methods[m]);
-                    std::string methodName = sel_getName(selector);
-                    if( Detail::startsWith( methodName, "Catch_TestCase_" ) )
-                    {
-                        std::string testCaseName = methodName.substr( 15 );
-                        const char* name = Detail::getAnnotation( cls, "Name", testCaseName );
-                        const char* desc = Detail::getAnnotation( cls, "Description", testCaseName );
-
-                        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name, desc, "", 0 ) );
-                        noTestMethods++;
-
-                    }
-                }
-                free(methods);
-            }
-        }
-        return noTestMethods;
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-#define OC_TEST_CASE( name, desc )\
-+(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \
-{\
-return name; \
-}\
-+(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Description_test ) \
-{ \
-return desc; \
-} \
--(void) INTERNAL_CATCH_UNIQUE_NAME( Catch_TestCase_test )
 
 #endif
 
