@@ -29,16 +29,16 @@
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
 
+#ifdef __OBJC__
+#include "internal/catch_objc.hpp"
+#endif
+
 #if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
 #include "catch_runner.hpp"
 #endif
 
 #ifdef CATCH_CONFIG_MAIN
 #include "internal/catch_default_main.hpp"
-#endif
-
-#ifdef __OBJC__
-#include "internal/catch_objc.hpp"
 #endif
 
 //////
