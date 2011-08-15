@@ -8,3 +8,4 @@ Release
 *.user
 *.xcuserstate
 /Test/Test.xcodeproj/xcuserdata/
+.DS_Store
