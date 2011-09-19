@@ -367,7 +367,7 @@ public:
     Expression
     (
         MutableResultInfo& result, 
-        const T& lhs 
+        T lhs 
     )
     :   m_result( result ),
         m_lhs( lhs )
@@ -475,7 +475,7 @@ public:
 
 private:
     MutableResultInfo& m_result;
-    const T& m_lhs;
+    T m_lhs;
 };
     
 template<typename LhsT> 
@@ -564,12 +564,12 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    Expression<T> operator->*
+    Expression<const T&> operator->*
     (
         const T & operand
     )
     {
-        Expression<T> expr( m_result, operand );
+        Expression<const T&> expr( m_result, operand );
         
         return expr;
     }
