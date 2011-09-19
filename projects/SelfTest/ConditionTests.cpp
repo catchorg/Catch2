@@ -241,6 +241,8 @@ TEST_CASE(  "./succeeding/conditions/not",
 {
     bool falseValue = false;
     
+    REQUIRE( false == false );
+    REQUIRE( true == true );
     REQUIRE( !false );
     REQUIRE_FALSE( false );
 
@@ -256,6 +258,8 @@ TEST_CASE(  "./failing/conditions/not",
 {
     bool trueValue = true;
     
+    CHECK( false != false );
+    CHECK( true != true );
     CHECK( !true );
     CHECK_FALSE( true );
     
