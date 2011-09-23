@@ -195,14 +195,25 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////
         XmlWriter& writeAttribute
         (
-            const std::string& name, 
+            const std::string& name,
+            double attribute
+        )
+        {
+            stream() << " " << name << "=\"" << std::fixed << attribute << "\"";
+            return *this;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        XmlWriter& writeAttribute
+        (
+            const std::string& name,
             bool attribute
         )
         {
             stream() << " " << name << "=\"" << ( attribute ? "true" : "false" ) << "\"";
             return *this;
         }
-        
+
         ///////////////////////////////////////////////////////////////////////
         template<typename T>
         XmlWriter& writeAttribute
