@@ -12,6 +12,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
 
+#include <ctime>
 #include "../internal/catch_capture.hpp"
 #include "../internal/catch_interfaces_reporter.h"
 #include "../internal/catch_reporter_registrars.hpp"
@@ -19,6 +20,19 @@
 
 namespace Catch
 {
+
+    std::string
+    timestamp() {
+        time_t timep;
+        struct tm timel;
+        char   buffer[80];
+
+        time(&timep);
+        localtime_r(&timep, &timel);
+        strftime(buffer, 80, "%Y-%m-%dT%H:%M:%S", &timel);
+        return buffer;
+    }
+
     class JunitReporter : public Catch::IReporter
     {
         struct TestStats
@@ -72,6 +86,7 @@ namespace Catch
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
         {
+            tzset();
         }        
         
         ///////////////////////////////////////////////////////////////////////////
@@ -195,8 +210,8 @@ namespace Catch
                     xml.writeAttribute( "failures", it->m_failuresCount );
                     xml.writeAttribute( "tests", it->m_testsCount );
                     xml.writeAttribute( "hostname", "tbd" );
-                    xml.writeAttribute( "time", "tbd" );
-                    xml.writeAttribute( "timestamp", "tbd" );
+                    xml.writeAttribute( "time", it->m_timeInSeconds );
+                    xml.writeAttribute( "timestamp", timestamp() );
                     
                     OutputTestCases( xml, *it );
                 }
@@ -219,7 +234,7 @@ namespace Catch
                 XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
                 xml.writeAttribute( "classname", it->m_className );
                 xml.writeAttribute( "name", it->m_name );
-                xml.writeAttribute( "time", "tbd" );
+                xml.writeAttribute( "time", it->m_timeInSeconds );
 
                 OutputTestResult( xml, *it );
             }
