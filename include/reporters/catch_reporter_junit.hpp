@@ -22,12 +22,10 @@ namespace Catch
 {
 
     std::string
-    timestamp() {
-        time_t timep;
+    timestamp(const time_t &timep) {
         struct tm timel;
         char   buffer[80];
 
-        time(&timep);
         localtime_r(&timep, &timel);
         strftime(buffer, 80, "%Y-%m-%dT%H:%M:%S", &timel);
         return buffer;
@@ -82,7 +80,8 @@ namespace Catch
     public:
         ///////////////////////////////////////////////////////////////////////////
         JunitReporter( const IReporterConfig& config )
-        :   m_config( config ),
+        :   m_start_time(time(NULL)),
+            m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
         {
@@ -211,7 +210,7 @@ namespace Catch
                     xml.writeAttribute( "tests", it->m_testsCount );
                     xml.writeAttribute( "hostname", "tbd" );
                     xml.writeAttribute( "time", it->m_timeInSeconds );
-                    xml.writeAttribute( "timestamp", timestamp() );
+                    xml.writeAttribute( "timestamp", timestamp(m_start_time) );
                     
                     OutputTestCases( xml, *it );
                 }
@@ -261,6 +260,7 @@ namespace Catch
         }
         
     private:
+        time_t m_start_time;
         const IReporterConfig& m_config;
         bool m_currentTestSuccess;
         
