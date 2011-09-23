@@ -24,7 +24,14 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         ResultInfo
         ()
-        :   m_line( 0 ),
+        :   m_macroName(),
+            m_filename(),
+            m_line( 0 ),
+            m_expr(),
+            m_lhs(),
+            m_rhs(),
+            m_op(),
+            m_message(),
             m_result( ResultWas::Unknown ),
             m_isNot( false )
         {}
@@ -44,6 +51,8 @@ namespace Catch
             m_filename( filename ),
             m_line( line ),
             m_expr( expr ),
+	    m_lhs(),
+	    m_rhs(),
             m_op( isNotExpression( expr ) ? "!" : "" ),
             m_message( message ),
             m_result( result ),
@@ -53,6 +62,11 @@ namespace Catch
                 m_expr = "!" + m_expr;
         }
         
+        ///////////////////////////////////////////////////////////////////////////
+	virtual ~ResultInfo
+        ()
+	{
+	}
         ///////////////////////////////////////////////////////////////////////////
         bool ok
         ()
