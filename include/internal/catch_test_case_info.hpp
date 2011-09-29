@@ -42,7 +42,11 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////
         TestCaseInfo
         ()
-        :   m_test( NULL )
+        :   m_test( NULL ),
+            m_name(),
+            m_description(),
+            m_filename(),
+            m_line( 0 )
         {
         }
         
