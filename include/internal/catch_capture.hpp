@@ -527,7 +527,8 @@ public:
         const char* expr = "",
         bool isNot = false
     )
-    : m_result( expr, isNot, filename, line, macroName )
+    : m_result( expr, isNot, filename, line, macroName ),
+      m_messageStream()
     {}
     
     ///////////////////////////////////////////////////////////////////////////
@@ -627,7 +628,7 @@ class ScopedInfo
 public:
     ///////////////////////////////////////////////////////////////////////////
     ScopedInfo
-    ()
+    () : m_oss()
     {
         Hub::getResultCapture().pushScopedInfo( this );
     }

@@ -28,6 +28,7 @@
 #include "internal/catch_generators.hpp"
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
+#include "internal/catch_test_case_info.hpp"
 
 #ifdef __OBJC__
 #include "internal/catch_objc.hpp"

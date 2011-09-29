@@ -156,6 +156,10 @@ namespace Catch
                     case ResultWas::Ok:
                         stats.m_element = "success";
                         break;
+                    case ResultWas::Unknown:
+                    case ResultWas::FailureBit:
+                    case ResultWas::Exception:
+                    case ResultWas::DidntThrowException:
                     default:
                         stats.m_element = "unknown";
                         break;

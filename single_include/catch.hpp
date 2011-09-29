@@ -1530,7 +1530,7 @@ public:
     Expression
     (
         MutableResultInfo& result,
-        const T& lhs
+        T lhs
     )
     :   m_result( result ),
         m_lhs( lhs )
@@ -1638,7 +1638,7 @@ public:
 
 private:
     MutableResultInfo& m_result;
-    const T& m_lhs;
+    T m_lhs;
 };
 
 template<typename LhsT>
@@ -1727,12 +1727,12 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    Expression<T> operator->*
+    Expression<const T&> operator->*
     (
         const T & operand
     )
     {
-        Expression<T> expr( m_result, operand );
+        Expression<const T&> expr( m_result, operand );
 
         return expr;
     }
@@ -2553,30 +2553,6 @@ namespace Catch
 
 } // end namespace Catch
 
-
-#ifdef __OBJC__
-// #included from: internal/catch_objc.hpp
-
-/*
- *  catch_objc.hpp
- *  Catch
- *
- *  Created by Phil on 14/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
-
-#import <objc/runtime.h>
-#include <string>
-
-// NB. Any general catch headers included here must be included
-// in catch.hpp first to make sure they are included by the single
-// header for non obj-usage
 // #included from: internal/catch_test_case_info.hpp
 
 /*
@@ -2803,6 +2779,30 @@ namespace Catch
     };
 }
 
+
+#ifdef __OBJC__
+// #included from: internal/catch_objc.hpp
+
+/*
+ *  catch_objc.hpp
+ *  Catch
+ *
+ *  Created by Phil on 14/11/2010.
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+
+#define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
+
+#import <objc/runtime.h>
+#include <string>
+
+// NB. Any general catch headers included here must be included
+// in catch.hpp first to make sure they are included by the single
+// header for non obj-usage
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
