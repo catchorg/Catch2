@@ -31,6 +31,8 @@ namespace Catch
             std::size_t line
         )
         :   m_name( name ),
+            m_successes(0),
+            m_failures(0),
             m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_successes, m_failures ) )
         {
         }
