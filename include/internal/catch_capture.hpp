@@ -23,67 +23,35 @@
 
 namespace Catch
 {
+    
 namespace Detail
 {
-    // The following code, contributed by Sam Partington, allows us to choose an implementation
-    // of toString() depending on whether a << overload is available
-    
     struct NonStreamable
     {
-        // allow construction from anything...
-        template<typename Anything> 
-        NonStreamable(Anything)
-        {}
+        template<typename T>
+        NonStreamable( const T& )
+        {
+        }
     };
     
-    // a local operator<<  which may be called if there isn't a better one elsewhere...
-    inline NonStreamable operator << ( std::ostream&, const NonStreamable& ns )
+    // If the type does not have its own << overload for ostream then
+    // this one will be used instead
+    inline std::ostream& operator << ( std::ostream& ss, NonStreamable )
     {
-        return ns;
+        ss << "{?}";
+        return ss;
     }
-
-    template<typename T>
-    struct IsStreamable
-    {
-        static NoType Deduce( const NonStreamable& );
-        static YesType Deduce( std::ostream& );
-
-        enum
-        {
-            value = sizeof( Deduce( Synth<std::ostream&>() << Synth<const T&>() ) ) 
-                        == sizeof( YesType )
-        };
-    };
     
-    // << is available, so use it with ostringstream to make the string
-    template<typename T, bool streamable>
-    struct StringMaker
-    {
-        ///////////////////////////////////////////////////////////////////////
-        static std::string apply
-        (
-            const T& value
-        )
-        {
-            std::ostringstream oss;
-            oss << value;
-            return oss.str();
-        }
-    };
-      
-    // << not available - use a default string
     template<typename T>
-    struct StringMaker<T, false>
+    inline std::string makeString
+    (
+        const T& value
+    )
     {
-        ///////////////////////////////////////////////////////////////////////
-        static std::string apply
-        (
-            const T&
-        )
-        {
-            return "{?}";
-        }
-    };
+        std::ostringstream oss;
+        oss << value;
+        return oss.str();
+    }    
 
 }// end namespace Detail
 
@@ -94,7 +62,7 @@ std::string toString
     const T& value
 )
 {
-    return Detail::StringMaker<T, Detail::IsStreamable<T>::value>::apply( value );
+    return Detail::makeString( value );
 }
     
 // Shortcut overloads
