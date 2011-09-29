@@ -153,6 +153,12 @@ namespace Catch
                         .writeText( resultInfo.getMessage() );
                     m_currentTestSuccess = false;
                     break;
+                case ResultWas::Unknown:
+                case ResultWas::Ok:
+                case ResultWas::FailureBit:
+                case ResultWas::ExpressionFailed:
+                case ResultWas::Exception:
+                case ResultWas::DidntThrowException:
                 default:
                     break;
             }            

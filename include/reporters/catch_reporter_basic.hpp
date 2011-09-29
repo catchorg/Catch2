@@ -211,6 +211,11 @@ namespace Catch
                 case ResultWas::ExplicitFailure:
                     m_config.stream() << "failed with message: '" << resultInfo.getMessage() << "'";
                     break;
+                case ResultWas::Unknown: // These cases are here to prevent compiler warnings
+                case ResultWas::Ok:
+                case ResultWas::FailureBit:
+                case ResultWas::ExpressionFailed:
+                case ResultWas::Exception:
                 default:
                     if( !resultInfo.hasExpression() )
                     {

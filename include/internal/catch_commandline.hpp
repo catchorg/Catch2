@@ -194,6 +194,7 @@ namespace Catch
                         return setErrorMode( m_command + " does not accept arguments" );
                     m_config.setShowHelp( true );
                     break;
+                case modeError:
                 default:
                 break;
             }
