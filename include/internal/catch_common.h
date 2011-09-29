@@ -38,6 +38,7 @@ namespace Catch
 		void operator = ( const NonCopyable& );
 	protected:
 		NonCopyable(){}
+		virtual ~NonCopyable() {}
 	};
     
     typedef char NoType;
