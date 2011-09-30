@@ -386,11 +386,9 @@
 				USER_HEADER_SEARCH_PATHS = ../../include;
 				WARNING_CFLAGS = (
 					"-Winit-self",
-					"-Wmissing-include-dirs",
 					"-Wswitch-enum",
 					"-Wunused",
 					"-Wredundant-decls",
-					"-Wsign-promo",
 				);
 			};
 			name = Debug;
@@ -408,11 +406,9 @@
 				USER_HEADER_SEARCH_PATHS = ../../include;
 				WARNING_CFLAGS = (
 					"-Winit-self",
-					"-Wmissing-include-dirs",
 					"-Wswitch-enum",
 					"-Wunused",
 					"-Wredundant-decls",
-					"-Wsign-promo",
 				);
 			};
 			name = Release;
