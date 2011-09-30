@@ -297,7 +297,7 @@ namespace Catch
             // !TBD finish this
             if( !findReplaceableString( text, "<", "&lt;" ) &&
                !findReplaceableString( text, "&", "&amp;" ) &&
-               !findReplaceableString( text, "\"", "&quote;" ) )
+               !findReplaceableString( text, "\"", "&quot;" ) )
             {
                 stream() << text;
             }
