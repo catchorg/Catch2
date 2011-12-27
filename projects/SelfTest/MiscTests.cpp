@@ -103,7 +103,7 @@ TEST_CASE( "./succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr"
     std::cerr << "An error";
 }
 
-const char* makeString( bool makeNull ) 
+inline const char* makeString( bool makeNull )
 {
     return makeNull ? NULL : "valid string";
 }

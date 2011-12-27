@@ -88,7 +88,6 @@
 
 #elif defined(_MSC_VER)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
-    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
     #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
     inline bool isDebuggerActive()
     {
@@ -99,14 +98,18 @@
 	   inline bool isDebuggerActive() { return false; }
 #endif
 
+#ifdef CATCH_PLATFORM_WINDOWS
+extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
 inline void writeToDebugConsole( const std::string& text )
 {
-#ifdef CATCH_PLATFORM_WINDOWS
-    ::OutputDebugStringA( text.c_str() );    
+    ::OutputDebugStringA( text.c_str() );
+}
 #else
+inline void writeToDebugConsole( const std::string& text )
+{
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
-#endif
 }
+#endif // CATCH_PLATFORM_WINDOWS
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED

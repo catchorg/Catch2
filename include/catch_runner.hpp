@@ -82,7 +82,7 @@ namespace Catch
     }
 
     //////////////////////////////////////////////////////////////////////////
-    void showHelp
+    inline void showHelp
     (
         std::string exeName
     )
