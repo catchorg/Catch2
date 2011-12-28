@@ -46,7 +46,8 @@ namespace Catch
         (
             const IReporterConfig& config
         )
-        :   m_config( config )
+        :   m_config( config ),
+            m_firstSectionInTestCase( true )
         {
         }
 
