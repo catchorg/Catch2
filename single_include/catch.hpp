@@ -562,11 +562,12 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
-    struct INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper ) : ClassName \
-    { \
-        void test(); \
-    }; \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test, TestName, Desc, __FILE__, __LINE__ ); } \
+    namespace{ \
+        struct INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper ) : ClassName{ \
+            void test(); \
+        }; \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test, TestName, Desc, __FILE__, __LINE__ ); \
+    } \
     void INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test()
 
 // #included from: internal/catch_capture.hpp
