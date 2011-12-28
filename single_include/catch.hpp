@@ -96,6 +96,7 @@ namespace Catch
 		void operator = ( const NonCopyable& );
 	protected:
 		NonCopyable(){}
+		virtual ~NonCopyable() {}
 	};
 
     typedef char NoType;
@@ -660,7 +661,14 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         ResultInfo
         ()
-        :   m_line( 0 ),
+        :   m_macroName(),
+            m_filename(),
+            m_line( 0 ),
+            m_expr(),
+            m_lhs(),
+            m_rhs(),
+            m_op(),
+            m_message(),
             m_result( ResultWas::Unknown ),
             m_isNot( false )
         {}
@@ -680,6 +688,8 @@ namespace Catch
             m_filename( filename ),
             m_line( line ),
             m_expr( expr ),
+	    m_lhs(),
+	    m_rhs(),
             m_op( isNotExpression( expr ) ? "!" : "" ),
             m_message( message ),
             m_result( result ),
@@ -689,6 +699,11 @@ namespace Catch
                 m_expr = "!" + m_expr;
         }
 
+        ///////////////////////////////////////////////////////////////////////////
+	virtual ~ResultInfo
+        ()
+	{
+	}
         ///////////////////////////////////////////////////////////////////////////
         bool ok
         ()
@@ -970,7 +985,6 @@ namespace Catch
 
 #elif defined(_MSC_VER)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
-    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
     #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
     inline bool isDebuggerActive()
     {
@@ -981,15 +995,19 @@ namespace Catch
 	   inline bool isDebuggerActive() { return false; }
 #endif
 
+#ifdef CATCH_PLATFORM_WINDOWS
+extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
 inline void writeToDebugConsole( const std::string& text )
 {
-#ifdef CATCH_PLATFORM_WINDOWS
     ::OutputDebugStringA( text.c_str() );
+}
 #else
+inline void writeToDebugConsole( const std::string& text )
+{
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
-#endif
 }
+#endif // CATCH_PLATFORM_WINDOWS
 
 // #included from: catch_evaluate.hpp
 
@@ -1186,67 +1204,35 @@ namespace Internal
 
 namespace Catch
 {
+
 namespace Detail
 {
-    // The following code, contributed by Sam Partington, allows us to choose an implementation
-    // of toString() depending on whether a << overload is available
-
     struct NonStreamable
     {
-        // allow construction from anything...
-        template<typename Anything>
-        NonStreamable(Anything)
-        {}
+        template<typename T>
+        NonStreamable( const T& )
+        {
+        }
     };
 
-    // a local operator<<  which may be called if there isn't a better one elsewhere...
-    inline NonStreamable operator << ( std::ostream&, const NonStreamable& ns )
+    // If the type does not have its own << overload for ostream then
+    // this one will be used instead
+    inline std::ostream& operator << ( std::ostream& ss, NonStreamable )
     {
-        return ns;
+        ss << "{?}";
+        return ss;
     }
 
     template<typename T>
-    struct IsStreamable
+    inline std::string makeString
+    (
+        const T& value
+    )
     {
-        static NoType Deduce( const NonStreamable& );
-        static YesType Deduce( std::ostream& );
-
-        enum
-        {
-            value = sizeof( Deduce( Synth<std::ostream&>() << Synth<const T&>() ) )
-                        == sizeof( YesType )
-        };
-    };
-
-    // << is available, so use it with ostringstream to make the string
-    template<typename T, bool streamable>
-    struct StringMaker
-    {
-        ///////////////////////////////////////////////////////////////////////
-        static std::string apply
-        (
-            const T& value
-        )
-        {
-            std::ostringstream oss;
-            oss << value;
-            return oss.str();
-        }
-    };
-
-    // << not available - use a default string
-    template<typename T>
-    struct StringMaker<T, false>
-    {
-        ///////////////////////////////////////////////////////////////////////
-        static std::string apply
-        (
-            const T&
-        )
-        {
-            return "{?}";
-        }
-    };
+        std::ostringstream oss;
+        oss << value;
+        return oss.str();
+    }
 
 }// end namespace Detail
 
@@ -1257,7 +1243,7 @@ std::string toString
     const T& value
 )
 {
-    return Detail::StringMaker<T, Detail::IsStreamable<T>::value>::apply( value );
+    return Detail::makeString( value );
 }
 
 // Shortcut overloads
@@ -1722,7 +1708,8 @@ public:
         const char* expr = "",
         bool isNot = false
     )
-    : m_result( expr, isNot, filename, line, macroName )
+    : m_result( expr, isNot, filename, line, macroName ),
+      m_messageStream()
     {}
 
     ///////////////////////////////////////////////////////////////////////////
@@ -1822,7 +1809,7 @@ class ScopedInfo
 public:
     ///////////////////////////////////////////////////////////////////////////
     ScopedInfo
-    ()
+    () : m_oss()
     {
         Hub::getResultCapture().pushScopedInfo( this );
     }
@@ -1963,6 +1950,8 @@ namespace Catch
             std::size_t line
         )
         :   m_name( name ),
+            m_successes(0),
+            m_failures(0),
             m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_successes, m_failures ) )
         {
         }
@@ -2597,7 +2586,11 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////
         TestCaseInfo
         ()
-        :   m_test( NULL )
+        :   m_test( NULL ),
+            m_name(),
+            m_description(),
+            m_filename(),
+            m_line( 0 )
         {
         }
 
@@ -3142,7 +3135,6 @@ namespace Catch
                 if( testSpec.matches( it->getName() ) )
                 {
                     testList.push_back( *it );
-                    std::cout << it->getName() << std::endl;
                 }
             }
             return testList;
@@ -3312,7 +3304,7 @@ namespace Catch
 
 // #included from: catch_runner_impl.hpp
 
-/*
+ /*
  *  catch_runner.hpp
  *  Catch
  *
@@ -3643,7 +3635,7 @@ namespace Catch
         ~StreamRedirect
         ()
         {
-            m_targetString = m_oss.str();
+            m_targetString += m_oss.str();
             m_stream.rdbuf( m_prevBuf );
         }
 
@@ -4085,7 +4077,7 @@ namespace Catch
         )
         {
             std::ostringstream oss;
-            oss << filename << ":" << line;
+            oss << name << "@" << filename << ":" << line;
 
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
@@ -4750,6 +4742,7 @@ namespace Catch
                         return setErrorMode( m_command + " does not accept arguments" );
                     m_config.setShowHelp( true );
                     break;
+                case modeError:
                 default:
                 break;
             }
@@ -4953,7 +4946,8 @@ namespace Catch
         (
             const IReporterConfig& config
         )
-        :   m_config( config )
+        :   m_config( config ),
+            m_firstSectionInTestCase( true )
         {
         }
 
@@ -5118,6 +5112,11 @@ namespace Catch
                 case ResultWas::ExplicitFailure:
                     m_config.stream() << "failed with message: '" << resultInfo.getMessage() << "'";
                     break;
+                case ResultWas::Unknown: // These cases are here to prevent compiler warnings
+                case ResultWas::Ok:
+                case ResultWas::FailureBit:
+                case ResultWas::ExpressionFailed:
+                case ResultWas::Exception:
                 default:
                     if( !resultInfo.hasExpression() )
                     {
@@ -5565,7 +5564,7 @@ namespace Catch
             // !TBD finish this
             if( !findReplaceableString( text, "<", "&lt;" ) &&
                !findReplaceableString( text, "&", "&amp;" ) &&
-               !findReplaceableString( text, "\"", "&quote;" ) )
+               !findReplaceableString( text, "\"", "&quot;" ) )
             {
                 stream() << text;
             }
@@ -5734,6 +5733,12 @@ namespace Catch
                         .writeText( resultInfo.getMessage() );
                     m_currentTestSuccess = false;
                     break;
+                case ResultWas::Unknown:
+                case ResultWas::Ok:
+                case ResultWas::FailureBit:
+                case ResultWas::ExpressionFailed:
+                case ResultWas::Exception:
+                case ResultWas::DidntThrowException:
                 default:
                     break;
             }
@@ -5913,6 +5918,10 @@ namespace Catch
                     case ResultWas::Ok:
                         stats.m_element = "success";
                         break;
+                    case ResultWas::Unknown:
+                    case ResultWas::FailureBit:
+                    case ResultWas::Exception:
+                    case ResultWas::DidntThrowException:
                     default:
                         stats.m_element = "unknown";
                         break;
@@ -6079,7 +6088,7 @@ namespace Catch
     }
 
     //////////////////////////////////////////////////////////////////////////
-    void showHelp
+    inline void showHelp
     (
         std::string exeName
     )
