@@ -49,3 +49,29 @@ TEST_CASE( "./failing/message/fail", "FAIL aborts the test" )
 {
     FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
+
+TEST_CASE( "./failing/message/sections", "Output from all sections is reported" )
+{
+    SECTION( "one", "" )
+    {
+        FAIL( "Message from section one" );
+    }
+
+    SECTION( "two", "" )
+    {
+        FAIL( "Message from section two" );
+    }
+}
+
+TEST_CASE( "./succeeding/message/sections/stdout", "Output from all sections is reported" )
+{
+    SECTION( "one", "" )
+    {
+        std::cout << "Message from section one" << std::endl;
+    }
+    
+    SECTION( "two", "" )
+    {
+        std::cout << "Message from section two" << std::endl;
+    }
+}

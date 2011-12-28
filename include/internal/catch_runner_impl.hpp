@@ -1,4 +1,4 @@
-/*
+ /*
  *  catch_runner.hpp
  *  Catch
  *
@@ -45,7 +45,7 @@ namespace Catch
         ~StreamRedirect
         ()
         {
-            m_targetString = m_oss.str();
+            m_targetString += m_oss.str();
             m_stream.rdbuf( m_prevBuf );
         }
         

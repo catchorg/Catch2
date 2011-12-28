@@ -74,7 +74,6 @@ namespace Catch
                 if( testSpec.matches( it->getName() ) )
                 {
                     testList.push_back( *it );
-                    std::cout << it->getName() << std::endl;
                 }
             }
             return testList;
