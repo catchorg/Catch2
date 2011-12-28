@@ -487,7 +487,7 @@ namespace Catch
         )
         {
             std::ostringstream oss;
-            oss << filename << ":" << line;
+            oss << name << "@" << filename << ":" << line;
 
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
