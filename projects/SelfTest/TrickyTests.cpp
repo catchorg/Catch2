@@ -281,3 +281,15 @@ TEST_CASE( "./succeeding/unimplemented static bool", "static bools can be evalua
         REQUIRE_FALSE( is_true<false>::value );
     }
 }
+
+// Uncomment these tests to produce an error at test registration time
+/*
+TEST_CASE( "./sameName", "Tests with the same name are not allowed" )
+{
+    
+}
+TEST_CASE( "./sameName", "Tests with the same name are not allowed" )
+{
+    
+}
+*/

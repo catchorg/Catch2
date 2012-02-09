@@ -161,7 +161,7 @@ namespace Catch
         )
         const
         {
-            return *m_test == *other.m_test && m_name == other.m_name && m_description == other.m_description;            
+            return *m_test == *other.m_test && m_name == other.m_name;
         }
         
         ///////////////////////////////////////////////////////////////////////
@@ -171,12 +171,7 @@ namespace Catch
         ) 
         const
         {
-            if( m_name < other.m_name )
-                return true;
-            if( m_name > other.m_name )
-                return false;
-
-            return *m_test < *other.m_test;
+            return m_name < other.m_name;
         }
 
     private:
