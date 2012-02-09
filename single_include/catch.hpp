@@ -2706,7 +2706,7 @@ namespace Catch
         )
         const
         {
-            return *m_test == *other.m_test && m_name == other.m_name && m_description == other.m_description;
+            return *m_test == *other.m_test && m_name == other.m_name;
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -2716,12 +2716,7 @@ namespace Catch
         )
         const
         {
-            if( m_name < other.m_name )
-                return true;
-            if( m_name > other.m_name )
-                return false;
-
-            return *m_test < *other.m_test;
+            return m_name < other.m_name;
         }
 
     private:
@@ -3109,6 +3104,14 @@ namespace Catch
             {
                 m_functions.insert( testInfo );
                 m_functionsInOrder.push_back( testInfo );
+            }
+            else
+            {
+                const TestCaseInfo& prev = *m_functions.find( testInfo );
+                std::cerr   << "error: TEST_CASE( \"" << testInfo.getName() << "\" ) already defined.\n"
+                            << "\tFirst seen at " << prev.getFilename() << ":" << prev.getLine() << "\n"
+                            << "\tRedefined at " << testInfo.getFilename() << ":" << testInfo.getLine() << std::endl;
+                exit(1);
             }
         }
 
