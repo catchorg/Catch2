@@ -548,6 +548,14 @@ namespace Catch
                 ? m_runningTest->getTestCaseInfo().getName()
                 : "";
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual const ResultInfo* getLastResult
+        ()
+        const
+        {
+            return &m_lastResult;            
+        }
         
     private:
         
@@ -556,10 +564,10 @@ namespace Catch
         ()
         {
             testEnded( m_currentResult );
+            m_lastResult = m_currentResult;
             
-            bool ok = m_currentResult.ok();
             m_currentResult = MutableResultInfo();
-            if( ok )
+            if( m_lastResult.ok() )
                 return ResultAction::None;
             else if( shouldDebugBreak() )
                 return ResultAction::DebugFailed;
@@ -612,6 +620,7 @@ namespace Catch
     private:
         RunningTest* m_runningTest;
         MutableResultInfo m_currentResult;
+        ResultInfo m_lastResult;
 
         const Config& m_config;
         std::size_t m_successes;

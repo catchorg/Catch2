@@ -121,3 +121,39 @@ TEST_CASE( "./failing/info", "sends information to INFO" )
     CAPTURE( i );
     REQUIRE( false );
 }
+
+inline bool testCheckedIf( bool flag )
+{
+    CHECKED_IF( flag )
+        return true;
+    else
+        return false;
+}
+
+TEST_CASE( "./succeeding/checkedif", "" )
+{
+    REQUIRE( testCheckedIf( true ) );
+}
+
+TEST_CASE( "./failing/checkedif", "" )
+{
+    REQUIRE( testCheckedIf( false ) );
+}
+
+inline bool testCheckedElse( bool flag )
+{
+    CHECKED_ELSE( flag )
+        return false;
+    
+    return true;
+}
+
+TEST_CASE( "./succeeding/checkedelse", "" )
+{
+    REQUIRE( testCheckedElse( true ) );
+}
+
+TEST_CASE( "./failing/checkedelse", "" )
+{
+    REQUIRE( testCheckedElse( false ) );
+}

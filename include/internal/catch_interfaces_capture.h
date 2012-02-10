@@ -20,6 +20,7 @@ namespace Catch
     class TestCaseInfo;
     class ScopedInfo;
     class MutableResultInfo;
+    class ResultInfo;
 
     struct IResultCapture
     {
@@ -66,6 +67,8 @@ namespace Catch
             ) = 0;
         
         virtual std::string getCurrentTestName
+            () const = 0;        
+        virtual const ResultInfo* getLastResult
             () const = 0;
         
     };

@@ -688,6 +688,16 @@ inline bool isTrue
     if( Catch::isTrue( false ) ){ bool internal_catch_dummyResult = ( expr ); Catch::isTrue( internal_catch_dummyResult ); }
 
 ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_IF( expr, isNot, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+    if( Catch::Hub::getResultCapture().getLastResult()->ok() )
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_ELSE( expr, isNot, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+    if( !Catch::Hub::getResultCapture().getLastResult()->ok() )
+
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
     try \
     { \

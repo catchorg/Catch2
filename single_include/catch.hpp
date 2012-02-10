@@ -701,10 +701,11 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-	virtual ~ResultInfo
+        virtual ~ResultInfo
         ()
-	{
-	}
+        {
+        }
+
         ///////////////////////////////////////////////////////////////////////////
         bool ok
         ()
@@ -844,6 +845,7 @@ namespace Catch
     class TestCaseInfo;
     class ScopedInfo;
     class MutableResultInfo;
+    class ResultInfo;
 
     struct IResultCapture
     {
@@ -890,6 +892,8 @@ namespace Catch
             ) = 0;
 
         virtual std::string getCurrentTestName
+            () const = 0;
+        virtual const ResultInfo* getLastResult
             () const = 0;
 
     };
@@ -1870,6 +1874,16 @@ inline bool isTrue
     if( Catch::isTrue( false ) ){ bool internal_catch_dummyResult = ( expr ); Catch::isTrue( internal_catch_dummyResult ); }
 
 ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_IF( expr, isNot, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+    if( Catch::Hub::getResultCapture().getLastResult()->ok() )
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_ELSE( expr, isNot, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+    if( !Catch::Hub::getResultCapture().getLastResult()->ok() )
+
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
     try \
     { \
@@ -2786,7 +2800,9 @@ namespace Catch
 
 #define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 
+#import <Foundation/Foundation.h>
 #import <objc/runtime.h>
+
 #include <string>
 
 // NB. Any general catch headers included here must be included
@@ -4143,6 +4159,14 @@ namespace Catch
                 : "";
         }
 
+        ///////////////////////////////////////////////////////////////////////////
+        virtual const ResultInfo* getLastResult
+        ()
+        const
+        {
+            return &m_lastResult;
+        }
+
     private:
 
         ///////////////////////////////////////////////////////////////////////////
@@ -4150,10 +4174,10 @@ namespace Catch
         ()
         {
             testEnded( m_currentResult );
+            m_lastResult = m_currentResult;
 
-            bool ok = m_currentResult.ok();
             m_currentResult = MutableResultInfo();
-            if( ok )
+            if( m_lastResult.ok() )
                 return ResultAction::None;
             else if( shouldDebugBreak() )
                 return ResultAction::DebugFailed;
@@ -4206,6 +4230,7 @@ namespace Catch
     private:
         RunningTest* m_runningTest;
         MutableResultInfo m_currentResult;
+        ResultInfo m_lastResult;
 
         const Config& m_config;
         std::size_t m_successes;
@@ -6208,6 +6233,8 @@ int main (int argc, char * const argv[])
 
 #define CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CHECK" )
 #define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CHECK_FALSE" )
+#define CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, false, false, "CHECKED_IF" )
+#define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, false, false, "CHECKED_ELSE" )
 
 #define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false, "CHECK_THROWS" )
 #define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, "CHECK_THROWS_AS" )
