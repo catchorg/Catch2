@@ -13,7 +13,9 @@
 #ifndef TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 
+#import <Foundation/Foundation.h>
 #import <objc/runtime.h>
+
 #include <string>
 
 // NB. Any general catch headers included here must be included
