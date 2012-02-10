@@ -294,32 +294,30 @@ namespace Catch
             const std::string& text
         )
         {
-            // !TBD finish this
-            if( !findReplaceableString( text, "<", "&lt;" ) &&
-               !findReplaceableString( text, "&", "&amp;" ) &&
-               !findReplaceableString( text, "\"", "&quot;" ) )
+            static const char* charsToEncode = "<&\"";
+            std::string mtext = text;
+            std::string::size_type pos = mtext.find_first_of( charsToEncode );
+            while( pos != std::string::npos )
             {
-                stream() << text;
+                stream() << mtext.substr( 0, pos );
+                
+                switch( mtext[pos] )
+                {
+                    case '<':
+                        stream() << "&lt;";
+                        break;
+                    case '&':
+                        stream() << "&amp;";
+                        break;
+                    case '\"':
+                        stream() << "&quot;";
+                        break;
+                }
+                mtext = mtext.substr( pos+1 );
+                pos = mtext.find_first_of( charsToEncode );
             }
-        }
-        
-        ///////////////////////////////////////////////////////////////////////
-        bool findReplaceableString
-        (
-            const std::string& text, 
-            const std::string& replaceWhat, 
-            const std::string& replaceWith
-        )
-        {
-            std::string::size_type pos = text.find_first_of( replaceWhat );
-            if( pos != std::string::npos )
-            {
-                stream() << text.substr( 0, pos ) << replaceWith;
-                writeEncodedText( text.substr( pos+1 ) );
-                return true;
-            }
-            return false;
-        }
+            stream() << mtext;
+        }        
         
         bool m_tagIsOpen;
         bool m_needsNewline;

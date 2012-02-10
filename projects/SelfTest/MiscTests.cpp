@@ -157,3 +157,15 @@ TEST_CASE( "./failing/checkedelse", "" )
 {
     REQUIRE( testCheckedElse( false ) );
 }
+
+TEST_CASE( "./misc/xmlentitycheck", "" )
+{
+    SECTION( "embedded xml", "<test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" )
+    {
+        // No test
+    }
+    SECTION( "encoded chars", "these should all be encoded: &&&\"\"\"<<<&\"<<&\"" )
+    {
+        // No test
+    }
+}

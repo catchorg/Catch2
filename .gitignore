@@ -9,3 +9,4 @@ Release
 *.xcuserstate
 .DS_Store
 xcuserdata
+CatchSelfTest.xcscheme
