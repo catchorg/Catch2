@@ -15,6 +15,8 @@
 #include <string>
 #include <stdexcept>
 
+#include "catch_self_test.hpp"
+
 namespace
 {
     ATTRIBUTE_NORETURN
@@ -114,9 +116,32 @@ TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections r
 {
     SECTION( "the section", "" )
     {
-        SECTION( "the section2", "" )
+        CATCH_REGISTER_LINE_INFO( "the section2" ) SECTION( "the section2", "" )
         {
             throw std::domain_error( "Exception from section" );
         }
     }
+}
+
+TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produced by exceptions caught by Catch matched the expected form" )
+{
+    Catch::EmbeddedRunner runner;
+    
+    SECTION( "custom, unexpected", "" )
+    {    
+        runner.runMatching( "./failing/exceptions/custom" );
+        INFO( runner.getOutput() );
+        CHECK( runner.getOutput().find( "Unexpected exception" ) != std::string::npos );
+        CHECK( runner.getOutput().find( "custom exception" ) != std::string::npos );
+    }
+    
+    SECTION( "in section", "" )
+    {    
+        runner.runMatching( "./failing/exceptions/in-section" );
+        INFO( runner.getOutput() );
+        CHECK( runner.getOutput().find( "Unexpected exception" ) != std::string::npos );
+        CHECK( runner.getOutput().find( "Exception from section" ) != std::string::npos );
+        CHECK( runner.getOutput().find( CATCH_GET_LINE_INFO( "the section2" ) ) != std::string::npos );
+    }
+    
 }

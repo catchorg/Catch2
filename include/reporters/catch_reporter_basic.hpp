@@ -174,11 +174,7 @@ namespace Catch
             StartSpansLazily();
             
             if( !resultInfo.getFilename().empty() )
-#ifndef __GNUG__
-                m_config.stream() << resultInfo.getFilename() << "(" << resultInfo.getLine() << "): ";
-#else                
-                m_config.stream() << resultInfo.getFilename() << ":" << resultInfo.getLine() << ": ";            
-#endif            
+                m_config.stream() << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
             
             if( resultInfo.hasExpression() )
             {

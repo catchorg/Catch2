@@ -52,8 +52,8 @@ namespace Catch
             {
                 const TestCaseInfo& prev = *m_functions.find( testInfo );
                 std::cerr   << "error: TEST_CASE( \"" << testInfo.getName() << "\" ) already defined.\n"
-                            << "\tFirst seen at " << prev.getFilename() << ":" << prev.getLine() << "\n"
-                            << "\tRedefined at " << testInfo.getFilename() << ":" << testInfo.getLine() << std::endl;
+                            << "\tFirst seen at " << SourceLineInfo( prev.getFilename(), prev.getLine() ) << "\n"
+                            << "\tRedefined at " << SourceLineInfo( testInfo.getFilename(), testInfo.getLine() ) << std::endl;
                 exit(1);
             }
         }

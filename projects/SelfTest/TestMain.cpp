@@ -10,10 +10,6 @@
  *
  */
 
-#define CATCH_CONFIG_MAIN
-#include "catch.hpp"
-
-
 #include "catch_self_test.hpp"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" )
@@ -47,7 +43,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
                     "Number of 'succeeding' tests is fixed" )
         {
             runner.runMatching( "./succeeding/*" );
-            CHECK( runner.getSuccessCount() == 262 );
+            CHECK( runner.getSuccessCount() == 267 );
             CHECK( runner.getFailureCount() == 0 );
         }
 

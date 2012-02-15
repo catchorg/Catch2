@@ -80,11 +80,36 @@ namespace Catch
         std::for_each( container.begin(), container.end(), function );
     }
     
+    struct SourceLineInfo
+    {
+        SourceLineInfo        
+        (
+            const std::string& file, 
+            std::size_t line
+        )
+        :   file( file ),
+            line( line )
+        {}
+        
+        std::string file;
+        std::size_t line;        
+    };
+    
+    inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info )
+    {
+#ifndef __GNUG__
+        os << info.file << "(" << info.line << "): ";
+#else                
+        os << info.file << ":" << info.line << ": ";            
+#endif            
+        return os;
+    }
+    
     ATTRIBUTE_NORETURN
     inline void throwLogicError( const std::string& message, const std::string& file, long line )
     {
         std::ostringstream oss;
-        oss << "Internal Catch error: '" << message << "' at: " << file << "(" << line << ")";
+        oss << "Internal Catch error: '" << message << "' at: " << SourceLineInfo( file, line );
         throw std::logic_error( oss.str() );
     }
 }

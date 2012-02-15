@@ -129,7 +129,7 @@ namespace Catch
                 {
                     oss << resultInfo.getMessage() << " at ";
                 }
-                oss << resultInfo.getFilename() << ":" << resultInfo.getLine();
+                oss << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
                 stats.m_content = oss.str();
                 stats.m_message = resultInfo.getExpandedExpression();
                 stats.m_resultType = resultInfo.getTestMacroName();

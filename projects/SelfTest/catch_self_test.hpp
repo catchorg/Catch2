@@ -16,7 +16,6 @@
 
 namespace Catch
 {
-
     class EmbeddedRunner
     {
     public:
@@ -26,29 +25,8 @@ namespace Catch
         {
         }
         
-        ///////////////////////////////////////////////////////////////////////////
         std::size_t runMatching
-        (
-            const std::string& rawTestSpec
-        )
-        {
-            std::ostringstream oss;
-            Config config;
-            config.setStreamBuf( oss.rdbuf() );
-            config.setReporter( "basic" );
-
-            std::size_t result;
-            
-            // Scoped because Runner doesn't report EndTesting until its destructor
-            {
-                Runner runner( config );
-                result = runner.runMatching( rawTestSpec );
-                m_successes = runner.getSuccessCount();
-                m_failures = runner.getFailureCount();
-            }
-            m_output = oss.str();
-            return result;
-        }
+            (   const std::string& rawTestSpec );
         
         ///////////////////////////////////////////////////////////////////////////
         std::string getOutput
@@ -148,6 +126,54 @@ namespace Catch
         Expected::Result m_expectedResult;
     };
     
+
+    struct LineInfoRegistry
+    {
+        static LineInfoRegistry& get
+        ()
+        {
+            static LineInfoRegistry s_instance;
+            return s_instance;
+        }
+        
+        void registerLineInfo
+        (
+            const std::string& name, 
+            const SourceLineInfo& info 
+        )
+        {
+            m_registry.insert( std::make_pair( name, info ) );
+        }
+        
+        const SourceLineInfo* find( const std::string& name ) const
+        {
+            std::map<std::string, SourceLineInfo>::const_iterator it = m_registry.find( name );
+            return it == m_registry.end() ? NULL : &(it->second);
+        }
+
+        const std::string infoForName( const std::string& name ) const
+        {
+            std::map<std::string, SourceLineInfo>::const_iterator it = m_registry.find( name );
+            if( it == m_registry.end() )
+                return "";
+            std::ostringstream oss;
+            oss << it->second;
+            return oss.str();
+        }
+        
+        std::map<std::string, SourceLineInfo> m_registry;
+    };
+    
+    struct LineInfoRegistrar
+    {
+        LineInfoRegistrar( const char* name, const SourceLineInfo& lineInfo )
+        {
+            LineInfoRegistry::get().registerLineInfo( name, lineInfo );
+        }
+    };
 }
+
+#define CATCH_REGISTER_LINE_INFO( name ) ::Catch::LineInfoRegistrar INTERNAL_CATCH_UNIQUE_NAME( lineRegistrar )( name, ::Catch::SourceLineInfo( __FILE__, __LINE__ ) );
+#define CATCH_GET_LINE_INFO( name ) ::Catch::LineInfoRegistry::get().infoForName( name )
 
 #endif // TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
