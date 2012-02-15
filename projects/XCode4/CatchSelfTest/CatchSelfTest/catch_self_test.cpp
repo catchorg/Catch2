@@ -38,5 +38,4 @@ namespace Catch
         m_output = oss.str();
         return result;
     }
-    
 }
