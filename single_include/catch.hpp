@@ -138,11 +138,36 @@ namespace Catch
         std::for_each( container.begin(), container.end(), function );
     }
 
+    struct SourceLineInfo
+    {
+        SourceLineInfo
+        (
+            const std::string& file,
+            std::size_t line
+        )
+        :   file( file ),
+            line( line )
+        {}
+
+        std::string file;
+        std::size_t line;
+    };
+
+    inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info )
+    {
+#ifndef __GNUG__
+        os << info.file << "(" << info.line << "): ";
+#else
+        os << info.file << ":" << info.line << ": ";
+#endif
+        return os;
+    }
+
     ATTRIBUTE_NORETURN
     inline void throwLogicError( const std::string& message, const std::string& file, long line )
     {
         std::ostringstream oss;
-        oss << "Internal Catch error: '" << message << "' at: " << file << "(" << line << ")";
+        oss << "Internal Catch error: '" << message << "' at: " << SourceLineInfo( file, line );
         throw std::logic_error( oss.str() );
     }
 }
@@ -3125,8 +3150,8 @@ namespace Catch
             {
                 const TestCaseInfo& prev = *m_functions.find( testInfo );
                 std::cerr   << "error: TEST_CASE( \"" << testInfo.getName() << "\" ) already defined.\n"
-                            << "\tFirst seen at " << prev.getFilename() << ":" << prev.getLine() << "\n"
-                            << "\tRedefined at " << testInfo.getFilename() << ":" << testInfo.getLine() << std::endl;
+                            << "\tFirst seen at " << SourceLineInfo( prev.getFilename(), prev.getLine() ) << "\n"
+                            << "\tRedefined at " << SourceLineInfo( testInfo.getFilename(), testInfo.getLine() ) << std::endl;
                 exit(1);
             }
         }
@@ -4097,7 +4122,7 @@ namespace Catch
         )
         {
             std::ostringstream oss;
-            oss << name << "@" << filename << ":" << line;
+            oss << name << "@" << SourceLineInfo( filename, line );
 
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
@@ -5103,11 +5128,7 @@ namespace Catch
             StartSpansLazily();
 
             if( !resultInfo.getFilename().empty() )
-#ifndef __GNUG__
-                m_config.stream() << resultInfo.getFilename() << "(" << resultInfo.getLine() << "): ";
-#else
-                m_config.stream() << resultInfo.getFilename() << ":" << resultInfo.getLine() << ": ";
-#endif
+                m_config.stream() << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
 
             if( resultInfo.hasExpression() )
             {
@@ -5590,31 +5611,29 @@ namespace Catch
             const std::string& text
         )
         {
-            // !TBD finish this
-            if( !findReplaceableString( text, "<", "&lt;" ) &&
-               !findReplaceableString( text, "&", "&amp;" ) &&
-               !findReplaceableString( text, "\"", "&quot;" ) )
+            static const char* charsToEncode = "<&\"";
+            std::string mtext = text;
+            std::string::size_type pos = mtext.find_first_of( charsToEncode );
+            while( pos != std::string::npos )
             {
-                stream() << text;
-            }
-        }
+                stream() << mtext.substr( 0, pos );
 
-        ///////////////////////////////////////////////////////////////////////
-        bool findReplaceableString
-        (
-            const std::string& text,
-            const std::string& replaceWhat,
-            const std::string& replaceWith
-        )
-        {
-            std::string::size_type pos = text.find_first_of( replaceWhat );
-            if( pos != std::string::npos )
-            {
-                stream() << text.substr( 0, pos ) << replaceWith;
-                writeEncodedText( text.substr( pos+1 ) );
-                return true;
+                switch( mtext[pos] )
+                {
+                    case '<':
+                        stream() << "&lt;";
+                        break;
+                    case '&':
+                        stream() << "&amp;";
+                        break;
+                    case '\"':
+                        stream() << "&quot;";
+                        break;
+                }
+                mtext = mtext.substr( pos+1 );
+                pos = mtext.find_first_of( charsToEncode );
             }
-            return false;
+            stream() << mtext;
         }
 
         bool m_tagIsOpen;
@@ -5920,7 +5939,7 @@ namespace Catch
                 {
                     oss << resultInfo.getMessage() << " at ";
                 }
-                oss << resultInfo.getFilename() << ":" << resultInfo.getLine();
+                oss << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
                 stats.m_content = oss.str();
                 stats.m_message = resultInfo.getExpandedExpression();
                 stats.m_resultType = resultInfo.getTestMacroName();
@@ -6113,6 +6132,7 @@ namespace Catch
                 config.getReporter()->EndGroup( *it, runner.getSuccessCount()-prevSuccess, runner.getFailureCount()-prevFail );
             }
         }
+
         return static_cast<int>( runner.getFailureCount() );
     }
 
