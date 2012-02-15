@@ -11,8 +11,7 @@
 		4A73280C14E66CFC0044823F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A73280B14E66CFC0044823F /* Foundation.framework */; };
 		4A73280E14E66CFC0044823F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A73280D14E66CFC0044823F /* CoreGraphics.framework */; };
 		4A73281414E66CFC0044823F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A73281214E66CFC0044823F /* InfoPlist.strings */; };
-		4A73281614E66CFC0044823F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A73281514E66CFC0044823F /* main.m */; };
-		4A73281A14E66CFC0044823F /* TBCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A73281914E66CFC0044823F /* TBCAppDelegate.m */; };
+		4A73282614E66D8B0044823F /* itChRunnerMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4A73282514E66D8B0044823F /* itChRunnerMain.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,12 +19,13 @@
 		4A73280914E66CFC0044823F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4A73280B14E66CFC0044823F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4A73280D14E66CFC0044823F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		4A73281114E66CFC0044823F /* iOSTest-Info.plist */ = {isa = PBXFileReference; path = "iOSTest-Info.plist"; sourceTree = "<group>"; };
+		4A73281114E66CFC0044823F /* iOSTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOSTest-Info.plist"; sourceTree = "<group>"; };
 		4A73281314E66CFC0044823F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4A73281514E66CFC0044823F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4A73281714E66CFC0044823F /* iOSTest-Prefix.pch */ = {isa = PBXFileReference; path = "iOSTest-Prefix.pch"; sourceTree = "<group>"; };
-		4A73281814E66CFC0044823F /* TBCAppDelegate.h */ = {isa = PBXFileReference; path = TBCAppDelegate.h; sourceTree = "<group>"; };
-		4A73281914E66CFC0044823F /* TBCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TBCAppDelegate.m; sourceTree = "<group>"; };
+		4A73281714E66CFC0044823F /* iOSTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOSTest-Prefix.pch"; sourceTree = "<group>"; };
+		4A73282214E66D8B0044823F /* iTchRunnerAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTchRunnerAppDelegate.h; sourceTree = "<group>"; };
+		4A73282314E66D8B0044823F /* iTchRunnerMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTchRunnerMainView.h; sourceTree = "<group>"; };
+		4A73282414E66D8B0044823F /* iTchRunnerReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTchRunnerReporter.h; sourceTree = "<group>"; };
+		4A73282514E66D8B0044823F /* itChRunnerMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = itChRunnerMain.mm; path = ../../../runners/iTchRunner/itChRunnerMain.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +72,7 @@
 		4A73280F14E66CFC0044823F /* iOSTest */ = {
 			isa = PBXGroup;
 			children = (
-				4A73281814E66CFC0044823F /* TBCAppDelegate.h */,
-				4A73281914E66CFC0044823F /* TBCAppDelegate.m */,
+				4A73282014E66D6C0044823F /* iTch */,
 				4A73281014E66CFC0044823F /* Supporting Files */,
 			);
 			path = iOSTest;
@@ -84,10 +83,29 @@
 			children = (
 				4A73281114E66CFC0044823F /* iOSTest-Info.plist */,
 				4A73281214E66CFC0044823F /* InfoPlist.strings */,
-				4A73281514E66CFC0044823F /* main.m */,
 				4A73281714E66CFC0044823F /* iOSTest-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4A73282014E66D6C0044823F /* iTch */ = {
+			isa = PBXGroup;
+			children = (
+				4A73282114E66D8B0044823F /* internal */,
+				4A73282514E66D8B0044823F /* itChRunnerMain.mm */,
+			);
+			name = iTch;
+			sourceTree = "<group>";
+		};
+		4A73282114E66D8B0044823F /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				4A73282214E66D8B0044823F /* iTchRunnerAppDelegate.h */,
+				4A73282314E66D8B0044823F /* iTchRunnerMainView.h */,
+				4A73282414E66D8B0044823F /* iTchRunnerReporter.h */,
+			);
+			name = internal;
+			path = ../../../runners/iTchRunner/internal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,8 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A73281614E66CFC0044823F /* main.m in Sources */,
-				4A73281A14E66CFC0044823F /* TBCAppDelegate.m in Sources */,
+				4A73282614E66D8B0044823F /* itChRunnerMain.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +192,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Phil Nash (4KJCM5XSVL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -190,8 +208,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PROVISIONING_PROFILE = "95C4758A-E0B8-4714-9DA3-C7E1284444A4";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = ../../../include;
 			};
 			name = Debug;
 		};
@@ -200,6 +220,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Phil Nash (4KJCM5XSVL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -209,8 +230,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "95C4758A-E0B8-4714-9DA3-C7E1284444A4";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = ../../../include;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

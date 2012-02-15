@@ -21,6 +21,8 @@
     UITextField* appName;
 }
 
+-(void) showAlert;
+
 @end
 
 @implementation iTchRunnerMainView
@@ -42,15 +44,8 @@
         appName.textAlignment = UITextAlignmentCenter;
         
         appName.text = [NSString stringWithFormat:@"CATCH tests"];
-
-    
-        UIActionSheet* menu = [[UIActionSheet alloc] initWithTitle:@"Options"
-                                                          delegate:self
-                                                 cancelButtonTitle:nil
-                                            destructiveButtonTitle:nil
-                                                 otherButtonTitles:@"Run all tests", nil];
-        [menu showInView: self];
-        [menu release];
+//        [self performSelector: @selector(showAlert) withObject:nil afterDelay:0.1];
+        [self performSelectorOnMainThread:@selector(showAlert) withObject:nil waitUntilDone:NO];
         
     }
     return self;
@@ -61,6 +56,19 @@
 {
     [appName removeFromSuperview];
     [super dealloc];
+}
+
+///////////////////////////////////////////////////////////////////////////////
+-(void) showAlert
+{    
+    UIActionSheet* menu = [[UIActionSheet alloc] initWithTitle:@"Options"
+                                                      delegate:self
+                                             cancelButtonTitle:nil
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:@"Run all tests", nil];
+    [menu showInView: self];
+    [menu release];
+ 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -82,7 +90,7 @@
     }
     else
     {
-        NSLog( @"%d failures", runner.getFailureCount() );
+        NSLog( @"%lu failures", runner.getFailureCount() );
         appName.textColor = [[UIColor alloc] initWithRed:1 green:0.35 blue:0.35 alpha:1];
     }
 }
