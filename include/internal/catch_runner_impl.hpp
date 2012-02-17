@@ -585,9 +585,16 @@ namespace Catch
             try
             {
                 m_runningTest->reset();
-                StreamRedirect coutRedir( std::cout, redirectedCout );
-                StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                m_runningTest->getTestCaseInfo().invoke();
+                if( m_reporter->shouldRedirectStdout() )
+                {
+                    StreamRedirect coutRedir( std::cout, redirectedCout );
+                    StreamRedirect cerrRedir( std::cerr, redirectedCerr );
+                    m_runningTest->getTestCaseInfo().invoke();
+                }
+                else
+                {
+                    m_runningTest->getTestCaseInfo().invoke();
+                }
                 m_runningTest->ranToCompletion();
             }
             catch( TestFailureException& )

@@ -78,6 +78,7 @@ namespace Catch
                 config.getReporter()->EndGroup( *it, runner.getSuccessCount()-prevSuccess, runner.getFailureCount()-prevFail );
             }
         }
+
         return static_cast<int>( runner.getFailureCount() );
     }
 

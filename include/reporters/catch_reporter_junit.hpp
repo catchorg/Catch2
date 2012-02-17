@@ -83,6 +83,14 @@ namespace Catch
     private: // IReporter
         
         ///////////////////////////////////////////////////////////////////////////
+        virtual bool shouldRedirectStdout
+        ()
+        const
+        {
+            return true;
+        }        
+
+        ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting()
         {
         }

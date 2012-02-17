@@ -47,6 +47,9 @@ namespace Catch
         virtual ~IReporter
             (){}
         
+        virtual bool shouldRedirectStdout
+            () const = 0;
+        
         virtual void StartTesting
             () = 0;
         
