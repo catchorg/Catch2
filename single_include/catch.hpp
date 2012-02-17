@@ -208,6 +208,9 @@ namespace Catch
         virtual ~IReporter
             (){}
 
+        virtual bool shouldRedirectStdout
+            () const = 0;
+
         virtual void StartTesting
             () = 0;
 
@@ -1895,8 +1898,20 @@ inline bool isTrue
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr ), stopOnFailure ); \
-    if( Catch::isTrue( false ) ){ bool internal_catch_dummyResult = ( expr ); Catch::isTrue( internal_catch_dummyResult ); }
+    try \
+    { \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr ), stopOnFailure ); \
+        if( Catch::isTrue( false ) ){ bool internal_catch_dummyResult = ( expr ); Catch::isTrue( internal_catch_dummyResult ); } \
+    } \
+    catch( Catch::TestFailureException& ) \
+    { \
+        throw; \
+    } \
+    catch( ... ) \
+    { \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false ); \
+        throw; \
+    }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, isNot, stopOnFailure, macroName ) \
@@ -1914,10 +1929,6 @@ inline bool isTrue
     { \
         expr; \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure ); \
-    } \
-    catch( std::exception& internal_catch_exception ) \
-    { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << internal_catch_exception.what() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
     } \
     catch( ... ) \
     { \
@@ -3319,7 +3330,26 @@ namespace Catch
         ()
         const
         {
-            return tryTranslators( m_translators.begin() );
+            try
+            {
+                throw;
+            }
+            catch( std::exception& ex )
+            {
+                return ex.what();
+            }
+            catch( std::string& msg )
+            {
+                return msg;
+            }
+            catch( const char* msg )
+            {
+                return msg;
+            }
+            catch(...)
+            {
+                return tryTranslators( m_translators.begin() );
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -4220,29 +4250,21 @@ namespace Catch
             try
             {
                 m_runningTest->reset();
-                StreamRedirect coutRedir( std::cout, redirectedCout );
-                StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                m_runningTest->getTestCaseInfo().invoke();
+                if( m_reporter->shouldRedirectStdout() )
+                {
+                    StreamRedirect coutRedir( std::cout, redirectedCout );
+                    StreamRedirect cerrRedir( std::cerr, redirectedCerr );
+                    m_runningTest->getTestCaseInfo().invoke();
+                }
+                else
+                {
+                    m_runningTest->getTestCaseInfo().invoke();
+                }
                 m_runningTest->ranToCompletion();
             }
             catch( TestFailureException& )
             {
                 // This just means the test was aborted due to failure
-            }
-            catch( std::exception& ex )
-            {
-                acceptMessage( ex.what() );
-                acceptResult( ResultWas::ThrewException );
-            }
-            catch( std::string& msg )
-            {
-                acceptMessage( msg );
-                acceptResult( ResultWas::ThrewException );
-            }
-            catch( const char* msg )
-            {
-                acceptMessage( msg );
-                acceptResult( ResultWas::ThrewException );
             }
             catch(...)
             {
@@ -5034,6 +5056,14 @@ namespace Catch
     private: // IReporter
 
         ///////////////////////////////////////////////////////////////////////////
+        virtual bool shouldRedirectStdout
+        ()
+        const
+        {
+            return false;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting
         ()
         {
@@ -5669,6 +5699,14 @@ namespace Catch
     private: // IReporter
 
         ///////////////////////////////////////////////////////////////////////////
+        virtual bool shouldRedirectStdout
+        ()
+        const
+        {
+            return true;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting
         ()
         {
@@ -5891,6 +5929,14 @@ namespace Catch
         }
 
     private: // IReporter
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool shouldRedirectStdout
+        ()
+        const
+        {
+            return true;
+        }
 
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting()

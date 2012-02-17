@@ -391,7 +391,7 @@ namespace Catch
 
             m_reporter->EndTestCase( testInfo, m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         virtual std::size_t getSuccessCount
         ()
@@ -600,21 +600,6 @@ namespace Catch
             catch( TestFailureException& )
             {
                 // This just means the test was aborted due to failure
-            }
-            catch( std::exception& ex )
-            {
-                acceptMessage( ex.what() );
-                acceptResult( ResultWas::ThrewException );
-            }
-            catch( std::string& msg )
-            {
-                acceptMessage( msg );
-                acceptResult( ResultWas::ThrewException );
-            }
-            catch( const char* msg )
-            {
-                acceptMessage( msg );
-                acceptResult( ResultWas::ThrewException );
             }
             catch(...)
             {

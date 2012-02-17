@@ -32,7 +32,26 @@ namespace Catch
         ()
         const
         {
-            return tryTranslators( m_translators.begin() );
+            try
+            {
+                throw;
+            }
+            catch( std::exception& ex )
+            {
+                return ex.what();
+            }
+            catch( std::string& msg )
+            {
+                return msg;
+            }
+            catch( const char* msg )
+            {
+                return msg;
+            }
+            catch(...)
+            {
+                return tryTranslators( m_translators.begin() );
+            }
         }
         
         ///////////////////////////////////////////////////////////////////////
