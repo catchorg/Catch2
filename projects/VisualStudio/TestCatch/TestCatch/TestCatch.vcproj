@@ -344,6 +344,10 @@
 			Name="TestCases"
 			>
 			<File
+				RelativePath="..\..\..\SelfTest\catch_self_test.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\SelfTest\ClassTests.cpp"
 				>
 			</File>
