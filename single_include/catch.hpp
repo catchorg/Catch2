@@ -3323,6 +3323,13 @@ namespace Catch
     class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry
     {
         ///////////////////////////////////////////////////////////////////////
+        ~ExceptionTranslatorRegistry
+        ()
+        {
+            deleteAll( m_translators );
+        }
+
+        ///////////////////////////////////////////////////////////////////////
         virtual void registerTranslator
         (
             IExceptionTranslator* translator
