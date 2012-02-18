@@ -77,7 +77,13 @@ namespace Catch
         static bool advanceGeneratorsForCurrentTest
             ();
         
+        static void cleanUp
+            ();
+        
     private:
+
+        static Hub*& singleInstance();
+        
         GeneratorsForTest* findGeneratorsForCurrentTest
             ();
         

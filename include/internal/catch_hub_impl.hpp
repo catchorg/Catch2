@@ -32,8 +32,27 @@ namespace Catch
     Hub& Hub::me
     ()
     {
-        static Hub hub;
+        Hub*& hub = singleInstance();
+        if( !hub )
+            hub = new Hub();
+        return *hub;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    void Hub::cleanUp
+    ()
+    {
+        Hub*& hub = singleInstance();
+        delete hub;
+        hub = NULL;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    Hub*& Hub::singleInstance()
+    {
+        static Hub* hub = NULL;        
         return hub;
+        
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -370,7 +370,13 @@ namespace Catch
         static bool advanceGeneratorsForCurrentTest
             ();
 
+        static void cleanUp
+            ();
+
     private:
+
+        static Hub*& singleInstance();
+
         GeneratorsForTest* findGeneratorsForCurrentTest
             ();
 
@@ -4513,8 +4519,27 @@ namespace Catch
     Hub& Hub::me
     ()
     {
-        static Hub hub;
+        Hub*& hub = singleInstance();
+        if( !hub )
+            hub = new Hub();
+        return *hub;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    void Hub::cleanUp
+    ()
+    {
+        Hub*& hub = singleInstance();
+        delete hub;
+        hub = NULL;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    Hub*& Hub::singleInstance()
+    {
+        static Hub* hub = NULL;
         return hub;
+
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -6276,15 +6301,15 @@ int main (int argc, char * const argv[])
     int result = Catch::Main( argc, (char* const*)argv );
 
     [pool drain];
-    return result;
 
 #else
 
-    return Catch::Main( argc, argv );
+    int result =Catch::Main( argc, argv );
 
 #endif
+    Catch::Hub::cleanUp();
+    return result;
 }
-
 
 #endif
 

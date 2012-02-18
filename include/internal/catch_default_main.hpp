@@ -24,14 +24,14 @@ int main (int argc, char * const argv[])
     int result = Catch::Main( argc, (char* const*)argv );
     
     [pool drain];
-    return result;
     
 #else
     
-    return Catch::Main( argc, argv );
+    int result =Catch::Main( argc, argv );
     
 #endif
+    Catch::Hub::cleanUp();
+    return result;
 }
-
 
 #endif // TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
