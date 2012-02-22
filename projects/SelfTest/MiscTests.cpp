@@ -98,9 +98,9 @@ TEST_CASE( "./mixed/Misc/loops", "looped tests" )
 
 TEST_CASE( "./succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr" )
 {
-    std::cout << "Some information";
+    std::cout << "Some information" << std::endl;
     
-    std::cerr << "An error";
+    std::cerr << "An error" << std::endl;
 }
 
 inline const char* makeString( bool makeNull )

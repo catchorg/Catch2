@@ -70,11 +70,30 @@ namespace Catch
             if( failed + succeeded == 0 )
                 m_config.stream() << "No tests ran";
             else if( failed == 0 )
-                m_config.stream() << "All " << succeeded << " test(s) succeeded";
+            {
+                if( succeeded == 1 )
+                    m_config.stream() << "1 test succeeded";
+                else
+                    m_config.stream() << "All " << succeeded << " tests succeeded";
+            }
             else if( succeeded == 0 )
-                m_config.stream() << "All " << failed << " test(s) failed";
+            {
+                if( failed == 1 )                    
+                    m_config.stream() << "1 test failed";
+                else
+                    m_config.stream() << "All " << failed << " tests failed";
+            }
             else
-                m_config.stream() << succeeded << " test(s) passed but " << failed << " test(s) failed";
+            {
+                m_config.stream() << succeeded << " test";
+                if( succeeded > 1 )
+                    m_config.stream() << "s";
+
+                m_config.stream() << " passed but " << failed << " test";
+                if( failed > 1 )
+                    m_config.stream() << "s";
+                m_config.stream() << " failed";
+            }
         }
         
     private: // IReporter
@@ -102,7 +121,7 @@ namespace Catch
         )
         {
             // Output the overall test results even if "Started Testing" was not emitted
-            m_config.stream() << "[Testing completed. ";
+            m_config.stream() << "\n[Testing completed. ";
             ReportCounts( succeeded, failed );
             m_config.stream() << "]\n" << std::endl;
         }
