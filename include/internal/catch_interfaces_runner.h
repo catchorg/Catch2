@@ -12,6 +12,8 @@
 #ifndef TWOBLUECUBES_INTERNAL_CATCH_INTERFACES_RUNNER_H_INCLUDED
 #define TWOBLUECUBES_INTERNAL_CATCH_INTERFACES_RUNNER_H_INCLUDED
 
+#include "catch_totals.hpp"
+
 #include <string>
 
 namespace Catch
@@ -32,10 +34,7 @@ namespace Catch
             ( const std::string& rawTestSpec 
             ) = 0;
         
-        virtual std::size_t getSuccessCount
-            () const = 0;
-        
-        virtual std:: size_t getFailureCount
+        virtual Totals getTotals
             () const = 0;
         
     };

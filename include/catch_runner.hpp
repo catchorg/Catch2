@@ -57,7 +57,7 @@ namespace Catch
         {
             config.getReporter()->StartGroup( "" );
             runner.runAll();
-            config.getReporter()->EndGroup( "", runner.getSuccessCount(), runner.getFailureCount() );
+            config.getReporter()->EndGroup( "", runner.getTotals().assertions.passed, runner.getTotals().assertions.failed );
         }
         else
         {
@@ -67,19 +67,19 @@ namespace Catch
             std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
             for(; it != itEnd; ++it )
             {
-                size_t prevSuccess = runner.getSuccessCount();
-                size_t prevFail = runner.getFailureCount();
+                Totals prevTotals = runner.getTotals();
                 config.getReporter()->StartGroup( *it );
                 if( runner.runMatching( *it ) == 0 )
                 {
                     // Use reporter?
 //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
                 }
-                config.getReporter()->EndGroup( *it, runner.getSuccessCount()-prevSuccess, runner.getFailureCount()-prevFail );
+                Totals diffTotals = runner.getTotals() - prevTotals;
+                config.getReporter()->EndGroup( *it, diffTotals.assertions.passed, diffTotals.assertions.failed );
             }
         }
 
-        return static_cast<int>( runner.getFailureCount() );
+        return static_cast<int>( runner.getTotals().assertions.failed );
     }
 
     //////////////////////////////////////////////////////////////////////////

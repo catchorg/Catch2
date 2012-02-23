@@ -18,8 +18,8 @@ namespace Catch
     ///////////////////////////////////////////////////////////////////////////
     std::size_t EmbeddedRunner::runMatching
     (
-     const std::string& rawTestSpec
-     )
+        const std::string& rawTestSpec
+    )
     {
         std::ostringstream oss;
         Config config;
@@ -32,8 +32,7 @@ namespace Catch
         {
             Runner runner( config );
             result = runner.runMatching( rawTestSpec );
-            m_successes = runner.getSuccessCount();
-            m_failures = runner.getFailureCount();
+            m_totals = runner.getTotals();
         }
         m_output = oss.str();
         return result;

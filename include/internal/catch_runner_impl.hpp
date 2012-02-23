@@ -391,21 +391,13 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual std::size_t getSuccessCount
+        virtual Totals getTotals
         ()
         const
         {
-            return m_totals.assertions.passed;
+            return m_totals;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual std:: size_t getFailureCount
-        ()
-        const
-        {
-            return m_totals.assertions.failed;
-        }
-
     private: // IResultCapture
 
         ///////////////////////////////////////////////////////////////////////////

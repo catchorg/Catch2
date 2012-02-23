@@ -43,16 +43,16 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
                     "Number of 'succeeding' tests is fixed" )
         {
             runner.runMatching( "./succeeding/*" );
-            CHECK( runner.getSuccessCount() == 267 );
-            CHECK( runner.getFailureCount() == 0 );
+            CHECK( runner.getTotals().assertions.passed == 267 );
+            CHECK( runner.getTotals().assertions.failed == 0 );
         }
 
         SECTION(    "selftest/test counts/failing tests", 
                     "Number of 'failing' tests is fixed" )
         {
             runner.runMatching( "./failing/*" );        
-            CHECK( runner.getSuccessCount() == 0 );
-            CHECK( runner.getFailureCount() == 68 );
+            CHECK( runner.getTotals().assertions.passed == 0 );
+            CHECK( runner.getTotals().assertions.failed == 68 );
         }
     }
 }
@@ -62,7 +62,7 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" )
     Catch::EmbeddedRunner runner;
     
     runner.runMatching( "./mixed/Misc/Sections/nested2" );
-    CHECK( runner.getSuccessCount() == 2 );
-    CHECK( runner.getFailureCount() == 1 );
+    CHECK( runner.getTotals().assertions.passed == 2 );
+    CHECK( runner.getTotals().assertions.failed == 1 );
     
 }

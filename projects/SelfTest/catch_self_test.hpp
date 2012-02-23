@@ -36,24 +36,15 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        std::size_t getSuccessCount
+        const Totals& getTotals
         ()
         const
         {
-            return m_successes;
+            return m_totals;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        std:: size_t getFailureCount
-        ()
-        const
-        {
-            return m_failures;
-        }
-
     private:
-        std::size_t m_successes;
-        std::size_t m_failures;
+        Totals m_totals;
         std::string m_output;
     };
 
@@ -97,26 +88,27 @@ namespace Catch
         {
             EmbeddedRunner runner;
             runner.runMatching( testCase.getName() );
+            Totals totals = runner.getTotals();
             switch( m_expectedResult )
             {
                 case Expected::ToSucceed:
-                    if( runner.getFailureCount() > 0 )
+                    if( totals.assertions.failed > 0 )
                     {
                         INFO( runner.getOutput() );
                         FAIL( "Expected test case '" 
                              << testCase.getName() 
                              << "' to succeed but there was/ were " 
-                             << runner.getFailureCount() << " failure(s)" );
+                             << totals.assertions.failed << " failure(s)" );
                     }
                     break;
                 case Expected::ToFail:
-                    if( runner.getSuccessCount() > 0 )
+                    if( totals.assertions.passed > 0 )
                     {
                         INFO( runner.getOutput() );
                         FAIL( "Expected test case '" 
                              << testCase.getName() 
                              << "' to fail but there was/ were " 
-                             << runner.getSuccessCount() << " success(es)" );
+                             << totals.assertions.passed << " success(es)" );
                     }
                     break;
             }        
