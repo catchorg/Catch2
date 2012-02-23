@@ -18,6 +18,7 @@
 #include "catch_test_registry.hpp"
 #include "catch_test_case_info.hpp"
 #include "catch_capture.hpp"
+#include "catch_totals.hpp"
 
 #include <set>
 #include <string>
@@ -303,8 +304,6 @@ namespace Catch
         )
         :   m_runningTest( NULL ),
             m_config( config ),
-            m_successes( 0 ),
-            m_failures( 0 ),
             m_reporter( m_config.getReporter() ),
             m_prevRunner( &Hub::getRunner() ),
             m_prevResultCapture( &Hub::getResultCapture() )
@@ -318,7 +317,7 @@ namespace Catch
         ~Runner
         ()
         {
-            m_reporter->EndTesting( m_successes, m_failures );
+            m_reporter->EndTesting( m_totals.assertions.passed, m_totals.assertions.failed );
             Hub::setRunner( m_prevRunner );
             Hub::setResultCapture( m_prevResultCapture );
         }
@@ -364,8 +363,7 @@ namespace Catch
             const TestCaseInfo& testInfo
         )
         {
-            std::size_t prevSuccessCount = m_successes;
-            std::size_t prevFailureCount = m_failures;
+            Totals prevTotals = m_totals;
 
             std::string redirectedCout;
             std::string redirectedCerr;
@@ -389,7 +387,7 @@ namespace Catch
             delete m_runningTest;
             m_runningTest = NULL;
 
-            m_reporter->EndTestCase( testInfo, m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
+            m_reporter->EndTestCase( testInfo, m_totals.assertions.passed - prevTotals.assertions.passed, m_totals.assertions.failed - prevTotals.assertions.failed, redirectedCout, redirectedCerr );
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -397,7 +395,7 @@ namespace Catch
         ()
         const
         {
-            return m_successes;
+            return m_totals.assertions.passed;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -405,7 +403,7 @@ namespace Catch
         ()
         const
         {
-            return m_failures;
+            return m_totals.assertions.failed;
         }
 
     private: // IResultCapture
@@ -456,11 +454,11 @@ namespace Catch
         { 
             if( result.getResultType() == ResultWas::Ok )
             {
-                m_successes++;
+                m_totals.assertions.passed++;
             }
             else if( !result.ok() )
             {
-                m_failures++;
+                m_totals.assertions.failed++;
 
                 std::vector<ResultInfo>::const_iterator it = m_info.begin();
                 std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
@@ -494,8 +492,8 @@ namespace Catch
 
             m_currentResult.setFileAndLine( filename, line );
             m_reporter->StartSection( name, description );
-            successes = m_successes;
-            failures = m_failures;
+            successes = m_totals.assertions.passed;
+            failures = m_totals.assertions.failed;
             
             return true;
         }
@@ -509,7 +507,7 @@ namespace Catch
         )
         {
             m_runningTest->endSection( name );
-            m_reporter->EndSection( name, m_successes - prevSuccesses, m_failures - prevFailures );
+            m_reporter->EndSection( name, m_totals.assertions.passed - prevSuccesses, m_totals.assertions.failed - prevFailures );
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -615,8 +613,7 @@ namespace Catch
         ResultInfo m_lastResult;
 
         const Config& m_config;
-        std::size_t m_successes;
-        std::size_t m_failures;
+        Totals m_totals;
         IReporter* m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
         std::vector<ResultInfo> m_info;
