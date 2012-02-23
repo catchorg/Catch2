@@ -14,6 +14,7 @@
 
 #include <string>
 #include "catch_result_type.h"
+#include "catch_totals.hpp"
 
 namespace Catch
 {    
@@ -36,13 +37,11 @@ namespace Catch
                 const std::string& description, 
                 const std::string& filename,
                 std::size_t line,
-                std::size_t& successes, 
-                std::size_t& failures 
+                Counts& assertions
             ) = 0;
         virtual void sectionEnded
             (   const std::string& name, 
-                std::size_t successes, 
-                std::size_t failures 
+                const Counts& assertions
             ) = 0;
         virtual void pushScopedInfo
             (   ScopedInfo* scopedInfo 

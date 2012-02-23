@@ -480,8 +480,7 @@ namespace Catch
             const std::string& description,
             const std::string& filename,
             std::size_t line,
-            std::size_t& successes,
-            std::size_t& failures 
+            Counts& assertions
         )
         {
             std::ostringstream oss;
@@ -492,8 +491,7 @@ namespace Catch
 
             m_currentResult.setFileAndLine( filename, line );
             m_reporter->StartSection( name, description );
-            successes = m_totals.assertions.passed;
-            failures = m_totals.assertions.failed;
+            assertions = m_totals.assertions;
             
             return true;
         }
@@ -501,13 +499,12 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void sectionEnded
         (
-            const std::string& name, 
-            std::size_t prevSuccesses, 
-            std::size_t prevFailures 
+            const std::string& name,
+            const Counts& prevAssertions
         )
         {
             m_runningTest->endSection( name );
-            m_reporter->EndSection( name, m_totals.assertions.passed - prevSuccesses, m_totals.assertions.failed - prevFailures );
+            m_reporter->EndSection( name, m_totals.assertions.passed - prevAssertions.passed, m_totals.assertions.failed - prevAssertions.failed );
         }
 
         ///////////////////////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@
 #define TWOBLUECUBES_CATCH_SECTION_HPP_INCLUDED
 
 #include "catch_capture.hpp"
+#include "catch_totals.hpp"
 
 #include <string>
 
@@ -31,9 +32,7 @@ namespace Catch
             std::size_t line
         )
         :   m_name( name ),
-            m_successes(0),
-            m_failures(0),
-            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_successes, m_failures ) )
+            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_assertions ) )
         {
         }
 
@@ -42,7 +41,7 @@ namespace Catch
         ()
         {
             if( m_sectionIncluded )
-                Hub::getResultCapture().sectionEnded( m_name, m_successes, m_failures );
+                Hub::getResultCapture().sectionEnded( m_name, m_assertions );
         }
         
         ///////////////////////////////////////////////////////////////////////        
@@ -56,8 +55,7 @@ namespace Catch
     private:
         
         std::string m_name;
-        std::size_t m_successes;
-        std::size_t m_failures;
+        Counts m_assertions;
         bool m_sectionIncluded;
     };
     
