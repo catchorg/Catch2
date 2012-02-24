@@ -317,7 +317,7 @@ namespace Catch
         ~Runner
         ()
         {
-            m_reporter->EndTesting( m_totals.assertions.passed, m_totals.assertions.failed );
+            m_reporter->EndTesting( m_totals );
             Hub::setRunner( m_prevRunner );
             Hub::setResultCapture( m_prevResultCapture );
         }
@@ -387,7 +387,7 @@ namespace Catch
             delete m_runningTest;
             m_runningTest = NULL;
 
-            m_reporter->EndTestCase( testInfo, m_totals.assertions.passed - prevTotals.assertions.passed, m_totals.assertions.failed - prevTotals.assertions.failed, redirectedCout, redirectedCerr );
+            m_reporter->EndTestCase( testInfo, m_totals - prevTotals, redirectedCout, redirectedCerr );
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -496,7 +496,7 @@ namespace Catch
         )
         {
             m_runningTest->endSection( name );
-            m_reporter->EndSection( name, m_totals.assertions.passed - prevAssertions.passed, m_totals.assertions.failed - prevAssertions.failed );
+            m_reporter->EndSection( name, m_totals.assertions - prevAssertions );
         }
 
         ///////////////////////////////////////////////////////////////////////////

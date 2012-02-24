@@ -61,13 +61,12 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndTesting
         (
-            std::size_t succeeded, 
-            std::size_t failed
+            const Totals& totals
         )
         {
             m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", succeeded )
-                .writeAttribute( "failures", failed );
+                .writeAttribute( "successes", totals.assertions.passed )
+                .writeAttribute( "failures", totals.assertions.failed );
             m_xml.endElement();
         }
         
@@ -85,13 +84,12 @@ namespace Catch
         virtual void EndGroup
         (
             const std::string& /*groupName*/, 
-            std::size_t succeeded, 
-            std::size_t failed 
+            const Totals& totals
         )
         {
             m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", succeeded )
-                .writeAttribute( "failures", failed );            
+                .writeAttribute( "successes", totals.assertions.passed )
+                .writeAttribute( "failures", totals.assertions.failed );
             m_xml.endElement();
         }
         
@@ -104,11 +102,11 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndSection( const std::string& /*sectionName*/, std::size_t succeeded, std::size_t failed )
+        virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions )
         {
             m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", succeeded )
-                .writeAttribute( "failures", failed );            
+                .writeAttribute( "successes", assertions.passed )
+                .writeAttribute( "failures", assertions.failed );
             m_xml.endElement();
         }
         
@@ -175,7 +173,7 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const Catch::TestCaseInfo&, std::size_t /* succeeded */, std::size_t /* failed */, const std::string& /*stdOut*/, const std::string& /*stdErr*/ )
+        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals& /* totals */, const std::string& /*stdOut*/, const std::string& /*stdErr*/ )
         {
             m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );
             m_xml.endElement();

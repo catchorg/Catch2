@@ -104,9 +104,9 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndGroup( const std::string&, std::size_t succeeded, std::size_t failed )
+        virtual void EndGroup( const std::string&, const Totals& totals )
         {
-            m_currentStats->m_testsCount = failed+succeeded;
+            m_currentStats->m_testsCount = totals.assertions.total();
             m_currentStats = &m_testSuiteStats;
         }
         
@@ -114,7 +114,7 @@ namespace Catch
         {
         }
 
-        virtual void EndSection( const std::string& /*sectionName*/, std::size_t /*succeeded*/, std::size_t /*failed*/ )
+        virtual void EndSection( const std::string& /*sectionName*/, const Counts& /* assertions */ )
         {
         }
         
@@ -178,7 +178,7 @@ namespace Catch
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const Catch::TestCaseInfo&, std::size_t /* succeeded */, std::size_t /* failed */, const std::string& stdOut, const std::string& stdErr )
+        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals& /* totals */, const std::string& stdOut, const std::string& stdErr )
         {
             if( !stdOut.empty() )
                 m_stdOut << stdOut << "\n";
@@ -187,7 +187,7 @@ namespace Catch
         }    
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTesting( std::size_t /* succeeded */, std::size_t /* failed */ )
+        virtual void EndTesting( const Totals& /* totals */ )
         {
             std::ostream& str = m_config.stream();
             {

@@ -30,6 +30,10 @@ namespace Catch
             return diff;
         }
         
+        std::size_t total() const
+        {
+            return passed + failed;
+        }
         std::size_t passed;
         std::size_t failed;
     };

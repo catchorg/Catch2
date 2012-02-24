@@ -57,7 +57,7 @@ namespace Catch
         {
             config.getReporter()->StartGroup( "" );
             runner.runAll();
-            config.getReporter()->EndGroup( "", runner.getTotals().assertions.passed, runner.getTotals().assertions.failed );
+            config.getReporter()->EndGroup( "", runner.getTotals() );
         }
         else
         {
@@ -74,8 +74,7 @@ namespace Catch
                     // Use reporter?
 //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
                 }
-                Totals diffTotals = runner.getTotals() - prevTotals;
-                config.getReporter()->EndGroup( *it, diffTotals.assertions.passed, diffTotals.assertions.failed );
+                config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
             }
         }
 

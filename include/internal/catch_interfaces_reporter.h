@@ -14,6 +14,7 @@
 #define TWOBLUECUBES_CATCH_IREPORTERREGISTRY_INCLUDED
 
 #include "catch_common.h"
+#include "catch_totals.hpp"
 
 #include <string>
 #include <ostream>
@@ -54,8 +55,7 @@ namespace Catch
             () = 0;
         
         virtual void EndTesting
-            (   std::size_t succeeded, 
-                std::size_t failed 
+            (   const Totals& totals
             ) = 0;
         
         virtual void StartGroup
@@ -64,8 +64,7 @@ namespace Catch
         
         virtual void EndGroup
             (   const std::string& groupName, 
-                std::size_t succeeded, 
-                std::size_t failed 
+                const Totals& totals
             ) = 0;
         
         virtual void StartSection
@@ -75,8 +74,7 @@ namespace Catch
         
         virtual void EndSection
             (   const std::string& sectionName, 
-                std::size_t succeeded, 
-                std::size_t failed 
+                const Counts& assertions 
             ) = 0;
         
         virtual void StartTestCase
@@ -85,8 +83,7 @@ namespace Catch
         
         virtual void EndTestCase
             (   const TestCaseInfo& testInfo, 
-                std::size_t succeeded, 
-                std::size_t failed,
+                const Totals& totals,
                 const std::string& stdOut, 
                 const std::string& stdErr 
             ) = 0;

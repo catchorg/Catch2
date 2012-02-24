@@ -63,37 +63,45 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void ReportCounts
         (
-            std::size_t succeeded, 
-            std::size_t failed
+            const Counts& assertions
         )
         {
-            if( failed + succeeded == 0 )
+            if( assertions.failed + assertions.passed == 0 )
                 m_config.stream() << "No tests ran";
-            else if( failed == 0 )
+            else if( assertions.failed == 0 )
             {
-                if( succeeded == 1 )
+                if( assertions.passed == 1 )
                     m_config.stream() << "1 test succeeded";
                 else
-                    m_config.stream() << "All " << succeeded << " tests succeeded";
+                    m_config.stream() << "All " << assertions.passed << " tests succeeded";
             }
-            else if( succeeded == 0 )
+            else if( assertions.passed == 0 )
             {
-                if( failed == 1 )                    
+                if( assertions.failed == 1 )                    
                     m_config.stream() << "1 test failed";
                 else
-                    m_config.stream() << "All " << failed << " tests failed";
+                    m_config.stream() << "All " << assertions.failed << " tests failed";
             }
             else
             {
-                m_config.stream() << succeeded << " test";
-                if( succeeded > 1 )
+                m_config.stream() << assertions.passed << " test";
+                if( assertions.passed > 1 )
                     m_config.stream() << "s";
 
-                m_config.stream() << " passed but " << failed << " test";
-                if( failed > 1 )
+                m_config.stream() << " passed but " << assertions.failed << " test";
+                if( assertions.failed > 1 )
                     m_config.stream() << "s";
                 m_config.stream() << " failed";
             }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        void ReportCounts
+        (
+            const Totals& totals
+        )
+        {
+            ReportCounts( totals.assertions );
         }
         
     private: // IReporter
@@ -116,13 +124,12 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndTesting
         (
-            std::size_t succeeded, 
-            std::size_t failed
+            const Totals& totals
         )
         {
             // Output the overall test results even if "Started Testing" was not emitted
             m_config.stream() << "\n[Testing completed. ";
-            ReportCounts( succeeded, failed );
+            ReportCounts( totals);
             m_config.stream() << "]\n" << std::endl;
         }
         
@@ -139,14 +146,13 @@ namespace Catch
         virtual void EndGroup
         (
             const std::string& groupName, 
-            std::size_t succeeded, 
-            std::size_t failed 
+            const Totals& totals
         )
         {
             if( m_groupSpan.emitted && !groupName.empty() )
             {
                 m_config.stream() << "[End of group: '" << groupName << "'. ";
-                ReportCounts( succeeded, failed );
+                ReportCounts( totals );
                 m_config.stream() << "]\n" << std::endl;
                 m_groupSpan = SpanInfo();
             }
@@ -175,15 +181,14 @@ namespace Catch
         virtual void EndSection
         (
             const std::string& sectionName, 
-            std::size_t succeeded, 
-            std::size_t failed
+            const Counts& assertions
         )
         {
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() )
             {
                 m_config.stream() << "[End of section: '" << sectionName << "'. ";
-                ReportCounts( succeeded, failed );
+                ReportCounts( assertions);
                 m_config.stream() << "]\n" << std::endl;
             }
             m_sectionSpans.pop_back();
@@ -262,8 +267,7 @@ namespace Catch
         virtual void EndTestCase
         (
             const TestCaseInfo& testInfo, 
-            std::size_t succeeded, 
-            std::size_t failed, 
+            const Totals& totals,
             const std::string& stdOut, 
             const std::string& stdErr
         )
@@ -283,7 +287,7 @@ namespace Catch
             if( m_testSpan.emitted )
             {
                 m_config.stream() << "[Finished: " << testInfo.getName() << " ";
-                ReportCounts( succeeded, failed );
+                ReportCounts( totals );
                 m_config.stream() << "]" << std::endl;
             }
         }    
