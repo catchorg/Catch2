@@ -175,6 +175,62 @@ namespace Catch
 #define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
 
 
+// #included from: catch_totals.hpp
+
+//
+//  catch_totals.hpp
+//  Catch
+//
+//  Created by Phil Nash on 23/02/2012.
+//  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
+
+namespace Catch
+{
+    struct Counts
+    {
+        Counts
+        ()
+        :   passed( 0 ),
+            failed( 0 )
+        {}
+
+        Counts operator - ( const Counts& other ) const
+        {
+            Counts diff;
+            diff.passed = passed - other.passed;
+            diff.failed = failed - other.failed;
+            return diff;
+        }
+
+        std::size_t total() const
+        {
+            return passed + failed;
+        }
+        std::size_t passed;
+        std::size_t failed;
+    };
+
+    struct Totals
+    {
+        Totals operator - ( const Totals& other ) const
+        {
+            Totals diff;
+            diff.assertions = assertions - other.assertions;
+            diff.testCases = testCases - other.testCases;
+            return diff;
+        }
+
+        Counts assertions;
+        Counts testCases;
+    };
+}
+
 
 #include <string>
 #include <ostream>
@@ -215,8 +271,7 @@ namespace Catch
             () = 0;
 
         virtual void EndTesting
-            (   std::size_t succeeded,
-                std::size_t failed
+            (   const Totals& totals
             ) = 0;
 
         virtual void StartGroup
@@ -225,8 +280,7 @@ namespace Catch
 
         virtual void EndGroup
             (   const std::string& groupName,
-                std::size_t succeeded,
-                std::size_t failed
+                const Totals& totals
             ) = 0;
 
         virtual void StartSection
@@ -236,8 +290,7 @@ namespace Catch
 
         virtual void EndSection
             (   const std::string& sectionName,
-                std::size_t succeeded,
-                std::size_t failed
+                const Counts& assertions
             ) = 0;
 
         virtual void StartTestCase
@@ -246,8 +299,7 @@ namespace Catch
 
         virtual void EndTestCase
             (   const TestCaseInfo& testInfo,
-                std::size_t succeeded,
-                std::size_t failed,
+                const Totals& totals,
                 const std::string& stdOut,
                 const std::string& stdErr
             ) = 0;
@@ -895,13 +947,11 @@ namespace Catch
                 const std::string& description,
                 const std::string& filename,
                 std::size_t line,
-                std::size_t& successes,
-                std::size_t& failures
+                Counts& assertions
             ) = 0;
         virtual void sectionEnded
             (   const std::string& name,
-                std::size_t successes,
-                std::size_t failures
+                const Counts& assertions
             ) = 0;
         virtual void pushScopedInfo
             (   ScopedInfo* scopedInfo
@@ -2007,9 +2057,7 @@ namespace Catch
             std::size_t line
         )
         :   m_name( name ),
-            m_successes(0),
-            m_failures(0),
-            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_successes, m_failures ) )
+            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_assertions ) )
         {
         }
 
@@ -2018,7 +2066,7 @@ namespace Catch
         ()
         {
             if( m_sectionIncluded )
-                Hub::getResultCapture().sectionEnded( m_name, m_successes, m_failures );
+                Hub::getResultCapture().sectionEnded( m_name, m_assertions );
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -2032,8 +2080,7 @@ namespace Catch
     private:
 
         std::string m_name;
-        std::size_t m_successes;
-        std::size_t m_failures;
+        Counts m_assertions;
         bool m_sectionIncluded;
     };
 
@@ -3420,6 +3467,7 @@ namespace Catch
  */
 #define TWOBLUECUBES_INTERNAL_CATCH_INTERFACES_RUNNER_H_INCLUDED
 
+
 #include <string>
 
 namespace Catch
@@ -3440,10 +3488,7 @@ namespace Catch
             ( const std::string& rawTestSpec
             ) = 0;
 
-        virtual std::size_t getSuccessCount
-            () const = 0;
-
-        virtual std:: size_t getFailureCount
+        virtual Totals getTotals
             () const = 0;
 
     };
@@ -3981,8 +4026,6 @@ namespace Catch
         )
         :   m_runningTest( NULL ),
             m_config( config ),
-            m_successes( 0 ),
-            m_failures( 0 ),
             m_reporter( m_config.getReporter() ),
             m_prevRunner( &Hub::getRunner() ),
             m_prevResultCapture( &Hub::getResultCapture() )
@@ -3996,7 +4039,7 @@ namespace Catch
         ~Runner
         ()
         {
-            m_reporter->EndTesting( m_successes, m_failures );
+            m_reporter->EndTesting( m_totals );
             Hub::setRunner( m_prevRunner );
             Hub::setResultCapture( m_prevResultCapture );
         }
@@ -4042,8 +4085,7 @@ namespace Catch
             const TestCaseInfo& testInfo
         )
         {
-            std::size_t prevSuccessCount = m_successes;
-            std::size_t prevFailureCount = m_failures;
+            Totals prevTotals = m_totals;
 
             std::string redirectedCout;
             std::string redirectedCerr;
@@ -4067,23 +4109,20 @@ namespace Catch
             delete m_runningTest;
             m_runningTest = NULL;
 
-            m_reporter->EndTestCase( testInfo, m_successes - prevSuccessCount, m_failures - prevFailureCount, redirectedCout, redirectedCerr );
+            if( m_totals.assertions.failed > prevTotals.assertions.failed )
+                ++m_totals.testCases.failed;
+            else
+                ++m_totals.testCases.passed;
+
+            m_reporter->EndTestCase( testInfo, m_totals - prevTotals, redirectedCout, redirectedCerr );
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual std::size_t getSuccessCount
+        virtual Totals getTotals
         ()
         const
         {
-            return m_successes;
-        }
-
-        ///////////////////////////////////////////////////////////////////////////
-        virtual std:: size_t getFailureCount
-        ()
-        const
-        {
-            return m_failures;
+            return m_totals;
         }
 
     private: // IResultCapture
@@ -4134,11 +4173,11 @@ namespace Catch
         {
             if( result.getResultType() == ResultWas::Ok )
             {
-                m_successes++;
+                m_totals.assertions.passed++;
             }
             else if( !result.ok() )
             {
-                m_failures++;
+                m_totals.assertions.failed++;
 
                 std::vector<ResultInfo>::const_iterator it = m_info.begin();
                 std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
@@ -4160,8 +4199,7 @@ namespace Catch
             const std::string& description,
             const std::string& filename,
             std::size_t line,
-            std::size_t& successes,
-            std::size_t& failures
+            Counts& assertions
         )
         {
             std::ostringstream oss;
@@ -4172,8 +4210,7 @@ namespace Catch
 
             m_currentResult.setFileAndLine( filename, line );
             m_reporter->StartSection( name, description );
-            successes = m_successes;
-            failures = m_failures;
+            assertions = m_totals.assertions;
 
             return true;
         }
@@ -4182,12 +4219,11 @@ namespace Catch
         virtual void sectionEnded
         (
             const std::string& name,
-            std::size_t prevSuccesses,
-            std::size_t prevFailures
+            const Counts& prevAssertions
         )
         {
             m_runningTest->endSection( name );
-            m_reporter->EndSection( name, m_successes - prevSuccesses, m_failures - prevFailures );
+            m_reporter->EndSection( name, m_totals.assertions - prevAssertions );
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -4293,8 +4329,7 @@ namespace Catch
         ResultInfo m_lastResult;
 
         const Config& m_config;
-        std::size_t m_successes;
-        std::size_t m_failures;
+        Totals m_totals;
         IReporter* m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
         std::vector<ResultInfo> m_info;
@@ -5026,6 +5061,25 @@ namespace Catch
 
 namespace Catch
 {
+    struct pluralise
+    {
+        pluralise( std::size_t count, const std::string& label )
+        :   m_count( count ),
+            m_label( label )
+        {}
+
+        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser )
+        {
+            os << pluraliser.m_count << " " << pluraliser.m_label;
+            if( pluraliser.m_count != 1 )
+                os << "s";
+            return os;
+        }
+
+        std::size_t m_count;
+        std::string m_label;
+    };
+
     class BasicReporter : public IReporter
     {
         struct SpanInfo
@@ -5071,36 +5125,45 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void ReportCounts
         (
-            std::size_t succeeded,
-            std::size_t failed
+            const std::string& label,
+            const Counts& counts
         )
         {
-            if( failed + succeeded == 0 )
-                m_config.stream() << "No tests ran";
-            else if( failed == 0 )
+            if( counts.failed > 0 )
             {
-                if( succeeded == 1 )
-                    m_config.stream() << "1 test succeeded";
+                if( counts.passed > 0 )
+                    m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
                 else
-                    m_config.stream() << "All " << succeeded << " tests succeeded";
-            }
-            else if( succeeded == 0 )
-            {
-                if( failed == 1 )
-                    m_config.stream() << "1 test failed";
-                else
-                    m_config.stream() << "All " << failed << " tests failed";
+                {
+                    if( counts.failed > 1 )
+                        m_config.stream() << "All ";
+                    m_config.stream() << pluralise( counts.failed, label ) << " failed";
+                }
             }
             else
             {
-                m_config.stream() << succeeded << " test";
-                if( succeeded > 1 )
-                    m_config.stream() << "s";
+                if( counts.passed > 1 )
+                    m_config.stream() << "All ";
+                m_config.stream() << pluralise( counts.passed, label ) << " passed";
+            }
+        }
 
-                m_config.stream() << " passed but " << failed << " test";
-                if( failed > 1 )
-                    m_config.stream() << "s";
-                m_config.stream() << " failed";
+        ///////////////////////////////////////////////////////////////////////////
+        void ReportCounts
+        (
+            const Totals& totals
+        )
+        {
+            if( totals.assertions.total() == 0 )
+            {
+                m_config.stream() << "No tests ran";
+                return;
+            }
+            ReportCounts( "test case", totals.testCases );
+            if( totals.testCases.failed > 0 )
+            {
+                m_config.stream() << ". ";
+                ReportCounts( "assertion", totals.assertions );
             }
         }
 
@@ -5124,13 +5187,12 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndTesting
         (
-            std::size_t succeeded,
-            std::size_t failed
+            const Totals& totals
         )
         {
             // Output the overall test results even if "Started Testing" was not emitted
             m_config.stream() << "\n[Testing completed. ";
-            ReportCounts( succeeded, failed );
+            ReportCounts( totals);
             m_config.stream() << "]\n" << std::endl;
         }
 
@@ -5147,14 +5209,13 @@ namespace Catch
         virtual void EndGroup
         (
             const std::string& groupName,
-            std::size_t succeeded,
-            std::size_t failed
+            const Totals& totals
         )
         {
             if( m_groupSpan.emitted && !groupName.empty() )
             {
                 m_config.stream() << "[End of group: '" << groupName << "'. ";
-                ReportCounts( succeeded, failed );
+                ReportCounts( totals );
                 m_config.stream() << "]\n" << std::endl;
                 m_groupSpan = SpanInfo();
             }
@@ -5183,15 +5244,14 @@ namespace Catch
         virtual void EndSection
         (
             const std::string& sectionName,
-            std::size_t succeeded,
-            std::size_t failed
+            const Counts& assertions
         )
         {
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() )
             {
                 m_config.stream() << "[End of section: '" << sectionName << "'. ";
-                ReportCounts( succeeded, failed );
+                ReportCounts( "assertion", assertions);
                 m_config.stream() << "]\n" << std::endl;
             }
             m_sectionSpans.pop_back();
@@ -5270,8 +5330,7 @@ namespace Catch
         virtual void EndTestCase
         (
             const TestCaseInfo& testInfo,
-            std::size_t succeeded,
-            std::size_t failed,
+            const Totals& totals,
             const std::string& stdOut,
             const std::string& stdErr
         )
@@ -5291,7 +5350,7 @@ namespace Catch
             if( m_testSpan.emitted )
             {
                 m_config.stream() << "[Finished: " << testInfo.getName() << " ";
-                ReportCounts( succeeded, failed );
+                ReportCounts( totals );
                 m_config.stream() << "]" << std::endl;
             }
         }
@@ -5770,13 +5829,12 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndTesting
         (
-            std::size_t succeeded,
-            std::size_t failed
+            const Totals& totals
         )
         {
             m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", succeeded )
-                .writeAttribute( "failures", failed );
+                .writeAttribute( "successes", totals.assertions.passed )
+                .writeAttribute( "failures", totals.assertions.failed );
             m_xml.endElement();
         }
 
@@ -5794,13 +5852,12 @@ namespace Catch
         virtual void EndGroup
         (
             const std::string& /*groupName*/,
-            std::size_t succeeded,
-            std::size_t failed
+            const Totals& totals
         )
         {
             m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", succeeded )
-                .writeAttribute( "failures", failed );
+                .writeAttribute( "successes", totals.assertions.passed )
+                .writeAttribute( "failures", totals.assertions.failed );
             m_xml.endElement();
         }
 
@@ -5813,11 +5870,11 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndSection( const std::string& /*sectionName*/, std::size_t succeeded, std::size_t failed )
+        virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions )
         {
             m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", succeeded )
-                .writeAttribute( "failures", failed );
+                .writeAttribute( "successes", assertions.passed )
+                .writeAttribute( "failures", assertions.failed );
             m_xml.endElement();
         }
 
@@ -5884,7 +5941,7 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const Catch::TestCaseInfo&, std::size_t /* succeeded */, std::size_t /* failed */, const std::string& /*stdOut*/, const std::string& /*stdErr*/ )
+        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals& /* totals */, const std::string& /*stdOut*/, const std::string& /*stdErr*/ )
         {
             m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );
             m_xml.endElement();
@@ -6003,9 +6060,9 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndGroup( const std::string&, std::size_t succeeded, std::size_t failed )
+        virtual void EndGroup( const std::string&, const Totals& totals )
         {
-            m_currentStats->m_testsCount = failed+succeeded;
+            m_currentStats->m_testsCount = totals.assertions.total();
             m_currentStats = &m_testSuiteStats;
         }
 
@@ -6013,7 +6070,7 @@ namespace Catch
         {
         }
 
-        virtual void EndSection( const std::string& /*sectionName*/, std::size_t /*succeeded*/, std::size_t /*failed*/ )
+        virtual void EndSection( const std::string& /*sectionName*/, const Counts& /* assertions */ )
         {
         }
 
@@ -6077,7 +6134,7 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const Catch::TestCaseInfo&, std::size_t /* succeeded */, std::size_t /* failed */, const std::string& stdOut, const std::string& stdErr )
+        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals& /* totals */, const std::string& stdOut, const std::string& stdErr )
         {
             if( !stdOut.empty() )
                 m_stdOut << stdOut << "\n";
@@ -6086,7 +6143,7 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTesting( std::size_t /* succeeded */, std::size_t /* failed */ )
+        virtual void EndTesting( const Totals& /* totals */ )
         {
             std::ostream& str = m_config.stream();
             {
@@ -6208,7 +6265,7 @@ namespace Catch
         {
             config.getReporter()->StartGroup( "" );
             runner.runAll();
-            config.getReporter()->EndGroup( "", runner.getSuccessCount(), runner.getFailureCount() );
+            config.getReporter()->EndGroup( "", runner.getTotals() );
         }
         else
         {
@@ -6218,19 +6275,18 @@ namespace Catch
             std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
             for(; it != itEnd; ++it )
             {
-                size_t prevSuccess = runner.getSuccessCount();
-                size_t prevFail = runner.getFailureCount();
+                Totals prevTotals = runner.getTotals();
                 config.getReporter()->StartGroup( *it );
                 if( runner.runMatching( *it ) == 0 )
                 {
                     // Use reporter?
 //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
                 }
-                config.getReporter()->EndGroup( *it, runner.getSuccessCount()-prevSuccess, runner.getFailureCount()-prevFail );
+                config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
             }
         }
 
-        return static_cast<int>( runner.getFailureCount() );
+        return static_cast<int>( runner.getTotals().assertions.failed );
     }
 
     //////////////////////////////////////////////////////////////////////////
