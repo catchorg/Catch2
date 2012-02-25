@@ -387,6 +387,11 @@ namespace Catch
             delete m_runningTest;
             m_runningTest = NULL;
 
+            if( m_totals.assertions.failed > prevTotals.assertions.failed )
+                ++m_totals.testCases.failed;
+            else
+                ++m_totals.testCases.passed;
+            
             m_reporter->EndTestCase( testInfo, m_totals - prevTotals, redirectedCout, redirectedCerr );
         }
 

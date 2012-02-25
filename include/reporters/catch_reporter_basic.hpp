@@ -18,6 +18,25 @@
 
 namespace Catch
 {
+    struct pluralise
+    {
+        pluralise( std::size_t count, const std::string& label )
+        :   m_count( count ),
+            m_label( label )
+        {}
+
+        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser )
+        {
+            os << pluraliser.m_count << " " << pluraliser.m_label;
+            if( pluraliser.m_count != 1 )
+                os << "s";
+            return os;
+        }
+        
+        std::size_t m_count;
+        std::string m_label;
+    };
+        
     class BasicReporter : public IReporter
     {
         struct SpanInfo
@@ -59,49 +78,50 @@ namespace Catch
         }
         
     private:
-        
+
         ///////////////////////////////////////////////////////////////////////////
         void ReportCounts
         (
-            const Counts& assertions
+            const std::string& label,
+            const Counts& counts
         )
         {
-            if( assertions.failed + assertions.passed == 0 )
-                m_config.stream() << "No tests ran";
-            else if( assertions.failed == 0 )
+            if( counts.failed > 0 )
             {
-                if( assertions.passed == 1 )
-                    m_config.stream() << "1 test succeeded";
+                if( counts.passed > 0 )
+                    m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
                 else
-                    m_config.stream() << "All " << assertions.passed << " tests succeeded";
-            }
-            else if( assertions.passed == 0 )
-            {
-                if( assertions.failed == 1 )                    
-                    m_config.stream() << "1 test failed";
-                else
-                    m_config.stream() << "All " << assertions.failed << " tests failed";
+                {
+                    if( counts.failed > 1 )
+                        m_config.stream() << "All ";
+                    m_config.stream() << pluralise( counts.failed, label ) << " failed";
+                }
             }
             else
             {
-                m_config.stream() << assertions.passed << " test";
-                if( assertions.passed > 1 )
-                    m_config.stream() << "s";
-
-                m_config.stream() << " passed but " << assertions.failed << " test";
-                if( assertions.failed > 1 )
-                    m_config.stream() << "s";
-                m_config.stream() << " failed";
+                if( counts.passed > 1 )
+                    m_config.stream() << "All ";
+                m_config.stream() << pluralise( counts.passed, label ) << " passed";
             }
         }
-
+        
         ///////////////////////////////////////////////////////////////////////////
         void ReportCounts
         (
             const Totals& totals
         )
         {
-            ReportCounts( totals.assertions );
+            if( totals.assertions.total() == 0 )
+            {
+                m_config.stream() << "No tests ran";
+                return;
+            }
+            ReportCounts( "test case", totals.testCases );
+            if( totals.testCases.failed > 0 )
+            {
+                m_config.stream() << ". ";
+                ReportCounts( "assertion", totals.assertions );
+            }
         }
         
     private: // IReporter
@@ -188,7 +208,7 @@ namespace Catch
             if( sectionSpan.emitted && !sectionSpan.name.empty() )
             {
                 m_config.stream() << "[End of section: '" << sectionName << "'. ";
-                ReportCounts( assertions);
+                ReportCounts( "assertion", assertions);
                 m_config.stream() << "]\n" << std::endl;
             }
             m_sectionSpans.pop_back();
