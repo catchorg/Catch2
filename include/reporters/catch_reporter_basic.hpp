@@ -15,6 +15,7 @@
 #include "../internal/catch_capture.hpp"
 #include "../internal/catch_interfaces_reporter.h"
 #include "../internal/catch_reporter_registrars.hpp"
+#include "../internal/catch_console_colour.hpp"
 
 namespace Catch
 {
@@ -32,11 +33,11 @@ namespace Catch
                 os << "s";
             return os;
         }
-        
+
         std::size_t m_count;
         std::string m_label;
     };
-        
+
     class BasicReporter : public IReporter
     {
         struct SpanInfo
@@ -58,7 +59,7 @@ namespace Catch
             std::string name;
             bool emitted;
         };
-        
+
     public:
         ///////////////////////////////////////////////////////////////////////////
         BasicReporter
@@ -69,14 +70,14 @@ namespace Catch
             m_firstSectionInTestCase( true )
         {
         }
-
+        
         ///////////////////////////////////////////////////////////////////////////
         static std::string getDescription
         ()
         {
             return "Reports test results as lines of text";
         }
-        
+
     private:
 
         ///////////////////////////////////////////////////////////////////////////
@@ -86,25 +87,12 @@ namespace Catch
             const Counts& counts
         )
         {
-            if( counts.failed > 0 )
-            {
-                if( counts.passed > 0 )
-                    m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
-                else
-                {
-                    if( counts.failed > 1 )
-                        m_config.stream() << "All ";
-                    m_config.stream() << pluralise( counts.failed, label ) << " failed";
-                }
-            }
+            if( counts.passed )
+                m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
             else
-            {
-                if( counts.passed > 1 )
-                    m_config.stream() << "All ";
-                m_config.stream() << pluralise( counts.passed, label ) << " passed";
-            }
+                m_config.stream() << ( counts.failed > 1 ? "All " : "" ) << pluralise( counts.failed, label ) << " failed";
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         void ReportCounts
         (
@@ -114,18 +102,29 @@ namespace Catch
             if( totals.assertions.total() == 0 )
             {
                 m_config.stream() << "No tests ran";
-                return;
             }
-            ReportCounts( "test case", totals.testCases );
-            if( totals.testCases.failed > 0 )
+            else if( totals.assertions.failed )
             {
-                m_config.stream() << ". ";
-                ReportCounts( "assertion", totals.assertions );
+                TextColour colour( TextColour::ResultError );
+                ReportCounts( "test case", totals.testCases );
+                if( totals.testCases.failed > 0 )
+                {
+                    m_config.stream() << " (";
+                    ReportCounts( "assertion", totals.assertions );
+                    m_config.stream() << ")";
+                }
+            }
+            else
+            {
+                TextColour colour( TextColour::ResultSuccess );
+                m_config.stream()   << "All tests passed (" 
+                << pluralise( totals.assertions.passed, "assertion" ) << " in " 
+                << pluralise( totals.testCases.passed, "test case" ) << ")";
             }
         }
-        
-    private: // IReporter
 
+    private: // IReporter
+        
         ///////////////////////////////////////////////////////////////////////////
         virtual bool shouldRedirectStdout
         ()
@@ -152,7 +151,7 @@ namespace Catch
             ReportCounts( totals);
             m_config.stream() << "]\n" << std::endl;
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartGroup
         (
@@ -161,7 +160,7 @@ namespace Catch
         {
             m_groupSpan = groupName;
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndGroup
         (
@@ -207,8 +206,19 @@ namespace Catch
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() )
             {
-                m_config.stream() << "[End of section: '" << sectionName << "'. ";
-                ReportCounts( "assertion", assertions);
+                m_config.stream() << "[End of section: '" << sectionName << "'";
+                
+                if( assertions.failed )
+                {
+                    TextColour colour( TextColour::ResultError );
+                    ReportCounts( "assertion", assertions);
+                }
+                else
+                {
+                    TextColour colour( TextColour::ResultSuccess );
+                    m_config.stream()   << ( assertions.passed > 1 ? "All " : "" ) 
+                    << pluralise( assertions.passed, "assertion" ) << "passed" ;
+                }
                 m_config.stream() << "]\n" << std::endl;
             }
             m_sectionSpans.pop_back();
@@ -226,30 +236,46 @@ namespace Catch
             StartSpansLazily();
             
             if( !resultInfo.getFilename().empty() )
+            {
+                TextColour colour( TextColour::FileName );
                 m_config.stream() << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
+            }
             
             if( resultInfo.hasExpression() )
             {
+                TextColour colour( TextColour::OriginalExpression );
                 m_config.stream() << resultInfo.getExpression();
                 if( resultInfo.ok() )
+                {
+                    TextColour colour( TextColour::Success );
                     m_config.stream() << " succeeded";
+                }
                 else
+                {
+                    TextColour colour( TextColour::Error );
                     m_config.stream() << " failed";
+                }
             }
             switch( resultInfo.getResultType() )
             {
                 case ResultWas::ThrewException:
+                {
+                    TextColour colour( TextColour::Error );
                     if( resultInfo.hasExpression() )
                         m_config.stream() << " with unexpected";
                     else
                         m_config.stream() << "Unexpected";
                     m_config.stream() << " exception with message: '" << resultInfo.getMessage() << "'";
+                }
                     break;
                 case ResultWas::DidntThrowException:
+                {
+                    TextColour colour( TextColour::Error );
                     if( resultInfo.hasExpression() )
                         m_config.stream() << " because no exception was thrown where one was expected";
                     else
                         m_config.stream() << "No exception thrown where one was expected";
+                }
                     break;
                 case ResultWas::Info:
                     streamVariableLengthText( "info", resultInfo.getMessage() );
@@ -258,7 +284,10 @@ namespace Catch
                     m_config.stream() << "warning:\n'" << resultInfo.getMessage() << "'";
                     break;
                 case ResultWas::ExplicitFailure:
+                {
+                    TextColour colour( TextColour::Error );
                     m_config.stream() << "failed with message: '" << resultInfo.getMessage() << "'";
+                }
                     break;
                 case ResultWas::Unknown: // These cases are here to prevent compiler warnings
                 case ResultWas::Ok:
@@ -269,16 +298,24 @@ namespace Catch
                     if( !resultInfo.hasExpression() )
                     {
                         if( resultInfo.ok() )
+                        {
+                            TextColour colour( TextColour::Success );
                             m_config.stream() << " succeeded";
+                        }
                         else
+                        {
+                            TextColour colour( TextColour::Error );
                             m_config.stream() << " failed";
+                        }
                     }
                     break;
             }
             
-            if( resultInfo.hasExpression() )
+            if( resultInfo.hasExpression() && resultInfo.getExpression() != resultInfo.getExpandedExpression() )
             {
-                m_config.stream() << " for: " << resultInfo.getExpandedExpression();
+                m_config.stream() << " for: ";
+                TextColour colour( TextColour::ReconstructedExpression );
+                m_config.stream() << resultInfo.getExpandedExpression();
             }
             m_config.stream() << std::endl;        
         }
@@ -297,21 +334,21 @@ namespace Catch
                 StartSpansLazily();
                 streamVariableLengthText( "stdout", stdOut );
             }
-
+            
             if( !stdErr.empty() )
             {
                 StartSpansLazily();
                 streamVariableLengthText( "stderr", stdErr );
             }
-                
+            
             if( m_testSpan.emitted )
             {
-                m_config.stream() << "[Finished: " << testInfo.getName() << " ";
+                m_config.stream() << "[Finished: '" << testInfo.getName() << "' ";
                 ReportCounts( totals );
                 m_config.stream() << "]" << std::endl;
             }
         }    
-
+        
     private: // helpers
         
         ///////////////////////////////////////////////////////////////////////////
@@ -362,7 +399,7 @@ namespace Catch
                 }
             }
         }
-
+        
         ///////////////////////////////////////////////////////////////////////////
         void streamVariableLengthText
         (
@@ -377,23 +414,23 @@ namespace Catch
             }
             else 
             {
-                m_config.stream()   << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 
-                                    << "\n[end of " << prefix << "] <<<<<<<<<<<<<<<<<<<<<<<<\n";
+                m_config.stream() << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 
+                << "\n[end of " << prefix << "] <<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
         }
         
     private:
         const IReporterConfig& m_config;
         bool m_firstSectionInTestCase;
-
+        
         SpanInfo m_testingSpan;
         SpanInfo m_groupSpan;
         SpanInfo m_testSpan;
         std::vector<SpanInfo> m_sectionSpans;
     };
-
+    
     INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
     
 } // end namespace Catch
-    
+
 #endif // TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED

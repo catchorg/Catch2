@@ -15,6 +15,7 @@
 #include "catch_exception_translator_registry.hpp"
 #include "catch_runner_impl.hpp"
 #include "catch_generators_impl.hpp"
+#include "catch_console_colour_impl.hpp"
 #include "catch_stream.hpp"
 
 namespace Catch
