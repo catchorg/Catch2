@@ -80,17 +80,17 @@
     
     config.getReporter()->StartGroup( "" );
     runner.runAll( true );
-    config.getReporter()->EndGroup( "", runner.getSuccessCount(), runner.getFailureCount() );
+    config.getReporter()->EndGroup( "", runner.getTotals() );
 
-    if( runner.getFailureCount() == 0 )
+    if( runner.getTotals().assertions.failed == 0 )
     {
         NSLog( @"no failures" );
-        if( runner.getSuccessCount() > 0 )
+        if( runner.getTotals().assertions.passed > 0 )
             appName.textColor = [[UIColor alloc] initWithRed:0.35 green:1 blue:0.35 alpha:1];
     }
     else
     {
-        NSLog( @"%lu failures", runner.getFailureCount() );
+        NSLog( @"%lu failures", runner.getTotals().assertions.failed );
         appName.textColor = [[UIColor alloc] initWithRed:1 green:0.35 blue:0.35 alpha:1];
     }
 }

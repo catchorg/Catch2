@@ -24,10 +24,16 @@ namespace Catch
         (
             id<iTchRunnerDelegate> delegate
         )
-        :   m_succeeded( 0 ),
-            m_failed( 0 ),
-            m_delegate( delegate )
+        :   m_delegate( delegate )
         {
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        virtual bool shouldRedirectStdout
+        ()
+        const
+        {
+            return true;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -42,7 +48,7 @@ namespace Catch
         ()
         const
         {
-            return m_succeeded;
+            return m_totals.assertions.passed;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -50,14 +56,13 @@ namespace Catch
         ()
         const
         {
-            return m_failed;
+            return m_totals.assertions.failed;
         }
         
         ///////////////////////////////////////////////////////////////////////////
         void reset()
         {
-            m_succeeded = 0;
-            m_failed = 0;
+            m_totals = Totals();
         }
         
     private: // IReporter
@@ -70,12 +75,10 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndTesting
         (
-            std::size_t succeeded, 
-            std::size_t failed
+            const Totals& totals
         )
         {
-            m_succeeded = succeeded;
-            m_failed = failed;
+            m_totals = totals;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -90,15 +93,14 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         // Deliberately unimplemented:
         virtual void StartGroup( const std::string& ){}
-        virtual void EndGroup( const std::string&, std::size_t, std::size_t ){}
+        virtual void EndGroup( const std::string&, const Totals& ){}
         virtual void StartTestCase( const TestCaseInfo& ){}
         virtual void StartSection( const std::string&, const std::string ){}
-        virtual void EndSection( const std::string&, std::size_t, std::size_t ){}
-        virtual void EndTestCase( const TestCaseInfo&, std::size_t, std::size_t, const std::string&, const std::string& ){}
+        virtual void EndSection( const std::string&, const Counts& ){}
+        virtual void EndTestCase( const TestCaseInfo&, const Totals&, const std::string&, const std::string& ){}
         
     private:
-        size_t m_succeeded;
-        size_t m_failed;
+        Totals m_totals;
         
         id<iTchRunnerDelegate> m_delegate;
     };

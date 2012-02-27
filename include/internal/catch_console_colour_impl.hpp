@@ -49,7 +49,7 @@ namespace Catch
     {
         ConsoleColourImpl()
         :   hStdout( GetStdHandle(STD_OUTPUT_HANDLE) ),
-        wOldColorAttrs( 0 )
+            wOldColorAttrs( 0 )
         {
             GetConsoleScreenBufferInfo( hStdout, &csbiInfo );
             wOldColorAttrs = csbiInfo.wAttributes;
