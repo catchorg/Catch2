@@ -12,6 +12,8 @@
 		4A73280E14E66CFC0044823F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A73280D14E66CFC0044823F /* CoreGraphics.framework */; };
 		4A73281414E66CFC0044823F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A73281214E66CFC0044823F /* InfoPlist.strings */; };
 		4A73282614E66D8B0044823F /* itChRunnerMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4A73282514E66D8B0044823F /* itChRunnerMain.mm */; };
+		4AB1C74F14FCC74900F31DF7 /* OCTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4AB1C74C14FCC74900F31DF7 /* OCTest.mm */; };
+		4AB1C75014FCC74900F31DF7 /* TestObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB1C74E14FCC74900F31DF7 /* TestObj.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,9 @@
 		4A73282314E66D8B0044823F /* iTchRunnerMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTchRunnerMainView.h; sourceTree = "<group>"; };
 		4A73282414E66D8B0044823F /* iTchRunnerReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTchRunnerReporter.h; sourceTree = "<group>"; };
 		4A73282514E66D8B0044823F /* itChRunnerMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = itChRunnerMain.mm; path = ../../../runners/iTchRunner/itChRunnerMain.mm; sourceTree = "<group>"; };
+		4AB1C74C14FCC74900F31DF7 /* OCTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCTest.mm; sourceTree = "<group>"; };
+		4AB1C74D14FCC74900F31DF7 /* TestObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObj.h; sourceTree = "<group>"; };
+		4AB1C74E14FCC74900F31DF7 /* TestObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObj.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +96,9 @@
 		4A73282014E66D6C0044823F /* iTch */ = {
 			isa = PBXGroup;
 			children = (
+				4AB1C74C14FCC74900F31DF7 /* OCTest.mm */,
+				4AB1C74D14FCC74900F31DF7 /* TestObj.h */,
+				4AB1C74E14FCC74900F31DF7 /* TestObj.m */,
 				4A73282114E66D8B0044823F /* internal */,
 				4A73282514E66D8B0044823F /* itChRunnerMain.mm */,
 			);
@@ -170,6 +178,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A73282614E66D8B0044823F /* itChRunnerMain.mm in Sources */,
+				4AB1C74F14FCC74900F31DF7 /* OCTest.mm in Sources */,
+				4AB1C75014FCC74900F31DF7 /* TestObj.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +289,7 @@
 				4A73281F14E66CFC0044823F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
