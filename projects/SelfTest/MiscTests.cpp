@@ -169,3 +169,9 @@ TEST_CASE( "./misc/xmlentitycheck", "" )
         // No test
     }
 }
+
+TEST_CASE( "./manual/onechar", "send a single char to INFO" )
+{
+    INFO(3);
+    REQUIRE(false);    
+}

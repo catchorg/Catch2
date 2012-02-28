@@ -16,7 +16,7 @@
 
 #ifdef CATCH_PLATFORM_WINDOWS
 
-#include "windows.h"
+#include <windows.h>
 
 namespace Catch
 {
