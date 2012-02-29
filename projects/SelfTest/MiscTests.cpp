@@ -175,3 +175,13 @@ TEST_CASE( "./manual/onechar", "send a single char to INFO" )
     INFO(3);
     REQUIRE(false);    
 }
+
+TEST_CASE("./succeeding/atomic if", "")
+{
+    size_t x = 0;
+    
+    if( x )
+        REQUIRE(x > 0);
+    else
+        REQUIRE(x == 0);
+}
