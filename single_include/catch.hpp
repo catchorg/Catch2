@@ -775,8 +775,8 @@ namespace Catch
             m_filename( filename ),
             m_line( line ),
             m_expr( expr ),
-	    m_lhs(),
-	    m_rhs(),
+            m_lhs(),
+            m_rhs(),
             m_op( isNotExpression( expr ) ? "!" : "" ),
             m_message( message ),
             m_result( result ),
@@ -881,6 +881,8 @@ namespace Catch
         {
             if( m_op == "" || m_isNot )
                 return m_lhs.empty() ? m_expr : m_op + m_lhs;
+            else if( m_op == "matches" )
+                return m_lhs + " " + m_rhs;
             else if( m_op != "!" )
                 return m_lhs + " " + m_op + " " + m_rhs;
             else
@@ -1325,6 +1327,32 @@ namespace Detail
         return oss.str();
     }
 
+    template<typename T>
+    inline std::string makeString
+    (
+        T* p
+    )
+    {
+        if( !p )
+            return INTERNAL_CATCH_STRINGIFY( NULL );
+        std::ostringstream oss;
+        oss << p;
+        return oss.str();
+    }
+
+    template<typename T>
+    inline std::string makeString
+    (
+        const T* p
+    )
+    {
+        if( !p )
+            return INTERNAL_CATCH_STRINGIFY( NULL );
+        std::ostringstream oss;
+        oss << p;
+        return oss.str();
+    }
+
 }// end namespace Detail
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1439,39 +1467,6 @@ inline std::string toString
     return value ? "true" : "false";
 }
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    void* p
-)
-{
-    if( !p )
-        return INTERNAL_CATCH_STRINGIFY( NULL );
-    std::ostringstream oss;
-    oss << p;
-    return oss.str();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-template<typename T>
-inline std::string toString
-(
-    T* p
-)
-{
-    return Catch::toString( static_cast<void*>( p ) );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-template<typename T>
-inline std::string toString
-(
-    const T* p
-)
-{
-    return Catch::toString( static_cast<void*>( const_cast<T*>( p ) ) );
-}
-
 struct TestFailureException
 {
 };
@@ -1536,6 +1531,33 @@ public:
     {
         m_filename = filename;
         m_line = line;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    void setLhs
+    (
+        const std::string& lhs
+    )
+    {
+        m_lhs = lhs;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    void setRhs
+    (
+        const std::string& rhs
+    )
+    {
+        m_rhs = rhs;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    void setOp
+    (
+        const std::string& op
+    )
+    {
+        m_op = op;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -1786,6 +1808,7 @@ private:
     const LhsT* m_lhs;
 };
 
+
 class ResultBuilder
 {
 public:
@@ -1868,6 +1891,25 @@ public:
     )
     {
         m_messageStream << Catch::toString( value );
+        return *this;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename MatcherT, typename ArgT>
+    ResultBuilder& acceptMatcher
+    (
+        const MatcherT& matcher,
+        const ArgT& arg,
+        const std::string& matcherCallAsString
+    )
+    {
+        std::string matcherAsString = Catch::toString( matcher );
+        if( matcherAsString == "{?}" )
+            matcherAsString = matcherCallAsString;
+        m_result.setLhs( Catch::toString( arg ) );
+        m_result.setRhs( matcherAsString );
+        m_result.setOp( "matches" );
+        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
 
@@ -2020,6 +2062,17 @@ inline bool isTrue
 #define INTERNAL_CATCH_SCOPED_INFO( log ) \
     Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
     INTERNAL_CATCH_UNIQUE_NAME( info ) << log
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
+    do{ try{ \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #arg " " #matcher, false ).acceptMatcher( matcher, arg, #matcher ) ), stopOnFailure ); \
+    }catch( Catch::TestFailureException& ){ \
+        throw; \
+    } catch( ... ){ \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #arg " " #matcher ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false ); \
+        throw; \
+    }}while( Catch::isTrue( false ) )
 
 // #included from: internal/catch_section.hpp
 
@@ -2868,6 +2921,92 @@ namespace Catch
     };
 }
 
+// #included from: internal/catch_matchers.hpp
+
+//
+//  catch_matchers.hpp
+//  CatchSelfTest
+//
+//  Created by Phil Nash on 04/03/2012.
+//  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#define TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
+
+namespace Catch
+{
+namespace Matchers
+{
+    namespace Impl
+    {
+    namespace StdString
+    {
+        struct Contains
+        {
+            Contains( const std::string& substr ) : m_substr( substr ){}
+
+            bool operator()( const std::string& str ) const
+            {
+                return str.find( m_substr ) != std::string::npos;
+            }
+
+            friend std::ostream& operator<<( std::ostream& os, const Contains& matcher )
+            {
+                os << "contains: \"" << matcher.m_substr << "\"";
+                return os;
+            }
+            std::string m_substr;
+        };
+
+        struct StartsWith
+        {
+            StartsWith( const std::string& substr ) : m_substr( substr ){}
+
+            bool operator()( const std::string& str ) const
+            {
+                return str.find( m_substr ) == 0;
+            }
+
+            friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher )
+            {
+                os << "starts with: \"" << matcher.m_substr << "\"";
+                return os;
+            }
+            std::string m_substr;
+        };
+
+        struct EndsWith
+        {
+            EndsWith( const std::string& substr ) : m_substr( substr ){}
+
+            bool operator()( const std::string& str ) const
+            {
+                return str.find( m_substr ) == str.size() - m_substr.size();
+            }
+
+            friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher )
+            {
+                os << "ends with: \"" << matcher.m_substr << "\"";
+                return os;
+            }
+            std::string m_substr;
+        };
+    } // namespace StdString
+    } // namespace Impl
+
+    inline Impl::StdString::Contains    Contains( const std::string& substr ){ return Impl::StdString::Contains( substr ); }
+    inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ){ return Impl::StdString::StartsWith( substr ); }
+    inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ){ return Impl::StdString::EndsWith( substr ); }
+
+} // namespace Matchers
+
+using namespace Matchers;
+
+} // namespace Catch
+
 
 #ifdef __OBJC__
 // #included from: internal/catch_objc.hpp
@@ -3044,7 +3183,92 @@ namespace Catch
         }
         return noTestMethods;
     }
-}
+
+    template<>
+    inline std::string toString<NSString*>( NSString* const& nsstring )
+    {
+        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    }
+
+    namespace Matchers
+    {
+        namespace Impl
+        {
+        namespace NSStringMatchers
+        {
+            struct StringHolder
+            {
+                StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
+                StringHolder()
+                {
+                    [m_substr release];
+                }
+
+                NSString* m_substr;
+            };
+
+            struct Contains : StringHolder
+            {
+                Contains( NSString* substr ) : StringHolder( substr ){}
+
+                bool operator()( NSString* str ) const
+                {
+                    return [str rangeOfString:m_substr].location != NSNotFound;
+                }
+
+                friend std::ostream& operator<<( std::ostream& os, const Contains& matcher )
+                {
+                    os << "contains: " << Catch::toString( matcher.m_substr );
+                    return os;
+                }
+            };
+
+            struct StartsWith : StringHolder
+            {
+                StartsWith( NSString* substr ) : StringHolder( substr ){}
+
+                bool operator()( NSString* str ) const
+                {
+                    return [str rangeOfString:m_substr].location == 0;
+                }
+
+                friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher )
+                {
+                    os << "starts with: " << Catch::toString( matcher.m_substr );
+                    return os;
+                }
+            };
+            struct EndsWith : StringHolder
+            {
+                EndsWith( NSString* substr ) : StringHolder( substr ){}
+
+                bool operator()( NSString* str ) const
+                {
+                    return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
+                }
+
+                friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher )
+                {
+                    os << "ends with: " << Catch::toString( matcher.m_substr );
+                    return os;
+                }
+            };
+
+        } // namespace NSStringMatchers
+        } // namespace Impl
+
+        inline Impl::NSStringMatchers::Contains
+            Contains( NSString* substr ){ return Impl::NSStringMatchers::Contains( substr ); }
+        inline Impl::NSStringMatchers::StartsWith
+            StartsWith( NSString* substr ){ return Impl::NSStringMatchers::StartsWith( substr ); }
+        inline Impl::NSStringMatchers::EndsWith
+            EndsWith( NSString* substr ){ return Impl::NSStringMatchers::EndsWith( substr ); }
+
+    } // namespace Matchers
+
+    using namespace Matchers;
+
+} // namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
 #define OC_TEST_CASE( name, desc )\
@@ -5307,8 +5531,8 @@ namespace Catch
             {
                 TextColour colour( TextColour::ResultSuccess );
                 m_config.stream()   << "All tests passed ("
-                << pluralise( totals.assertions.passed, "assertion" ) << " in "
-                << pluralise( totals.testCases.passed, "test case" ) << ")";
+                                    << pluralise( totals.assertions.passed, "assertion" ) << " in "
+                                    << pluralise( totals.testCases.passed, "test case" ) << ")";
             }
         }
 
@@ -5395,7 +5619,7 @@ namespace Catch
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() )
             {
-                m_config.stream() << "[End of section: '" << sectionName << "'";
+                m_config.stream() << "[End of section: '" << sectionName << "' ";
 
                 if( assertions.failed )
                 {
@@ -5406,7 +5630,7 @@ namespace Catch
                 {
                     TextColour colour( TextColour::ResultSuccess );
                     m_config.stream()   << ( assertions.passed > 1 ? "All " : "" )
-                    << pluralise( assertions.passed, "assertion" ) << "passed" ;
+                                        << pluralise( assertions.passed, "assertion" ) << "passed" ;
                 }
                 m_config.stream() << "]\n" << std::endl;
             }
@@ -6595,6 +6819,9 @@ int main (int argc, char * const argv[])
 #define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false, "CHECK_THROWS" )
 #define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, "CHECK_THROWS_AS" )
 #define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, false, "CHECK_NOTHROW" )
+
+#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, false, "CHECK_THAT" )
+#define REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, true, "REQUIRE_THAT" )
 
 #define INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, false, "INFO" )
 #define WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, false, "WARN" )
