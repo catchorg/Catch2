@@ -53,6 +53,32 @@ namespace Detail
         return oss.str();
     }    
 
+    template<typename T>
+    inline std::string makeString
+    (
+        T* p
+    )
+    {
+        if( !p )
+            return INTERNAL_CATCH_STRINGIFY( NULL );
+        std::ostringstream oss;
+        oss << p;
+        return oss.str();
+    }    
+
+    template<typename T>
+    inline std::string makeString
+    (
+        const T* p
+    )
+    {
+        if( !p )
+            return INTERNAL_CATCH_STRINGIFY( NULL );
+        std::ostringstream oss;
+        oss << p;
+        return oss.str();
+    }    
+
 }// end namespace Detail
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -165,39 +191,6 @@ inline std::string toString
 )
 {
     return value ? "true" : "false";
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    void* p
-)
-{
-    if( !p )
-        return INTERNAL_CATCH_STRINGIFY( NULL );
-    std::ostringstream oss;
-    oss << p;
-    return oss.str();
-}
-    
-///////////////////////////////////////////////////////////////////////////////
-template<typename T>
-inline std::string toString
-(
-    T* p
-)
-{
-    return Catch::toString( static_cast<void*>( p ) );
-}
-    
-///////////////////////////////////////////////////////////////////////////////
-template<typename T>
-inline std::string toString
-(
-    const T* p
-)
-{
-    return Catch::toString( static_cast<void*>( const_cast<T*>( p ) ) );
 }
     
 struct TestFailureException

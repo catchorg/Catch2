@@ -171,8 +171,93 @@ namespace Catch
             }
         }
         return noTestMethods;
-    }  
-}
+    }
+    
+    template<>
+    inline std::string toString<NSString*>( NSString* const& nsstring )
+    {
+        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    }
+    
+    namespace Matchers
+    {
+        namespace Impl
+        {
+        namespace NSStringMatchers
+        {
+            struct StringHolder
+            {
+                StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
+                StringHolder()
+                {
+                    [m_substr release];
+                }
+                
+                NSString* m_substr;            
+            };
+            
+            struct Contains : StringHolder
+            {
+                Contains( NSString* substr ) : StringHolder( substr ){}
+                
+                bool operator()( NSString* str ) const
+                {
+                    return [str rangeOfString:m_substr].location != NSNotFound;
+                }
+                
+                friend std::ostream& operator<<( std::ostream& os, const Contains& matcher )
+                {
+                    os << "contains: " << Catch::toString( matcher.m_substr );
+                    return os;
+                }
+            };
+
+            struct StartsWith : StringHolder
+            {
+                StartsWith( NSString* substr ) : StringHolder( substr ){}
+                
+                bool operator()( NSString* str ) const
+                {
+                    return [str rangeOfString:m_substr].location == 0;
+                }
+                
+                friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher )
+                {
+                    os << "starts with: " << Catch::toString( matcher.m_substr );
+                    return os;
+                }
+            };
+            struct EndsWith : StringHolder
+            {
+                EndsWith( NSString* substr ) : StringHolder( substr ){}
+                
+                bool operator()( NSString* str ) const
+                {
+                    return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
+                }
+                
+                friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher )
+                {
+                    os << "ends with: " << Catch::toString( matcher.m_substr );
+                    return os;
+                }
+            };
+            
+        } // namespace NSStringMatchers
+        } // namespace Impl
+        
+        inline Impl::NSStringMatchers::Contains
+            Contains( NSString* substr ){ return Impl::NSStringMatchers::Contains( substr ); }
+        inline Impl::NSStringMatchers::StartsWith
+            StartsWith( NSString* substr ){ return Impl::NSStringMatchers::StartsWith( substr ); }
+        inline Impl::NSStringMatchers::EndsWith
+            EndsWith( NSString* substr ){ return Impl::NSStringMatchers::EndsWith( substr ); }
+        
+    } // namespace Matchers
+    
+    using namespace Matchers;
+    
+} // namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
 #define OC_TEST_CASE( name, desc )\

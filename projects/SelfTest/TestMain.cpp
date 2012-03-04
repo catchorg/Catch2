@@ -32,7 +32,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
             MetaTestRunner::runMatching( "./succeeding/*",  MetaTestRunner::Expected::ToSucceed );
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
     SECTION(    "selftest/test counts", 
                 "Number of test cases that run is fixed" )
