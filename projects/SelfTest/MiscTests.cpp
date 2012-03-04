@@ -186,33 +186,33 @@ TEST_CASE("./succeeding/atomic if", "")
         REQUIRE(x == 0);
 }
 
-namespace Matchers
-{    
-    struct ContainsStdString
-    {
-        ContainsStdString( const std::string& substr ) : m_substr( substr ){}
-        
-        bool operator()( const std::string& str ) const
-        {
-            return str.find( m_substr ) != std::string::npos;        
-        }
-        
-        friend std::ostream& operator<<( std::ostream& os, const ContainsStdString& matcher )
-        {
-            os << "contains: \"" << matcher.m_substr << "\"";
-            return os;
-        }
-        std::string m_substr;
-    };
+inline const char* testStringForMatching()
+{
+    return "this string contains 'abc' as a substring";
 }
 
-inline Matchers::ContainsStdString Contains( const std::string& substr ){ return Matchers::ContainsStdString( substr ); }
+using namespace Catch::Matchers;
 
+TEST_CASE("./succeeding/matchers", "") 
+{    
+    REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );    
+    CHECK_THAT( testStringForMatching(), Contains( "abc" ) );
 
-TEST_CASE("./succeeding/matcher", "") 
+    CHECK_THAT( testStringForMatching(), StartsWith( "this" ) );
+    CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) );
+}
+
+TEST_CASE("./failing/matchers/Contains", "") 
 {
-    const char* actualStr = "this string contains 'abc' as a substring";
-    REQUIRE_THAT( actualStr, Contains( "string" ) );
-    CHECK_THAT( actualStr, Contains( "not there" ) );
-    CHECK_THAT( actualStr, Contains( "a2bc" ) );
+    CHECK_THAT( testStringForMatching(), Contains( "not there" ) );
+}
+
+TEST_CASE("./failing/matchers/StartsWith", "") 
+{
+    CHECK_THAT( testStringForMatching(), StartsWith( "string" ) );
+}
+
+TEST_CASE("./failing/matchers/EndsWith", "") 
+{
+    CHECK_THAT( testStringForMatching(), EndsWith( "this" ) );
 }

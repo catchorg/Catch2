@@ -29,6 +29,7 @@
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
 #include "internal/catch_test_case_info.hpp"
+#include "internal/catch_matchers.hpp"
 
 #ifdef __OBJC__
 #include "internal/catch_objc.hpp"
