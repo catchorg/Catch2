@@ -118,8 +118,8 @@ namespace Catch
             {
                 TextColour colour( TextColour::ResultSuccess );
                 m_config.stream()   << "All tests passed (" 
-                << pluralise( totals.assertions.passed, "assertion" ) << " in " 
-                << pluralise( totals.testCases.passed, "test case" ) << ")";
+                                    << pluralise( totals.assertions.passed, "assertion" ) << " in " 
+                                    << pluralise( totals.testCases.passed, "test case" ) << ")";
             }
         }
 
@@ -206,7 +206,7 @@ namespace Catch
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() )
             {
-                m_config.stream() << "[End of section: '" << sectionName << "'";
+                m_config.stream() << "[End of section: '" << sectionName << "' ";
                 
                 if( assertions.failed )
                 {
@@ -217,7 +217,7 @@ namespace Catch
                 {
                     TextColour colour( TextColour::ResultSuccess );
                     m_config.stream()   << ( assertions.passed > 1 ? "All " : "" ) 
-                    << pluralise( assertions.passed, "assertion" ) << "passed" ;
+                                        << pluralise( assertions.passed, "assertion" ) << "passed" ;
                 }
                 m_config.stream() << "]\n" << std::endl;
             }

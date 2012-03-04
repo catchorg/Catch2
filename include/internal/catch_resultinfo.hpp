@@ -51,8 +51,8 @@ namespace Catch
             m_filename( filename ),
             m_line( line ),
             m_expr( expr ),
-	    m_lhs(),
-	    m_rhs(),
+            m_lhs(),
+            m_rhs(),
             m_op( isNotExpression( expr ) ? "!" : "" ),
             m_message( message ),
             m_result( result ),
@@ -157,6 +157,8 @@ namespace Catch
         {
             if( m_op == "" || m_isNot )
                 return m_lhs.empty() ? m_expr : m_op + m_lhs;
+            else if( m_op == "matches" )
+                return m_lhs + " " + m_rhs;
             else if( m_op != "!" )
                 return m_lhs + " " + m_op + " " + m_rhs;
             else

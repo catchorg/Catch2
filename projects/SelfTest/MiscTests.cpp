@@ -185,3 +185,34 @@ TEST_CASE("./succeeding/atomic if", "")
     else
         REQUIRE(x == 0);
 }
+
+namespace Matchers
+{    
+    struct ContainsStdString
+    {
+        ContainsStdString( const std::string& substr ) : m_substr( substr ){}
+        
+        bool operator()( const std::string& str ) const
+        {
+            return str.find( m_substr ) != std::string::npos;        
+        }
+        
+        friend std::ostream& operator<<( std::ostream& os, const ContainsStdString& matcher )
+        {
+            os << "contains: \"" << matcher.m_substr << "\"";
+            return os;
+        }
+        std::string m_substr;
+    };
+}
+
+inline Matchers::ContainsStdString Contains( const std::string& substr ){ return Matchers::ContainsStdString( substr ); }
+
+
+TEST_CASE("./succeeding/matcher", "") 
+{
+    const char* actualStr = "this string contains 'abc' as a substring";
+    REQUIRE_THAT( actualStr, Contains( "string" ) );
+    CHECK_THAT( actualStr, Contains( "not there" ) );
+    CHECK_THAT( actualStr, Contains( "a2bc" ) );
+}

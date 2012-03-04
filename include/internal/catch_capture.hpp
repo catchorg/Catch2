@@ -267,6 +267,33 @@ public:
     }
     
     ///////////////////////////////////////////////////////////////////////////
+    void setLhs
+    (
+        const std::string& lhs
+    )
+    {
+        m_lhs = lhs;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    void setRhs
+    (
+        const std::string& rhs
+    )
+    {
+        m_rhs = rhs;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    void setOp
+    (
+        const std::string& op
+    )
+    {
+        m_op = op;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator ||
     (
@@ -513,6 +540,7 @@ private:
     MutableResultInfo* m_result;
     const LhsT* m_lhs;
 };
+
     
 class ResultBuilder
 {
@@ -596,6 +624,25 @@ public:
     )
     {
         m_messageStream << Catch::toString( value );        
+        return *this;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    template<typename MatcherT, typename ArgT>
+    ResultBuilder& acceptMatcher
+    (
+        const MatcherT& matcher,
+        const ArgT& arg,
+        const std::string& matcherCallAsString
+    )
+    {
+        std::string matcherAsString = Catch::toString( matcher );
+        if( matcherAsString == "{?}" )
+            matcherAsString = matcherCallAsString;
+        m_result.setLhs( Catch::toString( arg ) );
+        m_result.setRhs( matcherAsString );
+        m_result.setOp( "matches" );
+        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
     
@@ -748,5 +795,16 @@ inline bool isTrue
 #define INTERNAL_CATCH_SCOPED_INFO( log ) \
     Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
     INTERNAL_CATCH_UNIQUE_NAME( info ) << log
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
+    do{ try{ \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #arg " " #matcher, false ).acceptMatcher( matcher, arg, #matcher ) ), stopOnFailure ); \
+    }catch( Catch::TestFailureException& ){ \
+        throw; \
+    } catch( ... ){ \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #arg " " #matcher ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false ); \
+        throw; \
+    }}while( Catch::isTrue( false ) )
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
