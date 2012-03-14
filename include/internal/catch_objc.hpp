@@ -196,6 +196,22 @@ namespace Catch
                 NSString* m_substr;            
             };
             
+            struct Equals : StringHolder
+            {
+                Equals( NSString* substr ) : StringHolder( substr ){}
+                
+                bool operator()( NSString* str ) const
+                {
+                    return [str isEqualToString:m_substr];
+                }
+                
+                friend std::ostream& operator<<( std::ostream& os, const Equals& matcher )
+                {
+                    os << "equals string: " << Catch::toString( matcher.m_substr );
+                    return os;
+                }
+            };
+            
             struct Contains : StringHolder
             {
                 Contains( NSString* substr ) : StringHolder( substr ){}
@@ -246,10 +262,15 @@ namespace Catch
         } // namespace NSStringMatchers
         } // namespace Impl
         
+        inline Impl::NSStringMatchers::Equals
+            Equals( NSString* substr ){ return Impl::NSStringMatchers::Equals( substr ); }
+        
         inline Impl::NSStringMatchers::Contains
             Contains( NSString* substr ){ return Impl::NSStringMatchers::Contains( substr ); }
+        
         inline Impl::NSStringMatchers::StartsWith
             StartsWith( NSString* substr ){ return Impl::NSStringMatchers::StartsWith( substr ); }
+        
         inline Impl::NSStringMatchers::EndsWith
             EndsWith( NSString* substr ){ return Impl::NSStringMatchers::EndsWith( substr ); }
         
