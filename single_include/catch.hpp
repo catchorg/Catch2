@@ -1914,6 +1914,25 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    template<typename MatcherT, typename ArgT>
+    ResultBuilder& acceptMatcher
+    (
+        const MatcherT& matcher,
+        ArgT* arg,
+        const std::string& matcherCallAsString
+    )
+    {
+        std::string matcherAsString = Catch::toString( matcher );
+        if( matcherAsString == "{?}" )
+            matcherAsString = matcherCallAsString;
+        m_result.setLhs( Catch::toString( arg ) );
+        m_result.setRhs( matcherAsString );
+        m_result.setOp( "matches" );
+        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        return *this;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     ResultBuilder& setResultType
     (
         ResultWas::OfType resultType
@@ -3034,6 +3053,39 @@ using namespace Matchers;
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
 
+#ifdef __has_feature
+#define CATCH_ARC_ENABLED __has_feature(objc_arc)
+#else
+#define CATCH_ARC_ENABLED 0
+#endif
+
+void arcSafeRelease( NSObject* obj );
+id performOptionalSelector( id obj, SEL sel );
+
+#if !CATCH_ARC_ENABLED
+inline void arcSafeRelease( NSObject* obj )
+{
+    [obj release];
+}
+inline id performOptionalSelector( id obj, SEL sel )
+{
+    if( [obj respondsToSelector: sel] )
+        return [obj performSelector: sel];
+    return nil;
+}
+#else
+inline void arcSafeRelease( NSObject* ){}
+inline id performOptionalSelector( id obj, SEL sel )
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    if( [obj respondsToSelector: sel] )
+        return [obj performSelector: sel];
+#pragma clang diagnostic pop
+    return nil;
+}
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
 // all its methods are optional.
@@ -3067,19 +3119,13 @@ namespace Catch
         ()
         const
         {
-            id obj = class_createInstance( m_cls, 0 );
-            obj = [obj init];
+            id obj = [[m_cls alloc] init];
 
-            if( [obj respondsToSelector: @selector(setUp) ] )
-                [obj performSelector: @selector(setUp)];
+            performOptionalSelector( obj, @selector(setUp)  );
+            performOptionalSelector( obj, m_sel );
+            performOptionalSelector( obj, @selector(tearDown)  );
 
-            if( [obj respondsToSelector: m_sel] )
-                [obj performSelector: m_sel];
-
-            if( [obj respondsToSelector: @selector(tearDown) ] )
-                [obj performSelector: @selector(tearDown)];
-
-            [obj release];
+            arcSafeRelease( obj );
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -3131,7 +3177,7 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////
-        inline const char* getAnnotation
+        inline std::string getAnnotation
         (
             Class cls,
             const std::string& annotationName,
@@ -3140,9 +3186,10 @@ namespace Catch
         {
             NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
             SEL sel = NSSelectorFromString( selStr );
-            [selStr release];
-            if( [cls respondsToSelector: sel] )
-                return (const char*)[cls performSelector: sel];
+            arcSafeRelease( selStr );
+            id value = performOptionalSelector( cls, sel );
+            if( value )
+                return [(NSString*)value UTF8String];
             return "";
         }
     }
@@ -3154,8 +3201,8 @@ namespace Catch
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( NULL, 0 );
 
-        std::vector<Class> classes( noClasses );
-        objc_getClassList( &classes[0], noClasses );
+        Class* classes = (__unsafe_unretained Class *)malloc( sizeof(Class) * noClasses);
+        objc_getClassList( classes, noClasses );
 
         for( int c = 0; c < noClasses; c++ )
         {
@@ -3170,10 +3217,10 @@ namespace Catch
                     if( Detail::startsWith( methodName, "Catch_TestCase_" ) )
                     {
                         std::string testCaseName = methodName.substr( 15 );
-                        const char* name = Detail::getAnnotation( cls, "Name", testCaseName );
-                        const char* desc = Detail::getAnnotation( cls, "Description", testCaseName );
+                        std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
+                        std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
 
-                        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name, desc, "", 0 ) );
+                        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name.c_str(), desc.c_str(), "", 0 ) );
                         noTestMethods++;
 
                     }
@@ -3184,8 +3231,7 @@ namespace Catch
         return noTestMethods;
     }
 
-    template<>
-    inline std::string toString<NSString*>( NSString* const& nsstring )
+    inline std::string toString( NSString* const& nsstring )
     {
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
@@ -3201,7 +3247,7 @@ namespace Catch
                 StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
                 StringHolder()
                 {
-                    [m_substr release];
+                    arcSafeRelease( m_substr );
                 }
 
                 NSString* m_substr;
@@ -3293,13 +3339,13 @@ namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
 #define OC_TEST_CASE( name, desc )\
-+(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \
++(NSString*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \
 {\
-return name; \
+return @ name; \
 }\
-+(const char*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Description_test ) \
++(NSString*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Description_test ) \
 { \
-return desc; \
+return @ desc; \
 } \
 -(void) INTERNAL_CATCH_UNIQUE_NAME( Catch_TestCase_test )
 
@@ -6804,13 +6850,17 @@ int main (int argc, char * const argv[])
 {
 #ifdef __OBJC__
 
+#if !CATCH_ARC_ENABLED
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+#endif
 
     Catch::registerTestMethods();
 
     int result = Catch::Main( argc, (char* const*)argv );
 
+#if !CATCH_ARC_ENABLED
     [pool drain];
+#endif
 
 #else
 

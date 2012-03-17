@@ -640,6 +640,25 @@ public:
     }
     
     ///////////////////////////////////////////////////////////////////////////
+    template<typename MatcherT, typename ArgT>
+    ResultBuilder& acceptMatcher
+    (
+        const MatcherT& matcher,
+        ArgT* arg,
+        const std::string& matcherCallAsString
+    )
+    {
+        std::string matcherAsString = Catch::toString( matcher );
+        if( matcherAsString == "{?}" )
+            matcherAsString = matcherCallAsString;
+        m_result.setLhs( Catch::toString( arg ) );
+        m_result.setRhs( matcherAsString );
+        m_result.setOp( "matches" );
+        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        return *this;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
     ResultBuilder& setResultType
     (
         ResultWas::OfType resultType

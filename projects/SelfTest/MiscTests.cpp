@@ -194,7 +194,7 @@ inline const char* testStringForMatching()
 using namespace Catch::Matchers;
 
 TEST_CASE("./succeeding/matchers", "") 
-{    
+{
     REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );    
     CHECK_THAT( testStringForMatching(), Contains( "abc" ) );
 

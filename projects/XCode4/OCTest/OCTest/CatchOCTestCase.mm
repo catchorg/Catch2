@@ -21,7 +21,7 @@
 
 -(void) tearDown
 {
-    [obj release];
+    arcSafeRelease( obj );
 }
 
 OC_TEST_CASE( "OCTest/test1", "This is a test case" )
@@ -41,6 +41,12 @@ OC_TEST_CASE( "OCTest/test2", "This is another test case" )
     
     REQUIRE( obj.int_val == 2 );
 }
+///////////////////////////////////////////////////////////////////////////
+template<typename T>
+void useObject( const T& object ){}
+
+template<typename T>
+void useObject( const T* object ){}
 
 using namespace Catch::Matchers;
 OC_TEST_CASE( "OCTest/matchers", "Matches work with OC types (NSString so far)" )

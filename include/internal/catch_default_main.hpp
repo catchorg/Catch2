@@ -17,13 +17,17 @@ int main (int argc, char * const argv[])
 {
 #ifdef __OBJC__
     
+#if !CATCH_ARC_ENABLED
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+#endif
     
     Catch::registerTestMethods();
     
     int result = Catch::Main( argc, (char* const*)argv );
     
+#if !CATCH_ARC_ENABLED
     [pool drain];
+#endif
     
 #else
     

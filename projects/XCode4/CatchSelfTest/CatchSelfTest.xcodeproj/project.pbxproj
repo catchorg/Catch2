@@ -34,6 +34,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A3D7DD01503869D005F9203 /* catch_matchers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_matchers.hpp; sourceTree = "<group>"; };
 		4A6D0C20149B3D3B00DB3EAA /* CatchSelfTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CatchSelfTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A6D0C26149B3D3B00DB3EAA /* CatchSelfTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CatchSelfTest.1; sourceTree = "<group>"; };
 		4A6D0C2D149B3D9E00DB3EAA /* ApproxTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ApproxTests.cpp; path = ../../../SelfTest/ApproxTests.cpp; sourceTree = "<group>"; };
@@ -193,6 +194,7 @@
 				4A7ADB4314F631E10094FE10 /* catch_totals.hpp */,
 				4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */,
 				4AB1C73714F97C1300F31DF7 /* catch_console_colour.hpp */,
+				4A3D7DD01503869D005F9203 /* catch_matchers.hpp */,
 			);
 			name = internal;
 			path = ../../../../include/internal;
