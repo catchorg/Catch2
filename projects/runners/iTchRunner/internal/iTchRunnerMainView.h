@@ -38,9 +38,9 @@
         
         appName = [[UITextField alloc] initWithFrame: CGRectMake( 0, 50, 320, 50 )];
         [self addSubview: appName];
-        [appName release];
+        arcSafeRelease( appName );
         appName.textColor = [[UIColor alloc] initWithRed:0.35 green:0.35 blue:1 alpha:1];
-        [appName.textColor release];
+        arcSafeRelease( appName.textColor );
         appName.textAlignment = UITextAlignmentCenter;
         
         appName.text = [NSString stringWithFormat:@"CATCH tests"];
@@ -55,7 +55,9 @@
 -(void) dealloc
 {
     [appName removeFromSuperview];
+#if !CATCH_ARC_ENABLED
     [super dealloc];
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -67,7 +69,7 @@
                                         destructiveButtonTitle:nil
                                              otherButtonTitles:@"Run all tests", nil];
     [menu showInView: self];
-    [menu release];
+    arcSafeRelease( menu );
  
 }
 

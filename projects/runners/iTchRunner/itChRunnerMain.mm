@@ -11,10 +11,16 @@
 
 int main(int argc, char *argv[]) 
 {    
+#if !CATCH_ARC_ENABLED
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-
+#endif
+    
     Catch::registerTestMethods();
     int retVal = UIApplicationMain(argc, argv, nil, @"iTchRunnerAppDelegate");
+
+#if !CATCH_ARC_ENABLED
     [pool release];
+#endif
+
     return retVal;
 }

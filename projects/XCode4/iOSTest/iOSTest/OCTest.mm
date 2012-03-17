@@ -23,5 +23,5 @@ TEST_CASE( "OCTest/TestObj", "tests TestObj" )
     
     REQUIRE( obj.int_val == 1 );
     
-    [obj release];
+    arcSafeRelease( obj );
 }

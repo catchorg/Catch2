@@ -34,7 +34,7 @@
     
     [window addSubview:view];
     [window makeKeyAndVisible];
-    [view release];
+    arcSafeRelease( view );
 
     return YES;
 }
@@ -42,8 +42,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 - (void)dealloc 
 {
+#if !CATCH_ARC_ENABLED
     [window release];
     [super dealloc];
+#endif
 }
 
 
