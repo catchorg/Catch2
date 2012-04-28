@@ -160,15 +160,15 @@ namespace Internal
     // long to unsigned X
     template<Operator Op> bool compare( long lhs, unsigned int rhs )
     {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ) );
+        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
     }
     template<Operator Op> bool compare( long lhs, unsigned long rhs )
     {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ) );
+        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
     }
     template<Operator Op> bool compare( long lhs, unsigned char rhs )
     {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ) );
+        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
     }
 
     template<Operator Op, typename T>
