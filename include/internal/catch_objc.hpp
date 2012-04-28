@@ -33,27 +33,29 @@ void arcSafeRelease( NSObject* obj );
 id performOptionalSelector( id obj, SEL sel );
 
 #if !CATCH_ARC_ENABLED
-inline void arcSafeRelease( NSObject* obj )
-{
-    [obj release];
-}
-inline id performOptionalSelector( id obj, SEL sel )
-{
-    if( [obj respondsToSelector: sel] )
-        return [obj performSelector: sel];
-    return nil;
-}
+    inline void arcSafeRelease( NSObject* obj )
+    {
+        [obj release];
+    }
+    inline id performOptionalSelector( id obj, SEL sel )
+    {
+        if( [obj respondsToSelector: sel] )
+            return [obj performSelector: sel];
+        return nil;
+    }
+    #define CATCH_UNSAFE_UNRETAINED
 #else
-inline void arcSafeRelease( NSObject* ){}
-inline id performOptionalSelector( id obj, SEL sel )
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    if( [obj respondsToSelector: sel] )
-        return [obj performSelector: sel];
-#pragma clang diagnostic pop     
-    return nil;
-}
+    inline void arcSafeRelease( NSObject* ){}
+    inline id performOptionalSelector( id obj, SEL sel )
+    {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        if( [obj respondsToSelector: sel] )
+            return [obj performSelector: sel];
+    #pragma clang diagnostic pop     
+        return nil;
+    }
+    #define CATCH_UNSAFE_UNRETAINED __unsafe_unretained
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -171,7 +173,7 @@ namespace Catch
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( NULL, 0 );
         
-        Class* classes = (__unsafe_unretained Class *)malloc( sizeof(Class) * noClasses);
+        Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
         objc_getClassList( classes, noClasses );
         
         for( int c = 0; c < noClasses; c++ )

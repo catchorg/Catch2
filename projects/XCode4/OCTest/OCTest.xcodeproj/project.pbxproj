@@ -38,6 +38,7 @@
 		4A63D2C314E454CC00F615CB /* OCTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCTest.mm; sourceTree = "<group>"; };
 		4A63D2C414E454CC00F615CB /* TestObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObj.h; sourceTree = "<group>"; };
 		4A63D2C514E454CC00F615CB /* TestObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObj.m; sourceTree = "<group>"; };
+		4AA0D951154C0A7A004B4193 /* catch_objc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc.hpp; path = ../../../include/internal/catch_objc.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +56,7 @@
 		4A63D29A14E3C1A900F615CB = {
 			isa = PBXGroup;
 			children = (
+				4AA0D94F154C0A63004B4193 /* Catch */,
 				4A63D2BF14E4544700F615CB /* Foundation.framework */,
 				4A63D2A814E3C1A900F615CB /* OCTest */,
 				4A63D2A614E3C1A900F615CB /* Products */,
@@ -81,6 +83,14 @@
 				4A63D2AB14E3C1A900F615CB /* OCTest.1 */,
 			);
 			path = OCTest;
+			sourceTree = "<group>";
+		};
+		4AA0D94F154C0A63004B4193 /* Catch */ = {
+			isa = PBXGroup;
+			children = (
+				4AA0D951154C0A7A004B4193 /* catch_objc.hpp */,
+			);
+			name = Catch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
