@@ -131,7 +131,7 @@ inline std::string toString
     char* const value
 )
 {
-    return Catch::toString( static_cast<const char* const>( value ) );
+    return Catch::toString( static_cast<const char*>( value ) );
 }        
 
 ///////////////////////////////////////////////////////////////////////////////
