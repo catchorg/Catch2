@@ -189,6 +189,21 @@ TEST_CASE(  "./succeeding/conditions/int literals",
     REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul );
 }
 
+TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x", 
+            "comparisons between int variables" )
+{
+	long		long_var = 1L;
+	unsigned char	unsigned_char_var = 1;
+	unsigned short	unsigned_short_var = 1;
+	unsigned int	unsigned_int_var = 1;
+	unsigned long	unsigned_long_var = 1L;
+    
+	REQUIRE( long_var == unsigned_char_var );
+	REQUIRE( long_var == unsigned_short_var );
+	REQUIRE( long_var == unsigned_int_var );
+	REQUIRE( long_var == unsigned_long_var );
+}
+
 // These are not built normally to avoid warnings about signed/ unsigned
 #ifdef ALLOW_TESTS_THAT_WARN
 TEST_CASE(  "succeeding/conditions/negative ints", 
