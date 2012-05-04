@@ -13,18 +13,18 @@
 #define CATCH_CONFIG_MAIN
 #include "catch_self_test.hpp"
 
-namespace Catch
-{
-    ///////////////////////////////////////////////////////////////////////////
-    std::size_t EmbeddedRunner::runMatching
-    (
-        const std::string& rawTestSpec
-    )
+namespace Catch{
+    
+    std::size_t EmbeddedRunner::runMatching( 
+        const std::string& rawTestSpec, 
+        const std::string& reporter )
     {
         std::ostringstream oss;
         Config config;
         config.setStreamBuf( oss.rdbuf() );
-        config.setReporter( "basic" );
+        
+        //if( reporter == "mock" ) // !TBD
+            config.setReporter( m_reporter.get() );
         
         std::size_t result;
         
@@ -37,4 +37,11 @@ namespace Catch
         m_output = oss.str();
         return result;
     }
+
+    const std::string MockReporter::recordGroups = "[g]";
+    const std::string MockReporter::recordTestCases = "[tc]";
+    const std::string MockReporter::recordSections =" [s]";
+    
+    INTERNAL_CATCH_REGISTER_REPORTER( "mock", MockReporter )
+    
 }

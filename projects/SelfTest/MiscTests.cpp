@@ -11,6 +11,8 @@
  */
 
 #include "catch.hpp"
+#include "catch_self_test.hpp"
+
 #include <iostream>
 
 TEST_CASE( "./succeeding/Misc/Sections", "random SECTION tests" )
@@ -68,6 +70,53 @@ TEST_CASE( "./mixed/Misc/Sections/nested2", "nested SECTION tests" )
             REQUIRE( a < b );
         }
     }
+}
+
+TEST_CASE( "./Sections/nested/a/b", "nested SECTION tests" )
+{
+    SECTION( "c", "" )
+    {
+        SECTION( "d (leaf)", "" )
+        {
+        }
+        
+        SECTION( "e (leaf)", "" )
+        {
+        }
+    }
+
+    SECTION( "f (leaf)", "" )
+    {
+    }
+}
+
+TEST_CASE( "Sections/nested3", "nested SECTION tests" )
+{
+    Catch::EmbeddedRunner runner;
+    
+    runner.runMatching( "./Sections/nested/a/b", "mock" );
+    CHECK( runner.getLog() == 
+        "[tc]( ./Sections/nested/a/b ){ "
+
+          "[g]( test case run ){  "
+            "[s]( c ){  "
+                "[s]( d (leaf) ){  }  [s]( d (leaf) ) "
+            "}  [s]( c ) "
+          "} [g]( test case run )"
+          
+          "[g]( test case run ){  "
+            "[s]( c ){  "
+                "[s]( e (leaf) ){  }  [s]( e (leaf) ) "
+            "}  [s]( c ) "
+          "} [g]( test case run )"
+          
+          "[g]( test case run ){  "
+            "[s]( c ){  }  [s]( c ) "
+            "[s]( f (leaf) ){  }  [s]( f (leaf) ) "
+          "} [g]( test case run ) "
+
+        "} [tc]( ./Sections/nested/a/b )" );
+    
 }
 
 TEST_CASE( "./mixed/Misc/Sections/loops", "looped SECTION tests" )

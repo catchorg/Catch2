@@ -19,7 +19,7 @@
 
 namespace Catch
 {
-    class JunitReporter : public Catch::IReporter
+    class JunitReporter : public SharedImpl<IReporter>
     {
         struct TestStats
         {

@@ -300,11 +300,11 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         explicit Runner
         (
-            const Config& config 
+            Config& config 
         )
         :   m_runningTest( NULL ),
             m_config( config ),
-            m_reporter( m_config.getReporter() ),
+            m_reporter( config.getReporter() ),
             m_prevRunner( &Hub::getRunner() ),
             m_prevResultCapture( &Hub::getResultCapture() )
         {
@@ -376,9 +376,11 @@ namespace Catch
             {
                 do
                 {
+                    m_reporter->StartGroup( "test case run" );
                     m_currentResult.setFileAndLine( m_runningTest->getTestCaseInfo().getFilename(), 
                                                     m_runningTest->getTestCaseInfo().getLine() );
                     runCurrentTest( redirectedCout, redirectedCerr );
+                    m_reporter->EndGroup( "test case run", m_totals - prevTotals );
                 }
                 while( m_runningTest->hasUntestedSections() );
             }
@@ -608,7 +610,7 @@ namespace Catch
 
         const Config& m_config;
         Totals m_totals;
-        IReporter* m_reporter;
+        Ptr<IReporter> m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
         std::vector<ResultInfo> m_info;
         IRunner* m_prevRunner;

@@ -56,8 +56,7 @@ namespace Catch
         
         ///////////////////////////////////////////////////////////////////////////
         Config()
-        :   m_reporter( NULL ),
-            m_listSpec( List::None ),
+        :   m_listSpec( List::None ),
             m_shouldDebugBreak( false ),
             m_showHelp( false ),
             m_streambuf( NULL ),
@@ -137,15 +136,15 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void setReporter( IReporter* reporter )
         {
-            m_reporter = std::auto_ptr<IReporter>( reporter );
+            m_reporter = reporter;
         }
         
         ///////////////////////////////////////////////////////////////////////////
-        IReporter* getReporter() const
+        Ptr<IReporter> getReporter()
         {
             if( !m_reporter.get() )
                 const_cast<Config*>( this )->setReporter( Hub::getReporterRegistry().create( "basic", *this ) );
-            return m_reporter.get();
+            return m_reporter;
         }
                 
         ///////////////////////////////////////////////////////////////////////////
@@ -221,7 +220,7 @@ namespace Catch
             setStreamBuf( newBuf );
             delete m_streambuf;
             m_streambuf = newBuf;
-        }        
+        }
         
         ///////////////////////////////////////////////////////////////////////////
         virtual bool includeSuccessfulResults() const
@@ -230,7 +229,7 @@ namespace Catch
         }
         
     private:
-        std::auto_ptr<IReporter> m_reporter;
+        Ptr<IReporter> m_reporter;
         std::string m_filename;
         std::string m_message;
         List::What m_listSpec;

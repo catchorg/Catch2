@@ -15,6 +15,7 @@
 
 #include "catch_common.h"
 #include "catch_totals.hpp"
+#include "catch_ptr.hpp"
 
 #include <string>
 #include <ostream>
@@ -43,7 +44,7 @@ namespace Catch
     class ResultInfo;
     
     ///////////////////////////////////////////////////////////////////////////
-    struct IReporter : NonCopyable
+    struct IReporter : IShared
     {
         virtual ~IReporter
             (){}

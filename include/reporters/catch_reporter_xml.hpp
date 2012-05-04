@@ -19,7 +19,7 @@
 
 namespace Catch
 {
-    class XmlReporter : public Catch::IReporter
+    class XmlReporter : public SharedImpl<IReporter>
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ namespace Catch
         )
         : m_config( config )
         {
-        }        
+        }
 
         ///////////////////////////////////////////////////////////////////////////
         static std::string getDescription

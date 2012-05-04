@@ -109,6 +109,14 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
+        bool hasExpandedExpression
+        ()
+        const
+        {
+            return hasExpression() && getExpandedExpressionInternal() != m_expr;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////
         std::string getExpandedExpression
         ()
         const
@@ -162,7 +170,7 @@ namespace Catch
             else if( m_op != "!" )
                 return m_lhs + " " + m_op + " " + m_rhs;
             else
-                return "{can't expand - use " + m_macroName + "_NOT( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
+                return "{can't expand - use " + m_macroName + "_FALSE( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
         }
 
         ///////////////////////////////////////////////////////////////////////////

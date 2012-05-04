@@ -38,7 +38,7 @@ namespace Catch
         std::string m_label;
     };
 
-    class BasicReporter : public IReporter
+    class BasicReporter : public SharedImpl<IReporter>
     {
         struct SpanInfo
         {
@@ -311,7 +311,7 @@ namespace Catch
                     break;
             }
             
-            if( resultInfo.hasExpression() && resultInfo.getExpression() != resultInfo.getExpandedExpression() )
+            if( resultInfo.hasExpandedExpression() )
             {
                 m_config.stream() << " for: ";
                 TextColour colour( TextColour::ReconstructedExpression );

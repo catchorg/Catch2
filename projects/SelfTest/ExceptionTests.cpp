@@ -126,22 +126,22 @@ TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections r
 TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produced by exceptions caught by Catch matched the expected form" )
 {
     Catch::EmbeddedRunner runner;
+    using namespace Catch::Matchers;
     
     SECTION( "custom, unexpected", "" )
     {    
         runner.runMatching( "./failing/exceptions/custom" );
-        INFO( runner.getOutput() );
-        CHECK( runner.getOutput().find( "Unexpected exception" ) != std::string::npos );
-        CHECK( runner.getOutput().find( "custom exception" ) != std::string::npos );
+//        CHECK_THAT( runner.getLog(), Contains( "Unexpected exception" ) ); // Mock reporter doesn't say this
+        CHECK_THAT( runner.getLog(), Contains( "custom exception" ) );
     }
     
     SECTION( "in section", "" )
     {    
         runner.runMatching( "./failing/exceptions/in-section" );
-        INFO( runner.getOutput() );
-        CHECK( runner.getOutput().find( "Unexpected exception" ) != std::string::npos );
-        CHECK( runner.getOutput().find( "Exception from section" ) != std::string::npos );
-        CHECK( runner.getOutput().find( CATCH_GET_LINE_INFO( "the section2" ) ) != std::string::npos );
+        INFO( runner.getLog() );
+//        CHECK( runner.getLog().find( "Unexpected exception" ) != std::string::npos ); // Mock reporter doesn't say this
+        CHECK_THAT( runner.getLog(), Contains( "Exception from section" ) );
+//        CHECK( runner.getLog().find( CATCH_GET_LINE_INFO( "the section2" ) ) != std::string::npos ); // Mock reporter doesn't say this
     }
     
 }

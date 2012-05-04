@@ -21,7 +21,7 @@ namespace Catch
     ///////////////////////////////////////////////////////////////////////////
     inline int List
     (
-        const Config& config
+        Config& config
     )
     {
         if( config.listWhat() & Config::List::Reports )
@@ -54,7 +54,7 @@ namespace Catch
             return (std::numeric_limits<int>::max)();
         }
         
-        if( config.getReporter() )
+        if( config.getReporter().get() )
         {
             std::cerr << "Reporters ignored when listing" << std::endl;
         }
