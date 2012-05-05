@@ -18,7 +18,6 @@
 #include <set>
 #include <sstream>
 
-#include <iostream> // !TBD DBG
 namespace Catch
 {
     class TestRegistry : public ITestCaseRegistry

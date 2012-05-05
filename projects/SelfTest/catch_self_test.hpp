@@ -95,8 +95,7 @@ namespace Catch
             const std::string& groupName
         )
         {
-            if( shouldRecord( recordGroups ) )
-                m_log << recordGroups << "( " << groupName << " ){ ";
+            openLabel( recordGroups, groupName );
         }
         
         virtual void EndGroup
@@ -105,8 +104,7 @@ namespace Catch
             const Totals& totals
         )
         {
-            if( shouldRecord( recordGroups ) )
-                m_log << " } " << recordGroups << "( " << groupName << " )";
+            closeLabel( recordGroups, groupName );
         }
         
         virtual void StartSection
@@ -115,8 +113,7 @@ namespace Catch
             const std::string description 
         )
         {
-            if( shouldRecord( recordSections ) )
-                m_log << recordSections << "( " << sectionName << " ){ ";
+            openLabel( recordSections, sectionName );
         }
         
         virtual void EndSection
@@ -125,8 +122,7 @@ namespace Catch
             const Counts& assertions 
         )
         {
-            if( shouldRecord( recordSections ) )
-                m_log << " } " << recordSections << "( " << sectionName << " )";
+            closeLabel( recordSections, sectionName );
         }
         
         virtual void StartTestCase
@@ -134,8 +130,7 @@ namespace Catch
             const TestCaseInfo& testInfo 
         )
         {
-            if( shouldRecord( recordTestCases ) )
-                m_log << recordTestCases << "( " << testInfo.getName() << " ){ ";
+            openLabel( recordTestCases, testInfo.getName()  );
         }
         
         virtual void EndTestCase
@@ -146,8 +141,7 @@ namespace Catch
             const std::string& stdErr 
         )
         {
-            if( shouldRecord( recordTestCases ) )
-                m_log << " } " << recordTestCases << "( " << testInfo.getName() << " )";
+            closeLabel( recordTestCases, testInfo.getName()  );
         }
         
         virtual void Result
@@ -214,6 +208,32 @@ namespace Catch
         {
             return m_recorders.find( recorder ) != m_recorders.end();
         }
+        
+        void openLabel( const std::string& label, const std::string& arg = "" )
+        {
+            if( shouldRecord( label ) )
+            {
+                m_log << m_indent << "\\" << label;
+                if( !arg.empty() )
+                    m_log << " " << arg;
+                m_log << "\n";
+                m_indent += " ";
+            }
+        }
+        
+        void closeLabel( const std::string& label, const std::string& arg = "" )
+        {
+            if( shouldRecord( label ) )
+            {
+                m_indent = m_indent.substr( 0, m_indent.size()-1 );
+                m_log << m_indent << "/" << label;
+                if( !arg.empty() )
+                    m_log << " " << arg;
+                m_log << "\n";
+            }
+        }
+        
+        std::string m_indent;
         std::ostringstream m_log;
         std::set<std::string> m_recorders;
     };    
