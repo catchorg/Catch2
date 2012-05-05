@@ -115,7 +115,6 @@ namespace Catch
             {
                 m_runStatus = RanAtLeastOneSection;
                 m_lastSectionToRun = m_currentSection;
-//                m_changed = true;
             }
             m_currentSection = m_currentSection->getParent();
         }

@@ -231,6 +231,105 @@ namespace Catch
     };
 }
 
+// #included from: catch_ptr.hpp
+
+/*
+ *  catch_ptr.hpp
+ *  Catch
+ *
+ *  Created by Phil on 02/05/2012.
+ *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+#define TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
+
+
+namespace Catch
+{
+    // An intrusive reference counting smart pointer.
+    // T must implement addRef() and release() methods
+    // typically implementing the IShared interface
+    template<typename T>
+    class Ptr
+    {
+    public:
+        Ptr() : m_p( NULL ){}
+        Ptr( T* p ) : m_p( p ){
+            m_p->addRef();
+        }
+        Ptr( const Ptr& other ) : m_p( other.m_p ){
+            m_p->addRef();
+        }
+        ~Ptr(){
+            if( m_p )
+                m_p->release();
+        }
+        Ptr& operator = ( T* p ){
+            Ptr temp( p );
+            swap( temp );
+            return *this;
+        }
+        Ptr& operator = ( Ptr& other ){
+            Ptr temp( other );
+            swap( temp );
+            return *this;
+        }
+        void swap( Ptr& other ){
+            std::swap( m_p, other.m_p );
+        }
+
+        T* get(){
+            return m_p;
+        }
+        const T* get() const{
+            return m_p;
+        }
+
+        T& operator*(){
+            return *m_p;
+        }
+        const T& operator*() const{
+            return *m_p;
+        }
+
+        T* operator->(){
+            return m_p;
+        }
+        const T* operator->() const{
+            return m_p;
+        }
+
+    private:
+        T* m_p;
+    };
+
+    struct IShared : NonCopyable {
+        virtual ~IShared(){}
+        virtual void addRef() = 0;
+        virtual void release() = 0;
+    };
+
+    template<typename T>
+    struct SharedImpl : T {
+
+        SharedImpl() : m_rc( 0 ){}
+
+        virtual void addRef(){
+            ++m_rc;
+        }
+        virtual void release(){
+            if( --m_rc == 0 )
+                delete this;
+        }
+
+        int m_rc;
+    };
+
+} // end namespace Catch
+
 
 #include <string>
 #include <ostream>
@@ -259,7 +358,7 @@ namespace Catch
     class ResultInfo;
 
     ///////////////////////////////////////////////////////////////////////////
-    struct IReporter : NonCopyable
+    struct IReporter : IShared
     {
         virtual ~IReporter
             (){}
@@ -833,6 +932,14 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////////
+        bool hasExpandedExpression
+        ()
+        const
+        {
+            return hasExpression() && getExpandedExpressionInternal() != m_expr;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
         std::string getExpandedExpression
         ()
         const
@@ -886,7 +993,7 @@ namespace Catch
             else if( m_op != "!" )
                 return m_lhs + " " + m_op + " " + m_rhs;
             else
-                return "{can't expand - use " + m_macroName + "_NOT( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
+                return "{can't expand - use " + m_macroName + "_FALSE( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -3470,7 +3577,6 @@ namespace Catch
 #include <set>
 #include <sstream>
 
-#include <iostream> // !TBD DBG
 namespace Catch
 {
     class TestRegistry : public ITestCaseRegistry
@@ -3841,8 +3947,7 @@ namespace Catch
 
         ///////////////////////////////////////////////////////////////////////////
         Config()
-        :   m_reporter( NULL ),
-            m_listSpec( List::None ),
+        :   m_listSpec( List::None ),
             m_shouldDebugBreak( false ),
             m_showHelp( false ),
             m_streambuf( NULL ),
@@ -3922,15 +4027,15 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void setReporter( IReporter* reporter )
         {
-            m_reporter = std::auto_ptr<IReporter>( reporter );
+            m_reporter = reporter;
         }
 
         ///////////////////////////////////////////////////////////////////////////
-        IReporter* getReporter() const
+        Ptr<IReporter> getReporter()
         {
             if( !m_reporter.get() )
                 const_cast<Config*>( this )->setReporter( Hub::getReporterRegistry().create( "basic", *this ) );
-            return m_reporter.get();
+            return m_reporter;
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -4015,7 +4120,7 @@ namespace Catch
         }
 
     private:
-        std::auto_ptr<IReporter> m_reporter;
+        Ptr<IReporter> m_reporter;
         std::string m_filename;
         std::string m_message;
         List::What m_listSpec;
@@ -4031,45 +4136,34 @@ namespace Catch
 
 } // end namespace Catch
 
+// #included from: catch_running_test.hpp
 
-#include <set>
+/*
+ *  Created by Phil Nash on 4/5/2012
+ *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ */
+#define TWOBLUECUBES_INTERNAL_CATCH_RUNNING_TEST_HPP_INCLUDED
+
+// #included from: catch_section_info.hpp
+
+/*
+ *  Created by Phil Nash on 4/5/2012
+ *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ */
+#define TWOBLUECUBES_INTERNAL_CATCH_SECTION_INFO_HPP_INCLUDED
+
+
+#include <map>
 #include <string>
 
 namespace Catch
 {
-
-    class StreamRedirect
-    {
-    public:
-        ///////////////////////////////////////////////////////////////////////
-        StreamRedirect
-        (
-            std::ostream& stream,
-            std::string& targetString
-        )
-        :   m_stream( stream ),
-            m_prevBuf( stream.rdbuf() ),
-            m_targetString( targetString )
-        {
-            stream.rdbuf( m_oss.rdbuf() );
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        ~StreamRedirect
-        ()
-        {
-            m_targetString += m_oss.str();
-            m_stream.rdbuf( m_prevBuf );
-        }
-
-    private:
-        std::ostream& m_stream;
-        std::streambuf* m_prevBuf;
-        std::ostringstream m_oss;
-        std::string& m_targetString;
-    };
-
-
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     class SectionInfo
@@ -4079,7 +4173,8 @@ namespace Catch
         {
             Root,
             Unknown,
-            NonLeaf,
+            Branch,
+            TestedBranch,
             TestedLeaf
         };
 
@@ -4113,19 +4208,28 @@ namespace Catch
         ()
         const
         {
-            return m_status != TestedLeaf;
+            return m_status < TestedBranch;
         }
 
         ///////////////////////////////////////////////////////////////////////
         bool ran
         ()
         {
-            if( m_status != NonLeaf )
+            if( m_status < Branch )
             {
                 m_status = TestedLeaf;
                 return true;
             }
             return false;
+        }
+        ///////////////////////////////////////////////////////////////////////
+        void ranToCompletion
+        ()
+        {
+            if( m_status == Branch && !hasUntestedSections() )
+            {
+                m_status = TestedBranch;
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -4136,8 +4240,8 @@ namespace Catch
         {
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
             return it != m_subSections.end()
-                ? it->second
-                : NULL;
+                        ? it->second
+                        : NULL;
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -4148,7 +4252,7 @@ namespace Catch
         {
             SectionInfo* subSection = new SectionInfo( this );
             m_subSections.insert( std::make_pair( name, subSection ) );
-            m_status = NonLeaf;
+            m_status = Branch;
             return subSection;
         }
 
@@ -4182,10 +4286,11 @@ namespace Catch
         std::map<std::string, SectionInfo*> m_subSections;
         SectionInfo* m_parent;
     };
+}
 
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
 
+namespace Catch
+{
     class RunningTest
     {
         enum RunStatus
@@ -4225,16 +4330,27 @@ namespace Catch
         {
             m_runStatus = NothingRun;
             m_changed = false;
+            m_lastSectionToRun = NULL;
         }
 
         ///////////////////////////////////////////////////////////////////////
         void ranToCompletion
         ()
         {
-            m_runStatus =   m_runStatus == RanAtLeastOneSection ||
-                            m_runStatus == EncounteredASection
-                ? RanToCompletionWithSections
-                : RanToCompletionWithNoSections;
+            if( m_runStatus == RanAtLeastOneSection ||
+                m_runStatus == EncounteredASection )
+            {
+                m_runStatus = RanToCompletionWithSections;
+                if( m_lastSectionToRun )
+                {
+                    m_lastSectionToRun->ranToCompletion();
+                    m_changed = true;
+                }
+            }
+            else
+            {
+                m_runStatus = RanToCompletionWithNoSections;
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -4256,6 +4372,7 @@ namespace Catch
             if( !wasSectionSeen() && thisSection->shouldRun() )
             {
                 m_currentSection = thisSection;
+                m_lastSectionToRun = NULL;
                 return true;
             }
             return false;
@@ -4271,6 +4388,11 @@ namespace Catch
             {
                 m_runStatus = RanAtLeastOneSection;
                 m_changed = true;
+            }
+            else if( m_runStatus == EncounteredASection )
+            {
+                m_runStatus = RanAtLeastOneSection;
+                m_lastSectionToRun = m_currentSection;
             }
             m_currentSection = m_currentSection->getParent();
         }
@@ -4297,7 +4419,47 @@ namespace Catch
         RunStatus m_runStatus;
         SectionInfo m_rootSection;
         SectionInfo* m_currentSection;
+        SectionInfo* m_lastSectionToRun;
         bool m_changed;
+    };
+}
+
+
+#include <set>
+#include <string>
+
+namespace Catch
+{
+
+    class StreamRedirect
+    {
+    public:
+        ///////////////////////////////////////////////////////////////////////
+        StreamRedirect
+        (
+            std::ostream& stream,
+            std::string& targetString
+        )
+        :   m_stream( stream ),
+            m_prevBuf( stream.rdbuf() ),
+            m_targetString( targetString )
+        {
+            stream.rdbuf( m_oss.rdbuf() );
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        ~StreamRedirect
+        ()
+        {
+            m_targetString += m_oss.str();
+            m_stream.rdbuf( m_prevBuf );
+        }
+
+    private:
+        std::ostream& m_stream;
+        std::streambuf* m_prevBuf;
+        std::ostringstream m_oss;
+        std::string& m_targetString;
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -4312,11 +4474,11 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         explicit Runner
         (
-            const Config& config
+            Config& config
         )
         :   m_runningTest( NULL ),
             m_config( config ),
-            m_reporter( m_config.getReporter() ),
+            m_reporter( config.getReporter() ),
             m_prevRunner( &Hub::getRunner() ),
             m_prevResultCapture( &Hub::getResultCapture() )
         {
@@ -4388,9 +4550,11 @@ namespace Catch
             {
                 do
                 {
+                    m_reporter->StartGroup( "test case run" );
                     m_currentResult.setFileAndLine( m_runningTest->getTestCaseInfo().getFilename(),
                                                     m_runningTest->getTestCaseInfo().getLine() );
                     runCurrentTest( redirectedCout, redirectedCerr );
+                    m_reporter->EndGroup( "test case run", m_totals - prevTotals );
                 }
                 while( m_runningTest->hasUntestedSections() );
             }
@@ -4620,7 +4784,7 @@ namespace Catch
 
         const Config& m_config;
         Totals m_totals;
-        IReporter* m_reporter;
+        Ptr<IReporter> m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
         std::vector<ResultInfo> m_info;
         IRunner* m_prevRunner;
@@ -5378,7 +5542,7 @@ namespace Catch
     ///////////////////////////////////////////////////////////////////////////
     inline int List
     (
-        const Config& config
+        Config& config
     )
     {
         if( config.listWhat() & Config::List::Reports )
@@ -5411,7 +5575,7 @@ namespace Catch
             return (std::numeric_limits<int>::max)();
         }
 
-        if( config.getReporter() )
+        if( config.getReporter().get() )
         {
             std::cerr << "Reporters ignored when listing" << std::endl;
         }
@@ -5520,7 +5684,7 @@ namespace Catch
         std::string m_label;
     };
 
-    class BasicReporter : public IReporter
+    class BasicReporter : public SharedImpl<IReporter>
     {
         struct SpanInfo
         {
@@ -5793,7 +5957,7 @@ namespace Catch
                     break;
             }
 
-            if( resultInfo.hasExpression() && resultInfo.getExpression() != resultInfo.getExpandedExpression() )
+            if( resultInfo.hasExpandedExpression() )
             {
                 m_config.stream() << " for: ";
                 TextColour colour( TextColour::ReconstructedExpression );
@@ -6263,7 +6427,7 @@ namespace Catch
 
 namespace Catch
 {
-    class XmlReporter : public Catch::IReporter
+    class XmlReporter : public SharedImpl<IReporter>
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
@@ -6451,7 +6615,7 @@ namespace Catch
 
 namespace Catch
 {
-    class JunitReporter : public Catch::IReporter
+    class JunitReporter : public SharedImpl<IReporter>
     {
         struct TestStats
         {
