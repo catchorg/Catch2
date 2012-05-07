@@ -221,6 +221,9 @@ TEST_CASE(  "succeeding/conditions/negative ints",
 }
 #endif
 
+inline const char* returnsConstNull(){ return NULL; }
+inline char* returnsNull(){ return NULL; }
+
 TEST_CASE(  "./succeeding/conditions/ptr", 
             "Pointers can be compared to null" )
 {
@@ -241,6 +244,9 @@ TEST_CASE(  "./succeeding/conditions/ptr",
     const TestData* const cpc = p;
     REQUIRE( cpc != NULL );
 
+    REQUIRE( returnsNull() == NULL );
+    REQUIRE( returnsConstNull() == NULL );
+    
 //    REQUIRE( NULL != p ); // gives warning, but should compile and run ok
 }
 

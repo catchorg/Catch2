@@ -174,16 +174,26 @@ namespace Internal
     template<Operator Op, typename T>
     bool compare( long lhs, const T* rhs )
     {
-        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( NULL ), rhs );
-
+        return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
     }
     
     template<Operator Op, typename T>
     bool compare( long lhs, T* rhs )
     {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
-        
     }
+
+    template<Operator Op, typename T>
+    bool compare( const T* lhs, long rhs )
+    {
+        return Evaluator<const T*, const T*, Op>::evaluate( lhs, reinterpret_cast<const T*>( rhs ) );
+    }    
+    
+    template<Operator Op, typename T>
+    bool compare( T* lhs, long rhs )
+    {
+        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
+    }    
     
 } // end of namespace Internal
 } // end of namespace Catch
