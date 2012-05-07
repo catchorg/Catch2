@@ -18,220 +18,87 @@
 
 namespace Catch
 {
-    class MockReporter : public SharedImpl<IReporter>
-    {
+    class MockReporter : public SharedImpl<IReporter> {
     public:
         
         static const std::string recordGroups;
         static const std::string recordTestCases;
         static const std::string recordSections;
         
-        void recordAll
-        ()
-        {
+        void recordAll() {
             addRecorder( recordGroups );
             addRecorder( recordTestCases );
             addRecorder( recordSections );
         }
                 
-        MockReporter
-        (
-            const IReporterConfig& config
-        )
-        {
+        MockReporter( const IReporterConfig& config ) {
             recordAll();
         }
         
-        MockReporter
-        ()
-        {
+        MockReporter() {
             recordAll();
         }
         
-        void addRecorder
-        (
-            const std::string& recorder
-        )
-        {
+        void addRecorder( const std::string& recorder ) {
             m_recorders.insert( recorder );
         }
         
-        static std::string getDescription
-        ()
-        {
+        static std::string getDescription() {
             return "mock reporter";
         }
         
-        std::string getLog
-        ()
-        const
-        {
+        std::string getLog() const {
             return m_log.str();
         }
         
     private: // IReporter
         
-        virtual bool shouldRedirectStdout
-        ()
-        const
-        {
+        virtual bool shouldRedirectStdout() const {
             return false;
         }
         
-        virtual void StartTesting
-        ()
-        {
-        }
+        virtual void StartTesting() {}
         
-        virtual void EndTesting
-        (   
-            const Totals& totals
-        )
-        {
-        }
+        virtual void EndTesting( const Totals& totals ) {}
         
-        virtual void StartGroup
-        (
-            const std::string& groupName
-        )
-        {
+        virtual void StartGroup( const std::string& groupName ) {
             openLabel( recordGroups, groupName );
         }
         
-        virtual void EndGroup
-        (   
-            const std::string& groupName, 
-            const Totals& totals
-        )
-        {
+        virtual void EndGroup( const std::string& groupName, const Totals& totals ) {
             closeLabel( recordGroups, groupName );
         }
         
-        virtual void StartSection
-        (   
-            const std::string& sectionName, 
-            const std::string description 
-        )
-        {
+        virtual void StartSection( const std::string& sectionName, const std::string description ) {
             openLabel( recordSections, sectionName );
         }
         
-        virtual void EndSection
-        (   
-            const std::string& sectionName, 
-            const Counts& assertions 
-        )
-        {
+        virtual void EndSection( const std::string& sectionName, const Counts& assertions ) {
             closeLabel( recordSections, sectionName );
         }
         
-        virtual void StartTestCase
-        (   
-            const TestCaseInfo& testInfo 
-        )
-        {
+        virtual void StartTestCase( const TestCaseInfo& testInfo ) {
             openLabel( recordTestCases, testInfo.getName()  );
         }
         
-        virtual void EndTestCase
-        (   
-            const TestCaseInfo& testInfo, 
-            const Totals& totals,
-            const std::string& stdOut, 
-            const std::string& stdErr 
-        )
-        {
+        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
+                                    const Totals& totals,
+                                    const std::string& stdOut, 
+                                    const std::string& stdErr ) {
             closeLabel( recordTestCases, testInfo.getName()  );
         }
         
-        virtual void Result
-        (   
-            const ResultInfo& resultInfo          
-        )
-        {
-            if( resultInfo.getResultType() == ResultWas::Ok )
-                return;
-            
-            
-            switch( resultInfo.getResultType() )
-            {                    
-                case ResultWas::Info:
-                    m_log << "Info";
-                    break;
-                case ResultWas::Warning:
-                    m_log << "Warning";
-                    break;
-                case ResultWas::ExplicitFailure:
-                    m_log << "ExplicitFailure";
-                    break;
-                case ResultWas::ExpressionFailed:
-                    m_log << "ExpressionFailed";
-                    break;
-                case ResultWas::Unknown:
-                    m_log << "Unknown";
-                    break;
-                case ResultWas::ThrewException:
-                    m_log << "ThrewException";
-                    break;
-                case ResultWas::DidntThrowException:
-                    m_log << "DidntThrowException";
-                    break;
+        virtual void Result( const ResultInfo& resultInfo );
 
-                // We shouldn't ever see these
-                case ResultWas::Ok:
-                    m_log << "Ok";
-                    break;
-                case ResultWas::FailureBit:
-                    m_log << "FailureBit";
-                    break;
-                case ResultWas::Exception:
-                    m_log << "Exception";
-                    break;
-                default:
-                    m_log << "{unrecognised ResultType enum value}";
-                    break;
-            }
-            
-            if( resultInfo.hasExpression() )
-                m_log << resultInfo.getExpression();
-            
-            if( resultInfo.hasMessage() )
-                m_log << "'" << resultInfo.getMessage() << "'";
-            
-            if( resultInfo.hasExpandedExpression() )
-                m_log << resultInfo.getExpandedExpression();        
-        }
         
     private:
         
-        bool shouldRecord( const std::string& recorder ) const
-        {
+        bool shouldRecord( const std::string& recorder ) const {
             return m_recorders.find( recorder ) != m_recorders.end();
         }
         
-        void openLabel( const std::string& label, const std::string& arg = "" )
-        {
-            if( shouldRecord( label ) )
-            {
-                m_log << m_indent << "\\" << label;
-                if( !arg.empty() )
-                    m_log << " " << arg;
-                m_log << "\n";
-                m_indent += " ";
-            }
-        }
-        
-        void closeLabel( const std::string& label, const std::string& arg = "" )
-        {
-            if( shouldRecord( label ) )
-            {
-                m_indent = m_indent.substr( 0, m_indent.size()-1 );
-                m_log << m_indent << "/" << label;
-                if( !arg.empty() )
-                    m_log << " " << arg;
-                m_log << "\n";
-            }
-        }
+        void openLabel( const std::string& label, const std::string& arg = "" );
+        void closeLabel( const std::string& label, const std::string& arg = "" );
         
         std::string m_indent;
         std::ostringstream m_log;
