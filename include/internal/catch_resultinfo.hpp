@@ -168,7 +168,14 @@ namespace Catch
             else if( m_op == "matches" )
                 return m_lhs + " " + m_rhs;
             else if( m_op != "!" )
-                return m_lhs + " " + m_op + " " + m_rhs;
+            {
+                if( m_lhs.size() + m_rhs.size() < 30 )
+                    return m_lhs + " " + m_op + " " + m_rhs;
+                else if( m_lhs.size() < 70 && m_rhs.size() < 70 )
+                    return "\n\t" + m_lhs + "\n\t" + m_op + "\n\t" + m_rhs;
+                else
+                    return "\n" + m_lhs + "\n" + m_op + "\n" + m_rhs + "\n\n";
+            }
             else
                 return "{can't expand - use " + m_macroName + "_FALSE( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
         }
