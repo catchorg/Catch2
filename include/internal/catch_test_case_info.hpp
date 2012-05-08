@@ -28,14 +28,12 @@ namespace Catch
             ITestCase* testCase, 
             const char* name, 
             const char* description,
-            const char* filename,
-            std::size_t line
+            const SourceLineInfo& lineInfo
         )
         :   m_test( testCase ),
             m_name( name ),
             m_description( description ),
-            m_filename( filename ),
-            m_line( line )
+            m_lineInfo( lineInfo )
         {
         }
 
@@ -44,9 +42,7 @@ namespace Catch
         ()
         :   m_test( NULL ),
             m_name(),
-            m_description(),
-            m_filename(),
-            m_line( 0 )
+            m_description()
         {
         }
         
@@ -58,8 +54,7 @@ namespace Catch
         :   m_test( other.m_test->clone() ),
             m_name( other.m_name ),
             m_description( other.m_description ),
-            m_filename( other.m_filename ),
-            m_line( other.m_line )
+            m_lineInfo( other.m_lineInfo )
         {
         }
         
@@ -72,8 +67,7 @@ namespace Catch
         :   m_test( other.m_test->clone() ),
             m_name( name ),
             m_description( other.m_description ),
-            m_filename( other.m_filename ),
-            m_line( other.m_line )
+            m_lineInfo( other.m_lineInfo )
         {
         }
         
@@ -120,21 +114,13 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////
-        const std::string& getFilename
+        const SourceLineInfo& getLineInfo
         ()
         const
         {
-            return m_filename;
+            return m_lineInfo;
         }
 
-        ///////////////////////////////////////////////////////////////////////
-        std::size_t getLine
-        ()
-        const
-        {
-            return m_line;
-        }
-        
         ///////////////////////////////////////////////////////////////////////
         bool isHidden
         ()
@@ -152,6 +138,7 @@ namespace Catch
             std::swap( m_test, other.m_test );
             m_name.swap( other.m_name );
             m_description.swap( other.m_description );
+            m_lineInfo.swap( other.m_lineInfo );
         }
         
         ///////////////////////////////////////////////////////////////////////
@@ -178,9 +165,7 @@ namespace Catch
         ITestCase* m_test;
         std::string m_name;
         std::string m_description;
-        std::string m_filename;
-        std::size_t m_line;
-        
+        SourceLineInfo m_lineInfo;        
     };
     
     ///////////////////////////////////////////////////////////////////////////

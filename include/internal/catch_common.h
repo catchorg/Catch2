@@ -1,15 +1,10 @@
 /*
- *  catch_common.h
- *  Catch
- *
  *  Created by Phil on 29/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
-
 #ifndef TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
@@ -32,24 +27,16 @@
 
 namespace Catch
 {
-	class NonCopyable
-	{
+	class NonCopyable {
 		NonCopyable( const NonCopyable& );
 		void operator = ( const NonCopyable& );
 	protected:
-		NonCopyable(){}
+		NonCopyable() {}
 		virtual ~NonCopyable() {}
 	};
     
-    typedef char NoType;
-    typedef int YesType;
-
-    // create a T for use in sizeof expressions
-    template<typename T> T Synth();
-
     template<typename ContainerT>
-    inline void deleteAll( ContainerT& container )
-    {
+    inline void deleteAll( ContainerT& container ) {
         typename ContainerT::const_iterator it = container.begin();
         typename ContainerT::const_iterator itEnd = container.end();
         for(; it != itEnd; ++it )
@@ -58,8 +45,7 @@ namespace Catch
         }
     }
     template<typename AssociativeContainerT>
-    inline void deleteAllValues( AssociativeContainerT& container )
-    {
+    inline void deleteAllValues( AssociativeContainerT& container ) {
         typename AssociativeContainerT::const_iterator it = container.begin();
         typename AssociativeContainerT::const_iterator itEnd = container.end();
         for(; it != itEnd; ++it )
@@ -69,34 +55,36 @@ namespace Catch
     }
     
     template<typename ContainerT, typename Function>
-    inline void forEach( ContainerT& container, Function function )
-    {
+    inline void forEach( ContainerT& container, Function function ) {
         std::for_each( container.begin(), container.end(), function );
     }
     
     template<typename ContainerT, typename Function>
-    inline void forEach( const ContainerT& container, Function function )
-    {
+    inline void forEach( const ContainerT& container, Function function ) {
         std::for_each( container.begin(), container.end(), function );
     }
     
     struct SourceLineInfo
     {
-        SourceLineInfo        
-        (
-            const std::string& file, 
-            std::size_t line
-        )
+        SourceLineInfo() : line( 0 ){}
+        SourceLineInfo( const std::string& file, std::size_t line )
         :   file( file ),
             line( line )
         {}
+        SourceLineInfo( const SourceLineInfo& other )
+        :   file( other.file ),
+            line( other.line )
+        {}
+        void swap( SourceLineInfo& other ){
+            file.swap( other.file );
+            std::swap( line, other.line );
+        }
         
         std::string file;
         std::size_t line;        
     };
     
-    inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info )
-    {
+    inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info ) {
 #ifndef __GNUG__
         os << info.file << "(" << info.line << "): ";
 #else                
@@ -106,8 +94,7 @@ namespace Catch
     }
     
     ATTRIBUTE_NORETURN
-    inline void throwLogicError( const std::string& message, const std::string& file, long line )
-    {
+    inline void throwLogicError( const std::string& message, const std::string& file, long line ) {
         std::ostringstream oss;
         oss << "Internal Catch error: '" << message << "' at: " << SourceLineInfo( file, line );
         throw std::logic_error( oss.str() );
@@ -115,6 +102,7 @@ namespace Catch
 }
 
 #define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
+#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 

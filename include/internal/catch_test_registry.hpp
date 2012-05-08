@@ -80,8 +80,7 @@ struct AutoReg
         (   TestFunction function, 
             const char* name, 
             const char* description,
-            const char* filename,
-            std::size_t line
+            const SourceLineInfo& lineInfo
         );
     
     ///////////////////////////////////////////////////////////////////////////
@@ -91,11 +90,10 @@ struct AutoReg
         void (C::*method)(), 
         const char* name, 
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     )
     {
-        registerTestCase( new MethodTestCase<C>( method ), name, description, filename, line );
+        registerTestCase( new MethodTestCase<C>( method ), name, description, lineInfo );
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -104,8 +102,7 @@ struct AutoReg
         ITestCase* testCase, 
         const char* name, 
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     );
     
     ~AutoReg
@@ -124,18 +121,18 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
     static void INTERNAL_CATCH_UNIQUE_NAME( catch_internal_TestFunction )(); \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc, __FILE__, __LINE__ ); }\
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
     static void INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction )()
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
     static void INTERNAL_CATCH_UNIQUE_NAME( catch_internal_TestFunction )() ATTRIBUTE_NORETURN; \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc, __FILE__, __LINE__ ); }\
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
     static void INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction )()
 
 ///////////////////////////////////////////////////////////////////////////////
 #define CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc, __FILE__, __LINE__ ); }
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
@@ -143,7 +140,7 @@ private:
         struct INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper ) : ClassName{ \
             void test(); \
         }; \
-        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test, TestName, Desc, __FILE__, __LINE__ ); \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test, TestName, Desc, CATCH_INTERNAL_LINEINFO ); \
     } \
     void INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test()
 

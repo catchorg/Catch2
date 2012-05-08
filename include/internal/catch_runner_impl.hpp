@@ -147,8 +147,7 @@ namespace Catch
                 do
                 {
                     m_reporter->StartGroup( "test case run" );
-                    m_currentResult.setFileAndLine( m_runningTest->getTestCaseInfo().getFilename(), 
-                                                    m_runningTest->getTestCaseInfo().getLine() );
+                    m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
                     m_reporter->EndGroup( "test case run", m_totals - prevTotals );
                 }
@@ -247,18 +246,17 @@ namespace Catch
         (
             const std::string& name, 
             const std::string& description,
-            const std::string& filename,
-            std::size_t line,
+            const SourceLineInfo& lineInfo,
             Counts& assertions
         )
         {
             std::ostringstream oss;
-            oss << name << "@" << SourceLineInfo( filename, line );
+            oss << name << "@" << lineInfo;
 
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
 
-            m_currentResult.setFileAndLine( filename, line );
+            m_currentResult.setLineInfo( lineInfo );
             m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
             

@@ -35,8 +35,7 @@ namespace Catch
         virtual bool sectionStarted
             (   const std::string& name, 
                 const std::string& description, 
-                const std::string& filename,
-                std::size_t line,
+                const SourceLineInfo& lineInfo,
                 Counts& assertions
             ) = 0;
         virtual void sectionEnded

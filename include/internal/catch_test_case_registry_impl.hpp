@@ -51,8 +51,8 @@ namespace Catch
             {
                 const TestCaseInfo& prev = *m_functions.find( testInfo );
                 std::cerr   << "error: TEST_CASE( \"" << testInfo.getName() << "\" ) already defined.\n"
-                            << "\tFirst seen at " << SourceLineInfo( prev.getFilename(), prev.getLine() ) << "\n"
-                            << "\tRedefined at " << SourceLineInfo( testInfo.getFilename(), testInfo.getLine() ) << std::endl;
+                            << "\tFirst seen at " << SourceLineInfo( prev.getLineInfo() ) << "\n"
+                            << "\tRedefined at " << SourceLineInfo( testInfo.getLineInfo() ) << std::endl;
                 exit(1);
             }
         }
@@ -158,11 +158,10 @@ namespace Catch
         TestFunction function, 
         const char* name,
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     )
     {
-        registerTestCase( new FreeFunctionTestCase( function ), name, description, filename, line );
+        registerTestCase( new FreeFunctionTestCase( function ), name, description, lineInfo );
     }    
     
     ///////////////////////////////////////////////////////////////////////////
@@ -177,11 +176,10 @@ namespace Catch
         ITestCase* testCase, 
         const char* name, 
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     )
     {
-        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, filename, line ) );
+        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
     }
     
 } // end namespace Catch

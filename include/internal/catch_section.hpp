@@ -28,11 +28,10 @@ namespace Catch
         (
             const std::string& name, 
             const std::string& description,
-            const std::string& filename,
-            std::size_t line
+            const SourceLineInfo& lineInfo
         )
         :   m_name( name ),
-            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_assertions ) )
+            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
         {
         }
 
@@ -62,6 +61,6 @@ namespace Catch
 } // end namespace Catch
 
 #define INTERNAL_CATCH_SECTION( name, desc ) \
-    if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc, __FILE__, __LINE__ ) )
+    if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc, CATCH_INTERNAL_LINEINFO ) )
 
 #endif // TWOBLUECUBES_CATCH_SECTION_HPP_INCLUDED

@@ -25,8 +25,6 @@ namespace Catch
         ResultInfo
         ()
         :   m_macroName(),
-            m_filename(),
-            m_line( 0 ),
             m_expr(),
             m_lhs(),
             m_rhs(),
@@ -41,15 +39,13 @@ namespace Catch
         (
             const char* expr, 
             ResultWas::OfType result, 
-            bool isNot, 
-            const char* filename, 
-            std::size_t line, 
+            bool isNot,
+            const SourceLineInfo& lineInfo,
             const char* macroName,
             const char* message
         )
         :   m_macroName( macroName ),
-            m_filename( filename ),
-            m_line( line ),
+            m_lineInfo( lineInfo ),
             m_expr( expr ),
             m_lhs(),
             m_rhs(),
@@ -137,7 +133,7 @@ namespace Catch
         ()
         const
         {
-            return m_filename;
+            return m_lineInfo.file;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -145,7 +141,7 @@ namespace Catch
         ()
         const
         {
-            return m_line;
+            return m_lineInfo.line;
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -191,8 +187,7 @@ namespace Catch
         
     protected:
         std::string m_macroName;
-        std::string m_filename;
-        std::size_t m_line;
+        SourceLineInfo m_lineInfo;
         std::string m_expr, m_lhs, m_rhs, m_op;
         std::string m_message;
         ResultWas::OfType m_result;
