@@ -198,7 +198,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual ResultAction::Value acceptExpression
         (
-            const MutableResultInfo& resultInfo
+            const ResultInfoBuilder& resultInfo
         )
         {
             m_currentResult = resultInfo;
@@ -328,7 +328,7 @@ namespace Catch
             testEnded( m_currentResult );
             m_lastResult = m_currentResult;
             
-            m_currentResult = MutableResultInfo();
+            m_currentResult = ResultInfoBuilder();
             if( m_lastResult.ok() )
                 return ResultAction::None;
             else if( shouldDebugBreak() )
@@ -373,7 +373,7 @@ namespace Catch
         
     private:
         RunningTest* m_runningTest;
-        MutableResultInfo m_currentResult;
+        ResultInfoBuilder m_currentResult;
         ResultInfo m_lastResult;
 
         const Config& m_config;

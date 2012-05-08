@@ -34,7 +34,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     Expression
     (
-        MutableResultInfo& result, 
+        ResultInfoBuilder& result, 
         T lhs 
     )
     :   m_result( result ),
@@ -44,7 +44,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator == 
+    ResultInfoBuilder& operator == 
     (
         const RhsT& rhs
     )
@@ -54,7 +54,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator != 
+    ResultInfoBuilder& operator != 
     (
         const RhsT& rhs
     )
@@ -64,7 +64,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator <
+    ResultInfoBuilder& operator <
     (
         const RhsT& rhs
     )
@@ -74,7 +74,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator >
+    ResultInfoBuilder& operator >
     (
         const RhsT& rhs
     )
@@ -84,7 +84,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator <= 
+    ResultInfoBuilder& operator <= 
     (
         const RhsT& rhs
     )
@@ -94,7 +94,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator >= 
+    ResultInfoBuilder& operator >= 
     (
         const RhsT& rhs
     )
@@ -103,7 +103,7 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo& operator == 
+    ResultInfoBuilder& operator == 
     (
         bool rhs
     )
@@ -112,7 +112,7 @@ public:
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo& operator != 
+    ResultInfoBuilder& operator != 
     (
         bool rhs
     )
@@ -121,7 +121,7 @@ public:
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    operator MutableResultInfo&
+    operator ResultInfoBuilder&
     ()
     {
         return m_result.captureBoolExpression( m_lhs );
@@ -142,7 +142,7 @@ public:
     );
 
 private:
-    MutableResultInfo& m_result;
+    ResultInfoBuilder& m_result;
     T m_lhs;
 };
     
@@ -154,7 +154,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     PtrExpression
     (
-        MutableResultInfo& result, 
+        ResultInfoBuilder& result, 
         const LhsT* lhs 
     )
     :   m_result( &result ),
@@ -163,7 +163,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator == 
+    ResultInfoBuilder& operator == 
     (
         const RhsT* rhs
     )
@@ -173,7 +173,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     // This catches NULL
-    MutableResultInfo& operator == 
+    ResultInfoBuilder& operator == 
     (
         LhsT* rhs
     )
@@ -183,7 +183,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator != 
+    ResultInfoBuilder& operator != 
     (
         const RhsT* rhs
     )
@@ -193,7 +193,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     // This catches NULL
-    MutableResultInfo& operator != 
+    ResultInfoBuilder& operator != 
     (
         LhsT* rhs
     )
@@ -202,7 +202,7 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    operator MutableResultInfo&
+    operator ResultInfoBuilder&
     ()
     {
         return m_result->captureBoolExpression( m_lhs );
@@ -210,7 +210,7 @@ public:
     
     
 private:
-    MutableResultInfo* m_result;
+    ResultInfoBuilder* m_result;
     const LhsT* m_lhs;
 };
 
@@ -348,7 +348,7 @@ public:
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    operator MutableResultInfo&
+    operator ResultInfoBuilder&
     ()
     {
         m_result.setMessage( m_messageStream.str() );
@@ -356,7 +356,7 @@ public:
     }
     
 private:
-    MutableResultInfo m_result;
+    ResultInfoBuilder m_result;
     std::ostringstream m_messageStream;
     
 };

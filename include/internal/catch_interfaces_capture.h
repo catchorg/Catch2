@@ -20,7 +20,7 @@ namespace Catch
 {    
     class TestCaseInfo;
     class ScopedInfo;
-    class MutableResultInfo;
+    class ResultInfoBuilder;
     class ResultInfo;
 
     struct IResultCapture
@@ -58,7 +58,7 @@ namespace Catch
             (   ResultWas::OfType result
             ) = 0;
         virtual ResultAction::Value acceptExpression
-            (   const MutableResultInfo& resultInfo 
+            (   const ResultInfoBuilder& resultInfo 
             ) = 0;
         virtual void acceptMessage
             (   const std::string& msg 

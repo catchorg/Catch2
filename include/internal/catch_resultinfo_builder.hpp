@@ -19,13 +19,13 @@ namespace Catch
 
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
-class MutableResultInfo : public ResultInfo
+class ResultInfoBuilder : public ResultInfo
 {
 public:
     
-    MutableResultInfo() {}
+    ResultInfoBuilder() {}
     
-    MutableResultInfo(  const char* expr, 
+    ResultInfoBuilder(  const char* expr, 
                         bool isNot, 
                         const SourceLineInfo& lineInfo,
                         const char* macroName,
@@ -81,7 +81,7 @@ private:
 
     template<typename T> friend class PtrExpression;
 
-    MutableResultInfo& captureBoolExpression( bool result ) {
+    ResultInfoBuilder& captureBoolExpression( bool result ) {
         m_lhs = Catch::toString( result );
         m_op = m_isNot ? "!" : "";
         setResultType( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
@@ -89,7 +89,7 @@ private:
     }    
 
     template<Internal::Operator Op, typename T1, typename T2>    
-    MutableResultInfo& captureExpression( const T1& lhs, const T2& rhs ) {
+    ResultInfoBuilder& captureExpression( const T1& lhs, const T2& rhs ) {
         setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         m_lhs = Catch::toString( lhs );
         m_rhs = Catch::toString( rhs );
@@ -98,7 +98,7 @@ private:
     }
 
     template<Internal::Operator Op, typename T>
-    MutableResultInfo& captureExpression( const T* lhs, int rhs ) {
+    ResultInfoBuilder& captureExpression( const T* lhs, int rhs ) {
         return captureExpression<Op>( lhs, reinterpret_cast<const T*>( rhs ) );
     }    
 };
