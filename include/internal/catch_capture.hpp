@@ -26,39 +26,25 @@ namespace Catch
     
 namespace Detail
 {
-    struct NonStreamable
-    {
-        template<typename T>
-        NonStreamable( const T& )
-        {
-        }
+    struct NonStreamable {
+        template<typename T> NonStreamable( const T& ){}
     };
     
     // If the type does not have its own << overload for ostream then
     // this one will be used instead
-    inline std::ostream& operator << ( std::ostream& ss, NonStreamable )
-    {
-        ss << "{?}";
-        return ss;
+    inline std::ostream& operator << ( std::ostream& ss, NonStreamable ){
+        return ss << "{?}";
     }
     
     template<typename T>
-    inline std::string makeString
-    (
-        const T& value
-    )
-    {
+    inline std::string makeString( const T& value ) {
         std::ostringstream oss;
         oss << value;
         return oss.str();
     }    
 
     template<typename T>
-    inline std::string makeString
-    (
-        T* p
-    )
-    {
+    inline std::string makeString( T* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
@@ -67,11 +53,7 @@ namespace Detail
     }    
 
     template<typename T>
-    inline std::string makeString
-    (
-        const T* p
-    )
-    {
+    inline std::string makeString( const T* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
@@ -81,33 +63,18 @@ namespace Detail
 
 }// end namespace Detail
 
-///////////////////////////////////////////////////////////////////////////////
 template<typename T>
-std::string toString
-(
-    const T& value
-)
-{
+std::string toString( const T& value ) {
     return Detail::makeString( value );
 }
     
 // Shortcut overloads
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const std::string& value
-)
-{
+inline std::string toString( const std::string& value ) {
     return "\"" + value + "\"";
 }
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const std::wstring& value
-)
-{
+inline std::string toString( const std::wstring& value ) {
     std::ostringstream oss;
     oss << "\"";
     for(size_t i = 0; i < value.size(); ++i )
@@ -116,41 +83,21 @@ inline std::string toString
     return oss.str();
 }
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const char* const value
-)
-{
+inline std::string toString( const char* const value ) {
     return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
 }   
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    char* const value
-)
-{
+inline std::string toString( char* const value ) {
     return Catch::toString( static_cast<const char*>( value ) );
 }        
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    int value
-)
-{
+inline std::string toString( int value ) {
     std::ostringstream oss;
     oss << value;
     return oss.str();
 }
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    unsigned int value
-)
-{
+inline std::string toString( unsigned int value ) {
     std::ostringstream oss;
     if( value > 8192 )
         oss << "0x" << std::hex << value;
@@ -159,12 +106,7 @@ inline std::string toString
     return oss.str();
 }
     
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    unsigned long value
-)
-{
+inline std::string toString( unsigned long value ) {
     std::ostringstream oss;
     if( value > 8192 )
         oss << "0x" << std::hex << value;
@@ -173,32 +115,19 @@ inline std::string toString
     return oss.str();
 }
     
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const double value 
-)
-{
+inline std::string toString( const double value ) {
     std::ostringstream oss;
     oss << value;
     return oss.str();
 }    
 
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    bool value
-)
-{
+inline std::string toString( bool value ) {
     return value ? "true" : "false";
 }
     
-struct TestFailureException
-{
-};
-struct DummyExceptionType_DontUse
-{
-};
+struct TestFailureException{};
+struct DummyExceptionType_DontUse{};
+
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
 class MutableResultInfo : public ResultInfo
