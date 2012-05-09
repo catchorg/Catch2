@@ -10,15 +10,6 @@
  *
  */
 
-/* TBD:
- 
- Next:
-
- Later:
-    Finish command line parser (list as xml)
-    Tags?
-    Finish macros, listed here, later (just CHECK_NOFAIL now)
- */
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 #include "internal/catch_hub.h"
