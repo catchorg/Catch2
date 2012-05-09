@@ -94,7 +94,7 @@ namespace Catch
     }
     
     ATTRIBUTE_NORETURN
-    inline void throwLogicError( const std::string& message, const std::string& file, long line ) {
+    inline void throwLogicError( const std::string& message, const std::string& file, std::size_t line ) {
         std::ostringstream oss;
         oss << "Internal Catch error: '" << message << "' at: " << SourceLineInfo( file, line );
         throw std::logic_error( oss.str() );

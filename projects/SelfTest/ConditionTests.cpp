@@ -247,7 +247,7 @@ TEST_CASE(  "./succeeding/conditions/ptr",
     REQUIRE( returnsNull() == NULL );
     REQUIRE( returnsConstNull() == NULL );
     
-//    REQUIRE( NULL != p ); // gives warning, but should compile and run ok
+    REQUIRE( NULL != p );
 }
 
 // Not (!) tests

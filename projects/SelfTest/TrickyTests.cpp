@@ -209,7 +209,7 @@ namespace ObjectWithNonConstEqualityOperator
     TEST_CASE("./succeeding/non-const==", "Demonstrate that a non-const == is not used")
     {
         Test t( 1 );
-        REQUIRE( t == 1 );
+        REQUIRE( t == 1u );
     }
 }
 

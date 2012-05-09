@@ -58,7 +58,7 @@ namespace Internal
     {
         static bool evaluate( const T1& lhs, const T2& rhs)
         {
-            return const_cast<T1&>( lhs ) == const_cast<T2&>( rhs );
+            return const_cast<T1&>( lhs ) ==  const_cast<T2&>( rhs );
         }
     };
     template<typename T1, typename T2>

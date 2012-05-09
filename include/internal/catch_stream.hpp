@@ -64,7 +64,7 @@ namespace Catch
         {
             if( pbase() != pptr() )
             {
-                m_writer( std::string( pbase(), pptr() - pbase() ) );
+                m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
                 setp( pbase(), epptr() );
             }
             return 0;

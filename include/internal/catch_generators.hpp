@@ -68,7 +68,7 @@ public:
     ()
     const
     {
-        return 1+m_to-m_from;
+        return static_cast<std::size_t>( 1+m_to-m_from );
     }
     
 private:
