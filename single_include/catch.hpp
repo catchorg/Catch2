@@ -1,65 +1,18 @@
-// This file has been merged from multiple headers. Please don't edit it directly
-
-#ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_HPP_INCLUDED
 /*
- *  catch.hpp
- *  Catch
- *
- *  Created by Phil on 22/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd
+ *  This file has been merged from multiple headers. Please don't edit it directly
+ *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
+#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
+#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 
-/* TBD:
-
- Next:
-
- Later:
-    Finish command line parser (list as xml)
-    Tags?
-    Finish macros, listed here, later (just CHECK_NOFAIL now)
- */
-#define TWOBLUECUBES_CATCH_HPP_INCLUDED
 // #included from: internal/catch_hub.h
-
-/*
- *  catch_hub.h
- *  Catch
- *
- *  Created by Phil on 31/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_HUB_H_INCLUDED
 
 // #included from: catch_interfaces_reporter.h
 
-/*
- *  Created by Phil on 31/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_CATCH_IREPORTERREGISTRY_INCLUDED
-
 // #included from: catch_common.h
-
-/*
- *  Created by Phil on 29/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
@@ -157,21 +110,7 @@ namespace Catch
 #define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
 
-
 // #included from: catch_totals.hpp
-
-//
-//  catch_totals.hpp
-//  Catch
-//
-//  Created by Phil Nash on 23/02/2012.
-//  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
-#define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 
 namespace Catch
 {
@@ -215,20 +154,6 @@ namespace Catch
 }
 
 // #included from: catch_ptr.hpp
-
-/*
- *  catch_ptr.hpp
- *  Catch
- *
- *  Created by Phil on 02/05/2012.
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
-
 
 namespace Catch
 {
@@ -313,7 +238,6 @@ namespace Catch
 
 } // end namespace Catch
 
-
 #include <string>
 #include <ostream>
 #include <map>
@@ -367,7 +291,6 @@ namespace Catch
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }
 }
-
 
 #include <memory>
 #include <vector>
@@ -456,34 +379,7 @@ namespace Catch
 
 // #included from: internal/catch_test_registry.hpp
 
-/*
- *  catch_test_registry.hpp
- *  Catch
- *
- *  Created by Phil on 18/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
-
 // #included from: catch_interfaces_testcase.h
-
-/*
- *  catch_interfaces_testcase.h
- *  Catch
- *
- *  Created by Phil on 07/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 
 #include <vector>
 
@@ -530,9 +426,6 @@ namespace Catch
             ) = 0;
     };
 }
-
-
-
 
 namespace Catch
 {
@@ -665,36 +558,9 @@ private:
 
 // #included from: internal/catch_capture.hpp
 
-/*
- *  Created by Phil on 18/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
-
 // #included from: catch_resultinfo_builder.hpp
 
-/*
- *  Created by Phil on 8/5/2012.
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_CATCH_RESULTINFO_BUILDER_HPP_INCLUDED
-
 // #included from: catch_tostring.hpp
-
-/*
- *  Created by Phil on 8/5/2012.
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
 
 #include <sstream>
 
@@ -807,35 +673,8 @@ inline std::string toString( bool value ) {
 
 // #included from: catch_resultinfo.hpp
 
-/*
- *  catch_resultinfo.hpp
- *  Catch
- *
- *  Created by Phil on 28/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_RESULT_INFO_HPP_INCLUDED
-
 #include <string>
 // #included from: catch_result_type.h
-
-/*
- *  catch_result_type.h
- *  Catch
- *
- *  Created by Phil on 07/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
 
 namespace Catch
 {
@@ -870,7 +709,6 @@ struct ResultWas{ enum OfType
     };
 
 }
-
 
 
 namespace Catch
@@ -1054,22 +892,7 @@ namespace Catch
 
 } // end namespace Catch
 
-
 // #included from: catch_evaluate.hpp
-
-/*
- *  catch_evaluate.hpp
- *  Catch
- *
- *  Created by Phil on 04/03/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_EVALUATE_HPP_INCLUDED
 
 namespace Catch
 {
@@ -1256,7 +1079,6 @@ namespace Internal
 } // end of namespace Internal
 } // end of namespace Catch
 
-
 namespace Catch
 {
 
@@ -1350,19 +1172,6 @@ private:
 
 // #included from: catch_interfaces_capture.h
 
-/*
- *  catch_interfaces_capture.h
- *  Catch
- *
- *  Created by Phil on 07/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED
-
 #include <string>
 
 namespace Catch
@@ -1422,21 +1231,6 @@ namespace Catch
 }
 
 // #included from: catch_debugger.hpp
-
-/*
- *  catch_debugger.hpp
- *  Catch
- *
- *  Created by Phil on 27/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- * Provides a BreakIntoDebugger() macro for Windows and Mac (so far)
- */
-
-#define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 
 #include <iostream>
 
@@ -1729,12 +1523,10 @@ public:
         return m_result->captureBoolExpression( m_lhs );
     }
 
-
 private:
     ResultInfoBuilder* m_result;
     const LhsT* m_lhs;
 };
-
 
 class ResultBuilder
 {
@@ -2000,21 +1792,6 @@ inline bool isTrue( bool value ){ return value; }
 
 // #included from: internal/catch_section.hpp
 
-/*
- *  catch_section.hpp
- *  Catch
- *
- *  Created by Phil on 03/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_SECTION_HPP_INCLUDED
-
-
 #include <string>
 
 namespace Catch
@@ -2063,21 +1840,6 @@ namespace Catch
     if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc, CATCH_INTERNAL_LINEINFO ) )
 
 // #included from: internal/catch_generators.hpp
-
-/*
- *  catch_generators.hpp
- *  Catch
- *
- *  Created by Phil on 27/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
-
 
 #include <iterator>
 #include <vector>
@@ -2373,19 +2135,6 @@ using namespace Generators;
 
 // #included from: internal/catch_interfaces_exception.h
 
-/*
- *  catch_exception_interfaces.h
- *  Catch
- *
- *  Created by Phil on 20/04/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
-
 #include <string>
 
 namespace Catch
@@ -2464,20 +2213,6 @@ namespace Catch
     static std::string INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_ExceptionTranslator )( signature )
 
 // #included from: internal/catch_approx.hpp
-
-/*
- *  catch_approx.hpp
- *  Catch
- *
- *  Created by Phil on 28/04/2011.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
-
 
 #include <cmath>
 #include <limits>
@@ -2571,7 +2306,6 @@ namespace Catch
                 return !operator==( rhs, lhs );
             }
 
-
             ///////////////////////////////////////////////////////////////////////////
             Approx& epsilon
             (
@@ -2620,20 +2354,6 @@ namespace Catch
 } // end namespace Catch
 
 // #included from: internal/catch_test_case_info.hpp
-
-/*
- *  catch_test_case_info.hpp
- *  Catch
- *
- *  Created by Phil on 29/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED
 
 #include <map>
 #include <string>
@@ -2831,19 +2551,6 @@ namespace Catch
 
 // #included from: internal/catch_matchers.hpp
 
-//
-//  catch_matchers.hpp
-//  CatchSelfTest
-//
-//  Created by Phil Nash on 04/03/2012.
-//  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
-#define TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
-
 namespace Catch
 {
 namespace Matchers
@@ -2915,23 +2622,8 @@ using namespace Matchers;
 
 } // namespace Catch
 
-
 #ifdef __OBJC__
 // #included from: internal/catch_objc.hpp
-
-/*
- *  catch_objc.hpp
- *  Catch
- *
- *  Created by Phil on 14/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
@@ -3245,48 +2937,8 @@ return @ desc; \
 #if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
 // #included from: catch_runner.hpp
 
-/*
- *  catch_runner.hpp
- *  Catch
- *
- *  Created by Phil on 31/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
-
 // #included from: internal/catch_hub_impl.hpp
-
-/*
- *  catch_hub_impl.hpp
- *  Catch
- *
- *  Created by Phil on 31/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
 // #included from: catch_reporter_registry.hpp
-
-/*
- *  catch_reporter_registry.hpp
- *  Catch
- *
- *  Created by Phil on 29/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_REPORTER_REGISTRY_HPP_INCLUDED
-
 
 #include <map>
 
@@ -3341,19 +2993,6 @@ namespace Catch
 }
 
 // #included from: catch_test_case_registry_impl.hpp
-
-/*
- *  catch_test_case_registry_impl.hpp
- *  Catch
- *
- *  Created by Phil on 7/1/2011
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
 
 #include <vector>
 #include <set>
@@ -3436,7 +3075,6 @@ namespace Catch
 
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-
 
     struct FreeFunctionTestCase : ITestCase
     {
@@ -3527,20 +3165,6 @@ namespace Catch
 
 // #included from: catch_exception_translator_registry.hpp
 
-/*
- *  catch_exception_translator_registry.hpp
- *  Catch
- *
- *  Created by Phil on 20/04/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_HPP_INCLUDED
-
-
 namespace Catch
 {
     class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry
@@ -3615,34 +3239,7 @@ namespace Catch
 
 // #included from: catch_runner_impl.hpp
 
- /*
- *  catch_runner.hpp
- *  Catch
- *
- *  Created by Phil on 22/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_INTERNAL_CATCH_RUNNER_HPP_INCLUDED
-
 // #included from: catch_interfaces_runner.h
-
-/*
- *  catch_interfaces_runner.h
- *  Catch
- *
- *  Created by Phil on 07/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_INTERNAL_CATCH_INTERFACES_RUNNER_H_INCLUDED
-
 
 #include <string>
 
@@ -3671,21 +3268,6 @@ namespace Catch
 }
 
 // #included from: catch_config.hpp
-
-/*
- *  catch_config.hpp
- *  Catch
- *
- *  Created by Phil on 08/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
-
 
 #include <memory>
 #include <vector>
@@ -3723,7 +3305,6 @@ namespace Catch
 
             AsMask = 0xf0
         }; };
-
 
         ///////////////////////////////////////////////////////////////////////////
         Config()
@@ -3918,26 +3499,7 @@ namespace Catch
 
 // #included from: catch_running_test.hpp
 
-/*
- *  Created by Phil Nash on 4/5/2012
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_INTERNAL_CATCH_RUNNING_TEST_HPP_INCLUDED
-
 // #included from: catch_section_info.hpp
-
-/*
- *  Created by Phil Nash on 4/5/2012
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_INTERNAL_CATCH_SECTION_INFO_HPP_INCLUDED
-
 
 #include <map>
 #include <string>
@@ -4067,7 +3629,6 @@ namespace Catch
         SectionInfo* m_parent;
     };
 }
-
 
 namespace Catch
 {
@@ -4203,7 +3764,6 @@ namespace Catch
         bool m_changed;
     };
 }
-
 
 #include <set>
 #include <string>
@@ -4572,21 +4132,6 @@ namespace Catch
 
 // #included from: catch_generators_impl.hpp
 
-/*
- *  catch_generators_impl.hpp
- *  Catch
- *
- *  Created by Phil on 28/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_GENERATORS_IMPL_HPP_INCLUDED
-
-
 #include <vector>
 #include <string>
 #include <map>
@@ -4689,34 +4234,7 @@ namespace Catch
 
 // #included from: catch_console_colour_impl.hpp
 
-/*
- *  catch_console_colour_impl.hpp
- *  Catch
- *
- *  Created by Phil on 25/2/2012.
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
-
 // #included from: catch_console_colour.hpp
-
-/*
- *  catch_console_colour.hpp
- *  Catch
- *
- *  Created by Phil on 25/2/2012.
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
-
 
 namespace Catch
 {
@@ -4750,7 +4268,6 @@ namespace Catch
     };
 
 } // end namespace Catch
-
 
 #ifdef CATCH_PLATFORM_WINDOWS
 
@@ -4838,20 +4355,6 @@ namespace Catch
 #endif
 
 // #included from: catch_stream.hpp
-
-/*
- *  catch_stream.hpp
- *  Catch
- *
- *  Created by Phil on 17/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
 #include <stdexcept>
 #include <cstdio>
@@ -5071,23 +4574,7 @@ namespace Catch
         return generators && generators->moveNext();
     }
 }
-
 // #included from: internal/catch_commandline.hpp
-
-/*
- *  catch_commandline.hpp
- *  Catch
- *
- *  Created by Phil on 02/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
-
 
 namespace Catch
 {
@@ -5294,24 +4781,9 @@ namespace Catch
         Config& m_config;
     };
 
-
 } // end namespace Catch
 
 // #included from: internal/catch_list.hpp
-
-/*
- *  catch_list.hpp
- *  Catch
- *
- *  Created by Phil on 5/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
 
 #include <limits>
 
@@ -5369,34 +4841,7 @@ namespace Catch
 
 // #included from: reporters/catch_reporter_basic.hpp
 
-/*
- *  catch_reporter_basic.hpp
- *  Catch
- *
- *  Created by Phil on 28/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED
-
 // #included from: ../internal/catch_reporter_registrars.hpp
-
-/*
- *  catch_reporter_registrars.hpp
- *  Test
- *
- *  Created by Phil on 31/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
-
 
 namespace Catch
 {
@@ -5439,7 +4884,6 @@ namespace Catch
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
     Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
-
 
 namespace Catch
 {
@@ -5859,32 +5303,7 @@ namespace Catch
 
 // #included from: reporters/catch_reporter_xml.hpp
 
-/*
- *  catch_reporter_xml.hpp
- *  Catch
- *
- *  Created by Phil on 28/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED
-
 // #included from: ../internal/catch_xmlwriter.hpp
-
-/*
- *  catch_xmlwriter.hpp
- *  Catch
- *
- *  Created by Phil on 09/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
 #include <sstream>
 #include <string>
@@ -6202,7 +5621,6 @@ namespace Catch
     };
 
 }
-
 namespace Catch
 {
     class XmlReporter : public SharedImpl<IReporter>
@@ -6376,20 +5794,6 @@ namespace Catch
 } // end namespace Catch
 
 // #included from: reporters/catch_reporter_junit.hpp
-
-/*
- *  catch_reporter_junit.hpp
- *  Catch
- *
- *  Created by Phil on 26/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
-
 
 namespace Catch
 {
@@ -6611,7 +6015,6 @@ namespace Catch
             }
         }
 
-
         ///////////////////////////////////////////////////////////////////////////
         void OutputTestResult( XmlWriter& xml, const TestCaseStats& stats )
         {
@@ -6645,7 +6048,6 @@ namespace Catch
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
 } // end namespace Catch
-
 
 #include <fstream>
 #include <stdlib.h>
@@ -6776,20 +6178,6 @@ namespace Catch
 #ifdef CATCH_CONFIG_MAIN
 // #included from: internal/catch_default_main.hpp
 
-/*
- *  catch_default_main.hpp
- *  Catch
- *
- *  Created by Phil on 20/05/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
-#define TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
-
 int main (int argc, char * const argv[])
 {
 #ifdef __OBJC__
@@ -6862,5 +6250,5 @@ int main (int argc, char * const argv[])
 
 using Catch::Detail::Approx;
 
-#endif // TWOBLUECUBES_CATCH_HPP_INCLUDED
+#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 
