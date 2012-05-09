@@ -42,33 +42,23 @@
 // #included from: catch_interfaces_reporter.h
 
 /*
- *  catch_interfaces_reporter.h
- *  Test
- *
  *  Created by Phil on 31/12/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
-
 #define TWOBLUECUBES_CATCH_IREPORTERREGISTRY_INCLUDED
 
 // #included from: catch_common.h
 
 /*
- *  catch_common.h
- *  Catch
- *
  *  Created by Phil on 29/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
-
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
@@ -90,24 +80,16 @@
 
 namespace Catch
 {
-	class NonCopyable
-	{
+	class NonCopyable {
 		NonCopyable( const NonCopyable& );
 		void operator = ( const NonCopyable& );
 	protected:
-		NonCopyable(){}
+		NonCopyable() {}
 		virtual ~NonCopyable() {}
 	};
 
-    typedef char NoType;
-    typedef int YesType;
-
-    // create a T for use in sizeof expressions
-    template<typename T> T Synth();
-
     template<typename ContainerT>
-    inline void deleteAll( ContainerT& container )
-    {
+    inline void deleteAll( ContainerT& container ) {
         typename ContainerT::const_iterator it = container.begin();
         typename ContainerT::const_iterator itEnd = container.end();
         for(; it != itEnd; ++it )
@@ -116,8 +98,7 @@ namespace Catch
         }
     }
     template<typename AssociativeContainerT>
-    inline void deleteAllValues( AssociativeContainerT& container )
-    {
+    inline void deleteAllValues( AssociativeContainerT& container ) {
         typename AssociativeContainerT::const_iterator it = container.begin();
         typename AssociativeContainerT::const_iterator itEnd = container.end();
         for(; it != itEnd; ++it )
@@ -127,34 +108,36 @@ namespace Catch
     }
 
     template<typename ContainerT, typename Function>
-    inline void forEach( ContainerT& container, Function function )
-    {
+    inline void forEach( ContainerT& container, Function function ) {
         std::for_each( container.begin(), container.end(), function );
     }
 
     template<typename ContainerT, typename Function>
-    inline void forEach( const ContainerT& container, Function function )
-    {
+    inline void forEach( const ContainerT& container, Function function ) {
         std::for_each( container.begin(), container.end(), function );
     }
 
     struct SourceLineInfo
     {
-        SourceLineInfo
-        (
-            const std::string& file,
-            std::size_t line
-        )
+        SourceLineInfo() : line( 0 ){}
+        SourceLineInfo( const std::string& file, std::size_t line )
         :   file( file ),
             line( line )
         {}
+        SourceLineInfo( const SourceLineInfo& other )
+        :   file( other.file ),
+            line( other.line )
+        {}
+        void swap( SourceLineInfo& other ){
+            file.swap( other.file );
+            std::swap( line, other.line );
+        }
 
         std::string file;
         std::size_t line;
     };
 
-    inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info )
-    {
+    inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info ) {
 #ifndef __GNUG__
         os << info.file << "(" << info.line << "): ";
 #else
@@ -164,8 +147,7 @@ namespace Catch
     }
 
     ATTRIBUTE_NORETURN
-    inline void throwLogicError( const std::string& message, const std::string& file, long line )
-    {
+    inline void throwLogicError( const std::string& message, const std::string& file, std::size_t line ) {
         std::ostringstream oss;
         oss << "Internal Catch error: '" << message << "' at: " << SourceLineInfo( file, line );
         throw std::logic_error( oss.str() );
@@ -173,6 +155,7 @@ namespace Catch
 }
 
 #define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
+#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
 
 
 // #included from: catch_totals.hpp
@@ -337,115 +320,45 @@ namespace Catch
 
 namespace Catch
 {
-    ///////////////////////////////////////////////////////////////////////////
-    struct IReporterConfig
-    {
-        virtual ~IReporterConfig
-        ()
-        {}
-
-        virtual std::ostream& stream
-            () const = 0;
-
-        virtual bool includeSuccessfulResults
-            () const = 0;
-
-        virtual std::string getName
-            () const = 0;
+    struct IReporterConfig {
+        virtual ~IReporterConfig() {}
+        virtual std::ostream& stream () const = 0;
+        virtual bool includeSuccessfulResults () const = 0;
+        virtual std::string getName () const = 0;
     };
 
     class TestCaseInfo;
     class ResultInfo;
 
-    ///////////////////////////////////////////////////////////////////////////
-    struct IReporter : IShared
-    {
-        virtual ~IReporter
-            (){}
-
-        virtual bool shouldRedirectStdout
-            () const = 0;
-
-        virtual void StartTesting
-            () = 0;
-
-        virtual void EndTesting
-            (   const Totals& totals
-            ) = 0;
-
-        virtual void StartGroup
-            (   const std::string& groupName
-            ) = 0;
-
-        virtual void EndGroup
-            (   const std::string& groupName,
-                const Totals& totals
-            ) = 0;
-
-        virtual void StartSection
-            (   const std::string& sectionName,
-                const std::string description
-            ) = 0;
-
-        virtual void EndSection
-            (   const std::string& sectionName,
-                const Counts& assertions
-            ) = 0;
-
-        virtual void StartTestCase
-            (   const TestCaseInfo& testInfo
-            ) = 0;
-
-        virtual void EndTestCase
-            (   const TestCaseInfo& testInfo,
-                const Totals& totals,
-                const std::string& stdOut,
-                const std::string& stdErr
-            ) = 0;
-
-        virtual void Result
-            (   const ResultInfo& result
-            ) = 0;
+    struct IReporter : IShared {
+        virtual ~IReporter() {}
+        virtual bool shouldRedirectStdout() const = 0;
+        virtual void StartTesting() = 0;
+        virtual void EndTesting( const Totals& totals ) = 0;
+        virtual void StartGroup( const std::string& groupName ) = 0;
+        virtual void EndGroup( const std::string& groupName, const Totals& totals ) = 0;
+        virtual void StartSection( const std::string& sectionName, const std::string description ) = 0;
+        virtual void EndSection( const std::string& sectionName, const Counts& assertions ) = 0;
+        virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;
+        virtual void EndTestCase( const TestCaseInfo& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;
+        virtual void Result( const ResultInfo& result ) = 0;
     };
 
-    ///////////////////////////////////////////////////////////////////////////
-    struct IReporterFactory
-    {
-        virtual ~IReporterFactory
-            (){}
-
-        virtual IReporter* create
-            (   const IReporterConfig& config
-            ) const = 0;
-
-        virtual std::string getDescription
-            () const = 0;
+    struct IReporterFactory {
+        virtual ~IReporterFactory() {}
+        virtual IReporter* create( const IReporterConfig& config ) const = 0;
+        virtual std::string getDescription() const = 0;
     };
 
-    ///////////////////////////////////////////////////////////////////////////
-    struct IReporterRegistry
-    {
+    struct IReporterRegistry {
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
-        virtual ~IReporterRegistry
-            (){}
-
-        virtual IReporter* create
-            (   const std::string& name,
-                const IReporterConfig& config
-            ) const = 0;
-
-        virtual void registerReporter
-            (   const std::string& name,
-                IReporterFactory* factory
-            ) = 0;
-
-        virtual const FactoryMap& getFactories
-            () const = 0;
-
+        virtual ~IReporterRegistry() {}
+        virtual IReporter* create( const std::string& name, const IReporterConfig& config ) const = 0;
+        virtual void registerReporter( const std::string& name, IReporterFactory* factory ) = 0;
+        virtual const FactoryMap& getFactories() const = 0;
     };
 
-    ///////////////////////////////////////////////////////////////////////////
     inline std::string trim( const std::string& str )
     {
         std::string::size_type start = str.find_first_not_of( "\n\r\t " );
@@ -453,8 +366,6 @@ namespace Catch
 
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }
-
-
 }
 
 
@@ -688,8 +599,7 @@ struct AutoReg
         (   TestFunction function,
             const char* name,
             const char* description,
-            const char* filename,
-            std::size_t line
+            const SourceLineInfo& lineInfo
         );
 
     ///////////////////////////////////////////////////////////////////////////
@@ -699,11 +609,10 @@ struct AutoReg
         void (C::*method)(),
         const char* name,
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     )
     {
-        registerTestCase( new MethodTestCase<C>( method ), name, description, filename, line );
+        registerTestCase( new MethodTestCase<C>( method ), name, description, lineInfo );
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -712,8 +621,7 @@ struct AutoReg
         ITestCase* testCase,
         const char* name,
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     );
 
     ~AutoReg
@@ -731,44 +639,171 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
-    static void INTERNAL_CATCH_UNIQUE_NAME( catch_internal_TestFunction )(); \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc, __FILE__, __LINE__ ); }\
-    static void INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction )()
+    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
+    static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
-    static void INTERNAL_CATCH_UNIQUE_NAME( catch_internal_TestFunction )() ATTRIBUTE_NORETURN; \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction ), Name, Desc, __FILE__, __LINE__ ); }\
-    static void INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_TestFunction )()
+    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() ATTRIBUTE_NORETURN; \
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
+    static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
 ///////////////////////////////////////////////////////////////////////////////
 #define CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc, __FILE__, __LINE__ ); }
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
     namespace{ \
-        struct INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper ) : ClassName{ \
+        struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
             void test(); \
         }; \
-        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test, TestName, Desc, __FILE__, __LINE__ ); \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, TestName, Desc, CATCH_INTERNAL_LINEINFO ); \
     } \
-    void INTERNAL_CATCH_UNIQUE_NAME( Catch_FixtureWrapper )::test()
+    void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
 
 // #included from: internal/catch_capture.hpp
 
 /*
- *  catch_capture.hpp
- *  Catch
- *
  *  Created by Phil on 18/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
+
+// #included from: catch_resultinfo_builder.hpp
+
+/*
+ *  Created by Phil on 8/5/2012.
+ *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ */
+#define TWOBLUECUBES_CATCH_RESULTINFO_BUILDER_HPP_INCLUDED
+
+// #included from: catch_tostring.hpp
+
+/*
+ *  Created by Phil on 8/5/2012.
+ *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ */
+#define TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
+
+#include <sstream>
+
+namespace Catch
+{
+namespace Detail
+{
+    struct NonStreamable {
+        template<typename T> NonStreamable( const T& ){}
+    };
+
+    // If the type does not have its own << overload for ostream then
+    // this one will be used instead
+    inline std::ostream& operator << ( std::ostream& ss, NonStreamable ){
+        return ss << "{?}";
+    }
+
+    template<typename T>
+    inline std::string makeString( const T& value ) {
+        std::ostringstream oss;
+        oss << value;
+        return oss.str();
+    }
+
+    template<typename T>
+    inline std::string makeString( T* p ) {
+        if( !p )
+            return INTERNAL_CATCH_STRINGIFY( NULL );
+        std::ostringstream oss;
+        oss << p;
+        return oss.str();
+    }
+
+    template<typename T>
+    inline std::string makeString( const T* p ) {
+        if( !p )
+            return INTERNAL_CATCH_STRINGIFY( NULL );
+        std::ostringstream oss;
+        oss << p;
+        return oss.str();
+    }
+
+} // end namespace Detail
+
+/// \brief converts any type to a string
+///
+/// The default template forwards on to ostringstream - except when an
+/// ostringstream overload does not exist - in which case it attempts to detect
+/// that and writes {?}.
+/// Overload (not specialise) this template for custom typs that you don't want
+/// to provide an ostream overload for.
+template<typename T>
+std::string toString( const T& value ) {
+    return Detail::makeString( value );
+}
+
+// Built in overloads
+
+inline std::string toString( const std::string& value ) {
+    return "\"" + value + "\"";
+}
+
+inline std::string toString( const std::wstring& value ) {
+    std::ostringstream oss;
+    oss << "\"";
+    for(size_t i = 0; i < value.size(); ++i )
+        oss << static_cast<char>( value[i] <= 0xff ? value[i] : '?');
+    oss << "\"";
+    return oss.str();
+}
+
+inline std::string toString( const char* const value ) {
+    return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
+}
+
+inline std::string toString( char* const value ) {
+    return Catch::toString( static_cast<const char*>( value ) );
+}
+
+inline std::string toString( int value ) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
+inline std::string toString( unsigned long value ) {
+    std::ostringstream oss;
+    if( value > 8192 )
+        oss << "0x" << std::hex << value;
+    else
+        oss << value;
+    return oss.str();
+}
+
+inline std::string toString( unsigned int value ) {
+    return toString( (unsigned long)value );
+}
+
+inline std::string toString( const double value ) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
+inline std::string toString( bool value ) {
+    return value ? "true" : "false";
+}
+
+} // end namespace Catch
 
 // #included from: catch_resultinfo.hpp
 
@@ -848,8 +883,6 @@ namespace Catch
         ResultInfo
         ()
         :   m_macroName(),
-            m_filename(),
-            m_line( 0 ),
             m_expr(),
             m_lhs(),
             m_rhs(),
@@ -865,14 +898,12 @@ namespace Catch
             const char* expr,
             ResultWas::OfType result,
             bool isNot,
-            const char* filename,
-            std::size_t line,
+            const SourceLineInfo& lineInfo,
             const char* macroName,
             const char* message
         )
         :   m_macroName( macroName ),
-            m_filename( filename ),
-            m_line( line ),
+            m_lineInfo( lineInfo ),
             m_expr( expr ),
             m_lhs(),
             m_rhs(),
@@ -960,7 +991,7 @@ namespace Catch
         ()
         const
         {
-            return m_filename;
+            return m_lineInfo.file;
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -968,7 +999,7 @@ namespace Catch
         ()
         const
         {
-            return m_line;
+            return m_lineInfo.line;
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -1014,8 +1045,7 @@ namespace Catch
 
     protected:
         std::string m_macroName;
-        std::string m_filename;
-        std::size_t m_line;
+        SourceLineInfo m_lineInfo;
         std::string m_expr, m_lhs, m_rhs, m_op;
         std::string m_message;
         ResultWas::OfType m_result;
@@ -1024,197 +1054,6 @@ namespace Catch
 
 } // end namespace Catch
 
-
-// #included from: catch_interfaces_capture.h
-
-/*
- *  catch_interfaces_capture.h
- *  Catch
- *
- *  Created by Phil on 07/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-#define TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED
-
-#include <string>
-
-namespace Catch
-{
-    class TestCaseInfo;
-    class ScopedInfo;
-    class MutableResultInfo;
-    class ResultInfo;
-
-    struct IResultCapture
-    {
-        virtual ~IResultCapture
-        ()
-        {}
-
-        virtual void testEnded
-            (   const ResultInfo& result
-            ) = 0;
-        virtual bool sectionStarted
-            (   const std::string& name,
-                const std::string& description,
-                const std::string& filename,
-                std::size_t line,
-                Counts& assertions
-            ) = 0;
-        virtual void sectionEnded
-            (   const std::string& name,
-                const Counts& assertions
-            ) = 0;
-        virtual void pushScopedInfo
-            (   ScopedInfo* scopedInfo
-            ) = 0;
-        virtual void popScopedInfo
-            (   ScopedInfo* scopedInfo
-            ) = 0;
-        virtual bool shouldDebugBreak
-            () const = 0;
-
-        virtual ResultAction::Value acceptResult
-            (   bool result
-            ) = 0;
-        virtual ResultAction::Value acceptResult
-            (   ResultWas::OfType result
-            ) = 0;
-        virtual ResultAction::Value acceptExpression
-            (   const MutableResultInfo& resultInfo
-            ) = 0;
-        virtual void acceptMessage
-            (   const std::string& msg
-            ) = 0;
-
-        virtual std::string getCurrentTestName
-            () const = 0;
-        virtual const ResultInfo* getLastResult
-            () const = 0;
-
-    };
-}
-
-// #included from: catch_debugger.hpp
-
-/*
- *  catch_debugger.hpp
- *  Catch
- *
- *  Created by Phil on 27/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- * Provides a BreakIntoDebugger() macro for Windows and Mac (so far)
- */
-
-#define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
-
-#include <iostream>
-
-#if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
-#define CATCH_PLATFORM_MAC
-#elif  defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-#define CATCH_PLATFORM_IPHONE
-#elif defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
-#define CATCH_PLATFORM_WINDOWS
-#endif
-
-#ifdef CATCH_PLATFORM_MAC
-
-    #include <assert.h>
-    #include <stdbool.h>
-    #include <sys/types.h>
-    #include <unistd.h>
-    #include <sys/sysctl.h>
-
-    namespace Catch
-    {
-        // The following function is taken directly from the following technical note:
-        // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html
-
-        inline bool isDebuggerActive()
-        // Returns true if the current process is being debugged (either
-        // running under the debugger or has a debugger attached post facto).
-        {
-            int                 junk;
-            int                 mib[4];
-            struct kinfo_proc   info;
-            size_t              size;
-
-            // Initialize the flags so that, if sysctl fails for some bizarre
-            // reason, we get a predictable result.
-
-            info.kp_proc.p_flag = 0;
-
-            // Initialize mib, which tells sysctl the info we want, in this case
-            // we're looking for information about a specific process ID.
-
-            mib[0] = CTL_KERN;
-            mib[1] = KERN_PROC;
-            mib[2] = KERN_PROC_PID;
-            mib[3] = getpid();
-
-            // Call sysctl.
-
-            size = sizeof(info);
-            junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
-            assert(junk == 0);
-
-            // We're being debugged if the P_TRACED flag is set.
-
-            return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
-        }
-    }
-
-    // The following code snippet taken from:
-    // http://cocoawithlove.com/2008/03/break-into-debugger.html
-    #ifdef DEBUG
-        #if defined(__ppc64__) || defined(__ppc__)
-            #define BreakIntoDebugger() \
-            if( Catch::isDebuggerActive() ) \
-            { \
-            __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
-            : : : "memory","r0","r3","r4" ); \
-            }
-        #else
-            #define BreakIntoDebugger() if( Catch::isDebuggerActive() ) {__asm__("int $3\n" : : );}
-        #endif
-    #else
-        inline void BreakIntoDebugger(){}
-    #endif
-
-#elif defined(_MSC_VER)
-    extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
-    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
-    inline bool isDebuggerActive()
-    {
-        return IsDebuggerPresent() != 0;
-    }
-#else
-	   inline void BreakIntoDebugger(){}
-	   inline bool isDebuggerActive() { return false; }
-#endif
-
-#ifdef CATCH_PLATFORM_WINDOWS
-extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
-inline void writeToDebugConsole( const std::string& text )
-{
-    ::OutputDebugStringA( text.c_str() );
-}
-#else
-inline void writeToDebugConsole( const std::string& text )
-{
-    // !TBD: Need a version for Mac/ XCode and other IDEs
-    std::cout << text;
-}
-#endif // CATCH_PLATFORM_WINDOWS
 
 // #included from: catch_evaluate.hpp
 
@@ -1277,7 +1116,7 @@ namespace Internal
     {
         static bool evaluate( const T1& lhs, const T2& rhs)
         {
-            return const_cast<T1&>( lhs ) == const_cast<T2&>( rhs );
+            return const_cast<T1&>( lhs ) ==  const_cast<T2&>( rhs );
         }
     };
     template<typename T1, typename T2>
@@ -1417,217 +1256,27 @@ namespace Internal
 } // end of namespace Internal
 } // end of namespace Catch
 
-#include <sstream>
 
 namespace Catch
 {
 
-namespace Detail
-{
-    struct NonStreamable
-    {
-        template<typename T>
-        NonStreamable( const T& )
-        {
-        }
-    };
-
-    // If the type does not have its own << overload for ostream then
-    // this one will be used instead
-    inline std::ostream& operator << ( std::ostream& ss, NonStreamable )
-    {
-        ss << "{?}";
-        return ss;
-    }
-
-    template<typename T>
-    inline std::string makeString
-    (
-        const T& value
-    )
-    {
-        std::ostringstream oss;
-        oss << value;
-        return oss.str();
-    }
-
-    template<typename T>
-    inline std::string makeString
-    (
-        T* p
-    )
-    {
-        if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
-        std::ostringstream oss;
-        oss << p;
-        return oss.str();
-    }
-
-    template<typename T>
-    inline std::string makeString
-    (
-        const T* p
-    )
-    {
-        if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
-        std::ostringstream oss;
-        oss << p;
-        return oss.str();
-    }
-
-}// end namespace Detail
-
-///////////////////////////////////////////////////////////////////////////////
-template<typename T>
-std::string toString
-(
-    const T& value
-)
-{
-    return Detail::makeString( value );
-}
-
-// Shortcut overloads
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const std::string& value
-)
-{
-    return "\"" + value + "\"";
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const std::wstring& value
-)
-{
-    std::ostringstream oss;
-    oss << "\"";
-    for(size_t i = 0; i < value.size(); ++i )
-        oss << static_cast<char>( value[i] <= 0xff ? value[i] : '?');
-    oss << "\"";
-    return oss.str();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const char* const value
-)
-{
-    return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    char* const value
-)
-{
-    return Catch::toString( static_cast<const char*>( value ) );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    int value
-)
-{
-    std::ostringstream oss;
-    oss << value;
-    return oss.str();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    unsigned int value
-)
-{
-    std::ostringstream oss;
-    if( value > 8192 )
-        oss << "0x" << std::hex << value;
-    else
-        oss << value;
-    return oss.str();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    unsigned long value
-)
-{
-    std::ostringstream oss;
-    if( value > 8192 )
-        oss << "0x" << std::hex << value;
-    else
-        oss << value;
-    return oss.str();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    const double value
-)
-{
-    std::ostringstream oss;
-    oss << value;
-    return oss.str();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-inline std::string toString
-(
-    bool value
-)
-{
-    return value ? "true" : "false";
-}
-
-struct TestFailureException
-{
-};
-struct DummyExceptionType_DontUse
-{
-};
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 
-class MutableResultInfo : public ResultInfo
+class ResultInfoBuilder : public ResultInfo
 {
 public:
 
-    ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo
-    ()
+    ResultInfoBuilder() {}
+
+    ResultInfoBuilder(  const char* expr,
+                        bool isNot,
+                        const SourceLineInfo& lineInfo,
+                        const char* macroName,
+                        const char* message = "" )
+    : ResultInfo( expr, ResultWas::Unknown, isNot, lineInfo, macroName, message )
     {}
 
-    ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo
-    (
-        const char* expr,
-        bool isNot,
-        const char* filename,
-        std::size_t line,
-        const char* macroName,
-        const char* message = ""
-    )
-    : ResultInfo( expr, ResultWas::Unknown, isNot, filename, line, macroName, message )
-    {
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    void setResultType
-    (
-        ResultWas::OfType result
-    )
-    {
+    void setResultType( ResultWas::OfType result ) {
         // Flip bool results if isNot is set
         if( m_isNot && result == ResultWas::Ok )
             m_result = ResultWas::ExpressionFailed;
@@ -1637,61 +1286,32 @@ public:
             m_result = result;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    void setMessage
-    (
-        const std::string& message
-    )
-    {
+    void setMessage( const std::string& message ) {
         m_message = message;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    void setFileAndLine
-    (
-        const std::string& filename,
-        std::size_t line
-    )
-    {
-        m_filename = filename;
-        m_line = line;
+    void setLineInfo( const SourceLineInfo& lineInfo ) {
+        m_lineInfo = lineInfo;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    void setLhs
-    (
-        const std::string& lhs
-    )
-    {
+    void setLhs( const std::string& lhs ) {
         m_lhs = lhs;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    void setRhs
-    (
-        const std::string& rhs
-    )
-    {
+    void setRhs( const std::string& rhs ) {
         m_rhs = rhs;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    void setOp
-    (
-        const std::string& op
-    )
-    {
+    void setOp( const std::string& op ) {
         m_op = op;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator ||
     (
         const RhsT&
     );
 
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator &&
     (
@@ -1704,26 +1324,15 @@ private:
 
     template<typename T> friend class PtrExpression;
 
-    ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo& captureBoolExpression
-    (
-        bool result
-    )
-    {
+    ResultInfoBuilder& captureBoolExpression( bool result ) {
         m_lhs = Catch::toString( result );
         m_op = m_isNot ? "!" : "";
         setResultType( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     template<Internal::Operator Op, typename T1, typename T2>
-    MutableResultInfo& captureExpression
-    (
-        const T1& lhs,
-        const T2& rhs
-    )
-    {
+    ResultInfoBuilder& captureExpression( const T1& lhs, const T2& rhs ) {
         setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         m_lhs = Catch::toString( lhs );
         m_rhs = Catch::toString( rhs );
@@ -1731,17 +1340,211 @@ private:
         return *this;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     template<Internal::Operator Op, typename T>
-    MutableResultInfo& captureExpression
-    (
-        const T* lhs,
-        int rhs
-    )
-    {
+    ResultInfoBuilder& captureExpression( const T* lhs, int rhs ) {
         return captureExpression<Op>( lhs, reinterpret_cast<const T*>( rhs ) );
     }
 };
+
+} // end namespace Catch
+
+// #included from: catch_interfaces_capture.h
+
+/*
+ *  catch_interfaces_capture.h
+ *  Catch
+ *
+ *  Created by Phil on 07/01/2011.
+ *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ */
+#define TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED
+
+#include <string>
+
+namespace Catch
+{
+    class TestCaseInfo;
+    class ScopedInfo;
+    class ResultInfoBuilder;
+    class ResultInfo;
+
+    struct IResultCapture
+    {
+        virtual ~IResultCapture
+        ()
+        {}
+
+        virtual void testEnded
+            (   const ResultInfo& result
+            ) = 0;
+        virtual bool sectionStarted
+            (   const std::string& name,
+                const std::string& description,
+                const SourceLineInfo& lineInfo,
+                Counts& assertions
+            ) = 0;
+        virtual void sectionEnded
+            (   const std::string& name,
+                const Counts& assertions
+            ) = 0;
+        virtual void pushScopedInfo
+            (   ScopedInfo* scopedInfo
+            ) = 0;
+        virtual void popScopedInfo
+            (   ScopedInfo* scopedInfo
+            ) = 0;
+        virtual bool shouldDebugBreak
+            () const = 0;
+
+        virtual ResultAction::Value acceptResult
+            (   bool result
+            ) = 0;
+        virtual ResultAction::Value acceptResult
+            (   ResultWas::OfType result
+            ) = 0;
+        virtual ResultAction::Value acceptExpression
+            (   const ResultInfoBuilder& resultInfo
+            ) = 0;
+        virtual void acceptMessage
+            (   const std::string& msg
+            ) = 0;
+
+        virtual std::string getCurrentTestName
+            () const = 0;
+        virtual const ResultInfo* getLastResult
+            () const = 0;
+
+    };
+}
+
+// #included from: catch_debugger.hpp
+
+/*
+ *  catch_debugger.hpp
+ *  Catch
+ *
+ *  Created by Phil on 27/12/2010.
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * Provides a BreakIntoDebugger() macro for Windows and Mac (so far)
+ */
+
+#define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
+
+#include <iostream>
+
+#if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+#define CATCH_PLATFORM_MAC
+#elif  defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
+#define CATCH_PLATFORM_IPHONE
+#elif defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
+#define CATCH_PLATFORM_WINDOWS
+#endif
+
+#ifdef CATCH_PLATFORM_MAC
+
+    #include <assert.h>
+    #include <stdbool.h>
+    #include <sys/types.h>
+    #include <unistd.h>
+    #include <sys/sysctl.h>
+
+    namespace Catch
+    {
+        // The following function is taken directly from the following technical note:
+        // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html
+
+        inline bool isDebuggerActive()
+        // Returns true if the current process is being debugged (either
+        // running under the debugger or has a debugger attached post facto).
+        {
+            int                 junk;
+            int                 mib[4];
+            struct kinfo_proc   info;
+            size_t              size;
+
+            // Initialize the flags so that, if sysctl fails for some bizarre
+            // reason, we get a predictable result.
+
+            info.kp_proc.p_flag = 0;
+
+            // Initialize mib, which tells sysctl the info we want, in this case
+            // we're looking for information about a specific process ID.
+
+            mib[0] = CTL_KERN;
+            mib[1] = KERN_PROC;
+            mib[2] = KERN_PROC_PID;
+            mib[3] = getpid();
+
+            // Call sysctl.
+
+            size = sizeof(info);
+            junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
+            assert(junk == 0);
+
+            // We're being debugged if the P_TRACED flag is set.
+
+            return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
+        }
+    }
+
+    // The following code snippet taken from:
+    // http://cocoawithlove.com/2008/03/break-into-debugger.html
+    #ifdef DEBUG
+        #if defined(__ppc64__) || defined(__ppc__)
+            #define BreakIntoDebugger() \
+            if( Catch::isDebuggerActive() ) \
+            { \
+            __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
+            : : : "memory","r0","r3","r4" ); \
+            }
+        #else
+            #define BreakIntoDebugger() if( Catch::isDebuggerActive() ) {__asm__("int $3\n" : : );}
+        #endif
+    #else
+        inline void BreakIntoDebugger(){}
+    #endif
+
+#elif defined(_MSC_VER)
+    extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
+    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
+    inline bool isDebuggerActive()
+    {
+        return IsDebuggerPresent() != 0;
+    }
+#else
+	   inline void BreakIntoDebugger(){}
+	   inline bool isDebuggerActive() { return false; }
+#endif
+
+#ifdef CATCH_PLATFORM_WINDOWS
+extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
+inline void writeToDebugConsole( const std::string& text )
+{
+    ::OutputDebugStringA( text.c_str() );
+}
+#else
+inline void writeToDebugConsole( const std::string& text )
+{
+    // !TBD: Need a version for Mac/ XCode and other IDEs
+    std::cout << text;
+}
+#endif // CATCH_PLATFORM_WINDOWS
+
+#include <sstream>
+
+namespace Catch
+{
+
+struct TestFailureException{};
+struct DummyExceptionType_DontUse{};
 
 template<typename T>
 class Expression
@@ -1752,7 +1555,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     Expression
     (
-        MutableResultInfo& result,
+        ResultInfoBuilder& result,
         T lhs
     )
     :   m_result( result ),
@@ -1762,7 +1565,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator ==
+    ResultInfoBuilder& operator ==
     (
         const RhsT& rhs
     )
@@ -1772,7 +1575,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator !=
+    ResultInfoBuilder& operator !=
     (
         const RhsT& rhs
     )
@@ -1782,7 +1585,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator <
+    ResultInfoBuilder& operator <
     (
         const RhsT& rhs
     )
@@ -1792,7 +1595,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator >
+    ResultInfoBuilder& operator >
     (
         const RhsT& rhs
     )
@@ -1802,7 +1605,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator <=
+    ResultInfoBuilder& operator <=
     (
         const RhsT& rhs
     )
@@ -1812,7 +1615,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator >=
+    ResultInfoBuilder& operator >=
     (
         const RhsT& rhs
     )
@@ -1821,7 +1624,7 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo& operator ==
+    ResultInfoBuilder& operator ==
     (
         bool rhs
     )
@@ -1830,7 +1633,7 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    MutableResultInfo& operator !=
+    ResultInfoBuilder& operator !=
     (
         bool rhs
     )
@@ -1839,7 +1642,7 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    operator MutableResultInfo&
+    operator ResultInfoBuilder&
     ()
     {
         return m_result.captureBoolExpression( m_lhs );
@@ -1860,7 +1663,7 @@ public:
     );
 
 private:
-    MutableResultInfo& m_result;
+    ResultInfoBuilder& m_result;
     T m_lhs;
 };
 
@@ -1872,7 +1675,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     PtrExpression
     (
-        MutableResultInfo& result,
+        ResultInfoBuilder& result,
         const LhsT* lhs
     )
     :   m_result( &result ),
@@ -1881,7 +1684,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator ==
+    ResultInfoBuilder& operator ==
     (
         const RhsT* rhs
     )
@@ -1891,7 +1694,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     // This catches NULL
-    MutableResultInfo& operator ==
+    ResultInfoBuilder& operator ==
     (
         LhsT* rhs
     )
@@ -1901,7 +1704,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    MutableResultInfo& operator !=
+    ResultInfoBuilder& operator !=
     (
         const RhsT* rhs
     )
@@ -1911,7 +1714,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     // This catches NULL
-    MutableResultInfo& operator !=
+    ResultInfoBuilder& operator !=
     (
         LhsT* rhs
     )
@@ -1920,7 +1723,7 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    operator MutableResultInfo&
+    operator ResultInfoBuilder&
     ()
     {
         return m_result->captureBoolExpression( m_lhs );
@@ -1928,7 +1731,7 @@ public:
 
 
 private:
-    MutableResultInfo* m_result;
+    ResultInfoBuilder* m_result;
     const LhsT* m_lhs;
 };
 
@@ -1940,13 +1743,12 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     ResultBuilder
     (
-        const char* filename,
-        std::size_t line,
+        const SourceLineInfo& lineInfo,
         const char* macroName,
         const char* expr = "",
         bool isNot = false
     )
-    : m_result( expr, isNot, filename, line, macroName ),
+    : m_result( expr, isNot, lineInfo, macroName ),
       m_messageStream()
     {}
 
@@ -2067,7 +1869,7 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    operator MutableResultInfo&
+    operator ResultInfoBuilder&
     ()
     {
         m_result.setMessage( m_messageStream.str() );
@@ -2075,7 +1877,7 @@ public:
     }
 
 private:
-    MutableResultInfo m_result;
+    ResultInfoBuilder m_result;
     std::ostringstream m_messageStream;
 
 };
@@ -2083,35 +1885,21 @@ private:
 class ScopedInfo
 {
 public:
-    ///////////////////////////////////////////////////////////////////////////
-    ScopedInfo
-    () : m_oss()
-    {
+    ScopedInfo() : m_oss() {
         Hub::getResultCapture().pushScopedInfo( this );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    ~ScopedInfo
-    ()
-    {
+    ~ScopedInfo() {
         Hub::getResultCapture().popScopedInfo( this );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    ScopedInfo& operator <<
-    (
-        const char* str
-    )
-    {
-        m_oss << str;
+    template<typename T>
+    ScopedInfo& operator << ( const T& value ) {
+        m_oss << value;
         return *this;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    std::string getInfo
-    ()
-    const
-    {
+    std::string getInfo () const {
         return m_oss.str();
     }
 
@@ -2119,35 +1907,28 @@ private:
     std::ostringstream m_oss;
 };
 
-///////////////////////////////////////////////////////////////////////////////
 // This is just here to avoid compiler warnings with macro constants
-inline bool isTrue
-(
-    bool value
-)
-{
-    return value;
-}
+inline bool isTrue( bool value ){ return value; }
 
 } // end namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure ) \
+#define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure, originalExpr ) \
     if( Catch::ResultAction::Value internal_catch_action = Catch::Hub::getResultCapture().acceptExpression( expr )  ) \
     { \
         if( internal_catch_action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
+        if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
     do{ try{ \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr, isNot )->*expr ), stopOnFailure ); \
-        if( Catch::isTrue( false ) ){ bool internal_catch_dummyResult = ( expr ); Catch::isTrue( internal_catch_dummyResult ); } \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr, isNot )->*expr ), stopOnFailure, expr ); \
     }catch( Catch::TestFailureException& ){ \
         throw; \
     } catch( ... ){ \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
         throw; \
     }}while( Catch::isTrue( false ) )
 
@@ -2166,11 +1947,11 @@ inline bool isTrue
     try \
     { \
         expr; \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     } \
     catch( ... ) \
     { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2178,7 +1959,7 @@ inline bool isTrue
     try \
     { \
         expr; \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::DidntThrowException ), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
     } \
     catch( Catch::TestFailureException& ) \
     { \
@@ -2186,7 +1967,7 @@ inline bool isTrue
     } \
     catch( exceptionType ) \
     { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2194,12 +1975,12 @@ inline bool isTrue
     INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     catch( ... ) \
     { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #expr ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    Catch::Hub::getResultCapture().acceptExpression( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName ) << reason ).setResultType( resultType ) );
+    Catch::Hub::getResultCapture().acceptExpression( ( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName ) << reason ).setResultType( resultType ) );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log ) \
@@ -2209,11 +1990,11 @@ inline bool isTrue
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
     do{ try{ \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #arg " " #matcher, false ).acceptMatcher( matcher, arg, #matcher ) ), stopOnFailure ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher, false ).acceptMatcher( matcher, arg, #matcher ) ), stopOnFailure, false ); \
     }catch( Catch::TestFailureException& ){ \
         throw; \
     } catch( ... ){ \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( __FILE__, __LINE__, macroName, #arg " " #matcher ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ResultBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
 
@@ -2246,11 +2027,10 @@ namespace Catch
         (
             const std::string& name,
             const std::string& description,
-            const std::string& filename,
-            std::size_t line
+            const SourceLineInfo& lineInfo
         )
         :   m_name( name ),
-            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, filename, line, m_assertions ) )
+            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
         {
         }
 
@@ -2280,7 +2060,7 @@ namespace Catch
 } // end namespace Catch
 
 #define INTERNAL_CATCH_SECTION( name, desc ) \
-    if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc, __FILE__, __LINE__ ) )
+    if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc, CATCH_INTERNAL_LINEINFO ) )
 
 // #included from: internal/catch_generators.hpp
 
@@ -2352,7 +2132,7 @@ public:
     ()
     const
     {
-        return 1+m_to-m_from;
+        return static_cast<std::size_t>( 1+m_to-m_from );
     }
 
 private:
@@ -2869,14 +2649,12 @@ namespace Catch
             ITestCase* testCase,
             const char* name,
             const char* description,
-            const char* filename,
-            std::size_t line
+            const SourceLineInfo& lineInfo
         )
         :   m_test( testCase ),
             m_name( name ),
             m_description( description ),
-            m_filename( filename ),
-            m_line( line )
+            m_lineInfo( lineInfo )
         {
         }
 
@@ -2885,9 +2663,7 @@ namespace Catch
         ()
         :   m_test( NULL ),
             m_name(),
-            m_description(),
-            m_filename(),
-            m_line( 0 )
+            m_description()
         {
         }
 
@@ -2899,8 +2675,7 @@ namespace Catch
         :   m_test( other.m_test->clone() ),
             m_name( other.m_name ),
             m_description( other.m_description ),
-            m_filename( other.m_filename ),
-            m_line( other.m_line )
+            m_lineInfo( other.m_lineInfo )
         {
         }
 
@@ -2913,8 +2688,7 @@ namespace Catch
         :   m_test( other.m_test->clone() ),
             m_name( name ),
             m_description( other.m_description ),
-            m_filename( other.m_filename ),
-            m_line( other.m_line )
+            m_lineInfo( other.m_lineInfo )
         {
         }
 
@@ -2961,19 +2735,11 @@ namespace Catch
         }
 
         ///////////////////////////////////////////////////////////////////////
-        const std::string& getFilename
+        const SourceLineInfo& getLineInfo
         ()
         const
         {
-            return m_filename;
-        }
-
-        ///////////////////////////////////////////////////////////////////////
-        std::size_t getLine
-        ()
-        const
-        {
-            return m_line;
+            return m_lineInfo;
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -2993,6 +2759,7 @@ namespace Catch
             std::swap( m_test, other.m_test );
             m_name.swap( other.m_name );
             m_description.swap( other.m_description );
+            m_lineInfo.swap( other.m_lineInfo );
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -3019,9 +2786,7 @@ namespace Catch
         ITestCase* m_test;
         std::string m_name;
         std::string m_description;
-        std::string m_filename;
-        std::size_t m_line;
-
+        SourceLineInfo m_lineInfo;
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -3627,8 +3392,8 @@ namespace Catch
             {
                 const TestCaseInfo& prev = *m_functions.find( testInfo );
                 std::cerr   << "error: TEST_CASE( \"" << testInfo.getName() << "\" ) already defined.\n"
-                            << "\tFirst seen at " << SourceLineInfo( prev.getFilename(), prev.getLine() ) << "\n"
-                            << "\tRedefined at " << SourceLineInfo( testInfo.getFilename(), testInfo.getLine() ) << std::endl;
+                            << "\tFirst seen at " << SourceLineInfo( prev.getLineInfo() ) << "\n"
+                            << "\tRedefined at " << SourceLineInfo( testInfo.getLineInfo() ) << std::endl;
                 exit(1);
             }
         }
@@ -3734,11 +3499,10 @@ namespace Catch
         TestFunction function,
         const char* name,
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     )
     {
-        registerTestCase( new FreeFunctionTestCase( function ), name, description, filename, line );
+        registerTestCase( new FreeFunctionTestCase( function ), name, description, lineInfo );
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -3753,11 +3517,10 @@ namespace Catch
         ITestCase* testCase,
         const char* name,
         const char* description,
-        const char* filename,
-        std::size_t line
+        const SourceLineInfo& lineInfo
     )
     {
-        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, filename, line ) );
+        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
     }
 
 } // end namespace Catch
@@ -4568,8 +4331,7 @@ namespace Catch
                 do
                 {
                     m_reporter->StartGroup( "test case run" );
-                    m_currentResult.setFileAndLine( m_runningTest->getTestCaseInfo().getFilename(),
-                                                    m_runningTest->getTestCaseInfo().getLine() );
+                    m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
                     m_reporter->EndGroup( "test case run", m_totals - prevTotals );
                 }
@@ -4620,7 +4382,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual ResultAction::Value acceptExpression
         (
-            const MutableResultInfo& resultInfo
+            const ResultInfoBuilder& resultInfo
         )
         {
             m_currentResult = resultInfo;
@@ -4668,18 +4430,17 @@ namespace Catch
         (
             const std::string& name,
             const std::string& description,
-            const std::string& filename,
-            std::size_t line,
+            const SourceLineInfo& lineInfo,
             Counts& assertions
         )
         {
             std::ostringstream oss;
-            oss << name << "@" << SourceLineInfo( filename, line );
+            oss << name << "@" << lineInfo;
 
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
 
-            m_currentResult.setFileAndLine( filename, line );
+            m_currentResult.setLineInfo( lineInfo );
             m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
 
@@ -4751,7 +4512,7 @@ namespace Catch
             testEnded( m_currentResult );
             m_lastResult = m_currentResult;
 
-            m_currentResult = MutableResultInfo();
+            m_currentResult = ResultInfoBuilder();
             if( m_lastResult.ok() )
                 return ResultAction::None;
             else if( shouldDebugBreak() )
@@ -4796,7 +4557,7 @@ namespace Catch
 
     private:
         RunningTest* m_runningTest;
-        MutableResultInfo m_currentResult;
+        ResultInfoBuilder m_currentResult;
         ResultInfo m_lastResult;
 
         const Config& m_config;
@@ -5143,7 +4904,7 @@ namespace Catch
         {
             if( pbase() != pptr() )
             {
-                m_writer( std::string( pbase(), pptr() - pbase() ) );
+                m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
                 setp( pbase(), epptr() );
             }
             return 0;
