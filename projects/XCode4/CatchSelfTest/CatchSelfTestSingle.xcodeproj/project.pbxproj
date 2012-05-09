@@ -1,0 +1,253 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4A9D84DC155AEA2D00FBB209 /* ApproxTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D1155AEA2D00FBB209 /* ApproxTests.cpp */; };
+		4A9D84DD155AEA2D00FBB209 /* catch_self_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D2155AEA2D00FBB209 /* catch_self_test.cpp */; };
+		4A9D84DE155AEA2D00FBB209 /* ClassTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D4155AEA2D00FBB209 /* ClassTests.cpp */; };
+		4A9D84DF155AEA2D00FBB209 /* ConditionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D5155AEA2D00FBB209 /* ConditionTests.cpp */; };
+		4A9D84E0155AEA2D00FBB209 /* ExceptionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D6155AEA2D00FBB209 /* ExceptionTests.cpp */; };
+		4A9D84E1155AEA2D00FBB209 /* GeneratorTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D7155AEA2D00FBB209 /* GeneratorTests.cpp */; };
+		4A9D84E2155AEA2D00FBB209 /* MessageTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D8155AEA2D00FBB209 /* MessageTests.cpp */; };
+		4A9D84E3155AEA2D00FBB209 /* MiscTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84D9155AEA2D00FBB209 /* MiscTests.cpp */; };
+		4A9D84E4155AEA2D00FBB209 /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84DA155AEA2D00FBB209 /* TestMain.cpp */; };
+		4A9D84E5155AEA2D00FBB209 /* TrickyTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D84DB155AEA2D00FBB209 /* TrickyTests.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4A9D84BD155AE9C200FBB209 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4A9D84BF155AE9C200FBB209 /* CatchSelfTestSingle */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CatchSelfTestSingle; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A9D84D1155AEA2D00FBB209 /* ApproxTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ApproxTests.cpp; path = ../../../SelfTest/ApproxTests.cpp; sourceTree = "<group>"; };
+		4A9D84D2155AEA2D00FBB209 /* catch_self_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_self_test.cpp; path = ../../../SelfTest/catch_self_test.cpp; sourceTree = "<group>"; };
+		4A9D84D3155AEA2D00FBB209 /* catch_self_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_self_test.hpp; path = ../../../SelfTest/catch_self_test.hpp; sourceTree = "<group>"; };
+		4A9D84D4155AEA2D00FBB209 /* ClassTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClassTests.cpp; path = ../../../SelfTest/ClassTests.cpp; sourceTree = "<group>"; };
+		4A9D84D5155AEA2D00FBB209 /* ConditionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConditionTests.cpp; path = ../../../SelfTest/ConditionTests.cpp; sourceTree = "<group>"; };
+		4A9D84D6155AEA2D00FBB209 /* ExceptionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExceptionTests.cpp; path = ../../../SelfTest/ExceptionTests.cpp; sourceTree = "<group>"; };
+		4A9D84D7155AEA2D00FBB209 /* GeneratorTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GeneratorTests.cpp; path = ../../../SelfTest/GeneratorTests.cpp; sourceTree = "<group>"; };
+		4A9D84D8155AEA2D00FBB209 /* MessageTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MessageTests.cpp; path = ../../../SelfTest/MessageTests.cpp; sourceTree = "<group>"; };
+		4A9D84D9155AEA2D00FBB209 /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MiscTests.cpp; path = ../../../SelfTest/MiscTests.cpp; sourceTree = "<group>"; };
+		4A9D84DA155AEA2D00FBB209 /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestMain.cpp; path = ../../../SelfTest/TestMain.cpp; sourceTree = "<group>"; };
+		4A9D84DB155AEA2D00FBB209 /* TrickyTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrickyTests.cpp; path = ../../../SelfTest/TrickyTests.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4A9D84BC155AE9C200FBB209 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4A9D84B4155AE9C200FBB209 = {
+			isa = PBXGroup;
+			children = (
+				4A9D84C2155AE9C200FBB209 /* CatchSelfTestSingle */,
+				4A9D84C0155AE9C200FBB209 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4A9D84C0155AE9C200FBB209 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4A9D84BF155AE9C200FBB209 /* CatchSelfTestSingle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4A9D84C2155AE9C200FBB209 /* CatchSelfTestSingle */ = {
+			isa = PBXGroup;
+			children = (
+				4A9D84D2155AEA2D00FBB209 /* catch_self_test.cpp */,
+				4A9D84D3155AEA2D00FBB209 /* catch_self_test.hpp */,
+				4A9D84DA155AEA2D00FBB209 /* TestMain.cpp */,
+				4A9D84E6155AEA3200FBB209 /* Tests */,
+			);
+			path = CatchSelfTestSingle;
+			sourceTree = "<group>";
+		};
+		4A9D84E6155AEA3200FBB209 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				4A9D84D1155AEA2D00FBB209 /* ApproxTests.cpp */,
+				4A9D84D4155AEA2D00FBB209 /* ClassTests.cpp */,
+				4A9D84D5155AEA2D00FBB209 /* ConditionTests.cpp */,
+				4A9D84D6155AEA2D00FBB209 /* ExceptionTests.cpp */,
+				4A9D84D7155AEA2D00FBB209 /* GeneratorTests.cpp */,
+				4A9D84D8155AEA2D00FBB209 /* MessageTests.cpp */,
+				4A9D84D9155AEA2D00FBB209 /* MiscTests.cpp */,
+				4A9D84DB155AEA2D00FBB209 /* TrickyTests.cpp */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4A9D84BE155AE9C200FBB209 /* CatchSelfTestSingle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A9D84C9155AE9C200FBB209 /* Build configuration list for PBXNativeTarget "CatchSelfTestSingle" */;
+			buildPhases = (
+				4A9D84BB155AE9C200FBB209 /* Sources */,
+				4A9D84BC155AE9C200FBB209 /* Frameworks */,
+				4A9D84BD155AE9C200FBB209 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CatchSelfTestSingle;
+			productName = CatchSelfTestSingle;
+			productReference = 4A9D84BF155AE9C200FBB209 /* CatchSelfTestSingle */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4A9D84B6155AE9C200FBB209 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 4A9D84B9155AE9C200FBB209 /* Build configuration list for PBXProject "CatchSelfTestSingle" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4A9D84B4155AE9C200FBB209;
+			productRefGroup = 4A9D84C0155AE9C200FBB209 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4A9D84BE155AE9C200FBB209 /* CatchSelfTestSingle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4A9D84BB155AE9C200FBB209 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A9D84DC155AEA2D00FBB209 /* ApproxTests.cpp in Sources */,
+				4A9D84DD155AEA2D00FBB209 /* catch_self_test.cpp in Sources */,
+				4A9D84DE155AEA2D00FBB209 /* ClassTests.cpp in Sources */,
+				4A9D84DF155AEA2D00FBB209 /* ConditionTests.cpp in Sources */,
+				4A9D84E0155AEA2D00FBB209 /* ExceptionTests.cpp in Sources */,
+				4A9D84E1155AEA2D00FBB209 /* GeneratorTests.cpp in Sources */,
+				4A9D84E2155AEA2D00FBB209 /* MessageTests.cpp in Sources */,
+				4A9D84E3155AEA2D00FBB209 /* MiscTests.cpp in Sources */,
+				4A9D84E4155AEA2D00FBB209 /* TestMain.cpp in Sources */,
+				4A9D84E5155AEA2D00FBB209 /* TrickyTests.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4A9D84C7155AE9C200FBB209 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4A9D84C8155AE9C200FBB209 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4A9D84CA155AE9C200FBB209 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = ../../../single_include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4A9D84CB155AE9C200FBB209 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = ../../../single_include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4A9D84B9155AE9C200FBB209 /* Build configuration list for PBXProject "CatchSelfTestSingle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A9D84C7155AE9C200FBB209 /* Debug */,
+				4A9D84C8155AE9C200FBB209 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A9D84C9155AE9C200FBB209 /* Build configuration list for PBXNativeTarget "CatchSelfTestSingle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A9D84CA155AE9C200FBB209 /* Debug */,
+				4A9D84CB155AE9C200FBB209 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4A9D84B6155AE9C200FBB209 /* Project object */;
+}
