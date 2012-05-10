@@ -27,8 +27,8 @@ namespace Catch
         if( config.listWhat() & Config::List::Reports )
         {
             std::cout << "Available reports:\n";
-            IReporterRegistry::FactoryMap::const_iterator it = Hub::getReporterRegistry().getFactories().begin();
-            IReporterRegistry::FactoryMap::const_iterator itEnd = Hub::getReporterRegistry().getFactories().end();
+            IReporterRegistry::FactoryMap::const_iterator it = Context::getReporterRegistry().getFactories().begin();
+            IReporterRegistry::FactoryMap::const_iterator itEnd = Context::getReporterRegistry().getFactories().end();
             for(; it != itEnd; ++it )
             {
                 // !TBD: consider listAs()
@@ -39,8 +39,8 @@ namespace Catch
         if( config.listWhat() & Config::List::Tests )
         {
             std::cout << "Available tests:\n";
-            std::vector<TestCaseInfo>::const_iterator it = Hub::getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = Hub::getTestCaseRegistry().getAllTests().end();
+            std::vector<TestCaseInfo>::const_iterator it = Context::getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = Context::getTestCaseRegistry().getAllTests().end();
             for(; it != itEnd; ++it )
             {
                 // !TBD: consider listAs()

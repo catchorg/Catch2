@@ -13,7 +13,7 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
-#include "internal/catch_hub_impl.hpp"
+#include "internal/catch_context_impl.hpp"
 
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"

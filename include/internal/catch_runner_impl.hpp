@@ -75,11 +75,11 @@ namespace Catch
         :   m_runningTest( NULL ),
             m_config( config ),
             m_reporter( config.getReporter() ),
-            m_prevRunner( &Hub::getRunner() ),
-            m_prevResultCapture( &Hub::getResultCapture() )
+            m_prevRunner( &Context::getRunner() ),
+            m_prevResultCapture( &Context::getResultCapture() )
         {
-            Hub::setRunner( this );
-            Hub::setResultCapture( this );
+            Context::setRunner( this );
+            Context::setResultCapture( this );
             m_reporter->StartTesting();
         }
         
@@ -88,8 +88,8 @@ namespace Catch
         ()
         {
             m_reporter->EndTesting( m_totals );
-            Hub::setRunner( m_prevRunner );
-            Hub::setResultCapture( m_prevResultCapture );
+            Context::setRunner( m_prevRunner );
+            Context::setResultCapture( m_prevResultCapture );
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ namespace Catch
             bool runHiddenTests = false
         )
         {
-            std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
+            std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i )
             {
                 if( runHiddenTests || !allTests[i].isHidden() )
@@ -114,7 +114,7 @@ namespace Catch
         {
             TestSpec testSpec( rawTestSpec );
             
-            std::vector<TestCaseInfo> allTests = Hub::getTestCaseRegistry().getAllTests();
+            std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
             std::size_t testsRun = 0;
             for( std::size_t i=0; i < allTests.size(); ++i )
             {
@@ -153,7 +153,7 @@ namespace Catch
                 }
                 while( m_runningTest->hasUntestedSections() );
             }
-            while( Hub::advanceGeneratorsForCurrentTest() );
+            while( Context::advanceGeneratorsForCurrentTest() );
 
             delete m_runningTest;
             m_runningTest = NULL;
@@ -365,7 +365,7 @@ namespace Catch
             }
             catch(...)
             {
-                acceptMessage( Catch::Hub::getExceptionTranslatorRegistry().translateActiveException() );
+                acceptMessage( Catch::Context::getExceptionTranslatorRegistry().translateActiveException() );
                 acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();

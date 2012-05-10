@@ -34,7 +34,7 @@ int main (int argc, char * const argv[])
     int result =Catch::Main( argc, argv );
     
 #endif
-    Catch::Hub::cleanUp();
+    Catch::Context::cleanUp();
     return result;
 }
 

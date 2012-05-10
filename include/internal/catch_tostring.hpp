@@ -116,6 +116,12 @@ inline std::string toString( bool value ) {
     return value ? "true" : "false";
 }
 
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+inline std::string toString( std::nullptr_t null ) {
+    return "nullptr";
+}
+#endif
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED

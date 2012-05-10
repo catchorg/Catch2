@@ -180,7 +180,7 @@ namespace Catch
             Expected::Result expectedResult
         )
         {
-            forEach(    Hub::getTestCaseRegistry().getMatchingTestCases( testSpec ), 
+            forEach(    Context::getTestCaseRegistry().getMatchingTestCases( testSpec ), 
                         MetaTestRunner( expectedResult ) );
         }
         

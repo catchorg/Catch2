@@ -77,7 +77,7 @@ namespace Catch
             std::string(*translateFunction)( T& ) 
         )
         {
-            Catch::Hub::getExceptionTranslatorRegistry().registerTranslator
+            Catch::Context::getExceptionTranslatorRegistry().registerTranslator
                 ( new ExceptionTranslator<T>( translateFunction ) );
         }
     };

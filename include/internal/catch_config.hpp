@@ -14,7 +14,7 @@
 #define TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
 
 #include "catch_interfaces_reporter.h"
-#include "catch_hub.h"
+#include "catch_context.h"
 
 #include <memory>
 #include <vector>
@@ -76,7 +76,7 @@ namespace Catch
         {
             if( m_reporter.get() )
                 return setError( "Only one reporter may be specified" );
-            setReporter( Hub::getReporterRegistry().create( reporterName, *this ) );
+            setReporter( Context::getReporterRegistry().create( reporterName, *this ) );
         }
         
         ///////////////////////////////////////////////////////////////////////////
@@ -143,7 +143,7 @@ namespace Catch
         Ptr<IReporter> getReporter()
         {
             if( !m_reporter.get() )
-                const_cast<Config*>( this )->setReporter( Hub::getReporterRegistry().create( "basic", *this ) );
+                const_cast<Config*>( this )->setReporter( Context::getReporterRegistry().create( "basic", *this ) );
             return m_reporter;
         }
                 
@@ -216,7 +216,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         void useStream( const std::string& streamName )
         {
-            std::streambuf* newBuf = Hub::createStreamBuf( streamName );
+            std::streambuf* newBuf = Context::createStreamBuf( streamName );
             setStreamBuf( newBuf );
             delete m_streambuf;
             m_streambuf = newBuf;

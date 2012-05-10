@@ -13,7 +13,7 @@
 #ifndef TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 
-#include "catch_hub.h"
+#include "catch_context.h"
 
 #include <iterator>
 #include <vector>
@@ -160,7 +160,7 @@ public:
     ()
     const
     {
-        size_t overallIndex = Hub::getGeneratorIndex( m_fileInfo, m_totalSize );
+        size_t overallIndex = Context::getGeneratorIndex( m_fileInfo, m_totalSize );
         
         typename std::vector<const IGenerator<T>*>::const_iterator it = m_composed.begin();
         typename std::vector<const IGenerator<T>*>::const_iterator itEnd = m_composed.end();

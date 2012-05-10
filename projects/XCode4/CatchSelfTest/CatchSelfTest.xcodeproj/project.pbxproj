@@ -61,8 +61,8 @@
 		4A6D0C4E149B3E3D00DB3EAA /* catch_exception_translator_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_exception_translator_registry.hpp; sourceTree = "<group>"; };
 		4A6D0C4F149B3E3D00DB3EAA /* catch_generators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_generators.hpp; sourceTree = "<group>"; };
 		4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_generators_impl.hpp; sourceTree = "<group>"; };
-		4A6D0C51149B3E3D00DB3EAA /* catch_hub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_hub.h; sourceTree = "<group>"; };
-		4A6D0C52149B3E3D00DB3EAA /* catch_hub_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_hub_impl.hpp; sourceTree = "<group>"; };
+		4A6D0C51149B3E3D00DB3EAA /* catch_context.h */ = {isa = PBXFileReference; fileEncoding = 4; path = catch_context.h; sourceTree = "<group>"; };
+		4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; path = catch_context_impl.hpp; sourceTree = "<group>"; };
 		4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_capture.h; sourceTree = "<group>"; };
 		4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_exception.h; sourceTree = "<group>"; };
 		4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_reporter.h; sourceTree = "<group>"; };
@@ -176,8 +176,8 @@
 				4A6D0C4E149B3E3D00DB3EAA /* catch_exception_translator_registry.hpp */,
 				4A6D0C4F149B3E3D00DB3EAA /* catch_generators.hpp */,
 				4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */,
-				4A6D0C51149B3E3D00DB3EAA /* catch_hub.h */,
-				4A6D0C52149B3E3D00DB3EAA /* catch_hub_impl.hpp */,
+				4A6D0C51149B3E3D00DB3EAA /* catch_context.h */,
+				4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */,
 				4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */,
 				4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */,
 				4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */,
@@ -292,6 +292,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -319,6 +322,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

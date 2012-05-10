@@ -12,7 +12,7 @@
 
 #include "catch_test_registry.hpp"
 #include "catch_test_case_info.hpp"
-#include "catch_hub.h"
+#include "catch_context.h"
 
 #include <vector>
 #include <set>
@@ -179,7 +179,7 @@ namespace Catch
         const SourceLineInfo& lineInfo
     )
     {
-        Hub::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+        Context::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
     }
     
 } // end namespace Catch

@@ -31,7 +31,7 @@ namespace Catch
             const SourceLineInfo& lineInfo
         )
         :   m_name( name ),
-            m_sectionIncluded( Hub::getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
+            m_sectionIncluded( Context::getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
         {
         }
 
@@ -40,7 +40,7 @@ namespace Catch
         ()
         {
             if( m_sectionIncluded )
-                Hub::getResultCapture().sectionEnded( m_name, m_assertions );
+                Context::getResultCapture().sectionEnded( m_name, m_assertions );
         }
         
         ///////////////////////////////////////////////////////////////////////        
