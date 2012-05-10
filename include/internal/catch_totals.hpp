@@ -12,32 +12,26 @@ namespace Catch
 {
     struct Counts
     {
-        Counts
-        ()
-        :   passed( 0 ), 
-            failed( 0 )
-        {}
+        Counts() : passed( 0 ), failed( 0 ) {}
 
-        Counts operator - ( const Counts& other ) const
-        {
+        Counts operator - ( const Counts& other ) const {
             Counts diff;
             diff.passed = passed - other.passed;
             diff.failed = failed - other.failed;
             return diff;
         }
         
-        std::size_t total() const
-        {
+        std::size_t total() const {
             return passed + failed;
         }
+        
         std::size_t passed;
         std::size_t failed;
     };
     
     struct Totals
     {
-        Totals operator - ( const Totals& other ) const
-        {
+        Totals operator - ( const Totals& other ) const {
             Totals diff;
             diff.assertions = assertions - other.assertions;
             diff.testCases = testCases - other.testCases;

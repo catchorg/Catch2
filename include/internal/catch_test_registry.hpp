@@ -1,13 +1,9 @@
 /*
- *  catch_test_registry.hpp
- *  Catch
- *
  *  Created by Phil on 18/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
@@ -19,51 +15,26 @@ namespace Catch
 {
     
 template<typename C>
-struct MethodTestCase : ITestCase
+class MethodTestCase : public ITestCase
 {
-    ///////////////////////////////////////////////////////////////////////////
-    MethodTestCase
-    (
-        void (C::*method)() 
-    )
-    : m_method( method )
-    {}
+public:
+    MethodTestCase( void (C::*method)() ) : m_method( method ) {}
     
-    ///////////////////////////////////////////////////////////////////////////
-    virtual void invoke
-    ()
-    const
-    {
+    virtual void invoke() const {
         C obj;
         (obj.*m_method)();
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    virtual ITestCase* clone
-    ()
-    const
-    {
+    virtual ITestCase* clone() const {
         return new MethodTestCase<C>( m_method );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    virtual bool operator == 
-    (
-        const ITestCase& other
-    )
-    const
-    {
+    virtual bool operator == ( const ITestCase& other ) const {
         const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
         return mtOther && m_method == mtOther->m_method;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    virtual bool operator < 
-    (
-        const ITestCase& other
-    )
-    const
-    {
+    virtual bool operator < ( const ITestCase& other ) const {
         const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
         return mtOther && &m_method < &mtOther->m_method;
     }
@@ -76,44 +47,29 @@ typedef void(*TestFunction)();
     
 struct AutoReg
 {
-    AutoReg
-        (   TestFunction function, 
-            const char* name, 
-            const char* description,
-            const SourceLineInfo& lineInfo
-        );
+    AutoReg(    TestFunction function, 
+                const char* name, 
+                const char* description,
+                const SourceLineInfo& lineInfo );
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename C>
-    AutoReg
-    (
-        void (C::*method)(), 
-        const char* name, 
-        const char* description,
-        const SourceLineInfo& lineInfo
-    )
-    {
+    AutoReg(    void (C::*method)(), 
+                const char* name, 
+                const char* description,
+                const SourceLineInfo& lineInfo ) {
         registerTestCase( new MethodTestCase<C>( method ), name, description, lineInfo );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    void registerTestCase
-    (
-        ITestCase* testCase, 
-        const char* name, 
-        const char* description,
-        const SourceLineInfo& lineInfo
-    );
+    void registerTestCase(  ITestCase* testCase, 
+                            const char* name, 
+                            const char* description,
+                            const SourceLineInfo& lineInfo );
     
-    ~AutoReg
-        ();
+    ~AutoReg();
     
 private:
-    AutoReg
-        ( const AutoReg& );
-    
-    void operator=
-        ( const AutoReg& );
+    AutoReg( const AutoReg& );    
+    void operator= ( const AutoReg& );
 };
     
 } // end namespace Catch
