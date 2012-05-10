@@ -61,8 +61,8 @@
 		4A6D0C4E149B3E3D00DB3EAA /* catch_exception_translator_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_exception_translator_registry.hpp; sourceTree = "<group>"; };
 		4A6D0C4F149B3E3D00DB3EAA /* catch_generators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_generators.hpp; sourceTree = "<group>"; };
 		4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_generators_impl.hpp; sourceTree = "<group>"; };
-		4A6D0C51149B3E3D00DB3EAA /* catch_context.h */ = {isa = PBXFileReference; fileEncoding = 4; path = catch_context.h; sourceTree = "<group>"; };
-		4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; path = catch_context_impl.hpp; sourceTree = "<group>"; };
+		4A6D0C51149B3E3D00DB3EAA /* catch_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_context.h; sourceTree = "<group>"; };
+		4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_context_impl.hpp; sourceTree = "<group>"; };
 		4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_capture.h; sourceTree = "<group>"; };
 		4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_exception.h; sourceTree = "<group>"; };
 		4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_reporter.h; sourceTree = "<group>"; };
@@ -165,6 +165,7 @@
 		4A6D0C45149B3E3D00DB3EAA /* internal */ = {
 			isa = PBXGroup;
 			children = (
+				4AC91CB4155B9EBF00DC5117 /* impl */,
 				4A6D0C46149B3E3D00DB3EAA /* catch_approx.hpp */,
 				4A6D0C47149B3E3D00DB3EAA /* catch_capture.hpp */,
 				4A6D0C48149B3E3D00DB3EAA /* catch_commandline.hpp */,
@@ -175,9 +176,7 @@
 				4A6D0C4D149B3E3D00DB3EAA /* catch_evaluate.hpp */,
 				4A6D0C4E149B3E3D00DB3EAA /* catch_exception_translator_registry.hpp */,
 				4A6D0C4F149B3E3D00DB3EAA /* catch_generators.hpp */,
-				4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */,
 				4A6D0C51149B3E3D00DB3EAA /* catch_context.h */,
-				4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */,
 				4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */,
 				4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */,
 				4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */,
@@ -190,15 +189,12 @@
 				4A6D0C5C149B3E3D00DB3EAA /* catch_result_type.h */,
 				4A6D0C5D149B3E3D00DB3EAA /* catch_resultinfo.hpp */,
 				4A9D84B315599AC900FBB209 /* catch_resultinfo_builder.hpp */,
-				4A6D0C5E149B3E3D00DB3EAA /* catch_runner_impl.hpp */,
 				4A6D0C5F149B3E3D00DB3EAA /* catch_section.hpp */,
 				4A6D0C60149B3E3D00DB3EAA /* catch_stream.hpp */,
 				4A6D0C61149B3E3D00DB3EAA /* catch_test_case_info.hpp */,
-				4A6D0C62149B3E3D00DB3EAA /* catch_test_case_registry_impl.hpp */,
 				4A6D0C63149B3E3D00DB3EAA /* catch_test_registry.hpp */,
 				4A6D0C64149B3E3D00DB3EAA /* catch_xmlwriter.hpp */,
 				4A7ADB4314F631E10094FE10 /* catch_totals.hpp */,
-				4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */,
 				4AB1C73714F97C1300F31DF7 /* catch_console_colour.hpp */,
 				4A3D7DD01503869D005F9203 /* catch_matchers.hpp */,
 				4AB77CB51551AEA200857BF0 /* catch_ptr.hpp */,
@@ -219,6 +215,18 @@
 			);
 			name = reporters;
 			path = ../../../../include/reporters;
+			sourceTree = "<group>";
+		};
+		4AC91CB4155B9EBF00DC5117 /* impl */ = {
+			isa = PBXGroup;
+			children = (
+				4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */,
+				4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */,
+				4A6D0C5E149B3E3D00DB3EAA /* catch_runner_impl.hpp */,
+				4A6D0C62149B3E3D00DB3EAA /* catch_test_case_registry_impl.hpp */,
+				4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */,
+			);
+			name = impl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

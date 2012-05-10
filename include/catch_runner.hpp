@@ -140,7 +140,9 @@ namespace Catch
         Config config;
 //        if( isDebuggerActive() )
 //            config.useStream( "debug" );
-        return Main( argc, argv, config );
+        int result = Main( argc, argv, config );
+        Catch::Context::cleanUp();
+        return result;        
     }
     
 } // end namespace Catch
