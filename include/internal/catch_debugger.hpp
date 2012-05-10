@@ -95,6 +95,14 @@
     {
         return IsDebuggerPresent() != 0;
     }
+#elif defined(__MINGW32__)
+    extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
+    extern "C" __declspec(dllimport) void __stdcall DebugBreak();
+    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { DebugBreak(); }
+    inline bool isDebuggerActive()
+    {
+        return IsDebuggerPresent() != 0;
+    }
 #else
 	   inline void BreakIntoDebugger(){}
 	   inline bool isDebuggerActive() { return false; }
