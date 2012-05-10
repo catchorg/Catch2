@@ -9,7 +9,7 @@
 
 #include "internal/catch_config.hpp"
 #include "internal/catch_runner_impl.hpp"
-#include "internal/catch_hub_impl.hpp"
+#include "internal/catch_context_impl.hpp"
 #include "catch.hpp"
 
 #include "iTchRunnerReporter.h"

@@ -16,7 +16,7 @@
 
 namespace Catch
 {
-    class iTchRunnerReporter : public IReporter
+    class iTchRunnerReporter : public SharedImpl<IReporter>
     {
     public:
         ///////////////////////////////////////////////////////////////////////////
