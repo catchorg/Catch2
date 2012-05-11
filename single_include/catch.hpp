@@ -73,9 +73,9 @@ namespace Catch
     struct SourceLineInfo
     {
         SourceLineInfo() : line( 0 ){}
-        SourceLineInfo( const std::string& file, std::size_t line )
-        :   file( file ),
-            line( line )
+        SourceLineInfo( const std::string& _file, std::size_t _line )
+        :   file( _file ),
+            line( _line )
         {}
         SourceLineInfo( const SourceLineInfo& other )
         :   file( other.file ),
@@ -577,7 +577,7 @@ inline std::string toString( unsigned long value ) {
 }
 
 inline std::string toString( unsigned int value ) {
-    return toString( (unsigned long)value );
+    return toString( static_cast<unsigned long>( value ) );
 }
 
 inline std::string toString( const double value ) {
@@ -2798,6 +2798,7 @@ return @ desc; \
 #include <vector>
 #include <set>
 #include <sstream>
+#include <iostream>
 
 namespace Catch
 {
@@ -4856,12 +4857,12 @@ namespace Catch
                 m_config.stream() << resultInfo.getExpression();
                 if( resultInfo.ok() )
                 {
-                    TextColour colour( TextColour::Success );
+                    TextColour successColour( TextColour::Success );
                     m_config.stream() << " succeeded";
                 }
                 else
                 {
-                    TextColour colour( TextColour::Error );
+                    TextColour errorColour( TextColour::Error );
                     m_config.stream() << " failed";
                 }
             }
