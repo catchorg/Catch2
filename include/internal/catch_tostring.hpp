@@ -103,7 +103,7 @@ inline std::string toString( unsigned long value ) {
 }
     
 inline std::string toString( unsigned int value ) {
-    return toString( (unsigned long)value );
+    return toString( static_cast<unsigned long>( value ) );
 }
     
 inline std::string toString( const double value ) {

@@ -247,12 +247,12 @@ namespace Catch
                 m_config.stream() << resultInfo.getExpression();
                 if( resultInfo.ok() )
                 {
-                    TextColour colour( TextColour::Success );
+                    TextColour successColour( TextColour::Success );
                     m_config.stream() << " succeeded";
                 }
                 else
                 {
-                    TextColour colour( TextColour::Error );
+                    TextColour errorColour( TextColour::Error );
                     m_config.stream() << " failed";
                 }
             }

@@ -67,9 +67,9 @@ namespace Catch
     struct SourceLineInfo
     {
         SourceLineInfo() : line( 0 ){}
-        SourceLineInfo( const std::string& file, std::size_t line )
-        :   file( file ),
-            line( line )
+        SourceLineInfo( const std::string& _file, std::size_t _line )
+        :   file( _file ),
+            line( _line )
         {}
         SourceLineInfo( const SourceLineInfo& other )
         :   file( other.file ),
