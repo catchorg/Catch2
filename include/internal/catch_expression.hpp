@@ -20,115 +20,58 @@ class Expression
 	void operator = ( const Expression& );
 
 public:
-    ///////////////////////////////////////////////////////////////////////////
-    Expression
-    (
-        ResultInfoBuilder& result, 
-        T lhs 
-    )
+    Expression( ResultInfoBuilder& result, T lhs )
     :   m_result( result ),
         m_lhs( lhs )
-    {
-    }
+    {}
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator == 
-    (
-        const RhsT& rhs
-    )
-    {
+    ResultInfoBuilder& operator == ( const RhsT& rhs ) {
         return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator != 
-    (
-        const RhsT& rhs
-    )
-    {
+    ResultInfoBuilder& operator != ( const RhsT& rhs ) {
         return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator <
-    (
-        const RhsT& rhs
-    )
-    {
+    ResultInfoBuilder& operator < ( const RhsT& rhs ) {
         return m_result.captureExpression<Internal::IsLessThan>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator >
-    (
-        const RhsT& rhs
-    )
-    {
+    ResultInfoBuilder& operator > ( const RhsT& rhs ) {
         return m_result.captureExpression<Internal::IsGreaterThan>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator <= 
-    (
-        const RhsT& rhs
-    )
-    {
+    ResultInfoBuilder& operator <= ( const RhsT& rhs ) {
         return m_result.captureExpression<Internal::IsLessThanOrEqualTo>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator >= 
-    (
-        const RhsT& rhs
-    )
-    {
+    ResultInfoBuilder& operator >= ( const RhsT& rhs ) {
         return m_result.captureExpression<Internal::IsGreaterThanOrEqualTo>( m_lhs, rhs );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    ResultInfoBuilder& operator == 
-    (
-        bool rhs
-    )
-    {
+    ResultInfoBuilder& operator == ( bool rhs ) {
         return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    ResultInfoBuilder& operator != 
-    (
-        bool rhs
-    )
-    {
+    ResultInfoBuilder& operator != ( bool rhs ) {
         return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    operator ResultInfoBuilder&
-    ()
-    {
+    operator ResultInfoBuilder& () {
         return m_result.captureBoolExpression( m_lhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator +
-    (
-        const RhsT&
-    );
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( const RhsT& );
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator -
-    (
-        const RhsT&
-    );
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( const RhsT& );
 
 private:
     ResultInfoBuilder& m_result;
@@ -140,63 +83,34 @@ class PtrExpression
 {
 public:
 
-    ///////////////////////////////////////////////////////////////////////////
-    PtrExpression
-    (
-        ResultInfoBuilder& result, 
-        const LhsT* lhs 
-    )
+    PtrExpression ( ResultInfoBuilder& result, const LhsT* lhs )
     :   m_result( &result ),
         m_lhs( lhs )
     {}
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator == 
-    (
-        const RhsT* rhs
-    )
-    {
+    ResultInfoBuilder& operator == ( const RhsT* rhs ) {
         return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // This catches NULL
-    ResultInfoBuilder& operator == 
-    (
-        LhsT* rhs
-    )
-    {
+    ResultInfoBuilder& operator == ( LhsT* rhs ) {
         return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename RhsT>
-    ResultInfoBuilder& operator != 
-    (
-        const RhsT* rhs
-    )
-    {
+    ResultInfoBuilder& operator != ( const RhsT* rhs ) {
         return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     // This catches NULL
-    ResultInfoBuilder& operator != 
-    (
-        LhsT* rhs
-    )
-    {
+    ResultInfoBuilder& operator != ( LhsT* rhs ) {
         return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    operator ResultInfoBuilder&
-    ()
-    {
+    operator ResultInfoBuilder& () {
         return m_result->captureBoolExpression( m_lhs );
     }
-    
     
 private:
     ResultInfoBuilder* m_result;
