@@ -93,6 +93,7 @@
 		4AB77CB71553B72B00857BF0 /* catch_section_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_section_info.hpp; sourceTree = "<group>"; };
 		4AB77CB81553BB3800857BF0 /* catch_running_test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_running_test.hpp; sourceTree = "<group>"; };
 		4AC91CCE155CF02800DC5117 /* catch_expression.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_expression.hpp; sourceTree = "<group>"; };
+		4AC91CD0155D8DA600DC5117 /* catch_expression_builder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_expression_builder.hpp; sourceTree = "<group>"; };
 		4AE1840A14EE4F230066340D /* catch_self_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_self_test.cpp; path = ../../../SelfTest/catch_self_test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -216,6 +217,7 @@
 				4A6D0C46149B3E3D00DB3EAA /* catch_approx.hpp */,
 				4A6D0C47149B3E3D00DB3EAA /* catch_capture.hpp */,
 				4AC91CCE155CF02800DC5117 /* catch_expression.hpp */,
+				4AC91CD0155D8DA600DC5117 /* catch_expression_builder.hpp */,
 			);
 			name = Assertions;
 			sourceTree = "<group>";
