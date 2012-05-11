@@ -76,7 +76,7 @@ public:
     );
     
 private:
-    friend class ResultBuilder;
+    friend class ExpressionBuilder;
     template<typename T> friend class Expression;
 
     template<typename T> friend class PtrExpression;

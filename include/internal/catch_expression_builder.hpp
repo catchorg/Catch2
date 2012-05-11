@@ -17,102 +17,57 @@
 #include "catch_common.h"
 #include <sstream>
 
-namespace Catch
-{
+namespace Catch {
     
-class ResultBuilder
-{
+class ExpressionBuilder {
 public:
 
-    ///////////////////////////////////////////////////////////////////////////
-    ResultBuilder
-    (
-        const SourceLineInfo& lineInfo,
-        const char* macroName,
-        const char* expr = "",
-        bool isNot = false
-    )
+    ExpressionBuilder(  const SourceLineInfo& lineInfo,
+                        const char* macroName,
+                        const char* expr = "",
+                        bool isNot = false )
     : m_result( expr, isNot, lineInfo, macroName ),
       m_messageStream()
     {}
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    Expression<const T&> operator->*
-    (
-        const T & operand
-    )
-    {
-        Expression<const T&> expr( m_result, operand );
-        
+    Expression<const T&> operator->* ( const T & operand ) {
+        Expression<const T&> expr( m_result, operand );        
         return expr;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    Expression<const char*> operator->*
-    (
-        const char* const& operand
-     )
-    {
-        Expression<const char*> expr( m_result, operand );
-        
+    Expression<const char*> operator->* ( const char* const& operand ) {
+        Expression<const char*> expr( m_result, operand );        
         return expr;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    PtrExpression<T> operator->*
-    (
-        const T* operand
-    )
-    {
-        PtrExpression<T> expr( m_result, operand );
-        
+    PtrExpression<T> operator->* ( const T* operand ) {
+        PtrExpression<T> expr( m_result, operand );        
         return expr;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    PtrExpression<T> operator->*
-    (
-        T* operand
-    )
-    {
-        PtrExpression<T> expr( m_result, operand );
-        
+    PtrExpression<T> operator->* ( T* operand ) {
+        PtrExpression<T> expr( m_result, operand );        
         return expr;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    Expression<bool> operator->*
-    (
-        bool value
-    )
-    {
+    Expression<bool> operator->* ( bool value ) {
         Expression<bool> expr( m_result, value );
         return expr;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    ResultBuilder& operator <<
-    (
-        const T & value
-    )
-    {
+    ExpressionBuilder& operator << ( const T & value ) {
         m_messageStream << Catch::toString( value );        
         return *this;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename MatcherT, typename ArgT>
-    ResultBuilder& acceptMatcher
-    (
-        const MatcherT& matcher,
-        const ArgT& arg,
-        const std::string& matcherCallAsString
-    )
-    {
+    ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
+                                        const ArgT& arg,
+                                        const std::string& matcherCallAsString ) {
         std::string matcherAsString = Catch::toString( matcher );
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
@@ -123,15 +78,10 @@ public:
         return *this;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
     template<typename MatcherT, typename ArgT>
-    ResultBuilder& acceptMatcher
-    (
-        const MatcherT& matcher,
-        ArgT* arg,
-        const std::string& matcherCallAsString
-    )
-    {
+    ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
+                                        ArgT* arg,
+                                        const std::string& matcherCallAsString ) {
         std::string matcherAsString = Catch::toString( matcher );
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
@@ -142,20 +92,12 @@ public:
         return *this;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    ResultBuilder& setResultType
-    (
-        ResultWas::OfType resultType
-    )
-    {
+    ExpressionBuilder& setResultType( ResultWas::OfType resultType ) {
         m_result.setResultType( resultType );
         return *this;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    operator ResultInfoBuilder&
-    ()
-    {
+    operator ResultInfoBuilder&() {
         m_result.setMessage( m_messageStream.str() );
         return m_result;
     }
