@@ -8,16 +8,12 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 
-namespace Catch
-{
-namespace Matchers
-{
-    namespace Impl
-    {
-    namespace StdString
-    {
-        struct Contains
-        {
+namespace Catch {
+namespace Matchers {
+    namespace Impl {
+    namespace StdString {
+
+        struct Contains {        
             Contains( const std::string& substr ) : m_substr( substr ){}
             
             bool operator()( const std::string& str ) const
@@ -33,8 +29,7 @@ namespace Matchers
             std::string m_substr;
         };
         
-        struct StartsWith
-        {
+        struct StartsWith {
             StartsWith( const std::string& substr ) : m_substr( substr ){}
             
             bool operator()( const std::string& str ) const
@@ -50,8 +45,7 @@ namespace Matchers
             std::string m_substr;
         };
         
-        struct EndsWith
-        {
+        struct EndsWith {
             EndsWith( const std::string& substr ) : m_substr( substr ){}
             
             bool operator()( const std::string& str ) const

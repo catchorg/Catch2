@@ -11,10 +11,9 @@
 #include "catch_common.h"
 #include <sstream>
 
-namespace Catch
-{
-namespace Detail
-{
+namespace Catch {
+namespace Detail {
+
     struct NonStreamable {
         template<typename T> NonStreamable( const T& ){}
     };

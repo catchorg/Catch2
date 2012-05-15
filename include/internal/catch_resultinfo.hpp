@@ -1,13 +1,9 @@
 /*
- *  catch_resultinfo.hpp
- *  Catch
- *
  *  Created by Phil on 28/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_RESULT_INFO_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RESULT_INFO_HPP_INCLUDED
@@ -15,15 +11,11 @@
 #include <string>
 #include "catch_result_type.h"
 
-namespace Catch
-{    
-    class ResultInfo
-    {
+namespace Catch {
+
+    class ResultInfo {
     public:
-        
-        ///////////////////////////////////////////////////////////////////////////
-        ResultInfo
-        ()
+        ResultInfo()
         :   m_macroName(),
             m_expr(),
             m_lhs(),
@@ -34,16 +26,12 @@ namespace Catch
             m_isNot( false )
         {}
         
-        ///////////////////////////////////////////////////////////////////////////
-        ResultInfo
-        (
-            const char* expr, 
-            ResultWas::OfType result, 
-            bool isNot,
-            const SourceLineInfo& lineInfo,
-            const char* macroName,
-            const char* message
-        )
+        ResultInfo( const char* expr, 
+                    ResultWas::OfType result, 
+                    bool isNot,
+                    const SourceLineInfo& lineInfo,
+                    const char* macroName,
+                    const char* message )
         :   m_macroName( macroName ),
             m_lineInfo( lineInfo ),
             m_expr( expr ),
@@ -52,113 +40,61 @@ namespace Catch
             m_op( isNotExpression( expr ) ? "!" : "" ),
             m_message( message ),
             m_result( result ),
-            m_isNot( isNot )
+            m_isNot( isNot ) 
         {
             if( isNot )
                 m_expr = "!" + m_expr;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual ~ResultInfo
-        ()
-        {
-        }
+        virtual ~ResultInfo() {}
         
-        ///////////////////////////////////////////////////////////////////////////
-        bool ok
-        ()
-        const
-        {
+        bool ok() const {
             return ( m_result & ResultWas::FailureBit ) != ResultWas::FailureBit;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        ResultWas::OfType getResultType
-        ()
-        const
-        {
+        ResultWas::OfType getResultType() const {
             return m_result;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        bool hasExpression
-        ()
-        const
-        {
+        bool hasExpression() const {
             return !m_expr.empty();
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        bool hasMessage
-        ()
-        const
-        {
+        bool hasMessage() const {
             return !m_message.empty();
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getExpression
-        ()
-        const
-        {
+        std::string getExpression() const {
             return m_expr;
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        bool hasExpandedExpression
-        ()
-        const
-        {
+        bool hasExpandedExpression() const {
             return hasExpression() && getExpandedExpressionInternal() != m_expr;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getExpandedExpression
-        ()
-        const
-        {
+        std::string getExpandedExpression() const {
             return hasExpression() ? getExpandedExpressionInternal() : "";
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getMessage
-        ()
-        const
-        {
+        std::string getMessage() const {
             return m_message;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getFilename
-        ()
-        const
-        {
+        std::string getFilename() const {
             return m_lineInfo.file;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        std::size_t getLine
-        ()
-        const
-        {
+        std::size_t getLine() const {
             return m_lineInfo.line;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getTestMacroName
-        ()
-        const
-        {
+        std::string getTestMacroName() const {
             return m_macroName;
         }
 
     protected:
 
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getExpandedExpressionInternal
-        ()
-        const
-        {
+        std::string getExpandedExpressionInternal() const {
             if( m_op == "" || m_isNot )
                 return m_lhs.empty() ? m_expr : m_op + m_lhs;
             else if( m_op == "matches" )
@@ -176,12 +112,7 @@ namespace Catch
                 return "{can't expand - use " + m_macroName + "_FALSE( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        bool isNotExpression
-        (
-            const char* expr
-        )
-        {
+        bool isNotExpression( const char* expr ) {
             return expr && expr[0] == '!';
         }        
         
@@ -195,6 +126,5 @@ namespace Catch
     };
     
 } // end namespace Catch
-
 
 #endif // TWOBLUECUBES_CATCH_RESULT_INFO_HPP_INCLUDED

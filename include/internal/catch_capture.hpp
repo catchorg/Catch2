@@ -15,13 +15,11 @@
 #include "catch_common.h"
 #include <ostream>
 
-namespace Catch
-{
+namespace Catch {
 
 struct TestFailureException{};
 
-class ScopedInfo
-{
+class ScopedInfo {
 public:
     ScopedInfo() : m_oss() {
         Context::getResultCapture().pushScopedInfo( this );

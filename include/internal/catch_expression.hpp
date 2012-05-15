@@ -11,12 +11,10 @@
 #include "catch_resultinfo_builder.hpp"
 #include "catch_evaluate.hpp"
 
-namespace Catch
-{
+namespace Catch {
 
 template<typename T>
-class Expression
-{
+class Expression {
 	void operator = ( const Expression& );
 
 public:
@@ -79,8 +77,7 @@ private:
 };
     
 template<typename LhsT> 
-class PtrExpression
-{
+class PtrExpression {
 public:
 
     PtrExpression ( ResultInfoBuilder& result, const LhsT* lhs )

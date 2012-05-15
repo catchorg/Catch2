@@ -1,15 +1,10 @@
 /*
- *  catch_generators.hpp
- *  Catch
- *
  *  Created by Phil on 27/01/2011.
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
-
 #ifndef TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 
@@ -20,54 +15,25 @@
 #include <string>
 #include <stdlib.h>
 
-namespace Catch
-{
+namespace Catch {
 
 template<typename T>
-struct IGenerator
-{        
-    virtual ~IGenerator
-    ()
-    {}
-    
-    virtual T getValue
-        ( std::size_t index
-        ) const = 0;
-    
-    virtual std::size_t size
-        () const = 0;
+struct IGenerator {
+    virtual ~IGenerator() {}
+    virtual T getValue( std::size_t index ) const = 0;
+    virtual std::size_t size () const = 0;
 };
 
 template<typename T>
-class BetweenGenerator : public IGenerator<T>
-{
+class BetweenGenerator : public IGenerator<T> {
 public:
-    ///////////////////////////////////////////////////////////////////////////
-    BetweenGenerator
-    ( 
-        T from, 
-        T to 
-    )
-    :   m_from( from ), 
-        m_to( to )
-    {
-    }
+    BetweenGenerator( T from, T to ) : m_from( from ), m_to( to ){}
     
-    ///////////////////////////////////////////////////////////////////////////
-    virtual T getValue
-    (
-        std::size_t index
-    )
-    const
-    {
+    virtual T getValue( std::size_t index ) const {
         return m_from+static_cast<T>( index );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    virtual std::size_t size
-    ()
-    const
-    {
+    virtual std::size_t size() const {
         return static_cast<std::size_t>( 1+m_to-m_from );
     }
     
@@ -78,88 +44,49 @@ private:
 };
 
 template<typename T>
-class ValuesGenerator : public IGenerator<T>
-{
+class ValuesGenerator : public IGenerator<T> {
 public:
-    ///////////////////////////////////////////////////////////////////////////
-    ValuesGenerator
-    ()
-    {
-    }
+    ValuesGenerator(){}
     
-    ///////////////////////////////////////////////////////////////////////////
-    void add
-    (
-        T value
-    )
-    {
+    void add( T value ) {
         m_values.push_back( value );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    virtual T getValue
-    (
-        std::size_t index
-    )
-    const
-    {
+    virtual T getValue( std::size_t index ) const {
         return m_values[index];
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    virtual std::size_t size
-    ()
-    const
-    {
+    virtual std::size_t size() const {
         return m_values.size();
     }
     
 private:
-    
     std::vector<T> m_values;
 };
 
 template<typename T>
-class CompositeGenerator
-{
+class CompositeGenerator {
 public:
-    ///////////////////////////////////////////////////////////////////////////
-    CompositeGenerator()
-    :   m_totalSize( 0 )
-    {
-    }
+    CompositeGenerator() : m_totalSize( 0 ) {}
     
-    ///////////////////////////////////////////////////////////////////////////
 	// *** Move semantics, similar to auto_ptr ***
-    CompositeGenerator( CompositeGenerator& other )
-	:	m_fileInfo( other.m_fileInfo ),
-		m_totalSize( 0 )
+    CompositeGenerator( CompositeGenerator& other ) 
+    :   m_fileInfo( other.m_fileInfo ), 
+        m_totalSize( 0 ) 
     {
 		move( other );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    CompositeGenerator& setFileInfo
-    (
-        const char* fileInfo
-    )
-    {
+    CompositeGenerator& setFileInfo( const char* fileInfo ) {
         m_fileInfo = fileInfo;
         return *this;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    ~CompositeGenerator
-    ()
-    {
+    ~CompositeGenerator() {
         deleteAll( m_composed );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    operator T
-    ()
-    const
-    {
+    operator T () const {
         size_t overallIndex = Context::getGeneratorIndex( m_fileInfo, m_totalSize );
         
         typename std::vector<const IGenerator<T>*>::const_iterator it = m_composed.begin();
@@ -177,32 +104,17 @@ public:
 		return T(); // Suppress spurious "not all control paths return a value" warning in Visual Studio - if you know how to fix this please do so
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    void add
-    (
-        const IGenerator<T>* generator
-    )
-    {
+    void add( const IGenerator<T>* generator ) {
         m_totalSize += generator->size();
         m_composed.push_back( generator );
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    CompositeGenerator& then
-    (
-        CompositeGenerator& other
-    )
-    {
+    CompositeGenerator& then( CompositeGenerator& other ) {
         move( other );
         return *this;
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    CompositeGenerator& then
-    (
-        T value
-    )
-    {
+    CompositeGenerator& then( T value ) {
         ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
         valuesGen->add( value );
         add( valuesGen );
@@ -211,12 +123,7 @@ public:
     
 private:
     
-    ///////////////////////////////////////////////////////////////////////////
-    void move
-    (
-        CompositeGenerator& other
-    )
-    {
+    void move( CompositeGenerator& other ) {
         std::copy( other.m_composed.begin(), other.m_composed.end(), std::back_inserter( m_composed ) );
         m_totalSize += other.m_totalSize;
         other.m_composed.clear();
@@ -229,27 +136,15 @@ private:
 
 namespace Generators
 {
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    CompositeGenerator<T> between
-    (
-        T from, 
-        T to
-    )
-    {
+    CompositeGenerator<T> between( T from, T to ) {
         CompositeGenerator<T> generators;
         generators.add( new BetweenGenerator<T>( from, to ) );
         return generators;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    CompositeGenerator<T> values
-    (
-        T val1, 
-        T val2
-    )
-    {
+    CompositeGenerator<T> values( T val1, T val2 ) {
         CompositeGenerator<T> generators;
         ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
         valuesGen->add( val1 );
@@ -258,15 +153,8 @@ namespace Generators
         return generators;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    CompositeGenerator<T> values
-    (
-        T val1, 
-        T val2, 
-        T val3
-    )
-    {
+    CompositeGenerator<T> values( T val1, T val2, T val3 ){
         CompositeGenerator<T> generators;
         ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
         valuesGen->add( val1 );
@@ -276,16 +164,8 @@ namespace Generators
         return generators;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     template<typename T>
-    CompositeGenerator<T> values
-    (
-        T val1, 
-        T val2, 
-        T val3, 
-        T val4
-    )
-    {
+    CompositeGenerator<T> values( T val1, T val2, T val3, T val4 ) {
         CompositeGenerator<T> generators;
         ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
         valuesGen->add( val1 );

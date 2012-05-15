@@ -14,8 +14,7 @@
 #include "catch_evaluate.hpp"
 #include "catch_common.h"
 
-namespace Catch
-{    
+namespace Catch {
 
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
