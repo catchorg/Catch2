@@ -14,8 +14,8 @@
 #include <vector>
 #include <stdlib.h>
 
-namespace Catch
-{
+namespace Catch {
+
     class TestCaseInfo;
     struct IResultCapture;
     struct ITestCaseRegistry;
@@ -25,8 +25,8 @@ namespace Catch
 
     class StreamBufBase : public std::streambuf{};
     
-    class Context
-    {
+    class Context {
+    
         Context();                
         Context( const Context& );
         void operator=( const Context& );

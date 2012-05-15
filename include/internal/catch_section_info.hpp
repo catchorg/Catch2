@@ -13,15 +13,12 @@
 #include <map>
 #include <string>
 
-namespace Catch
-{    
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////    
-    class SectionInfo
-    {
+namespace Catch {
+
+    class SectionInfo {
     public:
-        enum Status
-        {
+    
+        enum Status {
             Root,
             Unknown,
             Branch,
@@ -29,103 +26,62 @@ namespace Catch
             TestedLeaf
         };
         
-        ///////////////////////////////////////////////////////////////////////        
-        SectionInfo
-        (
-            SectionInfo* parent
-        )
+        SectionInfo( SectionInfo* parent )
         :   m_status( Unknown ),
             m_parent( parent )
-        {
-        }
+        {}
         
-        ///////////////////////////////////////////////////////////////////////        
-        SectionInfo
-        ()
+        SectionInfo()
         :   m_status( Root ),
             m_parent( NULL )
-        {
-        }
+        {}
         
-        ///////////////////////////////////////////////////////////////////////
-        ~SectionInfo
-        ()
-        {
+        ~SectionInfo() {
             deleteAllValues( m_subSections );
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        bool shouldRun
-        ()
-        const
-        {
+        bool shouldRun() const {
             return m_status < TestedBranch;
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        bool ran
-        ()
-        {
-            if( m_status < Branch )
-            {
+        bool ran() {
+            if( m_status < Branch ) {
                 m_status = TestedLeaf;
                 return true;
             }            
             return false;
         }
-        ///////////////////////////////////////////////////////////////////////
-        void ranToCompletion
-        ()
-        {
+
+        void ranToCompletion() {
             if( m_status == Branch && !hasUntestedSections() )
-            {
                 m_status = TestedBranch;
-            }
         }
                 
-        ///////////////////////////////////////////////////////////////////////
-        SectionInfo* findSubSection
-        (
-            const std::string& name
-        )
-        {
+        SectionInfo* findSubSection( const std::string& name ) {
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
             return it != m_subSections.end()
                         ? it->second
                         : NULL;
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        SectionInfo* addSubSection
-        (
-            const std::string& name
-        )
-        {
+        SectionInfo* addSubSection( const std::string& name ) {
             SectionInfo* subSection = new SectionInfo( this );
             m_subSections.insert( std::make_pair( name, subSection ) );
             m_status = Branch;
             return subSection;
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        SectionInfo* getParent
-        ()
-        {
+        SectionInfo* getParent() {
             return m_parent;
         }
         
-        ///////////////////////////////////////////////////////////////////////        
-        bool hasUntestedSections
-        ()
-        const
-        {
+        bool hasUntestedSections() const {
             if( m_status == Unknown )
                 return true;
             
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.begin();
             std::map<std::string, SectionInfo*>::const_iterator itEnd = m_subSections.end();
-            for(; it != itEnd; ++it )
-            {
+            for(; it != itEnd; ++it ) {
                 if( it->second->hasUntestedSections() )
                     return true;
             }

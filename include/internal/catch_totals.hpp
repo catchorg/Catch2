@@ -8,10 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 
-namespace Catch
-{
-    struct Counts
-    {
+namespace Catch {
+
+    struct Counts {
         Counts() : passed( 0 ), failed( 0 ) {}
 
         Counts operator - ( const Counts& other ) const {
@@ -29,8 +28,8 @@ namespace Catch
         std::size_t failed;
     };
     
-    struct Totals
-    {
+    struct Totals {
+    
         Totals operator - ( const Totals& other ) const {
             Totals diff;
             diff.assertions = assertions - other.assertions;

@@ -1,27 +1,17 @@
 /*
- *  catch_commandline.hpp
- *  Catch
- *
  *  Created by Phil on 02/11/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
-
 #ifndef TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
 
 #include "catch_config.hpp"
 #include "catch_runner_impl.hpp"
 
-namespace Catch
-{
-    // !TBD: This could be refactored to be more "declarative"
-    //       have a table up front that relates the mode, option strings, # arguments, names of arguments
-    //       - may not be worth it at this scale
-    
+namespace Catch {
     // -l, --list tests [xml] lists available tests (optionally in xml)
     // -l, --list reporters [xml] lists available reports (optionally in xml)
     // -l, --list all [xml] lists available tests and reports (optionally in xml)
@@ -31,10 +21,9 @@ namespace Catch
     // -s, --success report successful cases too
     // -b, --break breaks into debugger on test failure
     // -n, --name specifies an optional name for the test run
-	class ArgParser : NonCopyable
-    {
-        enum Mode
-        {
+	class ArgParser : NonCopyable {
+
+        enum Mode {
             modeNone,
             modeList,
             modeTest,
@@ -49,20 +38,12 @@ namespace Catch
         };
         
     public:
-        ///////////////////////////////////////////////////////////////////////
-        ArgParser
-        (
-            int argc, 
-            char * const argv[], 
-            Config& config
-        )
+        ArgParser ( int argc,  char * const argv[], Config& config )
         :   m_mode( modeNone ),
-            m_config( config )
-        {
-            for( int i=1; i < argc; ++i )
-            {
-                if( argv[i][0] == '-' )
-                {
+            m_config( config ) {
+            
+            for( int i=1; i < argc; ++i ) {
+                if( argv[i][0] == '-' ) {
                     std::string cmd = ( argv[i] );
                     if( cmd == "-l" || cmd == "--list" )
                         changeMode( cmd, modeList );
@@ -81,8 +62,7 @@ namespace Catch
                     else if( cmd == "-h" || cmd == "-?" || cmd == "--help" )
                         changeMode( cmd, modeHelp );
                 }
-                else
-                {
+                else {
                     m_args.push_back( argv[i] );
                 }
                 if( m_mode == modeError )
@@ -92,15 +72,11 @@ namespace Catch
         }
         
     private:
-        ///////////////////////////////////////////////////////////////////////
-        std::string argsAsString
-        ()
-        {
+        std::string argsAsString() {
             std::ostringstream oss;
             std::vector<std::string>::const_iterator it = m_args.begin();
             std::vector<std::string>::const_iterator itEnd = m_args.end();
-            for( bool first = true; it != itEnd; ++it, first = false )
-            {
+            for( bool first = true; it != itEnd; ++it, first = false ) {
                 if( !first )
                     oss << " ";
                 oss << *it;
@@ -108,30 +84,20 @@ namespace Catch
             return oss.str();
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        void changeMode
-        (
-            const std::string& cmd, 
-            Mode mode
-        )
-        {
+        void changeMode( const std::string& cmd, Mode mode ) {
             m_command = cmd;
-            switch( m_mode )
-            {
+            switch( m_mode ) {
                 case modeNone:
                     if( m_args.size() > 0 )
                         return setErrorMode( "Unexpected arguments before " + m_command + ": " + argsAsString() );
                     break;
                 case modeList:
-                    if( m_args.size() > 2 )
-                    {
+                    if( m_args.size() > 2 ) {
                         return setErrorMode( m_command + " expected upto 2 arguments but recieved: " + argsAsString() );
                     }
-                    else
-                    {
+                    else {
                         Config::List::What listSpec = Config::List::All;
-                        if( m_args.size() >= 1 )
-                        {
+                        if( m_args.size() >= 1 ) {
                             if( m_args[0] == "tests" )
                                 listSpec = Config::List::Tests;
                             else if( m_args[0] == "reporters" )
@@ -139,8 +105,7 @@ namespace Catch
                             else
                                 return setErrorMode( m_command + " expected [tests] or [reporters] but recieved: [" + m_args[0] + "]" );                        
                         }
-                        if( m_args.size() >= 2 )
-                        {
+                        if( m_args.size() >= 2 ) {
                             if( m_args[1] == "xml" )
                                 listSpec = static_cast<Config::List::What>( listSpec | Config::List::AsXml );
                             else if( m_args[1] == "text" )
@@ -202,12 +167,7 @@ namespace Catch
             m_mode = mode;
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        void setErrorMode
-        (
-            const std::string& errorMessage
-        )
-        {
+        void setErrorMode( const std::string& errorMessage ) {
             m_mode = modeError;
             m_command = "";
             m_config.setError( errorMessage );
