@@ -57,8 +57,7 @@ namespace Catch
         virtual const FactoryMap& getFactories() const = 0;
     };
     
-    inline std::string trim( const std::string& str )
-    {
+    inline std::string trim( const std::string& str ) {
         std::string::size_type start = str.find_first_not_of( "\n\r\t " );
         std::string::size_type end = str.find_last_not_of( "\n\r\t " );
         

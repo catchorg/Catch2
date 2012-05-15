@@ -25,8 +25,8 @@
 #include <stdexcept>
 #include <algorithm>
 
-namespace Catch
-{
+namespace Catch {
+
 	class NonCopyable {
 		NonCopyable( const NonCopyable& );
 		void operator = ( const NonCopyable& );
@@ -64,8 +64,8 @@ namespace Catch
         std::for_each( container.begin(), container.end(), function );
     }
     
-    struct SourceLineInfo
-    {
+    struct SourceLineInfo {
+    
         SourceLineInfo() : line( 0 ){}
         SourceLineInfo( const std::string& _file, std::size_t _line )
         :   file( _file ),

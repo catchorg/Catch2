@@ -1,27 +1,22 @@
 /*
- *  catch_ptr.hpp
- *  Catch
- *
  *  Created by Phil on 02/05/2012.
  *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
 
 #include "catch_common.h"
 
-namespace Catch
-{
+namespace Catch {
+
     // An intrusive reference counting smart pointer.
     // T must implement addRef() and release() methods
     // typically implementing the IShared interface
     template<typename T>
-    class Ptr
-    {
+    class Ptr {
     public:
         Ptr() : m_p( NULL ){}
         Ptr( T* p ) : m_p( p ){

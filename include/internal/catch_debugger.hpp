@@ -1,7 +1,4 @@
 /*
- *  catch_debugger.hpp
- *  Catch
- *
  *  Created by Phil on 27/12/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
@@ -10,7 +7,6 @@
  *
  * Provides a BreakIntoDebugger() macro for Windows and Mac (so far)
  */
-
 #ifndef TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 
@@ -32,15 +28,15 @@
     #include <unistd.h>
     #include <sys/sysctl.h>
 
-    namespace Catch
-    {
+    namespace Catch{
+    
         // The following function is taken directly from the following technical note:
         // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html
             
-        inline bool isDebuggerActive()
         // Returns true if the current process is being debugged (either
         // running under the debugger or has a debugger attached post facto).
-        {
+        inline bool isDebuggerActive(){
+        
             int                 junk;
             int                 mib[4];
             struct kinfo_proc   info;
@@ -76,8 +72,7 @@
     #ifdef DEBUG
         #if defined(__ppc64__) || defined(__ppc__)
             #define BreakIntoDebugger() \
-            if( Catch::isDebuggerActive() ) \
-            { \
+            if( Catch::isDebuggerActive() ) { \
             __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
             : : : "memory","r0","r3","r4" ); \
             }
@@ -91,16 +86,14 @@
 #elif defined(_MSC_VER)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
-    inline bool isDebuggerActive()
-    {
+    inline bool isDebuggerActive() {
         return IsDebuggerPresent() != 0;
     }
 #elif defined(__MINGW32__)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     extern "C" __declspec(dllimport) void __stdcall DebugBreak();
     #define BreakIntoDebugger() if (IsDebuggerPresent() ) { DebugBreak(); }
-    inline bool isDebuggerActive()
-    {
+    inline bool isDebuggerActive() {
         return IsDebuggerPresent() != 0;
     }
 #else
@@ -110,13 +103,11 @@
 
 #ifdef CATCH_PLATFORM_WINDOWS
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
-inline void writeToDebugConsole( const std::string& text )
-{
+inline void writeToDebugConsole( const std::string& text ) {
     ::OutputDebugStringA( text.c_str() );
 }
 #else
-inline void writeToDebugConsole( const std::string& text )
-{
+inline void writeToDebugConsole( const std::string& text ) {
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
 }

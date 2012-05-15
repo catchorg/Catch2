@@ -1,67 +1,45 @@
 /*
- *  catch_exception_interfaces.h
- *  Catch
- *
  *  Created by Phil on 20/04/2011.
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
 
 #include <string>
                                               
-namespace Catch
-{    
+namespace Catch {
+    
     typedef std::string(*exceptionTranslateFunction)();
 
-    struct IExceptionTranslator
-    {
+    struct IExceptionTranslator {
         virtual ~IExceptionTranslator(){}
         virtual std::string translate() const = 0;
     };
     
-    struct IExceptionTranslatorRegistry
-    {
-        virtual ~IExceptionTranslatorRegistry
-        ()
-        {}
+    struct IExceptionTranslatorRegistry {
+        virtual ~IExceptionTranslatorRegistry(){}
         
-        virtual void registerTranslator
-            (   IExceptionTranslator* translator 
-            ) = 0;
-        virtual std::string translateActiveException
-            () const = 0;
-        
+        virtual void registerTranslator( IExceptionTranslator* translator ) = 0;
+        virtual std::string translateActiveException() const = 0;
     };
 
-    class ExceptionTranslatorRegistrar
-    {
+    class ExceptionTranslatorRegistrar {
         template<typename T>
-        class ExceptionTranslator : public IExceptionTranslator
-        {
+        class ExceptionTranslator : public IExceptionTranslator {
         public:
             
-            ExceptionTranslator
-            (
-                std::string(*translateFunction)( T& ) 
-            )
+            ExceptionTranslator( std::string(*translateFunction)( T& ) )
             : m_translateFunction( translateFunction )
             {}
             
-            virtual std::string translate
-            ()
-            const
-            {
-                try
-                {
+            virtual std::string translate() const {
+                try {
                     throw;
                 }
-                catch( T& ex )
-                {
+                catch( T& ex ) {
                     return m_translateFunction( ex );
                 }
             }
@@ -72,11 +50,7 @@ namespace Catch
         
     public:
         template<typename T>
-        ExceptionTranslatorRegistrar
-        (
-            std::string(*translateFunction)( T& ) 
-        )
-        {
+        ExceptionTranslatorRegistrar( std::string(*translateFunction)( T& ) ) {
             Catch::Context::getExceptionTranslatorRegistry().registerTranslator
                 ( new ExceptionTranslator<T>( translateFunction ) );
         }
