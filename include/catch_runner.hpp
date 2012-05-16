@@ -1,15 +1,10 @@
 /*
- *  catch_runner.hpp
- *  Catch
- *
  *  Created by Phil on 31/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
-
 #ifndef TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
@@ -25,25 +20,19 @@
 #include <stdlib.h>
 #include <limits>
 
-namespace Catch
-{
-    //////////////////////////////////////////////////////////////////////////
-    inline int Main
-    (
-        Config& config
-    )
-    {        
+namespace Catch {
+
+    inline int Main( Config& config ) {
+    
         // Handle list request
         if( config.listWhat() != Config::List::None )
             return List( config );
         
         // Open output file, if specified
         std::ofstream ofs;
-        if( !config.getFilename().empty() )
-        {
+        if( !config.getFilename().empty() ) {
             ofs.open( config.getFilename().c_str() );
-            if( ofs.fail() )
-            {
+            if( ofs.fail() ) {
                 std::cerr << "Unable to open file: '" << config.getFilename() << "'" << std::endl;
                 return (std::numeric_limits<int>::max)();
             }
@@ -53,43 +42,32 @@ namespace Catch
         Runner runner( config );
 
         // Run test specs specified on the command line - or default to all
-        if( !config.testsSpecified() )
-        {
+        if( !config.testsSpecified() ) {
             config.getReporter()->StartGroup( "" );
             runner.runAll();
             config.getReporter()->EndGroup( "", runner.getTotals() );
         }
-        else
-        {
+        else {
             // !TBD We should get all the testcases upfront, report any missing,
             // then just run them
             std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
             std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
-            for(; it != itEnd; ++it )
-            {
+            for(; it != itEnd; ++it ) {
                 Totals prevTotals = runner.getTotals();
                 config.getReporter()->StartGroup( *it );
-                if( runner.runMatching( *it ) == 0 )
-                {
+                if( runner.runMatching( *it ) == 0 ) {
                     // Use reporter?
 //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
                 }
                 config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
             }
         }
-
         return static_cast<int>( runner.getTotals().assertions.failed );
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    inline void showHelp
-    (
-        std::string exeName
-    )
-    {
+    inline void showHelp( std::string exeName ) {
         std::string::size_type pos = exeName.find_last_of( "/\\" );
-        if( pos != std::string::npos )
-        {
+        if( pos != std::string::npos ) {
             exeName = exeName.substr( pos+1 );
         }
         
@@ -104,25 +82,16 @@ namespace Catch
         << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    inline int Main
-    (
-        int argc, 
-        char* const argv[],
-        Config& config
-    )
-    {
+    inline int Main( int argc, char* const argv[], Config& config ) {
         ArgParser( argc, argv, config );
         
-        if( !config.getMessage().empty() )
-        {
+        if( !config.getMessage().empty() ) {
             std::cerr << config.getMessage() << std::endl;
             return (std::numeric_limits<int>::max)();
         }
         
         // Handle help
-        if( config.showHelp() )
-        {
+        if( config.showHelp() ) {
             showHelp( argv[0] );
             return 0;
         }
@@ -130,13 +99,7 @@ namespace Catch
         return Main( config );
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    inline int Main
-    (
-        int argc, 
-        char* const argv[]
-    )
-    {
+    inline int Main( int argc, char* const argv[] ) {
         Config config;
 //        if( isDebuggerActive() )
 //            config.useStream( "debug" );

@@ -15,10 +15,7 @@
 
 namespace Catch{
     
-    std::size_t EmbeddedRunner::runMatching( 
-        const std::string& rawTestSpec, 
-        const std::string& reporter )
-    {
+    std::size_t EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& reporter ) {
         std::ostringstream oss;
         Config config;
         config.setStreamBuf( oss.rdbuf() );
@@ -38,17 +35,11 @@ namespace Catch{
         return result;
     }
     
-    void MockReporter::Result
-    (   
-        const ResultInfo& resultInfo          
-    )
-    {
+    void MockReporter::Result( const ResultInfo& resultInfo ) {
         if( resultInfo.getResultType() == ResultWas::Ok )
             return;
         
-        
-        switch( resultInfo.getResultType() )
-        {                    
+        switch( resultInfo.getResultType() ) {          
             case ResultWas::Info:
                 m_log << "Info";
                 break;
@@ -96,10 +87,8 @@ namespace Catch{
             m_log << resultInfo.getExpandedExpression();        
     }    
 
-    void MockReporter::openLabel( const std::string& label, const std::string& arg )
-    {
-        if( shouldRecord( label ) )
-        {
+    void MockReporter::openLabel( const std::string& label, const std::string& arg ) {
+        if( shouldRecord( label ) ) {
             m_log << m_indent << "\\" << label;
             if( !arg.empty() )
                 m_log << " " << arg;
@@ -108,10 +97,8 @@ namespace Catch{
         }
     }
     
-    void MockReporter::closeLabel( const std::string& label, const std::string& arg )
-    {
-        if( shouldRecord( label ) )
-        {
+    void MockReporter::closeLabel( const std::string& label, const std::string& arg ) {
+        if( shouldRecord( label ) ) {
             m_indent = m_indent.substr( 0, m_indent.size()-1 );
             m_log << m_indent << "/" << label;
             if( !arg.empty() )

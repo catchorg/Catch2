@@ -1,13 +1,9 @@
 /*
- *  catch_self_test.hpp
- *  Catch
- *
  *  Created by Phil on 14/01/2011.
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
@@ -16,8 +12,8 @@
 
 #include "set"
 
-namespace Catch
-{
+namespace Catch {
+
     class MockReporter : public SharedImpl<IReporter> {
     public:
         
@@ -105,44 +101,27 @@ namespace Catch
         std::set<std::string> m_recorders;
     };    
     
-    class EmbeddedRunner
-    {
+    class EmbeddedRunner {
+
     public:
-        ///////////////////////////////////////////////////////////////////////////
-        EmbeddedRunner
-        ()
-        : m_reporter( new MockReporter() )
-        {
-        }
+        EmbeddedRunner() : m_reporter( new MockReporter() ) {}
         
-        std::size_t runMatching
-            (   const std::string& rawTestSpec,
-                const std::string& reporter = "basic" );
+        std::size_t runMatching(    const std::string& rawTestSpec,
+                                    const std::string& reporter = "basic" );
         
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getOutput
-        ()
-        {
+        std::string getOutput() {
             return m_output;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        const Totals& getTotals
-        ()
-        const
-        {
+        const Totals& getTotals() const {
             return m_totals;
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        void addRecorder( const std::string& recorder )
-        {
+        void addRecorder( const std::string& recorder ) {
             m_reporter->addRecorder( recorder );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        std::string getLog() const
-        {
+        std::string getLog() const {
             return m_reporter->getLog();
         }
         
@@ -152,52 +131,29 @@ namespace Catch
         Ptr<MockReporter> m_reporter;
     };
 
-    class MetaTestRunner
-    {
+    class MetaTestRunner {
+
     public:
-        struct Expected
-        {
-            enum Result
-            {
-                ToSucceed,
-                ToFail
-            };
-        };
+        struct Expected { enum Result {
+            ToSucceed,
+            ToFail
+        }; };
         
-        ///////////////////////////////////////////////////////////////////////////
-        MetaTestRunner
-        (
-            Expected::Result expectedResult
-        )
-        : m_expectedResult( expectedResult )
-        {        
-        }
+        MetaTestRunner( Expected::Result expectedResult ) : m_expectedResult( expectedResult ) {}
         
-        ///////////////////////////////////////////////////////////////////////////
-        static void runMatching
-        (
-            const std::string& testSpec, 
-            Expected::Result expectedResult
-        )
-        {
+        static void runMatching(    const std::string& testSpec, 
+                                    Expected::Result expectedResult ) {
             forEach(    Context::getTestCaseRegistry().getMatchingTestCases( testSpec ), 
                         MetaTestRunner( expectedResult ) );
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        void operator()
-        (
-            const TestCaseInfo& testCase
-        )
-        {
+        void operator()( const TestCaseInfo& testCase ) {
             EmbeddedRunner runner;
             runner.runMatching( testCase.getName() );
             Totals totals = runner.getTotals();
-            switch( m_expectedResult )
-            {
+            switch( m_expectedResult ) {
                 case Expected::ToSucceed:
-                    if( totals.assertions.failed > 0 )
-                    {
+                    if( totals.assertions.failed > 0 ) {
                         INFO( runner.getOutput() );
                         FAIL( "Expected test case '" 
                              << testCase.getName() 
@@ -206,8 +162,7 @@ namespace Catch
                     }
                     break;
                 case Expected::ToFail:
-                    if( totals.assertions.passed > 0 )
-                    {
+                    if( totals.assertions.passed > 0 ) {
                         INFO( runner.getOutput() );
                         FAIL( "Expected test case '" 
                              << testCase.getName() 
@@ -223,32 +178,24 @@ namespace Catch
     };
     
 
-    struct LineInfoRegistry
-    {
-        static LineInfoRegistry& get
-        ()
-        {
+    struct LineInfoRegistry {
+
+        static LineInfoRegistry& get() {
             static LineInfoRegistry s_instance;
             return s_instance;
         }
         
-        void registerLineInfo
-        (
-            const std::string& name, 
-            const SourceLineInfo& info 
-        )
-        {
+        void registerLineInfo(  const std::string& name, 
+                                const SourceLineInfo& info ) {
             m_registry.insert( std::make_pair( name, info ) );
         }
         
-        const SourceLineInfo* find( const std::string& name ) const
-        {
+        const SourceLineInfo* find( const std::string& name ) const {
             std::map<std::string, SourceLineInfo>::const_iterator it = m_registry.find( name );
             return it == m_registry.end() ? NULL : &(it->second);
         }
 
-        const std::string infoForName( const std::string& name ) const
-        {
+        const std::string infoForName( const std::string& name ) const {
             std::map<std::string, SourceLineInfo>::const_iterator it = m_registry.find( name );
             if( it == m_registry.end() )
                 return "";
@@ -260,10 +207,8 @@ namespace Catch
         std::map<std::string, SourceLineInfo> m_registry;
     };
     
-    struct LineInfoRegistrar
-    {
-        LineInfoRegistrar( const char* name, const SourceLineInfo& lineInfo )
-        {
+    struct LineInfoRegistrar {
+        LineInfoRegistrar( const char* name, const SourceLineInfo& lineInfo ) {
             LineInfoRegistry::get().registerLineInfo( name, lineInfo );
         }
     };
