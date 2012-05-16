@@ -35,7 +35,7 @@ namespace Catch
         virtual void EndTesting( const Totals& totals ) = 0;        
         virtual void StartGroup( const std::string& groupName ) = 0;        
         virtual void EndGroup( const std::string& groupName, const Totals& totals ) = 0;        
-        virtual void StartSection( const std::string& sectionName, const std::string description ) = 0;        
+        virtual void StartSection( const std::string& sectionName, const std::string& description ) = 0;        
         virtual void EndSection( const std::string& sectionName, const Counts& assertions ) = 0;        
         virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;        
         virtual void EndTestCase( const TestCaseInfo& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;        

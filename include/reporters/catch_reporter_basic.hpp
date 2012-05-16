@@ -1,13 +1,9 @@
 /*
- *  catch_reporter_basic.hpp
- *  Catch
- *
  *  Created by Phil on 28/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED
@@ -17,17 +13,15 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 
-namespace Catch
-{
-    struct pluralise
-    {
+namespace Catch {
+
+    struct pluralise {
         pluralise( std::size_t count, const std::string& label )
         :   m_count( count ),
             m_label( label )
         {}
 
-        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser )
-        {
+        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
             os << pluraliser.m_count << " " << pluraliser.m_label;
             if( pluraliser.m_count != 1 )
                 os << "s";
@@ -38,10 +32,10 @@ namespace Catch
         std::string m_label;
     };
 
-    class BasicReporter : public SharedImpl<IReporter>
-    {
-        struct SpanInfo
-        {
+    class BasicReporter : public SharedImpl<IReporter> {
+    
+        struct SpanInfo {
+        
             SpanInfo() 
             :   emitted( false )
             {}
@@ -61,61 +55,38 @@ namespace Catch
         };
 
     public:
-        ///////////////////////////////////////////////////////////////////////////
-        BasicReporter
-        (
-            const IReporterConfig& config
-        )
+        BasicReporter( const IReporterConfig& config )
         :   m_config( config ),
             m_firstSectionInTestCase( true )
-        {
-        }
+        {}
         
-        ///////////////////////////////////////////////////////////////////////////
-        static std::string getDescription
-        ()
-        {
+        static std::string getDescription() {
             return "Reports test results as lines of text";
         }
 
     private:
 
-        ///////////////////////////////////////////////////////////////////////////
-        void ReportCounts
-        (
-            const std::string& label,
-            const Counts& counts
-        )
-        {
+        void ReportCounts( const std::string& label, const Counts& counts ) {
             if( counts.passed )
                 m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
             else
                 m_config.stream() << ( counts.failed > 1 ? "All " : "" ) << pluralise( counts.failed, label ) << " failed";
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        void ReportCounts
-        (
-            const Totals& totals
-        )
-        {
-            if( totals.assertions.total() == 0 )
-            {
+        void ReportCounts( const Totals& totals ) {
+            if( totals.assertions.total() == 0 ) {
                 m_config.stream() << "No tests ran";
             }
-            else if( totals.assertions.failed )
-            {
+            else if( totals.assertions.failed ) {
                 TextColour colour( TextColour::ResultError );
                 ReportCounts( "test case", totals.testCases );
-                if( totals.testCases.failed > 0 )
-                {
+                if( totals.testCases.failed > 0 ) {
                     m_config.stream() << " (";
                     ReportCounts( "assertion", totals.assertions );
                     m_config.stream() << ")";
                 }
             }
-            else
-            {
+            else {
                 TextColour colour( TextColour::ResultSuccess );
                 m_config.stream()   << "All tests passed (" 
                                     << pluralise( totals.assertions.passed, "assertion" ) << " in " 
@@ -125,51 +96,27 @@ namespace Catch
 
     private: // IReporter
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual bool shouldRedirectStdout
-        ()
-        const
-        {
+        virtual bool shouldRedirectStdout() const {
             return false;
         }        
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartTesting
-        ()
-        {
+        virtual void StartTesting() {
             m_testingSpan = SpanInfo();
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTesting
-        (
-            const Totals& totals
-        )
-        {
+        virtual void EndTesting( const Totals& totals ) {
             // Output the overall test results even if "Started Testing" was not emitted
             m_config.stream() << "\n[Testing completed. ";
             ReportCounts( totals);
             m_config.stream() << "]\n" << std::endl;
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartGroup
-        (
-            const std::string& groupName
-        )
-        {
+        virtual void StartGroup( const std::string& groupName ) {
             m_groupSpan = groupName;
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndGroup
-        (
-            const std::string& groupName, 
-            const Totals& totals
-        )
-        {
-            if( m_groupSpan.emitted && !groupName.empty() )
-            {
+        virtual void EndGroup( const std::string& groupName, const Totals& totals ) {
+            if( m_groupSpan.emitted && !groupName.empty() ) {
                 m_config.stream() << "[End of group: '" << groupName << "'. ";
                 ReportCounts( totals );
                 m_config.stream() << "]\n" << std::endl;
@@ -177,44 +124,24 @@ namespace Catch
             }
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartTestCase
-        (
-            const TestCaseInfo& testInfo
-        )
-        {
+        virtual void StartTestCase( const TestCaseInfo& testInfo ) {
             m_testSpan = testInfo.getName();
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartSection
-        (
-            const std::string& sectionName, 
-            const std::string /*description*/ 
-        )
-        {
+        virtual void StartSection( const std::string& sectionName, const std::string& ) {
             m_sectionSpans.push_back( SpanInfo( sectionName ) );
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndSection
-        (
-            const std::string& sectionName, 
-            const Counts& assertions
-        )
-        {
+        virtual void EndSection( const std::string& sectionName, const Counts& assertions ) {
             SpanInfo& sectionSpan = m_sectionSpans.back();
-            if( sectionSpan.emitted && !sectionSpan.name.empty() )
-            {
+            if( sectionSpan.emitted && !sectionSpan.name.empty() ) {
                 m_config.stream() << "[End of section: '" << sectionName << "' ";
                 
-                if( assertions.failed )
-                {
+                if( assertions.failed ) {
                     TextColour colour( TextColour::ResultError );
                     ReportCounts( "assertion", assertions);
                 }
-                else
-                {
+                else {
                     TextColour colour( TextColour::ResultSuccess );
                     m_config.stream()   << ( assertions.passed > 1 ? "All " : "" ) 
                                         << pluralise( assertions.passed, "assertion" ) << "passed" ;
@@ -224,40 +151,30 @@ namespace Catch
             m_sectionSpans.pop_back();
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void Result
-        (
-            const ResultInfo& resultInfo
-        )
-        {
+        virtual void Result( const ResultInfo& resultInfo ) {
             if( !m_config.includeSuccessfulResults() && resultInfo.getResultType() == ResultWas::Ok )
                 return;
             
             StartSpansLazily();
             
-            if( !resultInfo.getFilename().empty() )
-            {
+            if( !resultInfo.getFilename().empty() ) {
                 TextColour colour( TextColour::FileName );
                 m_config.stream() << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
             }
             
-            if( resultInfo.hasExpression() )
-            {
+            if( resultInfo.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
                 m_config.stream() << resultInfo.getExpression();
-                if( resultInfo.ok() )
-                {
+                if( resultInfo.ok() ) {
                     TextColour successColour( TextColour::Success );
                     m_config.stream() << " succeeded";
                 }
-                else
-                {
+                else {
                     TextColour errorColour( TextColour::Error );
                     m_config.stream() << " failed";
                 }
             }
-            switch( resultInfo.getResultType() )
-            {
+            switch( resultInfo.getResultType() ) {
                 case ResultWas::ThrewException:
                 {
                     TextColour colour( TextColour::Error );
@@ -295,15 +212,12 @@ namespace Catch
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
                 default:
-                    if( !resultInfo.hasExpression() )
-                    {
-                        if( resultInfo.ok() )
-                        {
+                    if( !resultInfo.hasExpression() ) {
+                        if( resultInfo.ok() ) {
                             TextColour colour( TextColour::Success );
                             m_config.stream() << " succeeded";
                         }
-                        else
-                        {
+                        else {
                             TextColour colour( TextColour::Error );
                             m_config.stream() << " failed";
                         }
@@ -311,8 +225,7 @@ namespace Catch
                     break;
             }
             
-            if( resultInfo.hasExpandedExpression() )
-            {
+            if( resultInfo.hasExpandedExpression() ) {
                 m_config.stream() << " for: ";
                 TextColour colour( TextColour::ReconstructedExpression );
                 m_config.stream() << resultInfo.getExpandedExpression();
@@ -320,29 +233,21 @@ namespace Catch
             m_config.stream() << std::endl;        
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase
-        (
-            const TestCaseInfo& testInfo, 
-            const Totals& totals,
-            const std::string& stdOut, 
-            const std::string& stdErr
-        )
-        {
-            if( !stdOut.empty() )
-            {
+        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
+                                    const Totals& totals,
+                                    const std::string& stdOut, 
+                                    const std::string& stdErr ) {
+            if( !stdOut.empty() ) {
                 StartSpansLazily();
                 streamVariableLengthText( "stdout", stdOut );
             }
             
-            if( !stdErr.empty() )
-            {
+            if( !stdErr.empty() ) {
                 StartSpansLazily();
                 streamVariableLengthText( "stderr", stdErr );
             }
             
-            if( m_testSpan.emitted )
-            {
+            if( m_testSpan.emitted ) {
                 m_config.stream() << "[Finished: '" << testInfo.getName() << "' ";
                 ReportCounts( totals );
                 m_config.stream() << "]" << std::endl;
@@ -351,11 +256,8 @@ namespace Catch
         
     private: // helpers
         
-        ///////////////////////////////////////////////////////////////////////////
-        void StartSpansLazily()
-        {
-            if( !m_testingSpan.emitted )
-            {
+        void StartSpansLazily() {
+            if( !m_testingSpan.emitted ) {
                 if( m_config.getName().empty() )
                     m_config.stream() << "[Started testing]" << std::endl;
                 else
@@ -363,35 +265,28 @@ namespace Catch
                 m_testingSpan.emitted = true;
             }
             
-            if( !m_groupSpan.emitted && !m_groupSpan.name.empty() )
-            {
+            if( !m_groupSpan.emitted && !m_groupSpan.name.empty() ) {
                 m_config.stream() << "[Started group: '" << m_groupSpan.name << "']" << std::endl;
                 m_groupSpan.emitted = true;
             }
             
-            if( !m_testSpan.emitted )
-            {
+            if( !m_testSpan.emitted ) {
                 m_config.stream() << std::endl << "[Running: " << m_testSpan.name << "]" << std::endl;
                 m_testSpan.emitted = true;
             }
             
-            if( !m_sectionSpans.empty() )
-            {
+            if( !m_sectionSpans.empty() ) {
                 SpanInfo& sectionSpan = m_sectionSpans.back();
-                if( !sectionSpan.emitted && !sectionSpan.name.empty() )
-                {
-                    if( m_firstSectionInTestCase )
-                    {
+                if( !sectionSpan.emitted && !sectionSpan.name.empty() ) {
+                    if( m_firstSectionInTestCase ) {
                         m_config.stream() << "\n";
                         m_firstSectionInTestCase = false;
                     }
                     std::vector<SpanInfo>::iterator it = m_sectionSpans.begin();
                     std::vector<SpanInfo>::iterator itEnd = m_sectionSpans.end();
-                    for(; it != itEnd; ++it )
-                    {
+                    for(; it != itEnd; ++it ) {
                         SpanInfo& prevSpan = *it;
-                        if( !prevSpan.emitted && !prevSpan.name.empty() )
-                        {
+                        if( !prevSpan.emitted && !prevSpan.name.empty() ) {
                             m_config.stream() << "[Started section: '" << prevSpan.name << "']" << std::endl;
                             prevSpan.emitted = true;
                         }                        
@@ -400,20 +295,12 @@ namespace Catch
             }
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        void streamVariableLengthText
-        (
-            const std::string& prefix,
-            const std::string& text
-        )
-        {
+        void streamVariableLengthText( const std::string& prefix, const std::string& text ) {
             std::string trimmed = trim( text );
-            if( trimmed.find_first_of( "\r\n" ) == std::string::npos )
-            {
+            if( trimmed.find_first_of( "\r\n" ) == std::string::npos ) {
                 m_config.stream() << "[" << prefix << ": " << trimmed << "]\n";
             }
-            else 
-            {
+            else {
                 m_config.stream() << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 
                 << "\n[end of " << prefix << "] <<<<<<<<<<<<<<<<<<<<<<<<\n";
             }

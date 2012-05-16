@@ -69,7 +69,7 @@ namespace Catch
             closeLabel( recordGroups, groupName );
         }
         
-        virtual void StartSection( const std::string& sectionName, const std::string description ) {
+        virtual void StartSection( const std::string& sectionName, const std::string& description ) {
             openLabel( recordSections, sectionName );
         }
         

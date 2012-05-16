@@ -1,13 +1,9 @@
 /*
- *  catch_reporter_xml.hpp
- *  Catch
- *
  *  Created by Phil on 28/10/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED
@@ -17,114 +13,70 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_xmlwriter.hpp"
 
-namespace Catch
-{
-    class XmlReporter : public SharedImpl<IReporter>
-    {
+namespace Catch {
+    class XmlReporter : public SharedImpl<IReporter> {
     public:
-        ///////////////////////////////////////////////////////////////////////////
-        XmlReporter
-        (
-            const IReporterConfig& config
-        )
-        : m_config( config )
-        {
-        }
+        XmlReporter( const IReporterConfig& config ) : m_config( config ) {}
 
-        ///////////////////////////////////////////////////////////////////////////
-        static std::string getDescription
-        ()
-        {
+        static std::string getDescription() {
             return "Reports test results as an XML document";
         }
         
     private: // IReporter
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual bool shouldRedirectStdout
-        ()
-        const
-        {
+        virtual bool shouldRedirectStdout() const {
             return true;
         }        
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartTesting
-        ()
-        {
+        virtual void StartTesting() {
             m_xml = XmlWriter( m_config.stream() );
             m_xml.startElement( "Catch" );
             if( !m_config.getName().empty() )
                 m_xml.writeAttribute( "name", m_config.getName() );
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTesting
-        (
-            const Totals& totals
-        )
-        {
+        virtual void EndTesting( const Totals& totals ) {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", totals.assertions.passed )
                 .writeAttribute( "failures", totals.assertions.failed );
             m_xml.endElement();
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartGroup
-        (
-            const std::string& groupName
-        )
-        {
+        virtual void StartGroup( const std::string& groupName ) {
             m_xml.startElement( "Group" )
                 .writeAttribute( "name", groupName );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndGroup
-        (
-            const std::string& /*groupName*/, 
-            const Totals& totals
-        )
-        {
+        virtual void EndGroup( const std::string&, const Totals& totals ) {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", totals.assertions.passed )
                 .writeAttribute( "failures", totals.assertions.failed );
             m_xml.endElement();
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartSection( const std::string& sectionName, const std::string description )
-        {
+        virtual void StartSection( const std::string& sectionName, const std::string& description ) {
             m_xml.startElement( "Section" )
                 .writeAttribute( "name", sectionName )
                 .writeAttribute( "description", description );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions )
-        {
+        virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions ) {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", assertions.passed )
                 .writeAttribute( "failures", assertions.failed );
             m_xml.endElement();
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void StartTestCase( const Catch::TestCaseInfo& testInfo )
-        {
+        virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
             m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.getName() );
             m_currentTestSuccess = true;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void Result( const Catch::ResultInfo& resultInfo )
-        {
+        virtual void Result( const Catch::ResultInfo& resultInfo ) {
             if( !m_config.includeSuccessfulResults() && resultInfo.getResultType() == ResultWas::Ok )
                 return;
 
-            if( resultInfo.hasExpression() )
-            {
+            if( resultInfo.hasExpression() ) {
                 m_xml.startElement( "Expression" )
                     .writeAttribute( "success", resultInfo.ok() )
                     .writeAttribute( "filename", resultInfo.getFilename() )
@@ -137,8 +89,7 @@ namespace Catch
                 m_currentTestSuccess &= resultInfo.ok();
             }
             
-            switch( resultInfo.getResultType() )
-            {
+            switch( resultInfo.getResultType() ) {
                 case ResultWas::ThrewException:
                     m_xml.scopedElement( "Exception" )
                         .writeAttribute( "filename", resultInfo.getFilename() )
@@ -172,9 +123,7 @@ namespace Catch
                 m_xml.endElement();
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals& /* totals */, const std::string& /*stdOut*/, const std::string& /*stdErr*/ )
-        {
+        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string&, const std::string& ) {
             m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );
             m_xml.endElement();
         }    
