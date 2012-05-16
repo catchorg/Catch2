@@ -28,12 +28,10 @@ void arcSafeRelease( NSObject* obj );
 id performOptionalSelector( id obj, SEL sel );
 
 #if !CATCH_ARC_ENABLED
-    inline void arcSafeRelease( NSObject* obj )
-    {
+    inline void arcSafeRelease( NSObject* obj ) {
         [obj release];
     }
-    inline id performOptionalSelector( id obj, SEL sel )
-    {
+    inline id performOptionalSelector( id obj, SEL sel ) {
         if( [obj respondsToSelector: sel] )
             return [obj performSelector: sel];
         return nil;
@@ -41,8 +39,7 @@ id performOptionalSelector( id obj, SEL sel );
     #define CATCH_UNSAFE_UNRETAINED
 #else
     inline void arcSafeRelease( NSObject* ){}
-    inline id performOptionalSelector( id obj, SEL sel )
-    {
+    inline id performOptionalSelector( id obj, SEL sel ) {
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         if( [obj respondsToSelector: sel] )
@@ -65,27 +62,14 @@ id performOptionalSelector( id obj, SEL sel );
 
 @end
 
-namespace Catch 
-{
-    class OcMethod : public ITestCase
-    {
+namespace Catch {
+
+    class OcMethod : public ITestCase {
+    
     public:
-        ///////////////////////////////////////////////////////////////////////
-        OcMethod
-        (
-            Class cls, 
-            SEL sel
-        )
-        :   m_cls( cls ), 
-            m_sel( sel )
-        {
-        }
+        OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel ) {}
         
-        ///////////////////////////////////////////////////////////////////////
-        virtual void invoke
-        ()
-        const
-        {
+        virtual void invoke() const {
             id obj = [[m_cls alloc] init];
             
             performOptionalSelector( obj, @selector(setUp)  );
@@ -95,32 +79,16 @@ namespace Catch
             arcSafeRelease( obj );
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        virtual ITestCase* clone
-        ()
-        const
-        {
+        virtual ITestCase* clone() const {
             return new OcMethod( m_cls, m_sel );
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        virtual bool operator == 
-        (
-            const ITestCase& other
-        )
-        const
-        {
+        virtual bool operator == ( const ITestCase& other ) const {
             const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
             return ocmOther && ocmOther->m_sel == m_sel;
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        virtual bool operator < 
-        (
-            const ITestCase& other
-        )
-        const
-        {
+        virtual bool operator < ( const ITestCase& other ) const {
             const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
             return ocmOther && ocmOther->m_sel < m_sel;
         }
@@ -130,27 +98,15 @@ namespace Catch
         SEL m_sel;
     };
     
-    namespace Detail
-    {
+    namespace Detail{
     
-        ///////////////////////////////////////////////////////////////////////
-        inline bool startsWith
-        (
-            const std::string& str, 
-            const std::string& sub
-        )
-        {
+        inline bool startsWith( const std::string& str, const std::string& sub ) {
             return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
         }
         
-        ///////////////////////////////////////////////////////////////////////
-        inline std::string getAnnotation
-        (
-            Class cls, 
-            const std::string& annotationName, 
-            const std::string& testCaseName
-        )
-        {
+        inline std::string getAnnotation(   Class cls, 
+                                            const std::string& annotationName, 
+                                            const std::string& testCaseName ) {
             NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
             SEL sel = NSSelectorFromString( selStr );
             arcSafeRelease( selStr );
@@ -161,35 +117,28 @@ namespace Catch
         }        
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    inline size_t registerTestMethods
-    ()
-    {
+    inline size_t registerTestMethods() {
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( NULL, 0 );
         
         Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
         objc_getClassList( classes, noClasses );
         
-        for( int c = 0; c < noClasses; c++ )
-        {
+        for( int c = 0; c < noClasses; c++ ) {
             Class cls = classes[c];
             {
                 u_int count;
                 Method* methods = class_copyMethodList( cls, &count );
-                for( int m = 0; m < count ; m++ )
-                {
+                for( int m = 0; m < count ; m++ ) {
                     SEL selector = method_getName(methods[m]);
                     std::string methodName = sel_getName(selector);
-                    if( Detail::startsWith( methodName, "Catch_TestCase_" ) )
-                    {
+                    if( Detail::startsWith( methodName, "Catch_TestCase_" ) ) {
                         std::string testCaseName = methodName.substr( 15 );
                         std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
                         
                         Context::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name.c_str(), desc.c_str(), SourceLineInfo() ) );
                         noTestMethods++;
-                        
                     }
                 }
                 free(methods);              
@@ -198,86 +147,69 @@ namespace Catch
         return noTestMethods;
     }
     
-    inline std::string toString( NSString* const& nsstring )
-    {
+    inline std::string toString( NSString* const& nsstring ) {
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
     
-    namespace Matchers
-    {
-        namespace Impl
-        {
-        namespace NSStringMatchers
-        {
-            struct StringHolder
-            {
+    namespace Matchers {
+        namespace Impl {
+        namespace NSStringMatchers {
+
+            struct StringHolder {
                 StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
-                StringHolder()
-                {
+                StringHolder() {
                     arcSafeRelease( m_substr );
                 }
                 
                 NSString* m_substr;            
             };
             
-            struct Equals : StringHolder
-            {
+            struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const
-                {
+                bool operator()( NSString* str ) const {
                     return [str isEqualToString:m_substr];
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const Equals& matcher )
-                {
+                friend std::ostream& operator<<( std::ostream& os, const Equals& matcher ) {
                     os << "equals string: " << Catch::toString( matcher.m_substr );
                     return os;
                 }
             };
             
-            struct Contains : StringHolder
-            {
+            struct Contains : StringHolder {
                 Contains( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const
-                {
+                bool operator()( NSString* str ) const {
                     return [str rangeOfString:m_substr].location != NSNotFound;
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const Contains& matcher )
-                {
+                friend std::ostream& operator<<( std::ostream& os, const Contains& matcher ) {
                     os << "contains: " << Catch::toString( matcher.m_substr );
                     return os;
                 }
             };
 
-            struct StartsWith : StringHolder
-            {
+            struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const
-                {
+                bool operator()( NSString* str ) const {
                     return [str rangeOfString:m_substr].location == 0;
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher )
-                {
+                friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher ) {
                     os << "starts with: " << Catch::toString( matcher.m_substr );
                     return os;
                 }
             };
-            struct EndsWith : StringHolder
-            {
+            struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const
-                {
+                bool operator()( NSString* str ) const {
                     return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher )
-                {
+                friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher ) {
                     os << "ends with: " << Catch::toString( matcher.m_substr );
                     return os;
                 }
