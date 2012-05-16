@@ -18,8 +18,8 @@ namespace Catch {
 
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
-class ResultInfoBuilder : public ResultInfo
-{
+class ResultInfoBuilder : public ResultInfo {
+
 public:
     
     ResultInfoBuilder() {}

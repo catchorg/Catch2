@@ -15,8 +15,8 @@
 #include "catch_reporter_registry.hpp"
 #include "catch_stream.hpp"
 
-namespace Catch
-{    
+namespace Catch {
+    
     Context::Context()
     :   m_reporterRegistry( new ReporterRegistry ),
         m_testCaseRegistry( new TestRegistry ),
@@ -89,8 +89,7 @@ namespace Catch
     
     GeneratorsForTest& Context::getGeneratorsForCurrentTest() {
         GeneratorsForTest* generators = findGeneratorsForCurrentTest();
-        if( !generators )
-        {
+        if( !generators ) {
             std::string testName = getResultCapture().getCurrentTestName();
             generators = new GeneratorsForTest();
             m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
@@ -98,8 +97,7 @@ namespace Catch
         return *generators;
     }
     
-    size_t Context::getGeneratorIndex( const std::string& fileInfo, size_t totalSize )
-    {
+    size_t Context::getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) {
         return me().getGeneratorsForCurrentTest()
             .getGeneratorInfo( fileInfo, totalSize )
             .getCurrentIndex();

@@ -1,13 +1,9 @@
 /*
- *  catch_console_colour_impl.hpp
- *  Catch
- *
  *  Created by Phil on 25/2/2012.
  *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 #ifndef TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
@@ -18,14 +14,12 @@
 
 #include <windows.h>
 
-namespace Catch
-{
-    namespace
-    {
-        WORD mapConsoleColour( TextColour::Colours colour )
-        {
-            switch( colour )
-            {
+namespace Catch {
+
+    namespace {
+    
+        WORD mapConsoleColour( TextColour::Colours colour ) {
+            switch( colour ) {
                 case TextColour::FileName:      
                     return FOREGROUND_INTENSITY;                    // greyed out
                 case TextColour::ResultError:   
@@ -45,8 +39,8 @@ namespace Catch
         }
     }
     
-    struct ConsoleColourImpl
-    {
+    struct ConsoleColourImpl {
+    
         ConsoleColourImpl()
         :   hStdout( GetStdHandle(STD_OUTPUT_HANDLE) ),
             wOldColorAttrs( 0 )
@@ -54,12 +48,12 @@ namespace Catch
             GetConsoleScreenBufferInfo( hStdout, &csbiInfo );
             wOldColorAttrs = csbiInfo.wAttributes;
         }
-        ~ConsoleColourImpl()
-        {
+        
+        ~ConsoleColourImpl() {
             SetConsoleTextAttribute( hStdout, wOldColorAttrs );
         }
-        void set( TextColour::Colours colour )
-        {
+        
+        void set( TextColour::Colours colour ) {
             WORD consoleColour = mapConsoleColour( colour );
             if( consoleColour > 0 )
                 SetConsoleTextAttribute( hStdout, consoleColour );
@@ -70,18 +64,18 @@ namespace Catch
         WORD wOldColorAttrs;
     };
     
-    TextColour::TextColour( Colours colour )
-    : m_impl( new ConsoleColourImpl() )
+    TextColour::TextColour( Colours colour ) 
+    : m_impl( new ConsoleColourImpl() ) 
     {
         if( colour )
             m_impl->set( colour );
     }
-    TextColour::~TextColour()
-    {
+
+    TextColour::~TextColour() {
         delete m_impl;
     }
-    void TextColour::set( Colours colour )
-    {
+
+    void TextColour::set( Colours colour ) {
         m_impl->set( colour );
     }
     
@@ -89,8 +83,7 @@ namespace Catch
 
 #else
 
-namespace Catch
-{
+namespace Catch {
     TextColour::TextColour( Colours ){}
     TextColour::~TextColour(){}
     void TextColour::set( Colours ){}

@@ -14,8 +14,8 @@
 #include <sstream>
 #include <iostream>
 
-namespace Catch
-{
+namespace Catch {
+
     class TestRegistry : public ITestCaseRegistry {
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}

@@ -21,28 +21,20 @@
 #include <set>
 #include <string>
 
-namespace Catch
-{    
-    class StreamRedirect
-    {
+namespace Catch {
+
+    class StreamRedirect {
+    
     public:
-        ///////////////////////////////////////////////////////////////////////        
-        StreamRedirect
-        (
-            std::ostream& stream, 
-            std::string& targetString
-        )
+        StreamRedirect( std::ostream& stream, std::string& targetString )
         :   m_stream( stream ),
             m_prevBuf( stream.rdbuf() ),
-            m_targetString( targetString )
+            m_targetString( targetString ) 
         {            
             stream.rdbuf( m_oss.rdbuf() );
         }
         
-        ///////////////////////////////////////////////////////////////////////        
-        ~StreamRedirect
-        ()
-        {
+        ~StreamRedirect() {
             m_targetString += m_oss.str();
             m_stream.rdbuf( m_prevBuf );
         }
@@ -55,19 +47,15 @@ namespace Catch
     };
     
     ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////    
-    class Runner : public IResultCapture, public IRunner
-    {
+
+    class Runner : public IResultCapture, public IRunner {
+    
         Runner( const Runner& );
         void operator =( const Runner& );
         
     public:
 
-        ///////////////////////////////////////////////////////////////////////////
-        explicit Runner
-        (
-            Config& config 
-        )
+        explicit Runner( Config& config )
         :   m_runningTest( NULL ),
             m_config( config ),
             m_reporter( config.getReporter() ),
@@ -79,43 +67,27 @@ namespace Catch
             m_reporter->StartTesting();
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        ~Runner
-        ()
-        {
+        ~Runner() {
             m_reporter->EndTesting( m_totals );
             Context::setRunner( m_prevRunner );
             Context::setResultCapture( m_prevResultCapture );
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void runAll
-        (
-            bool runHiddenTests = false
-        )
-        {
+        virtual void runAll( bool runHiddenTests = false ) {
             std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
-            for( std::size_t i=0; i < allTests.size(); ++i )
-            {
+            for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() )
                    runTest( allTests[i] );
             }
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual std::size_t runMatching
-        (
-            const std::string& rawTestSpec
-        )
-        {
+        virtual std::size_t runMatching( const std::string& rawTestSpec ) {
             TestSpec testSpec( rawTestSpec );
             
             std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
             std::size_t testsRun = 0;
-            for( std::size_t i=0; i < allTests.size(); ++i )
-            {
-                if( testSpec.matches( allTests[i].getName() ) )
-                {
+            for( std::size_t i=0; i < allTests.size(); ++i ) {
+                if( testSpec.matches( allTests[i].getName() ) ) {
                     runTest( allTests[i] );
                     testsRun++;
                 }
@@ -123,12 +95,7 @@ namespace Catch
             return testsRun;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        void runTest
-        (
-            const TestCaseInfo& testInfo
-        )
-        {
+        void runTest( const TestCaseInfo& testInfo ) {
             Totals prevTotals = m_totals;
 
             std::string redirectedCout;
@@ -138,10 +105,8 @@ namespace Catch
             
             m_runningTest = new RunningTest( &testInfo );
 
-            do
-            {
-                do
-                {
+            do {
+                do {
                     m_reporter->StartGroup( "test case run" );
                     m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
@@ -162,66 +127,35 @@ namespace Catch
             m_reporter->EndTestCase( testInfo, m_totals - prevTotals, redirectedCout, redirectedCerr );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual Totals getTotals
-        ()
-        const
-        {
+        virtual Totals getTotals() const {
             return m_totals;
         }
         
     private: // IResultCapture
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual ResultAction::Value acceptResult
-        (
-            bool result
-        )
-        {
+        virtual ResultAction::Value acceptResult( bool result ) {
             return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual ResultAction::Value acceptResult
-        (
-            ResultWas::OfType result
-        )
-        {
+        virtual ResultAction::Value acceptResult( ResultWas::OfType result ) {
             m_currentResult.setResultType( result );            
             return actOnCurrentResult();
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual ResultAction::Value acceptExpression
-        (
-            const ResultInfoBuilder& resultInfo
-        )
-        {
+        virtual ResultAction::Value acceptExpression( const ResultInfoBuilder& resultInfo ) {
             m_currentResult = resultInfo;
             return actOnCurrentResult();
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void acceptMessage
-        (
-            const std::string& msg
-        )
-        {
+        virtual void acceptMessage( const std::string& msg ) {
             m_currentResult.setMessage( msg );
         }
                 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void testEnded
-        (
-            const ResultInfo& result        
-        )
-        { 
-            if( result.getResultType() == ResultWas::Ok )
-            {
+        virtual void testEnded( const ResultInfo& result ) {
+            if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
-            else if( !result.ok() )
-            {
+            else if( !result.ok() ) {
                 m_totals.assertions.failed++;
 
                 std::vector<ResultInfo>::const_iterator it = m_info.begin();
@@ -237,9 +171,7 @@ namespace Catch
                 m_reporter->Result( result );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual bool sectionStarted
-        (
+        virtual bool sectionStarted (
             const std::string& name, 
             const std::string& description,
             const SourceLineInfo& lineInfo,
@@ -259,68 +191,37 @@ namespace Catch
             return true;
         }
         
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void sectionEnded
-        (
-            const std::string& name,
-            const Counts& prevAssertions
-        )
-        {
+        virtual void sectionEnded( const std::string& name, const Counts& prevAssertions ) {
             m_runningTest->endSection( name );
             m_reporter->EndSection( name, m_totals.assertions - prevAssertions );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void pushScopedInfo
-        (
-            ScopedInfo* scopedInfo 
-        )
-        {
+        virtual void pushScopedInfo( ScopedInfo* scopedInfo ) {
             m_scopedInfos.push_back( scopedInfo );
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual void popScopedInfo
-        (
-            ScopedInfo* scopedInfo
-        )
-        {
+        virtual void popScopedInfo( ScopedInfo* scopedInfo ) {
             if( m_scopedInfos.back() == scopedInfo )
                 m_scopedInfos.pop_back();
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual bool shouldDebugBreak
-        () 
-        const
-        {
+        virtual bool shouldDebugBreak() const {        
             return m_config.shouldDebugBreak();
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual std::string getCurrentTestName
-        () 
-        const
-        {
+        virtual std::string getCurrentTestName() const {
             return m_runningTest
                 ? m_runningTest->getTestCaseInfo().getName()
                 : "";
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        virtual const ResultInfo* getLastResult
-        ()
-        const
-        {
+        virtual const ResultInfo* getLastResult() const {
             return &m_lastResult;            
         }
         
     private:
         
-        ///////////////////////////////////////////////////////////////////////////
-        ResultAction::Value actOnCurrentResult
-        ()
-        {
+        ResultAction::Value actOnCurrentResult() {
             testEnded( m_currentResult );
             m_lastResult = m_currentResult;
             
@@ -333,34 +234,23 @@ namespace Catch
                 return ResultAction::Failed;
         }
 
-        ///////////////////////////////////////////////////////////////////////////
-        void runCurrentTest
-        (
-            std::string& redirectedCout,
-            std::string& redirectedCerr
-        )
-        {            
-            try
-            {
+        void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
+            try {
                 m_runningTest->reset();
-                if( m_reporter->shouldRedirectStdout() )
-                {
+                if( m_reporter->shouldRedirectStdout() ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
                     m_runningTest->getTestCaseInfo().invoke();
                 }
-                else
-                {
+                else {
                     m_runningTest->getTestCaseInfo().invoke();
                 }
                 m_runningTest->ranToCompletion();
             }
-            catch( TestFailureException& )
-            {
+            catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
             }
-            catch(...)
-            {
+            catch(...) {
                 acceptMessage( Catch::Context::getExceptionTranslatorRegistry().translateActiveException() );
                 acceptResult( ResultWas::ThrewException );
             }

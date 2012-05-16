@@ -11,12 +11,11 @@
 #include "catch_common.h"
 #include "catch_interfaces_testcase.h"
 
-namespace Catch
-{
+namespace Catch {
     
 template<typename C>
-class MethodTestCase : public ITestCase
-{
+class MethodTestCase : public ITestCase {
+
 public:
     MethodTestCase( void (C::*method)() ) : m_method( method ) {}
     
@@ -45,8 +44,8 @@ private:
 
 typedef void(*TestFunction)();
     
-struct AutoReg
-{
+struct AutoReg {
+
     AutoReg(    TestFunction function, 
                 const char* name, 
                 const char* description,

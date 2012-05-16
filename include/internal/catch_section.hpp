@@ -13,7 +13,7 @@
 
 #include <string>
 
-namespace Catch{
+namespace Catch {
 
     class Section {
     public:
