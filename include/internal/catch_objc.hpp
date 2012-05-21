@@ -129,7 +129,7 @@ namespace Catch {
             {
                 u_int count;
                 Method* methods = class_copyMethodList( cls, &count );
-                for( int m = 0; m < count ; m++ ) {
+                for( u_int m = 0; m < count ; m++ ) {
                     SEL selector = method_getName(methods[m]);
                     std::string methodName = sel_getName(selector);
                     if( Detail::startsWith( methodName, "Catch_TestCase_" ) ) {
