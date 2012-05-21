@@ -51,7 +51,7 @@ namespace Catch {
     public:
         template<typename T>
         ExceptionTranslatorRegistrar( std::string(*translateFunction)( T& ) ) {
-            Catch::Context::getExceptionTranslatorRegistry().registerTranslator
+            getCurrentContext().getExceptionTranslatorRegistry().registerTranslator
                 ( new ExceptionTranslator<T>( translateFunction ) );
         }
     };

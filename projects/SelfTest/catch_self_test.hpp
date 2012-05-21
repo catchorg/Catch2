@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
 
 #include "catch.hpp"
+#include "catch_test_case_info.hpp"
 
 #include "set"
 
@@ -143,7 +144,7 @@ namespace Catch {
         
         static void runMatching(    const std::string& testSpec, 
                                     Expected::Result expectedResult ) {
-            forEach(    Context::getTestCaseRegistry().getMatchingTestCases( testSpec ), 
+            forEach(    getCurrentContext().getTestCaseRegistry().getMatchingTestCases( testSpec ), 
                         MetaTestRunner( expectedResult ) );
         }
         

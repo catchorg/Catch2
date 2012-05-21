@@ -298,27 +298,55 @@ namespace Catch {
 
     class StreamBufBase : public std::streambuf{};
 
-    class Context {
+    struct IContext
+    {
+        virtual IResultCapture& getResultCapture() = 0;
+        virtual IRunner& getRunner() = 0;
+        virtual IReporterRegistry& getReporterRegistry() = 0;
+        virtual ITestCaseRegistry& getTestCaseRegistry() = 0;
+        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
+        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) = 0;
+        virtual bool advanceGeneratorsForCurrentTest() = 0;
+    };
+
+    struct IMutableContext : IContext
+    {
+        virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
+        virtual void setRunner( IRunner* runner ) = 0;
+    };
+
+    IContext& getCurrentContext();
+    IMutableContext& getCurrentMutableContext();
+
+    class Context : public IMutableContext {
 
         Context();
         Context( const Context& );
         void operator=( const Context& );
-        static Context& me();
 
-    public:
-        static void setRunner( IRunner* runner );
-        static void setResultCapture( IResultCapture* resultCapture );
-        static IResultCapture& getResultCapture();
-        static IReporterRegistry& getReporterRegistry();
-        static ITestCaseRegistry& getTestCaseRegistry();
-        static IExceptionTranslatorRegistry& getExceptionTranslatorRegistry();
+    public: // friends
+        friend IContext& getCurrentContext() { return Context::getCurrent(); }
+        friend IMutableContext& getCurrentMutableContext() { return Context::getCurrent(); }
+
+    public: // IContext
+        virtual IResultCapture& getResultCapture();
+        virtual IRunner& getRunner();
+        virtual IReporterRegistry& getReporterRegistry();
+        virtual ITestCaseRegistry& getTestCaseRegistry();
+        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry();
+        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize );
+        virtual bool advanceGeneratorsForCurrentTest();
+
+    public: // IMutableContext
+        virtual void setResultCapture( IResultCapture* resultCapture );
+        virtual void setRunner( IRunner* runner );
+
+    public: // Statics
         static std::streambuf* createStreamBuf( const std::string& streamName );
-        static IRunner& getRunner();
-        static size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize );
-        static bool advanceGeneratorsForCurrentTest();
         static void cleanUp();
 
     private:
+        static Context& getCurrent();
         static Context*& singleInstance();
         GeneratorsForTest* findGeneratorsForCurrentTest();
         GeneratorsForTest& getGeneratorsForCurrentTest();
@@ -735,26 +763,13 @@ namespace Internal {
         IsGreaterThanOrEqualTo
     };
 
-    template<Operator Op>
-    struct OperatorTraits{ static const char* getName(){ return "*error - unknown operator*"; } };
-
-    template<>
-    struct OperatorTraits<IsEqualTo>{ static const char* getName(){ return "=="; } };
-
-    template<>
-    struct OperatorTraits<IsNotEqualTo>{ static const char* getName(){ return "!="; } };
-
-    template<>
-    struct OperatorTraits<IsLessThan>{ static const char* getName(){ return "<"; } };
-
-    template<>
-    struct OperatorTraits<IsGreaterThan>{ static const char* getName(){ return ">"; } };
-
-    template<>
-    struct OperatorTraits<IsLessThanOrEqualTo>{ static const char* getName(){ return "<="; } };
-
-    template<>
-    struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
+    template<Operator Op> struct OperatorTraits             { static const char* getName(){ return "*error*"; } };
+    template<> struct OperatorTraits<IsEqualTo>             { static const char* getName(){ return "=="; } };
+    template<> struct OperatorTraits<IsNotEqualTo>          { static const char* getName(){ return "!="; } };
+    template<> struct OperatorTraits<IsLessThan>            { static const char* getName(){ return "<"; } };
+    template<> struct OperatorTraits<IsGreaterThan>         { static const char* getName(){ return ">"; } };
+    template<> struct OperatorTraits<IsLessThanOrEqualTo>   { static const char* getName(){ return "<="; } };
+    template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
 
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.
@@ -1314,11 +1329,11 @@ struct TestFailureException{};
 class ScopedInfo {
 public:
     ScopedInfo() : m_oss() {
-        Context::getResultCapture().pushScopedInfo( this );
+        getCurrentContext().getResultCapture().pushScopedInfo( this );
     }
 
     ~ScopedInfo() {
-        Context::getResultCapture().popScopedInfo( this );
+        getCurrentContext().getResultCapture().popScopedInfo( this );
     }
 
     template<typename T>
@@ -1342,7 +1357,7 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure, originalExpr ) \
-    if( Catch::ResultAction::Value internal_catch_action = Catch::Context::getResultCapture().acceptExpression( expr )  ) \
+    if( Catch::ResultAction::Value internal_catch_action = Catch::getCurrentContext().getResultCapture().acceptExpression( expr )  ) \
     { \
         if( internal_catch_action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
@@ -1356,19 +1371,19 @@ inline bool isTrue( bool value ){ return value; }
     }catch( Catch::TestFailureException& ){ \
         throw; \
     } catch( ... ){ \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::Context::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
         throw; \
     }}while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, isNot, stopOnFailure, macroName ) \
     INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
-    if( Catch::Context::getResultCapture().getLastResult()->ok() )
+    if( Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( expr, isNot, stopOnFailure, macroName ) \
     INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
-    if( !Catch::Context::getResultCapture().getLastResult()->ok() )
+    if( !Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
@@ -1379,7 +1394,7 @@ inline bool isTrue( bool value ){ return value; }
     } \
     catch( ... ) \
     { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::Context::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1403,12 +1418,12 @@ inline bool isTrue( bool value ){ return value; }
     INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     catch( ... ) \
     { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::Context::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    Catch::Context::getResultCapture().acceptExpression( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName ) << reason ).setResultType( resultType ) );
+    Catch::getCurrentContext().getResultCapture().acceptExpression( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName ) << reason ).setResultType( resultType ) );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log ) \
@@ -1422,7 +1437,7 @@ inline bool isTrue( bool value ){ return value; }
     }catch( Catch::TestFailureException& ){ \
         throw; \
     } catch( ... ){ \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::Context::getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
 
@@ -1438,12 +1453,12 @@ namespace Catch {
                     const std::string& description,
                     const SourceLineInfo& lineInfo )
         :   m_name( name ),
-            m_sectionIncluded( Context::getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
+            m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
         {}
 
         ~Section() {
             if( m_sectionIncluded )
-                Context::getResultCapture().sectionEnded( m_name, m_assertions );
+                getCurrentContext().getResultCapture().sectionEnded( m_name, m_assertions );
         }
 
         // This indicates whether the section should be executed or not
@@ -1542,7 +1557,7 @@ public:
     }
 
     operator T () const {
-        size_t overallIndex = Context::getGeneratorIndex( m_fileInfo, m_totalSize );
+        size_t overallIndex = getCurrentContext().getGeneratorIndex( m_fileInfo, m_totalSize );
 
         typename std::vector<const IGenerator<T>*>::const_iterator it = m_composed.begin();
         typename std::vector<const IGenerator<T>*>::const_iterator itEnd = m_composed.end();
@@ -1687,7 +1702,7 @@ namespace Catch {
     public:
         template<typename T>
         ExceptionTranslatorRegistrar( std::string(*translateFunction)( T& ) ) {
-            Catch::Context::getExceptionTranslatorRegistry().registerTranslator
+            getCurrentContext().getExceptionTranslatorRegistry().registerTranslator
                 ( new ExceptionTranslator<T>( translateFunction ) );
         }
     };
@@ -1779,6 +1794,84 @@ inline std::string toString<Detail::Approx>( const Detail::Approx& value ) {
 
 } // end namespace Catch
 
+// #included from: internal/catch_matchers.hpp
+
+namespace Catch {
+namespace Matchers {
+    namespace Impl {
+    namespace StdString {
+
+        struct Contains {
+            Contains( const std::string& substr ) : m_substr( substr ){}
+
+            bool operator()( const std::string& str ) const
+            {
+                return str.find( m_substr ) != std::string::npos;
+            }
+
+            friend std::ostream& operator<<( std::ostream& os, const Contains& matcher )
+            {
+                os << "contains: \"" << matcher.m_substr << "\"";
+                return os;
+            }
+            std::string m_substr;
+        };
+
+        struct StartsWith {
+            StartsWith( const std::string& substr ) : m_substr( substr ){}
+
+            bool operator()( const std::string& str ) const
+            {
+                return str.find( m_substr ) == 0;
+            }
+
+            friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher )
+            {
+                os << "starts with: \"" << matcher.m_substr << "\"";
+                return os;
+            }
+            std::string m_substr;
+        };
+
+        struct EndsWith {
+            EndsWith( const std::string& substr ) : m_substr( substr ){}
+
+            bool operator()( const std::string& str ) const
+            {
+                return str.find( m_substr ) == str.size() - m_substr.size();
+            }
+
+            friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher )
+            {
+                os << "ends with: \"" << matcher.m_substr << "\"";
+                return os;
+            }
+            std::string m_substr;
+        };
+    } // namespace StdString
+    } // namespace Impl
+
+    inline Impl::StdString::Contains    Contains( const std::string& substr ){ return Impl::StdString::Contains( substr ); }
+    inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ){ return Impl::StdString::StartsWith( substr ); }
+    inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ){ return Impl::StdString::EndsWith( substr ); }
+
+} // namespace Matchers
+
+using namespace Matchers;
+
+} // namespace Catch
+
+#ifdef __OBJC__
+// #included from: internal/catch_objc.hpp
+
+#import <Foundation/Foundation.h>
+#import <objc/runtime.h>
+
+#include <string>
+
+// NB. Any general catch headers included here must be included
+// in catch.hpp first to make sure they are included by the single
+// header for non obj-usage
 // #included from: internal/catch_test_case_info.hpp
 
 #include <map>
@@ -1897,84 +1990,6 @@ namespace Catch {
     };
 }
 
-// #included from: internal/catch_matchers.hpp
-
-namespace Catch {
-namespace Matchers {
-    namespace Impl {
-    namespace StdString {
-
-        struct Contains {
-            Contains( const std::string& substr ) : m_substr( substr ){}
-
-            bool operator()( const std::string& str ) const
-            {
-                return str.find( m_substr ) != std::string::npos;
-            }
-
-            friend std::ostream& operator<<( std::ostream& os, const Contains& matcher )
-            {
-                os << "contains: \"" << matcher.m_substr << "\"";
-                return os;
-            }
-            std::string m_substr;
-        };
-
-        struct StartsWith {
-            StartsWith( const std::string& substr ) : m_substr( substr ){}
-
-            bool operator()( const std::string& str ) const
-            {
-                return str.find( m_substr ) == 0;
-            }
-
-            friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher )
-            {
-                os << "starts with: \"" << matcher.m_substr << "\"";
-                return os;
-            }
-            std::string m_substr;
-        };
-
-        struct EndsWith {
-            EndsWith( const std::string& substr ) : m_substr( substr ){}
-
-            bool operator()( const std::string& str ) const
-            {
-                return str.find( m_substr ) == str.size() - m_substr.size();
-            }
-
-            friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher )
-            {
-                os << "ends with: \"" << matcher.m_substr << "\"";
-                return os;
-            }
-            std::string m_substr;
-        };
-    } // namespace StdString
-    } // namespace Impl
-
-    inline Impl::StdString::Contains    Contains( const std::string& substr ){ return Impl::StdString::Contains( substr ); }
-    inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ){ return Impl::StdString::StartsWith( substr ); }
-    inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ){ return Impl::StdString::EndsWith( substr ); }
-
-} // namespace Matchers
-
-using namespace Matchers;
-
-} // namespace Catch
-
-#ifdef __OBJC__
-// #included from: internal/catch_objc.hpp
-
-#import <Foundation/Foundation.h>
-#import <objc/runtime.h>
-
-#include <string>
-
-// NB. Any general catch headers included here must be included
-// in catch.hpp first to make sure they are included by the single
-// header for non obj-usage
 
 #ifdef __has_feature
 #define CATCH_ARC_ENABLED __has_feature(objc_arc)
@@ -2095,7 +2110,7 @@ namespace Catch {
                         std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
 
-                        Context::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name.c_str(), desc.c_str(), SourceLineInfo() ) );
+                        getCurrentContext().getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name.c_str(), desc.c_str(), SourceLineInfo() ) );
                         noTestMethods++;
                     }
                 }
@@ -2314,7 +2329,7 @@ namespace Catch {
                                     const char* name,
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
-        Context::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+        getCurrentContext().getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
     }
 
 } // end namespace Catch
@@ -2388,7 +2403,7 @@ namespace Catch {
         void setReporter( const std::string& reporterName ) {
             if( m_reporter.get() )
                 return setError( "Only one reporter may be specified" );
-            setReporter( Context::getReporterRegistry().create( reporterName, *this ) );
+            setReporter( getCurrentContext().getReporterRegistry().create( reporterName, *this ) );
         }
 
         void addTestSpec( const std::string& testSpec ) {
@@ -2433,7 +2448,7 @@ namespace Catch {
 
         Ptr<IReporter> getReporter() {
             if( !m_reporter.get() )
-                const_cast<Config*>( this )->setReporter( Context::getReporterRegistry().create( "basic", *this ) );
+                const_cast<Config*>( this )->setReporter( getCurrentContext().getReporterRegistry().create( "basic", *this ) );
             return m_reporter;
         }
 
@@ -2730,25 +2745,26 @@ namespace Catch {
     public:
 
         explicit Runner( Config& config )
-        :   m_runningTest( NULL ),
+        :   m_context( getCurrentMutableContext() ),
+            m_runningTest( NULL ),
             m_config( config ),
             m_reporter( config.getReporter() ),
-            m_prevRunner( &Context::getRunner() ),
-            m_prevResultCapture( &Context::getResultCapture() )
+            m_prevRunner( &m_context.getRunner() ),
+            m_prevResultCapture( &m_context.getResultCapture() )
         {
-            Context::setRunner( this );
-            Context::setResultCapture( this );
+            m_context.setRunner( this );
+            m_context.setResultCapture( this );
             m_reporter->StartTesting();
         }
 
         ~Runner() {
             m_reporter->EndTesting( m_totals );
-            Context::setRunner( m_prevRunner );
-            Context::setResultCapture( m_prevResultCapture );
+            m_context.setRunner( m_prevRunner );
+            m_context.setResultCapture( m_prevResultCapture );
         }
 
         virtual void runAll( bool runHiddenTests = false ) {
-            std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
+            const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() )
                    runTest( allTests[i] );
@@ -2758,7 +2774,7 @@ namespace Catch {
         virtual std::size_t runMatching( const std::string& rawTestSpec ) {
             TestSpec testSpec( rawTestSpec );
 
-            std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
+            const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             std::size_t testsRun = 0;
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( testSpec.matches( allTests[i].getName() ) ) {
@@ -2788,7 +2804,7 @@ namespace Catch {
                 }
                 while( m_runningTest->hasUntestedSections() );
             }
-            while( Context::advanceGeneratorsForCurrentTest() );
+            while( getCurrentContext().advanceGeneratorsForCurrentTest() );
 
             delete m_runningTest;
             m_runningTest = NULL;
@@ -2925,13 +2941,14 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                acceptMessage( Catch::Context::getExceptionTranslatorRegistry().translateActiveException() );
+                acceptMessage( getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() );
                 acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();
         }
 
     private:
+        IMutableContext& m_context;
         RunningTest* m_runningTest;
         ResultInfoBuilder m_currentResult;
         ResultInfo m_lastResult;
@@ -2944,7 +2961,8 @@ namespace Catch {
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
     };
-}
+
+} // end namespace Catch
 
 // #included from: catch_generators_impl.hpp
 
@@ -3281,7 +3299,12 @@ namespace Catch {
         m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry )
     {}
 
-    Context& Context::me() {
+    Context*& Context::singleInstance() {
+        static Context* hub = NULL;
+        return hub;
+    }
+
+    Context& Context::getCurrent() {
         Context*& hub = singleInstance();
         if( !hub )
             hub = new Context();
@@ -3294,37 +3317,32 @@ namespace Catch {
         hub = NULL;
     }
 
-    Context*& Context::singleInstance() {
-        static Context* hub = NULL;
-        return hub;
-    }
-
     void Context::setRunner( IRunner* runner ) {
-        me().m_runner = runner;
+        m_runner = runner;
     }
 
     void Context::setResultCapture( IResultCapture* resultCapture ) {
-        me().m_resultCapture = resultCapture;
+        m_resultCapture = resultCapture;
     }
 
     IResultCapture& Context::getResultCapture() {
-        return *me().m_resultCapture;
+        return *m_resultCapture;
     }
 
     IRunner& Context::getRunner() {
-        return *me().m_runner;
+        return *m_runner;
     }
 
     IReporterRegistry& Context::getReporterRegistry() {
-        return *me().m_reporterRegistry.get();
+        return *m_reporterRegistry.get();
     }
 
     ITestCaseRegistry& Context::getTestCaseRegistry() {
-        return *me().m_testCaseRegistry.get();
+        return *m_testCaseRegistry.get();
     }
 
     IExceptionTranslatorRegistry& Context::getExceptionTranslatorRegistry() {
-        return *me().m_exceptionTranslatorRegistry.get();
+        return *m_exceptionTranslatorRegistry.get();
     }
 
     std::streambuf* Context::createStreamBuf( const std::string& streamName ) {
@@ -3336,7 +3354,7 @@ namespace Catch {
     }
 
     GeneratorsForTest* Context::findGeneratorsForCurrentTest() {
-        std::string testName = getResultCapture().getCurrentTestName();
+        std::string testName = getCurrentContext().getResultCapture().getCurrentTestName();
 
         std::map<std::string, GeneratorsForTest*>::const_iterator it =
             m_generatorsByTestName.find( testName );
@@ -3348,7 +3366,7 @@ namespace Catch {
     GeneratorsForTest& Context::getGeneratorsForCurrentTest() {
         GeneratorsForTest* generators = findGeneratorsForCurrentTest();
         if( !generators ) {
-            std::string testName = getResultCapture().getCurrentTestName();
+            std::string testName = getCurrentContext().getResultCapture().getCurrentTestName();
             generators = new GeneratorsForTest();
             m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
         }
@@ -3356,13 +3374,13 @@ namespace Catch {
     }
 
     size_t Context::getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) {
-        return me().getGeneratorsForCurrentTest()
+        return getGeneratorsForCurrentTest()
             .getGeneratorInfo( fileInfo, totalSize )
             .getCurrentIndex();
     }
 
     bool Context::advanceGeneratorsForCurrentTest() {
-        GeneratorsForTest* generators = me().findGeneratorsForCurrentTest();
+        GeneratorsForTest* generators = findGeneratorsForCurrentTest();
         return generators && generators->moveNext();
     }
 }
@@ -3547,10 +3565,11 @@ namespace Catch {
 namespace Catch {
     inline int List( Config& config ) {
 
+        IContext& context = getCurrentContext();
         if( config.listWhat() & Config::List::Reports ) {
             std::cout << "Available reports:\n";
-            IReporterRegistry::FactoryMap::const_iterator it = Context::getReporterRegistry().getFactories().begin();
-            IReporterRegistry::FactoryMap::const_iterator itEnd = Context::getReporterRegistry().getFactories().end();
+            IReporterRegistry::FactoryMap::const_iterator it = context.getReporterRegistry().getFactories().begin();
+            IReporterRegistry::FactoryMap::const_iterator itEnd = context.getReporterRegistry().getFactories().end();
             for(; it != itEnd; ++it ) {
                 // !TBD: consider listAs()
                 std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
@@ -3560,8 +3579,8 @@ namespace Catch {
 
         if( config.listWhat() & Config::List::Tests ) {
             std::cout << "Available tests:\n";
-            std::vector<TestCaseInfo>::const_iterator it = Context::getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = Context::getTestCaseRegistry().getAllTests().end();
+            std::vector<TestCaseInfo>::const_iterator it = context.getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = context.getTestCaseRegistry().getAllTests().end();
             for(; it != itEnd; ++it ) {
                 // !TBD: consider listAs()
                 std::cout << "\t" << it->getName() << "\n\t\t '" << it->getDescription() << "'\n";
@@ -3606,7 +3625,7 @@ namespace Catch {
     public:
 
         ReporterRegistrar( const std::string& name ) {
-            Context::getReporterRegistry().registerReporter( name, new ReporterFactory() );
+            getCurrentContext().getReporterRegistry().registerReporter( name, new ReporterFactory() );
         }
     };
 }
@@ -4505,7 +4524,9 @@ namespace Catch {
                 config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
             }
         }
-        return static_cast<int>( runner.getTotals().assertions.failed );
+        int result = static_cast<int>( runner.getTotals().assertions.failed );
+        Catch::Context::cleanUp();
+        return result;
     }
 
     inline void showHelp( std::string exeName ) {
@@ -4530,25 +4551,25 @@ namespace Catch {
 
         if( !config.getMessage().empty() ) {
             std::cerr << config.getMessage() << std::endl;
+            Catch::Context::cleanUp();
             return (std::numeric_limits<int>::max)();
         }
 
         // Handle help
         if( config.showHelp() ) {
             showHelp( argv[0] );
+            Catch::Context::cleanUp();
             return 0;
         }
-
         return Main( config );
     }
 
     inline int Main( int argc, char* const argv[] ) {
         Config config;
+// !TBD: This doesn't always work, for some reason
 //        if( isDebuggerActive() )
 //            config.useStream( "debug" );
-        int result = Main( argc, argv, config );
-        Catch::Context::cleanUp();
-        return result;
+        return Main( argc, argv, config );
     }
 
 } // end namespace Catch

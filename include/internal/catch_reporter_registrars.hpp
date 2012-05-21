@@ -29,7 +29,7 @@ namespace Catch {
     public:
 
         ReporterRegistrar( const std::string& name ) {
-            Context::getReporterRegistry().registerReporter( name, new ReporterFactory() );
+            getCurrentContext().getReporterRegistry().registerReporter( name, new ReporterFactory() );
         }
     }; 
 }

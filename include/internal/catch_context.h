@@ -25,28 +25,56 @@ namespace Catch {
 
     class StreamBufBase : public std::streambuf{};
     
-    class Context {
+    struct IContext
+    {
+        virtual IResultCapture& getResultCapture() = 0;
+        virtual IRunner& getRunner() = 0;
+        virtual IReporterRegistry& getReporterRegistry() = 0;
+        virtual ITestCaseRegistry& getTestCaseRegistry() = 0;
+        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
+        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) = 0;
+        virtual bool advanceGeneratorsForCurrentTest() = 0;
+    };
     
-        Context();                
+    struct IMutableContext : IContext
+    {
+        virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
+        virtual void setRunner( IRunner* runner ) = 0;
+    };
+
+    IContext& getCurrentContext();
+    IMutableContext& getCurrentMutableContext();    
+
+    class Context : public IMutableContext {
+    
+        Context();
         Context( const Context& );
         void operator=( const Context& );
-        static Context& me();
 
-    public:        
-        static void setRunner( IRunner* runner );        
-        static void setResultCapture( IResultCapture* resultCapture );        
-        static IResultCapture& getResultCapture();        
-        static IReporterRegistry& getReporterRegistry();        
-        static ITestCaseRegistry& getTestCaseRegistry();        
-        static IExceptionTranslatorRegistry& getExceptionTranslatorRegistry();        
+    public: // friends
+        friend IContext& getCurrentContext() { return Context::getCurrent(); }
+        friend IMutableContext& getCurrentMutableContext() { return Context::getCurrent(); }
+        
+    public: // IContext
+        virtual IResultCapture& getResultCapture();
+        virtual IRunner& getRunner();
+        virtual IReporterRegistry& getReporterRegistry();
+        virtual ITestCaseRegistry& getTestCaseRegistry();
+        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry();
+        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize );
+        virtual bool advanceGeneratorsForCurrentTest();        
+
+    public: // IMutableContext
+        virtual void setResultCapture( IResultCapture* resultCapture );
+        virtual void setRunner( IRunner* runner );
+    
+    public: // Statics
         static std::streambuf* createStreamBuf( const std::string& streamName );        
-        static IRunner& getRunner();        
-        static size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize );        
-        static bool advanceGeneratorsForCurrentTest();        
         static void cleanUp();
         
     private:
-        static Context*& singleInstance();        
+        static Context& getCurrent();
+        static Context*& singleInstance();
         GeneratorsForTest* findGeneratorsForCurrentTest();        
         GeneratorsForTest& getGeneratorsForCurrentTest();
 

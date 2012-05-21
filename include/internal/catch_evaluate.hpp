@@ -20,26 +20,13 @@ namespace Internal {
         IsGreaterThanOrEqualTo
     };
     
-    template<Operator Op>
-    struct OperatorTraits{ static const char* getName(){ return "*error - unknown operator*"; } };
-
-    template<>
-    struct OperatorTraits<IsEqualTo>{ static const char* getName(){ return "=="; } };
-    
-    template<>
-    struct OperatorTraits<IsNotEqualTo>{ static const char* getName(){ return "!="; } };
-    
-    template<>
-    struct OperatorTraits<IsLessThan>{ static const char* getName(){ return "<"; } };
-    
-    template<>
-    struct OperatorTraits<IsGreaterThan>{ static const char* getName(){ return ">"; } };
-    
-    template<>
-    struct OperatorTraits<IsLessThanOrEqualTo>{ static const char* getName(){ return "<="; } };
-    
-    template<>
-    struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
+    template<Operator Op> struct OperatorTraits             { static const char* getName(){ return "*error*"; } };
+    template<> struct OperatorTraits<IsEqualTo>             { static const char* getName(){ return "=="; } };
+    template<> struct OperatorTraits<IsNotEqualTo>          { static const char* getName(){ return "!="; } };
+    template<> struct OperatorTraits<IsLessThan>            { static const char* getName(){ return "<"; } };
+    template<> struct OperatorTraits<IsGreaterThan>         { static const char* getName(){ return ">"; } };
+    template<> struct OperatorTraits<IsLessThanOrEqualTo>   { static const char* getName(){ return "<="; } };
+    template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
     
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.

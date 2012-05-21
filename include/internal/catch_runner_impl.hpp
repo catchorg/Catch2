@@ -56,25 +56,26 @@ namespace Catch {
     public:
 
         explicit Runner( Config& config )
-        :   m_runningTest( NULL ),
+        :   m_context( getCurrentMutableContext() ),
+            m_runningTest( NULL ),
             m_config( config ),
             m_reporter( config.getReporter() ),
-            m_prevRunner( &Context::getRunner() ),
-            m_prevResultCapture( &Context::getResultCapture() )
+            m_prevRunner( &m_context.getRunner() ),
+            m_prevResultCapture( &m_context.getResultCapture() )
         {
-            Context::setRunner( this );
-            Context::setResultCapture( this );
+            m_context.setRunner( this );
+            m_context.setResultCapture( this );
             m_reporter->StartTesting();
         }
         
         ~Runner() {
             m_reporter->EndTesting( m_totals );
-            Context::setRunner( m_prevRunner );
-            Context::setResultCapture( m_prevResultCapture );
+            m_context.setRunner( m_prevRunner );
+            m_context.setResultCapture( m_prevResultCapture );
         }
         
         virtual void runAll( bool runHiddenTests = false ) {
-            std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
+            const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() )
                    runTest( allTests[i] );
@@ -84,7 +85,7 @@ namespace Catch {
         virtual std::size_t runMatching( const std::string& rawTestSpec ) {
             TestSpec testSpec( rawTestSpec );
             
-            std::vector<TestCaseInfo> allTests = Context::getTestCaseRegistry().getAllTests();
+            const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             std::size_t testsRun = 0;
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( testSpec.matches( allTests[i].getName() ) ) {
@@ -114,7 +115,7 @@ namespace Catch {
                 }
                 while( m_runningTest->hasUntestedSections() );
             }
-            while( Context::advanceGeneratorsForCurrentTest() );
+            while( getCurrentContext().advanceGeneratorsForCurrentTest() );
 
             delete m_runningTest;
             m_runningTest = NULL;
@@ -251,13 +252,14 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                acceptMessage( Catch::Context::getExceptionTranslatorRegistry().translateActiveException() );
+                acceptMessage( getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() );
                 acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();
         }
 
     private:
+        IMutableContext& m_context;
         RunningTest* m_runningTest;
         ResultInfoBuilder m_currentResult;
         ResultInfo m_lastResult;
@@ -270,6 +272,7 @@ namespace Catch {
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
     };
-}
+    
+} // end namespace Catch
 
 #endif // TWOBLUECUBES_INTERNAL_CATCH_RUNNER_HPP_INCLUDED

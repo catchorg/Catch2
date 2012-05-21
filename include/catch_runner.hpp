@@ -62,7 +62,9 @@ namespace Catch {
                 config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
             }
         }
-        return static_cast<int>( runner.getTotals().assertions.failed );
+        int result = static_cast<int>( runner.getTotals().assertions.failed );
+        Catch::Context::cleanUp();        
+        return result;
     }
 
     inline void showHelp( std::string exeName ) {
@@ -87,25 +89,25 @@ namespace Catch {
         
         if( !config.getMessage().empty() ) {
             std::cerr << config.getMessage() << std::endl;
+            Catch::Context::cleanUp();        
             return (std::numeric_limits<int>::max)();
         }
         
         // Handle help
         if( config.showHelp() ) {
             showHelp( argv[0] );
+            Catch::Context::cleanUp();        
             return 0;
         }
-        
         return Main( config );
     }
     
     inline int Main( int argc, char* const argv[] ) {
         Config config;
+// !TBD: This doesn't always work, for some reason
 //        if( isDebuggerActive() )
 //            config.useStream( "debug" );
-        int result = Main( argc, argv, config );
-        Catch::Context::cleanUp();
-        return result;        
+        return Main( argc, argv, config );
     }
     
 } // end namespace Catch

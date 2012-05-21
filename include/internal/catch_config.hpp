@@ -62,7 +62,7 @@ namespace Catch {
         void setReporter( const std::string& reporterName ) {
             if( m_reporter.get() )
                 return setError( "Only one reporter may be specified" );
-            setReporter( Context::getReporterRegistry().create( reporterName, *this ) );
+            setReporter( getCurrentContext().getReporterRegistry().create( reporterName, *this ) );
         }
         
         void addTestSpec( const std::string& testSpec ) {
@@ -107,7 +107,7 @@ namespace Catch {
         
         Ptr<IReporter> getReporter() {
             if( !m_reporter.get() )
-                const_cast<Config*>( this )->setReporter( Context::getReporterRegistry().create( "basic", *this ) );
+                const_cast<Config*>( this )->setReporter( getCurrentContext().getReporterRegistry().create( "basic", *this ) );
             return m_reporter;
         }
                 

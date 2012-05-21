@@ -109,7 +109,7 @@ namespace Catch {
                                     const char* name, 
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
-        Context::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+        getCurrentContext().getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
     }
     
 } // end namespace Catch
