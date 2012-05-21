@@ -41,6 +41,18 @@ OC_TEST_CASE( "OCTest/test2", "This is another test case" )
     
     REQUIRE( obj.int_val == 2 );
 }
+
+OC_TEST_CASE( "OCTest/throws/objc", "throws an Objective-C exception" )
+{
+    @throw [[NSException alloc] initWithName: NSGenericException
+                                      reason: @"Objective-C exception"
+                                    userInfo: nil];
+}
+OC_TEST_CASE( "OCTest/throws/stdc++", "throws a std c++ exception" )
+{
+    throw std::domain_error( "std C++ exception" );
+}
+
 ///////////////////////////////////////////////////////////////////////////
 template<typename T>
 void useObject( const T& object ){}

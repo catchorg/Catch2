@@ -10,6 +10,10 @@
 
 #include "catch_interfaces_exception.h"
 
+#ifdef __OBJC__
+#import "Foundation/Foundation.h"
+#endif
+
 namespace Catch {
 
     class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry {
@@ -24,7 +28,17 @@ namespace Catch {
         
         virtual std::string translateActiveException() const {
             try {
+#ifdef __OBJC__
+                // In Objective-C try objective-c exceptions first
+                @try {
+                    throw;
+                }
+                @catch (NSException *exception) {
+                    return toString( [exception description] );
+                }
+#else
                 throw;
+#endif
             }
             catch( std::exception& ex ) {
                 return ex.what();
