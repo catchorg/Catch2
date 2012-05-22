@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import datetime
 
 includesParser = re.compile( r'\s*#include\s*"(.*)"' )
 guardParser = re.compile( r'\s*#.*_INCLUDED')
@@ -38,6 +39,8 @@ def parseFile( path, filename ):
 				print line.rstrip()
 
 print "/*"
+print " *  Generated: " + str( datetime.datetime.now() )
+print " *  ----------------------------------------------------------"
 print " *  This file has been merged from multiple headers. Please don't edit it directly"
 print " *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved."
 print " *"
