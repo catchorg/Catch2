@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED
 
+#include "catch_common.h"
 #include "catch_interfaces_testcase.h"
 #include <map>
 #include <string>

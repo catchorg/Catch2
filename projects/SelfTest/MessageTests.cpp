@@ -75,3 +75,12 @@ TEST_CASE( "./succeeding/message/sections/stdout", "Output from all sections is 
         std::cout << "Message from section two" << std::endl;
     }
 }
+
+TEST_CASE( "./mixed/message/scoped", "" )
+{
+    for( int i=0; i<100; i++ )
+    {
+       SCOPED_INFO( "current counter " << i );
+       REQUIRE( i < 10 );
+    }
+}

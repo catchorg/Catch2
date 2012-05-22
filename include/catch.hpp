@@ -8,6 +8,7 @@
 
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
+#include "internal/catch_test_case_info.hpp" // This needs to be here to prevent the single_include script ommitting it after the obj_c header
 #include "internal/catch_context.h"
 #include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"

@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
 
 #include "catch.hpp"
-#include "catch_test_case_info.hpp"
 
 #include "set"
 
