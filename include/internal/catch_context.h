@@ -51,10 +51,6 @@ namespace Catch {
         Context( const Context& );
         void operator=( const Context& );
 
-    public: // friends
-        friend IContext& getCurrentContext() { return Context::getCurrent(); }
-        friend IMutableContext& getCurrentMutableContext() { return Context::getCurrent(); }
-        
     public: // IContext
         virtual IResultCapture& getResultCapture();
         virtual IRunner& getRunner();
@@ -72,9 +68,9 @@ namespace Catch {
         static std::streambuf* createStreamBuf( const std::string& streamName );        
         static void cleanUp();
         
+        friend IMutableContext& getCurrentMutableContext();
+
     private:
-        static Context& getCurrent();
-        static Context*& singleInstance();
         GeneratorsForTest* findGeneratorsForCurrentTest();        
         GeneratorsForTest& getGeneratorsForCurrentTest();
 

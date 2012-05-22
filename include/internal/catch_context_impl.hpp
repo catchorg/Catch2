@@ -17,7 +17,17 @@
 
 namespace Catch {
     
-
+    namespace {
+        Context* currentHub = NULL;
+    }
+    IMutableContext& getCurrentMutableContext() {
+        if( !currentHub )
+            currentHub = new Context();
+        return *currentHub;
+    }
+    IContext& getCurrentContext() {
+        return getCurrentMutableContext();
+    }
  
     Context::Context()
     :   m_reporterRegistry( new ReporterRegistry ),
@@ -25,22 +35,9 @@ namespace Catch {
         m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry )
     {}
 
-    Context*& Context::singleInstance() {
-        static Context* hub = NULL;        
-        return hub;
-    }
-
-    Context& Context::getCurrent() {
-        Context*& hub = singleInstance();
-        if( !hub )
-            hub = new Context();
-        return *hub;
-    }
-
     void Context::cleanUp() {
-        Context*& hub = singleInstance();
-        delete hub;
-        hub = NULL;
+        delete currentHub;
+        currentHub = NULL;
     }
 
     void Context::setRunner( IRunner* runner ) {
@@ -80,7 +77,7 @@ namespace Catch {
     }
 
     GeneratorsForTest* Context::findGeneratorsForCurrentTest() {
-        std::string testName = getCurrentContext().getResultCapture().getCurrentTestName();
+        std::string testName = getResultCapture().getCurrentTestName();
         
         std::map<std::string, GeneratorsForTest*>::const_iterator it = 
             m_generatorsByTestName.find( testName );
@@ -92,7 +89,7 @@ namespace Catch {
     GeneratorsForTest& Context::getGeneratorsForCurrentTest() {
         GeneratorsForTest* generators = findGeneratorsForCurrentTest();
         if( !generators ) {
-            std::string testName = getCurrentContext().getResultCapture().getCurrentTestName();
+            std::string testName = getResultCapture().getCurrentTestName();
             generators = new GeneratorsForTest();
             m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
         }
