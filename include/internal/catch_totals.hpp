@@ -19,6 +19,11 @@ namespace Catch {
             diff.failed = failed - other.failed;
             return diff;
         }
+        Counts& operator += ( const Counts& other ) {
+            passed += other.passed;
+            failed += other.failed;
+            return *this;
+        }
         
         std::size_t total() const {
             return passed + failed;
@@ -34,6 +39,15 @@ namespace Catch {
             Totals diff;
             diff.assertions = assertions - other.assertions;
             diff.testCases = testCases - other.testCases;
+            return diff;
+        }
+
+        Totals delta( const Totals& prevTotals ) const {
+            Totals diff = *this - prevTotals;
+            if( diff.assertions.failed > 0 )
+                ++diff.testCases.failed;
+            else
+                ++diff.testCases.passed;
             return diff;
         }
         

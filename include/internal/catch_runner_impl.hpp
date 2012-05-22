@@ -111,7 +111,7 @@ namespace Catch {
                     m_reporter->StartGroup( "test case run" );
                     m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
-                    m_reporter->EndGroup( "test case run", m_totals - prevTotals );
+                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
                 }
                 while( m_runningTest->hasUntestedSections() );
             }
@@ -120,12 +120,9 @@ namespace Catch {
             delete m_runningTest;
             m_runningTest = NULL;
 
-            if( m_totals.assertions.failed > prevTotals.assertions.failed )
-                ++m_totals.testCases.failed;
-            else
-                ++m_totals.testCases.passed;
-            
-            m_reporter->EndTestCase( testInfo, m_totals - prevTotals, redirectedCout, redirectedCerr );
+            Totals deltaTotals = m_totals.delta( prevTotals );
+            m_totals.testCases += deltaTotals.testCases;            
+            m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
         }
 
         virtual Totals getTotals() const {
