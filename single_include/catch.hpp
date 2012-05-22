@@ -123,6 +123,11 @@ namespace Catch {
             diff.failed = failed - other.failed;
             return diff;
         }
+        Counts& operator += ( const Counts& other ) {
+            passed += other.passed;
+            failed += other.failed;
+            return *this;
+        }
 
         std::size_t total() const {
             return passed + failed;
@@ -138,6 +143,15 @@ namespace Catch {
             Totals diff;
             diff.assertions = assertions - other.assertions;
             diff.testCases = testCases - other.testCases;
+            return diff;
+        }
+
+        Totals delta( const Totals& prevTotals ) const {
+            Totals diff = *this - prevTotals;
+            if( diff.assertions.failed > 0 )
+                ++diff.testCases.failed;
+            else
+                ++diff.testCases.passed;
             return diff;
         }
 
@@ -324,10 +338,6 @@ namespace Catch {
         Context( const Context& );
         void operator=( const Context& );
 
-    public: // friends
-        friend IContext& getCurrentContext() { return Context::getCurrent(); }
-        friend IMutableContext& getCurrentMutableContext() { return Context::getCurrent(); }
-
     public: // IContext
         virtual IResultCapture& getResultCapture();
         virtual IRunner& getRunner();
@@ -345,9 +355,9 @@ namespace Catch {
         static std::streambuf* createStreamBuf( const std::string& streamName );
         static void cleanUp();
 
+        friend IMutableContext& getCurrentMutableContext();
+
     private:
-        static Context& getCurrent();
-        static Context*& singleInstance();
         GeneratorsForTest* findGeneratorsForCurrentTest();
         GeneratorsForTest& getGeneratorsForCurrentTest();
 
@@ -2102,7 +2112,7 @@ namespace Catch {
             {
                 u_int count;
                 Method* methods = class_copyMethodList( cls, &count );
-                for( int m = 0; m < count ; m++ ) {
+                for( u_int m = 0; m < count ; m++ ) {
                     SEL selector = method_getName(methods[m]);
                     std::string methodName = sel_getName(selector);
                     if( Detail::startsWith( methodName, "Catch_TestCase_" ) ) {
@@ -2800,7 +2810,7 @@ namespace Catch {
                     m_reporter->StartGroup( "test case run" );
                     m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
-                    m_reporter->EndGroup( "test case run", m_totals - prevTotals );
+                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
                 }
                 while( m_runningTest->hasUntestedSections() );
             }
@@ -2809,12 +2819,9 @@ namespace Catch {
             delete m_runningTest;
             m_runningTest = NULL;
 
-            if( m_totals.assertions.failed > prevTotals.assertions.failed )
-                ++m_totals.testCases.failed;
-            else
-                ++m_totals.testCases.passed;
-
-            m_reporter->EndTestCase( testInfo, m_totals - prevTotals, redirectedCout, redirectedCerr );
+            Totals deltaTotals = m_totals.delta( prevTotals );
+            m_totals.testCases += deltaTotals.testCases;
+            m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
         }
 
         virtual Totals getTotals() const {
@@ -3307,28 +3314,27 @@ namespace Catch {
 
 namespace Catch {
 
+    namespace {
+        Context* currentHub = NULL;
+    }
+    IMutableContext& getCurrentMutableContext() {
+        if( !currentHub )
+            currentHub = new Context();
+        return *currentHub;
+    }
+    IContext& getCurrentContext() {
+        return getCurrentMutableContext();
+    }
+
     Context::Context()
     :   m_reporterRegistry( new ReporterRegistry ),
         m_testCaseRegistry( new TestRegistry ),
         m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry )
     {}
 
-    Context*& Context::singleInstance() {
-        static Context* hub = NULL;
-        return hub;
-    }
-
-    Context& Context::getCurrent() {
-        Context*& hub = singleInstance();
-        if( !hub )
-            hub = new Context();
-        return *hub;
-    }
-
     void Context::cleanUp() {
-        Context*& hub = singleInstance();
-        delete hub;
-        hub = NULL;
+        delete currentHub;
+        currentHub = NULL;
     }
 
     void Context::setRunner( IRunner* runner ) {
@@ -3368,7 +3374,7 @@ namespace Catch {
     }
 
     GeneratorsForTest* Context::findGeneratorsForCurrentTest() {
-        std::string testName = getCurrentContext().getResultCapture().getCurrentTestName();
+        std::string testName = getResultCapture().getCurrentTestName();
 
         std::map<std::string, GeneratorsForTest*>::const_iterator it =
             m_generatorsByTestName.find( testName );
@@ -3380,7 +3386,7 @@ namespace Catch {
     GeneratorsForTest& Context::getGeneratorsForCurrentTest() {
         GeneratorsForTest* generators = findGeneratorsForCurrentTest();
         if( !generators ) {
-            std::string testName = getCurrentContext().getResultCapture().getCurrentTestName();
+            std::string testName = getResultCapture().getCurrentTestName();
             generators = new GeneratorsForTest();
             m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
         }
