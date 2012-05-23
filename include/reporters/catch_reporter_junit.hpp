@@ -171,7 +171,7 @@ namespace Catch {
                 }
       
                 xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ) );                
-                xml.scopedElement( "system-err" ).writeText( trim( m_stdOut.str() ) );
+                xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ) );
             }
         }
         
