@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="TestCatch">
+</Property><Property Name="Solution File" Value="\\psf\Home\Dev\TwoBlueCubes\Dev\GitHub\CatchBugFix\projects\VisualStudio\TestCatch\TestCatch.sln">
+</Property><Property Name="Date" Value="Friday, March 02, 2012">
+</Property><Property Name="Time" Value="7:43 AM">
+</Property></Properties><Event ErrorLevel="0" Project="TestCatch" Source="TestCatch\TestCatch.vcproj" Description="Converting project file '\\psf\Home\Dev\TwoBlueCubes\Dev\GitHub\CatchBugFix\projects\VisualStudio\TestCatch\TestCatch\TestCatch.vcproj'.">
+</Event><Event ErrorLevel="1" Project="TestCatch" Source="TestCatch\TestCatch.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="TestCatch" Source="TestCatch\TestCatch.vcproj" Description="Done converting to new project file '\\psf\Home\Dev\TwoBlueCubes\Dev\GitHub\CatchBugFix\projects\VisualStudio\TestCatch\TestCatch\TestCatch.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="TestCatch" Source="TestCatch\TestCatch.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="TestCatch.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="TestCatch.sln" Description="Converted">
+</Event></UpgradeLog>
