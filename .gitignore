@@ -11,6 +11,7 @@ Release
 xcuserdata
 CatchSelfTest.xcscheme
 Breakpoints.xcbkptlist
-projects/VisualStudio/TestCatch/_UpgradeReport_Files/
-projects/VisualStudio/TestCatch/TestCatch/TestCatch.vcxproj.filters
+projects/VS2010/TestCatch/_UpgradeReport_Files/
+projects/VS2010/TestCatch/TestCatch/TestCatch.vcxproj.filters
 projects/VisualStudio/TestCatch/UpgradeLog.XML
+UpgradeLog.XML
