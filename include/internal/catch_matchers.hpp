@@ -13,7 +13,23 @@ namespace Matchers {
     namespace Impl {
     namespace StdString {
 
-        struct Contains {        
+        struct Equals {
+            Equals( const std::string& str ) : m_str( str ){}
+            
+            bool operator()( const std::string& str ) const
+            {
+                return str == m_str;
+            }
+            
+            friend std::ostream& operator<<( std::ostream& os, const Equals& matcher )
+            {
+                os << "equals: \"" << matcher.m_str << "\"";
+                return os;
+            }
+            std::string m_str;
+        };
+        
+        struct Contains {
             Contains( const std::string& substr ) : m_substr( substr ){}
             
             bool operator()( const std::string& str ) const
@@ -63,6 +79,7 @@ namespace Matchers {
     } // namespace StdString
     } // namespace Impl
     
+    inline Impl::StdString::Equals      Equals( const std::string& str ){ return Impl::StdString::Equals( str ); }
     inline Impl::StdString::Contains    Contains( const std::string& substr ){ return Impl::StdString::Contains( substr ); }
     inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ){ return Impl::StdString::StartsWith( substr ); }
     inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ){ return Impl::StdString::EndsWith( substr ); }
