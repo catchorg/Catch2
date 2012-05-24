@@ -27,7 +27,7 @@ namespace Catch {
             addRecorder( recordSections );
         }
                 
-        MockReporter( const IReporterConfig& config ) {
+        MockReporter( const IReporterConfig& ) {
             recordAll();
         }
         
@@ -55,21 +55,21 @@ namespace Catch {
         
         virtual void StartTesting() {}
         
-        virtual void EndTesting( const Totals& totals ) {}
+        virtual void EndTesting( const Totals& ) {}
         
         virtual void StartGroup( const std::string& groupName ) {
             openLabel( recordGroups, groupName );
         }
         
-        virtual void EndGroup( const std::string& groupName, const Totals& totals ) {
+        virtual void EndGroup( const std::string& groupName, const Totals& ) {
             closeLabel( recordGroups, groupName );
         }
         
-        virtual void StartSection( const std::string& sectionName, const std::string& description ) {
+        virtual void StartSection( const std::string& sectionName, const std::string& ) {
             openLabel( recordSections, sectionName );
         }
         
-        virtual void EndSection( const std::string& sectionName, const Counts& assertions ) {
+        virtual void EndSection( const std::string& sectionName, const Counts& ) {
             closeLabel( recordSections, sectionName );
         }
         
@@ -78,9 +78,9 @@ namespace Catch {
         }
         
         virtual void EndTestCase(   const TestCaseInfo& testInfo, 
-                                    const Totals& totals,
-                                    const std::string& stdOut, 
-                                    const std::string& stdErr ) {
+                                    const Totals&,
+                                    const std::string&, 
+                                    const std::string& ) {
             closeLabel( recordTestCases, testInfo.getName()  );
         }
         

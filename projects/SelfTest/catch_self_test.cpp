@@ -15,7 +15,7 @@
 
 namespace Catch{
     
-    std::size_t EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& reporter ) {
+    std::size_t EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& ) {
         std::ostringstream oss;
         Config config;
         config.setStreamBuf( oss.rdbuf() );
