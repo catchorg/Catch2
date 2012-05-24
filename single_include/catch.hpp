@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-05-22 22:16:20.449820
+ *  Generated: 2012-05-24 08:29:19.524673
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1176,44 +1176,6 @@ private:
     T m_lhs;
 };
 
-template<typename LhsT>
-class PtrExpression {
-public:
-
-    PtrExpression ( ResultInfoBuilder& result, const LhsT* lhs )
-    :   m_result( &result ),
-        m_lhs( lhs )
-    {}
-
-    template<typename RhsT>
-    ResultInfoBuilder& operator == ( const RhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
-    }
-
-    // This catches NULL
-    ResultInfoBuilder& operator == ( LhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
-    }
-
-    template<typename RhsT>
-    ResultInfoBuilder& operator != ( const RhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
-    }
-
-    // This catches NULL
-    ResultInfoBuilder& operator != ( LhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
-    }
-
-    operator ResultInfoBuilder& () {
-        return m_result->captureBoolExpression( m_lhs );
-    }
-
-private:
-    ResultInfoBuilder* m_result;
-    const LhsT* m_lhs;
-};
-
 } // end namespace Catch
 
 #include <sstream>
@@ -1234,23 +1196,6 @@ public:
     template<typename T>
     Expression<const T&> operator->* ( const T & operand ) {
         Expression<const T&> expr( m_result, operand );
-        return expr;
-    }
-
-    Expression<const char*> operator->* ( const char* const& operand ) {
-        Expression<const char*> expr( m_result, operand );
-        return expr;
-    }
-
-    template<typename T>
-    PtrExpression<T> operator->* ( const T* operand ) {
-        PtrExpression<T> expr( m_result, operand );
-        return expr;
-    }
-
-    template<typename T>
-    PtrExpression<T> operator->* ( T* operand ) {
-        PtrExpression<T> expr( m_result, operand );
         return expr;
     }
 
@@ -1563,7 +1508,7 @@ inline bool isTrue( bool value ){ return value; }
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
     do{ try{ \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher, false ).acceptMatcher( matcher, arg, #matcher ) ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher, false ).acceptMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
     }catch( Catch::TestFailureException& ){ \
         throw; \
     } catch( ... ){ \
@@ -1931,6 +1876,22 @@ namespace Matchers {
     namespace Impl {
     namespace StdString {
 
+        struct Equals {
+            Equals( const std::string& str ) : m_str( str ){}
+
+            bool operator()( const std::string& str ) const
+            {
+                return str == m_str;
+            }
+
+            friend std::ostream& operator<<( std::ostream& os, const Equals& matcher )
+            {
+                os << "equals: \"" << matcher.m_str << "\"";
+                return os;
+            }
+            std::string m_str;
+        };
+
         struct Contains {
             Contains( const std::string& substr ) : m_substr( substr ){}
 
@@ -1981,6 +1942,7 @@ namespace Matchers {
     } // namespace StdString
     } // namespace Impl
 
+    inline Impl::StdString::Equals      Equals( const std::string& str ){ return Impl::StdString::Equals( str ); }
     inline Impl::StdString::Contains    Contains( const std::string& substr ){ return Impl::StdString::Contains( substr ); }
     inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ){ return Impl::StdString::StartsWith( substr ); }
     inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ){ return Impl::StdString::EndsWith( substr ); }
@@ -2531,7 +2493,6 @@ namespace Catch {
         mutable std::ostream m_os;
         Include::What m_includeWhat;
         std::string m_name;
-
     };
 
 } // end namespace Catch
@@ -4450,7 +4411,7 @@ namespace Catch {
                 }
 
                 xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ) );
-                xml.scopedElement( "system-err" ).writeText( trim( m_stdOut.str() ) );
+                xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ) );
             }
         }
 
