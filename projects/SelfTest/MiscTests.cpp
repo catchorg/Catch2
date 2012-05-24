@@ -247,8 +247,6 @@ inline const char* testStringForMatching()
     return "this string contains 'abc' as a substring";
 }
 
-using namespace Catch::Matchers;
-
 TEST_CASE("./succeeding/matchers", "") 
 {
     REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );    
@@ -271,4 +269,14 @@ TEST_CASE("./failing/matchers/StartsWith", "")
 TEST_CASE("./failing/matchers/EndsWith", "") 
 {
     CHECK_THAT( testStringForMatching(), EndsWith( "this" ) );
+}
+
+TEST_CASE("./failing/matchers/Equals", "")
+{
+    CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
+}
+
+TEST_CASE("./succeeding/matchers/Equals", "")
+{
+    CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
 }

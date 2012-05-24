@@ -60,7 +60,6 @@ void useObject( const T& object ){}
 template<typename T>
 void useObject( const T* object ){}
 
-using namespace Catch::Matchers;
 OC_TEST_CASE( "OCTest/matchers", "Matches work with OC types (NSString so far)" )
 {
     REQUIRE_THAT( @"This is a string", Equals( @"This is a string" ) );

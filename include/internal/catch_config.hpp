@@ -178,7 +178,6 @@ namespace Catch {
         mutable std::ostream m_os;
         Include::What m_includeWhat;
         std::string m_name;
-        
     };
     
 } // end namespace Catch
