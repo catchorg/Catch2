@@ -36,23 +36,6 @@ public:
         return expr;
     }
 
-    Expression<const char*> operator->* ( const char* const& operand ) {
-        Expression<const char*> expr( m_result, operand );        
-        return expr;
-    }
-    
-    template<typename T>
-    PtrExpression<T> operator->* ( const T* operand ) {
-        PtrExpression<T> expr( m_result, operand );        
-        return expr;
-    }
-    
-    template<typename T>
-    PtrExpression<T> operator->* ( T* operand ) {
-        PtrExpression<T> expr( m_result, operand );        
-        return expr;
-    }
-    
     Expression<bool> operator->* ( bool value ) {
         Expression<bool> expr( m_result, value );
         return expr;

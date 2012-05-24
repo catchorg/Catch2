@@ -75,44 +75,6 @@ private:
     ResultInfoBuilder& m_result;
     T m_lhs;
 };
-    
-template<typename LhsT> 
-class PtrExpression {
-public:
-
-    PtrExpression ( ResultInfoBuilder& result, const LhsT* lhs )
-    :   m_result( &result ),
-        m_lhs( lhs )
-    {}
-    
-    template<typename RhsT>
-    ResultInfoBuilder& operator == ( const RhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
-    }
-
-    // This catches NULL
-    ResultInfoBuilder& operator == ( LhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
-    }
-    
-    template<typename RhsT>
-    ResultInfoBuilder& operator != ( const RhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
-    }
-    
-    // This catches NULL
-    ResultInfoBuilder& operator != ( LhsT* rhs ) {
-        return m_result->captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
-    }
-
-    operator ResultInfoBuilder& () {
-        return m_result->captureBoolExpression( m_lhs );
-    }
-    
-private:
-    ResultInfoBuilder* m_result;
-    const LhsT* m_lhs;
-};
 
 } // end namespace Catch
 
