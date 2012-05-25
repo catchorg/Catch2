@@ -116,7 +116,7 @@ inline std::string toString( bool value ) {
 }
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
-inline std::string toString( std::nullptr_t null ) {
+inline std::string toString( std::nullptr_t ) {
     return "nullptr";
 }
 #endif
