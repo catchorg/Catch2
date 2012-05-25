@@ -39,31 +39,36 @@ namespace Catch {
             config.setStreamBuf( ofs.rdbuf() );
         }
 
-        Runner runner( config );
+        int result = 0;
+        
+        // Scope here for the Runner so it can use the context before it is cleaned-up
+        {
+            Runner runner( config );
 
-        // Run test specs specified on the command line - or default to all
-        if( !config.testsSpecified() ) {
-            config.getReporter()->StartGroup( "" );
-            runner.runAll();
-            config.getReporter()->EndGroup( "", runner.getTotals() );
-        }
-        else {
-            // !TBD We should get all the testcases upfront, report any missing,
-            // then just run them
-            std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
-            std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
-            for(; it != itEnd; ++it ) {
-                Totals prevTotals = runner.getTotals();
-                config.getReporter()->StartGroup( *it );
-                if( runner.runMatching( *it ) == 0 ) {
-                    // Use reporter?
-//                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
-                }
-                config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
+            // Run test specs specified on the command line - or default to all
+            if( !config.testsSpecified() ) {
+                config.getReporter()->StartGroup( "" );
+                runner.runAll();
+                config.getReporter()->EndGroup( "", runner.getTotals() );
             }
+            else {
+                // !TBD We should get all the testcases upfront, report any missing,
+                // then just run them
+                std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
+                std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
+                for(; it != itEnd; ++it ) {
+                    Totals prevTotals = runner.getTotals();
+                    config.getReporter()->StartGroup( *it );
+                    if( runner.runMatching( *it ) == 0 ) {
+                        // Use reporter?
+    //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
+                    }
+                    config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
+                }
+            }
+            result = static_cast<int>( runner.getTotals().assertions.failed );
         }
-        int result = static_cast<int>( runner.getTotals().assertions.failed );
-        Catch::Context::cleanUp();        
+        Catch::Context::cleanUp();
         return result;
     }
 

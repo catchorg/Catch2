@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-05-24 08:29:19.524673
+ *  Generated: 2012-05-25 08:50:58.340151
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -457,6 +457,8 @@ namespace Catch {
 
     struct IContext
     {
+        virtual ~IContext(){}
+
         virtual IResultCapture& getResultCapture() = 0;
         virtual IRunner& getRunner() = 0;
         virtual IReporterRegistry& getReporterRegistry() = 0;
@@ -721,7 +723,7 @@ inline std::string toString( bool value ) {
 }
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
-inline std::string toString( std::nullptr_t null ) {
+inline std::string toString( std::nullptr_t ) {
     return "nullptr";
 }
 #endif
@@ -998,6 +1000,7 @@ namespace Internal {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
     }
 
+    // pointer to long (when comparing against NULL)
     template<Operator Op, typename T>
     bool compare( long lhs, const T* rhs ) {
         return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
@@ -1015,6 +1018,27 @@ namespace Internal {
 
     template<Operator Op, typename T>
     bool compare( T* lhs, long rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
+    }
+
+    // pointer to int (when comparing against NULL)
+    template<Operator Op, typename T>
+    bool compare( int lhs, const T* rhs ) {
+        return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
+    }
+
+    template<Operator Op, typename T>
+    bool compare( int lhs, T* rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
+    }
+
+    template<Operator Op, typename T>
+    bool compare( const T* lhs, int rhs ) {
+        return Evaluator<const T*, const T*, Op>::evaluate( lhs, reinterpret_cast<const T*>( rhs ) );
+    }
+
+    template<Operator Op, typename T>
+    bool compare( T* lhs, int rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 
@@ -4484,30 +4508,35 @@ namespace Catch {
             config.setStreamBuf( ofs.rdbuf() );
         }
 
-        Runner runner( config );
+        int result = 0;
 
-        // Run test specs specified on the command line - or default to all
-        if( !config.testsSpecified() ) {
-            config.getReporter()->StartGroup( "" );
-            runner.runAll();
-            config.getReporter()->EndGroup( "", runner.getTotals() );
-        }
-        else {
-            // !TBD We should get all the testcases upfront, report any missing,
-            // then just run them
-            std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
-            std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
-            for(; it != itEnd; ++it ) {
-                Totals prevTotals = runner.getTotals();
-                config.getReporter()->StartGroup( *it );
-                if( runner.runMatching( *it ) == 0 ) {
-                    // Use reporter?
-//                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
-                }
-                config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
+        // Scope here for the Runner so it can use the context before it is cleaned-up
+        {
+            Runner runner( config );
+
+            // Run test specs specified on the command line - or default to all
+            if( !config.testsSpecified() ) {
+                config.getReporter()->StartGroup( "" );
+                runner.runAll();
+                config.getReporter()->EndGroup( "", runner.getTotals() );
             }
+            else {
+                // !TBD We should get all the testcases upfront, report any missing,
+                // then just run them
+                std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
+                std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
+                for(; it != itEnd; ++it ) {
+                    Totals prevTotals = runner.getTotals();
+                    config.getReporter()->StartGroup( *it );
+                    if( runner.runMatching( *it ) == 0 ) {
+                        // Use reporter?
+    //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
+                    }
+                    config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
+                }
+            }
+            result = static_cast<int>( runner.getTotals().assertions.failed );
         }
-        int result = static_cast<int>( runner.getTotals().assertions.failed );
         Catch::Context::cleanUp();
         return result;
     }

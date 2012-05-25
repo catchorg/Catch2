@@ -27,6 +27,8 @@ namespace Catch {
     
     struct IContext
     {
+        virtual ~IContext(){}
+        
         virtual IResultCapture& getResultCapture() = 0;
         virtual IRunner& getRunner() = 0;
         virtual IReporterRegistry& getReporterRegistry() = 0;
