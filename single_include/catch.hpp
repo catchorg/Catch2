@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-05-25 08:50:58.340151
+ *  Generated: 2012-05-31 19:40:06.141562
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -40,6 +40,17 @@ namespace Catch {
 		NonCopyable() {}
 		virtual ~NonCopyable() {}
 	};
+
+    class SafeBool {
+    public:
+        typedef void (SafeBool::*type)() const;
+
+        static type makeSafe( bool value ) {
+            return value ? &SafeBool::trueValue : 0;
+        }
+    private:
+        void trueValue() const {}
+    };
 
     template<typename ContainerT>
     inline void deleteAll( ContainerT& container ) {
@@ -2358,31 +2369,31 @@ namespace Catch {
 
 namespace Catch {
 
+    struct Include { enum WhichResults {
+        FailedOnly,
+        SuccessfulResults
+    }; };
+
+    struct List{ enum What {
+        None = 0,
+
+        Reports = 1,
+        Tests = 2,
+        All = 3,
+
+        WhatMask = 0xf,
+
+        AsText = 0x10,
+        AsXml = 0x11,
+
+        AsMask = 0xf0
+    }; };
+
     class Config : public IReporterConfig {
     private:
         Config( const Config& other );
         Config& operator = ( const Config& other );
     public:
-
-        struct Include { enum What {
-            FailedOnly,
-            SuccessfulResults
-        }; };
-
-        struct List{ enum What {
-            None = 0,
-
-            Reports = 1,
-            Tests = 2,
-            All = 3,
-
-            WhatMask = 0xf,
-
-            AsText = 0x10,
-            AsXml = 0x11,
-
-            AsMask = 0xf0
-        }; };
 
         Config()
         :   m_listSpec( List::None ),
@@ -2390,7 +2401,7 @@ namespace Catch {
             m_showHelp( false ),
             m_streambuf( NULL ),
             m_os( std::cout.rdbuf() ),
-            m_includeWhat( Include::FailedOnly )
+            m_includeWhichResults( Include::FailedOnly )
         {}
 
         ~Config() {
@@ -2437,7 +2448,7 @@ namespace Catch {
         }
 
         void setError( const std::string& errorMessage ) {
-            m_message = errorMessage + "\n\n" + "Usage: ...";
+            m_message = errorMessage;
         }
 
         void setReporter( IReporter* reporter ) {
@@ -2458,8 +2469,8 @@ namespace Catch {
             return static_cast<List::What>( m_listSpec & List::AsMask );
         }
 
-        void setIncludeWhat( Include::What includeWhat ) {
-            m_includeWhat = includeWhat;
+        void setIncludeWhichResults( Include::WhichResults includeWhichResults ) {
+            m_includeWhichResults = includeWhichResults;
         }
 
         void setShouldDebugBreak( bool shouldDebugBreakFlag ) {
@@ -2502,7 +2513,7 @@ namespace Catch {
         }
 
         virtual bool includeSuccessfulResults() const {
-            return m_includeWhat == Include::SuccessfulResults;
+            return m_includeWhichResults == Include::SuccessfulResults;
         }
 
     private:
@@ -2515,8 +2526,19 @@ namespace Catch {
         bool m_showHelp;
         std::streambuf* m_streambuf;
         mutable std::ostream m_os;
-        Include::What m_includeWhat;
+        Include::WhichResults m_includeWhichResults;
         std::string m_name;
+    };
+
+    struct NewConfig {
+        std::string reporter;
+        std::string outputFilename;
+        List::What listSpec;
+        std::vector<std::string> testSpecs;
+        bool shouldDebugBreak;
+        bool showHelp;
+        Include::WhichResults includeWhichResults;
+        std::string name;
     };
 
 } // end namespace Catch
@@ -3394,174 +3416,162 @@ namespace Catch {
 // #included from: internal/catch_commandline.hpp
 
 namespace Catch {
-    // -l, --list tests [xml] lists available tests (optionally in xml)
-    // -l, --list reporters [xml] lists available reports (optionally in xml)
-    // -l, --list all [xml] lists available tests and reports (optionally in xml)
-    // -t, --test "testspec" ["testspec", ...]
-    // -r, --reporter <type>
-    // -o, --out filename to write to
-    // -s, --success report successful cases too
-    // -b, --break breaks into debugger on test failure
-    // -n, --name specifies an optional name for the test run
-	class ArgParser : NonCopyable {
 
-        enum Mode {
-            modeNone,
-            modeList,
-            modeTest,
-            modeReport,
-            modeOutput,
-            modeSuccess,
-            modeBreak,
-            modeName,
-            modeHelp,
-
-            modeError
-        };
-
+    class Command {
     public:
-        ArgParser ( int argc,  char * const argv[], Config& config )
-        :   m_mode( modeNone ),
-            m_config( config ) {
+        Command(){}
 
-            for( int i=1; i < argc; ++i ) {
-                if( argv[i][0] == '-' ) {
-                    std::string cmd = ( argv[i] );
-                    if( cmd == "-l" || cmd == "--list" )
-                        changeMode( cmd, modeList );
-                    else if( cmd == "-t" || cmd == "--test" )
-                        changeMode( cmd, modeTest );
-                    else if( cmd == "-r" || cmd == "--reporter" )
-                        changeMode( cmd, modeReport );
-                    else if( cmd == "-o" || cmd == "--out" )
-                        changeMode( cmd, modeOutput );
-                    else if( cmd == "-s" || cmd == "--success" )
-                        changeMode( cmd, modeSuccess );
-                    else if( cmd == "-b" || cmd == "--break" )
-                        changeMode( cmd, modeBreak );
-                    else if( cmd == "-n" || cmd == "--name" )
-                        changeMode( cmd, modeName );
-                    else if( cmd == "-h" || cmd == "-?" || cmd == "--help" )
-                        changeMode( cmd, modeHelp );
-                }
-                else {
-                    m_args.push_back( argv[i] );
-                }
-                if( m_mode == modeError )
-                    return;
-            }
-            changeMode( "", modeNone );
+        Command( const std::string& name ) : m_name( name ) {}
+
+        Command& operator += ( const std::string& arg ) {
+            m_args.push_back( arg );
+            return *this;
+        }
+        Command& operator += ( const Command& other ) {
+            std::copy( other.m_args.begin(), other.m_args.end(), std::back_inserter( m_args ) );
+            if( m_name.empty() )
+                m_name = other.m_name;
+            return *this;
+        }
+        Command operator + ( const Command& other ) {
+            Command newCommand( *this );
+            newCommand += other;
+            return newCommand;
         }
 
-    private:
-        std::string argsAsString() {
+        operator SafeBool::type() const {
+            return SafeBool::makeSafe( !m_name.empty() );
+        }
+
+        std::string name() const { return m_name; }
+        std::string operator[]( std::size_t i ) const { return m_args[i]; }
+        std::size_t argsCount() const { return m_args.size(); }
+
+        void raiseError( const std::string& message ) const {
             std::ostringstream oss;
-            std::vector<std::string>::const_iterator it = m_args.begin();
-            std::vector<std::string>::const_iterator itEnd = m_args.end();
-            for( bool first = true; it != itEnd; ++it, first = false ) {
-                if( !first )
-                    oss << " ";
-                oss << *it;
-            }
-            return oss.str();
-        }
-
-        void changeMode( const std::string& cmd, Mode mode ) {
-            m_command = cmd;
-            switch( m_mode ) {
-                case modeNone:
-                    if( m_args.size() > 0 )
-                        return setErrorMode( "Unexpected arguments before " + m_command + ": " + argsAsString() );
-                    break;
-                case modeList:
-                    if( m_args.size() > 2 ) {
-                        return setErrorMode( m_command + " expected upto 2 arguments but recieved: " + argsAsString() );
-                    }
-                    else {
-                        Config::List::What listSpec = Config::List::All;
-                        if( m_args.size() >= 1 ) {
-                            if( m_args[0] == "tests" )
-                                listSpec = Config::List::Tests;
-                            else if( m_args[0] == "reporters" )
-                                listSpec = Config::List::Reports;
-                            else
-                                return setErrorMode( m_command + " expected [tests] or [reporters] but recieved: [" + m_args[0] + "]" );
-                        }
-                        if( m_args.size() >= 2 ) {
-                            if( m_args[1] == "xml" )
-                                listSpec = static_cast<Config::List::What>( listSpec | Config::List::AsXml );
-                            else if( m_args[1] == "text" )
-                                listSpec = static_cast<Config::List::What>( listSpec | Config::List::AsText );
-                            else
-                                return setErrorMode( m_command + " expected [xml] or [text] but recieved: [" + m_args[1] + "]" );
-                        }
-                        m_config.setListSpec( static_cast<Config::List::What>( m_config.getListSpec() | listSpec ) );
-                    }
-                    break;
-                case modeTest:
-                    if( m_args.size() == 0 )
-                        return setErrorMode( m_command + " expected at least 1 argument but recieved none" );
-                    {
-                        std::vector<std::string>::const_iterator it = m_args.begin();
-                        std::vector<std::string>::const_iterator itEnd = m_args.end();
-                        for(; it != itEnd; ++it )
-                            m_config.addTestSpec( *it );
-                    }
-                    break;
-                case modeReport:
-                    if( m_args.size() != 1 )
-                        return setErrorMode( m_command + " expected one argument, recieved: " +  argsAsString() );
-                    m_config.setReporter( m_args[0] );
-                    break;
-                case modeOutput:
-                    if( m_args.size() == 0 )
-                        return setErrorMode( m_command + " expected filename" );
-                    if( m_args[0][0] == '%' )
-                        m_config.useStream( m_args[0].substr( 1 ) );
-                    else
-                        m_config.setFilename( m_args[0] );
-                    break;
-                case modeSuccess:
-                    if( m_args.size() != 0 )
-                        return setErrorMode( m_command + " does not accept arguments" );
-                    m_config.setIncludeWhat( Config::Include::SuccessfulResults );
-                    break;
-                case modeBreak:
-                    if( m_args.size() != 0 )
-                        return setErrorMode( m_command + " does not accept arguments" );
-                    m_config.setShouldDebugBreak( true );
-                    break;
-                case modeName:
-                    if( m_args.size() != 1 )
-                        return setErrorMode( m_command + " requires exactly one argument (a name)" );
-                    m_config.setName( m_args[0] );
-                    break;
-                case modeHelp:
-                    if( m_args.size() != 0 )
-                        return setErrorMode( m_command + " does not accept arguments" );
-                    m_config.setShowHelp( true );
-                    break;
-                case modeError:
-                default:
-                break;
-            }
-            m_args.clear();
-            m_mode = mode;
-        }
-
-        void setErrorMode( const std::string& errorMessage ) {
-            m_mode = modeError;
-            m_command = "";
-            m_config.setError( errorMessage );
+            oss << "Error while parsing " << m_name << ". " << message << ".";
+            if( m_args.size() > 0 )
+                oss << " Arguments where:";
+            for( std::size_t i = 0; i < m_args.size(); ++i )
+                oss << " " << m_args[i];
+            throw std::domain_error( oss.str() );
         }
 
     private:
 
-        Mode m_mode;
-        std::string m_command;
+        std::string m_name;
         std::vector<std::string> m_args;
-        Config& m_config;
     };
+
+    class CommandParser {
+    public:
+        CommandParser( int argc, char const * const * argv ) : m_argc( argc ), m_argv( argv ) {}
+
+        Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
+            return find( arg1 ) + find( arg2 ) + find( arg3 );
+        }
+
+        Command find( const std::string& shortArg, const std::string& longArg ) const {
+            return find( shortArg ) + find( longArg );
+        }
+        Command find( const std::string& arg ) const {
+            for( std::size_t i = 0; i < m_argc; ++i  )
+                if( m_argv[i] == arg )
+                    return getArgs( i );
+            return Command();
+        }
+
+    private:
+        Command getArgs( std::size_t from ) const {
+            Command command( m_argv[from] );
+            for( std::size_t i = from+1; i < m_argc && m_argv[i][0] != '-'; ++i  )
+                command += m_argv[i];
+            return command;
+        }
+
+        int m_argc;
+        char const * const * m_argv;
+    };
+
+    inline bool parseIntoConfig( const CommandParser& parser, Config& config ) {
+
+        try {
+            if( Command cmd = parser.find( "-l", "--list" ) ) {
+                if( cmd.argsCount() > 2 )
+                    throw std::domain_error( cmd.name() + " expected upto 2 arguments but recieved: " );
+
+                List::What listSpec = List::All;
+                if( cmd.argsCount() >= 1 ) {
+                    if( cmd[0] == "tests" )
+                        listSpec = List::Tests;
+                    else if( cmd[0] == "reporters" )
+                        listSpec = List::Reports;
+                    else
+                        throw std::domain_error( cmd.name()  + " expected [tests] or [reporters] but recieved: : " );
+                }
+                if( cmd.argsCount() >= 2 ) {
+                    if( cmd[1] == "xml" )
+                        listSpec = static_cast<List::What>( listSpec | List::AsXml );
+                    else if( cmd[1] == "text" )
+                        listSpec = static_cast<List::What>( listSpec | List::AsText );
+                    else
+                        throw std::domain_error( cmd.name() + " expected [xml] or [text] but recieved: " );
+                }
+                config.setListSpec( static_cast<List::What>( config.getListSpec() | listSpec ) );
+            }
+
+            if( Command cmd = parser.find( "-t", "--test" ) ) {
+                if( cmd.argsCount() == 0 )
+                    throw std::domain_error( cmd.name() + " expected at least 1 argument but recieved none" );
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                    config.addTestSpec( cmd[i] );
+            }
+
+            if( Command cmd = parser.find( "-r", "--reporter" ) ) {
+                if( cmd.argsCount() != 1 )
+                    cmd.raiseError( "Expected one argument" );
+                config.setReporter( cmd[0] );
+            }
+
+            if( Command cmd = parser.find( "-o", "--out" ) ) {
+                if( cmd.argsCount() == 0 )
+                    throw std::domain_error( cmd.name() + " expected filename" );
+                if( cmd[0][0] == '%' )
+                    config.useStream( cmd[0].substr( 1 ) );
+                else
+                    config.setFilename( cmd[0] );
+            }
+
+            if( Command cmd = parser.find( "-s", "--success" ) ) {
+                if( cmd.argsCount() != 0 )
+                    throw std::domain_error( cmd.name() + " does not accept arguments" );
+                config.setIncludeWhichResults( Include::SuccessfulResults );
+            }
+
+            if( Command cmd = parser.find( "-b", "--break" ) ) {
+                if( cmd.argsCount() != 0 )
+                    throw std::domain_error( cmd.name() + " does not accept arguments" );
+                config.setShouldDebugBreak( true );
+            }
+
+            if( Command cmd = parser.find( "-n", "--name" ) ) {
+                if( cmd.argsCount() != 1 )
+                    throw std::domain_error( cmd.name() + " requires exactly one argument (a name)" );
+                config.setName( cmd[0] );
+            }
+
+            if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
+                if( cmd.argsCount() != 0 )
+                    throw std::domain_error( cmd.name() + " does not accept arguments" );
+                config.setShowHelp( true );
+            }
+        }
+        catch( std::exception& ex ) {
+            config.setError( ex.what() );
+            return false;
+        }
+        return true;
+    }
 
 } // end namespace Catch
 
@@ -3573,7 +3583,7 @@ namespace Catch {
     inline int List( Config& config ) {
 
         IContext& context = getCurrentContext();
-        if( config.listWhat() & Config::List::Reports ) {
+        if( config.listWhat() & List::Reports ) {
             std::cout << "Available reports:\n";
             IReporterRegistry::FactoryMap::const_iterator it = context.getReporterRegistry().getFactories().begin();
             IReporterRegistry::FactoryMap::const_iterator itEnd = context.getReporterRegistry().getFactories().end();
@@ -3584,7 +3594,7 @@ namespace Catch {
             std::cout << std::endl;
         }
 
-        if( config.listWhat() & Config::List::Tests ) {
+        if( config.listWhat() & List::Tests ) {
             std::cout << "Available tests:\n";
             std::vector<TestCaseInfo>::const_iterator it = context.getTestCaseRegistry().getAllTests().begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = context.getTestCaseRegistry().getAllTests().end();
@@ -3595,7 +3605,7 @@ namespace Catch {
             std::cout << std::endl;
         }
 
-        if( ( config.listWhat() & Config::List::All ) == 0 ) {
+        if( ( config.listWhat() & List::All ) == 0 ) {
             std::cerr << "Unknown list type" << std::endl;
             return (std::numeric_limits<int>::max)();
         }
@@ -3943,8 +3953,6 @@ namespace Catch {
         std::vector<SpanInfo> m_sectionSpans;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
-
 } // end namespace Catch
 
 // #included from: reporters/catch_reporter_xml.hpp
@@ -4271,8 +4279,6 @@ namespace Catch {
         XmlWriter m_xml;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
-
 } // end namespace Catch
 
 // #included from: reporters/catch_reporter_junit.hpp
@@ -4481,8 +4487,6 @@ namespace Catch {
         std::ostringstream m_stdErr;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
-
 } // end namespace Catch
 
 #include <fstream>
@@ -4491,10 +4495,14 @@ namespace Catch {
 
 namespace Catch {
 
+    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
+
     inline int Main( Config& config ) {
 
         // Handle list request
-        if( config.listWhat() != Config::List::None )
+        if( config.listWhat() != List::None )
             return List( config );
 
         // Open output file, if specified
@@ -4541,28 +4549,33 @@ namespace Catch {
         return result;
     }
 
+    inline void showUsage( std::ostream& os ) {
+        os  << "\t-l, --list <tests | reporters> [xml]\n"
+            << "\t-t, --test <testspec> [<testspec>...]\n"
+            << "\t-r, --reporter <reporter name>\n"
+            << "\t-o, --out <file name>|<%stream name>\n"
+            << "\t-s, --success\n"
+            << "\t-b, --break\n"
+            << "\t-n, --name <name>\n\n"
+            << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
+    }
     inline void showHelp( std::string exeName ) {
         std::string::size_type pos = exeName.find_last_of( "/\\" );
         if( pos != std::string::npos ) {
             exeName = exeName.substr( pos+1 );
         }
 
-        std::cout   << exeName << " is a CATCH host application. Options are as follows:\n\n"
-        << "\t-l, --list <tests | reporters> [xml]\n"
-        << "\t-t, --test <testspec> [<testspec>...]\n"
-        << "\t-r, --reporter <reporter name>\n"
-        << "\t-o, --out <file name>|<%stream name>\n"
-        << "\t-s, --success\n"
-        << "\t-b, --break\n"
-        << "\t-n, --name <name>\n\n"
-        << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
+        std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
+        showUsage( std::cout );
     }
 
     inline int Main( int argc, char* const argv[], Config& config ) {
-        ArgParser( argc, argv, config );
+
+        parseIntoConfig( CommandParser( argc, argv ), config );
 
         if( !config.getMessage().empty() ) {
-            std::cerr << config.getMessage() << std::endl;
+            std::cerr << config.getMessage() <<  + "\n\nUsage: ...\n\n";
+            showUsage( std::cerr );
             Catch::Context::cleanUp();
             return (std::numeric_limits<int>::max)();
         }

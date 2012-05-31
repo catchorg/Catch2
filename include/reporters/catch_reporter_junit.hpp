@@ -217,8 +217,6 @@ namespace Catch {
         std::ostringstream m_stdOut;
         std::ostringstream m_stdErr;
     };
-
-    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
     
 } // end namespace Catch
 

@@ -134,8 +134,6 @@ namespace Catch {
         XmlWriter m_xml;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
-
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED

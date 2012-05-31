@@ -315,9 +315,7 @@ namespace Catch {
         SpanInfo m_testSpan;
         std::vector<SpanInfo> m_sectionSpans;
     };
-    
-    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
-    
+        
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED

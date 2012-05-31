@@ -22,10 +22,14 @@
 
 namespace Catch {
 
+    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
+
     inline int Main( Config& config ) {
     
         // Handle list request
-        if( config.listWhat() != Config::List::None )
+        if( config.listWhat() != List::None )
             return List( config );
         
         // Open output file, if specified
@@ -72,29 +76,34 @@ namespace Catch {
         return result;
     }
 
+    inline void showUsage( std::ostream& os ) {
+        os  << "\t-l, --list <tests | reporters> [xml]\n"
+            << "\t-t, --test <testspec> [<testspec>...]\n"
+            << "\t-r, --reporter <reporter name>\n"
+            << "\t-o, --out <file name>|<%stream name>\n"
+            << "\t-s, --success\n"
+            << "\t-b, --break\n"
+            << "\t-n, --name <name>\n\n"
+            << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
+    }
     inline void showHelp( std::string exeName ) {
         std::string::size_type pos = exeName.find_last_of( "/\\" );
         if( pos != std::string::npos ) {
             exeName = exeName.substr( pos+1 );
         }
-        
-        std::cout   << exeName << " is a CATCH host application. Options are as follows:\n\n"
-        << "\t-l, --list <tests | reporters> [xml]\n"
-        << "\t-t, --test <testspec> [<testspec>...]\n"
-        << "\t-r, --reporter <reporter name>\n"
-        << "\t-o, --out <file name>|<%stream name>\n"
-        << "\t-s, --success\n"
-        << "\t-b, --break\n"
-        << "\t-n, --name <name>\n\n"
-        << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
+
+        std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
+        showUsage( std::cout );
     }
     
     inline int Main( int argc, char* const argv[], Config& config ) {
-        ArgParser( argc, argv, config );
+    
+        parseIntoConfig( CommandParser( argc, argv ), config );
         
         if( !config.getMessage().empty() ) {
-            std::cerr << config.getMessage() << std::endl;
-            Catch::Context::cleanUp();        
+            std::cerr << config.getMessage() <<  + "\n\nUsage: ...\n\n";
+            showUsage( std::cerr );
+            Catch::Context::cleanUp();
             return (std::numeric_limits<int>::max)();
         }
         

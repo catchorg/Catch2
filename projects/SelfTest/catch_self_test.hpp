@@ -99,7 +99,7 @@ namespace Catch {
         std::string m_indent;
         std::ostringstream m_log;
         std::set<std::string> m_recorders;
-    };    
+    };
     
     class EmbeddedRunner {
 
@@ -112,7 +112,7 @@ namespace Catch {
         std::string getOutput() {
             return m_output;
         }
-        
+
         const Totals& getTotals() const {
             return m_totals;
         }
@@ -124,7 +124,7 @@ namespace Catch {
         std::string getLog() const {
             return m_reporter->getLog();
         }
-        
+
     private:
         Totals m_totals;
         std::string m_output;

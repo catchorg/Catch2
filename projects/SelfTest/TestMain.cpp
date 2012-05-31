@@ -53,3 +53,151 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
     CHECK( runner.getTotals().assertions.passed == 2 );
     CHECK( runner.getTotals().assertions.failed == 1 );
 }
+
+#include "catch_commandline.hpp"
+#include "catch_reporter_basic.hpp"
+#include "catch_reporter_xml.hpp"
+#include "catch_reporter_junit.hpp"
+
+template<size_t size>
+bool parseIntoConfig( const char * (&argv)[size], Catch::Config& config ) {
+    return Catch::parseIntoConfig( Catch::CommandParser( size, argv ), config );
+}
+
+TEST_CASE( "selftest/parser", "" ) {
+
+    SECTION( "default", "" ) {
+        const char* argv[] = { "test" };
+        Catch::Config config;
+        CHECK( parseIntoConfig( argv, config ) );
+        
+        CHECK( config.getTestSpecs().empty() );
+        CHECK( config.shouldDebugBreak() == false );
+        CHECK( config.showHelp() == false );
+        CHECK( dynamic_cast<Catch::BasicReporter*>( config.getReporter().get() ) );
+    }
+    
+    SECTION( "test lists", "" ) {
+        SECTION( "-t/1", "Specify one test case using -t" ) {
+            const char* argv[] = { "test", "-t", "test1" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.getTestSpecs().size() == 1 );
+            REQUIRE( config.getTestSpecs()[0] == "test1" );
+        }
+
+        SECTION( "--test/1", "Specify one test case using --test" ) {
+            const char* argv[] = { "test", "--test", "test1" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.getTestSpecs().size() == 1 );
+            REQUIRE( config.getTestSpecs()[0] == "test1" );
+        }
+
+        SECTION( "-t/2", "Specify two test cases using -t" ) {
+            const char* argv[] = { "test", "-t", "test1", "test2" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.getTestSpecs().size() == 2 );
+            REQUIRE( config.getTestSpecs()[0] == "test1" );
+            REQUIRE( config.getTestSpecs()[1] == "test2" );
+        }
+
+        SECTION( "-t/0", "When no test names are supplied it is an error" ) {
+            const char* argv[] = { "test", "-t" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) == false );
+            
+            REQUIRE_THAT( config.getMessage(), Contains( "none" ) );
+        }
+    }
+    
+    SECTION( "reporter", "" ) {
+        SECTION( "-r/basic", "" ) {
+            const char* argv[] = { "test", "-reporter", "basic" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( dynamic_cast<Catch::BasicReporter*>( config.getReporter().get() ) );
+        }
+        SECTION( "-r/xml", "" ) {
+            const char* argv[] = { "test", "-r", "xml" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( dynamic_cast<Catch::XmlReporter*>( config.getReporter().get() ) );
+        }
+        SECTION( "-r/junit", "" ) {
+            const char* argv[] = { "test", "-r", "junit" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( dynamic_cast<Catch::JunitReporter*>( config.getReporter().get() ) );
+        }
+        SECTION( "-r/error", "reporter config only accepts one argument" ) {
+            const char* argv[] = { "test", "-r", "one", "two" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) == false );
+            
+            REQUIRE_THAT( config.getMessage(), Contains( "one argument" ) );
+        }
+    }
+    
+    SECTION( "debugger", "" ) {
+        SECTION( "-b", "" ) {
+            const char* argv[] = { "test", "-b" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.shouldDebugBreak() == true );
+        }
+        SECTION( "--break", "" ) {
+            const char* argv[] = { "test", "--break" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.shouldDebugBreak() );
+        }
+        SECTION( "-b", "break option has no arguments" ) {
+            const char* argv[] = { "test", "-b", "unexpected" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) == false );
+            
+            REQUIRE_THAT( config.getMessage(), Contains( "not accept" ) );
+        }
+    }
+    
+    SECTION( "help", "" ) {
+        SECTION( "-h", "" ) {
+            const char* argv[] = { "test", "-h" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.showHelp() );
+        }
+        SECTION( "-?", "" ) {
+            const char* argv[] = { "test", "-?" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.showHelp() );
+        }
+        SECTION( "--help", "" ) {
+            const char* argv[] = { "test", "--help" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.showHelp() );
+        }
+        SECTION( "-h", "help option has no arguments" ) {
+            const char* argv[] = { "test", "-h", "unexpected" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) == false );
+            
+            REQUIRE_THAT( config.getMessage(), Contains( "not accept" ) );
+        }
+    }
+}

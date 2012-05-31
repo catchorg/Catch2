@@ -18,40 +18,39 @@
 
 namespace Catch {
 
+    struct Include { enum WhichResults {
+        FailedOnly, 
+        SuccessfulResults
+    }; };
+
+    struct List{ enum What {
+        None = 0,
+        
+        Reports = 1,
+        Tests = 2,
+        All = 3,
+        
+        WhatMask = 0xf,
+        
+        AsText = 0x10,
+        AsXml = 0x11,
+        
+        AsMask = 0xf0
+    }; };
+    
     class Config : public IReporterConfig {
     private:
         Config( const Config& other );
         Config& operator = ( const Config& other );
     public:
-        
-        struct Include { enum What {
-            FailedOnly, 
-            SuccessfulResults
-        }; };
-
-        struct List{ enum What {
-            None = 0,
-            
-            Reports = 1,
-            Tests = 2,
-            All = 3,
-            
-            WhatMask = 0xf,
-            
-            AsText = 0x10,
-            AsXml = 0x11,
-            
-            AsMask = 0xf0
-        }; };
-        
-        
+                
         Config()
         :   m_listSpec( List::None ),
             m_shouldDebugBreak( false ),
             m_showHelp( false ),
             m_streambuf( NULL ),
             m_os( std::cout.rdbuf() ),
-            m_includeWhat( Include::FailedOnly )
+            m_includeWhichResults( Include::FailedOnly )
         {}
         
         ~Config() {
@@ -98,7 +97,7 @@ namespace Catch {
         }
         
         void setError( const std::string& errorMessage ) {
-            m_message = errorMessage + "\n\n" + "Usage: ...";
+            m_message = errorMessage;
         }
         
         void setReporter( IReporter* reporter ) {
@@ -119,8 +118,8 @@ namespace Catch {
             return static_cast<List::What>( m_listSpec & List::AsMask );
         }        
         
-        void setIncludeWhat( Include::What includeWhat ) {
-            m_includeWhat = includeWhat;
+        void setIncludeWhichResults( Include::WhichResults includeWhichResults ) {
+            m_includeWhichResults = includeWhichResults;
         }
         
         void setShouldDebugBreak( bool shouldDebugBreakFlag ) {
@@ -163,7 +162,7 @@ namespace Catch {
         }
         
         virtual bool includeSuccessfulResults() const {
-            return m_includeWhat == Include::SuccessfulResults;
+            return m_includeWhichResults == Include::SuccessfulResults;
         }
         
     private:
@@ -176,9 +175,22 @@ namespace Catch {
         bool m_showHelp;
         std::streambuf* m_streambuf;
         mutable std::ostream m_os;
-        Include::What m_includeWhat;
+        Include::WhichResults m_includeWhichResults;
         std::string m_name;
     };
+    
+    struct NewConfig {
+        std::string reporter;
+        std::string outputFilename;
+        List::What listSpec;
+        std::vector<std::string> testSpecs;
+        bool shouldDebugBreak;
+        bool showHelp;
+        Include::WhichResults includeWhichResults;
+        std::string name;        
+    };
+    
+    
     
 } // end namespace Catch
 

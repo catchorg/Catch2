@@ -280,3 +280,18 @@ TEST_CASE("./succeeding/matchers/Equals", "")
 {
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
 }
+
+inline unsigned int Factorial( unsigned int number )
+{
+//  return number <= 1 ? number : Factorial(number-1)*number;
+  return number > 1 ? Factorial(number-1)*number : 1;
+}
+
+TEST_CASE( "example/factorial", "The Factorial function should return the factorial of the number passed in" )
+{
+  REQUIRE( Factorial(0) == 1 );
+  REQUIRE( Factorial(1) == 1 );
+  REQUIRE( Factorial(2) == 2 );
+  REQUIRE( Factorial(3) == 6 );
+  REQUIRE( Factorial(10) == 3628800 );
+}

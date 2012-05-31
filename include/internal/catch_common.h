@@ -35,6 +35,17 @@ namespace Catch {
 		virtual ~NonCopyable() {}
 	};
     
+    class SafeBool {
+    public:
+        typedef void (SafeBool::*type)() const;
+
+        static type makeSafe( bool value ) {
+            return value ? &SafeBool::trueValue : 0;
+        }
+    private:
+        void trueValue() const {}
+    };
+  
     template<typename ContainerT>
     inline void deleteAll( ContainerT& container ) {
         typename ContainerT::const_iterator it = container.begin();
