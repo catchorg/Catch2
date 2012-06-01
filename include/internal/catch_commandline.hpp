@@ -161,6 +161,19 @@ namespace Catch {
                     throw std::domain_error( cmd.name() + " does not accept arguments" );
                 config.setShowHelp( true );
             }
+
+            if( Command cmd = parser.find( "-c", "--cutoff" ) ) {
+                if( cmd.argsCount() > 1 )
+                    throw std::domain_error( cmd.name() + " only accepts 0-1 arguments" );
+                int threshold = 1;
+                if( cmd.argsCount() == 1 )
+                {
+                    std::stringstream ss;
+                    ss << cmd[0];
+                    ss >> threshold;
+                }
+                config.setCutoff( threshold );
+            }
         }
         catch( std::exception& ex ) {
             config.setError( ex.what() );

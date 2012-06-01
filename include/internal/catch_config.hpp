@@ -50,7 +50,8 @@ namespace Catch {
             m_showHelp( false ),
             m_streambuf( NULL ),
             m_os( std::cout.rdbuf() ),
-            m_includeWhichResults( Include::FailedOnly )
+            m_includeWhichResults( Include::FailedOnly ),
+            m_cutoff( -1 )
         {}
         
         ~Config() {
@@ -165,6 +166,14 @@ namespace Catch {
             return m_includeWhichResults == Include::SuccessfulResults;
         }
         
+        int getCutoff() const {
+            return m_cutoff;
+        }
+        
+        void setCutoff( int cutoff ) {
+            m_cutoff = cutoff;
+        }
+        
     private:
         Ptr<IReporter> m_reporter;
         std::string m_filename;
@@ -177,6 +186,7 @@ namespace Catch {
         mutable std::ostream m_os;
         Include::WhichResults m_includeWhichResults;
         std::string m_name;
+        int m_cutoff;
     };
     
     struct NewConfig {

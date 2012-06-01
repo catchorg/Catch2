@@ -74,6 +74,7 @@ TEST_CASE( "selftest/parser", "" ) {
         CHECK( config.getTestSpecs().empty() );
         CHECK( config.shouldDebugBreak() == false );
         CHECK( config.showHelp() == false );
+        CHECK( config.getCutoff() == -1 );
         CHECK( dynamic_cast<Catch::BasicReporter*>( config.getReporter().get() ) );
     }
     
@@ -200,4 +201,39 @@ TEST_CASE( "selftest/parser", "" ) {
             REQUIRE_THAT( config.getMessage(), Contains( "not accept" ) );
         }
     }
+    
+    SECTION( "cutoff", "" ) {
+        SECTION( "-c", "" ) {
+            const char* argv[] = { "test", "-c" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.getCutoff() == 1 );
+        }
+        SECTION( "-c/2", "" ) {
+            const char* argv[] = { "test", "-c", "2" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.getCutoff() == 2 );
+        }
+        SECTION( "-c/error", "cutoff only takes one argument" ) {
+            const char* argv[] = { "test", "-c", "1", "2" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) == false );
+
+            REQUIRE_THAT( config.getMessage(), Contains( "accepts" ) );
+        }
+    }
+    SECTION( "combinations", "" ) {
+        SECTION( "-c -b", "" ) {
+            const char* argv[] = { "test", "-c", "-b" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.getCutoff() == 1 );
+            REQUIRE( config.shouldDebugBreak() );
+        }
+    }
+    
 }

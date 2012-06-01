@@ -146,6 +146,10 @@ namespace Catch {
                 m_stdErr << stdErr << "\n";
         }    
 
+        virtual void Aborted() {
+            // !TBD
+        }
+
         virtual void EndTesting( const Totals& ) {
             std::ostream& str = m_config.stream();
             {

@@ -78,7 +78,13 @@ namespace Catch {
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() )
-                   runTest( allTests[i] );
+                {
+                    if( aborting() ) {
+                        m_reporter->Aborted();
+                        break;
+                    }
+                    runTest( allTests[i] );
+                }
             }
         }
         
@@ -89,6 +95,10 @@ namespace Catch {
             std::size_t testsRun = 0;
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( testSpec.matches( allTests[i].getName() ) ) {
+                    if( aborting() ) {
+                        m_reporter->Aborted();
+                        break;
+                    }
                     runTest( allTests[i] );
                     testsRun++;
                 }
@@ -108,14 +118,14 @@ namespace Catch {
 
             do {
                 do {
-                    m_reporter->StartGroup( "test case run" );
+//                    m_reporter->StartGroup( "test case run" );
                     m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
-                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
+//                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
                 }
-                while( m_runningTest->hasUntestedSections() );
+                while( m_runningTest->hasUntestedSections() && !aborting() );
             }
-            while( getCurrentContext().advanceGeneratorsForCurrentTest() );
+            while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             delete m_runningTest;
             m_runningTest = NULL;
@@ -168,7 +178,7 @@ namespace Catch {
             else
                 m_reporter->Result( result );
         }
-
+        
         virtual bool sectionStarted (
             const std::string& name, 
             const std::string& description,
@@ -218,18 +228,27 @@ namespace Catch {
         }
         
     private:
+
+        bool aborting() const {
+            return m_totals.assertions.failed == m_config.getCutoff();
+        }
         
         ResultAction::Value actOnCurrentResult() {
             testEnded( m_currentResult );
             m_lastResult = m_currentResult;
             
             m_currentResult = ResultInfoBuilder();
-            if( m_lastResult.ok() )
-                return ResultAction::None;
-            else if( shouldDebugBreak() )
-                return ResultAction::DebugFailed;
-            else
-                return ResultAction::Failed;
+
+            ResultAction::Value action = ResultAction::None;
+            
+            if( !m_lastResult.ok() ) {
+                action = ResultAction::Failed;
+                if( shouldDebugBreak() )
+                    action = (ResultAction::Value)( action | ResultAction::Debug );
+                if( aborting() )
+                    action = (ResultAction::Value)( action | ResultAction::Abort );
+            }
+            return action;
         }
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {

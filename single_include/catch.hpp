@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-05-31 19:40:06.141562
+ *  Generated: 2012-06-01 19:40:15.883536
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -424,6 +424,7 @@ namespace Catch
         virtual void StartSection( const std::string& sectionName, const std::string& description ) = 0;
         virtual void EndSection( const std::string& sectionName, const Counts& assertions ) = 0;
         virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;
+        virtual void Aborted() = 0;
         virtual void EndTestCase( const TestCaseInfo& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;
         virtual void Result( const ResultInfo& result ) = 0;
     };
@@ -768,9 +769,9 @@ struct ResultWas { enum OfType {
 
 struct ResultAction { enum Value {
     None,
-    Failed = 1,     // Failure - but no debug break if Debug bit not set
-    DebugFailed = 3 // Indicates that the debugger should break, if possible
-
+    Failed = 1, // Failure - but no debug break if Debug bit not set
+    Debug = 2,  // If this bit is set, invoke the debugger
+    Abort = 4   // Test run should abort
 }; };
 
 }
@@ -1469,7 +1470,8 @@ inline bool isTrue( bool value ){ return value; }
 #define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure, originalExpr ) \
     if( Catch::ResultAction::Value internal_catch_action = Catch::getCurrentContext().getResultCapture().acceptExpression( expr )  ) \
     { \
-        if( internal_catch_action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
+        if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
+        if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
     }
@@ -2401,7 +2403,8 @@ namespace Catch {
             m_showHelp( false ),
             m_streambuf( NULL ),
             m_os( std::cout.rdbuf() ),
-            m_includeWhichResults( Include::FailedOnly )
+            m_includeWhichResults( Include::FailedOnly ),
+            m_cutoff( -1 )
         {}
 
         ~Config() {
@@ -2516,6 +2519,14 @@ namespace Catch {
             return m_includeWhichResults == Include::SuccessfulResults;
         }
 
+        int getCutoff() const {
+            return m_cutoff;
+        }
+
+        void setCutoff( int cutoff ) {
+            m_cutoff = cutoff;
+        }
+
     private:
         Ptr<IReporter> m_reporter;
         std::string m_filename;
@@ -2528,6 +2539,7 @@ namespace Catch {
         mutable std::ostream m_os;
         Include::WhichResults m_includeWhichResults;
         std::string m_name;
+        int m_cutoff;
     };
 
     struct NewConfig {
@@ -2786,7 +2798,13 @@ namespace Catch {
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() )
-                   runTest( allTests[i] );
+                {
+                    if( aborting() ) {
+                        m_reporter->Aborted();
+                        break;
+                    }
+                    runTest( allTests[i] );
+                }
             }
         }
 
@@ -2797,6 +2815,10 @@ namespace Catch {
             std::size_t testsRun = 0;
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( testSpec.matches( allTests[i].getName() ) ) {
+                    if( aborting() ) {
+                        m_reporter->Aborted();
+                        break;
+                    }
                     runTest( allTests[i] );
                     testsRun++;
                 }
@@ -2816,14 +2838,14 @@ namespace Catch {
 
             do {
                 do {
-                    m_reporter->StartGroup( "test case run" );
+//                    m_reporter->StartGroup( "test case run" );
                     m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
-                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
+//                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
                 }
-                while( m_runningTest->hasUntestedSections() );
+                while( m_runningTest->hasUntestedSections() && !aborting() );
             }
-            while( getCurrentContext().advanceGeneratorsForCurrentTest() );
+            while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             delete m_runningTest;
             m_runningTest = NULL;
@@ -2927,17 +2949,26 @@ namespace Catch {
 
     private:
 
+        bool aborting() const {
+            return m_totals.assertions.failed == m_config.getCutoff();
+        }
+
         ResultAction::Value actOnCurrentResult() {
             testEnded( m_currentResult );
             m_lastResult = m_currentResult;
 
             m_currentResult = ResultInfoBuilder();
-            if( m_lastResult.ok() )
-                return ResultAction::None;
-            else if( shouldDebugBreak() )
-                return ResultAction::DebugFailed;
-            else
-                return ResultAction::Failed;
+
+            ResultAction::Value action = ResultAction::None;
+
+            if( !m_lastResult.ok() ) {
+                action = ResultAction::Failed;
+                if( shouldDebugBreak() )
+                    action = (ResultAction::Value)( action | ResultAction::Debug );
+                if( aborting() )
+                    action = (ResultAction::Value)( action | ResultAction::Abort );
+            }
+            return action;
         }
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
@@ -3565,6 +3596,19 @@ namespace Catch {
                     throw std::domain_error( cmd.name() + " does not accept arguments" );
                 config.setShowHelp( true );
             }
+
+            if( Command cmd = parser.find( "-c", "--cutoff" ) ) {
+                if( cmd.argsCount() > 1 )
+                    throw std::domain_error( cmd.name() + " only accepts 0-1 arguments" );
+                int threshold = 1;
+                if( cmd.argsCount() == 1 )
+                {
+                    std::stringstream ss;
+                    ss << cmd[0];
+                    ss >> threshold;
+                }
+                config.setCutoff( threshold );
+            }
         }
         catch( std::exception& ex ) {
             config.setError( ex.what() );
@@ -3694,7 +3738,8 @@ namespace Catch {
     public:
         BasicReporter( const IReporterConfig& config )
         :   m_config( config ),
-            m_firstSectionInTestCase( true )
+            m_firstSectionInTestCase( true ),
+            m_aborted( false )
         {}
 
         static std::string getDescription() {
@@ -3703,29 +3748,29 @@ namespace Catch {
 
     private:
 
-        void ReportCounts( const std::string& label, const Counts& counts ) {
+        void ReportCounts( const std::string& label, const Counts& counts, const std::string& allPrefix = "All " ) {
             if( counts.passed )
                 m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
             else
-                m_config.stream() << ( counts.failed > 1 ? "All " : "" ) << pluralise( counts.failed, label ) << " failed";
+                m_config.stream() << ( counts.failed > 1 ? allPrefix : "" ) << pluralise( counts.failed, label ) << " failed";
         }
 
-        void ReportCounts( const Totals& totals ) {
+        void ReportCounts( const Totals& totals, const std::string& allPrefix = "All " ) {
             if( totals.assertions.total() == 0 ) {
                 m_config.stream() << "No tests ran";
             }
             else if( totals.assertions.failed ) {
                 TextColour colour( TextColour::ResultError );
-                ReportCounts( "test case", totals.testCases );
+                ReportCounts( "test case", totals.testCases, allPrefix );
                 if( totals.testCases.failed > 0 ) {
                     m_config.stream() << " (";
-                    ReportCounts( "assertion", totals.assertions );
+                    ReportCounts( "assertion", totals.assertions, allPrefix );
                     m_config.stream() << ")";
                 }
             }
             else {
                 TextColour colour( TextColour::ResultSuccess );
-                m_config.stream()   << "All tests passed ("
+                m_config.stream()   << allPrefix << "tests passed ("
                                     << pluralise( totals.assertions.passed, "assertion" ) << " in "
                                     << pluralise( totals.testCases.passed, "test case" ) << ")";
             }
@@ -3741,10 +3786,20 @@ namespace Catch {
             m_testingSpan = SpanInfo();
         }
 
+        virtual void Aborted() {
+            m_aborted = true;
+        }
+
         virtual void EndTesting( const Totals& totals ) {
             // Output the overall test results even if "Started Testing" was not emitted
-            m_config.stream() << "\n[Testing completed. ";
-            ReportCounts( totals);
+            if( m_aborted ) {
+                m_config.stream() << "\n[Testing aborted. ";
+                ReportCounts( totals, "The first " );
+            }
+            else {
+                m_config.stream() << "\n[Testing completed. ";
+                ReportCounts( totals );
+            }
             m_config.stream() << "]\n" << std::endl;
         }
 
@@ -3951,6 +4006,7 @@ namespace Catch {
         SpanInfo m_groupSpan;
         SpanInfo m_testSpan;
         std::vector<SpanInfo> m_sectionSpans;
+        bool m_aborted;
     };
 
 } // end namespace Catch
@@ -4268,6 +4324,10 @@ namespace Catch {
                 m_xml.endElement();
         }
 
+        virtual void Aborted() {
+            // !TBD
+        }
+
         virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string&, const std::string& ) {
             m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );
             m_xml.endElement();
@@ -4416,6 +4476,10 @@ namespace Catch {
                 m_stdErr << stdErr << "\n";
         }
 
+        virtual void Aborted() {
+            // !TBD
+        }
+
         virtual void EndTesting( const Totals& ) {
             std::ostream& str = m_config.stream();
             {
@@ -4557,6 +4621,7 @@ namespace Catch {
             << "\t-s, --success\n"
             << "\t-b, --break\n"
             << "\t-n, --name <name>\n\n"
+            << "\t-c, --cutoff [#]\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
     }
     inline void showHelp( std::string exeName ) {

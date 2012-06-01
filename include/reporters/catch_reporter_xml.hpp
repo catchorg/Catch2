@@ -122,6 +122,10 @@ namespace Catch {
             if( resultInfo.hasExpression() )
                 m_xml.endElement();
         }
+
+        virtual void Aborted() {
+            // !TBD
+        }
         
         virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string&, const std::string& ) {
             m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );

@@ -52,7 +52,8 @@ inline bool isTrue( bool value ){ return value; }
 #define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure, originalExpr ) \
     if( Catch::ResultAction::Value internal_catch_action = Catch::getCurrentContext().getResultCapture().acceptExpression( expr )  ) \
     { \
-        if( internal_catch_action == Catch::ResultAction::DebugFailed ) BreakIntoDebugger(); \
+        if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
+        if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
     }

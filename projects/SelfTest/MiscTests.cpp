@@ -98,29 +98,21 @@ TEST_CASE( "Sections/nested3", "nested SECTION tests" )
     CHECK( runner.getLog() == 
         "\\[tc] ./Sections/nested/a/b\n"
         
-        " \\[g] test case run\n"
-        "  \\ [s] c\n"
-        "   \\ [s] d (leaf)\n"
-        "   / [s] d (leaf)\n"
-        "  / [s] c\n"
-        " /[g] test case run\n"
+        " \\ [s] c\n"
+        "  \\ [s] d (leaf)\n"
+        "  / [s] d (leaf)\n"
+        " / [s] c\n"
         
-        " \\[g] test case run\n"
-        "  \\ [s] c\n"
-        "   \\ [s] e (leaf)\n"
-        "   / [s] e (leaf)\n"
-        "  / [s] c\n"
-        " /[g] test case run\n"
+        " \\ [s] c\n"
+        "  \\ [s] e (leaf)\n"
+        "  / [s] e (leaf)\n"
+        " / [s] c\n"
         
-        " \\[g] test case run\n"
-        "  \\ [s] c\n"
-        "  / [s] c\n"
-        " /[g] test case run\n"
+        " \\ [s] c\n"
+        " / [s] c\n"
         
-        " \\[g] test case run\n"
-        "  \\ [s] f (leaf)\n"
-        "  / [s] f (leaf)\n"
-        " /[g] test case run\n"
+        " \\ [s] f (leaf)\n"
+        " / [s] f (leaf)\n"
         
         "/[tc] ./Sections/nested/a/b\n" );
     

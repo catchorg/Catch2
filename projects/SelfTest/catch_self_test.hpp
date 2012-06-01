@@ -77,6 +77,8 @@ namespace Catch {
             openLabel( recordTestCases, testInfo.getName()  );
         }
         
+        virtual void Aborted(){}
+        
         virtual void EndTestCase(   const TestCaseInfo& testInfo, 
                                     const Totals&,
                                     const std::string&, 

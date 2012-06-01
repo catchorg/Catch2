@@ -30,9 +30,9 @@ struct ResultWas { enum OfType {
 
 struct ResultAction { enum Value {
     None,
-    Failed = 1,     // Failure - but no debug break if Debug bit not set
-    DebugFailed = 3 // Indicates that the debugger should break, if possible
-    
+    Failed = 1, // Failure - but no debug break if Debug bit not set
+    Debug = 2,  // If this bit is set, invoke the debugger
+    Abort = 4   // Test run should abort    
 }; };
     
 }

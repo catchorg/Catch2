@@ -57,7 +57,8 @@ namespace Catch {
     public:
         BasicReporter( const IReporterConfig& config )
         :   m_config( config ),
-            m_firstSectionInTestCase( true )
+            m_firstSectionInTestCase( true ),
+            m_aborted( false )
         {}
         
         static std::string getDescription() {
@@ -66,29 +67,29 @@ namespace Catch {
 
     private:
 
-        void ReportCounts( const std::string& label, const Counts& counts ) {
+        void ReportCounts( const std::string& label, const Counts& counts, const std::string& allPrefix = "All " ) {
             if( counts.passed )
                 m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
             else
-                m_config.stream() << ( counts.failed > 1 ? "All " : "" ) << pluralise( counts.failed, label ) << " failed";
+                m_config.stream() << ( counts.failed > 1 ? allPrefix : "" ) << pluralise( counts.failed, label ) << " failed";
         }
 
-        void ReportCounts( const Totals& totals ) {
+        void ReportCounts( const Totals& totals, const std::string& allPrefix = "All " ) {
             if( totals.assertions.total() == 0 ) {
                 m_config.stream() << "No tests ran";
             }
             else if( totals.assertions.failed ) {
                 TextColour colour( TextColour::ResultError );
-                ReportCounts( "test case", totals.testCases );
+                ReportCounts( "test case", totals.testCases, allPrefix );
                 if( totals.testCases.failed > 0 ) {
                     m_config.stream() << " (";
-                    ReportCounts( "assertion", totals.assertions );
+                    ReportCounts( "assertion", totals.assertions, allPrefix );
                     m_config.stream() << ")";
                 }
             }
             else {
                 TextColour colour( TextColour::ResultSuccess );
-                m_config.stream()   << "All tests passed (" 
+                m_config.stream()   << allPrefix << "tests passed ("
                                     << pluralise( totals.assertions.passed, "assertion" ) << " in " 
                                     << pluralise( totals.testCases.passed, "test case" ) << ")";
             }
@@ -104,10 +105,20 @@ namespace Catch {
             m_testingSpan = SpanInfo();
         }
 
+        virtual void Aborted() {
+            m_aborted = true;
+        }
+
         virtual void EndTesting( const Totals& totals ) {
             // Output the overall test results even if "Started Testing" was not emitted
-            m_config.stream() << "\n[Testing completed. ";
-            ReportCounts( totals);
+            if( m_aborted ) {
+                m_config.stream() << "\n[Testing aborted. ";
+                ReportCounts( totals, "The first " );
+            }
+            else {
+                m_config.stream() << "\n[Testing completed. ";
+                ReportCounts( totals );
+            }
             m_config.stream() << "]\n" << std::endl;
         }
 
@@ -314,6 +325,7 @@ namespace Catch {
         SpanInfo m_groupSpan;
         SpanInfo m_testSpan;
         std::vector<SpanInfo> m_sectionSpans;
+        bool m_aborted;
     };
         
 } // end namespace Catch
