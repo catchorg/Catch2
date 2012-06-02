@@ -54,10 +54,10 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
     CHECK( runner.getTotals().assertions.failed == 1 );
 }
 
-#include "catch_commandline.hpp"
-#include "catch_reporter_basic.hpp"
-#include "catch_reporter_xml.hpp"
-#include "catch_reporter_junit.hpp"
+#include "../../include/internal/catch_commandline.hpp"
+#include "../../include/reporters/catch_reporter_basic.hpp"
+#include "../../include/reporters/catch_reporter_xml.hpp"
+#include "../../include/reporters/catch_reporter_junit.hpp"
 
 template<size_t size>
 bool parseIntoConfig( const char * (&argv)[size], Catch::Config& config ) {
