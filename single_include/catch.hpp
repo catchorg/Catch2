@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-06-01 19:40:15.883536
+ *  Generated: 2012-06-02 23:11:28.498355
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -10,7 +10,9 @@
 #ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 
-// #included from: internal/catch_test_case_info.hpp
+// #included from: internal/catch_context.h
+
+// #included from: catch_interfaces_reporter.h
 
 // #included from: catch_common.h
 
@@ -120,149 +122,6 @@ namespace Catch {
 
 #define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
-
-// #included from: catch_interfaces_testcase.h
-
-#include <vector>
-
-namespace Catch {
-    struct ITestCase {
-        virtual ~ITestCase(){}
-        virtual void invoke () const = 0;
-        virtual ITestCase* clone() const = 0;
-        virtual bool operator == ( const ITestCase& other ) const = 0;
-        virtual bool operator < ( const ITestCase& other ) const = 0;
-    };
-
-    class TestCaseInfo;
-
-    struct ITestCaseRegistry {
-        virtual ~ITestCaseRegistry(){}
-        virtual void registerTest( const TestCaseInfo& testInfo ) = 0;
-        virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
-        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) = 0;
-    };
-}
-
-#include <map>
-#include <string>
-
-namespace Catch {
-
-    class TestCaseInfo {
-    public:
-        TestCaseInfo(   ITestCase* testCase,
-                        const char* name,
-                        const char* description,
-                        const SourceLineInfo& lineInfo )
-        :   m_test( testCase ),
-            m_name( name ),
-            m_description( description ),
-            m_lineInfo( lineInfo )
-        {}
-
-        TestCaseInfo()
-        :   m_test( NULL ),
-            m_name(),
-            m_description()
-        {}
-
-        TestCaseInfo( const TestCaseInfo& other )
-        :   m_test( other.m_test->clone() ),
-            m_name( other.m_name ),
-            m_description( other.m_description ),
-            m_lineInfo( other.m_lineInfo )
-        {}
-
-        TestCaseInfo( const TestCaseInfo& other, const std::string& name )
-        :   m_test( other.m_test->clone() ),
-            m_name( name ),
-            m_description( other.m_description ),
-            m_lineInfo( other.m_lineInfo )
-        {}
-
-        TestCaseInfo& operator = ( const TestCaseInfo& other ) {
-            TestCaseInfo temp( other );
-            swap( temp );
-            return *this;
-        }
-
-        ~TestCaseInfo() {
-            delete m_test;
-        }
-
-        void invoke() const {
-            m_test->invoke();
-        }
-
-        const std::string& getName() const {
-            return m_name;
-        }
-
-        const std::string& getDescription() const {
-            return m_description;
-        }
-
-        const SourceLineInfo& getLineInfo() const {
-            return m_lineInfo;
-        }
-
-        bool isHidden() const {
-            return m_name.size() >= 2 && m_name[0] == '.' && m_name[1] == '/';
-        }
-
-        void swap( TestCaseInfo& other ) {
-            std::swap( m_test, other.m_test );
-            m_name.swap( other.m_name );
-            m_description.swap( other.m_description );
-            m_lineInfo.swap( other.m_lineInfo );
-        }
-
-        bool operator == ( const TestCaseInfo& other ) const {
-            return *m_test == *other.m_test && m_name == other.m_name;
-        }
-
-        bool operator < ( const TestCaseInfo& other ) const {
-            return m_name < other.m_name;
-        }
-
-    private:
-        ITestCase* m_test;
-        std::string m_name;
-        std::string m_description;
-        SourceLineInfo m_lineInfo;
-    };
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    class TestSpec {
-    public:
-        TestSpec( const std::string& rawSpec )
-        :   m_rawSpec( rawSpec ),
-            m_isWildcarded( false ) {
-
-            if( m_rawSpec[m_rawSpec.size()-1] == '*' ) {
-                m_rawSpec = m_rawSpec.substr( 0, m_rawSpec.size()-1 );
-                m_isWildcarded = true;
-            }
-        }
-
-        bool matches ( const std::string& testName ) const {
-            if( !m_isWildcarded )
-                return m_rawSpec == testName;
-            else
-                return testName.size() >= m_rawSpec.size() && testName.substr( 0, m_rawSpec.size() ) == m_rawSpec;
-        }
-
-    private:
-        std::string m_rawSpec;
-        bool m_isWildcarded;
-    };
-}
-
-// #included from: internal/catch_context.h
-
-// #included from: catch_interfaces_reporter.h
 
 // #included from: catch_totals.hpp
 
@@ -529,6 +388,29 @@ namespace Catch {
 }
 
 // #included from: internal/catch_test_registry.hpp
+
+// #included from: catch_interfaces_testcase.h
+
+#include <vector>
+
+namespace Catch {
+    struct ITestCase {
+        virtual ~ITestCase(){}
+        virtual void invoke () const = 0;
+        virtual ITestCase* clone() const = 0;
+        virtual bool operator == ( const ITestCase& other ) const = 0;
+        virtual bool operator < ( const ITestCase& other ) const = 0;
+    };
+
+    class TestCaseInfo;
+
+    struct ITestCaseRegistry {
+        virtual ~ITestCaseRegistry(){}
+        virtual void registerTest( const TestCaseInfo& testInfo ) = 0;
+        virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
+        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) = 0;
+    };
+}
 
 namespace Catch {
 
@@ -1990,6 +1872,142 @@ using namespace Matchers;
 
 } // namespace Catch
 
+// These files are included here so the single_include script doesn't put them
+// in the conditionally compiled sections
+// #included from: internal/catch_test_case_info.hpp
+
+#include <map>
+#include <string>
+
+namespace Catch {
+
+    class TestCaseInfo {
+    public:
+        TestCaseInfo(   ITestCase* testCase,
+                        const char* name,
+                        const char* description,
+                        const SourceLineInfo& lineInfo )
+        :   m_test( testCase ),
+            m_name( name ),
+            m_description( description ),
+            m_lineInfo( lineInfo )
+        {}
+
+        TestCaseInfo()
+        :   m_test( NULL ),
+            m_name(),
+            m_description()
+        {}
+
+        TestCaseInfo( const TestCaseInfo& other )
+        :   m_test( other.m_test->clone() ),
+            m_name( other.m_name ),
+            m_description( other.m_description ),
+            m_lineInfo( other.m_lineInfo )
+        {}
+
+        TestCaseInfo( const TestCaseInfo& other, const std::string& name )
+        :   m_test( other.m_test->clone() ),
+            m_name( name ),
+            m_description( other.m_description ),
+            m_lineInfo( other.m_lineInfo )
+        {}
+
+        TestCaseInfo& operator = ( const TestCaseInfo& other ) {
+            TestCaseInfo temp( other );
+            swap( temp );
+            return *this;
+        }
+
+        ~TestCaseInfo() {
+            delete m_test;
+        }
+
+        void invoke() const {
+            m_test->invoke();
+        }
+
+        const std::string& getName() const {
+            return m_name;
+        }
+
+        const std::string& getDescription() const {
+            return m_description;
+        }
+
+        const SourceLineInfo& getLineInfo() const {
+            return m_lineInfo;
+        }
+
+        bool isHidden() const {
+            return m_name.size() >= 2 && m_name[0] == '.' && m_name[1] == '/';
+        }
+
+        void swap( TestCaseInfo& other ) {
+            std::swap( m_test, other.m_test );
+            m_name.swap( other.m_name );
+            m_description.swap( other.m_description );
+            m_lineInfo.swap( other.m_lineInfo );
+        }
+
+        bool operator == ( const TestCaseInfo& other ) const {
+            return *m_test == *other.m_test && m_name == other.m_name;
+        }
+
+        bool operator < ( const TestCaseInfo& other ) const {
+            return m_name < other.m_name;
+        }
+
+    private:
+        ITestCase* m_test;
+        std::string m_name;
+        std::string m_description;
+        SourceLineInfo m_lineInfo;
+    };
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    class TestSpec {
+    public:
+        TestSpec( const std::string& rawSpec )
+        :   m_rawSpec( rawSpec ),
+            m_isWildcarded( false ) {
+
+            if( m_rawSpec[m_rawSpec.size()-1] == '*' ) {
+                m_rawSpec = m_rawSpec.substr( 0, m_rawSpec.size()-1 );
+                m_isWildcarded = true;
+            }
+        }
+
+        bool matches ( const std::string& testName ) const {
+            if( !m_isWildcarded )
+                return m_rawSpec == testName;
+            else
+                return testName.size() >= m_rawSpec.size() && testName.substr( 0, m_rawSpec.size() ) == m_rawSpec;
+        }
+
+    private:
+        std::string m_rawSpec;
+        bool m_isWildcarded;
+    };
+}
+
+// #included from: internal/catch_interfaces_runner.h
+
+#include <string>
+
+namespace Catch {
+    class TestCaseInfo;
+
+    struct IRunner {
+        virtual ~IRunner() {}
+        virtual void runAll( bool runHiddenTests = false ) = 0;
+        virtual std::size_t runMatching( const std::string& rawTestSpec ) = 0;
+        virtual Totals getTotals() const = 0;
+    };
+}
+
+
 #ifdef __OBJC__
 // #included from: internal/catch_objc.hpp
 
@@ -2346,21 +2364,6 @@ namespace Catch {
 } // end namespace Catch
 
 // #included from: catch_runner_impl.hpp
-
-// #included from: catch_interfaces_runner.h
-
-#include <string>
-
-namespace Catch {
-    class TestCaseInfo;
-
-    struct IRunner {
-        virtual ~IRunner() {}
-        virtual void runAll( bool runHiddenTests = false ) = 0;
-        virtual std::size_t runMatching( const std::string& rawTestSpec ) = 0;
-        virtual Totals getTotals() const = 0;
-    };
-}
 
 // #included from: catch_config.hpp
 
@@ -2950,7 +2953,7 @@ namespace Catch {
     private:
 
         bool aborting() const {
-            return m_totals.assertions.failed == m_config.getCutoff();
+            return m_totals.assertions.failed == static_cast<std::size_t>( m_config.getCutoff() );
         }
 
         ResultAction::Value actOnCurrentResult() {
@@ -3452,7 +3455,7 @@ namespace Catch {
     public:
         Command(){}
 
-        Command( const std::string& name ) : m_name( name ) {}
+        explicit Command( const std::string& name ) : m_name( name ) {}
 
         Command& operator += ( const std::string& arg ) {
             m_args.push_back( arg );
@@ -3496,7 +3499,7 @@ namespace Catch {
 
     class CommandParser {
     public:
-        CommandParser( int argc, char const * const * argv ) : m_argc( argc ), m_argv( argv ) {}
+        CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
@@ -3520,7 +3523,7 @@ namespace Catch {
             return command;
         }
 
-        int m_argc;
+        std::size_t m_argc;
         char const * const * m_argv;
     };
 
@@ -4620,7 +4623,7 @@ namespace Catch {
             << "\t-o, --out <file name>|<%stream name>\n"
             << "\t-s, --success\n"
             << "\t-b, --break\n"
-            << "\t-n, --name <name>\n\n"
+            << "\t-n, --name <name>\n"
             << "\t-c, --cutoff [#]\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
     }
