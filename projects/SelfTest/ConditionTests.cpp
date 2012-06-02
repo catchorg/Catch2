@@ -192,7 +192,7 @@ TEST_CASE(  "./succeeding/conditions/int literals",
 TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x", 
             "comparisons between int variables" )
 {
-	long		long_var = 1L;
+	long            long_var = 1L;
 	unsigned char	unsigned_char_var = 1;
 	unsigned short	unsigned_short_var = 1;
 	unsigned int	unsigned_int_var = 1;

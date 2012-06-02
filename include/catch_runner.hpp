@@ -83,7 +83,7 @@ namespace Catch {
             << "\t-o, --out <file name>|<%stream name>\n"
             << "\t-s, --success\n"
             << "\t-b, --break\n"
-            << "\t-n, --name <name>\n\n"
+            << "\t-n, --name <name>\n"
             << "\t-c, --cutoff [#]\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
     }

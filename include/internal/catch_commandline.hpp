@@ -17,7 +17,7 @@ namespace Catch {
     public:
         Command(){}
         
-        Command( const std::string& name ) : m_name( name ) {}
+        explicit Command( const std::string& name ) : m_name( name ) {}
                 
         Command& operator += ( const std::string& arg ) {
             m_args.push_back( arg );
@@ -61,7 +61,7 @@ namespace Catch {
     
     class CommandParser {
     public:
-        CommandParser( int argc, char const * const * argv ) : m_argc( argc ), m_argv( argv ) {}
+        CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
@@ -85,7 +85,7 @@ namespace Catch {
             return command;
         }
         
-        int m_argc;
+        std::size_t m_argc;
         char const * const * m_argv;
     };
     

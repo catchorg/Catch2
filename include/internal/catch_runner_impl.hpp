@@ -230,7 +230,7 @@ namespace Catch {
     private:
 
         bool aborting() const {
-            return m_totals.assertions.failed == m_config.getCutoff();
+            return m_totals.assertions.failed == static_cast<std::size_t>( m_config.getCutoff() );
         }
         
         ResultAction::Value actOnCurrentResult() {
