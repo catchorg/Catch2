@@ -202,23 +202,23 @@ TEST_CASE( "selftest/parser", "" ) {
         }
     }
     
-    SECTION( "cutoff", "" ) {
-        SECTION( "-c", "" ) {
-            const char* argv[] = { "test", "-c" };
+    SECTION( "abort", "" ) {
+        SECTION( "-a", "" ) {
+            const char* argv[] = { "test", "-a" };
             Catch::Config config;
             CHECK( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.getCutoff() == 1 );
         }
-        SECTION( "-c/2", "" ) {
-            const char* argv[] = { "test", "-c", "2" };
+        SECTION( "-a/2", "" ) {
+            const char* argv[] = { "test", "-a", "2" };
             Catch::Config config;
             CHECK( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.getCutoff() == 2 );
         }
-        SECTION( "-c/error", "cutoff only takes one argument" ) {
-            const char* argv[] = { "test", "-c", "1", "2" };
+        SECTION( "-a/error", "cutoff only takes one argument" ) {
+            const char* argv[] = { "test", "-a", "1", "2" };
             Catch::Config config;
             CHECK( parseIntoConfig( argv, config ) == false );
 
@@ -226,8 +226,8 @@ TEST_CASE( "selftest/parser", "" ) {
         }
     }
     SECTION( "combinations", "" ) {
-        SECTION( "-c -b", "" ) {
-            const char* argv[] = { "test", "-c", "-b" };
+        SECTION( "-a -b", "" ) {
+            const char* argv[] = { "test", "-a", "-b" };
             Catch::Config config;
             CHECK( parseIntoConfig( argv, config ) );
 

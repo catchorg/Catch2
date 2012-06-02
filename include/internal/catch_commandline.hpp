@@ -162,7 +162,7 @@ namespace Catch {
                 config.setShowHelp( true );
             }
 
-            if( Command cmd = parser.find( "-c", "--cutoff" ) ) {
+            if( Command cmd = parser.find( "-a", "--abort" ) ) {
                 if( cmd.argsCount() > 1 )
                     throw std::domain_error( cmd.name() + " only accepts 0-1 arguments" );
                 int threshold = 1;

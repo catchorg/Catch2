@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-06-02 23:11:28.498355
+ *  Generated: 2012-06-02 23:25:57.372770
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3600,7 +3600,7 @@ namespace Catch {
                 config.setShowHelp( true );
             }
 
-            if( Command cmd = parser.find( "-c", "--cutoff" ) ) {
+            if( Command cmd = parser.find( "-a", "--abort" ) ) {
                 if( cmd.argsCount() > 1 )
                     throw std::domain_error( cmd.name() + " only accepts 0-1 arguments" );
                 int threshold = 1;
@@ -4624,7 +4624,7 @@ namespace Catch {
             << "\t-s, --success\n"
             << "\t-b, --break\n"
             << "\t-n, --name <name>\n"
-            << "\t-c, --cutoff [#]\n\n"
+            << "\t-a, --abort [#]\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
     }
     inline void showHelp( std::string exeName ) {
