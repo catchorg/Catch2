@@ -112,7 +112,7 @@ TEST_CASE( "selftest/parser", "" ) {
             Catch::Config config;
             CHECK( parseIntoConfig( argv, config ) == false );
             
-            REQUIRE_THAT( config.getMessage(), Contains( "none" ) );
+            REQUIRE_THAT( config.getMessage(), Contains( "at least one" ) );
         }
     }
     
