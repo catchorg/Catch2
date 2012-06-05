@@ -189,7 +189,14 @@ TEST_CASE(  "./succeeding/conditions/int literals",
     REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul );
 }
 
-TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x", 
+// Disable warnings about sign conversions for the next two tests
+// (as we are deliberately invoking them)
+// - Current only disabled for GCC/ LLVM. Should add VC++ too
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+
+TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
             "comparisons between int variables" )
 {
 	long            long_var = 1L;
@@ -204,9 +211,7 @@ TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
 	REQUIRE( long_var == unsigned_long_var );
 }
 
-// These are not built normally to avoid warnings about signed/ unsigned
-#ifdef ALLOW_TESTS_THAT_WARN
-TEST_CASE(  "succeeding/conditions/negative ints", 
+TEST_CASE(  "./succeeding/conditions/negative ints",
             "Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" )
 {
     CHECK( ( -1 > 2u ) );
@@ -219,7 +224,9 @@ TEST_CASE(  "succeeding/conditions/negative ints",
     CHECK( ( minInt > 2u ) );
     CHECK( minInt > 2u );
 }
-#endif
+
+#pragma GCC diagnostic pop
+
 
 inline const char* returnsConstNull(){ return NULL; }
 inline char* returnsNull(){ return NULL; }

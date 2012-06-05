@@ -112,6 +112,9 @@ TEST_CASE_NORETURN( "./failing/exceptions/custom/double", "Unexpected custom exc
     throw double( 3.14 );
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
 TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections report file/ line or section" )
 {
     SECTION( "the section", "" )
@@ -122,6 +125,8 @@ TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections r
         }
     }
 }
+
+#pragma GCC diagnostic pop
 
 TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produced by exceptions caught by Catch matched the expected form" )
 {
