@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-06-05 20:16:42.543387
+ *  Generated: 2012-06-05 20:50:55.068066
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -311,6 +311,18 @@ namespace Catch
     }
 }
 
+// #included from: catch_interfaces_config.h
+
+namespace Catch {
+
+    struct IConfig {
+
+        virtual ~IConfig(){}
+
+        virtual bool allowThrows() const = 0;
+    };
+}
+
 #include <memory>
 #include <vector>
 #include <stdlib.h>
@@ -337,12 +349,14 @@ namespace Catch {
         virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
         virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) = 0;
         virtual bool advanceGeneratorsForCurrentTest() = 0;
+        virtual const IConfig* getConfig() const = 0;
     };
 
     struct IMutableContext : IContext
     {
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setRunner( IRunner* runner ) = 0;
+        virtual void setConfig( const IConfig* config ) = 0;
     };
 
     IContext& getCurrentContext();
@@ -362,10 +376,12 @@ namespace Catch {
         virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry();
         virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize );
         virtual bool advanceGeneratorsForCurrentTest();
+        virtual const IConfig* getConfig() const;
 
     public: // IMutableContext
         virtual void setResultCapture( IResultCapture* resultCapture );
         virtual void setRunner( IRunner* runner );
+        virtual void setConfig( const IConfig* config );
 
     public: // Statics
         static std::streambuf* createStreamBuf( const std::string& streamName );
@@ -383,6 +399,7 @@ namespace Catch {
         std::auto_ptr<IExceptionTranslatorRegistry> m_exceptionTranslatorRegistry;
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
+        const IConfig* m_config;
         std::map<std::string, GeneratorsForTest*> m_generatorsByTestName;
     };
 }
@@ -1350,8 +1367,7 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure, originalExpr ) \
-    if( Catch::ResultAction::Value internal_catch_action = Catch::getCurrentContext().getResultCapture().acceptExpression( expr )  ) \
-    { \
+    if( Catch::ResultAction::Value internal_catch_action = Catch::getCurrentContext().getResultCapture().acceptExpression( expr )  ) { \
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
@@ -1360,14 +1376,14 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
-    do{ try{ \
+    do { try { \
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr, isNot )->*expr ), stopOnFailure, expr ); \
-    }catch( Catch::TestFailureException& ){ \
+    } catch( Catch::TestFailureException& ) { \
         throw; \
-    } catch( ... ){ \
+    } catch( ... ) { \
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
         throw; \
-    }}while( Catch::isTrue( false ) )
+    } } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, isNot, stopOnFailure, macroName ) \
@@ -1381,37 +1397,33 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
-    try \
-    { \
+    try { \
         expr; \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     } \
-    catch( ... ) \
-    { \
+    catch( ... ) { \
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
-    try \
-    { \
-        expr; \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
+    try { \
+        if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
+            expr; \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
+        } \
     } \
-    catch( Catch::TestFailureException& ) \
-    { \
+    catch( Catch::TestFailureException& ) { \
         throw; \
     } \
-    catch( exceptionType ) \
-    { \
+    catch( exceptionType ) { \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, stopOnFailure, macroName ) \
     INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
-    catch( ... ) \
-    { \
+    catch( ... ) { \
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
@@ -1426,11 +1438,11 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
-    do{ try{ \
+    do { try { \
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher, false ).acceptMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
-    }catch( Catch::TestFailureException& ){ \
+    } catch( Catch::TestFailureException& ) { \
         throw; \
-    } catch( ... ){ \
+    } catch( ... ) { \
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
@@ -2394,7 +2406,7 @@ namespace Catch {
         AsMask = 0xf0
     }; };
 
-    class Config : public IReporterConfig {
+    class Config : public IReporterConfig, public IConfig {
     private:
         Config( const Config& other );
         Config& operator = ( const Config& other );
@@ -2407,7 +2419,8 @@ namespace Catch {
             m_streambuf( NULL ),
             m_os( std::cout.rdbuf() ),
             m_includeWhichResults( Include::FailedOnly ),
-            m_cutoff( -1 )
+            m_cutoff( -1 ),
+            m_allowThrows( true )
         {}
 
         ~Config() {
@@ -2530,6 +2543,14 @@ namespace Catch {
             m_cutoff = cutoff;
         }
 
+        void setAllowThrows( bool allowThrows ) {
+            m_allowThrows = allowThrows;
+        }
+
+        virtual bool allowThrows() const {
+            return m_allowThrows;
+        }
+
     private:
         Ptr<IReporter> m_reporter;
         std::string m_filename;
@@ -2543,6 +2564,7 @@ namespace Catch {
         Include::WhichResults m_includeWhichResults;
         std::string m_name;
         int m_cutoff;
+        bool m_allowThrows;
     };
 
     struct NewConfig {
@@ -2787,6 +2809,7 @@ namespace Catch {
             m_prevResultCapture( &m_context.getResultCapture() )
         {
             m_context.setRunner( this );
+            m_context.setConfig( &m_config );
             m_context.setResultCapture( this );
             m_reporter->StartTesting();
         }
@@ -2794,6 +2817,7 @@ namespace Catch {
         ~Runner() {
             m_reporter->EndTesting( m_totals );
             m_context.setRunner( m_prevRunner );
+            m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
         }
 
@@ -2860,6 +2884,10 @@ namespace Catch {
 
         virtual Totals getTotals() const {
             return m_totals;
+        }
+
+        const Config& config() const {
+            return m_config;
         }
 
     private: // IResultCapture
@@ -3372,7 +3400,8 @@ namespace Catch {
     Context::Context()
     :   m_reporterRegistry( new ReporterRegistry ),
         m_testCaseRegistry( new TestRegistry ),
-        m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry )
+        m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry ),
+        m_config( NULL )
     {}
 
     void Context::cleanUp() {
@@ -3386,6 +3415,13 @@ namespace Catch {
 
     void Context::setResultCapture( IResultCapture* resultCapture ) {
         m_resultCapture = resultCapture;
+    }
+
+    const IConfig* Context::getConfig() const {
+        return m_config;
+    }
+    void Context::setConfig( const IConfig* config ) {
+        m_config = config;
     }
 
     IResultCapture& Context::getResultCapture() {
@@ -3612,6 +3648,13 @@ namespace Catch {
                 }
                 config.setCutoff( threshold );
             }
+
+            if( Command cmd = parser.find( "-nt", "--nothrow" ) ) {
+                if( cmd.argsCount() != 0 )
+                    cmd.raiseError( "Does not accept arguments" );
+                config.setAllowThrows( false );
+            }
+
         }
         catch( std::exception& ex ) {
             config.setError( ex.what() );
