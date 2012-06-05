@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-06-02 23:25:57.372770
+ *  Generated: 2012-06-05 20:16:42.543387
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3358,12 +3358,12 @@ namespace Catch {
 namespace Catch {
 
     namespace {
-        Context* currentHub = NULL;
+        Context* currentContext = NULL;
     }
     IMutableContext& getCurrentMutableContext() {
-        if( !currentHub )
-            currentHub = new Context();
-        return *currentHub;
+        if( !currentContext )
+            currentContext = new Context();
+        return *currentContext;
     }
     IContext& getCurrentContext() {
         return getCurrentMutableContext();
@@ -3376,8 +3376,8 @@ namespace Catch {
     {}
 
     void Context::cleanUp() {
-        delete currentHub;
-        currentHub = NULL;
+        delete currentContext;
+        currentContext = NULL;
     }
 
     void Context::setRunner( IRunner* runner ) {
@@ -3532,7 +3532,7 @@ namespace Catch {
         try {
             if( Command cmd = parser.find( "-l", "--list" ) ) {
                 if( cmd.argsCount() > 2 )
-                    throw std::domain_error( cmd.name() + " expected upto 2 arguments but recieved: " );
+                    cmd.raiseError( "Expected upto 2 arguments" );
 
                 List::What listSpec = List::All;
                 if( cmd.argsCount() >= 1 ) {
@@ -3541,7 +3541,7 @@ namespace Catch {
                     else if( cmd[0] == "reporters" )
                         listSpec = List::Reports;
                     else
-                        throw std::domain_error( cmd.name()  + " expected [tests] or [reporters] but recieved: : " );
+                        cmd.raiseError( "Expected [tests] or [reporters]" );
                 }
                 if( cmd.argsCount() >= 2 ) {
                     if( cmd[1] == "xml" )
@@ -3549,14 +3549,14 @@ namespace Catch {
                     else if( cmd[1] == "text" )
                         listSpec = static_cast<List::What>( listSpec | List::AsText );
                     else
-                        throw std::domain_error( cmd.name() + " expected [xml] or [text] but recieved: " );
+                        cmd.raiseError( "Expected [xml] or [text]" );
                 }
                 config.setListSpec( static_cast<List::What>( config.getListSpec() | listSpec ) );
             }
 
             if( Command cmd = parser.find( "-t", "--test" ) ) {
                 if( cmd.argsCount() == 0 )
-                    throw std::domain_error( cmd.name() + " expected at least 1 argument but recieved none" );
+                    cmd.raiseError( "Expected at least one argument" );
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i )
                     config.addTestSpec( cmd[i] );
             }
@@ -3569,7 +3569,7 @@ namespace Catch {
 
             if( Command cmd = parser.find( "-o", "--out" ) ) {
                 if( cmd.argsCount() == 0 )
-                    throw std::domain_error( cmd.name() + " expected filename" );
+                    cmd.raiseError( "Expected filename" );
                 if( cmd[0][0] == '%' )
                     config.useStream( cmd[0].substr( 1 ) );
                 else
@@ -3578,31 +3578,31 @@ namespace Catch {
 
             if( Command cmd = parser.find( "-s", "--success" ) ) {
                 if( cmd.argsCount() != 0 )
-                    throw std::domain_error( cmd.name() + " does not accept arguments" );
+                    cmd.raiseError( "Does not accept arguments" );
                 config.setIncludeWhichResults( Include::SuccessfulResults );
             }
 
             if( Command cmd = parser.find( "-b", "--break" ) ) {
                 if( cmd.argsCount() != 0 )
-                    throw std::domain_error( cmd.name() + " does not accept arguments" );
+                    cmd.raiseError( "Does not accept arguments" );
                 config.setShouldDebugBreak( true );
             }
 
             if( Command cmd = parser.find( "-n", "--name" ) ) {
                 if( cmd.argsCount() != 1 )
-                    throw std::domain_error( cmd.name() + " requires exactly one argument (a name)" );
+                    cmd.raiseError( "Expected a name" );
                 config.setName( cmd[0] );
             }
 
             if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
                 if( cmd.argsCount() != 0 )
-                    throw std::domain_error( cmd.name() + " does not accept arguments" );
+                    cmd.raiseError( "Does not accept arguments" );
                 config.setShowHelp( true );
             }
 
             if( Command cmd = parser.find( "-a", "--abort" ) ) {
                 if( cmd.argsCount() > 1 )
-                    throw std::domain_error( cmd.name() + " only accepts 0-1 arguments" );
+                    cmd.raiseError( "Only accepts 0-1 arguments" );
                 int threshold = 1;
                 if( cmd.argsCount() == 1 )
                 {
