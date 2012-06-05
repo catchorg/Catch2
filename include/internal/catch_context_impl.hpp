@@ -32,7 +32,8 @@ namespace Catch {
     Context::Context()
     :   m_reporterRegistry( new ReporterRegistry ),
         m_testCaseRegistry( new TestRegistry ),
-        m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry )
+        m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry ),
+        m_config( NULL )
     {}
 
     void Context::cleanUp() {
@@ -46,6 +47,13 @@ namespace Catch {
 
     void Context::setResultCapture( IResultCapture* resultCapture ) {
         m_resultCapture = resultCapture;
+    }
+
+    const IConfig* Context::getConfig() const {
+        return m_config;
+    }
+    void Context::setConfig( const IConfig* config ) {
+        m_config = config;
     }
     
     IResultCapture& Context::getResultCapture() {

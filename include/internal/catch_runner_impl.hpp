@@ -64,6 +64,7 @@ namespace Catch {
             m_prevResultCapture( &m_context.getResultCapture() )
         {
             m_context.setRunner( this );
+            m_context.setConfig( &m_config );
             m_context.setResultCapture( this );
             m_reporter->StartTesting();
         }
@@ -71,6 +72,7 @@ namespace Catch {
         ~Runner() {
             m_reporter->EndTesting( m_totals );
             m_context.setRunner( m_prevRunner );
+            m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
         }
         
@@ -137,6 +139,10 @@ namespace Catch {
 
         virtual Totals getTotals() const {
             return m_totals;
+        }
+        
+        const Config& config() const {
+            return m_config;
         }
         
     private: // IResultCapture

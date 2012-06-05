@@ -174,6 +174,13 @@ namespace Catch {
                 }
                 config.setCutoff( threshold );
             }
+
+            if( Command cmd = parser.find( "-nt", "--nothrow" ) ) {
+                if( cmd.argsCount() != 0 )
+                    cmd.raiseError( "Does not accept arguments" );
+                config.setAllowThrows( false );
+            }
+
         }
         catch( std::exception& ex ) {
             config.setError( ex.what() );

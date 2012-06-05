@@ -75,6 +75,7 @@ TEST_CASE( "selftest/parser", "" ) {
         CHECK( config.shouldDebugBreak() == false );
         CHECK( config.showHelp() == false );
         CHECK( config.getCutoff() == -1 );
+        CHECK( config.allowThrows() == true );
         CHECK( dynamic_cast<Catch::BasicReporter*>( config.getReporter().get() ) );
     }
     
@@ -225,14 +226,33 @@ TEST_CASE( "selftest/parser", "" ) {
             REQUIRE_THAT( config.getMessage(), Contains( "accepts" ) );
         }
     }
-    SECTION( "combinations", "" ) {
-        SECTION( "-a -b", "" ) {
-            const char* argv[] = { "test", "-a", "-b" };
+    
+    SECTION( "nothrow", "" ) {
+        SECTION( "-nt", "" ) {
+            const char* argv[] = { "test", "-nt" };
             Catch::Config config;
             CHECK( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.getCutoff() == 1 );
-            REQUIRE( config.shouldDebugBreak() );
+            REQUIRE( config.allowThrows() == false );
+        }
+        SECTION( "--nothrow", "" ) {
+            const char* argv[] = { "test", "--nothrow" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.allowThrows() == false );
+        }
+    
+    }
+    SECTION( "combinations", "" ) {
+        SECTION( "-a -b", "" ) {
+            const char* argv[] = { "test", "-a", "-b", "-nt" };
+            Catch::Config config;
+            CHECK( parseIntoConfig( argv, config ) );
+
+            CHECK( config.getCutoff() == 1 );
+            CHECK( config.shouldDebugBreak() );
+            CHECK( config.allowThrows() == false );
         }
     }
     

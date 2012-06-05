@@ -38,7 +38,7 @@ namespace Catch {
         AsMask = 0xf0
     }; };
     
-    class Config : public IReporterConfig {
+    class Config : public IReporterConfig, public IConfig {
     private:
         Config( const Config& other );
         Config& operator = ( const Config& other );
@@ -51,7 +51,8 @@ namespace Catch {
             m_streambuf( NULL ),
             m_os( std::cout.rdbuf() ),
             m_includeWhichResults( Include::FailedOnly ),
-            m_cutoff( -1 )
+            m_cutoff( -1 ),
+            m_allowThrows( true )
         {}
         
         ~Config() {
@@ -173,6 +174,14 @@ namespace Catch {
         void setCutoff( int cutoff ) {
             m_cutoff = cutoff;
         }
+
+        void setAllowThrows( bool allowThrows ) {
+            m_allowThrows = allowThrows;
+        }
+        
+        virtual bool allowThrows() const {
+            return m_allowThrows;
+        }
         
     private:
         Ptr<IReporter> m_reporter;
@@ -187,6 +196,7 @@ namespace Catch {
         Include::WhichResults m_includeWhichResults;
         std::string m_name;
         int m_cutoff;
+        bool m_allowThrows;
     };
     
     struct NewConfig {
