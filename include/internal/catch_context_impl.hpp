@@ -18,12 +18,12 @@
 namespace Catch {
     
     namespace {
-        Context* currentHub = NULL;
+        Context* currentContext = NULL;
     }
     IMutableContext& getCurrentMutableContext() {
-        if( !currentHub )
-            currentHub = new Context();
-        return *currentHub;
+        if( !currentContext )
+            currentContext = new Context();
+        return *currentContext;
     }
     IContext& getCurrentContext() {
         return getCurrentMutableContext();
@@ -36,8 +36,8 @@ namespace Catch {
     {}
 
     void Context::cleanUp() {
-        delete currentHub;
-        currentHub = NULL;
+        delete currentContext;
+        currentContext = NULL;
     }
 
     void Context::setRunner( IRunner* runner ) {
