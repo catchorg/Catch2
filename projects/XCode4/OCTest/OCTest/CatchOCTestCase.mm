@@ -42,6 +42,12 @@ OC_TEST_CASE( "OCTest/test2", "This is another test case" )
     REQUIRE( obj.int_val == 2 );
 }
 
+OC_TEST_CASE( "OCTest/BOOL", "tests a boolean value" )
+{
+    CHECK( [obj isTrue] == NO );
+    CHECK( [obj isFalse] == YES );
+}
+
 OC_TEST_CASE( "OCTest/throws/objc", "throws an Objective-C exception" )
 {
     @throw [[NSException alloc] initWithName: NSGenericException

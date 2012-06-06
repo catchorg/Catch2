@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-06-05 20:50:55.068066
+ *  Generated: 2012-06-06 08:05:56.928287
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -631,6 +631,16 @@ inline std::string toString( const double value ) {
 
 inline std::string toString( bool value ) {
     return value ? "true" : "false";
+}
+
+inline std::string toString( char value ) {
+    return value < ' '
+        ? toString( (unsigned int)value )
+        : Detail::makeString( value );
+}
+
+inline std::string toString( signed char value ) {
+    return toString( static_cast<char>( value ) );
 }
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR

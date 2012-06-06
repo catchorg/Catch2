@@ -16,6 +16,9 @@
     int int_val;
 }
 
+-(BOOL) isTrue;
+-(BOOL) isFalse;
+
 @property (nonatomic, assign ) int int_val;
 
 @end

@@ -115,6 +115,16 @@ inline std::string toString( bool value ) {
     return value ? "true" : "false";
 }
 
+inline std::string toString( char value ) {
+    return value < ' '
+        ? toString( (unsigned int)value )
+        : Detail::makeString( value );
+}
+
+inline std::string toString( signed char value ) {
+    return toString( static_cast<char>( value ) );
+}
+
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
 inline std::string toString( std::nullptr_t ) {
     return "nullptr";

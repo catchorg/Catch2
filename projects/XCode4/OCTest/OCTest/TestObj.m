@@ -15,4 +15,11 @@
 
 @synthesize int_val;
 
+-(BOOL) isTrue {
+    return YES;
+}
+-(BOOL) isFalse {
+    return NO;
+}
+
 @end
