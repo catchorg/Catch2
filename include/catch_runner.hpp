@@ -85,6 +85,7 @@ namespace Catch {
             << "\t-b, --break\n"
             << "\t-n, --name <name>\n"
             << "\t-a, --abort [#]\n\n"
+            << "\t-nt, --nothrow\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
     }
     inline void showHelp( std::string exeName ) {
@@ -98,22 +99,39 @@ namespace Catch {
     }
     
     inline int Main( int argc, char* const argv[], Config& config ) {
-    
-        parseIntoConfig( CommandParser( argc, argv ), config );
+
+        try {
+            CommandParser parser( argc, argv );
         
-        if( !config.getMessage().empty() ) {
-            std::cerr << config.getMessage() <<  + "\n\nUsage: ...\n\n";
+            if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
+                if( cmd.argsCount() != 0 )
+                    cmd.raiseError( "Does not accept arguments" );
+
+                showHelp( argv[0] );
+                Catch::Context::cleanUp();        
+                return 0;
+            }
+        
+            parseIntoConfig( parser, config.data() );
+            
+            // !TBD: wire up (do this lazily?)
+            if( !config.data().reporter.empty() )
+                config.setReporter( config.data().reporter );
+
+            if( !config.data().stream.empty() ) {
+                if( config.data().stream[0] == '%' )
+                    config.useStream( config.data().stream.substr( 1 ) );
+                else
+                    config.setFilename( config.data().stream );
+            }
+        }
+        catch( std::exception& ex ) {
+            std::cerr << ex.what() <<  + "\n\nUsage: ...\n\n";
             showUsage( std::cerr );
             Catch::Context::cleanUp();
             return (std::numeric_limits<int>::max)();
         }
-        
-        // Handle help
-        if( config.showHelp() ) {
-            showHelp( argv[0] );
-            Catch::Context::cleanUp();        
-            return 0;
-        }
+                
         return Main( config );
     }
     

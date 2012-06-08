@@ -61,7 +61,8 @@ namespace Catch {
             m_config( config ),
             m_reporter( config.getReporter() ),
             m_prevRunner( &m_context.getRunner() ),
-            m_prevResultCapture( &m_context.getResultCapture() )
+            m_prevResultCapture( &m_context.getResultCapture() ),
+            m_prevConfig( m_context.getConfig() )
         {
             m_context.setRunner( this );
             m_context.setConfig( &m_config );
@@ -74,6 +75,7 @@ namespace Catch {
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
+            m_context.setConfig( m_prevConfig );
         }
         
         virtual void runAll( bool runHiddenTests = false ) {
@@ -293,6 +295,7 @@ namespace Catch {
         std::vector<ResultInfo> m_info;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
+        const IConfig* m_prevConfig;
     };
     
 } // end namespace Catch

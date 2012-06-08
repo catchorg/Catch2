@@ -88,107 +88,92 @@ namespace Catch {
         std::size_t m_argc;
         char const * const * m_argv;
     };
-    
-    inline bool parseIntoConfig( const CommandParser& parser, Config& config ) {
+   
+    inline void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+        
+        if( Command cmd = parser.find( "-l", "--list" ) ) {
+            if( cmd.argsCount() > 2 )
+                cmd.raiseError( "Expected upto 2 arguments" );
 
-        try {
-            if( Command cmd = parser.find( "-l", "--list" ) ) {
-                if( cmd.argsCount() > 2 )
-                    cmd.raiseError( "Expected upto 2 arguments" );
-
-                List::What listSpec = List::All;
-                if( cmd.argsCount() >= 1 ) {
-                    if( cmd[0] == "tests" )
-                        listSpec = List::Tests;
-                    else if( cmd[0] == "reporters" )
-                        listSpec = List::Reports;
-                    else
-                        cmd.raiseError( "Expected [tests] or [reporters]" );
-                }
-                if( cmd.argsCount() >= 2 ) {
-                    if( cmd[1] == "xml" )
-                        listSpec = static_cast<List::What>( listSpec | List::AsXml );
-                    else if( cmd[1] == "text" )
-                        listSpec = static_cast<List::What>( listSpec | List::AsText );
-                    else
-                        cmd.raiseError( "Expected [xml] or [text]" );
-                }
-                config.setListSpec( static_cast<List::What>( config.getListSpec() | listSpec ) );
-            }
-                    
-            if( Command cmd = parser.find( "-t", "--test" ) ) {
-                if( cmd.argsCount() == 0 )
-                    cmd.raiseError( "Expected at least one argument" );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-                    config.addTestSpec( cmd[i] );
-            }
-            
-            if( Command cmd = parser.find( "-r", "--reporter" ) ) {
-                if( cmd.argsCount() != 1 )
-                    cmd.raiseError( "Expected one argument" );
-                config.setReporter( cmd[0] );
-            }
-
-            if( Command cmd = parser.find( "-o", "--out" ) ) {
-                if( cmd.argsCount() == 0 )
-                    cmd.raiseError( "Expected filename" );
-                if( cmd[0][0] == '%' )
-                    config.useStream( cmd[0].substr( 1 ) );
+            List::What listSpec = List::All;
+            if( cmd.argsCount() >= 1 ) {
+                if( cmd[0] == "tests" )
+                    config.listSpec = List::Tests;
+                else if( cmd[0] == "reporters" )
+                    config.listSpec = List::Reports;
                 else
-                    config.setFilename( cmd[0] );
+                    cmd.raiseError( "Expected [tests] or [reporters]" );
             }
-
-            if( Command cmd = parser.find( "-s", "--success" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setIncludeWhichResults( Include::SuccessfulResults );
+            if( cmd.argsCount() >= 2 ) {
+                if( cmd[1] == "xml" )
+                    config.listSpec = static_cast<List::What>( listSpec | List::AsXml );
+                else if( cmd[1] == "text" )
+                    config.listSpec = static_cast<List::What>( listSpec | List::AsText );
+                else
+                    cmd.raiseError( "Expected [xml] or [text]" );
             }
-            
-            if( Command cmd = parser.find( "-b", "--break" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setShouldDebugBreak( true );
-            }
-
-            if( Command cmd = parser.find( "-n", "--name" ) ) {
-                if( cmd.argsCount() != 1 )
-                    cmd.raiseError( "Expected a name" );
-                config.setName( cmd[0] );
-            }
-            
-            if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setShowHelp( true );
-            }
-
-            if( Command cmd = parser.find( "-a", "--abort" ) ) {
-                if( cmd.argsCount() > 1 )
-                    cmd.raiseError( "Only accepts 0-1 arguments" );
-                int threshold = 1;
-                if( cmd.argsCount() == 1 )
-                {
-                    std::stringstream ss;
-                    ss << cmd[0];
-                    ss >> threshold;
-                }
-                config.setCutoff( threshold );
-            }
-
-            if( Command cmd = parser.find( "-nt", "--nothrow" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setAllowThrows( false );
-            }
-
         }
-        catch( std::exception& ex ) {
-            config.setError( ex.what() );
-            return false;
-        }        
-        return true;
+                            
+        if( Command cmd = parser.find( "-t", "--test" ) ) {
+            if( cmd.argsCount() == 0 )
+                cmd.raiseError( "Expected at least one argument" );
+            for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                config.testSpecs.push_back( cmd[i] );
+        }
+        
+        if( Command cmd = parser.find( "-r", "--reporter" ) ) {
+            if( cmd.argsCount() != 1 )
+                cmd.raiseError( "Expected one argument" );
+            config.reporter = cmd[0];
+        }
+        
+        if( Command cmd = parser.find( "-o", "--out" ) ) {
+            if( cmd.argsCount() == 0 )
+                cmd.raiseError( "Expected filename" );
+            if( cmd[0][0] == '%' )
+                config.stream = cmd[0].substr( 1 );
+            else
+                config.outputFilename = cmd[0];
+        }
+
+        if( Command cmd = parser.find( "-s", "--success" ) ) {
+            if( cmd.argsCount() != 0 )
+                cmd.raiseError( "Does not accept arguments" );
+            config.includeWhichResults = Include::SuccessfulResults;
+        }
+        
+        if( Command cmd = parser.find( "-b", "--break" ) ) {
+            if( cmd.argsCount() != 0 )
+                cmd.raiseError( "Does not accept arguments" );
+            config.shouldDebugBreak = true;
+        }
+
+        if( Command cmd = parser.find( "-n", "--name" ) ) {
+            if( cmd.argsCount() != 1 )
+                cmd.raiseError( "Expected a name" );
+            config.name = cmd[0];
+        }
+        
+        if( Command cmd = parser.find( "-a", "--abort" ) ) {
+            if( cmd.argsCount() > 1 )
+                cmd.raiseError( "Only accepts 0-1 arguments" );
+            int threshold = 1;
+            if( cmd.argsCount() == 1 ) {
+                std::stringstream ss;
+                ss << cmd[0];
+                ss >> threshold;
+            }
+            config.cutoff = threshold;
+        }
+
+        if( Command cmd = parser.find( "-nt", "--nothrow" ) ) {
+            if( cmd.argsCount() != 0 )
+                cmd.raiseError( "Does not accept arguments" );
+            config.allowThrows = false;
+        }
+
     }
-    
+        
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED

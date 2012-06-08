@@ -38,6 +38,28 @@ namespace Catch {
         AsMask = 0xf0
     }; };
     
+    struct ConfigData {
+        ConfigData()
+        :   listSpec( List::None ),
+            shouldDebugBreak( false ),
+            includeWhichResults( Include::FailedOnly ),
+            cutoff( -1 ),
+            allowThrows( true )
+        {}
+        
+        std::string reporter;
+        std::string outputFilename;
+        List::What listSpec;
+        std::vector<std::string> testSpecs;
+        bool shouldDebugBreak;
+        std::string stream;
+        Include::WhichResults includeWhichResults;
+        std::string name;
+        int cutoff;
+        bool allowThrows;
+    };
+    
+    
     class Config : public IReporterConfig, public IConfig {
     private:
         Config( const Config& other );
@@ -45,14 +67,14 @@ namespace Catch {
     public:
                 
         Config()
-        :   m_listSpec( List::None ),
-            m_shouldDebugBreak( false ),
-            m_showHelp( false ),
+        :   m_streambuf( NULL ),
+            m_os( std::cout.rdbuf() )
+        {}
+        
+        Config( const ConfigData& data )
+        :   m_data( data ),
             m_streambuf( NULL ),
-            m_os( std::cout.rdbuf() ),
-            m_includeWhichResults( Include::FailedOnly ),
-            m_cutoff( -1 ),
-            m_allowThrows( true )
+            m_os( std::cout.rdbuf() )
         {}
         
         ~Config() {
@@ -62,44 +84,28 @@ namespace Catch {
         
         void setReporter( const std::string& reporterName ) {
             if( m_reporter.get() )
-                return setError( "Only one reporter may be specified" );
+                throw std::domain_error( "Only one reporter may be specified" );
             setReporter( getCurrentContext().getReporterRegistry().create( reporterName, *this ) );
         }
-        
-        void addTestSpec( const std::string& testSpec ) {
-            m_testSpecs.push_back( testSpec );
+
+        void setFilename( const std::string& filename ) {
+            m_data.outputFilename = filename;
         }
         
         bool testsSpecified() const {
-            return !m_testSpecs.empty();
+            return !m_data.testSpecs.empty();
         }
 
         const std::vector<std::string>& getTestSpecs() const {
-            return m_testSpecs;
+            return m_data.testSpecs;
         }
         
         List::What getListSpec( void ) const {
-            return m_listSpec;
+            return m_data.listSpec;
         }
 
-        void setListSpec( List::What listSpec ) {
-            m_listSpec = listSpec;
-        }
-        
-        void setFilename( const std::string& filename ) {
-            m_filename = filename;
-        }
-        
         const std::string& getFilename() const {
-            return m_filename;
-        }
-        
-        const std::string& getMessage() const {
-            return m_message;
-        }
-        
-        void setError( const std::string& errorMessage ) {
-            m_message = errorMessage;
+            return m_data.outputFilename ;
         }
         
         void setReporter( IReporter* reporter ) {
@@ -113,39 +119,19 @@ namespace Catch {
         }
                 
         List::What listWhat() const {
-            return static_cast<List::What>( m_listSpec & List::WhatMask );
+            return static_cast<List::What>( m_data.listSpec & List::WhatMask );
         }        
         
         List::What listAs() const {
-            return static_cast<List::What>( m_listSpec & List::AsMask );
-        }        
-        
-        void setIncludeWhichResults( Include::WhichResults includeWhichResults ) {
-            m_includeWhichResults = includeWhichResults;
-        }
-        
-        void setShouldDebugBreak( bool shouldDebugBreakFlag ) {
-            m_shouldDebugBreak = shouldDebugBreakFlag;
-        }
-
-        void setName( const std::string& name ) {
-            m_name = name;
+            return static_cast<List::What>( m_data.listSpec & List::AsMask );
         }
 
         std::string getName() const {
-            return m_name;
+            return m_data.name;
         }
         
         bool shouldDebugBreak() const {
-            return m_shouldDebugBreak;
-        }
-
-        void setShowHelp( bool showHelpFlag ) {
-            m_showHelp = showHelpFlag;
-        }
-
-        bool showHelp() const {
-            return m_showHelp;
+            return m_data.shouldDebugBreak;
         }
 
         virtual std::ostream& stream() const {
@@ -164,53 +150,30 @@ namespace Catch {
         }
         
         virtual bool includeSuccessfulResults() const {
-            return m_includeWhichResults == Include::SuccessfulResults;
+            return m_data.includeWhichResults == Include::SuccessfulResults;
         }
         
         int getCutoff() const {
-            return m_cutoff;
-        }
-        
-        void setCutoff( int cutoff ) {
-            m_cutoff = cutoff;
-        }
-
-        void setAllowThrows( bool allowThrows ) {
-            m_allowThrows = allowThrows;
+            return m_data.cutoff;
         }
         
         virtual bool allowThrows() const {
-            return m_allowThrows;
+            return m_data.allowThrows;
+        }
+        
+        ConfigData& data() {
+            return m_data;
         }
         
     private:
+        ConfigData m_data;
+        
+        // !TBD Move these out of here
         Ptr<IReporter> m_reporter;
-        std::string m_filename;
-        std::string m_message;
-        List::What m_listSpec;
-        std::vector<std::string> m_testSpecs;
-        bool m_shouldDebugBreak;
-        bool m_showHelp;
         std::streambuf* m_streambuf;
         mutable std::ostream m_os;
-        Include::WhichResults m_includeWhichResults;
-        std::string m_name;
-        int m_cutoff;
-        bool m_allowThrows;
     };
-    
-    struct NewConfig {
-        std::string reporter;
-        std::string outputFilename;
-        List::What listSpec;
-        std::vector<std::string> testSpecs;
-        bool shouldDebugBreak;
-        bool showHelp;
-        Include::WhichResults includeWhichResults;
-        std::string name;        
-    };
-    
-    
+        
     
 } // end namespace Catch
 
