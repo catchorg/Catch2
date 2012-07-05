@@ -82,6 +82,11 @@ namespace Catch {
         :   file( _file ),
             line( _line )
         {}
+        SourceLineInfo( const std::string& _function, const std::string& _file, std::size_t _line )
+        :   function( _function ),
+            file( _file ),
+            line( _line )
+        {}
         SourceLineInfo( const SourceLineInfo& other )
         :   file( other.file ),
             line( other.line )
@@ -91,6 +96,7 @@ namespace Catch {
             std::swap( line, other.line );
         }
         
+        std::string function;
         std::string file;
         std::size_t line;        
     };
@@ -113,7 +119,12 @@ namespace Catch {
 }
 
 #define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
+
+#ifdef __FUNCTION__
+#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FUNCTION__, __FILE__, __LINE__ )
+#else
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
+#endif
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 

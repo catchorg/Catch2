@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-06-06 08:05:56.928287
+ *  Generated: 2012-07-05 18:37:02.079024
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -90,6 +90,11 @@ namespace Catch {
         :   file( _file ),
             line( _line )
         {}
+        SourceLineInfo( const std::string& _function, const std::string& _file, std::size_t _line )
+        :   function( _function ),
+            file( _file ),
+            line( _line )
+        {}
         SourceLineInfo( const SourceLineInfo& other )
         :   file( other.file ),
             line( other.line )
@@ -99,6 +104,7 @@ namespace Catch {
             std::swap( line, other.line );
         }
 
+        std::string function;
         std::string file;
         std::size_t line;
     };
@@ -121,7 +127,12 @@ namespace Catch {
 }
 
 #define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
+
+#ifdef __FUNCTION__
+#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FUNCTION__, __FILE__, __LINE__ )
+#else
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
+#endif
 
 // #included from: catch_totals.hpp
 
@@ -1346,6 +1357,30 @@ namespace Catch {
 
 struct TestFailureException{};
 
+class NotImplementedException : public std::exception
+{
+public:
+    NotImplementedException( const SourceLineInfo& lineInfo )
+    :   m_lineInfo( lineInfo ) {
+        std::ostringstream oss;
+        oss << lineInfo << "function ";
+        if( !lineInfo.function.empty() )
+            oss << lineInfo.function << " ";
+        oss << "not implemented";
+        m_what = oss.str();
+    }
+
+    virtual ~NotImplementedException() throw() {}
+
+    virtual const char* what() const throw() {
+        return m_what.c_str();
+    }
+
+private:
+    std::string m_what;
+    SourceLineInfo m_lineInfo;
+};
+
 class ScopedInfo {
 public:
     ScopedInfo() : m_oss() {
@@ -1456,6 +1491,9 @@ inline bool isTrue( bool value ){ return value; }
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
+
+///////////////////////////////////////////////////////////////////////////////
+#define CATCH_NOT_IMPLEMENTED throw Catch::NotImplementedException( CATCH_INTERNAL_LINEINFO )
 
 // #included from: internal/catch_section.hpp
 
@@ -2174,6 +2212,9 @@ namespace Catch {
     inline std::string toString( NSString* const& nsstring ) {
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
+    inline std::string toString( NSObject* const& nsObject ) {
+        return toString( [nsObject description] );
+    }
 
     namespace Matchers {
         namespace Impl {
@@ -2416,6 +2457,27 @@ namespace Catch {
         AsMask = 0xf0
     }; };
 
+    struct ConfigData {
+        ConfigData()
+        :   listSpec( List::None ),
+            shouldDebugBreak( false ),
+            includeWhichResults( Include::FailedOnly ),
+            cutoff( -1 ),
+            allowThrows( true )
+        {}
+
+        std::string reporter;
+        std::string outputFilename;
+        List::What listSpec;
+        std::vector<std::string> testSpecs;
+        bool shouldDebugBreak;
+        std::string stream;
+        Include::WhichResults includeWhichResults;
+        std::string name;
+        int cutoff;
+        bool allowThrows;
+    };
+
     class Config : public IReporterConfig, public IConfig {
     private:
         Config( const Config& other );
@@ -2423,14 +2485,14 @@ namespace Catch {
     public:
 
         Config()
-        :   m_listSpec( List::None ),
-            m_shouldDebugBreak( false ),
-            m_showHelp( false ),
+        :   m_streambuf( NULL ),
+            m_os( std::cout.rdbuf() )
+        {}
+
+        Config( const ConfigData& data )
+        :   m_data( data ),
             m_streambuf( NULL ),
-            m_os( std::cout.rdbuf() ),
-            m_includeWhichResults( Include::FailedOnly ),
-            m_cutoff( -1 ),
-            m_allowThrows( true )
+            m_os( std::cout.rdbuf() )
         {}
 
         ~Config() {
@@ -2440,44 +2502,28 @@ namespace Catch {
 
         void setReporter( const std::string& reporterName ) {
             if( m_reporter.get() )
-                return setError( "Only one reporter may be specified" );
+                throw std::domain_error( "Only one reporter may be specified" );
             setReporter( getCurrentContext().getReporterRegistry().create( reporterName, *this ) );
         }
 
-        void addTestSpec( const std::string& testSpec ) {
-            m_testSpecs.push_back( testSpec );
+        void setFilename( const std::string& filename ) {
+            m_data.outputFilename = filename;
         }
 
         bool testsSpecified() const {
-            return !m_testSpecs.empty();
+            return !m_data.testSpecs.empty();
         }
 
         const std::vector<std::string>& getTestSpecs() const {
-            return m_testSpecs;
+            return m_data.testSpecs;
         }
 
         List::What getListSpec( void ) const {
-            return m_listSpec;
-        }
-
-        void setListSpec( List::What listSpec ) {
-            m_listSpec = listSpec;
-        }
-
-        void setFilename( const std::string& filename ) {
-            m_filename = filename;
+            return m_data.listSpec;
         }
 
         const std::string& getFilename() const {
-            return m_filename;
-        }
-
-        const std::string& getMessage() const {
-            return m_message;
-        }
-
-        void setError( const std::string& errorMessage ) {
-            m_message = errorMessage;
+            return m_data.outputFilename ;
         }
 
         void setReporter( IReporter* reporter ) {
@@ -2491,39 +2537,19 @@ namespace Catch {
         }
 
         List::What listWhat() const {
-            return static_cast<List::What>( m_listSpec & List::WhatMask );
+            return static_cast<List::What>( m_data.listSpec & List::WhatMask );
         }
 
         List::What listAs() const {
-            return static_cast<List::What>( m_listSpec & List::AsMask );
-        }
-
-        void setIncludeWhichResults( Include::WhichResults includeWhichResults ) {
-            m_includeWhichResults = includeWhichResults;
-        }
-
-        void setShouldDebugBreak( bool shouldDebugBreakFlag ) {
-            m_shouldDebugBreak = shouldDebugBreakFlag;
-        }
-
-        void setName( const std::string& name ) {
-            m_name = name;
+            return static_cast<List::What>( m_data.listSpec & List::AsMask );
         }
 
         std::string getName() const {
-            return m_name;
+            return m_data.name;
         }
 
         bool shouldDebugBreak() const {
-            return m_shouldDebugBreak;
-        }
-
-        void setShowHelp( bool showHelpFlag ) {
-            m_showHelp = showHelpFlag;
-        }
-
-        bool showHelp() const {
-            return m_showHelp;
+            return m_data.shouldDebugBreak;
         }
 
         virtual std::ostream& stream() const {
@@ -2542,50 +2568,28 @@ namespace Catch {
         }
 
         virtual bool includeSuccessfulResults() const {
-            return m_includeWhichResults == Include::SuccessfulResults;
+            return m_data.includeWhichResults == Include::SuccessfulResults;
         }
 
         int getCutoff() const {
-            return m_cutoff;
-        }
-
-        void setCutoff( int cutoff ) {
-            m_cutoff = cutoff;
-        }
-
-        void setAllowThrows( bool allowThrows ) {
-            m_allowThrows = allowThrows;
+            return m_data.cutoff;
         }
 
         virtual bool allowThrows() const {
-            return m_allowThrows;
+            return m_data.allowThrows;
+        }
+
+        ConfigData& data() {
+            return m_data;
         }
 
     private:
+        ConfigData m_data;
+
+        // !TBD Move these out of here
         Ptr<IReporter> m_reporter;
-        std::string m_filename;
-        std::string m_message;
-        List::What m_listSpec;
-        std::vector<std::string> m_testSpecs;
-        bool m_shouldDebugBreak;
-        bool m_showHelp;
         std::streambuf* m_streambuf;
         mutable std::ostream m_os;
-        Include::WhichResults m_includeWhichResults;
-        std::string m_name;
-        int m_cutoff;
-        bool m_allowThrows;
-    };
-
-    struct NewConfig {
-        std::string reporter;
-        std::string outputFilename;
-        List::What listSpec;
-        std::vector<std::string> testSpecs;
-        bool shouldDebugBreak;
-        bool showHelp;
-        Include::WhichResults includeWhichResults;
-        std::string name;
     };
 
 } // end namespace Catch
@@ -2816,7 +2820,8 @@ namespace Catch {
             m_config( config ),
             m_reporter( config.getReporter() ),
             m_prevRunner( &m_context.getRunner() ),
-            m_prevResultCapture( &m_context.getResultCapture() )
+            m_prevResultCapture( &m_context.getResultCapture() ),
+            m_prevConfig( m_context.getConfig() )
         {
             m_context.setRunner( this );
             m_context.setConfig( &m_config );
@@ -2829,13 +2834,13 @@ namespace Catch {
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
+            m_context.setConfig( m_prevConfig );
         }
 
         virtual void runAll( bool runHiddenTests = false ) {
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
-                if( runHiddenTests || !allTests[i].isHidden() )
-                {
+                if( runHiddenTests || !allTests[i].isHidden() ) {
                     if( aborting() ) {
                         m_reporter->Aborted();
                         break;
@@ -3048,6 +3053,7 @@ namespace Catch {
         std::vector<ResultInfo> m_info;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
+        const IConfig* m_prevConfig;
     };
 
 } // end namespace Catch
@@ -3573,104 +3579,89 @@ namespace Catch {
         char const * const * m_argv;
     };
 
-    inline bool parseIntoConfig( const CommandParser& parser, Config& config ) {
+    inline void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
 
-        try {
-            if( Command cmd = parser.find( "-l", "--list" ) ) {
-                if( cmd.argsCount() > 2 )
-                    cmd.raiseError( "Expected upto 2 arguments" );
+        if( Command cmd = parser.find( "-l", "--list" ) ) {
+            if( cmd.argsCount() > 2 )
+                cmd.raiseError( "Expected upto 2 arguments" );
 
-                List::What listSpec = List::All;
-                if( cmd.argsCount() >= 1 ) {
-                    if( cmd[0] == "tests" )
-                        listSpec = List::Tests;
-                    else if( cmd[0] == "reporters" )
-                        listSpec = List::Reports;
-                    else
-                        cmd.raiseError( "Expected [tests] or [reporters]" );
-                }
-                if( cmd.argsCount() >= 2 ) {
-                    if( cmd[1] == "xml" )
-                        listSpec = static_cast<List::What>( listSpec | List::AsXml );
-                    else if( cmd[1] == "text" )
-                        listSpec = static_cast<List::What>( listSpec | List::AsText );
-                    else
-                        cmd.raiseError( "Expected [xml] or [text]" );
-                }
-                config.setListSpec( static_cast<List::What>( config.getListSpec() | listSpec ) );
-            }
-
-            if( Command cmd = parser.find( "-t", "--test" ) ) {
-                if( cmd.argsCount() == 0 )
-                    cmd.raiseError( "Expected at least one argument" );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-                    config.addTestSpec( cmd[i] );
-            }
-
-            if( Command cmd = parser.find( "-r", "--reporter" ) ) {
-                if( cmd.argsCount() != 1 )
-                    cmd.raiseError( "Expected one argument" );
-                config.setReporter( cmd[0] );
-            }
-
-            if( Command cmd = parser.find( "-o", "--out" ) ) {
-                if( cmd.argsCount() == 0 )
-                    cmd.raiseError( "Expected filename" );
-                if( cmd[0][0] == '%' )
-                    config.useStream( cmd[0].substr( 1 ) );
+            List::What listSpec = List::All;
+            if( cmd.argsCount() >= 1 ) {
+                if( cmd[0] == "tests" )
+                    config.listSpec = List::Tests;
+                else if( cmd[0] == "reporters" )
+                    config.listSpec = List::Reports;
                 else
-                    config.setFilename( cmd[0] );
+                    cmd.raiseError( "Expected [tests] or [reporters]" );
             }
-
-            if( Command cmd = parser.find( "-s", "--success" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setIncludeWhichResults( Include::SuccessfulResults );
+            if( cmd.argsCount() >= 2 ) {
+                if( cmd[1] == "xml" )
+                    config.listSpec = static_cast<List::What>( listSpec | List::AsXml );
+                else if( cmd[1] == "text" )
+                    config.listSpec = static_cast<List::What>( listSpec | List::AsText );
+                else
+                    cmd.raiseError( "Expected [xml] or [text]" );
             }
-
-            if( Command cmd = parser.find( "-b", "--break" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setShouldDebugBreak( true );
-            }
-
-            if( Command cmd = parser.find( "-n", "--name" ) ) {
-                if( cmd.argsCount() != 1 )
-                    cmd.raiseError( "Expected a name" );
-                config.setName( cmd[0] );
-            }
-
-            if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setShowHelp( true );
-            }
-
-            if( Command cmd = parser.find( "-a", "--abort" ) ) {
-                if( cmd.argsCount() > 1 )
-                    cmd.raiseError( "Only accepts 0-1 arguments" );
-                int threshold = 1;
-                if( cmd.argsCount() == 1 )
-                {
-                    std::stringstream ss;
-                    ss << cmd[0];
-                    ss >> threshold;
-                }
-                config.setCutoff( threshold );
-            }
-
-            if( Command cmd = parser.find( "-nt", "--nothrow" ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-                config.setAllowThrows( false );
-            }
-
         }
-        catch( std::exception& ex ) {
-            config.setError( ex.what() );
-            return false;
+
+        if( Command cmd = parser.find( "-t", "--test" ) ) {
+            if( cmd.argsCount() == 0 )
+                cmd.raiseError( "Expected at least one argument" );
+            for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                config.testSpecs.push_back( cmd[i] );
         }
-        return true;
+
+        if( Command cmd = parser.find( "-r", "--reporter" ) ) {
+            if( cmd.argsCount() != 1 )
+                cmd.raiseError( "Expected one argument" );
+            config.reporter = cmd[0];
+        }
+
+        if( Command cmd = parser.find( "-o", "--out" ) ) {
+            if( cmd.argsCount() == 0 )
+                cmd.raiseError( "Expected filename" );
+            if( cmd[0][0] == '%' )
+                config.stream = cmd[0].substr( 1 );
+            else
+                config.outputFilename = cmd[0];
+        }
+
+        if( Command cmd = parser.find( "-s", "--success" ) ) {
+            if( cmd.argsCount() != 0 )
+                cmd.raiseError( "Does not accept arguments" );
+            config.includeWhichResults = Include::SuccessfulResults;
+        }
+
+        if( Command cmd = parser.find( "-b", "--break" ) ) {
+            if( cmd.argsCount() != 0 )
+                cmd.raiseError( "Does not accept arguments" );
+            config.shouldDebugBreak = true;
+        }
+
+        if( Command cmd = parser.find( "-n", "--name" ) ) {
+            if( cmd.argsCount() != 1 )
+                cmd.raiseError( "Expected a name" );
+            config.name = cmd[0];
+        }
+
+        if( Command cmd = parser.find( "-a", "--abort" ) ) {
+            if( cmd.argsCount() > 1 )
+                cmd.raiseError( "Only accepts 0-1 arguments" );
+            int threshold = 1;
+            if( cmd.argsCount() == 1 ) {
+                std::stringstream ss;
+                ss << cmd[0];
+                ss >> threshold;
+            }
+            config.cutoff = threshold;
+        }
+
+        if( Command cmd = parser.find( "-nt", "--nothrow" ) ) {
+            if( cmd.argsCount() != 0 )
+                cmd.raiseError( "Does not accept arguments" );
+            config.allowThrows = false;
+        }
+
     }
 
 } // end namespace Catch
@@ -4670,7 +4661,8 @@ namespace Catch {
     }
 
     inline void showUsage( std::ostream& os ) {
-        os  << "\t-l, --list <tests | reporters> [xml]\n"
+        os  << "\t-?, -h, --help\n"
+            << "\t-l, --list <tests | reporters> [xml]\n"
             << "\t-t, --test <testspec> [<testspec>...]\n"
             << "\t-r, --reporter <reporter name>\n"
             << "\t-o, --out <file name>|<%stream name>\n"
@@ -4678,6 +4670,7 @@ namespace Catch {
             << "\t-b, --break\n"
             << "\t-n, --name <name>\n"
             << "\t-a, --abort [#]\n\n"
+            << "\t-nt, --nothrow\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
     }
     inline void showHelp( std::string exeName ) {
@@ -4692,21 +4685,38 @@ namespace Catch {
 
     inline int Main( int argc, char* const argv[], Config& config ) {
 
-        parseIntoConfig( CommandParser( argc, argv ), config );
+        try {
+            CommandParser parser( argc, argv );
 
-        if( !config.getMessage().empty() ) {
-            std::cerr << config.getMessage() <<  + "\n\nUsage: ...\n\n";
+            if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
+                if( cmd.argsCount() != 0 )
+                    cmd.raiseError( "Does not accept arguments" );
+
+                showHelp( argv[0] );
+                Catch::Context::cleanUp();
+                return 0;
+            }
+
+            parseIntoConfig( parser, config.data() );
+
+            // !TBD: wire up (do this lazily?)
+            if( !config.data().reporter.empty() )
+                config.setReporter( config.data().reporter );
+
+            if( !config.data().stream.empty() ) {
+                if( config.data().stream[0] == '%' )
+                    config.useStream( config.data().stream.substr( 1 ) );
+                else
+                    config.setFilename( config.data().stream );
+            }
+        }
+        catch( std::exception& ex ) {
+            std::cerr << ex.what() <<  + "\n\nUsage: ...\n\n";
             showUsage( std::cerr );
             Catch::Context::cleanUp();
             return (std::numeric_limits<int>::max)();
         }
 
-        // Handle help
-        if( config.showHelp() ) {
-            showHelp( argv[0] );
-            Catch::Context::cleanUp();
-            return 0;
-        }
         return Main( config );
     }
 

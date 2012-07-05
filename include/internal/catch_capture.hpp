@@ -19,6 +19,30 @@ namespace Catch {
 
 struct TestFailureException{};
 
+class NotImplementedException : public std::exception
+{
+public:
+    NotImplementedException( const SourceLineInfo& lineInfo )
+    :   m_lineInfo( lineInfo ) {
+        std::ostringstream oss;
+        oss << lineInfo << "function ";
+        if( !lineInfo.function.empty() )
+            oss << lineInfo.function << " ";
+        oss << "not implemented";
+        m_what = oss.str();
+    }
+    
+    virtual ~NotImplementedException() throw() {}
+    
+    virtual const char* what() const throw() {
+        return m_what.c_str();
+    }
+    
+private:
+    std::string m_what;
+    SourceLineInfo m_lineInfo;
+};
+
 class ScopedInfo {
 public:
     ScopedInfo() : m_oss() {
@@ -129,5 +153,8 @@ inline bool isTrue( bool value ){ return value; }
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
+
+///////////////////////////////////////////////////////////////////////////////
+#define CATCH_NOT_IMPLEMENTED throw Catch::NotImplementedException( CATCH_INTERNAL_LINEINFO )
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED

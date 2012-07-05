@@ -77,7 +77,8 @@ namespace Catch {
     }
 
     inline void showUsage( std::ostream& os ) {
-        os  << "\t-l, --list <tests | reporters> [xml]\n"
+        os  << "\t-?, -h, --help\n"
+            << "\t-l, --list <tests | reporters> [xml]\n"
             << "\t-t, --test <testspec> [<testspec>...]\n"
             << "\t-r, --reporter <reporter name>\n"
             << "\t-o, --out <file name>|<%stream name>\n"

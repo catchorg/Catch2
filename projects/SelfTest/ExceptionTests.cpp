@@ -150,3 +150,12 @@ TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produce
     }
     
 }
+
+inline int thisFunctionNotImplemented( int ) {
+    CATCH_NOT_IMPLEMENTED;
+}
+
+TEST_CASE( "./succeeding/exceptions/notimplemented", "" )
+{
+    REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
+}

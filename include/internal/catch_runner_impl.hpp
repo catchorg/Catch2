@@ -81,8 +81,7 @@ namespace Catch {
         virtual void runAll( bool runHiddenTests = false ) {
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
-                if( runHiddenTests || !allTests[i].isHidden() )
-                {
+                if( runHiddenTests || !allTests[i].isHidden() ) {
                     if( aborting() ) {
                         m_reporter->Aborted();
                         break;
