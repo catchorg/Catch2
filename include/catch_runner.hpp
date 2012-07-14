@@ -13,6 +13,7 @@
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"
 #include "reporters/catch_reporter_basic.hpp"
+#include "reporters/catch_reporter_msvc.hpp"
 #include "reporters/catch_reporter_xml.hpp"
 #include "reporters/catch_reporter_junit.hpp"
 
@@ -22,7 +23,8 @@
 
 namespace Catch {
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
+	INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
+	INTERNAL_CATCH_REGISTER_REPORTER( "msvc", MsvcReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
     

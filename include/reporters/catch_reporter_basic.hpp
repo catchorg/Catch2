@@ -67,6 +67,16 @@ namespace Catch {
 
     private:
 
+		virtual const char* GetErrorPrefix() const {
+			return "";
+		}
+
+		virtual const char* GetWarningPrefix() const {		
+			return "warning:\n";
+		}
+
+	private:
+
         void ReportCounts( const std::string& label, const Counts& counts, const std::string& allPrefix = "All " ) {
             if( counts.passed )
                 m_config.stream << counts.failed << " of " << counts.total() << " " << label << "s failed";
@@ -110,13 +120,17 @@ namespace Catch {
         }
 
         virtual void EndTesting( const Totals& totals ) {
+			m_config.stream << "\n";
+			if( totals.assertions.failed ) {
+				m_config.stream << GetErrorPrefix();
+			}
             // Output the overall test results even if "Started Testing" was not emitted
             if( m_aborted ) {
-                m_config.stream << "\n[Testing aborted. ";
+                m_config.stream << "[Testing aborted. ";
                 ReportCounts( totals, "The first " );
             }
             else {
-                m_config.stream << "\n[Testing completed. ";
+                m_config.stream << "[Testing completed. ";
                 ReportCounts( totals );
             }
             m_config.stream << "]\n" << std::endl;
@@ -167,14 +181,17 @@ namespace Catch {
                 return;
             
             StartSpansLazily();
-            
-            if( !resultInfo.getFilename().empty() ) {
-                TextColour colour( TextColour::FileName );
-                m_config.stream << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
-            }
+
+			if( !resultInfo.getFilename().empty() ) {
+				TextColour colour( TextColour::FileName );
+				m_config.stream << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
+			}
             
             if( resultInfo.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
+				if( !resultInfo.ok() ) {
+					m_config.stream << GetErrorPrefix();
+				}
                 m_config.stream << resultInfo.getExpression();
                 if( resultInfo.ok() ) {
                     TextColour successColour( TextColour::Success );
@@ -209,7 +226,7 @@ namespace Catch {
                     streamVariableLengthText( "info", resultInfo.getMessage() );
                     break;
                 case ResultWas::Warning:
-                    m_config.stream << "warning:\n'" << resultInfo.getMessage() << "'";
+                    m_config.stream << GetWarningPrefix() << "'" << resultInfo.getMessage() << "'";
                     break;
                 case ResultWas::ExplicitFailure:
                 {
