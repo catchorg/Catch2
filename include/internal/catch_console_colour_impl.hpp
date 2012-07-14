@@ -34,6 +34,7 @@ namespace Catch {
                     return FOREGROUND_BLUE | FOREGROUND_GREEN;      // turquoise
                 case TextColour::ReconstructedExpression:    
                     return FOREGROUND_RED | FOREGROUND_GREEN;       // greeny-yellow
+				case TextColour::None:
                 default: return 0;
             }
         }
