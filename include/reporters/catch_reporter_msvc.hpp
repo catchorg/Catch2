@@ -16,27 +16,27 @@
 
 namespace Catch {
 
-	class MsvcReporter : public BasicReporter {
+    class MsvcReporter : public BasicReporter {
 
-	public:
-		MsvcReporter( const IReporterConfig& config )
-		:	BasicReporter(config)
-		{}
+    public:
+        MsvcReporter( const IReporterConfig& config )
+        :    BasicReporter(config)
+        {}
 
-		static std::string getDescription() {
-			return "Reports test results as lines of text formatted for Microsoft Visual Studio's output window";
-		}
+        static std::string getDescription() {
+            return "Reports test results as lines of text formatted for Microsoft Visual Studio's output window";
+        }
 
-	private:
+    private:
 
-		virtual const char* GetErrorPrefix() const {
-			return "error: ";
-		}
+        virtual const char* GetErrorPrefix() const {
+            return "error: ";
+        }
 
-		virtual const char* GetWarningPrefix() const {		
-			return "warning: ";
-		}
-	};
+        virtual const char* GetWarningPrefix() const {        
+            return "warning: ";
+        }
+    };
         
 } // end namespace Catch
 

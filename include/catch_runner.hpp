@@ -23,8 +23,8 @@
 
 namespace Catch {
 
-	INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
-	INTERNAL_CATCH_REGISTER_REPORTER( "msvc", MsvcReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "msvc", MsvcReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
     
