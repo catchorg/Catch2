@@ -47,13 +47,11 @@ namespace Catch {
         
         // Scope here for the Runner so it can use the context before it is cleaned-up
         {
-            Runner runner( config );
+            Runner runner( config, config.getReporter() );
 
             // Run test specs specified on the command line - or default to all
             if( !config.testsSpecified() ) {
-                config.getReporter()->StartGroup( "" );
                 runner.runAll();
-                config.getReporter()->EndGroup( "", runner.getTotals() );
             }
             else {
                 // !TBD We should get all the testcases upfront, report any missing,
@@ -61,13 +59,9 @@ namespace Catch {
                 std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
                 std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
                 for(; it != itEnd; ++it ) {
-                    Totals prevTotals = runner.getTotals();
-                    config.getReporter()->StartGroup( *it );
                     if( runner.runMatching( *it ) == 0 ) {
-                        // Use reporter?
-    //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
+                        std::cerr << "\n[No test cases matched with: " << *it << "]" << std::endl;
                     }
-                    config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
                 }
             }
             result = static_cast<int>( runner.getTotals().assertions.failed );
@@ -85,7 +79,7 @@ namespace Catch {
             << "\t-s, --success\n"
             << "\t-b, --break\n"
             << "\t-n, --name <name>\n"
-            << "\t-a, --abort [#]\n\n"
+            << "\t-a, --abort [#]\n"
             << "\t-nt, --nothrow\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
     }

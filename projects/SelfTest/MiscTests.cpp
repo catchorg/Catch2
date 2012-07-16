@@ -96,25 +96,27 @@ TEST_CASE( "Sections/nested3", "nested SECTION tests" )
     
     runner.runMatching( "./Sections/nested/a/b", "mock" );
     CHECK( runner.getLog() == 
-        "\\[tc] ./Sections/nested/a/b\n"
+        "\\[g] ./Sections/nested/a/b\n"
+        " \\[tc] ./Sections/nested/a/b\n"
         
-        " \\ [s] c\n"
-        "  \\ [s] d (leaf)\n"
-        "  / [s] d (leaf)\n"
-        " / [s] c\n"
+        "  \\ [s] c\n"
+        "   \\ [s] d (leaf)\n"
+        "   / [s] d (leaf)\n"
+        "  / [s] c\n"
         
-        " \\ [s] c\n"
-        "  \\ [s] e (leaf)\n"
-        "  / [s] e (leaf)\n"
-        " / [s] c\n"
+        "  \\ [s] c\n"
+        "   \\ [s] e (leaf)\n"
+        "   / [s] e (leaf)\n"
+        "  / [s] c\n"
         
-        " \\ [s] c\n"
-        " / [s] c\n"
+        "  \\ [s] c\n"
+        "  / [s] c\n"
         
-        " \\ [s] f (leaf)\n"
-        " / [s] f (leaf)\n"
+        "  \\ [s] f (leaf)\n"
+        "  / [s] f (leaf)\n"
         
-        "/[tc] ./Sections/nested/a/b\n" );
+        " /[tc] ./Sections/nested/a/b\n"
+        "/[g] ./Sections/nested/a/b\n" );
     
 }
 

@@ -55,11 +55,11 @@ namespace Catch {
         
     public:
 
-        explicit Runner( Config& config )
+        explicit Runner( Config& config, const Ptr<IReporter>& reporter )
         :   m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
             m_config( config ),
-            m_reporter( config.getReporter() ),
+            m_reporter( reporter ),
             m_prevRunner( &m_context.getRunner() ),
             m_prevResultCapture( &m_context.getResultCapture() ),
             m_prevConfig( m_context.getConfig() )
@@ -79,6 +79,7 @@ namespace Catch {
         }
         
         virtual void runAll( bool runHiddenTests = false ) {
+            m_reporter->StartGroup( "" );
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() ) {
@@ -89,9 +90,14 @@ namespace Catch {
                     runTest( allTests[i] );
                 }
             }
+            m_reporter->EndGroup( "", getTotals() );
         }
         
         virtual std::size_t runMatching( const std::string& rawTestSpec ) {
+
+            Totals prevTotals = getTotals();
+            m_reporter->StartGroup( rawTestSpec );
+
             TestSpec testSpec( rawTestSpec );
             
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
@@ -106,6 +112,7 @@ namespace Catch {
                     testsRun++;
                 }
             }
+            m_reporter->EndGroup( rawTestSpec, getTotals() - prevTotals );
             return testsRun;
         }
         
