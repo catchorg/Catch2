@@ -28,6 +28,18 @@ namespace Catch {
 
     inline int Main( Config& config ) {
     
+        std::string reporterName = config.data().reporter.empty()
+            ? "basic"
+            : config.data().reporter;
+        Ptr<IReporter> reporter = getCurrentContext().getReporterRegistry().create( reporterName, config );
+
+        if( !config.data().stream.empty() ) {
+            if( config.data().stream[0] == '%' )
+                config.useStream( config.data().stream.substr( 1 ) );
+            else
+                config.setFilename( config.data().stream );
+        }
+
         // Handle list request
         if( config.listWhat() != List::None )
             return List( config );
@@ -47,7 +59,7 @@ namespace Catch {
         
         // Scope here for the Runner so it can use the context before it is cleaned-up
         {
-            Runner runner( config, config.getReporter() );
+            Runner runner( config, reporter );
 
             // Run test specs specified on the command line - or default to all
             if( !config.testsSpecified() ) {
@@ -107,18 +119,7 @@ namespace Catch {
                 return 0;
             }
         
-            parseIntoConfig( parser, config.data() );
-            
-            // !TBD: wire up (do this lazily?)
-            if( !config.data().reporter.empty() )
-                config.setReporter( config.data().reporter );
-
-            if( !config.data().stream.empty() ) {
-                if( config.data().stream[0] == '%' )
-                    config.useStream( config.data().stream.substr( 1 ) );
-                else
-                    config.setFilename( config.data().stream );
-            }
+            parseIntoConfig( parser, config.data() );            
         }
         catch( std::exception& ex ) {
             std::cerr << ex.what() <<  + "\n\nUsage: ...\n\n";

@@ -20,14 +20,11 @@ namespace Catch{
         Config config;
         config.setStreamBuf( oss.rdbuf() );
         
-        //if( reporter == "mock" ) // !TBD
-            config.setReporter( m_reporter.get() );
-        
         std::size_t result;
         
         // Scoped because Runner doesn't report EndTesting until its destructor
         {
-            Runner runner( config, config.getReporter() );
+            Runner runner( config, m_reporter.get() );
             result = runner.runMatching( rawTestSpec );
             m_totals = runner.getTotals();
         }

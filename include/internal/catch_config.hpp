@@ -82,12 +82,6 @@ namespace Catch {
             delete m_streambuf;
         }
         
-        void setReporter( const std::string& reporterName ) {
-            if( m_reporter.get() )
-                throw std::domain_error( "Only one reporter may be specified" );
-            setReporter( getCurrentContext().getReporterRegistry().create( reporterName, *this ) );
-        }
-
         void setFilename( const std::string& filename ) {
             m_data.outputFilename = filename;
         }
@@ -108,16 +102,6 @@ namespace Catch {
             return m_data.outputFilename ;
         }
         
-        void setReporter( IReporter* reporter ) {
-            m_reporter = reporter;
-        }
-        
-        Ptr<IReporter> getReporter() {
-            if( !m_reporter.get() )
-                const_cast<Config*>( this )->setReporter( getCurrentContext().getReporterRegistry().create( "basic", *this ) );
-            return m_reporter;
-        }
-                
         List::What listWhat() const {
             return static_cast<List::What>( m_data.listSpec & List::WhatMask );
         }        
@@ -169,7 +153,6 @@ namespace Catch {
         ConfigData m_data;
         
         // !TBD Move these out of here
-        Ptr<IReporter> m_reporter;
         std::streambuf* m_streambuf;
         mutable std::ostream m_os;
     };

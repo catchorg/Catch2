@@ -42,10 +42,6 @@ namespace Catch {
             return (std::numeric_limits<int>::max)();
         }
         
-        if( config.getReporter().get() )
-            std::cerr << "Reporters ignored when listing" << std::endl;
-        if( !config.testsSpecified() )
-            std::cerr << "Test specs ignored when listing" << std::endl;
         return 0;
     }
     

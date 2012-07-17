@@ -15,8 +15,7 @@
 #include <string>
 #include <limits>
 
-struct TestData
-{
+struct TestData {
     TestData()
     :   int_seven( 7 ),
         str_hello( "hello" ),
@@ -30,6 +29,25 @@ struct TestData
     double double_pi;
 };
 
+
+struct TestDef {
+    TestDef& operator + ( const std::string& ) {
+        return *this;
+    }
+    TestDef& operator[]( const std::string& ) {
+        return *this;
+    }
+    
+};
+
+//TEST( "./succeeding/conditions/equality"  + Description("nyaya") )
+//{
+//    TEST_CASE( [Name("inner")] )
+//    {
+//        
+//    }
+//}
+
 // The "failing" tests all use the CHECK macro, which continues if the specific test fails.
 // This allows us to see all results, even if an earlier check fails
 
@@ -37,6 +55,10 @@ struct TestData
 TEST_CASE(  "./succeeding/conditions/equality", 
             "Equality checks that should succeed" )
 {
+
+    TestDef td;
+    td + "hello" + "hello";
+    
     TestData data;
     
     REQUIRE( data.int_seven == 7 );
@@ -223,6 +245,21 @@ TEST_CASE(  "./succeeding/conditions/negative ints",
     const int minInt = (std::numeric_limits<int>::min)();
     CHECK( ( minInt > 2u ) );
     CHECK( minInt > 2u );
+}
+
+template<typename T>
+struct Ex
+{
+    Ex( T ){}
+    
+    bool operator == ( const T& ) const { return true; }
+    T operator * ( const T& ) const { return T(); }
+};
+
+TEST_CASE(  "./succeeding/conditions/computed ints",
+            "Comparisons between ints where one side is computed" )
+{
+     CHECK( 54 == 6*9 );
 }
 
 #pragma GCC diagnostic pop

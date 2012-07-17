@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-05 18:47:13.729198
+ *  Generated: 2012-07-17 08:02:44.293339
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2500,12 +2500,6 @@ namespace Catch {
             delete m_streambuf;
         }
 
-        void setReporter( const std::string& reporterName ) {
-            if( m_reporter.get() )
-                throw std::domain_error( "Only one reporter may be specified" );
-            setReporter( getCurrentContext().getReporterRegistry().create( reporterName, *this ) );
-        }
-
         void setFilename( const std::string& filename ) {
             m_data.outputFilename = filename;
         }
@@ -2524,16 +2518,6 @@ namespace Catch {
 
         const std::string& getFilename() const {
             return m_data.outputFilename ;
-        }
-
-        void setReporter( IReporter* reporter ) {
-            m_reporter = reporter;
-        }
-
-        Ptr<IReporter> getReporter() {
-            if( !m_reporter.get() )
-                const_cast<Config*>( this )->setReporter( getCurrentContext().getReporterRegistry().create( "basic", *this ) );
-            return m_reporter;
         }
 
         List::What listWhat() const {
@@ -2587,7 +2571,6 @@ namespace Catch {
         ConfigData m_data;
 
         // !TBD Move these out of here
-        Ptr<IReporter> m_reporter;
         std::streambuf* m_streambuf;
         mutable std::ostream m_os;
     };
@@ -2814,11 +2797,11 @@ namespace Catch {
 
     public:
 
-        explicit Runner( Config& config )
+        explicit Runner( Config& config, const Ptr<IReporter>& reporter )
         :   m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
             m_config( config ),
-            m_reporter( config.getReporter() ),
+            m_reporter( reporter ),
             m_prevRunner( &m_context.getRunner() ),
             m_prevResultCapture( &m_context.getResultCapture() ),
             m_prevConfig( m_context.getConfig() )
@@ -2838,6 +2821,7 @@ namespace Catch {
         }
 
         virtual void runAll( bool runHiddenTests = false ) {
+            m_reporter->StartGroup( "" );
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() ) {
@@ -2848,9 +2832,14 @@ namespace Catch {
                     runTest( allTests[i] );
                 }
             }
+            m_reporter->EndGroup( "", getTotals() );
         }
 
         virtual std::size_t runMatching( const std::string& rawTestSpec ) {
+
+            Totals prevTotals = getTotals();
+            m_reporter->StartGroup( rawTestSpec );
+
             TestSpec testSpec( rawTestSpec );
 
             const std::vector<TestCaseInfo>& allTests = getCurrentContext().getTestCaseRegistry().getAllTests();
@@ -2865,6 +2854,7 @@ namespace Catch {
                     testsRun++;
                 }
             }
+            m_reporter->EndGroup( rawTestSpec, getTotals() - prevTotals );
             return testsRun;
         }
 
@@ -3701,10 +3691,6 @@ namespace Catch {
             return (std::numeric_limits<int>::max)();
         }
 
-        if( config.getReporter().get() )
-            std::cerr << "Reporters ignored when listing" << std::endl;
-        if( !config.testsSpecified() )
-            std::cerr << "Test specs ignored when listing" << std::endl;
         return 0;
     }
 
@@ -4612,6 +4598,18 @@ namespace Catch {
 
     inline int Main( Config& config ) {
 
+        std::string reporterName = config.data().reporter.empty()
+            ? "basic"
+            : config.data().reporter;
+        Ptr<IReporter> reporter = getCurrentContext().getReporterRegistry().create( reporterName, config );
+
+        if( !config.data().stream.empty() ) {
+            if( config.data().stream[0] == '%' )
+                config.useStream( config.data().stream.substr( 1 ) );
+            else
+                config.setFilename( config.data().stream );
+        }
+
         // Handle list request
         if( config.listWhat() != List::None )
             return List( config );
@@ -4631,13 +4629,11 @@ namespace Catch {
 
         // Scope here for the Runner so it can use the context before it is cleaned-up
         {
-            Runner runner( config );
+            Runner runner( config, reporter );
 
             // Run test specs specified on the command line - or default to all
             if( !config.testsSpecified() ) {
-                config.getReporter()->StartGroup( "" );
                 runner.runAll();
-                config.getReporter()->EndGroup( "", runner.getTotals() );
             }
             else {
                 // !TBD We should get all the testcases upfront, report any missing,
@@ -4645,13 +4641,9 @@ namespace Catch {
                 std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
                 std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
                 for(; it != itEnd; ++it ) {
-                    Totals prevTotals = runner.getTotals();
-                    config.getReporter()->StartGroup( *it );
                     if( runner.runMatching( *it ) == 0 ) {
-                        // Use reporter?
-    //                    std::cerr << "\n[Unable to match any test cases with: " << *it << "]" << std::endl;
+                        std::cerr << "\n[No test cases matched with: " << *it << "]" << std::endl;
                     }
-                    config.getReporter()->EndGroup( *it, runner.getTotals() - prevTotals );
                 }
             }
             result = static_cast<int>( runner.getTotals().assertions.failed );
@@ -4669,7 +4661,7 @@ namespace Catch {
             << "\t-s, --success\n"
             << "\t-b, --break\n"
             << "\t-n, --name <name>\n"
-            << "\t-a, --abort [#]\n\n"
+            << "\t-a, --abort [#]\n"
             << "\t-nt, --nothrow\n\n"
             << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
     }
@@ -4698,17 +4690,6 @@ namespace Catch {
             }
 
             parseIntoConfig( parser, config.data() );
-
-            // !TBD: wire up (do this lazily?)
-            if( !config.data().reporter.empty() )
-                config.setReporter( config.data().reporter );
-
-            if( !config.data().stream.empty() ) {
-                if( config.data().stream[0] == '%' )
-                    config.useStream( config.data().stream.substr( 1 ) );
-                else
-                    config.setFilename( config.data().stream );
-            }
         }
         catch( std::exception& ex ) {
             std::cerr << ex.what() <<  + "\n\nUsage: ...\n\n";
