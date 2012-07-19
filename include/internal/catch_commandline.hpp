@@ -61,7 +61,7 @@ namespace Catch {
     
     class CommandParser {
     public:
-        CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
+        CommandParser( int argc, char* const argv[] ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );

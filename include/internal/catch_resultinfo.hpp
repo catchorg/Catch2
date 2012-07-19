@@ -73,7 +73,7 @@ namespace Catch {
         }
         
         std::string getExpandedExpression() const {
-            return hasExpression() ? getExpandedExpressionInternal() : "";
+            return hasExpression() ? getExpandedExpressionInternal() : std::string();
         }
         
         std::string getMessage() const {
