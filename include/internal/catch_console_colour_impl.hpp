@@ -54,7 +54,7 @@ namespace Catch {
         }
         
         void set( TextColour::Colours colour ) {
-            WORD consoleColour = mapConsoleColour( colour );
+            WORD consoleColour = Catch::mapConsoleColour( colour );
             if( consoleColour > 0 )
                 SetConsoleTextAttribute( hStdout, consoleColour );
         }

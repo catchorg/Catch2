@@ -15,3 +15,8 @@ projects/VS2010/TestCatch/_UpgradeReport_Files/
 projects/VS2010/TestCatch/TestCatch/TestCatch.vcxproj.filters
 projects/VisualStudio/TestCatch/UpgradeLog.XML
 UpgradeLog.XML
+/projects\CPPBuilder5/*.~cpp
+/single_include/*.~HPP
+/projects\CPPBuilder5/*.~cpp
+/projects\CPPBuilder5/*.~cpp
+/projects\CPPBuilder5/*.~cpp

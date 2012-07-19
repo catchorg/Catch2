@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-05 18:47:13.729198
+ *  Generated: 2012-07-19 00:07:37.689000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -318,7 +318,7 @@ namespace Catch
         std::string::size_type start = str.find_first_not_of( "\n\r\t " );
         std::string::size_type end = str.find_last_not_of( "\n\r\t " );
 
-        return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
+        return start != std::string::npos ? str.substr( start, 1+end-start ) : std::string();
     }
 }
 
@@ -759,7 +759,7 @@ namespace Catch {
         }
 
         std::string getExpandedExpression() const {
-            return hasExpression() ? getExpandedExpressionInternal() : "";
+            return hasExpression() ? getExpandedExpressionInternal() : std::string();
         }
 
         std::string getMessage() const {
@@ -2212,9 +2212,6 @@ namespace Catch {
     inline std::string toString( NSString* const& nsstring ) {
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
-    inline std::string toString( NSObject* const& nsObject ) {
-        return toString( [nsObject description] );
-    }
 
     namespace Matchers {
         namespace Impl {
@@ -2986,7 +2983,7 @@ namespace Catch {
         virtual std::string getCurrentTestName() const {
             return m_runningTest
                 ? m_runningTest->getTestCaseInfo().getName()
-                : "";
+                : std::string();
         }
 
         virtual const ResultInfo* getLastResult() const {
@@ -3210,7 +3207,7 @@ namespace Catch {
         }
 
         void set( TextColour::Colours colour ) {
-            WORD consoleColour = mapConsoleColour( colour );
+            WORD consoleColour = Catch::mapConsoleColour( colour );
             if( consoleColour > 0 )
                 SetConsoleTextAttribute( hStdout, consoleColour );
         }
@@ -3551,7 +3548,7 @@ namespace Catch {
 
     class CommandParser {
     public:
-        CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
+        CommandParser( int argc, char* const argv[] ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
@@ -3799,7 +3796,7 @@ namespace Catch {
             if( counts.passed )
                 m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
             else
-                m_config.stream() << ( counts.failed > 1 ? allPrefix : "" ) << pluralise( counts.failed, label ) << " failed";
+                m_config.stream() << ( counts.failed > 1 ? allPrefix : std::string() ) << pluralise( counts.failed, label ) << " failed";
         }
 
         void ReportCounts( const Totals& totals, const std::string& allPrefix = "All " ) {

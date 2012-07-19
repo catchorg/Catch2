@@ -227,7 +227,7 @@ namespace Catch {
         virtual std::string getCurrentTestName() const {
             return m_runningTest
                 ? m_runningTest->getTestCaseInfo().getName()
-                : "";
+                : std::string();
         }
 
         virtual const ResultInfo* getLastResult() const {
