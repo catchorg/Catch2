@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-20 18:42:56.789420
+ *  Generated: 2012-07-20 18:46:50.092936
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3869,7 +3869,7 @@ namespace Catch {
                 else {
                     TextColour colour( TextColour::ResultSuccess );
                     m_config.stream()   << ( assertions.passed > 1 ? "All " : "" )
-                                        << pluralise( assertions.passed, "assertion" ) << "passed" ;
+                                        << pluralise( assertions.passed, "assertion" ) << " passed" ;
                 }
                 m_config.stream() << "]\n" << std::endl;
             }
