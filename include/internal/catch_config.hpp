@@ -60,7 +60,7 @@ namespace Catch {
     };
     
     
-    class Config : public IReporterConfig, public IConfig {
+    class Config : public IConfig {
     private:
         Config( const Config& other );
         Config& operator = ( const Config& other );

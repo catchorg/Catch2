@@ -27,7 +27,7 @@ namespace Catch {
             addRecorder( recordSections );
         }
                 
-        MockReporter( const IReporterConfig& ) {
+        MockReporter( const ReporterConfig& ) {
             recordAll();
         }
         

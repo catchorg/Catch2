@@ -57,7 +57,7 @@ namespace Catch {
         };
         
     public:
-        JunitReporter( const IReporterConfig& config )
+        JunitReporter( const ReporterConfig& config )
         :   m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
@@ -94,7 +94,7 @@ namespace Catch {
         }
         
         virtual void Result( const Catch::ResultInfo& resultInfo ) {
-            if( resultInfo.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults() ) {
+            if( resultInfo.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
@@ -151,7 +151,7 @@ namespace Catch {
         }
 
         virtual void EndTesting( const Totals& ) {
-            std::ostream& str = m_config.stream();
+            std::ostream& str = m_config.stream;
             {
                 XmlWriter xml( str );
                 
@@ -212,7 +212,7 @@ namespace Catch {
         }
         
     private:
-        const IReporterConfig& m_config;
+        ReporterConfig m_config;
         bool m_currentTestSuccess;
         
         Stats m_testSuiteStats;

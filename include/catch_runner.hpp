@@ -25,13 +25,16 @@ namespace Catch {
     INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
-
+    
     inline int Main( Config& config ) {
     
         std::string reporterName = config.data().reporter.empty()
             ? "basic"
             : config.data().reporter;
-        Ptr<IReporter> reporter = getCurrentContext().getReporterRegistry().create( reporterName, config );
+            
+        ReporterConfig reporterConfig( config.getName(), config.stream(), config.includeSuccessfulResults() );
+        
+        Ptr<IReporter> reporter = getCurrentContext().getReporterRegistry().create( reporterName, reporterConfig );
 
         if( !config.data().stream.empty() ) {
             if( config.data().stream[0] == '%' )

@@ -17,7 +17,7 @@ namespace Catch {
     
         class ReporterFactory : public IReporterFactory {
 
-            virtual IReporter* create( const IReporterConfig& config ) const {
+            virtual IReporter* create( const ReporterConfig& config ) const {
                 return new T( config );
             }
             

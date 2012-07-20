@@ -16,7 +16,7 @@
 namespace Catch {
     class XmlReporter : public SharedImpl<IReporter> {
     public:
-        XmlReporter( const IReporterConfig& config ) : m_config( config ) {}
+        XmlReporter( const ReporterConfig& config ) : m_config( config ) {}
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
@@ -29,10 +29,10 @@ namespace Catch {
         }        
 
         virtual void StartTesting() {
-            m_xml = XmlWriter( m_config.stream() );
+            m_xml = XmlWriter( m_config.stream );
             m_xml.startElement( "Catch" );
-            if( !m_config.getName().empty() )
-                m_xml.writeAttribute( "name", m_config.getName() );
+            if( !m_config.name.empty() )
+                m_xml.writeAttribute( "name", m_config.name );
         }
         
         virtual void EndTesting( const Totals& totals ) {
@@ -73,7 +73,7 @@ namespace Catch {
         }
         
         virtual void Result( const Catch::ResultInfo& resultInfo ) {
-            if( !m_config.includeSuccessfulResults() && resultInfo.getResultType() == ResultWas::Ok )
+            if( !m_config.includeSuccessfulResults && resultInfo.getResultType() == ResultWas::Ok )
                 return;
 
             if( resultInfo.hasExpression() ) {
@@ -133,7 +133,7 @@ namespace Catch {
         }    
                 
     private:
-        const IReporterConfig& m_config;
+        ReporterConfig m_config;
         bool m_currentTestSuccess;
         XmlWriter m_xml;
     };

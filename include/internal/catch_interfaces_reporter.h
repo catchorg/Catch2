@@ -18,12 +18,20 @@
 
 namespace Catch
 {
-    struct IReporterConfig {
-        virtual ~IReporterConfig() {}        
-        virtual std::ostream& stream () const = 0;        
-        virtual bool includeSuccessfulResults () const = 0;
-        virtual std::string getName () const = 0;
-    };
+    struct ReporterConfig
+    {
+        ReporterConfig( const std::string& _name,
+                        std::ostream& _stream,
+                        bool _includeSuccessfulResults = false )
+        :   name( _name ),
+            stream( _stream ),
+            includeSuccessfulResults( _includeSuccessfulResults )
+        {}
+        
+        std::string name;
+        std::ostream& stream;
+        bool includeSuccessfulResults;
+    };    
     
     class TestCaseInfo;
     class ResultInfo;
@@ -45,7 +53,7 @@ namespace Catch
     
     struct IReporterFactory {
         virtual ~IReporterFactory() {}        
-        virtual IReporter* create( const IReporterConfig& config ) const = 0;        
+        virtual IReporter* create( const ReporterConfig& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
 
@@ -53,7 +61,7 @@ namespace Catch
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
         virtual ~IReporterRegistry() {}
-        virtual IReporter* create( const std::string& name, const IReporterConfig& config ) const = 0;        
+        virtual IReporter* create( const std::string& name, const ReporterConfig& config ) const = 0;        
         virtual void registerReporter( const std::string& name, IReporterFactory* factory ) = 0;        
         virtual const FactoryMap& getFactories() const = 0;
     };
