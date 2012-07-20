@@ -37,6 +37,52 @@
 
 //////
 
+// If this config identifier is defined then all CATCH macros are prefixed with CATCH_
+#ifdef CATCH_CONFIG_PREFIX_ALL
+
+#define CATCH_REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "CATCH_REQUIRE" )
+#define CATCH_REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, true, "CATCH_REQUIRE_FALSE" )
+
+#define CATCH_REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., true, "CATCH_REQUIRE_THROWS" )
+#define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, true, "CATCH_REQUIRE_THROWS_AS" )
+#define CATCH_REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, true, "CATCH_REQUIRE_NOTHROW" )
+
+#define CATCH_CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CATCH_CHECK" )
+#define CATCH_CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CATCH_CHECK_FALSE" )
+#define CATCH_CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, false, false, "CATCH_CHECKED_IF" )
+#define CATCH_CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, false, false, "CATCH_CHECKED_ELSE" )
+
+#define CATCH_CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false, "CATCH_CHECK_THROWS" )
+#define CATCH_CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, "CATCH_CHECK_THROWS_AS" )
+#define CATCH_CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, false, "CATCH_CHECK_NOTHROW" )
+
+#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, false, "CATCH_CHECK_THAT" )
+#define CATCH_REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, true, "CATCH_REQUIRE_THAT" )
+
+#define CATCH_INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, false, "CATCH_INFO" )
+#define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, false, "CATCH_WARN" )
+#define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, true, "CATCH_FAIL" )
+#define CATCH_SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg )
+#define CATCH_CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, false, "CATCH_CAPTURE" )
+
+#define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
+
+#define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+#define CATCH_TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
+#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
+#define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+
+#define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
+
+#define CATCH_GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
+
+///////////////
+// Still to be implemented
+//#define CHECK_NOFAIL( expr ) // !TBD - reports violation, but doesn't fail Test
+
+// If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
+#else
+
 #define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "REQUIRE" )
 #define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, true, "REQUIRE_FALSE" )
 
@@ -67,16 +113,15 @@
 #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
 #define TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
-#define METHOD_AS_TEST_CASE( method, name, description ) CATCH_METHOD_AS_TEST_CASE( method, name, description )
+#define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
-#define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature )
 
 #define GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
-///////////////
-// Still to be implemented
-#define CHECK_NOFAIL( expr ) // !TBD - reports violation, but doesn't fail Test
+#endif
+
+#define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature )
 
 using Catch::Detail::Approx;
 

@@ -86,7 +86,7 @@ private:
     static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
 ///////////////////////////////////////////////////////////////////////////////
-#define CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
+#define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
     namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
 
 ///////////////////////////////////////////////////////////////////////////////
