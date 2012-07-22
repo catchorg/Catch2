@@ -155,7 +155,7 @@ namespace Catch {
                 else {
                     TextColour colour( TextColour::ResultSuccess );
                     m_config.stream()   << ( assertions.passed > 1 ? "All " : "" ) 
-                                        << pluralise( assertions.passed, "assertion" ) << " passed" ;
+                                        << pluralise( assertions.passed, "assertion" ) << "passed" ;
                 }
                 m_config.stream() << "]\n" << std::endl;
             }
