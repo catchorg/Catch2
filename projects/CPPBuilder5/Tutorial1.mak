@@ -36,7 +36,7 @@ PATHRC = .;
 DEBUGLIBPATH = $(BCB)\lib\debug
 RELEASELIBPATH = $(BCB)\lib\release
 USERDEFINES = _DEBUG;CATCH_PLATFORM_WINDOWS
-SYSDEFINES = NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES
+SYSDEFINES = NO_STRICT;_NO_VCL
 INCLUDEPATH = $(BCB)\include;$(BCB)\include\vcl;..\..\single_include
 LIBPATH = $(BCB)\lib\obj;$(BCB)\lib
 WARNINGS= -w-par
@@ -49,9 +49,9 @@ RFLAGS =
 AFLAGS = /mx /w2 /zd
 LFLAGS = -D"" -ap -Tpe -x -Gn -v
 # ---------------------------------------------------------------------------
-ALLOBJ = c0x32.obj $(PACKAGES) $(OBJFILES)
+ALLOBJ = c0x32.obj $(OBJFILES)
 ALLRES = $(RESFILES)
-ALLLIB = $(LIBFILES) $(LIBRARIES) import32.lib cw32i.lib
+ALLLIB = $(LIBFILES) $(LIBRARIES) import32.lib cw32.lib
 # ---------------------------------------------------------------------------
 !ifdef IDEOPTIONS
 

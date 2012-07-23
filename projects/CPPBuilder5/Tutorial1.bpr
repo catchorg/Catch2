@@ -23,7 +23,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="tlink32"/>
     <USERDEFINES value="_DEBUG;CATCH_PLATFORM_WINDOWS"/>
-    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
     <MAINSOURCE value="Tutorial1.bpf"/>
     <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl;..\..\single_include"/>
     <LIBPATH value="$(BCB)\lib\obj;$(BCB)\lib"/>
@@ -38,9 +38,9 @@
     <LFLAGS value="-D&quot;&quot; -ap -Tpe -x -Gn -v"/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0x32.obj $(PACKAGES) $(OBJFILES)"/>
+    <ALLOBJ value="c0x32.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32i.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32.lib"/>
   </LINKER>
   <IDEOPTIONS>
 [Version Info]
