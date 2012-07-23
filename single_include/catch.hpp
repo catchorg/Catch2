@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-20 19:07:25.539622
+ *  Generated: 2012-07-23 08:24:23.434402
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4703,7 +4703,7 @@ namespace Catch {
             parseIntoConfig( parser, config.data() );
         }
         catch( std::exception& ex ) {
-            std::cerr << ex.what() <<  + "\n\nUsage: ...\n\n";
+            std::cerr << ex.what() << "\n\nUsage: ...\n\n";
             showUsage( std::cerr );
             Catch::Context::cleanUp();
             return (std::numeric_limits<int>::max)();

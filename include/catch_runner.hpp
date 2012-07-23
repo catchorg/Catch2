@@ -125,7 +125,7 @@ namespace Catch {
             parseIntoConfig( parser, config.data() );            
         }
         catch( std::exception& ex ) {
-            std::cerr << ex.what() <<  + "\n\nUsage: ...\n\n";
+            std::cerr << ex.what() << "\n\nUsage: ...\n\n";
             showUsage( std::cerr );
             Catch::Context::cleanUp();
             return (std::numeric_limits<int>::max)();
