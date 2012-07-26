@@ -118,12 +118,12 @@ namespace Catch {
     }
 }
 
-#define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
+#define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, static_cast<std::size_t>(__LINE__) );
 
 //#ifdef __FUNCTION__
-//#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FUNCTION__, __FILE__, __LINE__ )
+//#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FUNCTION__, __FILE__, static_cast<std::size_t>(__LINE__) )
 //#else
-#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
+#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>(__LINE__) )
 //#endif
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED

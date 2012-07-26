@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-25 23:26:33.753000
+ *  Generated: 2012-07-26 00:07:30.124000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -126,12 +126,12 @@ namespace Catch {
     }
 }
 
-#define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
+#define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, static_cast<std::size_t>(__LINE__) );
 
 //#ifdef __FUNCTION__
-//#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FUNCTION__, __FILE__, __LINE__ )
+//#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FUNCTION__, __FILE__, static_cast<std::size_t>(__LINE__) )
 //#else
-#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
+#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>(__LINE__) )
 //#endif
 
 // #included from: catch_totals.hpp
