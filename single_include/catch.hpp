@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-25 23:10:58.030000
+ *  Generated: 2012-07-25 23:26:33.753000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -287,6 +287,11 @@ namespace Catch
         std::string name;
         std::ostream& stream;
         bool includeSuccessfulResults;
+
+	private:
+		// Explicitly disable copy constructor to prevent compiler warning on MSVC 2010.
+		// warning C4512: 'class' : assignment operator could not be generated
+		ReporterConfig& operator=( const ReporterConfig& );
     };
 
     class TestCaseInfo;
@@ -4074,7 +4079,7 @@ namespace Catch {
     class MsvcReporter : public BasicReporter {
 
     public:
-        MsvcReporter( const IReporterConfig& config )
+        MsvcReporter( const ReporterConfig& config )
         :    BasicReporter(config)
         {}
 

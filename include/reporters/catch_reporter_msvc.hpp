@@ -19,7 +19,7 @@ namespace Catch {
     class MsvcReporter : public BasicReporter {
 
     public:
-        MsvcReporter( const IReporterConfig& config )
+        MsvcReporter( const ReporterConfig& config )
         :    BasicReporter(config)
         {}
 

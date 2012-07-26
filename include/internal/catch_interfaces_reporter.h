@@ -31,6 +31,11 @@ namespace Catch
         std::string name;
         std::ostream& stream;
         bool includeSuccessfulResults;
+
+	private:
+		// Explicitly disable copy constructor to prevent compiler warning on MSVC 2010.
+		// warning C4512: 'class' : assignment operator could not be generated
+		ReporterConfig& operator=( const ReporterConfig& );
     };    
     
     class TestCaseInfo;
