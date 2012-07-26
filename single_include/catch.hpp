@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-23 08:24:23.434402
+ *  Generated: 2012-07-25 23:10:58.030000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2220,9 +2220,6 @@ namespace Catch {
     inline std::string toString( NSString* const& nsstring ) {
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
-    inline std::string toString( NSObject* const& nsObject ) {
-        return toString( [nsObject description] );
-    }
 
     namespace Matchers {
         namespace Impl {
@@ -3188,6 +3185,7 @@ namespace Catch {
                     return FOREGROUND_BLUE | FOREGROUND_GREEN;      // turquoise
                 case TextColour::ReconstructedExpression:
                     return FOREGROUND_RED | FOREGROUND_GREEN;       // greeny-yellow
+                case TextColour::None:
                 default: return 0;
             }
         }
@@ -3789,6 +3787,16 @@ namespace Catch {
 
     private:
 
+        virtual const char* GetErrorPrefix() const {
+            return "";
+        }
+
+        virtual const char* GetWarningPrefix() const {
+            return "warning:\n";
+        }
+
+    private:
+
         void ReportCounts( const std::string& label, const Counts& counts, const std::string& allPrefix = "All " ) {
             if( counts.passed )
                 m_config.stream << counts.failed << " of " << counts.total() << " " << label << "s failed";
@@ -3832,13 +3840,17 @@ namespace Catch {
         }
 
         virtual void EndTesting( const Totals& totals ) {
+            m_config.stream << "\n";
+            if( totals.assertions.failed ) {
+                m_config.stream << GetErrorPrefix();
+            }
             // Output the overall test results even if "Started Testing" was not emitted
             if( m_aborted ) {
-                m_config.stream << "\n[Testing aborted. ";
+                m_config.stream << "[Testing aborted. ";
                 ReportCounts( totals, "The first " );
             }
             else {
-                m_config.stream << "\n[Testing completed. ";
+                m_config.stream << "[Testing completed. ";
                 ReportCounts( totals );
             }
             m_config.stream << "]\n" << std::endl;
@@ -3897,6 +3909,9 @@ namespace Catch {
 
             if( resultInfo.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
+                if( !resultInfo.ok() ) {
+                    m_config.stream << GetErrorPrefix();
+                }
                 m_config.stream << resultInfo.getExpression();
                 if( resultInfo.ok() ) {
                     TextColour successColour( TextColour::Success );
@@ -3931,7 +3946,7 @@ namespace Catch {
                     streamVariableLengthText( "info", resultInfo.getMessage() );
                     break;
                 case ResultWas::Warning:
-                    m_config.stream << "warning:\n'" << resultInfo.getMessage() << "'";
+                    m_config.stream << GetWarningPrefix() << "'" << resultInfo.getMessage() << "'";
                     break;
                 case ResultWas::ExplicitFailure:
                 {
@@ -4048,6 +4063,34 @@ namespace Catch {
         SpanInfo m_testSpan;
         std::vector<SpanInfo> m_sectionSpans;
         bool m_aborted;
+    };
+
+} // end namespace Catch
+
+// #included from: reporters/catch_reporter_msvc.hpp
+
+namespace Catch {
+
+    class MsvcReporter : public BasicReporter {
+
+    public:
+        MsvcReporter( const IReporterConfig& config )
+        :    BasicReporter(config)
+        {}
+
+        static std::string getDescription() {
+            return "Reports test results as lines of text formatted for Microsoft Visual Studio's output window";
+        }
+
+    private:
+
+        virtual const char* GetErrorPrefix() const {
+            return "error: ";
+        }
+
+        virtual const char* GetWarningPrefix() const {
+            return "warning: ";
+        }
     };
 
 } // end namespace Catch
@@ -4601,6 +4644,7 @@ namespace Catch {
 namespace Catch {
 
     INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "msvc", MsvcReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
