@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-23 08:24:23.434402
+ *  Generated: 2012-07-28 20:22:25.519628
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3650,6 +3650,8 @@ namespace Catch {
                 std::stringstream ss;
                 ss << cmd[0];
                 ss >> threshold;
+                if( ss.fail() || threshold <= 0 )
+                    cmd.raiseError( "threshold must be a number greater than zero" );
             }
             config.cutoff = threshold;
         }

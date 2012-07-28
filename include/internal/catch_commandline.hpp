@@ -153,7 +153,7 @@ namespace Catch {
                 cmd.raiseError( "Expected a name" );
             config.name = cmd[0];
         }
-        
+
         if( Command cmd = parser.find( "-a", "--abort" ) ) {
             if( cmd.argsCount() > 1 )
                 cmd.raiseError( "Only accepts 0-1 arguments" );
@@ -162,6 +162,8 @@ namespace Catch {
                 std::stringstream ss;
                 ss << cmd[0];
                 ss >> threshold;
+                if( ss.fail() || threshold <= 0 )
+                    cmd.raiseError( "threshold must be a number greater than zero" );
             }
             config.cutoff = threshold;
         }

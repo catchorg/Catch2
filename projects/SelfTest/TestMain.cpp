@@ -68,6 +68,7 @@ template<size_t size>
 std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::ConfigData& config ) {
     try {
         Catch::parseIntoConfig( Catch::CommandParser( size, argv ), config );
+        FAIL( "expected exception" );
     }
     catch( std::exception& ex ) {
         return ex.what();
@@ -179,7 +180,15 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
 
             REQUIRE( config.cutoff == 2 );
         }
-        SECTION( "-a/error", "cutoff only takes one argument" ) {
+        SECTION( "-a/error/0", "" ) {
+            const char* argv[] = { "test", "-a", "0" };
+            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" ) );
+        }
+        SECTION( "-a/error/non numeric", "" ) {
+            const char* argv[] = { "test", "-a", "oops" };
+            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" ) );
+        }
+        SECTION( "-a/error/two args", "cutoff only takes one argument" ) {
             const char* argv[] = { "test", "-a", "1", "2" };
             REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "accepts" ) );
         }
