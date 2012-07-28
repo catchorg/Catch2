@@ -36,6 +36,12 @@ namespace Catch {
         
         Ptr<IReporter> reporter = getCurrentContext().getReporterRegistry().create( reporterName, reporterConfig );
 
+        if( !reporter )
+        {
+            std::cerr << "No reporter registered with name: " << reporterName << "'" << std::endl;
+            return (std::numeric_limits<int>::max)();
+        }
+        
         if( !config.data().stream.empty() ) {
             if( config.data().stream[0] == '%' )
                 config.useStream( config.data().stream.substr( 1 ) );

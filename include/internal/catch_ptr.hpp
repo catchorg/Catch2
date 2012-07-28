@@ -20,10 +20,12 @@ namespace Catch {
     public:
         Ptr() : m_p( NULL ){}
         Ptr( T* p ) : m_p( p ){
-            m_p->addRef();
+            if( m_p )
+                m_p->addRef();
         }
         Ptr( const Ptr& other ) : m_p( other.m_p ){
-            m_p->addRef();
+            if( m_p )
+                m_p->addRef();
         }
         ~Ptr(){
             if( m_p )
@@ -62,6 +64,9 @@ namespace Catch {
         }
         const T* operator->() const{
             return m_p;
+        }
+        bool operator !() const {
+            return m_p == NULL;
         }
         
     private:

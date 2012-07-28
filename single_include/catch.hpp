@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-28 20:22:25.519628
+ *  Generated: 2012-07-28 20:36:23.213113
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -196,10 +196,12 @@ namespace Catch {
     public:
         Ptr() : m_p( NULL ){}
         Ptr( T* p ) : m_p( p ){
-            m_p->addRef();
+            if( m_p )
+                m_p->addRef();
         }
         Ptr( const Ptr& other ) : m_p( other.m_p ){
-            m_p->addRef();
+            if( m_p )
+                m_p->addRef();
         }
         ~Ptr(){
             if( m_p )
@@ -238,6 +240,9 @@ namespace Catch {
         }
         const T* operator->() const{
             return m_p;
+        }
+        bool operator !() const {
+            return m_p == NULL;
         }
 
     private:
@@ -4615,6 +4620,12 @@ namespace Catch {
         ReporterConfig reporterConfig( config.getName(), config.stream(), config.includeSuccessfulResults() );
 
         Ptr<IReporter> reporter = getCurrentContext().getReporterRegistry().create( reporterName, reporterConfig );
+
+        if( !reporter )
+        {
+            std::cerr << "No reporter registered with name: " << reporterName << "'" << std::endl;
+            return (std::numeric_limits<int>::max)();
+        }
 
         if( !config.data().stream.empty() ) {
             if( config.data().stream[0] == '%' )
