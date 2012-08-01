@@ -8,7 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 
-#import <Foundation/Foundation.h>
+#include "catch_objc_arc.hpp"
+
 #import <objc/runtime.h>
 
 #include <string>
@@ -17,38 +18,6 @@
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
 #include "internal/catch_test_case_info.hpp"
-
-#ifdef __has_feature
-#define CATCH_ARC_ENABLED __has_feature(objc_arc)
-#else
-#define CATCH_ARC_ENABLED 0
-#endif
-
-void arcSafeRelease( NSObject* obj );
-id performOptionalSelector( id obj, SEL sel );
-
-#if !CATCH_ARC_ENABLED
-    inline void arcSafeRelease( NSObject* obj ) {
-        [obj release];
-    }
-    inline id performOptionalSelector( id obj, SEL sel ) {
-        if( [obj respondsToSelector: sel] )
-            return [obj performSelector: sel];
-        return nil;
-    }
-    #define CATCH_UNSAFE_UNRETAINED
-#else
-    inline void arcSafeRelease( NSObject* ){}
-    inline id performOptionalSelector( id obj, SEL sel ) {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        if( [obj respondsToSelector: sel] )
-            return [obj performSelector: sel];
-    #pragma clang diagnostic pop     
-        return nil;
-    }
-    #define CATCH_UNSAFE_UNRETAINED __unsafe_unretained
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
@@ -147,10 +116,6 @@ namespace Catch {
         return noTestMethods;
     }
     
-    inline std::string toString( NSString* const& nsstring ) {
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
-    }
-    
     namespace Matchers {
         namespace Impl {
         namespace NSStringMatchers {
@@ -161,7 +126,7 @@ namespace Catch {
                     arcSafeRelease( m_substr );
                 }
                 
-                NSString* m_substr;            
+                NSString* m_substr;
             };
             
             struct Equals : StringHolder {

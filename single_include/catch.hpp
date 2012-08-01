@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-07-28 20:36:23.213113
+ *  Generated: 2012-08-01 08:15:06.796335
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -553,6 +553,47 @@ private:
 
 #include <sstream>
 
+#ifdef __OBJC__
+// #included from: catch_objc_arc.hpp
+
+#import <Foundation/Foundation.h>
+
+#ifdef __has_feature
+#define CATCH_ARC_ENABLED __has_feature(objc_arc)
+#else
+#define CATCH_ARC_ENABLED 0
+#endif
+
+void arcSafeRelease( NSObject* obj );
+id performOptionalSelector( id obj, SEL sel );
+
+#if !CATCH_ARC_ENABLED
+inline void arcSafeRelease( NSObject* obj ) {
+    [obj release];
+}
+inline id performOptionalSelector( id obj, SEL sel ) {
+    if( [obj respondsToSelector: sel] )
+        return [obj performSelector: sel];
+    return nil;
+}
+#define CATCH_UNSAFE_UNRETAINED
+#define CATCH_ARC_STRONG
+#else
+inline void arcSafeRelease( NSObject* ){}
+inline id performOptionalSelector( id obj, SEL sel ) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    if( [obj respondsToSelector: sel] )
+        return [obj performSelector: sel];
+#pragma clang diagnostic pop
+    return nil;
+}
+#define CATCH_UNSAFE_UNRETAINED __unsafe_unretained
+#define CATCH_ARC_STRONG __strong
+#endif
+
+#endif
+
 namespace Catch {
 namespace Detail {
 
@@ -671,6 +712,21 @@ inline std::string toString( signed char value ) {
 inline std::string toString( std::nullptr_t ) {
     return "nullptr";
 }
+#endif
+
+#ifdef __OBJC__
+    //    inline std::string toString( NSString* const& nsstring ) {
+    //        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    //    }
+    inline std::string toString( NSString const * const& nsstring ) {
+        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    }
+    inline std::string toString( NSString * CATCH_ARC_STRONG const& nsstring ) {
+        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    }
+    inline std::string toString( NSObject* const& nsObject ) {
+        return toString( [nsObject description] );
+    }
 #endif
 
 } // end namespace Catch
@@ -2084,7 +2140,6 @@ namespace Catch {
 #ifdef __OBJC__
 // #included from: internal/catch_objc.hpp
 
-#import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 
 #include <string>
@@ -2092,38 +2147,6 @@ namespace Catch {
 // NB. Any general catch headers included here must be included
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
-
-#ifdef __has_feature
-#define CATCH_ARC_ENABLED __has_feature(objc_arc)
-#else
-#define CATCH_ARC_ENABLED 0
-#endif
-
-void arcSafeRelease( NSObject* obj );
-id performOptionalSelector( id obj, SEL sel );
-
-#if !CATCH_ARC_ENABLED
-    inline void arcSafeRelease( NSObject* obj ) {
-        [obj release];
-    }
-    inline id performOptionalSelector( id obj, SEL sel ) {
-        if( [obj respondsToSelector: sel] )
-            return [obj performSelector: sel];
-        return nil;
-    }
-    #define CATCH_UNSAFE_UNRETAINED
-#else
-    inline void arcSafeRelease( NSObject* ){}
-    inline id performOptionalSelector( id obj, SEL sel ) {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        if( [obj respondsToSelector: sel] )
-            return [obj performSelector: sel];
-    #pragma clang diagnostic pop
-        return nil;
-    }
-    #define CATCH_UNSAFE_UNRETAINED __unsafe_unretained
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
@@ -2220,13 +2243,6 @@ namespace Catch {
             }
         }
         return noTestMethods;
-    }
-
-    inline std::string toString( NSString* const& nsstring ) {
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
-    }
-    inline std::string toString( NSObject* const& nsObject ) {
-        return toString( [nsObject description] );
     }
 
     namespace Matchers {

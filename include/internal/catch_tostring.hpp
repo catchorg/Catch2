@@ -11,6 +11,10 @@
 #include "catch_common.h"
 #include <sstream>
 
+#ifdef __OBJC__
+#include "catch_objc_arc.hpp"
+#endif
+
 namespace Catch {
 namespace Detail {
 
@@ -129,6 +133,21 @@ inline std::string toString( signed char value ) {
 inline std::string toString( std::nullptr_t ) {
     return "nullptr";
 }
+#endif
+
+#ifdef __OBJC__
+    //    inline std::string toString( NSString* const& nsstring ) {
+    //        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    //    }
+    inline std::string toString( NSString const * const& nsstring ) {
+        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    }
+    inline std::string toString( NSString * CATCH_ARC_STRONG const& nsstring ) {
+        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+    }
+    inline std::string toString( NSObject* const& nsObject ) {
+        return toString( [nsObject description] );
+    }
 #endif
 
 } // end namespace Catch

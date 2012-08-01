@@ -68,7 +68,7 @@ void useObject( const T* object ){}
 
 OC_TEST_CASE( "OCTest/matchers", "Matches work with OC types (NSString so far)" )
 {
-    REQUIRE_THAT( @"This is a string", Equals( @"This is a string" ) );
+    REQUIRE_THAT( @"This is a string", Equals( @"This isnt a string" ) );
     REQUIRE_THAT( @"This is a string", Contains( @"is a" ) );
     REQUIRE_THAT( @"This is a string", StartsWith( @"This" ) );
     REQUIRE_THAT( @"This is a string", EndsWith( @"string" ) );
