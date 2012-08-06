@@ -38,7 +38,7 @@ namespace Catch {
 
         if( !reporter )
         {
-            std::cerr << "No reporter registered with name: " << reporterName << "'" << std::endl;
+            std::cerr << "No reporter registered with name: '" << reporterName << "'" << std::endl;
             return (std::numeric_limits<int>::max)();
         }
         
