@@ -34,7 +34,7 @@ namespace Catch {
             
         ReporterConfig reporterConfig( config.getName(), config.stream(), config.includeSuccessfulResults() );
         
-        Ptr<IReporter> reporter = getCurrentContext().getReporterRegistry().create( reporterName, reporterConfig );
+        Ptr<IReporter> reporter = getStatics().getReporterRegistry().create( reporterName, reporterConfig );
 
         if( !reporter )
         {
@@ -87,7 +87,7 @@ namespace Catch {
             }
             result = static_cast<int>( runner.getTotals().assertions.failed );
         }
-        Catch::Context::cleanUp();
+        Catch::cleanUp();
         return result;
     }
 
@@ -124,7 +124,7 @@ namespace Catch {
                     cmd.raiseError( "Does not accept arguments" );
 
                 showHelp( argv[0] );
-                Catch::Context::cleanUp();        
+                Catch::cleanUp();        
                 return 0;
             }
         
@@ -133,7 +133,7 @@ namespace Catch {
         catch( std::exception& ex ) {
             std::cerr << ex.what() << "\n\nUsage: ...\n\n";
             showUsage( std::cerr );
-            Catch::Context::cleanUp();
+            Catch::cleanUp();
             return (std::numeric_limits<int>::max)();
         }
                 

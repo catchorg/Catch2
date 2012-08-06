@@ -62,7 +62,6 @@ namespace Catch
 
         virtual ~IReporterRegistry() {}
         virtual IReporter* create( const std::string& name, const ReporterConfig& config ) const = 0;        
-        virtual void registerReporter( const std::string& name, IReporterFactory* factory ) = 0;        
         virtual const FactoryMap& getFactories() const = 0;
     };
     

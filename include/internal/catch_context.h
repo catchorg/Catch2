@@ -19,9 +19,7 @@ namespace Catch {
 
     class TestCaseInfo;
     struct IResultCapture;
-    struct ITestCaseRegistry;
     struct IRunner;
-    struct IExceptionTranslatorRegistry;
     class GeneratorsForTest;
 
     class StreamBufBase : public std::streambuf{};
@@ -32,9 +30,6 @@ namespace Catch {
         
         virtual IResultCapture& getResultCapture() = 0;
         virtual IRunner& getRunner() = 0;
-        virtual IReporterRegistry& getReporterRegistry() = 0;
-        virtual ITestCaseRegistry& getTestCaseRegistry() = 0;
-        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
         virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) = 0;
         virtual bool advanceGeneratorsForCurrentTest() = 0;
         virtual const IConfig* getConfig() const = 0;
@@ -59,9 +54,6 @@ namespace Catch {
     public: // IContext
         virtual IResultCapture& getResultCapture();
         virtual IRunner& getRunner();
-        virtual IReporterRegistry& getReporterRegistry();
-        virtual ITestCaseRegistry& getTestCaseRegistry();
-        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry();
         virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize );
         virtual bool advanceGeneratorsForCurrentTest();
         virtual const IConfig* getConfig() const;
@@ -82,9 +74,6 @@ namespace Catch {
         GeneratorsForTest& getGeneratorsForCurrentTest();
 
     private:        
-        std::auto_ptr<IReporterRegistry> m_reporterRegistry;
-        std::auto_ptr<ITestCaseRegistry> m_testCaseRegistry;
-        std::auto_ptr<IExceptionTranslatorRegistry> m_exceptionTranslatorRegistry;
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
         const IConfig* m_config;

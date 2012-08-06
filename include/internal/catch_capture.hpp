@@ -19,30 +19,6 @@ namespace Catch {
 
 struct TestFailureException{};
 
-class NotImplementedException : public std::exception
-{
-public:
-    NotImplementedException( const SourceLineInfo& lineInfo )
-    :   m_lineInfo( lineInfo ) {
-        std::ostringstream oss;
-        oss << lineInfo << "function ";
-        if( !lineInfo.function.empty() )
-            oss << lineInfo.function << " ";
-        oss << "not implemented";
-        m_what = oss.str();
-    }
-    
-    virtual ~NotImplementedException() throw() {}
-    
-    virtual const char* what() const throw() {
-        return m_what.c_str();
-    }
-    
-private:
-    std::string m_what;
-    SourceLineInfo m_lineInfo;
-};
-
 class ScopedInfo {
 public:
     ScopedInfo() : m_oss() {
@@ -88,7 +64,7 @@ inline bool isTrue( bool value ){ return value; }
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getStatics().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
         throw; \
     } } while( Catch::isTrue( false ) )
 
@@ -109,7 +85,7 @@ inline bool isTrue( bool value ){ return value; }
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     } \
     catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getStatics().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -131,7 +107,7 @@ inline bool isTrue( bool value ){ return value; }
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, stopOnFailure, macroName ) \
     INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getStatics().getExceptionTranslatorRegistry() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -150,11 +126,8 @@ inline bool isTrue( bool value ){ return value; }
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::getCurrentContext().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::getStatics().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
-
-///////////////////////////////////////////////////////////////////////////////
-#define CATCH_NOT_IMPLEMENTED throw Catch::NotImplementedException( CATCH_INTERNAL_LINEINFO )
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED

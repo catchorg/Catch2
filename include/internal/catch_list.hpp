@@ -14,11 +14,10 @@
 namespace Catch {
     inline int List( Config& config ) {
         
-        IContext& context = getCurrentContext();
         if( config.listWhat() & List::Reports ) {
             std::cout << "Available reports:\n";
-            IReporterRegistry::FactoryMap::const_iterator it = context.getReporterRegistry().getFactories().begin();
-            IReporterRegistry::FactoryMap::const_iterator itEnd = context.getReporterRegistry().getFactories().end();
+            IReporterRegistry::FactoryMap::const_iterator it = getStatics().getReporterRegistry().getFactories().begin();
+            IReporterRegistry::FactoryMap::const_iterator itEnd = getStatics().getReporterRegistry().getFactories().end();
             for(; it != itEnd; ++it ) {
                 // !TBD: consider listAs()
                 std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
@@ -28,8 +27,8 @@ namespace Catch {
         
         if( config.listWhat() & List::Tests ) {
             std::cout << "Available tests:\n";
-            std::vector<TestCaseInfo>::const_iterator it = context.getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = context.getTestCaseRegistry().getAllTests().end();
+            std::vector<TestCaseInfo>::const_iterator it = getStatics().getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = getStatics().getTestCaseRegistry().getAllTests().end();
             for(; it != itEnd; ++it ) {
                 // !TBD: consider listAs()
                 std::cout << "\t" << it->getName() << "\n\t\t '" << it->getDescription() << "'\n";

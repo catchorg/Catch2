@@ -17,12 +17,12 @@
 namespace Catch {
 
     class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry {
-
+    public:
         ~ExceptionTranslatorRegistry() {
             deleteAll( m_translators );
         }
 
-        virtual void registerTranslator( IExceptionTranslator* translator ) {
+        virtual void registerTranslator( const IExceptionTranslator* translator ) {
             m_translators.push_back( translator );
         }
         
@@ -54,7 +54,7 @@ namespace Catch {
             }
         }
         
-        std::string tryTranslators( std::vector<IExceptionTranslator*>::const_iterator it ) const {
+        std::string tryTranslators( std::vector<const IExceptionTranslator*>::const_iterator it ) const {
             if( it == m_translators.end() )
                 return "Unknown exception";
             
@@ -67,7 +67,7 @@ namespace Catch {
         }
         
     private:
-        std::vector<IExceptionTranslator*> m_translators;
+        std::vector<const IExceptionTranslator*> m_translators;
     };
 }
 

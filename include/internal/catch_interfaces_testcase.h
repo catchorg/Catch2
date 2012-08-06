@@ -23,9 +23,8 @@ namespace Catch {
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry(){}
-        virtual void registerTest( const TestCaseInfo& testInfo ) = 0;        
         virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
-        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) = 0;
+        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
     };
 }
 

@@ -44,7 +44,7 @@ namespace Catch {
             return m_functionsInOrder;
         }
 
-        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) {
+        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const {
             TestSpec testSpec( rawTestSpec );
             
             std::vector<TestCaseInfo> testList;
@@ -109,7 +109,7 @@ namespace Catch {
                                     const char* name, 
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
-        getCurrentContext().getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+        getStaticRegistries().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
     }
     
 } // end namespace Catch

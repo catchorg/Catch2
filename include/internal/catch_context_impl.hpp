@@ -5,14 +5,11 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#include "catch_test_case_registry_impl.hpp"
 #include "catch_runner_impl.hpp"
 #include "catch_generators_impl.hpp"
 #include "catch_console_colour_impl.hpp"
 
-#include "catch_exception_translator_registry.hpp"
 #include "catch_context.h"
-#include "catch_reporter_registry.hpp"
 #include "catch_stream.hpp"
 
 namespace Catch {
@@ -30,10 +27,7 @@ namespace Catch {
     }
  
     Context::Context()
-    :   m_reporterRegistry( new ReporterRegistry ),
-        m_testCaseRegistry( new TestRegistry ),
-        m_exceptionTranslatorRegistry( new ExceptionTranslatorRegistry ),
-        m_config( NULL )
+    :   m_config( NULL )
     {}
 
     void Context::cleanUp() {
@@ -62,18 +56,6 @@ namespace Catch {
 
     IRunner& Context::getRunner() {
         return *m_runner;
-    }
-    
-    IReporterRegistry& Context::getReporterRegistry() {
-        return *m_reporterRegistry.get();
-    }
-
-    ITestCaseRegistry& Context::getTestCaseRegistry() {
-        return *m_testCaseRegistry.get();
-    }
-    
-    IExceptionTranslatorRegistry& Context::getExceptionTranslatorRegistry() {
-        return *m_exceptionTranslatorRegistry.get();
     }
     
     std::streambuf* Context::createStreamBuf( const std::string& streamName ) {

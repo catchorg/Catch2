@@ -1,14 +1,35 @@
-//
-//  catch_notimplemented_exception.h
-//  CatchSelfTest
-//
-//  Created by Phil Nash on 05/08/2012.
-//
-//
+/*
+ *  Created by Phil on 5/8/2012.
+ *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ */
+#ifndef TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_H_INCLUDED
+#define TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_H_INCLUDED
 
-#ifndef CatchSelfTest_catch_notimplemented_exception_h
-#define CatchSelfTest_catch_notimplemented_exception_h
+#include "catch_common.h"
+#include <ostream>
 
+namespace Catch {
 
+    class NotImplementedException : public std::exception
+    {
+    public:
+        NotImplementedException( const SourceLineInfo& lineInfo );
 
-#endif
+        virtual ~NotImplementedException() throw() {}
+
+        virtual const char* what() const throw();
+
+    private:
+        std::string m_what;
+        SourceLineInfo m_lineInfo;
+    };
+
+} // end namespace Catch
+
+///////////////////////////////////////////////////////////////////////////////
+#define CATCH_NOT_IMPLEMENTED throw Catch::NotImplementedException( CATCH_INTERNAL_LINEINFO )
+
+#endif // TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_H_INCLUDED

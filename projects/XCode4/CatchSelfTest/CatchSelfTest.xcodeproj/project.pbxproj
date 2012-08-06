@@ -35,6 +35,11 @@
 
 /* Begin PBXFileReference section */
 		4A3D7DD01503869D005F9203 /* catch_matchers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_matchers.hpp; sourceTree = "<group>"; };
+		4A4B0F9715CE6CFB00AE2392 /* catch_static_registries_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_static_registries_impl.hpp; sourceTree = "<group>"; };
+		4A4B0F9915CE6EC100AE2392 /* catch_interfaces_static_registries.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_static_registries.h; sourceTree = "<group>"; };
+		4A4B0F9A15CEF84800AE2392 /* catch_notimplemented_exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_notimplemented_exception.h; sourceTree = "<group>"; };
+		4A4B0F9B15CEF8C400AE2392 /* catch_notimplemented_exception.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_notimplemented_exception.hpp; sourceTree = "<group>"; };
+		4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_impl.hpp; sourceTree = "<group>"; };
 		4A6D0C20149B3D3B00DB3EAA /* CatchSelfTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CatchSelfTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A6D0C26149B3D3B00DB3EAA /* CatchSelfTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CatchSelfTest.1; sourceTree = "<group>"; };
 		4A6D0C2D149B3D9E00DB3EAA /* ApproxTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ApproxTests.cpp; path = ../../../SelfTest/ApproxTests.cpp; sourceTree = "<group>"; };
@@ -196,11 +201,14 @@
 		4AC91CB4155B9EBF00DC5117 /* impl */ = {
 			isa = PBXGroup;
 			children = (
+				4A4B0F9715CE6CFB00AE2392 /* catch_static_registries_impl.hpp */,
 				4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */,
 				4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */,
 				4A6D0C5E149B3E3D00DB3EAA /* catch_runner_impl.hpp */,
 				4A6D0C62149B3E3D00DB3EAA /* catch_test_case_registry_impl.hpp */,
 				4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */,
+				4A4B0F9B15CEF8C400AE2392 /* catch_notimplemented_exception.hpp */,
+				4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */,
 			);
 			name = impl;
 			sourceTree = "<group>";
@@ -220,6 +228,7 @@
 				4A6D0C47149B3E3D00DB3EAA /* catch_capture.hpp */,
 				4AC91CCE155CF02800DC5117 /* catch_expression.hpp */,
 				4AC91CD0155D8DA600DC5117 /* catch_expression_builder.hpp */,
+				4A4B0F9A15CEF84800AE2392 /* catch_notimplemented_exception.h */,
 			);
 			name = Assertions;
 			sourceTree = "<group>";
@@ -261,6 +270,7 @@
 		4AC91CC1155C387400DC5117 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				4A4B0F9915CE6EC100AE2392 /* catch_interfaces_static_registries.h */,
 				4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */,
 				4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */,
 				4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */,
