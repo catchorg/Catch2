@@ -6,8 +6,6 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 #include "catch_runner_impl.hpp"
-#include "catch_generators_impl.hpp"
-#include "catch_console_colour_impl.hpp"
 
 #include "catch_context.h"
 #include "catch_stream.hpp"
@@ -66,21 +64,21 @@ namespace Catch {
         throw std::domain_error( "Unknown stream: " + streamName );
     }
 
-    GeneratorsForTest* Context::findGeneratorsForCurrentTest() {
+    IGeneratorsForTest* Context::findGeneratorsForCurrentTest() {
         std::string testName = getResultCapture().getCurrentTestName();
         
-        std::map<std::string, GeneratorsForTest*>::const_iterator it = 
+        std::map<std::string, IGeneratorsForTest*>::const_iterator it =
             m_generatorsByTestName.find( testName );
         return it != m_generatorsByTestName.end()
             ? it->second
             : NULL;
     }
     
-    GeneratorsForTest& Context::getGeneratorsForCurrentTest() {
-        GeneratorsForTest* generators = findGeneratorsForCurrentTest();
+    IGeneratorsForTest& Context::getGeneratorsForCurrentTest() {
+        IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
         if( !generators ) {
             std::string testName = getResultCapture().getCurrentTestName();
-            generators = new GeneratorsForTest();
+            generators = createGeneratorsForTest();
             m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
         }
         return *generators;
@@ -93,7 +91,7 @@ namespace Catch {
     }
 
     bool Context::advanceGeneratorsForCurrentTest() {
-        GeneratorsForTest* generators = findGeneratorsForCurrentTest();
+        IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
         return generators && generators->moveNext();
     }
 }

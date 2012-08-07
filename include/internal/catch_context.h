@@ -10,6 +10,7 @@
 
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_config.h"
+#include "catch_interfaces_generators.h"
 
 #include <memory>
 #include <vector>
@@ -20,7 +21,7 @@ namespace Catch {
     class TestCaseInfo;
     struct IResultCapture;
     struct IRunner;
-    class GeneratorsForTest;
+    struct IGeneratorsForTest;
 
     class StreamBufBase : public std::streambuf{};
     
@@ -70,14 +71,14 @@ namespace Catch {
         friend IMutableContext& getCurrentMutableContext();
 
     private:
-        GeneratorsForTest* findGeneratorsForCurrentTest();        
-        GeneratorsForTest& getGeneratorsForCurrentTest();
+        IGeneratorsForTest* findGeneratorsForCurrentTest();
+        IGeneratorsForTest& getGeneratorsForCurrentTest();
 
     private:        
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
         const IConfig* m_config;
-        std::map<std::string, GeneratorsForTest*> m_generatorsByTestName;
+        std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
 }
 

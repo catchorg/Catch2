@@ -8,4 +8,7 @@
 
 #include "catch_registry_hub.hpp"
 #include "catch_notimplemented_exception.hpp"
+#include "catch_context_impl.hpp"
+#include "catch_console_colour_impl.hpp"
+#include "catch_generators_impl.hpp"
 // !TBD... migrate all impl headers here
