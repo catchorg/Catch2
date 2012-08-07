@@ -23,23 +23,23 @@ namespace Catch {
     struct IExceptionTranslatorRegistry;
     struct IExceptionTranslator;
 
-    struct IStatics {
-        virtual ~IStatics(){}
+    struct IRegistryHub {
+        virtual ~IRegistryHub(){}
 
         virtual const IReporterRegistry& getReporterRegistry() const = 0;
         virtual const ITestCaseRegistry& getTestCaseRegistry() const = 0;
         virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
     };
 
-    struct IStaticRegistries {
-        virtual ~IStaticRegistries(){}
+    struct IMutableRegistryHub {
+        virtual ~IMutableRegistryHub(){}
         virtual void registerReporter( const std::string& name, IReporterFactory* factory ) = 0;
         virtual void registerTest( const TestCaseInfo& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
     };
 
-    IStatics& getStatics();
-    IStaticRegistries& getStaticRegistries();
+    IRegistryHub& getRegistryHub();
+    IMutableRegistryHub& getMutableRegistryHub();
     void cleanUp();
 }
 

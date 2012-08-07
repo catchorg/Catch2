@@ -109,7 +109,7 @@ namespace Catch {
                                     const char* name, 
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
-        getStaticRegistries().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+        getMutableRegistryHub().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
     }
     
 } // end namespace Catch

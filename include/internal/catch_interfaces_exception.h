@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
 
 #include <string>
-#include "catch_interfaces_static_registries.h"
+#include "catch_interfaces_registry_hub.h"
                                               
 namespace Catch {
     
@@ -51,7 +51,7 @@ namespace Catch {
     public:
         template<typename T>
         ExceptionTranslatorRegistrar( std::string(*translateFunction)( T& ) ) {
-            getStaticRegistries().registerTranslator
+            getMutableRegistryHub().registerTranslator
                 ( new ExceptionTranslator<T>( translateFunction ) );
         }
     };

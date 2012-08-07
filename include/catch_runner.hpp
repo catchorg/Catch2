@@ -34,7 +34,7 @@ namespace Catch {
             
         ReporterConfig reporterConfig( config.getName(), config.stream(), config.includeSuccessfulResults() );
         
-        Ptr<IReporter> reporter = getStatics().getReporterRegistry().create( reporterName, reporterConfig );
+        Ptr<IReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
 
         if( !reporter )
         {

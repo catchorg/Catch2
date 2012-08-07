@@ -5,7 +5,7 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#include "catch_interfaces_static_registries.h"
+#include "catch_interfaces_registry_hub.h"
 
 #include "catch_test_case_registry_impl.hpp"
 #include "catch_reporter_registry.hpp"
@@ -15,13 +15,13 @@ namespace Catch {
 
     namespace {
         
-        class StaticRegistries : public IStatics, public IStaticRegistries {
+        class RegistryHub : public IRegistryHub, public IMutableRegistryHub {
 
-            StaticRegistries( const StaticRegistries& );
-            void operator=( const StaticRegistries& );
+            RegistryHub( const RegistryHub& );
+            void operator=( const RegistryHub& );
 
-        public: // IStatics
-            StaticRegistries() {
+        public: // IRegistryHub
+            RegistryHub() {
             }
             virtual const IReporterRegistry& getReporterRegistry() const {
                 return m_reporterRegistry;
@@ -33,7 +33,7 @@ namespace Catch {
                 return m_exceptionTranslatorRegistry;
             }
 
-        public: // IStaticRegistries
+        public: // IMutableRegistryHub
             virtual void registerReporter( const std::string& name, IReporterFactory* factory ) {
                 m_reporterRegistry.registerReporter( name, factory );
             }
@@ -50,23 +50,24 @@ namespace Catch {
             ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
         };
 
-        inline StaticRegistries*& getTheStaticRegistries() {
-            static StaticRegistries* registries = NULL;
-            if( !registries )
-                registries = new StaticRegistries();
-            return registries;
+        // Single, global, instance
+        inline RegistryHub*& getTheRegistryHub() {
+            static RegistryHub* theRegistryHub = NULL;
+            if( !theRegistryHub )
+                theRegistryHub = new RegistryHub();
+            return theRegistryHub;
         }
     }
 
-    IStatics& getStatics() {
-        return *getTheStaticRegistries();
+    IRegistryHub& getRegistryHub() {
+        return *getTheRegistryHub();
     }
-    IStaticRegistries& getStaticRegistries() {
-        return *getTheStaticRegistries();
+    IMutableRegistryHub& getMutableRegistryHub() {
+        return *getTheRegistryHub();
     }
     void cleanUp() {
-        delete getTheStaticRegistries();
-        getTheStaticRegistries() = NULL;
+        delete getTheRegistryHub();
+        getTheRegistryHub() = NULL;
         Context::cleanUp();
     }
 

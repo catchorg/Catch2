@@ -6,6 +6,6 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_static_registries_impl.hpp"
+#include "catch_registry_hub.hpp"
 #include "catch_notimplemented_exception.hpp"
 // !TBD... migrate all impl headers here

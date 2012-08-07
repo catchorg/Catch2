@@ -80,7 +80,7 @@ namespace Catch {
         
         virtual void runAll( bool runHiddenTests = false ) {
             m_reporter->StartGroup( "" );
-            const std::vector<TestCaseInfo>& allTests = getStatics().getTestCaseRegistry().getAllTests();
+            const std::vector<TestCaseInfo>& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( runHiddenTests || !allTests[i].isHidden() ) {
                     if( aborting() ) {
@@ -100,7 +100,7 @@ namespace Catch {
 
             TestSpec testSpec( rawTestSpec );
             
-            const std::vector<TestCaseInfo>& allTests = getStatics().getTestCaseRegistry().getAllTests();
+            const std::vector<TestCaseInfo>& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
             std::size_t testsRun = 0;
             for( std::size_t i=0; i < allTests.size(); ++i ) {
                 if( testSpec.matches( allTests[i].getName() ) ) {
@@ -282,7 +282,7 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                acceptMessage( getStatics().getExceptionTranslatorRegistry().translateActiveException() );
+                acceptMessage( getRegistryHub().getExceptionTranslatorRegistry().translateActiveException() );
                 acceptResult( ResultWas::ThrewException );
             }
             m_info.clear();

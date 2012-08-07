@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
 
 #include "catch.hpp"
-#include "catch_interfaces_static_registries.h"
+#include "catch_interfaces_registry_hub.h"
 
 #include "set"
 
@@ -146,7 +146,7 @@ namespace Catch {
         
         static void runMatching(    const std::string& testSpec, 
                                     Expected::Result expectedResult ) {
-            forEach(    getStatics().getTestCaseRegistry().getMatchingTestCases( testSpec ), 
+            forEach(    getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec ), 
                         MetaTestRunner( expectedResult ) );
         }
         
