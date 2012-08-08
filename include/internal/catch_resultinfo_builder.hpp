@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_RESULTINFO_BUILDER_HPP_INCLUDED
 
 #include "catch_tostring.hpp"
-#include "catch_resultinfo.hpp"
+#include "catch_resultinfo.h"
 #include "catch_result_type.h"
 #include "catch_evaluate.hpp"
 #include "catch_common.h"

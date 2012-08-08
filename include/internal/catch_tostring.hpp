@@ -136,9 +136,6 @@ inline std::string toString( std::nullptr_t ) {
 #endif
 
 #ifdef __OBJC__
-    //    inline std::string toString( NSString* const& nsstring ) {
-    //        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
-    //    }
     inline std::string toString( NSString const * const& nsstring ) {
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }

@@ -11,7 +11,7 @@
 #include "catch_expression.hpp"
 #include "catch_resultinfo_builder.hpp"
 #include "catch_tostring.hpp"
-#include "catch_resultinfo.hpp"
+#include "catch_resultinfo.h"
 #include "catch_result_type.h"
 #include "catch_context.h"
 #include "catch_common.h"
