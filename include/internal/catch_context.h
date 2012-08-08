@@ -44,42 +44,10 @@ namespace Catch {
     };
 
     IContext& getCurrentContext();
-    IMutableContext& getCurrentMutableContext();    
+    IMutableContext& getCurrentMutableContext();
+    void cleanUpContext();
+    std::streambuf* createStreamBuf( const std::string& streamName );
 
-    class Context : public IMutableContext {
-    
-        Context();
-        Context( const Context& );
-        void operator=( const Context& );
-
-    public: // IContext
-        virtual IResultCapture& getResultCapture();
-        virtual IRunner& getRunner();
-        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize );
-        virtual bool advanceGeneratorsForCurrentTest();
-        virtual const IConfig* getConfig() const;
-
-    public: // IMutableContext
-        virtual void setResultCapture( IResultCapture* resultCapture );
-        virtual void setRunner( IRunner* runner );
-        virtual void setConfig( const IConfig* config );
-    
-    public: // Statics
-        static std::streambuf* createStreamBuf( const std::string& streamName );        
-        static void cleanUp();
-        
-        friend IMutableContext& getCurrentMutableContext();
-
-    private:
-        IGeneratorsForTest* findGeneratorsForCurrentTest();
-        IGeneratorsForTest& getGeneratorsForCurrentTest();
-
-    private:        
-        IRunner* m_runner;
-        IResultCapture* m_resultCapture;
-        const IConfig* m_config;
-        std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
-    };
 }
 
 #endif // TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED

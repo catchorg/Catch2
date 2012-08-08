@@ -68,7 +68,7 @@ namespace Catch {
     void cleanUp() {
         delete getTheRegistryHub();
         getTheRegistryHub() = NULL;
-        Context::cleanUp();
+        cleanUpContext();
     }
 
 } // end namespace Catch

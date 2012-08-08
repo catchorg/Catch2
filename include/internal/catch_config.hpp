@@ -127,7 +127,7 @@ namespace Catch {
         }        
 
         void useStream( const std::string& streamName ) {
-            std::streambuf* newBuf = Context::createStreamBuf( streamName );
+            std::streambuf* newBuf = createStreamBuf( streamName );
             setStreamBuf( newBuf );
             delete m_streambuf;
             m_streambuf = newBuf;
