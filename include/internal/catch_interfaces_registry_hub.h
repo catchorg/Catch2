@@ -5,8 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_STATIC_REGISTRIES_H_INCLUDED
-#define TWOBLUECUBES_CATCH_STATIC_REGISTRIES_H_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
+#define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_config.h"
@@ -43,4 +43,4 @@ namespace Catch {
     void cleanUp();
 }
 
-#endif // TWOBLUECUBES_CATCH_STATIC_REGISTRIES_H_INCLUDED
+#endif // TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED

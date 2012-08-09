@@ -30,7 +30,7 @@ def parseFile( path, filename ):
 					parseFile( path + headerPath + sep, headerFile )
 				else:
 					parseFile( rootPath + headerPath + sep, headerFile )
-		elif not guardParser.match( line ) and not commentParser1.match( line )and not commentParser2.match( line ):
+		elif (not guardParser.match( line ) or defineParser.match( line ) ) and not commentParser1.match( line )and not commentParser2.match( line ):
 			if blankParser.match( line ):
 				blanks = blanks + 1
 			else:

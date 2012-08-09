@@ -9,7 +9,12 @@
 #define TWOBLUECUBES_CATCH_SELF_TEST_HPP_INCLUDED
 
 #include "catch.hpp"
+
+// Use this external guard here as if we're using the single header version
+// this will already be defined
+#ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 #include "catch_interfaces_registry_hub.h"
+#endif
 
 #include "set"
 
