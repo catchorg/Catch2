@@ -25,60 +25,73 @@ namespace Catch {
     INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
-    
-    inline int Main( Config& config ) {
-    
-        std::string reporterName = config.data().reporter.empty()
-            ? "basic"
-            : config.data().reporter;
-            
-        ReporterConfig reporterConfig( config.getName(), config.stream(), config.includeSuccessfulResults() );
-        
-        Ptr<IReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
 
-        if( !reporter )
-        {
-            std::cerr << "No reporter registered with name: '" << reporterName << "'" << std::endl;
-            return (std::numeric_limits<int>::max)();
-        }
+    inline int resolveStream( Config& configWrapper ) {
+        const ConfigData& config = configWrapper.data();
         
-        if( !config.data().stream.empty() ) {
-            if( config.data().stream[0] == '%' )
-                config.useStream( config.data().stream.substr( 1 ) );
+        if( !config.stream.empty() ) {
+            if( config.stream[0] == '%' )
+                configWrapper.useStream( config.stream.substr( 1 ) );
             else
-                config.setFilename( config.data().stream );
+                configWrapper.setFilename( config.stream );
         }
-
-        // Handle list request
-        if( config.listWhat() != List::None )
-            return List( config );
-        
         // Open output file, if specified
         std::ofstream ofs;
-        if( !config.getFilename().empty() ) {
-            ofs.open( config.getFilename().c_str() );
+        if( !config.outputFilename.empty() ) {
+            ofs.open( config.outputFilename.c_str() );
             if( ofs.fail() ) {
-                std::cerr << "Unable to open file: '" << config.getFilename() << "'" << std::endl;
+                std::cerr << "Unable to open file: '" << config.outputFilename << "'" << std::endl;
                 return (std::numeric_limits<int>::max)();
             }
-            config.setStreamBuf( ofs.rdbuf() );
+            configWrapper.setStreamBuf( ofs.rdbuf() );
         }
+        return 0;
+    }
+    
+    inline Ptr<IReporter> makeReporter( Config& configWrapper ) {
+        const ConfigData& config = configWrapper.data();
+        
+        std::string reporterName = config.reporter.empty()
+            ? "basic"
+            : config.reporter;
 
-        int result = 0;
+        ReporterConfig reporterConfig( config.name, configWrapper.stream(), config.includeWhichResults == Include::SuccessfulResults );
+
+        Ptr<IReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
+        if( !reporter )
+            std::cerr << "No reporter registered with name: '" << reporterName << "'" << std::endl;
+        return reporter;
+    }
+
+    inline int Main( Config& configWrapper ) {
+
+        int result = resolveStream( configWrapper );
+        if( result != 0 )
+            return result;
+
+        Ptr<IReporter> reporter = makeReporter( configWrapper );
+        if( !reporter )
+            return (std::numeric_limits<int>::max)();
+        
+        const ConfigData& config = configWrapper.data();
+
+        // Handle list request
+        if( config.listSpec != List::None )
+            return List( config );
         
         // Scope here for the Runner so it can use the context before it is cleaned-up
         {
-            Runner runner( config, reporter );
+            Runner runner( configWrapper, reporter );
 
             // Run test specs specified on the command line - or default to all
-            if( !config.testsSpecified() ) {
+            if( config.testSpecs.empty() ) {
                 runner.runAll();
             }
             else {
                 // !TBD We should get all the testcases upfront, report any missing,
                 // then just run them
-                std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
-                std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
+                std::vector<std::string>::const_iterator it = config.testSpecs.begin();
+                std::vector<std::string>::const_iterator itEnd = config.testSpecs.end();
                 for(; it != itEnd; ++it ) {
                     if( runner.runMatching( *it ) == 0 ) {
                         std::cerr << "\n[No test cases matched with: " << *it << "]" << std::endl;
