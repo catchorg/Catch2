@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
 
 #include "catch_config.hpp"
-#include "catch_runner_impl.hpp"
 
 namespace Catch {
 
@@ -42,7 +41,8 @@ namespace Catch {
         std::string name() const { return m_name; }
         std::string operator[]( std::size_t i ) const { return m_args[i]; }
         std::size_t argsCount() const { return m_args.size(); }
-        
+
+        CATCH_ATTRIBUTE_NORETURN
         void raiseError( const std::string& message ) const {
             std::ostringstream oss;
             oss << "Error while parsing " << m_name << ". " << message << ".";

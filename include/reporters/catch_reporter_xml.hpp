@@ -21,6 +21,7 @@ namespace Catch {
         static std::string getDescription() {
             return "Reports test results as an XML document";
         }
+        virtual ~XmlReporter();
         
     private: // IReporter
 
@@ -116,7 +117,6 @@ namespace Catch {
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
                 case ResultWas::DidntThrowException:
-                default:
                     break;
             }            
             if( resultInfo.hasExpression() )

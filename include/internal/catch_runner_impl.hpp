@@ -70,7 +70,7 @@ namespace Catch {
             m_reporter->StartTesting();
         }
         
-        ~Runner() {
+        virtual ~Runner() {
             m_reporter->EndTesting( m_totals );
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );

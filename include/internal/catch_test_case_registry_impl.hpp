@@ -19,6 +19,7 @@ namespace Catch {
     class TestRegistry : public ITestCaseRegistry {
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
+        virtual ~TestRegistry();
         
         virtual void registerTest( const TestCaseInfo& testInfo ) {
             if( testInfo.getName() == "" ) {
@@ -71,6 +72,7 @@ namespace Catch {
     public:
 
         FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}
+        virtual ~FreeFunctionTestCase();
         
         virtual void invoke() const {
             m_fun();

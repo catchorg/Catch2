@@ -22,7 +22,7 @@ namespace Catch {
                     const SourceLineInfo& lineInfo,
                     const char* macroName,
                    const char* message );
-        virtual ~ResultInfo();
+        ~ResultInfo();
         
         bool ok() const;
         ResultWas::OfType getResultType() const;

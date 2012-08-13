@@ -21,7 +21,7 @@ namespace Catch {
 
     struct IResultCapture {
     
-        virtual ~IResultCapture(){}
+        virtual ~IResultCapture();
         
         virtual void testEnded( const ResultInfo& result ) = 0;
         virtual bool sectionStarted(    const std::string& name, 

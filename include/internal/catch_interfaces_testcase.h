@@ -12,7 +12,7 @@
 
 namespace Catch {
     struct ITestCase {
-        virtual ~ITestCase(){}
+        virtual ~ITestCase();
         virtual void invoke () const = 0;        
         virtual ITestCase* clone() const = 0;        
         virtual bool operator == ( const ITestCase& other ) const = 0;        
@@ -22,7 +22,7 @@ namespace Catch {
     class TestCaseInfo;
 
     struct ITestCaseRegistry {
-        virtual ~ITestCaseRegistry(){}
+        virtual ~ITestCaseRegistry();
         virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
         virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
     };

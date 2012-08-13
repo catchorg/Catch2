@@ -465,14 +465,28 @@
 		4A6D0C2B149B3D3B00DB3EAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-disabled-macro-expansion",
+					"-Wno-global-constructors",
+				);
 			};
 			name = Debug;
 		};
 		4A6D0C2C149B3D3B00DB3EAA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-disabled-macro-expansion",
+					"-Wno-global-constructors",
+				);
 			};
 			name = Release;
 		};

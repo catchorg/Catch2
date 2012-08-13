@@ -23,11 +23,14 @@ namespace Catch {
     struct IRunner;
     struct IGeneratorsForTest;
 
-    class StreamBufBase : public std::streambuf{};
+    class StreamBufBase : public std::streambuf {
+    public:
+        virtual ~StreamBufBase();
+    };
     
     struct IContext
     {
-        virtual ~IContext(){}
+        virtual ~IContext();
         
         virtual IResultCapture& getResultCapture() = 0;
         virtual IRunner& getRunner() = 0;
@@ -38,6 +41,7 @@ namespace Catch {
     
     struct IMutableContext : IContext
     {
+        virtual ~IMutableContext();
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setRunner( IRunner* runner ) = 0;
         virtual void setConfig( const IConfig* config ) = 0;

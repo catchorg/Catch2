@@ -35,7 +35,7 @@ namespace Catch {
     class BasicReporter : public SharedImpl<IReporter> {
     
         struct SpanInfo {
-        
+
             SpanInfo() 
             :   emitted( false )
             {}
@@ -60,6 +60,8 @@ namespace Catch {
             m_firstSectionInTestCase( true ),
             m_aborted( false )
         {}
+
+        virtual ~BasicReporter();
         
         static std::string getDescription() {
             return "Reports test results as lines of text";
@@ -222,7 +224,6 @@ namespace Catch {
                 case ResultWas::FailureBit:
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
-                default:
                     if( !resultInfo.hasExpression() ) {
                         if( resultInfo.ok() ) {
                             TextColour colour( TextColour::Success );

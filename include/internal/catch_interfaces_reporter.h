@@ -37,7 +37,7 @@ namespace Catch
     class ResultInfo;
     
     struct IReporter : IShared {
-        virtual ~IReporter() {}        
+        virtual ~IReporter();
         virtual bool shouldRedirectStdout() const = 0;        
         virtual void StartTesting() = 0;        
         virtual void EndTesting( const Totals& totals ) = 0;        
@@ -52,7 +52,7 @@ namespace Catch
     };
     
     struct IReporterFactory {
-        virtual ~IReporterFactory() {}        
+        virtual ~IReporterFactory();
         virtual IReporter* create( const ReporterConfig& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
@@ -60,7 +60,7 @@ namespace Catch
     struct IReporterRegistry {
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
-        virtual ~IReporterRegistry() {}
+        virtual ~IReporterRegistry();
         virtual IReporter* create( const std::string& name, const ReporterConfig& config ) const = 0;        
         virtual const FactoryMap& getFactories() const = 0;
     };

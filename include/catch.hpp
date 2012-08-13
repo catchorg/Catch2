@@ -9,6 +9,12 @@
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
+#pragma clang diagnostic ignored "-Wno-global-constructors"
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+
+
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
 #include "internal/catch_test_registry.hpp"
@@ -29,7 +35,6 @@
 #endif
 
 #if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
-#include "catch_runner.hpp"
 #include "internal/catch_impl.hpp"
 #endif
 
@@ -126,5 +131,7 @@
 #define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature )
 
 using Catch::Detail::Approx;
+
+#pragma clang diagnostic pop
 
 #endif // TWOBLUECUBES_CATCH_HPP_INCLUDED

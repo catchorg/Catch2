@@ -5,6 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+#pragma clang diagnostic ignored "-Wpadded"
+
 #include "catch_self_test.hpp"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {
@@ -53,6 +55,8 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
     CHECK( runner.getTotals().assertions.passed == 2 );
     CHECK( runner.getTotals().assertions.failed == 1 );
 }
+
+#pragma clang diagnostic ignored "-Wweak-vtables"
 
 #include "../../include/internal/catch_commandline.hpp"
 #include "../../include/reporters/catch_reporter_basic.hpp"

@@ -81,7 +81,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
-    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() ATTRIBUTE_NORETURN; \
+    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() CATCH_ATTRIBUTE_NORETURN; \
     namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
     static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 

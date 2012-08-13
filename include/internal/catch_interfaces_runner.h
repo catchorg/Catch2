@@ -16,7 +16,7 @@ namespace Catch {
     class TestCaseInfo;
     
     struct IRunner {
-        virtual ~IRunner() {}        
+        virtual ~IRunner();
         virtual void runAll( bool runHiddenTests = false ) = 0;        
         virtual std::size_t runMatching( const std::string& rawTestSpec ) = 0;        
         virtual Totals getTotals() const = 0;

@@ -18,7 +18,7 @@ namespace Catch {
     
     public:
         
-        ~ReporterRegistry() {
+        virtual ~ReporterRegistry() {
             deleteAllValues( m_factories );
         }
         

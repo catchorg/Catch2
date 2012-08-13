@@ -16,12 +16,12 @@ namespace Catch {
     typedef std::string(*exceptionTranslateFunction)();
 
     struct IExceptionTranslator {
-        virtual ~IExceptionTranslator(){}
+        virtual ~IExceptionTranslator();
         virtual std::string translate() const = 0;
     };
     
     struct IExceptionTranslatorRegistry {
-        virtual ~IExceptionTranslatorRegistry(){}
+        virtual ~IExceptionTranslatorRegistry();
         
         virtual std::string translateActiveException() const = 0;
     };

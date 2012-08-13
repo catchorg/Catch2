@@ -13,13 +13,13 @@
 namespace Catch {
 
     struct IGeneratorInfo {
-        virtual ~IGeneratorInfo(){}
+        virtual ~IGeneratorInfo();
         virtual bool moveNext() = 0;
         virtual std::size_t getCurrentIndex() const = 0;
     };
     
     struct IGeneratorsForTest {
-        virtual ~IGeneratorsForTest() {}
+        virtual ~IGeneratorsForTest();
 
         virtual IGeneratorInfo& getGeneratorInfo( const std::string& fileInfo, std::size_t size ) = 0;
         virtual bool moveNext() = 0;

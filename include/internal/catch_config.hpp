@@ -64,8 +64,9 @@ namespace Catch {
     private:
         Config( const Config& other );
         Config& operator = ( const Config& other );
+        virtual void dummy();
     public:
-                
+
         Config()
         :   m_streambuf( NULL ),
             m_os( std::cout.rdbuf() )
@@ -77,7 +78,7 @@ namespace Catch {
             m_os( std::cout.rdbuf() )
         {}
         
-        ~Config() {
+        virtual ~Config() {
             m_os.rdbuf( std::cout.rdbuf() );
             delete m_streambuf;
         }

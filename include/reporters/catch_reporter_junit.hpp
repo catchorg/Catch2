@@ -61,7 +61,8 @@ namespace Catch {
         :   m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
-        {}        
+        {}
+        virtual ~JunitReporter();
         
         static std::string getDescription() {
             return "Reports test results in an XML format that looks like Ant's junitreport target";
@@ -131,8 +132,6 @@ namespace Catch {
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
                     case ResultWas::DidntThrowException:
-                    default:
-                        stats.m_element = "unknown";
                         break;
                 }
                 testCaseStats.m_testStats.push_back( stats );                

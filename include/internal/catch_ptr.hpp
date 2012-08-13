@@ -74,7 +74,7 @@ namespace Catch {
     };
     
     struct IShared : NonCopyable {
-        virtual ~IShared(){}
+        virtual ~IShared();
         virtual void addRef() = 0;
         virtual void release() = 0;
     };

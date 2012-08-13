@@ -12,7 +12,7 @@ namespace Catch {
 
     struct IConfig {
     
-        virtual ~IConfig(){}
+        virtual ~IConfig();
         
         virtual bool allowThrows() const = 0;
     };

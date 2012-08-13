@@ -8,11 +8,13 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
-#include "internal/catch_commandline.hpp"
-#include "internal/catch_list.hpp"
 #include "reporters/catch_reporter_basic.hpp"
 #include "reporters/catch_reporter_xml.hpp"
 #include "reporters/catch_reporter_junit.hpp"
+
+#include "internal/catch_commandline.hpp"
+#include "internal/catch_list.hpp"
+#include "internal/catch_runner_impl.hpp"
 
 #include <fstream>
 #include <stdlib.h>
