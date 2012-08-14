@@ -13,7 +13,7 @@
 #include "catch_interfaces_exception.h"
 #include "catch_config.hpp"
 #include "catch_test_registry.hpp"
-#include "catch_test_case_info.hpp"
+#include "catch_test_case_info.h"
 #include "catch_capture.hpp"
 #include "catch_totals.hpp"
 #include "catch_running_test.hpp"

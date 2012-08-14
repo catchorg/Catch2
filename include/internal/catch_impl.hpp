@@ -20,6 +20,7 @@
 #include "catch_generators_impl.hpp"
 #include "catch_resultinfo.hpp"
 #include "catch_resultinfo_builder.hpp"
+#include "catch_test_case_info.hpp"
 
 namespace Catch {
     NonCopyable::~NonCopyable() {}

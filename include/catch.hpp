@@ -27,7 +27,7 @@
 
 // These files are included here so the single_include script doesn't put them
 // in the conditionally compiled sections
-#include "internal/catch_test_case_info.hpp"
+#include "internal/catch_test_case_info.h"
 #include "internal/catch_interfaces_runner.h"
 
 #ifdef __OBJC__
