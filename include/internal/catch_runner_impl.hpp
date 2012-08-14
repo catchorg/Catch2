@@ -17,6 +17,7 @@
 #include "catch_capture.hpp"
 #include "catch_totals.hpp"
 #include "catch_running_test.hpp"
+#include "catch_test_spec.h"
 
 #include <set>
 #include <string>
