@@ -68,31 +68,18 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
         
-    class FreeFunctionTestCase : public ITestCase {
+    class FreeFunctionTestCase : public SharedImpl<ITestCase> {
     public:
 
         FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}
-        virtual ~FreeFunctionTestCase();
-        
+
         virtual void invoke() const {
             m_fun();
         }
-        
-        virtual ITestCase* clone() const {
-            return new FreeFunctionTestCase( m_fun );
-        }
-        
-        virtual bool operator == ( const ITestCase& other ) const {
-            const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && m_fun == ffOther->m_fun;
-        }
-        
-        virtual bool operator < ( const ITestCase& other ) const {
-            const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && m_fun < ffOther->m_fun;
-        }
-        
+
     private:
+        virtual ~FreeFunctionTestCase();
+
         TestFunction m_fun;
     };
         

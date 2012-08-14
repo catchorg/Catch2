@@ -14,7 +14,7 @@
 namespace Catch {
     
 template<typename C>
-class MethodTestCase : public ITestCase {
+class MethodTestCase : public SharedImpl<ITestCase> {
 
 public:
     MethodTestCase( void (C::*method)() ) : m_method( method ) {}
@@ -24,21 +24,9 @@ public:
         (obj.*m_method)();
     }
     
-    virtual ITestCase* clone() const {
-        return new MethodTestCase<C>( m_method );
-    }
-
-    virtual bool operator == ( const ITestCase& other ) const {
-        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && m_method == mtOther->m_method;
-    }
-    
-    virtual bool operator < ( const ITestCase& other ) const {
-        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && &m_method < &mtOther->m_method;
-    }
-    
 private:
+    virtual ~MethodTestCase() {}
+
     void (C::*m_method)();
 };
 

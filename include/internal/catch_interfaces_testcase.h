@@ -11,12 +11,10 @@
 #include <vector>
 
 namespace Catch {
-    struct ITestCase {
+    struct ITestCase : IShared {
+        virtual void invoke () const = 0;
+    protected:
         virtual ~ITestCase();
-        virtual void invoke () const = 0;        
-        virtual ITestCase* clone() const = 0;        
-        virtual bool operator == ( const ITestCase& other ) const = 0;        
-        virtual bool operator < ( const ITestCase& other ) const = 0;
     };
     
     class TestCaseInfo;

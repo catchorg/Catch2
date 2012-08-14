@@ -11,14 +11,11 @@
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_config.h"
 
-#include <memory>
 #include <vector>
-#include <stdlib.h>
 
 namespace Catch {
 
     class TestCaseInfo;
-    struct IResultCapture;
     struct ITestCaseRegistry;
     struct IExceptionTranslatorRegistry;
     struct IExceptionTranslator;

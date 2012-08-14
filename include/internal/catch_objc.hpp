@@ -33,7 +33,7 @@
 
 namespace Catch {
 
-    class OcMethod : public ITestCase {
+    class OcMethod : public SharedImpl<ITestCase> {
     
     public:
         OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel ) {}
@@ -47,22 +47,9 @@ namespace Catch {
             
             arcSafeRelease( obj );
         }
-        
-        virtual ITestCase* clone() const {
-            return new OcMethod( m_cls, m_sel );
-        }
-        
-        virtual bool operator == ( const ITestCase& other ) const {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel == m_sel;
-        }
-        
-        virtual bool operator < ( const ITestCase& other ) const {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel < m_sel;
-        }
-        
     private:
+        virtual ~OcMethod() {}
+        
         Class m_cls;
         SEL m_sel;
     };
