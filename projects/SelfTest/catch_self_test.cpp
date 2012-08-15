@@ -13,21 +13,20 @@
 
 namespace Catch{
     
-    std::size_t EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& ) {
+    Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& ) {
         std::ostringstream oss;
         Config config;
         config.setStreamBuf( oss.rdbuf() );
         
-        std::size_t result;
-        
+        Totals totals;
+
         // Scoped because Runner doesn't report EndTesting until its destructor
         {
             Runner runner( config, m_reporter.get() );
-            result = runner.runMatching( rawTestSpec );
-            m_totals = runner.getTotals();
+            totals = runner.runMatching( rawTestSpec );
         }
         m_output = oss.str();
-        return result;
+        return totals;
     }
     
     void MockReporter::Result( const ResultInfo& resultInfo ) {

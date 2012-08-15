@@ -7,6 +7,7 @@
  */
 #include "catch_test_registry.hpp"
 #include "catch_test_case_info.h"
+#include "catch_test_spec.h"
 #include "catch_context.h"
 
 #include <vector>
@@ -31,6 +32,8 @@ namespace Catch {
             if( m_functions.find( testInfo ) == m_functions.end() ) {
                 m_functions.insert( testInfo );
                 m_functionsInOrder.push_back( testInfo );
+                if( !testInfo.isHidden() )
+                    m_nonHiddenFunctions.push_back( testInfo );
             }
             else {
                 const TestCaseInfo& prev = *m_functions.find( testInfo );
@@ -45,24 +48,35 @@ namespace Catch {
             return m_functionsInOrder;
         }
 
+        virtual const std::vector<TestCaseInfo>& getAllNonHiddenTests() const {
+            return m_nonHiddenFunctions;
+        }
+
         virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const {
             TestSpec testSpec( rawTestSpec );
             
-            std::vector<TestCaseInfo> testList;
+            std::vector<TestCaseInfo> matchingTests;
+            getMatchingTestCases( rawTestSpec, matchingTests );
+            return matchingTests;
+        }
+
+        virtual void getMatchingTestCases( const std::string& rawTestSpec, std::vector<TestCaseInfo>& matchingTestsOut ) const {
+            TestSpec testSpec( rawTestSpec );
+
             std::vector<TestCaseInfo>::const_iterator it = m_functionsInOrder.begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = m_functionsInOrder.end();
             for(; it != itEnd; ++it ) {
                 if( testSpec.matches( it->getName() ) ) {
-                    testList.push_back( *it );
+                    matchingTestsOut.push_back( *it );
                 }
             }
-            return testList;
         }
-        
+
     private:
         
         std::set<TestCaseInfo> m_functions;
         std::vector<TestCaseInfo> m_functionsInOrder;
+        std::vector<TestCaseInfo> m_nonHiddenFunctions;        
         size_t m_unnamedCount;
     };
 

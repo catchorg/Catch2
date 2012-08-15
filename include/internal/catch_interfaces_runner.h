@@ -17,9 +17,18 @@ namespace Catch {
     
     struct IRunner {
         virtual ~IRunner();
-        virtual void runAll( bool runHiddenTests = false ) = 0;        
-        virtual std::size_t runMatching( const std::string& rawTestSpec ) = 0;        
-        virtual Totals getTotals() const = 0;
+
+        /// Runs all tests, even if hidden
+        virtual Totals runAll() = 0;
+
+        /// Runs all tests unless 'hidden' by ./ prefix
+        virtual Totals runAllNonHidden() = 0;
+
+        /// Runs all test that match the spec string
+        virtual Totals runMatching( const std::string& rawTestSpec ) = 0;
+
+        /// Runs all the tests passed in
+        virtual Totals runTests( const std::string& groupName, const std::vector<TestCaseInfo>& testCases ) = 0;
     };
 }
 

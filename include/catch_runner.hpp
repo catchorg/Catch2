@@ -83,22 +83,22 @@ namespace Catch {
         {
             Runner runner( configWrapper, reporter );
 
+            Totals totals;
             // Run test specs specified on the command line - or default to all
             if( config.testSpecs.empty() ) {
-                runner.runAll();
+                totals = runner.runAllNonHidden();
             }
             else {
-                // !TBD We should get all the testcases upfront, report any missing,
-                // then just run them
                 std::vector<std::string>::const_iterator it = config.testSpecs.begin();
                 std::vector<std::string>::const_iterator itEnd = config.testSpecs.end();
                 for(; it != itEnd; ++it ) {
-                    if( runner.runMatching( *it ) == 0 ) {
+                    Totals groupTotals = runner.runMatching( *it );
+                    if( groupTotals.testCases.total() == 0 )
                         std::cerr << "\n[No test cases matched with: " << *it << "]" << std::endl;
-                    }
+                    totals += groupTotals;
                 }
             }
-            result = static_cast<int>( runner.getTotals().assertions.failed );
+            result = static_cast<int>( totals.assertions.failed );
         }
         Catch::cleanUp();
         return result;

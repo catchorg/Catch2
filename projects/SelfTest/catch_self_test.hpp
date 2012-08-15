@@ -114,15 +114,11 @@ namespace Catch {
     public:
         EmbeddedRunner() : m_reporter( new MockReporter() ) {}
         
-        std::size_t runMatching(    const std::string& rawTestSpec,
-                                    const std::string& reporter = "basic" );
+        Totals runMatching( const std::string& rawTestSpec,
+                            const std::string& reporter = "basic" );
         
         std::string getOutput() {
             return m_output;
-        }
-
-        const Totals& getTotals() const {
-            return m_totals;
         }
 
         void addRecorder( const std::string& recorder ) {
@@ -134,7 +130,6 @@ namespace Catch {
         }
 
     private:
-        Totals m_totals;
         std::string m_output;
         Ptr<MockReporter> m_reporter;
     };
@@ -157,8 +152,7 @@ namespace Catch {
         
         void operator()( const TestCaseInfo& testCase ) {
             EmbeddedRunner runner;
-            runner.runMatching( testCase.getName() );
-            Totals totals = runner.getTotals();
+            Totals totals = runner.runMatching( testCase.getName() );
             switch( m_expectedResult ) {
                 case Expected::ToSucceed:
                     if( totals.assertions.failed > 0 ) {

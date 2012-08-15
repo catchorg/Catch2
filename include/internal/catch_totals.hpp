@@ -50,7 +50,13 @@ namespace Catch {
                 ++diff.testCases.passed;
             return diff;
         }
-        
+
+        Totals& operator += ( const Totals& other ) {
+            assertions += other.assertions;
+            testCases += other.testCases;
+            return *this;
+        }
+
         Counts assertions;
         Counts testCases;
     };

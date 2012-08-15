@@ -34,16 +34,16 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
         
         SECTION(    "selftest/test counts/succeeding tests", 
                     "Number of 'succeeding' tests is fixed" ) {
-            runner.runMatching( "./succeeding/*" );
-            CHECK( runner.getTotals().assertions.passed == 285 );
-            CHECK( runner.getTotals().assertions.failed == 0 );
+            Totals totals = runner.runMatching( "./succeeding/*" );
+            CHECK( totals.assertions.passed == 285 );
+            CHECK( totals.assertions.failed == 0 );
         }
 
         SECTION(    "selftest/test counts/failing tests", 
                     "Number of 'failing' tests is fixed" ) {
-            runner.runMatching( "./failing/*" );        
-            CHECK( runner.getTotals().assertions.passed == 0 );
-            CHECK( runner.getTotals().assertions.failed == 72 );
+            Totals totals = runner.runMatching( "./failing/*" );        
+            CHECK( totals.assertions.passed == 0 );
+            CHECK( totals.assertions.failed == 72 );
         }
     }
 }
@@ -51,9 +51,9 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
 TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
     Catch::EmbeddedRunner runner;
     
-    runner.runMatching( "./mixed/Misc/Sections/nested2" );
-    CHECK( runner.getTotals().assertions.passed == 2 );
-    CHECK( runner.getTotals().assertions.failed == 1 );
+    Catch::Totals totals = runner.runMatching( "./mixed/Misc/Sections/nested2" );
+    CHECK( totals.assertions.passed == 2 );
+    CHECK( totals.assertions.failed == 1 );
 }
 
 #pragma clang diagnostic ignored "-Wweak-vtables"

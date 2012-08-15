@@ -79,45 +79,37 @@ namespace Catch {
             m_context.setConfig( m_prevConfig );
         }
         
-        virtual void runAll( bool runHiddenTests = false ) {
-            m_reporter->StartGroup( "" );
-            const std::vector<TestCaseInfo>& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-            for( std::size_t i=0; i < allTests.size(); ++i ) {
-                if( runHiddenTests || !allTests[i].isHidden() ) {
-                    if( aborting() ) {
-                        m_reporter->Aborted();
-                        break;
-                    }
-                    runTest( allTests[i] );
-                }
-            }
-            m_reporter->EndGroup( "", getTotals() );
+        virtual Totals runAll() {
+            return runTests( "", getRegistryHub().getTestCaseRegistry().getAllTests() );
         }
-        
-        virtual std::size_t runMatching( const std::string& rawTestSpec ) {
 
-            Totals prevTotals = getTotals();
-            m_reporter->StartGroup( rawTestSpec );
-
-            TestSpec testSpec( rawTestSpec );
-            
-            const std::vector<TestCaseInfo>& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-            std::size_t testsRun = 0;
-            for( std::size_t i=0; i < allTests.size(); ++i ) {
-                if( testSpec.matches( allTests[i].getName() ) ) {
-                    if( aborting() ) {
-                        m_reporter->Aborted();
-                        break;
-                    }
-                    runTest( allTests[i] );
-                    testsRun++;
-                }
-            }
-            m_reporter->EndGroup( rawTestSpec, getTotals() - prevTotals );
-            return testsRun;
+        virtual Totals runAllNonHidden() {
+            return runTests( "", getRegistryHub().getTestCaseRegistry().getAllNonHiddenTests() );
         }
-        
-        void runTest( const TestCaseInfo& testInfo ) {
+
+        virtual Totals runMatching( const std::string& rawTestSpec ) {
+
+            const std::vector<TestCaseInfo>& matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( rawTestSpec );
+            return runTests( rawTestSpec, matchingTests );
+        }
+
+        virtual Totals runTests( const std::string& groupName, const std::vector<TestCaseInfo>& testCases ) {
+
+            Totals totals;
+            m_reporter->StartGroup( groupName );
+
+            for( std::size_t i=0; i < testCases.size(); ++i ) {
+                if( aborting() ) {
+                    m_reporter->Aborted();
+                    break;
+                }
+                totals += runTest( testCases[i] );
+            }
+            m_reporter->EndGroup( groupName, totals );
+            return totals;
+        }
+
+        Totals runTest( const TestCaseInfo& testInfo ) {
             Totals prevTotals = m_totals;
 
             std::string redirectedCout;
@@ -129,10 +121,8 @@ namespace Catch {
 
             do {
                 do {
-//                    m_reporter->StartGroup( "test case run" );
                     m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
-//                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
                 }
                 while( m_runningTest->hasUntestedSections() && !aborting() );
             }
@@ -144,12 +134,9 @@ namespace Catch {
             Totals deltaTotals = m_totals.delta( prevTotals );
             m_totals.testCases += deltaTotals.testCases;            
             m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
+            return deltaTotals;
         }
 
-        virtual Totals getTotals() const {
-            return m_totals;
-        }
-        
         const Config& config() const {
             return m_config;
         }
