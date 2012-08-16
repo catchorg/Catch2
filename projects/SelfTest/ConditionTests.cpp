@@ -213,9 +213,11 @@ TEST_CASE(  "./succeeding/conditions/int literals",
 // Disable warnings about sign conversions for the next two tests
 // (as we are deliberately invoking them)
 // - Current only disabled for GCC/ LLVM. Should add VC++ too
+#ifdef  __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
 
 TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
             "comparisons between int variables" )
@@ -261,8 +263,9 @@ TEST_CASE(  "./succeeding/conditions/computed ints",
      CHECK( 54 == 6*9 );
 }
 
+#ifdef  __GNUC__
 #pragma GCC diagnostic pop
-
+#endif
 
 inline const char* returnsConstNull(){ return NULL; }
 inline char* returnsNull(){ return NULL; }
