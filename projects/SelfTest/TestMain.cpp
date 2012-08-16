@@ -5,7 +5,9 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+#ifdef __clang__
 #pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 #include "catch_self_test.hpp"
 
@@ -225,4 +227,121 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             CHECK( config.allowThrows == false );
         }
     }        
+}
+
+class TestSpec {
+public:
+    TestSpec( const std::string& rawSpec )
+    :   m_rawSpec( rawSpec ),
+    m_isWildcarded( false ) {
+
+        if( m_rawSpec[m_rawSpec.size()-1] == '*' ) {
+            m_rawSpec = m_rawSpec.substr( 0, m_rawSpec.size()-1 );
+            m_isWildcarded = true;
+        }
+    }
+
+    bool matches ( const std::string& testName ) const {
+        if( !m_isWildcarded )
+            return m_rawSpec == testName;
+        else
+            return testName.size() >= m_rawSpec.size() && testName.substr( 0, m_rawSpec.size() ) == m_rawSpec;
+    }
+
+private:
+    std::string m_rawSpec;
+    bool m_isWildcarded;
+};
+
+
+namespace Catch{ //
+
+struct IfFilterMatches{ enum DoWhat {
+    IncludeTests,
+    ExcludeTests
+}; };
+
+class TestCaseFilter {
+public:
+    TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat filterType = IfFilterMatches::IncludeTests )
+    :   m_testSpec( testSpec ),
+        m_filterType( filterType ),
+        m_isWildcarded( false )
+    {
+        if( m_testSpec[m_testSpec.size()-1] == '*' ) {
+            m_testSpec = m_testSpec.substr( 0, m_testSpec.size()-1 );
+            m_isWildcarded = true;
+        }
+    }
+
+    bool shouldInclude( const TestCaseInfo& testCase ) const {
+        return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
+    }
+private:
+
+    bool isMatch( const TestCaseInfo& testCase ) const {
+        const std::string& name = testCase.getName();
+        if( !m_isWildcarded )
+            return m_testSpec == name;
+        else
+            return name.size() >= m_testSpec.size() && name.substr( 0, m_testSpec.size() ) == m_testSpec;
+    }
+
+    std::string m_testSpec;
+    IfFilterMatches::DoWhat m_filterType;
+    bool m_isWildcarded;
+};
+
+class TestCaseFilters {
+public:
+    void addFilter( const TestCaseFilter& filter ) {
+        m_filters.push_back( filter );
+    }
+
+    bool shouldInclude( const TestCaseInfo& testCase ) const {
+        std::vector<TestCaseFilter>::const_iterator it = m_filters.begin();
+        std::vector<TestCaseFilter>::const_iterator itEnd = m_filters.end();
+        for(; it != itEnd; ++it )
+            if( !it->shouldInclude( testCase ) )
+                return false;
+        return true;
+    }
+private:
+    std::vector<TestCaseFilter> m_filters;
+};
+
+}
+
+inline Catch::TestCaseInfo makeTestCase( const char* name ){ return Catch::TestCaseInfo( NULL, name, "", CATCH_INTERNAL_LINEINFO ); }
+
+TEST_CASE( "selftest/test filter", "Groups of tests can be selected" ) {
+
+    Catch::TestCaseFilter matchAny( "*" );
+    Catch::TestCaseFilter matchNone( "*", Catch::IfFilterMatches::ExcludeTests );
+    CHECK( matchAny.shouldInclude( makeTestCase( "any" ) ));
+    CHECK( matchNone.shouldInclude( makeTestCase( "any" ) ) == false );
+
+    Catch::TestCaseFilter matchHidden( "./*" );
+    Catch::TestCaseFilter matchNonHidden( "./*", Catch::IfFilterMatches::ExcludeTests );
+
+    CHECK( matchHidden.shouldInclude( makeTestCase( "any" ) ) == false );
+    CHECK( matchNonHidden.shouldInclude( makeTestCase( "any" ) ) );
+
+    CHECK( matchHidden.shouldInclude( makeTestCase( "./any" ) ) );
+    CHECK( matchNonHidden.shouldInclude( makeTestCase( "./any" ) ) == false );
+}
+
+TEST_CASE( "selftest/test filters", "Groups of tests can be selected" ) {
+
+    Catch::TestCaseFilter matchHidden( "./*" );
+    Catch::TestCaseFilter dontMatchA( "./a*", Catch::IfFilterMatches::ExcludeTests );
+    Catch::TestCaseFilters filters;
+    filters.addFilter( matchHidden );
+    filters.addFilter( dontMatchA );
+
+    CHECK( matchHidden.shouldInclude( makeTestCase( "./something" ) ) );
+
+    CHECK( filters.shouldInclude( makeTestCase( "any" ) ) == false );
+    CHECK( filters.shouldInclude( makeTestCase( "./something" ) ) );
+    CHECK( filters.shouldInclude( makeTestCase( "./anything" ) ) == false );
 }
