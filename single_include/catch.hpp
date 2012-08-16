@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-12 09:51:33.273449
+ *  Generated: 2012-08-16 18:48:36.660439
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -12,8 +12,12 @@
 
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wno-global-constructors"
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 // #included from: internal/catch_notimplemented_exception.h
 #define TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_H_INCLUDED
@@ -207,6 +211,12 @@ namespace Catch {
             else
                 ++diff.testCases.passed;
             return diff;
+        }
+
+        Totals& operator += ( const Totals& other ) {
+            assertions += other.assertions;
+            testCases += other.testCases;
+            return *this;
         }
 
         Counts assertions;
@@ -453,12 +463,10 @@ namespace Catch {
 #include <vector>
 
 namespace Catch {
-    struct ITestCase {
-        virtual ~ITestCase();
+    struct ITestCase : IShared {
         virtual void invoke () const = 0;
-        virtual ITestCase* clone() const = 0;
-        virtual bool operator == ( const ITestCase& other ) const = 0;
-        virtual bool operator < ( const ITestCase& other ) const = 0;
+    protected:
+        virtual ~ITestCase();
     };
 
     class TestCaseInfo;
@@ -466,14 +474,17 @@ namespace Catch {
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
+        virtual const std::vector<TestCaseInfo>& getAllNonHiddenTests() const = 0;
+
         virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
+        virtual void getMatchingTestCases( const std::string& rawTestSpec, std::vector<TestCaseInfo>& matchingTestsOut ) const = 0;
     };
 }
 
 namespace Catch {
 
 template<typename C>
-class MethodTestCase : public ITestCase {
+class MethodTestCase : public SharedImpl<ITestCase> {
 
 public:
     MethodTestCase( void (C::*method)() ) : m_method( method ) {}
@@ -483,21 +494,9 @@ public:
         (obj.*m_method)();
     }
 
-    virtual ITestCase* clone() const {
-        return new MethodTestCase<C>( m_method );
-    }
-
-    virtual bool operator == ( const ITestCase& other ) const {
-        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && m_method == mtOther->m_method;
-    }
-
-    virtual bool operator < ( const ITestCase& other ) const {
-        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && &m_method < &mtOther->m_method;
-    }
-
 private:
+    virtual ~MethodTestCase() {}
+
     void (C::*m_method)();
 };
 
@@ -604,11 +603,15 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 #else
 inline void arcSafeRelease( NSObject* ){}
 inline id performOptionalSelector( id obj, SEL sel ) {
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+#endif
     if( [obj respondsToSelector: sel] )
         return [obj performSelector: sel];
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif
     return nil;
 }
 #define CATCH_UNSAFE_UNRETAINED __unsafe_unretained
@@ -1682,14 +1685,11 @@ using namespace Generators;
 // #included from: catch_interfaces_registry_hub.h
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
-#include <memory>
 #include <vector>
-#include <stdlib.h>
 
 namespace Catch {
 
     class TestCaseInfo;
-    struct IResultCapture;
     struct ITestCaseRegistry;
     struct IExceptionTranslatorRegistry;
     struct IExceptionTranslator;
@@ -1935,122 +1935,41 @@ using namespace Matchers;
 
 // These files are included here so the single_include script doesn't put them
 // in the conditionally compiled sections
-// #included from: internal/catch_test_case_info.hpp
-#define TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED
+// #included from: internal/catch_test_case_info.h
+#define TWOBLUECUBES_CATCH_TESTCASEINFO_H_INCLUDED
 
-#include <map>
 #include <string>
 
 namespace Catch {
 
+    struct ITestCase;
+
     class TestCaseInfo {
     public:
+        TestCaseInfo();
+
         TestCaseInfo(   ITestCase* testCase,
                         const char* name,
                         const char* description,
-                        const SourceLineInfo& lineInfo )
-        :   m_test( testCase ),
-            m_name( name ),
-            m_description( description ),
-            m_lineInfo( lineInfo )
-        {}
+                        const SourceLineInfo& lineInfo );
 
-        TestCaseInfo()
-        :   m_test( NULL ),
-            m_name(),
-            m_description()
-        {}
+        TestCaseInfo( const TestCaseInfo& other, const std::string& name );
 
-        TestCaseInfo( const TestCaseInfo& other )
-        :   m_test( other.m_test->clone() ),
-            m_name( other.m_name ),
-            m_description( other.m_description ),
-            m_lineInfo( other.m_lineInfo )
-        {}
+        void invoke() const;
+        const std::string& getName() const;
+        const std::string& getDescription() const;
+        const SourceLineInfo& getLineInfo() const;
+        bool isHidden() const;
 
-        TestCaseInfo( const TestCaseInfo& other, const std::string& name )
-        :   m_test( other.m_test->clone() ),
-            m_name( name ),
-            m_description( other.m_description ),
-            m_lineInfo( other.m_lineInfo )
-        {}
-
-        TestCaseInfo& operator = ( const TestCaseInfo& other ) {
-            TestCaseInfo temp( other );
-            swap( temp );
-            return *this;
-        }
-
-        ~TestCaseInfo() {
-            delete m_test;
-        }
-
-        void invoke() const {
-            m_test->invoke();
-        }
-
-        const std::string& getName() const {
-            return m_name;
-        }
-
-        const std::string& getDescription() const {
-            return m_description;
-        }
-
-        const SourceLineInfo& getLineInfo() const {
-            return m_lineInfo;
-        }
-
-        bool isHidden() const {
-            return m_name.size() >= 2 && m_name[0] == '.' && m_name[1] == '/';
-        }
-
-        void swap( TestCaseInfo& other ) {
-            std::swap( m_test, other.m_test );
-            m_name.swap( other.m_name );
-            m_description.swap( other.m_description );
-            m_lineInfo.swap( other.m_lineInfo );
-        }
-
-        bool operator == ( const TestCaseInfo& other ) const {
-            return *m_test == *other.m_test && m_name == other.m_name;
-        }
-
-        bool operator < ( const TestCaseInfo& other ) const {
-            return m_name < other.m_name;
-        }
+        void swap( TestCaseInfo& other );
+        bool operator == ( const TestCaseInfo& other ) const;
+        bool operator < ( const TestCaseInfo& other ) const;
 
     private:
-        ITestCase* m_test;
+        Ptr<ITestCase> m_test;
         std::string m_name;
         std::string m_description;
         SourceLineInfo m_lineInfo;
-    };
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    class TestSpec {
-    public:
-        TestSpec( const std::string& rawSpec )
-        :   m_rawSpec( rawSpec ),
-            m_isWildcarded( false ) {
-
-            if( m_rawSpec[m_rawSpec.size()-1] == '*' ) {
-                m_rawSpec = m_rawSpec.substr( 0, m_rawSpec.size()-1 );
-                m_isWildcarded = true;
-            }
-        }
-
-        bool matches ( const std::string& testName ) const {
-            if( !m_isWildcarded )
-                return m_rawSpec == testName;
-            else
-                return testName.size() >= m_rawSpec.size() && testName.substr( 0, m_rawSpec.size() ) == m_rawSpec;
-        }
-
-    private:
-        std::string m_rawSpec;
-        bool m_isWildcarded;
     };
 }
 
@@ -2064,9 +1983,18 @@ namespace Catch {
 
     struct IRunner {
         virtual ~IRunner();
-        virtual void runAll( bool runHiddenTests = false ) = 0;
-        virtual std::size_t runMatching( const std::string& rawTestSpec ) = 0;
-        virtual Totals getTotals() const = 0;
+
+        /// Runs all tests, even if hidden
+        virtual Totals runAll() = 0;
+
+        /// Runs all tests unless 'hidden' by ./ prefix
+        virtual Totals runAllNonHidden() = 0;
+
+        /// Runs all test that match the spec string
+        virtual Totals runMatching( const std::string& rawTestSpec ) = 0;
+
+        /// Runs all the tests passed in
+        virtual Totals runTests( const std::string& groupName, const std::vector<TestCaseInfo>& testCases ) = 0;
     };
 }
 
@@ -2097,7 +2025,7 @@ namespace Catch {
 
 namespace Catch {
 
-    class OcMethod : public ITestCase {
+    class OcMethod : public SharedImpl<ITestCase> {
 
     public:
         OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel ) {}
@@ -2111,22 +2039,9 @@ namespace Catch {
 
             arcSafeRelease( obj );
         }
-
-        virtual ITestCase* clone() const {
-            return new OcMethod( m_cls, m_sel );
-        }
-
-        virtual bool operator == ( const ITestCase& other ) const {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel == m_sel;
-        }
-
-        virtual bool operator < ( const ITestCase& other ) const {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel < m_sel;
-        }
-
     private:
+        virtual ~OcMethod() {}
+
         Class m_cls;
         SEL m_sel;
     };
@@ -2285,8 +2200,10 @@ return @ desc; \
 // Collect all the implementation files together here
 // These are the equivalent of what would usually be cpp files
 
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
 
 // #included from: catch_runner.hpp
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
@@ -3548,9 +3465,9 @@ namespace Catch {
 #include <limits>
 
 namespace Catch {
-    inline int List( Config& config ) {
+    inline int List( const ConfigData& config ) {
 
-        if( config.listWhat() & List::Reports ) {
+        if( config.listSpec & List::Reports ) {
             std::cout << "Available reports:\n";
             IReporterRegistry::FactoryMap::const_iterator it = getRegistryHub().getReporterRegistry().getFactories().begin();
             IReporterRegistry::FactoryMap::const_iterator itEnd = getRegistryHub().getReporterRegistry().getFactories().end();
@@ -3561,7 +3478,7 @@ namespace Catch {
             std::cout << std::endl;
         }
 
-        if( config.listWhat() & List::Tests ) {
+        if( config.listSpec & List::Tests ) {
             std::cout << "Available tests:\n";
             std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
@@ -3572,7 +3489,7 @@ namespace Catch {
             std::cout << std::endl;
         }
 
-        if( ( config.listWhat() & List::All ) == 0 ) {
+        if( ( config.listSpec & List::All ) == 0 ) {
             std::cerr << "Unknown list type" << std::endl;
             return (std::numeric_limits<int>::max)();
         }
@@ -3770,6 +3687,38 @@ namespace Catch {
     };
 }
 
+// #included from: catch_test_spec.h
+#define TWOBLUECUBES_CATCH_TESTSPEC_H_INCLUDED
+
+#include <string>
+
+namespace Catch {
+
+    class TestSpec {
+    public:
+        TestSpec( const std::string& rawSpec )
+        :   m_rawSpec( rawSpec ),
+            m_isWildcarded( false ) {
+
+            if( m_rawSpec[m_rawSpec.size()-1] == '*' ) {
+                m_rawSpec = m_rawSpec.substr( 0, m_rawSpec.size()-1 );
+                m_isWildcarded = true;
+            }
+        }
+
+        bool matches ( const std::string& testName ) const {
+            if( !m_isWildcarded )
+                return m_rawSpec == testName;
+            else
+                return testName.size() >= m_rawSpec.size() && testName.substr( 0, m_rawSpec.size() ) == m_rawSpec;
+        }
+
+    private:
+        std::string m_rawSpec;
+        bool m_isWildcarded;
+    };
+}
+
 #include <set>
 #include <string>
 
@@ -3830,45 +3779,37 @@ namespace Catch {
             m_context.setConfig( m_prevConfig );
         }
 
-        virtual void runAll( bool runHiddenTests = false ) {
-            m_reporter->StartGroup( "" );
-            const std::vector<TestCaseInfo>& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-            for( std::size_t i=0; i < allTests.size(); ++i ) {
-                if( runHiddenTests || !allTests[i].isHidden() ) {
-                    if( aborting() ) {
-                        m_reporter->Aborted();
-                        break;
-                    }
-                    runTest( allTests[i] );
-                }
-            }
-            m_reporter->EndGroup( "", getTotals() );
+        virtual Totals runAll() {
+            return runTests( "", getRegistryHub().getTestCaseRegistry().getAllTests() );
         }
 
-        virtual std::size_t runMatching( const std::string& rawTestSpec ) {
-
-            Totals prevTotals = getTotals();
-            m_reporter->StartGroup( rawTestSpec );
-
-            TestSpec testSpec( rawTestSpec );
-
-            const std::vector<TestCaseInfo>& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-            std::size_t testsRun = 0;
-            for( std::size_t i=0; i < allTests.size(); ++i ) {
-                if( testSpec.matches( allTests[i].getName() ) ) {
-                    if( aborting() ) {
-                        m_reporter->Aborted();
-                        break;
-                    }
-                    runTest( allTests[i] );
-                    testsRun++;
-                }
-            }
-            m_reporter->EndGroup( rawTestSpec, getTotals() - prevTotals );
-            return testsRun;
+        virtual Totals runAllNonHidden() {
+            return runTests( "", getRegistryHub().getTestCaseRegistry().getAllNonHiddenTests() );
         }
 
-        void runTest( const TestCaseInfo& testInfo ) {
+        virtual Totals runMatching( const std::string& rawTestSpec ) {
+
+            const std::vector<TestCaseInfo>& matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( rawTestSpec );
+            return runTests( rawTestSpec, matchingTests );
+        }
+
+        virtual Totals runTests( const std::string& groupName, const std::vector<TestCaseInfo>& testCases ) {
+
+            Totals totals;
+            m_reporter->StartGroup( groupName );
+
+            for( std::size_t i=0; i < testCases.size(); ++i ) {
+                if( aborting() ) {
+                    m_reporter->Aborted();
+                    break;
+                }
+                totals += runTest( testCases[i] );
+            }
+            m_reporter->EndGroup( groupName, totals );
+            return totals;
+        }
+
+        Totals runTest( const TestCaseInfo& testInfo ) {
             Totals prevTotals = m_totals;
 
             std::string redirectedCout;
@@ -3880,10 +3821,8 @@ namespace Catch {
 
             do {
                 do {
-//                    m_reporter->StartGroup( "test case run" );
                     m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
                     runCurrentTest( redirectedCout, redirectedCerr );
-//                    m_reporter->EndGroup( "test case run", m_totals.delta( prevTotals ) );
                 }
                 while( m_runningTest->hasUntestedSections() && !aborting() );
             }
@@ -3895,10 +3834,7 @@ namespace Catch {
             Totals deltaTotals = m_totals.delta( prevTotals );
             m_totals.testCases += deltaTotals.testCases;
             m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
-        }
-
-        virtual Totals getTotals() const {
-            return m_totals;
+            return deltaTotals;
         }
 
         const Config& config() const {
@@ -4068,66 +4004,79 @@ namespace Catch {
     INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
-    inline int Main( Config& config ) {
+    inline int resolveStream( Config& configWrapper ) {
+        const ConfigData& config = configWrapper.data();
 
-        std::string reporterName = config.data().reporter.empty()
-            ? "basic"
-            : config.data().reporter;
-
-        ReporterConfig reporterConfig( config.getName(), config.stream(), config.includeSuccessfulResults() );
-
-        Ptr<IReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
-
-        if( !reporter )
-        {
-            std::cerr << "No reporter registered with name: '" << reporterName << "'" << std::endl;
-            return (std::numeric_limits<int>::max)();
-        }
-
-        if( !config.data().stream.empty() ) {
-            if( config.data().stream[0] == '%' )
-                config.useStream( config.data().stream.substr( 1 ) );
+        if( !config.stream.empty() ) {
+            if( config.stream[0] == '%' )
+                configWrapper.useStream( config.stream.substr( 1 ) );
             else
-                config.setFilename( config.data().stream );
+                configWrapper.setFilename( config.stream );
         }
-
-        // Handle list request
-        if( config.listWhat() != List::None )
-            return List( config );
-
         // Open output file, if specified
         std::ofstream ofs;
-        if( !config.getFilename().empty() ) {
-            ofs.open( config.getFilename().c_str() );
+        if( !config.outputFilename.empty() ) {
+            ofs.open( config.outputFilename.c_str() );
             if( ofs.fail() ) {
-                std::cerr << "Unable to open file: '" << config.getFilename() << "'" << std::endl;
+                std::cerr << "Unable to open file: '" << config.outputFilename << "'" << std::endl;
                 return (std::numeric_limits<int>::max)();
             }
-            config.setStreamBuf( ofs.rdbuf() );
+            configWrapper.setStreamBuf( ofs.rdbuf() );
         }
+        return 0;
+    }
 
-        int result = 0;
+    inline Ptr<IReporter> makeReporter( Config& configWrapper ) {
+        const ConfigData& config = configWrapper.data();
+
+        std::string reporterName = config.reporter.empty()
+            ? "basic"
+            : config.reporter;
+
+        ReporterConfig reporterConfig( config.name, configWrapper.stream(), config.includeWhichResults == Include::SuccessfulResults );
+
+        Ptr<IReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
+        if( !reporter )
+            std::cerr << "No reporter registered with name: '" << reporterName << "'" << std::endl;
+        return reporter;
+    }
+
+    inline int Main( Config& configWrapper ) {
+
+        int result = resolveStream( configWrapper );
+        if( result != 0 )
+            return result;
+
+        Ptr<IReporter> reporter = makeReporter( configWrapper );
+        if( !reporter )
+            return (std::numeric_limits<int>::max)();
+
+        const ConfigData& config = configWrapper.data();
+
+        // Handle list request
+        if( config.listSpec != List::None )
+            return List( config );
 
         // Scope here for the Runner so it can use the context before it is cleaned-up
         {
-            Runner runner( config, reporter );
+            Runner runner( configWrapper, reporter );
 
+            Totals totals;
             // Run test specs specified on the command line - or default to all
-            if( !config.testsSpecified() ) {
-                runner.runAll();
+            if( config.testSpecs.empty() ) {
+                totals = runner.runAllNonHidden();
             }
             else {
-                // !TBD We should get all the testcases upfront, report any missing,
-                // then just run them
-                std::vector<std::string>::const_iterator it = config.getTestSpecs().begin();
-                std::vector<std::string>::const_iterator itEnd = config.getTestSpecs().end();
+                std::vector<std::string>::const_iterator it = config.testSpecs.begin();
+                std::vector<std::string>::const_iterator itEnd = config.testSpecs.end();
                 for(; it != itEnd; ++it ) {
-                    if( runner.runMatching( *it ) == 0 ) {
+                    Totals groupTotals = runner.runMatching( *it );
+                    if( groupTotals.testCases.total() == 0 )
                         std::cerr << "\n[No test cases matched with: " << *it << "]" << std::endl;
-                    }
+                    totals += groupTotals;
                 }
             }
-            result = static_cast<int>( runner.getTotals().assertions.failed );
+            result = static_cast<int>( totals.assertions.failed );
         }
         Catch::cleanUp();
         return result;
@@ -4218,6 +4167,8 @@ namespace Catch {
             if( m_functions.find( testInfo ) == m_functions.end() ) {
                 m_functions.insert( testInfo );
                 m_functionsInOrder.push_back( testInfo );
+                if( !testInfo.isHidden() )
+                    m_nonHiddenFunctions.push_back( testInfo );
             }
             else {
                 const TestCaseInfo& prev = *m_functions.find( testInfo );
@@ -4232,54 +4183,52 @@ namespace Catch {
             return m_functionsInOrder;
         }
 
+        virtual const std::vector<TestCaseInfo>& getAllNonHiddenTests() const {
+            return m_nonHiddenFunctions;
+        }
+
         virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const {
             TestSpec testSpec( rawTestSpec );
 
-            std::vector<TestCaseInfo> testList;
+            std::vector<TestCaseInfo> matchingTests;
+            getMatchingTestCases( rawTestSpec, matchingTests );
+            return matchingTests;
+        }
+
+        virtual void getMatchingTestCases( const std::string& rawTestSpec, std::vector<TestCaseInfo>& matchingTestsOut ) const {
+            TestSpec testSpec( rawTestSpec );
+
             std::vector<TestCaseInfo>::const_iterator it = m_functionsInOrder.begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = m_functionsInOrder.end();
             for(; it != itEnd; ++it ) {
                 if( testSpec.matches( it->getName() ) ) {
-                    testList.push_back( *it );
+                    matchingTestsOut.push_back( *it );
                 }
             }
-            return testList;
         }
 
     private:
 
         std::set<TestCaseInfo> m_functions;
         std::vector<TestCaseInfo> m_functionsInOrder;
+        std::vector<TestCaseInfo> m_nonHiddenFunctions;
         size_t m_unnamedCount;
     };
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class FreeFunctionTestCase : public ITestCase {
+    class FreeFunctionTestCase : public SharedImpl<ITestCase> {
     public:
 
         FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}
-        virtual ~FreeFunctionTestCase();
 
         virtual void invoke() const {
             m_fun();
         }
 
-        virtual ITestCase* clone() const {
-            return new FreeFunctionTestCase( m_fun );
-        }
-
-        virtual bool operator == ( const ITestCase& other ) const {
-            const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && m_fun == ffOther->m_fun;
-        }
-
-        virtual bool operator < ( const ITestCase& other ) const {
-            const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && m_fun < ffOther->m_fun;
-        }
-
     private:
+        virtual ~FreeFunctionTestCase();
+
         TestFunction m_fun;
     };
 
@@ -4956,6 +4905,70 @@ namespace Catch {
 
 } // end namespace Catch
 
+// #included from: catch_test_case_info.hpp
+#define TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED
+
+namespace Catch {
+
+    TestCaseInfo::TestCaseInfo( ITestCase* testCase,
+                                const char* name,
+                                const char* description,
+                                const SourceLineInfo& lineInfo )
+    :   m_test( testCase ),
+        m_name( name ),
+        m_description( description ),
+        m_lineInfo( lineInfo )
+    {}
+
+    TestCaseInfo::TestCaseInfo()
+    :   m_test( NULL ),
+        m_name(),
+        m_description()
+    {}
+
+    TestCaseInfo::TestCaseInfo( const TestCaseInfo& other, const std::string& name )
+    :   m_test( other.m_test ),
+        m_name( name ),
+        m_description( other.m_description ),
+        m_lineInfo( other.m_lineInfo )
+    {}
+
+    void TestCaseInfo::invoke() const {
+        m_test->invoke();
+    }
+
+    const std::string& TestCaseInfo::getName() const {
+        return m_name;
+    }
+
+    const std::string& TestCaseInfo::getDescription() const {
+        return m_description;
+    }
+
+    const SourceLineInfo& TestCaseInfo::getLineInfo() const {
+        return m_lineInfo;
+    }
+
+    bool TestCaseInfo::isHidden() const {
+        return m_name.size() >= 2 && m_name[0] == '.' && m_name[1] == '/';
+    }
+
+    void TestCaseInfo::swap( TestCaseInfo& other ) {
+        m_test.swap( other.m_test );
+        m_name.swap( other.m_name );
+        m_description.swap( other.m_description );
+        m_lineInfo.swap( other.m_lineInfo );
+    }
+
+    bool TestCaseInfo::operator == ( const TestCaseInfo& other ) const {
+        return m_test.get() == other.m_test.get() && m_name == other.m_name;
+    }
+
+    bool TestCaseInfo::operator < ( const TestCaseInfo& other ) const {
+        return m_name < other.m_name;
+    }
+}
+
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
@@ -4986,7 +4999,9 @@ namespace Catch {
 
 }
 
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif
 #endif
 
 #ifdef CATCH_CONFIG_MAIN
@@ -5112,7 +5127,9 @@ int main (int argc, char * const argv[]) {
 
 using Catch::Detail::Approx;
 
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 
