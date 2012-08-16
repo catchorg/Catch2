@@ -56,7 +56,9 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
     CHECK( totals.assertions.failed == 1 );
 }
 
+#ifdef __clang__
 #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
 
 #include "../../include/internal/catch_commandline.hpp"
 #include "../../include/reporters/catch_reporter_basic.hpp"

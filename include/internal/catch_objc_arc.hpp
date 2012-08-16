@@ -33,11 +33,15 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 #else
 inline void arcSafeRelease( NSObject* ){}
 inline id performOptionalSelector( id obj, SEL sel ) {
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+#endif
     if( [obj respondsToSelector: sel] )
         return [obj performSelector: sel];
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif
     return nil;
 }
 #define CATCH_UNSAFE_UNRETAINED __unsafe_unretained

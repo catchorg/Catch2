@@ -6,7 +6,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#ifdef __clang__
 #pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 #include "catch.hpp"
 

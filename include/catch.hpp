@@ -9,11 +9,12 @@
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
+#ifdef __clang__
 #pragma clang diagnostic ignored "-Wno-global-constructors"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
-
+#endif
 
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
@@ -132,6 +133,8 @@
 
 using Catch::Detail::Approx;
 
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_CATCH_HPP_INCLUDED

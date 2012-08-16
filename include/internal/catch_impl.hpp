@@ -9,8 +9,10 @@
 // Collect all the implementation files together here
 // These are the equivalent of what would usually be cpp files
 
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
 
 #include "catch_runner.hpp"
 #include "catch_registry_hub.hpp"
@@ -52,4 +54,6 @@ namespace Catch {
 
 }
 
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif
