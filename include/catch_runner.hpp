@@ -8,10 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
-#include "reporters/catch_reporter_basic.hpp"
-#include "reporters/catch_reporter_xml.hpp"
-#include "reporters/catch_reporter_junit.hpp"
-
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"
 #include "internal/catch_runner_impl.hpp"
@@ -22,11 +18,7 @@
 
 namespace Catch {
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
-    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
-    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
-
-    inline int resolveStream( Config& configWrapper ) {
+    inline int resolveStream( std::ofstream& ofs, Config& configWrapper ) {
         const ConfigData& config = configWrapper.data();
         
         if( !config.stream.empty() ) {
@@ -36,7 +28,6 @@ namespace Catch {
                 configWrapper.setFilename( config.stream );
         }
         // Open output file, if specified
-        std::ofstream ofs;
         if( !config.outputFilename.empty() ) {
             ofs.open( config.outputFilename.c_str() );
             if( ofs.fail() ) {
@@ -65,7 +56,8 @@ namespace Catch {
 
     inline int Main( Config& configWrapper ) {
 
-        int result = resolveStream( configWrapper );
+        std::ofstream ofs;
+        int result = resolveStream( ofs, configWrapper );
         if( result != 0 )
             return result;
 
