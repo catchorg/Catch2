@@ -12,7 +12,15 @@
 #include <limits>
 
 namespace Catch {
-    inline int List( const ConfigData& config ) {
+    inline bool matchesFilters( const std::vector<TestCaseFilters>& filters, const TestCaseInfo& testCase ) {
+        std::vector<TestCaseFilters>::const_iterator it = filters.begin();
+        std::vector<TestCaseFilters>::const_iterator itEnd = filters.end();
+        for(; it != itEnd; ++it )
+            if( !it->shouldInclude( testCase ) )
+                return false;
+        return true;
+    }
+    inline void List( const ConfigData& config ) {
         
         if( config.listSpec & List::Reports ) {
             std::cout << "Available reports:\n";
@@ -26,22 +34,28 @@ namespace Catch {
         }
         
         if( config.listSpec & List::Tests ) {
-            std::cout << "Available tests:\n";
+            if( config.filters.empty() )
+                std::cout << "All available tests:\n";
+            else
+                std::cout << "Matching tests:\n";
             std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
             for(; it != itEnd; ++it ) {
-                // !TBD: consider listAs()
-                std::cout << "\t" << it->getName() << "\n\t\t '" << it->getDescription() << "'\n";
+                if( matchesFilters( config.filters, *it ) ) {
+                    // !TBD: consider listAs()
+                    std::cout << "\t" << it->getName() << "\n";
+                    if( ( config.listSpec & List::TestNames ) != List::TestNames )
+                        std::cout << "\t\t '" << it->getDescription() << "'\n";
+                }
             }
             std::cout << std::endl;
         }
         
         if( ( config.listSpec & List::All ) == 0 ) {
-            std::cerr << "Unknown list type" << std::endl;
-            return (std::numeric_limits<int>::max)();
+            std::ostringstream oss;
+            oss << "Unknown list type";
+            throw std::domain_error( oss.str() );
         }
-        
-        return 0;
     }
     
 } // end namespace Catch

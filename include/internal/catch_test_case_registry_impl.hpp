@@ -52,24 +52,32 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
+        // !TBD deprecated
         virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const {
-            TestSpec testSpec( rawTestSpec );
-            
             std::vector<TestCaseInfo> matchingTests;
             getMatchingTestCases( rawTestSpec, matchingTests );
             return matchingTests;
         }
 
+        // !TBD deprecated
         virtual void getMatchingTestCases( const std::string& rawTestSpec, std::vector<TestCaseInfo>& matchingTestsOut ) const {
-            TestSpec testSpec( rawTestSpec );
+            TestCaseFilter filter( rawTestSpec );
 
             std::vector<TestCaseInfo>::const_iterator it = m_functionsInOrder.begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = m_functionsInOrder.end();
             for(; it != itEnd; ++it ) {
-                if( testSpec.matches( it->getName() ) ) {
+                if( filter.shouldInclude( *it ) ) {
                     matchingTestsOut.push_back( *it );
                 }
             }
+        }
+        virtual void getMatchingTestCases( const TestCaseFilters& filters, std::vector<TestCaseInfo>& matchingTestsOut ) const {
+            std::vector<TestCaseInfo>::const_iterator it = m_functionsInOrder.begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = m_functionsInOrder.end();
+            // !TBD: replace with algorithm
+            for(; it != itEnd; ++it )
+                if( filters.shouldInclude( *it ) )
+                    matchingTestsOut.push_back( *it );
         }
 
     private:

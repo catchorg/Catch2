@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
 
 #include "catch_config.hpp"
+#include "catch_common.h"
 
 namespace Catch {
 
@@ -95,9 +96,11 @@ namespace Catch {
             if( cmd.argsCount() > 2 )
                 cmd.raiseError( "Expected upto 2 arguments" );
 
-            List::What listSpec = List::All;
+            config.listSpec = List::TestNames;
             if( cmd.argsCount() >= 1 ) {
-                if( cmd[0] == "tests" )
+                if( cmd[0] == "all" )
+                    config.listSpec = List::All;
+                else if( cmd[0] == "tests" )
                     config.listSpec = List::Tests;
                 else if( cmd[0] == "reporters" )
                     config.listSpec = List::Reports;
@@ -106,9 +109,9 @@ namespace Catch {
             }
             if( cmd.argsCount() >= 2 ) {
                 if( cmd[1] == "xml" )
-                    config.listSpec = static_cast<List::What>( listSpec | List::AsXml );
+                    config.listSpec = static_cast<List::What>( config.listSpec | List::AsXml );
                 else if( cmd[1] == "text" )
-                    config.listSpec = static_cast<List::What>( listSpec | List::AsText );
+                    config.listSpec = static_cast<List::What>( config.listSpec | List::AsText );
                 else
                     cmd.raiseError( "Expected [xml] or [text]" );
             }
@@ -117,10 +120,22 @@ namespace Catch {
         if( Command cmd = parser.find( "-t", "--test" ) ) {
             if( cmd.argsCount() == 0 )
                 cmd.raiseError( "Expected at least one argument" );
-            for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-                config.testSpecs.push_back( cmd[i] );
+            std::string groupName;
+            for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                if( i != 0 )
+                    groupName += " ";
+                groupName += cmd[i];
+            }
+            TestCaseFilters filters( groupName );
+            for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                if( startsWith( cmd[i], "exclude:" ) )
+                    filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
+                else
+                    filters.addFilter( TestCaseFilter( cmd[i] ) );
+            }
+            config.filters.push_back( filters );
         }
-        
+
         if( Command cmd = parser.find( "-r", "--reporter" ) ) {
             if( cmd.argsCount() != 1 )
                 cmd.raiseError( "Expected one argument" );

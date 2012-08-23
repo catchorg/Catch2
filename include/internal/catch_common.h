@@ -74,6 +74,10 @@ namespace Catch {
     inline void forEach( const ContainerT& container, Function function ) {
         std::for_each( container.begin(), container.end(), function );
     }
+
+    inline bool startsWith( const std::string& s, const std::string& prefix ) {
+        return s.size() >= prefix.size() && s.substr( 0, prefix.size() ) == prefix;
+    }
     
     struct SourceLineInfo {
     

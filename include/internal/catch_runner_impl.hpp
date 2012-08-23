@@ -56,7 +56,7 @@ namespace Catch {
         
     public:
 
-        explicit Runner( Config& config, const Ptr<IReporter>& reporter )
+        explicit Runner( const Config& config, const Ptr<IReporter>& reporter )
         :   m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
             m_config( config ),
@@ -78,34 +78,22 @@ namespace Catch {
             m_context.setResultCapture( m_prevResultCapture );
             m_context.setConfig( m_prevConfig );
         }
-        
-        virtual Totals runAll() {
-            return runTests( "", getRegistryHub().getTestCaseRegistry().getAllTests() );
-        }
 
-        virtual Totals runAllNonHidden() {
-            return runTests( "", getRegistryHub().getTestCaseRegistry().getAllNonHiddenTests() );
-        }
+        Totals runMatching( const std::string& testSpec ) {
 
-        virtual Totals runMatching( const std::string& rawTestSpec ) {
-
-            const std::vector<TestCaseInfo>& matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( rawTestSpec );
-            return runTests( rawTestSpec, matchingTests );
-        }
-
-        virtual Totals runTests( const std::string& groupName, const std::vector<TestCaseInfo>& testCases ) {
+            std::vector<TestCaseInfo> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
 
             Totals totals;
-            m_reporter->StartGroup( groupName );
 
-            for( std::size_t i=0; i < testCases.size(); ++i ) {
-                if( aborting() ) {
-                    m_reporter->Aborted();
-                    break;
-                }
-                totals += runTest( testCases[i] );
-            }
-            m_reporter->EndGroup( groupName, totals );
+            m_reporter->StartGroup( testSpec );
+
+            std::vector<TestCaseInfo>::const_iterator it = matchingTests.begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = matchingTests.end();
+            for(; it != itEnd; ++it )
+                totals += runTest( *it );
+            // !TBD use std::accumulate?
+
+            m_reporter->EndGroup( testSpec, totals );
             return totals;
         }
 
@@ -228,13 +216,15 @@ namespace Catch {
         virtual const ResultInfo* getLastResult() const {
             return &m_lastResult;            
         }
-        
-    private:
 
+    public:
+        // !TBD We need to do this another way!
         bool aborting() const {
             return m_totals.assertions.failed == static_cast<std::size_t>( m_config.getCutoff() );
         }
-        
+
+    private:
+
         ResultAction::Value actOnCurrentResult() {
             testEnded( m_currentResult );
             m_lastResult = m_currentResult;

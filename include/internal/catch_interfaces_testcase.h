@@ -11,6 +11,9 @@
 #include <vector>
 
 namespace Catch {
+
+    class TestCaseFilters;
+
     struct ITestCase : IShared {
         virtual void invoke () const = 0;
     protected:
@@ -22,10 +25,7 @@ namespace Catch {
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
-        virtual const std::vector<TestCaseInfo>& getAllNonHiddenTests() const = 0;        
-
         virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
-        virtual void getMatchingTestCases( const std::string& rawTestSpec, std::vector<TestCaseInfo>& matchingTestsOut ) const = 0;
     };
 }
 

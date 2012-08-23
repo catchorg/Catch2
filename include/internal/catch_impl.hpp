@@ -24,6 +24,10 @@
 #include "catch_resultinfo_builder.hpp"
 #include "catch_test_case_info.hpp"
 
+#include "../reporters/catch_reporter_basic.hpp"
+#include "../reporters/catch_reporter_xml.hpp"
+#include "../reporters/catch_reporter_junit.hpp"
+
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
@@ -51,6 +55,10 @@ namespace Catch {
     IGeneratorsForTest::~IGeneratorsForTest() {}
 
     void Config::dummy() {}
+
+    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
 }
 

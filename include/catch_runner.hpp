@@ -11,6 +11,7 @@
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"
 #include "internal/catch_runner_impl.hpp"
+#include "internal/catch_test_spec.h"
 
 #include <fstream>
 #include <stdlib.h>
@@ -18,87 +19,136 @@
 
 namespace Catch {
 
-    inline int resolveStream( std::ofstream& ofs, Config& configWrapper ) {
-        const ConfigData& config = configWrapper.data();
-        
-        if( !config.stream.empty() ) {
-            if( config.stream[0] == '%' )
-                configWrapper.useStream( config.stream.substr( 1 ) );
-            else
-                configWrapper.setFilename( config.stream );
-        }
-        // Open output file, if specified
-        if( !config.outputFilename.empty() ) {
-            ofs.open( config.outputFilename.c_str() );
-            if( ofs.fail() ) {
-                std::cerr << "Unable to open file: '" << config.outputFilename << "'" << std::endl;
-                return (std::numeric_limits<int>::max)();
-            }
-            configWrapper.setStreamBuf( ofs.rdbuf() );
-        }
-        return 0;
-    }
-    
-    inline Ptr<IReporter> makeReporter( Config& configWrapper ) {
-        const ConfigData& config = configWrapper.data();
-        
-        std::string reporterName = config.reporter.empty()
-            ? "basic"
-            : config.reporter;
+    class Runner2 { // This will become Runner when Runner becomes Context
 
-        ReporterConfig reporterConfig( config.name, configWrapper.stream(), config.includeWhichResults == Include::SuccessfulResults );
-
-        Ptr<IReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
-        if( !reporter )
-            std::cerr << "No reporter registered with name: '" << reporterName << "'" << std::endl;
-        return reporter;
-    }
-
-    inline int Main( Config& configWrapper ) {
-
-        std::ofstream ofs;
-        int result = resolveStream( ofs, configWrapper );
-        if( result != 0 )
-            return result;
-
-        Ptr<IReporter> reporter = makeReporter( configWrapper );
-        if( !reporter )
-            return (std::numeric_limits<int>::max)();
-        
-        const ConfigData& config = configWrapper.data();
-
-        // Handle list request
-        if( config.listSpec != List::None )
-            return List( config );
-        
-        // Scope here for the Runner so it can use the context before it is cleaned-up
+    public:
+        Runner2( Config& configWrapper )
+        :   m_configWrapper( configWrapper ),
+            m_config( configWrapper.data() )
         {
-            Runner runner( configWrapper, reporter );
+            resolveStream();
+            makeReporter();
+        }
 
-            Totals totals;
-            // Run test specs specified on the command line - or default to all
-            if( config.testSpecs.empty() ) {
-                totals = runner.runAllNonHidden();
+        Totals runTests() {
+
+            std::vector<TestCaseFilters> filterGroups = m_config.filters;
+            if( filterGroups.empty() ) {
+                TestCaseFilters filterGroup( "" );
+                filterGroup.addFilter( TestCaseFilter( "./*", IfFilterMatches::ExcludeTests ) );
+                filterGroups.push_back( filterGroup );
             }
-            else {
-                std::vector<std::string>::const_iterator it = config.testSpecs.begin();
-                std::vector<std::string>::const_iterator itEnd = config.testSpecs.end();
-                for(; it != itEnd; ++it ) {
-                    Totals groupTotals = runner.runMatching( *it );
-                    if( groupTotals.testCases.total() == 0 )
-                        std::cerr << "\n[No test cases matched with: " << *it << "]" << std::endl;
-                    totals += groupTotals;
+
+            Runner context( m_configWrapper, m_reporter ); // This Runner will be renamed Context
+            Totals totals;
+
+            std::vector<TestCaseFilters>::const_iterator it = filterGroups.begin();
+            std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
+            for(; it != itEnd; ++it ) {
+                m_reporter->StartGroup( it->getName() );
+                runTestsForGroup( context, *it );
+                if( context.aborting() )
+                    m_reporter->Aborted();
+                m_reporter->EndGroup( it->getName(), totals );
+            }
+            return totals;
+        }
+
+        Totals runTestsForGroup( Runner& context, const TestCaseFilters& filterGroup ) {
+            Totals totals;
+            std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+            int testsRunForGroup = 0;
+            for(; it != itEnd; ++it ) {
+                if( filterGroup.shouldInclude( *it ) ) {
+                    testsRunForGroup++;
+                    if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
+
+                        if( context.aborting() )
+                            break;
+
+                        totals += context.runTest( *it );
+                        m_testsAlreadyRun.insert( *it );
+                    }
                 }
             }
-            result = static_cast<int>( totals.assertions.failed );
+            if( testsRunForGroup == 0 )
+                std::cerr << "\n[No test cases matched with: " << filterGroup.getName() << "]" << std::endl;
+            return totals;
+            
         }
+
+    private:
+        void resolveStream() {
+            if( !m_config.stream.empty() ) {
+                if( m_config.stream[0] == '%' )
+                    m_configWrapper.useStream( m_config.stream.substr( 1 ) );
+                else
+                    m_configWrapper.setFilename( m_config.stream );
+            }
+            // Open output file, if specified
+            if( !m_config.outputFilename.empty() ) {
+                m_ofs.open( m_config.outputFilename.c_str() );
+                if( m_ofs.fail() ) {
+                    std::ostringstream oss;
+                    oss << "Unable to open file: '" << m_config.outputFilename << "'";
+                    throw std::domain_error( oss.str() );
+                }
+                m_configWrapper.setStreamBuf( m_ofs.rdbuf() );
+            }
+        }
+        void makeReporter() {
+            std::string reporterName = m_config.reporter.empty()
+            ? "basic"
+            : m_config.reporter;
+
+            ReporterConfig reporterConfig( m_config.name, m_configWrapper.stream(), m_config.includeWhichResults == Include::SuccessfulResults );
+
+            m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
+            if( !m_reporter ) {
+                std::ostringstream oss;
+                oss << "No reporter registered with name: '" << reporterName << "'";
+                throw std::domain_error( oss.str() );
+            }
+        }
+        
+    private:
+        Config& m_configWrapper;
+        const ConfigData& m_config;
+        std::ofstream m_ofs;
+        Ptr<IReporter> m_reporter;
+        std::set<TestCaseInfo> m_testsAlreadyRun;
+    };
+
+    inline int Main( Config& configWrapper ) {
+        int result = 0;
+        try
+        {
+            Runner2 runner( configWrapper );
+
+            const ConfigData& config = configWrapper.data();
+
+            // Handle list request
+            if( config.listSpec != List::None ) {
+                List( config );
+                return 0;
+            }
+
+            result = static_cast<int>( runner.runTests().assertions.failed );
+
+        }
+        catch( std::exception& ex ) {
+            std::cerr << ex.what() << std::endl;
+            result = (std::numeric_limits<int>::max)();
+        }
+
         Catch::cleanUp();
         return result;
     }
 
     inline void showUsage( std::ostream& os ) {
         os  << "\t-?, -h, --help\n"
-            << "\t-l, --list <tests | reporters> [xml]\n"
+            << "\t-l, --list [all | tests | reporters [xml]]\n"
             << "\t-t, --test <testspec> [<testspec>...]\n"
             << "\t-r, --reporter <reporter name>\n"
             << "\t-o, --out <file name>|<%stream name>\n"

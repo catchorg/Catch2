@@ -52,19 +52,14 @@ namespace Catch {
             return m_p;
         }
         
-        T& operator*(){
+        T& operator*() const {
             return *m_p;
         }
-        const T& operator*() const{
-            return *m_p;
+
+        T* operator->() const {
+            return m_p;
         }
         
-        T* operator->(){
-            return m_p;
-        }
-        const T* operator->() const{
-            return m_p;
-        }
         bool operator !() const {
             return m_p == NULL;
         }

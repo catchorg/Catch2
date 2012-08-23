@@ -63,6 +63,7 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
 #endif
 
 #include "../../include/internal/catch_commandline.hpp"
+#include "../../include/internal/catch_test_spec.h"
 #include "../../include/reporters/catch_reporter_basic.hpp"
 #include "../../include/reporters/catch_reporter_xml.hpp"
 #include "../../include/reporters/catch_reporter_junit.hpp"
@@ -84,6 +85,8 @@ std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::Co
     return "";
 }
 
+inline Catch::TestCaseInfo makeTestCase( const char* name ){ return Catch::TestCaseInfo( NULL, name, "", CATCH_INTERNAL_LINEINFO ); }
+
 TEST_CASE( "selftest/parser/2", "ConfigData" ) {
 
     Catch::ConfigData config;
@@ -92,7 +95,6 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
         const char* argv[] = { "test" };
         CHECK_NOTHROW( parseIntoConfig( argv, config ) );
         
-        CHECK( config.testSpecs.empty() );
         CHECK( config.shouldDebugBreak == false );
         CHECK( config.cutoff == -1 );
         CHECK( config.allowThrows == true );
@@ -103,26 +105,46 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
         SECTION( "-t/1", "Specify one test case using -t" ) {
             const char* argv[] = { "test", "-t", "test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
-            REQUIRE( config.testSpecs.size() == 1 );
-            REQUIRE( config.testSpecs[0] == "test1" );
+
+            REQUIRE( config.filters.size() == 1 );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+        }
+        SECTION( "-t/exclude:1", "Specify one test case exclusion using -t exclude:" ) {
+            const char* argv[] = { "test", "-t", "exclude:test1" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.filters.size() == 1 );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "alwaysIncluded" ) ) );
         }
 
         SECTION( "--test/1", "Specify one test case using --test" ) {
             const char* argv[] = { "test", "--test", "test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.testSpecs.size() == 1 );
-            REQUIRE( config.testSpecs[0] == "test1" );
+            REQUIRE( config.filters.size() == 1 );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+        }
+
+        SECTION( "--test/exclude:1", "Specify one test case exclusion using --test exclude:" ) {
+            const char* argv[] = { "test", "--test", "exclude:test1" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.filters.size() == 1 );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "alwaysIncluded" ) ) );
         }
 
         SECTION( "-t/2", "Specify two test cases using -t" ) {
             const char* argv[] = { "test", "-t", "test1", "test2" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.testSpecs.size() == 2 );
-            REQUIRE( config.testSpecs[0] == "test1" );
-            REQUIRE( config.testSpecs[1] == "test2" );
+            REQUIRE( config.filters.size() == 1 );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test2" ) ) );
         }
 
         SECTION( "-t/0", "When no test names are supplied it is an error" ) {
@@ -229,91 +251,6 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
     }        
 }
 
-class TestSpec {
-public:
-    TestSpec( const std::string& rawSpec )
-    :   m_rawSpec( rawSpec ),
-    m_isWildcarded( false ) {
-
-        if( m_rawSpec[m_rawSpec.size()-1] == '*' ) {
-            m_rawSpec = m_rawSpec.substr( 0, m_rawSpec.size()-1 );
-            m_isWildcarded = true;
-        }
-    }
-
-    bool matches ( const std::string& testName ) const {
-        if( !m_isWildcarded )
-            return m_rawSpec == testName;
-        else
-            return testName.size() >= m_rawSpec.size() && testName.substr( 0, m_rawSpec.size() ) == m_rawSpec;
-    }
-
-private:
-    std::string m_rawSpec;
-    bool m_isWildcarded;
-};
-
-
-namespace Catch{ //
-
-struct IfFilterMatches{ enum DoWhat {
-    IncludeTests,
-    ExcludeTests
-}; };
-
-class TestCaseFilter {
-public:
-    TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat filterType = IfFilterMatches::IncludeTests )
-    :   m_testSpec( testSpec ),
-        m_filterType( filterType ),
-        m_isWildcarded( false )
-    {
-        if( m_testSpec[m_testSpec.size()-1] == '*' ) {
-            m_testSpec = m_testSpec.substr( 0, m_testSpec.size()-1 );
-            m_isWildcarded = true;
-        }
-    }
-
-    bool shouldInclude( const TestCaseInfo& testCase ) const {
-        return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
-    }
-private:
-
-    bool isMatch( const TestCaseInfo& testCase ) const {
-        const std::string& name = testCase.getName();
-        if( !m_isWildcarded )
-            return m_testSpec == name;
-        else
-            return name.size() >= m_testSpec.size() && name.substr( 0, m_testSpec.size() ) == m_testSpec;
-    }
-
-    std::string m_testSpec;
-    IfFilterMatches::DoWhat m_filterType;
-    bool m_isWildcarded;
-};
-
-class TestCaseFilters {
-public:
-    void addFilter( const TestCaseFilter& filter ) {
-        m_filters.push_back( filter );
-    }
-
-    bool shouldInclude( const TestCaseInfo& testCase ) const {
-        std::vector<TestCaseFilter>::const_iterator it = m_filters.begin();
-        std::vector<TestCaseFilter>::const_iterator itEnd = m_filters.end();
-        for(; it != itEnd; ++it )
-            if( !it->shouldInclude( testCase ) )
-                return false;
-        return true;
-    }
-private:
-    std::vector<TestCaseFilter> m_filters;
-};
-
-}
-
-inline Catch::TestCaseInfo makeTestCase( const char* name ){ return Catch::TestCaseInfo( NULL, name, "", CATCH_INTERNAL_LINEINFO ); }
-
 TEST_CASE( "selftest/test filter", "Groups of tests can be selected" ) {
 
     Catch::TestCaseFilter matchAny( "*" );
@@ -335,7 +272,7 @@ TEST_CASE( "selftest/test filters", "Groups of tests can be selected" ) {
 
     Catch::TestCaseFilter matchHidden( "./*" );
     Catch::TestCaseFilter dontMatchA( "./a*", Catch::IfFilterMatches::ExcludeTests );
-    Catch::TestCaseFilters filters;
+    Catch::TestCaseFilters filters( "" );
     filters.addFilter( matchHidden );
     filters.addFilter( dontMatchA );
 

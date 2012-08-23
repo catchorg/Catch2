@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
 
+#include "catch_test_spec.h"
 #include "catch_interfaces_reporter.h"
 #include "catch_context.h"
 
@@ -29,7 +30,9 @@ namespace Catch {
         Reports = 1,
         Tests = 2,
         All = 3,
-        
+
+        TestNames = 6,
+
         WhatMask = 0xf,
         
         AsText = 0x10,
@@ -50,7 +53,7 @@ namespace Catch {
         std::string reporter;
         std::string outputFilename;
         List::What listSpec;
-        std::vector<std::string> testSpecs;
+        std::vector<TestCaseFilters> filters;
         bool shouldDebugBreak;
         std::string stream;
         Include::WhichResults includeWhichResults;
@@ -85,14 +88,6 @@ namespace Catch {
         
         void setFilename( const std::string& filename ) {
             m_data.outputFilename = filename;
-        }
-        
-        bool testsSpecified() const {
-            return !m_data.testSpecs.empty();
-        }
-
-        const std::vector<std::string>& getTestSpecs() const {
-            return m_data.testSpecs;
         }
         
         List::What getListSpec( void ) const {
