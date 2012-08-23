@@ -27,6 +27,7 @@ namespace Catch {
 
 
         TestCaseInfo( const TestCaseInfo& other, const std::string& name );
+        TestCaseInfo( const TestCaseInfo& other );
 
         void invoke() const;
         const std::string& getName() const;
@@ -37,6 +38,7 @@ namespace Catch {
         void swap( TestCaseInfo& other );
         bool operator == ( const TestCaseInfo& other ) const;
         bool operator < ( const TestCaseInfo& other ) const;
+        TestCaseInfo& operator = ( const TestCaseInfo& other );
 
     private:
         Ptr<ITestCase> m_test;

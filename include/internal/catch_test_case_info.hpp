@@ -36,6 +36,13 @@ namespace Catch {
         m_lineInfo( other.m_lineInfo )
     {}
 
+    TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
+    :   m_test( other.m_test ),
+        m_name( other.m_name ),
+        m_description( other.m_description ),
+        m_lineInfo( other.m_lineInfo )
+    {}
+
     void TestCaseInfo::invoke() const {
         m_test->invoke();
     }
@@ -69,6 +76,11 @@ namespace Catch {
 
     bool TestCaseInfo::operator < ( const TestCaseInfo& other ) const {
         return m_name < other.m_name;
+    }
+    TestCaseInfo& TestCaseInfo::operator = ( const TestCaseInfo& other ) {
+        TestCaseInfo temp( other );
+        swap( temp );
+        return *this;
     }
 }
 
