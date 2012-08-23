@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-16 18:48:36.660439
+ *  Generated: 2012-08-23 19:48:39.069512
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1954,6 +1954,7 @@ namespace Catch {
                         const SourceLineInfo& lineInfo );
 
         TestCaseInfo( const TestCaseInfo& other, const std::string& name );
+        TestCaseInfo( const TestCaseInfo& other );
 
         void invoke() const;
         const std::string& getName() const;
@@ -1964,6 +1965,7 @@ namespace Catch {
         void swap( TestCaseInfo& other );
         bool operator == ( const TestCaseInfo& other ) const;
         bool operator < ( const TestCaseInfo& other ) const;
+        TestCaseInfo& operator = ( const TestCaseInfo& other );
 
     private:
         Ptr<ITestCase> m_test;
@@ -4933,6 +4935,13 @@ namespace Catch {
         m_lineInfo( other.m_lineInfo )
     {}
 
+    TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
+    :   m_test( other.m_test ),
+        m_name( other.m_name ),
+        m_description( other.m_description ),
+        m_lineInfo( other.m_lineInfo )
+    {}
+
     void TestCaseInfo::invoke() const {
         m_test->invoke();
     }
@@ -4966,6 +4975,11 @@ namespace Catch {
 
     bool TestCaseInfo::operator < ( const TestCaseInfo& other ) const {
         return m_name < other.m_name;
+    }
+    TestCaseInfo& TestCaseInfo::operator = ( const TestCaseInfo& other ) {
+        TestCaseInfo temp( other );
+        swap( temp );
+        return *this;
     }
 }
 
