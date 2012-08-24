@@ -36,7 +36,7 @@ namespace Catch {
         }
         
         operator SafeBool::type() const {
-            return SafeBool::makeSafe( !m_name.empty() );
+            return SafeBool::makeSafe( !m_name.empty() || !m_args.empty() );
         }
         
         std::string name() const { return m_name; }
@@ -72,16 +72,19 @@ namespace Catch {
             return find( shortArg ) + find( longArg );
         }
         Command find( const std::string& arg ) const {
-            for( std::size_t i = 0; i < m_argc; ++i  )
+            for( std::size_t i = 1; i < m_argc; ++i  )
                 if( m_argv[i] == arg )
-                    return getArgs( i );
+                    return getArgs( m_argv[i], i+1 );
             return Command();
         }
-        
+        Command getDefaultArgs() const {
+            return getArgs( "", 1 );
+        }
+
     private:
-        Command getArgs( std::size_t from ) const {
-            Command command( m_argv[from] );
-            for( std::size_t i = from+1; i < m_argc && m_argv[i][0] != '-'; ++i  )
+        Command getArgs( const std::string& cmdName, std::size_t from ) const {
+            Command command( cmdName );
+            for( std::size_t i = from; i < m_argc && m_argv[i][0] != '-'; ++i  )
                 command += m_argv[i];
             return command;
         }
@@ -117,7 +120,7 @@ namespace Catch {
             }
         }
                             
-        if( Command cmd = parser.find( "-t", "--test" ) ) {
+        if( Command cmd = parser.find( "-t", "--test" ) + parser.getDefaultArgs() ) {
             if( cmd.argsCount() == 0 )
                 cmd.raiseError( "Expected at least one argument" );
             std::string groupName;
@@ -128,8 +131,11 @@ namespace Catch {
             }
             TestCaseFilters filters( groupName );
             for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                std::cout << "[" << cmd[i] << "]" << std::endl;
                 if( startsWith( cmd[i], "exclude:" ) )
                     filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
+                else if( startsWith( cmd[i], "ex:" ) )
+                    filters.addFilter( TestCaseFilter( cmd[i].substr( 3 ), IfFilterMatches::ExcludeTests ) );
                 else
                     filters.addFilter( TestCaseFilter( cmd[i] ) );
             }
