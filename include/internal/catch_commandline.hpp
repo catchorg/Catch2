@@ -134,8 +134,8 @@ namespace Catch {
                 std::cout << "[" << cmd[i] << "]" << std::endl;
                 if( startsWith( cmd[i], "exclude:" ) )
                     filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
-                else if( startsWith( cmd[i], "ex:" ) )
-                    filters.addFilter( TestCaseFilter( cmd[i].substr( 3 ), IfFilterMatches::ExcludeTests ) );
+                else if( startsWith( cmd[i], "~" ) )
+                    filters.addFilter( TestCaseFilter( cmd[i].substr( 1 ), IfFilterMatches::ExcludeTests ) );
                 else
                     filters.addFilter( TestCaseFilter( cmd[i] ) );
             }
