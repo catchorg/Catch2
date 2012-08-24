@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-24 18:57:26.838444
+ *  Generated: 2012-08-24 19:01:02.483106
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2594,7 +2594,6 @@ namespace Catch {
             }
             TestCaseFilters filters( groupName );
             for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                std::cout << "[" << cmd[i] << "]" << std::endl;
                 if( startsWith( cmd[i], "exclude:" ) )
                     filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
                 else if( startsWith( cmd[i], "~" ) )

@@ -131,7 +131,6 @@ namespace Catch {
             }
             TestCaseFilters filters( groupName );
             for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                std::cout << "[" << cmd[i] << "]" << std::endl;
                 if( startsWith( cmd[i], "exclude:" ) )
                     filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
                 else if( startsWith( cmd[i], "~" ) )

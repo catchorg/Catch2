@@ -137,6 +137,15 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             REQUIRE( config.filters[0].shouldInclude( makeTestCase( "alwaysIncluded" ) ) );
         }
 
+        SECTION( "--test/exclude:2", "Specify one test case exclusion using --test ~" ) {
+            const char* argv[] = { "test", "--test", "~test1" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.filters.size() == 1 );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "alwaysIncluded" ) ) );
+        }
+        
         SECTION( "-t/2", "Specify two test cases using -t" ) {
             const char* argv[] = { "test", "-t", "test1", "test2" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
