@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-23 20:06:52.538506
+ *  Generated: 2012-08-24 08:23:10.017875
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -95,6 +95,29 @@ namespace Catch {
     inline bool startsWith( const std::string& s, const std::string& prefix ) {
         return s.size() >= prefix.size() && s.substr( 0, prefix.size() ) == prefix;
     }
+    inline bool endsWith( const std::string& s, const std::string& suffix ) {
+        return s.size() >= suffix.size() && s.substr( s.size()-suffix.size(), suffix.size() ) == suffix;
+    }
+    inline bool contains( const std::string& s, const std::string& infix ) {
+        return s.find( infix ) != std::string::npos;
+    }
+
+    struct pluralise {
+        pluralise( std::size_t count, const std::string& label )
+        :   m_count( count ),
+            m_label( label )
+        {}
+
+        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
+            os << pluraliser.m_count << " " << pluraliser.m_label;
+            if( pluraliser.m_count != 1 )
+            os << "s";
+            return os;
+        }
+
+        std::size_t m_count;
+        std::string m_label;
+    };
 
     struct SourceLineInfo {
 
@@ -2216,15 +2239,26 @@ namespace Catch {
     }; };
 
     class TestCaseFilter {
+        enum WildcardPosition {
+            NoWildcard = 0,
+            WildcardAtStart = 1,
+            WildcardAtEnd = 2,
+            WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
+        };
+
     public:
         TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::IncludeTests )
-        :   m_testSpec( testSpec ),
+        :   m_stringToMatch( testSpec ),
             m_filterType( matchBehaviour ),
-            m_isWildcarded( false )
+            m_wildcardPosition( NoWildcard )
         {
-            if( m_testSpec[m_testSpec.size()-1] == '*' ) {
-                m_testSpec = m_testSpec.substr( 0, m_testSpec.size()-1 );
-                m_isWildcarded = true;
+            if( m_stringToMatch[0] == '*' ) {
+                m_stringToMatch = m_stringToMatch.substr( 1 );
+                m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
+            }
+            if( m_stringToMatch[m_stringToMatch.size()-1] == '*' ) {
+                m_stringToMatch = m_stringToMatch.substr( 0, m_stringToMatch.size()-1 );
+                m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtEnd );
             }
         }
 
@@ -2239,15 +2273,23 @@ namespace Catch {
 
         bool isMatch( const TestCaseInfo& testCase ) const {
             const std::string& name = testCase.getName();
-            if( !m_isWildcarded )
-                return m_testSpec == name;
-            else
-                return name.size() >= m_testSpec.size() && name.substr( 0, m_testSpec.size() ) == m_testSpec;
+
+            switch( m_wildcardPosition ) {
+                case NoWildcard:
+                    return m_stringToMatch == name;
+                case WildcardAtStart:
+                    return endsWith( name, m_stringToMatch );
+                case WildcardAtEnd:
+                    return startsWith( name, m_stringToMatch );
+                case WildcardAtBothEnds:
+                    return contains( name, m_stringToMatch );
+            }
+
         }
 
-        std::string m_testSpec;
+        std::string m_stringToMatch;
         IfFilterMatches::DoWhat m_filterType;
-        bool m_isWildcarded;
+        WildcardPosition m_wildcardPosition;
     };
 
     class TestCaseFilters {
@@ -2643,20 +2685,25 @@ namespace Catch {
 
         if( config.listSpec & List::Tests ) {
             if( config.filters.empty() )
-                std::cout << "All available tests:\n";
+                std::cout << "All available test cases:\n";
             else
-                std::cout << "Matching tests:\n";
+                std::cout << "Matching test cases:\n";
             std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+            std::size_t matchedTests = 0;
             for(; it != itEnd; ++it ) {
                 if( matchesFilters( config.filters, *it ) ) {
+                    matchedTests++;
                     // !TBD: consider listAs()
                     std::cout << "\t" << it->getName() << "\n";
                     if( ( config.listSpec & List::TestNames ) != List::TestNames )
                         std::cout << "\t\t '" << it->getDescription() << "'\n";
                 }
             }
-            std::cout << std::endl;
+            if( config.filters.empty() )
+                std::cout << pluralise( matchedTests, "test case" ) << std::endl;
+            else
+                std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
         }
 
         if( ( config.listSpec & List::All ) == 0 ) {
@@ -4229,23 +4276,6 @@ namespace Catch {
     Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
 
 namespace Catch {
-
-    struct pluralise {
-        pluralise( std::size_t count, const std::string& label )
-        :   m_count( count ),
-            m_label( label )
-        {}
-
-        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
-            os << pluraliser.m_count << " " << pluraliser.m_label;
-            if( pluraliser.m_count != 1 )
-                os << "s";
-            return os;
-        }
-
-        std::size_t m_count;
-        std::string m_label;
-    };
 
     class BasicReporter : public SharedImpl<IReporter> {
 

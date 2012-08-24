@@ -18,15 +18,26 @@ namespace Catch {
     }; };
 
     class TestCaseFilter {
+        enum WildcardPosition {
+            NoWildcard = 0,
+            WildcardAtStart = 1,
+            WildcardAtEnd = 2,
+            WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
+        };
+        
     public:
         TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::IncludeTests )
-        :   m_testSpec( testSpec ),
+        :   m_stringToMatch( testSpec ),
             m_filterType( matchBehaviour ),
-            m_isWildcarded( false )
+            m_wildcardPosition( NoWildcard )
         {
-            if( m_testSpec[m_testSpec.size()-1] == '*' ) {
-                m_testSpec = m_testSpec.substr( 0, m_testSpec.size()-1 );
-                m_isWildcarded = true;
+            if( m_stringToMatch[0] == '*' ) {
+                m_stringToMatch = m_stringToMatch.substr( 1 );
+                m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
+            }
+            if( m_stringToMatch[m_stringToMatch.size()-1] == '*' ) {
+                m_stringToMatch = m_stringToMatch.substr( 0, m_stringToMatch.size()-1 );
+                m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtEnd );
             }
         }
 
@@ -41,15 +52,23 @@ namespace Catch {
 
         bool isMatch( const TestCaseInfo& testCase ) const {
             const std::string& name = testCase.getName();
-            if( !m_isWildcarded )
-                return m_testSpec == name;
-            else
-                return name.size() >= m_testSpec.size() && name.substr( 0, m_testSpec.size() ) == m_testSpec;
+
+            switch( m_wildcardPosition ) {
+                case NoWildcard:
+                    return m_stringToMatch == name;
+                case WildcardAtStart:
+                    return endsWith( name, m_stringToMatch );
+                case WildcardAtEnd:
+                    return startsWith( name, m_stringToMatch );
+                case WildcardAtBothEnds:
+                    return contains( name, m_stringToMatch );
+            }
+
         }
 
-        std::string m_testSpec;
+        std::string m_stringToMatch;
         IfFilterMatches::DoWhat m_filterType;
-        bool m_isWildcarded;
+        WildcardPosition m_wildcardPosition;
     };
 
     class TestCaseFilters {

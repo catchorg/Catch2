@@ -78,7 +78,30 @@ namespace Catch {
     inline bool startsWith( const std::string& s, const std::string& prefix ) {
         return s.size() >= prefix.size() && s.substr( 0, prefix.size() ) == prefix;
     }
-    
+    inline bool endsWith( const std::string& s, const std::string& suffix ) {
+        return s.size() >= suffix.size() && s.substr( s.size()-suffix.size(), suffix.size() ) == suffix;
+    }
+    inline bool contains( const std::string& s, const std::string& infix ) {
+        return s.find( infix ) != std::string::npos;
+    }
+
+    struct pluralise {
+        pluralise( std::size_t count, const std::string& label )
+        :   m_count( count ),
+            m_label( label )
+        {}
+
+        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
+            os << pluraliser.m_count << " " << pluraliser.m_label;
+            if( pluraliser.m_count != 1 )
+            os << "s";
+            return os;
+        }
+
+        std::size_t m_count;
+        std::string m_label;
+    };
+
     struct SourceLineInfo {
     
         SourceLineInfo() : line( 0 ){}

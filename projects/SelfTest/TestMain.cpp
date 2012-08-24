@@ -251,7 +251,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
     }        
 }
 
-TEST_CASE( "selftest/test filter", "Groups of tests can be selected" ) {
+TEST_CASE( "selftest/test filter", "Individual filters" ) {
 
     Catch::TestCaseFilter matchAny( "*" );
     Catch::TestCaseFilter matchNone( "*", Catch::IfFilterMatches::ExcludeTests );
@@ -268,7 +268,7 @@ TEST_CASE( "selftest/test filter", "Groups of tests can be selected" ) {
     CHECK( matchNonHidden.shouldInclude( makeTestCase( "./any" ) ) == false );
 }
 
-TEST_CASE( "selftest/test filters", "Groups of tests can be selected" ) {
+TEST_CASE( "selftest/test filters", "Sets of filters" ) {
 
     Catch::TestCaseFilter matchHidden( "./*" );
     Catch::TestCaseFilter dontMatchA( "./a*", Catch::IfFilterMatches::ExcludeTests );
@@ -281,4 +281,19 @@ TEST_CASE( "selftest/test filters", "Groups of tests can be selected" ) {
     CHECK( filters.shouldInclude( makeTestCase( "any" ) ) == false );
     CHECK( filters.shouldInclude( makeTestCase( "./something" ) ) );
     CHECK( filters.shouldInclude( makeTestCase( "./anything" ) ) == false );
+}
+
+TEST_CASE( "selftest/filter/prefix wildcard", "Individual filters with wildcards at the start" ) {
+    Catch::TestCaseFilter matchBadgers( "*badger" );
+
+    CHECK( matchBadgers.shouldInclude( makeTestCase( "big badger" ) ));
+    CHECK( matchBadgers.shouldInclude( makeTestCase( "little badgers" ) ) == false );
+}
+TEST_CASE( "selftest/filter/wildcard at both ends", "Individual filters with wildcards at both ends" ) {
+    Catch::TestCaseFilter matchBadgers( "*badger*" );
+
+    CHECK( matchBadgers.shouldInclude( makeTestCase( "big badger" ) ));
+    CHECK( matchBadgers.shouldInclude( makeTestCase( "little badgers" ) ) );
+    CHECK( matchBadgers.shouldInclude( makeTestCase( "badgers are big" ) ) );
+    CHECK( matchBadgers.shouldInclude( makeTestCase( "hedgehogs" ) ) == false );
 }

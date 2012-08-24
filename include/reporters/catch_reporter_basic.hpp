@@ -15,23 +15,6 @@
 
 namespace Catch {
 
-    struct pluralise {
-        pluralise( std::size_t count, const std::string& label )
-        :   m_count( count ),
-            m_label( label )
-        {}
-
-        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
-            os << pluraliser.m_count << " " << pluraliser.m_label;
-            if( pluraliser.m_count != 1 )
-                os << "s";
-            return os;
-        }
-
-        std::size_t m_count;
-        std::string m_label;
-    };
-
     class BasicReporter : public SharedImpl<IReporter> {
     
         struct SpanInfo {

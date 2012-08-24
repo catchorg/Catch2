@@ -35,20 +35,25 @@ namespace Catch {
         
         if( config.listSpec & List::Tests ) {
             if( config.filters.empty() )
-                std::cout << "All available tests:\n";
+                std::cout << "All available test cases:\n";
             else
-                std::cout << "Matching tests:\n";
+                std::cout << "Matching test cases:\n";
             std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+            std::size_t matchedTests = 0;
             for(; it != itEnd; ++it ) {
                 if( matchesFilters( config.filters, *it ) ) {
+                    matchedTests++;
                     // !TBD: consider listAs()
                     std::cout << "\t" << it->getName() << "\n";
                     if( ( config.listSpec & List::TestNames ) != List::TestNames )
                         std::cout << "\t\t '" << it->getDescription() << "'\n";
                 }
             }
-            std::cout << std::endl;
+            if( config.filters.empty() )
+                std::cout << pluralise( matchedTests, "test case" ) << std::endl;
+            else
+                std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
         }
         
         if( ( config.listSpec & List::All ) == 0 ) {
