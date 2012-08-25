@@ -13,7 +13,7 @@
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {
     using namespace Catch;
-    
+
     ///////////////////////////////////////////////////////////////////////////
     SECTION(    "selftest/expected result",
                 "Tests do what they claim" ) {
@@ -70,13 +70,14 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
 
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
-    Catch::parseIntoConfig( Catch::CommandParser( size, argv ), config );
+    static Catch::AllOptions options;
+    options.parseIntoConfig( Catch::CommandParser( size, argv ), config );
 }
 
 template<size_t size>
 std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::ConfigData& config ) {
     try {
-        Catch::parseIntoConfig( Catch::CommandParser( size, argv ), config );
+        parseIntoConfig( argv, config );
         FAIL( "expected exception" );
     }
     catch( std::exception& ex ) {
@@ -305,4 +306,31 @@ TEST_CASE( "selftest/filter/wildcard at both ends", "Individual filters with wil
     CHECK( matchBadgers.shouldInclude( makeTestCase( "little badgers" ) ) );
     CHECK( matchBadgers.shouldInclude( makeTestCase( "badgers are big" ) ) );
     CHECK( matchBadgers.shouldInclude( makeTestCase( "hedgehogs" ) ) == false );
+}
+
+
+template<size_t size>
+int getArgc( const char * (&)[size] ) {
+    return size;
+}
+
+TEST_CASE( "selftest/option parsers", "" )
+{
+    Catch::ConfigData config;
+    
+    Catch::SharedImpl<Catch::Options::TestCaseOptionParser> tcOpt;
+    Catch::OptionParser& opt = tcOpt;
+
+    const char* argv[] = { "test", "-t", "test1" };
+
+    Catch::CommandParser parser( getArgc( argv ), argv );
+
+    CHECK_NOTHROW( opt.parseIntoConfig( parser, config ) );
+
+    REQUIRE( config.filters.size() == 1 );
+    REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
+    REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+
+
+
 }

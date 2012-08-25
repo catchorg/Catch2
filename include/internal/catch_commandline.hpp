@@ -72,9 +72,12 @@ namespace Catch {
             return find( shortArg ) + find( longArg );
         }
         Command find( const std::string& arg ) const {
-            for( std::size_t i = 1; i < m_argc; ++i  )
-                if( m_argv[i] == arg )
-                    return getArgs( m_argv[i], i+1 );
+            if( arg.empty() )
+                return getArgs( "", 1 );
+            else
+                for( std::size_t i = 1; i < m_argc; ++i  )
+                    if( m_argv[i] == arg )
+                        return getArgs( m_argv[i], i+1 );
             return Command();
         }
         Command getDefaultArgs() const {
@@ -92,109 +95,298 @@ namespace Catch {
         std::size_t m_argc;
         char const * const * m_argv;
     };
-   
-    inline void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+
+    class OptionParser : public IShared {
+    public:
+        virtual ~OptionParser() {}
+
+        void parseIntoConfig( CommandParser parser, ConfigData& config ) {
+            Command cmd;
+            for( std::vector<std::string>::const_iterator it = m_optionNames.begin();
+                it != m_optionNames.end();
+                ++it )
+                cmd += parser.find( *it );
+
+            if( cmd )
+                parseIntoConfig( cmd, config );
+        }
+
+        virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
+        virtual std::string argsSynopsis() const = 0;
+        virtual std::string optionSummary() const = 0;
         
-        if( Command cmd = parser.find( "-l", "--list" ) ) {
-            if( cmd.argsCount() > 2 )
-                cmd.raiseError( "Expected upto 2 arguments" );
+    protected:
+        std::vector<std::string> m_optionNames;
+    };
 
-            config.listSpec = List::TestNames;
-            if( cmd.argsCount() >= 1 ) {
-                if( cmd[0] == "all" )
-                    config.listSpec = List::All;
-                else if( cmd[0] == "tests" )
-                    config.listSpec = List::Tests;
-                else if( cmd[0] == "reporters" )
-                    config.listSpec = List::Reports;
-                else
-                    cmd.raiseError( "Expected [tests] or [reporters]" );
-            }
-            if( cmd.argsCount() >= 2 ) {
-                if( cmd[1] == "xml" )
-                    config.listSpec = static_cast<List::What>( config.listSpec | List::AsXml );
-                else if( cmd[1] == "text" )
-                    config.listSpec = static_cast<List::What>( config.listSpec | List::AsText );
-                else
-                    cmd.raiseError( "Expected [xml] or [text]" );
-            }
-        }
-                            
-        if( Command cmd = parser.find( "-t", "--test" ) + parser.getDefaultArgs() ) {
-            if( cmd.argsCount() == 0 )
-                cmd.raiseError( "Expected at least one argument" );
-            std::string groupName;
-            for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                if( i != 0 )
-                    groupName += " ";
-                groupName += cmd[i];
-            }
-            TestCaseFilters filters( groupName );
-            for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                if( startsWith( cmd[i], "exclude:" ) )
-                    filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
-                else if( startsWith( cmd[i], "~" ) )
-                    filters.addFilter( TestCaseFilter( cmd[i].substr( 1 ), IfFilterMatches::ExcludeTests ) );
-                else
-                    filters.addFilter( TestCaseFilter( cmd[i] ) );
-            }
-            config.filters.push_back( filters );
-        }
+    namespace Options {
 
-        if( Command cmd = parser.find( "-r", "--reporter" ) ) {
-            if( cmd.argsCount() != 1 )
-                cmd.raiseError( "Expected one argument" );
-            config.reporter = cmd[0];
-        }
+        class TestCaseOptionParser : public OptionParser {
+        public:
+            TestCaseOptionParser() {
+                m_optionNames.push_back( "-t" );
+                m_optionNames.push_back( "--test" );
+                m_optionNames.push_back( "" ); // default option
+            }
+            virtual std::string argsSynopsis() const {
+                return "<testspec> [<testspec>...]";
+            }
+            virtual std::string optionSummary() const {
+                return "Specify which test case or cases to run";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() == 0 )
+                    cmd.raiseError( "Expected at least one argument" );
+                std::string groupName;
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                    if( i != 0 )
+                        groupName += " ";
+                    groupName += cmd[i];
+                }
+                TestCaseFilters filters( groupName );
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                    if( startsWith( cmd[i], "exclude:" ) )
+                        filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
+                    else if( startsWith( cmd[i], "~" ) )
+                        filters.addFilter( TestCaseFilter( cmd[i].substr( 1 ), IfFilterMatches::ExcludeTests ) );
+                    else
+                        filters.addFilter( TestCaseFilter( cmd[i] ) );
+                }
+                config.filters.push_back( filters );
+            }
+        };
+
+        class ListOptionParser : public OptionParser {
+        public:
+            ListOptionParser() {
+                m_optionNames.push_back( "-l" );
+                m_optionNames.push_back( "--list" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() > 2 )
+                    cmd.raiseError( "Expected upto 2 arguments" );
+
+                config.listSpec = List::TestNames;
+                if( cmd.argsCount() >= 1 ) {
+                    if( cmd[0] == "all" )
+                        config.listSpec = List::All;
+                    else if( cmd[0] == "tests" )
+                        config.listSpec = List::Tests;
+                    else if( cmd[0] == "reporters" )
+                        config.listSpec = List::Reports;
+                    else
+                        cmd.raiseError( "Expected [tests] or [reporters]" );
+                }
+                if( cmd.argsCount() >= 2 ) {
+                    if( cmd[1] == "xml" )
+                        config.listSpec = static_cast<List::What>( config.listSpec | List::AsXml );
+                    else if( cmd[1] == "text" )
+                        config.listSpec = static_cast<List::What>( config.listSpec | List::AsText );
+                    else
+                        cmd.raiseError( "Expected [xml] or [text]" );
+                }
+            }
+        };
         
-        if( Command cmd = parser.find( "-o", "--out" ) ) {
-            if( cmd.argsCount() == 0 )
-                cmd.raiseError( "Expected filename" );
-            if( cmd[0][0] == '%' )
-                config.stream = cmd[0].substr( 1 );
-            else
-                config.outputFilename = cmd[0];
-        }
-
-        if( Command cmd = parser.find( "-s", "--success" ) ) {
-            if( cmd.argsCount() != 0 )
-                cmd.raiseError( "Does not accept arguments" );
-            config.includeWhichResults = Include::SuccessfulResults;
-        }
-        
-        if( Command cmd = parser.find( "-b", "--break" ) ) {
-            if( cmd.argsCount() != 0 )
-                cmd.raiseError( "Does not accept arguments" );
-            config.shouldDebugBreak = true;
-        }
-
-        if( Command cmd = parser.find( "-n", "--name" ) ) {
-            if( cmd.argsCount() != 1 )
-                cmd.raiseError( "Expected a name" );
-            config.name = cmd[0];
-        }
-
-        if( Command cmd = parser.find( "-a", "--abort" ) ) {
-            if( cmd.argsCount() > 1 )
-                cmd.raiseError( "Only accepts 0-1 arguments" );
-            int threshold = 1;
-            if( cmd.argsCount() == 1 ) {
-                std::stringstream ss;
-                ss << cmd[0];
-                ss >> threshold;
-                if( ss.fail() || threshold <= 0 )
-                    cmd.raiseError( "threshold must be a number greater than zero" );
+        class ReporterOptionParser : public OptionParser {
+        public:
+            ReporterOptionParser() {
+                m_optionNames.push_back( "-r" );
+                m_optionNames.push_back( "--reporter" );
             }
-            config.cutoff = threshold;
-        }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
 
-        if( Command cmd = parser.find( "-nt", "--nothrow" ) ) {
-            if( cmd.argsCount() != 0 )
-                cmd.raiseError( "Does not accept arguments" );
-            config.allowThrows = false;
-        }
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() != 1 )
+                    cmd.raiseError( "Expected one argument" );
+                config.reporter = cmd[0];
+            }
+        };
 
+        class OutputOptionParser : public OptionParser {
+        public:
+            OutputOptionParser() {
+                m_optionNames.push_back( "-o" );
+                m_optionNames.push_back( "--out" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() == 0 )
+                    cmd.raiseError( "Expected filename" );
+                if( cmd[0][0] == '%' )
+                    config.stream = cmd[0].substr( 1 );
+                else
+                    config.outputFilename = cmd[0];
+            }
+        };
+        
+        class SuccesssOptionParser : public OptionParser {
+        public:
+            SuccesssOptionParser() {
+                m_optionNames.push_back( "-s" );
+                m_optionNames.push_back( "--success" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() != 0 )
+                    cmd.raiseError( "Does not accept arguments" );
+                config.includeWhichResults = Include::SuccessfulResults;
+            }
+        };
+        
+        class DebugBreakOptionParser : public OptionParser {
+        public:
+            DebugBreakOptionParser() {
+                m_optionNames.push_back( "-b" );
+                m_optionNames.push_back( "--break" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() != 0 )
+                    cmd.raiseError( "Does not accept arguments" );
+                config.shouldDebugBreak = true;
+            }
+        };
+        
+        class NameOptionParser : public OptionParser {
+        public:
+            NameOptionParser() {
+                m_optionNames.push_back( "-n" );
+                m_optionNames.push_back( "--name" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() != 1 )
+                    cmd.raiseError( "Expected a name" );
+                config.name = cmd[0];
+            }
+        };
+
+        class AbortOptionParser : public OptionParser {
+        public:
+            AbortOptionParser() {
+                m_optionNames.push_back( "-a" );
+                m_optionNames.push_back( "--abort" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() > 1 )
+                    cmd.raiseError( "Only accepts 0-1 arguments" );
+                int threshold = 1;
+                if( cmd.argsCount() == 1 ) {
+                    std::stringstream ss;
+                    ss << cmd[0];
+                    ss >> threshold;
+                    if( ss.fail() || threshold <= 0 )
+                        cmd.raiseError( "threshold must be a number greater than zero" );
+                }
+                config.cutoff = threshold;
+            }
+        };
+
+        class NoThrowOptionParser : public OptionParser {
+        public:
+            NoThrowOptionParser() {
+                m_optionNames.push_back( "-nt" );
+                m_optionNames.push_back( "--nothrow" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "!TBD";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                if( cmd.argsCount() != 0 )
+                    cmd.raiseError( "Does not accept arguments" );
+                config.allowThrows = false;
+            }
+        };
     }
+    
+    class AllOptions
+    {
+    public:
+        typedef std::vector<Ptr<OptionParser> > Parsers;
+        typedef Parsers::const_iterator const_iterator;
+        typedef Parsers::const_iterator iterator;
+
+        AllOptions() {
+            add<Options::AbortOptionParser>();
+            add<Options::DebugBreakOptionParser>();
+            add<Options::ListOptionParser>();
+            add<Options::NameOptionParser>();
+            add<Options::NoThrowOptionParser>();
+            add<Options::OutputOptionParser>();
+            add<Options::ReporterOptionParser>();
+            add<Options::SuccesssOptionParser>();
+            add<Options::TestCaseOptionParser>();
+        }
+
+        void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+            for( const_iterator it = m_parsers.begin(); it != m_parsers.end(); ++it )
+                (*it)->parseIntoConfig( parser, config );
+        }
+
+        const_iterator begin() const {
+            return m_parsers.begin();
+        }
+        const_iterator end() const {
+            return m_parsers.end();
+        }
+    private:
+
+        template<typename T>
+        void add() {
+            m_parsers.push_back( new SharedImpl<T>() );
+        }
+        Parsers m_parsers;
+
+    };
         
 } // end namespace Catch
 

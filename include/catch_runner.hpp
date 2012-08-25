@@ -173,7 +173,9 @@ namespace Catch {
 
         try {
             CommandParser parser( argc, argv );
-        
+
+            AllOptions options;
+            
             if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
                 if( cmd.argsCount() != 0 )
                     cmd.raiseError( "Does not accept arguments" );
@@ -183,7 +185,7 @@ namespace Catch {
                 return 0;
             }
         
-            parseIntoConfig( parser, config.data() );            
+            options.parseIntoConfig( parser, config.data() );
         }
         catch( std::exception& ex ) {
             std::cerr << ex.what() << "\n\nUsage: ...\n\n";
