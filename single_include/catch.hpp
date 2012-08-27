@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-27 21:42:22.556899
+ *  Generated: 2012-08-27 21:47:53.626062
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2271,6 +2271,11 @@ namespace Catch {
         }
     private:
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#endif
+
         bool isMatch( const TestCaseInfo& testCase ) const {
             const std::string& name = testCase.getName();
 
@@ -2284,8 +2289,12 @@ namespace Catch {
                 case WildcardAtBothEnds:
                     return contains( name, m_stringToMatch );
             }
-
+            throw std::logic_error( "Unhandled wildcard type" );
         }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
         std::string m_stringToMatch;
         IfFilterMatches::DoWhat m_filterType;
@@ -2780,7 +2789,7 @@ namespace Catch {
                 return "!TBD";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
                 config.includeWhichResults = Include::SuccessfulResults;
             }
         };
@@ -2798,7 +2807,7 @@ namespace Catch {
                 return "!TBD";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
                 config.shouldDebugBreak = true;
             }
         };
@@ -2860,7 +2869,7 @@ namespace Catch {
                 return "!TBD";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
                 config.allowThrows = false;
             }
         };

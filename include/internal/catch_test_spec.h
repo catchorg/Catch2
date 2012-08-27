@@ -50,6 +50,11 @@ namespace Catch {
         }
     private:
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#endif
+
         bool isMatch( const TestCaseInfo& testCase ) const {
             const std::string& name = testCase.getName();
 
@@ -63,8 +68,12 @@ namespace Catch {
                 case WildcardAtBothEnds:
                     return contains( name, m_stringToMatch );
             }
-
+            throw std::logic_error( "Unhandled wildcard type" );
         }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
         std::string m_stringToMatch;
         IfFilterMatches::DoWhat m_filterType;
