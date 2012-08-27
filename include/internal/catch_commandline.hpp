@@ -96,24 +96,46 @@ namespace Catch {
         char const * const * m_argv;
     };
 
-    class OptionParser : public IShared {
+    class OptionParser : public SharedImpl<IShared> {
     public:
         virtual ~OptionParser() {}
 
-        void parseIntoConfig( CommandParser parser, ConfigData& config ) {
+        Command find( const CommandParser& parser ) const {
             Command cmd;
             for( std::vector<std::string>::const_iterator it = m_optionNames.begin();
                 it != m_optionNames.end();
                 ++it )
                 cmd += parser.find( *it );
+            return cmd;
+        }
 
-            if( cmd )
+        void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+            if( Command cmd = find( parser ) )
                 parseIntoConfig( cmd, config );
         }
 
         virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
         virtual std::string argsSynopsis() const = 0;
         virtual std::string optionSummary() const = 0;
+
+        std::string optionNames() const {
+            std::string names;
+            for(    std::vector<std::string>::const_iterator it = m_optionNames.begin();
+                    it != m_optionNames.end();
+                    ++it ) {
+                if( !it->empty() ) {
+                    if( !names.empty() )
+                        names += ", ";
+                    names += *it;
+                }
+                else {
+                    names = "[" + names;
+                }
+            }
+            if( names[0] == '[' )
+                names += "]";
+            return names;
+        }
         
     protected:
         std::vector<std::string> m_optionNames;
@@ -121,6 +143,25 @@ namespace Catch {
 
     namespace Options {
 
+        class HelpOptionParser : public OptionParser {
+        public:
+            HelpOptionParser() {
+                m_optionNames.push_back( "-?" );
+                m_optionNames.push_back( "-h" );
+                m_optionNames.push_back( "--help" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "";
+            }
+            virtual std::string optionSummary() const {
+                return "Shows this usage summary";
+            }
+
+            virtual void parseIntoConfig( const Command&, ConfigData& ) {
+                // Does not affect config
+            }
+        };
+        
         class TestCaseOptionParser : public OptionParser {
         public:
             TestCaseOptionParser() {
@@ -164,7 +205,7 @@ namespace Catch {
                 m_optionNames.push_back( "--list" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "[all | tests | reporters [xml]]";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -203,7 +244,7 @@ namespace Catch {
                 m_optionNames.push_back( "--reporter" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "<reporter name>";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -223,7 +264,7 @@ namespace Catch {
                 m_optionNames.push_back( "--out" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "<file name>|<%stream name>";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -246,7 +287,7 @@ namespace Catch {
                 m_optionNames.push_back( "--success" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -266,7 +307,7 @@ namespace Catch {
                 m_optionNames.push_back( "--break" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -286,7 +327,7 @@ namespace Catch {
                 m_optionNames.push_back( "--name" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "<name>";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -306,7 +347,7 @@ namespace Catch {
                 m_optionNames.push_back( "--abort" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "[#]";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -334,7 +375,7 @@ namespace Catch {
                 m_optionNames.push_back( "--nothrow" );
             }
             virtual std::string argsSynopsis() const {
-                return "!TBD";
+                return "";
             }
             virtual std::string optionSummary() const {
                 return "!TBD";
@@ -355,16 +396,17 @@ namespace Catch {
         typedef Parsers::const_iterator const_iterator;
         typedef Parsers::const_iterator iterator;
 
-        AllOptions() {
-            add<Options::AbortOptionParser>();
-            add<Options::DebugBreakOptionParser>();
-            add<Options::ListOptionParser>();
-            add<Options::NameOptionParser>();
-            add<Options::NoThrowOptionParser>();
-            add<Options::OutputOptionParser>();
-            add<Options::ReporterOptionParser>();
-            add<Options::SuccesssOptionParser>();
+        AllOptions() {            
             add<Options::TestCaseOptionParser>();
+            add<Options::ListOptionParser>();
+            add<Options::ReporterOptionParser>();
+            add<Options::OutputOptionParser>();
+            add<Options::SuccesssOptionParser>();
+            add<Options::DebugBreakOptionParser>();
+            add<Options::NameOptionParser>();
+            add<Options::AbortOptionParser>();
+            add<Options::NoThrowOptionParser>();
+            add<Options::HelpOptionParser>();
         }
 
         void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
@@ -382,7 +424,7 @@ namespace Catch {
 
         template<typename T>
         void add() {
-            m_parsers.push_back( new SharedImpl<T>() );
+            m_parsers.push_back( new T() );
         }
         Parsers m_parsers;
 

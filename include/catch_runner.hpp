@@ -147,17 +147,12 @@ namespace Catch {
     }
 
     inline void showUsage( std::ostream& os ) {
-        os  << "\t-?, -h, --help\n"
-            << "\t-l, --list [all | tests | reporters [xml]]\n"
-            << "\t-t, --test <testspec> [<testspec>...]\n"
-            << "\t-r, --reporter <reporter name>\n"
-            << "\t-o, --out <file name>|<%stream name>\n"
-            << "\t-s, --success\n"
-            << "\t-b, --break\n"
-            << "\t-n, --name <name>\n"
-            << "\t-a, --abort [#]\n"
-            << "\t-nt, --nothrow\n\n"
-            << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;    
+        AllOptions options;
+        for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
+            OptionParser& opt = **it;
+            os << "  " << opt.optionNames() << " " << opt.argsSynopsis() << "\n";
+        }
+        os << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
     }
     inline void showHelp( std::string exeName ) {
         std::string::size_type pos = exeName.find_last_of( "/\\" );
@@ -174,9 +169,7 @@ namespace Catch {
         try {
             CommandParser parser( argc, argv );
 
-            AllOptions options;
-            
-            if( Command cmd = parser.find( "-h", "-?", "--help" ) ) {
+            if( Command cmd = Options::HelpOptionParser().find( parser ) ) {
                 if( cmd.argsCount() != 0 )
                     cmd.raiseError( "Does not accept arguments" );
 
@@ -184,7 +177,9 @@ namespace Catch {
                 Catch::cleanUp();        
                 return 0;
             }
-        
+
+            AllOptions options;
+
             options.parseIntoConfig( parser, config.data() );
         }
         catch( std::exception& ex ) {
