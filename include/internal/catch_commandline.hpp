@@ -17,7 +17,8 @@ namespace Catch {
     public:
         Command(){}
         
-        explicit Command( const std::string& name ) : m_name( name ) {}
+        explicit Command( const std::string& name ) : m_name( name ) {
+        }
                 
         Command& operator += ( const std::string& arg ) {
             m_args.push_back( arg );
@@ -46,9 +47,13 @@ namespace Catch {
         CATCH_ATTRIBUTE_NORETURN
         void raiseError( const std::string& message ) const {
             std::ostringstream oss;
-            oss << "Error while parsing " << m_name << ". " << message << ".";
+            if( m_name.empty() )
+                oss << "Error while parsing " << m_name << ". " << message << ".";
+            else
+                oss << "Error while parsing arguments. " << message << ".";
+
             if( m_args.size() > 0 )
-                oss << " Arguments where:";
+                oss << " Arguments were:";
             for( std::size_t i = 0; i < m_args.size(); ++i )
                 oss << " " << m_args[i];
             throw std::domain_error( oss.str() );
@@ -98,6 +103,10 @@ namespace Catch {
 
     class OptionParser : public SharedImpl<IShared> {
     public:
+        OptionParser( int minArgs = 0, int maxArgs = 0 )
+        : m_minArgs( minArgs ), m_maxArgs( maxArgs )
+        {}
+        
         virtual ~OptionParser() {}
 
         Command find( const CommandParser& parser ) const {
@@ -109,9 +118,24 @@ namespace Catch {
             return cmd;
         }
 
+        void validateArgs( const Command& args ) const {
+            if(  tooFewArgs( args ) || tooManyArgs( args ) ) {
+                std::ostringstream oss;
+                if( m_maxArgs == -1 )
+                    oss <<"Expected at least " << pluralise( static_cast<std::size_t>( m_minArgs ), "argument" );
+                else if( m_minArgs == m_maxArgs )
+                    oss <<"Expected " << pluralise( static_cast<std::size_t>( m_minArgs ), "argument" );
+                else
+                    oss <<"Expected between " << m_minArgs << " and " << m_maxArgs << " argument";
+                args.raiseError( oss.str() );
+            }
+        }
+
         void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
-            if( Command cmd = find( parser ) )
+            if( Command cmd = find( parser ) ) {
+                validateArgs( cmd );
                 parseIntoConfig( cmd, config );
+            }
         }
 
         virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
@@ -138,7 +162,16 @@ namespace Catch {
         }
         
     protected:
+
+        bool tooFewArgs( const Command& args ) const {
+            return args.argsCount() < static_cast<std::size_t>( m_minArgs );
+        }
+        bool tooManyArgs( const Command& args ) const {
+            return m_maxArgs >= 0 && args.argsCount() > static_cast<std::size_t>( m_maxArgs );
+        }
         std::vector<std::string> m_optionNames;
+        int m_minArgs;
+        int m_maxArgs;
     };
 
     namespace Options {
@@ -164,7 +197,7 @@ namespace Catch {
         
         class TestCaseOptionParser : public OptionParser {
         public:
-            TestCaseOptionParser() {
+            TestCaseOptionParser() : OptionParser( 1, -1 ) {
                 m_optionNames.push_back( "-t" );
                 m_optionNames.push_back( "--test" );
                 m_optionNames.push_back( "" ); // default option
@@ -177,8 +210,6 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() == 0 )
-                    cmd.raiseError( "Expected at least one argument" );
                 std::string groupName;
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
                     if( i != 0 )
@@ -200,7 +231,7 @@ namespace Catch {
 
         class ListOptionParser : public OptionParser {
         public:
-            ListOptionParser() {
+            ListOptionParser() : OptionParser( 0, 2 ) {
                 m_optionNames.push_back( "-l" );
                 m_optionNames.push_back( "--list" );
             }
@@ -212,9 +243,6 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() > 2 )
-                    cmd.raiseError( "Expected upto 2 arguments" );
-
                 config.listSpec = List::TestNames;
                 if( cmd.argsCount() >= 1 ) {
                     if( cmd[0] == "all" )
@@ -239,7 +267,7 @@ namespace Catch {
         
         class ReporterOptionParser : public OptionParser {
         public:
-            ReporterOptionParser() {
+            ReporterOptionParser() : OptionParser( 1, 1 ) {
                 m_optionNames.push_back( "-r" );
                 m_optionNames.push_back( "--reporter" );
             }
@@ -251,15 +279,13 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() != 1 )
-                    cmd.raiseError( "Expected one argument" );
                 config.reporter = cmd[0];
             }
         };
 
         class OutputOptionParser : public OptionParser {
         public:
-            OutputOptionParser() {
+            OutputOptionParser() : OptionParser( 1, 1 ) {
                 m_optionNames.push_back( "-o" );
                 m_optionNames.push_back( "--out" );
             }
@@ -271,8 +297,6 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() == 0 )
-                    cmd.raiseError( "Expected filename" );
                 if( cmd[0][0] == '%' )
                     config.stream = cmd[0].substr( 1 );
                 else
@@ -294,8 +318,6 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
                 config.includeWhichResults = Include::SuccessfulResults;
             }
         };
@@ -314,15 +336,13 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
                 config.shouldDebugBreak = true;
             }
         };
         
         class NameOptionParser : public OptionParser {
         public:
-            NameOptionParser() {
+            NameOptionParser() : OptionParser( 1, 1 ) {
                 m_optionNames.push_back( "-n" );
                 m_optionNames.push_back( "--name" );
             }
@@ -334,15 +354,13 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() != 1 )
-                    cmd.raiseError( "Expected a name" );
                 config.name = cmd[0];
             }
         };
 
         class AbortOptionParser : public OptionParser {
         public:
-            AbortOptionParser() {
+            AbortOptionParser() : OptionParser( 0, 1 ) {
                 m_optionNames.push_back( "-a" );
                 m_optionNames.push_back( "--abort" );
             }
@@ -354,8 +372,6 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() > 1 )
-                    cmd.raiseError( "Only accepts 0-1 arguments" );
                 int threshold = 1;
                 if( cmd.argsCount() == 1 ) {
                     std::stringstream ss;
@@ -382,8 +398,6 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
                 config.allowThrows = false;
             }
         };

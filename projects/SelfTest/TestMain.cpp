@@ -159,7 +159,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
 
         SECTION( "-t/0", "When no test names are supplied it is an error" ) {
             const char* argv[] = { "test", "-t" };
-            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "at least one" ) );
+            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "at least 1" ) );
         }
     }
     
@@ -184,7 +184,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
         }
         SECTION( "-r/error", "reporter config only accepts one argument" ) {
             const char* argv[] = { "test", "-r", "one", "two" };
-            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "one argument" ) );
+            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "1 argument" ) );
         }
     }
     
@@ -203,7 +203,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
         }
         SECTION( "-b", "break option has no arguments" ) {
             const char* argv[] = { "test", "-b", "unexpected" };
-            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "not accept" ) );
+            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "0 arguments" ) );
         }
     }
         
@@ -230,7 +230,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
         }
         SECTION( "-a/error/two args", "cutoff only takes one argument" ) {
             const char* argv[] = { "test", "-a", "1", "2" };
-            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "accepts" ) );
+            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "0 and 1 argument" ) );
         }
     }
     

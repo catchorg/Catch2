@@ -152,7 +152,7 @@ namespace Catch {
             OptionParser& opt = **it;
             os << "  " << opt.optionNames() << " " << opt.argsSynopsis() << "\n";
         }
-        os << "For more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line" << std::endl;
+        os << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
     inline void showHelp( std::string exeName ) {
         std::string::size_type pos = exeName.find_last_of( "/\\" );
