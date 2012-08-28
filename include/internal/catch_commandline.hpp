@@ -401,6 +401,29 @@ namespace Catch {
                 config.allowThrows = false;
             }
         };
+
+        class WarningsOptionParser : public OptionParser {
+        public:
+            WarningsOptionParser() : OptionParser( 1, -1 ) {
+                m_optionNames.push_back( "-w" );
+                m_optionNames.push_back( "--warnings" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "<warning>";
+            }
+            virtual std::string optionSummary() const {
+                return "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                    if( cmd[i] == "NoAssertions" )
+                        config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
+                    else
+                        cmd.raiseError( "Unrecognised warning: " + cmd[i] );
+                }
+            }
+        };
     }
     
     class AllOptions
@@ -410,8 +433,9 @@ namespace Catch {
         typedef Parsers::const_iterator const_iterator;
         typedef Parsers::const_iterator iterator;
 
-        AllOptions() {            
-            add<Options::TestCaseOptionParser>();
+        AllOptions() {
+            add<Options::TestCaseOptionParser>();   // Keep this one first
+
             add<Options::ListOptionParser>();
             add<Options::ReporterOptionParser>();
             add<Options::OutputOptionParser>();
@@ -420,7 +444,9 @@ namespace Catch {
             add<Options::NameOptionParser>();
             add<Options::AbortOptionParser>();
             add<Options::NoThrowOptionParser>();
-            add<Options::HelpOptionParser>();
+            add<Options::WarningsOptionParser>();
+
+            add<Options::HelpOptionParser>();       // Keep this one last
         }
 
         void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {

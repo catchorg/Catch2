@@ -8,7 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_TESTSPEC_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TESTSPEC_H_INCLUDED
 
+#include "catch_test_case_info.h"
+
 #include <string>
+#include <vector>
 
 namespace Catch {
     

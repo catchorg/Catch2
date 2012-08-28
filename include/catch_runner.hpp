@@ -102,7 +102,7 @@ namespace Catch {
             ? "basic"
             : m_config.reporter;
 
-            ReporterConfig reporterConfig( m_config.name, m_configWrapper.stream(), m_config.includeWhichResults == Include::SuccessfulResults );
+            ReporterConfig reporterConfig( m_config.name, m_configWrapper.stream(), m_config.includeWhichResults == Include::SuccessfulResults, m_config );
 
             m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
             if( !m_reporter ) {

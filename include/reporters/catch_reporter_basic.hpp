@@ -129,6 +129,11 @@ namespace Catch {
         }
         
         virtual void EndSection( const std::string& sectionName, const Counts& assertions ) {
+            if( ( m_config.fullConfig.warnings & ConfigData::WarnAbout::NoAssertions ) && assertions.total() == 0 ) {
+                StartSpansLazily();
+                m_config.stream << "** No assertions in section **" << std::endl;
+            }
+
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() ) {
                 m_config.stream << "[End of section: '" << sectionName << "' ";

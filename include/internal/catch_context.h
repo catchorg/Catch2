@@ -8,8 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 #define TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 
-#include "catch_interfaces_reporter.h"
-#include "catch_interfaces_config.h"
 #include "catch_interfaces_generators.h"
 
 #include <memory>
@@ -22,6 +20,7 @@ namespace Catch {
     struct IResultCapture;
     struct IRunner;
     struct IGeneratorsForTest;
+    struct IConfig;
 
     class StreamBufBase : public std::streambuf {
     public:

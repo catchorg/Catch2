@@ -11,6 +11,7 @@
 #include "catch_common.h"
 #include "catch_totals.hpp"
 #include "catch_ptr.hpp"
+#include "catch_config.hpp"
 
 #include <string>
 #include <ostream>
@@ -22,16 +23,19 @@ namespace Catch
     {
         ReporterConfig( const std::string& _name,
                         std::ostream& _stream,
-                        bool _includeSuccessfulResults = false )
+                        bool _includeSuccessfulResults,
+                        const ConfigData& _fullConfig )
         :   name( _name ),
             stream( _stream ),
-            includeSuccessfulResults( _includeSuccessfulResults )
+            includeSuccessfulResults( _includeSuccessfulResults ),
+            fullConfig( _fullConfig )
         {}
         
         std::string name;
         std::ostream& stream;
         bool includeSuccessfulResults;
-    };    
+        ConfigData fullConfig;
+    };
     
     class TestCaseInfo;
     class ResultInfo;

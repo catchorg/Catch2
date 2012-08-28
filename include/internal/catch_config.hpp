@@ -9,8 +9,8 @@
 #define TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
 
 #include "catch_test_spec.h"
-#include "catch_interfaces_reporter.h"
 #include "catch_context.h"
+#include "catch_interfaces_config.h"
 
 #include <memory>
 #include <vector>
@@ -36,18 +36,25 @@ namespace Catch {
         WhatMask = 0xf,
         
         AsText = 0x10,
-        AsXml = 0x11,
+        AsXml = 0x20,
         
         AsMask = 0xf0
     }; };
     
     struct ConfigData {
+
+        struct WarnAbout { enum What {
+            Nothing = 0x00,
+            NoAssertions = 0x01
+        }; };
+
         ConfigData()
         :   listSpec( List::None ),
             shouldDebugBreak( false ),
             includeWhichResults( Include::FailedOnly ),
             cutoff( -1 ),
-            allowThrows( true )
+            allowThrows( true ),
+            warnings( WarnAbout::Nothing )
         {}
         
         std::string reporter;
@@ -60,6 +67,7 @@ namespace Catch {
         std::string name;
         int cutoff;
         bool allowThrows;
+        WarnAbout::What warnings;
     };
     
     
