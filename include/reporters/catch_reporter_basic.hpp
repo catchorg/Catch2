@@ -127,12 +127,19 @@ namespace Catch {
         virtual void StartSection( const std::string& sectionName, const std::string& ) {
             m_sectionSpans.push_back( SpanInfo( sectionName ) );
         }
-        
+
+        virtual void NoAssertionsInSection( const std::string& sectionName ) {
+            StartSpansLazily();
+            TextColour colour( TextColour::ResultError );
+            m_config.stream << "\nNo assertions in section, '" << sectionName << "'\n" << std::endl;
+        }
+        virtual void NoAssertionsInTestCase( const std::string& testName ) {
+            StartSpansLazily();
+            TextColour colour( TextColour::ResultError );
+            m_config.stream << "\nNo assertions in test case, '" << testName << "'\n" << std::endl;
+        }
+
         virtual void EndSection( const std::string& sectionName, const Counts& assertions ) {
-            if( ( m_config.fullConfig.warnings & ConfigData::WarnAbout::NoAssertions ) && assertions.total() == 0 ) {
-                StartSpansLazily();
-                m_config.stream << "** No assertions in section **" << std::endl;
-            }
 
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() ) {

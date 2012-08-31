@@ -60,6 +60,8 @@ namespace Catch {
                 .writeAttribute( "name", sectionName )
                 .writeAttribute( "description", description );
         }
+        virtual void NoAssertionsInSection( const std::string& ) {}
+        virtual void NoAssertionsInTestCase( const std::string& ) {}
 
         virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions ) {
             m_xml.scopedElement( "OverallResults" )

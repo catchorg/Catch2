@@ -149,10 +149,13 @@ namespace Catch {
             return m_data.allowThrows;
         }
         
+        const ConfigData& data() const {
+            return m_data;
+        }
         ConfigData& data() {
             return m_data;
         }
-        
+
     private:
         ConfigData m_data;
         

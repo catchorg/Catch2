@@ -289,3 +289,7 @@ TEST_CASE( "example/factorial", "The Factorial function should return the factor
   REQUIRE( Factorial(3) == 6 );
   REQUIRE( Factorial(10) == 3628800 );
 }
+
+TEST_CASE( "empty", "An empty test with no assertions" )
+{
+}

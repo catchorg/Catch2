@@ -74,7 +74,10 @@ namespace Catch {
         virtual void StartSection( const std::string& sectionName, const std::string& ) {
             openLabel( recordSections, sectionName );
         }
-        
+
+        virtual void NoAssertionsInSection( const std::string& ) {}
+        virtual void NoAssertionsInTestCase( const std::string& ) {}
+
         virtual void EndSection( const std::string& sectionName, const Counts& ) {
             closeLabel( recordSections, sectionName );
         }
@@ -162,6 +165,9 @@ namespace Catch {
                              << "' to succeed but there was/ were " 
                              << totals.assertions.failed << " failure(s)" );
                     }
+                    else {
+                        SUCCEED( "Tests passed, as expected" );
+                    }
                     break;
                 case Expected::ToFail:
                     if( totals.assertions.passed > 0 ) {
@@ -170,6 +176,9 @@ namespace Catch {
                              << testCase.getName() 
                              << "' to fail but there was/ were " 
                              << totals.assertions.passed << " success(es)" );
+                    }
+                    else {
+                        SUCCEED( "Tests failed, as expected" );
                     }
                     break;
             }        

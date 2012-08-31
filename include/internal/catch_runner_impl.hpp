@@ -190,8 +190,16 @@ namespace Catch {
         }
         
         virtual void sectionEnded( const std::string& name, const Counts& prevAssertions ) {
+            Counts assertions = m_totals.assertions - prevAssertions;
+            if( assertions.total() == 0  &&
+               ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
+               !m_runningTest->isBranchSection() ) {
+                m_reporter->NoAssertionsInSection( name );
+                m_totals.assertions.failed++;
+                assertions.failed++;
+            }
             m_runningTest->endSection( name );
-            m_reporter->EndSection( name, m_totals.assertions - prevAssertions );
+            m_reporter->EndSection( name, assertions );
         }
 
         virtual void pushScopedInfo( ScopedInfo* scopedInfo ) {
@@ -246,6 +254,7 @@ namespace Catch {
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             try {
                 m_runningTest->reset();
+                Counts prevAssertions = m_totals.assertions;
                 if( m_reporter->shouldRedirectStdout() ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
@@ -253,6 +262,13 @@ namespace Catch {
                 }
                 else {
                     m_runningTest->getTestCaseInfo().invoke();
+                }
+                Counts assertions = m_totals.assertions - prevAssertions;
+                if( assertions.total() == 0  &&
+                   ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
+                   !m_runningTest->hasSections() ) {
+                        m_totals.assertions.failed++;                        
+                        m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCaseInfo().getName() );
                 }
                 m_runningTest->ranToCompletion();
             }

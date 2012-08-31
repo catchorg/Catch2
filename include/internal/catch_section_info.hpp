@@ -52,6 +52,10 @@ namespace Catch {
             return false;
         }
 
+        bool isBranch() const {
+            return m_status == Branch;
+        }
+
         void ranToCompletion() {
             if( m_status == Branch && !hasUntestedSections() )
                 m_status = TestedBranch;

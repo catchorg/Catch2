@@ -88,7 +88,10 @@ namespace Catch {
         
         virtual void StartSection( const std::string&, const std::string& ){}
 
-        virtual void EndSection( const std::string&, const Counts& ){}
+        virtual void NoAssertionsInSection( const std::string& ) {}
+        virtual void NoAssertionsInTestCase( const std::string& ) {}
+
+        virtual void EndSection( const std::string&, const Counts& ) {}
         
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
             m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );            

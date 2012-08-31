@@ -36,6 +36,17 @@ namespace Catch {
                     m_runStatus == RanToCompletionWithSections;
         }
         
+        bool isBranchSection() const {
+            return  m_currentSection &&
+                    m_currentSection->isBranch();
+        }
+
+        bool hasSections() const {
+            return  m_runStatus == RanAtLeastOneSection ||
+                    m_runStatus == RanToCompletionWithSections ||
+                    m_runStatus == EncounteredASection;
+        }
+
         void reset() {
             m_runStatus = NothingRun;
             m_changed = false;
