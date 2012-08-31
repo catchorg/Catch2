@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-31 18:45:38.119837
+ *  Generated: 2012-08-31 18:50:03.965736
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -293,7 +293,7 @@ namespace Catch {
             swap( temp );
             return *this;
         }
-        Ptr& operator = ( Ptr& other ){
+        Ptr& operator = ( const Ptr& other ){
             Ptr temp( other );
             swap( temp );
             return *this;

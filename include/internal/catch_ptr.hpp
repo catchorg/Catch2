@@ -36,7 +36,7 @@ namespace Catch {
             swap( temp );
             return *this;
         }
-        Ptr& operator = ( Ptr& other ){
+        Ptr& operator = ( const Ptr& other ){
             Ptr temp( other );
             swap( temp );
             return *this;
