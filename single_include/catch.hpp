@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-31 18:37:21.922461
+ *  Generated: 2012-08-31 18:45:38.119837
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3538,7 +3538,7 @@ namespace Catch {
             std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
             for(; it != itEnd; ++it ) {
                 m_reporter->StartGroup( it->getName() );
-                runTestsForGroup( context, *it );
+                totals += runTestsForGroup( context, *it );
                 if( context.aborting() )
                     m_reporter->Aborted();
                 m_reporter->EndGroup( it->getName(), totals );

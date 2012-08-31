@@ -46,7 +46,7 @@ namespace Catch {
             std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
             for(; it != itEnd; ++it ) {
                 m_reporter->StartGroup( it->getName() );
-                runTestsForGroup( context, *it );
+                totals += runTestsForGroup( context, *it );
                 if( context.aborting() )
                     m_reporter->Aborted();
                 m_reporter->EndGroup( it->getName(), totals );
