@@ -17,6 +17,7 @@
 		4A6D0C3D149B3D9E00DB3EAA /* MiscTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D0C34149B3D9E00DB3EAA /* MiscTests.cpp */; };
 		4A6D0C3E149B3D9E00DB3EAA /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D0C35149B3D9E00DB3EAA /* TestMain.cpp */; };
 		4A6D0C3F149B3D9E00DB3EAA /* TrickyTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D0C36149B3D9E00DB3EAA /* TrickyTests.cpp */; };
+		4AA7FF4315F3E89E009AD7F9 /* BDDTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AA7FF4115F3E89D009AD7F9 /* BDDTests.cpp */; };
 		4AE1840B14EE4F230066340D /* catch_self_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1840A14EE4F230066340D /* catch_self_test.cpp */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +98,7 @@
 		4A90B59E15D2521E00EF71BC /* catch_resultinfo_builder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_resultinfo_builder.hpp; sourceTree = "<group>"; };
 		4A9D84B11558FC0400FBB209 /* catch_tostring.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_tostring.hpp; sourceTree = "<group>"; };
 		4A9D84B315599AC900FBB209 /* catch_resultinfo_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_resultinfo_builder.h; sourceTree = "<group>"; };
+		4AA7FF4115F3E89D009AD7F9 /* BDDTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BDDTests.cpp; sourceTree = "<group>"; };
 		4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_console_colour_impl.hpp; sourceTree = "<group>"; };
 		4AB1C73714F97C1300F31DF7 /* catch_console_colour.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_console_colour.hpp; sourceTree = "<group>"; };
 		4AB77CB51551AEA200857BF0 /* catch_ptr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_ptr.hpp; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				4A6D0C32149B3D9E00DB3EAA /* GeneratorTests.cpp */,
 				4A6D0C33149B3D9E00DB3EAA /* MessageTests.cpp */,
 				4A6D0C34149B3D9E00DB3EAA /* MiscTests.cpp */,
+				4AA7FF4115F3E89D009AD7F9 /* BDDTests.cpp */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				4A6D0C3E149B3D9E00DB3EAA /* TestMain.cpp in Sources */,
 				4A6D0C3F149B3D9E00DB3EAA /* TrickyTests.cpp in Sources */,
 				4AE1840B14EE4F230066340D /* catch_self_test.cpp in Sources */,
+				4AA7FF4315F3E89E009AD7F9 /* BDDTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
