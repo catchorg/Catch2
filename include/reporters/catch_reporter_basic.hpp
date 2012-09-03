@@ -129,12 +129,12 @@ namespace Catch {
         }
 
         virtual void NoAssertionsInSection( const std::string& sectionName ) {
-            StartSpansLazily();
+            startSpansLazily();
             TextColour colour( TextColour::ResultError );
             m_config.stream << "\nNo assertions in section, '" << sectionName << "'\n" << std::endl;
         }
         virtual void NoAssertionsInTestCase( const std::string& testName ) {
-            StartSpansLazily();
+            startSpansLazily();
             TextColour colour( TextColour::ResultError );
             m_config.stream << "\nNo assertions in test case, '" << testName << "'\n" << std::endl;
         }
@@ -163,7 +163,7 @@ namespace Catch {
             if( !m_config.includeSuccessfulResults && resultInfo.getResultType() == ResultWas::Ok )
                 return;
             
-            StartSpansLazily();
+            startSpansLazily();
             
             if( !resultInfo.getFilename().empty() ) {
                 TextColour colour( TextColour::FileName );
@@ -245,12 +245,12 @@ namespace Catch {
                                     const std::string& stdOut, 
                                     const std::string& stdErr ) {
             if( !stdOut.empty() ) {
-                StartSpansLazily();
+                startSpansLazily();
                 streamVariableLengthText( "stdout", stdOut );
             }
             
             if( !stdErr.empty() ) {
-                StartSpansLazily();
+                startSpansLazily();
                 streamVariableLengthText( "stderr", stdErr );
             }
             
@@ -263,7 +263,7 @@ namespace Catch {
         
     private: // helpers
         
-        void StartSpansLazily() {
+        void startSpansLazily() {
             if( !m_testingSpan.emitted ) {
                 if( m_config.name.empty() )
                     m_config.stream << "[Started testing]" << std::endl;
