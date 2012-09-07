@@ -136,6 +136,12 @@ namespace Catch {
             delete m_streambuf;
             m_streambuf = newBuf;
         }
+
+        void addTestSpec( const std::string& testSpec ) {
+            TestCaseFilters filters( testSpec );
+            filters.addFilter( TestCaseFilter( testSpec ) );
+            m_data.filters.push_back( filters );
+        }
         
         virtual bool includeSuccessfulResults() const {
             return m_data.includeWhichResults == Include::SuccessfulResults;

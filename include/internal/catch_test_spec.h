@@ -16,6 +16,7 @@
 namespace Catch {
     
     struct IfFilterMatches{ enum DoWhat {
+        AutoDetectBehaviour,
         IncludeTests,
         ExcludeTests
     }; };
@@ -29,11 +30,25 @@ namespace Catch {
         };
         
     public:
-        TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::IncludeTests )
+        TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
         :   m_stringToMatch( testSpec ),
             m_filterType( matchBehaviour ),
             m_wildcardPosition( NoWildcard )
         {
+            if( m_filterType == IfFilterMatches::AutoDetectBehaviour ) {
+                if( startsWith( m_stringToMatch, "exclude:" ) ) {
+                    m_stringToMatch = m_stringToMatch.substr( 8 );
+                    m_filterType = IfFilterMatches::ExcludeTests;
+                }
+                else if( startsWith( m_stringToMatch, "~" ) ) {
+                    m_stringToMatch = m_stringToMatch.substr( 1 );
+                    m_filterType = IfFilterMatches::ExcludeTests;
+                }
+                else {
+                    m_filterType = IfFilterMatches::IncludeTests;
+                }
+            }
+
             if( m_stringToMatch[0] == '*' ) {
                 m_stringToMatch = m_stringToMatch.substr( 1 );
                 m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
