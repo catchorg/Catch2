@@ -69,6 +69,9 @@ namespace Catch {
     public:
         CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
+        std::string exeName() const {
+            return m_argv[0];
+        }
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
         }
@@ -141,6 +144,7 @@ namespace Catch {
         virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
         virtual std::string argsSynopsis() const = 0;
         virtual std::string optionSummary() const = 0;
+        virtual std::string optionDescription() const { return ""; };
 
         std::string optionNames() const {
             std::string names;
@@ -184,17 +188,21 @@ namespace Catch {
                 m_optionNames.push_back( "--help" );
             }
             virtual std::string argsSynopsis() const {
-                return "";
+                return "[<option for help on>]";
             }
             virtual std::string optionSummary() const {
-                return "Shows this usage summary";
+                return "Shows this usage summary, or help on a specific option, if supplied";
+            }
+            virtual std::string optionDescription() const {
+                return "";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& ) {
                 // Does not affect config
             }
         };
-        
+
+
         class TestCaseOptionParser : public OptionParser {
         public:
             TestCaseOptionParser() : OptionParser( 1, -1 ) {
@@ -206,7 +214,39 @@ namespace Catch {
                 return "<testspec> [<testspec>...]";
             }
             virtual std::string optionSummary() const {
-                return "Specify which test case or cases to run";
+                return "Specifies which test case or cases to run";
+            }
+
+            // Lines are split at the nearest prior space char to the 80 char column.
+            // Tab chars are removed from the output but their positions are used to align
+            // subsequently wrapped lines
+            virtual std::string optionDescription() const {
+                return "This option allows one ore more test specs to be supplied. Each spec either fully "
+                        "specifies a test case or is a pattern containing wildcards to match a set of test "
+                        "cases. If this option is not provided then all test cases, except those prefixed "
+                        "by './' are run\n"
+                        "\n"
+                        "Specs must be enclosed in \"quotes\" if they contain spaces. If they do not "
+                        "contain spaces the quotes are optional.\n"
+                        "\n"
+                        "Wildcards consist of the * character at the beginning, end, or both and can substitute for "
+                        "any number of any characters (including none)\n"
+                        "\n"
+                        "If spec is prefixed with exclude: or the ~ character then the pattern matches an exclusion. "
+                        "This means that tests matching the pattern are excluded from the set - even if a prior "
+                        "inclusion spec included them. Subsequent inclusion specs will take precendence, however. "
+                        "Inclusions and exclusions are evaluated in left-to-right order.\n"
+                        "\n"
+                        "Examples:\n"
+                        "\n"
+                        "    -t thisTestOnly        \tMatches the test case called, 'thisTestOnly'\n"
+                        "    -t \"this test only\"    \tMatches the test case called, 'this test only'\n"
+                        "    -t these/*             \tMatches all cases starting with 'these/'\n"
+                        "    -t exclude:notThis     \tMatches all tests except, 'notThis'\n"
+                        "    -t ~notThis            \tMatches all tests except, 'notThis'\n"
+                        "    -t ~*private*          \tMatches all tests except those that contain 'private'\n"
+                        "    -t a/* ~a/b/* a/b/c    \tMatches all tests that start with 'a/', except those"
+                                                         "that start with 'a/b/', except 'a/b/c', which is included";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -217,14 +257,8 @@ namespace Catch {
                     groupName += cmd[i];
                 }
                 TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( startsWith( cmd[i], "exclude:" ) )
-                        filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
-                    else if( startsWith( cmd[i], "~" ) )
-                        filters.addFilter( TestCaseFilter( cmd[i].substr( 1 ), IfFilterMatches::ExcludeTests ) );
-                    else
-                        filters.addFilter( TestCaseFilter( cmd[i] ) );
-                }
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                    filters.addFilter( TestCaseFilter( cmd[i] ) );
                 config.filters.push_back( filters );
             }
         };
@@ -239,7 +273,21 @@ namespace Catch {
                 return "[all | tests | reporters [xml]]";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Lists available tests or reporters";
+            }
+
+            virtual std::string optionDescription() const {
+                return  "With no arguments this option will list all registered tests - one per line.\n"
+                        "Supplying the xml argument formats the list as an xml document (which may be useful for "
+                        "consumption by other tools).\n"
+                        "Supplying the tests or reporters lists tests or reporters respectively - with descriptions.\n"
+                        "\n"
+                        "Examples:\n"
+                        "\n"
+                        "    -l\n"
+                        "    -l tests\n"
+                        "    -l reporters xml\n"
+                        "    -l xml";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -275,7 +323,27 @@ namespace Catch {
                 return "<reporter name>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Specifies type of reporter";
+            }
+
+            virtual std::string optionDescription() const {
+                return  "A reporter is an object that formats and structures the output of running "
+                        "tests, and potentially summarises the results. By default a basic reporter "
+                        "is used that writes IDE friendly results. CATCH comes bundled with some "
+                        "alternative reporters, but more can be added in client code.\n"
+                        "\n"
+                        "The bundled reporters are:\n"
+                        "    -r basic\n"
+                        "    -r xml\n"
+                        "    -r junit\n"
+                        "\n"
+                        "The JUnit reporter is an xml format that follows the structure of the JUnit "
+                        "XML Report ANT task, as consumed by a number of third-party tools, "
+                        "including Continuous Integration servers such as Jenkins.\n"
+                        "If not otherwise needed, the standard XML reporter is preferred as this is "
+                        "a streaming reporter, whereas the Junit reporter needs to hold all its "
+                        "results until the end so it can write the overall results into attributes "
+                        "of the root node.";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -293,7 +361,7 @@ namespace Catch {
                 return "<file name>|<%stream name>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Sends output to a file or stream";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -314,7 +382,7 @@ namespace Catch {
                 return "";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Shows results for successful tests";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
@@ -332,7 +400,7 @@ namespace Catch {
                 return "";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Breaks into the debugger on failure";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
@@ -350,7 +418,7 @@ namespace Catch {
                 return "<name>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Names a test run";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -368,7 +436,7 @@ namespace Catch {
                 return "[#]";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Aborts after a certain number of failures";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -394,7 +462,7 @@ namespace Catch {
                 return "";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Elides assertions expected to throw";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
@@ -412,7 +480,7 @@ namespace Catch {
                 return "<warning>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Enable warnings";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {

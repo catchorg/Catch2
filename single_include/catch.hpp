@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-08-31 18:50:03.965736
+ *  Generated: 2012-09-07 17:50:08.286409
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1686,6 +1686,7 @@ namespace Catch {
 namespace Catch {
 
     struct IfFilterMatches{ enum DoWhat {
+        AutoDetectBehaviour,
         IncludeTests,
         ExcludeTests
     }; };
@@ -1699,11 +1700,25 @@ namespace Catch {
         };
 
     public:
-        TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::IncludeTests )
+        TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
         :   m_stringToMatch( testSpec ),
             m_filterType( matchBehaviour ),
             m_wildcardPosition( NoWildcard )
         {
+            if( m_filterType == IfFilterMatches::AutoDetectBehaviour ) {
+                if( startsWith( m_stringToMatch, "exclude:" ) ) {
+                    m_stringToMatch = m_stringToMatch.substr( 8 );
+                    m_filterType = IfFilterMatches::ExcludeTests;
+                }
+                else if( startsWith( m_stringToMatch, "~" ) ) {
+                    m_stringToMatch = m_stringToMatch.substr( 1 );
+                    m_filterType = IfFilterMatches::ExcludeTests;
+                }
+                else {
+                    m_filterType = IfFilterMatches::IncludeTests;
+                }
+            }
+
             if( m_stringToMatch[0] == '*' ) {
                 m_stringToMatch = m_stringToMatch.substr( 1 );
                 m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
@@ -1928,6 +1943,12 @@ namespace Catch {
             setStreamBuf( newBuf );
             delete m_streambuf;
             m_streambuf = newBuf;
+        }
+
+        void addTestSpec( const std::string& testSpec ) {
+            TestCaseFilters filters( testSpec );
+            filters.addFilter( TestCaseFilter( testSpec ) );
+            m_data.filters.push_back( filters );
         }
 
         virtual bool includeSuccessfulResults() const {
@@ -2559,6 +2580,9 @@ namespace Catch {
     public:
         CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
+        std::string exeName() const {
+            return m_argv[0];
+        }
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
         }
@@ -2631,6 +2655,7 @@ namespace Catch {
         virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
         virtual std::string argsSynopsis() const = 0;
         virtual std::string optionSummary() const = 0;
+        virtual std::string optionDescription() const { return ""; };
 
         std::string optionNames() const {
             std::string names;
@@ -2674,10 +2699,13 @@ namespace Catch {
                 m_optionNames.push_back( "--help" );
             }
             virtual std::string argsSynopsis() const {
-                return "";
+                return "[<option for help on>]";
             }
             virtual std::string optionSummary() const {
-                return "Shows this usage summary";
+                return "Shows this usage summary, or help on a specific option, if supplied";
+            }
+            virtual std::string optionDescription() const {
+                return "";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& ) {
@@ -2696,7 +2724,39 @@ namespace Catch {
                 return "<testspec> [<testspec>...]";
             }
             virtual std::string optionSummary() const {
-                return "Specify which test case or cases to run";
+                return "Specifies which test case or cases to run";
+            }
+
+            // Lines are split at the nearest prior space char to the 80 char column.
+            // Tab chars are removed from the output but their positions are used to align
+            // subsequently wrapped lines
+            virtual std::string optionDescription() const {
+                return "This option allows one ore more test specs to be supplied. Each spec either fully "
+                        "specifies a test case or is a pattern containing wildcards to match a set of test "
+                        "cases. If this option is not provided then all test cases, except those prefixed "
+                        "by './' are run\n"
+                        "\n"
+                        "Specs must be enclosed in \"quotes\" if they contain spaces. If they do not "
+                        "contain spaces the quotes are optional.\n"
+                        "\n"
+                        "Wildcards consist of the * character at the beginning, end, or both and can substitute for "
+                        "any number of any characters (including none)\n"
+                        "\n"
+                        "If spec is prefixed with exclude: or the ~ character then the pattern matches an exclusion. "
+                        "This means that tests matching the pattern are excluded from the set - even if a prior "
+                        "inclusion spec included them. Subsequent inclusion specs will take precendence, however. "
+                        "Inclusions and exclusions are evaluated in left-to-right order.\n"
+                        "\n"
+                        "Examples:\n"
+                        "\n"
+                        "    -t thisTestOnly        \tMatches the test case called, 'thisTestOnly'\n"
+                        "    -t \"this test only\"    \tMatches the test case called, 'this test only'\n"
+                        "    -t these/*             \tMatches all cases starting with 'these/'\n"
+                        "    -t exclude:notThis     \tMatches all tests except, 'notThis'\n"
+                        "    -t ~notThis            \tMatches all tests except, 'notThis'\n"
+                        "    -t ~*private*          \tMatches all tests except those that contain 'private'\n"
+                        "    -t a/* ~a/b/* a/b/c    \tMatches all tests that start with 'a/', except those"
+                                                         "that start with 'a/b/', except 'a/b/c', which is included";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -2707,14 +2767,8 @@ namespace Catch {
                     groupName += cmd[i];
                 }
                 TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( startsWith( cmd[i], "exclude:" ) )
-                        filters.addFilter( TestCaseFilter( cmd[i].substr( 8 ), IfFilterMatches::ExcludeTests ) );
-                    else if( startsWith( cmd[i], "~" ) )
-                        filters.addFilter( TestCaseFilter( cmd[i].substr( 1 ), IfFilterMatches::ExcludeTests ) );
-                    else
-                        filters.addFilter( TestCaseFilter( cmd[i] ) );
-                }
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                    filters.addFilter( TestCaseFilter( cmd[i] ) );
                 config.filters.push_back( filters );
             }
         };
@@ -2729,7 +2783,21 @@ namespace Catch {
                 return "[all | tests | reporters [xml]]";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Lists available tests or reporters";
+            }
+
+            virtual std::string optionDescription() const {
+                return  "With no arguments this option will list all registered tests - one per line.\n"
+                        "Supplying the xml argument formats the list as an xml document (which may be useful for "
+                        "consumption by other tools).\n"
+                        "Supplying the tests or reporters lists tests or reporters respectively - with descriptions.\n"
+                        "\n"
+                        "Examples:\n"
+                        "\n"
+                        "    -l\n"
+                        "    -l tests\n"
+                        "    -l reporters xml\n"
+                        "    -l xml";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -2765,7 +2833,27 @@ namespace Catch {
                 return "<reporter name>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Specifies type of reporter";
+            }
+
+            virtual std::string optionDescription() const {
+                return  "A reporter is an object that formats and structures the output of running "
+                        "tests, and potentially summarises the results. By default a basic reporter "
+                        "is used that writes IDE friendly results. CATCH comes bundled with some "
+                        "alternative reporters, but more can be added in client code.\n"
+                        "\n"
+                        "The bundled reporters are:\n"
+                        "    -r basic\n"
+                        "    -r xml\n"
+                        "    -r junit\n"
+                        "\n"
+                        "The JUnit reporter is an xml format that follows the structure of the JUnit "
+                        "XML Report ANT task, as consumed by a number of third-party tools, "
+                        "including Continuous Integration servers such as Jenkins.\n"
+                        "If not otherwise needed, the standard XML reporter is preferred as this is "
+                        "a streaming reporter, whereas the Junit reporter needs to hold all its "
+                        "results until the end so it can write the overall results into attributes "
+                        "of the root node.";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -2783,7 +2871,7 @@ namespace Catch {
                 return "<file name>|<%stream name>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Sends output to a file or stream";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -2804,7 +2892,7 @@ namespace Catch {
                 return "";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Shows results for successful tests";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
@@ -2822,7 +2910,7 @@ namespace Catch {
                 return "";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Breaks into the debugger on failure";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
@@ -2840,7 +2928,7 @@ namespace Catch {
                 return "<name>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Names a test run";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -2858,7 +2946,7 @@ namespace Catch {
                 return "[#]";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Aborts after a certain number of failures";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -2884,7 +2972,7 @@ namespace Catch {
                 return "";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Elides assertions expected to throw";
             }
 
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
@@ -2902,7 +2990,7 @@ namespace Catch {
                 return "<warning>";
             }
             virtual std::string optionSummary() const {
-                return "!TBD";
+                return "Enable warnings";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -3536,7 +3624,7 @@ namespace Catch {
 
             std::vector<TestCaseFilters>::const_iterator it = filterGroups.begin();
             std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
-            for(; it != itEnd; ++it ) {
+            for(; it != itEnd && !context.aborting(); ++it ) {
                 m_reporter->StartGroup( it->getName() );
                 totals += runTestsForGroup( context, *it );
                 if( context.aborting() )
@@ -3640,20 +3728,79 @@ namespace Catch {
 
     inline void showUsage( std::ostream& os ) {
         AllOptions options;
+
         for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
             OptionParser& opt = **it;
             os << "  " << opt.optionNames() << " " << opt.argsSynopsis() << "\n";
         }
         os << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
-    inline void showHelp( std::string exeName ) {
+
+    inline void addIndent( std::ostream& os, std::size_t indent ) {
+        while( indent-- > 0 )
+            os << ' ';
+    }
+
+    inline void recursivelyWrapLine( std::ostream& os, std::string paragraph, std::size_t columns, std::size_t indent ) {
+        std::size_t width = columns-indent;
+        std::size_t tab = 0;
+        std::size_t wrapPoint = width;
+        for( std::size_t pos = 0; pos < paragraph.size(); ++pos ) {
+            if( pos == width ) {
+                addIndent( os, indent );
+                os << paragraph.substr( 0, wrapPoint ) << "\n";
+                return recursivelyWrapLine( os, paragraph.substr( wrapPoint+1 ), columns, indent+tab );
+            }
+            if( paragraph[pos] == '\t' ) {
+                    tab = pos;
+                    paragraph = paragraph.substr( 0, tab ) + paragraph.substr( tab+1 );
+                    pos--;
+            }
+            else if( paragraph[pos] == ' ' ) {
+                wrapPoint = pos;
+            }
+        }
+        addIndent( os, indent );
+        os << paragraph << "\n";
+    }
+    inline std::string addLineBreaks( const std::string& str, std::size_t columns, std::size_t indent = 0 ) {
+        std::ostringstream oss;
+        std::string::size_type pos = 0;
+        std::string::size_type newline = str.find_first_of( '\n' );
+        while( newline != std::string::npos ) {
+            std::string paragraph = str.substr( pos, newline-pos );
+            recursivelyWrapLine( oss, paragraph, columns, indent );
+            pos = newline+1;
+            newline = str.find_first_of( '\n', pos );
+        }
+        return oss.str();
+    }
+
+    inline void showHelp( const CommandParser& parser ) {
+        std::string exeName = parser.exeName();
         std::string::size_type pos = exeName.find_last_of( "/\\" );
         if( pos != std::string::npos ) {
             exeName = exeName.substr( pos+1 );
         }
 
-        std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
-        showUsage( std::cout );
+        AllOptions options;
+        Options::HelpOptionParser helpOpt;
+        bool displayedSpecificOption = false;
+        for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
+            OptionParser& opt = **it;
+            if( opt.find( parser ) && opt.optionNames() != helpOpt.optionNames() ) {
+                displayedSpecificOption = true;
+                std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
+                            << opt.optionSummary() << "\n\n"
+
+                << addLineBreaks( opt.optionDescription(), 80, 2 ) << "\n" << std::endl;
+            }
+        }
+
+        if( !displayedSpecificOption ) {
+            std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
+            showUsage( std::cout );
+        }
     }
 
     inline int Main( int argc, char* const argv[], Config& config ) {
@@ -3665,7 +3812,7 @@ namespace Catch {
                 if( cmd.argsCount() != 0 )
                     cmd.raiseError( "Does not accept arguments" );
 
-                showHelp( argv[0] );
+                showHelp( parser );
                 Catch::cleanUp();
                 return 0;
             }
@@ -4725,12 +4872,12 @@ namespace Catch {
         }
 
         virtual void NoAssertionsInSection( const std::string& sectionName ) {
-            StartSpansLazily();
+            startSpansLazily();
             TextColour colour( TextColour::ResultError );
             m_config.stream << "\nNo assertions in section, '" << sectionName << "'\n" << std::endl;
         }
         virtual void NoAssertionsInTestCase( const std::string& testName ) {
-            StartSpansLazily();
+            startSpansLazily();
             TextColour colour( TextColour::ResultError );
             m_config.stream << "\nNo assertions in test case, '" << testName << "'\n" << std::endl;
         }
@@ -4759,7 +4906,7 @@ namespace Catch {
             if( !m_config.includeSuccessfulResults && resultInfo.getResultType() == ResultWas::Ok )
                 return;
 
-            StartSpansLazily();
+            startSpansLazily();
 
             if( !resultInfo.getFilename().empty() ) {
                 TextColour colour( TextColour::FileName );
@@ -4841,12 +4988,12 @@ namespace Catch {
                                     const std::string& stdOut,
                                     const std::string& stdErr ) {
             if( !stdOut.empty() ) {
-                StartSpansLazily();
+                startSpansLazily();
                 streamVariableLengthText( "stdout", stdOut );
             }
 
             if( !stdErr.empty() ) {
-                StartSpansLazily();
+                startSpansLazily();
                 streamVariableLengthText( "stderr", stdErr );
             }
 
@@ -4859,7 +5006,7 @@ namespace Catch {
 
     private: // helpers
 
-        void StartSpansLazily() {
+        void startSpansLazily() {
             if( !m_testingSpan.emitted ) {
                 if( m_config.name.empty() )
                     m_config.stream << "[Started testing]" << std::endl;

@@ -44,7 +44,7 @@ namespace Catch {
 
             std::vector<TestCaseFilters>::const_iterator it = filterGroups.begin();
             std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
-            for(; it != itEnd; ++it ) {
+            for(; it != itEnd && !context.aborting(); ++it ) {
                 m_reporter->StartGroup( it->getName() );
                 totals += runTestsForGroup( context, *it );
                 if( context.aborting() )
@@ -148,20 +148,79 @@ namespace Catch {
 
     inline void showUsage( std::ostream& os ) {
         AllOptions options;
+
         for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
             OptionParser& opt = **it;
             os << "  " << opt.optionNames() << " " << opt.argsSynopsis() << "\n";
         }
         os << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
-    inline void showHelp( std::string exeName ) {
+
+    inline void addIndent( std::ostream& os, std::size_t indent ) {
+        while( indent-- > 0 )
+            os << ' ';
+    }
+
+    inline void recursivelyWrapLine( std::ostream& os, std::string paragraph, std::size_t columns, std::size_t indent ) {
+        std::size_t width = columns-indent;
+        std::size_t tab = 0;
+        std::size_t wrapPoint = width;
+        for( std::size_t pos = 0; pos < paragraph.size(); ++pos ) {
+            if( pos == width ) {
+                addIndent( os, indent );
+                os << paragraph.substr( 0, wrapPoint ) << "\n";
+                return recursivelyWrapLine( os, paragraph.substr( wrapPoint+1 ), columns, indent+tab );
+            }
+            if( paragraph[pos] == '\t' ) {
+                    tab = pos;
+                    paragraph = paragraph.substr( 0, tab ) + paragraph.substr( tab+1 );
+                    pos--;
+            }
+            else if( paragraph[pos] == ' ' ) {
+                wrapPoint = pos;
+            }
+        }
+        addIndent( os, indent );
+        os << paragraph << "\n";
+    }
+    inline std::string addLineBreaks( const std::string& str, std::size_t columns, std::size_t indent = 0 ) {
+        std::ostringstream oss;
+        std::string::size_type pos = 0;
+        std::string::size_type newline = str.find_first_of( '\n' );
+        while( newline != std::string::npos ) {
+            std::string paragraph = str.substr( pos, newline-pos );
+            recursivelyWrapLine( oss, paragraph, columns, indent );
+            pos = newline+1;
+            newline = str.find_first_of( '\n', pos );
+        }
+        return oss.str();
+    }
+
+    inline void showHelp( const CommandParser& parser ) {
+        std::string exeName = parser.exeName();
         std::string::size_type pos = exeName.find_last_of( "/\\" );
         if( pos != std::string::npos ) {
             exeName = exeName.substr( pos+1 );
         }
 
-        std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
-        showUsage( std::cout );
+        AllOptions options;
+        Options::HelpOptionParser helpOpt;
+        bool displayedSpecificOption = false;
+        for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
+            OptionParser& opt = **it;
+            if( opt.find( parser ) && opt.optionNames() != helpOpt.optionNames() ) {
+                displayedSpecificOption = true;
+                std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
+                            << opt.optionSummary() << "\n\n"
+
+                << addLineBreaks( opt.optionDescription(), 80, 2 ) << "\n" << std::endl;
+            }
+        }
+
+        if( !displayedSpecificOption ) {
+            std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
+            showUsage( std::cout );
+        }
     }
     
     inline int Main( int argc, char* const argv[], Config& config ) {
@@ -173,7 +232,7 @@ namespace Catch {
                 if( cmd.argsCount() != 0 )
                     cmd.raiseError( "Does not accept arguments" );
 
-                showHelp( argv[0] );
+                showHelp( parser );
                 Catch::cleanUp();        
                 return 0;
             }
