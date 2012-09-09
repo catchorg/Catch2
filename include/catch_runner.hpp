@@ -183,6 +183,7 @@ namespace Catch {
         addIndent( os, indent );
         os << paragraph << "\n";
     }
+
     inline std::string addLineBreaks( const std::string& str, std::size_t columns, std::size_t indent = 0 ) {
         std::ostringstream oss;
         std::string::size_type pos = 0;
@@ -193,6 +194,9 @@ namespace Catch {
             pos = newline+1;
             newline = str.find_first_of( '\n', pos );
         }
+        if( pos != str.size() )
+            recursivelyWrapLine( oss, str.substr( pos, str.size()-pos ), columns, indent );
+
         return oss.str();
     }
 
