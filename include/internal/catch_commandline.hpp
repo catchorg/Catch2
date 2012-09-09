@@ -221,32 +221,33 @@ namespace Catch {
             // Tab chars are removed from the output but their positions are used to align
             // subsequently wrapped lines
             virtual std::string optionDescription() const {
-                return "This option allows one ore more test specs to be supplied. Each spec either fully "
-                        "specifies a test case or is a pattern containing wildcards to match a set of test "
-                        "cases. If this option is not provided then all test cases, except those prefixed "
-                        "by './' are run\n"
-                        "\n"
-                        "Specs must be enclosed in \"quotes\" if they contain spaces. If they do not "
-                        "contain spaces the quotes are optional.\n"
-                        "\n"
-                        "Wildcards consist of the * character at the beginning, end, or both and can substitute for "
-                        "any number of any characters (including none)\n"
-                        "\n"
-                        "If spec is prefixed with exclude: or the ~ character then the pattern matches an exclusion. "
-                        "This means that tests matching the pattern are excluded from the set - even if a prior "
-                        "inclusion spec included them. Subsequent inclusion specs will take precendence, however. "
-                        "Inclusions and exclusions are evaluated in left-to-right order.\n"
-                        "\n"
-                        "Examples:\n"
-                        "\n"
-                        "    -t thisTestOnly        \tMatches the test case called, 'thisTestOnly'\n"
-                        "    -t \"this test only\"    \tMatches the test case called, 'this test only'\n"
-                        "    -t these/*             \tMatches all cases starting with 'these/'\n"
-                        "    -t exclude:notThis     \tMatches all tests except, 'notThis'\n"
-                        "    -t ~notThis            \tMatches all tests except, 'notThis'\n"
-                        "    -t ~*private*          \tMatches all tests except those that contain 'private'\n"
-                        "    -t a/* ~a/b/* a/b/c    \tMatches all tests that start with 'a/', except those"
-                                                         "that start with 'a/b/', except 'a/b/c', which is included";
+                return
+                    "This option allows one ore more test specs to be supplied. Each spec either fully "
+                    "specifies a test case or is a pattern containing wildcards to match a set of test "
+                    "cases. If this option is not provided then all test cases, except those prefixed "
+                    "by './' are run\n"
+                    "\n"
+                    "Specs must be enclosed in \"quotes\" if they contain spaces. If they do not "
+                    "contain spaces the quotes are optional.\n"
+                    "\n"
+                    "Wildcards consist of the * character at the beginning, end, or both and can substitute for "
+                    "any number of any characters (including none)\n"
+                    "\n"
+                    "If spec is prefixed with exclude: or the ~ character then the pattern matches an exclusion. "
+                    "This means that tests matching the pattern are excluded from the set - even if a prior "
+                    "inclusion spec included them. Subsequent inclusion specs will take precendence, however. "
+                    "Inclusions and exclusions are evaluated in left-to-right order.\n"
+                    "\n"
+                    "Examples:\n"
+                    "\n"
+                    "    -t thisTestOnly        \tMatches the test case called, 'thisTestOnly'\n"
+                    "    -t \"this test only\"    \tMatches the test case called, 'this test only'\n"
+                    "    -t these/*             \tMatches all cases starting with 'these/'\n"
+                    "    -t exclude:notThis     \tMatches all tests except, 'notThis'\n"
+                    "    -t ~notThis            \tMatches all tests except, 'notThis'\n"
+                    "    -t ~*private*          \tMatches all tests except those that contain 'private'\n"
+                    "    -t a/* ~a/b/* a/b/c    \tMatches all tests that start with 'a/', except those "
+                                                 "that start with 'a/b/', except 'a/b/c', which is included";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -277,17 +278,18 @@ namespace Catch {
             }
 
             virtual std::string optionDescription() const {
-                return  "With no arguments this option will list all registered tests - one per line.\n"
-                        "Supplying the xml argument formats the list as an xml document (which may be useful for "
-                        "consumption by other tools).\n"
-                        "Supplying the tests or reporters lists tests or reporters respectively - with descriptions.\n"
-                        "\n"
-                        "Examples:\n"
-                        "\n"
-                        "    -l\n"
-                        "    -l tests\n"
-                        "    -l reporters xml\n"
-                        "    -l xml";
+                return
+                    "With no arguments this option will list all registered tests - one per line.\n"
+                    "Supplying the xml argument formats the list as an xml document (which may be useful for "
+                    "consumption by other tools).\n"
+                    "Supplying the tests or reporters lists tests or reporters respectively - with descriptions.\n"
+                    "\n"
+                    "Examples:\n"
+                    "\n"
+                    "    -l\n"
+                    "    -l tests\n"
+                    "    -l reporters xml\n"
+                    "    -l xml";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -327,23 +329,24 @@ namespace Catch {
             }
 
             virtual std::string optionDescription() const {
-                return  "A reporter is an object that formats and structures the output of running "
-                        "tests, and potentially summarises the results. By default a basic reporter "
-                        "is used that writes IDE friendly results. CATCH comes bundled with some "
-                        "alternative reporters, but more can be added in client code.\n"
-                        "\n"
-                        "The bundled reporters are:\n"
-                        "    -r basic\n"
-                        "    -r xml\n"
-                        "    -r junit\n"
-                        "\n"
-                        "The JUnit reporter is an xml format that follows the structure of the JUnit "
-                        "XML Report ANT task, as consumed by a number of third-party tools, "
-                        "including Continuous Integration servers such as Jenkins.\n"
-                        "If not otherwise needed, the standard XML reporter is preferred as this is "
-                        "a streaming reporter, whereas the Junit reporter needs to hold all its "
-                        "results until the end so it can write the overall results into attributes "
-                        "of the root node.";
+                return
+                    "A reporter is an object that formats and structures the output of running "
+                    "tests, and potentially summarises the results. By default a basic reporter "
+                    "is used that writes IDE friendly results. CATCH comes bundled with some "
+                    "alternative reporters, but more can be added in client code.\n"
+                    "\n"
+                    "The bundled reporters are:\n"
+                    "    -r basic\n"
+                    "    -r xml\n"
+                    "    -r junit\n"
+                    "\n"
+                    "The JUnit reporter is an xml format that follows the structure of the JUnit "
+                    "XML Report ANT task, as consumed by a number of third-party tools, "
+                    "including Continuous Integration servers such as Jenkins.\n"
+                    "If not otherwise needed, the standard XML reporter is preferred as this is "
+                    "a streaming reporter, whereas the Junit reporter needs to hold all its "
+                    "results until the end so it can write the overall results into attributes "
+                    "of the root node.";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -363,7 +366,23 @@ namespace Catch {
             virtual std::string optionSummary() const {
                 return "Sends output to a file or stream";
             }
-
+            virtual std::string optionDescription() const {
+                return
+                    "Use this option to send all output to a file or a stream. By default output is "
+                    "sent to stdout (note that uses ofstdout and stderr from within test cases are "
+                    "redirected and included in the report - so even stderr will effectively end up "
+                    "on stdout). If the name begins with % it is interpretted as a stream. "
+                    "Otherwise it is treated as a filename.\n"
+                    "\n"
+                    "Examples are:\n"
+                    "\n"
+                    "    -o filename.txt\n"
+                    "    -o \"long filename.txt\"\n"
+                    "    -o %stdout\n"
+                    "    -o %stderr\n"
+                    "    -o %debug    \t(The IDE's debug output window - currently only Windows' "
+                                        "OutputDebugString is supported).";
+            }
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
                 if( cmd[0][0] == '%' )
                     config.stream = cmd[0].substr( 1 );
@@ -372,9 +391,9 @@ namespace Catch {
             }
         };
         
-        class SuccesssOptionParser : public OptionParser {
+        class SuccessOptionParser : public OptionParser {
         public:
-            SuccesssOptionParser() {
+            SuccessOptionParser() {
                 m_optionNames.push_back( "-s" );
                 m_optionNames.push_back( "--success" );
             }
@@ -384,7 +403,13 @@ namespace Catch {
             virtual std::string optionSummary() const {
                 return "Shows results for successful tests";
             }
-
+            virtual std::string optionDescription() const {
+                return
+                    "Usually you only want to see reporting for failed tests. Sometimes it's useful "
+                    "to see all the output (especially when you don't trust that that test you just "
+                    "added worked first time!). To see successul, as well as failing, test results "
+                    "just pass this option.";
+            }
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
                 config.includeWhichResults = Include::SuccessfulResults;
             }
@@ -402,7 +427,15 @@ namespace Catch {
             virtual std::string optionSummary() const {
                 return "Breaks into the debugger on failure";
             }
-
+            virtual std::string optionDescription() const {
+                return
+                    "In some IDEs (currently XCode and Visual Studio) it is possible for CATCH to "
+                    "break into the debugger on a test failure. This can be very helpful during "
+                    "debug sessions - especially when there is more than one path through a "
+                    "particular test. In addition to the command line option, ensure you have "
+                    "built your code with the DEBUG preprocessor symbol";
+            }
+            
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
                 config.shouldDebugBreak = true;
             }
@@ -419,6 +452,18 @@ namespace Catch {
             }
             virtual std::string optionSummary() const {
                 return "Names a test run";
+            }
+            virtual std::string optionDescription() const {
+                return
+                    "If a name is supplied it will be used by the reporter to provide an overall "
+                    "name for the test run. This can be useful if you are sending to a file, for "
+                    "example, and need to distinguish different test runs - either from different "
+                    "Catch executables or runs of the same executable with different options.\n"
+                    "\n"
+                    "Examples:\n"
+                    "\n"
+                    "    -n testRun\n"
+                    "    -n \"tests of the widget component\"";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -437,6 +482,17 @@ namespace Catch {
             }
             virtual std::string optionSummary() const {
                 return "Aborts after a certain number of failures";
+            }
+            virtual std::string optionDescription() const {
+                return
+                    "If a REQUIRE assertion fails the test case aborts, but subsequent test cases "
+                    "are still run. If a CHECK assertion fails even the current test case is not "
+                    "aborted.\n"
+                    "\n"
+                    "Sometimes this results in a flood of failure messages and you'd rather just "
+                    "see the first few. Specifying -a or --abort on its own will abort the whole "
+                    "test run on the first failed assertion of any kind. Following it with a "
+                    "number causes it to abort after that number of assertion failures.";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -464,6 +520,19 @@ namespace Catch {
             virtual std::string optionSummary() const {
                 return "Elides assertions expected to throw";
             }
+            virtual std::string optionDescription() const {
+                return
+                    "Skips all assertions that test that an exception is thrown, "
+                    "e.g. REQUIRE_THROWS.\n"
+                    "\n"
+                    "These can be a nuisance in certain debugging environments that may break when "
+                    "exceptions are thrown (while this is usually optional for handled exceptions, "
+                    "it can be useful to have enabled if you are trying to track down something "
+                    "unexpected).\n"
+                    "\n"
+                    "When running with this option the throw checking assertions are skipped so "
+                    "as not to contribute additional noise.";
+            }
 
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
                 config.allowThrows = false;
@@ -481,6 +550,19 @@ namespace Catch {
             }
             virtual std::string optionSummary() const {
                 return "Enable warnings";
+            }
+            virtual std::string optionDescription() const {
+                return
+                    "Enables the named warnings. If the warnings are violated the test case is "
+                    "failed.\n"
+                    "\n"
+                    "At present only one warning has been provided: NoAssertions. If this warning "
+                    "is enabled then any test case that completes without an assertions (CHECK, "
+                    "REQUIRE etc) being encountered violates the warning.\n"
+                    "\n"
+                    "e.g.:\n"
+                    "\n"
+                    "    -w NoAssertions";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -507,7 +589,7 @@ namespace Catch {
             add<Options::ListOptionParser>();
             add<Options::ReporterOptionParser>();
             add<Options::OutputOptionParser>();
-            add<Options::SuccesssOptionParser>();
+            add<Options::SuccessOptionParser>();
             add<Options::DebugBreakOptionParser>();
             add<Options::NameOptionParser>();
             add<Options::AbortOptionParser>();
