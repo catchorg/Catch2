@@ -20,27 +20,31 @@ namespace Catch {
     :   m_test( testCase ),
         m_name( name ),
         m_description( description ),
-        m_lineInfo( lineInfo )
+        m_lineInfo( lineInfo ),
+        m_isHidden( startsWith( name, "./" ) )
     {}
 
     TestCaseInfo::TestCaseInfo()
     :   m_test( NULL ),
         m_name(),
-        m_description()
+        m_description(),
+        m_isHidden( false )
     {}
 
     TestCaseInfo::TestCaseInfo( const TestCaseInfo& other, const std::string& name )
     :   m_test( other.m_test ),
         m_name( name ),
         m_description( other.m_description ),
-        m_lineInfo( other.m_lineInfo )
+        m_lineInfo( other.m_lineInfo ),
+        m_isHidden( other.m_isHidden )
     {}
 
     TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
     :   m_test( other.m_test ),
         m_name( other.m_name ),
         m_description( other.m_description ),
-        m_lineInfo( other.m_lineInfo )
+        m_lineInfo( other.m_lineInfo ),
+        m_isHidden( other.m_isHidden )
     {}
 
     void TestCaseInfo::invoke() const {
@@ -60,7 +64,7 @@ namespace Catch {
     }
 
     bool TestCaseInfo::isHidden() const {
-        return m_name.size() >= 2 && m_name[0] == '.' && m_name[1] == '/';
+        return m_isHidden;
     }
 
     void TestCaseInfo::swap( TestCaseInfo& other ) {

@@ -44,7 +44,8 @@ namespace Catch {
         Ptr<ITestCase> m_test;
         std::string m_name;
         std::string m_description;
-        SourceLineInfo m_lineInfo;        
+        SourceLineInfo m_lineInfo;
+        bool m_isHidden;
     };
 }
 
