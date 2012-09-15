@@ -330,7 +330,52 @@ TEST_CASE( "selftest/option parsers", "" )
     REQUIRE( config.filters.size() == 1 );
     REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
     REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+}
 
+TEST_CASE( "selftest/tags", "" ) {
+    
+    SECTION( "one tag", "" ) {
+        Catch::TestCaseInfo oneTag( NULL, "test", "[one]", CATCH_INTERNAL_LINEINFO );
 
+        CHECK( oneTag.getDescription() == "" );
+        CHECK( oneTag.hasTag( "one" ) );
+        CHECK( oneTag.tags().size() == 1 );
+    }
 
+    SECTION( "two tags", "" ) {
+        Catch::TestCaseInfo twoTags( NULL, "test", "[one][two]", CATCH_INTERNAL_LINEINFO );
+
+        CHECK( twoTags.getDescription() == "" );
+        CHECK( twoTags.hasTag( "one" ) );
+        CHECK( twoTags.hasTag( "two" ) );
+        CHECK( twoTags.hasTag( "three" ) == false );
+        CHECK( twoTags.tags().size() == 2 );
+    }
+
+    SECTION( "one tag with characters either side", "" ) {
+
+        Catch::TestCaseInfo oneTagWithExtras( NULL, "test", "12[one]34", CATCH_INTERNAL_LINEINFO );
+        CHECK( oneTagWithExtras.getDescription() == "1234" );
+        CHECK( oneTagWithExtras.hasTag( "one" ) );
+        CHECK( oneTagWithExtras.hasTag( "two" ) == false );
+        CHECK( oneTagWithExtras.tags().size() == 1 );
+    }
+    
+    SECTION( "start of a tag, but not closed", "" ) {
+
+        Catch::TestCaseInfo oneTagOpen( NULL, "test", "[one", CATCH_INTERNAL_LINEINFO );
+
+        CHECK( oneTagOpen.getDescription() == "[one" );
+        CHECK( oneTagOpen.hasTag( "one" ) == false );
+        CHECK( oneTagOpen.tags().size() == 0 );
+    }
+
+    SECTION( "hidden", "" ) {
+        Catch::TestCaseInfo oneTag( NULL, "test", "[hide]", CATCH_INTERNAL_LINEINFO );
+
+        CHECK( oneTag.getDescription() == "" );
+        CHECK( oneTag.hasTag( "hide" ) );
+        CHECK( oneTag.isHidden() );
+    }
+    
 }

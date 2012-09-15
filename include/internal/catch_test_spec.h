@@ -123,6 +123,10 @@ namespace Catch {
                 if( it == itEnd )
                     return false;
             }
+            else if( m_exclusionFilters.empty() ) {
+                return !testCase.isHidden();
+            }
+            
             std::vector<TestCaseFilter>::const_iterator it = m_exclusionFilters.begin();
             std::vector<TestCaseFilter>::const_iterator itEnd = m_exclusionFilters.end();
             for(; it != itEnd; ++it )

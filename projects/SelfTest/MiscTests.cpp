@@ -293,3 +293,8 @@ TEST_CASE( "example/factorial", "The Factorial function should return the factor
 TEST_CASE( "empty", "An empty test with no assertions" )
 {
 }
+
+TEST_CASE( "Nice descriptive name", "[tag1][tag2][hide]" )
+{
+    WARN( "This one ran" );
+}

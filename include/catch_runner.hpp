@@ -35,7 +35,6 @@ namespace Catch {
             std::vector<TestCaseFilters> filterGroups = m_config.filters;
             if( filterGroups.empty() ) {
                 TestCaseFilters filterGroup( "" );
-                filterGroup.addFilter( TestCaseFilter( "./*", IfFilterMatches::ExcludeTests ) );
                 filterGroups.push_back( filterGroup );
             }
 

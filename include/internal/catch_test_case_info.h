@@ -11,6 +11,7 @@
 #include "catch_common.h"
 
 #include <string>
+#include <set>
 
 namespace Catch {
 
@@ -34,6 +35,8 @@ namespace Catch {
         const std::string& getDescription() const;
         const SourceLineInfo& getLineInfo() const;
         bool isHidden() const;
+        bool hasTag( const std::string& tag ) const;
+        const std::set<std::string>& tags() const;
         
         void swap( TestCaseInfo& other );
         bool operator == ( const TestCaseInfo& other ) const;
@@ -44,6 +47,7 @@ namespace Catch {
         Ptr<ITestCase> m_test;
         std::string m_name;
         std::string m_description;
+        std::set<std::string> m_tags;
         SourceLineInfo m_lineInfo;
         bool m_isHidden;
     };
