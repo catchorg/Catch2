@@ -5,8 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
-#define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
+#define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
 
 #include <string>
 #include "catch_interfaces_registry_hub.h"
@@ -63,4 +63,4 @@ namespace Catch {
     namespace{ Catch::ExceptionTranslatorRegistrar INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator ) ); }\
     static std::string INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_ExceptionTranslator )( signature )
 
-#endif // TWOBLUECUBES_CATCH_INTERFACES_EXCEPTIONS_H_INCLUDED
+#endif // TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
