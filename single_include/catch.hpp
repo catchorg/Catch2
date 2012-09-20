@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-09-15 17:50:31.695760
+ *  Generated: 2012-09-20 08:36:21.042619
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2007,10 +2007,20 @@ namespace Catch
             fullConfig( _fullConfig )
         {}
 
+        ReporterConfig( const ReporterConfig& other )
+        :   name( other.name ),
+            stream( other.stream ),
+            includeSuccessfulResults( other.includeSuccessfulResults ),
+            fullConfig( other.fullConfig )
+        {}
+
         std::string name;
         std::ostream& stream;
         bool includeSuccessfulResults;
         ConfigData fullConfig;
+
+    private:
+        void operator=(const ReporterConfig&);
     };
 
     class TestCaseInfo;
