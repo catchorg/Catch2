@@ -31,10 +31,21 @@ namespace Catch
             fullConfig( _fullConfig )
         {}
         
+        ReporterConfig( const ReporterConfig& other )
+        :   name( other.name ),
+            stream( other.stream ),
+            includeSuccessfulResults( other.includeSuccessfulResults ),
+            fullConfig( other.fullConfig )
+        {}
+        
+
         std::string name;
         std::ostream& stream;
         bool includeSuccessfulResults;
         ConfigData fullConfig;
+
+    private:
+        void operator=(const ReporterConfig&);
     };
     
     class TestCaseInfo;
