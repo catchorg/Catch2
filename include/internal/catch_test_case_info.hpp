@@ -8,41 +8,13 @@
 #ifndef TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED
 
+#include "catch_tags.hpp"
 #include "catch_test_case_info.h"
 #include "catch_interfaces_testcase.h"
 
 namespace Catch {
 
-    namespace {
-        void extractTags( std::string& str, std::set<std::string>& tags ) {
-            std::string remainder;
-            std::size_t last = 0;
-            std::size_t begin = str.find_first_of( '[' );
-            while( begin != std::string::npos ) {
-                std::size_t end = str.find_first_of( ']', begin );
-                if( end != std::string::npos ) {
-                    std::string tag = str.substr( begin+1, end-begin-1 );
-                    tags.insert( tag );
-                    if( begin - last > 0 )
-                        remainder += str.substr( last, begin-last );
-                    last = end+1;
-                }
-                else if( begin != str.size()-1 ) {
-                    end = begin+1;
-                }
-                else {
-                    break;
-                }
-                begin = str.find_first_of( '[', end );
-            }
-            if( !tags.empty() ) {
-                if( last < str.size() )
-                    str = remainder + str.substr( last );
-                else
-                    str = remainder;
-            }
-        }
-    }
+    
     TestCaseInfo::TestCaseInfo( ITestCase* testCase,
                                 const char* name,
                                 const char* description,
@@ -53,7 +25,7 @@ namespace Catch {
         m_lineInfo( lineInfo ),
         m_isHidden( startsWith( name, "./" ) )
     {
-        extractTags( m_description, m_tags );
+        TagExtracter( m_tags ).parse( m_description );
         if( hasTag( "hide" ) )
             m_isHidden = true;
     }
@@ -106,6 +78,11 @@ namespace Catch {
     bool TestCaseInfo::hasTag( const std::string& tag ) const {
         return m_tags.find( tag ) != m_tags.end();
     }
+    bool TestCaseInfo::matchesTags( const std::string& tagPattern ) const {
+        TagExpression exp;
+        TagExpressionParser( exp ).parse( tagPattern );
+        return exp.matches( m_tags );
+    }
     const std::set<std::string>& TestCaseInfo::tags() const {
         return m_tags;
     }
@@ -129,6 +106,7 @@ namespace Catch {
         swap( temp );
         return *this;
     }
-}
+
+} // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_TESTCASEINFO_HPP_INCLUDED

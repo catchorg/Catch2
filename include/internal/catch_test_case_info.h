@@ -36,6 +36,7 @@ namespace Catch {
         const SourceLineInfo& getLineInfo() const;
         bool isHidden() const;
         bool hasTag( const std::string& tag ) const;
+        bool matchesTags( const std::string& tagPattern ) const;
         const std::set<std::string>& tags() const;
         
         void swap( TestCaseInfo& other );

@@ -235,7 +235,7 @@ namespace Catch {
                     "\n"
                     "If spec is prefixed with exclude: or the ~ character then the pattern matches an exclusion. "
                     "This means that tests matching the pattern are excluded from the set - even if a prior "
-                    "inclusion spec included them. Subsequent inclusion specs will take precendence, however. "
+                    "inclusion spec included them. Subsequent inclusion specs will take precedence, however. "
                     "Inclusions and exclusions are evaluated in left-to-right order.\n"
                     "\n"
                     "Examples:\n"
@@ -249,7 +249,7 @@ namespace Catch {
                     "    -t a/* ~a/b/* a/b/c    \tMatches all tests that start with 'a/', except those "
                                                  "that start with 'a/b/', except 'a/b/c', which is included";
             }
-
+                            
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
                 std::string groupName;
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
@@ -264,6 +264,42 @@ namespace Catch {
             }
         };
 
+        class TagOptionParser : public OptionParser {
+        public:
+            TagOptionParser() : OptionParser( 1, -1 ) {
+                m_optionNames.push_back( "-g" );
+                m_optionNames.push_back( "--tag" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "<tagspec> [,<tagspec>...]";
+            }
+            virtual std::string optionSummary() const {
+                return "Matches test cases against tags or tag patterns";
+            }
+
+            // Lines are split at the nearest prior space char to the 80 char column.
+            // Tab chars are removed from the output but their positions are used to align
+            // subsequently wrapped lines
+            virtual std::string optionDescription() const {
+                return
+                "!TBD";
+            }
+            
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+//                std::string groupName;
+//                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+//                    if( i != 0 )
+//                        groupName += " ";
+//                    groupName += cmd[i];
+//                }
+//                TestCaseFilters filters( groupName );
+//                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+//                    filters.addFilter( TestCaseFilter( cmd[i] ) );
+//                config.filters.push_back( filters );
+            }
+        };
+
+        
         class ListOptionParser : public OptionParser {
         public:
             ListOptionParser() : OptionParser( 0, 2 ) {
@@ -369,9 +405,9 @@ namespace Catch {
             virtual std::string optionDescription() const {
                 return
                     "Use this option to send all output to a file or a stream. By default output is "
-                    "sent to stdout (note that uses ofstdout and stderr from within test cases are "
+                    "sent to stdout (note that uses of stdout and stderr from within test cases are "
                     "redirected and included in the report - so even stderr will effectively end up "
-                    "on stdout). If the name begins with % it is interpretted as a stream. "
+                    "on stdout). If the name begins with % it is interpreted as a stream. "
                     "Otherwise it is treated as a filename.\n"
                     "\n"
                     "Examples are:\n"
@@ -407,7 +443,7 @@ namespace Catch {
                 return
                     "Usually you only want to see reporting for failed tests. Sometimes it's useful "
                     "to see all the output (especially when you don't trust that that test you just "
-                    "added worked first time!). To see successul, as well as failing, test results "
+                    "added worked first time!). To see successful, as well as failing, test results "
                     "just pass this option.";
             }
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {

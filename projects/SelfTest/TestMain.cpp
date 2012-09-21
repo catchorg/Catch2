@@ -333,6 +333,12 @@ TEST_CASE( "selftest/option parsers", "" )
 }
 
 TEST_CASE( "selftest/tags", "" ) {
+
+    std::string p1 = "[one]";
+    std::string p2 = "[one],[two]";
+    std::string p3 = "[one][two]";
+    std::string p4 = "[one][two],[three]";
+    std::string p5 = "[one][two]~[hide],[three]";
     
     SECTION( "one tag", "" ) {
         Catch::TestCaseInfo oneTag( NULL, "test", "[one]", CATCH_INTERNAL_LINEINFO );
@@ -340,6 +346,12 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( oneTag.getDescription() == "" );
         CHECK( oneTag.hasTag( "one" ) );
         CHECK( oneTag.tags().size() == 1 );
+
+        CHECK( oneTag.matchesTags( p1 ) == true );
+        CHECK( oneTag.matchesTags( p2 ) == true );
+        CHECK( oneTag.matchesTags( p3 ) == false );
+        CHECK( oneTag.matchesTags( p4 ) == false );
+        CHECK( oneTag.matchesTags( p5 ) == false );
     }
 
     SECTION( "two tags", "" ) {
@@ -350,6 +362,12 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( twoTags.hasTag( "two" ) );
         CHECK( twoTags.hasTag( "three" ) == false );
         CHECK( twoTags.tags().size() == 2 );
+
+        CHECK( twoTags.matchesTags( p1 ) == true );
+        CHECK( twoTags.matchesTags( p2 ) == true );
+        CHECK( twoTags.matchesTags( p3 ) == true );
+        CHECK( twoTags.matchesTags( p4 ) == true );
+        CHECK( twoTags.matchesTags( p5 ) == true );
     }
 
     SECTION( "one tag with characters either side", "" ) {
@@ -376,6 +394,9 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( oneTag.getDescription() == "" );
         CHECK( oneTag.hasTag( "hide" ) );
         CHECK( oneTag.isHidden() );
+
+        CHECK( oneTag.matchesTags( "~[hide]" ) == false );
+
     }
     
 }

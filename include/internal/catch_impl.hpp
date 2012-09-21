@@ -23,6 +23,7 @@
 #include "catch_resultinfo.hpp"
 #include "catch_resultinfo_builder.hpp"
 #include "catch_test_case_info.hpp"
+#include "catch_tags.hpp"
 
 #include "../reporters/catch_reporter_basic.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
@@ -53,6 +54,9 @@ namespace Catch {
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
     IGeneratorInfo::~IGeneratorInfo() {}
     IGeneratorsForTest::~IGeneratorsForTest() {}
+    TagParser::~TagParser() {}
+    TagExtracter::~TagExtracter() {}
+    TagExpressionParser::~TagExpressionParser() {}
 
     void Config::dummy() {}
 
