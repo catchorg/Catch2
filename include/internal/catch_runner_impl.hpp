@@ -156,10 +156,18 @@ namespace Catch {
             else if( !result.ok() ) {
                 m_totals.assertions.failed++;
 
-                std::vector<ResultInfo>::const_iterator it = m_info.begin();
-                std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
-                for(; it != itEnd; ++it )
-                    m_reporter->Result( *it );
+                {
+                    std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
+                    std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
+                    for(; it != itEnd; ++it )
+                        m_reporter->Result( (*it)->getInfo() );
+                }
+                {
+                    std::vector<ResultInfo>::const_iterator it = m_info.begin();
+                    std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
+                    for(; it != itEnd; ++it )
+                        m_reporter->Result( *it );
+                }
                 m_info.clear();
             }
             
