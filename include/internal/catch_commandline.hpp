@@ -188,10 +188,10 @@ namespace Catch {
                 m_optionNames.push_back( "--help" );
             }
             virtual std::string argsSynopsis() const {
-                return "[<option for help on>]";
+                return "[<option for help on> ...]";
             }
             virtual std::string optionSummary() const {
-                return "Shows this usage summary, or help on a specific option, if supplied";
+                return "Shows this usage summary, or help on a specific option, or options, if supplied";
             }
             virtual std::string optionDescription() const {
                 return "";
