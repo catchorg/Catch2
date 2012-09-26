@@ -17,6 +17,7 @@
 namespace Catch {
 
     class TestCaseInfo;
+    class Stream;
     struct IResultCapture;
     struct IRunner;
     struct IGeneratorsForTest;
@@ -49,7 +50,7 @@ namespace Catch {
     IContext& getCurrentContext();
     IMutableContext& getCurrentMutableContext();
     void cleanUpContext();
-    std::streambuf* createStreamBuf( const std::string& streamName );
+    Stream createStream( const std::string& streamName );
 
 }
 

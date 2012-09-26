@@ -58,6 +58,30 @@ namespace Catch {
             writeToDebugConsole( str );
         }
     };
+
+    class Stream {
+    public:
+        Stream()
+        : streamBuf( NULL ), isOwned( false )
+        {}
+        
+        Stream( std::streambuf* _streamBuf, bool _isOwned )
+        : streamBuf( _streamBuf ), isOwned( _isOwned )
+        {}
+
+        void release() {
+            if( isOwned ) {
+                delete streamBuf;
+                streamBuf = NULL;
+                isOwned = false;
+            }
+        }
+
+        std::streambuf* streamBuf;
+
+    private:
+        bool isOwned;
+    };
 }
 
 #endif // TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
