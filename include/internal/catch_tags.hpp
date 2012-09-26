@@ -78,8 +78,7 @@ namespace Catch {
         std::string m_remainder;
     };
 
-    class Tag
-    {
+    class Tag {
     public:
         Tag()
         : m_isNegated( false )
@@ -106,8 +105,7 @@ namespace Catch {
         bool m_isNegated;
     };
 
-    class TagSet
-    {
+    class TagSet {
         typedef std::map<std::string, Tag> TagMap;
     public:
         void add( const Tag& tag ) {

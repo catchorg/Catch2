@@ -83,7 +83,7 @@ namespace Catch {
         TagExpressionParser( exp ).parse( tagPattern );
         return exp.matches( m_tags );
     }
-    const std::set<std::string>& TestCaseInfo::tags() const {
+    const std::set<std::string>& TestCaseInfo::getTags() const {
         return m_tags;
     }
 

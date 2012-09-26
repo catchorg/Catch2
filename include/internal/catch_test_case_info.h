@@ -37,7 +37,7 @@ namespace Catch {
         bool isHidden() const;
         bool hasTag( const std::string& tag ) const;
         bool matchesTags( const std::string& tagPattern ) const;
-        const std::set<std::string>& tags() const;
+        const std::set<std::string>& getTags() const;
         
         void swap( TestCaseInfo& other );
         bool operator == ( const TestCaseInfo& other ) const;

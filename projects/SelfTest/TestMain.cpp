@@ -247,8 +247,31 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
 
             REQUIRE( config.allowThrows == false );
         }
-    
     }
+
+    SECTION( "streams", "" ) {
+        SECTION( "-o filename", "" ) {
+            const char* argv[] = { "test", "-o", "filename.ext" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.outputFilename == "filename.ext" );
+            REQUIRE( config.stream.empty() );
+        }
+        SECTION( "-o %stdout", "" ) {
+            const char* argv[] = { "test", "-o", "%stdout" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.stream == "stdout" );
+            REQUIRE( config.outputFilename.empty() );
+        }
+        SECTION( "--out", "" ) {
+            const char* argv[] = { "test", "--out", "filename.ext" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.outputFilename == "filename.ext" );
+        }
+    }
+
     SECTION( "combinations", "" ) {
         SECTION( "-a -b", "" ) {
             const char* argv[] = { "test", "-a", "-b", "-nt" };
@@ -345,7 +368,7 @@ TEST_CASE( "selftest/tags", "" ) {
 
         CHECK( oneTag.getDescription() == "" );
         CHECK( oneTag.hasTag( "one" ) );
-        CHECK( oneTag.tags().size() == 1 );
+        CHECK( oneTag.getTags().size() == 1 );
 
         CHECK( oneTag.matchesTags( p1 ) == true );
         CHECK( oneTag.matchesTags( p2 ) == true );
@@ -361,7 +384,7 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( twoTags.hasTag( "one" ) );
         CHECK( twoTags.hasTag( "two" ) );
         CHECK( twoTags.hasTag( "three" ) == false );
-        CHECK( twoTags.tags().size() == 2 );
+        CHECK( twoTags.getTags().size() == 2 );
 
         CHECK( twoTags.matchesTags( p1 ) == true );
         CHECK( twoTags.matchesTags( p2 ) == true );
@@ -376,7 +399,7 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( oneTagWithExtras.getDescription() == "1234" );
         CHECK( oneTagWithExtras.hasTag( "one" ) );
         CHECK( oneTagWithExtras.hasTag( "two" ) == false );
-        CHECK( oneTagWithExtras.tags().size() == 1 );
+        CHECK( oneTagWithExtras.getTags().size() == 1 );
     }
     
     SECTION( "start of a tag, but not closed", "" ) {
@@ -385,7 +408,7 @@ TEST_CASE( "selftest/tags", "" ) {
 
         CHECK( oneTagOpen.getDescription() == "[one" );
         CHECK( oneTagOpen.hasTag( "one" ) == false );
-        CHECK( oneTagOpen.tags().size() == 0 );
+        CHECK( oneTagOpen.getTags().size() == 0 );
     }
 
     SECTION( "hidden", "" ) {

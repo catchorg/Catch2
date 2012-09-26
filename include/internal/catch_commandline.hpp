@@ -286,16 +286,16 @@ namespace Catch {
             }
             
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-//                std::string groupName;
-//                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-//                    if( i != 0 )
-//                        groupName += " ";
-//                    groupName += cmd[i];
-//                }
-//                TestCaseFilters filters( groupName );
-//                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-//                    filters.addFilter( TestCaseFilter( cmd[i] ) );
-//                config.filters.push_back( filters );
+                std::string groupName;
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                    if( i != 0 )
+                        groupName += " ";
+                    groupName += cmd[i];
+                }
+                TestCaseFilters filters( groupName );
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                    filters.addTags( cmd[i] );
+                config.filters.push_back( filters );
             }
         };
 
@@ -622,6 +622,7 @@ namespace Catch {
         AllOptions() {
             add<Options::TestCaseOptionParser>();   // Keep this one first
 
+            add<Options::TagOptionParser>();
             add<Options::ListOptionParser>();
             add<Options::ReporterOptionParser>();
             add<Options::OutputOptionParser>();

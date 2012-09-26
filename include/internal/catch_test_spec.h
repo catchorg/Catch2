@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_TESTSPEC_H_INCLUDED
 
 #include "catch_test_case_info.h"
+#include "catch_tags.hpp"
 
 #include <string>
 #include <vector>
@@ -113,7 +114,24 @@ namespace Catch {
                 m_inclusionFilters.push_back( filter );
         }
 
+        void addTags( const std::string& tagPattern ) {
+            TagExpression exp;
+            TagExpressionParser( exp ).parse( tagPattern );
+
+            m_tagExpressions.push_back( exp );
+        }
+
         bool shouldInclude( const TestCaseInfo& testCase ) const {
+            if( !m_tagExpressions.empty() ) {
+                std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
+                std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();
+                for(; it != itEnd; ++it )
+                    if( it->matches( testCase.getTags() ) )
+                        break;
+                if( it == itEnd )
+                    return false;
+            }
+
             if( !m_inclusionFilters.empty() ) {
                 std::vector<TestCaseFilter>::const_iterator it = m_inclusionFilters.begin();
                 std::vector<TestCaseFilter>::const_iterator itEnd = m_inclusionFilters.end();
@@ -123,7 +141,7 @@ namespace Catch {
                 if( it == itEnd )
                     return false;
             }
-            else if( m_exclusionFilters.empty() ) {
+            else if( m_exclusionFilters.empty() && m_tagExpressions.empty() ) {
                 return !testCase.isHidden();
             }
             
@@ -135,6 +153,7 @@ namespace Catch {
             return true;
         }
     private:
+        std::vector<TagExpression> m_tagExpressions;
         std::vector<TestCaseFilter> m_inclusionFilters;
         std::vector<TestCaseFilter> m_exclusionFilters;
         std::string m_name;
