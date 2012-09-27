@@ -11,6 +11,7 @@
 #include "catch_test_spec.h"
 #include "catch_context.h"
 #include "catch_interfaces_config.h"
+#include "catch_stream.hpp"
 
 #include <memory>
 #include <vector>
@@ -79,19 +80,17 @@ namespace Catch {
     public:
 
         Config()
-        :   m_streambuf( NULL ),
-            m_os( std::cout.rdbuf() )
+        :   m_os( std::cout.rdbuf() )
         {}
         
         Config( const ConfigData& data )
         :   m_data( data ),
-            m_streambuf( NULL ),
             m_os( std::cout.rdbuf() )
         {}
         
         virtual ~Config() {
             m_os.rdbuf( std::cout.rdbuf() );
-            delete m_streambuf;
+            m_stream.release();
         }
         
         void setFilename( const std::string& filename ) {
@@ -131,10 +130,10 @@ namespace Catch {
         }        
 
         void useStream( const std::string& streamName ) {
-            std::streambuf* newBuf = createStreamBuf( streamName );
-            setStreamBuf( newBuf );
-            delete m_streambuf;
-            m_streambuf = newBuf;
+            Stream stream = createStream( streamName );
+            setStreamBuf( stream.streamBuf );
+            m_stream.release();
+            m_stream = stream;
         }
 
         void addTestSpec( const std::string& testSpec ) {
@@ -166,7 +165,7 @@ namespace Catch {
         ConfigData m_data;
         
         // !TBD Move these out of here
-        std::streambuf* m_streambuf;
+        Stream m_stream;
         mutable std::ostream m_os;
     };
         

@@ -95,10 +95,10 @@ namespace Catch {
         return getCurrentMutableContext();
     }
 
-    std::streambuf* createStreamBuf( const std::string& streamName ) {
-        if( streamName == "stdout" ) return std::cout.rdbuf();
-        if( streamName == "stderr" ) return std::cerr.rdbuf();
-        if( streamName == "debug" ) return new StreamBufImpl<OutputDebugWriter>;
+    Stream createStream( const std::string& streamName ) {
+        if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
+        if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
+        if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
 
         throw std::domain_error( "Unknown stream: " + streamName );
     }

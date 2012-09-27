@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-09-17 01:41:39.049891
+ *  Generated: 2012-09-26 21:42:33.317309
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -222,6 +222,7 @@ namespace Catch {
 namespace Catch {
 
     class TestCaseInfo;
+    class Stream;
     struct IResultCapture;
     struct IRunner;
     struct IGeneratorsForTest;
@@ -254,7 +255,7 @@ namespace Catch {
     IContext& getCurrentContext();
     IMutableContext& getCurrentMutableContext();
     void cleanUpContext();
-    std::streambuf* createStreamBuf( const std::string& streamName );
+    Stream createStream( const std::string& streamName );
 
 }
 
@@ -1311,8 +1312,8 @@ public:
         return *this;
     }
 
-    std::string getInfo () const {
-        return m_oss.str();
+    ResultInfo getInfo () const {
+        return ResultInfo( "", ResultWas::Info, false, SourceLineInfo(), "SCOPED_INFO", m_oss.str().c_str() );
     }
 
 private:
@@ -1668,7 +1669,8 @@ namespace Catch {
         const SourceLineInfo& getLineInfo() const;
         bool isHidden() const;
         bool hasTag( const std::string& tag ) const;
-        const std::set<std::string>& tags() const;
+        bool matchesTags( const std::string& tagPattern ) const;
+        const std::set<std::string>& getTags() const;
 
         void swap( TestCaseInfo& other );
         bool operator == ( const TestCaseInfo& other ) const;
@@ -1684,6 +1686,193 @@ namespace Catch {
         bool m_isHidden;
     };
 }
+
+// #included from: catch_tags.hpp
+#define TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED
+
+#include <string>
+#include <set>
+#include <map>
+#include <vector>
+
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
+namespace Catch {
+    class TagParser {
+    public:
+        virtual ~TagParser();
+
+        void parse( const std::string& str ) {
+            std::size_t pos = 0;
+            while( pos < str.size() ) {
+                char c = str[pos];
+                if( c == '[' ) {
+                    std::size_t end = str.find_first_of( ']', pos );
+                    if( end != std::string::npos ) {
+                        acceptTag( str.substr( pos+1, end-pos-1 ) );
+                        pos = end+1;
+                    }
+                    else {
+                        acceptChar( c );
+                        pos++;
+                    }
+                }
+                else {
+                    acceptChar( c );
+                    pos++;
+                }
+            }
+            endParse();
+        }
+
+    protected:
+        virtual void acceptTag( const std::string& tag ) = 0;
+        virtual void acceptChar( char c ) = 0;
+        virtual void endParse() {}
+
+    private:
+    };
+
+    class TagExtracter : public TagParser {
+    public:
+
+        TagExtracter( std::set<std::string>& tags )
+        :   m_tags( tags )
+        {}
+        virtual ~TagExtracter();
+
+        void parse( std::string& description ) {
+            TagParser::parse( description );
+            description = m_remainder;
+        }
+
+    private:
+        virtual void acceptTag( const std::string& tag ) {
+            m_tags.insert( tag );
+        }
+        virtual void acceptChar( char c ) {
+            m_remainder += c;
+        }
+
+        std::set<std::string>& m_tags;
+        std::string m_remainder;
+    };
+
+    class Tag {
+    public:
+        Tag()
+        : m_isNegated( false )
+        {}
+
+        Tag( const std::string& name, bool isNegated )
+        :   m_name( name ),
+        m_isNegated( isNegated )
+        {}
+
+        std::string getName() const {
+            return m_name;
+        }
+        bool isNegated() const {
+            return m_isNegated;
+        }
+
+        bool operator ! () const {
+            return m_name.empty();
+        }
+
+    private:
+        std::string m_name;
+        bool m_isNegated;
+    };
+
+    class TagSet {
+        typedef std::map<std::string, Tag> TagMap;
+    public:
+        void add( const Tag& tag ) {
+            m_tags.insert( std::make_pair( tag.getName(), tag ) );
+        }
+
+        // needed?
+        Tag find( const std::string& name ) const {
+            TagMap::const_iterator it = m_tags.find( name );
+            if( it == m_tags.end() )
+                return Tag();
+            else
+                return it->second;
+        }
+        bool empty() const {
+            return m_tags.empty();
+        }
+
+        bool matches( const std::set<std::string>& tags ) const {
+            TagMap::const_iterator it = m_tags.begin();
+            TagMap::const_iterator itEnd = m_tags.end();
+            for(; it != itEnd; ++it ) {
+                bool found = tags.find( it->first ) != tags.end();
+                if( found == it->second.isNegated() )
+                    return false;
+            }
+            return true;
+        }
+
+    private:
+        TagMap m_tags;
+    };
+
+    class TagExpression {
+    public:
+        bool matches( const std::set<std::string>& tags ) const {
+            std::vector<TagSet>::const_iterator it = m_tagSets.begin();
+            std::vector<TagSet>::const_iterator itEnd = m_tagSets.end();
+            for(; it != itEnd; ++it )
+                if( it->matches( tags ) )
+                    return true;
+            return false;
+        }
+
+    private:
+        friend class TagExpressionParser;
+
+        std::vector<TagSet> m_tagSets;
+    };
+
+    class TagExpressionParser : public TagParser {
+    public:
+        TagExpressionParser( TagExpression& exp )
+        :   m_isNegated( false ),
+            m_exp( exp )
+        {}
+
+        ~TagExpressionParser();
+
+    private:
+        virtual void acceptTag( const std::string& tag ) {
+            m_currentTagSet.add( Tag( tag, m_isNegated ) );
+            m_isNegated = false;
+        }
+        virtual void acceptChar( char c ) {
+            switch( c ) {
+                case '~':
+                    m_isNegated = true;
+                    break;
+                case ',':
+                    m_exp.m_tagSets.push_back( m_currentTagSet );
+                    break;
+            }
+        }
+        virtual void endParse() {
+            if( !m_currentTagSet.empty() )
+                m_exp.m_tagSets.push_back( m_currentTagSet );
+        }
+
+        bool m_isNegated;
+        TagSet m_currentTagSet;
+        TagExpression& m_exp;
+    };
+
+} // end namespace Catch
 
 #include <string>
 #include <vector>
@@ -1788,7 +1977,24 @@ namespace Catch {
                 m_inclusionFilters.push_back( filter );
         }
 
+        void addTags( const std::string& tagPattern ) {
+            TagExpression exp;
+            TagExpressionParser( exp ).parse( tagPattern );
+
+            m_tagExpressions.push_back( exp );
+        }
+
         bool shouldInclude( const TestCaseInfo& testCase ) const {
+            if( !m_tagExpressions.empty() ) {
+                std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
+                std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();
+                for(; it != itEnd; ++it )
+                    if( it->matches( testCase.getTags() ) )
+                        break;
+                if( it == itEnd )
+                    return false;
+            }
+
             if( !m_inclusionFilters.empty() ) {
                 std::vector<TestCaseFilter>::const_iterator it = m_inclusionFilters.begin();
                 std::vector<TestCaseFilter>::const_iterator itEnd = m_inclusionFilters.end();
@@ -1798,7 +2004,7 @@ namespace Catch {
                 if( it == itEnd )
                     return false;
             }
-            else if( m_exclusionFilters.empty() ) {
+            else if( m_exclusionFilters.empty() && m_tagExpressions.empty() ) {
                 return !testCase.isHidden();
             }
 
@@ -1810,6 +2016,7 @@ namespace Catch {
             return true;
         }
     private:
+        std::vector<TagExpression> m_tagExpressions;
         std::vector<TestCaseFilter> m_inclusionFilters;
         std::vector<TestCaseFilter> m_exclusionFilters;
         std::string m_name;
@@ -1827,6 +2034,84 @@ namespace Catch {
         virtual ~IConfig();
 
         virtual bool allowThrows() const = 0;
+    };
+}
+
+// #included from: catch_stream.hpp
+#define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
+
+#include <stdexcept>
+#include <cstdio>
+
+namespace Catch {
+
+    template<typename WriterF, size_t bufferSize=256>
+    class StreamBufImpl : public StreamBufBase {
+        char data[bufferSize];
+        WriterF m_writer;
+
+    public:
+        StreamBufImpl() {
+            setp( data, data + sizeof(data) );
+        }
+
+        ~StreamBufImpl() {
+            sync();
+        }
+
+    private:
+        int	overflow( int c ) {
+            sync();
+
+            if( c != EOF ) {
+                if( pbase() == epptr() )
+                    m_writer( std::string( 1, static_cast<char>( c ) ) );
+                else
+                    sputc( static_cast<char>( c ) );
+            }
+            return 0;
+        }
+
+        int	sync() {
+            if( pbase() != pptr() ) {
+                m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
+                setp( pbase(), epptr() );
+            }
+            return 0;
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    struct OutputDebugWriter {
+
+        void operator()( const std::string &str ) {
+            writeToDebugConsole( str );
+        }
+    };
+
+    class Stream {
+    public:
+        Stream()
+        : streamBuf( NULL ), isOwned( false )
+        {}
+
+        Stream( std::streambuf* _streamBuf, bool _isOwned )
+        : streamBuf( _streamBuf ), isOwned( _isOwned )
+        {}
+
+        void release() {
+            if( isOwned ) {
+                delete streamBuf;
+                streamBuf = NULL;
+                isOwned = false;
+            }
+        }
+
+        std::streambuf* streamBuf;
+
+    private:
+        bool isOwned;
     };
 }
 
@@ -1896,19 +2181,17 @@ namespace Catch {
     public:
 
         Config()
-        :   m_streambuf( NULL ),
-            m_os( std::cout.rdbuf() )
+        :   m_os( std::cout.rdbuf() )
         {}
 
         Config( const ConfigData& data )
         :   m_data( data ),
-            m_streambuf( NULL ),
             m_os( std::cout.rdbuf() )
         {}
 
         virtual ~Config() {
             m_os.rdbuf( std::cout.rdbuf() );
-            delete m_streambuf;
+            m_stream.release();
         }
 
         void setFilename( const std::string& filename ) {
@@ -1948,10 +2231,10 @@ namespace Catch {
         }
 
         void useStream( const std::string& streamName ) {
-            std::streambuf* newBuf = createStreamBuf( streamName );
-            setStreamBuf( newBuf );
-            delete m_streambuf;
-            m_streambuf = newBuf;
+            Stream stream = createStream( streamName );
+            setStreamBuf( stream.streamBuf );
+            m_stream.release();
+            m_stream = stream;
         }
 
         void addTestSpec( const std::string& testSpec ) {
@@ -1983,7 +2266,7 @@ namespace Catch {
         ConfigData m_data;
 
         // !TBD Move these out of here
-        std::streambuf* m_streambuf;
+        Stream m_stream;
         mutable std::ostream m_os;
     };
 
@@ -2007,10 +2290,20 @@ namespace Catch
             fullConfig( _fullConfig )
         {}
 
+        ReporterConfig( const ReporterConfig& other )
+        :   name( other.name ),
+            stream( other.stream ),
+            includeSuccessfulResults( other.includeSuccessfulResults ),
+            fullConfig( other.fullConfig )
+        {}
+
         std::string name;
         std::ostream& stream;
         bool includeSuccessfulResults;
         ConfigData fullConfig;
+
+    private:
+        void operator=(const ReporterConfig&);
     };
 
     class TestCaseInfo;
@@ -2709,10 +3002,10 @@ namespace Catch {
                 m_optionNames.push_back( "--help" );
             }
             virtual std::string argsSynopsis() const {
-                return "[<option for help on>]";
+                return "[<option for help on> ...]";
             }
             virtual std::string optionSummary() const {
-                return "Shows this usage summary, or help on a specific option, if supplied";
+                return "Shows this usage summary, or help on a specific option, or options, if supplied";
             }
             virtual std::string optionDescription() const {
                 return "";
@@ -2755,7 +3048,7 @@ namespace Catch {
                     "\n"
                     "If spec is prefixed with exclude: or the ~ character then the pattern matches an exclusion. "
                     "This means that tests matching the pattern are excluded from the set - even if a prior "
-                    "inclusion spec included them. Subsequent inclusion specs will take precendence, however. "
+                    "inclusion spec included them. Subsequent inclusion specs will take precedence, however. "
                     "Inclusions and exclusions are evaluated in left-to-right order.\n"
                     "\n"
                     "Examples:\n"
@@ -2780,6 +3073,41 @@ namespace Catch {
                 TestCaseFilters filters( groupName );
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i )
                     filters.addFilter( TestCaseFilter( cmd[i] ) );
+                config.filters.push_back( filters );
+            }
+        };
+
+        class TagOptionParser : public OptionParser {
+        public:
+            TagOptionParser() : OptionParser( 1, -1 ) {
+                m_optionNames.push_back( "-g" );
+                m_optionNames.push_back( "--tag" );
+            }
+            virtual std::string argsSynopsis() const {
+                return "<tagspec> [,<tagspec>...]";
+            }
+            virtual std::string optionSummary() const {
+                return "Matches test cases against tags or tag patterns";
+            }
+
+            // Lines are split at the nearest prior space char to the 80 char column.
+            // Tab chars are removed from the output but their positions are used to align
+            // subsequently wrapped lines
+            virtual std::string optionDescription() const {
+                return
+                "!TBD";
+            }
+
+            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+                std::string groupName;
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                    if( i != 0 )
+                        groupName += " ";
+                    groupName += cmd[i];
+                }
+                TestCaseFilters filters( groupName );
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                    filters.addTags( cmd[i] );
                 config.filters.push_back( filters );
             }
         };
@@ -2889,9 +3217,9 @@ namespace Catch {
             virtual std::string optionDescription() const {
                 return
                     "Use this option to send all output to a file or a stream. By default output is "
-                    "sent to stdout (note that uses ofstdout and stderr from within test cases are "
+                    "sent to stdout (note that uses of stdout and stderr from within test cases are "
                     "redirected and included in the report - so even stderr will effectively end up "
-                    "on stdout). If the name begins with % it is interpretted as a stream. "
+                    "on stdout). If the name begins with % it is interpreted as a stream. "
                     "Otherwise it is treated as a filename.\n"
                     "\n"
                     "Examples are:\n"
@@ -2927,7 +3255,7 @@ namespace Catch {
                 return
                     "Usually you only want to see reporting for failed tests. Sometimes it's useful "
                     "to see all the output (especially when you don't trust that that test you just "
-                    "added worked first time!). To see successul, as well as failing, test results "
+                    "added worked first time!). To see successful, as well as failing, test results "
                     "just pass this option.";
             }
             virtual void parseIntoConfig( const Command&, ConfigData& config ) {
@@ -3106,6 +3434,7 @@ namespace Catch {
         AllOptions() {
             add<Options::TestCaseOptionParser>();   // Keep this one first
 
+            add<Options::TagOptionParser>();
             add<Options::ListOptionParser>();
             add<Options::ReporterOptionParser>();
             add<Options::OutputOptionParser>();
@@ -3541,10 +3870,18 @@ namespace Catch {
             else if( !result.ok() ) {
                 m_totals.assertions.failed++;
 
-                std::vector<ResultInfo>::const_iterator it = m_info.begin();
-                std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
-                for(; it != itEnd; ++it )
-                    m_reporter->Result( *it );
+                {
+                    std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
+                    std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
+                    for(; it != itEnd; ++it )
+                        m_reporter->Result( (*it)->getInfo() );
+                }
+                {
+                    std::vector<ResultInfo>::const_iterator it = m_info.begin();
+                    std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
+                    for(; it != itEnd; ++it )
+                        m_reporter->Result( *it );
+                }
                 m_info.clear();
             }
 
@@ -3698,7 +4035,7 @@ namespace Catch {
         :   m_configWrapper( configWrapper ),
             m_config( configWrapper.data() )
         {
-            resolveStream();
+            openStream();
             makeReporter();
         }
 
@@ -3750,13 +4087,10 @@ namespace Catch {
         }
 
     private:
-        void resolveStream() {
-            if( !m_config.stream.empty() ) {
-                if( m_config.stream[0] == '%' )
-                    m_configWrapper.useStream( m_config.stream.substr( 1 ) );
-                else
-                    m_configWrapper.setFilename( m_config.stream );
-            }
+        void openStream() {
+            if( !m_config.stream.empty() )
+                m_configWrapper.useStream( m_config.stream );
+
             // Open output file, if specified
             if( !m_config.outputFilename.empty() ) {
                 m_ofs.open( m_config.outputFilename.c_str() );
@@ -3802,6 +4136,7 @@ namespace Catch {
             // Handle list request
             if( config.listSpec != List::None ) {
                 List( config );
+                Catch::cleanUp();
                 return 0;
             }
 
@@ -4244,60 +4579,6 @@ namespace Catch {
 // #included from: catch_context_impl.hpp
 #define TWOBLUECUBES_CATCH_CONTEXT_IMPL_HPP_INCLUDED
 
-// #included from: catch_stream.hpp
-#define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
-
-#include <stdexcept>
-#include <cstdio>
-
-namespace Catch {
-
-    template<typename WriterF, size_t bufferSize=256>
-    class StreamBufImpl : public StreamBufBase {
-        char data[bufferSize];
-        WriterF m_writer;
-
-    public:
-        StreamBufImpl() {
-            setp( data, data + sizeof(data) );
-        }
-
-        ~StreamBufImpl() {
-            sync();
-        }
-
-    private:
-        int	overflow( int c ) {
-            sync();
-
-            if( c != EOF ) {
-                if( pbase() == epptr() )
-                    m_writer( std::string( 1, static_cast<char>( c ) ) );
-                else
-                    sputc( static_cast<char>( c ) );
-            }
-            return 0;
-        }
-
-        int	sync() {
-            if( pbase() != pptr() ) {
-                m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
-                setp( pbase(), epptr() );
-            }
-            return 0;
-        }
-    };
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    struct OutputDebugWriter {
-
-        void operator()( const std::string &str ) {
-            writeToDebugConsole( str );
-        }
-    };
-}
-
 namespace Catch {
 
     class Context : public IMutableContext {
@@ -4380,10 +4661,10 @@ namespace Catch {
         return getCurrentMutableContext();
     }
 
-    std::streambuf* createStreamBuf( const std::string& streamName ) {
-        if( streamName == "stdout" ) return std::cout.rdbuf();
-        if( streamName == "stderr" ) return std::cerr.rdbuf();
-        if( streamName == "debug" ) return new StreamBufImpl<OutputDebugWriter>;
+    Stream createStream( const std::string& streamName ) {
+        if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
+        if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
+        if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
 
         throw std::domain_error( "Unknown stream: " + streamName );
     }
@@ -4752,36 +5033,6 @@ namespace Catch {
 
 namespace Catch {
 
-    namespace {
-        void extractTags( std::string& str, std::set<std::string>& tags ) {
-            std::string remainder;
-            std::size_t last = 0;
-            std::size_t begin = str.find_first_of( '[' );
-            while( begin != std::string::npos ) {
-                std::size_t end = str.find_first_of( ']', begin );
-                if( end != std::string::npos ) {
-                    std::string tag = str.substr( begin+1, end-begin-1 );
-                    tags.insert( tag );
-                    if( begin - last > 0 )
-                        remainder += str.substr( last, begin-last );
-                    last = end+1;
-                }
-                else if( begin != str.size()-1 ) {
-                    end = begin+1;
-                }
-                else {
-                    break;
-                }
-                begin = str.find_first_of( '[', end );
-            }
-            if( !tags.empty() ) {
-                if( last < str.size() )
-                    str = remainder + str.substr( last );
-                else
-                    str = remainder;
-            }
-        }
-    }
     TestCaseInfo::TestCaseInfo( ITestCase* testCase,
                                 const char* name,
                                 const char* description,
@@ -4792,7 +5043,7 @@ namespace Catch {
         m_lineInfo( lineInfo ),
         m_isHidden( startsWith( name, "./" ) )
     {
-        extractTags( m_description, m_tags );
+        TagExtracter( m_tags ).parse( m_description );
         if( hasTag( "hide" ) )
             m_isHidden = true;
     }
@@ -4845,7 +5096,12 @@ namespace Catch {
     bool TestCaseInfo::hasTag( const std::string& tag ) const {
         return m_tags.find( tag ) != m_tags.end();
     }
-    const std::set<std::string>& TestCaseInfo::tags() const {
+    bool TestCaseInfo::matchesTags( const std::string& tagPattern ) const {
+        TagExpression exp;
+        TagExpressionParser( exp ).parse( tagPattern );
+        return exp.matches( m_tags );
+    }
+    const std::set<std::string>& TestCaseInfo::getTags() const {
         return m_tags;
     }
 
@@ -4868,7 +5124,8 @@ namespace Catch {
         swap( temp );
         return *this;
     }
-}
+
+} // end namespace Catch
 
 // #included from: ../reporters/catch_reporter_basic.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED
@@ -5790,6 +6047,9 @@ namespace Catch {
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
     IGeneratorInfo::~IGeneratorInfo() {}
     IGeneratorsForTest::~IGeneratorsForTest() {}
+    TagParser::~TagParser() {}
+    TagExtracter::~TagExtracter() {}
+    TagExpressionParser::~TagExpressionParser() {}
 
     void Config::dummy() {}
 

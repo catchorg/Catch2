@@ -26,7 +26,7 @@ namespace Catch {
         :   m_configWrapper( configWrapper ),
             m_config( configWrapper.data() )
         {
-            resolveStream();
+            openStream();
             makeReporter();
         }
 
@@ -78,13 +78,10 @@ namespace Catch {
         }
 
     private:
-        void resolveStream() {
-            if( !m_config.stream.empty() ) {
-                if( m_config.stream[0] == '%' )
-                    m_configWrapper.useStream( m_config.stream.substr( 1 ) );
-                else
-                    m_configWrapper.setFilename( m_config.stream );
-            }
+        void openStream() {
+            if( !m_config.stream.empty() )
+                m_configWrapper.useStream( m_config.stream );
+
             // Open output file, if specified
             if( !m_config.outputFilename.empty() ) {
                 m_ofs.open( m_config.outputFilename.c_str() );
@@ -130,6 +127,7 @@ namespace Catch {
             // Handle list request
             if( config.listSpec != List::None ) {
                 List( config );
+                Catch::cleanUp();
                 return 0;
             }
 

@@ -294,7 +294,13 @@ TEST_CASE( "empty", "An empty test with no assertions" )
 {
 }
 
-TEST_CASE( "Nice descriptive name", "[tag1][tag2][hide]" )
+TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][hide]" )
 {
     WARN( "This one ran" );
+}
+TEST_CASE( "first tag", "[tag1]" )
+{
+}
+TEST_CASE( "second tag", "[tag2]" )
+{
 }

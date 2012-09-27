@@ -35,8 +35,8 @@ public:
         return *this; 
     }
     
-    std::string getInfo () const {
-        return m_oss.str();
+    ResultInfo getInfo () const {
+        return ResultInfo( "", ResultWas::Info, false, SourceLineInfo(), "SCOPED_INFO", m_oss.str().c_str() );
     }
     
 private:
