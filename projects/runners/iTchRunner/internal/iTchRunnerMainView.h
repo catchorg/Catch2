@@ -6,6 +6,8 @@
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  */
+#ifndef TWOBLUECUBES_ITCHRUNNERMAINVIEW_H_INCLUDED
+#define TWOBLUECUBES_ITCHRUNNERMAINVIEW_H_INCLUDED
 
 #include "internal/catch_config.hpp"
 #include "internal/catch_runner_impl.hpp"
@@ -143,3 +145,5 @@
 
 
 @end
+
+#endif // TWOBLUECUBES_ITCHRUNNERMAINVIEW_H_INCLUDED

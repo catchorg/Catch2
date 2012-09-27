@@ -5,6 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+#ifndef TWOBLUECUBES_CATCH_IMPL_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_IMPL_HPP_INCLUDED
 
 // Collect all the implementation files together here
 // These are the equivalent of what would usually be cpp files
@@ -69,3 +71,5 @@ namespace Catch {
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
+
+#endif // TWOBLUECUBES_CATCH_IMPL_HPP_INCLUDED

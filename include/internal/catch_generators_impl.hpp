@@ -83,4 +83,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_GENERATORS_IMPL_HPP_INCLUDED
