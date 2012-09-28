@@ -23,11 +23,6 @@ namespace Catch {
     struct IGeneratorsForTest;
     struct IConfig;
 
-    class StreamBufBase : public std::streambuf {
-    public:
-        virtual ~StreamBufBase();
-    };
-    
     struct IContext
     {
         virtual ~IContext();

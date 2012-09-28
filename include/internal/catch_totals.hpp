@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 
+#include <cstddef>
+
 namespace Catch {
 
     struct Counts {

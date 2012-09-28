@@ -9,6 +9,9 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
+#include "catch_streambuf.h"
+#include "catch_debugger.hpp"
+
 #include <stdexcept>
 #include <cstdio>
 
