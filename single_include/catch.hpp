@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-09-26 21:42:33.317309
+ *  Generated: 2012-09-29 20:53:48.580228
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -227,11 +227,6 @@ namespace Catch {
     struct IRunner;
     struct IGeneratorsForTest;
     struct IConfig;
-
-    class StreamBufBase : public std::streambuf {
-    public:
-        virtual ~StreamBufBase();
-    };
 
     struct IContext
     {
@@ -1097,6 +1092,8 @@ private:
 #include <string>
 // #included from: catch_totals.hpp
 #define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
+
+#include <cstddef>
 
 namespace Catch {
 
@@ -2039,6 +2036,19 @@ namespace Catch {
 
 // #included from: catch_stream.hpp
 #define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
+
+// #included from: catch_streambuf.h
+#define TWOBLUECUBES_CATCH_STREAMBUF_H_INCLUDED
+
+#include <streambuf>
+
+namespace Catch {
+
+    class StreamBufBase : public std::streambuf {
+    public:
+        virtual ~StreamBufBase();
+    };
+}
 
 #include <stdexcept>
 #include <cstdio>
@@ -5480,6 +5490,7 @@ namespace Catch {
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
 #include <sstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
