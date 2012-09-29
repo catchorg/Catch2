@@ -5,8 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_TESTSPEC_H_INCLUDED
-#define TWOBLUECUBES_CATCH_TESTSPEC_H_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_TEST_SPEC_H_INCLUDED
+#define TWOBLUECUBES_CATCH_TEST_SPEC_H_INCLUDED
 
 #include "catch_test_case_info.h"
 #include "catch_tags.hpp"
@@ -161,4 +161,4 @@ namespace Catch {
 
 }
 
-#endif // TWOBLUECUBES_CATCH_TESTSPEC_H_INCLUDED
+#endif // TWOBLUECUBES_CATCH_TEST_SPEC_H_INCLUDED
