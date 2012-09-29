@@ -5,8 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_RESULT_INFO_H_INCLUDED
-#define TWOBLUECUBES_CATCH_RESULT_INFO_H_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_RESULTINFO_H_INCLUDED
+#define TWOBLUECUBES_CATCH_RESULTINFO_H_INCLUDED
 
 #include <string>
 #include "catch_result_type.h"
@@ -52,4 +52,4 @@ namespace Catch {
     
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_RESULT_INFO_H_INCLUDED
+#endif // TWOBLUECUBES_CATCH_RESULTINFO_H_INCLUDED

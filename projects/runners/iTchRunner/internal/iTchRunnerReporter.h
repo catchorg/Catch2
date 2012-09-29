@@ -6,6 +6,9 @@
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  */
+#ifndef TWOBLUECUBES_ITCHRUNNERREPORTER_H_INCLUDED
+#define TWOBLUECUBES_ITCHRUNNERREPORTER_H_INCLUDED
+
 #include "catch.hpp"
 
 @protocol iTchRunnerDelegate
@@ -106,3 +109,5 @@ namespace Catch
         id<iTchRunnerDelegate> m_delegate;
     };
 }
+
+#endif // TWOBLUECUBES_ITCHRUNNERREPORTER_H_INCLUDED

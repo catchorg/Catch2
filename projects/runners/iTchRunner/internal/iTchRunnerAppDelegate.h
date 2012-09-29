@@ -6,6 +6,8 @@
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  */
+#ifndef TWOBLUECUBES_ITCHRUNNERAPPDELEGATE_H_INCLUDED
+#define TWOBLUECUBES_ITCHRUNNERAPPDELEGATE_H_INCLUDED
 
 #import "iTchRunnerMainView.h"
 
@@ -108,3 +110,5 @@
 
 
 @end
+
+#endif // TWOBLUECUBES_ITCHRUNNERAPPDELEGATE_H_INCLUDED
