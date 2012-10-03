@@ -40,7 +40,7 @@ namespace Catch {
         m_isNot( isNot )
         {
             if( isNot )
-                m_expr = "!" + m_expr;
+                m_expr = "!(" + m_expr + ")";
         }
 
     ResultInfo::~ResultInfo() {}

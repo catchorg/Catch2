@@ -39,14 +39,6 @@ struct TestDef {
     
 };
 
-//TEST( "./succeeding/conditions/equality"  + Description("nyaya") )
-//{
-//    TEST_CASE( [Name("inner")] )
-//    {
-//        
-//    }
-//}
-
 // The "failing" tests all use the CHECK macro, which continues if the specific test fails.
 // This allows us to see all results, even if an earlier check fails
 

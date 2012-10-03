@@ -112,14 +112,6 @@ namespace Catch {
             m_tags.insert( std::make_pair( tag.getName(), tag ) );
         }
 
-        // needed?
-        Tag find( const std::string& name ) const {
-            TagMap::const_iterator it = m_tags.find( name );
-            if( it == m_tags.end() )
-                return Tag();
-            else
-                return it->second;
-        }
         bool empty() const {
             return m_tags.empty();
         }

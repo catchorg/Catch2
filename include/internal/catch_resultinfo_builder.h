@@ -38,16 +38,10 @@ public:
     void setOp( const std::string& op );
     
     template<typename RhsT>
-    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator ||
-    (
-        const RhsT&
-    );
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( const RhsT& );
 
     template<typename RhsT>
-    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator &&
-    (
-        const RhsT&
-    );
+    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
     
 private:
     friend class ExpressionBuilder;
