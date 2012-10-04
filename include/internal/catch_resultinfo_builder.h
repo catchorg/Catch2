@@ -19,23 +19,17 @@ namespace Catch {
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
 class ResultInfoBuilder : public ResultInfo {
-
 public:
     
-    ResultInfoBuilder();
-    
-    ResultInfoBuilder(  const char* expr, 
-                        bool isNot, 
-                        const SourceLineInfo& lineInfo,
-                        const char* macroName,
-                        const char* message = "" );
+    ResultInfoBuilder();    
 
-    void setResultType( ResultWas::OfType result );
-    void setMessage( const std::string& message );
-    void setLineInfo( const SourceLineInfo& lineInfo );
-    void setLhs( const std::string& lhs );
-    void setRhs( const std::string& rhs );
-    void setOp( const std::string& op );
+    ResultInfoBuilder& setResultType( ResultWas::OfType result );
+    ResultInfoBuilder& setMessage( const std::string& message );
+    ResultInfoBuilder& setLineInfo( const SourceLineInfo& lineInfo );
+    ResultInfoBuilder& setLhs( const std::string& lhs );
+    ResultInfoBuilder& setRhs( const std::string& rhs );
+    ResultInfoBuilder& setOp( const std::string& op );
+    ResultInfoBuilder& setMacroName( const std::string& macroName );
     
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( const RhsT& );
@@ -44,6 +38,12 @@ public:
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
     
 private:
+
+    ResultInfoBuilder(  const char* expr,
+                      bool isNot,
+                      const SourceLineInfo& lineInfo,
+                      const char* macroName );
+
     friend class ExpressionBuilder;
     template<typename T> friend class Expression;
 

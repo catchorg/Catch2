@@ -16,12 +16,6 @@ namespace Catch {
     class ResultInfo {
     public:
         ResultInfo();        
-        ResultInfo( const char* expr, 
-                    ResultWas::OfType result, 
-                    bool isNot,
-                    const SourceLineInfo& lineInfo,
-                    const char* macroName,
-                   const char* message );
         ~ResultInfo();
         
         bool ok() const;
@@ -37,6 +31,12 @@ namespace Catch {
         std::string getTestMacroName() const;
 
     protected:
+        ResultInfo( const char* expr,
+                   ResultWas::OfType result,
+                   bool isNot,
+                   const SourceLineInfo& lineInfo,
+                   const char* macroName,
+                   const char* message );
 
         std::string getExpandedExpressionInternal() const;
         bool isNotExpression( const char* expr );

@@ -12,17 +12,16 @@
 
 namespace Catch {
 
-    ResultInfoBuilder::ResultInfoBuilder() {}
-
     ResultInfoBuilder::ResultInfoBuilder(   const char* expr,
                                             bool isNot,
                                             const SourceLineInfo& lineInfo,
-                                            const char* macroName,
-                                            const char* message )
-    : ResultInfo( expr, ResultWas::Unknown, isNot, lineInfo, macroName, message )
+                                            const char* macroName )
+    : ResultInfo( expr, ResultWas::Unknown, isNot, lineInfo, macroName, "" )
     {}
 
-    void ResultInfoBuilder::setResultType( ResultWas::OfType result ) {
+    ResultInfoBuilder::ResultInfoBuilder() {}
+
+    ResultInfoBuilder& ResultInfoBuilder::setResultType( ResultWas::OfType result ) {
         // Flip bool results if isNot is set
         if( m_isNot && result == ResultWas::Ok )
             m_result = ResultWas::ExpressionFailed;
@@ -30,26 +29,37 @@ namespace Catch {
             m_result = ResultWas::Ok;
         else
             m_result = result;
+        return *this;
     }
 
-    void ResultInfoBuilder::setMessage( const std::string& message ) {
+    ResultInfoBuilder& ResultInfoBuilder::setMessage( const std::string& message ) {
         m_message = message;
+        return *this;
     }
 
-    void ResultInfoBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
+    ResultInfoBuilder& ResultInfoBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
         m_lineInfo = lineInfo;
+        return *this;
     }
 
-    void ResultInfoBuilder::setLhs( const std::string& lhs ) {
+    ResultInfoBuilder& ResultInfoBuilder::setLhs( const std::string& lhs ) {
         m_lhs = lhs;
+        return *this;
     }
 
-    void ResultInfoBuilder::setRhs( const std::string& rhs ) {
+    ResultInfoBuilder& ResultInfoBuilder::setRhs( const std::string& rhs ) {
         m_rhs = rhs;
+        return *this;
     }
 
-    void ResultInfoBuilder::setOp( const std::string& op ) {
+    ResultInfoBuilder& ResultInfoBuilder::setOp( const std::string& op ) {
         m_op = op;
+        return *this;
+    }
+
+    ResultInfoBuilder& ResultInfoBuilder::setMacroName( const std::string& macroName ) {
+        m_macroName = macroName;
+        return *this;
     }
 
     ResultInfoBuilder& ResultInfoBuilder::captureBoolExpression( bool result ) {

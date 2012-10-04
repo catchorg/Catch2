@@ -34,9 +34,12 @@ public:
         m_oss << value;
         return *this; 
     }
-    
+
     ResultInfo getInfo () const {
-        return ResultInfo( "", ResultWas::Info, false, SourceLineInfo(), "SCOPED_INFO", m_oss.str().c_str() );
+        return ResultInfoBuilder()
+            .setResultType( ResultWas::Info )
+            .setMessage( m_oss.str() )
+            .setMacroName( "SCOPED_INFO" );
     }
     
 private:
