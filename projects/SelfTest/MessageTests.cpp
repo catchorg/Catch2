@@ -76,7 +76,8 @@ TEST_CASE( "./mixed/message/scoped", "" )
 {
     for( int i=0; i<100; i++ )
     {
-       SCOPED_INFO( "current counter " << i );
-       REQUIRE( i < 10 );
+        SCOPED_INFO( "current counter " << i );
+        SCOPED_CAPTURE( i );
+        REQUIRE( i < 10 );
     }
 }
