@@ -23,6 +23,8 @@ namespace Catch {
         m_isNot( false )
         {}
 
+    ResultInfo::ResultInfo( const ResultData& data ) : m_data( data ) {}
+
     ResultInfo::ResultInfo(const char* expr,
                            ResultWas::OfType result,
                            bool isNot,

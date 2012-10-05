@@ -28,6 +28,10 @@ struct ResultWas { enum OfType {
     
 }; };
 
+inline bool isOk( ResultWas::OfType resultType ) {
+    return ( resultType & ResultWas::FailureBit ) == 0;
+}
+
 struct ResultAction { enum Value {
     None,
     Failed = 1, // Failure - but no debug break if Debug bit not set

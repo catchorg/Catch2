@@ -18,53 +18,55 @@ namespace Catch {
 
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
-class ResultInfoBuilder : public ResultInfo {
+class ResultInfoBuilder : protected ResultInfo {
 public:
     
-    ResultInfoBuilder();    
+    ResultInfoBuilder();
 
     ResultInfoBuilder& setResultType( ResultWas::OfType result );
+    ResultInfoBuilder& setCapturedExpression( const std::string& capturedExpression );
+    ResultInfoBuilder& setIsFalse( bool isFalse );
     ResultInfoBuilder& setMessage( const std::string& message );
     ResultInfoBuilder& setLineInfo( const SourceLineInfo& lineInfo );
     ResultInfoBuilder& setLhs( const std::string& lhs );
     ResultInfoBuilder& setRhs( const std::string& rhs );
     ResultInfoBuilder& setOp( const std::string& op );
     ResultInfoBuilder& setMacroName( const std::string& macroName );
-    
+
+    std::string reconstructExpression() const;
+
+    const ResultInfo& build() const;
+
+    // Disable attempts to use || and && in expressions (without parantheses)
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( const RhsT& );
-
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
-    
-private:
 
-    ResultInfoBuilder(  const char* expr,
-                      bool isNot,
-                      const SourceLineInfo& lineInfo,
-                      const char* macroName );
-
-    friend class ExpressionBuilder;
-    template<typename T> friend class Expression;
-
-    template<typename T> friend class PtrExpression;
-
-    ResultInfoBuilder& captureBoolExpression( bool result );
-
-    template<Internal::Operator Op, typename T1, typename T2>    
-    ResultInfoBuilder& captureExpression( const T1& lhs, const T2& rhs ) {
-        setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
-        m_lhs = Catch::toString( lhs );
-        m_rhs = Catch::toString( rhs );
-        m_op = Internal::OperatorTraits<Op>::getName();
-        return *this;
+    bool getIsFalse() const {
+        return m_isNot;
     }
 
-    template<Internal::Operator Op, typename T>
-    ResultInfoBuilder& captureExpression( const T* lhs, int rhs ) {
-        return captureExpression<Op>( lhs, reinterpret_cast<const T*>( rhs ) );
-    }    
+private:
+    ResultData m_data;
 };
+
+template<Internal::Operator Op, typename T1, typename T2>
+ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T1& lhs, const T2& rhs ) {
+    return builder
+    .setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
+    .setLhs( Catch::toString( lhs ) )
+    .setRhs( Catch::toString( rhs ) )
+    .setOp( Internal::OperatorTraits<Op>::getName() );
+}
+
+template<Internal::Operator Op, typename T>
+ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T* lhs, int rhs ) {
+    return captureExpression<Op>( builder, lhs, reinterpret_cast<const T*>( rhs ) );
+}
+
+ResultInfoBuilder& captureBoolExpression( ResultInfoBuilder& builder, bool result );
+
 
 } // end namespace Catch
 

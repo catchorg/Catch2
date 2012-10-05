@@ -25,44 +25,44 @@ public:
     
     template<typename RhsT>
     ResultInfoBuilder& operator == ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
     }
-    
+
     template<typename RhsT>
     ResultInfoBuilder& operator != ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator < ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsLessThan>( m_lhs, rhs );
+        return captureExpression<Internal::IsLessThan>( m_result, m_lhs, rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator > ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsGreaterThan>( m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThan>( m_result, m_lhs, rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator <= ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsLessThanOrEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsLessThanOrEqualTo>( m_result, m_lhs, rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator >= ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsGreaterThanOrEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThanOrEqualTo>( m_result, m_lhs, rhs );
     }
 
     ResultInfoBuilder& operator == ( bool rhs ) {
-        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
     }
     
     ResultInfoBuilder& operator != ( bool rhs ) {
-        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
     }
     
     operator ResultInfoBuilder& () {
-        return m_result.captureBoolExpression( m_lhs );
+        return captureBoolExpression( m_result, m_lhs );
     }
     
     template<typename RhsT>

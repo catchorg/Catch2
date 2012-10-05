@@ -26,9 +26,14 @@ public:
                         const char* macroName,
                         const char* expr = "",
                         bool isNot = false )
-    : m_result( expr, isNot, lineInfo, macroName ),
-      m_messageStream()
-    {}
+    : m_messageStream()
+    {
+        m_result
+            .setCapturedExpression( expr )
+            .setIsFalse( isNot )
+            .setLineInfo( lineInfo )
+            .setMacroName( macroName );
+    }
     
     template<typename T>
     Expression<const T&> operator->* ( const T & operand ) {
@@ -54,10 +59,11 @@ public:
         std::string matcherAsString = Catch::toString( matcher );
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
-        m_result.setLhs( Catch::toString( arg ) );
-        m_result.setRhs( matcherAsString );
-        m_result.setOp( "matches" );
-        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        m_result
+            .setLhs( Catch::toString( arg ) )
+            .setRhs( matcherAsString )
+            .setOp( "matches" )
+            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
     
@@ -68,10 +74,11 @@ public:
         std::string matcherAsString = Catch::toString( matcher );
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
-        m_result.setLhs( Catch::toString( arg ) );
-        m_result.setRhs( matcherAsString );
-        m_result.setOp( "matches" );
-        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        m_result
+            .setLhs( Catch::toString( arg ) )
+            .setRhs( matcherAsString )
+            .setOp( "matches" )
+            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
     

@@ -242,9 +242,9 @@ namespace Catch {
     private:
 
         ResultAction::Value actOnCurrentResult() {
-            testEnded( m_currentResult );
-            m_lastResult = m_currentResult;
-            
+            m_lastResult = m_currentResult.build();
+            testEnded( m_lastResult );
+
             m_currentResult = ResultInfoBuilder();
 
             ResultAction::Value action = ResultAction::None;

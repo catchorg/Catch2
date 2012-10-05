@@ -39,7 +39,8 @@ public:
         return ResultInfoBuilder()
             .setResultType( ResultWas::Info )
             .setMessage( m_oss.str() )
-            .setMacroName( "SCOPED_INFO" );
+            .setMacroName( "SCOPED_INFO" )
+            .build();
     }
     
 private:

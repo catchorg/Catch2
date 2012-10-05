@@ -13,9 +13,22 @@
 
 namespace Catch {
 
+    struct ResultData
+    {
+        ResultData() : resultType( ResultWas::Unknown ) {}
+
+        std::string macroName;
+        SourceLineInfo lineInfo;
+        std::string capturedExpression;
+        std::string reconstructedExpression;
+        std::string message;
+        ResultWas::OfType resultType;
+    };
+
     class ResultInfo {
     public:
-        ResultInfo();        
+        ResultInfo();
+        ResultInfo( const ResultData& data );
         ~ResultInfo();
         
         bool ok() const;
@@ -42,6 +55,7 @@ namespace Catch {
         bool isNotExpression( const char* expr );
         
     protected:
+        ResultData m_data;
         std::string m_macroName;
         SourceLineInfo m_lineInfo;
         std::string m_expr, m_lhs, m_rhs, m_op;
