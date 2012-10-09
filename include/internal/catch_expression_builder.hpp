@@ -25,12 +25,12 @@ public:
     ExpressionBuilder(  const SourceLineInfo& lineInfo,
                         const char* macroName,
                         const char* expr = "",
-                        bool isNot = false )
+                        bool isFalse = false )
     : m_messageStream()
     {
         m_result
             .setCapturedExpression( expr )
-            .setIsFalse( isNot )
+            .setIsFalse( isFalse )
             .setLineInfo( lineInfo )
             .setMacroName( macroName );
     }

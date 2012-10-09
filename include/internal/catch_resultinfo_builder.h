@@ -44,13 +44,13 @@ public:
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
 
     bool getIsFalse() const {
-        return m_isNot;
+        return m_isFalse;
     }
 
 private:
     ResultData m_data;
     std::string m_lhs, m_rhs, m_op;
-    bool m_isNot;
+    bool m_isFalse;
 };
 
 template<Internal::Operator Op, typename T1, typename T2>

@@ -62,9 +62,9 @@ inline bool isTrue( bool value ){ return value; }
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ) \
     do { try { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr, isNot )->*expr ), stopOnFailure, expr ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr, isFalse )->*expr ), stopOnFailure, expr ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
@@ -73,13 +73,13 @@ inline bool isTrue( bool value ){ return value; }
     } } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_IF( expr, isNot, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_IF( expr, isFalse, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
     if( Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ELSE( expr, isNot, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_ELSE( expr, isFalse, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
     if( !Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////

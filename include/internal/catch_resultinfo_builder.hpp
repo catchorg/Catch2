@@ -15,10 +15,10 @@ namespace Catch {
     ResultInfoBuilder::ResultInfoBuilder() {}
 
     ResultInfoBuilder& ResultInfoBuilder::setResultType( ResultWas::OfType result ) {
-        // Flip bool results if isNot is set
-        if( m_isNot && result == ResultWas::Ok )
+        // Flip bool results if isFalse is set
+        if( m_isFalse && result == ResultWas::Ok )
             m_data.resultType = ResultWas::ExpressionFailed;
-        else if( m_isNot && result == ResultWas::ExpressionFailed )
+        else if( m_isFalse && result == ResultWas::ExpressionFailed )
             m_data.resultType = ResultWas::Ok;
         else
             m_data.resultType = result;
@@ -29,7 +29,7 @@ namespace Catch {
         return *this;
     }
     ResultInfoBuilder& ResultInfoBuilder::setIsFalse( bool isFalse ) {
-        m_isNot = isFalse;
+        m_isFalse = isFalse;
         return *this;
     }
 
@@ -67,7 +67,7 @@ namespace Catch {
     {
         ResultData data = m_data;
         data.reconstructedExpression = reconstructExpression();
-        if( m_isNot ) {
+        if( m_isFalse ) {
             if( m_op == "" ) {
                 data.capturedExpression = "!" + data.capturedExpression;
                 data.reconstructedExpression = "!" + data.reconstructedExpression;
