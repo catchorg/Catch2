@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-10-09 11:46:45.335978
+ *  Generated: 2012-10-09 20:58:02.234458
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -913,28 +913,14 @@ public:
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
 
     bool getIsFalse() const {
-        return m_isNot;
+        return m_isFalse;
     }
 
 private:
     ResultData m_data;
     std::string m_lhs, m_rhs, m_op;
-    bool m_isNot;
+    bool m_isFalse;
 };
-
-template<Internal::Operator Op, typename T1, typename T2>
-ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T1& lhs, const T2& rhs ) {
-    return builder
-    .setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
-    .setLhs( Catch::toString( lhs ) )
-    .setRhs( Catch::toString( rhs ) )
-    .setOp( Internal::OperatorTraits<Op>::getName() );
-}
-
-template<Internal::Operator Op, typename T>
-ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T* lhs, int rhs ) {
-    return captureExpression<Op>( builder, lhs, reinterpret_cast<const T*>( rhs ) );
-}
 
 } // end namespace Catch
 
@@ -946,53 +932,50 @@ class Expression {
 
 public:
     Expression( ResultInfoBuilder& result, T lhs )
-    :   m_result( result ),
+    :   m_result( result.setLhs( Catch::toString( lhs ) ) ),
         m_lhs( lhs )
     {}
 
     template<typename RhsT>
     ResultInfoBuilder& operator == ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator != ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator < ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsLessThan>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsLessThan>( rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator > ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsGreaterThan>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThan>( rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator <= ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsLessThanOrEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator >= ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsGreaterThanOrEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
     }
 
     ResultInfoBuilder& operator == ( bool rhs ) {
-        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
     ResultInfoBuilder& operator != ( bool rhs ) {
-        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
     operator ResultInfoBuilder& () {
-        return m_result
-            .setLhs( Catch::toString( m_lhs ) )
-            .setOp( "" )
-            .setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        return m_result.setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
     }
 
     template<typename RhsT>
@@ -1000,6 +983,15 @@ public:
 
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( const RhsT& );
+
+private:
+    template<Internal::Operator Op, typename RhsT>
+    ResultInfoBuilder& captureExpression( const RhsT& rhs ) {
+        return m_result
+            .setResultType( Internal::compare<Op>( m_lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
+            .setRhs( Catch::toString( rhs ) )
+            .setOp( Internal::OperatorTraits<Op>::getName() );
+    }
 
 private:
     ResultInfoBuilder& m_result;
@@ -1018,12 +1010,12 @@ public:
     ExpressionBuilder(  const SourceLineInfo& lineInfo,
                         const char* macroName,
                         const char* expr = "",
-                        bool isNot = false )
+                        bool isFalse = false )
     : m_messageStream()
     {
         m_result
             .setCapturedExpression( expr )
-            .setIsFalse( isNot )
+            .setIsFalse( isFalse )
             .setLineInfo( lineInfo )
             .setMacroName( macroName );
     }
@@ -1342,9 +1334,9 @@ inline bool isTrue( bool value ){ return value; }
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ) \
     do { try { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr, isNot )->*expr ), stopOnFailure, expr ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr, isFalse )->*expr ), stopOnFailure, expr ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
@@ -1353,13 +1345,13 @@ inline bool isTrue( bool value ){ return value; }
     } } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_IF( expr, isNot, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_IF( expr, isFalse, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
     if( Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ELSE( expr, isNot, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, isNot, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_ELSE( expr, isFalse, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
     if( !Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4945,10 +4937,10 @@ namespace Catch {
     ResultInfoBuilder::ResultInfoBuilder() {}
 
     ResultInfoBuilder& ResultInfoBuilder::setResultType( ResultWas::OfType result ) {
-        // Flip bool results if isNot is set
-        if( m_isNot && result == ResultWas::Ok )
+        // Flip bool results if isFalse is set
+        if( m_isFalse && result == ResultWas::Ok )
             m_data.resultType = ResultWas::ExpressionFailed;
-        else if( m_isNot && result == ResultWas::ExpressionFailed )
+        else if( m_isFalse && result == ResultWas::ExpressionFailed )
             m_data.resultType = ResultWas::Ok;
         else
             m_data.resultType = result;
@@ -4959,7 +4951,7 @@ namespace Catch {
         return *this;
     }
     ResultInfoBuilder& ResultInfoBuilder::setIsFalse( bool isFalse ) {
-        m_isNot = isFalse;
+        m_isFalse = isFalse;
         return *this;
     }
 
@@ -4997,7 +4989,7 @@ namespace Catch {
     {
         ResultData data = m_data;
         data.reconstructedExpression = reconstructExpression();
-        if( m_isNot ) {
+        if( m_isFalse ) {
             if( m_op == "" ) {
                 data.capturedExpression = "!" + data.capturedExpression;
                 data.reconstructedExpression = "!" + data.reconstructedExpression;

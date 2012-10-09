@@ -53,21 +53,6 @@ private:
     bool m_isFalse;
 };
 
-template<Internal::Operator Op, typename T1, typename T2>
-ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T1& lhs, const T2& rhs ) {
-    return builder
-    .setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
-    .setLhs( Catch::toString( lhs ) )
-    .setRhs( Catch::toString( rhs ) )
-    .setOp( Internal::OperatorTraits<Op>::getName() );
-}
-
-template<Internal::Operator Op, typename T>
-ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T* lhs, int rhs ) {
-    return captureExpression<Op>( builder, lhs, reinterpret_cast<const T*>( rhs ) );
-}
-
-
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_RESULTINFO_BUILDER_H_INCLUDED

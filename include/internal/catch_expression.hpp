@@ -19,53 +19,50 @@ class Expression {
 
 public:
     Expression( ResultInfoBuilder& result, T lhs )
-    :   m_result( result ),
+    :   m_result( result.setLhs( Catch::toString( lhs ) ) ),
         m_lhs( lhs )
     {}
     
     template<typename RhsT>
     ResultInfoBuilder& operator == ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator != ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator < ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsLessThan>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsLessThan>( rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator > ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsGreaterThan>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThan>( rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator <= ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsLessThanOrEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
     
     template<typename RhsT>
     ResultInfoBuilder& operator >= ( const RhsT& rhs ) {
-        return captureExpression<Internal::IsGreaterThanOrEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
     }
 
     ResultInfoBuilder& operator == ( bool rhs ) {
-        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( rhs );
     }
     
     ResultInfoBuilder& operator != ( bool rhs ) {
-        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
     operator ResultInfoBuilder& () {
-        return m_result
-            .setLhs( Catch::toString( m_lhs ) )
-            .setOp( "" )
-            .setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        return m_result.setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
     }
     
     template<typename RhsT>
@@ -73,6 +70,15 @@ public:
     
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( const RhsT& );
+
+private:
+    template<Internal::Operator Op, typename RhsT>
+    ResultInfoBuilder& captureExpression( const RhsT& rhs ) {
+        return m_result
+            .setResultType( Internal::compare<Op>( m_lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
+            .setRhs( Catch::toString( rhs ) )
+            .setOp( Internal::OperatorTraits<Op>::getName() );
+    }
 
 private:
     ResultInfoBuilder& m_result;
