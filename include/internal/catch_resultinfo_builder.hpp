@@ -17,16 +17,14 @@ namespace Catch {
     ResultInfoBuilder& ResultInfoBuilder::setResultType( ResultWas::OfType result ) {
         // Flip bool results if isNot is set
         if( m_isNot && result == ResultWas::Ok )
-            m_result = ResultWas::ExpressionFailed;
+            m_data.resultType = ResultWas::ExpressionFailed;
         else if( m_isNot && result == ResultWas::ExpressionFailed )
-            m_result = ResultWas::Ok;
+            m_data.resultType = ResultWas::Ok;
         else
-            m_result = result;
-        m_data.resultType = m_result;
+            m_data.resultType = result;
         return *this;
     }
     ResultInfoBuilder& ResultInfoBuilder::setCapturedExpression( const std::string& capturedExpression ) {
-        m_expr = capturedExpression;
         m_data.capturedExpression = capturedExpression;
         return *this;
     }
@@ -36,19 +34,16 @@ namespace Catch {
     }
 
     ResultInfoBuilder& ResultInfoBuilder::setMessage( const std::string& message ) {
-        m_message = message;
         m_data.message = message;
         return *this;
     }
 
     ResultInfoBuilder& ResultInfoBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
-        m_lineInfo = lineInfo;
         m_data.lineInfo = lineInfo;
         return *this;
     }
 
     ResultInfoBuilder& ResultInfoBuilder::setMacroName( const std::string& macroName ) {
-        m_macroName = macroName;
         m_data.macroName = macroName;
         return *this;
     }
@@ -68,27 +63,29 @@ namespace Catch {
         return *this;
     }
 
-    ResultInfoBuilder& captureBoolExpression( ResultInfoBuilder& builder, bool result ) {
-        return builder
-            .setLhs( Catch::toString( result ) )
-            .setOp( builder.getIsFalse() ? "!" : "" )
-            .setResultType( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
-    }
-
-    const ResultInfo& ResultInfoBuilder::build() const
+    ResultInfo ResultInfoBuilder::build() const
     {
         ResultData data = m_data;
         data.reconstructedExpression = reconstructExpression();
-        return *this;
+        if( m_isNot ) {
+            if( m_op == "" ) {
+                data.capturedExpression = "!" + data.capturedExpression;
+                data.reconstructedExpression = "!" + data.reconstructedExpression;
+            }
+            else {
+                data.capturedExpression = "!(" + data.capturedExpression + ")";
+                data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
+            }
+        }
+        return ResultInfo( data );
     }
 
     std::string ResultInfoBuilder::reconstructExpression() const {
-        if( m_op == "" || m_isNot )
-            return m_lhs.empty() ? m_expr : m_op + m_lhs;
+        if( m_op == "" )
+            return m_lhs.empty() ? m_data.capturedExpression : m_op + m_lhs;
         else if( m_op == "matches" )
             return m_lhs + " " + m_rhs;
-        else if( m_op != "!" )
-        {
+        else if( m_op != "!" ) {
             if( m_lhs.size() + m_rhs.size() < 30 )
                 return m_lhs + " " + m_op + " " + m_rhs;
             else if( m_lhs.size() < 70 && m_rhs.size() < 70 )
@@ -97,7 +94,7 @@ namespace Catch {
                 return "\n" + m_lhs + "\n" + m_op + "\n" + m_rhs + "\n\n";
         }
         else
-            return "{can't expand - use " + m_data.macroName + "_FALSE( " + m_expr.substr(1) + " ) instead of " + m_data.macroName + "( " + m_expr + " ) for better diagnostics}";
+            return "{can't expand - use " + m_data.macroName + "_FALSE( " + m_data.capturedExpression.substr(1) + " ) instead of " + m_data.macroName + "( " + m_data.capturedExpression + " ) for better diagnostics}";
     }
 
 } // end namespace Catch

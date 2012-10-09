@@ -62,7 +62,10 @@ public:
     }
     
     operator ResultInfoBuilder& () {
-        return captureBoolExpression( m_result, m_lhs );
+        return m_result
+            .setLhs( Catch::toString( m_lhs ) )
+            .setOp( "" )
+            .setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
     }
     
     template<typename RhsT>

@@ -18,7 +18,7 @@ namespace Catch {
 
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
-class ResultInfoBuilder : protected ResultInfo {
+class ResultInfoBuilder {
 public:
     
     ResultInfoBuilder();
@@ -35,7 +35,7 @@ public:
 
     std::string reconstructExpression() const;
 
-    const ResultInfo& build() const;
+    ResultInfo build() const;
 
     // Disable attempts to use || and && in expressions (without parantheses)
     template<typename RhsT>
@@ -49,6 +49,8 @@ public:
 
 private:
     ResultData m_data;
+    std::string m_lhs, m_rhs, m_op;
+    bool m_isNot;
 };
 
 template<Internal::Operator Op, typename T1, typename T2>
@@ -64,8 +66,6 @@ template<Internal::Operator Op, typename T>
 ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T* lhs, int rhs ) {
     return captureExpression<Op>( builder, lhs, reinterpret_cast<const T*>( rhs ) );
 }
-
-ResultInfoBuilder& captureBoolExpression( ResultInfoBuilder& builder, bool result );
 
 
 } // end namespace Catch

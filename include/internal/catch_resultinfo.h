@@ -44,24 +44,7 @@ namespace Catch {
         std::string getTestMacroName() const;
 
     protected:
-        ResultInfo( const char* expr,
-                   ResultWas::OfType result,
-                   bool isNot,
-                   const SourceLineInfo& lineInfo,
-                   const char* macroName,
-                   const char* message );
-
-        std::string getExpandedExpressionInternal() const;
-        bool isNotExpression( const char* expr );
-        
-    protected:
         ResultData m_data;
-        std::string m_macroName;
-        SourceLineInfo m_lineInfo;
-        std::string m_expr, m_lhs, m_rhs, m_op;
-        std::string m_message;
-        ResultWas::OfType m_result;
-        bool m_isNot;
     };
     
 } // end namespace Catch

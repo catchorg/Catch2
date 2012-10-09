@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-10-04 08:14:09.958803
+ *  Generated: 2012-10-09 11:46:45.335978
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -666,6 +666,10 @@ struct ResultWas { enum OfType {
 
 }; };
 
+inline bool isOk( ResultWas::OfType resultType ) {
+    return ( resultType & ResultWas::FailureBit ) == 0;
+}
+
 struct ResultAction { enum Value {
     None,
     Failed = 1, // Failure - but no debug break if Debug bit not set
@@ -678,9 +682,22 @@ struct ResultAction { enum Value {
 
 namespace Catch {
 
+    struct ResultData
+    {
+        ResultData() : resultType( ResultWas::Unknown ) {}
+
+        std::string macroName;
+        SourceLineInfo lineInfo;
+        std::string capturedExpression;
+        std::string reconstructedExpression;
+        std::string message;
+        ResultWas::OfType resultType;
+    };
+
     class ResultInfo {
     public:
         ResultInfo();
+        ResultInfo( const ResultData& data );
         ~ResultInfo();
 
         bool ok() const;
@@ -696,23 +713,7 @@ namespace Catch {
         std::string getTestMacroName() const;
 
     protected:
-        ResultInfo( const char* expr,
-                   ResultWas::OfType result,
-                   bool isNot,
-                   const SourceLineInfo& lineInfo,
-                   const char* macroName,
-                   const char* message );
-
-        std::string getExpandedExpressionInternal() const;
-        bool isNotExpression( const char* expr );
-
-    protected:
-        std::string m_macroName;
-        SourceLineInfo m_lineInfo;
-        std::string m_expr, m_lhs, m_rhs, m_op;
-        std::string m_message;
-        ResultWas::OfType m_result;
-        bool m_isNot;
+        ResultData m_data;
     };
 
 } // end namespace Catch
@@ -886,12 +887,14 @@ namespace Catch {
 
 struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 
-class ResultInfoBuilder : public ResultInfo {
+class ResultInfoBuilder {
 public:
 
     ResultInfoBuilder();
 
     ResultInfoBuilder& setResultType( ResultWas::OfType result );
+    ResultInfoBuilder& setCapturedExpression( const std::string& capturedExpression );
+    ResultInfoBuilder& setIsFalse( bool isFalse );
     ResultInfoBuilder& setMessage( const std::string& message );
     ResultInfoBuilder& setLineInfo( const SourceLineInfo& lineInfo );
     ResultInfoBuilder& setLhs( const std::string& lhs );
@@ -899,40 +902,39 @@ public:
     ResultInfoBuilder& setOp( const std::string& op );
     ResultInfoBuilder& setMacroName( const std::string& macroName );
 
+    std::string reconstructExpression() const;
+
+    ResultInfo build() const;
+
+    // Disable attempts to use || and && in expressions (without parantheses)
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( const RhsT& );
-
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
 
+    bool getIsFalse() const {
+        return m_isNot;
+    }
+
 private:
-
-    ResultInfoBuilder(  const char* expr,
-                      bool isNot,
-                      const SourceLineInfo& lineInfo,
-                      const char* macroName );
-
-    friend class ExpressionBuilder;
-    template<typename T> friend class Expression;
-
-    template<typename T> friend class PtrExpression;
-
-    ResultInfoBuilder& captureBoolExpression( bool result );
-
-    template<Internal::Operator Op, typename T1, typename T2>
-    ResultInfoBuilder& captureExpression( const T1& lhs, const T2& rhs ) {
-        setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
-        m_lhs = Catch::toString( lhs );
-        m_rhs = Catch::toString( rhs );
-        m_op = Internal::OperatorTraits<Op>::getName();
-        return *this;
-    }
-
-    template<Internal::Operator Op, typename T>
-    ResultInfoBuilder& captureExpression( const T* lhs, int rhs ) {
-        return captureExpression<Op>( lhs, reinterpret_cast<const T*>( rhs ) );
-    }
+    ResultData m_data;
+    std::string m_lhs, m_rhs, m_op;
+    bool m_isNot;
 };
+
+template<Internal::Operator Op, typename T1, typename T2>
+ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T1& lhs, const T2& rhs ) {
+    return builder
+    .setResultType( Internal::compare<Op>( lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
+    .setLhs( Catch::toString( lhs ) )
+    .setRhs( Catch::toString( rhs ) )
+    .setOp( Internal::OperatorTraits<Op>::getName() );
+}
+
+template<Internal::Operator Op, typename T>
+ResultInfoBuilder& captureExpression( ResultInfoBuilder& builder, const T* lhs, int rhs ) {
+    return captureExpression<Op>( builder, lhs, reinterpret_cast<const T*>( rhs ) );
+}
 
 } // end namespace Catch
 
@@ -950,44 +952,47 @@ public:
 
     template<typename RhsT>
     ResultInfoBuilder& operator == ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator != ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator < ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsLessThan>( m_lhs, rhs );
+        return captureExpression<Internal::IsLessThan>( m_result, m_lhs, rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator > ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsGreaterThan>( m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThan>( m_result, m_lhs, rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator <= ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsLessThanOrEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsLessThanOrEqualTo>( m_result, m_lhs, rhs );
     }
 
     template<typename RhsT>
     ResultInfoBuilder& operator >= ( const RhsT& rhs ) {
-        return m_result.captureExpression<Internal::IsGreaterThanOrEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsGreaterThanOrEqualTo>( m_result, m_lhs, rhs );
     }
 
     ResultInfoBuilder& operator == ( bool rhs ) {
-        return m_result.captureExpression<Internal::IsEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsEqualTo>( m_result, m_lhs, rhs );
     }
 
     ResultInfoBuilder& operator != ( bool rhs ) {
-        return m_result.captureExpression<Internal::IsNotEqualTo>( m_lhs, rhs );
+        return captureExpression<Internal::IsNotEqualTo>( m_result, m_lhs, rhs );
     }
 
     operator ResultInfoBuilder& () {
-        return m_result.captureBoolExpression( m_lhs );
+        return m_result
+            .setLhs( Catch::toString( m_lhs ) )
+            .setOp( "" )
+            .setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
     }
 
     template<typename RhsT>
@@ -1014,9 +1019,14 @@ public:
                         const char* macroName,
                         const char* expr = "",
                         bool isNot = false )
-    : m_result( expr, isNot, lineInfo, macroName ),
-      m_messageStream()
-    {}
+    : m_messageStream()
+    {
+        m_result
+            .setCapturedExpression( expr )
+            .setIsFalse( isNot )
+            .setLineInfo( lineInfo )
+            .setMacroName( macroName );
+    }
 
     template<typename T>
     Expression<const T&> operator->* ( const T & operand ) {
@@ -1042,10 +1052,11 @@ public:
         std::string matcherAsString = Catch::toString( matcher );
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
-        m_result.setLhs( Catch::toString( arg ) );
-        m_result.setRhs( matcherAsString );
-        m_result.setOp( "matches" );
-        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        m_result
+            .setLhs( Catch::toString( arg ) )
+            .setRhs( matcherAsString )
+            .setOp( "matches" )
+            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
 
@@ -1056,10 +1067,11 @@ public:
         std::string matcherAsString = Catch::toString( matcher );
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
-        m_result.setLhs( Catch::toString( arg ) );
-        m_result.setRhs( matcherAsString );
-        m_result.setOp( "matches" );
-        m_result.setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        m_result
+            .setLhs( Catch::toString( arg ) )
+            .setRhs( matcherAsString )
+            .setOp( "matches" )
+            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
 
@@ -1307,7 +1319,8 @@ public:
         return ResultInfoBuilder()
             .setResultType( ResultWas::Info )
             .setMessage( m_oss.str() )
-            .setMacroName( "SCOPED_INFO" );
+            .setMacroName( "SCOPED_INFO" )
+            .build();
     }
 
 private:
@@ -2492,7 +2505,7 @@ namespace Detail {
 
         std::string toString() const {
             std::ostringstream oss;
-            oss << "Approx( " << m_value << ")";
+            oss << "Approx( " << m_value << " )";
             return oss.str();
         }
 
@@ -3955,8 +3968,8 @@ namespace Catch {
     private:
 
         ResultAction::Value actOnCurrentResult() {
-            testEnded( m_currentResult );
-            m_lastResult = m_currentResult;
+            m_lastResult = m_currentResult.build();
+            testEnded( m_lastResult );
 
             m_currentResult = ResultInfoBuilder();
 
@@ -4872,103 +4885,54 @@ namespace Catch {
 
 namespace Catch {
 
-    ResultInfo::ResultInfo()
-    :   m_macroName(),
-        m_expr(),
-        m_lhs(),
-        m_rhs(),
-        m_op(),
-        m_message(),
-        m_result( ResultWas::Unknown ),
-        m_isNot( false )
-        {}
+    ResultInfo::ResultInfo() {}
 
-    ResultInfo::ResultInfo(const char* expr,
-                           ResultWas::OfType result,
-                           bool isNot,
-                           const SourceLineInfo& lineInfo,
-                           const char* macroName,
-                           const char* message )
-    :   m_macroName( macroName ),
-        m_lineInfo( lineInfo ),
-        m_expr( expr ),
-        m_lhs(),
-        m_rhs(),
-        m_op( isNotExpression( expr ) ? "!" : "" ),
-        m_message( message ),
-        m_result( result ),
-        m_isNot( isNot )
-        {
-            if( isNot )
-                m_expr = "!(" + m_expr + ")";
-        }
+    ResultInfo::ResultInfo( const ResultData& data ) : m_data( data ) {}
 
     ResultInfo::~ResultInfo() {}
 
     bool ResultInfo::ok() const {
-        return ( m_result & ResultWas::FailureBit ) != ResultWas::FailureBit;
+        return isOk( m_data.resultType );
     }
 
     ResultWas::OfType ResultInfo::getResultType() const {
-        return m_result;
+        return m_data.resultType;
     }
 
     bool ResultInfo::hasExpression() const {
-        return !m_expr.empty();
+        return !m_data.capturedExpression.empty();
     }
 
     bool ResultInfo::hasMessage() const {
-        return !m_message.empty();
+        return !m_data.message.empty();
     }
 
     std::string ResultInfo::getExpression() const {
-        return m_expr;
+        return m_data.capturedExpression;
     }
 
     bool ResultInfo::hasExpandedExpression() const {
-        return hasExpression() && getExpandedExpressionInternal() != m_expr;
+        return hasExpression() && getExpandedExpression() != getExpression();
     }
 
     std::string ResultInfo::getExpandedExpression() const {
-        return hasExpression() ? getExpandedExpressionInternal() : "";
+        return m_data.reconstructedExpression;
     }
 
     std::string ResultInfo::getMessage() const {
-        return m_message;
+        return m_data.message;
     }
 
     std::string ResultInfo::getFilename() const {
-        return m_lineInfo.file;
+        return m_data.lineInfo.file;
     }
 
     std::size_t ResultInfo::getLine() const {
-        return m_lineInfo.line;
+        return m_data.lineInfo.line;
     }
 
     std::string ResultInfo::getTestMacroName() const {
-        return m_macroName;
-    }
-
-    std::string ResultInfo::getExpandedExpressionInternal() const {
-        if( m_op == "" || m_isNot )
-            return m_lhs.empty() ? m_expr : m_op + m_lhs;
-        else if( m_op == "matches" )
-            return m_lhs + " " + m_rhs;
-        else if( m_op != "!" )
-        {
-            if( m_lhs.size() + m_rhs.size() < 30 )
-                return m_lhs + " " + m_op + " " + m_rhs;
-            else if( m_lhs.size() < 70 && m_rhs.size() < 70 )
-                return "\n\t" + m_lhs + "\n\t" + m_op + "\n\t" + m_rhs;
-            else
-                return "\n" + m_lhs + "\n" + m_op + "\n" + m_rhs + "\n\n";
-        }
-        else
-            return "{can't expand - use " + m_macroName + "_FALSE( " + m_expr.substr(1) + " ) instead of " + m_macroName + "( " + m_expr + " ) for better diagnostics}";
-    }
-
-    bool ResultInfo::isNotExpression( const char* expr ) {
-        return expr && expr[0] == '!';
+        return m_data.macroName;
     }
 
 } // end namespace Catch
@@ -4978,33 +4942,39 @@ namespace Catch {
 
 namespace Catch {
 
-    ResultInfoBuilder::ResultInfoBuilder(   const char* expr,
-                                            bool isNot,
-                                            const SourceLineInfo& lineInfo,
-                                            const char* macroName )
-    : ResultInfo( expr, ResultWas::Unknown, isNot, lineInfo, macroName, "" )
-    {}
-
     ResultInfoBuilder::ResultInfoBuilder() {}
 
     ResultInfoBuilder& ResultInfoBuilder::setResultType( ResultWas::OfType result ) {
         // Flip bool results if isNot is set
         if( m_isNot && result == ResultWas::Ok )
-            m_result = ResultWas::ExpressionFailed;
+            m_data.resultType = ResultWas::ExpressionFailed;
         else if( m_isNot && result == ResultWas::ExpressionFailed )
-            m_result = ResultWas::Ok;
+            m_data.resultType = ResultWas::Ok;
         else
-            m_result = result;
+            m_data.resultType = result;
+        return *this;
+    }
+    ResultInfoBuilder& ResultInfoBuilder::setCapturedExpression( const std::string& capturedExpression ) {
+        m_data.capturedExpression = capturedExpression;
+        return *this;
+    }
+    ResultInfoBuilder& ResultInfoBuilder::setIsFalse( bool isFalse ) {
+        m_isNot = isFalse;
         return *this;
     }
 
     ResultInfoBuilder& ResultInfoBuilder::setMessage( const std::string& message ) {
-        m_message = message;
+        m_data.message = message;
         return *this;
     }
 
     ResultInfoBuilder& ResultInfoBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
-        m_lineInfo = lineInfo;
+        m_data.lineInfo = lineInfo;
+        return *this;
+    }
+
+    ResultInfoBuilder& ResultInfoBuilder::setMacroName( const std::string& macroName ) {
+        m_data.macroName = macroName;
         return *this;
     }
 
@@ -5023,16 +4993,38 @@ namespace Catch {
         return *this;
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::setMacroName( const std::string& macroName ) {
-        m_macroName = macroName;
-        return *this;
+    ResultInfo ResultInfoBuilder::build() const
+    {
+        ResultData data = m_data;
+        data.reconstructedExpression = reconstructExpression();
+        if( m_isNot ) {
+            if( m_op == "" ) {
+                data.capturedExpression = "!" + data.capturedExpression;
+                data.reconstructedExpression = "!" + data.reconstructedExpression;
+            }
+            else {
+                data.capturedExpression = "!(" + data.capturedExpression + ")";
+                data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
+            }
+        }
+        return ResultInfo( data );
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::captureBoolExpression( bool result ) {
-        m_lhs = Catch::toString( result );
-        m_op = m_isNot ? "!" : "";
-        setResultType( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
-        return *this;
+    std::string ResultInfoBuilder::reconstructExpression() const {
+        if( m_op == "" )
+            return m_lhs.empty() ? m_data.capturedExpression : m_op + m_lhs;
+        else if( m_op == "matches" )
+            return m_lhs + " " + m_rhs;
+        else if( m_op != "!" ) {
+            if( m_lhs.size() + m_rhs.size() < 30 )
+                return m_lhs + " " + m_op + " " + m_rhs;
+            else if( m_lhs.size() < 70 && m_rhs.size() < 70 )
+                return "\n\t" + m_lhs + "\n\t" + m_op + "\n\t" + m_rhs;
+            else
+                return "\n" + m_lhs + "\n" + m_op + "\n" + m_rhs + "\n\n";
+        }
+        else
+            return "{can't expand - use " + m_data.macroName + "_FALSE( " + m_data.capturedExpression.substr(1) + " ) instead of " + m_data.macroName + "( " + m_data.capturedExpression + " ) for better diagnostics}";
     }
 
 } // end namespace Catch
