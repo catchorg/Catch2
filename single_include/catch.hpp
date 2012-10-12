@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-10-09 20:58:02.234458
+ *  Generated: 2012-10-12 07:57:48.487873
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1041,14 +1041,14 @@ public:
     ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
                                         const ArgT& arg,
                                         const std::string& matcherCallAsString ) {
-        std::string matcherAsString = Catch::toString( matcher );
+        std::string matcherAsString = matcher.toString();
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
         m_result
             .setLhs( Catch::toString( arg ) )
             .setRhs( matcherAsString )
             .setOp( "matches" )
-            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
 
@@ -1056,14 +1056,14 @@ public:
     ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
                                         ArgT* arg,
                                         const std::string& matcherCallAsString ) {
-        std::string matcherAsString = Catch::toString( matcher );
+        std::string matcherAsString = matcher.toString();
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
         m_result
             .setLhs( Catch::toString( arg ) )
             .setRhs( matcherAsString )
             .setOp( "matches" )
-            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
 
@@ -2521,73 +2521,188 @@ inline std::string toString<Detail::Approx>( const Detail::Approx& value ) {
 namespace Catch {
 namespace Matchers {
     namespace Impl {
+
+    template<typename ExpressionT>
+    struct Matcher : SharedImpl<IShared>
+    {
+        virtual ~Matcher() {}
+        virtual Ptr<Matcher> clone() const = 0;
+        virtual bool match( const ExpressionT& expr ) const = 0;
+        virtual std::string toString() const = 0;
+    };
+
+    template<typename DerivedT, typename ExpressionT>
+    struct MatcherImpl : Matcher<ExpressionT> {
+
+        virtual Ptr<Matcher<ExpressionT> > clone() const {
+            return Ptr<Matcher<ExpressionT> >( new DerivedT( static_cast<const DerivedT&>( *this ) ) );
+        }
+    };
+
+    namespace Generic {
+
+        template<typename ExpressionT>
+        class AllOf : public MatcherImpl<AllOf<ExpressionT>, ExpressionT> {
+        public:
+
+            AllOf() {}
+            AllOf( const AllOf& other ) : m_matchers( other.m_matchers ) {}
+
+            AllOf& add( const Matcher<ExpressionT>& matcher ) {
+                m_matchers.push_back( matcher.clone() );
+                return *this;
+            }
+            virtual bool match( const ExpressionT& expr ) const
+            {
+                for( std::size_t i = 0; i < m_matchers.size(); ++i )
+                    if( !m_matchers[i]->match( expr ) )
+                        return false;
+                return true;
+            }
+            virtual std::string toString() const {
+                std::ostringstream oss;
+                oss << "( ";
+                for( std::size_t i = 0; i < m_matchers.size(); ++i ) {
+                    if( i != 0 )
+                        oss << " and ";
+                    oss << m_matchers[i]->toString();
+                }
+                oss << " )";
+                return oss.str();
+            }
+
+        private:
+            std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
+        };
+
+        template<typename ExpressionT>
+        class AnyOf : public MatcherImpl<AnyOf<ExpressionT>, ExpressionT> {
+        public:
+
+            AnyOf() {}
+            AnyOf( const AnyOf& other ) : m_matchers( other.m_matchers ) {}
+
+            AnyOf& add( const Matcher<ExpressionT>& matcher ) {
+                m_matchers.push_back( matcher.clone() );
+                return *this;
+            }
+            virtual bool match( const ExpressionT& expr ) const
+            {
+                for( std::size_t i = 0; i < m_matchers.size(); ++i )
+                    if( m_matchers[i]->match( expr ) )
+                        return true;
+                return false;
+            }
+            virtual std::string toString() const {
+                std::ostringstream oss;
+                oss << "( ";
+                for( std::size_t i = 0; i < m_matchers.size(); ++i ) {
+                    if( i != 0 )
+                        oss << " or ";
+                    oss << m_matchers[i]->toString();
+                }
+                oss << " )";
+                return oss.str();
+            }
+
+        private:
+            std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
+        };
+
+    }
+
     namespace StdString {
 
-        struct Equals {
+        struct Equals : MatcherImpl<Equals, std::string> {
             Equals( const std::string& str ) : m_str( str ){}
+            Equals( const Equals& other ) : m_str( other.m_str ){}
 
-            bool operator()( const std::string& str ) const
-            {
-                return str == m_str;
+            virtual ~Equals();
+
+            virtual bool match( const std::string& expr ) const {
+                return m_str == expr;
+            }
+            virtual std::string toString() const {
+                return "equals: \"" + m_str + "\"";
             }
 
-            friend std::ostream& operator<<( std::ostream& os, const Equals& matcher )
-            {
-                os << "equals: \"" << matcher.m_str << "\"";
-                return os;
-            }
             std::string m_str;
         };
 
-        struct Contains {
+        struct Contains : MatcherImpl<Contains, std::string> {
             Contains( const std::string& substr ) : m_substr( substr ){}
+            Contains( const Contains& other ) : m_substr( other.m_substr ){}
 
-            bool operator()( const std::string& str ) const
-            {
-                return str.find( m_substr ) != std::string::npos;
+            virtual ~Contains();
+
+            virtual bool match( const std::string& expr ) const {
+                return expr.find( m_substr ) != std::string::npos;
+            }
+            virtual std::string toString() const {
+                return "contains: \"" + m_substr + "\"";
             }
 
-            friend std::ostream& operator<<( std::ostream& os, const Contains& matcher )
-            {
-                os << "contains: \"" << matcher.m_substr << "\"";
-                return os;
-            }
             std::string m_substr;
         };
 
-        struct StartsWith {
+        struct StartsWith : MatcherImpl<StartsWith, std::string> {
             StartsWith( const std::string& substr ) : m_substr( substr ){}
+            StartsWith( const StartsWith& other ) : m_substr( other.m_substr ){}
 
-            bool operator()( const std::string& str ) const
-            {
-                return str.find( m_substr ) == 0;
+            virtual ~StartsWith();
+
+            virtual bool match( const std::string& expr ) const {
+                return expr.find( m_substr ) == 0;
+            }
+            virtual std::string toString() const {
+                return "starts with: \"" + m_substr + "\"";
             }
 
-            friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher )
-            {
-                os << "starts with: \"" << matcher.m_substr << "\"";
-                return os;
-            }
             std::string m_substr;
         };
 
-        struct EndsWith {
+        struct EndsWith : MatcherImpl<EndsWith, std::string> {
             EndsWith( const std::string& substr ) : m_substr( substr ){}
+            EndsWith( const EndsWith& other ) : m_substr( other.m_substr ){}
 
-            bool operator()( const std::string& str ) const
-            {
-                return str.find( m_substr ) == str.size() - m_substr.size();
+            virtual ~EndsWith();
+
+            virtual bool match( const std::string& expr ) const {
+                return expr.find( m_substr ) == expr.size() - m_substr.size();
+            }
+            virtual std::string toString() const {
+                return "ends with: \"" + m_substr + "\"";
             }
 
-            friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher )
-            {
-                os << "ends with: \"" << matcher.m_substr << "\"";
-                return os;
-            }
             std::string m_substr;
         };
     } // namespace StdString
     } // namespace Impl
+
+    // The following functions create the actual matcher objects.
+    // This allows the types to be inferred
+    template<typename ExpressionT>
+    inline Impl::Generic::AllOf<ExpressionT> AllOf( const Impl::Matcher<ExpressionT>& m1,
+                                                    const Impl::Matcher<ExpressionT>& m2 ) {
+        return Impl::Generic::AllOf<ExpressionT>().add( m1 ).add( m2 );
+    }
+    template<typename ExpressionT>
+    inline Impl::Generic::AllOf<ExpressionT> AllOf( const Impl::Matcher<ExpressionT>& m1,
+                                                    const Impl::Matcher<ExpressionT>& m2,
+                                                    const Impl::Matcher<ExpressionT>& m3 ) {
+        return Impl::Generic::AllOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
+    }
+    template<typename ExpressionT>
+    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( const Impl::Matcher<ExpressionT>& m1,
+                                                    const Impl::Matcher<ExpressionT>& m2 ) {
+        return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 );
+    }
+    template<typename ExpressionT>
+    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( const Impl::Matcher<ExpressionT>& m1,
+                                                    const Impl::Matcher<ExpressionT>& m2,
+                                                    const Impl::Matcher<ExpressionT>& m3 ) {
+        return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
+    }
 
     inline Impl::StdString::Equals      Equals( const std::string& str ){ return Impl::StdString::Equals( str ); }
     inline Impl::StdString::Contains    Contains( const std::string& substr ){ return Impl::StdString::Contains( substr ); }
@@ -5374,6 +5489,10 @@ namespace Catch {
 
             if( resultInfo.hasExpandedExpression() ) {
                 m_config.stream << " for: ";
+                if( resultInfo.getExpandedExpression().size() > 40 )
+                    m_config.stream << "\n";
+                if( resultInfo.getExpandedExpression().size() < 70 )
+                    m_config.stream << "\t";
                 TextColour colour( TextColour::ReconstructedExpression );
                 m_config.stream << resultInfo.getExpandedExpression();
             }
@@ -6044,6 +6163,11 @@ namespace Catch {
     TagParser::~TagParser() {}
     TagExtracter::~TagExtracter() {}
     TagExpressionParser::~TagExpressionParser() {}
+
+    Matchers::Impl::StdString::Equals::~Equals() {}
+    Matchers::Impl::StdString::Contains::~Contains() {}
+    Matchers::Impl::StdString::StartsWith::~StartsWith() {}
+    Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     void Config::dummy() {}
 

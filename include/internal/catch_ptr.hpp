@@ -78,7 +78,7 @@ namespace Catch {
     struct SharedImpl : T {
         
         SharedImpl() : m_rc( 0 ){}
-        
+
         virtual void addRef(){
             ++m_rc;
         }

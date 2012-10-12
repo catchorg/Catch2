@@ -56,14 +56,14 @@ public:
     ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
                                         const ArgT& arg,
                                         const std::string& matcherCallAsString ) {
-        std::string matcherAsString = Catch::toString( matcher );
+        std::string matcherAsString = matcher.toString();
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
         m_result
             .setLhs( Catch::toString( arg ) )
             .setRhs( matcherAsString )
             .setOp( "matches" )
-            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
     
@@ -71,14 +71,14 @@ public:
     ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
                                         ArgT* arg,
                                         const std::string& matcherCallAsString ) {
-        std::string matcherAsString = Catch::toString( matcher );
+        std::string matcherAsString = matcher.toString();
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
         m_result
             .setLhs( Catch::toString( arg ) )
             .setRhs( matcherAsString )
             .setOp( "matches" )
-            .setResultType( matcher( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
         return *this;
     }
     
