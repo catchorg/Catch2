@@ -159,7 +159,7 @@ namespace Catch {
             m_sectionSpans.pop_back();
         }
         
-        virtual void Result( const ResultInfo& resultInfo ) {
+        virtual void Result( const AssertionResult& resultInfo ) {
             if( !m_config.includeSuccessfulResults && resultInfo.getResultType() == ResultWas::Ok )
                 return;
             

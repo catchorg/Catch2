@@ -5,16 +5,16 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_RESULTINFO_BUILDER_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_RESULTINFO_BUILDER_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_HPP_INCLUDED
 
 #include "catch_resultinfo_builder.h"
 
 namespace Catch {
 
-    ResultInfoBuilder::ResultInfoBuilder() {}
+    AssertionResultBuilder::AssertionResultBuilder() {}
 
-    ResultInfoBuilder& ResultInfoBuilder::setResultType( ResultWas::OfType result ) {
+    AssertionResultBuilder& AssertionResultBuilder::setResultType( ResultWas::OfType result ) {
         // Flip bool results if isFalse is set
         if( m_isFalse && result == ResultWas::Ok )
             m_data.resultType = ResultWas::ExpressionFailed;
@@ -24,46 +24,46 @@ namespace Catch {
             m_data.resultType = result;
         return *this;
     }
-    ResultInfoBuilder& ResultInfoBuilder::setCapturedExpression( const std::string& capturedExpression ) {
+    AssertionResultBuilder& AssertionResultBuilder::setCapturedExpression( const std::string& capturedExpression ) {
         m_data.capturedExpression = capturedExpression;
         return *this;
     }
-    ResultInfoBuilder& ResultInfoBuilder::setIsFalse( bool isFalse ) {
+    AssertionResultBuilder& AssertionResultBuilder::setIsFalse( bool isFalse ) {
         m_isFalse = isFalse;
         return *this;
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::setMessage( const std::string& message ) {
+    AssertionResultBuilder& AssertionResultBuilder::setMessage( const std::string& message ) {
         m_data.message = message;
         return *this;
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
+    AssertionResultBuilder& AssertionResultBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
         m_data.lineInfo = lineInfo;
         return *this;
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::setMacroName( const std::string& macroName ) {
+    AssertionResultBuilder& AssertionResultBuilder::setMacroName( const std::string& macroName ) {
         m_data.macroName = macroName;
         return *this;
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::setLhs( const std::string& lhs ) {
+    AssertionResultBuilder& AssertionResultBuilder::setLhs( const std::string& lhs ) {
         m_lhs = lhs;
         return *this;
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::setRhs( const std::string& rhs ) {
+    AssertionResultBuilder& AssertionResultBuilder::setRhs( const std::string& rhs ) {
         m_rhs = rhs;
         return *this;
     }
 
-    ResultInfoBuilder& ResultInfoBuilder::setOp( const std::string& op ) {
+    AssertionResultBuilder& AssertionResultBuilder::setOp( const std::string& op ) {
         m_op = op;
         return *this;
     }
 
-    ResultInfo ResultInfoBuilder::build() const
+    AssertionResult AssertionResultBuilder::build() const
     {
         ResultData data = m_data;
         data.reconstructedExpression = reconstructExpression();
@@ -77,10 +77,10 @@ namespace Catch {
                 data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
             }
         }
-        return ResultInfo( data );
+        return AssertionResult( data );
     }
 
-    std::string ResultInfoBuilder::reconstructExpression() const {
+    std::string AssertionResultBuilder::reconstructExpression() const {
         if( m_op == "" )
             return m_lhs.empty() ? m_data.capturedExpression : m_op + m_lhs;
         else if( m_op == "matches" )
@@ -99,4 +99,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_RESULTINFO_BUILDER_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_HPP_INCLUDED

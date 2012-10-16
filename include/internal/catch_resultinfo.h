@@ -5,8 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_RESULTINFO_H_INCLUDED
-#define TWOBLUECUBES_CATCH_RESULTINFO_H_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
+#define TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
 
 #include <string>
 #include "catch_result_type.h"
@@ -25,11 +25,11 @@ namespace Catch {
         ResultWas::OfType resultType;
     };
 
-    class ResultInfo {
+    class AssertionResult {
     public:
-        ResultInfo();
-        ResultInfo( const ResultData& data );
-        ~ResultInfo();
+        AssertionResult();
+        AssertionResult( const ResultData& data );
+        ~AssertionResult();
         
         bool ok() const;
         ResultWas::OfType getResultType() const;
@@ -49,4 +49,4 @@ namespace Catch {
     
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_RESULTINFO_H_INCLUDED
+#endif // TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED

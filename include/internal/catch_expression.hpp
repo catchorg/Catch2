@@ -18,50 +18,50 @@ class Expression {
 	void operator = ( const Expression& );
 
 public:
-    Expression( ResultInfoBuilder& result, T lhs )
+    Expression( AssertionResultBuilder& result, T lhs )
     :   m_result( result.setLhs( Catch::toString( lhs ) ) ),
         m_lhs( lhs )
     {}
     
     template<typename RhsT>
-    ResultInfoBuilder& operator == ( const RhsT& rhs ) {
+    AssertionResultBuilder& operator == ( const RhsT& rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
     template<typename RhsT>
-    ResultInfoBuilder& operator != ( const RhsT& rhs ) {
+    AssertionResultBuilder& operator != ( const RhsT& rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
     template<typename RhsT>
-    ResultInfoBuilder& operator < ( const RhsT& rhs ) {
+    AssertionResultBuilder& operator < ( const RhsT& rhs ) {
         return captureExpression<Internal::IsLessThan>( rhs );
     }
     
     template<typename RhsT>
-    ResultInfoBuilder& operator > ( const RhsT& rhs ) {
+    AssertionResultBuilder& operator > ( const RhsT& rhs ) {
         return captureExpression<Internal::IsGreaterThan>( rhs );
     }
     
     template<typename RhsT>
-    ResultInfoBuilder& operator <= ( const RhsT& rhs ) {
+    AssertionResultBuilder& operator <= ( const RhsT& rhs ) {
         return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
     
     template<typename RhsT>
-    ResultInfoBuilder& operator >= ( const RhsT& rhs ) {
+    AssertionResultBuilder& operator >= ( const RhsT& rhs ) {
         return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
     }
 
-    ResultInfoBuilder& operator == ( bool rhs ) {
+    AssertionResultBuilder& operator == ( bool rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
     
-    ResultInfoBuilder& operator != ( bool rhs ) {
+    AssertionResultBuilder& operator != ( bool rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
-    operator ResultInfoBuilder& () {
+    operator AssertionResultBuilder& () {
         return m_result.setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
     }
     
@@ -73,7 +73,7 @@ public:
 
 private:
     template<Internal::Operator Op, typename RhsT>
-    ResultInfoBuilder& captureExpression( const RhsT& rhs ) {
+    AssertionResultBuilder& captureExpression( const RhsT& rhs ) {
         return m_result
             .setResultType( Internal::compare<Op>( m_lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
             .setRhs( Catch::toString( rhs ) )
@@ -81,7 +81,7 @@ private:
     }
 
 private:
-    ResultInfoBuilder& m_result;
+    AssertionResultBuilder& m_result;
     T m_lhs;
 };
 

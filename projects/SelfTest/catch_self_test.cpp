@@ -31,7 +31,7 @@ namespace Catch{
         return totals;
     }
     
-    void MockReporter::Result( const ResultInfo& resultInfo ) {
+    void MockReporter::Result( const AssertionResult& resultInfo ) {
         if( resultInfo.getResultType() == ResultWas::Ok )
             return;
         

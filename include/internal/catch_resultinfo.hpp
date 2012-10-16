@@ -5,63 +5,63 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_RESULTINFO_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_RESULTINFO_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_ASSERTIONRESULT_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_ASSERTIONRESULT_HPP_INCLUDED
 
 #include "catch_resultinfo.h"
 
 namespace Catch {
 
-    ResultInfo::ResultInfo() {}
+    AssertionResult::AssertionResult() {}
 
-    ResultInfo::ResultInfo( const ResultData& data ) : m_data( data ) {}
+    AssertionResult::AssertionResult( const ResultData& data ) : m_data( data ) {}
 
-    ResultInfo::~ResultInfo() {}
+    AssertionResult::~AssertionResult() {}
 
-    bool ResultInfo::ok() const {
+    bool AssertionResult::ok() const {
         return isOk( m_data.resultType );
     }
 
-    ResultWas::OfType ResultInfo::getResultType() const {
+    ResultWas::OfType AssertionResult::getResultType() const {
         return m_data.resultType;
     }
 
-    bool ResultInfo::hasExpression() const {
+    bool AssertionResult::hasExpression() const {
         return !m_data.capturedExpression.empty();
     }
 
-    bool ResultInfo::hasMessage() const {
+    bool AssertionResult::hasMessage() const {
         return !m_data.message.empty();
     }
 
-    std::string ResultInfo::getExpression() const {
+    std::string AssertionResult::getExpression() const {
         return m_data.capturedExpression;
     }
 
-    bool ResultInfo::hasExpandedExpression() const {
+    bool AssertionResult::hasExpandedExpression() const {
         return hasExpression() && getExpandedExpression() != getExpression();
     }
 
-    std::string ResultInfo::getExpandedExpression() const {
+    std::string AssertionResult::getExpandedExpression() const {
         return m_data.reconstructedExpression;
     }
 
-    std::string ResultInfo::getMessage() const {
+    std::string AssertionResult::getMessage() const {
         return m_data.message;
     }
 
-    std::string ResultInfo::getFilename() const {
+    std::string AssertionResult::getFilename() const {
         return m_data.lineInfo.file;
     }
 
-    std::size_t ResultInfo::getLine() const {
+    std::size_t AssertionResult::getLine() const {
         return m_data.lineInfo.line;
     }
 
-    std::string ResultInfo::getTestMacroName() const {
+    std::string AssertionResult::getTestMacroName() const {
         return m_data.macroName;
     }
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_RESULTINFO_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_ASSERTIONRESULT_HPP_INCLUDED

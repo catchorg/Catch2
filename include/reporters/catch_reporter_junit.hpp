@@ -97,7 +97,7 @@ namespace Catch {
             m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );            
         }
         
-        virtual void Result( const Catch::ResultInfo& resultInfo ) {
+        virtual void Result( const Catch::AssertionResult& resultInfo ) {
             if( resultInfo.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;

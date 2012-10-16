@@ -140,7 +140,7 @@ namespace Catch {
             return actOnCurrentResult();
         }
 
-        virtual ResultAction::Value acceptExpression( const ResultInfoBuilder& resultInfo ) {
+        virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& resultInfo ) {
             m_currentResult = resultInfo;
             return actOnCurrentResult();
         }
@@ -149,7 +149,7 @@ namespace Catch {
             m_currentResult.setMessage( msg );
         }
                 
-        virtual void testEnded( const ResultInfo& result ) {
+        virtual void testEnded( const AssertionResult& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
@@ -163,8 +163,8 @@ namespace Catch {
                         m_reporter->Result( (*it)->getInfo() );
                 }
                 {
-                    std::vector<ResultInfo>::const_iterator it = m_info.begin();
-                    std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
+                    std::vector<AssertionResult>::const_iterator it = m_info.begin();
+                    std::vector<AssertionResult>::const_iterator itEnd = m_info.end();
                     for(; it != itEnd; ++it )
                         m_reporter->Result( *it );
                 }
@@ -229,7 +229,7 @@ namespace Catch {
                 : "";
         }
 
-        virtual const ResultInfo* getLastResult() const {
+        virtual const AssertionResult* getLastResult() const {
             return &m_lastResult;            
         }
 
@@ -245,7 +245,7 @@ namespace Catch {
             m_lastResult = m_currentResult.build();
             testEnded( m_lastResult );
 
-            m_currentResult = ResultInfoBuilder();
+            m_currentResult = AssertionResultBuilder();
 
             ResultAction::Value action = ResultAction::None;
             
@@ -293,14 +293,14 @@ namespace Catch {
     private:
         IMutableContext& m_context;
         RunningTest* m_runningTest;
-        ResultInfoBuilder m_currentResult;
-        ResultInfo m_lastResult;
+        AssertionResultBuilder m_currentResult;
+        AssertionResult m_lastResult;
 
         const Config& m_config;
         Totals m_totals;
         Ptr<IReporter> m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
-        std::vector<ResultInfo> m_info;
+        std::vector<AssertionResult> m_info;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;

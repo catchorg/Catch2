@@ -35,8 +35,8 @@ public:
         return *this; 
     }
 
-    ResultInfo getInfo () const {
-        return ResultInfoBuilder()
+    AssertionResult getInfo () const {
+        return AssertionResultBuilder()
             .setResultType( ResultWas::Info )
             .setMessage( m_oss.str() )
             .setMacroName( "SCOPED_INFO" )

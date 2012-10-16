@@ -75,7 +75,7 @@ namespace Catch {
             m_currentTestSuccess = true;
         }
         
-        virtual void Result( const Catch::ResultInfo& resultInfo ) {
+        virtual void Result( const Catch::AssertionResult& resultInfo ) {
             if( !m_config.includeSuccessfulResults && resultInfo.getResultType() == ResultWas::Ok )
                 return;
 

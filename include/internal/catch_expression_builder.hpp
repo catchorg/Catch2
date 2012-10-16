@@ -87,13 +87,13 @@ public:
         return *this;
     }
     
-    operator ResultInfoBuilder&() {
+    operator AssertionResultBuilder&() {
         m_result.setMessage( m_messageStream.str() );
         return m_result;
     }
     
 private:
-    ResultInfoBuilder m_result;
+    AssertionResultBuilder m_result;
     std::ostringstream m_messageStream;
 };
 
