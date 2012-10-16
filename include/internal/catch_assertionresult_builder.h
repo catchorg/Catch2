@@ -48,7 +48,7 @@ public:
     }
 
 private:
-    ResultData m_data;
+    AssertionResultData m_data;
     std::string m_lhs, m_rhs, m_op;
     bool m_isFalse;
 };

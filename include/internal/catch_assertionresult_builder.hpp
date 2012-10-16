@@ -65,7 +65,7 @@ namespace Catch {
 
     AssertionResult AssertionResultBuilder::build() const
     {
-        ResultData data = m_data;
+        AssertionResultData data = m_data;
         data.reconstructedExpression = reconstructExpression();
         if( m_isFalse ) {
             if( m_op == "" ) {

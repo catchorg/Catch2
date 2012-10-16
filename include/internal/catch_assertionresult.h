@@ -13,9 +13,9 @@
 
 namespace Catch {
 
-    struct ResultData
+    struct AssertionResultData
     {
-        ResultData() : resultType( ResultWas::Unknown ) {}
+        AssertionResultData() : resultType( ResultWas::Unknown ) {}
 
         std::string macroName;
         SourceLineInfo lineInfo;
@@ -28,7 +28,7 @@ namespace Catch {
     class AssertionResult {
     public:
         AssertionResult();
-        AssertionResult( const ResultData& data );
+        AssertionResult( const AssertionResultData& data );
         ~AssertionResult();
         
         bool ok() const;
@@ -44,7 +44,7 @@ namespace Catch {
         std::string getTestMacroName() const;
 
     protected:
-        ResultData m_data;
+        AssertionResultData m_data;
     };
     
 } // end namespace Catch

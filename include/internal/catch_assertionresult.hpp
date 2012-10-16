@@ -14,7 +14,7 @@ namespace Catch {
 
     AssertionResult::AssertionResult() {}
 
-    AssertionResult::AssertionResult( const ResultData& data ) : m_data( data ) {}
+    AssertionResult::AssertionResult( const AssertionResultData& data ) : m_data( data ) {}
 
     AssertionResult::~AssertionResult() {}
 
