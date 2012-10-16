@@ -95,7 +95,7 @@ namespace Catch {
             closeLabel( recordTestCases, testInfo.getName()  );
         }
         
-        virtual void Result( const AssertionResult& resultInfo );
+        virtual void Result( const AssertionResult& assertionResult );
 
         
     private:

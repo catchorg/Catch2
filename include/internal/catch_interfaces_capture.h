@@ -36,7 +36,7 @@ namespace Catch {
         
         virtual ResultAction::Value acceptResult( bool result ) = 0;
         virtual ResultAction::Value acceptResult( ResultWas::OfType result ) = 0;
-        virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& resultInfo ) = 0;
+        virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& assertionResult ) = 0;
         virtual void acceptMessage( const std::string& msg ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;        

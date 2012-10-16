@@ -97,19 +97,19 @@ namespace Catch {
             m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );            
         }
         
-        virtual void Result( const Catch::AssertionResult& resultInfo ) {
-            if( resultInfo.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults ) {
+        virtual void Result( const Catch::AssertionResult& assertionResult ) {
+            if( assertionResult.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
-                if( !resultInfo.getMessage().empty() )
-                    oss << resultInfo.getMessage() << " at ";
-                oss << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
+                if( !assertionResult.getMessage().empty() )
+                    oss << assertionResult.getMessage() << " at ";
+                oss << SourceLineInfo( assertionResult.getFilename(), assertionResult.getLine() );
                 stats.m_content = oss.str();
-                stats.m_message = resultInfo.getExpandedExpression();
-                stats.m_resultType = resultInfo.getTestMacroName();
+                stats.m_message = assertionResult.getExpandedExpression();
+                stats.m_resultType = assertionResult.getTestMacroName();
 
-                switch( resultInfo.getResultType() ) {
+                switch( assertionResult.getResultType() ) {
                     case ResultWas::ThrewException:
                         stats.m_element = "error";
                         m_currentStats->m_errorsCount++;

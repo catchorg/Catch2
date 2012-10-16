@@ -9,9 +9,9 @@
 #define TWOBLUECUBES_CATCH_EXPRESSION_BUILDER_HPP_INCLUDED
 
 #include "catch_expression.hpp"
-#include "catch_resultinfo_builder.h"
+#include "catch_assertionresult_builder.h"
 #include "catch_tostring.hpp"
-#include "catch_resultinfo.h"
+#include "catch_assertionresult.h"
 #include "catch_result_type.h"
 #include "catch_context.h"
 #include "catch_common.h"

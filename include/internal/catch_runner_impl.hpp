@@ -140,8 +140,8 @@ namespace Catch {
             return actOnCurrentResult();
         }
 
-        virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& resultInfo ) {
-            m_currentResult = resultInfo;
+        virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& assertionResult ) {
+            m_currentResult = assertionResult;
             return actOnCurrentResult();
         }
 

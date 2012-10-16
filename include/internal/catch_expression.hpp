@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_EXPRESSION_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_EXPRESSION_HPP_INCLUDED
 
-#include "catch_resultinfo_builder.h"
+#include "catch_assertionresult_builder.h"
 #include "catch_evaluate.hpp"
 
 namespace Catch {

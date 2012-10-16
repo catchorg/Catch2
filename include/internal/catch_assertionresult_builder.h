@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_H_INCLUDED
 
 #include "catch_tostring.hpp"
-#include "catch_resultinfo.h"
+#include "catch_assertionresult.h"
 #include "catch_result_type.h"
 #include "catch_evaluate.hpp"
 #include "catch_common.h"
