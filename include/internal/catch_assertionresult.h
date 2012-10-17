@@ -13,6 +13,20 @@
 
 namespace Catch {
 
+    struct AssertionInfo
+    {
+        AssertionInfo() {}
+        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression )
+        :   macroName( _macroName ),
+            lineInfo( _lineInfo ),
+            capturedExpression( _capturedExpression )
+        {}
+
+        std::string macroName;
+        SourceLineInfo lineInfo;
+        std::string capturedExpression;
+    };
+
     struct AssertionResultData
     {
         AssertionResultData() : resultType( ResultWas::Unknown ) {}

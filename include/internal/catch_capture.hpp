@@ -13,20 +13,25 @@
 #include "catch_debugger.hpp"
 #include "catch_context.h"
 #include "catch_common.h"
+#include "catch_interfaces_registry_hub.h"
 #include <ostream>
 
 namespace Catch {
 
+    inline IResultCapture& getResultCapture() {
+        return getCurrentContext().getResultCapture();
+    }
+    
 struct TestFailureException{};
 
 class ScopedInfo {
 public:
     ScopedInfo() : m_oss() {
-        getCurrentContext().getResultCapture().pushScopedInfo( this );
+        getResultCapture().pushScopedInfo( this );
     }
     
     ~ScopedInfo() {
-        getCurrentContext().getResultCapture().popScopedInfo( this );
+        getResultCapture().popScopedInfo( this );
     }
     
     template<typename T>
@@ -49,12 +54,12 @@ private:
         
 // This is just here to avoid compiler warnings with macro constants
 inline bool isTrue( bool value ){ return value; }
-    
+
 } // end namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_EXPR( expr, stopOnFailure, originalExpr ) \
-    if( Catch::ResultAction::Value internal_catch_action = Catch::getCurrentContext().getResultCapture().acceptExpression( expr )  ) { \
+    if( Catch::ResultAction::Value internal_catch_action = Catch::getResultCapture().acceptExpression( expr )  ) { \
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
@@ -64,59 +69,62 @@ inline bool isTrue( bool value ){ return value; }
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ) \
     do { try { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr, isFalse )->*expr ), stopOnFailure, expr ); \
+        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #expr  ) ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( isFalse )->*expr ), stopOnFailure, expr ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getRegistryHub().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder() << Catch::translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, expr ); \
         throw; \
     } } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, isFalse, stopOnFailure, macroName ) \
     INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
-    if( Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
+    if( Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( expr, isFalse, stopOnFailure, macroName ) \
     INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
-    if( !Catch::getCurrentContext().getResultCapture().getLastResult()->ok() )
+    if( !Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
     try { \
+        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #expr  ) ); \
         expr; \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder().setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     } \
     catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getRegistryHub().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder() << Catch::translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     try { \
+        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #expr  ) ); \
         if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
             expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder().setResultType( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
         } \
     } \
     catch( Catch::TestFailureException& ) { \
         throw; \
     } \
     catch( exceptionType ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ).setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionBuilder().setResultType( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, stopOnFailure, macroName ) \
     INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #expr ) << Catch::getRegistryHub().getExceptionTranslatorRegistry() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder() << Catch::getRegistryHub().getExceptionTranslatorRegistry() ).setResultType( Catch::ResultWas::ThrewException ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    Catch::getCurrentContext().getResultCapture().acceptExpression( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName ) << reason ).setResultType( resultType ) );
+    Catch::getResultCapture().acceptExpression( ( Catch::ExpressionBuilder() << reason ).setResultType( resultType ) );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log ) \
@@ -126,11 +134,12 @@ inline bool isTrue( bool value ){ return value; }
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
     do { try { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher, false ).acceptMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
+        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #arg " " #matcher  ) ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder().acceptMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder( CATCH_INTERNAL_LINEINFO, macroName, #arg " " #matcher ) << Catch::getRegistryHub().getExceptionTranslatorRegistry().translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder() << Catch::translateActiveException() ).setResultType( Catch::ResultWas::ThrewException ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
 

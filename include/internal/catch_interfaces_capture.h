@@ -19,6 +19,7 @@ namespace Catch {
     class ScopedInfo;
     class AssertionResultBuilder;
     class AssertionResult;
+    struct AssertionInfo;
 
     struct IResultCapture {
     
@@ -34,6 +35,7 @@ namespace Catch {
         virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
         virtual bool shouldDebugBreak() const = 0;
         
+        virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) = 0;
         virtual ResultAction::Value acceptResult( bool result ) = 0;
         virtual ResultAction::Value acceptResult( ResultWas::OfType result ) = 0;
         virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& assertionResult ) = 0;

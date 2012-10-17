@@ -73,6 +73,10 @@ namespace Catch {
         getTheRegistryHub() = NULL;
         cleanUpContext();
     }
+    std::string translateActiveException() {
+        return getRegistryHub().getExceptionTranslatorRegistry().translateActiveException();
+    }
+
 
 } // end namespace Catch
 

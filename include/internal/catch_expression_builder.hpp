@@ -22,17 +22,10 @@ namespace Catch {
 class ExpressionBuilder {
 public:
 
-    ExpressionBuilder(  const SourceLineInfo& lineInfo,
-                        const char* macroName,
-                        const char* expr = "",
-                        bool isFalse = false )
+    ExpressionBuilder( bool isFalse = false )
     : m_messageStream()
     {
-        m_result
-            .setCapturedExpression( expr )
-            .setIsFalse( isFalse )
-            .setLineInfo( lineInfo )
-            .setMacroName( macroName );
+        m_result.setIsFalse( isFalse );
     }
     
     template<typename T>

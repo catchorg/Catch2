@@ -131,6 +131,9 @@ namespace Catch {
         
     private: // IResultCapture
 
+        virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) {
+            m_assertionInfo = assertionInfo;
+        }
         virtual ResultAction::Value acceptResult( bool result ) {
             return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
         }
@@ -242,10 +245,16 @@ namespace Catch {
     private:
 
         ResultAction::Value actOnCurrentResult() {
+            m_currentResult
+                .setMacroName( m_assertionInfo.macroName )
+                .setLineInfo( m_assertionInfo.lineInfo )
+                .setCapturedExpression( m_assertionInfo.capturedExpression );
+
             m_lastResult = m_currentResult.build();
             testEnded( m_lastResult );
 
             m_currentResult = AssertionResultBuilder();
+            m_assertionInfo = AssertionInfo();
 
             ResultAction::Value action = ResultAction::None;
             
@@ -304,6 +313,7 @@ namespace Catch {
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;
+        AssertionInfo m_assertionInfo;
     };
     
 } // end namespace Catch
