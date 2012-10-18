@@ -10,9 +10,8 @@
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wno-global-constructors"
-
 #pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
