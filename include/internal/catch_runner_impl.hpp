@@ -148,10 +148,6 @@ namespace Catch {
             return actOnCurrentResult();
         }
 
-        virtual void acceptMessage( const std::string& msg ) {
-            m_currentResult.setMessage( msg );
-        }
-                
         virtual void testEnded( const AssertionResult& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
@@ -293,8 +289,10 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                acceptMessage( getRegistryHub().getExceptionTranslatorRegistry().translateActiveException() );
-                acceptResult( ResultWas::ThrewException );
+                m_currentResult
+                    .setResultType( ResultWas::ThrewException )
+                    << translateActiveException();
+                actOnCurrentResult();
             }
             m_info.clear();
         }

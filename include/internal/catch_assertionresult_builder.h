@@ -22,16 +22,23 @@ class AssertionResultBuilder {
 public:
     
     AssertionResultBuilder();
+    AssertionResultBuilder( const AssertionResultBuilder& other );
+    AssertionResultBuilder& operator=(const AssertionResultBuilder& other );
 
     AssertionResultBuilder& setResultType( ResultWas::OfType result );
     AssertionResultBuilder& setCapturedExpression( const std::string& capturedExpression );
     AssertionResultBuilder& setIsFalse( bool isFalse );
-    AssertionResultBuilder& setMessage( const std::string& message );
     AssertionResultBuilder& setLineInfo( const SourceLineInfo& lineInfo );
     AssertionResultBuilder& setLhs( const std::string& lhs );
     AssertionResultBuilder& setRhs( const std::string& rhs );
     AssertionResultBuilder& setOp( const std::string& op );
     AssertionResultBuilder& setMacroName( const std::string& macroName );
+
+    template<typename T>
+    AssertionResultBuilder& operator << ( const T& value ) {
+        m_stream << value;
+        return *this;
+    }
 
     std::string reconstructExpression() const;
 
@@ -43,14 +50,14 @@ public:
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
 
-    bool getIsFalse() const {
-        return m_isFalse;
-    }
-
 private:
     AssertionResultData m_data;
-    std::string m_lhs, m_rhs, m_op;
-    bool m_isFalse;
+    struct ExprComponents {
+        ExprComponents() : isFalse( false ) {}
+        bool isFalse;
+        std::string lhs, rhs, op;
+    } m_exprComponents;
+    std::ostringstream m_stream;
 };
 
 } // end namespace Catch

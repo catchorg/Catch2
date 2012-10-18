@@ -10,12 +10,6 @@
 
 #include "catch_expression.hpp"
 #include "catch_assertionresult_builder.h"
-#include "catch_tostring.hpp"
-#include "catch_assertionresult.h"
-#include "catch_result_type.h"
-#include "catch_context.h"
-#include "catch_common.h"
-#include <sstream>
 
 namespace Catch {
     
@@ -23,7 +17,6 @@ class ExpressionBuilder {
 public:
 
     ExpressionBuilder( bool isFalse = false )
-    : m_messageStream()
     {
         m_result.setIsFalse( isFalse );
     }
@@ -38,56 +31,9 @@ public:
         Expression<bool> expr( m_result, value );
         return expr;
     }
-    
-    template<typename T>
-    ExpressionBuilder& operator << ( const T & value ) {
-        m_messageStream << Catch::toString( value );        
-        return *this;
-    }
-    
-    template<typename MatcherT, typename ArgT>
-    ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
-                                        const ArgT& arg,
-                                        const std::string& matcherCallAsString ) {
-        std::string matcherAsString = matcher.toString();
-        if( matcherAsString == "{?}" )
-            matcherAsString = matcherCallAsString;
-        m_result
-            .setLhs( Catch::toString( arg ) )
-            .setRhs( matcherAsString )
-            .setOp( "matches" )
-            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
-        return *this;
-    }
-    
-    template<typename MatcherT, typename ArgT>
-    ExpressionBuilder& acceptMatcher(   const MatcherT& matcher,
-                                        ArgT* arg,
-                                        const std::string& matcherCallAsString ) {
-        std::string matcherAsString = matcher.toString();
-        if( matcherAsString == "{?}" )
-            matcherAsString = matcherCallAsString;
-        m_result
-            .setLhs( Catch::toString( arg ) )
-            .setRhs( matcherAsString )
-            .setOp( "matches" )
-            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
-        return *this;
-    }
-    
-    ExpressionBuilder& setResultType( ResultWas::OfType resultType ) {
-        m_result.setResultType( resultType );
-        return *this;
-    }
-    
-    operator AssertionResultBuilder&() {
-        m_result.setMessage( m_messageStream.str() );
-        return m_result;
-    }
-    
+
 private:
     AssertionResultBuilder m_result;
-    std::ostringstream m_messageStream;
 };
 
 } // end namespace Catch

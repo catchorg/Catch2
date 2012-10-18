@@ -13,12 +13,26 @@
 namespace Catch {
 
     AssertionResultBuilder::AssertionResultBuilder() {}
+    AssertionResultBuilder::AssertionResultBuilder( const AssertionResultBuilder& other )
+    :   m_data( other.m_data ),
+        m_exprComponents( other.m_exprComponents )
+    {
+        m_stream << other.m_stream.str();
+    }
+
+    AssertionResultBuilder& AssertionResultBuilder::operator=(const AssertionResultBuilder& other ) {
+        m_data = other.m_data;
+        m_exprComponents = other.m_exprComponents;
+        m_stream.clear();
+        m_stream << other.m_stream.str();
+        return *this;
+    }
 
     AssertionResultBuilder& AssertionResultBuilder::setResultType( ResultWas::OfType result ) {
         // Flip bool results if isFalse is set
-        if( m_isFalse && result == ResultWas::Ok )
+        if( m_exprComponents.isFalse && result == ResultWas::Ok )
             m_data.resultType = ResultWas::ExpressionFailed;
-        else if( m_isFalse && result == ResultWas::ExpressionFailed )
+        else if( m_exprComponents.isFalse && result == ResultWas::ExpressionFailed )
             m_data.resultType = ResultWas::Ok;
         else
             m_data.resultType = result;
@@ -29,12 +43,7 @@ namespace Catch {
         return *this;
     }
     AssertionResultBuilder& AssertionResultBuilder::setIsFalse( bool isFalse ) {
-        m_isFalse = isFalse;
-        return *this;
-    }
-
-    AssertionResultBuilder& AssertionResultBuilder::setMessage( const std::string& message ) {
-        m_data.message = message;
+        m_exprComponents.isFalse = isFalse;
         return *this;
     }
 
@@ -49,26 +58,27 @@ namespace Catch {
     }
 
     AssertionResultBuilder& AssertionResultBuilder::setLhs( const std::string& lhs ) {
-        m_lhs = lhs;
+        m_exprComponents.lhs = lhs;
         return *this;
     }
 
     AssertionResultBuilder& AssertionResultBuilder::setRhs( const std::string& rhs ) {
-        m_rhs = rhs;
+        m_exprComponents.rhs = rhs;
         return *this;
     }
 
     AssertionResultBuilder& AssertionResultBuilder::setOp( const std::string& op ) {
-        m_op = op;
+        m_exprComponents.op = op;
         return *this;
     }
 
     AssertionResult AssertionResultBuilder::build() const
     {
         AssertionResultData data = m_data;
+        data.message = m_stream.str();
         data.reconstructedExpression = reconstructExpression();
-        if( m_isFalse ) {
-            if( m_op == "" ) {
+        if( m_exprComponents.isFalse ) {
+            if( m_exprComponents.op == "" ) {
                 data.capturedExpression = "!" + data.capturedExpression;
                 data.reconstructedExpression = "!" + data.reconstructedExpression;
             }
@@ -81,17 +91,17 @@ namespace Catch {
     }
 
     std::string AssertionResultBuilder::reconstructExpression() const {
-        if( m_op == "" )
-            return m_lhs.empty() ? m_data.capturedExpression : m_op + m_lhs;
-        else if( m_op == "matches" )
-            return m_lhs + " " + m_rhs;
-        else if( m_op != "!" ) {
-            if( m_lhs.size() + m_rhs.size() < 30 )
-                return m_lhs + " " + m_op + " " + m_rhs;
-            else if( m_lhs.size() < 70 && m_rhs.size() < 70 )
-                return "\n\t" + m_lhs + "\n\t" + m_op + "\n\t" + m_rhs;
+        if( m_exprComponents.op == "" )
+            return m_exprComponents.lhs.empty() ? m_data.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
+        else if( m_exprComponents.op == "matches" )
+            return m_exprComponents.lhs + " " + m_exprComponents.rhs;
+        else if( m_exprComponents.op != "!" ) {
+            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 30 )
+                return m_exprComponents.lhs + " " + m_exprComponents.op + " " + m_exprComponents.rhs;
+            else if( m_exprComponents.lhs.size() < 70 && m_exprComponents.rhs.size() < 70 )
+                return "\n\t" + m_exprComponents.lhs + "\n\t" + m_exprComponents.op + "\n\t" + m_exprComponents.rhs;
             else
-                return "\n" + m_lhs + "\n" + m_op + "\n" + m_rhs + "\n\n";
+                return "\n" + m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs + "\n\n";
         }
         else
             return "{can't expand - use " + m_data.macroName + "_FALSE( " + m_data.capturedExpression.substr(1) + " ) instead of " + m_data.macroName + "( " + m_data.capturedExpression + " ) for better diagnostics}";
