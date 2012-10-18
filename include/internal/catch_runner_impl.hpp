@@ -134,15 +134,7 @@ namespace Catch {
         virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) {
             m_assertionInfo = assertionInfo;
         }
-        virtual ResultAction::Value acceptResult( bool result ) {
-            return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
-        }
-
-        virtual ResultAction::Value acceptResult( ResultWas::OfType result ) {
-            m_currentResult.setResultType( result );            
-            return actOnCurrentResult();
-        }
-
+        
         virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& assertionResult ) {
             m_currentResult = assertionResult;
             return actOnCurrentResult();

@@ -155,7 +155,7 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    Catch::getResultCapture().acceptExpression( Catch::AssertionResultBuilder().setResultType( resultType ) << reason );
+    INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder().setResultType( resultType ) << reason, stopOnFailure, true );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log ) \
