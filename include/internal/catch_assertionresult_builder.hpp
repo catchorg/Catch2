@@ -10,16 +10,19 @@
 
 #include "catch_assertionresult_builder.h"
 
+#include <assert.h>
+
 namespace Catch {
 
-    AssertionResultBuilder::AssertionResultBuilder() {}
+    AssertionResultBuilder::AssertionResultBuilder( ResultWas::OfType resultType ) {
+        m_data.resultType = resultType;
+    }
     AssertionResultBuilder::AssertionResultBuilder( const AssertionResultBuilder& other )
     :   m_data( other.m_data ),
         m_exprComponents( other.m_exprComponents )
     {
         m_stream << other.m_stream.str();
     }
-
     AssertionResultBuilder& AssertionResultBuilder::operator=(const AssertionResultBuilder& other ) {
         m_data = other.m_data;
         m_exprComponents = other.m_exprComponents;
@@ -27,15 +30,8 @@ namespace Catch {
         m_stream << other.m_stream.str();
         return *this;
     }
-
     AssertionResultBuilder& AssertionResultBuilder::setResultType( ResultWas::OfType result ) {
-        // Flip bool results if isFalse is set
-        if( m_exprComponents.isFalse && result == ResultWas::Ok )
-            m_data.resultType = ResultWas::ExpressionFailed;
-        else if( m_exprComponents.isFalse && result == ResultWas::ExpressionFailed )
-            m_data.resultType = ResultWas::Ok;
-        else
-            m_data.resultType = result;
+        m_data.resultType = result;
         return *this;
     }
     AssertionResultBuilder& AssertionResultBuilder::setCapturedExpression( const std::string& capturedExpression ) {
@@ -46,35 +42,38 @@ namespace Catch {
         m_exprComponents.isFalse = isFalse;
         return *this;
     }
-
     AssertionResultBuilder& AssertionResultBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
         m_data.lineInfo = lineInfo;
         return *this;
     }
-
     AssertionResultBuilder& AssertionResultBuilder::setMacroName( const std::string& macroName ) {
         m_data.macroName = macroName;
         return *this;
     }
-
     AssertionResultBuilder& AssertionResultBuilder::setLhs( const std::string& lhs ) {
         m_exprComponents.lhs = lhs;
         return *this;
     }
-
     AssertionResultBuilder& AssertionResultBuilder::setRhs( const std::string& rhs ) {
         m_exprComponents.rhs = rhs;
         return *this;
     }
-
     AssertionResultBuilder& AssertionResultBuilder::setOp( const std::string& op ) {
         m_exprComponents.op = op;
         return *this;
     }
-
     AssertionResult AssertionResultBuilder::build() const
     {
+        assert( m_data.resultType != ResultWas::Unknown );
+
         AssertionResultData data = m_data;
+        
+        // Flip bool results if isFalse is set
+        if( m_exprComponents.isFalse && data.resultType == ResultWas::Ok )
+            data.resultType = ResultWas::ExpressionFailed;
+        else if( m_exprComponents.isFalse && data.resultType == ResultWas::ExpressionFailed )
+            data.resultType = ResultWas::Ok;
+
         data.message = m_stream.str();
         data.reconstructedExpression = reconstructExpression();
         if( m_exprComponents.isFalse ) {
@@ -89,7 +88,6 @@ namespace Catch {
         }
         return AssertionResult( data );
     }
-
     std::string AssertionResultBuilder::reconstructExpression() const {
         if( m_exprComponents.op == "" )
             return m_exprComponents.lhs.empty() ? m_data.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;

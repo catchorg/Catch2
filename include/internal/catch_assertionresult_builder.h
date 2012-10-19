@@ -21,7 +21,7 @@ struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 class AssertionResultBuilder {
 public:
     
-    AssertionResultBuilder();
+    AssertionResultBuilder( ResultWas::OfType resultType = ResultWas::Unknown );
     AssertionResultBuilder( const AssertionResultBuilder& other );
     AssertionResultBuilder& operator=(const AssertionResultBuilder& other );
 
