@@ -16,24 +16,14 @@ namespace Catch {
 class ExpressionBuilder {
 public:
 
-    ExpressionBuilder( bool isFalse = false )
-    {
-        m_result.setIsFalse( isFalse );
-    }
-    
     template<typename T>
     Expression<const T&> operator->* ( const T & operand ) {
-        Expression<const T&> expr( m_result, operand );        
-        return expr;
+        return Expression<const T&>( operand );
     }
 
     Expression<bool> operator->* ( bool value ) {
-        Expression<bool> expr( m_result, value );
-        return expr;
+        return Expression<bool>( value );
     }
-
-private:
-    AssertionResultBuilder m_result;
 };
 
 } // end namespace Catch

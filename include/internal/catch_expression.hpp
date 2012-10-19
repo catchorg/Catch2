@@ -18,10 +18,9 @@ class Expression {
 	void operator = ( const Expression& );
 
 public:
-    Expression( AssertionResultBuilder& result, T lhs )
-    :   m_result( result.setLhs( Catch::toString( lhs ) ) ),
-        m_lhs( lhs )
-    {}
+    Expression( T lhs ) : m_lhs( lhs ) {
+        m_result.setLhs( Catch::toString( lhs ) );
+    }
     
     template<typename RhsT>
     AssertionResultBuilder& operator == ( const RhsT& rhs ) {
@@ -61,10 +60,12 @@ public:
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
-    operator AssertionResultBuilder& () {
-        return m_result.setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed );
+    AssertionResultBuilder setIsFalse( bool isFalse ) {
+        return m_result
+            .setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed )
+            .setIsFalse( isFalse );
     }
-    
+
     template<typename RhsT>
     STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( const RhsT& );
     
@@ -81,7 +82,7 @@ private:
     }
 
 private:
-    AssertionResultBuilder& m_result;
+    AssertionResultBuilder m_result;
     T m_lhs;
 };
 
