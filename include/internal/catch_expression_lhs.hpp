@@ -19,11 +19,11 @@ namespace Catch {
         result.setResultType( value );
     }
 template<typename T>
-class Expression {
-	void operator = ( const Expression& );
+class ExpressionLhs {
+	void operator = ( const ExpressionLhs& );
 
 public:
-    Expression( T lhs ) : m_lhs( lhs ) {
+    ExpressionLhs( T lhs ) : m_lhs( lhs ) {
         setResultIfBoolean( m_result.setLhs( Catch::toString( lhs ) ), lhs );
     }
 

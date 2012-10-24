@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 
-#include "catch_expression_builder.hpp"
+#include "catch_expression_decomposer.hpp"
 #include "catch_assertionresult_builder.h"
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.hpp"
@@ -97,7 +97,7 @@ inline bool isTrue( bool value ){ return value; }
 #define INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ) \
     do { try { \
         INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, shouldNegate ); \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder()->*expr ).negate( shouldNegate ), stopOnFailure, expr ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).negate( shouldNegate ), stopOnFailure, expr ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
