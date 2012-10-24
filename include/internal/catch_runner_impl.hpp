@@ -109,7 +109,7 @@ namespace Catch {
 
             do {
                 do {
-                    m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
+                    m_assertionInfo.lineInfo = m_runningTest->getTestCaseInfo().getLineInfo();
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
                 while( m_runningTest->hasUntestedSections() && !aborting() );
@@ -151,7 +151,7 @@ namespace Catch {
                     std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
                     std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
                     for(; it != itEnd; ++it )
-                        m_reporter->Result( (*it)->getInfo() );
+                        m_reporter->Result( AssertionResult( m_assertionInfo, (*it)->getInfo() ) );
                 }
                 {
                     std::vector<AssertionResult>::const_iterator it = m_info.begin();
@@ -181,7 +181,7 @@ namespace Catch {
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
 
-            m_currentResult.setLineInfo( lineInfo );
+            m_assertionInfo.lineInfo = lineInfo;
             m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
             
@@ -233,12 +233,7 @@ namespace Catch {
     private:
 
         ResultAction::Value actOnCurrentResult() {
-            m_currentResult
-                .setMacroName( m_assertionInfo.macroName )
-                .setLineInfo( m_assertionInfo.lineInfo )
-                .setCapturedExpression( m_assertionInfo.capturedExpression );
-
-            m_lastResult = m_currentResult.build();
+            m_lastResult = AssertionResult( m_assertionInfo, m_currentResult.build( m_assertionInfo ) );
             testEnded( m_lastResult );
 
             m_currentResult = AssertionResultBuilder();

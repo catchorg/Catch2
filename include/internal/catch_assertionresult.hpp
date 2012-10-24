@@ -14,28 +14,31 @@ namespace Catch {
 
     AssertionResult::AssertionResult() {}
 
-    AssertionResult::AssertionResult( const AssertionResultData& data ) : m_data( data ) {}
+    AssertionResult::AssertionResult( const AssertionInfo& info, const AssertionResultData& data )
+    :   m_info( info ),
+        m_resultData( data )
+    {}
 
     AssertionResult::~AssertionResult() {}
 
     bool AssertionResult::ok() const {
-        return isOk( m_data.resultType );
+        return isOk( m_resultData.resultType );
     }
 
     ResultWas::OfType AssertionResult::getResultType() const {
-        return m_data.resultType;
+        return m_resultData.resultType;
     }
 
     bool AssertionResult::hasExpression() const {
-        return !m_data.capturedExpression.empty();
+        return !m_info.capturedExpression.empty();
     }
 
     bool AssertionResult::hasMessage() const {
-        return !m_data.message.empty();
+        return !m_resultData.message.empty();
     }
 
     std::string AssertionResult::getExpression() const {
-        return m_data.capturedExpression;
+        return m_info.capturedExpression;
     }
 
     bool AssertionResult::hasExpandedExpression() const {
@@ -43,23 +46,18 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpandedExpression() const {
-        return m_data.reconstructedExpression;
+        return m_resultData.reconstructedExpression;
     }
 
     std::string AssertionResult::getMessage() const {
-        return m_data.message;
+        return m_resultData.message;
     }
-
-    std::string AssertionResult::getFilename() const {
-        return m_data.lineInfo.file;
-    }
-
-    std::size_t AssertionResult::getLine() const {
-        return m_data.lineInfo.line;
+    SourceLineInfo AssertionResult::getSourceInfo() const {
+        return m_info.lineInfo;
     }
 
     std::string AssertionResult::getTestMacroName() const {
-        return m_data.macroName;
+        return m_info.macroName;
     }
 
 } // end namespace Catch

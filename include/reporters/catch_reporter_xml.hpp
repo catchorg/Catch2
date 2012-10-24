@@ -82,8 +82,8 @@ namespace Catch {
             if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
                     .writeAttribute( "success", assertionResult.ok() )
-                    .writeAttribute( "filename", assertionResult.getFilename() )
-                    .writeAttribute( "line", assertionResult.getLine() );
+                    .writeAttribute( "filename", assertionResult.getSourceInfo().file )
+                    .writeAttribute( "line", assertionResult.getSourceInfo().line );
                 
                 m_xml.scopedElement( "Original" )
                     .writeText( assertionResult.getExpression() );
@@ -95,8 +95,8 @@ namespace Catch {
             switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
                     m_xml.scopedElement( "Exception" )
-                        .writeAttribute( "filename", assertionResult.getFilename() )
-                        .writeAttribute( "line", assertionResult.getLine() )
+                        .writeAttribute( "filename", assertionResult.getSourceInfo().file )
+                        .writeAttribute( "line", assertionResult.getSourceInfo().line )
                         .writeText( assertionResult.getMessage() );
                     m_currentTestSuccess = false;
                     break;

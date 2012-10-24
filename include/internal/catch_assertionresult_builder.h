@@ -26,13 +26,12 @@ public:
     AssertionResultBuilder& operator=(const AssertionResultBuilder& other );
 
     AssertionResultBuilder& setResultType( ResultWas::OfType result );
-    AssertionResultBuilder& setCapturedExpression( const std::string& capturedExpression );
-    AssertionResultBuilder& setIsFalse( bool isFalse );
-    AssertionResultBuilder& setLineInfo( const SourceLineInfo& lineInfo );
+    AssertionResultBuilder& setResultType( bool result );
     AssertionResultBuilder& setLhs( const std::string& lhs );
     AssertionResultBuilder& setRhs( const std::string& rhs );
     AssertionResultBuilder& setOp( const std::string& op );
-    AssertionResultBuilder& setMacroName( const std::string& macroName );
+
+    AssertionResultBuilder& negate( bool shouldNegate );
 
     template<typename T>
     AssertionResultBuilder& operator << ( const T& value ) {
@@ -40,9 +39,9 @@ public:
         return *this;
     }
 
-    std::string reconstructExpression() const;
+    std::string reconstructExpression( const AssertionInfo& info ) const;
 
-    AssertionResult build() const;
+    AssertionResultData build( const AssertionInfo& info ) const;
 
     // Disable attempts to use || and && in expressions (without parantheses)
     template<typename RhsT>
@@ -53,8 +52,8 @@ public:
 private:
     AssertionResultData m_data;
     struct ExprComponents {
-        ExprComponents() : isFalse( false ) {}
-        bool isFalse;
+        ExprComponents() : shouldNegate( false ) {}
+        bool shouldNegate;
         std::string lhs, rhs, op;
     } m_exprComponents;
     std::ostringstream m_stream;

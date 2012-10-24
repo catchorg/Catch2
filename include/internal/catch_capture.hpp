@@ -40,7 +40,7 @@ namespace Catch {
                                                         const std::string& matcherCallAsString ) {
         return assertionBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
-            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+            .setResultType( matcher.match( arg ) );
     }
 
     template<typename MatcherT, typename ArgT>
@@ -49,38 +49,30 @@ namespace Catch {
                                                         const std::string& matcherCallAsString ) {
         return assertionBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
-            .setResultType( matcher.match( arg ) ? ResultWas::Ok : ResultWas::ExpressionFailed );
+            .setResultType( matcher.match( arg ) );
     }
     
 struct TestFailureException{};
 
 class ScopedInfo {
 public:
-    ScopedInfo() {
-        m_resultBuilder
-            .setResultType( ResultWas::Info )
-            .setMacroName( "SCOPED_INFO" );
-
+    ScopedInfo() : m_resultBuilder( ResultWas::Info ) {
         getResultCapture().pushScopedInfo( this );
     }
-    
     ~ScopedInfo() {
         getResultCapture().popScopedInfo( this );
     }
-    
     template<typename T>
     ScopedInfo& operator << ( const T& value ) {
         m_resultBuilder << value;
         return *this; 
     }
-
-    AssertionResult getInfo () const {
-        return m_resultBuilder.build();
+    AssertionResultData getInfo () const {
+        return m_resultBuilder.build( AssertionInfo() ); // !TBD
     }
     
 private:
     AssertionResultBuilder m_resultBuilder;
-    std::ostringstream m_oss;
 };
         
 // This is just here to avoid compiler warnings with macro constants and boolean literals
@@ -98,10 +90,14 @@ inline bool isTrue( bool value ){ return value; }
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, shouldNegate ) \
+    Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #expr, shouldNegate ) );
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ) \
     do { try { \
-        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #expr  ) ); \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder()->*expr ).setIsFalse( isFalse ), stopOnFailure, expr ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, shouldNegate ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionBuilder()->*expr ).negate( shouldNegate ), stopOnFailure, expr ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
@@ -110,19 +106,19 @@ inline bool isTrue( bool value ){ return value; }
     } } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_IF( expr, isFalse, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_IF( expr, shouldNegate, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ); \
     if( Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ELSE( expr, isFalse, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, isFalse, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_ELSE( expr, shouldNegate, stopOnFailure, macroName ) \
+    INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ); \
     if( !Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
     try { \
-        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #expr  ) ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
         expr; \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     } \
@@ -133,7 +129,7 @@ inline bool isTrue( bool value ){ return value; }
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     try { \
-        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #expr  ) ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
         if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
             expr; \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
@@ -158,14 +154,15 @@ inline bool isTrue( bool value ){ return value; }
     INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( resultType ) << reason, stopOnFailure, true );
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_SCOPED_INFO( log ) \
+#define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
+    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
     Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
     INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
     do { try { \
-        Catch::getResultCapture().acceptAssertionInfo( Catch::AssertionInfo( macroName, CATCH_INTERNAL_LINEINFO, #arg " " #matcher  ) ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, false ) \
         INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::assertionBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \

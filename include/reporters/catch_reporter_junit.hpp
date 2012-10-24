@@ -104,7 +104,7 @@ namespace Catch {
                 std::ostringstream oss;
                 if( !assertionResult.getMessage().empty() )
                     oss << assertionResult.getMessage() << " at ";
-                oss << SourceLineInfo( assertionResult.getFilename(), assertionResult.getLine() );
+                oss << assertionResult.getSourceInfo();
                 stats.m_content = oss.str();
                 stats.m_message = assertionResult.getExpandedExpression();
                 stats.m_resultType = assertionResult.getTestMacroName();

@@ -16,11 +16,14 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression )
+        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression, bool _shouldNegate )
         :   macroName( _macroName ),
             lineInfo( _lineInfo ),
             capturedExpression( _capturedExpression )
-        {}
+        {
+            if( _shouldNegate )
+                capturedExpression = "!" + _capturedExpression;
+        }
 
         std::string macroName;
         SourceLineInfo lineInfo;
@@ -31,9 +34,6 @@ namespace Catch {
     {
         AssertionResultData() : resultType( ResultWas::Unknown ) {}
 
-        std::string macroName;
-        SourceLineInfo lineInfo;
-        std::string capturedExpression;
         std::string reconstructedExpression;
         std::string message;
         ResultWas::OfType resultType;
@@ -42,7 +42,7 @@ namespace Catch {
     class AssertionResult {
     public:
         AssertionResult();
-        AssertionResult( const AssertionResultData& data );
+        AssertionResult( const AssertionInfo& info, const AssertionResultData& data );
         ~AssertionResult();
         
         bool ok() const;
@@ -53,12 +53,12 @@ namespace Catch {
         bool hasExpandedExpression() const;
         std::string getExpandedExpression() const;
         std::string getMessage() const;
-        std::string getFilename() const;
-        std::size_t getLine() const;
+        SourceLineInfo getSourceInfo() const;
         std::string getTestMacroName() const;
 
     protected:
-        AssertionResultData m_data;
+        AssertionInfo m_info;
+        AssertionResultData m_resultData;
     };
     
 } // end namespace Catch

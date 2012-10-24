@@ -13,15 +13,20 @@
 
 namespace Catch {
 
+    template<typename T>
+    inline void setResultIfBoolean( AssertionResultBuilder&, const T& ) {}
+    inline void setResultIfBoolean( AssertionResultBuilder& result, bool value ) {
+        result.setResultType( value );
+    }
 template<typename T>
 class Expression {
 	void operator = ( const Expression& );
 
 public:
     Expression( T lhs ) : m_lhs( lhs ) {
-        m_result.setLhs( Catch::toString( lhs ) );
+        setResultIfBoolean( m_result.setLhs( Catch::toString( lhs ) ), lhs );
     }
-    
+
     template<typename RhsT>
     AssertionResultBuilder& operator == ( const RhsT& rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
@@ -60,10 +65,8 @@ public:
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
-    AssertionResultBuilder setIsFalse( bool isFalse ) {
-        return m_result
-            .setResultType( m_lhs ? ResultWas::Ok : ResultWas::ExpressionFailed )
-            .setIsFalse( isFalse );
+    AssertionResultBuilder negate( bool shouldNegate ) {
+        return m_result.negate( shouldNegate );
     }
 
     template<typename RhsT>
@@ -76,7 +79,7 @@ private:
     template<Internal::Operator Op, typename RhsT>
     AssertionResultBuilder& captureExpression( const RhsT& rhs ) {
         return m_result
-            .setResultType( Internal::compare<Op>( m_lhs, rhs ) ? ResultWas::Ok : ResultWas::ExpressionFailed )
+            .setResultType( Internal::compare<Op>( m_lhs, rhs ) )
             .setRhs( Catch::toString( rhs ) )
             .setOp( Internal::OperatorTraits<Op>::getName() );
     }

@@ -34,20 +34,12 @@ namespace Catch {
         m_data.resultType = result;
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::setCapturedExpression( const std::string& capturedExpression ) {
-        m_data.capturedExpression = capturedExpression;
+    AssertionResultBuilder& AssertionResultBuilder::setResultType( bool result ) {
+        m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::setIsFalse( bool isFalse ) {
-        m_exprComponents.isFalse = isFalse;
-        return *this;
-    }
-    AssertionResultBuilder& AssertionResultBuilder::setLineInfo( const SourceLineInfo& lineInfo ) {
-        m_data.lineInfo = lineInfo;
-        return *this;
-    }
-    AssertionResultBuilder& AssertionResultBuilder::setMacroName( const std::string& macroName ) {
-        m_data.macroName = macroName;
+    AssertionResultBuilder& AssertionResultBuilder::negate( bool shouldNegate ) {
+        m_exprComponents.shouldNegate = shouldNegate;
         return *this;
     }
     AssertionResultBuilder& AssertionResultBuilder::setLhs( const std::string& lhs ) {
@@ -62,35 +54,31 @@ namespace Catch {
         m_exprComponents.op = op;
         return *this;
     }
-    AssertionResult AssertionResultBuilder::build() const
+    AssertionResultData AssertionResultBuilder::build( const AssertionInfo& info ) const
     {
         assert( m_data.resultType != ResultWas::Unknown );
 
         AssertionResultData data = m_data;
         
-        // Flip bool results if isFalse is set
-        if( m_exprComponents.isFalse && data.resultType == ResultWas::Ok )
+        // Flip bool results if shouldNegate is set
+        if( m_exprComponents.shouldNegate && data.resultType == ResultWas::Ok )
             data.resultType = ResultWas::ExpressionFailed;
-        else if( m_exprComponents.isFalse && data.resultType == ResultWas::ExpressionFailed )
+        else if( m_exprComponents.shouldNegate && data.resultType == ResultWas::ExpressionFailed )
             data.resultType = ResultWas::Ok;
 
         data.message = m_stream.str();
-        data.reconstructedExpression = reconstructExpression();
-        if( m_exprComponents.isFalse ) {
-            if( m_exprComponents.op == "" ) {
-                data.capturedExpression = "!" + data.capturedExpression;
+        data.reconstructedExpression = reconstructExpression( info );
+        if( m_exprComponents.shouldNegate ) {
+            if( m_exprComponents.op == "" )
                 data.reconstructedExpression = "!" + data.reconstructedExpression;
-            }
-            else {
-                data.capturedExpression = "!(" + data.capturedExpression + ")";
+            else
                 data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
-            }
         }
-        return AssertionResult( data );
+        return data;
     }
-    std::string AssertionResultBuilder::reconstructExpression() const {
+    std::string AssertionResultBuilder::reconstructExpression( const AssertionInfo& info ) const {
         if( m_exprComponents.op == "" )
-            return m_exprComponents.lhs.empty() ? m_data.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
+            return m_exprComponents.lhs.empty() ? info.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
         else if( m_exprComponents.op == "matches" )
             return m_exprComponents.lhs + " " + m_exprComponents.rhs;
         else if( m_exprComponents.op != "!" ) {
@@ -102,7 +90,7 @@ namespace Catch {
                 return "\n" + m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs + "\n\n";
         }
         else
-            return "{can't expand - use " + m_data.macroName + "_FALSE( " + m_data.capturedExpression.substr(1) + " ) instead of " + m_data.macroName + "( " + m_data.capturedExpression + " ) for better diagnostics}";
+            return "{can't expand - use " + info.macroName + "_FALSE( " + info.capturedExpression.substr(1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";
     }
 
 } // end namespace Catch
