@@ -20,6 +20,9 @@ namespace Catch {
     inline void setResultIfBoolean( ExpressionResultBuilder& result, bool value ) {
         result.setResultType( value );
     }
+
+// Wraps the LHS of an expression and captures the operator and RHS (if any) - wrapping them all
+// in an ExpressionResultBuilder object
 template<typename T>
 class ExpressionLhs {
 	void operator = ( const ExpressionLhs& );
@@ -67,7 +70,7 @@ public:
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
-    ExpressionResultBuilder negate( bool shouldNegate ) {
+    ExpressionResultBuilder& negate( bool shouldNegate ) {
         return m_result.negate( shouldNegate );
     }
 

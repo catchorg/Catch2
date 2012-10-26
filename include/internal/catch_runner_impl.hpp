@@ -151,19 +151,19 @@ namespace Catch {
                     std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
                     std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
                     for(; it != itEnd; ++it )
-                        m_reporter->Result( AssertionResult( m_assertionInfo, (*it)->getInfo() ) );
+                        m_reporter->Result( (*it)->buildResult( m_assertionInfo ) );
                 }
                 {
-                    std::vector<AssertionResult>::const_iterator it = m_info.begin();
-                    std::vector<AssertionResult>::const_iterator itEnd = m_info.end();
+                    std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
+                    std::vector<AssertionResult>::const_iterator itEnd = m_assertionResults.end();
                     for(; it != itEnd; ++it )
                         m_reporter->Result( *it );
                 }
-                m_info.clear();
+                m_assertionResults.clear();
             }
             
             if( result.getResultType() == ResultWas::Info )
-                m_info.push_back( result );
+                m_assertionResults.push_back( result );
             else
                 m_reporter->Result( result );
         }
@@ -233,7 +233,7 @@ namespace Catch {
     private:
 
         ResultAction::Value actOnCurrentResult() {
-            m_lastResult = AssertionResult( m_assertionInfo, m_currentResult.build( m_assertionInfo ) );
+            m_lastResult = m_currentResult.buildResult( m_assertionInfo );
             testEnded( m_lastResult );
 
             m_currentResult = ExpressionResultBuilder();
@@ -281,7 +281,7 @@ namespace Catch {
                     << translateActiveException();
                 actOnCurrentResult();
             }
-            m_info.clear();
+            m_assertionResults.clear();
         }
 
     private:
@@ -294,7 +294,7 @@ namespace Catch {
         Totals m_totals;
         Ptr<IReporter> m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
-        std::vector<AssertionResult> m_info;
+        std::vector<AssertionResult> m_assertionResults;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;

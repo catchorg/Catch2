@@ -54,7 +54,7 @@ namespace Catch {
         m_exprComponents.op = op;
         return *this;
     }
-    AssertionResultData ExpressionResultBuilder::build( const AssertionInfo& info ) const
+    AssertionResult ExpressionResultBuilder::buildResult( const AssertionInfo& info ) const
     {
         assert( m_data.resultType != ResultWas::Unknown );
 
@@ -74,7 +74,7 @@ namespace Catch {
             else
                 data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
         }
-        return data;
+        return AssertionResult( info, data );
     }
     std::string ExpressionResultBuilder::reconstructExpression( const AssertionInfo& info ) const {
         if( m_exprComponents.op == "" )

@@ -105,7 +105,7 @@
 		4A6D0C5A149B3E3D00DB3EAA /* catch_reporter_registrars.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_reporter_registrars.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C5B149B3E3D00DB3EAA /* catch_reporter_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_registry.hpp; sourceTree = "<group>"; };
 		4A6D0C5C149B3E3D00DB3EAA /* catch_result_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_result_type.h; sourceTree = "<group>"; };
-		4A6D0C5D149B3E3D00DB3EAA /* catch_assertionresult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_assertionresult.h; sourceTree = "<group>"; };
+		4A6D0C5D149B3E3D00DB3EAA /* catch_assertionresult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = catch_assertionresult.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4A6D0C5E149B3E3D00DB3EAA /* catch_runner_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_runner_impl.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C5F149B3E3D00DB3EAA /* catch_section.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_section.hpp; sourceTree = "<group>"; };
 		4A6D0C60149B3E3D00DB3EAA /* catch_stream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_stream.hpp; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		4A8E4DCC160A344100194CBD /* catch_tags.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_tags.hpp; sourceTree = "<group>"; };
 		4A8E4DD0160A352200194CBD /* catch_tags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_tags.cpp; path = ../../../SelfTest/SurrogateCpps/catch_tags.cpp; sourceTree = "<group>"; };
 		4A90B59B15D0F61A00EF71BC /* catch_interfaces_generators.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_generators.h; sourceTree = "<group>"; };
-		4A90B59D15D24FE900EF71BC /* catch_assertionresult.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_assertionresult.hpp; sourceTree = "<group>"; };
+		4A90B59D15D24FE900EF71BC /* catch_assertionresult.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_assertionresult.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A90B59E15D2521E00EF71BC /* catch_expressionresult_builder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_expressionresult_builder.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A9D84B11558FC0400FBB209 /* catch_tostring.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_tostring.hpp; sourceTree = "<group>"; };
 		4A9D84B315599AC900FBB209 /* catch_expressionresult_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = catch_expressionresult_builder.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -132,7 +132,7 @@
 		4AB3D9A1161621B500C9A0F8 /* catch_interfaces_generators.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_interfaces_generators.cpp; path = ../../../SelfTest/SurrogateCpps/catch_interfaces_generators.cpp; sourceTree = "<group>"; };
 		4AB77CB51551AEA200857BF0 /* catch_ptr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_ptr.hpp; sourceTree = "<group>"; };
 		4AB77CB71553B72B00857BF0 /* catch_section_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_section_info.hpp; sourceTree = "<group>"; };
-		4AB77CB81553BB3800857BF0 /* catch_running_test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_running_test.hpp; sourceTree = "<group>"; };
+		4AB77CB81553BB3800857BF0 /* catch_running_test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_running_test.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4ABEA80415C90D2B009F0424 /* catch_objc_arc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_objc_arc.hpp; sourceTree = "<group>"; };
 		4AC91CCE155CF02800DC5117 /* catch_expression_lhs.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_expression_lhs.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4AC91CD0155D8DA600DC5117 /* catch_expression_decomposer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_expression_decomposer.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };

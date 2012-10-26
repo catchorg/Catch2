@@ -67,8 +67,8 @@ public:
         m_resultBuilder << value;
         return *this; 
     }
-    AssertionResultData getInfo () const {
-        return m_resultBuilder.build( AssertionInfo() ); // !TBD
+    AssertionResult buildResult( const AssertionInfo& assertionInfo ) const {
+        return m_resultBuilder.buildResult( assertionInfo );
     }
     
 private:

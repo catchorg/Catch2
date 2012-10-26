@@ -15,7 +15,9 @@
 #include "catch_common.h"
 
 namespace Catch {
-    
+
+// Wraps the (stringised versions of) the lhs, operator and rhs of an expression - as well as
+// the result of evaluating it. This is used to build an AssertionResult object
 class ExpressionResultBuilder {
 public:
     
@@ -39,7 +41,7 @@ public:
 
     std::string reconstructExpression( const AssertionInfo& info ) const;
 
-    AssertionResultData build( const AssertionInfo& info ) const;
+    AssertionResult buildResult( const AssertionInfo& info ) const;
 
 private:
     AssertionResultData m_data;

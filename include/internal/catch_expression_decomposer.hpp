@@ -11,7 +11,8 @@
 #include "catch_expression_lhs.hpp"
 
 namespace Catch {
-    
+
+// Captures the LHS of the expression and wraps it in an Expression Lhs object
 class ExpressionDecomposer {
 public:
 
