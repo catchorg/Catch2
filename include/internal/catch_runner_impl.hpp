@@ -135,7 +135,7 @@ namespace Catch {
             m_assertionInfo = assertionInfo;
         }
         
-        virtual ResultAction::Value acceptExpression( const AssertionResultBuilder& assertionResult ) {
+        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult ) {
             m_currentResult = assertionResult;
             return actOnCurrentResult();
         }
@@ -236,7 +236,7 @@ namespace Catch {
             m_lastResult = AssertionResult( m_assertionInfo, m_currentResult.build( m_assertionInfo ) );
             testEnded( m_lastResult );
 
-            m_currentResult = AssertionResultBuilder();
+            m_currentResult = ExpressionResultBuilder();
             m_assertionInfo = AssertionInfo();
 
             ResultAction::Value action = ResultAction::None;
@@ -287,7 +287,7 @@ namespace Catch {
     private:
         IMutableContext& m_context;
         RunningTest* m_runningTest;
-        AssertionResultBuilder m_currentResult;
+        ExpressionResultBuilder m_currentResult;
         AssertionResult m_lastResult;
 
         const Config& m_config;

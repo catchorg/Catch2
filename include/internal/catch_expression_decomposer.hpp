@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_EXPRESSION_DECOMPOSER_HPP_INCLUDED
 
 #include "catch_expression_lhs.hpp"
-#include "catch_assertionresult_builder.h"
 
 namespace Catch {
     

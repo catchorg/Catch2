@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 
 #include "catch_expression_decomposer.hpp"
-#include "catch_assertionresult_builder.h"
+#include "catch_expressionresult_builder.h"
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.hpp"
 #include "catch_context.h"
@@ -24,30 +24,30 @@ namespace Catch {
     }
     
     template<typename MatcherT>
-    AssertionResultBuilder assertionBuilderFromMatcher( const MatcherT& matcher,
-                                                        const std::string& matcherCallAsString ) {
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
+                                                                const std::string& matcherCallAsString ) {
         std::string matcherAsString = matcher.toString();
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
-        return AssertionResultBuilder()
+        return ExpressionResultBuilder()
             .setRhs( matcherAsString )
             .setOp( "matches" );
     }
 
     template<typename MatcherT, typename ArgT>
-    AssertionResultBuilder assertionBuilderFromMatcher( const MatcherT& matcher,
-                                                        const ArgT& arg,
-                                                        const std::string& matcherCallAsString ) {
-        return assertionBuilderFromMatcher( matcher, matcherCallAsString )
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
+                                                                const ArgT& arg,
+                                                                const std::string& matcherCallAsString ) {
+        return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
 
     template<typename MatcherT, typename ArgT>
-    AssertionResultBuilder assertionBuilderFromMatcher( const MatcherT& matcher,
-                                                        ArgT* arg,
-                                                        const std::string& matcherCallAsString ) {
-        return assertionBuilderFromMatcher( matcher, matcherCallAsString )
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
+                                                                ArgT* arg,
+                                                                const std::string& matcherCallAsString ) {
+        return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
@@ -72,7 +72,7 @@ public:
     }
     
 private:
-    AssertionResultBuilder m_resultBuilder;
+    ExpressionResultBuilder m_resultBuilder;
 };
         
 // This is just here to avoid compiler warnings with macro constants and boolean literals
@@ -101,7 +101,7 @@ inline bool isTrue( bool value ){ return value; }
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), false, expr ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), false, expr ); \
         throw; \
     } } while( Catch::isTrue( false ) )
 
@@ -120,10 +120,10 @@ inline bool isTrue( bool value ){ return value; }
     try { \
         INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
         expr; \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     } \
     catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -132,26 +132,26 @@ inline bool isTrue( bool value ){ return value; }
         INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
         if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
             expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
         } \
     } \
     catch( Catch::TestFailureException& ) { \
         throw; \
     } \
     catch( exceptionType ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, stopOnFailure, macroName ) \
     INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
     catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::AssertionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), stopOnFailure, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_ACCEPT_EXPR( Catch::AssertionResultBuilder( resultType ) << reason, stopOnFailure, true );
+    INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, stopOnFailure, true );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
@@ -163,11 +163,11 @@ inline bool isTrue( bool value ){ return value; }
 #define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
     do { try { \
         INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, false ) \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::assertionBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
     } catch( Catch::TestFailureException& ) { \
         throw; \
     } catch( ... ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::AssertionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), false, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), false, false ); \
         throw; \
     }}while( Catch::isTrue( false ) )
 

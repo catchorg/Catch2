@@ -15,26 +15,24 @@
 #include "catch_common.h"
 
 namespace Catch {
-
-struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
     
-class AssertionResultBuilder {
+class ExpressionResultBuilder {
 public:
     
-    AssertionResultBuilder( ResultWas::OfType resultType = ResultWas::Unknown );
-    AssertionResultBuilder( const AssertionResultBuilder& other );
-    AssertionResultBuilder& operator=(const AssertionResultBuilder& other );
+    ExpressionResultBuilder( ResultWas::OfType resultType = ResultWas::Unknown );
+    ExpressionResultBuilder( const ExpressionResultBuilder& other );
+    ExpressionResultBuilder& operator=(const ExpressionResultBuilder& other );
 
-    AssertionResultBuilder& setResultType( ResultWas::OfType result );
-    AssertionResultBuilder& setResultType( bool result );
-    AssertionResultBuilder& setLhs( const std::string& lhs );
-    AssertionResultBuilder& setRhs( const std::string& rhs );
-    AssertionResultBuilder& setOp( const std::string& op );
+    ExpressionResultBuilder& setResultType( ResultWas::OfType result );
+    ExpressionResultBuilder& setResultType( bool result );
+    ExpressionResultBuilder& setLhs( const std::string& lhs );
+    ExpressionResultBuilder& setRhs( const std::string& rhs );
+    ExpressionResultBuilder& setOp( const std::string& op );
 
-    AssertionResultBuilder& negate( bool shouldNegate );
+    ExpressionResultBuilder& negate( bool shouldNegate );
 
     template<typename T>
-    AssertionResultBuilder& operator << ( const T& value ) {
+    ExpressionResultBuilder& operator << ( const T& value ) {
         m_stream << value;
         return *this;
     }
@@ -42,12 +40,6 @@ public:
     std::string reconstructExpression( const AssertionInfo& info ) const;
 
     AssertionResultData build( const AssertionInfo& info ) const;
-
-    // Disable attempts to use || and && in expressions (without parantheses)
-    template<typename RhsT>
-    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( const RhsT& );
-    template<typename RhsT>
-    STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( const RhsT& );
 
 private:
     AssertionResultData m_data;

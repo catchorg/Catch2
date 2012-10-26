@@ -23,7 +23,7 @@
 #include "catch_console_colour_impl.hpp"
 #include "catch_generators_impl.hpp"
 #include "catch_assertionresult.hpp"
-#include "catch_assertionresult_builder.hpp"
+#include "catch_expressionresult_builder.hpp"
 #include "catch_test_case_info.hpp"
 #include "catch_tags.hpp"
 

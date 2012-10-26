@@ -5,56 +5,56 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_EXPRESSIONRESULT_BUILDER_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_EXPRESSIONRESULT_BUILDER_HPP_INCLUDED
 
-#include "catch_assertionresult_builder.h"
+#include "catch_expressionresult_builder.h"
 
 #include <assert.h>
 
 namespace Catch {
 
-    AssertionResultBuilder::AssertionResultBuilder( ResultWas::OfType resultType ) {
+    ExpressionResultBuilder::ExpressionResultBuilder( ResultWas::OfType resultType ) {
         m_data.resultType = resultType;
     }
-    AssertionResultBuilder::AssertionResultBuilder( const AssertionResultBuilder& other )
+    ExpressionResultBuilder::ExpressionResultBuilder( const ExpressionResultBuilder& other )
     :   m_data( other.m_data ),
         m_exprComponents( other.m_exprComponents )
     {
         m_stream << other.m_stream.str();
     }
-    AssertionResultBuilder& AssertionResultBuilder::operator=(const AssertionResultBuilder& other ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::operator=(const ExpressionResultBuilder& other ) {
         m_data = other.m_data;
         m_exprComponents = other.m_exprComponents;
         m_stream.clear();
         m_stream << other.m_stream.str();
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::setResultType( ResultWas::OfType result ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setResultType( ResultWas::OfType result ) {
         m_data.resultType = result;
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::setResultType( bool result ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setResultType( bool result ) {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::negate( bool shouldNegate ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::negate( bool shouldNegate ) {
         m_exprComponents.shouldNegate = shouldNegate;
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::setLhs( const std::string& lhs ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {
         m_exprComponents.lhs = lhs;
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::setRhs( const std::string& rhs ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setRhs( const std::string& rhs ) {
         m_exprComponents.rhs = rhs;
         return *this;
     }
-    AssertionResultBuilder& AssertionResultBuilder::setOp( const std::string& op ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setOp( const std::string& op ) {
         m_exprComponents.op = op;
         return *this;
     }
-    AssertionResultData AssertionResultBuilder::build( const AssertionInfo& info ) const
+    AssertionResultData ExpressionResultBuilder::build( const AssertionInfo& info ) const
     {
         assert( m_data.resultType != ResultWas::Unknown );
 
@@ -76,7 +76,7 @@ namespace Catch {
         }
         return data;
     }
-    std::string AssertionResultBuilder::reconstructExpression( const AssertionInfo& info ) const {
+    std::string ExpressionResultBuilder::reconstructExpression( const AssertionInfo& info ) const {
         if( m_exprComponents.op == "" )
             return m_exprComponents.lhs.empty() ? info.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
         else if( m_exprComponents.op == "matches" )
@@ -95,4 +95,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_EXPRESSIONRESULT_BUILDER_HPP_INCLUDED
