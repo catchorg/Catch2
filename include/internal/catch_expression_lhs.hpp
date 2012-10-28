@@ -13,13 +13,7 @@
 
 namespace Catch {
 
-    struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
-
-    template<typename T>
-    inline void setResultIfBoolean( ExpressionResultBuilder&, const T& ) {}
-    inline void setResultIfBoolean( ExpressionResultBuilder& result, bool value ) {
-        result.setResultType( value );
-    }
+struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 
 // Wraps the LHS of an expression and captures the operator and RHS (if any) - wrapping them all
 // in an ExpressionResultBuilder object
@@ -28,9 +22,7 @@ class ExpressionLhs {
 	void operator = ( const ExpressionLhs& );
 
 public:
-    ExpressionLhs( T lhs ) : m_lhs( lhs ) {
-        setResultIfBoolean( m_result.setLhs( Catch::toString( lhs ) ), lhs );
-    }
+    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
 
     template<typename RhsT>
     ExpressionResultBuilder& operator == ( const RhsT& rhs ) {
@@ -71,7 +63,11 @@ public:
     }
     
     ExpressionResultBuilder& negate( bool shouldNegate ) {
-        return m_result.negate( shouldNegate );
+        bool value = m_lhs ? true : false;
+        return m_result
+            .setLhs( Catch::toString( value ) )
+            .setResultType( value )
+            .negate( shouldNegate );
     }
 
     // Only simple binary expressions are allowed on the LHS.
@@ -86,6 +82,7 @@ private:
     ExpressionResultBuilder& captureExpression( const RhsT& rhs ) {
         return m_result
             .setResultType( Internal::compare<Op>( m_lhs, rhs ) )
+            .setLhs( Catch::toString( m_lhs ) )
             .setRhs( Catch::toString( rhs ) )
             .setOp( Internal::OperatorTraits<Op>::getName() );
     }

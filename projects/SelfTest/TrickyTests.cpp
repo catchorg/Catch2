@@ -293,3 +293,24 @@ TEST_CASE( "./sameName", "Tests with the same name are not allowed" )
     
 }
 */
+
+struct Boolable
+{
+    explicit Boolable( bool value ) : m_value( value ) {}
+
+    operator Catch::SafeBool::type() const {
+        return Catch::SafeBool::makeSafe( m_value );
+    }
+
+    bool m_value;
+};
+
+TEST_CASE( "./succeeding/SafeBool", "Objects that evaluated in boolean contexts can be checked")
+{
+    Boolable True( true );
+    Boolable False( false );
+
+    CHECK( True );
+    CHECK( !False );
+    CHECK_FALSE( False );
+}
