@@ -206,7 +206,7 @@ namespace Catch {
                     streamVariableLengthText( "info", assertionResult.getMessage() );
                     break;
                 case ResultWas::Warning:
-                    m_config.stream << "warning:\n'" << assertionResult.getMessage() << "'";
+                    streamVariableLengthText( "warning", assertionResult.getMessage() );
                     break;
                 case ResultWas::ExplicitFailure:
                 {
@@ -309,7 +309,7 @@ namespace Catch {
         void streamVariableLengthText( const std::string& prefix, const std::string& text ) {
             std::string trimmed = trim( text );
             if( trimmed.find_first_of( "\r\n" ) == std::string::npos ) {
-                m_config.stream << "[" << prefix << ": " << trimmed << "]\n";
+                m_config.stream << "[" << prefix << ": " << trimmed << "]";
             }
             else {
                 m_config.stream << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 

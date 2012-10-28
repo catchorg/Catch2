@@ -26,7 +26,7 @@ namespace Catch {
     ExpressionResultBuilder& ExpressionResultBuilder::operator=(const ExpressionResultBuilder& other ) {
         m_data = other.m_data;
         m_exprComponents = other.m_exprComponents;
-        m_stream.clear();
+        m_stream.str("");
         m_stream << other.m_stream.str();
         return *this;
     }
