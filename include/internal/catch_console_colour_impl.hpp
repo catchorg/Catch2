@@ -10,11 +10,56 @@
 
 #include "catch_console_colour.hpp"
 
-#ifdef CATCH_PLATFORM_WINDOWS
+namespace Catch {
+
+#if defined( CATCH_CONFIG_USE_POSIX_COLOUR_CODES )
+
+    // use POSIX console terminal codes
+    // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
+    // https://github.com/philsquared/Catch/pull/131
+    
+    TextColour::TextColour( Colours colour ) {
+        if( colour )
+            set( colour );
+    }
+
+    TextColour::~TextColour() {
+        set( TextColour::None );
+    }
+
+    void TextColour::set( Colours colour ) {
+        if( isatty( fileno(stdout) ) ) {
+            switch( colour ) {
+                case TextColour::FileName:
+                    std::cout << "\e[1m";    // bold
+                    break;
+                case TextColour::ResultError:
+                    std::cout << "\e[1;31m"; // bright red
+                    break;
+                case TextColour::ResultSuccess:
+                    std::cout << "\e[1;32m"; // bright green
+                    break;
+                case TextColour::Error:
+                    std::cout << "\e[0;31m"; // dark red
+                    break;
+                case TextColour::Success:
+                    std::cout << "\e[0;32m"; // dark green
+                    break;
+                case TextColour::OriginalExpression:
+                    std::cout << "\e[0;36m"; // cyan
+                    break;
+                case TextColour::ReconstructedExpression:
+                    std::cout << "\e[0;33m"; // yellow
+                    break;
+                case TextColour::None:
+                    std::cout << "\e[0m"; // reset
+            }
+        }
+    }
+    
+#elif defined ( CATCH_PLATFORM_WINDOWS )
 
 #include <windows.h>
-
-namespace Catch {
 
     namespace {
     
@@ -78,18 +123,15 @@ namespace Catch {
     void TextColour::set( Colours colour ) {
         m_impl->set( colour );
     }
-    
-} // end namespace Catch
 
 #else
 
-namespace Catch {
     TextColour::TextColour( Colours ){}
     TextColour::~TextColour(){}
     void TextColour::set( Colours ){}
-    
-} // end namespace Catch
 
 #endif
+
+} // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
