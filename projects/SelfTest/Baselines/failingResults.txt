@@ -1,0 +1,169 @@
+[Started testing]
+[Started group: './failing*']
+
+[Running: ./failing/TestClass/failingCase]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ClassTests.cpp:28: s == "world" failed for: "hello" == "world"
+[Finished: './failing/TestClass/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/Fixture/failingCase]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ClassTests.cpp:55: m_a == 2 failed for: 1 == 2
+[Finished: './failing/Fixture/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/conditions/equality]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:71: data.int_seven == 6 failed for: 7 == 6
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:72: data.int_seven == 8 failed for: 7 == 8
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:73: data.int_seven == 0 failed for: 7 == 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:74: data.float_nine_point_one == Approx( 9.11f ) failed for: 9.1 == Approx( 9.11 )
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:75: data.float_nine_point_one == Approx( 9.0f ) failed for: 9.1 == Approx( 9 )
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:76: data.float_nine_point_one == Approx( 1 ) failed for: 9.1 == Approx( 1 )
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:77: data.float_nine_point_one == Approx( 0 ) failed for: 9.1 == Approx( 0 )
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:78: data.double_pi == Approx( 3.1415 ) failed for: 3.14159 == Approx( 3.1415 )
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:79: data.str_hello == "goodbye" failed for: "hello" == "goodbye"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:80: data.str_hello == "hell" failed for: "hello" == "hell"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:81: data.str_hello == "hello1" failed for: "hello" == "hello1"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:82: data.str_hello.size() == 6 failed for: 5 == 6
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:85: x == Approx( 1.301 ) failed for: 1.3 == Approx( 1.301 )
+[Finished: './failing/conditions/equality' 1 test case failed (All 13 assertions failed)]
+
+[Running: ./failing/conditions/inequality]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:111: data.int_seven != 7 failed for: 7 != 7
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:112: data.float_nine_point_one != Approx( 9.1f ) failed for: 9.1 != Approx( 9.1 )
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:113: data.double_pi != Approx( 3.1415926535 ) failed for: 3.14159 != Approx( 3.14159 )
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:114: data.str_hello != "hello" failed for: "hello" != "hello"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:115: data.str_hello.size() != 5 failed for: 5 != 5
+[Finished: './failing/conditions/inequality' 1 test case failed (All 5 assertions failed)]
+
+[Running: ./failing/conditions/ordered]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:152: data.int_seven > 7 failed for: 7 > 7
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:153: data.int_seven < 7 failed for: 7 < 7
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:154: data.int_seven > 8 failed for: 7 > 8
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:155: data.int_seven < 6 failed for: 7 < 6
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:156: data.int_seven < 0 failed for: 7 < 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:157: data.int_seven < -1 failed for: 7 < -1
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:159: data.int_seven >= 8 failed for: 7 >= 8
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:160: data.int_seven <= 6 failed for: 7 <= 6
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:162: data.float_nine_point_one < 9 failed for: 9.1 < 9
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:163: data.float_nine_point_one > 10 failed for: 9.1 > 10
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:164: data.float_nine_point_one > 9.2 failed for: 9.1 > 9.2
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:166: data.str_hello > "hello" failed for: "hello" > "hello"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:167: data.str_hello < "hello" failed for: "hello" < "hello"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:168: data.str_hello > "hellp" failed for: "hello" > "hellp"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:169: data.str_hello > "z" failed for: "hello" > "z"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:170: data.str_hello < "hellm" failed for: "hello" < "hellm"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:171: data.str_hello < "a" failed for: "hello" < "a"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:173: data.str_hello >= "z" failed for: "hello" >= "z"
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:174: data.str_hello <= "a" failed for: "hello" <= "a"
+[Finished: './failing/conditions/ordered' 1 test case failed (All 19 assertions failed)]
+
+[Running: ./failing/conditions/not]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:320: false != false failed
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:321: true != true failed
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:322: !true failed for: false
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:323: !true failed
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:325: !trueValue failed for: false
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:326: !trueValue failed for: !true
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:328: !(1 == 1) failed for: false
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:329: !1 == 1 failed for: !(1 == 1)
+[Finished: './failing/conditions/not' 1 test case failed (All 8 assertions failed)]
+
+[Running: ./failing/exceptions/explicit]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:47: thisThrows() failed with unexpected exception with message: 'expected exception'
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:48: thisDoesntThrow() failed because no exception was thrown where one was expected
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:49: thisThrows() failed with unexpected exception with message: 'expected exception'
+[Finished: './failing/exceptions/explicit' 1 test case failed (All 3 assertions failed)]
+
+[Running: ./failing/exceptions/implicit]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:52: Unexpected exception with message: 'unexpected exception'
+[Finished: './failing/exceptions/implicit' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:95: Unexpected exception with message: 'custom exception'
+[Finished: './failing/exceptions/custom' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom/nothrow]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:102: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
+[Finished: './failing/exceptions/custom/nothrow' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom/throw]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:107: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
+[Finished: './failing/exceptions/custom/throw' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom/double]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:111: Unexpected exception with message: '3.14'
+[Finished: './failing/exceptions/custom/double' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/in-section]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:125: Unexpected exception with message: 'Exception from section'
+[Finished: './failing/exceptions/in-section' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/message/info/1]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MessageTests.cpp:19: [info: this message should be logged]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MessageTests.cpp:20: [info: so should this]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MessageTests.cpp:22: a == 1 failed for: 2 == 1
+[Finished: './failing/message/info/1' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/message/fail]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MessageTests.cpp:46: failed with message: 'This is a failure'
+[Finished: './failing/message/fail' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/message/sections]
+
+[Started section: 'one']
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MessageTests.cpp:53: failed with message: 'Message from section one'
+[End of section: 'one' 1 assertion failed]
+
+[Started section: 'two']
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MessageTests.cpp:58: failed with message: 'Message from section two'
+[End of section: 'two' 1 assertion failed]
+
+[Finished: './failing/message/sections' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./failing/info]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:169: [info: hi]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:171: [info: i := 7]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:172: false failed
+[Finished: './failing/info' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/checkedif]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:177: flag failed for: false
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:190: testCheckedIf( false ) failed for: false
+[Finished: './failing/checkedif' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./failing/checkedelse]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:195: flag failed for: false
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:208: testCheckedElse( false ) failed for: false
+[Finished: './failing/checkedelse' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./failing/matchers/Contains]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:255: testStringForMatching() Contains( "not there" ) failed for: 
+	"this string contains 'abc' as a substring" contains: "not there"
+[Finished: './failing/matchers/Contains' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/matchers/StartsWith]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:260: testStringForMatching() StartsWith( "string" ) failed for: 
+	"this string contains 'abc' as a substring" starts with: "string"
+[Finished: './failing/matchers/StartsWith' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/matchers/EndsWith]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:265: testStringForMatching() EndsWith( "this" ) failed for: 
+	"this string contains 'abc' as a substring" ends with: "this"
+[Finished: './failing/matchers/EndsWith' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/matchers/Equals]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:270: testStringForMatching() Equals( "something else" ) failed for: 
+	"this string contains 'abc' as a substring" equals: "something else"
+[Finished: './failing/matchers/Equals' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/Tricky/non streamable type]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:95: &o1 == &o2 failed for: 0x7fff522b88b8 == 0x7fff522b88b0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:96: o1 == o2 failed for: {?} == {?}
+[Finished: './failing/Tricky/non streamable type' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./failing/string literals]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:106: std::string( "first" ) == "second" failed for: "first" == "second"
+[Finished: './failing/string literals' 1 test case failed (1 assertion failed)]
+[End of group: './failing*'. All 25 test cases failed (All 72 assertions failed)]
+
+
+[Testing completed. All 25 test cases failed (All 72 assertions failed)]
+
