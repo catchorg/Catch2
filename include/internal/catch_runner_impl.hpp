@@ -135,7 +135,8 @@ namespace Catch {
             m_assertionInfo = assertionInfo;
         }
         
-        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult ) {
+        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) {
+            m_assertionInfo = assertionInfo;
             m_currentResult = assertionResult;
             return actOnCurrentResult();
         }

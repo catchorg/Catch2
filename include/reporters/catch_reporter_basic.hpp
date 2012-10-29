@@ -234,10 +234,11 @@ namespace Catch {
             
             if( assertionResult.hasExpandedExpression() ) {
                 m_config.stream << " for: ";
-                if( assertionResult.getExpandedExpression().size() > 40 )
+                if( assertionResult.getExpandedExpression().size() > 40 ) {
                     m_config.stream << "\n";
-                if( assertionResult.getExpandedExpression().size() < 70 )
-                    m_config.stream << "\t";
+                    if( assertionResult.getExpandedExpression().size() < 70 )
+                        m_config.stream << "\t";
+                }
                 TextColour colour( TextColour::ReconstructedExpression );
                 m_config.stream << assertionResult.getExpandedExpression();
             }

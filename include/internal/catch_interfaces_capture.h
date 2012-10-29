@@ -36,7 +36,7 @@ namespace Catch {
         virtual bool shouldDebugBreak() const = 0;
         
         virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) = 0;
-        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult ) = 0;
+        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;        
         virtual const AssertionResult* getLastResult() const = 0;        
