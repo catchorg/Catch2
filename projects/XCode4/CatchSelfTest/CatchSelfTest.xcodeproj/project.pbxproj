@@ -555,7 +555,6 @@
 				WARNING_CFLAGS = (
 					"-Weverything",
 					"-Wno-disabled-macro-expansion",
-					"-Wno-global-constructors",
 				);
 			};
 			name = Debug;
@@ -569,7 +568,6 @@
 				WARNING_CFLAGS = (
 					"-Weverything",
 					"-Wno-disabled-macro-expansion",
-					"-Wno-global-constructors",
 				);
 			};
 			name = Release;

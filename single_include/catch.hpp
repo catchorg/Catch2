@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-10-29 20:48:55.345250
+ *  Generated: 2012-10-30 09:08:37.538907
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -13,7 +13,7 @@
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wno-global-constructors"
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
