@@ -184,35 +184,41 @@ namespace Catch {
             }
             switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( assertionResult.hasExpression() )
-                        m_config.stream << " with unexpected";
-                    else
-                        m_config.stream << "Unexpected";
-                    m_config.stream << " exception with message: '" << assertionResult.getMessage() << "'";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        if( assertionResult.hasExpression() )
+                            m_config.stream << " with unexpected";
+                        else
+                            m_config.stream << "Unexpected";
+                        m_config.stream << " exception with message: '" << assertionResult.getMessage() << "'";
+                    }
                     break;
                 case ResultWas::DidntThrowException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( assertionResult.hasExpression() )
-                        m_config.stream << " because no exception was thrown where one was expected";
-                    else
-                        m_config.stream << "No exception thrown where one was expected";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        if( assertionResult.hasExpression() )
+                            m_config.stream << " because no exception was thrown where one was expected";
+                        else
+                            m_config.stream << "No exception thrown where one was expected";
+                    }
                     break;
                 case ResultWas::Info:
-                    streamVariableLengthText( "info", assertionResult.getMessage() );
+                    {
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "info", assertionResult.getMessage() );
+                    }
                     break;
                 case ResultWas::Warning:
-                    streamVariableLengthText( "warning", assertionResult.getMessage() );
+                    {
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "warning", assertionResult.getMessage() );
+                    }
                     break;
                 case ResultWas::ExplicitFailure:
-                {
-                    TextColour colour( TextColour::Error );
-                    m_config.stream << "failed with message: '" << assertionResult.getMessage() << "'";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        m_config.stream << "failed with message: '" << assertionResult.getMessage() << "'";
+                    }
                     break;
                 case ResultWas::Unknown: // These cases are here to prevent compiler warnings
                 case ResultWas::Ok:

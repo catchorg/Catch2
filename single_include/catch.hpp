@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-10-30 09:08:37.538907
+ *  Generated: 2012-10-31 18:04:01.157950
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4858,11 +4858,13 @@ namespace Catch {
 
 } // end namespace Catch
 
+#if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
+
+#include <unistd.h>
+
 namespace Catch {
 
-#if defined( CATCH_CONFIG_USE_POSIX_COLOUR_CODES )
-
-    // use POSIX console terminal codes
+    // use POSIX/ ANSI console terminal codes
     // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
 
@@ -4875,39 +4877,45 @@ namespace Catch {
         set( TextColour::None );
     }
 
+    namespace { const char colourEscape = '\033'; }
+
     void TextColour::set( Colours colour ) {
         if( isatty( fileno(stdout) ) ) {
             switch( colour ) {
                 case TextColour::FileName:
-                    std::cout << "\e[1m";    // bold
+                    std::cout << colourEscape << "[0m";    // white
                     break;
                 case TextColour::ResultError:
-                    std::cout << "\e[1;31m"; // bright red
+                    std::cout << colourEscape << "[1;31m"; // bold red
                     break;
                 case TextColour::ResultSuccess:
-                    std::cout << "\e[1;32m"; // bright green
+                    std::cout << colourEscape << "[1;32m"; // bold green
                     break;
                 case TextColour::Error:
-                    std::cout << "\e[0;31m"; // dark red
+                    std::cout << colourEscape << "[0;31m"; // red
                     break;
                 case TextColour::Success:
-                    std::cout << "\e[0;32m"; // dark green
+                    std::cout << colourEscape << "[0;32m"; // green
                     break;
                 case TextColour::OriginalExpression:
-                    std::cout << "\e[0;36m"; // cyan
+                    std::cout << colourEscape << "[0;36m"; // cyan
                     break;
                 case TextColour::ReconstructedExpression:
-                    std::cout << "\e[0;33m"; // yellow
+                    std::cout << colourEscape << "[0;33m"; // yellow
                     break;
                 case TextColour::None:
-                    std::cout << "\e[0m"; // reset
+                    std::cout << colourEscape << "[0m"; // reset to white
             }
         }
     }
 
+} // namespace Catch
+
 #elif defined ( CATCH_PLATFORM_WINDOWS )
 
 #include <windows.h>
+
+namespace Catch {
 
     namespace {
 
@@ -4972,15 +4980,19 @@ namespace Catch {
         m_impl->set( colour );
     }
 
+} // end namespace Catch
+
 #else
+
+namespace Catch {
 
     TextColour::TextColour( Colours ){}
     TextColour::~TextColour(){}
     void TextColour::set( Colours ){}
 
-#endif
-
 } // end namespace Catch
+
+#endif
 
 // #included from: catch_generators_impl.hpp
 #define TWOBLUECUBES_CATCH_GENERATORS_IMPL_HPP_INCLUDED
@@ -5502,35 +5514,41 @@ namespace Catch {
             }
             switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( assertionResult.hasExpression() )
-                        m_config.stream << " with unexpected";
-                    else
-                        m_config.stream << "Unexpected";
-                    m_config.stream << " exception with message: '" << assertionResult.getMessage() << "'";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        if( assertionResult.hasExpression() )
+                            m_config.stream << " with unexpected";
+                        else
+                            m_config.stream << "Unexpected";
+                        m_config.stream << " exception with message: '" << assertionResult.getMessage() << "'";
+                    }
                     break;
                 case ResultWas::DidntThrowException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( assertionResult.hasExpression() )
-                        m_config.stream << " because no exception was thrown where one was expected";
-                    else
-                        m_config.stream << "No exception thrown where one was expected";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        if( assertionResult.hasExpression() )
+                            m_config.stream << " because no exception was thrown where one was expected";
+                        else
+                            m_config.stream << "No exception thrown where one was expected";
+                    }
                     break;
                 case ResultWas::Info:
-                    streamVariableLengthText( "info", assertionResult.getMessage() );
+                    {
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "info", assertionResult.getMessage() );
+                    }
                     break;
                 case ResultWas::Warning:
-                    streamVariableLengthText( "warning", assertionResult.getMessage() );
+                    {
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "warning", assertionResult.getMessage() );
+                    }
                     break;
                 case ResultWas::ExplicitFailure:
-                {
-                    TextColour colour( TextColour::Error );
-                    m_config.stream << "failed with message: '" << assertionResult.getMessage() << "'";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        m_config.stream << "failed with message: '" << assertionResult.getMessage() << "'";
+                    }
                     break;
                 case ResultWas::Unknown: // These cases are here to prevent compiler warnings
                 case ResultWas::Ok:

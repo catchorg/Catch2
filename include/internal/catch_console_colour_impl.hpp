@@ -10,11 +10,13 @@
 
 #include "catch_console_colour.hpp"
 
+#if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
+
+#include <unistd.h>
+
 namespace Catch {
 
-#if defined( CATCH_CONFIG_USE_POSIX_COLOUR_CODES )
-
-    // use POSIX console terminal codes
+    // use POSIX/ ANSI console terminal codes
     // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
     
@@ -27,39 +29,45 @@ namespace Catch {
         set( TextColour::None );
     }
 
+    namespace { const char colourEscape = '\033'; }
+
     void TextColour::set( Colours colour ) {
         if( isatty( fileno(stdout) ) ) {
             switch( colour ) {
                 case TextColour::FileName:
-                    std::cout << "\e[1m";    // bold
+                    std::cout << colourEscape << "[0m";    // white
                     break;
                 case TextColour::ResultError:
-                    std::cout << "\e[1;31m"; // bright red
+                    std::cout << colourEscape << "[1;31m"; // bold red
                     break;
                 case TextColour::ResultSuccess:
-                    std::cout << "\e[1;32m"; // bright green
+                    std::cout << colourEscape << "[1;32m"; // bold green
                     break;
                 case TextColour::Error:
-                    std::cout << "\e[0;31m"; // dark red
+                    std::cout << colourEscape << "[0;31m"; // red
                     break;
                 case TextColour::Success:
-                    std::cout << "\e[0;32m"; // dark green
+                    std::cout << colourEscape << "[0;32m"; // green
                     break;
                 case TextColour::OriginalExpression:
-                    std::cout << "\e[0;36m"; // cyan
+                    std::cout << colourEscape << "[0;36m"; // cyan
                     break;
                 case TextColour::ReconstructedExpression:
-                    std::cout << "\e[0;33m"; // yellow
+                    std::cout << colourEscape << "[0;33m"; // yellow
                     break;
                 case TextColour::None:
-                    std::cout << "\e[0m"; // reset
+                    std::cout << colourEscape << "[0m"; // reset to white
             }
         }
     }
-    
+
+} // namespace Catch
+
 #elif defined ( CATCH_PLATFORM_WINDOWS )
 
 #include <windows.h>
+
+namespace Catch {
 
     namespace {
     
@@ -124,14 +132,18 @@ namespace Catch {
         m_impl->set( colour );
     }
 
+} // end namespace Catch
+
 #else
+
+namespace Catch {
 
     TextColour::TextColour( Colours ){}
     TextColour::~TextColour(){}
     void TextColour::set( Colours ){}
 
-#endif
-
 } // end namespace Catch
+
+#endif
 
 #endif // TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
