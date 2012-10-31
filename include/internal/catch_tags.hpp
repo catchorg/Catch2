@@ -74,6 +74,8 @@ namespace Catch {
             m_remainder += c;
         }
 
+        TagExtracter& operator=(const TagExtracter&);
+        
         std::set<std::string>& m_tags;
         std::string m_remainder;
     };
@@ -176,6 +178,8 @@ namespace Catch {
             if( !m_currentTagSet.empty() )
                 m_exp.m_tagSets.push_back( m_currentTagSet );
         }
+
+        TagExpressionParser& operator=(const TagExpressionParser&);
 
         bool m_isNegated;
         TagSet m_currentTagSet;
