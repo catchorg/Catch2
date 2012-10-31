@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-10-12 18:17:54.059305
+ *  Generated: 2012-10-31 19:15:51.281013
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1755,6 +1755,10 @@ namespace Catch {
             m_remainder += c;
         }
 
+        // Suppress assignment operator to avoid warnings from MSVC saying that
+        // it can't be implicitly synthesized.
+        TagExtracter& operator=(const TagExtracter&);
+
         std::set<std::string>& m_tags;
         std::string m_remainder;
     };
@@ -1857,6 +1861,10 @@ namespace Catch {
             if( !m_currentTagSet.empty() )
                 m_exp.m_tagSets.push_back( m_currentTagSet );
         }
+
+        // Suppress assignment operator to avoid warnings from MSVC saying that
+        // it can't be implicitly synthesized.
+        TagExpressionParser& operator=(const TagExpressionParser&);
 
         bool m_isNegated;
         TagSet m_currentTagSet;
