@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-10-31 18:04:01.157950
+ *  Generated: 2012-11-01 08:27:51.720005
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1369,6 +1369,8 @@ namespace Catch {
             m_remainder += c;
         }
 
+        TagExtracter& operator=(const TagExtracter&);
+
         std::set<std::string>& m_tags;
         std::string m_remainder;
     };
@@ -1471,6 +1473,8 @@ namespace Catch {
             if( !m_currentTagSet.empty() )
                 m_exp.m_tagSets.push_back( m_currentTagSet );
         }
+
+        TagExpressionParser& operator=(const TagExpressionParser&);
 
         bool m_isNegated;
         TagSet m_currentTagSet;
@@ -4883,7 +4887,7 @@ namespace Catch {
         if( isatty( fileno(stdout) ) ) {
             switch( colour ) {
                 case TextColour::FileName:
-                    std::cout << colourEscape << "[0m";    // white
+                    std::cout << colourEscape << "[0m";    // white/ normal
                     break;
                 case TextColour::ResultError:
                     std::cout << colourEscape << "[1;31m"; // bold red
@@ -4904,7 +4908,7 @@ namespace Catch {
                     std::cout << colourEscape << "[0;33m"; // yellow
                     break;
                 case TextColour::None:
-                    std::cout << colourEscape << "[0m"; // reset to white
+                    std::cout << colourEscape << "[0m"; // reset
             }
         }
     }
