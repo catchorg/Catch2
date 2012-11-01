@@ -35,7 +35,7 @@ namespace Catch {
         if( isatty( fileno(stdout) ) ) {
             switch( colour ) {
                 case TextColour::FileName:
-                    std::cout << colourEscape << "[0m";    // white
+                    std::cout << colourEscape << "[0m";    // white/ normal
                     break;
                 case TextColour::ResultError:
                     std::cout << colourEscape << "[1;31m"; // bold red
@@ -56,7 +56,7 @@ namespace Catch {
                     std::cout << colourEscape << "[0;33m"; // yellow
                     break;
                 case TextColour::None:
-                    std::cout << colourEscape << "[0m"; // reset to white
+                    std::cout << colourEscape << "[0m"; // reset
             }
         }
     }
