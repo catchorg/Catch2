@@ -109,7 +109,7 @@ namespace Catch {
 
             do {
                 do {
-                    m_currentResult.setLineInfo( m_runningTest->getTestCaseInfo().getLineInfo() );
+                    m_assertionInfo.lineInfo = m_runningTest->getTestCaseInfo().getLineInfo();
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
                 while( m_runningTest->hasUntestedSections() && !aborting() );
@@ -131,25 +131,17 @@ namespace Catch {
         
     private: // IResultCapture
 
-        virtual ResultAction::Value acceptResult( bool result ) {
-            return acceptResult( result ? ResultWas::Ok : ResultWas::ExpressionFailed );
+        virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) {
+            m_assertionInfo = assertionInfo;
         }
-
-        virtual ResultAction::Value acceptResult( ResultWas::OfType result ) {
-            m_currentResult.setResultType( result );            
+        
+        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) {
+            m_assertionInfo = assertionInfo;
+            m_currentResult = assertionResult;
             return actOnCurrentResult();
         }
 
-        virtual ResultAction::Value acceptExpression( const ResultInfoBuilder& resultInfo ) {
-            m_currentResult = resultInfo;
-            return actOnCurrentResult();
-        }
-
-        virtual void acceptMessage( const std::string& msg ) {
-            m_currentResult.setMessage( msg );
-        }
-                
-        virtual void testEnded( const ResultInfo& result ) {
+        virtual void testEnded( const AssertionResult& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
@@ -160,19 +152,19 @@ namespace Catch {
                     std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
                     std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
                     for(; it != itEnd; ++it )
-                        m_reporter->Result( (*it)->getInfo() );
+                        m_reporter->Result( (*it)->buildResult( m_assertionInfo ) );
                 }
                 {
-                    std::vector<ResultInfo>::const_iterator it = m_info.begin();
-                    std::vector<ResultInfo>::const_iterator itEnd = m_info.end();
+                    std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
+                    std::vector<AssertionResult>::const_iterator itEnd = m_assertionResults.end();
                     for(; it != itEnd; ++it )
                         m_reporter->Result( *it );
                 }
-                m_info.clear();
+                m_assertionResults.clear();
             }
             
             if( result.getResultType() == ResultWas::Info )
-                m_info.push_back( result );
+                m_assertionResults.push_back( result );
             else
                 m_reporter->Result( result );
         }
@@ -190,7 +182,7 @@ namespace Catch {
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
 
-            m_currentResult.setLineInfo( lineInfo );
+            m_assertionInfo.lineInfo = lineInfo;
             m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
             
@@ -229,7 +221,7 @@ namespace Catch {
                 : "";
         }
 
-        virtual const ResultInfo* getLastResult() const {
+        virtual const AssertionResult* getLastResult() const {
             return &m_lastResult;            
         }
 
@@ -242,10 +234,11 @@ namespace Catch {
     private:
 
         ResultAction::Value actOnCurrentResult() {
-            m_lastResult = m_currentResult.build();
+            m_lastResult = m_currentResult.buildResult( m_assertionInfo );
             testEnded( m_lastResult );
 
-            m_currentResult = ResultInfoBuilder();
+            m_currentResult = ExpressionResultBuilder();
+            m_assertionInfo = AssertionInfo();
 
             ResultAction::Value action = ResultAction::None;
             
@@ -284,26 +277,29 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                acceptMessage( getRegistryHub().getExceptionTranslatorRegistry().translateActiveException() );
-                acceptResult( ResultWas::ThrewException );
+                m_currentResult
+                    .setResultType( ResultWas::ThrewException )
+                    << translateActiveException();
+                actOnCurrentResult();
             }
-            m_info.clear();
+            m_assertionResults.clear();
         }
 
     private:
         IMutableContext& m_context;
         RunningTest* m_runningTest;
-        ResultInfoBuilder m_currentResult;
-        ResultInfo m_lastResult;
+        ExpressionResultBuilder m_currentResult;
+        AssertionResult m_lastResult;
 
         const Config& m_config;
         Totals m_totals;
         Ptr<IReporter> m_reporter;
         std::vector<ScopedInfo*> m_scopedInfos;
-        std::vector<ResultInfo> m_info;
+        std::vector<AssertionResult> m_assertionResults;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;
+        AssertionInfo m_assertionInfo;
     };
     
 } // end namespace Catch

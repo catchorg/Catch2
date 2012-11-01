@@ -122,6 +122,9 @@ namespace Catch {
             file.swap( other.file );
             std::swap( line, other.line );
         }
+        bool empty() const {
+            return file.empty();
+        }
         
         std::string function;
         std::string file;

@@ -10,7 +10,60 @@
 
 #include "catch_console_colour.hpp"
 
-#ifdef CATCH_PLATFORM_WINDOWS
+#if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
+
+#include <unistd.h>
+
+namespace Catch {
+
+    // use POSIX/ ANSI console terminal codes
+    // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
+    // https://github.com/philsquared/Catch/pull/131
+    
+    TextColour::TextColour( Colours colour ) {
+        if( colour )
+            set( colour );
+    }
+
+    TextColour::~TextColour() {
+        set( TextColour::None );
+    }
+
+    namespace { const char colourEscape = '\033'; }
+
+    void TextColour::set( Colours colour ) {
+        if( isatty( fileno(stdout) ) ) {
+            switch( colour ) {
+                case TextColour::FileName:
+                    std::cout << colourEscape << "[0m";    // white/ normal
+                    break;
+                case TextColour::ResultError:
+                    std::cout << colourEscape << "[1;31m"; // bold red
+                    break;
+                case TextColour::ResultSuccess:
+                    std::cout << colourEscape << "[1;32m"; // bold green
+                    break;
+                case TextColour::Error:
+                    std::cout << colourEscape << "[0;31m"; // red
+                    break;
+                case TextColour::Success:
+                    std::cout << colourEscape << "[0;32m"; // green
+                    break;
+                case TextColour::OriginalExpression:
+                    std::cout << colourEscape << "[0;36m"; // cyan
+                    break;
+                case TextColour::ReconstructedExpression:
+                    std::cout << colourEscape << "[0;33m"; // yellow
+                    break;
+                case TextColour::None:
+                    std::cout << colourEscape << "[0m"; // reset
+            }
+        }
+    }
+
+} // namespace Catch
+
+#elif defined ( CATCH_PLATFORM_WINDOWS )
 
 #include <windows.h>
 
@@ -78,16 +131,17 @@ namespace Catch {
     void TextColour::set( Colours colour ) {
         m_impl->set( colour );
     }
-    
+
 } // end namespace Catch
 
 #else
 
 namespace Catch {
+
     TextColour::TextColour( Colours ){}
     TextColour::~TextColour(){}
     void TextColour::set( Colours ){}
-    
+
 } // end namespace Catch
 
 #endif

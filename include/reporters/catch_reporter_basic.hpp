@@ -159,21 +159,21 @@ namespace Catch {
             m_sectionSpans.pop_back();
         }
         
-        virtual void Result( const ResultInfo& resultInfo ) {
-            if( !m_config.includeSuccessfulResults && resultInfo.getResultType() == ResultWas::Ok )
+        virtual void Result( const AssertionResult& assertionResult ) {
+            if( !m_config.includeSuccessfulResults && assertionResult.getResultType() == ResultWas::Ok )
                 return;
             
             startSpansLazily();
             
-            if( !resultInfo.getFilename().empty() ) {
+            if( !assertionResult.getSourceInfo().empty() ) {
                 TextColour colour( TextColour::FileName );
-                m_config.stream << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
+                m_config.stream << assertionResult.getSourceInfo();
             }
             
-            if( resultInfo.hasExpression() ) {
+            if( assertionResult.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
-                m_config.stream << resultInfo.getExpression();
-                if( resultInfo.ok() ) {
+                m_config.stream << assertionResult.getExpression();
+                if( assertionResult.ok() ) {
                     TextColour successColour( TextColour::Success );
                     m_config.stream << " succeeded";
                 }
@@ -182,45 +182,51 @@ namespace Catch {
                     m_config.stream << " failed";
                 }
             }
-            switch( resultInfo.getResultType() ) {
+            switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( resultInfo.hasExpression() )
-                        m_config.stream << " with unexpected";
-                    else
-                        m_config.stream << "Unexpected";
-                    m_config.stream << " exception with message: '" << resultInfo.getMessage() << "'";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        if( assertionResult.hasExpression() )
+                            m_config.stream << " with unexpected";
+                        else
+                            m_config.stream << "Unexpected";
+                        m_config.stream << " exception with message: '" << assertionResult.getMessage() << "'";
+                    }
                     break;
                 case ResultWas::DidntThrowException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( resultInfo.hasExpression() )
-                        m_config.stream << " because no exception was thrown where one was expected";
-                    else
-                        m_config.stream << "No exception thrown where one was expected";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        if( assertionResult.hasExpression() )
+                            m_config.stream << " because no exception was thrown where one was expected";
+                        else
+                            m_config.stream << "No exception thrown where one was expected";
+                    }
                     break;
                 case ResultWas::Info:
-                    streamVariableLengthText( "info", resultInfo.getMessage() );
+                    {
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "info", assertionResult.getMessage() );
+                    }
                     break;
                 case ResultWas::Warning:
-                    m_config.stream << "warning:\n'" << resultInfo.getMessage() << "'";
+                    {
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "warning", assertionResult.getMessage() );
+                    }
                     break;
                 case ResultWas::ExplicitFailure:
-                {
-                    TextColour colour( TextColour::Error );
-                    m_config.stream << "failed with message: '" << resultInfo.getMessage() << "'";
-                }
+                    {
+                        TextColour colour( TextColour::Error );
+                        m_config.stream << "failed with message: '" << assertionResult.getMessage() << "'";
+                    }
                     break;
                 case ResultWas::Unknown: // These cases are here to prevent compiler warnings
                 case ResultWas::Ok:
                 case ResultWas::FailureBit:
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
-                    if( !resultInfo.hasExpression() ) {
-                        if( resultInfo.ok() ) {
+                    if( !assertionResult.hasExpression() ) {
+                        if( assertionResult.ok() ) {
                             TextColour colour( TextColour::Success );
                             m_config.stream << " succeeded";
                         }
@@ -232,14 +238,15 @@ namespace Catch {
                     break;
             }
             
-            if( resultInfo.hasExpandedExpression() ) {
+            if( assertionResult.hasExpandedExpression() ) {
                 m_config.stream << " for: ";
-                if( resultInfo.getExpandedExpression().size() > 40 )
+                if( assertionResult.getExpandedExpression().size() > 40 ) {
                     m_config.stream << "\n";
-                if( resultInfo.getExpandedExpression().size() < 70 )
-                    m_config.stream << "\t";
+                    if( assertionResult.getExpandedExpression().size() < 70 )
+                        m_config.stream << "\t";
+                }
                 TextColour colour( TextColour::ReconstructedExpression );
-                m_config.stream << resultInfo.getExpandedExpression();
+                m_config.stream << assertionResult.getExpandedExpression();
             }
             m_config.stream << std::endl;        
         }
@@ -309,7 +316,7 @@ namespace Catch {
         void streamVariableLengthText( const std::string& prefix, const std::string& text ) {
             std::string trimmed = trim( text );
             if( trimmed.find_first_of( "\r\n" ) == std::string::npos ) {
-                m_config.stream << "[" << prefix << ": " << trimmed << "]\n";
+                m_config.stream << "[" << prefix << ": " << trimmed << "]";
             }
             else {
                 m_config.stream << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 

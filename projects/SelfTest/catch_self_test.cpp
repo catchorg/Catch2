@@ -31,11 +31,11 @@ namespace Catch{
         return totals;
     }
     
-    void MockReporter::Result( const ResultInfo& resultInfo ) {
-        if( resultInfo.getResultType() == ResultWas::Ok )
+    void MockReporter::Result( const AssertionResult& assertionResult ) {
+        if( assertionResult.getResultType() == ResultWas::Ok )
             return;
         
-        switch( resultInfo.getResultType() ) {          
+        switch( assertionResult.getResultType() ) {          
             case ResultWas::Info:
                 m_log << "Info";
                 break;
@@ -70,14 +70,14 @@ namespace Catch{
                 break;
         }
         
-        if( resultInfo.hasExpression() )
-            m_log << resultInfo.getExpression();
+        if( assertionResult.hasExpression() )
+            m_log << assertionResult.getExpression();
         
-        if( resultInfo.hasMessage() )
-            m_log << "'" << resultInfo.getMessage() << "'";
+        if( assertionResult.hasMessage() )
+            m_log << "'" << assertionResult.getMessage() << "'";
         
-        if( resultInfo.hasExpandedExpression() )
-            m_log << resultInfo.getExpandedExpression();        
+        if( assertionResult.hasExpandedExpression() )
+            m_log << assertionResult.getExpandedExpression();        
     }    
 
     void MockReporter::openLabel( const std::string& label, const std::string& arg ) {

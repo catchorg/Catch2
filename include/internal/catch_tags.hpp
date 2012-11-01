@@ -74,10 +74,8 @@ namespace Catch {
             m_remainder += c;
         }
 
-        // Suppress assignment operator to avoid warnings from MSVC saying that
-        // it can't be implicitly synthesized.
         TagExtracter& operator=(const TagExtracter&);
-
+        
         std::set<std::string>& m_tags;
         std::string m_remainder;
     };
@@ -181,8 +179,6 @@ namespace Catch {
                 m_exp.m_tagSets.push_back( m_currentTagSet );
         }
 
-        // Suppress assignment operator to avoid warnings from MSVC saying that
-        // it can't be implicitly synthesized.
         TagExpressionParser& operator=(const TagExpressionParser&);
 
         bool m_isNegated;

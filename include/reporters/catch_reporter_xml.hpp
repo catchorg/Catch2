@@ -75,42 +75,42 @@ namespace Catch {
             m_currentTestSuccess = true;
         }
         
-        virtual void Result( const Catch::ResultInfo& resultInfo ) {
-            if( !m_config.includeSuccessfulResults && resultInfo.getResultType() == ResultWas::Ok )
+        virtual void Result( const Catch::AssertionResult& assertionResult ) {
+            if( !m_config.includeSuccessfulResults && assertionResult.getResultType() == ResultWas::Ok )
                 return;
 
-            if( resultInfo.hasExpression() ) {
+            if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
-                    .writeAttribute( "success", resultInfo.ok() )
-                    .writeAttribute( "filename", resultInfo.getFilename() )
-                    .writeAttribute( "line", resultInfo.getLine() );
+                    .writeAttribute( "success", assertionResult.ok() )
+                    .writeAttribute( "filename", assertionResult.getSourceInfo().file )
+                    .writeAttribute( "line", assertionResult.getSourceInfo().line );
                 
                 m_xml.scopedElement( "Original" )
-                    .writeText( resultInfo.getExpression() );
+                    .writeText( assertionResult.getExpression() );
                 m_xml.scopedElement( "Expanded" )
-                    .writeText( resultInfo.getExpandedExpression() );
-                m_currentTestSuccess &= resultInfo.ok();
+                    .writeText( assertionResult.getExpandedExpression() );
+                m_currentTestSuccess &= assertionResult.ok();
             }
             
-            switch( resultInfo.getResultType() ) {
+            switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
                     m_xml.scopedElement( "Exception" )
-                        .writeAttribute( "filename", resultInfo.getFilename() )
-                        .writeAttribute( "line", resultInfo.getLine() )
-                        .writeText( resultInfo.getMessage() );
+                        .writeAttribute( "filename", assertionResult.getSourceInfo().file )
+                        .writeAttribute( "line", assertionResult.getSourceInfo().line )
+                        .writeText( assertionResult.getMessage() );
                     m_currentTestSuccess = false;
                     break;
                 case ResultWas::Info:
                     m_xml.scopedElement( "Info" )
-                        .writeText( resultInfo.getMessage() );
+                        .writeText( assertionResult.getMessage() );
                     break;
                 case ResultWas::Warning:
                     m_xml.scopedElement( "Warning" )
-                        .writeText( resultInfo.getMessage() );
+                        .writeText( assertionResult.getMessage() );
                     break;
                 case ResultWas::ExplicitFailure:
                     m_xml.scopedElement( "Failure" )
-                        .writeText( resultInfo.getMessage() );
+                        .writeText( assertionResult.getMessage() );
                     m_currentTestSuccess = false;
                     break;
                 case ResultWas::Unknown:
@@ -121,7 +121,7 @@ namespace Catch {
                 case ResultWas::DidntThrowException:
                     break;
             }            
-            if( resultInfo.hasExpression() )
+            if( assertionResult.hasExpression() )
                 m_xml.endElement();
         }
 

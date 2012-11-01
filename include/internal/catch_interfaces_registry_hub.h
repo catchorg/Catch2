@@ -38,6 +38,8 @@ namespace Catch {
     IRegistryHub& getRegistryHub();
     IMutableRegistryHub& getMutableRegistryHub();
     void cleanUp();
+    std::string translateActiveException();
+
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
