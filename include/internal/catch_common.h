@@ -109,11 +109,6 @@ namespace Catch {
         :   file( _file ),
             line( _line )
         {}
-        SourceLineInfo( const std::string& _function, const std::string& _file, std::size_t _line )
-        :   function( _function ),
-            file( _file ),
-            line( _line )
-        {}
         SourceLineInfo( const SourceLineInfo& other )
         :   file( other.file ),
             line( other.line )
@@ -126,7 +121,6 @@ namespace Catch {
             return file.empty();
         }
         
-        std::string function;
         std::string file;
         std::size_t line;        
     };
