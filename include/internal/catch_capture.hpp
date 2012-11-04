@@ -95,7 +95,6 @@ inline bool isTrue( bool value ){ return value; }
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, shouldNegate ) \
     Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, shouldNegate );
-// !TBD    Catch::getResultCapture().acceptAssertionInfo( INTERNAL_CATCH_ASSERTIONINFO_NAME )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ) \

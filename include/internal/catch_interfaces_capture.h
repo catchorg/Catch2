@@ -35,7 +35,6 @@ namespace Catch {
         virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
         virtual bool shouldDebugBreak() const = 0;
         
-        virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) = 0;
         virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;        

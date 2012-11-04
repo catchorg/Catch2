@@ -16,7 +16,7 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression, bool _shouldNegate )
+        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression = "", bool _shouldNegate = false )
         :   macroName( _macroName ),
             lineInfo( _lineInfo ),
             capturedExpression( _capturedExpression )

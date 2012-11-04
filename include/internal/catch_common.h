@@ -94,7 +94,7 @@ namespace Catch {
         friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
             os << pluraliser.m_count << " " << pluraliser.m_label;
             if( pluraliser.m_count != 1 )
-            os << "s";
+                os << "s";
             return os;
         }
 
@@ -113,10 +113,6 @@ namespace Catch {
         :   file( other.file ),
             line( other.line )
         {}
-        void swap( SourceLineInfo& other ){
-            file.swap( other.file );
-            std::swap( line, other.line );
-        }
         bool empty() const {
             return file.empty();
         }
