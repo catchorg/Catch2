@@ -174,12 +174,10 @@ namespace Catch {
             oss << name << "@" << lineInfo;
 
 
-            m_assertionInfoStack.push_back( m_lastAssertionInfo );
-            m_lastAssertionInfo = AssertionInfo( "SECTION", lineInfo );
-
-
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
+
+            m_lastAssertionInfo.lineInfo = lineInfo;
 
             m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
@@ -198,8 +196,6 @@ namespace Catch {
             }
             m_runningTest->endSection( name );
             m_reporter->EndSection( name, assertions );
-            m_lastAssertionInfo = m_assertionInfoStack.back();
-            m_assertionInfoStack.pop_back();
         }
 
         virtual void pushScopedInfo( ScopedInfo* scopedInfo ) {
@@ -296,7 +292,6 @@ namespace Catch {
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
-        std::vector<AssertionInfo> m_assertionInfoStack;
     };
     
 } // end namespace Catch
