@@ -22,8 +22,9 @@ namespace Catch {
         TestCaseInfo();
 
         TestCaseInfo(   ITestCase* testCase,
-                        const char* name, 
-                        const char* description,
+                        const std::string& className,
+                        const std::string& name,
+                        const std::string& description,
                         const SourceLineInfo& lineInfo );
 
 
@@ -31,6 +32,8 @@ namespace Catch {
         TestCaseInfo( const TestCaseInfo& other );
 
         void invoke() const;
+
+        const std::string& getClassName() const;
         const std::string& getName() const;
         const std::string& getDescription() const;
         const SourceLineInfo& getLineInfo() const;
@@ -46,6 +49,7 @@ namespace Catch {
 
     private:
         Ptr<ITestCase> m_test;
+        std::string m_className;
         std::string m_name;
         std::string m_description;
         std::set<std::string> m_tags;

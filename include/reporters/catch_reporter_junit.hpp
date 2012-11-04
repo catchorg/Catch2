@@ -26,7 +26,10 @@ namespace Catch {
         
         struct TestCaseStats {
         
-            TestCaseStats( const std::string& name = std::string() ) :m_name( name ){}
+            TestCaseStats( const std::string& className, const std::string& name )
+            :   m_className( className ),
+                m_name( name )
+            {}
             
             double      m_timeInSeconds;
             std::string m_status;
@@ -94,7 +97,7 @@ namespace Catch {
         virtual void EndSection( const std::string&, const Counts& ) {}
         
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );            
+            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getClassName(), testInfo.getName() ) );
         }
         
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
