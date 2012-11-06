@@ -282,7 +282,14 @@ namespace Catch {
             // subsequently wrapped lines
             virtual std::string optionDescription() const {
                 return
-                "!TBD";
+                "This option allows one or more tags or tag patterns to be specified.\n"
+                "Each tag is enclosed in square brackets. A series of tags form an AND expression "
+                "wheras a comma seperated sequence forms an OR expression. e.g.:\n\n"
+                "    -g [one][two],[three]\n\n"
+                "This matches all tests tagged [one] and [two], as well as all tests tagged [three].\n\n"
+                "Tags can be negated with the ~ character. This removes matching tests from the set. e.g.:\n\n"
+                "    -g [one]~[two]\n\n"
+                "matches all tests tagged [one], except those also tagged [two]";
             }
             
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
