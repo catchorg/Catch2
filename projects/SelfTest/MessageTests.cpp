@@ -43,7 +43,8 @@ TEST_CASE( "./mixed/message/info/2", "INFO gets logged on failure" )
 
 TEST_CASE( "./failing/message/fail", "FAIL aborts the test" )
 {
-    FAIL( "This is a " << "failure" );    // This should output the message and abort
+    if( true )
+        FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
 
 TEST_CASE( "./failing/message/sections", "Output from all sections is reported" )

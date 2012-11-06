@@ -167,8 +167,10 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
-    INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, stopOnFailure, true );
+    do { \
+        INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, stopOnFailure, true ) \
+    } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
