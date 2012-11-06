@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-11-06 07:51:06.701955
+ *  Generated: 2012-11-06 19:13:05.717033
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -797,6 +797,9 @@ namespace Internal {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
 
+    // This level of indirection allows us to specialise for integer types
+    // to avoid signed/ unsigned warnings
+
     // "base" overload
     template<Operator Op, typename T1, typename T2>
     bool compare( const T1& lhs, const T2& rhs ) {
@@ -848,44 +851,18 @@ namespace Internal {
     }
 
     // pointer to long (when comparing against NULL)
-    template<Operator Op, typename T>
-    bool compare( long lhs, const T* rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( long lhs, T* rhs ) {
+    template<Operator Op, typename T> bool compare( long lhs, T* rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
     }
-
-    template<Operator Op, typename T>
-    bool compare( const T* lhs, long rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( lhs, reinterpret_cast<const T*>( rhs ) );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( T* lhs, long rhs ) {
+    template<Operator Op, typename T> bool compare( T* lhs, long rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 
     // pointer to int (when comparing against NULL)
-    template<Operator Op, typename T>
-    bool compare( int lhs, const T* rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( int lhs, T* rhs ) {
+    template<Operator Op, typename T> bool compare( int lhs, T* rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
     }
-
-    template<Operator Op, typename T>
-    bool compare( const T* lhs, int rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( lhs, reinterpret_cast<const T*>( rhs ) );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( T* lhs, int rhs ) {
+    template<Operator Op, typename T> bool compare( T* lhs, int rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 
@@ -944,7 +921,7 @@ class ExpressionLhs {
 	void operator = ( const ExpressionLhs& );
 
 public:
-    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
+    ExpressionLhs( const T& lhs ) : m_lhs( lhs ) {}
 
     template<typename RhsT>
     ExpressionResultBuilder& operator == ( const RhsT& rhs ) {
