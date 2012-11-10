@@ -38,8 +38,8 @@ namespace Catch {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::negate( bool shouldNegate ) {
-        m_exprComponents.shouldNegate = shouldNegate;
+    ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
+        m_exprComponents.shouldNegate = testFlag( resultDisposition, ResultDisposition::NegateResult );
         return *this;
     }
     ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {

@@ -75,24 +75,8 @@ private:
     ExpressionResultBuilder m_resultBuilder;
 };
 
-struct ResultDisposition {
-    enum Flags {
-        Normal = 0x00,
-
-        ContinueOnFailure = 0x01,
-        NegateResult = 0x02,
-        SuppressFail = 0x04
-    };
-};
-inline ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {
-    return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
-}
-
 // This is just here to avoid compiler warnings with macro constants and boolean literals
 inline bool isTrue( bool value ){ return value; }
-inline bool testFlag( int flags, int bitOrBitsToTest ) { return ( flags & bitOrBitsToTest ) == bitOrBitsToTest; }
-inline bool setFlag( int flags, int bitOrBitsToSet ) { return static_cast<ResultDisposition::Flags>( flags | bitOrBitsToSet ); }
-inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<ResultDisposition::Flags>( flags & ~bitOrBitsToReset ); }
 
 } // end namespace Catch
 
@@ -104,20 +88,20 @@ inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<Re
     if( Catch::ResultAction::Value internal_catch_action = Catch::getResultCapture().acceptExpression( evaluatedExpr, INTERNAL_CATCH_ASSERTIONINFO_NAME )  ) { \
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
-        if( !Catch::testFlag( resultDisposition, Catch::ResultDisposition::ContinueOnFailure ) ) throw Catch::TestFailureException(); \
+        if( !Catch::shouldContinueOnFailure( resultDisposition ) ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, shouldNegate ) \
-    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, shouldNegate );
+#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, resultDisposition ) \
+    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).negate( testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) ), resultDisposition, expr ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).endExpression( resultDisposition ), resultDisposition, expr ); \
         } catch( Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
@@ -140,7 +124,7 @@ inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<Re
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
             expr; \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
@@ -168,14 +152,14 @@ inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<Re
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
         catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
@@ -186,20 +170,20 @@ inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<Re
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( reason, resultType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
         INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, resultDisposition, true ) \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
+    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, Catch::ResultDisposition::Normal ); \
     Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
     INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, resultDisposition ); \
         try { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), resultDisposition, false ); \
         } catch( Catch::TestFailureException& ) { \
