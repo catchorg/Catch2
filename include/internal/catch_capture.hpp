@@ -113,11 +113,11 @@ inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<Re
     Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, shouldNegate );
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( expr, shouldNegate, resultDisposition, macroName ) \
+#define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, shouldNegate ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).negate( shouldNegate ), resultDisposition, expr ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).negate( testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) ), resultDisposition, expr ); \
         } catch( Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
@@ -128,13 +128,13 @@ inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<Re
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_IF( expr, shouldNegate, resultDisposition, macroName ) \
-    INTERNAL_CATCH_TEST( expr, shouldNegate, resultDisposition, macroName ); \
+#define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
+    INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
     if( Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ELSE( expr, shouldNegate, resultDisposition, macroName ) \
-    INTERNAL_CATCH_TEST( expr, shouldNegate, resultDisposition, macroName ); \
+#define INTERNAL_CATCH_ELSE( expr, resultDisposition, macroName ) \
+    INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
     if( !Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
