@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-11-06 19:34:24.321771
+ *  Generated: 2012-11-10 18:44:32.330710
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -643,36 +643,55 @@ inline std::string toString( std::nullptr_t ) {
 
 namespace Catch {
 
-struct ResultWas { enum OfType {
-    Unknown = -1,
-    Ok = 0,
-    Info = 1,
-    Warning = 2,
+    struct ResultWas { enum OfType {
+        Unknown = -1,
+        Ok = 0,
+        Info = 1,
+        Warning = 2,
 
-    FailureBit = 0x10,
+        FailureBit = 0x10,
 
-    ExpressionFailed = FailureBit | 1,
-    ExplicitFailure = FailureBit | 2,
+        ExpressionFailed = FailureBit | 1,
+        ExplicitFailure = FailureBit | 2,
 
-    Exception = 0x100 | FailureBit,
+        Exception = 0x100 | FailureBit,
 
-    ThrewException = Exception | 1,
-    DidntThrowException = Exception | 2
+        ThrewException = Exception | 1,
+        DidntThrowException = Exception | 2
 
-}; };
+    }; };
 
-inline bool isOk( ResultWas::OfType resultType ) {
-    return ( resultType & ResultWas::FailureBit ) == 0;
-}
+    inline bool isOk( ResultWas::OfType resultType ) {
+        return ( resultType & ResultWas::FailureBit ) == 0;
+    }
 
-struct ResultAction { enum Value {
-    None,
-    Failed = 1, // Failure - but no debug break if Debug bit not set
-    Debug = 2,  // If this bit is set, invoke the debugger
-    Abort = 4   // Test run should abort
-}; };
+    struct ResultAction { enum Value {
+        None,
+        Failed = 1, // Failure - but no debug break if Debug bit not set
+        Debug = 2,  // If this bit is set, invoke the debugger
+        Abort = 4   // Test run should abort
+    }; };
 
-}
+    struct ResultDisposition {
+        enum Flags {
+            Normal = 0x00,
+
+            ContinueOnFailure = 0x01,
+            NegateResult = 0x02,
+            SuppressFail = 0x04
+        };
+    };
+    inline ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {
+        return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
+    }
+
+    inline bool testFlag( int flags, int bitOrBitsToTest ) { return ( flags & bitOrBitsToTest ) == bitOrBitsToTest; }
+    inline bool setFlag( int flags, int bitOrBitsToSet ) { return static_cast<ResultDisposition::Flags>( flags | bitOrBitsToSet ); }
+    inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<ResultDisposition::Flags>( flags & ~bitOrBitsToReset ); }
+
+    inline bool shouldContinueOnFailure( int flags ) { return testFlag( flags, ResultDisposition::ContinueOnFailure ); }
+
+} // end namespace Catch
 
 
 namespace Catch {
@@ -886,7 +905,7 @@ public:
     ExpressionResultBuilder& setRhs( const std::string& rhs );
     ExpressionResultBuilder& setOp( const std::string& op );
 
-    ExpressionResultBuilder& negate( bool shouldNegate );
+    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition );
 
     template<typename T>
     ExpressionResultBuilder& operator << ( const T& value ) {
@@ -961,12 +980,12 @@ public:
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
-    ExpressionResultBuilder& negate( bool shouldNegate ) {
+    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition ) {
         bool value = m_lhs ? true : false;
         return m_result
             .setLhs( Catch::toString( value ) )
             .setResultType( value )
-            .negate( shouldNegate );
+            .endExpression( resultDisposition );
     }
 
     // Only simple binary expressions are allowed on the LHS.
@@ -2056,110 +2075,113 @@ inline bool isTrue( bool value ){ return value; }
 #define INTERNAL_CATCH_ASSERTIONINFO_NAME INTERNAL_CATCH_UNIQUE_NAME( __assertionInfo )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_EXPR( evaluatedExpr, stopOnFailure, originalExpr ) \
+#define INTERNAL_CATCH_ACCEPT_EXPR( evaluatedExpr, resultDisposition, originalExpr ) \
     if( Catch::ResultAction::Value internal_catch_action = Catch::getResultCapture().acceptExpression( evaluatedExpr, INTERNAL_CATCH_ASSERTIONINFO_NAME )  ) { \
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
-        if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
+        if( !Catch::shouldContinueOnFailure( resultDisposition ) ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, shouldNegate ) \
-    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, shouldNegate );
+#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, resultDisposition ) \
+    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) );
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, shouldNegate ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).negate( shouldNegate ), stopOnFailure, expr ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).endExpression( resultDisposition ), resultDisposition, expr ); \
         } catch( Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), false, expr ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
+                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, expr ); \
             throw; \
         } \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_IF( expr, shouldNegate, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
+    INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
     if( Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ELSE( expr, shouldNegate, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ); \
+#define INTERNAL_CATCH_ELSE( expr, resultDisposition, macroName ) \
+    INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
     if( !Catch::getResultCapture().getLastResult()->ok() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
             expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
         } \
         catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), resultDisposition, false ); \
         } \
 } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, stopOnFailure ) \
+#define INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
     try { \
         if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
             expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), resultDisposition, false ); \
         } \
     } \
     catch( Catch::TestFailureException& ) { \
         throw; \
     } \
     catch( exceptionType ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
-        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, stopOnFailure ) \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
+        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
-        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, stopOnFailure ) \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
+        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
         catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
+                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
         } \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_MSG( reason, resultType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, stopOnFailure, true ) \
+        INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, resultDisposition, true ) \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
+    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, Catch::ResultDisposition::Normal ); \
     Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
     INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
+#define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, resultDisposition ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), resultDisposition, false ); \
         } catch( Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), false, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
+                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
             throw; \
         } \
     } while( Catch::isTrue( false ) )
@@ -5142,8 +5164,8 @@ namespace Catch {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::negate( bool shouldNegate ) {
-        m_exprComponents.shouldNegate = shouldNegate;
+    ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
+        m_exprComponents.shouldNegate = testFlag( resultDisposition, ResultDisposition::NegateResult );
         return *this;
     }
     ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {
@@ -6303,31 +6325,31 @@ int main (int argc, char * const argv[]) {
 // If this config identifier is defined then all CATCH macros are prefixed with CATCH_
 #ifdef CATCH_CONFIG_PREFIX_ALL
 
-#define CATCH_REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "CATCH_REQUIRE" )
-#define CATCH_REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, true, "CATCH_REQUIRE_FALSE" )
+#define CATCH_REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "CATCH_REQUIRE" )
+#define CATCH_REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::NegateResult, "CATCH_REQUIRE_FALSE" )
 
-#define CATCH_REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., true, "CATCH_REQUIRE_THROWS" )
-#define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, true, "CATCH_REQUIRE_THROWS_AS" )
-#define CATCH_REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, true, "CATCH_REQUIRE_NOTHROW" )
+#define CATCH_REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS" )
+#define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS_AS" )
+#define CATCH_REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_NOTHROW" )
 
-#define CATCH_CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CATCH_CHECK" )
-#define CATCH_CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CATCH_CHECK_FALSE" )
-#define CATCH_CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, false, false, "CATCH_CHECKED_IF" )
-#define CATCH_CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, false, false, "CATCH_CHECKED_ELSE" )
+#define CATCH_CHECK( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK" )
+#define CATCH_CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::NegateResult, "CATCH_CHECK_FALSE" )
+#define CATCH_CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_IF" )
+#define CATCH_CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_ELSE" )
 
-#define CATCH_CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false, "CATCH_CHECK_THROWS" )
-#define CATCH_CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, "CATCH_CHECK_THROWS_AS" )
-#define CATCH_CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, false, "CATCH_CHECK_NOTHROW" )
+#define CATCH_CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS" )
+#define CATCH_CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS_AS" )
+#define CATCH_CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_NOTHROW" )
 
-#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, false, "CATCH_CHECK_THAT" )
-#define CATCH_REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, true, "CATCH_REQUIRE_THAT" )
+#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THAT" )
+#define CATCH_REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THAT" )
 
-#define CATCH_INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, false, "CATCH_INFO" )
-#define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, false, "CATCH_WARN" )
-#define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, true, "CATCH_FAIL" )
-#define CATCH_SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, false, "CATCH_SUCCEED" )
+#define CATCH_INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "CATCH_INFO" )
+#define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, "CATCH_WARN" )
+#define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL" )
+#define CATCH_SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED" )
 #define CATCH_SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg, "CATCH_SCOPED_INFO" )
-#define CATCH_CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, false, "CATCH_CAPTURE" )
+#define CATCH_CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CAPTURE" )
 #define CATCH_SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "CATCH_SCOPED_CAPTURE" )
 
 #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
@@ -6343,36 +6365,37 @@ int main (int argc, char * const argv[]) {
 
 ///////////////
 // Still to be implemented
-//#define CHECK_NOFAIL( expr ) // !TBD - reports violation, but doesn't fail Test
+#define CHECK_NOFAIL( expr ) // !TBD - reports violation, but doesn't fail Test
 
 // If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
 #else
 
-#define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "REQUIRE" )
-#define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, true, "REQUIRE_FALSE" )
+#define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "REQUIRE" )
+#define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::NegateResult, "REQUIRE_FALSE" )
 
-#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., true, "REQUIRE_THROWS" )
-#define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, true, "REQUIRE_THROWS_AS" )
-#define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, true, "REQUIRE_NOTHROW" )
+#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::Normal, "REQUIRE_THROWS" )
+#define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "REQUIRE_THROWS_AS" )
+#define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::Normal, "REQUIRE_NOTHROW" )
 
-#define CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CHECK" )
-#define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CHECK_FALSE" )
-#define CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, false, false, "CHECKED_IF" )
-#define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, false, false, "CHECKED_ELSE" )
+#define CHECK( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK" )
+#define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::NegateResult, "CHECK_FALSE" )
+#define CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_IF" )
+#define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_ELSE" )
+#define CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOFAIL" )
 
-#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false, "CHECK_THROWS" )
-#define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, "CHECK_THROWS_AS" )
-#define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, false, "CHECK_NOTHROW" )
+#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS" )
+#define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS_AS" )
+#define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOTHROW" )
 
-#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, false, "CHECK_THAT" )
-#define REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, true, "REQUIRE_THAT" )
+#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THAT" )
+#define REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::Normal, "REQUIRE_THAT" )
 
-#define INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, false, "INFO" )
-#define WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, false, "WARN" )
-#define FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
-#define SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, false, "SUCCEED" )
+#define INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "INFO" )
+#define WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, "WARN" )
+#define FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL" )
+#define SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED" )
 #define SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg, "SCOPED_INFO" )
-#define CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, false, "CAPTURE" )
+#define CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "CAPTURE" )
 #define SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "SCOPED_CAPTURE" )
 
 #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
