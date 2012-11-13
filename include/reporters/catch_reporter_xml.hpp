@@ -81,7 +81,7 @@ namespace Catch {
 
             if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
-                    .writeAttribute( "success", assertionResult.ok() )
+                    .writeAttribute( "success", assertionResult.succeeded() )
                     .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                     .writeAttribute( "line", assertionResult.getSourceInfo().line );
                 
@@ -89,7 +89,7 @@ namespace Catch {
                     .writeText( assertionResult.getExpression() );
                 m_xml.scopedElement( "Expanded" )
                     .writeText( assertionResult.getExpandedExpression() );
-                m_currentTestSuccess &= assertionResult.ok();
+                m_currentTestSuccess &= assertionResult.succeeded();
             }
             
             switch( assertionResult.getResultType() ) {

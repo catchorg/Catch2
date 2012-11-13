@@ -189,12 +189,12 @@
 [Running: ./succeeding/conditions/ptr]
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:271: p == __null succeeded for: __null == 0
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:272: p == pNULL succeeded for: __null == __null
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:277: p != __null succeeded for: 0x7fff521a90a8 != 0
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:280: cp != __null succeeded for: 0x7fff521a90a8 != 0
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:283: cpc != __null succeeded for: 0x7fff521a90a8 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:277: p != __null succeeded for: 0x7fff50472078 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:280: cp != __null succeeded for: 0x7fff50472078 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:283: cpc != __null succeeded for: 0x7fff50472078 != 0
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:285: returnsNull() == __null succeeded for: {null string} == 0
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:286: returnsConstNull() == __null succeeded for: {null string} == 0
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:288: __null != p succeeded for: 0 != 0x7fff521a90a8
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:288: __null != p succeeded for: 0 != 0x7fff50472078
 [Finished: './succeeding/conditions/ptr' All tests passed (8 assertions in 1 test case)]
 
 [Running: ./succeeding/conditions/not]
@@ -471,6 +471,10 @@
 
 [Finished: './failing/message/sections' 1 test case failed (All 2 assertions failed)]
 
+[Running: ./succeeding/nofail]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MessageTests.cpp:88: 1 == 2 failed - but was ok
+[Finished: './succeeding/nofail' No tests ran]
+
 [Running: ./succeeding/Misc/Sections]
 [Started section: 's1']
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/MiscTests.cpp:25: a != b succeeded for: 1 != 2
@@ -575,7 +579,7 @@
 [Finished: './succeeding/Tricky/std::pair' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./failing/Tricky/non streamable type]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:95: &o1 == &o2 failed for: 0x7fff521a9878 == 0x7fff521a9870
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:95: &o1 == &o2 failed for: 0x7fff50472858 == 0x7fff50472850
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:96: o1 == o2 failed for: {?} == {?}
 [Finished: './failing/Tricky/non streamable type' 1 test case failed (All 2 assertions failed)]
 
@@ -601,7 +605,7 @@
 [Finished: './succeeding/enum/bits' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/boolean member]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:239: obj.prop != __null succeeded for: 0x7fff521a9870 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:239: obj.prop != __null succeeded for: 0x7fff50472850 != 0
 [Finished: './succeeding/boolean member' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/unimplemented static bool]
@@ -635,8 +639,8 @@
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:314: !False succeeded for: true
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:315: !False succeeded for: !false
 [Finished: './succeeding/SafeBool' All tests passed (3 assertions in 1 test case)]
-[End of group: './failing* ./succeeding*'. 25 of 66 test cases failed (72 of 361 assertions failed)]
+[End of group: './failing* ./succeeding*'. 25 of 67 test cases failed (72 of 361 assertions failed)]
 
 
-[Testing completed. 25 of 66 test cases failed (72 of 361 assertions failed)]
+[Testing completed. 25 of 67 test cases failed (72 of 361 assertions failed)]
 

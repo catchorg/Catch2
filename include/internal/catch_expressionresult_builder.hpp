@@ -39,7 +39,7 @@ namespace Catch {
         return *this;
     }
     ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
-        m_exprComponents.shouldNegate = testFlag( resultDisposition, ResultDisposition::NegateResult );
+        m_exprComponents.shouldNegate = shouldNegate( resultDisposition );
         return *this;
     }
     ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {

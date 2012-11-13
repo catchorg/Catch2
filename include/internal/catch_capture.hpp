@@ -94,7 +94,7 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, resultDisposition ) \
-    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) );
+    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, resultDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
@@ -114,12 +114,12 @@ inline bool isTrue( bool value ){ return value; }
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( Catch::getResultCapture().getLastResult()->ok() )
+    if( Catch::getResultCapture().getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( !Catch::getResultCapture().getLastResult()->ok() )
+    if( !Catch::getResultCapture().getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \

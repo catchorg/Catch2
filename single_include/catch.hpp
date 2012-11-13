@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-11-10 18:44:32.330710
+ *  Generated: 2012-11-12 19:04:30.724994
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -690,6 +690,8 @@ namespace Catch {
     inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<ResultDisposition::Flags>( flags & ~bitOrBitsToReset ); }
 
     inline bool shouldContinueOnFailure( int flags ) { return testFlag( flags, ResultDisposition::ContinueOnFailure ); }
+    inline bool shouldNegate( int flags ) { return testFlag( flags, ResultDisposition::NegateResult ); }
+    inline bool shouldSuppressFailure( int flags ) { return testFlag( flags, ResultDisposition::SuppressFail ); }
 
 } // end namespace Catch
 
@@ -699,18 +701,15 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression = "", bool _shouldNegate = false )
-        :   macroName( _macroName ),
-            lineInfo( _lineInfo ),
-            capturedExpression( _capturedExpression )
-        {
-            if( _shouldNegate )
-                capturedExpression = "!" + _capturedExpression;
-        }
+        AssertionInfo(  const std::string& _macroName,
+                        const SourceLineInfo& _lineInfo,
+                        const std::string& _capturedExpression,
+                        ResultDisposition::Flags _resultDisposition );
 
         std::string macroName;
         SourceLineInfo lineInfo;
         std::string capturedExpression;
+        ResultDisposition::Flags resultDisposition;
     };
 
     struct AssertionResultData
@@ -728,7 +727,8 @@ namespace Catch {
         AssertionResult( const AssertionInfo& info, const AssertionResultData& data );
         ~AssertionResult();
 
-        bool ok() const;
+        bool isOk() const;
+        bool succeeded() const;
         ResultWas::OfType getResultType() const;
         bool hasExpression() const;
         bool hasMessage() const;
@@ -2085,7 +2085,7 @@ inline bool isTrue( bool value ){ return value; }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, resultDisposition ) \
-    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, testFlag( resultDisposition, Catch::ResultDisposition::NegateResult ) );
+    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, resultDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
@@ -2105,12 +2105,12 @@ inline bool isTrue( bool value ){ return value; }
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( Catch::getResultCapture().getLastResult()->ok() )
+    if( Catch::getResultCapture().getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( !Catch::getResultCapture().getLastResult()->ok() )
+    if( !Catch::getResultCapture().getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \
@@ -4006,7 +4006,7 @@ namespace Catch {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
-            else if( !result.ok() ) {
+            else if( !result.isOk() ) {
                 m_totals.assertions.failed++;
 
                 {
@@ -4101,7 +4101,7 @@ namespace Catch {
 
             ResultAction::Value action = ResultAction::None;
 
-            if( !m_lastResult.ok() ) {
+            if( !m_lastResult.isOk() ) {
                 action = ResultAction::Failed;
                 if( shouldDebugBreak() )
                     action = (ResultAction::Value)( action | ResultAction::Debug );
@@ -4113,7 +4113,7 @@ namespace Catch {
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             try {
-                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo() );
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo(), "", ResultDisposition::Normal );
                 m_runningTest->reset();
                 Counts prevAssertions = m_totals.assertions;
                 if( m_reporter->shouldRedirectStdout() ) {
@@ -5083,6 +5083,19 @@ namespace Catch {
 
 namespace Catch {
 
+    AssertionInfo::AssertionInfo(   const std::string& _macroName,
+                                    const SourceLineInfo& _lineInfo,
+                                    const std::string& _capturedExpression,
+                                    ResultDisposition::Flags _resultDisposition )
+    :   macroName( _macroName ),
+        lineInfo( _lineInfo ),
+        capturedExpression( _capturedExpression ),
+        resultDisposition( _resultDisposition )
+    {
+        if( shouldNegate( resultDisposition ) )
+            capturedExpression = "!" + _capturedExpression;
+    }
+
     AssertionResult::AssertionResult() {}
 
     AssertionResult::AssertionResult( const AssertionInfo& info, const AssertionResultData& data )
@@ -5092,8 +5105,14 @@ namespace Catch {
 
     AssertionResult::~AssertionResult() {}
 
-    bool AssertionResult::ok() const {
-        return isOk( m_resultData.resultType );
+    // Result was a success
+    bool AssertionResult::succeeded() const {
+        return Catch::isOk( m_resultData.resultType );
+    }
+
+    // Result was a success, or failure is suppressed
+    bool AssertionResult::isOk() const {
+        return Catch::isOk( m_resultData.resultType ) || shouldSuppressFailure( m_info.resultDisposition );
     }
 
     ResultWas::OfType AssertionResult::getResultType() const {
@@ -5165,7 +5184,7 @@ namespace Catch {
         return *this;
     }
     ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
-        m_exprComponents.shouldNegate = testFlag( resultDisposition, ResultDisposition::NegateResult );
+        m_exprComponents.shouldNegate = shouldNegate( resultDisposition );
         return *this;
     }
     ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {
@@ -5522,13 +5541,17 @@ namespace Catch {
             if( assertionResult.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
                 m_config.stream << assertionResult.getExpression();
-                if( assertionResult.ok() ) {
+                if( assertionResult.succeeded() ) {
                     TextColour successColour( TextColour::Success );
                     m_config.stream << " succeeded";
                 }
                 else {
                     TextColour errorColour( TextColour::Error );
                     m_config.stream << " failed";
+                    if( assertionResult.isOk() ) {
+                        TextColour okAnywayColour( TextColour::Success );
+                        m_config.stream << " - but was ok";
+                    }
                 }
             }
             switch( assertionResult.getResultType() ) {
@@ -5575,13 +5598,17 @@ namespace Catch {
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
                     if( !assertionResult.hasExpression() ) {
-                        if( assertionResult.ok() ) {
+                        if( assertionResult.succeeded() ) {
                             TextColour colour( TextColour::Success );
                             m_config.stream << " succeeded";
                         }
                         else {
                             TextColour colour( TextColour::Error );
                             m_config.stream << " failed";
+                            if( assertionResult.isOk() ) {
+                                TextColour okAnywayColour( TextColour::Success );
+                                m_config.stream << " - but was ok";
+                            }
                         }
                     }
                     break;
@@ -5960,7 +5987,7 @@ namespace Catch {
 
             if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
-                    .writeAttribute( "success", assertionResult.ok() )
+                    .writeAttribute( "success", assertionResult.succeeded() )
                     .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                     .writeAttribute( "line", assertionResult.getSourceInfo().line );
 
@@ -5968,7 +5995,7 @@ namespace Catch {
                     .writeText( assertionResult.getExpression() );
                 m_xml.scopedElement( "Expanded" )
                     .writeText( assertionResult.getExpandedExpression() );
-                m_currentTestSuccess &= assertionResult.ok();
+                m_currentTestSuccess &= assertionResult.succeeded();
             }
 
             switch( assertionResult.getResultType() ) {
@@ -6381,7 +6408,7 @@ int main (int argc, char * const argv[]) {
 #define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::NegateResult, "CHECK_FALSE" )
 #define CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_IF" )
 #define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_ELSE" )
-#define CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOFAIL" )
+#define CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CHECK_NOFAIL" )
 
 #define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS" )
 #define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS_AS" )

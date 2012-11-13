@@ -139,7 +139,7 @@ namespace Catch {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
-            else if( !result.ok() ) {
+            else if( !result.isOk() ) {
                 m_totals.assertions.failed++;
 
                 {
@@ -235,7 +235,7 @@ namespace Catch {
 
             ResultAction::Value action = ResultAction::None;
             
-            if( !m_lastResult.ok() ) {
+            if( !m_lastResult.isOk() ) {
                 action = ResultAction::Failed;
                 if( shouldDebugBreak() )
                     action = (ResultAction::Value)( action | ResultAction::Debug );
@@ -247,7 +247,7 @@ namespace Catch {
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             try {
-                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo() );
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo(), "", ResultDisposition::Normal );
                 m_runningTest->reset();
                 Counts prevAssertions = m_totals.assertions;
                 if( m_reporter->shouldRedirectStdout() ) {

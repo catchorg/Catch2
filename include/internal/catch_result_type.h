@@ -57,6 +57,8 @@ namespace Catch {
     inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<ResultDisposition::Flags>( flags & ~bitOrBitsToReset ); }
 
     inline bool shouldContinueOnFailure( int flags ) { return testFlag( flags, ResultDisposition::ContinueOnFailure ); }
+    inline bool shouldNegate( int flags ) { return testFlag( flags, ResultDisposition::NegateResult ); }
+    inline bool shouldSuppressFailure( int flags ) { return testFlag( flags, ResultDisposition::SuppressFail ); }
 
 } // end namespace Catch
 

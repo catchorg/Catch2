@@ -82,3 +82,8 @@ TEST_CASE( "./mixed/message/scoped", "" )
         REQUIRE( i < 10 );
     }
 }
+
+TEST_CASE( "./succeeding/nofail", "The NO_FAIL macro reports a failure but does not fail the test" )
+{
+    CHECK_NOFAIL( 1 == 2 );
+}
