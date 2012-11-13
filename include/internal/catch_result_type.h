@@ -10,6 +10,7 @@
 
 namespace Catch {    
 
+    // ResultWas::OfType enum
     struct ResultWas { enum OfType {
         Unknown = -1,
         Ok = 0,
@@ -32,6 +33,7 @@ namespace Catch {
         return ( resultType & ResultWas::FailureBit ) == 0;
     }
 
+    // ResultAction::Value enum
     struct ResultAction { enum Value {
         None,
         Failed = 1, // Failure - but no debug break if Debug bit not set
@@ -39,26 +41,22 @@ namespace Catch {
         Abort = 4   // Test run should abort    
     }; };
 
-    struct ResultDisposition {
-        enum Flags {
+    // ResultDisposition::Flags enum
+    struct ResultDisposition { enum Flags {
             Normal = 0x00,
 
-            ContinueOnFailure = 0x01,
-            NegateResult = 0x02,
-            SuppressFail = 0x04
-        };
-    };
+            ContinueOnFailure = 0x01,   // Failures fail test, but execution continues
+            NegateResult = 0x02,        // Prefix expressiom with !
+            SuppressFail = 0x04         // Failures are reported but do not fail the test
+    }; };
+
     inline ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {
         return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
     }
 
-    inline bool testFlag( int flags, int bitOrBitsToTest ) { return ( flags & bitOrBitsToTest ) == bitOrBitsToTest; }
-    inline bool setFlag( int flags, int bitOrBitsToSet ) { return static_cast<ResultDisposition::Flags>( flags | bitOrBitsToSet ); }
-    inline bool resetFlag( int flags, int bitOrBitsToReset ) { return static_cast<ResultDisposition::Flags>( flags & ~bitOrBitsToReset ); }
-
-    inline bool shouldContinueOnFailure( int flags ) { return testFlag( flags, ResultDisposition::ContinueOnFailure ); }
-    inline bool shouldNegate( int flags ) { return testFlag( flags, ResultDisposition::NegateResult ); }
-    inline bool shouldSuppressFailure( int flags ) { return testFlag( flags, ResultDisposition::SuppressFail ); }
+    inline bool shouldContinueOnFailure( int flags ) { return flags & ResultDisposition::ContinueOnFailure; }
+    inline bool shouldNegate( int flags ) { return flags & ResultDisposition::NegateResult; }
+    inline bool shouldSuppressFailure( int flags ) { return flags & ResultDisposition::SuppressFail; }
 
 } // end namespace Catch
 
