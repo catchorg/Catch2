@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-11-01 08:27:51.720005
+ *  Generated: 2012-11-13 22:03:59.839085
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -111,7 +111,7 @@ namespace Catch {
         friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
             os << pluraliser.m_count << " " << pluraliser.m_label;
             if( pluraliser.m_count != 1 )
-            os << "s";
+                os << "s";
             return os;
         }
 
@@ -126,24 +126,14 @@ namespace Catch {
         :   file( _file ),
             line( _line )
         {}
-        SourceLineInfo( const std::string& _function, const std::string& _file, std::size_t _line )
-        :   function( _function ),
-            file( _file ),
-            line( _line )
-        {}
         SourceLineInfo( const SourceLineInfo& other )
         :   file( other.file ),
             line( other.line )
         {}
-        void swap( SourceLineInfo& other ){
-            file.swap( other.file );
-            std::swap( line, other.line );
-        }
         bool empty() const {
             return file.empty();
         }
 
-        std::string function;
         std::string file;
         std::size_t line;
     };
@@ -399,13 +389,15 @@ struct AutoReg {
 
     template<typename C>
     AutoReg(    void (C::*method)(),
+                const char* className,
                 const char* name,
                 const char* description,
                 const SourceLineInfo& lineInfo ) {
-        registerTestCase( new MethodTestCase<C>( method ), name, description, lineInfo );
+        registerTestCase( new MethodTestCase<C>( method ), className, name, description, lineInfo );
     }
 
     void registerTestCase(  ITestCase* testCase,
+                            const char* className,
                             const char* name,
                             const char* description,
                             const SourceLineInfo& lineInfo );
@@ -433,7 +425,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
@@ -441,7 +433,7 @@ private:
         struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
             void test(); \
         }; \
-        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, TestName, Desc, CATCH_INTERNAL_LINEINFO ); \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, #ClassName, TestName, Desc, CATCH_INTERNAL_LINEINFO ); \
     } \
     void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
 
@@ -651,36 +643,55 @@ inline std::string toString( std::nullptr_t ) {
 
 namespace Catch {
 
-struct ResultWas { enum OfType {
-    Unknown = -1,
-    Ok = 0,
-    Info = 1,
-    Warning = 2,
+    // ResultWas::OfType enum
+    struct ResultWas { enum OfType {
+        Unknown = -1,
+        Ok = 0,
+        Info = 1,
+        Warning = 2,
 
-    FailureBit = 0x10,
+        FailureBit = 0x10,
 
-    ExpressionFailed = FailureBit | 1,
-    ExplicitFailure = FailureBit | 2,
+        ExpressionFailed = FailureBit | 1,
+        ExplicitFailure = FailureBit | 2,
 
-    Exception = 0x100 | FailureBit,
+        Exception = 0x100 | FailureBit,
 
-    ThrewException = Exception | 1,
-    DidntThrowException = Exception | 2
+        ThrewException = Exception | 1,
+        DidntThrowException = Exception | 2
 
-}; };
+    }; };
 
-inline bool isOk( ResultWas::OfType resultType ) {
-    return ( resultType & ResultWas::FailureBit ) == 0;
-}
+    inline bool isOk( ResultWas::OfType resultType ) {
+        return ( resultType & ResultWas::FailureBit ) == 0;
+    }
 
-struct ResultAction { enum Value {
-    None,
-    Failed = 1, // Failure - but no debug break if Debug bit not set
-    Debug = 2,  // If this bit is set, invoke the debugger
-    Abort = 4   // Test run should abort
-}; };
+    // ResultAction::Value enum
+    struct ResultAction { enum Value {
+        None,
+        Failed = 1, // Failure - but no debug break if Debug bit not set
+        Debug = 2,  // If this bit is set, invoke the debugger
+        Abort = 4   // Test run should abort
+    }; };
 
-}
+    // ResultDisposition::Flags enum
+    struct ResultDisposition { enum Flags {
+            Normal = 0x00,
+
+            ContinueOnFailure = 0x01,   // Failures fail test, but execution continues
+            NegateResult = 0x02,        // Prefix expressiom with !
+            SuppressFail = 0x04         // Failures are reported but do not fail the test
+    }; };
+
+    inline ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {
+        return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
+    }
+
+    inline bool shouldContinueOnFailure( int flags ) { return flags & ResultDisposition::ContinueOnFailure; }
+    inline bool shouldNegate( int flags ) { return flags & ResultDisposition::NegateResult; }
+    inline bool shouldSuppressFailure( int flags ) { return flags & ResultDisposition::SuppressFail; }
+
+} // end namespace Catch
 
 
 namespace Catch {
@@ -688,18 +699,15 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression, bool _shouldNegate )
-        :   macroName( _macroName ),
-            lineInfo( _lineInfo ),
-            capturedExpression( _capturedExpression )
-        {
-            if( _shouldNegate )
-                capturedExpression = "!" + _capturedExpression;
-        }
+        AssertionInfo(  const std::string& _macroName,
+                        const SourceLineInfo& _lineInfo,
+                        const std::string& _capturedExpression,
+                        ResultDisposition::Flags _resultDisposition );
 
         std::string macroName;
         SourceLineInfo lineInfo;
         std::string capturedExpression;
+        ResultDisposition::Flags resultDisposition;
     };
 
     struct AssertionResultData
@@ -717,7 +725,8 @@ namespace Catch {
         AssertionResult( const AssertionInfo& info, const AssertionResultData& data );
         ~AssertionResult();
 
-        bool ok() const;
+        bool isOk() const;
+        bool succeeded() const;
         ResultWas::OfType getResultType() const;
         bool hasExpression() const;
         bool hasMessage() const;
@@ -805,6 +814,9 @@ namespace Internal {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
 
+    // This level of indirection allows us to specialise for integer types
+    // to avoid signed/ unsigned warnings
+
     // "base" overload
     template<Operator Op, typename T1, typename T2>
     bool compare( const T1& lhs, const T2& rhs ) {
@@ -856,44 +868,18 @@ namespace Internal {
     }
 
     // pointer to long (when comparing against NULL)
-    template<Operator Op, typename T>
-    bool compare( long lhs, const T* rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( long lhs, T* rhs ) {
+    template<Operator Op, typename T> bool compare( long lhs, T* rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
     }
-
-    template<Operator Op, typename T>
-    bool compare( const T* lhs, long rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( lhs, reinterpret_cast<const T*>( rhs ) );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( T* lhs, long rhs ) {
+    template<Operator Op, typename T> bool compare( T* lhs, long rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 
     // pointer to int (when comparing against NULL)
-    template<Operator Op, typename T>
-    bool compare( int lhs, const T* rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( int lhs, T* rhs ) {
+    template<Operator Op, typename T> bool compare( int lhs, T* rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
     }
-
-    template<Operator Op, typename T>
-    bool compare( const T* lhs, int rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( lhs, reinterpret_cast<const T*>( rhs ) );
-    }
-
-    template<Operator Op, typename T>
-    bool compare( T* lhs, int rhs ) {
+    template<Operator Op, typename T> bool compare( T* lhs, int rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 
@@ -917,7 +903,7 @@ public:
     ExpressionResultBuilder& setRhs( const std::string& rhs );
     ExpressionResultBuilder& setOp( const std::string& op );
 
-    ExpressionResultBuilder& negate( bool shouldNegate );
+    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition );
 
     template<typename T>
     ExpressionResultBuilder& operator << ( const T& value ) {
@@ -952,7 +938,7 @@ class ExpressionLhs {
 	void operator = ( const ExpressionLhs& );
 
 public:
-    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
+    ExpressionLhs( const T& lhs ) : m_lhs( lhs ) {}
 
     template<typename RhsT>
     ExpressionResultBuilder& operator == ( const RhsT& rhs ) {
@@ -992,12 +978,12 @@ public:
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
-    ExpressionResultBuilder& negate( bool shouldNegate ) {
+    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition ) {
         bool value = m_lhs ? true : false;
         return m_result
             .setLhs( Catch::toString( value ) )
             .setResultType( value )
-            .negate( shouldNegate );
+            .endExpression( resultDisposition );
     }
 
     // Only simple binary expressions are allowed on the LHS.
@@ -1128,7 +1114,6 @@ namespace Catch {
         virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
         virtual bool shouldDebugBreak() const = 0;
 
-        virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) = 0;
         virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) = 0;
 
         virtual std::string getCurrentTestName() const = 0;
@@ -1269,14 +1254,17 @@ namespace Catch {
         TestCaseInfo();
 
         TestCaseInfo(   ITestCase* testCase,
-                        const char* name,
-                        const char* description,
+                        const std::string& className,
+                        const std::string& name,
+                        const std::string& description,
                         const SourceLineInfo& lineInfo );
 
         TestCaseInfo( const TestCaseInfo& other, const std::string& name );
         TestCaseInfo( const TestCaseInfo& other );
 
         void invoke() const;
+
+        const std::string& getClassName() const;
         const std::string& getName() const;
         const std::string& getDescription() const;
         const SourceLineInfo& getLineInfo() const;
@@ -1292,6 +1280,7 @@ namespace Catch {
 
     private:
         Ptr<ITestCase> m_test;
+        std::string m_className;
         std::string m_name;
         std::string m_description;
         std::set<std::string> m_tags;
@@ -1378,12 +1367,12 @@ namespace Catch {
     class Tag {
     public:
         Tag()
-        : m_isNegated( false )
+        :   m_isNegated( false )
         {}
 
         Tag( const std::string& name, bool isNegated )
         :   m_name( name ),
-        m_isNegated( isNegated )
+            m_isNegated( isNegated )
         {}
 
         std::string getName() const {
@@ -2084,109 +2073,113 @@ inline bool isTrue( bool value ){ return value; }
 #define INTERNAL_CATCH_ASSERTIONINFO_NAME INTERNAL_CATCH_UNIQUE_NAME( __assertionInfo )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_EXPR( evaluatedExpr, stopOnFailure, originalExpr ) \
+#define INTERNAL_CATCH_ACCEPT_EXPR( evaluatedExpr, resultDisposition, originalExpr ) \
     if( Catch::ResultAction::Value internal_catch_action = Catch::getResultCapture().acceptExpression( evaluatedExpr, INTERNAL_CATCH_ASSERTIONINFO_NAME )  ) { \
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
-        if( Catch::isTrue( stopOnFailure ) ) throw Catch::TestFailureException(); \
+        if( !Catch::shouldContinueOnFailure( resultDisposition ) ) throw Catch::TestFailureException(); \
         if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, shouldNegate ) \
-    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, shouldNegate );
-// !TBD    Catch::getResultCapture().acceptAssertionInfo( INTERNAL_CATCH_ASSERTIONINFO_NAME )
+#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, resultDisposition ) \
+    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, resultDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, shouldNegate ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).negate( shouldNegate ), stopOnFailure, expr ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).endExpression( resultDisposition ), resultDisposition, expr ); \
         } catch( Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), false, expr ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
+                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, expr ); \
             throw; \
         } \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_IF( expr, shouldNegate, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ); \
-    if( Catch::getResultCapture().getLastResult()->ok() )
+#define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
+    INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
+    if( Catch::getResultCapture().getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ELSE( expr, shouldNegate, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_TEST( expr, shouldNegate, stopOnFailure, macroName ); \
-    if( !Catch::getResultCapture().getLastResult()->ok() )
+#define INTERNAL_CATCH_ELSE( expr, resultDisposition, macroName ) \
+    INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
+    if( !Catch::getResultCapture().getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_NO_THROW( expr, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
             expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
         } \
         catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), resultDisposition, false ); \
         } \
 } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, stopOnFailure ) \
+#define INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
     try { \
         if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
             expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), resultDisposition, false ); \
         } \
     } \
     catch( Catch::TestFailureException& ) { \
         throw; \
     } \
     catch( exceptionType ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), stopOnFailure, false ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS( expr, exceptionType, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
-        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, stopOnFailure ) \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
+        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, stopOnFailure, macroName ) \
+#define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, false ); \
-        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, stopOnFailure ) \
+        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
+        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
         catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
+                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
         } \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_MSG( reason, resultType, stopOnFailure, macroName ) \
-    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
-    INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, stopOnFailure, true );
+#define INTERNAL_CATCH_MSG( reason, resultType, resultDisposition, macroName ) \
+    do { \
+        INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, resultDisposition, true ) \
+    } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, false ); \
+    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, Catch::ResultDisposition::Normal ); \
     Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
     INTERNAL_CATCH_UNIQUE_NAME( info ) << log
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CHECK_THAT( arg, matcher, stopOnFailure, macroName ) \
+#define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, false ); \
+        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, resultDisposition ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), stopOnFailure, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), resultDisposition, false ); \
         } catch( Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), false, false ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
+                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
             throw; \
         } \
     } while( Catch::isTrue( false ) )
@@ -3246,7 +3239,14 @@ namespace Catch {
             // subsequently wrapped lines
             virtual std::string optionDescription() const {
                 return
-                "!TBD";
+                "This option allows one or more tags or tag patterns to be specified.\n"
+                "Each tag is enclosed in square brackets. A series of tags form an AND expression "
+                "wheras a comma seperated sequence forms an OR expression. e.g.:\n\n"
+                "    -g [one][two],[three]\n\n"
+                "This matches all tests tagged [one] and [two], as well as all tests tagged [three].\n\n"
+                "Tags can be negated with the ~ character. This removes matching tests from the set. e.g.:\n\n"
+                "    -g [one]~[two]\n\n"
+                "matches all tests tagged [one], except those also tagged [two]";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
@@ -3974,7 +3974,6 @@ namespace Catch {
 
             do {
                 do {
-                    m_assertionInfo.lineInfo = m_runningTest->getTestCaseInfo().getLineInfo();
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
                 while( m_runningTest->hasUntestedSections() && !aborting() );
@@ -3996,28 +3995,23 @@ namespace Catch {
 
     private: // IResultCapture
 
-        virtual void acceptAssertionInfo( const AssertionInfo& assertionInfo ) {
-            m_assertionInfo = assertionInfo;
-        }
-
         virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) {
-            m_assertionInfo = assertionInfo;
-            m_currentResult = assertionResult;
-            return actOnCurrentResult();
+            m_lastAssertionInfo = assertionInfo;
+            return actOnCurrentResult( assertionResult.buildResult( assertionInfo ) );
         }
 
         virtual void testEnded( const AssertionResult& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
-            else if( !result.ok() ) {
+            else if( !result.isOk() ) {
                 m_totals.assertions.failed++;
 
                 {
                     std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
                     std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
                     for(; it != itEnd; ++it )
-                        m_reporter->Result( (*it)->buildResult( m_assertionInfo ) );
+                        m_reporter->Result( (*it)->buildResult( m_lastAssertionInfo ) );
                 }
                 {
                     std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
@@ -4047,7 +4041,8 @@ namespace Catch {
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
 
-            m_assertionInfo.lineInfo = lineInfo;
+            m_lastAssertionInfo.lineInfo = lineInfo;
+
             m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
 
@@ -4098,16 +4093,13 @@ namespace Catch {
 
     private:
 
-        ResultAction::Value actOnCurrentResult() {
-            m_lastResult = m_currentResult.buildResult( m_assertionInfo );
+        ResultAction::Value actOnCurrentResult( const AssertionResult& result ) {
+            m_lastResult = result;
             testEnded( m_lastResult );
-
-            m_currentResult = ExpressionResultBuilder();
-            m_assertionInfo = AssertionInfo();
 
             ResultAction::Value action = ResultAction::None;
 
-            if( !m_lastResult.ok() ) {
+            if( !m_lastResult.isOk() ) {
                 action = ResultAction::Failed;
                 if( shouldDebugBreak() )
                     action = (ResultAction::Value)( action | ResultAction::Debug );
@@ -4119,6 +4111,7 @@ namespace Catch {
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             try {
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo(), "", ResultDisposition::Normal );
                 m_runningTest->reset();
                 Counts prevAssertions = m_totals.assertions;
                 if( m_reporter->shouldRedirectStdout() ) {
@@ -4142,10 +4135,9 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                m_currentResult
-                    .setResultType( ResultWas::ThrewException )
-                    << translateActiveException();
-                actOnCurrentResult();
+                ExpressionResultBuilder exResult( ResultWas::ThrewException );
+                exResult << translateActiveException();
+                actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
             m_assertionResults.clear();
         }
@@ -4153,7 +4145,6 @@ namespace Catch {
     private:
         IMutableContext& m_context;
         RunningTest* m_runningTest;
-        ExpressionResultBuilder m_currentResult;
         AssertionResult m_lastResult;
 
         const Config& m_config;
@@ -4164,7 +4155,7 @@ namespace Catch {
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;
-        AssertionInfo m_assertionInfo;
+        AssertionInfo m_lastAssertionInfo;
     };
 
 } // end namespace Catch
@@ -4519,22 +4510,37 @@ namespace Catch {
         TestFunction m_fun;
     };
 
+    inline std::string extractClassName( const std::string& classOrQualifiedMethodName ) {
+        std::string className = classOrQualifiedMethodName;
+        if( className[0] == '&' )
+        {
+            std::size_t lastColons = className.rfind( "::" );
+            std::size_t penultimateColons = className.rfind( "::", lastColons-1 );
+            if( penultimateColons == std::string::npos )
+                penultimateColons = 1;
+            className = className.substr( penultimateColons, lastColons-penultimateColons );
+        }
+        return className;
+    }
+
     ///////////////////////////////////////////////////////////////////////////
 
     AutoReg::AutoReg(   TestFunction function,
                         const char* name,
                         const char* description,
                         const SourceLineInfo& lineInfo ) {
-        registerTestCase( new FreeFunctionTestCase( function ), name, description, lineInfo );
+        registerTestCase( new FreeFunctionTestCase( function ), "global", name, description, lineInfo );
     }
 
     AutoReg::~AutoReg() {}
 
     void AutoReg::registerTestCase( ITestCase* testCase,
+                                    const char* classOrQualifiedMethodName,
                                     const char* name,
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
-        getMutableRegistryHub().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+
+        getMutableRegistryHub().registerTest( TestCaseInfo( testCase, extractClassName( classOrQualifiedMethodName ), name, description, lineInfo ) );
     }
 
 } // end namespace Catch
@@ -4714,8 +4720,6 @@ namespace Catch {
     :   m_lineInfo( lineInfo ) {
         std::ostringstream oss;
         oss << lineInfo << "function ";
-        if( !lineInfo.function.empty() )
-            oss << lineInfo.function << " ";
         oss << "not implemented";
         m_what = oss.str();
     }
@@ -5077,6 +5081,19 @@ namespace Catch {
 
 namespace Catch {
 
+    AssertionInfo::AssertionInfo(   const std::string& _macroName,
+                                    const SourceLineInfo& _lineInfo,
+                                    const std::string& _capturedExpression,
+                                    ResultDisposition::Flags _resultDisposition )
+    :   macroName( _macroName ),
+        lineInfo( _lineInfo ),
+        capturedExpression( _capturedExpression ),
+        resultDisposition( _resultDisposition )
+    {
+        if( shouldNegate( resultDisposition ) )
+            capturedExpression = "!" + _capturedExpression;
+    }
+
     AssertionResult::AssertionResult() {}
 
     AssertionResult::AssertionResult( const AssertionInfo& info, const AssertionResultData& data )
@@ -5086,8 +5103,14 @@ namespace Catch {
 
     AssertionResult::~AssertionResult() {}
 
-    bool AssertionResult::ok() const {
-        return isOk( m_resultData.resultType );
+    // Result was a success
+    bool AssertionResult::succeeded() const {
+        return Catch::isOk( m_resultData.resultType );
+    }
+
+    // Result was a success, or failure is suppressed
+    bool AssertionResult::isOk() const {
+        return Catch::isOk( m_resultData.resultType ) || shouldSuppressFailure( m_info.resultDisposition );
     }
 
     ResultWas::OfType AssertionResult::getResultType() const {
@@ -5158,8 +5181,8 @@ namespace Catch {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::negate( bool shouldNegate ) {
-        m_exprComponents.shouldNegate = shouldNegate;
+    ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
+        m_exprComponents.shouldNegate = shouldNegate( resultDisposition );
         return *this;
     }
     ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {
@@ -5221,10 +5244,12 @@ namespace Catch {
 namespace Catch {
 
     TestCaseInfo::TestCaseInfo( ITestCase* testCase,
-                                const char* name,
-                                const char* description,
+                                const std::string& className,
+                                const std::string& name,
+                                const std::string& description,
                                 const SourceLineInfo& lineInfo )
     :   m_test( testCase ),
+        m_className( className ),
         m_name( name ),
         m_description( description ),
         m_lineInfo( lineInfo ),
@@ -5237,6 +5262,7 @@ namespace Catch {
 
     TestCaseInfo::TestCaseInfo()
     :   m_test( NULL ),
+        m_className(),
         m_name(),
         m_description(),
         m_isHidden( false )
@@ -5244,6 +5270,7 @@ namespace Catch {
 
     TestCaseInfo::TestCaseInfo( const TestCaseInfo& other, const std::string& name )
     :   m_test( other.m_test ),
+        m_className( other.m_className ),
         m_name( name ),
         m_description( other.m_description ),
         m_tags( other.m_tags ),
@@ -5253,6 +5280,7 @@ namespace Catch {
 
     TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
     :   m_test( other.m_test ),
+        m_className( other.m_className ),
         m_name( other.m_name ),
         m_description( other.m_description ),
         m_tags( other.m_tags ),
@@ -5264,14 +5292,15 @@ namespace Catch {
         m_test->invoke();
     }
 
+    const std::string& TestCaseInfo::getClassName() const {
+        return m_className;
+    }
     const std::string& TestCaseInfo::getName() const {
         return m_name;
     }
-
     const std::string& TestCaseInfo::getDescription() const {
         return m_description;
     }
-
     const SourceLineInfo& TestCaseInfo::getLineInfo() const {
         return m_lineInfo;
     }
@@ -5294,13 +5323,16 @@ namespace Catch {
 
     void TestCaseInfo::swap( TestCaseInfo& other ) {
         m_test.swap( other.m_test );
+        m_className.swap( other.m_className );
         m_name.swap( other.m_name );
         m_description.swap( other.m_description );
-        m_lineInfo.swap( other.m_lineInfo );
+        std::swap( m_lineInfo, other.m_lineInfo );
     }
 
     bool TestCaseInfo::operator == ( const TestCaseInfo& other ) const {
-        return m_test.get() == other.m_test.get() && m_name == other.m_name;
+        return  m_test.get() == other.m_test.get() &&
+                m_name == other.m_name &&
+                m_className == other.m_className;
     }
 
     bool TestCaseInfo::operator < ( const TestCaseInfo& other ) const {
@@ -5507,13 +5539,17 @@ namespace Catch {
             if( assertionResult.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
                 m_config.stream << assertionResult.getExpression();
-                if( assertionResult.ok() ) {
+                if( assertionResult.succeeded() ) {
                     TextColour successColour( TextColour::Success );
                     m_config.stream << " succeeded";
                 }
                 else {
                     TextColour errorColour( TextColour::Error );
                     m_config.stream << " failed";
+                    if( assertionResult.isOk() ) {
+                        TextColour okAnywayColour( TextColour::Success );
+                        m_config.stream << " - but was ok";
+                    }
                 }
             }
             switch( assertionResult.getResultType() ) {
@@ -5560,13 +5596,17 @@ namespace Catch {
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
                     if( !assertionResult.hasExpression() ) {
-                        if( assertionResult.ok() ) {
+                        if( assertionResult.succeeded() ) {
                             TextColour colour( TextColour::Success );
                             m_config.stream << " succeeded";
                         }
                         else {
                             TextColour colour( TextColour::Error );
                             m_config.stream << " failed";
+                            if( assertionResult.isOk() ) {
+                                TextColour okAnywayColour( TextColour::Success );
+                                m_config.stream << " - but was ok";
+                            }
                         }
                     }
                     break;
@@ -5945,7 +5985,7 @@ namespace Catch {
 
             if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
-                    .writeAttribute( "success", assertionResult.ok() )
+                    .writeAttribute( "success", assertionResult.succeeded() )
                     .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                     .writeAttribute( "line", assertionResult.getSourceInfo().line );
 
@@ -5953,7 +5993,7 @@ namespace Catch {
                     .writeText( assertionResult.getExpression() );
                 m_xml.scopedElement( "Expanded" )
                     .writeText( assertionResult.getExpandedExpression() );
-                m_currentTestSuccess &= assertionResult.ok();
+                m_currentTestSuccess &= assertionResult.succeeded();
             }
 
             switch( assertionResult.getResultType() ) {
@@ -6022,7 +6062,10 @@ namespace Catch {
 
         struct TestCaseStats {
 
-            TestCaseStats( const std::string& name = std::string() ) :m_name( name ){}
+            TestCaseStats( const std::string& className, const std::string& name )
+            :   m_className( className ),
+                m_name( name )
+            {}
 
             double      m_timeInSeconds;
             std::string m_status;
@@ -6090,7 +6133,7 @@ namespace Catch {
         virtual void EndSection( const std::string&, const Counts& ) {}
 
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );
+            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getClassName(), testInfo.getName() ) );
         }
 
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
@@ -6307,31 +6350,32 @@ int main (int argc, char * const argv[]) {
 // If this config identifier is defined then all CATCH macros are prefixed with CATCH_
 #ifdef CATCH_CONFIG_PREFIX_ALL
 
-#define CATCH_REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "CATCH_REQUIRE" )
-#define CATCH_REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, true, "CATCH_REQUIRE_FALSE" )
+#define CATCH_REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "CATCH_REQUIRE" )
+#define CATCH_REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::NegateResult, "CATCH_REQUIRE_FALSE" )
 
-#define CATCH_REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., true, "CATCH_REQUIRE_THROWS" )
-#define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, true, "CATCH_REQUIRE_THROWS_AS" )
-#define CATCH_REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, true, "CATCH_REQUIRE_NOTHROW" )
+#define CATCH_REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS" )
+#define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS_AS" )
+#define CATCH_REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_NOTHROW" )
 
-#define CATCH_CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CATCH_CHECK" )
-#define CATCH_CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CATCH_CHECK_FALSE" )
-#define CATCH_CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, false, false, "CATCH_CHECKED_IF" )
-#define CATCH_CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, false, false, "CATCH_CHECKED_ELSE" )
+#define CATCH_CHECK( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK" )
+#define CATCH_CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::NegateResult, "CATCH_CHECK_FALSE" )
+#define CATCH_CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_IF" )
+#define CATCH_CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_ELSE" )
+#define CATCH_CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CATCH_CHECK_NOFAIL" )
 
-#define CATCH_CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false, "CATCH_CHECK_THROWS" )
-#define CATCH_CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, "CATCH_CHECK_THROWS_AS" )
-#define CATCH_CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, false, "CATCH_CHECK_NOTHROW" )
+#define CATCH_CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS" )
+#define CATCH_CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS_AS" )
+#define CATCH_CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_NOTHROW" )
 
-#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, false, "CATCH_CHECK_THAT" )
-#define CATCH_REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, true, "CATCH_REQUIRE_THAT" )
+#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THAT" )
+#define CATCH_REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THAT" )
 
-#define CATCH_INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, false, "CATCH_INFO" )
-#define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, false, "CATCH_WARN" )
-#define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, true, "CATCH_FAIL" )
-#define CATCH_SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, false, "CATCH_SUCCEED" )
+#define CATCH_INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "CATCH_INFO" )
+#define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, "CATCH_WARN" )
+#define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL" )
+#define CATCH_SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED" )
 #define CATCH_SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg, "CATCH_SCOPED_INFO" )
-#define CATCH_CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, false, "CATCH_CAPTURE" )
+#define CATCH_CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CAPTURE" )
 #define CATCH_SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "CATCH_SCOPED_CAPTURE" )
 
 #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
@@ -6345,38 +6389,35 @@ int main (int argc, char * const argv[]) {
 
 #define CATCH_GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
-///////////////
-// Still to be implemented
-//#define CHECK_NOFAIL( expr ) // !TBD - reports violation, but doesn't fail Test
-
 // If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
 #else
 
-#define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, false, true, "REQUIRE" )
-#define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, true, "REQUIRE_FALSE" )
+#define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "REQUIRE" )
+#define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::NegateResult, "REQUIRE_FALSE" )
 
-#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., true, "REQUIRE_THROWS" )
-#define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, true, "REQUIRE_THROWS_AS" )
-#define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, true, "REQUIRE_NOTHROW" )
+#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::Normal, "REQUIRE_THROWS" )
+#define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "REQUIRE_THROWS_AS" )
+#define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::Normal, "REQUIRE_NOTHROW" )
 
-#define CHECK( expr ) INTERNAL_CATCH_TEST( expr, false, false, "CHECK" )
-#define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, true, false, "CHECK_FALSE" )
-#define CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, false, false, "CHECKED_IF" )
-#define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, false, false, "CHECKED_ELSE" )
+#define CHECK( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK" )
+#define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::NegateResult, "CHECK_FALSE" )
+#define CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_IF" )
+#define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_ELSE" )
+#define CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CHECK_NOFAIL" )
 
-#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., false, "CHECK_THROWS" )
-#define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, false, "CHECK_THROWS_AS" )
-#define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, false, "CHECK_NOTHROW" )
+#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, ..., Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS" )
+#define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS_AS" )
+#define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOTHROW" )
 
-#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, false, "CHECK_THAT" )
-#define REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, true, "REQUIRE_THAT" )
+#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THAT" )
+#define REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::Normal, "REQUIRE_THAT" )
 
-#define INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, false, "INFO" )
-#define WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, false, "WARN" )
-#define FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, true, "FAIL" )
-#define SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, false, "SUCCEED" )
+#define INFO( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "INFO" )
+#define WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, "WARN" )
+#define FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL" )
+#define SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED" )
 #define SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg, "SCOPED_INFO" )
-#define CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, false, "CAPTURE" )
+#define CAPTURE( msg ) INTERNAL_CATCH_MSG( #msg " := " << msg, Catch::ResultWas::Info, Catch::ResultDisposition::ContinueOnFailure, "CAPTURE" )
 #define SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "SCOPED_CAPTURE" )
 
 #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
