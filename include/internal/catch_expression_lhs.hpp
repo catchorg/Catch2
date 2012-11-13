@@ -22,7 +22,7 @@ class ExpressionLhs {
 	void operator = ( const ExpressionLhs& );
 
 public:
-    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
+    ExpressionLhs( const T& lhs ) : m_lhs( lhs ) {}
 
     template<typename RhsT>
     ExpressionResultBuilder& operator == ( const RhsT& rhs ) {
@@ -62,12 +62,12 @@ public:
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
     
-    ExpressionResultBuilder& negate( bool shouldNegate ) {
+    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition ) {
         bool value = m_lhs ? true : false;
         return m_result
             .setLhs( Catch::toString( value ) )
             .setResultType( value )
-            .negate( shouldNegate );
+            .endExpression( resultDisposition );
     }
 
     // Only simple binary expressions are allowed on the LHS.

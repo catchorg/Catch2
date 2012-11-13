@@ -34,6 +34,8 @@ namespace Catch{
     void MockReporter::Result( const AssertionResult& assertionResult ) {
         if( assertionResult.getResultType() == ResultWas::Ok )
             return;
+
+        m_log << assertionResult.getSourceInfo() << " ";
         
         switch( assertionResult.getResultType() ) {          
             case ResultWas::Info:

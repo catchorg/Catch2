@@ -151,7 +151,7 @@ TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produce
         INFO( runner.getLog() );
 //        CHECK( runner.getLog().find( "Unexpected exception" ) != std::string::npos ); // Mock reporter doesn't say this
         CHECK_THAT( runner.getLog(), Contains( "Exception from section" ) );
-//        CHECK( runner.getLog().find( CATCH_GET_LINE_INFO( "the section2" ) ) != std::string::npos ); // Mock reporter doesn't say this
+        CHECK_THAT( runner.getLog(), Contains( CATCH_GET_LINE_INFO( "the section2" ) ) );
     }
     
 }

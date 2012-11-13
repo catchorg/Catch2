@@ -17,8 +17,6 @@ namespace Catch {
     :   m_lineInfo( lineInfo ) {
         std::ostringstream oss;
         oss << lineInfo << "function ";
-        if( !lineInfo.function.empty() )
-            oss << lineInfo.function << " ";
         oss << "not implemented";
         m_what = oss.str();
     }

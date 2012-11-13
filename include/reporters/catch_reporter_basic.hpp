@@ -173,13 +173,17 @@ namespace Catch {
             if( assertionResult.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
                 m_config.stream << assertionResult.getExpression();
-                if( assertionResult.ok() ) {
+                if( assertionResult.succeeded() ) {
                     TextColour successColour( TextColour::Success );
                     m_config.stream << " succeeded";
                 }
                 else {
                     TextColour errorColour( TextColour::Error );
                     m_config.stream << " failed";
+                    if( assertionResult.isOk() ) {
+                        TextColour okAnywayColour( TextColour::Success );
+                        m_config.stream << " - but was ok";
+                    }
                 }
             }
             switch( assertionResult.getResultType() ) {
@@ -226,13 +230,17 @@ namespace Catch {
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
                     if( !assertionResult.hasExpression() ) {
-                        if( assertionResult.ok() ) {
+                        if( assertionResult.succeeded() ) {
                             TextColour colour( TextColour::Success );
                             m_config.stream << " succeeded";
                         }
                         else {
                             TextColour colour( TextColour::Error );
                             m_config.stream << " failed";
+                            if( assertionResult.isOk() ) {
+                                TextColour okAnywayColour( TextColour::Success );
+                                m_config.stream << " - but was ok";
+                            }
                         }
                     }
                     break;

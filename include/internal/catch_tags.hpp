@@ -83,12 +83,12 @@ namespace Catch {
     class Tag {
     public:
         Tag()
-        : m_isNegated( false )
+        :   m_isNegated( false )
         {}
 
         Tag( const std::string& name, bool isNegated )
         :   m_name( name ),
-        m_isNegated( isNegated )
+            m_isNegated( isNegated )
         {}
 
         std::string getName() const {

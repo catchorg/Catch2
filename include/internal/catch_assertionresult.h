@@ -16,18 +16,15 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo( const std::string& _macroName, const SourceLineInfo& _lineInfo, const std::string& _capturedExpression, bool _shouldNegate )
-        :   macroName( _macroName ),
-            lineInfo( _lineInfo ),
-            capturedExpression( _capturedExpression )
-        {
-            if( _shouldNegate )
-                capturedExpression = "!" + _capturedExpression;
-        }
+        AssertionInfo(  const std::string& _macroName,
+                        const SourceLineInfo& _lineInfo,
+                        const std::string& _capturedExpression,
+                        ResultDisposition::Flags _resultDisposition );
 
         std::string macroName;
         SourceLineInfo lineInfo;
         std::string capturedExpression;
+        ResultDisposition::Flags resultDisposition;
     };
 
     struct AssertionResultData
@@ -45,7 +42,8 @@ namespace Catch {
         AssertionResult( const AssertionInfo& info, const AssertionResultData& data );
         ~AssertionResult();
         
-        bool ok() const;
+        bool isOk() const;
+        bool succeeded() const;
         ResultWas::OfType getResultType() const;
         bool hasExpression() const;
         bool hasMessage() const;

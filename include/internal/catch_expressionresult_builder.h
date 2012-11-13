@@ -31,7 +31,7 @@ public:
     ExpressionResultBuilder& setRhs( const std::string& rhs );
     ExpressionResultBuilder& setOp( const std::string& op );
 
-    ExpressionResultBuilder& negate( bool shouldNegate );
+    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition );
 
     template<typename T>
     ExpressionResultBuilder& operator << ( const T& value ) {

@@ -107,23 +107,38 @@ namespace Catch {
 
         TestFunction m_fun;
     };
-        
+
+    inline std::string extractClassName( const std::string& classOrQualifiedMethodName ) {
+        std::string className = classOrQualifiedMethodName;
+        if( className[0] == '&' )
+        {
+            std::size_t lastColons = className.rfind( "::" );
+            std::size_t penultimateColons = className.rfind( "::", lastColons-1 );
+            if( penultimateColons == std::string::npos )
+                penultimateColons = 1;
+            className = className.substr( penultimateColons, lastColons-penultimateColons );
+        }
+        return className;
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     
     AutoReg::AutoReg(   TestFunction function, 
                         const char* name,
                         const char* description,
                         const SourceLineInfo& lineInfo ) {
-        registerTestCase( new FreeFunctionTestCase( function ), name, description, lineInfo );
+        registerTestCase( new FreeFunctionTestCase( function ), "global", name, description, lineInfo );
     }    
     
     AutoReg::~AutoReg() {}
     
-    void AutoReg::registerTestCase( ITestCase* testCase, 
-                                    const char* name, 
+    void AutoReg::registerTestCase( ITestCase* testCase,
+                                    const char* classOrQualifiedMethodName,
+                                    const char* name,
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
-        getMutableRegistryHub().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+        
+        getMutableRegistryHub().registerTest( TestCaseInfo( testCase, extractClassName( classOrQualifiedMethodName ), name, description, lineInfo ) );
     }
     
 } // end namespace Catch

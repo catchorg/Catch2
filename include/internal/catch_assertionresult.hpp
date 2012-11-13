@@ -12,6 +12,20 @@
 
 namespace Catch {
 
+
+    AssertionInfo::AssertionInfo(   const std::string& _macroName,
+                                    const SourceLineInfo& _lineInfo,
+                                    const std::string& _capturedExpression,
+                                    ResultDisposition::Flags _resultDisposition )
+    :   macroName( _macroName ),
+        lineInfo( _lineInfo ),
+        capturedExpression( _capturedExpression ),
+        resultDisposition( _resultDisposition )
+    {
+        if( shouldNegate( resultDisposition ) )
+            capturedExpression = "!" + _capturedExpression;
+    }
+
     AssertionResult::AssertionResult() {}
 
     AssertionResult::AssertionResult( const AssertionInfo& info, const AssertionResultData& data )
@@ -21,8 +35,14 @@ namespace Catch {
 
     AssertionResult::~AssertionResult() {}
 
-    bool AssertionResult::ok() const {
-        return isOk( m_resultData.resultType );
+    // Result was a success
+    bool AssertionResult::succeeded() const {
+        return Catch::isOk( m_resultData.resultType );
+    }
+
+    // Result was a success, or failure is suppressed
+    bool AssertionResult::isOk() const {
+        return Catch::isOk( m_resultData.resultType ) || shouldSuppressFailure( m_info.resultDisposition );
     }
 
     ResultWas::OfType AssertionResult::getResultType() const {
