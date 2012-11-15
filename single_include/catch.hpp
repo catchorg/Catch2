@@ -1,5 +1,6 @@
 /*
- *  Generated: 2012-11-13 21:45:42.830677
+ *  CATCH v0.9 build 1 (integration branch)
+ *  Generated: 2012-11-15 22:13:35.214657
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4160,6 +4161,22 @@ namespace Catch {
 
 } // end namespace Catch
 
+// #included from: internal/catch_version.h
+#define TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
+
+namespace Catch {
+
+    // Versioning information
+    struct Version {
+        const unsigned int MajorVersion;
+        const unsigned int MinorVersion;
+        const unsigned int BuildNumber;
+        const std::string BranchName;
+    };
+
+    extern Version libraryVersion;
+}
+
 #include <fstream>
 #include <stdlib.h>
 #include <limits>
@@ -4366,7 +4383,13 @@ namespace Catch {
         }
 
         if( !displayedSpecificOption ) {
-            std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
+            std::cout   << "\nCATCH v"    << libraryVersion.MajorVersion << "."
+                                        << libraryVersion.MinorVersion << " build "
+                                        << libraryVersion.BuildNumber;
+            if( libraryVersion.BranchName != "master" )
+                std::cout << " (" << libraryVersion.BranchName << " branch)";
+
+            std::cout << "\n\n" << exeName << " is a CATCH host application. Options are as follows:\n\n";
             showUsage( std::cout );
         }
     }
@@ -5345,6 +5368,15 @@ namespace Catch {
     }
 
 } // end namespace Catch
+
+// #included from: catch_version.hpp
+#define TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED
+
+namespace Catch {
+
+    // These numbers are maintained by a script
+    Version libraryVersion = { 0, 9, 1, "integration" };
+}
 
 // #included from: ../reporters/catch_reporter_basic.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED

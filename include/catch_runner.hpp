@@ -12,6 +12,7 @@
 #include "internal/catch_list.hpp"
 #include "internal/catch_runner_impl.hpp"
 #include "internal/catch_test_spec.h"
+#include "internal/catch_version.h"
 
 #include <fstream>
 #include <stdlib.h>
@@ -219,7 +220,13 @@ namespace Catch {
         }
 
         if( !displayedSpecificOption ) {
-            std::cout << exeName << " is a CATCH host application. Options are as follows:\n\n";
+            std::cout   << "\nCATCH v"    << libraryVersion.MajorVersion << "."
+                                        << libraryVersion.MinorVersion << " build "
+                                        << libraryVersion.BuildNumber;
+            if( libraryVersion.BranchName != "master" )
+                std::cout << " (" << libraryVersion.BranchName << " branch)";
+
+            std::cout << "\n\n" << exeName << " is a CATCH host application. Options are as follows:\n\n";
             showUsage( std::cout );
         }
     }
