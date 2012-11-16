@@ -938,7 +938,7 @@ class ExpressionLhs {
 	void operator = ( const ExpressionLhs& );
 
 public:
-    ExpressionLhs( const T& lhs ) : m_lhs( lhs ) {}
+    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
 
     template<typename RhsT>
     ExpressionResultBuilder& operator == ( const RhsT& rhs ) {
