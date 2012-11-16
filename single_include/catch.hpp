@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 2 (integration branch)
- *  Generated: 2012-11-16 08:44:53.410120
+ *  CATCH v0.9 build 3 (integration branch)
+ *  Generated: 2012-11-16 21:01:18.673384
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -939,7 +939,7 @@ class ExpressionLhs {
 	void operator = ( const ExpressionLhs& );
 
 public:
-    ExpressionLhs( const T& lhs ) : m_lhs( lhs ) {}
+    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
 
     template<typename RhsT>
     ExpressionResultBuilder& operator == ( const RhsT& rhs ) {
@@ -5375,7 +5375,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion = { 0, 9, 2, "integration" };
+    Version libraryVersion = { 0, 9, 3, "integration" };
 }
 
 // #included from: ../reporters/catch_reporter_basic.hpp
