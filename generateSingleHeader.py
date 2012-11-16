@@ -92,7 +92,4 @@ def generateSingleInclude():
 	print '#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED'
 	print
 
-#v = Version()
-#v.incrementBuildNumber()
-#v.updateVersionFile()
 generateSingleInclude()
