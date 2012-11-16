@@ -79,8 +79,11 @@ namespace Catch {
 
         virtual void StartTesting(){}
         
-        virtual void StartGroup( const std::string& groupName ) {            
-            m_statsForSuites.push_back( Stats( groupName ) );
+        virtual void StartGroup( const std::string& groupName ) {
+            if( groupName.empty() )
+                m_statsForSuites.push_back( Stats( "all tests" ) );
+            else
+                m_statsForSuites.push_back( Stats( groupName ) );
             m_currentStats = &m_statsForSuites.back();
         }
 
@@ -188,8 +191,6 @@ namespace Catch {
             std::vector<TestCaseStats>::const_iterator it = stats.m_testCaseStats.begin();
             std::vector<TestCaseStats>::const_iterator itEnd = stats.m_testCaseStats.end();
             for(; it != itEnd; ++it ) {
-                xml.writeBlankLine();
-                xml.writeComment( "Test case" );
                 
                 XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
                 xml.writeAttribute( "classname", it->m_className );
