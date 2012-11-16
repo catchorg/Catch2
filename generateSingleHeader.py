@@ -14,6 +14,7 @@ seenHeaders = set([])
 catchPath = os.path.realpath(os.path.dirname(sys.argv[0]))
 rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
+readmePath = os.path.join( catchPath, "README" )
 #outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
 
 def parseFile( path, filename ):
@@ -72,10 +73,22 @@ class Version:
 		for line in lines:
 			f.write( line + "\n" )
 
+	def updateReadmeFile(self):
+		f = open( readmePath, 'r' )
+		lines = []
+		for line in f:
+			lines.append( line.rstrip() )
+		f.close()
+		f = open( readmePath, 'w' )
+		f.write( 'CATCH v{0}.{1} build {2} ({3} branch)\n'.format( self.majorVersion, self.minorVersion, self.buildNumber, self.branchName ) )
+		for line in lines[1:]:
+			f.write( line + "\n" )
+
 def generateSingleInclude():
 	v = Version()
 	v.incrementBuildNumber()
 	v.updateVersionFile()
+	v.updateReadmeFile()
 	print "/*"
 	print " *  CATCH v{0}.{1} build {2} ({3} branch)".format( v.majorVersion, v.minorVersion, v.buildNumber, v.branchName )
 	print " *  Generated: " + str( datetime.datetime.now() )
