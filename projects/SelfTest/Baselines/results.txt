@@ -196,12 +196,12 @@
 [Running: ./succeeding/conditions/ptr]
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:285: p == __null succeeded for: __null == 0
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:286: p == pNULL succeeded for: __null == __null
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:291: p != __null succeeded for: 0x7fff5eb450b8 != 0
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:294: cp != __null succeeded for: 0x7fff5eb450b8 != 0
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:297: cpc != __null succeeded for: 0x7fff5eb450b8 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:291: p != __null succeeded for: 0x7fff523800e8 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:294: cp != __null succeeded for: 0x7fff523800e8 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:297: cpc != __null succeeded for: 0x7fff523800e8 != 0
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:299: returnsNull() == __null succeeded for: {null string} == 0
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:300: returnsConstNull() == __null succeeded for: {null string} == 0
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:302: __null != p succeeded for: 0 != 0x7fff5eb450b8
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ConditionTests.cpp:302: __null != p succeeded for: 0 != 0x7fff523800e8
 [Finished: './succeeding/conditions/ptr' All tests passed (8 assertions in 1 test case)]
 
 [Running: ./succeeding/conditions/not]
@@ -242,68 +242,73 @@
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:52: Unexpected exception with message: 'unexpected exception'
 [Finished: './failing/exceptions/implicit' 1 test case failed (1 assertion failed)]
 
+[Running: ./failing/exceptions/implicit/2]
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:60: 1 == 1 succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:60: {Unknown expression after this line} failed with unexpected exception with message: 'unexpected exception'
+[Finished: './failing/exceptions/implicit/2' 1 test case failed (1 of 2 assertions failed)]
+
 [Running: ./failing/exceptions/custom]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:95: Unexpected exception with message: 'custom exception'
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:102: Unexpected exception with message: 'custom exception'
 [Finished: './failing/exceptions/custom' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/nothrow]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:102: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:109: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
 [Finished: './failing/exceptions/custom/nothrow' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/throw]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:107: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:114: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
 [Finished: './failing/exceptions/custom/throw' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/double]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:111: Unexpected exception with message: '3.14'
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:118: Unexpected exception with message: '3.14'
 [Finished: './failing/exceptions/custom/double' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/in-section]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:125: Unexpected exception with message: 'Exception from section'
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:132: Unexpected exception with message: 'Exception from section'
 [Finished: './failing/exceptions/in-section' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/exceptions/error messages]
 
 [Started section: 'custom, unexpected']
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:145: runner.getLog() Contains( "custom exception" ) succeeded for: 
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:152: runner.getLog() Contains( "custom exception" ) succeeded for: 
 "\[g] ./failing/exceptions/custom
  \[tc] ./failing/exceptions/custom
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:95:  ThrewException'custom exception' /[tc] ./failing/exceptions/custom
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:102:  ThrewException'custom exception' /[tc] ./failing/exceptions/custom
 /[g] ./failing/exceptions/custom
 " contains: "custom exception"
 [End of section: 'custom, unexpected' 1 assertion passed]
 
 [Started section: 'in section']
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:153: runner.getLog() Contains( "Exception from section" ) succeeded for: 
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:160: runner.getLog() Contains( "Exception from section" ) succeeded for: 
 "\[g] ./failing/exceptions/in-section
  \[tc] ./failing/exceptions/in-section
   \ [s] the section
    \ [s] the section2
    / [s] the section2
   / [s] the section
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:125:  ThrewException'Exception from section'  \ [s] the section
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
   / [s] the section
  /[tc] ./failing/exceptions/in-section
 /[g] ./failing/exceptions/in-section
 " contains: "Exception from section"
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:154: runner.getLog() Contains( ::Catch::LineInfoRegistry::get().infoForName( "the section2" ) ) succeeded for: 
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:161: runner.getLog() Contains( ::Catch::LineInfoRegistry::get().infoForName( "the section2" ) ) succeeded for: 
 "\[g] ./failing/exceptions/in-section
  \[tc] ./failing/exceptions/in-section
   \ [s] the section
    \ [s] the section2
    / [s] the section2
   / [s] the section
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:125:  ThrewException'Exception from section'  \ [s] the section
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
   / [s] the section
  /[tc] ./failing/exceptions/in-section
 /[g] ./failing/exceptions/in-section
-" contains: "/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:125: "
+" contains: "/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:132: "
 [End of section: 'in section' All 2 assertions passed]
 
 [Finished: './succeeding/exceptions/error messages' All tests passed (3 assertions in 1 test case)]
 
 [Running: ./succeeding/exceptions/notimplemented]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:165: thisFunctionNotImplemented( 7 ) succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/ExceptionTests.cpp:172: thisFunctionNotImplemented( 7 ) succeeded
 [Finished: './succeeding/exceptions/notimplemented' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/generators/1]
@@ -609,7 +614,7 @@ Some information
 [Finished: './inprogress/failing/Tricky/compound lhs' No tests ran]
 
 [Running: ./failing/Tricky/non streamable type]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:95: &o1 == &o2 failed for: 0x7fff5eb45898 == 0x7fff5eb45890
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:95: &o1 == &o2 failed for: 0x7fff523808c8 == 0x7fff523808c0
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:96: o1 == o2 failed for: {?} == {?}
 [Finished: './failing/Tricky/non streamable type' 1 test case failed (All 2 assertions failed)]
 
@@ -635,7 +640,7 @@ Some information
 [Finished: './succeeding/enum/bits' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/boolean member]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:239: obj.prop != __null succeeded for: 0x7fff5eb45890 != 0
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:239: obj.prop != __null succeeded for: 0x7fff523808c0 != 0
 [Finished: './succeeding/boolean member' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/unimplemented static bool]
@@ -669,8 +674,8 @@ Some information
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:314: !False succeeded for: true
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp:315: !False succeeded for: !false
 [Finished: './succeeding/SafeBool' All tests passed (3 assertions in 1 test case)]
-[End of group: '*succeeding* *failing*'. 25 of 72 test cases failed (72 of 368 assertions failed)]
+[End of group: '*succeeding* *failing*'. 26 of 73 test cases failed (73 of 370 assertions failed)]
 
 
-[Testing completed. 25 of 72 test cases failed (72 of 368 assertions failed)]
+[Testing completed. 26 of 73 test cases failed (73 of 370 assertions failed)]
 

@@ -161,6 +161,9 @@ namespace Catch {
                 m_assertionResults.push_back( result );
             else
                 m_reporter->Result( result );
+
+            // Reset AssertionInfo
+            m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after this line}" , m_lastAssertionInfo.resultDisposition );
         }
         
         virtual bool sectionStarted (

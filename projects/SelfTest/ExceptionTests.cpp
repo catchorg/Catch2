@@ -55,6 +55,13 @@ TEST_CASE_NORETURN( "./failing/exceptions/implicit", "When unchecked exceptions 
     /*NOTREACHED*/    
 }
 
+TEST_CASE_NORETURN( "./failing/exceptions/implicit/2", "An unchecked exception reports the line of the last assertion" )
+{
+    CHECK( 1 == 1 );
+    throw std::domain_error( "unexpected exception" );
+    /*NOTREACHED*/
+}
+
 TEST_CASE( "./succeeding/exceptions/implicit", "When unchecked exceptions are thrown, but caught, they do not affect the test" )
 {
     try
