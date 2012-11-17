@@ -54,9 +54,9 @@ namespace Catch {
         return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
     }
 
-    inline bool shouldContinueOnFailure( int flags ) { return flags & ResultDisposition::ContinueOnFailure; }
-    inline bool shouldNegate( int flags ) { return flags & ResultDisposition::NegateResult; }
-    inline bool shouldSuppressFailure( int flags ) { return flags & ResultDisposition::SuppressFail; }
+    inline bool shouldContinueOnFailure( int flags )    { return ( flags & ResultDisposition::ContinueOnFailure ) != 0; }
+    inline bool shouldNegate( int flags )               { return ( flags & ResultDisposition::NegateResult ) != 0; }
+    inline bool shouldSuppressFailure( int flags )      { return ( flags & ResultDisposition::SuppressFail ) != 0; }
 
 } // end namespace Catch
 
