@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 3 (integration branch)
- *  Generated: 2012-11-16 21:01:18.673384
+ *  CATCH v0.9 build 4 (integration branch)
+ *  Generated: 2012-11-17 10:48:52.075284
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -688,9 +688,9 @@ namespace Catch {
         return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
     }
 
-    inline bool shouldContinueOnFailure( int flags ) { return flags & ResultDisposition::ContinueOnFailure; }
-    inline bool shouldNegate( int flags ) { return flags & ResultDisposition::NegateResult; }
-    inline bool shouldSuppressFailure( int flags ) { return flags & ResultDisposition::SuppressFail; }
+    inline bool shouldContinueOnFailure( int flags )    { return ( flags & ResultDisposition::ContinueOnFailure ) != 0; }
+    inline bool shouldNegate( int flags )               { return ( flags & ResultDisposition::NegateResult ) != 0; }
+    inline bool shouldSuppressFailure( int flags )      { return ( flags & ResultDisposition::SuppressFail ) != 0; }
 
 } // end namespace Catch
 
@@ -5375,7 +5375,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion = { 0, 9, 3, "integration" };
+    Version libraryVersion = { 0, 9, 4, "integration" };
 }
 
 // #included from: ../reporters/catch_reporter_basic.hpp
