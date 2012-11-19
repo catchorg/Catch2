@@ -81,7 +81,7 @@ namespace Catch {
         
         virtual void StartGroup( const std::string& groupName ) {
             if( groupName.empty() )
-                m_statsForSuites.push_back( Stats( "all tests" ) );
+                m_statsForSuites.push_back( Stats( m_config.name ) );
             else
                 m_statsForSuites.push_back( Stats( groupName ) );
             m_currentStats = &m_statsForSuites.back();

@@ -170,7 +170,7 @@ namespace Catch {
                     }
                     break;
                 case Expected::ToFail:
-                    if( totals.assertions.passed > 0 ) {
+                    if( totals.assertions.failed == 0 ) {
                         INFO( runner.getOutput() );
                         FAIL( "Expected test case '" 
                              << testCase.getName() 

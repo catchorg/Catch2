@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 4 (integration branch)
- *  Generated: 2012-11-17 10:48:52.075284
+ *  CATCH v0.9 build 5 (integration branch)
+ *  Generated: 2012-11-19 19:58:11.700412
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3029,7 +3029,11 @@ namespace Catch {
         CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
         std::string exeName() const {
-            return m_argv[0];
+            std::string exeName = m_argv[0];
+            std::string::size_type pos = exeName.find_last_of( "/\\" );
+            if( pos != std::string::npos )
+                exeName = exeName.substr( pos+1 );
+            return exeName;
         }
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
@@ -3601,6 +3605,9 @@ namespace Catch {
         }
 
         void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+            config.name = parser.exeName();
+            if( endsWith( config.name, ".exe" ) )
+               config.name = config.name.substr( 0, config.name.size()-4 );
             for( const_iterator it = m_parsers.begin(); it != m_parsers.end(); ++it )
                 (*it)->parseIntoConfig( parser, config );
         }
@@ -4027,6 +4034,9 @@ namespace Catch {
                 m_assertionResults.push_back( result );
             else
                 m_reporter->Result( result );
+
+            // Reset AssertionInfo
+            m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after this line}" , m_lastAssertionInfo.resultDisposition );
         }
 
         virtual bool sectionStarted (
@@ -4362,12 +4372,6 @@ namespace Catch {
     }
 
     inline void showHelp( const CommandParser& parser ) {
-        std::string exeName = parser.exeName();
-        std::string::size_type pos = exeName.find_last_of( "/\\" );
-        if( pos != std::string::npos ) {
-            exeName = exeName.substr( pos+1 );
-        }
-
         AllOptions options;
         Options::HelpOptionParser helpOpt;
         bool displayedSpecificOption = false;
@@ -4389,7 +4393,7 @@ namespace Catch {
             if( libraryVersion.BranchName != "master" )
                 std::cout << " (" << libraryVersion.BranchName << " branch)";
 
-            std::cout << "\n\n" << exeName << " is a CATCH host application. Options are as follows:\n\n";
+            std::cout << "\n\n" << parser.exeName() << " is a CATCH host application. Options are as follows:\n\n";
             showUsage( std::cout );
         }
     }
@@ -5375,7 +5379,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion = { 0, 9, 4, "integration" };
+    Version libraryVersion = { 0, 9, 5, "integration" };
 }
 
 // #included from: ../reporters/catch_reporter_basic.hpp
@@ -6149,7 +6153,7 @@ namespace Catch {
 
         virtual void StartGroup( const std::string& groupName ) {
             if( groupName.empty() )
-                m_statsForSuites.push_back( Stats( "all tests" ) );
+                m_statsForSuites.push_back( Stats( m_config.name ) );
             else
                 m_statsForSuites.push_back( Stats( groupName ) );
             m_currentStats = &m_statsForSuites.back();

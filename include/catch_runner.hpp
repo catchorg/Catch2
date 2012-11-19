@@ -199,12 +199,6 @@ namespace Catch {
     }
 
     inline void showHelp( const CommandParser& parser ) {
-        std::string exeName = parser.exeName();
-        std::string::size_type pos = exeName.find_last_of( "/\\" );
-        if( pos != std::string::npos ) {
-            exeName = exeName.substr( pos+1 );
-        }
-
         AllOptions options;
         Options::HelpOptionParser helpOpt;
         bool displayedSpecificOption = false;
@@ -226,7 +220,7 @@ namespace Catch {
             if( libraryVersion.BranchName != "master" )
                 std::cout << " (" << libraryVersion.BranchName << " branch)";
 
-            std::cout << "\n\n" << exeName << " is a CATCH host application. Options are as follows:\n\n";
+            std::cout << "\n\n" << parser.exeName() << " is a CATCH host application. Options are as follows:\n\n";
             showUsage( std::cout );
         }
     }

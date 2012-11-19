@@ -70,7 +70,11 @@ namespace Catch {
         CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
 
         std::string exeName() const {
-            return m_argv[0];
+            std::string exeName = m_argv[0];
+            std::string::size_type pos = exeName.find_last_of( "/\\" );
+            if( pos != std::string::npos )
+                exeName = exeName.substr( pos+1 );
+            return exeName;
         }
         Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
@@ -644,6 +648,9 @@ namespace Catch {
         }
 
         void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+            config.name = parser.exeName();
+            if( endsWith( config.name, ".exe" ) )
+               config.name = config.name.substr( 0, config.name.size()-4 );
             for( const_iterator it = m_parsers.begin(); it != m_parsers.end(); ++it )
                 (*it)->parseIntoConfig( parser, config );
         }
