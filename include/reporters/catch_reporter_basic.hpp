@@ -243,6 +243,11 @@ namespace Catch {
                             }
                         }
                     }
+                    if( assertionResult.hasMessage() ) {
+                        m_config.stream << "\n";
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "with message", assertionResult.getMessage() );
+                    }
                     break;
             }
             

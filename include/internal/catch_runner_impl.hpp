@@ -117,7 +117,6 @@ namespace Catch {
 
             Totals deltaTotals = m_totals.delta( prevTotals );
             if( deltaTotals.assertions.total() == 0  &&
-                deltaTotals.assertions.info == 0 &&
                ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
                 m_totals.assertions.failed++;
                 deltaTotals = m_totals.delta( prevTotals );
@@ -203,7 +202,7 @@ namespace Catch {
         
         virtual void sectionEnded( const std::string& name, const Counts& prevAssertions ) {
             Counts assertions = m_totals.assertions - prevAssertions;
-            if( assertions.total() == 0  &&
+            if( assertions.total() == 0 &&
                ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
                !m_runningTest->isBranchSection() ) {
                 m_reporter->NoAssertionsInSection( name );
