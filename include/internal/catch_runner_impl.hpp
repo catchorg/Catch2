@@ -115,12 +115,22 @@ namespace Catch {
             }
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
+            Totals deltaTotals = m_totals.delta( prevTotals );
+            if( deltaTotals.assertions.total() == 0  &&
+                deltaTotals.assertions.info == 0 &&
+               ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
+                m_totals.assertions.failed++;
+                deltaTotals = m_totals.delta( prevTotals );
+                m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCaseInfo().getName() );
+            }
+            m_totals.testCases += deltaTotals.testCases;
+
+            m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
+
+
             delete m_runningTest;
             m_runningTest = NULL;
 
-            Totals deltaTotals = m_totals.delta( prevTotals );
-            m_totals.testCases += deltaTotals.testCases;            
-            m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
             return deltaTotals;
         }
 
@@ -158,7 +168,10 @@ namespace Catch {
             }
             
             if( result.getResultType() == ResultWas::Info )
+            {
                 m_assertionResults.push_back( result );
+                m_totals.assertions.info++;
+            }
             else
                 m_reporter->Result( result );
 
@@ -252,7 +265,6 @@ namespace Catch {
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo(), "", ResultDisposition::Normal );
                 m_runningTest->reset();
-                Counts prevAssertions = m_totals.assertions;
                 if( m_reporter->shouldRedirectStdout() ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
@@ -260,13 +272,6 @@ namespace Catch {
                 }
                 else {
                     m_runningTest->getTestCaseInfo().invoke();
-                }
-                Counts assertions = m_totals.assertions - prevAssertions;
-                if( assertions.total() == 0  &&
-                   ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
-                   !m_runningTest->hasSections() ) {
-                        m_totals.assertions.failed++;                        
-                        m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCaseInfo().getName() );
                 }
                 m_runningTest->ranToCompletion();
             }
