@@ -10,7 +10,7 @@ main: $(OBJECTS)
 	$(CXX) -o $@ $^
 
 junit: main
-	./main -r junit > junit.xml
+	-./main -r junit > junit.xml
 
 clean:
 	rm -f $(OBJECTS) main junit.xml
