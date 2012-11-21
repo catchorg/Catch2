@@ -35,6 +35,8 @@ namespace Catch {
             std::string m_status;
             std::string m_className;
             std::string m_name;
+            std::string m_stdOut;
+            std::string m_stdErr;
             std::vector<TestStats> m_testStats;
         };
         
@@ -148,6 +150,9 @@ namespace Catch {
         }
         
         virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string& stdOut, const std::string& stdErr ) {
+            TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
+            testCaseStats.m_stdOut = stdOut;
+            testCaseStats.m_stdErr = stdErr;
             if( !stdOut.empty() )
                 m_stdOut << stdOut << "\n";
             if( !stdErr.empty() )
@@ -198,6 +203,13 @@ namespace Catch {
                 xml.writeAttribute( "time", "tbd" );
 
                 OutputTestResult( xml, *it );
+
+                std::string stdOut = trim( it->m_stdOut );
+                if( !stdOut.empty() )
+                    xml.scopedElement( "system-out" ).writeText( stdOut );
+                std::string stdErr = trim( it->m_stdErr );
+                if( !stdErr.empty() )
+                    xml.scopedElement( "system-err" ).writeText( stdErr );
             }
         }
 
