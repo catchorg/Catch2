@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 5 (integration branch)
- *  Generated: 2012-11-19 19:58:11.700412
+ *  CATCH v0.9 build 6 (integration branch)
+ *  Generated: 2012-11-21 18:04:49.655014
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1041,17 +1041,19 @@ public:
 namespace Catch {
 
     struct Counts {
-        Counts() : passed( 0 ), failed( 0 ) {}
+        Counts() : passed( 0 ), failed( 0 ), info( 0 ) {}
 
         Counts operator - ( const Counts& other ) const {
             Counts diff;
             diff.passed = passed - other.passed;
             diff.failed = failed - other.failed;
+            diff.info = info - other.info;
             return diff;
         }
         Counts& operator += ( const Counts& other ) {
             passed += other.passed;
             failed += other.failed;
+            info += other.info;
             return *this;
         }
 
@@ -1061,6 +1063,7 @@ namespace Catch {
 
         std::size_t passed;
         std::size_t failed;
+        std::size_t info;
     };
 
     struct Totals {
@@ -3988,12 +3991,20 @@ namespace Catch {
             }
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
+            Totals deltaTotals = m_totals.delta( prevTotals );
+            if( deltaTotals.assertions.total() == 0  &&
+               ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
+                m_totals.assertions.failed++;
+                deltaTotals = m_totals.delta( prevTotals );
+                m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCaseInfo().getName() );
+            }
+            m_totals.testCases += deltaTotals.testCases;
+
+            m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
+
             delete m_runningTest;
             m_runningTest = NULL;
 
-            Totals deltaTotals = m_totals.delta( prevTotals );
-            m_totals.testCases += deltaTotals.testCases;
-            m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
             return deltaTotals;
         }
 
@@ -4031,7 +4042,10 @@ namespace Catch {
             }
 
             if( result.getResultType() == ResultWas::Info )
+            {
                 m_assertionResults.push_back( result );
+                m_totals.assertions.info++;
+            }
             else
                 m_reporter->Result( result );
 
@@ -4062,7 +4076,7 @@ namespace Catch {
 
         virtual void sectionEnded( const std::string& name, const Counts& prevAssertions ) {
             Counts assertions = m_totals.assertions - prevAssertions;
-            if( assertions.total() == 0  &&
+            if( assertions.total() == 0 &&
                ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
                !m_runningTest->isBranchSection() ) {
                 m_reporter->NoAssertionsInSection( name );
@@ -4124,7 +4138,6 @@ namespace Catch {
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo(), "", ResultDisposition::Normal );
                 m_runningTest->reset();
-                Counts prevAssertions = m_totals.assertions;
                 if( m_reporter->shouldRedirectStdout() ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
@@ -4132,13 +4145,6 @@ namespace Catch {
                 }
                 else {
                     m_runningTest->getTestCaseInfo().invoke();
-                }
-                Counts assertions = m_totals.assertions - prevAssertions;
-                if( assertions.total() == 0  &&
-                   ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
-                   !m_runningTest->hasSections() ) {
-                        m_totals.assertions.failed++;
-                        m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCaseInfo().getName() );
                 }
                 m_runningTest->ranToCompletion();
             }
@@ -5379,7 +5385,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion = { 0, 9, 5, "integration" };
+    Version libraryVersion = { 0, 9, 6, "integration" };
 }
 
 // #included from: ../reporters/catch_reporter_basic.hpp
@@ -5644,6 +5650,11 @@ namespace Catch {
                                 m_config.stream << " - but was ok";
                             }
                         }
+                    }
+                    if( assertionResult.hasMessage() ) {
+                        m_config.stream << "\n";
+                        TextColour colour( TextColour::ReconstructedExpression );
+                        streamVariableLengthText( "with message", assertionResult.getMessage() );
                     }
                     break;
             }
@@ -6107,6 +6118,8 @@ namespace Catch {
             std::string m_status;
             std::string m_className;
             std::string m_name;
+            std::string m_stdOut;
+            std::string m_stdErr;
             std::vector<TestStats> m_testStats;
         };
 
@@ -6220,6 +6233,9 @@ namespace Catch {
         }
 
         virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string& stdOut, const std::string& stdErr ) {
+            TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
+            testCaseStats.m_stdOut = stdOut;
+            testCaseStats.m_stdErr = stdErr;
             if( !stdOut.empty() )
                 m_stdOut << stdOut << "\n";
             if( !stdErr.empty() )
@@ -6270,6 +6286,13 @@ namespace Catch {
                 xml.writeAttribute( "time", "tbd" );
 
                 OutputTestResult( xml, *it );
+
+                std::string stdOut = trim( it->m_stdOut );
+                if( !stdOut.empty() )
+                    xml.scopedElement( "system-out" ).writeText( stdOut );
+                std::string stdErr = trim( it->m_stdErr );
+                if( !stdErr.empty() )
+                    xml.scopedElement( "system-err" ).writeText( stdErr );
             }
         }
 
