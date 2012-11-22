@@ -16,7 +16,7 @@
 
 namespace Catch {
 
-    class TestCaseInfo;
+    class TestCase;
     class Stream;
     struct IResultCapture;
     struct IRunner;

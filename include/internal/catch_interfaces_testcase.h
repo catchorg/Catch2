@@ -22,12 +22,12 @@ namespace Catch {
         virtual ~ITestCase();
     };
     
-    class TestCaseInfo;
+    class TestCase;
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
-        virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
-        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
+        virtual const std::vector<TestCase>& getAllTests() const = 0;
+        virtual std::vector<TestCase> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
     };
 }
 

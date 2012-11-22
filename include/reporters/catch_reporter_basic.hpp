@@ -120,7 +120,7 @@ namespace Catch {
             }
         }
         
-        virtual void StartTestCase( const TestCaseInfo& testInfo ) {
+        virtual void StartTestCase( const TestCase& testInfo ) {
             m_testSpan = testInfo.getName();
         }
         
@@ -264,7 +264,7 @@ namespace Catch {
             m_config.stream << std::endl;        
         }
         
-        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
+        virtual void EndTestCase(   const TestCase& testInfo, 
                                     const Totals& totals,
                                     const std::string& stdOut, 
                                     const std::string& stdErr ) {

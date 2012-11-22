@@ -40,7 +40,7 @@ namespace Catch {
             virtual void registerReporter( const std::string& name, IReporterFactory* factory ) {
                 m_reporterRegistry.registerReporter( name, factory );
             }
-            virtual void registerTest( const TestCaseInfo& testInfo ) {
+            virtual void registerTest( const TestCase& testInfo ) {
                 m_testCaseRegistry.registerTest( testInfo );
             }
             virtual void registerTranslator( const IExceptionTranslator* translator ) {

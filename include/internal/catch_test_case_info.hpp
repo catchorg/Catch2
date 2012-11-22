@@ -15,7 +15,7 @@
 namespace Catch {
 
     
-    TestCaseInfo::TestCaseInfo( ITestCase* testCase,
+    TestCase::TestCase( ITestCase* testCase,
                                 const std::string& className,
                                 const std::string& name,
                                 const std::string& description,
@@ -32,7 +32,7 @@ namespace Catch {
             m_isHidden = true;
     }
 
-    TestCaseInfo::TestCaseInfo()
+    TestCase::TestCase()
     :   m_test( NULL ),
         m_className(),
         m_name(),
@@ -40,7 +40,7 @@ namespace Catch {
         m_isHidden( false )
     {}
 
-    TestCaseInfo::TestCaseInfo( const TestCaseInfo& other, const std::string& name )
+    TestCase::TestCase( const TestCase& other, const std::string& name )
     :   m_test( other.m_test ),
         m_className( other.m_className ),
         m_name( name ),
@@ -50,7 +50,7 @@ namespace Catch {
         m_isHidden( other.m_isHidden )
     {}
 
-    TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
+    TestCase::TestCase( const TestCase& other )
     :   m_test( other.m_test ),
         m_className( other.m_className ),
         m_name( other.m_name ),
@@ -60,40 +60,40 @@ namespace Catch {
         m_isHidden( other.m_isHidden )
     {}
 
-    void TestCaseInfo::invoke() const {
+    void TestCase::invoke() const {
         m_test->invoke();
     }
 
-    const std::string& TestCaseInfo::getClassName() const {
+    const std::string& TestCase::getClassName() const {
         return m_className;
     }
-    const std::string& TestCaseInfo::getName() const {
+    const std::string& TestCase::getName() const {
         return m_name;
     }
-    const std::string& TestCaseInfo::getDescription() const {
+    const std::string& TestCase::getDescription() const {
         return m_description;
     }
-    const SourceLineInfo& TestCaseInfo::getLineInfo() const {
+    const SourceLineInfo& TestCase::getLineInfo() const {
         return m_lineInfo;
     }
 
-    bool TestCaseInfo::isHidden() const {
+    bool TestCase::isHidden() const {
         return m_isHidden;
     }
 
-    bool TestCaseInfo::hasTag( const std::string& tag ) const {
+    bool TestCase::hasTag( const std::string& tag ) const {
         return m_tags.find( tag ) != m_tags.end();
     }
-    bool TestCaseInfo::matchesTags( const std::string& tagPattern ) const {
+    bool TestCase::matchesTags( const std::string& tagPattern ) const {
         TagExpression exp;
         TagExpressionParser( exp ).parse( tagPattern );
         return exp.matches( m_tags );
     }
-    const std::set<std::string>& TestCaseInfo::getTags() const {
+    const std::set<std::string>& TestCase::getTags() const {
         return m_tags;
     }
 
-    void TestCaseInfo::swap( TestCaseInfo& other ) {
+    void TestCase::swap( TestCase& other ) {
         m_test.swap( other.m_test );
         m_className.swap( other.m_className );
         m_name.swap( other.m_name );
@@ -101,17 +101,17 @@ namespace Catch {
         std::swap( m_lineInfo, other.m_lineInfo );
     }
 
-    bool TestCaseInfo::operator == ( const TestCaseInfo& other ) const {
+    bool TestCase::operator == ( const TestCase& other ) const {
         return  m_test.get() == other.m_test.get() &&
                 m_name == other.m_name &&
                 m_className == other.m_className;
     }
 
-    bool TestCaseInfo::operator < ( const TestCaseInfo& other ) const {
+    bool TestCase::operator < ( const TestCase& other ) const {
         return m_name < other.m_name;
     }
-    TestCaseInfo& TestCaseInfo::operator = ( const TestCaseInfo& other ) {
-        TestCaseInfo temp( other );
+    TestCase& TestCase::operator = ( const TestCase& other ) {
+        TestCase temp( other );
         swap( temp );
         return *this;
     }

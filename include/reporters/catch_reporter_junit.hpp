@@ -38,6 +38,7 @@ namespace Catch {
             std::string m_stdOut;
             std::string m_stdErr;
             std::vector<TestStats> m_testStats;
+            std::vector<TestCaseStats> m_sections;
         };
         
         struct Stats {
@@ -101,8 +102,9 @@ namespace Catch {
 
         virtual void EndSection( const std::string&, const Counts& ) {}
         
-        virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
+        virtual void StartTestCase( const Catch::TestCase& testInfo ) {
             m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getClassName(), testInfo.getName() ) );
+            m_currentTestCaseStats.push_back( &m_currentStats->m_testCaseStats.back() );
         }
         
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
@@ -149,7 +151,9 @@ namespace Catch {
             }
         }
         
-        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string& stdOut, const std::string& stdErr ) {
+        virtual void EndTestCase( const Catch::TestCase&, const Totals&, const std::string& stdOut, const std::string& stdErr ) {
+            m_currentTestCaseStats.pop_back();
+            assert( m_currentTestCaseStats.empty() );
             TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
             testCaseStats.m_stdOut = stdOut;
             testCaseStats.m_stdErr = stdErr;
@@ -236,6 +240,7 @@ namespace Catch {
         Stats m_testSuiteStats;
         Stats* m_currentStats;
         std::vector<Stats> m_statsForSuites;
+        std::vector<const TestCaseStats*> m_currentTestCaseStats;
         std::ostringstream m_stdOut;
         std::ostringstream m_stdErr;
     };

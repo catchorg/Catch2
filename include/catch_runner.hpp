@@ -56,8 +56,8 @@ namespace Catch {
 
         Totals runTestsForGroup( Runner& context, const TestCaseFilters& filterGroup ) {
             Totals totals;
-            std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+            std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
             int testsRunForGroup = 0;
             for(; it != itEnd; ++it ) {
                 if( filterGroup.shouldInclude( *it ) ) {
@@ -114,7 +114,7 @@ namespace Catch {
         const ConfigData& m_config;
         std::ofstream m_ofs;
         Ptr<IReporter> m_reporter;
-        std::set<TestCaseInfo> m_testsAlreadyRun;
+        std::set<TestCase> m_testsAlreadyRun;
     };
 
     inline int Main( Config& configWrapper ) {

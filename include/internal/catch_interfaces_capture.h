@@ -15,7 +15,7 @@
 
 namespace Catch {
 
-    class TestCaseInfo;
+    class TestCase;
     class ScopedInfo;
     class ExpressionResultBuilder;
     class AssertionResult;

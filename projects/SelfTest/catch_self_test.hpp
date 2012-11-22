@@ -82,13 +82,13 @@ namespace Catch {
             closeLabel( recordSections, sectionName );
         }
         
-        virtual void StartTestCase( const TestCaseInfo& testInfo ) {
+        virtual void StartTestCase( const TestCase& testInfo ) {
             openLabel( recordTestCases, testInfo.getName()  );
         }
         
         virtual void Aborted(){}
         
-        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
+        virtual void EndTestCase(   const TestCase& testInfo, 
                                     const Totals&,
                                     const std::string&, 
                                     const std::string& ) {
@@ -153,7 +153,7 @@ namespace Catch {
                         MetaTestRunner( expectedResult ) );
         }
         
-        void operator()( const TestCaseInfo& testCase ) {
+        void operator()( const TestCase& testCase ) {
             EmbeddedRunner runner;
             Totals totals = runner.runMatching( testCase.getName() );
             switch( m_expectedResult ) {

@@ -16,20 +16,20 @@
 namespace Catch {
 
     struct ITestCase;
-
-    class TestCaseInfo {
+    
+    class TestCase {
     public:
-        TestCaseInfo();
+        TestCase();
 
-        TestCaseInfo(   ITestCase* testCase,
+        TestCase(   ITestCase* testCase,
                         const std::string& className,
                         const std::string& name,
                         const std::string& description,
                         const SourceLineInfo& lineInfo );
 
 
-        TestCaseInfo( const TestCaseInfo& other, const std::string& name );
-        TestCaseInfo( const TestCaseInfo& other );
+        TestCase( const TestCase& other, const std::string& name );
+        TestCase( const TestCase& other );
 
         void invoke() const;
 
@@ -42,10 +42,10 @@ namespace Catch {
         bool matchesTags( const std::string& tagPattern ) const;
         const std::set<std::string>& getTags() const;
         
-        void swap( TestCaseInfo& other );
-        bool operator == ( const TestCaseInfo& other ) const;
-        bool operator < ( const TestCaseInfo& other ) const;
-        TestCaseInfo& operator = ( const TestCaseInfo& other );
+        void swap( TestCase& other );
+        bool operator == ( const TestCase& other ) const;
+        bool operator < ( const TestCase& other ) const;
+        TestCase& operator = ( const TestCase& other );
 
     private:
         Ptr<ITestCase> m_test;

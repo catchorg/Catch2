@@ -81,14 +81,14 @@ namespace Catch {
 
         Totals runMatching( const std::string& testSpec ) {
 
-            std::vector<TestCaseInfo> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
+            std::vector<TestCase> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
 
             Totals totals;
 
             m_reporter->StartGroup( testSpec );
 
-            std::vector<TestCaseInfo>::const_iterator it = matchingTests.begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = matchingTests.end();
+            std::vector<TestCase>::const_iterator it = matchingTests.begin();
+            std::vector<TestCase>::const_iterator itEnd = matchingTests.end();
             for(; it != itEnd; ++it )
                 totals += runTest( *it );
             // !TBD use std::accumulate?
@@ -97,7 +97,7 @@ namespace Catch {
             return totals;
         }
 
-        Totals runTest( const TestCaseInfo& testInfo ) {
+        Totals runTest( const TestCase& testInfo ) {
             Totals prevTotals = m_totals;
 
             std::string redirectedCout;
@@ -120,7 +120,7 @@ namespace Catch {
                ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
                 m_totals.assertions.failed++;
                 deltaTotals = m_totals.delta( prevTotals );
-                m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCaseInfo().getName() );
+                m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCase().getName() );
             }
             m_totals.testCases += deltaTotals.testCases;
 
@@ -228,7 +228,7 @@ namespace Catch {
 
         virtual std::string getCurrentTestName() const {
             return m_runningTest
-                ? m_runningTest->getTestCaseInfo().getName()
+                ? m_runningTest->getTestCase().getName()
                 : "";
         }
 
@@ -262,15 +262,15 @@ namespace Catch {
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             try {
-                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCaseInfo().getLineInfo(), "", ResultDisposition::Normal );
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCase().getLineInfo(), "", ResultDisposition::Normal );
                 m_runningTest->reset();
                 if( m_reporter->shouldRedirectStdout() ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                    m_runningTest->getTestCaseInfo().invoke();
+                    m_runningTest->getTestCase().invoke();
                 }
                 else {
-                    m_runningTest->getTestCaseInfo().invoke();
+                    m_runningTest->getTestCase().invoke();
                 }
                 m_runningTest->ranToCompletion();
             }

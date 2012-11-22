@@ -12,7 +12,7 @@
 #include <limits>
 
 namespace Catch {
-    inline bool matchesFilters( const std::vector<TestCaseFilters>& filters, const TestCaseInfo& testCase ) {
+    inline bool matchesFilters( const std::vector<TestCaseFilters>& filters, const TestCase& testCase ) {
         std::vector<TestCaseFilters>::const_iterator it = filters.begin();
         std::vector<TestCaseFilters>::const_iterator itEnd = filters.end();
         for(; it != itEnd; ++it )
@@ -38,8 +38,8 @@ namespace Catch {
                 std::cout << "All available test cases:\n";
             else
                 std::cout << "Matching test cases:\n";
-            std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+            std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
             std::size_t matchedTests = 0;
             for(; it != itEnd; ++it ) {
                 if( matchesFilters( config.filters, *it ) ) {

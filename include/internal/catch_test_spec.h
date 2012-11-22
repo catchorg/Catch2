@@ -64,7 +64,7 @@ namespace Catch {
             return m_filterType;
         }
         
-        bool shouldInclude( const TestCaseInfo& testCase ) const {
+        bool shouldInclude( const TestCase& testCase ) const {
             return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
         }
     private:
@@ -74,7 +74,7 @@ namespace Catch {
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
 
-        bool isMatch( const TestCaseInfo& testCase ) const {
+        bool isMatch( const TestCase& testCase ) const {
             const std::string& name = testCase.getName();
 
             switch( m_wildcardPosition ) {
@@ -121,7 +121,7 @@ namespace Catch {
             m_tagExpressions.push_back( exp );
         }
 
-        bool shouldInclude( const TestCaseInfo& testCase ) const {
+        bool shouldInclude( const TestCase& testCase ) const {
             if( !m_tagExpressions.empty() ) {
                 std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
                 std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();

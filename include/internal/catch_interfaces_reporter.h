@@ -12,6 +12,8 @@
 #include "catch_totals.hpp"
 #include "catch_ptr.hpp"
 #include "catch_config.hpp"
+#include "catch_test_case_info.h"
+#include "catch_assertionresult.h"
 
 #include <string>
 #include <ostream>
@@ -47,10 +49,54 @@ namespace Catch
     private:
         void operator=(const ReporterConfig&);
     };
+
+    struct AssertionStats {
+        AssertionInfo assertionInfo;
+        AssertionResult assertionResult;
+        Totals totals;
+    };
+
+    struct TestCaseStats {
+        TestCase testInfo;
+        Totals totals;
+        std::string stdOut;
+        std::string stdErr;
+        bool aborting;
+    };
     
-    class TestCaseInfo;
-    class AssertionResult;
+    struct TestGroupStats {
+        std::string groupName;
+        Totals totals;
+        bool aborting;
+    };
     
+    struct TestRunStats {
+        std::string runName;
+        Totals totals;
+        bool aborting;
+    };
+
+    // !Work In progress
+    struct IStreamingReporter : IShared {
+        virtual void testRunStarting( const std::string& runName ) = 0;
+        virtual void testGroupStarting( const std::string& groupName ) = 0;
+
+        // !TBD: include section info (perhaps TestCase has an isSection flag and/ or a parent pointer
+        virtual void testCaseStarting( const TestCase& testInfo ) = 0;
+        virtual void assertionStarting( const AssertionInfo& assertionInfo ) = 0;
+
+        virtual void assertionEnding( const AssertionStats& assertionStats ) = 0;
+        virtual void testCaseEnding( const TestCaseStats& testCaseStats ) = 0;
+        virtual void testGroupEnding( const TestGroupStats& testGroupStats ) = 0;
+        virtual void testRunEnding( const TestRunStats& testRunStats ) = 0;
+    };
+    // !TBD: Derived helper that implements the streaming interface but holds the stats
+    // - declares a new interface where methods are called at the end of each event
+    // - this would be used by the JUnit reporter, for example.
+    // - it may be used by the basic reporter, too, but that would clear down the stack
+    //   as it goes
+
+
     struct IReporter : IShared {
         virtual ~IReporter();
 
@@ -62,9 +108,9 @@ namespace Catch
         virtual void StartGroup( const std::string& groupName ) = 0;
         virtual void EndGroup( const std::string& groupName, const Totals& totals ) = 0;        
 
-        virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;
+        virtual void StartTestCase( const TestCase& testInfo ) = 0;
         // TestCaseResult
-        virtual void EndTestCase( const TestCaseInfo& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;
+        virtual void EndTestCase( const TestCase& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;
 
         // SectionInfo
         virtual void StartSection( const std::string& sectionName, const std::string& description ) = 0;

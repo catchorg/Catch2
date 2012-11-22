@@ -70,7 +70,7 @@ namespace Catch {
             m_xml.endElement();
         }
         
-        virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
+        virtual void StartTestCase( const Catch::TestCase& testInfo ) {
             m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.getName() );
             m_currentTestSuccess = true;
         }
@@ -129,7 +129,7 @@ namespace Catch {
             // !TBD
         }
         
-        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string&, const std::string& ) {
+        virtual void EndTestCase( const Catch::TestCase&, const Totals&, const std::string&, const std::string& ) {
             m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );
             m_xml.endElement();
         }    

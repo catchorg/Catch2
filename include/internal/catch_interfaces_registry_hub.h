@@ -15,7 +15,7 @@
 
 namespace Catch {
 
-    class TestCaseInfo;
+    class TestCase;
     struct ITestCaseRegistry;
     struct IExceptionTranslatorRegistry;
     struct IExceptionTranslator;
@@ -31,7 +31,7 @@ namespace Catch {
     struct IMutableRegistryHub {
         virtual ~IMutableRegistryHub();
         virtual void registerReporter( const std::string& name, IReporterFactory* factory ) = 0;
-        virtual void registerTest( const TestCaseInfo& testInfo ) = 0;
+        virtual void registerTest( const TestCase& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
     };
 

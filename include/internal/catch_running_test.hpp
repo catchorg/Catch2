@@ -24,7 +24,7 @@ namespace Catch {
         };
         
     public:
-        explicit RunningTest( const TestCaseInfo* info = NULL )
+        explicit RunningTest( const TestCase* info = NULL )
         :   m_info( info ),
             m_runStatus( RanAtLeastOneSection ),
             m_currentSection( &m_rootSection ),
@@ -97,7 +97,7 @@ namespace Catch {
             m_currentSection = m_currentSection->getParent();
         }
         
-        const TestCaseInfo& getTestCaseInfo() const {
+        const TestCase& getTestCase() const {
             return *m_info;
         }
         
@@ -107,7 +107,7 @@ namespace Catch {
         }
         
     private:
-        const TestCaseInfo* m_info;
+        const TestCase* m_info;
         RunStatus m_runStatus;
         SectionInfo m_rootSection;
         SectionInfo* m_currentSection;
