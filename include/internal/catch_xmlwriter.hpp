@@ -34,8 +34,8 @@ namespace Catch {
                     m_writer->endElement();
             }
 
-            ScopedElement& writeText( const std::string& text ) {
-                m_writer->writeText( text );
+            ScopedElement& writeText( const std::string& text, bool indent = true ) {
+                m_writer->writeText( text, indent );
                 return *this;
             }
 
@@ -131,11 +131,11 @@ namespace Catch {
             return *this;
         }
         
-        XmlWriter& writeText( const std::string& text ) {
+        XmlWriter& writeText( const std::string& text, bool indent = true ) {
             if( !text.empty() ){
                 bool tagWasOpen = m_tagIsOpen;
                 ensureTagClosed();
-                if( tagWasOpen )
+                if( tagWasOpen && indent )
                     stream() << m_indent;
                 writeEncodedText( text );
                 m_needsNewline = true;

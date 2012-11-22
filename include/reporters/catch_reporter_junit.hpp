@@ -187,8 +187,8 @@ namespace Catch {
                     OutputTestCases( xml, *it );
                 }
       
-                xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ) );                
-                xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ) );
+                xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ), false );
+                xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ), false );
             }
         }
         
@@ -206,10 +206,10 @@ namespace Catch {
 
                 std::string stdOut = trim( it->m_stdOut );
                 if( !stdOut.empty() )
-                    xml.scopedElement( "system-out" ).writeText( stdOut );
+                    xml.scopedElement( "system-out" ).writeText( stdOut, false );
                 std::string stdErr = trim( it->m_stdErr );
                 if( !stdErr.empty() )
-                    xml.scopedElement( "system-err" ).writeText( stdErr );
+                    xml.scopedElement( "system-err" ).writeText( stdErr, false );
             }
         }
 
