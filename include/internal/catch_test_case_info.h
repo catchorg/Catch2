@@ -16,27 +16,37 @@
 namespace Catch {
 
     struct ITestCase;
+
+    struct TestCaseInfo {
+        TestCaseInfo(   const std::string& _name,
+                        const std::string& _className,
+                        const std::string& _description,
+                        const std::set<std::string>& _tags,
+                        bool _isHidden,
+                        const SourceLineInfo& _lineInfo );
+
+        TestCaseInfo( const TestCaseInfo& other );
+
+        std::string name;
+        std::string className;
+        std::string description;
+        std::set<std::string> tags;
+        bool isHidden;
+        SourceLineInfo lineInfo;
+    };
     
-    class TestCase {
+    class TestCase : protected TestCaseInfo {
     public:
-        TestCase();
 
-        TestCase(   ITestCase* testCase,
-                        const std::string& className,
-                        const std::string& name,
-                        const std::string& description,
-                        const SourceLineInfo& lineInfo );
-
-
-        TestCase( const TestCase& other, const std::string& name );
+        TestCase( ITestCase* testCase, const TestCaseInfo& info );
         TestCase( const TestCase& other );
+
+        TestCase withName( const std::string& _newName ) const;
 
         void invoke() const;
 
-        const std::string& getClassName() const;
-        const std::string& getName() const;
-        const std::string& getDescription() const;
-        const SourceLineInfo& getLineInfo() const;
+        const TestCaseInfo& getTestCaseInfo() const;
+
         bool isHidden() const;
         bool hasTag( const std::string& tag ) const;
         bool matchesTags( const std::string& tagPattern ) const;
@@ -48,14 +58,14 @@ namespace Catch {
         TestCase& operator = ( const TestCase& other );
 
     private:
-        Ptr<ITestCase> m_test;
-        std::string m_className;
-        std::string m_name;
-        std::string m_description;
-        std::set<std::string> m_tags;
-        SourceLineInfo m_lineInfo;
-        bool m_isHidden;
+        Ptr<ITestCase> test;
     };
+
+    TestCase makeTestCase(  ITestCase* testCase,
+                            const std::string& className,
+                            const std::string& name,
+                            const std::string& description,
+                            const SourceLineInfo& lineInfo );
 }
 
 #endif // TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED

@@ -25,24 +25,25 @@ namespace Catch {
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
         
-        virtual void registerTest( const TestCase& testInfo ) {
-            if( testInfo.getName() == "" ) {
+        virtual void registerTest( const TestCase& testCase ) {
+            std::string name = testCase.getTestCaseInfo().name;
+            if( name == "" ) {
                 std::ostringstream oss;
-                oss << testInfo.getName() << "unnamed/" << ++m_unnamedCount;
-                return registerTest( TestCase( testInfo, oss.str() ) );
+                oss << name << "unnamed/" << ++m_unnamedCount;
+                return registerTest( testCase.withName( oss.str() ) );
             }
 
-            if( m_functions.find( testInfo ) == m_functions.end() ) {
-                m_functions.insert( testInfo );
-                m_functionsInOrder.push_back( testInfo );
-                if( !testInfo.isHidden() )
-                    m_nonHiddenFunctions.push_back( testInfo );
+            if( m_functions.find( testCase ) == m_functions.end() ) {
+                m_functions.insert( testCase );
+                m_functionsInOrder.push_back( testCase );
+                if( !testCase.isHidden() )
+                    m_nonHiddenFunctions.push_back( testCase );
             }
             else {
-                const TestCase& prev = *m_functions.find( testInfo );
-                std::cerr   << "error: TEST_CASE( \"" << testInfo.getName() << "\" ) already defined.\n"
-                            << "\tFirst seen at " << SourceLineInfo( prev.getLineInfo() ) << "\n"
-                            << "\tRedefined at " << SourceLineInfo( testInfo.getLineInfo() ) << std::endl;
+                const TestCase& prev = *m_functions.find( testCase );
+                std::cerr   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
+                            << "\tFirst seen at " << SourceLineInfo( prev.getTestCaseInfo().lineInfo ) << "\n"
+                            << "\tRedefined at " << SourceLineInfo( testCase.getTestCaseInfo().lineInfo ) << std::endl;
                 exit(1);
             }
         }
@@ -138,7 +139,7 @@ namespace Catch {
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
         
-        getMutableRegistryHub().registerTest( TestCase( testCase, extractClassName( classOrQualifiedMethodName ), name, description, lineInfo ) );
+        getMutableRegistryHub().registerTest( makeTestCase( testCase, extractClassName( classOrQualifiedMethodName ), name, description, lineInfo ) );
     }
     
 } // end namespace Catch

@@ -97,15 +97,17 @@ namespace Catch {
             return totals;
         }
 
-        Totals runTest( const TestCase& testInfo ) {
+        Totals runTest( const TestCase& testCase ) {
             Totals prevTotals = m_totals;
 
             std::string redirectedCout;
             std::string redirectedCerr;
+
+            TestCaseInfo testInfo = testCase.getTestCaseInfo();
             
             m_reporter->StartTestCase( testInfo );
             
-            m_runningTest = new RunningTest( &testInfo );
+            m_runningTest = new RunningTest( &testCase );
 
             do {
                 do {
@@ -120,7 +122,7 @@ namespace Catch {
                ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
                 m_totals.assertions.failed++;
                 deltaTotals = m_totals.delta( prevTotals );
-                m_reporter->NoAssertionsInTestCase( m_runningTest->getTestCase().getName() );
+                m_reporter->NoAssertionsInTestCase( testInfo.name );
             }
             m_totals.testCases += deltaTotals.testCases;
 
@@ -228,7 +230,7 @@ namespace Catch {
 
         virtual std::string getCurrentTestName() const {
             return m_runningTest
-                ? m_runningTest->getTestCase().getName()
+                ? m_runningTest->getTestCase().getTestCaseInfo().name
                 : "";
         }
 
@@ -262,7 +264,7 @@ namespace Catch {
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             try {
-                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCase().getLineInfo(), "", ResultDisposition::Normal );
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCase().getTestCaseInfo().lineInfo, "", ResultDisposition::Normal );
                 m_runningTest->reset();
                 if( m_reporter->shouldRedirectStdout() ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );

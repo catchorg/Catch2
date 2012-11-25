@@ -108,9 +108,9 @@ namespace Catch
         virtual void StartGroup( const std::string& groupName ) = 0;
         virtual void EndGroup( const std::string& groupName, const Totals& totals ) = 0;        
 
-        virtual void StartTestCase( const TestCase& testInfo ) = 0;
+        virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;
         // TestCaseResult
-        virtual void EndTestCase( const TestCase& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;
+        virtual void EndTestCase( const TestCaseInfo& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;
 
         // SectionInfo
         virtual void StartSection( const std::string& sectionName, const std::string& description ) = 0;

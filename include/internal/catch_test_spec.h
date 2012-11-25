@@ -75,7 +75,7 @@ namespace Catch {
 #endif
 
         bool isMatch( const TestCase& testCase ) const {
-            const std::string& name = testCase.getName();
+            const std::string& name = testCase.getTestCaseInfo().name;
 
             switch( m_wildcardPosition ) {
                 case NoWildcard:

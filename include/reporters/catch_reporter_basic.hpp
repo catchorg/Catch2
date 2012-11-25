@@ -120,8 +120,8 @@ namespace Catch {
             }
         }
         
-        virtual void StartTestCase( const TestCase& testInfo ) {
-            m_testSpan = testInfo.getName();
+        virtual void StartTestCase( const TestCaseInfo& testInfo ) {
+            m_testSpan = testInfo.name;
         }
         
         virtual void StartSection( const std::string& sectionName, const std::string& ) {
@@ -264,7 +264,7 @@ namespace Catch {
             m_config.stream << std::endl;        
         }
         
-        virtual void EndTestCase(   const TestCase& testInfo, 
+        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
                                     const Totals& totals,
                                     const std::string& stdOut, 
                                     const std::string& stdErr ) {
@@ -279,7 +279,7 @@ namespace Catch {
             }
             
             if( m_testSpan.emitted ) {
-                m_config.stream << "[Finished: '" << testInfo.getName() << "' ";
+                m_config.stream << "[Finished: '" << testInfo.name << "' ";
                 ReportCounts( totals );
                 m_config.stream << "]" << std::endl;
             }

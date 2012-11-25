@@ -37,7 +37,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
         SECTION(    "selftest/test counts/succeeding tests", 
                     "Number of 'succeeding' tests is fixed" ) {
             Totals totals = runner.runMatching( "./succeeding/*" );
-            CHECK( totals.assertions.passed == 293 );
+            CHECK( totals.assertions.passed == 294 );
             CHECK( totals.assertions.failed == 0 );
         }
 
@@ -86,7 +86,7 @@ std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::Co
     return "";
 }
 
-inline Catch::TestCase makeTestCase( const char* name ){ return Catch::TestCase( NULL, "", name, "", CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name ){ return Catch::makeTestCase( NULL, "", name, "", CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "selftest/parser/2", "ConfigData" ) {
 
@@ -108,16 +108,16 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
         }
         SECTION( "-t/exclude:1", "Specify one test case exclusion using -t exclude:" ) {
             const char* argv[] = { "test", "-t", "exclude:test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "alwaysIncluded" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
         }
 
         SECTION( "--test/1", "Specify one test case using --test" ) {
@@ -125,8 +125,8 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
             REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
         }
 
         SECTION( "--test/exclude:1", "Specify one test case exclusion using --test exclude:" ) {
@@ -134,8 +134,8 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "alwaysIncluded" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
         }
 
         SECTION( "--test/exclude:2", "Specify one test case exclusion using --test ~" ) {
@@ -143,8 +143,8 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "alwaysIncluded" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
         }
         
         SECTION( "-t/2", "Specify two test cases using -t" ) {
@@ -152,9 +152,9 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
-            REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test2" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
+            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test2" ) ) );
         }
 
         SECTION( "-t/0", "When no test names are supplied it is an error" ) {
@@ -288,17 +288,17 @@ TEST_CASE( "selftest/test filter", "Individual filters" ) {
 
     Catch::TestCaseFilter matchAny( "*" );
     Catch::TestCaseFilter matchNone( "*", Catch::IfFilterMatches::ExcludeTests );
-    CHECK( matchAny.shouldInclude( makeTestCase( "any" ) ));
-    CHECK( matchNone.shouldInclude( makeTestCase( "any" ) ) == false );
+    CHECK( matchAny.shouldInclude( fakeTestCase( "any" ) ));
+    CHECK( matchNone.shouldInclude( fakeTestCase( "any" ) ) == false );
 
     Catch::TestCaseFilter matchHidden( "./*" );
     Catch::TestCaseFilter matchNonHidden( "./*", Catch::IfFilterMatches::ExcludeTests );
 
-    CHECK( matchHidden.shouldInclude( makeTestCase( "any" ) ) == false );
-    CHECK( matchNonHidden.shouldInclude( makeTestCase( "any" ) ) );
+    CHECK( matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false );
+    CHECK( matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) );
 
-    CHECK( matchHidden.shouldInclude( makeTestCase( "./any" ) ) );
-    CHECK( matchNonHidden.shouldInclude( makeTestCase( "./any" ) ) == false );
+    CHECK( matchHidden.shouldInclude( fakeTestCase( "./any" ) ) );
+    CHECK( matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false );
 }
 
 TEST_CASE( "selftest/test filters", "Sets of filters" ) {
@@ -309,26 +309,26 @@ TEST_CASE( "selftest/test filters", "Sets of filters" ) {
     filters.addFilter( matchHidden );
     filters.addFilter( dontMatchA );
 
-    CHECK( matchHidden.shouldInclude( makeTestCase( "./something" ) ) );
+    CHECK( matchHidden.shouldInclude( fakeTestCase( "./something" ) ) );
 
-    CHECK( filters.shouldInclude( makeTestCase( "any" ) ) == false );
-    CHECK( filters.shouldInclude( makeTestCase( "./something" ) ) );
-    CHECK( filters.shouldInclude( makeTestCase( "./anything" ) ) == false );
+    CHECK( filters.shouldInclude( fakeTestCase( "any" ) ) == false );
+    CHECK( filters.shouldInclude( fakeTestCase( "./something" ) ) );
+    CHECK( filters.shouldInclude( fakeTestCase( "./anything" ) ) == false );
 }
 
 TEST_CASE( "selftest/filter/prefix wildcard", "Individual filters with wildcards at the start" ) {
     Catch::TestCaseFilter matchBadgers( "*badger" );
 
-    CHECK( matchBadgers.shouldInclude( makeTestCase( "big badger" ) ));
-    CHECK( matchBadgers.shouldInclude( makeTestCase( "little badgers" ) ) == false );
+    CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ));
+    CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false );
 }
 TEST_CASE( "selftest/filter/wildcard at both ends", "Individual filters with wildcards at both ends" ) {
     Catch::TestCaseFilter matchBadgers( "*badger*" );
 
-    CHECK( matchBadgers.shouldInclude( makeTestCase( "big badger" ) ));
-    CHECK( matchBadgers.shouldInclude( makeTestCase( "little badgers" ) ) );
-    CHECK( matchBadgers.shouldInclude( makeTestCase( "badgers are big" ) ) );
-    CHECK( matchBadgers.shouldInclude( makeTestCase( "hedgehogs" ) ) == false );
+    CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ));
+    CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) );
+    CHECK( matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) );
+    CHECK( matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false );
 }
 
 
@@ -351,8 +351,8 @@ TEST_CASE( "selftest/option parsers", "" )
     CHECK_NOTHROW( opt.parseIntoConfig( parser, config ) );
 
     REQUIRE( config.filters.size() == 1 );
-    REQUIRE( config.filters[0].shouldInclude( makeTestCase( "notIncluded" ) ) == false );
-    REQUIRE( config.filters[0].shouldInclude( makeTestCase( "test1" ) ) );
+    REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+    REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
 }
 
 TEST_CASE( "selftest/tags", "" ) {
@@ -364,9 +364,9 @@ TEST_CASE( "selftest/tags", "" ) {
     std::string p5 = "[one][two]~[hide],[three]";
     
     SECTION( "one tag", "" ) {
-        Catch::TestCase oneTag( NULL, "", "test", "[one]", CATCH_INTERNAL_LINEINFO );
+        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[one]", CATCH_INTERNAL_LINEINFO );
 
-        CHECK( oneTag.getDescription() == "" );
+        CHECK( oneTag.getTestCaseInfo().description == "" );
         CHECK( oneTag.hasTag( "one" ) );
         CHECK( oneTag.getTags().size() == 1 );
 
@@ -378,9 +378,9 @@ TEST_CASE( "selftest/tags", "" ) {
     }
 
     SECTION( "two tags", "" ) {
-        Catch::TestCase twoTags( NULL, "", "test", "[one][two]", CATCH_INTERNAL_LINEINFO );
+        Catch::TestCase twoTags= makeTestCase( NULL, "", "test", "[one][two]", CATCH_INTERNAL_LINEINFO );
 
-        CHECK( twoTags.getDescription() == "" );
+        CHECK( twoTags.getTestCaseInfo().description == "" );
         CHECK( twoTags.hasTag( "one" ) );
         CHECK( twoTags.hasTag( "two" ) );
         CHECK( twoTags.hasTag( "three" ) == false );
@@ -395,8 +395,8 @@ TEST_CASE( "selftest/tags", "" ) {
 
     SECTION( "one tag with characters either side", "" ) {
 
-        Catch::TestCase oneTagWithExtras( NULL, "", "test", "12[one]34", CATCH_INTERNAL_LINEINFO );
-        CHECK( oneTagWithExtras.getDescription() == "1234" );
+        Catch::TestCase oneTagWithExtras = makeTestCase( NULL, "", "test", "12[one]34", CATCH_INTERNAL_LINEINFO );
+        CHECK( oneTagWithExtras.getTestCaseInfo().description == "1234" );
         CHECK( oneTagWithExtras.hasTag( "one" ) );
         CHECK( oneTagWithExtras.hasTag( "two" ) == false );
         CHECK( oneTagWithExtras.getTags().size() == 1 );
@@ -404,17 +404,17 @@ TEST_CASE( "selftest/tags", "" ) {
     
     SECTION( "start of a tag, but not closed", "" ) {
 
-        Catch::TestCase oneTagOpen( NULL, "", "test", "[one", CATCH_INTERNAL_LINEINFO );
+        Catch::TestCase oneTagOpen = makeTestCase( NULL, "", "test", "[one", CATCH_INTERNAL_LINEINFO );
 
-        CHECK( oneTagOpen.getDescription() == "[one" );
+        CHECK( oneTagOpen.getTestCaseInfo().description == "[one" );
         CHECK( oneTagOpen.hasTag( "one" ) == false );
         CHECK( oneTagOpen.getTags().size() == 0 );
     }
 
     SECTION( "hidden", "" ) {
-        Catch::TestCase oneTag( NULL, "", "test", "[hide]", CATCH_INTERNAL_LINEINFO );
+        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[hide]", CATCH_INTERNAL_LINEINFO );
 
-        CHECK( oneTag.getDescription() == "" );
+        CHECK( oneTag.getTestCaseInfo().description == "" );
         CHECK( oneTag.hasTag( "hide" ) );
         CHECK( oneTag.isHidden() );
 

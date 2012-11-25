@@ -45,9 +45,9 @@ namespace Catch {
                 if( matchesFilters( config.filters, *it ) ) {
                     matchedTests++;
                     // !TBD: consider listAs()
-                    std::cout << "\t" << it->getName() << "\n";
+                    std::cout << "\t" << it->getTestCaseInfo().name << "\n";
                     if( ( config.listSpec & List::TestNames ) != List::TestNames )
-                        std::cout << "\t\t '" << it->getDescription() << "'\n";
+                        std::cout << "\t\t '" << it->getTestCaseInfo().description << "'\n";
                 }
             }
             if( config.filters.empty() )

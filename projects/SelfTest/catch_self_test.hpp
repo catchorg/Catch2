@@ -82,17 +82,17 @@ namespace Catch {
             closeLabel( recordSections, sectionName );
         }
         
-        virtual void StartTestCase( const TestCase& testInfo ) {
-            openLabel( recordTestCases, testInfo.getName()  );
+        virtual void StartTestCase( const TestCaseInfo& testInfo ) {
+            openLabel( recordTestCases, testInfo.name  );
         }
         
         virtual void Aborted(){}
         
-        virtual void EndTestCase(   const TestCase& testInfo, 
+        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
                                     const Totals&,
                                     const std::string&, 
                                     const std::string& ) {
-            closeLabel( recordTestCases, testInfo.getName()  );
+            closeLabel( recordTestCases, testInfo.name  );
         }
         
         virtual void Result( const AssertionResult& assertionResult );
@@ -155,13 +155,14 @@ namespace Catch {
         
         void operator()( const TestCase& testCase ) {
             EmbeddedRunner runner;
-            Totals totals = runner.runMatching( testCase.getName() );
+            std::string name = testCase.getTestCaseInfo().name;
+            Totals totals = runner.runMatching( name );
             switch( m_expectedResult ) {
                 case Expected::ToSucceed:
                     if( totals.assertions.failed > 0 ) {
                         INFO( runner.getOutput() );
                         FAIL( "Expected test case '" 
-                             << testCase.getName() 
+                             << name
                              << "' to succeed but there was/ were " 
                              << totals.assertions.failed << " failure(s)" );
                     }
@@ -173,7 +174,7 @@ namespace Catch {
                     if( totals.assertions.failed == 0 ) {
                         INFO( runner.getOutput() );
                         FAIL( "Expected test case '" 
-                             << testCase.getName() 
+                             << name
                              << "' to fail but there was/ were " 
                              << totals.assertions.passed << " success(es)" );
                     }

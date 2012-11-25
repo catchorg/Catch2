@@ -102,8 +102,8 @@ namespace Catch {
 
         virtual void EndSection( const std::string&, const Counts& ) {}
         
-        virtual void StartTestCase( const Catch::TestCase& testInfo ) {
-            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getClassName(), testInfo.getName() ) );
+        virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
+            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.className, testInfo.name ) );
             m_currentTestCaseStats.push_back( &m_currentStats->m_testCaseStats.back() );
         }
         
@@ -151,7 +151,7 @@ namespace Catch {
             }
         }
         
-        virtual void EndTestCase( const Catch::TestCase&, const Totals&, const std::string& stdOut, const std::string& stdErr ) {
+        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string& stdOut, const std::string& stdErr ) {
             m_currentTestCaseStats.pop_back();
             assert( m_currentTestCaseStats.empty() );
             TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
