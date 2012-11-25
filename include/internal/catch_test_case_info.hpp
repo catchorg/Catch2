@@ -31,12 +31,12 @@ namespace Catch {
         return TestCase( _testCase, info );
     }
 
-    TestCaseInfo::TestCaseInfo(   const std::string& _name,
-                 const std::string& _className,
-                 const std::string& _description,
-                 const std::set<std::string>& _tags,
-                 bool _isHidden,
-                 const SourceLineInfo& _lineInfo )
+    TestCaseInfo::TestCaseInfo( const std::string& _name,
+                                const std::string& _className,
+                                const std::string& _description,
+                                const std::set<std::string>& _tags,
+                                bool _isHidden,
+                                const SourceLineInfo& _lineInfo )
     :   name( _name ),
         className( _className ),
         description( _description ),

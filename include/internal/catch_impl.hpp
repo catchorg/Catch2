@@ -47,6 +47,9 @@ namespace Catch {
     IReporter::~IReporter() {}
     IReporterFactory::~IReporterFactory() {}
     IReporterRegistry::~IReporterRegistry() {}
+    IStreamingReporter::~IStreamingReporter() {}
+    LegacyReporterAdapter::~LegacyReporterAdapter() {}
+    
     BasicReporter::~BasicReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}

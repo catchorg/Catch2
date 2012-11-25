@@ -68,11 +68,11 @@ namespace Catch {
             m_context.setRunner( this );
             m_context.setConfig( &m_config );
             m_context.setResultCapture( this );
-            m_reporter->StartTesting();
+            LegacyReporterAdapter( m_reporter ).testRunStarting( "" ); // !TBD - name
         }
         
         virtual ~Runner() {
-            m_reporter->EndTesting( m_totals );
+            LegacyReporterAdapter( m_reporter ).testRunEnding( TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -85,15 +85,16 @@ namespace Catch {
 
             Totals totals;
 
-            m_reporter->StartGroup( testSpec );
+            LegacyReporterAdapter reporter( m_reporter );
+            
+            reporter.testGroupStarting( testSpec );
 
             std::vector<TestCase>::const_iterator it = matchingTests.begin();
             std::vector<TestCase>::const_iterator itEnd = matchingTests.end();
             for(; it != itEnd; ++it )
                 totals += runTest( *it );
-            // !TBD use std::accumulate?
 
-            m_reporter->EndGroup( testSpec, totals );
+            reporter.testGroupEnding( TestGroupStats( testSpec, totals, aborting() ) );
             return totals;
         }
 
@@ -104,8 +105,9 @@ namespace Catch {
             std::string redirectedCerr;
 
             TestCaseInfo testInfo = testCase.getTestCaseInfo();
-            
-            m_reporter->StartTestCase( testInfo );
+
+            LegacyReporterAdapter reporter( m_reporter );
+            reporter.testCaseStarting( testInfo );
             
             m_runningTest = new RunningTest( &testCase );
 
@@ -126,7 +128,8 @@ namespace Catch {
             }
             m_totals.testCases += deltaTotals.testCases;
 
-            m_reporter->EndTestCase( testInfo, deltaTotals, redirectedCout, redirectedCerr );
+            TestCaseStats stats( testInfo, deltaTotals, redirectedCout, redirectedCerr , aborting() );
+            reporter.testCaseEnding( stats );
 
 
             delete m_runningTest;
@@ -147,6 +150,7 @@ namespace Catch {
         }
 
         virtual void testEnded( const AssertionResult& result ) {
+            LegacyReporterAdapter reporter( m_reporter );
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
@@ -157,13 +161,13 @@ namespace Catch {
                     std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
                     std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
                     for(; it != itEnd; ++it )
-                        m_reporter->Result( (*it)->buildResult( m_lastAssertionInfo ) );
+                        reporter.assertionEnding( AssertionStats( (*it)->buildResult( m_lastAssertionInfo ), m_totals ) );
                 }
                 {
                     std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
                     std::vector<AssertionResult>::const_iterator itEnd = m_assertionResults.end();
                     for(; it != itEnd; ++it )
-                        m_reporter->Result( *it );
+                        reporter.assertionEnding( AssertionStats( *it, m_totals ) );
                 }
                 m_assertionResults.clear();
             }
@@ -174,7 +178,7 @@ namespace Catch {
                 m_totals.assertions.info++;
             }
             else
-                m_reporter->Result( result );
+                reporter.assertionEnding( AssertionStats( result, m_totals ) );
 
             // Reset AssertionInfo
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after this line}" , m_lastAssertionInfo.resultDisposition );

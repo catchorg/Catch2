@@ -51,13 +51,31 @@ namespace Catch
     };
 
     struct AssertionStats {
-        AssertionInfo assertionInfo;
+        AssertionStats( const AssertionResult& _assertionResult,
+                        const Totals& _totals )
+        :   assertionResult( _assertionResult ),
+            totals( _totals )
+        {}
+        
+//        AssertionInfo assertionInfo; // !TBD: needed? It's in the result
         AssertionResult assertionResult;
         Totals totals;
     };
 
     struct TestCaseStats {
-        TestCase testInfo;
+        TestCaseStats(  const TestCaseInfo& _testInfo,
+                        const Totals& _totals,
+                        const std::string& _stdOut,
+                        const std::string& _stdErr,
+                        bool _aborting )
+        : testInfo( _testInfo ),
+            totals( _totals ),
+            stdOut( _stdOut ),
+            stdErr( _stdErr ),
+            aborting( _aborting )
+        {}
+
+        TestCaseInfo testInfo;
         Totals totals;
         std::string stdOut;
         std::string stdErr;
@@ -65,12 +83,28 @@ namespace Catch
     };
     
     struct TestGroupStats {
+        TestGroupStats( const std::string& _groupName,
+                        const Totals& _totals,
+                        bool _aborting )
+        :   groupName( _groupName ),
+            totals( _totals ),
+            aborting( _aborting )
+        {}
+
         std::string groupName;
         Totals totals;
         bool aborting;
     };
     
     struct TestRunStats {
+        TestRunStats(   const std::string& _runName,
+                        const Totals& _totals,
+                        bool _aborting )
+        :   runName( _runName ),
+            totals( _totals ),
+            aborting( _aborting )
+        {}
+        
         std::string runName;
         Totals totals;
         bool aborting;
@@ -78,11 +112,12 @@ namespace Catch
 
     // !Work In progress
     struct IStreamingReporter : IShared {
+        virtual ~IStreamingReporter();
         virtual void testRunStarting( const std::string& runName ) = 0;
         virtual void testGroupStarting( const std::string& groupName ) = 0;
 
         // !TBD: include section info (perhaps TestCase has an isSection flag and/ or a parent pointer
-        virtual void testCaseStarting( const TestCase& testInfo ) = 0;
+        virtual void testCaseStarting( const TestCaseInfo& testInfo ) = 0;
         virtual void assertionStarting( const AssertionInfo& assertionInfo ) = 0;
 
         virtual void assertionEnding( const AssertionStats& assertionStats ) = 0;
@@ -127,6 +162,48 @@ namespace Catch
         // AssertionReslt
         virtual void Result( const AssertionResult& result ) = 0;
     };
+
+    class LegacyReporterAdapter : public SharedImpl<IStreamingReporter>
+    {
+    public:
+        LegacyReporterAdapter( const Ptr<IReporter>& legacyReporter )
+        : m_legacyReporter( legacyReporter )
+        {}
+        virtual ~LegacyReporterAdapter();
+        
+        
+        virtual void testRunStarting( const std::string& ) {
+            m_legacyReporter->StartTesting();
+        }
+        virtual void testGroupStarting( const std::string& groupName ) {
+            m_legacyReporter->StartGroup( groupName );
+        }
+        virtual void testCaseStarting( const TestCaseInfo& testInfo ) {
+            m_legacyReporter->StartTestCase( testInfo );
+        }
+        virtual void assertionStarting( const AssertionInfo& ) {
+            // Not on legacy interface
+        }
+
+        virtual void assertionEnding( const AssertionStats& assertionStats ) {
+            m_legacyReporter->Result( assertionStats.assertionResult );
+        }
+        virtual void testCaseEnding( const TestCaseStats& testCaseStats ) {
+            m_legacyReporter->EndTestCase( testCaseStats.testInfo, testCaseStats.totals, testCaseStats.stdOut, testCaseStats.stdErr );
+        }
+        virtual void testGroupEnding( const TestGroupStats& testGroupStats ) {
+            if( testGroupStats.aborting )
+                m_legacyReporter->Aborted();
+            m_legacyReporter->EndGroup( testGroupStats.groupName, testGroupStats.totals );
+        }
+        virtual void testRunEnding( const TestRunStats& testRunStats ) {
+            m_legacyReporter->EndTesting( testRunStats.totals );
+        }
+
+    private:
+        Ptr<IReporter> m_legacyReporter;
+    };
+
     
     struct IReporterFactory {
         virtual ~IReporterFactory();
