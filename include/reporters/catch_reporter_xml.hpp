@@ -30,10 +30,10 @@ namespace Catch {
         }        
 
         virtual void StartTesting() {
-            m_xml = XmlWriter( m_config.stream );
+            m_xml = XmlWriter( m_config.stream() );
             m_xml.startElement( "Catch" );
-            if( !m_config.name.empty() )
-                m_xml.writeAttribute( "name", m_config.name );
+            if( !m_config.name().empty() )
+                m_xml.writeAttribute( "name", m_config.name() );
         }
         
         virtual void EndTesting( const Totals& totals ) {
@@ -76,7 +76,7 @@ namespace Catch {
         }
         
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( !m_config.includeSuccessfulResults && assertionResult.getResultType() == ResultWas::Ok )
+            if( !m_config.includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
                 return;
 
             if( assertionResult.hasExpression() ) {

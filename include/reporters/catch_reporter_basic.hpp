@@ -54,27 +54,27 @@ namespace Catch {
 
         void ReportCounts( const std::string& label, const Counts& counts, const std::string& allPrefix = "All " ) {
             if( counts.passed )
-                m_config.stream << counts.failed << " of " << counts.total() << " " << label << "s failed";
+                m_config.stream() << counts.failed << " of " << counts.total() << " " << label << "s failed";
             else
-                m_config.stream << ( counts.failed > 1 ? allPrefix : "" ) << pluralise( counts.failed, label ) << " failed";
+                m_config.stream() << ( counts.failed > 1 ? allPrefix : "" ) << pluralise( counts.failed, label ) << " failed";
         }
 
         void ReportCounts( const Totals& totals, const std::string& allPrefix = "All " ) {
             if( totals.assertions.total() == 0 ) {
-                m_config.stream << "No tests ran";
+                m_config.stream() << "No tests ran";
             }
             else if( totals.assertions.failed ) {
                 TextColour colour( TextColour::ResultError );
                 ReportCounts( "test case", totals.testCases, allPrefix );
                 if( totals.testCases.failed > 0 ) {
-                    m_config.stream << " (";
+                    m_config.stream() << " (";
                     ReportCounts( "assertion", totals.assertions, allPrefix );
-                    m_config.stream << ")";
+                    m_config.stream() << ")";
                 }
             }
             else {
                 TextColour colour( TextColour::ResultSuccess );
-                m_config.stream   << allPrefix << "tests passed ("
+                m_config.stream()   << allPrefix << "tests passed ("
                                     << pluralise( totals.assertions.passed, "assertion" ) << " in "
                                     << pluralise( totals.testCases.passed, "test case" ) << ")";
             }
@@ -97,14 +97,14 @@ namespace Catch {
         virtual void EndTesting( const Totals& totals ) {
             // Output the overall test results even if "Started Testing" was not emitted
             if( m_aborted ) {
-                m_config.stream << "\n[Testing aborted. ";
+                m_config.stream() << "\n[Testing aborted. ";
                 ReportCounts( totals, "The first " );
             }
             else {
-                m_config.stream << "\n[Testing completed. ";
+                m_config.stream() << "\n[Testing completed. ";
                 ReportCounts( totals );
             }
-            m_config.stream << "]\n" << std::endl;
+            m_config.stream() << "]\n" << std::endl;
         }
 
         virtual void StartGroup( const std::string& groupName ) {
@@ -113,9 +113,9 @@ namespace Catch {
 
         virtual void EndGroup( const std::string& groupName, const Totals& totals ) {
             if( m_groupSpan.emitted && !groupName.empty() ) {
-                m_config.stream << "[End of group: '" << groupName << "'. ";
+                m_config.stream() << "[End of group: '" << groupName << "'. ";
                 ReportCounts( totals );
-                m_config.stream << "]\n" << std::endl;
+                m_config.stream() << "]\n" << std::endl;
                 m_groupSpan = SpanInfo();
             }
         }
@@ -131,19 +131,19 @@ namespace Catch {
         virtual void NoAssertionsInSection( const std::string& sectionName ) {
             startSpansLazily();
             TextColour colour( TextColour::ResultError );
-            m_config.stream << "\nNo assertions in section, '" << sectionName << "'\n" << std::endl;
+            m_config.stream() << "\nNo assertions in section, '" << sectionName << "'\n" << std::endl;
         }
         virtual void NoAssertionsInTestCase( const std::string& testName ) {
             startSpansLazily();
             TextColour colour( TextColour::ResultError );
-            m_config.stream << "\nNo assertions in test case, '" << testName << "'\n" << std::endl;
+            m_config.stream() << "\nNo assertions in test case, '" << testName << "'\n" << std::endl;
         }
 
         virtual void EndSection( const std::string& sectionName, const Counts& assertions ) {
 
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() ) {
-                m_config.stream << "[End of section: '" << sectionName << "' ";
+                m_config.stream() << "[End of section: '" << sectionName << "' ";
                 
                 if( assertions.failed ) {
                     TextColour colour( TextColour::ResultError );
@@ -151,38 +151,38 @@ namespace Catch {
                 }
                 else {
                     TextColour colour( TextColour::ResultSuccess );
-                    m_config.stream   << ( assertions.passed > 1 ? "All " : "" ) 
+                    m_config.stream()   << ( assertions.passed > 1 ? "All " : "" )
                                         << pluralise( assertions.passed, "assertion" ) << " passed" ;
                 }
-                m_config.stream << "]\n" << std::endl;
+                m_config.stream() << "]\n" << std::endl;
             }
             m_sectionSpans.pop_back();
         }
         
         virtual void Result( const AssertionResult& assertionResult ) {
-            if( !m_config.includeSuccessfulResults && assertionResult.getResultType() == ResultWas::Ok )
+            if( !m_config.includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
                 return;
             
             startSpansLazily();
             
             if( !assertionResult.getSourceInfo().empty() ) {
                 TextColour colour( TextColour::FileName );
-                m_config.stream << assertionResult.getSourceInfo();
+                m_config.stream() << assertionResult.getSourceInfo();
             }
             
             if( assertionResult.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
-                m_config.stream << assertionResult.getExpression();
+                m_config.stream() << assertionResult.getExpression();
                 if( assertionResult.succeeded() ) {
                     TextColour successColour( TextColour::Success );
-                    m_config.stream << " succeeded";
+                    m_config.stream() << " succeeded";
                 }
                 else {
                     TextColour errorColour( TextColour::Error );
-                    m_config.stream << " failed";
+                    m_config.stream() << " failed";
                     if( assertionResult.isOk() ) {
                         TextColour okAnywayColour( TextColour::Success );
-                        m_config.stream << " - but was ok";
+                        m_config.stream() << " - but was ok";
                     }
                 }
             }
@@ -191,19 +191,19 @@ namespace Catch {
                     {
                         TextColour colour( TextColour::Error );
                         if( assertionResult.hasExpression() )
-                            m_config.stream << " with unexpected";
+                            m_config.stream() << " with unexpected";
                         else
-                            m_config.stream << "Unexpected";
-                        m_config.stream << " exception with message: '" << assertionResult.getMessage() << "'";
+                            m_config.stream() << "Unexpected";
+                        m_config.stream() << " exception with message: '" << assertionResult.getMessage() << "'";
                     }
                     break;
                 case ResultWas::DidntThrowException:
                     {
                         TextColour colour( TextColour::Error );
                         if( assertionResult.hasExpression() )
-                            m_config.stream << " because no exception was thrown where one was expected";
+                            m_config.stream() << " because no exception was thrown where one was expected";
                         else
-                            m_config.stream << "No exception thrown where one was expected";
+                            m_config.stream() << "No exception thrown where one was expected";
                     }
                     break;
                 case ResultWas::Info:
@@ -221,7 +221,7 @@ namespace Catch {
                 case ResultWas::ExplicitFailure:
                     {
                         TextColour colour( TextColour::Error );
-                        m_config.stream << "failed with message: '" << assertionResult.getMessage() << "'";
+                        m_config.stream() << "failed with message: '" << assertionResult.getMessage() << "'";
                     }
                     break;
                 case ResultWas::Unknown: // These cases are here to prevent compiler warnings
@@ -232,19 +232,19 @@ namespace Catch {
                     if( !assertionResult.hasExpression() ) {
                         if( assertionResult.succeeded() ) {
                             TextColour colour( TextColour::Success );
-                            m_config.stream << " succeeded";
+                            m_config.stream() << " succeeded";
                         }
                         else {
                             TextColour colour( TextColour::Error );
-                            m_config.stream << " failed";
+                            m_config.stream() << " failed";
                             if( assertionResult.isOk() ) {
                                 TextColour okAnywayColour( TextColour::Success );
-                                m_config.stream << " - but was ok";
+                                m_config.stream() << " - but was ok";
                             }
                         }
                     }
                     if( assertionResult.hasMessage() ) {
-                        m_config.stream << "\n";
+                        m_config.stream() << "\n";
                         TextColour colour( TextColour::ReconstructedExpression );
                         streamVariableLengthText( "with message", assertionResult.getMessage() );
                     }
@@ -252,16 +252,16 @@ namespace Catch {
             }
             
             if( assertionResult.hasExpandedExpression() ) {
-                m_config.stream << " for: ";
+                m_config.stream() << " for: ";
                 if( assertionResult.getExpandedExpression().size() > 40 ) {
-                    m_config.stream << "\n";
+                    m_config.stream() << "\n";
                     if( assertionResult.getExpandedExpression().size() < 70 )
-                        m_config.stream << "\t";
+                        m_config.stream() << "\t";
                 }
                 TextColour colour( TextColour::ReconstructedExpression );
-                m_config.stream << assertionResult.getExpandedExpression();
+                m_config.stream() << assertionResult.getExpandedExpression();
             }
-            m_config.stream << std::endl;        
+            m_config.stream() << std::endl;
         }
         
         virtual void EndTestCase(   const TestCaseInfo& testInfo, 
@@ -279,9 +279,9 @@ namespace Catch {
             }
             
             if( m_testSpan.emitted ) {
-                m_config.stream << "[Finished: '" << testInfo.name << "' ";
+                m_config.stream() << "[Finished: '" << testInfo.name << "' ";
                 ReportCounts( totals );
-                m_config.stream << "]" << std::endl;
+                m_config.stream() << "]" << std::endl;
             }
         }    
         
@@ -289,20 +289,20 @@ namespace Catch {
         
         void startSpansLazily() {
             if( !m_testingSpan.emitted ) {
-                if( m_config.name.empty() )
-                    m_config.stream << "[Started testing]" << std::endl;
+                if( m_config.name().empty() )
+                    m_config.stream() << "[Started testing]" << std::endl;
                 else
-                    m_config.stream << "[Started testing: " << m_config.name << "]" << std::endl;
+                    m_config.stream() << "[Started testing: " << m_config.name() << "]" << std::endl;
                 m_testingSpan.emitted = true;
             }
             
             if( !m_groupSpan.emitted && !m_groupSpan.name.empty() ) {
-                m_config.stream << "[Started group: '" << m_groupSpan.name << "']" << std::endl;
+                m_config.stream() << "[Started group: '" << m_groupSpan.name << "']" << std::endl;
                 m_groupSpan.emitted = true;
             }
             
             if( !m_testSpan.emitted ) {
-                m_config.stream << std::endl << "[Running: " << m_testSpan.name << "]" << std::endl;
+                m_config.stream() << std::endl << "[Running: " << m_testSpan.name << "]" << std::endl;
                 m_testSpan.emitted = true;
             }
             
@@ -310,7 +310,7 @@ namespace Catch {
                 SpanInfo& sectionSpan = m_sectionSpans.back();
                 if( !sectionSpan.emitted && !sectionSpan.name.empty() ) {
                     if( m_firstSectionInTestCase ) {
-                        m_config.stream << "\n";
+                        m_config.stream() << "\n";
                         m_firstSectionInTestCase = false;
                     }
                     std::vector<SpanInfo>::iterator it = m_sectionSpans.begin();
@@ -318,7 +318,7 @@ namespace Catch {
                     for(; it != itEnd; ++it ) {
                         SpanInfo& prevSpan = *it;
                         if( !prevSpan.emitted && !prevSpan.name.empty() ) {
-                            m_config.stream << "[Started section: '" << prevSpan.name << "']" << std::endl;
+                            m_config.stream() << "[Started section: '" << prevSpan.name << "']" << std::endl;
                             prevSpan.emitted = true;
                         }                        
                     }
@@ -329,10 +329,10 @@ namespace Catch {
         void streamVariableLengthText( const std::string& prefix, const std::string& text ) {
             std::string trimmed = trim( text );
             if( trimmed.find_first_of( "\r\n" ) == std::string::npos ) {
-                m_config.stream << "[" << prefix << ": " << trimmed << "]";
+                m_config.stream() << "[" << prefix << ": " << trimmed << "]";
             }
             else {
-                m_config.stream << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 
+                m_config.stream() << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 
                 << "\n[end of " << prefix << "] <<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
         }

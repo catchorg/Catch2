@@ -84,7 +84,7 @@ namespace Catch {
         
         virtual void StartGroup( const std::string& groupName ) {
             if( groupName.empty() )
-                m_statsForSuites.push_back( Stats( m_config.name ) );
+                m_statsForSuites.push_back( Stats( m_config.name() ) );
             else
                 m_statsForSuites.push_back( Stats( groupName ) );
             m_currentStats = &m_statsForSuites.back();
@@ -108,7 +108,7 @@ namespace Catch {
         }
         
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( assertionResult.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults ) {
+            if( assertionResult.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults() ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
@@ -168,32 +168,29 @@ namespace Catch {
         }
 
         virtual void EndTesting( const Totals& ) {
-            std::ostream& str = m_config.stream;
-            {
-                XmlWriter xml( str );
+            XmlWriter xml( m_config.stream() );
+            
+            if( m_statsForSuites.size() > 0 )
+                xml.startElement( "testsuites" );
+                        
+            std::vector<Stats>::const_iterator it = m_statsForSuites.begin();
+            std::vector<Stats>::const_iterator itEnd = m_statsForSuites.end();
+            
+            for(; it != itEnd; ++it ) {
+                XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
+                xml.writeAttribute( "name", it->m_name );
+                xml.writeAttribute( "errors", it->m_errorsCount );
+                xml.writeAttribute( "failures", it->m_failuresCount );
+                xml.writeAttribute( "tests", it->m_testsCount );
+                xml.writeAttribute( "hostname", "tbd" );
+                xml.writeAttribute( "time", "tbd" );
+                xml.writeAttribute( "timestamp", "tbd" );
                 
-                if( m_statsForSuites.size() > 0 )
-                    xml.startElement( "testsuites" );
-                            
-                std::vector<Stats>::const_iterator it = m_statsForSuites.begin();
-                std::vector<Stats>::const_iterator itEnd = m_statsForSuites.end();
-                
-                for(; it != itEnd; ++it ) {
-                    XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
-                    xml.writeAttribute( "name", it->m_name );
-                    xml.writeAttribute( "errors", it->m_errorsCount );
-                    xml.writeAttribute( "failures", it->m_failuresCount );
-                    xml.writeAttribute( "tests", it->m_testsCount );
-                    xml.writeAttribute( "hostname", "tbd" );
-                    xml.writeAttribute( "time", "tbd" );
-                    xml.writeAttribute( "timestamp", "tbd" );
-                    
-                    OutputTestCases( xml, *it );
-                }
-      
-                xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ), false );
-                xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ), false );
+                OutputTestCases( xml, *it );
             }
+  
+            xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ), false );
+            xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ), false );
         }
         
         void OutputTestCases( XmlWriter& xml, const Stats& stats ) {

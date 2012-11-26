@@ -23,31 +23,17 @@ namespace Catch
 {
     struct ReporterConfig
     {
-        ReporterConfig( const std::string& _name,
-                        std::ostream& _stream,
-                        bool _includeSuccessfulResults,
-                        const ConfigData& _fullConfig )
-        :   name( _name ),
-            stream( _stream ),
-            includeSuccessfulResults( _includeSuccessfulResults ),
-            fullConfig( _fullConfig )
-        {}
-        
-        ReporterConfig( const ReporterConfig& other )
-        :   name( other.name ),
-            stream( other.stream ),
-            includeSuccessfulResults( other.includeSuccessfulResults ),
-            fullConfig( other.fullConfig )
-        {}
-        
+        ReporterConfig( std::ostream& _stream, const ConfigData& _fullConfig )
+        :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
-        std::string name;
-        std::ostream& stream;
-        bool includeSuccessfulResults;
-        ConfigData fullConfig;
+        std::ostream& stream()                  { return *m_stream; }
+        std::string name() const                { return m_fullConfig.name; }
+        bool includeSuccessfulResults() const   { return m_fullConfig.includeWhichResults == Include::SuccessfulResults; }
+        bool warnAboutMissingAssertions() const { return m_fullConfig.warnings & ConfigData::WarnAbout::NoAssertions; }
 
     private:
-        void operator=(const ReporterConfig&);
+        std::ostream* m_stream;
+        ConfigData m_fullConfig;
     };
 
     struct AssertionStats {
@@ -67,11 +53,13 @@ namespace Catch
                         const Totals& _totals,
                         const std::string& _stdOut,
                         const std::string& _stdErr,
+                        bool _missingAssertions,
                         bool _aborting )
         : testInfo( _testInfo ),
             totals( _totals ),
             stdOut( _stdOut ),
             stdErr( _stdErr ),
+            missingAssertions( _missingAssertions ),
             aborting( _aborting )
         {}
 
@@ -79,6 +67,7 @@ namespace Catch
         Totals totals;
         std::string stdOut;
         std::string stdErr;
+        bool missingAssertions;
         bool aborting;
     };
     
@@ -166,8 +155,9 @@ namespace Catch
     class LegacyReporterAdapter : public SharedImpl<IStreamingReporter>
     {
     public:
-        LegacyReporterAdapter( const Ptr<IReporter>& legacyReporter )
-        : m_legacyReporter( legacyReporter )
+        LegacyReporterAdapter( const Ptr<IReporter>& legacyReporter, const ReporterConfig& config )
+        :   m_legacyReporter( legacyReporter ),
+            m_config( config )
         {}
         virtual ~LegacyReporterAdapter();
         
@@ -189,6 +179,8 @@ namespace Catch
             m_legacyReporter->Result( assertionStats.assertionResult );
         }
         virtual void testCaseEnding( const TestCaseStats& testCaseStats ) {
+            if( testCaseStats.missingAssertions )
+                m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
             m_legacyReporter->EndTestCase( testCaseStats.testInfo, testCaseStats.totals, testCaseStats.stdOut, testCaseStats.stdErr );
         }
         virtual void testGroupEnding( const TestGroupStats& testGroupStats ) {
@@ -202,6 +194,7 @@ namespace Catch
 
     private:
         Ptr<IReporter> m_legacyReporter;
+        ReporterConfig m_config;
     };
 
     

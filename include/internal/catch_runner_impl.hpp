@@ -68,11 +68,11 @@ namespace Catch {
             m_context.setRunner( this );
             m_context.setConfig( &m_config );
             m_context.setResultCapture( this );
-            LegacyReporterAdapter( m_reporter ).testRunStarting( "" ); // !TBD - name
+            LegacyReporterAdapter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) ).testRunStarting( "" ); // !TBD - name
         }
         
         virtual ~Runner() {
-            LegacyReporterAdapter( m_reporter ).testRunEnding( TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
+            LegacyReporterAdapter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) ).testRunEnding( TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -85,7 +85,7 @@ namespace Catch {
 
             Totals totals;
 
-            LegacyReporterAdapter reporter( m_reporter );
+            LegacyReporterAdapter reporter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) );
             
             reporter.testGroupStarting( testSpec );
 
@@ -106,7 +106,7 @@ namespace Catch {
 
             TestCaseInfo testInfo = testCase.getTestCaseInfo();
 
-            LegacyReporterAdapter reporter( m_reporter );
+            LegacyReporterAdapter reporter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) );
             reporter.testCaseStarting( testInfo );
             
             m_runningTest = new RunningTest( &testCase );
@@ -120,15 +120,17 @@ namespace Catch {
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
+            bool missingAssertions = false;
             if( deltaTotals.assertions.total() == 0  &&
                ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
                 m_totals.assertions.failed++;
                 deltaTotals = m_totals.delta( prevTotals );
-                m_reporter->NoAssertionsInTestCase( testInfo.name );
+                missingAssertions = true;
             }
+
             m_totals.testCases += deltaTotals.testCases;
 
-            TestCaseStats stats( testInfo, deltaTotals, redirectedCout, redirectedCerr , aborting() );
+            TestCaseStats stats( testInfo, deltaTotals, redirectedCout, redirectedCerr, missingAssertions, aborting() );
             reporter.testCaseEnding( stats );
 
 
@@ -150,7 +152,7 @@ namespace Catch {
         }
 
         virtual void testEnded( const AssertionResult& result ) {
-            LegacyReporterAdapter reporter( m_reporter );
+            LegacyReporterAdapter reporter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) );
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }

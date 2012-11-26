@@ -45,7 +45,7 @@ namespace Catch {
             std::vector<TestCaseFilters>::const_iterator it = filterGroups.begin();
             std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
 
-            LegacyReporterAdapter reporter( m_reporter );
+            LegacyReporterAdapter reporter( m_reporter, ReporterConfig( m_configWrapper.stream(), m_config ) );
 
             for(; it != itEnd && !context.aborting(); ++it ) {
                 reporter.testGroupStarting( it->getName() );
@@ -100,7 +100,7 @@ namespace Catch {
             ? "basic"
             : m_config.reporter;
 
-            ReporterConfig reporterConfig( m_config.name, m_configWrapper.stream(), m_config.includeWhichResults == Include::SuccessfulResults, m_config );
+            ReporterConfig reporterConfig( m_configWrapper.stream(), m_config );
 
             m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
             if( !m_reporter ) {
