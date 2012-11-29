@@ -1424,9 +1424,9 @@ TrickyTests.cpp:315: !False succeeded for: !false
 [Running: scenario name]
 [Started section: 'This stuff exists']
 [Started section: 'I do this']
-[Started section: 'it should this this']
+[Started section: 'it should do this']
 BDDTests.cpp:37: itDoesThis() succeeded for: true
-[End of section: 'it should this this' 1 assertion passed]
+[End of section: 'it should do this' 1 assertion passed]
 
 [End of section: 'I do this' 1 assertion passed]
 
@@ -1438,3 +1438,5473 @@ BDDTests.cpp:37: itDoesThis() succeeded for: true
 
 [Testing completed. 45 of 98 test cases failed (103 of 615 assertions failed)]
 
+<testsuites>
+  <testsuite name="~dummy" errors="9" failures="76" tests="615" hostname="tbd" time="tbd" timestamp="tbd">
+    <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
+    <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
+    <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
+    <testcase classname="global" name="./succeeding/Approx/int" time="tbd"/>
+    <testcase classname="global" name="./succeeding/Approx/mixed" time="tbd"/>
+    <testcase classname="global" name="./succeeding/Approx/custom" time="tbd"/>
+    <testcase classname="TestClass" name="./succeeding/TestClass/succeedingCase" time="tbd"/>
+    <testcase classname="TestClass" name="./failing/TestClass/failingCase" time="tbd">
+      <failure message="&quot;hello&quot; == &quot;world&quot;" type="REQUIRE">
+ClassTests.cpp:28:
+      </failure>
+    </testcase>
+    <testcase classname="Fixture" name="./succeeding/Fixture/succeedingCase" time="tbd"/>
+    <testcase classname="Fixture" name="./failing/Fixture/failingCase" time="tbd">
+      <failure message="1 == 2" type="REQUIRE">
+ClassTests.cpp:55:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/conditions/equality" time="tbd"/>
+    <testcase classname="global" name="./failing/conditions/equality" time="tbd">
+      <failure message="7 == 6" type="CHECK">
+ConditionTests.cpp:71:
+      </failure>
+      <failure message="7 == 8" type="CHECK">
+ConditionTests.cpp:72:
+      </failure>
+      <failure message="7 == 0" type="CHECK">
+ConditionTests.cpp:73:
+      </failure>
+      <failure message="9.1 == Approx( 9.11 )" type="CHECK">
+ConditionTests.cpp:74:
+      </failure>
+      <failure message="9.1 == Approx( 9 )" type="CHECK">
+ConditionTests.cpp:75:
+      </failure>
+      <failure message="9.1 == Approx( 1 )" type="CHECK">
+ConditionTests.cpp:76:
+      </failure>
+      <failure message="9.1 == Approx( 0 )" type="CHECK">
+ConditionTests.cpp:77:
+      </failure>
+      <failure message="3.14159 == Approx( 3.1415 )" type="CHECK">
+ConditionTests.cpp:78:
+      </failure>
+      <failure message="&quot;hello&quot; == &quot;goodbye&quot;" type="CHECK">
+ConditionTests.cpp:79:
+      </failure>
+      <failure message="&quot;hello&quot; == &quot;hell&quot;" type="CHECK">
+ConditionTests.cpp:80:
+      </failure>
+      <failure message="&quot;hello&quot; == &quot;hello1&quot;" type="CHECK">
+ConditionTests.cpp:81:
+      </failure>
+      <failure message="5 == 6" type="CHECK">
+ConditionTests.cpp:82:
+      </failure>
+      <failure message="1.3 == Approx( 1.301 )" type="CHECK">
+ConditionTests.cpp:85:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/conditions/inequality" time="tbd"/>
+    <testcase classname="global" name="./failing/conditions/inequality" time="tbd">
+      <failure message="7 != 7" type="CHECK">
+ConditionTests.cpp:111:
+      </failure>
+      <failure message="9.1 != Approx( 9.1 )" type="CHECK">
+ConditionTests.cpp:112:
+      </failure>
+      <failure message="3.14159 != Approx( 3.14159 )" type="CHECK">
+ConditionTests.cpp:113:
+      </failure>
+      <failure message="&quot;hello&quot; != &quot;hello&quot;" type="CHECK">
+ConditionTests.cpp:114:
+      </failure>
+      <failure message="5 != 5" type="CHECK">
+ConditionTests.cpp:115:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/conditions/ordered" time="tbd"/>
+    <testcase classname="global" name="./failing/conditions/ordered" time="tbd">
+      <failure message="7 > 7" type="CHECK">
+ConditionTests.cpp:152:
+      </failure>
+      <failure message="7 &lt; 7" type="CHECK">
+ConditionTests.cpp:153:
+      </failure>
+      <failure message="7 > 8" type="CHECK">
+ConditionTests.cpp:154:
+      </failure>
+      <failure message="7 &lt; 6" type="CHECK">
+ConditionTests.cpp:155:
+      </failure>
+      <failure message="7 &lt; 0" type="CHECK">
+ConditionTests.cpp:156:
+      </failure>
+      <failure message="7 &lt; -1" type="CHECK">
+ConditionTests.cpp:157:
+      </failure>
+      <failure message="7 >= 8" type="CHECK">
+ConditionTests.cpp:159:
+      </failure>
+      <failure message="7 &lt;= 6" type="CHECK">
+ConditionTests.cpp:160:
+      </failure>
+      <failure message="9.1 &lt; 9" type="CHECK">
+ConditionTests.cpp:162:
+      </failure>
+      <failure message="9.1 > 10" type="CHECK">
+ConditionTests.cpp:163:
+      </failure>
+      <failure message="9.1 > 9.2" type="CHECK">
+ConditionTests.cpp:164:
+      </failure>
+      <failure message="&quot;hello&quot; > &quot;hello&quot;" type="CHECK">
+ConditionTests.cpp:166:
+      </failure>
+      <failure message="&quot;hello&quot; &lt; &quot;hello&quot;" type="CHECK">
+ConditionTests.cpp:167:
+      </failure>
+      <failure message="&quot;hello&quot; > &quot;hellp&quot;" type="CHECK">
+ConditionTests.cpp:168:
+      </failure>
+      <failure message="&quot;hello&quot; > &quot;z&quot;" type="CHECK">
+ConditionTests.cpp:169:
+      </failure>
+      <failure message="&quot;hello&quot; &lt; &quot;hellm&quot;" type="CHECK">
+ConditionTests.cpp:170:
+      </failure>
+      <failure message="&quot;hello&quot; &lt; &quot;a&quot;" type="CHECK">
+ConditionTests.cpp:171:
+      </failure>
+      <failure message="&quot;hello&quot; >= &quot;z&quot;" type="CHECK">
+ConditionTests.cpp:173:
+      </failure>
+      <failure message="&quot;hello&quot; &lt;= &quot;a&quot;" type="CHECK">
+ConditionTests.cpp:174:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/conditions/int literals" time="tbd"/>
+    <testcase classname="global" name="./succeeding/conditions//long_to_unsigned_x" time="tbd"/>
+    <testcase classname="global" name="./succeeding/conditions/const ints to int literal" time="tbd"/>
+    <testcase classname="global" name="./succeeding/conditions/negative ints" time="tbd"/>
+    <testcase classname="global" name="./succeeding/conditions/computed ints" time="tbd"/>
+    <testcase classname="global" name="./succeeding/conditions/ptr" time="tbd"/>
+    <testcase classname="global" name="./succeeding/conditions/not" time="tbd"/>
+    <testcase classname="global" name="./failing/conditions/not" time="tbd">
+      <failure message="false != false" type="CHECK">
+ConditionTests.cpp:334:
+      </failure>
+      <failure message="true != true" type="CHECK">
+ConditionTests.cpp:335:
+      </failure>
+      <failure message="false" type="CHECK">
+ConditionTests.cpp:336:
+      </failure>
+      <failure message="!true" type="CHECK_FALSE">
+ConditionTests.cpp:337:
+      </failure>
+      <failure message="false" type="CHECK">
+ConditionTests.cpp:339:
+      </failure>
+      <failure message="!true" type="CHECK_FALSE">
+ConditionTests.cpp:340:
+      </failure>
+      <failure message="false" type="CHECK">
+ConditionTests.cpp:342:
+      </failure>
+      <failure message="!(1 == 1)" type="CHECK_FALSE">
+ConditionTests.cpp:343:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/exceptions/explicit" time="tbd"/>
+    <testcase classname="global" name="./failing/exceptions/explicit" time="tbd">
+      <error message="thisThrows()" type="CHECK_THROWS_AS">
+ExceptionTests.cpp:47:
+      </error>
+      < message="thisDoesntThrow()" type="CHECK_THROWS_AS">
+ExceptionTests.cpp:48:
+      </>
+      <error message="thisThrows()" type="CHECK_NOTHROW">
+ExceptionTests.cpp:49:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./failing/exceptions/implicit" time="tbd">
+      <error type="TEST_CASE">
+ExceptionTests.cpp:52:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./failing/exceptions/implicit/2" time="tbd">
+      <error message="{Unknown expression after this line}">
+ExceptionTests.cpp:60:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./succeeding/exceptions/implicit" time="tbd"/>
+    <testcase classname="global" name="./failing/exceptions/custom" time="tbd">
+      <error type="TEST_CASE">
+ExceptionTests.cpp:102:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./failing/exceptions/custom/nothrow" time="tbd">
+      <error message="throw CustomException( &quot;unexpected custom exception&quot; )" type="REQUIRE_NOTHROW">
+ExceptionTests.cpp:109:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./failing/exceptions/custom/throw" time="tbd">
+      <error message="throw CustomException( &quot;custom exception - not std&quot; )" type="REQUIRE_THROWS_AS">
+ExceptionTests.cpp:114:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./failing/exceptions/custom/double" time="tbd">
+      <error type="TEST_CASE">
+ExceptionTests.cpp:118:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./failing/exceptions/in-section" time="tbd">
+      <error type="TEST_CASE">
+ExceptionTests.cpp:132:
+      </error>
+    </testcase>
+    <testcase classname="global" name="./succeeding/exceptions/error messages" time="tbd"/>
+    <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="tbd"/>
+    <testcase classname="global" name="./succeeding/generators/1" time="tbd"/>
+    <testcase classname="global" name="./succeeding/message" time="tbd">
+      <warning type="WARN">
+MessageTests.cpp:14:
+      </warning>
+    </testcase>
+    <testcase classname="global" name="./succeeding/succeed" time="tbd"/>
+    <testcase classname="global" name="./failing/message/info/1" time="tbd">
+      <info type="INFO">
+MessageTests.cpp:23:
+      </info>
+      <info type="INFO">
+MessageTests.cpp:24:
+      </info>
+      <failure message="2 == 1" type="REQUIRE">
+MessageTests.cpp:26:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./mixed/message/info/2" time="tbd">
+      <info type="INFO">
+MessageTests.cpp:31:
+      </info>
+      <info type="INFO">
+MessageTests.cpp:35:
+      </info>
+      <failure message="2 == 1" type="CHECK">
+MessageTests.cpp:37:
+      </failure>
+      <info type="INFO">
+MessageTests.cpp:39:
+      </info>
+      <failure message="2 == 0" type="CHECK">
+MessageTests.cpp:41:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./failing/message/fail" time="tbd">
+      <failure type="FAIL">
+MessageTests.cpp:51:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./failing/message/sections" time="tbd">
+      <failure type="FAIL">
+MessageTests.cpp:58:
+      </failure>
+      <failure type="FAIL">
+MessageTests.cpp:63:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/message/sections/stdout" time="tbd">
+      <system-out>
+Message from section one
+Message from section two
+      </system-out>
+    </testcase>
+    <testcase classname="global" name="./mixed/message/scoped" time="tbd">
+      <info message="i &lt; 10" type="REQUIRE">
+MessageTests.cpp:86:
+      </info>
+      <info message="i &lt; 10" type="REQUIRE">
+MessageTests.cpp:86:
+      </info>
+      <failure message="10 &lt; 10" type="REQUIRE">
+MessageTests.cpp:86:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/nofail" time="tbd">
+      <failure message="1 == 2" type="CHECK_NOFAIL">
+MessageTests.cpp:92:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/Misc/Sections" time="tbd"/>
+    <testcase classname="global" name="./succeeding/Misc/Sections/nested" time="tbd"/>
+    <testcase classname="global" name="./mixed/Misc/Sections/nested2" time="tbd">
+      <failure message="1 == 2" type="REQUIRE">
+MiscTests.cpp:61:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./Sections/nested/a/b" time="tbd"/>
+    <testcase classname="global" name="Sections/nested3" time="tbd"/>
+    <testcase classname="global" name="./mixed/Misc/Sections/loops" time="tbd">
+      <failure message="0 > 1" type="CHECK">
+MiscTests.cpp:133:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./mixed/Misc/loops" time="tbd">
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <failure message="1 == 0" type="CHECK">
+MiscTests.cpp:145:
+      </failure>
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <failure message="1 == 0" type="CHECK">
+MiscTests.cpp:145:
+      </failure>
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <failure message="1 == 0" type="CHECK">
+MiscTests.cpp:145:
+      </failure>
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <failure message="1 == 0" type="CHECK">
+MiscTests.cpp:145:
+      </failure>
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <failure message="1 == 0" type="CHECK">
+MiscTests.cpp:145:
+      </failure>
+      <info type="INFO">
+MiscTests.cpp:144:
+      </info>
+      <failure message="1 == 0" type="CHECK">
+MiscTests.cpp:145:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/Misc/stdout,stderr" time="tbd">
+      <system-out>
+Some information
+      </system-out>
+      <system-err>
+An error
+      </system-err>
+    </testcase>
+    <testcase classname="global" name="./succeeding/Misc/null strings" time="tbd"/>
+    <testcase classname="global" name="./failing/info" time="tbd">
+      <info type="INFO">
+MiscTests.cpp:169:
+      </info>
+      <info type="CAPTURE">
+MiscTests.cpp:171:
+      </info>
+      <failure message="false" type="REQUIRE">
+MiscTests.cpp:172:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/checkedif" time="tbd"/>
+    <testcase classname="global" name="./failing/checkedif" time="tbd">
+      <failure message="false" type="CHECKED_IF">
+MiscTests.cpp:177:
+      </failure>
+      <failure message="false" type="REQUIRE">
+MiscTests.cpp:190:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/checkedelse" time="tbd"/>
+    <testcase classname="global" name="./failing/checkedelse" time="tbd">
+      <failure message="false" type="CHECKED_ELSE">
+MiscTests.cpp:195:
+      </failure>
+      <failure message="false" type="REQUIRE">
+MiscTests.cpp:208:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./misc/xmlentitycheck" time="tbd"/>
+    <testcase classname="global" name="./manual/onechar" time="tbd">
+      <info type="INFO">
+MiscTests.cpp:225:
+      </info>
+      <failure message="false" type="REQUIRE">
+MiscTests.cpp:226:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/atomic if" time="tbd"/>
+    <testcase classname="global" name="./succeeding/matchers" time="tbd"/>
+    <testcase classname="global" name="./failing/matchers/Contains" time="tbd">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
+MiscTests.cpp:255:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./failing/matchers/StartsWith" time="tbd">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
+MiscTests.cpp:260:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./failing/matchers/EndsWith" time="tbd">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
+MiscTests.cpp:265:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./failing/matchers/Equals" time="tbd">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
+MiscTests.cpp:270:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="/succeeding/matchers/AllOf" time="tbd"/>
+    <testcase classname="global" name="/succeeding/matchers/AnyOf" time="tbd"/>
+    <testcase classname="global" name="./succeeding/matchers/Equals" time="tbd"/>
+    <testcase classname="global" name="example/factorial" time="tbd"/>
+    <testcase classname="global" name="empty" time="tbd"/>
+    <testcase classname="global" name="Nice descriptive name" time="tbd">
+      <warning type="WARN">
+MiscTests.cpp:309:
+      </warning>
+    </testcase>
+    <testcase classname="global" name="first tag" time="tbd"/>
+    <testcase classname="global" name="second tag" time="tbd"/>
+    <testcase classname="global" name="selftest/main" time="tbd">
+      <system-out>
+Message from section one
+Message from section two
+Some information
+Message from section one
+Message from section two
+Some information
+      </system-out>
+      <system-err>
+An error
+An error
+      </system-err>
+    </testcase>
+    <testcase classname="global" name="meta/Misc/Sections" time="tbd"/>
+    <testcase classname="global" name="selftest/parser/2" time="tbd"/>
+    <testcase classname="global" name="selftest/test filter" time="tbd"/>
+    <testcase classname="global" name="selftest/test filters" time="tbd"/>
+    <testcase classname="global" name="selftest/filter/prefix wildcard" time="tbd"/>
+    <testcase classname="global" name="selftest/filter/wildcard at both ends" time="tbd"/>
+    <testcase classname="global" name="selftest/option parsers" time="tbd"/>
+    <testcase classname="global" name="selftest/tags" time="tbd"/>
+    <testcase classname="global" name="./succeeding/Tricky/std::pair" time="tbd"/>
+    <testcase classname="global" name="./inprogress/failing/Tricky/trailing expression" time="tbd">
+      <warning type="WARN">
+TrickyTests.cpp:55:
+      </warning>
+    </testcase>
+    <testcase classname="global" name="./inprogress/failing/Tricky/compound lhs" time="tbd">
+      <warning type="WARN">
+TrickyTests.cpp:71:
+      </warning>
+    </testcase>
+    <testcase classname="global" name="./failing/Tricky/non streamable type" time="tbd">
+      <failure message="0x<hex digits> == 0x<hex digits>" type="CHECK">
+TrickyTests.cpp:95:
+      </failure>
+      <failure message="{?} == {?}" type="CHECK">
+TrickyTests.cpp:96:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./failing/string literals" time="tbd">
+      <failure message="&quot;first&quot; == &quot;second&quot;" type="REQUIRE">
+TrickyTests.cpp:106:
+      </failure>
+    </testcase>
+    <testcase classname="global" name="./succeeding/side-effects" time="tbd"/>
+    <testcase classname="global" name="./succeeding/koenig" time="tbd"/>
+    <testcase classname="global" name="./succeeding/non-const==" time="tbd"/>
+    <testcase classname="global" name="./succeeding/enum/bits" time="tbd"/>
+    <testcase classname="global" name="./succeeding/boolean member" time="tbd"/>
+    <testcase classname="global" name="./succeeding/unimplemented static bool" time="tbd"/>
+    <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
+    <testcase classname="global" name="scenario name" time="tbd"/>
+  </testsuite>
+  <system-out>
+Message from section one
+Message from section two
+
+Some information
+
+Message from section one
+Message from section two
+Some information
+Message from section one
+Message from section two
+Some information
+  </system-out>
+  <system-err>
+An error
+
+An error
+An error
+  </system-err>
+</testsuites>
+<Catch name="CatchSelfTest">
+  <Group name="~dummy">
+    <TestCase name="./succeeding/Approx/simple">
+ApproxTests.cpp" line="20">
+        <Original>
+          d == Approx( 1.23 )
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.23 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="21">
+        <Original>
+          d != Approx( 1.22 )
+        </Original>
+        <Expanded>
+          1.23 != Approx( 1.22 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="22">
+        <Original>
+          d != Approx( 1.24 )
+        </Original>
+        <Expanded>
+          1.23 != Approx( 1.24 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="24">
+        <Original>
+          Approx( d ) == 1.23
+        </Original>
+        <Expanded>
+          Approx( 1.23 ) == 1.23
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="25">
+        <Original>
+          Approx( d ) != 1.22
+        </Original>
+        <Expanded>
+          Approx( 1.23 ) != 1.22
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="26">
+        <Original>
+          Approx( d ) != 1.24
+        </Original>
+        <Expanded>
+          Approx( 1.23 ) != 1.24
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Approx/epsilon">
+ApproxTests.cpp" line="38">
+        <Original>
+          d != Approx( 1.231 )
+        </Original>
+        <Expanded>
+          1.23 != Approx( 1.231 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="39">
+        <Original>
+          d == Approx( 1.231 ).epsilon( 0.1 )
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.231 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Approx/float">
+ApproxTests.cpp" line="49">
+        <Original>
+          1.23f == Approx( 1.23f )
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.23 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="50">
+        <Original>
+          0.0f == Approx( 0.0f )
+        </Original>
+        <Expanded>
+          0 == Approx( 0 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Approx/int">
+ApproxTests.cpp" line="60">
+        <Original>
+          1 == Approx( 1 )
+        </Original>
+        <Expanded>
+          1 == Approx( 1 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="61">
+        <Original>
+          0 == Approx( 0 )
+        </Original>
+        <Expanded>
+          0 == Approx( 0 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Approx/mixed">
+ApproxTests.cpp" line="75">
+        <Original>
+          1.0f == Approx( 1 )
+        </Original>
+        <Expanded>
+          1 == Approx( 1 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="76">
+        <Original>
+          0 == Approx( dZero)
+        </Original>
+        <Expanded>
+          0 == Approx( 0 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="77">
+        <Original>
+          0 == Approx( dSmall ).epsilon( 0.001 )
+        </Original>
+        <Expanded>
+          0 == Approx( 1e-05 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="78">
+        <Original>
+          1.234f == Approx( dMedium )
+        </Original>
+        <Expanded>
+          1.234 == Approx( 1.234 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="79">
+        <Original>
+          dMedium == Approx( 1.234f )
+        </Original>
+        <Expanded>
+          1.234 == Approx( 1.234 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Approx/custom">
+ApproxTests.cpp" line="93">
+        <Original>
+          d == approx( 1.23 )
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.23 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="94">
+        <Original>
+          d == approx( 1.22 )
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.22 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="95">
+        <Original>
+          d == approx( 1.24 )
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.24 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="96">
+        <Original>
+          d != approx( 1.25 )
+        </Original>
+        <Expanded>
+          1.23 != Approx( 1.25 )
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="98">
+        <Original>
+          approx( d ) == 1.23
+        </Original>
+        <Expanded>
+          Approx( 1.23 ) == 1.23
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="99">
+        <Original>
+          approx( d ) == 1.22
+        </Original>
+        <Expanded>
+          Approx( 1.23 ) == 1.22
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="100">
+        <Original>
+          approx( d ) == 1.24
+        </Original>
+        <Expanded>
+          Approx( 1.23 ) == 1.24
+        </Expanded>
+      </Expression>
+ApproxTests.cpp" line="101">
+        <Original>
+          approx( d ) != 1.25
+        </Original>
+        <Expanded>
+          Approx( 1.23 ) != 1.25
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/TestClass/succeedingCase">
+ClassTests.cpp" line="24">
+        <Original>
+          s == &quot;hello&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; == &quot;hello&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/TestClass/failingCase">
+ClassTests.cpp" line="28">
+        <Original>
+          s == &quot;world&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; == &quot;world&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/Fixture/succeedingCase">
+ClassTests.cpp" line="47">
+        <Original>
+          m_a == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/Fixture/failingCase">
+ClassTests.cpp" line="55">
+        <Original>
+          m_a == 2
+        </Original>
+        <Expanded>
+          1 == 2
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/equality">
+ConditionTests.cpp" line="55">
+        <Original>
+          data.int_seven == 7
+        </Original>
+        <Expanded>
+          7 == 7
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="56">
+        <Original>
+          data.float_nine_point_one == Approx( 9.1f )
+        </Original>
+        <Expanded>
+          9.1 == Approx( 9.1 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="57">
+        <Original>
+          data.double_pi == Approx( 3.1415926535 )
+        </Original>
+        <Expanded>
+          3.14159 == Approx( 3.14159 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="58">
+        <Original>
+          data.str_hello == &quot;hello&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; == &quot;hello&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="59">
+        <Original>
+          &quot;hello&quot; == data.str_hello
+        </Original>
+        <Expanded>
+          &quot;hello&quot; == &quot;hello&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="60">
+        <Original>
+          data.str_hello.size() == 5
+        </Original>
+        <Expanded>
+          5 == 5
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="63">
+        <Original>
+          x == Approx( 1.3 )
+        </Original>
+        <Expanded>
+          1.3 == Approx( 1.3 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/conditions/equality">
+ConditionTests.cpp" line="71">
+        <Original>
+          data.int_seven == 6
+        </Original>
+        <Expanded>
+          7 == 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="72">
+        <Original>
+          data.int_seven == 8
+        </Original>
+        <Expanded>
+          7 == 8
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="73">
+        <Original>
+          data.int_seven == 0
+        </Original>
+        <Expanded>
+          7 == 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="74">
+        <Original>
+          data.float_nine_point_one == Approx( 9.11f )
+        </Original>
+        <Expanded>
+          9.1 == Approx( 9.11 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="75">
+        <Original>
+          data.float_nine_point_one == Approx( 9.0f )
+        </Original>
+        <Expanded>
+          9.1 == Approx( 9 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="76">
+        <Original>
+          data.float_nine_point_one == Approx( 1 )
+        </Original>
+        <Expanded>
+          9.1 == Approx( 1 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="77">
+        <Original>
+          data.float_nine_point_one == Approx( 0 )
+        </Original>
+        <Expanded>
+          9.1 == Approx( 0 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="78">
+        <Original>
+          data.double_pi == Approx( 3.1415 )
+        </Original>
+        <Expanded>
+          3.14159 == Approx( 3.1415 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="79">
+        <Original>
+          data.str_hello == &quot;goodbye&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; == &quot;goodbye&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="80">
+        <Original>
+          data.str_hello == &quot;hell&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; == &quot;hell&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="81">
+        <Original>
+          data.str_hello == &quot;hello1&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; == &quot;hello1&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="82">
+        <Original>
+          data.str_hello.size() == 6
+        </Original>
+        <Expanded>
+          5 == 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="85">
+        <Original>
+          x == Approx( 1.301 )
+        </Original>
+        <Expanded>
+          1.3 == Approx( 1.301 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/inequality">
+ConditionTests.cpp" line="93">
+        <Original>
+          data.int_seven != 6
+        </Original>
+        <Expanded>
+          7 != 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="94">
+        <Original>
+          data.int_seven != 8
+        </Original>
+        <Expanded>
+          7 != 8
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="95">
+        <Original>
+          data.float_nine_point_one != Approx( 9.11f )
+        </Original>
+        <Expanded>
+          9.1 != Approx( 9.11 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="96">
+        <Original>
+          data.float_nine_point_one != Approx( 9.0f )
+        </Original>
+        <Expanded>
+          9.1 != Approx( 9 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="97">
+        <Original>
+          data.float_nine_point_one != Approx( 1 )
+        </Original>
+        <Expanded>
+          9.1 != Approx( 1 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="98">
+        <Original>
+          data.float_nine_point_one != Approx( 0 )
+        </Original>
+        <Expanded>
+          9.1 != Approx( 0 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="99">
+        <Original>
+          data.double_pi != Approx( 3.1415 )
+        </Original>
+        <Expanded>
+          3.14159 != Approx( 3.1415 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="100">
+        <Original>
+          data.str_hello != &quot;goodbye&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; != &quot;goodbye&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="101">
+        <Original>
+          data.str_hello != &quot;hell&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; != &quot;hell&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="102">
+        <Original>
+          data.str_hello != &quot;hello1&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; != &quot;hello1&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="103">
+        <Original>
+          data.str_hello.size() != 6
+        </Original>
+        <Expanded>
+          5 != 6
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/conditions/inequality">
+ConditionTests.cpp" line="111">
+        <Original>
+          data.int_seven != 7
+        </Original>
+        <Expanded>
+          7 != 7
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="112">
+        <Original>
+          data.float_nine_point_one != Approx( 9.1f )
+        </Original>
+        <Expanded>
+          9.1 != Approx( 9.1 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="113">
+        <Original>
+          data.double_pi != Approx( 3.1415926535 )
+        </Original>
+        <Expanded>
+          3.14159 != Approx( 3.14159 )
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="114">
+        <Original>
+          data.str_hello != &quot;hello&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; != &quot;hello&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="115">
+        <Original>
+          data.str_hello.size() != 5
+        </Original>
+        <Expanded>
+          5 != 5
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/ordered">
+ConditionTests.cpp" line="124">
+        <Original>
+          data.int_seven &lt; 8
+        </Original>
+        <Expanded>
+          7 &lt; 8
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="125">
+        <Original>
+          data.int_seven > 6
+        </Original>
+        <Expanded>
+          7 > 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="126">
+        <Original>
+          data.int_seven > 0
+        </Original>
+        <Expanded>
+          7 > 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="127">
+        <Original>
+          data.int_seven > -1
+        </Original>
+        <Expanded>
+          7 > -1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="129">
+        <Original>
+          data.int_seven >= 7
+        </Original>
+        <Expanded>
+          7 >= 7
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="130">
+        <Original>
+          data.int_seven >= 6
+        </Original>
+        <Expanded>
+          7 >= 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="131">
+        <Original>
+          data.int_seven &lt;= 7
+        </Original>
+        <Expanded>
+          7 &lt;= 7
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="132">
+        <Original>
+          data.int_seven &lt;= 8
+        </Original>
+        <Expanded>
+          7 &lt;= 8
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="134">
+        <Original>
+          data.float_nine_point_one > 9
+        </Original>
+        <Expanded>
+          9.1 > 9
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="135">
+        <Original>
+          data.float_nine_point_one &lt; 10
+        </Original>
+        <Expanded>
+          9.1 &lt; 10
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="136">
+        <Original>
+          data.float_nine_point_one &lt; 9.2
+        </Original>
+        <Expanded>
+          9.1 &lt; 9.2
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="138">
+        <Original>
+          data.str_hello &lt;= &quot;hello&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; &lt;= &quot;hello&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="139">
+        <Original>
+          data.str_hello >= &quot;hello&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; >= &quot;hello&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="141">
+        <Original>
+          data.str_hello &lt; &quot;hellp&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; &lt; &quot;hellp&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="142">
+        <Original>
+          data.str_hello &lt; &quot;zebra&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; &lt; &quot;zebra&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="143">
+        <Original>
+          data.str_hello > &quot;hellm&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; > &quot;hellm&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="144">
+        <Original>
+          data.str_hello > &quot;a&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; > &quot;a&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/conditions/ordered">
+ConditionTests.cpp" line="152">
+        <Original>
+          data.int_seven > 7
+        </Original>
+        <Expanded>
+          7 > 7
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="153">
+        <Original>
+          data.int_seven &lt; 7
+        </Original>
+        <Expanded>
+          7 &lt; 7
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="154">
+        <Original>
+          data.int_seven > 8
+        </Original>
+        <Expanded>
+          7 > 8
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="155">
+        <Original>
+          data.int_seven &lt; 6
+        </Original>
+        <Expanded>
+          7 &lt; 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="156">
+        <Original>
+          data.int_seven &lt; 0
+        </Original>
+        <Expanded>
+          7 &lt; 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="157">
+        <Original>
+          data.int_seven &lt; -1
+        </Original>
+        <Expanded>
+          7 &lt; -1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="159">
+        <Original>
+          data.int_seven >= 8
+        </Original>
+        <Expanded>
+          7 >= 8
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="160">
+        <Original>
+          data.int_seven &lt;= 6
+        </Original>
+        <Expanded>
+          7 &lt;= 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="162">
+        <Original>
+          data.float_nine_point_one &lt; 9
+        </Original>
+        <Expanded>
+          9.1 &lt; 9
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="163">
+        <Original>
+          data.float_nine_point_one > 10
+        </Original>
+        <Expanded>
+          9.1 > 10
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="164">
+        <Original>
+          data.float_nine_point_one > 9.2
+        </Original>
+        <Expanded>
+          9.1 > 9.2
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="166">
+        <Original>
+          data.str_hello > &quot;hello&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; > &quot;hello&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="167">
+        <Original>
+          data.str_hello &lt; &quot;hello&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; &lt; &quot;hello&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="168">
+        <Original>
+          data.str_hello > &quot;hellp&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; > &quot;hellp&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="169">
+        <Original>
+          data.str_hello > &quot;z&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; > &quot;z&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="170">
+        <Original>
+          data.str_hello &lt; &quot;hellm&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; &lt; &quot;hellm&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="171">
+        <Original>
+          data.str_hello &lt; &quot;a&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; &lt; &quot;a&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="173">
+        <Original>
+          data.str_hello >= &quot;z&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; >= &quot;z&quot;
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="174">
+        <Original>
+          data.str_hello &lt;= &quot;a&quot;
+        </Original>
+        <Expanded>
+          &quot;hello&quot; &lt;= &quot;a&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/int literals">
+ConditionTests.cpp" line="188">
+        <Original>
+          i == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="189">
+        <Original>
+          ui == 2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="190">
+        <Original>
+          l == 3
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="191">
+        <Original>
+          ul == 4
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="192">
+        <Original>
+          c == 5
+        </Original>
+        <Expanded>
+          5 == 5
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="193">
+        <Original>
+          uc == 6
+        </Original>
+        <Expanded>
+           == 6
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="195">
+        <Original>
+          1 == i
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="196">
+        <Original>
+          2 == ui
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="197">
+        <Original>
+          3 == l
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="198">
+        <Original>
+          4 == ul
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="199">
+        <Original>
+          5 == c
+        </Original>
+        <Expanded>
+          5 == 5
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="200">
+        <Original>
+          6 == uc
+        </Original>
+        <Expanded>
+          6 == 
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="202">
+        <Original>
+          (std::numeric_limits&lt;unsigned long>::max)() > ul
+        </Original>
+        <Expanded>
+          0x<hex digits> > 4
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions//long_to_unsigned_x">
+ConditionTests.cpp" line="223">
+        <Original>
+          long_var == unsigned_char_var
+        </Original>
+        <Expanded>
+          1 == 
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="224">
+        <Original>
+          long_var == unsigned_short_var
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="225">
+        <Original>
+          long_var == unsigned_int_var
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="226">
+        <Original>
+          long_var == unsigned_long_var
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/const ints to int literal">
+ConditionTests.cpp" line="237">
+        <Original>
+          unsigned_char_var == 1
+        </Original>
+        <Expanded>
+           == 1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="238">
+        <Original>
+          unsigned_short_var == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="239">
+        <Original>
+          unsigned_int_var == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="240">
+        <Original>
+          unsigned_long_var == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/negative ints">
+ConditionTests.cpp" line="246">
+        <Original>
+          ( -1 > 2u )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="247">
+        <Original>
+          -1 > 2u
+        </Original>
+        <Expanded>
+          -1 > 2
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="249">
+        <Original>
+          ( 2u &lt; -1 )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="250">
+        <Original>
+          2u &lt; -1
+        </Original>
+        <Expanded>
+          2 &lt; -1
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="253">
+        <Original>
+          ( minInt > 2u )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="254">
+        <Original>
+          minInt > 2u
+        </Original>
+        <Expanded>
+          -2147483648 > 2
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/computed ints">
+ConditionTests.cpp" line="269">
+        <Original>
+          54 == 6*9
+        </Original>
+        <Expanded>
+          54 == 54
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/ptr">
+ConditionTests.cpp" line="285">
+        <Original>
+          p == __null
+        </Original>
+        <Expanded>
+          __null == 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="286">
+        <Original>
+          p == pNULL
+        </Original>
+        <Expanded>
+          __null == __null
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="291">
+        <Original>
+          p != __null
+        </Original>
+        <Expanded>
+          0x<hex digits> != 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="294">
+        <Original>
+          cp != __null
+        </Original>
+        <Expanded>
+          0x<hex digits> != 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="297">
+        <Original>
+          cpc != __null
+        </Original>
+        <Expanded>
+          0x<hex digits> != 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="299">
+        <Original>
+          returnsNull() == __null
+        </Original>
+        <Expanded>
+          {null string} == 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="300">
+        <Original>
+          returnsConstNull() == __null
+        </Original>
+        <Expanded>
+          {null string} == 0
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="302">
+        <Original>
+          __null != p
+        </Original>
+        <Expanded>
+          0 != 0x<hex digits>
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/conditions/not">
+ConditionTests.cpp" line="317">
+        <Original>
+          false == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="318">
+        <Original>
+          true == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="319">
+        <Original>
+          !false
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="320">
+        <Original>
+          !false
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="322">
+        <Original>
+          !falseValue
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="323">
+        <Original>
+          !falseValue
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="325">
+        <Original>
+          !(1 == 2)
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="326">
+        <Original>
+          !1 == 2
+        </Original>
+        <Expanded>
+          !(1 == 2)
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/conditions/not">
+ConditionTests.cpp" line="334">
+        <Original>
+          false != false
+        </Original>
+        <Expanded>
+          false != false
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="335">
+        <Original>
+          true != true
+        </Original>
+        <Expanded>
+          true != true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="336">
+        <Original>
+          !true
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="337">
+        <Original>
+          !true
+        </Original>
+        <Expanded>
+          !true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="339">
+        <Original>
+          !trueValue
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="340">
+        <Original>
+          !trueValue
+        </Original>
+        <Expanded>
+          !true
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="342">
+        <Original>
+          !(1 == 1)
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+ConditionTests.cpp" line="343">
+        <Original>
+          !1 == 1
+        </Original>
+        <Expanded>
+          !(1 == 1)
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/exceptions/explicit">
+ExceptionTests.cpp" line="39">
+        <Original>
+          thisThrows()
+        </Original>
+        <Expanded>
+          thisThrows()
+        </Expanded>
+      </Expression>
+ExceptionTests.cpp" line="40">
+        <Original>
+          thisDoesntThrow()
+        </Original>
+        <Expanded>
+          thisDoesntThrow()
+        </Expanded>
+      </Expression>
+ExceptionTests.cpp" line="41">
+        <Original>
+          thisThrows()
+        </Original>
+        <Expanded>
+          thisThrows()
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/explicit">
+ExceptionTests.cpp" line="47">
+        <Original>
+          thisThrows()
+        </Original>
+        <Expanded>
+          thisThrows()
+        </Expanded>
+ExceptionTests.cpp" line="47">
+          expected exception
+        </Exception>
+      </Expression>
+ExceptionTests.cpp" line="48">
+        <Original>
+          thisDoesntThrow()
+        </Original>
+        <Expanded>
+          thisDoesntThrow()
+        </Expanded>
+      </Expression>
+ExceptionTests.cpp" line="49">
+        <Original>
+          thisThrows()
+        </Original>
+        <Expanded>
+          thisThrows()
+        </Expanded>
+ExceptionTests.cpp" line="49">
+          expected exception
+        </Exception>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/implicit">
+ExceptionTests.cpp" line="52">
+        unexpected exception
+      </Exception>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/implicit/2">
+ExceptionTests.cpp" line="60">
+        <Original>
+          1 == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+ExceptionTests.cpp" line="60">
+        <Original>
+          {Unknown expression after this line}
+        </Original>
+        <Expanded>
+          {Unknown expression after this line}
+        </Expanded>
+ExceptionTests.cpp" line="60">
+          unexpected exception
+        </Exception>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/exceptions/implicit">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/custom">
+ExceptionTests.cpp" line="102">
+        custom exception
+      </Exception>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/custom/nothrow">
+ExceptionTests.cpp" line="109">
+        <Original>
+          throw CustomException( &quot;unexpected custom exception&quot; )
+        </Original>
+        <Expanded>
+          throw CustomException( &quot;unexpected custom exception&quot; )
+        </Expanded>
+ExceptionTests.cpp" line="109">
+          unexpected custom exception
+        </Exception>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/custom/throw">
+ExceptionTests.cpp" line="114">
+        <Original>
+          throw CustomException( &quot;custom exception - not std&quot; )
+        </Original>
+        <Expanded>
+          throw CustomException( &quot;custom exception - not std&quot; )
+        </Expanded>
+ExceptionTests.cpp" line="114">
+          custom exception - not std
+        </Exception>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/custom/double">
+ExceptionTests.cpp" line="118">
+        3.14
+      </Exception>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/exceptions/in-section">
+      <Section name="the section">
+        <Section name="the section2">
+          <OverallResults successes="0" failures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+ExceptionTests.cpp" line="132">
+        Exception from section
+      </Exception>
+      <Section name="the section">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/exceptions/error messages">
+      <Section name="custom, unexpected">
+ExceptionTests.cpp" line="152">
+          <Original>
+            runner.getLog() Contains( &quot;custom exception&quot; )
+          </Original>
+          <Expanded>
+            &quot;\[g] ./failing/exceptions/custom
+ \[tc] ./failing/exceptions/custom
+ExceptionTests.cpp:102:  ThrewException'custom exception' /[tc] ./failing/exceptions/custom
+/[g] ./failing/exceptions/custom
+&quot; contains: &quot;custom exception&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="in section">
+ExceptionTests.cpp" line="160">
+          <Original>
+            runner.getLog() Contains( &quot;Exception from section&quot; )
+          </Original>
+          <Expanded>
+            &quot;\[g] ./failing/exceptions/in-section
+ \[tc] ./failing/exceptions/in-section
+  \ [s] the section
+   \ [s] the section2
+   / [s] the section2
+  / [s] the section
+ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
+  / [s] the section
+ /[tc] ./failing/exceptions/in-section
+/[g] ./failing/exceptions/in-section
+&quot; contains: &quot;Exception from section&quot;
+          </Expanded>
+        </Expression>
+ExceptionTests.cpp" line="161">
+          <Original>
+            runner.getLog() Contains( ::Catch::LineInfoRegistry::get().infoForName( &quot;the section2&quot; ) )
+          </Original>
+          <Expanded>
+            &quot;\[g] ./failing/exceptions/in-section
+ \[tc] ./failing/exceptions/in-section
+  \ [s] the section
+   \ [s] the section2
+   / [s] the section2
+  / [s] the section
+ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
+  / [s] the section
+ /[tc] ./failing/exceptions/in-section
+/[g] ./failing/exceptions/in-section
+ExceptionTests.cpp:132: &quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/exceptions/notimplemented">
+ExceptionTests.cpp" line="172">
+        <Original>
+          thisFunctionNotImplemented( 7 )
+        </Original>
+        <Expanded>
+          thisFunctionNotImplemented( 7 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/generators/1">
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          200 == 200
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          202 == 202
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          204 == 204
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          206 == 206
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          208 == 208
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          210 == 210
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          212 == 212
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          30 == 30
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          40 == 40
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="26">
+        <Original>
+          multiply( i, 2 ) == i*2
+        </Original>
+        <Expanded>
+          72 == 72
+        </Expanded>
+      </Expression>
+GeneratorTests.cpp" line="27">
+        <Original>
+          multiply( j, 2 ) == j*2
+        </Original>
+        <Expanded>
+          214 == 214
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/message">
+      <Warning>
+        this is a warning
+      </Warning>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/succeed">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/message/info/1">
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
+        so should this
+      </Info>
+MessageTests.cpp" line="26">
+        <Original>
+          a == 1
+        </Original>
+        <Expanded>
+          2 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./mixed/message/info/2">
+MessageTests.cpp" line="33">
+        <Original>
+          a == 2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
+        this message should be logged, too
+      </Info>
+MessageTests.cpp" line="37">
+        <Original>
+          a == 1
+        </Original>
+        <Expanded>
+          2 == 1
+        </Expanded>
+      </Expression>
+      <Info>
+        and this, but later
+      </Info>
+MessageTests.cpp" line="41">
+        <Original>
+          a == 0
+        </Original>
+        <Expanded>
+          2 == 0
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="45">
+        <Original>
+          a == 2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/message/fail">
+      <Failure>
+        This is a failure
+      </Failure>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/message/sections">
+      <Section name="one">
+        <Failure>
+          Message from section one
+        </Failure>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <Section name="two">
+        <Failure>
+          Message from section two
+        </Failure>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/message/sections/stdout">
+      <Section name="one">
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <Section name="two">
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./mixed/message/scoped">
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          0 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          1 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          2 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          3 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          4 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          5 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          6 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          7 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          8 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          9 &lt; 10
+        </Expanded>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          i &lt; 10
+        </Expanded>
+        <Info>
+          current counter 10
+        </Info>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          i &lt; 10
+        </Expanded>
+        <Info>
+          i := 10
+        </Info>
+      </Expression>
+MessageTests.cpp" line="86">
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          10 &lt; 10
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/nofail">
+MessageTests.cpp" line="92">
+        <Original>
+          1 == 2
+        </Original>
+        <Expanded>
+          1 == 2
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/Misc/Sections">
+      <Section name="s1" description="doesn't equal">
+MiscTests.cpp" line="25">
+          <Original>
+            a != b
+          </Original>
+          <Expanded>
+            1 != 2
+          </Expanded>
+        </Expression>
+MiscTests.cpp" line="26">
+          <Original>
+            b != a
+          </Original>
+          <Expanded>
+            2 != 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="s2" description="not equal">
+MiscTests.cpp" line="31">
+          <Original>
+            a != b
+          </Original>
+          <Expanded>
+            1 != 2
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Misc/Sections/nested">
+      <Section name="s1" description="doesn't equal">
+MiscTests.cpp" line="42">
+          <Original>
+            a != b
+          </Original>
+          <Expanded>
+            1 != 2
+          </Expanded>
+        </Expression>
+MiscTests.cpp" line="43">
+          <Original>
+            b != a
+          </Original>
+          <Expanded>
+            2 != 1
+          </Expanded>
+        </Expression>
+        <Section name="s2" description="not equal">
+MiscTests.cpp" line="47">
+            <Original>
+              a != b
+            </Original>
+            <Expanded>
+              1 != 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./mixed/Misc/Sections/nested2">
+      <Section name="s1" description="doesn't equal">
+        <Section name="s2" description="equal">
+MiscTests.cpp" line="61">
+            <Original>
+              a == b
+            </Original>
+            <Expanded>
+              1 == 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="0" failures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <Section name="s1" description="doesn't equal">
+        <Section name="s3" description="not equal">
+MiscTests.cpp" line="66">
+            <Original>
+              a != b
+            </Original>
+            <Expanded>
+              1 != 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="s1" description="doesn't equal">
+        <Section name="s4" description="less than">
+MiscTests.cpp" line="70">
+            <Original>
+              a &lt; b
+            </Original>
+            <Expanded>
+              1 &lt; 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./Sections/nested/a/b">
+      <Section name="c">
+        <Section name="d (leaf)">
+          <OverallResults successes="0" failures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <Section name="c">
+        <Section name="e (leaf)">
+          <OverallResults successes="0" failures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <Section name="c">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="f (leaf)">
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Sections/nested3">
+MiscTests.cpp" line="119">
+        <Original>
+          runner.getLog() == &quot;\\[g] ./Sections/nested/a/b\n&quot; &quot; \\[tc] ./Sections/nested/a/b\n&quot; &quot;  \\ [s] c\n&quot; &quot;   \\ [s] d (leaf)\n&quot; &quot;   / [s] d (leaf)\n&quot; &quot;  / [s] c\n&quot; &quot;  \\ [s] c\n&quot; &quot;   \\ [s] e (leaf)\n&quot; &quot;   / [s] e (leaf)\n&quot; &quot;  / [s] c\n&quot; &quot;  \\ [s] c\n&quot; &quot;  / [s] c\n&quot; &quot;  \\ [s] f (leaf)\n&quot; &quot;  / [s] f (leaf)\n&quot; &quot; /[tc] ./Sections/nested/a/b\n&quot; &quot;/[g] ./Sections/nested/a/b\n&quot;
+        </Original>
+        <Expanded>
+
+&quot;\[g] ./Sections/nested/a/b
+ \[tc] ./Sections/nested/a/b
+  \ [s] c
+   \ [s] d (leaf)
+   / [s] d (leaf)
+  / [s] c
+  \ [s] c
+   \ [s] e (leaf)
+   / [s] e (leaf)
+  / [s] c
+  \ [s] c
+  / [s] c
+  \ [s] f (leaf)
+  / [s] f (leaf)
+ /[tc] ./Sections/nested/a/b
+/[g] ./Sections/nested/a/b
+&quot;
+==
+&quot;\[g] ./Sections/nested/a/b
+ \[tc] ./Sections/nested/a/b
+  \ [s] c
+   \ [s] d (leaf)
+   / [s] d (leaf)
+  / [s] c
+  \ [s] c
+   \ [s] e (leaf)
+   / [s] e (leaf)
+  / [s] c
+  \ [s] c
+  / [s] c
+  \ [s] f (leaf)
+  / [s] f (leaf)
+ /[tc] ./Sections/nested/a/b
+/[g] ./Sections/nested/a/b
+&quot;
+
+
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./mixed/Misc/Sections/loops">
+      <Section name="s1" description="b is currently: 0">
+MiscTests.cpp" line="133">
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            0 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./mixed/Misc/loops">
+      <Info>
+        Testing if fib[0] (1) is even
+      </Info>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+      <Info>
+        Testing if fib[1] (1) is even
+      </Info>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Info>
+        Testing if fib[2] (2) is even
+      </Info>
+      <Info>
+        Testing if fib[3] (3) is even
+      </Info>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+      <Info>
+        Testing if fib[4] (5) is even
+      </Info>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Info>
+        Testing if fib[5] (8) is even
+      </Info>
+      <Info>
+        Testing if fib[6] (13) is even
+      </Info>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+      <Info>
+        Testing if fib[7] (21) is even
+      </Info>
+MiscTests.cpp" line="145">
+        <Original>
+          ( fib[i] % 2 ) == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/Misc/stdout,stderr">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Misc/null strings">
+MiscTests.cpp" line="163">
+        <Original>
+          makeString( false ) != static_cast&lt;char*>(__null)
+        </Original>
+        <Expanded>
+          &quot;valid string&quot; != {null string}
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="164">
+        <Original>
+          makeString( true ) == static_cast&lt;char*>(__null)
+        </Original>
+        <Expanded>
+          {null string} == {null string}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/info">
+      <Info>
+        hi
+      </Info>
+      <Info>
+        i := 7
+      </Info>
+MiscTests.cpp" line="172">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/checkedif">
+MiscTests.cpp" line="177">
+        <Original>
+          flag
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="185">
+        <Original>
+          testCheckedIf( true )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/checkedif">
+MiscTests.cpp" line="177">
+        <Original>
+          flag
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="190">
+        <Original>
+          testCheckedIf( false )
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/checkedelse">
+MiscTests.cpp" line="195">
+        <Original>
+          flag
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="203">
+        <Original>
+          testCheckedElse( true )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/checkedelse">
+MiscTests.cpp" line="195">
+        <Original>
+          flag
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="208">
+        <Original>
+          testCheckedElse( false )
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./misc/xmlentitycheck">
+      <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>">
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;">
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./manual/onechar">
+      <Info>
+        3
+      </Info>
+MiscTests.cpp" line="226">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/atomic if">
+MiscTests.cpp" line="236">
+        <Original>
+          x == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/matchers">
+MiscTests.cpp" line="246">
+        <Original>
+          testStringForMatching() Contains( &quot;string&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; contains: &quot;string&quot;
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="247">
+        <Original>
+          testStringForMatching() Contains( &quot;abc&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; contains: &quot;abc&quot;
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="249">
+        <Original>
+          testStringForMatching() StartsWith( &quot;this&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; starts with: &quot;this&quot;
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="250">
+        <Original>
+          testStringForMatching() EndsWith( &quot;substring&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; ends with: &quot;substring&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/matchers/Contains">
+MiscTests.cpp" line="255">
+        <Original>
+          testStringForMatching() Contains( &quot;not there&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/matchers/StartsWith">
+MiscTests.cpp" line="260">
+        <Original>
+          testStringForMatching() StartsWith( &quot;string&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/matchers/EndsWith">
+MiscTests.cpp" line="265">
+        <Original>
+          testStringForMatching() EndsWith( &quot;this&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/matchers/Equals">
+MiscTests.cpp" line="270">
+        <Original>
+          testStringForMatching() Equals( &quot;something else&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="/succeeding/matchers/AllOf">
+MiscTests.cpp" line="275">
+        <Original>
+          testStringForMatching() AllOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;abc&quot; ) )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;string&quot; and contains: &quot;abc&quot; )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="/succeeding/matchers/AnyOf">
+MiscTests.cpp" line="279">
+        <Original>
+          testStringForMatching() AnyOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;not there&quot; ) )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;string&quot; or contains: &quot;not there&quot; )
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="280">
+        <Original>
+          testStringForMatching() AnyOf( Catch::Contains( &quot;not there&quot; ), Catch::Contains( &quot;string&quot; ) )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;not there&quot; or contains: &quot;string&quot; )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/matchers/Equals">
+MiscTests.cpp" line="285">
+        <Original>
+          testStringForMatching() Equals( &quot;this string contains 'abc' as a substring&quot; )
+        </Original>
+        <Expanded>
+          &quot;this string contains 'abc' as a substring&quot; equals: &quot;this string contains 'abc' as a substring&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="example/factorial">
+MiscTests.cpp" line="296">
+        <Original>
+          Factorial(0) == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="297">
+        <Original>
+          Factorial(1) == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="298">
+        <Original>
+          Factorial(2) == 2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="299">
+        <Original>
+          Factorial(3) == 6
+        </Original>
+        <Expanded>
+          6 == 6
+        </Expanded>
+      </Expression>
+MiscTests.cpp" line="300">
+        <Original>
+          Factorial(10) == 3628800
+        </Original>
+        <Expanded>
+          0x<hex digits> == 3628800
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="empty">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Nice descriptive name">
+      <Warning>
+        This one ran
+      </Warning>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="first tag">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="second tag">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/main">
+      <Section name="selftest/expected result" description="Tests do what they claim">
+        <Section name="selftest/expected result/failing tests" description="Tests in the 'failing' branch fail">
+          <OverallResults successes="26" failures="0"/>
+        </Section>
+        <OverallResults successes="26" failures="0"/>
+      </Section>
+      <Section name="selftest/expected result" description="Tests do what they claim">
+        <Section name="selftest/expected result/succeeding tests" description="Tests in the 'succeeding' branch succeed">
+          <OverallResults successes="44" failures="0"/>
+        </Section>
+        <OverallResults successes="44" failures="0"/>
+      </Section>
+      <Section name="selftest/expected result" description="Tests do what they claim">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="selftest/test counts" description="Number of test cases that run is fixed">
+        <Section name="selftest/test counts/succeeding tests" description="Number of 'succeeding' tests is fixed">
+TestMain.cpp" line="40">
+            <Original>
+              totals.assertions.passed == 294
+            </Original>
+            <Expanded>
+              294 == 294
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="41">
+            <Original>
+              totals.assertions.failed == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="selftest/test counts" description="Number of test cases that run is fixed">
+        <Section name="selftest/test counts/failing tests" description="Number of 'failing' tests is fixed">
+TestMain.cpp" line="47">
+            <Original>
+              totals.assertions.passed == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="48">
+            <Original>
+              totals.assertions.failed == 73
+            </Original>
+            <Expanded>
+              73 == 73
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="meta/Misc/Sections">
+TestMain.cpp" line="57">
+        <Original>
+          totals.assertions.passed == 2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="58">
+        <Original>
+          totals.assertions.failed == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/parser/2">
+      <Section name="default">
+TestMain.cpp" line="97">
+          <Original>
+            parseIntoConfig( argv, config )
+          </Original>
+          <Expanded>
+            parseIntoConfig( argv, config )
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="99">
+          <Original>
+            config.shouldDebugBreak == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="100">
+          <Original>
+            config.cutoff == -1
+          </Original>
+          <Expanded>
+            -1 == -1
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="101">
+          <Original>
+            config.allowThrows == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="102">
+          <Original>
+            config.reporter.empty()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <Section name="-t/1" description="Specify one test case using -t">
+TestMain.cpp" line="108">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="110">
+            <Original>
+              config.filters.size() == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="111">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="112">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <Section name="-t/exclude:1" description="Specify one test case exclusion using -t exclude:">
+TestMain.cpp" line="116">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="118">
+            <Original>
+              config.filters.size() == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="119">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="120">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <Section name="--test/1" description="Specify one test case using --test">
+TestMain.cpp" line="125">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="127">
+            <Original>
+              config.filters.size() == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="128">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="129">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <Section name="--test/exclude:1" description="Specify one test case exclusion using --test exclude:">
+TestMain.cpp" line="134">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="136">
+            <Original>
+              config.filters.size() == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="137">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="138">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <Section name="--test/exclude:2" description="Specify one test case exclusion using --test ~">
+TestMain.cpp" line="143">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="145">
+            <Original>
+              config.filters.size() == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="146">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="147">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <Section name="-t/2" description="Specify two test cases using -t">
+TestMain.cpp" line="152">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="154">
+            <Original>
+              config.filters.size() == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="155">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="156">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="157">
+            <Original>
+              config.filters[0].shouldInclude( fakeTestCase( &quot;test2&quot; ) )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="5" failures="0"/>
+        </Section>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <Section name="-t/0" description="When no test names are supplied it is an error">
+TestMain.cpp" line="162">
+            <Original>
+              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;at least 1&quot; )
+            </Original>
+            <Expanded>
+              &quot;Error while parsing arguments. Expected at least 1 argument.&quot; contains: &quot;at least 1&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="test lists">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="reporter">
+        <Section name="-r/basic">
+TestMain.cpp" line="169">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="171">
+            <Original>
+              config.reporter == &quot;basic&quot;
+            </Original>
+            <Expanded>
+              &quot;basic&quot; == &quot;basic&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="reporter">
+        <Section name="-r/xml">
+TestMain.cpp" line="175">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="177">
+            <Original>
+              config.reporter == &quot;xml&quot;
+            </Original>
+            <Expanded>
+              &quot;xml&quot; == &quot;xml&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="reporter">
+        <Section name="--reporter/junit">
+TestMain.cpp" line="181">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="183">
+            <Original>
+              config.reporter == &quot;junit&quot;
+            </Original>
+            <Expanded>
+              &quot;junit&quot; == &quot;junit&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="reporter">
+        <Section name="-r/error" description="reporter config only accepts one argument">
+TestMain.cpp" line="187">
+            <Original>
+              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;1 argument&quot; )
+            </Original>
+            <Expanded>
+              &quot;Error while parsing arguments. Expected 1 argument. Arguments were: one two&quot; contains: &quot;1 argument&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="reporter">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="debugger">
+        <Section name="-b">
+TestMain.cpp" line="194">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="196">
+            <Original>
+              config.shouldDebugBreak == true
+            </Original>
+            <Expanded>
+              true == true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="debugger">
+        <Section name="--break">
+TestMain.cpp" line="200">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="202">
+            <Original>
+              config.shouldDebugBreak
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="debugger">
+        <Section name="-b" description="break option has no arguments">
+TestMain.cpp" line="206">
+            <Original>
+              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;0 arguments&quot; )
+            </Original>
+            <Expanded>
+              &quot;Error while parsing arguments. Expected 0 arguments. Arguments were: unexpected&quot; contains: &quot;0 arguments&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="debugger">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="abort">
+        <Section name="-a">
+TestMain.cpp" line="213">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="215">
+            <Original>
+              config.cutoff == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="abort">
+        <Section name="-a/2">
+TestMain.cpp" line="219">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="221">
+            <Original>
+              config.cutoff == 2
+            </Original>
+            <Expanded>
+              2 == 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="abort">
+        <Section name="-a/error/0">
+TestMain.cpp" line="225">
+            <Original>
+              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;greater than zero&quot; )
+            </Original>
+            <Expanded>
+              &quot;Error while parsing arguments. threshold must be a number greater than zero. Arguments were: 0&quot; contains: &quot;greater than zero&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="abort">
+        <Section name="-a/error/non numeric">
+TestMain.cpp" line="229">
+            <Original>
+              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;greater than zero&quot; )
+            </Original>
+            <Expanded>
+              &quot;Error while parsing arguments. threshold must be a number greater than zero. Arguments were: oops&quot; contains: &quot;greater than zero&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="abort">
+        <Section name="-a/error/two args" description="cutoff only takes one argument">
+TestMain.cpp" line="233">
+            <Original>
+              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;0 and 1 argument&quot; )
+            </Original>
+            <Expanded>
+              &quot;Error while parsing arguments. Expected between 0 and 1 argument. Arguments were: 1 2&quot; contains: &quot;0 and 1 argument&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="abort">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="nothrow">
+        <Section name="-nt">
+TestMain.cpp" line="240">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="242">
+            <Original>
+              config.allowThrows == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="nothrow">
+        <Section name="--nothrow">
+TestMain.cpp" line="246">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="248">
+            <Original>
+              config.allowThrows == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="nothrow">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="streams">
+        <Section name="-o filename">
+TestMain.cpp" line="255">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="257">
+            <Original>
+              config.outputFilename == &quot;filename.ext&quot;
+            </Original>
+            <Expanded>
+              &quot;filename.ext&quot; == &quot;filename.ext&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="258">
+            <Original>
+              config.stream.empty()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="streams">
+        <Section name="-o %stdout">
+TestMain.cpp" line="262">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="264">
+            <Original>
+              config.stream == &quot;stdout&quot;
+            </Original>
+            <Expanded>
+              &quot;stdout&quot; == &quot;stdout&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="265">
+            <Original>
+              config.outputFilename.empty()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="streams">
+        <Section name="--out">
+TestMain.cpp" line="269">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="271">
+            <Original>
+              config.outputFilename == &quot;filename.ext&quot;
+            </Original>
+            <Expanded>
+              &quot;filename.ext&quot; == &quot;filename.ext&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="streams">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="combinations">
+        <Section name="-a -b">
+TestMain.cpp" line="278">
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="280">
+            <Original>
+              config.cutoff == 1
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="281">
+            <Original>
+              config.shouldDebugBreak
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="282">
+            <Original>
+              config.allowThrows == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/test filter">
+TestMain.cpp" line="291">
+        <Original>
+          matchAny.shouldInclude( fakeTestCase( &quot;any&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="292">
+        <Original>
+          matchNone.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="297">
+        <Original>
+          matchHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="298">
+        <Original>
+          matchNonHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="300">
+        <Original>
+          matchHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="301">
+        <Original>
+          matchNonHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/test filters">
+TestMain.cpp" line="312">
+        <Original>
+          matchHidden.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="314">
+        <Original>
+          filters.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="315">
+        <Original>
+          filters.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="316">
+        <Original>
+          filters.shouldInclude( fakeTestCase( &quot;./anything&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/filter/prefix wildcard">
+TestMain.cpp" line="322">
+        <Original>
+          matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="323">
+        <Original>
+          matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/filter/wildcard at both ends">
+TestMain.cpp" line="328">
+        <Original>
+          matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="329">
+        <Original>
+          matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="330">
+        <Original>
+          matchBadgers.shouldInclude( fakeTestCase( &quot;badgers are big&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="331">
+        <Original>
+          matchBadgers.shouldInclude( fakeTestCase( &quot;hedgehogs&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/option parsers">
+TestMain.cpp" line="351">
+        <Original>
+          opt.parseIntoConfig( parser, config )
+        </Original>
+        <Expanded>
+          opt.parseIntoConfig( parser, config )
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="353">
+        <Original>
+          config.filters.size() == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="354">
+        <Original>
+          config.filters[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+TestMain.cpp" line="355">
+        <Original>
+          config.filters[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="selftest/tags">
+      <Section name="one tag">
+TestMain.cpp" line="369">
+          <Original>
+            oneTag.getTestCaseInfo().description == &quot;&quot;
+          </Original>
+          <Expanded>
+            &quot;&quot; == &quot;&quot;
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="370">
+          <Original>
+            oneTag.hasTag( &quot;one&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="371">
+          <Original>
+            oneTag.getTags().size() == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="373">
+          <Original>
+            oneTag.matchesTags( p1 ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="374">
+          <Original>
+            oneTag.matchesTags( p2 ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="375">
+          <Original>
+            oneTag.matchesTags( p3 ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="376">
+          <Original>
+            oneTag.matchesTags( p4 ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="377">
+          <Original>
+            oneTag.matchesTags( p5 ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="8" failures="0"/>
+      </Section>
+      <Section name="two tags">
+TestMain.cpp" line="383">
+          <Original>
+            twoTags.getTestCaseInfo().description == &quot;&quot;
+          </Original>
+          <Expanded>
+            &quot;&quot; == &quot;&quot;
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="384">
+          <Original>
+            twoTags.hasTag( &quot;one&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="385">
+          <Original>
+            twoTags.hasTag( &quot;two&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="386">
+          <Original>
+            twoTags.hasTag( &quot;three&quot; ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="387">
+          <Original>
+            twoTags.getTags().size() == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="389">
+          <Original>
+            twoTags.matchesTags( p1 ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="390">
+          <Original>
+            twoTags.matchesTags( p2 ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="391">
+          <Original>
+            twoTags.matchesTags( p3 ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="392">
+          <Original>
+            twoTags.matchesTags( p4 ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="393">
+          <Original>
+            twoTags.matchesTags( p5 ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="10" failures="0"/>
+      </Section>
+      <Section name="one tag with characters either side">
+TestMain.cpp" line="399">
+          <Original>
+            oneTagWithExtras.getTestCaseInfo().description == &quot;1234&quot;
+          </Original>
+          <Expanded>
+            &quot;1234&quot; == &quot;1234&quot;
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="400">
+          <Original>
+            oneTagWithExtras.hasTag( &quot;one&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="401">
+          <Original>
+            oneTagWithExtras.hasTag( &quot;two&quot; ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="402">
+          <Original>
+            oneTagWithExtras.getTags().size() == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="start of a tag, but not closed">
+TestMain.cpp" line="409">
+          <Original>
+            oneTagOpen.getTestCaseInfo().description == &quot;[one&quot;
+          </Original>
+          <Expanded>
+            &quot;[one&quot; == &quot;[one&quot;
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="410">
+          <Original>
+            oneTagOpen.hasTag( &quot;one&quot; ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="411">
+          <Original>
+            oneTagOpen.getTags().size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="hidden">
+TestMain.cpp" line="417">
+          <Original>
+            oneTag.getTestCaseInfo().description == &quot;&quot;
+          </Original>
+          <Expanded>
+            &quot;&quot; == &quot;&quot;
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="418">
+          <Original>
+            oneTag.hasTag( &quot;hide&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="419">
+          <Original>
+            oneTag.isHidden()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+TestMain.cpp" line="421">
+          <Original>
+            oneTag.matchesTags( &quot;~[hide]&quot; ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/Tricky/std::pair">
+TrickyTests.cpp" line="37">
+        <Original>
+          (std::pair&lt;int, int>( 1, 2 )) == aNicePair
+        </Original>
+        <Expanded>
+
+	std::pair( 1, 2 )
+	==
+	std::pair( 1, 2 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./inprogress/failing/Tricky/trailing expression">
+      <Warning>
+        Uncomment the code in this test to check that it gives a sensible compiler error
+      </Warning>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./inprogress/failing/Tricky/compound lhs">
+      <Warning>
+        Uncomment the code in this test to check that it gives a sensible compiler error
+      </Warning>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./failing/Tricky/non streamable type">
+TrickyTests.cpp" line="95">
+        <Original>
+          &amp;o1 == &amp;o2
+        </Original>
+        <Expanded>
+          0x<hex digits> == 0x<hex digits>
+        </Expanded>
+      </Expression>
+TrickyTests.cpp" line="96">
+        <Original>
+          o1 == o2
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./failing/string literals">
+TrickyTests.cpp" line="106">
+        <Original>
+          std::string( &quot;first&quot; ) == &quot;second&quot;
+        </Original>
+        <Expanded>
+          &quot;first&quot; == &quot;second&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="./succeeding/side-effects">
+TrickyTests.cpp" line="119">
+        <Original>
+          i++ == 7
+        </Original>
+        <Expanded>
+          7 == 7
+        </Expanded>
+      </Expression>
+TrickyTests.cpp" line="120">
+        <Original>
+          i++ == 8
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/koenig">
+TrickyTests.cpp" line="186">
+        <Original>
+          0x<hex digits> == o
+        </Original>
+        <Expanded>
+          0x<hex digits> == {?}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/non-const==">
+TrickyTests.cpp" line="212">
+        <Original>
+          t == 1u
+        </Original>
+        <Expanded>
+          {?} == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/enum/bits">
+TrickyTests.cpp" line="224">
+        <Original>
+          0x<hex digits> == bit30and31
+        </Original>
+        <Expanded>
+          0x<hex digits> == 3221225472
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/boolean member">
+TrickyTests.cpp" line="239">
+        <Original>
+          obj.prop != __null
+        </Original>
+        <Expanded>
+          0x<hex digits> != 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/unimplemented static bool">
+      <Section name="compare to true">
+TrickyTests.cpp" line="259">
+          <Original>
+            is_true&lt;true>::value == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+TrickyTests.cpp" line="260">
+          <Original>
+            true == is_true&lt;true>::value
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="compare to false">
+TrickyTests.cpp" line="264">
+          <Original>
+            is_true&lt;false>::value == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+TrickyTests.cpp" line="265">
+          <Original>
+            false == is_true&lt;false>::value
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="negation">
+TrickyTests.cpp" line="270">
+          <Original>
+            !is_true&lt;false>::value
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="double negation">
+TrickyTests.cpp" line="275">
+          <Original>
+            !!is_true&lt;true>::value
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="direct">
+TrickyTests.cpp" line="280">
+          <Original>
+            is_true&lt;true>::value
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+TrickyTests.cpp" line="281">
+          <Original>
+            !is_true&lt;false>::value
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="./succeeding/SafeBool">
+TrickyTests.cpp" line="313">
+        <Original>
+          True
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TrickyTests.cpp" line="314">
+        <Original>
+          !False
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+TrickyTests.cpp" line="315">
+        <Original>
+          !False
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="scenario name">
+      <Section name="This stuff exists">
+        <Section name="I do this">
+          <Section name="it should do this">
+BDDTests.cpp" line="37">
+              <Original>
+                itDoesThis()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <OverallResults successes="1" failures="0"/>
+          </Section>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <OverallResults successes="512" failures="103"/>
+  </Group>
+  <OverallResults successes="512" failures="103"/>
+</Catch>

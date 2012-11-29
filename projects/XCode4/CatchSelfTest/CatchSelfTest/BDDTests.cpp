@@ -32,7 +32,7 @@ SCENARIO( storyName, "scenario name" )
         {
             // do this
 
-            THEN( "it should this this")
+            THEN( "it should do this")
             {
                 REQUIRE( itDoesThis() );
             }
