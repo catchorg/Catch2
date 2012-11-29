@@ -24,9 +24,10 @@ namespace Catch {
         };
         
     public:
-        explicit RunningTest( const TestCase* info = NULL )
+        explicit RunningTest( const TestCase& info )
         :   m_info( info ),
             m_runStatus( RanAtLeastOneSection ),
+            m_rootSection( info.getTestCaseInfo().name ),
             m_currentSection( &m_rootSection ),
             m_changed( false )
         {}
@@ -71,12 +72,8 @@ namespace Catch {
             if( m_runStatus == NothingRun )
                 m_runStatus = EncounteredASection;
             
-            SectionInfo* thisSection = m_currentSection->findSubSection( name );
-            if( !thisSection ) {
-                thisSection = m_currentSection->addSubSection( name );
-                m_changed = true;
-            }
-            
+            SectionInfo* thisSection = m_currentSection->findOrAddSubSection( name, m_changed );
+
             if( !wasSectionSeen() && thisSection->shouldRun() ) {
                 m_currentSection = thisSection;
                 m_lastSectionToRun = NULL;
@@ -98,16 +95,16 @@ namespace Catch {
         }
         
         const TestCase& getTestCase() const {
-            return *m_info;
+            return m_info;
         }
-        
+
         bool hasUntestedSections() const {
             return  m_runStatus == RanAtLeastOneSection ||
                     ( m_rootSection.hasUntestedSections() && m_changed );
         }
         
     private:
-        const TestCase* m_info;
+        const TestCase& m_info;
         RunStatus m_runStatus;
         SectionInfo m_rootSection;
         SectionInfo* m_currentSection;

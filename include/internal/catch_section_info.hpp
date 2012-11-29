@@ -15,10 +15,17 @@
 
 namespace Catch {
 
-    class SectionInfo {
+    struct ISectionInfo {
+        virtual ~ISectionInfo() {}
+
+        virtual std::string getName() const = 0;
+        virtual const ISectionInfo* getParent() const = 0;
+    };
+
+    class SectionInfo : ISectionInfo {
     public:
     
-        enum Status {
+        enum State {
             Root,
             Unknown,
             Branch,
@@ -26,61 +33,40 @@ namespace Catch {
             TestedLeaf
         };
         
-        SectionInfo( SectionInfo* parent )
-        :   m_status( Unknown ),
-            m_parent( parent )
+        SectionInfo( SectionInfo* parent, const std::string& name )
+        :   m_state( Unknown ),
+            m_parent( parent ),
+            m_name( name )
         {}
         
-        SectionInfo()
-        :   m_status( Root ),
-            m_parent( NULL )
+        SectionInfo( const std::string& name )
+        :   m_state( Root ),
+            m_parent( NULL ),
+            m_name( name )
         {}
         
         ~SectionInfo() {
             deleteAllValues( m_subSections );
         }
-        
+
+        virtual std::string getName() const {
+            return m_name;
+        }
+
         bool shouldRun() const {
-            return m_status < TestedBranch;
+            return m_state < TestedBranch;
         }
         
-        bool ran() {
-            if( m_status < Branch ) {
-                m_status = TestedLeaf;
-                return true;
-            }            
-            return false;
-        }
-
         bool isBranch() const {
-            return m_status == Branch;
+            return m_state == Branch;
         }
 
-        void ranToCompletion() {
-            if( m_status == Branch && !hasUntestedSections() )
-                m_status = TestedBranch;
-        }
-                
-        SectionInfo* findSubSection( const std::string& name ) {
-            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
-            return it != m_subSections.end()
-                        ? it->second
-                        : NULL;
-        }
-        
-        SectionInfo* addSubSection( const std::string& name ) {
-            SectionInfo* subSection = new SectionInfo( this );
-            m_subSections.insert( std::make_pair( name, subSection ) );
-            m_status = Branch;
-            return subSection;
-        }
-        
-        SectionInfo* getParent() {
+        const SectionInfo* getParent() const {
             return m_parent;
         }
-        
+
         bool hasUntestedSections() const {
-            if( m_status == Unknown )
+            if( m_state == Unknown )
                 return true;
             
             std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.begin();
@@ -91,11 +77,42 @@ namespace Catch {
             }
             return false;
         }
-        
+
+        // Mutable methods:
+
+        SectionInfo* getParent() {
+            return m_parent;
+        }
+
+        SectionInfo* findOrAddSubSection( const std::string& name, bool& changed ) {
+            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
+            if( it != m_subSections.end() )
+                return it->second;
+            SectionInfo* subSection = new SectionInfo( this, name );
+            m_subSections.insert( std::make_pair( name, subSection ) );
+            m_state = Branch;
+            changed = true;
+            return subSection;
+        }
+
+        bool ran() {
+            if( m_state < Branch ) {
+                m_state = TestedLeaf;
+                return true;
+            }
+            return false;
+        }
+
+        void ranToCompletion() {
+            if( m_state == Branch && !hasUntestedSections() )
+                m_state = TestedBranch;
+        }
+
     private:
-        Status m_status;
-        std::map<std::string, SectionInfo*> m_subSections;
+        State m_state;
         SectionInfo* m_parent;
+        std::string m_name;
+        std::map<std::string, SectionInfo*> m_subSections;
     };
 }
 

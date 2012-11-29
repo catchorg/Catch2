@@ -36,6 +36,15 @@ namespace Catch
         ConfigData m_fullConfig;
     };
 
+    struct ReporterPreferences
+    {
+        ReporterPreferences()
+        : shouldRedirectStdOut( false )
+        {}
+
+        bool shouldRedirectStdOut;
+    };
+
     struct AssertionStats {
         AssertionStats( const AssertionResult& _assertionResult,
                         const Totals& _totals )
@@ -102,6 +111,8 @@ namespace Catch
     // !Work In progress
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
+        virtual ReporterPreferences getPreferences() const = 0;
+
         virtual void testRunStarting( const std::string& runName ) = 0;
         virtual void testGroupStarting( const std::string& groupName ) = 0;
 
@@ -160,8 +171,13 @@ namespace Catch
             m_config( config )
         {}
         virtual ~LegacyReporterAdapter();
-        
-        
+
+        virtual ReporterPreferences getPreferences() const {
+            ReporterPreferences prefs;
+            prefs.shouldRedirectStdOut = m_legacyReporter->shouldRedirectStdout();
+            return prefs;
+        }
+
         virtual void testRunStarting( const std::string& ) {
             m_legacyReporter->StartTesting();
         }

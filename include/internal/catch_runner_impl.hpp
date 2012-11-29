@@ -109,7 +109,7 @@ namespace Catch {
             LegacyReporterAdapter reporter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) );
             reporter.testCaseStarting( testInfo );
             
-            m_runningTest = new RunningTest( &testCase );
+            m_runningTest = new RunningTest( testCase );
 
             do {
                 do {
@@ -202,6 +202,10 @@ namespace Catch {
 
             m_lastAssertionInfo.lineInfo = lineInfo;
 
+            // !TBD: ------------
+            std::string className = m_runningTest->getTestCase().getTestCaseInfo().className;
+            TestCaseInfo sectionInfo( name, className, description, std::set<std::string>(), false, lineInfo );
+
             m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
             
@@ -272,7 +276,8 @@ namespace Catch {
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCase().getTestCaseInfo().lineInfo, "", ResultDisposition::Normal );
                 m_runningTest->reset();
-                if( m_reporter->shouldRedirectStdout() ) {
+                LegacyReporterAdapter reporter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) );
+                if( reporter.getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
                     m_runningTest->getTestCase().invoke();
