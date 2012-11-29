@@ -55,16 +55,12 @@ namespace Catch {
         }
         
         void ranToCompletion() {
-            if( m_runStatus == RanAtLeastOneSection ||
-                m_runStatus == EncounteredASection ) {
-                m_runStatus = RanToCompletionWithSections;
-                if( m_lastSectionToRun ) {
-                    m_lastSectionToRun->ranToCompletion();
-                    m_changed = true;
-                }
-            }
-            else {
+            if( m_runStatus != RanAtLeastOneSection && m_runStatus != EncounteredASection )
                 m_runStatus = RanToCompletionWithNoSections;
+            m_runStatus = RanToCompletionWithSections;
+            if( m_lastSectionToRun ) {
+                m_lastSectionToRun->ranToCompletion();
+                m_changed = true;
             }
         }
         

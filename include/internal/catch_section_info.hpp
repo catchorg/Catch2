@@ -22,7 +22,7 @@ namespace Catch {
         virtual const ISectionInfo* getParent() const = 0;
     };
 
-    class SectionInfo : ISectionInfo {
+    class SectionInfo : public ISectionInfo {
     public:
 
         typedef std::vector<SectionInfo*> SubSections;
@@ -98,11 +98,10 @@ namespace Catch {
         }
 
         bool ran() {
-            if( m_state < Branch ) {
-                m_state = TestedLeaf;
-                return true;
-            }
-            return false;
+            if( m_state >= Branch )
+                return false;
+            m_state = TestedLeaf;
+            return true;
         }
 
         void ranToCompletion() {
