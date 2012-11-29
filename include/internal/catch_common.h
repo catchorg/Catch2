@@ -51,18 +51,14 @@ namespace Catch {
         typename ContainerT::const_iterator it = container.begin();
         typename ContainerT::const_iterator itEnd = container.end();
         for(; it != itEnd; ++it )
-        {
             delete *it;
-        }
     }
     template<typename AssociativeContainerT>
     inline void deleteAllValues( AssociativeContainerT& container ) {
         typename AssociativeContainerT::const_iterator it = container.begin();
         typename AssociativeContainerT::const_iterator itEnd = container.end();
         for(; it != itEnd; ++it )
-        {
             delete it->second;
-        }
     }
     
     template<typename ContainerT, typename Function>

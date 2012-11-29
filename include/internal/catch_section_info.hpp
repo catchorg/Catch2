@@ -24,6 +24,8 @@ namespace Catch {
 
     class SectionInfo : ISectionInfo {
     public:
+
+        typedef std::vector<SectionInfo*> SubSections;
     
         enum State {
             Root,
@@ -46,7 +48,7 @@ namespace Catch {
         {}
         
         ~SectionInfo() {
-            deleteAllValues( m_subSections );
+            deleteAll( m_subSections );
         }
 
         virtual std::string getName() const {
@@ -68,13 +70,11 @@ namespace Catch {
         bool hasUntestedSections() const {
             if( m_state == Unknown )
                 return true;
-            
-            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.begin();
-            std::map<std::string, SectionInfo*>::const_iterator itEnd = m_subSections.end();
-            for(; it != itEnd; ++it ) {
-                if( it->second->hasUntestedSections() )
+            for(    SubSections::const_iterator it = m_subSections.begin();
+                    it != m_subSections.end();
+                    ++it)
+                if( (*it)->hasUntestedSections() )
                     return true;
-            }
             return false;
         }
 
@@ -85,11 +85,13 @@ namespace Catch {
         }
 
         SectionInfo* findOrAddSubSection( const std::string& name, bool& changed ) {
-            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
-            if( it != m_subSections.end() )
-                return it->second;
+            for(    SubSections::const_iterator it = m_subSections.begin();
+                    it != m_subSections.end();
+                    ++it)
+                if( (*it)->getName() == name )
+                    return *it;
             SectionInfo* subSection = new SectionInfo( this, name );
-            m_subSections.insert( std::make_pair( name, subSection ) );
+            m_subSections.push_back( subSection );
             m_state = Branch;
             changed = true;
             return subSection;
@@ -112,7 +114,7 @@ namespace Catch {
         State m_state;
         SectionInfo* m_parent;
         std::string m_name;
-        std::map<std::string, SectionInfo*> m_subSections;
+        SubSections m_subSections;
     };
 }
 
