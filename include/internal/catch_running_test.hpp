@@ -68,7 +68,7 @@ namespace Catch {
             if( m_runStatus == NothingRun )
                 m_runStatus = EncounteredASection;
             
-            SectionInfo* thisSection = m_currentSection->findOrAddSubSection( name, m_changed );
+            RunningSection* thisSection = m_currentSection->findOrAddSubSection( name, m_changed );
 
             if( !wasSectionSeen() && thisSection->shouldRun() ) {
                 m_currentSection = thisSection;
@@ -102,9 +102,9 @@ namespace Catch {
     private:
         const TestCase& m_info;
         RunStatus m_runStatus;
-        SectionInfo m_rootSection;
-        SectionInfo* m_currentSection;
-        SectionInfo* m_lastSectionToRun;
+        RunningSection m_rootSection;
+        RunningSection* m_currentSection;
+        RunningSection* m_lastSectionToRun;
         bool m_changed;
     };
 }

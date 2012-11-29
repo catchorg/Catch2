@@ -15,17 +15,10 @@
 
 namespace Catch {
 
-    struct ISectionInfo {
-        virtual ~ISectionInfo() {}
-
-        virtual std::string getName() const = 0;
-        virtual const ISectionInfo* getParent() const = 0;
-    };
-
-    class SectionInfo : public ISectionInfo {
+    class RunningSection {
     public:
 
-        typedef std::vector<SectionInfo*> SubSections;
+        typedef std::vector<RunningSection*> SubSections;
     
         enum State {
             Root,
@@ -35,23 +28,23 @@ namespace Catch {
             TestedLeaf
         };
         
-        SectionInfo( SectionInfo* parent, const std::string& name )
+        RunningSection( RunningSection* parent, const std::string& name )
         :   m_state( Unknown ),
             m_parent( parent ),
             m_name( name )
         {}
         
-        SectionInfo( const std::string& name )
+        RunningSection( const std::string& name )
         :   m_state( Root ),
             m_parent( NULL ),
             m_name( name )
         {}
         
-        ~SectionInfo() {
+        ~RunningSection() {
             deleteAll( m_subSections );
         }
 
-        virtual std::string getName() const {
+        std::string getName() const {
             return m_name;
         }
 
@@ -63,7 +56,7 @@ namespace Catch {
             return m_state == Branch;
         }
 
-        const SectionInfo* getParent() const {
+        const RunningSection* getParent() const {
             return m_parent;
         }
 
@@ -80,17 +73,17 @@ namespace Catch {
 
         // Mutable methods:
 
-        SectionInfo* getParent() {
+        RunningSection* getParent() {
             return m_parent;
         }
 
-        SectionInfo* findOrAddSubSection( const std::string& name, bool& changed ) {
+        RunningSection* findOrAddSubSection( const std::string& name, bool& changed ) {
             for(    SubSections::const_iterator it = m_subSections.begin();
                     it != m_subSections.end();
                     ++it)
                 if( (*it)->getName() == name )
                     return *it;
-            SectionInfo* subSection = new SectionInfo( this, name );
+            RunningSection* subSection = new RunningSection( this, name );
             m_subSections.push_back( subSection );
             m_state = Branch;
             changed = true;
@@ -111,7 +104,7 @@ namespace Catch {
 
     private:
         State m_state;
-        SectionInfo* m_parent;
+        RunningSection* m_parent;
         std::string m_name;
         SubSections m_subSections;
     };
