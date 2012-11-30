@@ -38,6 +38,17 @@ namespace Catch {
 
         class ReporterFactory : public IReporterFactory {
 
+            // *** Please Note ***:
+            // - If you end up here looking at a compiler error because it's trying to register
+            // your custom reporter class be aware that the native reporter interface has changed
+            // to IStreamingReporter. The "legacy" interface, IReporter, is still supported via
+            // an adapter. Just use REGISTER_LEGACY_REPORTER to take advantage of the adapter.
+            // However please consider updating to the new interface as the old one is now
+            // deprecated and will probably be removed quite soon!
+            // Please contact me via github if you have any questions at all about this.
+            // In fact, ideally, please contact me anyway to let me know you've hit this - as I have
+            // no idea who is actually using custom reporters at all (possibly no-one!).
+            // The new interface is designed to minimise exposure to interface changes in the future.
             virtual IStreamingReporter* create( const ReporterConfig& config ) const {
                 return new T( config );
             }
@@ -55,9 +66,9 @@ namespace Catch {
     }; 
 }
 
-#define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
+#define INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) \
     Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
-#define INTERNAL_CATCH_REGISTER_REPORTER2( name, reporterType ) \
+#define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
     Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED

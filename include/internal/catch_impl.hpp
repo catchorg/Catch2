@@ -76,9 +76,9 @@ namespace Catch {
 
     void Config::dummy() {}
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "basic", BasicReporter )
-    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
-    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
+    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "basic", BasicReporter )
+    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
+    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "junit", JunitReporter )
 
 }
 

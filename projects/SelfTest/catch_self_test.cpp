@@ -106,6 +106,6 @@ namespace Catch{
     const std::string MockReporter::recordTestCases = "[tc]";
     const std::string MockReporter::recordSections =" [s]";
     
-    INTERNAL_CATCH_REGISTER_REPORTER( "mock", MockReporter )
+    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "mock", MockReporter )
     
 }
