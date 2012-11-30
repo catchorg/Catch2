@@ -112,7 +112,7 @@ namespace Catch {
         Config& m_configWrapper;
         const ConfigData& m_config;
         std::ofstream m_ofs;
-        Ptr<IReporter> m_reporter;
+        Ptr<IStreamingReporter> m_reporter;
         std::set<TestCase> m_testsAlreadyRun;
     };
 

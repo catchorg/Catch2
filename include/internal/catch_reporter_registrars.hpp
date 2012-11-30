@@ -13,12 +13,12 @@
 namespace Catch {    
 
     template<typename T>
-    class ReporterRegistrar {
+    class LegacyReporterRegistrar {
     
         class ReporterFactory : public IReporterFactory {
 
-            virtual IReporter* create( const ReporterConfig& config ) const {
-                return new T( config );
+            virtual IStreamingReporter* create( const ReporterConfig& config ) const {
+                return new LegacyReporterAdapter( new T( config ), config );
             }
             
             virtual std::string getDescription() const {
@@ -28,6 +28,27 @@ namespace Catch {
         
     public:
 
+        LegacyReporterRegistrar( const std::string& name ) {
+            getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
+        }
+    };
+
+    template<typename T>
+    class ReporterRegistrar {
+
+        class ReporterFactory : public IReporterFactory {
+
+            virtual IStreamingReporter* create( const ReporterConfig& config ) const {
+                return new T( config );
+            }
+
+            virtual std::string getDescription() const {
+                return T::getDescription();
+            }
+        };
+
+    public:
+
         ReporterRegistrar( const std::string& name ) {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
@@ -35,6 +56,8 @@ namespace Catch {
 }
 
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
+    Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+#define INTERNAL_CATCH_REGISTER_REPORTER2( name, reporterType ) \
     Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED

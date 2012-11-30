@@ -24,7 +24,7 @@ namespace Catch{
 
         // Scoped because Runner doesn't report EndTesting until its destructor
         {
-            Runner runner( config, m_reporter.get() );
+            Runner runner( config, new LegacyReporterAdapter( m_reporter.get(), ReporterConfig( config.stream(), config.data() ) ) );
             totals = runner.runMatching( rawTestSpec );
         }
         m_output = oss.str();

@@ -22,7 +22,7 @@ namespace Catch {
             deleteAllValues( m_factories );
         }
         
-        virtual IReporter* create( const std::string& name, const ReporterConfig& config ) const {
+        virtual IStreamingReporter* create( const std::string& name, const ReporterConfig& config ) const {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return NULL;

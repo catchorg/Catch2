@@ -249,7 +249,7 @@ namespace Catch
     
     struct IReporterFactory {
         virtual ~IReporterFactory();
-        virtual IReporter* create( ReporterConfig const& config ) const = 0;
+        virtual IStreamingReporter* create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
 
@@ -257,7 +257,7 @@ namespace Catch
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
         virtual ~IReporterRegistry();
-        virtual IReporter* create( std::string const& name, ReporterConfig const& config ) const = 0;        
+        virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const = 0;        
         virtual const FactoryMap& getFactories() const = 0;
     };
     
