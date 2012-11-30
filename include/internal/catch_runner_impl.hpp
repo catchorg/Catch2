@@ -72,7 +72,7 @@ namespace Catch {
         }
         
         virtual ~Runner() {
-            LegacyReporterAdapter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) ).testRunEnding( TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
+            LegacyReporterAdapter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) ).testRunEnded( TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -94,7 +94,7 @@ namespace Catch {
             for(; it != itEnd; ++it )
                 totals += runTest( *it );
 
-            reporter.testGroupEnding( TestGroupStats( testSpec, totals, aborting() ) );
+            reporter.testGroupEnded( TestGroupStats( testSpec, totals, aborting() ) );
             return totals;
         }
 
@@ -131,7 +131,7 @@ namespace Catch {
             m_totals.testCases += deltaTotals.testCases;
 
             TestCaseStats stats( testInfo, deltaTotals, redirectedCout, redirectedCerr, missingAssertions, aborting() );
-            reporter.testCaseEnding( stats );
+            reporter.testCaseEnded( stats );
 
 
             delete m_runningTest;
@@ -163,13 +163,13 @@ namespace Catch {
                     std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
                     std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
                     for(; it != itEnd; ++it )
-                        reporter.assertionEnding( AssertionStats( (*it)->buildResult( m_lastAssertionInfo ), m_totals ) );
+                        reporter.assertionEnded( AssertionStats( (*it)->buildResult( m_lastAssertionInfo ), m_totals ) );
                 }
                 {
                     std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
                     std::vector<AssertionResult>::const_iterator itEnd = m_assertionResults.end();
                     for(; it != itEnd; ++it )
-                        reporter.assertionEnding( AssertionStats( *it, m_totals ) );
+                        reporter.assertionEnded( AssertionStats( *it, m_totals ) );
                 }
                 m_assertionResults.clear();
             }
@@ -180,49 +180,48 @@ namespace Catch {
                 m_totals.assertions.info++;
             }
             else
-                reporter.assertionEnding( AssertionStats( result, m_totals ) );
+                reporter.assertionEnded( AssertionStats( result, m_totals ) );
 
             // Reset AssertionInfo
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after this line}" , m_lastAssertionInfo.resultDisposition );
         }
         
         virtual bool sectionStarted (
-            const std::string& name, 
-            const std::string& description,
-            const SourceLineInfo& lineInfo,
+            SectionInfo const& sectionInfo,
             Counts& assertions
         )
         {
             std::ostringstream oss;
-            oss << name << "@" << lineInfo;
+            oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
 
 
             if( !m_runningTest->addSection( oss.str() ) )
                 return false;
 
-            m_lastAssertionInfo.lineInfo = lineInfo;
+            m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
-            // !TBD: ------------
-            std::string className = m_runningTest->getTestCase().getTestCaseInfo().className;
-            TestCaseInfo sectionInfo( name, className, description, std::set<std::string>(), false, lineInfo );
+            LegacyReporterAdapter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) ).sectionStarting( sectionInfo );
 
-            m_reporter->StartSection( name, description );
             assertions = m_totals.assertions;
             
             return true;
         }
         
-        virtual void sectionEnded( const std::string& name, const Counts& prevAssertions ) {
+        virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions ) {
             Counts assertions = m_totals.assertions - prevAssertions;
+            bool missingAssertions = false;
             if( assertions.total() == 0 &&
                ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
                !m_runningTest->isBranchSection() ) {
-                m_reporter->NoAssertionsInSection( name );
                 m_totals.assertions.failed++;
                 assertions.failed++;
+                missingAssertions = true;
+
             }
-            m_runningTest->endSection( name );
-            m_reporter->EndSection( name, assertions );
+            m_runningTest->endSection( info.name );
+
+            SectionStats stats( info, assertions, missingAssertions );
+            LegacyReporterAdapter( m_reporter, ReporterConfig( m_config.stream(), m_config.data() ) ).sectionEnded( stats );
         }
 
         virtual void pushScopedInfo( ScopedInfo* scopedInfo ) {

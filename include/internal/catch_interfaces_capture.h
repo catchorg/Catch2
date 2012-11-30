@@ -20,22 +20,21 @@ namespace Catch {
     class ExpressionResultBuilder;
     class AssertionResult;
     struct AssertionInfo;
+    struct SectionInfo;
 
     struct IResultCapture {
     
         virtual ~IResultCapture();
         
-        virtual void testEnded( const AssertionResult& result ) = 0;
-        virtual bool sectionStarted(    const std::string& name, 
-                                        const std::string& description, 
-                                        const SourceLineInfo& lineInfo,
+        virtual void testEnded( AssertionResult const& result ) = 0;
+        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
-        virtual void sectionEnded( const std::string& name, const Counts& assertions ) = 0;
+        virtual void sectionEnded( SectionInfo const& name, Counts const& assertions ) = 0;
         virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0;
         virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
         virtual bool shouldDebugBreak() const = 0;
         
-        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) = 0;
+        virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;        
         virtual const AssertionResult* getLastResult() const = 0;        

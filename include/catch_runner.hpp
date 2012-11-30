@@ -50,7 +50,7 @@ namespace Catch {
             for(; it != itEnd && !context.aborting(); ++it ) {
                 reporter.testGroupStarting( it->getName() );
                 totals += runTestsForGroup( context, *it );
-                reporter.testGroupEnding( TestGroupStats( it->getName(), totals, context.aborting() ) );
+                reporter.testGroupEnded( TestGroupStats( it->getName(), totals, context.aborting() ) );
             }
             return totals;
         }

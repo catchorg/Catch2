@@ -20,13 +20,13 @@ namespace Catch {
         Section(    const std::string& name, 
                     const std::string& description,
                     const SourceLineInfo& lineInfo )
-        :   m_name( name ),
-            m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
+        :   m_info( name, description, lineInfo ),
+            m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( m_info, m_assertions ) )
         {}
 
         ~Section() {
             if( m_sectionIncluded )
-                getCurrentContext().getResultCapture().sectionEnded( m_name, m_assertions );
+                getCurrentContext().getResultCapture().sectionEnded( m_info, m_assertions );
         }
         
         // This indicates whether the section should be executed or not
@@ -35,6 +35,7 @@ namespace Catch {
         }
 
     private:
+        SectionInfo m_info;
         
         std::string m_name;
         Counts m_assertions;

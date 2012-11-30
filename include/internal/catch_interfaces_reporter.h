@@ -49,12 +49,12 @@ namespace Catch
                         SourceLineInfo const& _lineInfo )
         :   name( _name ),
             description( _description ),
-            sourceLineInfo( _lineInfo )
+            lineInfo( _lineInfo )
         {}
 
         std::string name;
         std::string description;
-        SourceLineInfo sourceLineInfo;
+        SourceLineInfo lineInfo;
     };
 
     struct AssertionStats {
@@ -70,8 +70,17 @@ namespace Catch
     };
 
     struct SectionStats {
+        SectionStats(   SectionInfo const& _sectionInfo,
+                        Counts const& _assertions,
+                        bool _missingAssertions )
+        :   sectionInfo( _sectionInfo ),
+            assertions( _assertions ),
+            missingAssertions( _missingAssertions )
+        {}
+        
         SectionInfo sectionInfo;
-        Totals totals;
+        Counts assertions;
+        bool missingAssertions;
     };
 
     struct TestCaseStats {
@@ -133,14 +142,16 @@ namespace Catch
         virtual void testRunStarting( std::string const& runName ) = 0;
         virtual void testGroupStarting( std::string const& groupName ) = 0;
 
-        // !TBD: include section info (perhaps TestCase has an isSection flag and/ or a parent pointer
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
+
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
-        virtual void assertionEnding( AssertionStats const& assertionStats ) = 0;
-        virtual void testCaseEnding( TestCaseStats const& testCaseStats ) = 0;
-        virtual void testGroupEnding( TestGroupStats const& testGroupStats ) = 0;
-        virtual void testRunEnding( TestRunStats const& testRunStats ) = 0;
+        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
+        virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
+        virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
     };
     // !TBD: Derived helper that implements the streaming interface but holds the stats
     // - declares a new interface where methods are called at the end of each event
@@ -204,24 +215,32 @@ namespace Catch
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
             m_legacyReporter->StartTestCase( testInfo );
         }
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+            m_legacyReporter->StartSection( sectionInfo.name, sectionInfo.description );
+        }
         virtual void assertionStarting( AssertionInfo const& ) {
             // Not on legacy interface
         }
 
-        virtual void assertionEnding( AssertionStats const& assertionStats ) {
+        virtual void assertionEnded( AssertionStats const& assertionStats ) {
             m_legacyReporter->Result( assertionStats.assertionResult );
         }
-        virtual void testCaseEnding( TestCaseStats const& testCaseStats ) {
+        virtual void sectionEnded( SectionStats const& sectionStats ) {
+            if( sectionStats.missingAssertions )
+                m_legacyReporter->NoAssertionsInSection( sectionStats.sectionInfo.name );
+            m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
+        }
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
             if( testCaseStats.missingAssertions )
                 m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
             m_legacyReporter->EndTestCase( testCaseStats.testInfo, testCaseStats.totals, testCaseStats.stdOut, testCaseStats.stdErr );
         }
-        virtual void testGroupEnding( TestGroupStats const& testGroupStats ) {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
             if( testGroupStats.aborting )
                 m_legacyReporter->Aborted();
             m_legacyReporter->EndGroup( testGroupStats.groupName, testGroupStats.totals );
         }
-        virtual void testRunEnding( TestRunStats const& testRunStats ) {
+        virtual void testRunEnded( TestRunStats const& testRunStats ) {
             m_legacyReporter->EndTesting( testRunStats.totals );
         }
 
