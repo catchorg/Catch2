@@ -49,7 +49,12 @@ namespace Catch {
     IReporterRegistry::~IReporterRegistry() {}
     IStreamingReporter::~IStreamingReporter() {}
     LegacyReporterAdapter::~LegacyReporterAdapter() {}
-    
+    AssertionStats::~AssertionStats() {}
+    SectionStats::~SectionStats() {}
+    TestCaseStats::~TestCaseStats() {}
+    TestGroupStats::~TestGroupStats() {}
+    TestRunStats::~TestRunStats() {}
+
     BasicReporter::~BasicReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}

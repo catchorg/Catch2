@@ -23,7 +23,7 @@ namespace Catch {
             if( m_p )
                 m_p->addRef();
         }
-        Ptr( const Ptr& other ) : m_p( other.m_p ){
+        Ptr( Ptr const& other ) : m_p( other.m_p ){
             if( m_p )
                 m_p->addRef();
         }
@@ -36,33 +36,17 @@ namespace Catch {
             swap( temp );
             return *this;
         }
-        Ptr& operator = ( const Ptr& other ){
+        Ptr& operator = ( Ptr const& other ){
             Ptr temp( other );
             swap( temp );
             return *this;
         }
-        void swap( Ptr& other ){
-            std::swap( m_p, other.m_p );
-        }
-        
-        T* get(){
-            return m_p;
-        }
-        const T* get() const{
-            return m_p;
-        }
-        
-        T& operator*() const {
-            return *m_p;
-        }
-
-        T* operator->() const {
-            return m_p;
-        }
-        
-        bool operator !() const {
-            return m_p == NULL;
-        }
+        void swap( Ptr& other ) { std::swap( m_p, other.m_p ); }
+        T* get() { return m_p; }
+        const T* get() const{ return m_p; }
+        T& operator*() const { return *m_p; }
+        T* operator->() const { return m_p; }
+        bool operator !() const { return m_p == NULL; }
         
     private:
         T* m_p;
@@ -70,24 +54,24 @@ namespace Catch {
     
     struct IShared : NonCopyable {
         virtual ~IShared();
-        virtual void addRef() = 0;
-        virtual void release() = 0;
+        virtual void addRef() const = 0;
+        virtual void release() const = 0;
     };
     
-    template<typename T>
+    template<typename T = IShared>
     struct SharedImpl : T {
         
         SharedImpl() : m_rc( 0 ){}
 
-        virtual void addRef(){
+        virtual void addRef() const {
             ++m_rc;
         }
-        virtual void release(){
+        virtual void release() const {
             if( --m_rc == 0 )
                 delete this;
         }
         
-        int m_rc;
+        mutable unsigned int m_rc;
     };
     
 } // end namespace Catch

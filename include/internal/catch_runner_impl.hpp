@@ -72,7 +72,7 @@ namespace Catch {
         }
         
         virtual ~Runner() {
-            m_reporter.testRunEnded( TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
+            m_reporter.testRunEnded( new TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -83,7 +83,7 @@ namespace Catch {
             m_reporter.testGroupStarting( testSpec );
         }
         void testGroupEnded( std::string const& testSpec, Totals const& totals ) {
-            m_reporter.testGroupEnded( TestGroupStats( testSpec, totals, aborting() ) );
+            m_reporter.testGroupEnded( new TestGroupStats( testSpec, totals, aborting() ) );
         }
 
         Totals runMatching( const std::string& testSpec ) {
@@ -134,8 +134,12 @@ namespace Catch {
 
             m_totals.testCases += deltaTotals.testCases;
 
-            TestCaseStats stats( testInfo, deltaTotals, redirectedCout, redirectedCerr, missingAssertions, aborting() );
-            m_reporter.testCaseEnded( stats );
+            m_reporter.testCaseEnded( new TestCaseStats(    testInfo,
+                                                            deltaTotals,
+                                                            redirectedCout,
+                                                            redirectedCerr,
+                                                            missingAssertions,
+                                                            aborting() ) );
 
 
             delete m_runningTest;
@@ -166,13 +170,13 @@ namespace Catch {
                     std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
                     std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
                     for(; it != itEnd; ++it )
-                        m_reporter.assertionEnded( AssertionStats( (*it)->buildResult( m_lastAssertionInfo ), m_totals ) );
+                        m_reporter.assertionEnded( new AssertionStats( (*it)->buildResult( m_lastAssertionInfo ), m_totals ) );
                 }
                 {
                     std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
                     std::vector<AssertionResult>::const_iterator itEnd = m_assertionResults.end();
                     for(; it != itEnd; ++it )
-                        m_reporter.assertionEnded( AssertionStats( *it, m_totals ) );
+                        m_reporter.assertionEnded( new AssertionStats( *it, m_totals ) );
                 }
                 m_assertionResults.clear();
             }
@@ -183,7 +187,7 @@ namespace Catch {
                 m_totals.assertions.info++;
             }
             else
-                m_reporter.assertionEnded( AssertionStats( result, m_totals ) );
+                m_reporter.assertionEnded( new AssertionStats( result, m_totals ) );
 
             // Reset AssertionInfo
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after this line}" , m_lastAssertionInfo.resultDisposition );
@@ -223,8 +227,7 @@ namespace Catch {
             }
             m_runningTest->endSection( info.name );
 
-            SectionStats stats( info, assertions, missingAssertions );
-            m_reporter.sectionEnded( stats );
+            m_reporter.sectionEnded( new SectionStats( info, assertions, missingAssertions ) );
         }
 
         virtual void pushScopedInfo( ScopedInfo* scopedInfo ) {

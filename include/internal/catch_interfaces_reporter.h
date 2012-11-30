@@ -57,19 +57,19 @@ namespace Catch
         SourceLineInfo lineInfo;
     };
 
-    struct AssertionStats {
+    struct AssertionStats : SharedImpl<> {
         AssertionStats( AssertionResult const& _assertionResult,
                         Totals const& _totals )
         :   assertionResult( _assertionResult ),
             totals( _totals )
         {}
+        virtual ~AssertionStats();
         
-//        AssertionInfo assertionInfo; // !TBD: needed? It's in the result
         AssertionResult assertionResult;
         Totals totals;
     };
 
-    struct SectionStats {
+    struct SectionStats : SharedImpl<> {
         SectionStats(   SectionInfo const& _sectionInfo,
                         Counts const& _assertions,
                         bool _missingAssertions )
@@ -77,13 +77,14 @@ namespace Catch
             assertions( _assertions ),
             missingAssertions( _missingAssertions )
         {}
-        
+        virtual ~SectionStats();
+
         SectionInfo sectionInfo;
         Counts assertions;
         bool missingAssertions;
     };
 
-    struct TestCaseStats {
+    struct TestCaseStats : SharedImpl<> {
         TestCaseStats(  TestCaseInfo const& _testInfo,
                         Totals const& _totals,
                         std::string const& _stdOut,
@@ -97,6 +98,7 @@ namespace Catch
             missingAssertions( _missingAssertions ),
             aborting( _aborting )
         {}
+        virtual ~TestCaseStats();
 
         TestCaseInfo testInfo;
         Totals totals;
@@ -106,7 +108,7 @@ namespace Catch
         bool aborting;
     };
     
-    struct TestGroupStats {
+    struct TestGroupStats : SharedImpl<> {
         TestGroupStats( std::string const& _groupName,
                         Totals const& _totals,
                         bool _aborting )
@@ -114,13 +116,14 @@ namespace Catch
             totals( _totals ),
             aborting( _aborting )
         {}
+        virtual ~TestGroupStats();
 
         std::string groupName;
         Totals totals;
         bool aborting;
     };
     
-    struct TestRunStats {
+    struct TestRunStats : SharedImpl<> {
         TestRunStats(   std::string const& _runName,
                         Totals const& _totals,
                         bool _aborting )
@@ -128,6 +131,7 @@ namespace Catch
             totals( _totals ),
             aborting( _aborting )
         {}
+        virtual ~TestRunStats();
         
         std::string runName;
         Totals totals;
@@ -147,11 +151,11 @@ namespace Catch
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
-        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
-        virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
-        virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
+        virtual void assertionEnded( Ptr<AssertionStats const> const& assertionStats ) = 0;
+        virtual void sectionEnded( Ptr<SectionStats const> const& sectionStats ) = 0;
+        virtual void testCaseEnded( Ptr<TestCaseStats const> const& testCaseStats ) = 0;
+        virtual void testGroupEnded( Ptr<TestGroupStats const> const& testGroupStats ) = 0;
+        virtual void testRunEnded( Ptr<TestRunStats const> const& testRunStats ) = 0;
     };
     // !TBD: Derived helper that implements the streaming interface but holds the stats
     // - declares a new interface where methods are called at the end of each event
@@ -160,34 +164,23 @@ namespace Catch
     //   as it goes
 
 
+    // Deprecated
     struct IReporter : IShared {
         virtual ~IReporter();
 
         virtual bool shouldRedirectStdout() const = 0;
 
         virtual void StartTesting() = 0;        
-        virtual void EndTesting( Totals const& totals ) = 0;        
-
+        virtual void EndTesting( Totals const& totals ) = 0;
         virtual void StartGroup( std::string const& groupName ) = 0;
-        virtual void EndGroup( std::string const& groupName, Totals const& totals ) = 0;        
-
+        virtual void EndGroup( std::string const& groupName, Totals const& totals ) = 0;
         virtual void StartTestCase( TestCaseInfo const& testInfo ) = 0;
-        // TestCaseResult
         virtual void EndTestCase( TestCaseInfo const& testInfo, Totals const& totals, std::string const& stdOut, std::string const& stdErr ) = 0;
-
-        // SectionInfo
         virtual void StartSection( std::string const& sectionName, std::string const& description ) = 0;
-        // Section Result
         virtual void EndSection( std::string const& sectionName, const Counts& assertions ) = 0;
-
-        // - merge into SectionResult ?
         virtual void NoAssertionsInSection( std::string const& sectionName ) = 0;
         virtual void NoAssertionsInTestCase( std::string const& testName ) = 0;
-
-        // - merge into SectionResult, TestCaseResult, GroupResult & TestRunResult
         virtual void Aborted() = 0;
-
-        // AssertionReslt
         virtual void Result( const AssertionResult& result ) = 0;
     };
 
@@ -222,26 +215,30 @@ namespace Catch
             // Not on legacy interface
         }
 
-        virtual void assertionEnded( AssertionStats const& assertionStats ) {
-            m_legacyReporter->Result( assertionStats.assertionResult );
+        virtual void assertionEnded( Ptr<AssertionStats const> const& assertionStats ) {
+            m_legacyReporter->Result( assertionStats->assertionResult );
         }
-        virtual void sectionEnded( SectionStats const& sectionStats ) {
-            if( sectionStats.missingAssertions )
-                m_legacyReporter->NoAssertionsInSection( sectionStats.sectionInfo.name );
-            m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
+        virtual void sectionEnded( Ptr<SectionStats const> const& sectionStats ) {
+            if( sectionStats->missingAssertions )
+                m_legacyReporter->NoAssertionsInSection( sectionStats->sectionInfo.name );
+            m_legacyReporter->EndSection( sectionStats->sectionInfo.name, sectionStats->assertions );
         }
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
-            if( testCaseStats.missingAssertions )
-                m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
-            m_legacyReporter->EndTestCase( testCaseStats.testInfo, testCaseStats.totals, testCaseStats.stdOut, testCaseStats.stdErr );
+        virtual void testCaseEnded( Ptr<TestCaseStats const> const& testCaseStats ) {
+            if( testCaseStats->missingAssertions )
+                m_legacyReporter->NoAssertionsInTestCase( testCaseStats->testInfo.name );
+            m_legacyReporter->EndTestCase
+                (   testCaseStats->testInfo,
+                    testCaseStats->totals,
+                    testCaseStats->stdOut,
+                    testCaseStats->stdErr );
         }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
-            if( testGroupStats.aborting )
+        virtual void testGroupEnded( Ptr<TestGroupStats const> const& testGroupStats ) {
+            if( testGroupStats->aborting )
                 m_legacyReporter->Aborted();
-            m_legacyReporter->EndGroup( testGroupStats.groupName, testGroupStats.totals );
+            m_legacyReporter->EndGroup( testGroupStats->groupName, testGroupStats->totals );
         }
-        virtual void testRunEnded( TestRunStats const& testRunStats ) {
-            m_legacyReporter->EndTesting( testRunStats.totals );
+        virtual void testRunEnded( Ptr<TestRunStats const> const& testRunStats ) {
+            m_legacyReporter->EndTesting( testRunStats->totals );
         }
 
     private:
