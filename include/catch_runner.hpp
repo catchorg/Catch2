@@ -45,12 +45,10 @@ namespace Catch {
             std::vector<TestCaseFilters>::const_iterator it = filterGroups.begin();
             std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
 
-            LegacyReporterAdapter reporter( m_reporter, ReporterConfig( m_configWrapper.stream(), m_config ) );
-
             for(; it != itEnd && !context.aborting(); ++it ) {
-                reporter.testGroupStarting( it->getName() );
+                context.testGroupStarting( it->getName() );
                 totals += runTestsForGroup( context, *it );
-                reporter.testGroupEnded( TestGroupStats( it->getName(), totals, context.aborting() ) );
+                context.testGroupEnded( it->getName(), totals );
             }
             return totals;
         }
