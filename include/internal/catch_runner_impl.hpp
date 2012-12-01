@@ -57,7 +57,8 @@ namespace Catch {
     public:
 
         explicit Runner( const Config& config, const Ptr<IStreamingReporter>& reporter )
-        :   m_context( getCurrentMutableContext() ),
+        :   m_runInfo( config.data().name ),
+            m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
             m_config( config ),
             m_reporter( reporter ),
@@ -68,11 +69,11 @@ namespace Catch {
             m_context.setRunner( this );
             m_context.setConfig( &m_config );
             m_context.setResultCapture( this );
-            m_reporter->testRunStarting( TestRunInfo( "" ) ); // !TBD - name
+            m_reporter->testRunStarting( m_runInfo );
         }
         
         virtual ~Runner() {
-            m_reporter->testRunEnded( new TestRunStats( TestRunInfo( "" ), m_totals, aborting() ) ); // !TBD - name
+            m_reporter->testRunEnded( new TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -303,6 +304,7 @@ namespace Catch {
         }
 
     private:
+        TestRunInfo m_runInfo;
         IMutableContext& m_context;
         RunningTest* m_runningTest;
         AssertionResult m_lastResult;
