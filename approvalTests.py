@@ -7,9 +7,9 @@ filenameParser = re.compile( r'\s*.*/(.*\.cpp)(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 
 catchPath = os.path.realpath(os.path.dirname(sys.argv[0]))
-baselinesPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/results.txt' )
+baselinesPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/approvedResults.txt' )
 rawResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/_rawResults.tmp' )
-filteredResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/newResults.txt' )
+filteredResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/unapprovedResults.txt' )
 
 cmdPath = sys.argv[1]
 
