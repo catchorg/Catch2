@@ -20,121 +20,43 @@
 
 namespace Catch {
 
-    class MockReporter : public SharedImpl<IReporter> {
+    class NullStreamingReporter : public SharedImpl<IStreamingReporter> {
     public:
-        
-        static const std::string recordGroups;
-        static const std::string recordTestCases;
-        static const std::string recordSections;
-        
-        void recordAll() {
-            addRecorder( recordGroups );
-            addRecorder( recordTestCases );
-            addRecorder( recordSections );
-        }
-                
-        MockReporter( const ReporterConfig& ) {
-            recordAll();
-        }
-        
-        MockReporter() {
-            recordAll();
-        }
-        
-        void addRecorder( const std::string& recorder ) {
-            m_recorders.insert( recorder );
-        }
-        
+
+        virtual ~NullStreamingReporter();
+
         static std::string getDescription() {
-            return "mock reporter";
+            return "null reporter";
         }
         
-        std::string getLog() const {
-            return m_log.str();
-        }
+    private: // IStreamingReporter
         
-    private: // IReporter
-        
-        virtual bool shouldRedirectStdout() const {
-            return false;
-        }
-        
-        virtual void StartTesting() {}
-        
-        virtual void EndTesting( const Totals& ) {}
-        
-        virtual void StartGroup( const std::string& groupName ) {
-            openLabel( recordGroups, groupName );
-        }
-        
-        virtual void EndGroup( const std::string& groupName, const Totals& ) {
-            closeLabel( recordGroups, groupName );
-        }
-        
-        virtual void StartSection( const std::string& sectionName, const std::string& ) {
-            openLabel( recordSections, sectionName );
+        virtual ReporterPreferences getPreferences() const {
+            return ReporterPreferences();
         }
 
-        virtual void NoAssertionsInSection( const std::string& ) {}
-        virtual void NoAssertionsInTestCase( const std::string& ) {}
-
-        virtual void EndSection( const std::string& sectionName, const Counts& ) {
-            closeLabel( recordSections, sectionName );
-        }
-        
-        virtual void StartTestCase( const TestCaseInfo& testInfo ) {
-            openLabel( recordTestCases, testInfo.name  );
-        }
-        
-        virtual void Aborted(){}
-        
-        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
-                                    const Totals&,
-                                    const std::string&, 
-                                    const std::string& ) {
-            closeLabel( recordTestCases, testInfo.name  );
-        }
-        
-        virtual void Result( const AssertionResult& assertionResult );
-
-        
-    private:
-        
-        bool shouldRecord( const std::string& recorder ) const {
-            return m_recorders.find( recorder ) != m_recorders.end();
-        }
-        
-        void openLabel( const std::string& label, const std::string& arg = "" );
-        void closeLabel( const std::string& label, const std::string& arg = "" );
-        
-        std::string m_indent;
-        std::ostringstream m_log;
-        std::set<std::string> m_recorders;
+        virtual void testRunStarting( std::string const& ) {}
+        virtual void testGroupStarting( std::string const& ) {}
+        virtual void testCaseStarting( TestCaseInfo const& ) {}
+        virtual void sectionStarting( SectionInfo const& ) {}
+        virtual void assertionStarting( AssertionInfo const& ) {}
+        virtual void assertionEnded( Ptr<AssertionStats const> const& ) {}
+        virtual void sectionEnded( Ptr<SectionStats const> const& ) {}
+        virtual void testCaseEnded( Ptr<TestCaseStats const> const& ) {}
+        virtual void testGroupEnded( Ptr<TestGroupStats const> const& ) {}
+        virtual void testRunEnded( Ptr<TestRunStats const> const& ) {}
     };
-    
+
     class EmbeddedRunner {
 
     public:
-        EmbeddedRunner() : m_reporter( new MockReporter() ) {}
+        EmbeddedRunner() : m_reporter( new NullStreamingReporter() ) {}
         
         Totals runMatching( const std::string& rawTestSpec,
                             const std::string& reporter = "basic" );
         
-        std::string getOutput() {
-            return m_output;
-        }
-
-        void addRecorder( const std::string& recorder ) {
-            m_reporter->addRecorder( recorder );
-        }
-
-        std::string getLog() const {
-            return m_reporter->getLog();
-        }
-
     private:
-        std::string m_output;
-        Ptr<MockReporter> m_reporter;
+        Ptr<IStreamingReporter> m_reporter;
     };
 
     class MetaTestRunner {
@@ -154,14 +76,17 @@ namespace Catch {
         }
         
         void operator()( const TestCase& testCase ) {
-            EmbeddedRunner runner;
-            std::string name = testCase.getTestCaseInfo().name;
-            Totals totals = runner.runMatching( name );
+            std::string name;
+            Totals totals;
+            {
+                EmbeddedRunner runner;
+                name = testCase.getTestCaseInfo().name;
+                totals = runner.runMatching( name );
+            }
             switch( m_expectedResult ) {
                 case Expected::ToSucceed:
                     if( totals.assertions.failed > 0 ) {
-                        INFO( runner.getOutput() );
-                        FAIL( "Expected test case '" 
+                        FAIL( "Expected test case '"
                              << name
                              << "' to succeed but there was/ were " 
                              << totals.assertions.failed << " failure(s)" );
@@ -172,8 +97,7 @@ namespace Catch {
                     break;
                 case Expected::ToFail:
                     if( totals.assertions.failed == 0 ) {
-                        INFO( runner.getOutput() );
-                        FAIL( "Expected test case '" 
+                        FAIL( "Expected test case '"
                              << name
                              << "' to fail but there was/ were " 
                              << totals.assertions.passed << " success(es)" );

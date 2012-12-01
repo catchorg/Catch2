@@ -283,47 +283,8 @@ No assertions in section, 'the section2'
 ExceptionTests.cpp:132: Unexpected exception with message: 'Exception from section'
 [Finished: './failing/exceptions/in-section' 1 test case failed (All 2 assertions failed)]
 
-[Running: ./succeeding/exceptions/error messages]
-[Started section: 'custom, unexpected']
-ExceptionTests.cpp:152: runner.getLog() Contains( "custom exception" ) succeeded for:
-"\[g] ./failing/exceptions/custom
- \[tc] ./failing/exceptions/custom
-ExceptionTests.cpp:102:  ThrewException'custom exception' /[tc] ./failing/exceptions/custom
-/[g] ./failing/exceptions/custom
-" contains: "custom exception"
-[End of section: 'custom, unexpected' 1 assertion passed]
-
-[Started section: 'in section']
-ExceptionTests.cpp:160: runner.getLog() Contains( "Exception from section" ) succeeded for:
-"\[g] ./failing/exceptions/in-section
- \[tc] ./failing/exceptions/in-section
-  \ [s] the section
-   \ [s] the section2
-   / [s] the section2
-  / [s] the section
-ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
-  / [s] the section
- /[tc] ./failing/exceptions/in-section
-/[g] ./failing/exceptions/in-section
-" contains: "Exception from section"
-ExceptionTests.cpp:161: runner.getLog() Contains( ::Catch::LineInfoRegistry::get().infoForName( "the section2" ) ) succeeded for:
-"\[g] ./failing/exceptions/in-section
- \[tc] ./failing/exceptions/in-section
-  \ [s] the section
-   \ [s] the section2
-   / [s] the section2
-  / [s] the section
-ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
-  / [s] the section
- /[tc] ./failing/exceptions/in-section
-/[g] ./failing/exceptions/in-section
-ExceptionTests.cpp:132: "
-[End of section: 'in section' All 2 assertions passed]
-
-[Finished: './succeeding/exceptions/error messages' All tests passed (3 assertions in 1 test case)]
-
 [Running: ./succeeding/exceptions/notimplemented]
-ExceptionTests.cpp:172: thisFunctionNotImplemented( 7 ) succeeded
+ExceptionTests.cpp:149: thisFunctionNotImplemented( 7 ) succeeded
 [Finished: './succeeding/exceptions/notimplemented' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/generators/1]
@@ -631,72 +592,30 @@ No assertions in section, 'f (leaf)'
 
 [Finished: './Sections/nested/a/b' 1 test case failed (All 3 assertions failed)]
 
-[Running: Sections/nested3]
-MiscTests.cpp:119: runner.getLog() == "\\[g] ./Sections/nested/a/b\n" " \\[tc] ./Sections/nested/a/b\n" "  \\ [s] c\n" "   \\ [s] d (leaf)\n" "   / [s] d (leaf)\n" "  / [s] c\n" "  \\ [s] c\n" "   \\ [s] e (leaf)\n" "   / [s] e (leaf)\n" "  / [s] c\n" "  \\ [s] c\n" "  / [s] c\n" "  \\ [s] f (leaf)\n" "  / [s] f (leaf)\n" " /[tc] ./Sections/nested/a/b\n" "/[g] ./Sections/nested/a/b\n" succeeded for:
-
-"\[g] ./Sections/nested/a/b
- \[tc] ./Sections/nested/a/b
-  \ [s] c
-   \ [s] d (leaf)
-   / [s] d (leaf)
-  / [s] c
-  \ [s] c
-   \ [s] e (leaf)
-   / [s] e (leaf)
-  / [s] c
-  \ [s] c
-  / [s] c
-  \ [s] f (leaf)
-  / [s] f (leaf)
- /[tc] ./Sections/nested/a/b
-/[g] ./Sections/nested/a/b
-"
-==
-"\[g] ./Sections/nested/a/b
- \[tc] ./Sections/nested/a/b
-  \ [s] c
-   \ [s] d (leaf)
-   / [s] d (leaf)
-  / [s] c
-  \ [s] c
-   \ [s] e (leaf)
-   / [s] e (leaf)
-  / [s] c
-  \ [s] c
-  / [s] c
-  \ [s] f (leaf)
-  / [s] f (leaf)
- /[tc] ./Sections/nested/a/b
-/[g] ./Sections/nested/a/b
-"
-
-
-[Finished: 'Sections/nested3' All tests passed (1 assertion in 1 test case)]
-
 [Running: ./mixed/Misc/Sections/loops]
 [Started section: 's1']
-MiscTests.cpp:133: b > a failed for: 0 > 1
+MiscTests.cpp:103: b > a failed for: 0 > 1
 [End of section: 's1' 1 assertion failed]
 
 [Finished: './mixed/Misc/Sections/loops' 1 test case failed (1 assertion failed)]
 
 [Running: ./mixed/Misc/loops]
-MiscTests.cpp:144: [info: Testing if fib[0] (1) is even]
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:144: [info: Testing if fib[1] (1) is even]
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
-MiscTests.cpp:144: [info: Testing if fib[2] (2) is even]
-MiscTests.cpp:144: [info: Testing if fib[3] (3) is even]
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:144: [info: Testing if fib[4] (5) is even]
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
-MiscTests.cpp:144: [info: Testing if fib[5] (8) is even]
-MiscTests.cpp:144: [info: Testing if fib[6] (13) is even]
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:144: [info: Testing if fib[7] (21) is even]
-MiscTests.cpp:145: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:114: [info: Testing if fib[0] (1) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:114: [info: Testing if fib[1] (1) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
+MiscTests.cpp:114: [info: Testing if fib[2] (2) is even]
+MiscTests.cpp:114: [info: Testing if fib[3] (3) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:114: [info: Testing if fib[4] (5) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
+MiscTests.cpp:114: [info: Testing if fib[5] (8) is even]
+MiscTests.cpp:114: [info: Testing if fib[6] (13) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:114: [info: Testing if fib[7] (21) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
 [Finished: './mixed/Misc/loops' 1 test case failed (6 of 8 assertions failed)]
 Some information
 An error
@@ -708,34 +627,34 @@ No assertions in test case, './succeeding/Misc/stdout,stderr'
 [Finished: './succeeding/Misc/stdout,stderr' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/Misc/null strings]
-MiscTests.cpp:163: makeString( false ) != static_cast<char*>(__null) succeeded for: "valid string" != {null string}
-MiscTests.cpp:164: makeString( true ) == static_cast<char*>(__null) succeeded for: {null string} == {null string}
+MiscTests.cpp:133: makeString( false ) != static_cast<char*>(__null) succeeded for: "valid string" != {null string}
+MiscTests.cpp:134: makeString( true ) == static_cast<char*>(__null) succeeded for: {null string} == {null string}
 [Finished: './succeeding/Misc/null strings' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./failing/info]
-MiscTests.cpp:169: [info: hi]
-MiscTests.cpp:171: [info: i := 7]
-MiscTests.cpp:172: false failed
+MiscTests.cpp:139: [info: hi]
+MiscTests.cpp:141: [info: i := 7]
+MiscTests.cpp:142: false failed
 [Finished: './failing/info' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/checkedif]
-MiscTests.cpp:177: flag succeeded for: true
-MiscTests.cpp:185: testCheckedIf( true ) succeeded for: true
+MiscTests.cpp:147: flag succeeded for: true
+MiscTests.cpp:155: testCheckedIf( true ) succeeded for: true
 [Finished: './succeeding/checkedif' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./failing/checkedif]
-MiscTests.cpp:177: flag failed for: false
-MiscTests.cpp:190: testCheckedIf( false ) failed for: false
+MiscTests.cpp:147: flag failed for: false
+MiscTests.cpp:160: testCheckedIf( false ) failed for: false
 [Finished: './failing/checkedif' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./succeeding/checkedelse]
-MiscTests.cpp:195: flag succeeded for: true
-MiscTests.cpp:203: testCheckedElse( true ) succeeded for: true
+MiscTests.cpp:165: flag succeeded for: true
+MiscTests.cpp:173: testCheckedElse( true ) succeeded for: true
 [Finished: './succeeding/checkedelse' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./failing/checkedelse]
-MiscTests.cpp:195: flag failed for: false
-MiscTests.cpp:208: testCheckedElse( false ) failed for: false
+MiscTests.cpp:165: flag failed for: false
+MiscTests.cpp:178: testCheckedElse( false ) failed for: false
 [Finished: './failing/checkedelse' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./misc/xmlentitycheck]
@@ -754,68 +673,68 @@ No assertions in section, 'encoded chars'
 [Finished: './misc/xmlentitycheck' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./manual/onechar]
-MiscTests.cpp:225: [info: 3]
-MiscTests.cpp:226: false failed
+MiscTests.cpp:195: [info: 3]
+MiscTests.cpp:196: false failed
 [Finished: './manual/onechar' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/atomic if]
-MiscTests.cpp:236: x == 0 succeeded for: 0 == 0
+MiscTests.cpp:206: x == 0 succeeded for: 0 == 0
 [Finished: './succeeding/atomic if' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/matchers]
-MiscTests.cpp:246: testStringForMatching() Contains( "string" ) succeeded for:
+MiscTests.cpp:216: testStringForMatching() Contains( "string" ) succeeded for:
 	"this string contains 'abc' as a substring" contains: "string"
-MiscTests.cpp:247: testStringForMatching() Contains( "abc" ) succeeded for:
+MiscTests.cpp:217: testStringForMatching() Contains( "abc" ) succeeded for:
 	"this string contains 'abc' as a substring" contains: "abc"
-MiscTests.cpp:249: testStringForMatching() StartsWith( "this" ) succeeded for:
+MiscTests.cpp:219: testStringForMatching() StartsWith( "this" ) succeeded for:
 	"this string contains 'abc' as a substring" starts with: "this"
-MiscTests.cpp:250: testStringForMatching() EndsWith( "substring" ) succeeded for:
+MiscTests.cpp:220: testStringForMatching() EndsWith( "substring" ) succeeded for:
 	"this string contains 'abc' as a substring" ends with: "substring"
 [Finished: './succeeding/matchers' All tests passed (4 assertions in 1 test case)]
 
 [Running: ./failing/matchers/Contains]
-MiscTests.cpp:255: testStringForMatching() Contains( "not there" ) failed for:
+MiscTests.cpp:225: testStringForMatching() Contains( "not there" ) failed for:
 	"this string contains 'abc' as a substring" contains: "not there"
 [Finished: './failing/matchers/Contains' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/matchers/StartsWith]
-MiscTests.cpp:260: testStringForMatching() StartsWith( "string" ) failed for:
+MiscTests.cpp:230: testStringForMatching() StartsWith( "string" ) failed for:
 	"this string contains 'abc' as a substring" starts with: "string"
 [Finished: './failing/matchers/StartsWith' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/matchers/EndsWith]
-MiscTests.cpp:265: testStringForMatching() EndsWith( "this" ) failed for:
+MiscTests.cpp:235: testStringForMatching() EndsWith( "this" ) failed for:
 	"this string contains 'abc' as a substring" ends with: "this"
 [Finished: './failing/matchers/EndsWith' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/matchers/Equals]
-MiscTests.cpp:270: testStringForMatching() Equals( "something else" ) failed for:
+MiscTests.cpp:240: testStringForMatching() Equals( "something else" ) failed for:
 	"this string contains 'abc' as a substring" equals: "something else"
 [Finished: './failing/matchers/Equals' 1 test case failed (1 assertion failed)]
 
 [Running: /succeeding/matchers/AllOf]
-MiscTests.cpp:275: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
+MiscTests.cpp:245: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
 [Finished: '/succeeding/matchers/AllOf' All tests passed (1 assertion in 1 test case)]
 
 [Running: /succeeding/matchers/AnyOf]
-MiscTests.cpp:279: testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) succeeded for:
+MiscTests.cpp:249: testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
-MiscTests.cpp:280: testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) succeeded for:
+MiscTests.cpp:250: testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
 [Finished: '/succeeding/matchers/AnyOf' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./succeeding/matchers/Equals]
-MiscTests.cpp:285: testStringForMatching() Equals( "this string contains 'abc' as a substring" ) succeeded for:
+MiscTests.cpp:255: testStringForMatching() Equals( "this string contains 'abc' as a substring" ) succeeded for:
 "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 [Finished: './succeeding/matchers/Equals' All tests passed (1 assertion in 1 test case)]
 
 [Running: example/factorial]
-MiscTests.cpp:296: Factorial(0) == 1 succeeded for: 1 == 1
-MiscTests.cpp:297: Factorial(1) == 1 succeeded for: 1 == 1
-MiscTests.cpp:298: Factorial(2) == 2 succeeded for: 2 == 2
-MiscTests.cpp:299: Factorial(3) == 6 succeeded for: 6 == 6
-MiscTests.cpp:300: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 3628800
+MiscTests.cpp:266: Factorial(0) == 1 succeeded for: 1 == 1
+MiscTests.cpp:267: Factorial(1) == 1 succeeded for: 1 == 1
+MiscTests.cpp:268: Factorial(2) == 2 succeeded for: 2 == 2
+MiscTests.cpp:269: Factorial(3) == 6 succeeded for: 6 == 6
+MiscTests.cpp:270: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 3628800
 [Finished: 'example/factorial' All tests passed (5 assertions in 1 test case)]
 
 [Running: empty]
@@ -825,7 +744,7 @@ No assertions in test case, 'empty'
 [Finished: 'empty' 1 test case failed (1 assertion failed)]
 
 [Running: Nice descriptive name]
-MiscTests.cpp:309: [warning: This one ran]
+MiscTests.cpp:279: [warning: This one ran]
 
 No assertions in test case, 'Nice descriptive name'
 
@@ -846,57 +765,57 @@ No assertions in test case, 'second tag'
 [Running: selftest/main]
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/failing tests']
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:182:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
 [End of section: 'selftest/expected result/failing tests' All 26 assertions passed]
 
@@ -904,101 +823,99 @@ No assertions in test case, 'second tag'
 
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/succeeding tests']
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
-[with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
 Message from section one
 Message from section two
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
 Some information
 An error
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:170:  succeeded
+/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:  succeeded
 [with message: Tests passed, as expected]
-[End of section: 'selftest/expected result/succeeding tests' All 44 assertions passed]
+[End of section: 'selftest/expected result/succeeding tests' All 43 assertions passed]
 
-[End of section: 'selftest/expected result' All 44 assertions passed]
+[End of section: 'selftest/expected result' All 43 assertions passed]
 
 Message from section one
 Message from section two
@@ -1006,7 +923,7 @@ Some information
 An error
 [Started section: 'selftest/test counts']
 [Started section: 'selftest/test counts/succeeding tests']
-TestMain.cpp:40: totals.assertions.passed == 294 succeeded for: 294 == 294
+TestMain.cpp:40: totals.assertions.passed == 291 succeeded for: 291 == 291
 TestMain.cpp:41: totals.assertions.failed == 0 succeeded for: 0 == 0
 [End of section: 'selftest/test counts/succeeding tests' All 2 assertions passed]
 
@@ -1020,7 +937,7 @@ TestMain.cpp:48: totals.assertions.failed == 73 succeeded for: 73 == 73
 
 [End of section: 'selftest/test counts' All 2 assertions passed]
 
-[Finished: 'selftest/main' All tests passed (74 assertions in 1 test case)]
+[Finished: 'selftest/main' All tests passed (73 assertions in 1 test case)]
 
 [Running: meta/Misc/Sections]
 TestMain.cpp:57: totals.assertions.passed == 2 succeeded for: 2 == 2
@@ -1433,13 +1350,13 @@ BDDTests.cpp:37: itDoesThis() succeeded for: true
 [End of section: 'This stuff exists' 1 assertion passed]
 
 [Finished: 'scenario name' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 45 of 98 test cases failed (103 of 615 assertions failed)]
+[End of group: '~dummy'. 45 of 96 test cases failed (103 of 610 assertions failed)]
 
 
-[Testing completed. 45 of 98 test cases failed (103 of 615 assertions failed)]
+[Testing completed. 45 of 96 test cases failed (103 of 610 assertions failed)]
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="76" tests="615" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="76" tests="610" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -1659,7 +1576,6 @@ ExceptionTests.cpp:118:
 ExceptionTests.cpp:132:
       </error>
     </testcase>
-    <testcase classname="global" name="./succeeding/exceptions/error messages" time="tbd"/>
     <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="tbd"/>
     <testcase classname="global" name="./succeeding/generators/1" time="tbd"/>
     <testcase classname="global" name="./succeeding/message" time="tbd">
@@ -1739,54 +1655,53 @@ MiscTests.cpp:61:
       </failure>
     </testcase>
     <testcase classname="global" name="./Sections/nested/a/b" time="tbd"/>
-    <testcase classname="global" name="Sections/nested3" time="tbd"/>
     <testcase classname="global" name="./mixed/Misc/Sections/loops" time="tbd">
       <failure message="0 > 1" type="CHECK">
-MiscTests.cpp:133:
+MiscTests.cpp:103:
       </failure>
     </testcase>
     <testcase classname="global" name="./mixed/Misc/loops" time="tbd">
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:145:
+MiscTests.cpp:115:
       </failure>
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:145:
+MiscTests.cpp:115:
       </failure>
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:145:
+MiscTests.cpp:115:
       </failure>
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:145:
+MiscTests.cpp:115:
       </failure>
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:145:
+MiscTests.cpp:115:
       </failure>
       <info type="INFO">
-MiscTests.cpp:144:
+MiscTests.cpp:114:
       </info>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:145:
+MiscTests.cpp:115:
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/Misc/stdout,stderr" time="tbd">
@@ -1800,62 +1715,62 @@ An error
     <testcase classname="global" name="./succeeding/Misc/null strings" time="tbd"/>
     <testcase classname="global" name="./failing/info" time="tbd">
       <info type="INFO">
-MiscTests.cpp:169:
+MiscTests.cpp:139:
       </info>
       <info type="CAPTURE">
-MiscTests.cpp:171:
+MiscTests.cpp:141:
       </info>
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:172:
+MiscTests.cpp:142:
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/checkedif" time="tbd"/>
     <testcase classname="global" name="./failing/checkedif" time="tbd">
       <failure message="false" type="CHECKED_IF">
-MiscTests.cpp:177:
+MiscTests.cpp:147:
       </failure>
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:190:
+MiscTests.cpp:160:
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/checkedelse" time="tbd"/>
     <testcase classname="global" name="./failing/checkedelse" time="tbd">
       <failure message="false" type="CHECKED_ELSE">
-MiscTests.cpp:195:
+MiscTests.cpp:165:
       </failure>
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:208:
+MiscTests.cpp:178:
       </failure>
     </testcase>
     <testcase classname="global" name="./misc/xmlentitycheck" time="tbd"/>
     <testcase classname="global" name="./manual/onechar" time="tbd">
       <info type="INFO">
-MiscTests.cpp:225:
+MiscTests.cpp:195:
       </info>
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:226:
+MiscTests.cpp:196:
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/atomic if" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers" time="tbd"/>
     <testcase classname="global" name="./failing/matchers/Contains" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
-MiscTests.cpp:255:
+MiscTests.cpp:225:
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/matchers/StartsWith" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
-MiscTests.cpp:260:
+MiscTests.cpp:230:
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/matchers/EndsWith" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
-MiscTests.cpp:265:
+MiscTests.cpp:235:
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/matchers/Equals" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
-MiscTests.cpp:270:
+MiscTests.cpp:240:
       </failure>
     </testcase>
     <testcase classname="global" name="/succeeding/matchers/AllOf" time="tbd"/>
@@ -1865,7 +1780,7 @@ MiscTests.cpp:270:
     <testcase classname="global" name="empty" time="tbd"/>
     <testcase classname="global" name="Nice descriptive name" time="tbd">
       <warning type="WARN">
-MiscTests.cpp:309:
+MiscTests.cpp:279:
       </warning>
     </testcase>
     <testcase classname="global" name="first tag" time="tbd"/>
@@ -3389,65 +3304,8 @@ ExceptionTests.cpp" line="132">
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/exceptions/error messages">
-      <Section name="custom, unexpected">
-ExceptionTests.cpp" line="152">
-          <Original>
-            runner.getLog() Contains( &quot;custom exception&quot; )
-          </Original>
-          <Expanded>
-            &quot;\[g] ./failing/exceptions/custom
- \[tc] ./failing/exceptions/custom
-ExceptionTests.cpp:102:  ThrewException'custom exception' /[tc] ./failing/exceptions/custom
-/[g] ./failing/exceptions/custom
-&quot; contains: &quot;custom exception&quot;
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="in section">
-ExceptionTests.cpp" line="160">
-          <Original>
-            runner.getLog() Contains( &quot;Exception from section&quot; )
-          </Original>
-          <Expanded>
-            &quot;\[g] ./failing/exceptions/in-section
- \[tc] ./failing/exceptions/in-section
-  \ [s] the section
-   \ [s] the section2
-   / [s] the section2
-  / [s] the section
-ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
-  / [s] the section
- /[tc] ./failing/exceptions/in-section
-/[g] ./failing/exceptions/in-section
-&quot; contains: &quot;Exception from section&quot;
-          </Expanded>
-        </Expression>
-ExceptionTests.cpp" line="161">
-          <Original>
-            runner.getLog() Contains( ::Catch::LineInfoRegistry::get().infoForName( &quot;the section2&quot; ) )
-          </Original>
-          <Expanded>
-            &quot;\[g] ./failing/exceptions/in-section
- \[tc] ./failing/exceptions/in-section
-  \ [s] the section
-   \ [s] the section2
-   / [s] the section2
-  / [s] the section
-ExceptionTests.cpp:132:  ThrewException'Exception from section'  \ [s] the section
-  / [s] the section
- /[tc] ./failing/exceptions/in-section
-/[g] ./failing/exceptions/in-section
-ExceptionTests.cpp:132: &quot;
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="./succeeding/exceptions/notimplemented">
-ExceptionTests.cpp" line="172">
+ExceptionTests.cpp" line="149">
         <Original>
           thisFunctionNotImplemented( 7 )
         </Original>
@@ -4968,57 +4826,9 @@ MiscTests.cpp" line="70">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Sections/nested3">
-MiscTests.cpp" line="119">
-        <Original>
-          runner.getLog() == &quot;\\[g] ./Sections/nested/a/b\n&quot; &quot; \\[tc] ./Sections/nested/a/b\n&quot; &quot;  \\ [s] c\n&quot; &quot;   \\ [s] d (leaf)\n&quot; &quot;   / [s] d (leaf)\n&quot; &quot;  / [s] c\n&quot; &quot;  \\ [s] c\n&quot; &quot;   \\ [s] e (leaf)\n&quot; &quot;   / [s] e (leaf)\n&quot; &quot;  / [s] c\n&quot; &quot;  \\ [s] c\n&quot; &quot;  / [s] c\n&quot; &quot;  \\ [s] f (leaf)\n&quot; &quot;  / [s] f (leaf)\n&quot; &quot; /[tc] ./Sections/nested/a/b\n&quot; &quot;/[g] ./Sections/nested/a/b\n&quot;
-        </Original>
-        <Expanded>
-
-&quot;\[g] ./Sections/nested/a/b
- \[tc] ./Sections/nested/a/b
-  \ [s] c
-   \ [s] d (leaf)
-   / [s] d (leaf)
-  / [s] c
-  \ [s] c
-   \ [s] e (leaf)
-   / [s] e (leaf)
-  / [s] c
-  \ [s] c
-  / [s] c
-  \ [s] f (leaf)
-  / [s] f (leaf)
- /[tc] ./Sections/nested/a/b
-/[g] ./Sections/nested/a/b
-&quot;
-==
-&quot;\[g] ./Sections/nested/a/b
- \[tc] ./Sections/nested/a/b
-  \ [s] c
-   \ [s] d (leaf)
-   / [s] d (leaf)
-  / [s] c
-  \ [s] c
-   \ [s] e (leaf)
-   / [s] e (leaf)
-  / [s] c
-  \ [s] c
-  / [s] c
-  \ [s] f (leaf)
-  / [s] f (leaf)
- /[tc] ./Sections/nested/a/b
-/[g] ./Sections/nested/a/b
-&quot;
-
-
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="./mixed/Misc/Sections/loops">
       <Section name="s1" description="b is currently: 0">
-MiscTests.cpp" line="133">
+MiscTests.cpp" line="103">
           <Original>
             b > a
           </Original>
@@ -5034,7 +4844,7 @@ MiscTests.cpp" line="133">
       <Info>
         Testing if fib[0] (1) is even
       </Info>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5045,7 +4855,7 @@ MiscTests.cpp" line="145">
       <Info>
         Testing if fib[1] (1) is even
       </Info>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5053,7 +4863,7 @@ MiscTests.cpp" line="145">
           1 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5067,7 +4877,7 @@ MiscTests.cpp" line="145">
       <Info>
         Testing if fib[3] (3) is even
       </Info>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5078,7 +4888,7 @@ MiscTests.cpp" line="145">
       <Info>
         Testing if fib[4] (5) is even
       </Info>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5086,7 +4896,7 @@ MiscTests.cpp" line="145">
           1 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5100,7 +4910,7 @@ MiscTests.cpp" line="145">
       <Info>
         Testing if fib[6] (13) is even
       </Info>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5111,7 +4921,7 @@ MiscTests.cpp" line="145">
       <Info>
         Testing if fib[7] (21) is even
       </Info>
-MiscTests.cpp" line="145">
+MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -5125,7 +4935,7 @@ MiscTests.cpp" line="145">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/Misc/null strings">
-MiscTests.cpp" line="163">
+MiscTests.cpp" line="133">
         <Original>
           makeString( false ) != static_cast&lt;char*>(__null)
         </Original>
@@ -5133,7 +4943,7 @@ MiscTests.cpp" line="163">
           &quot;valid string&quot; != {null string}
         </Expanded>
       </Expression>
-MiscTests.cpp" line="164">
+MiscTests.cpp" line="134">
         <Original>
           makeString( true ) == static_cast&lt;char*>(__null)
         </Original>
@@ -5150,7 +4960,7 @@ MiscTests.cpp" line="164">
       <Info>
         i := 7
       </Info>
-MiscTests.cpp" line="172">
+MiscTests.cpp" line="142">
         <Original>
           false
         </Original>
@@ -5161,7 +4971,7 @@ MiscTests.cpp" line="172">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/checkedif">
-MiscTests.cpp" line="177">
+MiscTests.cpp" line="147">
         <Original>
           flag
         </Original>
@@ -5169,7 +4979,7 @@ MiscTests.cpp" line="177">
           true
         </Expanded>
       </Expression>
-MiscTests.cpp" line="185">
+MiscTests.cpp" line="155">
         <Original>
           testCheckedIf( true )
         </Original>
@@ -5180,7 +4990,7 @@ MiscTests.cpp" line="185">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/checkedif">
-MiscTests.cpp" line="177">
+MiscTests.cpp" line="147">
         <Original>
           flag
         </Original>
@@ -5188,7 +4998,7 @@ MiscTests.cpp" line="177">
           false
         </Expanded>
       </Expression>
-MiscTests.cpp" line="190">
+MiscTests.cpp" line="160">
         <Original>
           testCheckedIf( false )
         </Original>
@@ -5199,7 +5009,7 @@ MiscTests.cpp" line="190">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/checkedelse">
-MiscTests.cpp" line="195">
+MiscTests.cpp" line="165">
         <Original>
           flag
         </Original>
@@ -5207,7 +5017,7 @@ MiscTests.cpp" line="195">
           true
         </Expanded>
       </Expression>
-MiscTests.cpp" line="203">
+MiscTests.cpp" line="173">
         <Original>
           testCheckedElse( true )
         </Original>
@@ -5218,7 +5028,7 @@ MiscTests.cpp" line="203">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/checkedelse">
-MiscTests.cpp" line="195">
+MiscTests.cpp" line="165">
         <Original>
           flag
         </Original>
@@ -5226,7 +5036,7 @@ MiscTests.cpp" line="195">
           false
         </Expanded>
       </Expression>
-MiscTests.cpp" line="208">
+MiscTests.cpp" line="178">
         <Original>
           testCheckedElse( false )
         </Original>
@@ -5249,7 +5059,7 @@ MiscTests.cpp" line="208">
       <Info>
         3
       </Info>
-MiscTests.cpp" line="226">
+MiscTests.cpp" line="196">
         <Original>
           false
         </Original>
@@ -5260,7 +5070,7 @@ MiscTests.cpp" line="226">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/atomic if">
-MiscTests.cpp" line="236">
+MiscTests.cpp" line="206">
         <Original>
           x == 0
         </Original>
@@ -5271,7 +5081,7 @@ MiscTests.cpp" line="236">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/matchers">
-MiscTests.cpp" line="246">
+MiscTests.cpp" line="216">
         <Original>
           testStringForMatching() Contains( &quot;string&quot; )
         </Original>
@@ -5279,7 +5089,7 @@ MiscTests.cpp" line="246">
           &quot;this string contains 'abc' as a substring&quot; contains: &quot;string&quot;
         </Expanded>
       </Expression>
-MiscTests.cpp" line="247">
+MiscTests.cpp" line="217">
         <Original>
           testStringForMatching() Contains( &quot;abc&quot; )
         </Original>
@@ -5287,7 +5097,7 @@ MiscTests.cpp" line="247">
           &quot;this string contains 'abc' as a substring&quot; contains: &quot;abc&quot;
         </Expanded>
       </Expression>
-MiscTests.cpp" line="249">
+MiscTests.cpp" line="219">
         <Original>
           testStringForMatching() StartsWith( &quot;this&quot; )
         </Original>
@@ -5295,7 +5105,7 @@ MiscTests.cpp" line="249">
           &quot;this string contains 'abc' as a substring&quot; starts with: &quot;this&quot;
         </Expanded>
       </Expression>
-MiscTests.cpp" line="250">
+MiscTests.cpp" line="220">
         <Original>
           testStringForMatching() EndsWith( &quot;substring&quot; )
         </Original>
@@ -5306,7 +5116,7 @@ MiscTests.cpp" line="250">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/matchers/Contains">
-MiscTests.cpp" line="255">
+MiscTests.cpp" line="225">
         <Original>
           testStringForMatching() Contains( &quot;not there&quot; )
         </Original>
@@ -5317,7 +5127,7 @@ MiscTests.cpp" line="255">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/matchers/StartsWith">
-MiscTests.cpp" line="260">
+MiscTests.cpp" line="230">
         <Original>
           testStringForMatching() StartsWith( &quot;string&quot; )
         </Original>
@@ -5328,7 +5138,7 @@ MiscTests.cpp" line="260">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/matchers/EndsWith">
-MiscTests.cpp" line="265">
+MiscTests.cpp" line="235">
         <Original>
           testStringForMatching() EndsWith( &quot;this&quot; )
         </Original>
@@ -5339,7 +5149,7 @@ MiscTests.cpp" line="265">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/matchers/Equals">
-MiscTests.cpp" line="270">
+MiscTests.cpp" line="240">
         <Original>
           testStringForMatching() Equals( &quot;something else&quot; )
         </Original>
@@ -5350,7 +5160,7 @@ MiscTests.cpp" line="270">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="/succeeding/matchers/AllOf">
-MiscTests.cpp" line="275">
+MiscTests.cpp" line="245">
         <Original>
           testStringForMatching() AllOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;abc&quot; ) )
         </Original>
@@ -5361,7 +5171,7 @@ MiscTests.cpp" line="275">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="/succeeding/matchers/AnyOf">
-MiscTests.cpp" line="279">
+MiscTests.cpp" line="249">
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;not there&quot; ) )
         </Original>
@@ -5369,7 +5179,7 @@ MiscTests.cpp" line="279">
           &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;string&quot; or contains: &quot;not there&quot; )
         </Expanded>
       </Expression>
-MiscTests.cpp" line="280">
+MiscTests.cpp" line="250">
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;not there&quot; ), Catch::Contains( &quot;string&quot; ) )
         </Original>
@@ -5380,7 +5190,7 @@ MiscTests.cpp" line="280">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/matchers/Equals">
-MiscTests.cpp" line="285">
+MiscTests.cpp" line="255">
         <Original>
           testStringForMatching() Equals( &quot;this string contains 'abc' as a substring&quot; )
         </Original>
@@ -5391,7 +5201,7 @@ MiscTests.cpp" line="285">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="example/factorial">
-MiscTests.cpp" line="296">
+MiscTests.cpp" line="266">
         <Original>
           Factorial(0) == 1
         </Original>
@@ -5399,7 +5209,7 @@ MiscTests.cpp" line="296">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="297">
+MiscTests.cpp" line="267">
         <Original>
           Factorial(1) == 1
         </Original>
@@ -5407,7 +5217,7 @@ MiscTests.cpp" line="297">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="298">
+MiscTests.cpp" line="268">
         <Original>
           Factorial(2) == 2
         </Original>
@@ -5415,7 +5225,7 @@ MiscTests.cpp" line="298">
           2 == 2
         </Expanded>
       </Expression>
-MiscTests.cpp" line="299">
+MiscTests.cpp" line="269">
         <Original>
           Factorial(3) == 6
         </Original>
@@ -5423,7 +5233,7 @@ MiscTests.cpp" line="299">
           6 == 6
         </Expanded>
       </Expression>
-MiscTests.cpp" line="300">
+MiscTests.cpp" line="270">
         <Original>
           Factorial(10) == 3628800
         </Original>
@@ -5457,9 +5267,9 @@ MiscTests.cpp" line="300">
       </Section>
       <Section name="selftest/expected result" description="Tests do what they claim">
         <Section name="selftest/expected result/succeeding tests" description="Tests in the 'succeeding' branch succeed">
-          <OverallResults successes="44" failures="0"/>
+          <OverallResults successes="43" failures="0"/>
         </Section>
-        <OverallResults successes="44" failures="0"/>
+        <OverallResults successes="43" failures="0"/>
       </Section>
       <Section name="selftest/expected result" description="Tests do what they claim">
         <OverallResults successes="0" failures="0"/>
@@ -5468,10 +5278,10 @@ MiscTests.cpp" line="300">
         <Section name="selftest/test counts/succeeding tests" description="Number of 'succeeding' tests is fixed">
 TestMain.cpp" line="40">
             <Original>
-              totals.assertions.passed == 294
+              totals.assertions.passed == 291
             </Original>
             <Expanded>
-              294 == 294
+              291 == 291
             </Expanded>
           </Expression>
 TestMain.cpp" line="41">
@@ -6904,7 +6714,7 @@ BDDTests.cpp" line="37">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="512" failures="103"/>
+    <OverallResults successes="507" failures="103"/>
   </Group>
-  <OverallResults successes="512" failures="103"/>
+  <OverallResults successes="507" failures="103"/>
 </Catch>

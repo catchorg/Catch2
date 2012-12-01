@@ -15,6 +15,8 @@
 
 namespace Catch{
     
+    NullStreamingReporter::~NullStreamingReporter() {}
+
     Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& ) {
         std::ostringstream oss;
         Config config;
@@ -24,88 +26,10 @@ namespace Catch{
 
         // Scoped because Runner doesn't report EndTesting until its destructor
         {
-            Runner runner( config, new LegacyReporterAdapter( m_reporter.get(), ReporterConfig( config.stream(), config.data() ) ) );
+            Runner runner( config, m_reporter.get() );
             totals = runner.runMatching( rawTestSpec );
         }
-        m_output = oss.str();
         return totals;
     }
-    
-    void MockReporter::Result( const AssertionResult& assertionResult ) {
-        if( assertionResult.getResultType() == ResultWas::Ok )
-            return;
 
-        m_log << assertionResult.getSourceInfo() << " ";
-        
-        switch( assertionResult.getResultType() ) {          
-            case ResultWas::Info:
-                m_log << "Info";
-                break;
-            case ResultWas::Warning:
-                m_log << "Warning";
-                break;
-            case ResultWas::ExplicitFailure:
-                m_log << "ExplicitFailure";
-                break;
-            case ResultWas::ExpressionFailed:
-                m_log << "ExpressionFailed";
-                break;
-            case ResultWas::Unknown:
-                m_log << "Unknown";
-                break;
-            case ResultWas::ThrewException:
-                m_log << "ThrewException";
-                break;
-            case ResultWas::DidntThrowException:
-                m_log << "DidntThrowException";
-                break;
-
-            // We shouldn't ever see these
-            case ResultWas::Ok:
-                m_log << "Ok";
-                break;
-            case ResultWas::FailureBit:
-                m_log << "FailureBit";
-                break;
-            case ResultWas::Exception:
-                m_log << "Exception";
-                break;
-        }
-        
-        if( assertionResult.hasExpression() )
-            m_log << assertionResult.getExpression();
-        
-        if( assertionResult.hasMessage() )
-            m_log << "'" << assertionResult.getMessage() << "'";
-        
-        if( assertionResult.hasExpandedExpression() )
-            m_log << assertionResult.getExpandedExpression();        
-    }    
-
-    void MockReporter::openLabel( const std::string& label, const std::string& arg ) {
-        if( shouldRecord( label ) ) {
-            m_log << m_indent << "\\" << label;
-            if( !arg.empty() )
-                m_log << " " << arg;
-            m_log << "\n";
-            m_indent += " ";
-        }
-    }
-    
-    void MockReporter::closeLabel( const std::string& label, const std::string& arg ) {
-        if( shouldRecord( label ) ) {
-            m_indent = m_indent.substr( 0, m_indent.size()-1 );
-            m_log << m_indent << "/" << label;
-            if( !arg.empty() )
-                m_log << " " << arg;
-            m_log << "\n";
-        }
-    }
-        
-    const std::string MockReporter::recordGroups = "[g]";
-    const std::string MockReporter::recordTestCases = "[tc]";
-    const std::string MockReporter::recordSections =" [s]";
-    
-    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "mock", MockReporter )
-    
 }

@@ -90,36 +90,6 @@ TEST_CASE( "./Sections/nested/a/b", "nested SECTION tests" )
     }
 }
 
-TEST_CASE( "Sections/nested3", "nested SECTION tests" )
-{
-    Catch::EmbeddedRunner runner;
-    
-    runner.runMatching( "./Sections/nested/a/b", "mock" );
-    CHECK( runner.getLog() == 
-        "\\[g] ./Sections/nested/a/b\n"
-        " \\[tc] ./Sections/nested/a/b\n"
-        
-        "  \\ [s] c\n"
-        "   \\ [s] d (leaf)\n"
-        "   / [s] d (leaf)\n"
-        "  / [s] c\n"
-        
-        "  \\ [s] c\n"
-        "   \\ [s] e (leaf)\n"
-        "   / [s] e (leaf)\n"
-        "  / [s] c\n"
-        
-        "  \\ [s] c\n"
-        "  / [s] c\n"
-        
-        "  \\ [s] f (leaf)\n"
-        "  / [s] f (leaf)\n"
-        
-        " /[tc] ./Sections/nested/a/b\n"
-        "/[g] ./Sections/nested/a/b\n" );
-    
-}
-
 TEST_CASE( "./mixed/Misc/Sections/loops", "looped SECTION tests" )
 {
     int a = 1;
