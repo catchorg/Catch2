@@ -68,11 +68,11 @@ namespace Catch {
             m_context.setRunner( this );
             m_context.setConfig( &m_config );
             m_context.setResultCapture( this );
-            m_reporter->testRunStarting( "" ); // !TBD - name
+            m_reporter->testRunStarting( TestRunInfo( "" ) ); // !TBD - name
         }
         
         virtual ~Runner() {
-            m_reporter->testRunEnded( new TestRunStats( "", m_totals, aborting() ) ); // !TBD - name
+            m_reporter->testRunEnded( new TestRunStats( TestRunInfo( "" ), m_totals, aborting() ) ); // !TBD - name
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -80,10 +80,10 @@ namespace Catch {
         }
 
         void testGroupStarting( std::string const& testSpec ) {
-            m_reporter->testGroupStarting( testSpec );
+            m_reporter->testGroupStarting( GroupInfo( testSpec ) );
         }
         void testGroupEnded( std::string const& testSpec, Totals const& totals ) {
-            m_reporter->testGroupEnded( new TestGroupStats( testSpec, totals, aborting() ) );
+            m_reporter->testGroupEnded( new TestGroupStats( GroupInfo( testSpec ), totals, aborting() ) );
         }
 
         Totals runMatching( const std::string& testSpec ) {

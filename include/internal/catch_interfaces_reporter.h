@@ -43,6 +43,15 @@ namespace Catch
         bool shouldRedirectStdOut;
     };
 
+    struct TestRunInfo {
+        TestRunInfo( std::string const& _name ) : name( _name ) {}
+        std::string name;
+    };
+    struct GroupInfo {
+        GroupInfo( std::string const& _name ) : name( _name ) {}
+        std::string name;
+    };
+
     struct SectionInfo {
         SectionInfo(    std::string const& _name,
                         std::string const& _description,
@@ -109,31 +118,31 @@ namespace Catch
     };
     
     struct TestGroupStats : SharedImpl<> {
-        TestGroupStats( std::string const& _groupName,
+        TestGroupStats( GroupInfo const& _groupInfo,
                         Totals const& _totals,
                         bool _aborting )
-        :   groupName( _groupName ),
+        :   groupInfo( _groupInfo ),
             totals( _totals ),
             aborting( _aborting )
         {}
         virtual ~TestGroupStats();
 
-        std::string groupName;
+        GroupInfo groupInfo;
         Totals totals;
         bool aborting;
     };
     
     struct TestRunStats : SharedImpl<> {
-        TestRunStats(   std::string const& _runName,
+        TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
                         bool _aborting )
-        :   runName( _runName ),
+        :   runInfo( _runInfo ),
             totals( _totals ),
             aborting( _aborting )
         {}
         virtual ~TestRunStats();
         
-        std::string runName;
+        TestRunInfo runInfo;
         Totals totals;
         bool aborting;
     };
@@ -143,8 +152,8 @@ namespace Catch
         virtual ~IStreamingReporter();
         virtual ReporterPreferences getPreferences() const = 0;
 
-        virtual void testRunStarting( std::string const& runName ) = 0;
-        virtual void testGroupStarting( std::string const& groupName ) = 0;
+        virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) = 0;
 
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
@@ -199,11 +208,11 @@ namespace Catch
             return prefs;
         }
 
-        virtual void testRunStarting( std::string const& ) {
+        virtual void testRunStarting( TestRunInfo const& ) {
             m_legacyReporter->StartTesting();
         }
-        virtual void testGroupStarting( std::string const& groupName ) {
-            m_legacyReporter->StartGroup( groupName );
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
+            m_legacyReporter->StartGroup( groupInfo.name );
         }
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
             m_legacyReporter->StartTestCase( testInfo );
@@ -235,7 +244,7 @@ namespace Catch
         virtual void testGroupEnded( Ptr<TestGroupStats const> const& testGroupStats ) {
             if( testGroupStats->aborting )
                 m_legacyReporter->Aborted();
-            m_legacyReporter->EndGroup( testGroupStats->groupName, testGroupStats->totals );
+            m_legacyReporter->EndGroup( testGroupStats->groupInfo.name, testGroupStats->totals );
         }
         virtual void testRunEnded( Ptr<TestRunStats const> const& testRunStats ) {
             m_legacyReporter->EndTesting( testRunStats->totals );
