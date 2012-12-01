@@ -213,11 +213,11 @@ namespace Catch {
         }
 
         if( !displayedSpecificOption ) {
-            std::cout   << "\nCATCH v"    << libraryVersion.MajorVersion << "."
-                                        << libraryVersion.MinorVersion << " build "
-                                        << libraryVersion.BuildNumber;
-            if( libraryVersion.BranchName != "master" )
-                std::cout << " (" << libraryVersion.BranchName << " branch)";
+            std::cout   << "\nCATCH v"    << libraryVersion.majorVersion << "."
+                                        << libraryVersion.minorVersion << " build "
+                                        << libraryVersion.buildNumber;
+            if( libraryVersion.branchName != "master" )
+                std::cout << " (" << libraryVersion.branchName << " branch)";
 
             std::cout << "\n\n" << parser.exeName() << " is a CATCH host application. Options are as follows:\n\n";
             showUsage( std::cout );
