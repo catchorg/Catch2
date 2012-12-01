@@ -120,26 +120,6 @@ TEST_CASE_NORETURN( "./failing/exceptions/custom/double", "Unexpected custom exc
     throw double( 3.14 );
 }
 
-#ifdef  __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
-
-TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections report file/ line or section" )
-{
-    SECTION( "the section", "" )
-    {
-        CATCH_REGISTER_LINE_INFO( "the section2" ) SECTION( "the section2", "" )
-        {
-            throw std::domain_error( "Exception from section" );
-        }
-    }
-}
-
-#ifdef  __GNUC__
-#pragma GCC diagnostic pop
-#endif
-
 inline int thisFunctionNotImplemented( int ) {
     CATCH_NOT_IMPLEMENTED;
 }

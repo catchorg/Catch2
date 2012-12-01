@@ -269,22 +269,8 @@ ExceptionTests.cpp:114: throw CustomException( "custom exception - not std" ) fa
 ExceptionTests.cpp:118: Unexpected exception with message: '3.14'
 [Finished: './failing/exceptions/custom/double' 1 test case failed (1 assertion failed)]
 
-[Running: ./failing/exceptions/in-section]
-
-[Started section: 'the section']
-[Started section: 'the section2']
-
-No assertions in section, 'the section2'
-
-[End of section: 'the section2' 1 assertion failed]
-
-[End of section: 'the section' 1 assertion failed]
-
-ExceptionTests.cpp:132: Unexpected exception with message: 'Exception from section'
-[Finished: './failing/exceptions/in-section' 1 test case failed (All 2 assertions failed)]
-
 [Running: ./succeeding/exceptions/notimplemented]
-ExceptionTests.cpp:149: thisFunctionNotImplemented( 7 ) succeeded
+ExceptionTests.cpp:129: thisFunctionNotImplemented( 7 ) succeeded
 [Finished: './succeeding/exceptions/notimplemented' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/generators/1]
@@ -467,6 +453,7 @@ MessageTests.cpp:51: failed with message: 'This is a failure'
 [Finished: './failing/message/fail' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/message/sections]
+
 [Started section: 'one']
 MessageTests.cpp:58: failed with message: 'Message from section one'
 [End of section: 'one' 1 assertion failed]
@@ -815,11 +802,9 @@ No assertions in test case, 'second tag'
 [with message: Tests failed, as expected]
 /Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
 [with message: Tests failed, as expected]
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:  succeeded
-[with message: Tests failed, as expected]
-[End of section: 'selftest/expected result/failing tests' All 26 assertions passed]
+[End of section: 'selftest/expected result/failing tests' All 25 assertions passed]
 
-[End of section: 'selftest/expected result' All 26 assertions passed]
+[End of section: 'selftest/expected result' All 25 assertions passed]
 
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/succeeding tests']
@@ -932,12 +917,12 @@ TestMain.cpp:41: totals.assertions.failed == 0 succeeded for: 0 == 0
 [Started section: 'selftest/test counts']
 [Started section: 'selftest/test counts/failing tests']
 TestMain.cpp:47: totals.assertions.passed == 1 succeeded for: 1 == 1
-TestMain.cpp:48: totals.assertions.failed == 73 succeeded for: 73 == 73
+TestMain.cpp:48: totals.assertions.failed == 72 succeeded for: 72 == 72
 [End of section: 'selftest/test counts/failing tests' All 2 assertions passed]
 
 [End of section: 'selftest/test counts' All 2 assertions passed]
 
-[Finished: 'selftest/main' All tests passed (73 assertions in 1 test case)]
+[Finished: 'selftest/main' All tests passed (72 assertions in 1 test case)]
 
 [Running: meta/Misc/Sections]
 TestMain.cpp:57: totals.assertions.passed == 2 succeeded for: 2 == 2
@@ -1350,13 +1335,13 @@ BDDTests.cpp:37: itDoesThis() succeeded for: true
 [End of section: 'This stuff exists' 1 assertion passed]
 
 [Finished: 'scenario name' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 45 of 96 test cases failed (103 of 610 assertions failed)]
+[End of group: '~dummy'. 44 of 95 test cases failed (101 of 607 assertions failed)]
 
 
-[Testing completed. 45 of 96 test cases failed (103 of 610 assertions failed)]
+[Testing completed. 44 of 95 test cases failed (101 of 607 assertions failed)]
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="76" tests="610" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="8" failures="76" tests="607" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -1569,11 +1554,6 @@ ExceptionTests.cpp:114:
     <testcase classname="global" name="./failing/exceptions/custom/double" time="tbd">
       <error type="TEST_CASE">
 ExceptionTests.cpp:118:
-      </error>
-    </testcase>
-    <testcase classname="global" name="./failing/exceptions/in-section" time="tbd">
-      <error type="TEST_CASE">
-ExceptionTests.cpp:132:
       </error>
     </testcase>
     <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="tbd"/>
@@ -3289,23 +3269,8 @@ ExceptionTests.cpp" line="118">
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/in-section">
-      <Section name="the section">
-        <Section name="the section2">
-          <OverallResults successes="0" failures="1"/>
-        </Section>
-        <OverallResults successes="0" failures="1"/>
-      </Section>
-ExceptionTests.cpp" line="132">
-        Exception from section
-      </Exception>
-      <Section name="the section">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <OverallResult success="false"/>
-    </TestCase>
     <TestCase name="./succeeding/exceptions/notimplemented">
-ExceptionTests.cpp" line="149">
+ExceptionTests.cpp" line="129">
         <Original>
           thisFunctionNotImplemented( 7 )
         </Original>
@@ -5261,9 +5226,9 @@ MiscTests.cpp" line="270">
     <TestCase name="selftest/main">
       <Section name="selftest/expected result" description="Tests do what they claim">
         <Section name="selftest/expected result/failing tests" description="Tests in the 'failing' branch fail">
-          <OverallResults successes="26" failures="0"/>
+          <OverallResults successes="25" failures="0"/>
         </Section>
-        <OverallResults successes="26" failures="0"/>
+        <OverallResults successes="25" failures="0"/>
       </Section>
       <Section name="selftest/expected result" description="Tests do what they claim">
         <Section name="selftest/expected result/succeeding tests" description="Tests in the 'succeeding' branch succeed">
@@ -5308,10 +5273,10 @@ TestMain.cpp" line="47">
           </Expression>
 TestMain.cpp" line="48">
             <Original>
-              totals.assertions.failed == 73
+              totals.assertions.failed == 72
             </Original>
             <Expanded>
-              73 == 73
+              72 == 72
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0"/>
@@ -6714,7 +6679,7 @@ BDDTests.cpp" line="37">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="507" failures="103"/>
+    <OverallResults successes="506" failures="101"/>
   </Group>
-  <OverallResults successes="507" failures="103"/>
+  <OverallResults successes="506" failures="101"/>
 </Catch>
