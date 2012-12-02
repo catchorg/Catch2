@@ -13,6 +13,8 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_xmlwriter.hpp"
 
+#include <assert.h>
+
 namespace Catch {
 
     class JunitReporter : public SharedImpl<IReporter> {

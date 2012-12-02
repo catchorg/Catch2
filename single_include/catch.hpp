@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 7 (integration branch)
- *  Generated: 2012-12-01 23:56:31.861593
+ *  CATCH v0.9 build 8 (integration branch)
+ *  Generated: 2012-12-02 00:05:11.160560
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5580,7 +5580,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 7, "integration" );
+    Version libraryVersion( 0, 9, 8, "integration" );
 }
 
 // #included from: ../reporters/catch_reporter_basic.hpp
@@ -6324,6 +6324,8 @@ namespace Catch {
 
 // #included from: ../reporters/catch_reporter_junit.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
+
+#include <assert.h>
 
 namespace Catch {
 
