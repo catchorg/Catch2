@@ -9,10 +9,7 @@ CXXFLAGS	= -I../../include
 main: $(OBJECTS)
 	$(CXX) -o $@ $^
 
-junit: main
-	-./main -r junit > junit.xml
-
 clean:
-	rm -f $(OBJECTS) main junit.xml
+	rm -f $(OBJECTS) main
 
-.PHONY: main junit
+.PHONY: main clean
