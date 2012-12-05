@@ -31,6 +31,7 @@
 #include "../reporters/catch_reporter_basic.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
+#include "../reporters/catch_reporter_console.hpp"
 
 namespace Catch {
     NonCopyable::~NonCopyable() {}
@@ -54,8 +55,11 @@ namespace Catch {
     TestCaseStats::~TestCaseStats() {}
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
+    ThreadedSectionInfo::~ThreadedSectionInfo() {}
 
     BasicReporter::~BasicReporter() {}
+    AccumulatingReporter::~AccumulatingReporter() {}
+    ConsoleReporter::~ConsoleReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}

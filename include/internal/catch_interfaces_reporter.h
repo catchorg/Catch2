@@ -14,6 +14,7 @@
 #include "catch_config.hpp"
 #include "catch_test_case_info.h"
 #include "catch_assertionresult.h"
+#include "catch_option.hpp"
 
 #include <string>
 #include <ostream>
@@ -25,7 +26,7 @@ namespace Catch
         ReporterConfig( std::ostream& _stream, ConfigData const& _fullConfig )
         :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
-        std::ostream& stream()                  { return *m_stream; }
+        std::ostream& stream() const            { return *m_stream; }
         std::string name() const                { return m_fullConfig.name; }
         bool includeSuccessfulResults() const   { return m_fullConfig.includeWhichResults == Include::SuccessfulResults; }
         bool warnAboutMissingAssertions() const { return m_fullConfig.warnings & ConfigData::WarnAbout::NoAssertions; }
@@ -64,6 +65,17 @@ namespace Catch
         std::string name;
         std::string description;
         SourceLineInfo lineInfo;
+    };
+
+    struct ThreadedSectionInfo : SectionInfo, SharedImpl<> {
+        ThreadedSectionInfo( SectionInfo const& _sectionInfo, Ptr<ThreadedSectionInfo> const& _parent = Ptr<ThreadedSectionInfo>() )
+        :   SectionInfo( _sectionInfo ),
+            parent( _parent )
+        {}
+        virtual ~ThreadedSectionInfo();
+
+        std::vector<Ptr<ThreadedSectionInfo> > children;
+        Ptr<ThreadedSectionInfo> parent;
     };
 
     struct AssertionStats : SharedImpl<> {
@@ -150,6 +162,10 @@ namespace Catch
     // !Work In progress
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
+
+        // Implementing class must also provide the following static methid:
+        // static std::string getDescription();
+
         virtual ReporterPreferences getPreferences() const = 0;
 
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
@@ -171,6 +187,59 @@ namespace Catch
     // - this would be used by the JUnit reporter, for example.
     // - it may be used by the basic reporter, too, but that would clear down the stack
     //   as it goes
+    struct AccumulatingReporter : SharedImpl<IStreamingReporter> {
+
+        AccumulatingReporter( ReporterConfig const& _config )
+        : stream( _config.stream() )
+        {}
+
+        virtual ~AccumulatingReporter();
+
+        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
+            testRunInfo = _testRunInfo;
+        }
+        virtual void testGroupStarting( GroupInfo const& _groupInfo ) {
+            unusedGroupInfo = _groupInfo;
+        }
+
+        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) {
+            unusedTestCaseInfo = _testInfo;
+        }
+        virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
+            Ptr<ThreadedSectionInfo> sectionInfo = new ThreadedSectionInfo( _sectionInfo );
+            unusedSectionInfo = sectionInfo;
+            if( !currentSectionInfo ) {
+                currentSectionInfo = sectionInfo;
+            }
+            else {
+                currentSectionInfo->children.push_back( sectionInfo );
+                sectionInfo->parent = currentSectionInfo;
+                currentSectionInfo = sectionInfo;
+            }
+        }
+
+        virtual void sectionEnded( Ptr<SectionStats const> const& /* _sectionStats */ ) {
+            currentSectionInfo = currentSectionInfo->parent;
+            unusedSectionInfo = currentSectionInfo;
+        }
+        virtual void testCaseEnded( Ptr<TestCaseStats const> const& /* _testCaseStats */ ) {
+            unusedTestCaseInfo.reset();
+        }
+        virtual void testGroupEnded( Ptr<TestGroupStats const> const& /* _testGroupStats */ ) {
+            unusedGroupInfo.reset();
+        }
+        virtual void testRunEnded( Ptr<TestRunStats const> const& /* _testRunStats */ ) {
+        }
+
+        Option<TestRunInfo> testRunInfo;
+        Option<GroupInfo> unusedGroupInfo;
+        Option<TestCaseInfo> unusedTestCaseInfo;
+        Ptr<ThreadedSectionInfo> unusedSectionInfo;
+        Ptr<ThreadedSectionInfo> currentSectionInfo;
+        bool currentSectionOpen;
+        std::ostream& stream;
+    };
+
 
 
     // Deprecated

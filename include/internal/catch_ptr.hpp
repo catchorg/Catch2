@@ -31,6 +31,11 @@ namespace Catch {
             if( m_p )
                 m_p->release();
         }
+        void reset() {
+            if( m_p )
+                m_p->release();
+            m_p = NULL;
+        }
         Ptr& operator = ( T* p ){
             Ptr temp( p );
             swap( temp );
@@ -47,6 +52,7 @@ namespace Catch {
         T& operator*() const { return *m_p; }
         T* operator->() const { return m_p; }
         bool operator !() const { return m_p == NULL; }
+        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != NULL ); }
         
     private:
         T* m_p;

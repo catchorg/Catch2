@@ -31,8 +31,8 @@ namespace Catch {
         std::string className;
         std::string description;
         std::set<std::string> tags;
-        bool isHidden;
         SourceLineInfo lineInfo;
+        bool isHidden;
     };
     
     class TestCase : protected TestCaseInfo {

@@ -41,8 +41,8 @@ namespace Catch {
         className( _className ),
         description( _description ),
         tags( _tags ),
-        isHidden( _isHidden ),
-        lineInfo( _lineInfo )
+        lineInfo( _lineInfo ),
+        isHidden( _isHidden )
     {}
 
     TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
@@ -50,8 +50,8 @@ namespace Catch {
         className( other.className ),
         description( other.description ),
         tags( other.tags ),
-        isHidden( other.isHidden ),
-        lineInfo( other.lineInfo )
+        lineInfo( other.lineInfo ),
+        isHidden( other.isHidden )
     {}
 
     TestCase::TestCase( ITestCase* testCase, const TestCaseInfo& info ) : TestCaseInfo( info ), test( testCase ) {}
