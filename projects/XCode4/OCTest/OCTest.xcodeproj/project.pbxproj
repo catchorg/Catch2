@@ -208,7 +208,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				HEADER_SEARCH_PATHS = ../../../single_include;
+				HEADER_SEARCH_PATHS = ../../../include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -217,7 +217,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				HEADER_SEARCH_PATHS = ../../../single_include;
+				HEADER_SEARCH_PATHS = ../../../include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

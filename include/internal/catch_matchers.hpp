@@ -15,9 +15,11 @@ namespace Matchers {
     template<typename ExpressionT>
     struct Matcher : SharedImpl<IShared>
     {
+        typedef ExpressionT ExpressionType;
+
         virtual ~Matcher() {}
         virtual Ptr<Matcher> clone() const = 0;
-        virtual bool match( const ExpressionT& expr ) const = 0;
+        virtual bool match( ExpressionT const& expr ) const = 0;
         virtual std::string toString() const = 0;
     };
 
