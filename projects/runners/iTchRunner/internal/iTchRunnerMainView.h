@@ -75,40 +75,78 @@
  
 }
 
+// This is a copy & paste from Catch::Runner2 to get us bootstrapped (this is due to all be
+// replaced anyway)
+inline Catch::Totals runTestsForGroup( Catch::Runner& context, const Catch::TestCaseFilters& filterGroup ) {
+    using namespace Catch;
+    Totals totals;
+    std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
+    std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+    int testsRunForGroup = 0;
+    for(; it != itEnd; ++it ) {
+        if( filterGroup.shouldInclude( *it ) ) {
+            testsRunForGroup++;
+
+            if( context.aborting() )
+                break;
+
+            totals += context.runTest( *it );
+        }
+    }
+    if( testsRunForGroup == 0 )
+        std::cerr << "\n[No test cases matched with: " << filterGroup.getName() << "]" << std::endl;
+    return totals;
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 -(void) actionSheet: (UIActionSheet*) sheet clickedButtonAtIndex: (NSInteger) index
 {
     Catch::Config config;
-    config.setReporter( new Catch::iTchRunnerReporter( self ) );
-    Catch::Runner runner( config );
-    
-    config.getReporter()->StartGroup( "" );
-    runner.runAll( true );
-    config.getReporter()->EndGroup( "", runner.getTotals() );
+    Catch::IReporter* reporter = new Catch::iTchRunnerReporter( self );
+    Catch::LegacyReporterAdapter* reporterAdapter = new Catch::LegacyReporterAdapter( reporter, Catch::ReporterConfig( config.stream(), config.data() ) );
+    Catch::Runner runner( config, reporterAdapter );
 
-    if( runner.getTotals().assertions.failed == 0 )
+
+    std::vector<Catch::TestCaseFilters> filterGroups;
+    Catch::TestCaseFilters filterGroup( "" );
+    filterGroups.push_back( filterGroup );
+
+    Catch::Totals totals;
+
+    std::vector<Catch::TestCaseFilters>::const_iterator it = filterGroups.begin();
+    std::vector<Catch::TestCaseFilters>::const_iterator itEnd = filterGroups.end();
+
+    for(; it != itEnd && !runner.aborting(); ++it ) {
+        runner.testGroupStarting( it->getName() );
+        totals += runTestsForGroup( runner, *it );
+        runner.testGroupEnded( it->getName(), totals );
+    }
+
+
+    if( totals.assertions.failed == 0 )
     {
         NSLog( @"no failures" );
-        if( runner.getTotals().assertions.passed > 0 )
+        if( totals.assertions.passed > 0 )
             appName.textColor = [[UIColor alloc] initWithRed:0.35 green:1 blue:0.35 alpha:1];
     }
     else
     {
-        NSLog( @"%lu failures", runner.getTotals().assertions.failed );
+        NSLog( @"%lu failures", totals.assertions.failed );
         appName.textColor = [[UIColor alloc] initWithRed:1 green:0.35 blue:0.35 alpha:1];
     }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
--(void) testWasRun: (const Catch::ResultInfo*) pResultInfo
+-(void) testWasRun: (const Catch::AssertionResult*) pResultInfo
 {
-    const Catch::ResultInfo& resultInfo = *pResultInfo;
+    const Catch::AssertionResult& resultInfo = *pResultInfo;
     std::ostringstream oss;
     
     if( resultInfo.hasExpression() )
     {
         oss << resultInfo.getExpression();
-        if( resultInfo.ok() )
+        if( resultInfo.isOk() )
             oss << " succeeded";
         else
             oss << " failed";
