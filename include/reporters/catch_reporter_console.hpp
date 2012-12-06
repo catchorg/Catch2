@@ -35,28 +35,27 @@ namespace Catch {
         }
         void lazyPrintGroupInfo() {
             if( !unusedGroupInfo->name.empty() )
-                stream << "[Group: " << unusedGroupInfo->name << "]" << std::endl;
+                stream << "[Group: '" << unusedGroupInfo->name << "']" << std::endl;
             unusedGroupInfo.reset();
         }
         void lazyPrintTestCaseInfo() {
-            stream << "[TestCase: " << unusedTestCaseInfo->name << "]" << std::endl;
+            stream << "[Test case: '" << unusedTestCaseInfo->name << "']" << std::endl;
             unusedTestCaseInfo.reset();
+        }
+        std::string makeSectionPath( ThreadedSectionInfo const * section, std::string const& delimiter ) {
+            std::string sectionPath = "'" + section->name + "'";
+            while( ( section = section->parent.get() ) )
+                sectionPath = "'" + section->name + "'" + delimiter + sectionPath;
+            return sectionPath;
         }
         void lazyPrintSectionInfo() {
             ThreadedSectionInfo* section = unusedSectionInfo.get();
-            bool firstSection = true;
-            stream << "[Section: ";
-            do {
-                if( firstSection )
-                    firstSection = false;
-                else
-                    stream << ",\n          ";
-                stream << section->name;
-                section = section->parent.get();
-            }
-            while( section );
 
-            stream << "]" << std::endl;
+            std::string sectionPath = makeSectionPath( section, ", " );
+            if( sectionPath.size() > 60 )
+                sectionPath = makeSectionPath( section, ",\n          " );
+
+            stream << "[Section: " << sectionPath << "]" << std::endl;
             unusedSectionInfo.reset();
         }
         void lazyPrint() {
@@ -77,19 +76,59 @@ namespace Catch {
                 lazyPrint();
         }
 
+        void printAssertionCounts( std::string const& label, Counts const& counts, std::string const& allPrefix = "All " ) {
+            if( counts.passed )
+                stream << counts.failed << " of " << counts.total() << " " << label << "s failed";
+            else
+                stream << ( counts.failed > 1 ? allPrefix : "" ) << pluralise( counts.failed, label ) << " failed";
+        }
+
+        void printTotals( const Totals& totals, const std::string& allPrefix = "All " ) {
+            if( totals.assertions.total() == 0 ) {
+                stream << "No tests ran";
+            }
+            else if( totals.assertions.failed ) {
+                TextColour colour( TextColour::ResultError );
+                printAssertionCounts( "test case", totals.testCases, allPrefix );
+                if( totals.testCases.failed > 0 ) {
+                    stream << " (";
+                    printAssertionCounts( "assertion", totals.assertions, allPrefix );
+                    stream << ")";
+                }
+            }
+            else {
+                TextColour colour( TextColour::ResultSuccess );
+                stream << allPrefix << "tests passed ("
+                    << pluralise( totals.assertions.passed, "assertion" ) << " in "
+                    << pluralise( totals.testCases.passed, "test case" ) << ")";
+            }
+        }
+
         virtual void sectionEnded( Ptr<SectionStats const> const& _sectionStats ) {
             if( !unusedSectionInfo ) {
-                stream << "[Section totals: ]" << std::endl;
+                stream << "[Summary for section '" << _sectionStats->sectionInfo.name << "': ";
+                printAssertionCounts( "assertion", _sectionStats->assertions );
+                stream << "]\n" << std::endl;
             }
             AccumulatingReporter::sectionEnded( _sectionStats );
         }
         virtual void testCaseEnded( Ptr<TestCaseStats const> const& _testCaseStats ) {
             if( !unusedTestCaseInfo ) {
-                stream << "[TestCase totals: ]\n" << std::endl;
+                stream << "[Summary for test case '" << _testCaseStats->testInfo.name << "': ";
+                printTotals( _testCaseStats->totals );
+                stream << "]\n" << std::endl;
             }
             AccumulatingReporter::testCaseEnded( _testCaseStats );
         }
-        
+        virtual void testGroupEnded( Ptr<TestGroupStats const> const& _testGroupStats ) {
+            // !TBD
+            AccumulatingReporter::testGroupEnded( _testGroupStats );
+        }
+        virtual void testRunEnded( Ptr<TestRunStats const> const& _testRunStats ) {
+            // !TBD
+            AccumulatingReporter::testRunEnded( _testRunStats );
+        }
+
     };
 
     INTERNAL_CATCH_REGISTER_REPORTER( "console", ConsoleReporter )
