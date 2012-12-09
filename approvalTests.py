@@ -15,8 +15,8 @@ cmdPath = sys.argv[1]
 
 f = open( rawResultsPath, 'w' )
 subprocess.call([ cmdPath, "~dummy", "-s", "-w", "NoAssertions", "-r", "basic" ], stdout=f, stderr=f )
+subprocess.call([ cmdPath, "~dummy", "-s", "-w", "NoAssertions", "-r", "basic", "-a", "4" ], stdout=f, stderr=f )
 #subprocess.call([ cmdPath, "~dummy", "-s", "-w", "NoAssertions", "-r", "console" ], stdout=f, stderr=f )
-#subprocess.call([ cmdPath, "~dummy", "-s", "-w", "NoAssertions", "-r", "basic", "-a", "4" ], stdout=f, stderr=f )
 subprocess.call([ cmdPath, "~dummy", "-s", "-w", "NoAssertions", "-r", "junit" ], stdout=f, stderr=f )
 subprocess.call([ cmdPath, "~dummy", "-s", "-w", "NoAssertions", "-r", "xml" ], stdout=f, stderr=f )
 f.close()

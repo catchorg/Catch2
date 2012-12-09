@@ -1340,6 +1340,87 @@ BDDTests.cpp:37: itDoesThis() succeeded for: true
 
 [Testing completed. 44 of 95 test cases failed (101 of 607 assertions failed)]
 
+[Started testing: CatchSelfTest]
+[Started group: '~dummy']
+
+[Running: ./succeeding/Approx/simple]
+ApproxTests.cpp:20: d == Approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:21: d != Approx( 1.22 ) succeeded for: 1.23 != Approx( 1.22 )
+ApproxTests.cpp:22: d != Approx( 1.24 ) succeeded for: 1.23 != Approx( 1.24 )
+ApproxTests.cpp:24: Approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
+ApproxTests.cpp:25: Approx( d ) != 1.22 succeeded for: Approx( 1.23 ) != 1.22
+ApproxTests.cpp:26: Approx( d ) != 1.24 succeeded for: Approx( 1.23 ) != 1.24
+[Finished: './succeeding/Approx/simple' All tests passed (6 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/epsilon]
+ApproxTests.cpp:38: d != Approx( 1.231 ) succeeded for: 1.23 != Approx( 1.231 )
+ApproxTests.cpp:39: d == Approx( 1.231 ).epsilon( 0.1 ) succeeded for: 1.23 == Approx( 1.231 )
+[Finished: './succeeding/Approx/epsilon' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/float]
+ApproxTests.cpp:49: 1.23f == Approx( 1.23f ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:50: 0.0f == Approx( 0.0f ) succeeded for: 0 == Approx( 0 )
+[Finished: './succeeding/Approx/float' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/int]
+ApproxTests.cpp:60: 1 == Approx( 1 ) succeeded
+ApproxTests.cpp:61: 0 == Approx( 0 ) succeeded
+[Finished: './succeeding/Approx/int' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/mixed]
+ApproxTests.cpp:75: 1.0f == Approx( 1 ) succeeded for: 1 == Approx( 1 )
+ApproxTests.cpp:76: 0 == Approx( dZero) succeeded for: 0 == Approx( 0 )
+ApproxTests.cpp:77: 0 == Approx( dSmall ).epsilon( 0.001 ) succeeded for: 0 == Approx( 1e-05 )
+ApproxTests.cpp:78: 1.234f == Approx( dMedium ) succeeded for: 1.234 == Approx( 1.234 )
+ApproxTests.cpp:79: dMedium == Approx( 1.234f ) succeeded for: 1.234 == Approx( 1.234 )
+[Finished: './succeeding/Approx/mixed' All tests passed (5 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/custom]
+ApproxTests.cpp:93: d == approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:94: d == approx( 1.22 ) succeeded for: 1.23 == Approx( 1.22 )
+ApproxTests.cpp:95: d == approx( 1.24 ) succeeded for: 1.23 == Approx( 1.24 )
+ApproxTests.cpp:96: d != approx( 1.25 ) succeeded for: 1.23 != Approx( 1.25 )
+ApproxTests.cpp:98: approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
+ApproxTests.cpp:99: approx( d ) == 1.22 succeeded for: Approx( 1.23 ) == 1.22
+ApproxTests.cpp:100: approx( d ) == 1.24 succeeded for: Approx( 1.23 ) == 1.24
+ApproxTests.cpp:101: approx( d ) != 1.25 succeeded for: Approx( 1.23 ) != 1.25
+[Finished: './succeeding/Approx/custom' All tests passed (8 assertions in 1 test case)]
+
+[Running: ./succeeding/TestClass/succeedingCase]
+ClassTests.cpp:24: s == "hello" succeeded for: "hello" == "hello"
+[Finished: './succeeding/TestClass/succeedingCase' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./failing/TestClass/failingCase]
+ClassTests.cpp:28: s == "world" failed for: "hello" == "world"
+[Finished: './failing/TestClass/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/Fixture/succeedingCase]
+ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
+[Finished: './succeeding/Fixture/succeedingCase' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./failing/Fixture/failingCase]
+ClassTests.cpp:55: m_a == 2 failed for: 1 == 2
+[Finished: './failing/Fixture/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/conditions/equality]
+ConditionTests.cpp:55: data.int_seven == 7 succeeded for: 7 == 7
+ConditionTests.cpp:56: data.float_nine_point_one == Approx( 9.1f ) succeeded for: 9.1 == Approx( 9.1 )
+ConditionTests.cpp:57: data.double_pi == Approx( 3.1415926535 ) succeeded for: 3.14159 == Approx( 3.14159 )
+ConditionTests.cpp:58: data.str_hello == "hello" succeeded for: "hello" == "hello"
+ConditionTests.cpp:59: "hello" == data.str_hello succeeded for: "hello" == "hello"
+ConditionTests.cpp:60: data.str_hello.size() == 5 succeeded for: 5 == 5
+ConditionTests.cpp:63: x == Approx( 1.3 ) succeeded for: 1.3 == Approx( 1.3 )
+[Finished: './succeeding/conditions/equality' All tests passed (7 assertions in 1 test case)]
+
+[Running: ./failing/conditions/equality]
+ConditionTests.cpp:71: data.int_seven == 6 failed for: 7 == 6
+ConditionTests.cpp:72: data.int_seven == 8 failed for: 7 == 8
+[Finished: './failing/conditions/equality' 1 test case failed (All 2 assertions failed)]
+[End of group: '~dummy'. 3 of 12 test cases failed (4 of 38 assertions failed)]
+
+
+[Testing aborted. 3 of 12 test cases failed (4 of 38 assertions failed)]
+
 <testsuites>
   <testsuite name="~dummy" errors="8" failures="76" tests="607" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
