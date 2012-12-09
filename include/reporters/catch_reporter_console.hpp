@@ -46,6 +46,8 @@ namespace Catch {
         }
         std::string makeSectionPath( ThreadedSectionInfo const * section, std::string const& delimiter ) {
             std::string sectionPath = "'" + section->name + "'";
+
+            // !TBD: Do this without the assignment in the while as it causes warnings:
             while( ( section = section->parent.get() ) )
                 sectionPath = "'" + section->name + "'" + delimiter + sectionPath;
             return sectionPath;
