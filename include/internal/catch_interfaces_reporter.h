@@ -70,12 +70,14 @@ namespace Catch
     struct ThreadedSectionInfo : SectionInfo, SharedImpl<> {
         ThreadedSectionInfo( SectionInfo const& _sectionInfo, Ptr<ThreadedSectionInfo> const& _parent = Ptr<ThreadedSectionInfo>() )
         :   SectionInfo( _sectionInfo ),
-            parent( _parent )
+            parent( _parent ),
+            printed( false )
         {}
         virtual ~ThreadedSectionInfo();
 
         std::vector<Ptr<ThreadedSectionInfo> > children;
         Ptr<ThreadedSectionInfo> parent;
+        bool printed;
     };
 
     struct AssertionStats : SharedImpl<> {
@@ -190,7 +192,8 @@ namespace Catch
     struct AccumulatingReporter : SharedImpl<IStreamingReporter> {
 
         AccumulatingReporter( ReporterConfig const& _config )
-        : stream( _config.stream() )
+        :   m_config( _config ),
+            stream( _config.stream() )
         {}
 
         virtual ~AccumulatingReporter();
@@ -231,6 +234,7 @@ namespace Catch
         virtual void testRunEnded( Ptr<TestRunStats const> const& /* _testRunStats */ ) {
         }
 
+        ReporterConfig m_config;
         Option<TestRunInfo> testRunInfo;
         Option<GroupInfo> unusedGroupInfo;
         Option<TestCaseInfo> unusedTestCaseInfo;
