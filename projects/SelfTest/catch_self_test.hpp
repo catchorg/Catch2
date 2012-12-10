@@ -53,7 +53,7 @@ namespace Catch {
         EmbeddedRunner() : m_reporter( new NullStreamingReporter() ) {}
         
         Totals runMatching( const std::string& rawTestSpec,
-                            const std::string& reporter = "basic" );
+                            const std::string& reporter = "console" );
         
     private:
         Ptr<IStreamingReporter> m_reporter;

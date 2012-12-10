@@ -165,10 +165,10 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
     
     SECTION( "reporter", "" ) {
         SECTION( "-r/basic", "" ) {
-            const char* argv[] = { "test", "-r", "basic" };
+            const char* argv[] = { "test", "-r", "console" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.reporter == "basic" );
+            REQUIRE( config.reporter == "console" );
         }
         SECTION( "-r/xml", "" ) {
             const char* argv[] = { "test", "-r", "xml" };

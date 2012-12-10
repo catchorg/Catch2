@@ -95,7 +95,7 @@ namespace Catch {
         }
         void makeReporter() {
             std::string reporterName = m_config.reporter.empty()
-            ? "basic"
+            ? "console"
             : m_config.reporter;
 
             ReporterConfig reporterConfig( m_configWrapper.stream(), m_config );

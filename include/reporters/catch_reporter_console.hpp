@@ -35,36 +35,17 @@ namespace Catch {
         }
         void lazyPrintGroupInfo() {
             if( !unusedGroupInfo->name.empty() )
-//                stream << "[Group: '" << unusedGroupInfo->name << "']" << std::endl;
-                stream << "[Started group: '" << unusedGroupInfo->name << "']" << std::endl;
+                stream << "[Group: '" << unusedGroupInfo->name << "']" << std::endl;
+//                stream << "[Started group: '" << unusedGroupInfo->name << "']" << std::endl;
             unusedGroupInfo.reset();
         }
         void lazyPrintTestCaseInfo() {
-//            stream << "[Test case: '" << unusedTestCaseInfo->name << "']" << std::endl;
-            stream << "[Running: " << unusedTestCaseInfo->name << "]" << std::endl;
+            stream << "[Test case: '" << unusedTestCaseInfo->name << "']" << std::endl;
+//            stream << "[Running: " << unusedTestCaseInfo->name << "]" << std::endl;
             unusedTestCaseInfo.reset();
         }
-        std::string makeSectionPath( ThreadedSectionInfo const * section, std::string const& delimiter ) {
-            std::string sectionPath = "'" + section->name + "'";
-
-            // !TBD: Do this without the assignment in the while as it causes warnings:
-            while( ( section = section->parent.get() ) )
-                sectionPath = "'" + section->name + "'" + delimiter + sectionPath;
-            return sectionPath;
-        }
-        void lazyPrintSectionInfo() {
-            // !TBD use printed flag
-            ThreadedSectionInfo* section = unusedSectionInfo.get();
-
-            std::string sectionPath = makeSectionPath( section, ", " );
-            if( sectionPath.size() > 60 )
-                sectionPath = makeSectionPath( section, ",\n          " );
-
-            stream << "[Section: " << sectionPath << "]" << std::endl;
-            unusedSectionInfo.reset();
-        }
         
-        void lazyPrintSectionInfoLegacy() {
+        void lazyPrintSectionInfo() {
             std::vector<ThreadedSectionInfo*> sections;
             for(    ThreadedSectionInfo* section = unusedSectionInfo.get();
                     section && !section->printed;
@@ -73,7 +54,8 @@ namespace Catch {
 
             typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
             for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
-                stream << "[Started section: " << "'" + (*it)->name + "'" << "]" << std::endl;
+//                stream << "[Started section: " << "'" + (*it)->name + "'" << "]" << std::endl;
+                stream << "[Section: " << "'" + (*it)->name + "'" << "]" << std::endl;
                 (*it)->printed = true;
             }
             unusedSectionInfo.reset();
@@ -86,7 +68,7 @@ namespace Catch {
             if( unusedTestCaseInfo )
                 lazyPrintTestCaseInfo();
             if( currentSectionInfo && !currentSectionInfo->printed )
-                lazyPrintSectionInfoLegacy(); // !TBD
+                lazyPrintSectionInfo();
         }
 
         virtual void assertionStarting( AssertionInfo const& ) {
@@ -248,8 +230,8 @@ namespace Catch {
                 stream << "\nNo assertions in section, '" << _sectionStats->sectionInfo.name << "'\n" << std::endl;
             }
             if( currentSectionInfo && currentSectionInfo->printed ) {
-//                stream << "[Summary for section '" << _sectionStats->sectionInfo.name << "': ";
-                stream << "[End of section: '" << _sectionStats->sectionInfo.name << "' ";
+                stream << "[Summary for section '" << _sectionStats->sectionInfo.name << "': ";
+//                stream << "[End of section: '" << _sectionStats->sectionInfo.name << "' ";
                 Counts const& assertions = _sectionStats->assertions;
                 if( assertions.failed ) {
                     TextColour colour( TextColour::ResultError );
@@ -271,8 +253,8 @@ namespace Catch {
                 stream << "\nNo assertions in test case, '" << _testCaseStats->testInfo.name << "'\n" << std::endl;
             }
             if( !unusedTestCaseInfo ) {
-//                stream << "[Summary for test case '" << _testCaseStats->testInfo.name << "': ";
-                stream << "[Finished: '" << _testCaseStats->testInfo.name << "' ";
+                stream << "[Summary for test case '" << _testCaseStats->testInfo.name << "': ";
+//                stream << "[Finished: '" << _testCaseStats->testInfo.name << "' ";
                 printTotals( _testCaseStats->totals );
                 stream << "]\n" << std::endl;
             }
@@ -280,8 +262,8 @@ namespace Catch {
         }
         virtual void testGroupEnded( Ptr<TestGroupStats const> const& _testGroupStats ) {
             if( !unusedGroupInfo ) {
-//                stream << "[Summary for group '" << _testGroupStats->groupInfo.name << "': ";
-                stream << "[End of group '" << _testGroupStats->groupInfo.name << "'. ";
+                stream << "[Summary for group '" << _testGroupStats->groupInfo.name << "': ";
+//                stream << "[End of group '" << _testGroupStats->groupInfo.name << "'. ";
                 printTotals( _testGroupStats->totals );
                 stream << "]\n" << std::endl;
             }
@@ -289,8 +271,8 @@ namespace Catch {
         }
         virtual void testRunEnded( Ptr<TestRunStats const> const& _testRunStats ) {
             if( !unusedTestCaseInfo ) {
-//                stream << "[Summary for '" << _testRunStats->runInfo.name << "': ";
-                stream << "[Testing completed. ";
+                stream << "[Summary for '" << _testRunStats->runInfo.name << "': ";
+//                stream << "[Testing completed. ";
                 printTotals( _testRunStats->totals );
                 stream << "]\n" << std::endl;
             }
