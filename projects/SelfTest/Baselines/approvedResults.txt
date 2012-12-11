@@ -49,7 +49,7 @@ ClassTests.cpp:24: s == "hello" succeeded for: "hello" == "hello"
 
 [Test case: './failing/TestClass/failingCase']
 ClassTests.cpp:28: s == "world" failed for: "hello" == "world"
-[Summary for test case './failing/TestClass/failingCase': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/TestClass/failingCase': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/Fixture/succeedingCase']
 ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
@@ -57,7 +57,7 @@ ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
 
 [Test case: './failing/Fixture/failingCase']
 ClassTests.cpp:55: m_a == 2 failed for: 1 == 2
-[Summary for test case './failing/Fixture/failingCase': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/Fixture/failingCase': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/conditions/equality']
 ConditionTests.cpp:55: data.int_seven == 7 succeeded for: 7 == 7
@@ -83,7 +83,7 @@ ConditionTests.cpp:80: data.str_hello == "hell" failed for: "hello" == "hell"
 ConditionTests.cpp:81: data.str_hello == "hello1" failed for: "hello" == "hello1"
 ConditionTests.cpp:82: data.str_hello.size() == 6 failed for: 5 == 6
 ConditionTests.cpp:85: x == Approx( 1.301 ) failed for: 1.3 == Approx( 1.301 )
-[Summary for test case './failing/conditions/equality': 1 test case failed (All 13 assertions failed)]
+[Summary for test case './failing/conditions/equality': 1 test case - failed (13 assertions - all failed)]
 
 [Test case: './succeeding/conditions/inequality']
 ConditionTests.cpp:93: data.int_seven != 6 succeeded for: 7 != 6
@@ -105,7 +105,7 @@ ConditionTests.cpp:112: data.float_nine_point_one != Approx( 9.1f ) failed for: 
 ConditionTests.cpp:113: data.double_pi != Approx( 3.1415926535 ) failed for: 3.14159 != Approx( 3.14159 )
 ConditionTests.cpp:114: data.str_hello != "hello" failed for: "hello" != "hello"
 ConditionTests.cpp:115: data.str_hello.size() != 5 failed for: 5 != 5
-[Summary for test case './failing/conditions/inequality': 1 test case failed (All 5 assertions failed)]
+[Summary for test case './failing/conditions/inequality': 1 test case - failed (5 assertions - all failed)]
 
 [Test case: './succeeding/conditions/ordered']
 ConditionTests.cpp:124: data.int_seven < 8 succeeded for: 7 < 8
@@ -147,7 +147,7 @@ ConditionTests.cpp:170: data.str_hello < "hellm" failed for: "hello" < "hellm"
 ConditionTests.cpp:171: data.str_hello < "a" failed for: "hello" < "a"
 ConditionTests.cpp:173: data.str_hello >= "z" failed for: "hello" >= "z"
 ConditionTests.cpp:174: data.str_hello <= "a" failed for: "hello" <= "a"
-[Summary for test case './failing/conditions/ordered': 1 test case failed (All 19 assertions failed)]
+[Summary for test case './failing/conditions/ordered': 1 test case - failed (19 assertions - all failed)]
 
 [Test case: './succeeding/conditions/int literals']
 ConditionTests.cpp:188: i == 1 succeeded for: 1 == 1
@@ -223,7 +223,7 @@ ConditionTests.cpp:339: !trueValue failed for: false
 ConditionTests.cpp:340: !trueValue failed for: !true
 ConditionTests.cpp:342: !(1 == 1) failed for: false
 ConditionTests.cpp:343: !1 == 1 failed for: !(1 == 1)
-[Summary for test case './failing/conditions/not': 1 test case failed (All 8 assertions failed)]
+[Summary for test case './failing/conditions/not': 1 test case - failed (8 assertions - all failed)]
 
 [Test case: './succeeding/exceptions/explicit']
 ExceptionTests.cpp:39: thisThrows() succeeded
@@ -235,38 +235,38 @@ ExceptionTests.cpp:41: thisThrows() succeeded
 ExceptionTests.cpp:47: thisThrows() failed with unexpected exception with message: 'expected exception'
 ExceptionTests.cpp:48: thisDoesntThrow() failed because no exception was thrown where one was expected
 ExceptionTests.cpp:49: thisThrows() failed with unexpected exception with message: 'expected exception'
-[Summary for test case './failing/exceptions/explicit': 1 test case failed (All 3 assertions failed)]
+[Summary for test case './failing/exceptions/explicit': 1 test case - failed (3 assertions - all failed)]
 
 [Test case: './failing/exceptions/implicit']
 ExceptionTests.cpp:52: Unexpected exception with message: 'unexpected exception'
-[Summary for test case './failing/exceptions/implicit': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/exceptions/implicit': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/exceptions/implicit/2']
 ExceptionTests.cpp:60: 1 == 1 succeeded
 ExceptionTests.cpp:60: {Unknown expression after this line} failed with unexpected exception with message: 'unexpected exception'
-[Summary for test case './failing/exceptions/implicit/2': 1 test case failed (1 of 2 assertions failed)]
+[Summary for test case './failing/exceptions/implicit/2': 1 test case - failed (2 assertions - 1 failed)]
 
 [Test case: './succeeding/exceptions/implicit']
 
 No assertions in test case, './succeeding/exceptions/implicit'
 
-[Summary for test case './succeeding/exceptions/implicit': 1 test case failed (1 assertion failed)]
+[Summary for test case './succeeding/exceptions/implicit': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/exceptions/custom']
 ExceptionTests.cpp:102: Unexpected exception with message: 'custom exception'
-[Summary for test case './failing/exceptions/custom': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/exceptions/custom': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/exceptions/custom/nothrow']
 ExceptionTests.cpp:109: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
-[Summary for test case './failing/exceptions/custom/nothrow': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/exceptions/custom/nothrow': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/exceptions/custom/throw']
 ExceptionTests.cpp:114: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
-[Summary for test case './failing/exceptions/custom/throw': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/exceptions/custom/throw': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/exceptions/custom/double']
 ExceptionTests.cpp:118: Unexpected exception with message: '3.14'
-[Summary for test case './failing/exceptions/custom/double': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/exceptions/custom/double': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/exceptions/notimplemented']
 ExceptionTests.cpp:129: thisFunctionNotImplemented( 7 ) succeeded
@@ -424,7 +424,7 @@ MessageTests.cpp:14: [warning: this is a warning]
 
 No assertions in test case, './succeeding/message'
 
-[Summary for test case './succeeding/message': 1 test case failed (1 assertion failed)]
+[Summary for test case './succeeding/message': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/succeed']
 MessageTests.cpp:18:  succeeded
@@ -435,7 +435,7 @@ MessageTests.cpp:18:  succeeded
 MessageTests.cpp:23: [info: this message should be logged]
 MessageTests.cpp:24: [info: so should this]
 MessageTests.cpp:26: a == 1 failed for: 2 == 1
-[Summary for test case './failing/message/info/1': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/message/info/1': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './mixed/message/info/2']
 MessageTests.cpp:33: a == 2 succeeded for: 2 == 2
@@ -445,22 +445,22 @@ MessageTests.cpp:37: a == 1 failed for: 2 == 1
 MessageTests.cpp:39: [info: and this, but later]
 MessageTests.cpp:41: a == 0 failed for: 2 == 0
 MessageTests.cpp:45: a == 2 succeeded for: 2 == 2
-[Summary for test case './mixed/message/info/2': 1 test case failed (2 of 4 assertions failed)]
+[Summary for test case './mixed/message/info/2': 1 test case - failed (4 assertions - 2 failed)]
 
 [Test case: './failing/message/fail']
 MessageTests.cpp:51: failed with message: 'This is a failure'
-[Summary for test case './failing/message/fail': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/message/fail': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/message/sections']
 [Section: 'one']
 MessageTests.cpp:58: failed with message: 'Message from section one'
-[Summary for section 'one': 1 assertion failed]
+[Summary for section 'one': 1 assertion - failed]
 
 [Section: 'two']
 MessageTests.cpp:63: failed with message: 'Message from section two'
-[Summary for section 'two': 1 assertion failed]
+[Summary for section 'two': 1 assertion - failed]
 
-[Summary for test case './failing/message/sections': 1 test case failed (All 2 assertions failed)]
+[Summary for test case './failing/message/sections': 1 test case - failed (2 assertions - both failed)]
 
 Message from section one
 [Test case: './succeeding/message/sections/stdout']
@@ -468,16 +468,16 @@ Message from section one
 
 No assertions in section, 'one'
 
-[Summary for section 'one': 1 assertion failed]
+[Summary for section 'one': 1 assertion - failed]
 
 Message from section two
 [Section: 'two']
 
 No assertions in section, 'two'
 
-[Summary for section 'two': 1 assertion failed]
+[Summary for section 'two': 1 assertion - failed]
 
-[Summary for test case './succeeding/message/sections/stdout': 1 test case failed (All 2 assertions failed)]
+[Summary for test case './succeeding/message/sections/stdout': 1 test case - failed (2 assertions - both failed)]
 
 [Test case: './mixed/message/scoped']
 MessageTests.cpp:86: i < 10 succeeded for: 0 < 10
@@ -493,14 +493,14 @@ MessageTests.cpp:86: i < 10 succeeded for: 9 < 10
 MessageTests.cpp:86: i < 10 succeeded[info: current counter 10]
 MessageTests.cpp:86: i < 10 succeeded[info: i := 10]
 MessageTests.cpp:86: i < 10 failed for: 10 < 10
-[Summary for test case './mixed/message/scoped': 1 test case failed (1 of 11 assertions failed)]
+[Summary for test case './mixed/message/scoped': 1 test case - failed (11 assertions - 1 failed)]
 
 [Test case: './succeeding/nofail']
 MessageTests.cpp:92: 1 == 2 failed - but was ok
 
 No assertions in test case, './succeeding/nofail'
 
-[Summary for test case './succeeding/nofail': 1 test case failed (1 assertion failed)]
+[Summary for test case './succeeding/nofail': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/Misc/Sections']
 [Section: 's1']
@@ -530,9 +530,9 @@ MiscTests.cpp:47: a != b succeeded for: 1 != 2
 [Section: 's1']
 [Section: 's2']
 MiscTests.cpp:61: a == b failed for: 1 == 2
-[Summary for section 's2': 1 assertion failed]
+[Summary for section 's2': 1 assertion - failed]
 
-[Summary for section 's1': 1 assertion failed]
+[Summary for section 's1': 1 assertion - failed]
 
 [Section: 's1']
 [Section: 's3']
@@ -548,7 +548,7 @@ MiscTests.cpp:70: a < b succeeded for: 1 < 2
 
 [Summary for section 's1': 1 assertion passed]
 
-[Summary for test case './mixed/Misc/Sections/nested2': 1 test case failed (1 of 3 assertions failed)]
+[Summary for test case './mixed/Misc/Sections/nested2': 1 test case - failed (3 assertions - 1 failed)]
 
 [Test case: './Sections/nested/a/b']
 [Section: 'c']
@@ -556,33 +556,33 @@ MiscTests.cpp:70: a < b succeeded for: 1 < 2
 
 No assertions in section, 'd (leaf)'
 
-[Summary for section 'd (leaf)': 1 assertion failed]
+[Summary for section 'd (leaf)': 1 assertion - failed]
 
-[Summary for section 'c': 1 assertion failed]
+[Summary for section 'c': 1 assertion - failed]
 
 [Section: 'c']
 [Section: 'e (leaf)']
 
 No assertions in section, 'e (leaf)'
 
-[Summary for section 'e (leaf)': 1 assertion failed]
+[Summary for section 'e (leaf)': 1 assertion - failed]
 
-[Summary for section 'c': 1 assertion failed]
+[Summary for section 'c': 1 assertion - failed]
 
 [Section: 'f (leaf)']
 
 No assertions in section, 'f (leaf)'
 
-[Summary for section 'f (leaf)': 1 assertion failed]
+[Summary for section 'f (leaf)': 1 assertion - failed]
 
-[Summary for test case './Sections/nested/a/b': 1 test case failed (All 3 assertions failed)]
+[Summary for test case './Sections/nested/a/b': 1 test case - failed (3 assertions - all failed)]
 
 [Test case: './mixed/Misc/Sections/loops']
 [Section: 's1']
 MiscTests.cpp:103: b > a failed for: 0 > 1
-[Summary for section 's1': 1 assertion failed]
+[Summary for section 's1': 1 assertion - failed]
 
-[Summary for test case './mixed/Misc/Sections/loops': 1 test case failed (1 assertion failed)]
+[Summary for test case './mixed/Misc/Sections/loops': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './mixed/Misc/loops']
 MiscTests.cpp:114: [info: Testing if fib[0] (1) is even]
@@ -601,7 +601,7 @@ MiscTests.cpp:114: [info: Testing if fib[6] (13) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
 MiscTests.cpp:114: [info: Testing if fib[7] (21) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-[Summary for test case './mixed/Misc/loops': 1 test case failed (6 of 8 assertions failed)]
+[Summary for test case './mixed/Misc/loops': 1 test case - failed (8 assertions - 6 failed)]
 
 Some information
 An error
@@ -609,7 +609,7 @@ An error
 
 No assertions in test case, './succeeding/Misc/stdout,stderr'
 
-[Summary for test case './succeeding/Misc/stdout,stderr': 1 test case failed (1 assertion failed)]
+[Summary for test case './succeeding/Misc/stdout,stderr': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/Misc/null strings']
 MiscTests.cpp:133: makeString( false ) != static_cast<char*>(__null) succeeded for: "valid string" != {null string}
@@ -620,7 +620,7 @@ MiscTests.cpp:134: makeString( true ) == static_cast<char*>(__null) succeeded fo
 MiscTests.cpp:139: [info: hi]
 MiscTests.cpp:141: [info: i := 7]
 MiscTests.cpp:142: false failed
-[Summary for test case './failing/info': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/info': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/checkedif']
 MiscTests.cpp:147: flag succeeded for: true
@@ -630,7 +630,7 @@ MiscTests.cpp:155: testCheckedIf( true ) succeeded for: true
 [Test case: './failing/checkedif']
 MiscTests.cpp:147: flag failed for: false
 MiscTests.cpp:160: testCheckedIf( false ) failed for: false
-[Summary for test case './failing/checkedif': 1 test case failed (All 2 assertions failed)]
+[Summary for test case './failing/checkedif': 1 test case - failed (2 assertions - both failed)]
 
 [Test case: './succeeding/checkedelse']
 MiscTests.cpp:165: flag succeeded for: true
@@ -640,27 +640,27 @@ MiscTests.cpp:173: testCheckedElse( true ) succeeded for: true
 [Test case: './failing/checkedelse']
 MiscTests.cpp:165: flag failed for: false
 MiscTests.cpp:178: testCheckedElse( false ) failed for: false
-[Summary for test case './failing/checkedelse': 1 test case failed (All 2 assertions failed)]
+[Summary for test case './failing/checkedelse': 1 test case - failed (2 assertions - both failed)]
 
 [Test case: './misc/xmlentitycheck']
 [Section: 'embedded xml']
 
 No assertions in section, 'embedded xml'
 
-[Summary for section 'embedded xml': 1 assertion failed]
+[Summary for section 'embedded xml': 1 assertion - failed]
 
 [Section: 'encoded chars']
 
 No assertions in section, 'encoded chars'
 
-[Summary for section 'encoded chars': 1 assertion failed]
+[Summary for section 'encoded chars': 1 assertion - failed]
 
-[Summary for test case './misc/xmlentitycheck': 1 test case failed (All 2 assertions failed)]
+[Summary for test case './misc/xmlentitycheck': 1 test case - failed (2 assertions - both failed)]
 
 [Test case: './manual/onechar']
 MiscTests.cpp:195: [info: 3]
 MiscTests.cpp:196: false failed
-[Summary for test case './manual/onechar': 1 test case failed (1 assertion failed)]
+[Summary for test case './manual/onechar': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/atomic if']
 MiscTests.cpp:206: x == 0 succeeded for: 0 == 0
@@ -680,22 +680,22 @@ MiscTests.cpp:220: testStringForMatching() EndsWith( "substring" ) succeeded for
 [Test case: './failing/matchers/Contains']
 MiscTests.cpp:225: testStringForMatching() Contains( "not there" ) failed for:
 	"this string contains 'abc' as a substring" contains: "not there"
-[Summary for test case './failing/matchers/Contains': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/matchers/Contains': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/matchers/StartsWith']
 MiscTests.cpp:230: testStringForMatching() StartsWith( "string" ) failed for:
 	"this string contains 'abc' as a substring" starts with: "string"
-[Summary for test case './failing/matchers/StartsWith': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/matchers/StartsWith': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/matchers/EndsWith']
 MiscTests.cpp:235: testStringForMatching() EndsWith( "this" ) failed for:
 	"this string contains 'abc' as a substring" ends with: "this"
-[Summary for test case './failing/matchers/EndsWith': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/matchers/EndsWith': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/matchers/Equals']
 MiscTests.cpp:240: testStringForMatching() Equals( "something else" ) failed for:
 	"this string contains 'abc' as a substring" equals: "something else"
-[Summary for test case './failing/matchers/Equals': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/matchers/Equals': 1 test case - failed (1 assertion - failed)]
 
 [Test case: '/succeeding/matchers/AllOf']
 MiscTests.cpp:245: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
@@ -726,26 +726,26 @@ MiscTests.cpp:270: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 362
 
 No assertions in test case, 'empty'
 
-[Summary for test case 'empty': 1 test case failed (1 assertion failed)]
+[Summary for test case 'empty': 1 test case - failed (1 assertion - failed)]
 
 [Test case: 'Nice descriptive name']
 MiscTests.cpp:279: [warning: This one ran]
 
 No assertions in test case, 'Nice descriptive name'
 
-[Summary for test case 'Nice descriptive name': 1 test case failed (1 assertion failed)]
+[Summary for test case 'Nice descriptive name': 1 test case - failed (1 assertion - failed)]
 
 [Test case: 'first tag']
 
 No assertions in test case, 'first tag'
 
-[Summary for test case 'first tag': 1 test case failed (1 assertion failed)]
+[Summary for test case 'first tag': 1 test case - failed (1 assertion - failed)]
 
 [Test case: 'second tag']
 
 No assertions in test case, 'second tag'
 
-[Summary for test case 'second tag': 1 test case failed (1 assertion failed)]
+[Summary for test case 'second tag': 1 test case - failed (1 assertion - failed)]
 
 [Test case: 'selftest/main']
 [Section: 'selftest/expected result']
@@ -1250,23 +1250,23 @@ TrickyTests.cpp:55: [warning: Uncomment the code in this test to check that it g
 
 No assertions in test case, './inprogress/failing/Tricky/trailing expression'
 
-[Summary for test case './inprogress/failing/Tricky/trailing expression': 1 test case failed (1 assertion failed)]
+[Summary for test case './inprogress/failing/Tricky/trailing expression': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './inprogress/failing/Tricky/compound lhs']
 TrickyTests.cpp:71: [warning: Uncomment the code in this test to check that it gives a sensible compiler error]
 
 No assertions in test case, './inprogress/failing/Tricky/compound lhs'
 
-[Summary for test case './inprogress/failing/Tricky/compound lhs': 1 test case failed (1 assertion failed)]
+[Summary for test case './inprogress/failing/Tricky/compound lhs': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './failing/Tricky/non streamable type']
 TrickyTests.cpp:95: &o1 == &o2 failed for: 0x<hex digits> == 0x<hex digits>
 TrickyTests.cpp:96: o1 == o2 failed for: {?} == {?}
-[Summary for test case './failing/Tricky/non streamable type': 1 test case failed (All 2 assertions failed)]
+[Summary for test case './failing/Tricky/non streamable type': 1 test case - failed (2 assertions - both failed)]
 
 [Test case: './failing/string literals']
 TrickyTests.cpp:106: std::string( "first" ) == "second" failed for: "first" == "second"
-[Summary for test case './failing/string literals': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/string literals': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/side-effects']
 TrickyTests.cpp:119: i++ == 7 succeeded for: 7 == 7
@@ -1334,9 +1334,9 @@ BDDTests.cpp:37: itDoesThis() succeeded for: true
 
 [Summary for test case 'scenario name': All tests passed (1 assertion in 1 test case)]
 
-[Summary for group '~dummy': 44 of 95 test cases failed (101 of 607 assertions failed)]
+[Summary for group '~dummy': 95 test cases - 44 failed (607 assertions - 101 failed)]
 
-[Summary for 'CatchSelfTest': 44 of 95 test cases failed (101 of 607 assertions failed)]
+[Summary for 'CatchSelfTest': 95 test cases - 44 failed (607 assertions - 101 failed)]
 
 [Started testing: CatchSelfTest]
 [Group: '~dummy']
@@ -1389,7 +1389,7 @@ ClassTests.cpp:24: s == "hello" succeeded for: "hello" == "hello"
 
 [Test case: './failing/TestClass/failingCase']
 ClassTests.cpp:28: s == "world" failed for: "hello" == "world"
-[Summary for test case './failing/TestClass/failingCase': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/TestClass/failingCase': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/Fixture/succeedingCase']
 ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
@@ -1397,7 +1397,7 @@ ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
 
 [Test case: './failing/Fixture/failingCase']
 ClassTests.cpp:55: m_a == 2 failed for: 1 == 2
-[Summary for test case './failing/Fixture/failingCase': 1 test case failed (1 assertion failed)]
+[Summary for test case './failing/Fixture/failingCase': 1 test case - failed (1 assertion - failed)]
 
 [Test case: './succeeding/conditions/equality']
 ConditionTests.cpp:55: data.int_seven == 7 succeeded for: 7 == 7
@@ -1412,11 +1412,11 @@ ConditionTests.cpp:63: x == Approx( 1.3 ) succeeded for: 1.3 == Approx( 1.3 )
 [Test case: './failing/conditions/equality']
 ConditionTests.cpp:71: data.int_seven == 6 failed for: 7 == 6
 ConditionTests.cpp:72: data.int_seven == 8 failed for: 7 == 8
-[Summary for test case './failing/conditions/equality': 1 test case failed (All 2 assertions failed)]
+[Summary for test case './failing/conditions/equality': 1 test case - failed (2 assertions - both failed)]
 
-[Summary for group '~dummy': 3 of 12 test cases failed (4 of 38 assertions failed)]
+[Summary for group '~dummy': 12 test cases - 3 failed (38 assertions - 4 failed)]
 
-[Summary for 'CatchSelfTest': 3 of 12 test cases failed (4 of 38 assertions failed)]
+[Summary for 'CatchSelfTest': 12 test cases - 3 failed (38 assertions - 4 failed)]
 
 <testsuites>
   <testsuite name="~dummy" errors="8" failures="76" tests="607" hostname="tbd" time="tbd" timestamp="tbd">
