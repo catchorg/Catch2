@@ -80,10 +80,7 @@ namespace Catch {
 
             lazyPrint();
 
-            if( !result.getSourceInfo().empty() ) {
-                TextColour colour( TextColour::FileName );
-                stream << result.getSourceInfo();
-            }
+            printLineInfo( result.getSourceInfo() );
 
             if( result.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
@@ -241,6 +238,7 @@ namespace Catch {
         }
 
         virtual void sectionEnded( Ptr<SectionStats const> const& _sectionStats ) {
+            resetLastPrintedLine();
             if( _sectionStats->missingAssertions ) {
                 lazyPrint();
                 TextColour colour( TextColour::ResultError );
@@ -263,6 +261,7 @@ namespace Catch {
             AccumulatingReporter::sectionEnded( _sectionStats );
         }
         virtual void testCaseEnded( Ptr<TestCaseStats const> const& _testCaseStats ) {
+            resetLastPrintedLine();
             if( _testCaseStats->missingAssertions ) {
                 lazyPrint();
                 TextColour colour( TextColour::ResultError );
@@ -291,6 +290,26 @@ namespace Catch {
             }
             AccumulatingReporter::testRunEnded( _testRunStats );
         }
+
+        void printLineInfo( SourceLineInfo const& lineInfo ) {
+            if( !lineInfo.empty() ) {
+                if( m_lastPrintedLine.empty() ||
+                        m_lastPrintedLine.file != lineInfo.file ||
+                        abs( static_cast<int>( m_lastPrintedLine.line ) - static_cast<int>( lineInfo.line ) ) > 20 ) {
+                    TextColour colour( TextColour::FileName );
+                    stream << lineInfo << "\n";
+                    m_lastPrintedLine = lineInfo;
+                }
+                else if( lineInfo.line != m_lastPrintedLine.line ) {
+                    TextColour colour( TextColour::FileName );
+                    stream << "line " << lineInfo.line << ":\n";
+                }
+            }
+        }
+        void resetLastPrintedLine() {
+            m_lastPrintedLine = SourceLineInfo();
+        }
+        SourceLineInfo m_lastPrintedLine;
 
     };
 
