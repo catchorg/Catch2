@@ -67,8 +67,10 @@ namespace Catch {
             return doubleDashes;
         }
         void printHeader( std::string const& _type, std::string const& _name ) {
+            std::size_t labelLen =  _type.size() + _name.size() + 8;
+            std::size_t dashLen = getDashes().size();
             stream  << "-- " << _type << ": '" << _name << "' "
-                    << getDashes().substr( 0, getDashes().size() - ( _type.size() + _name.size() + 9 ) )
+                    << getDashes().substr( 0, labelLen < dashLen ? dashLen - labelLen : 0 )
                     << std::endl;
         }
 
