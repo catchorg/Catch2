@@ -16,7 +16,8 @@ namespace Catch {
 
     struct ConsoleReporter : AccumulatingReporter {
         ConsoleReporter( ReporterConfig const& _config )
-        : AccumulatingReporter( _config )
+        :   AccumulatingReporter( _config ),
+            m_atLeastOneTestCasePrinted( false )
         {}
 
         virtual ~ConsoleReporter();
@@ -30,19 +31,18 @@ namespace Catch {
 
         }
         void lazyPrintRunInfo() {
-            stream << "[Started testing: " << testRunInfo->name << "]" << std::endl;
+            printHeader( "Started testing", testRunInfo->name );
             testRunInfo.reset();
         }
         void lazyPrintGroupInfo() {
             if( !unusedGroupInfo->name.empty() )
-                stream << "[Group: '" << unusedGroupInfo->name << "']" << std::endl;
+                printHeader( "Group", unusedGroupInfo->name );
             unusedGroupInfo.reset();
         }
         void lazyPrintTestCaseInfo() {
-            stream << "[Test case: '" << unusedTestCaseInfo->name << "']" << std::endl;
+            printHeader( "Test case", unusedTestCaseInfo->name );
             unusedTestCaseInfo.reset();
-        }
-        
+        }        
         void lazyPrintSectionInfo() {
             std::vector<ThreadedSectionInfo*> sections;
             for(    ThreadedSectionInfo* section = unusedSectionInfo.get();
@@ -52,11 +52,26 @@ namespace Catch {
 
             typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
             for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
-                stream << "[Section: " << "'" + (*it)->name + "'" << "]" << std::endl;
+                printHeader( "Section", (*it)->name );
                 (*it)->printed = true;
             }
             unusedSectionInfo.reset();
         }
+
+        static std::string const& getDashes() {
+            static const std::string dashes = "----------------------------------------------------------------";
+            return dashes;
+        }
+        static std::string const& getDoubleDashes() {
+            static const std::string doubleDashes = "================================================================";
+            return doubleDashes;
+        }
+        void printHeader( std::string const& _type, std::string const& _name ) {
+            stream  << "-- " << _type << ": '" << _name << "' "
+                    << getDashes().substr( 0, getDashes().size() - ( _type.size() + _name.size() + 9 ) )
+                    << std::endl;
+        }
+
         void lazyPrint() {
             if( testRunInfo )
                 lazyPrintRunInfo();
@@ -245,7 +260,8 @@ namespace Catch {
                 stream << "\nNo assertions in section, '" << _sectionStats->sectionInfo.name << "'\n" << std::endl;
             }
             if( currentSectionInfo && currentSectionInfo->printed ) {
-                stream << "[Summary for section '" << _sectionStats->sectionInfo.name << "': ";
+                printSummarDivider();
+                stream << "Summary for section '" << _sectionStats->sectionInfo.name << "':\n";
                 Counts const& assertions = _sectionStats->assertions;
                 if( assertions.failed ) {
                     TextColour colour( TextColour::ResultError );
@@ -256,7 +272,7 @@ namespace Catch {
                     stream  << ( assertions.passed > 1 ? "All " : "" )
                             << pluralise( assertions.passed, "assertion" ) << " passed" ;
                 }
-                stream << "]\n" << std::endl;
+                stream << "\n" << std::endl;
             }
             AccumulatingReporter::sectionEnded( _sectionStats );
         }
@@ -268,27 +284,38 @@ namespace Catch {
                 stream << "\nNo assertions in test case, '" << _testCaseStats->testInfo.name << "'\n" << std::endl;
             }
             if( !unusedTestCaseInfo ) {
-                stream << "[Summary for test case '" << _testCaseStats->testInfo.name << "': ";
+                m_atLeastOneTestCasePrinted = true;
+                printSummarDivider();
+                stream << "Summary for test case '" << _testCaseStats->testInfo.name << "':\n";
                 printTotals( _testCaseStats->totals );
-                stream << "]\n" << std::endl;
+                stream << "\n" << std::endl;
             }
             AccumulatingReporter::testCaseEnded( _testCaseStats );
         }
         virtual void testGroupEnded( Ptr<TestGroupStats const> const& _testGroupStats ) {
             if( !unusedGroupInfo ) {
-                stream << "[Summary for group '" << _testGroupStats->groupInfo.name << "': ";
+                printSummarDivider();
+                stream << "Summary for group '" << _testGroupStats->groupInfo.name << "':\n";
                 printTotals( _testGroupStats->totals );
-                stream << "]\n" << std::endl;
+                stream << "\n" << std::endl;
             }
             AccumulatingReporter::testGroupEnded( _testGroupStats );
         }
         virtual void testRunEnded( Ptr<TestRunStats const> const& _testRunStats ) {
-            if( !unusedTestCaseInfo ) {
-                stream << "[Summary for '" << _testRunStats->runInfo.name << "': ";
-                printTotals( _testRunStats->totals );
-                stream << "]\n" << std::endl;
-            }
+            if( m_atLeastOneTestCasePrinted )
+                printTotalsDivider();
+            stream << "Summary for all tests in '" << _testRunStats->runInfo.name << "':\n";
+            printTotals( _testRunStats->totals );
+            stream << "\n" << std::endl;
             AccumulatingReporter::testRunEnded( _testRunStats );
+        }
+
+    private:
+        void printTotalsDivider() {
+            stream << "================================================================\n";
+        }
+        void printSummarDivider() {
+            stream << "----------------------------------------------------------------\n";
         }
 
         void printLineInfo( SourceLineInfo const& lineInfo ) {
@@ -309,6 +336,7 @@ namespace Catch {
         void resetLastPrintedLine() {
             m_lastPrintedLine = SourceLineInfo();
         }
+        bool m_atLeastOneTestCasePrinted;
         SourceLineInfo m_lastPrintedLine;
 
     };
