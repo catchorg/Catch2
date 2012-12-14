@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 11 (integration branch)
- *  Generated: 2012-12-11 09:02:46.394854
+ *  CATCH v0.9 build 12 (integration branch)
+ *  Generated: 2012-12-14 07:49:28.360647
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -593,11 +593,15 @@ inline std::string toString( bool value ) {
 
 inline std::string toString( char value ) {
     return value < ' '
-        ? toString( (unsigned int)value )
+        ? toString( static_cast<unsigned int>( value ) )
         : Detail::makeString( value );
 }
 
 inline std::string toString( signed char value ) {
+    return toString( static_cast<char>( value ) );
+}
+
+inline std::string toString( unsigned char value ) {
     return toString( static_cast<char>( value ) );
 }
 
@@ -5710,7 +5714,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 11, "integration" );
+    Version libraryVersion( 0, 9, 12, "integration" );
 }
 
 // #included from: ../reporters/catch_reporter_basic.hpp
@@ -6694,7 +6698,8 @@ namespace Catch {
 
     struct ConsoleReporter : AccumulatingReporter {
         ConsoleReporter( ReporterConfig const& _config )
-        : AccumulatingReporter( _config )
+        :   AccumulatingReporter( _config ),
+            m_atLeastOneTestCasePrinted( false )
         {}
 
         virtual ~ConsoleReporter();
@@ -6708,19 +6713,18 @@ namespace Catch {
 
         }
         void lazyPrintRunInfo() {
-            stream << "[Started testing: " << testRunInfo->name << "]" << std::endl;
+            printHeader( "Started testing", testRunInfo->name );
             testRunInfo.reset();
         }
         void lazyPrintGroupInfo() {
             if( !unusedGroupInfo->name.empty() )
-                stream << "[Group: '" << unusedGroupInfo->name << "']" << std::endl;
+                printHeader( "Group", unusedGroupInfo->name );
             unusedGroupInfo.reset();
         }
         void lazyPrintTestCaseInfo() {
-            stream << "[Test case: '" << unusedTestCaseInfo->name << "']" << std::endl;
+            printHeader( "Test case", unusedTestCaseInfo->name );
             unusedTestCaseInfo.reset();
         }
-
         void lazyPrintSectionInfo() {
             std::vector<ThreadedSectionInfo*> sections;
             for(    ThreadedSectionInfo* section = unusedSectionInfo.get();
@@ -6730,11 +6734,36 @@ namespace Catch {
 
             typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
             for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
-                stream << "[Section: " << "'" + (*it)->name + "'" << "]" << std::endl;
+                printHeader( "Section", (*it)->name );
                 (*it)->printed = true;
             }
             unusedSectionInfo.reset();
         }
+
+        static std::string const& getDashes() {
+            static const std::string dashes = "----------------------------------------------------------------";
+            return dashes;
+        }
+        static std::string const& getDoubleDashes() {
+            static const std::string doubleDashes = "================================================================";
+            return doubleDashes;
+        }
+        static std::string const& getSpaces() {
+            static const std::string spaces = "                                                               ";
+            return spaces;
+        }
+        static std::string getSpaces( int spaces ) {
+            return getSpaces().substr( 0, spaces > 0 ? static_cast<std::size_t>( spaces ) : 0 );
+        }
+
+        void printHeader( std::string const& _type, std::string const& _name ) {
+            std::size_t labelLen =  _type.size() + _name.size() + 8;
+            std::size_t dashLen = getDashes().size();
+            stream  << "-- " << _type << ": '" << _name << "' "
+                    << getDashes().substr( 0, labelLen < dashLen ? dashLen - labelLen : 0 )
+                    << std::endl;
+        }
+
         void lazyPrint() {
             if( testRunInfo )
                 lazyPrintRunInfo();
@@ -6758,18 +6787,18 @@ namespace Catch {
 
             lazyPrint();
 
-            printLineInfo( result.getSourceInfo() );
+            int inset = printLineInfo( result.getSourceInfo() );
 
             if( result.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
-                stream << result.getExpression();
+                stream << result.getExpression() << "\n";
                 if( result.succeeded() ) {
                     TextColour successColour( TextColour::Success );
-                    stream << " succeeded";
+                    stream << "succeeded";
                 }
                 else {
                     TextColour errorColour( TextColour::Error );
-                    stream << " failed";
+                    stream << "failed";
                     if( result.isOk() ) {
                         TextColour okAnywayColour( TextColour::Success );
                         stream << " - but was ok";
@@ -6843,17 +6872,12 @@ namespace Catch {
             }
 
             if( result.hasExpandedExpression() ) {
-                stream << " for: ";
-                if( result.getExpandedExpression().size() > 40 ) {
-                    stream << "\n";
-                    if( result.getExpandedExpression().size() < 70 )
-                        stream << "\t";
-                }
+                stream << "\nfor: ";
                 TextColour colour( TextColour::ReconstructedExpression );
-                stream << result.getExpandedExpression();
+                stream << getSpaces( inset-5 ) << result.getExpandedExpression();
             }
 
-            stream << std::endl;
+            stream << "\n" << std::endl;
         }
 
         void streamVariableLengthText( std::string const& prefix, std::string const& text ) {
@@ -6923,7 +6947,8 @@ namespace Catch {
                 stream << "\nNo assertions in section, '" << _sectionStats->sectionInfo.name << "'\n" << std::endl;
             }
             if( currentSectionInfo && currentSectionInfo->printed ) {
-                stream << "[Summary for section '" << _sectionStats->sectionInfo.name << "': ";
+                printSummarDivider();
+                stream << "Summary for section '" << _sectionStats->sectionInfo.name << "':\n";
                 Counts const& assertions = _sectionStats->assertions;
                 if( assertions.failed ) {
                     TextColour colour( TextColour::ResultError );
@@ -6934,7 +6959,7 @@ namespace Catch {
                     stream  << ( assertions.passed > 1 ? "All " : "" )
                             << pluralise( assertions.passed, "assertion" ) << " passed" ;
                 }
-                stream << "]\n" << std::endl;
+                stream << "\n" << std::endl;
             }
             AccumulatingReporter::sectionEnded( _sectionStats );
         }
@@ -6946,47 +6971,64 @@ namespace Catch {
                 stream << "\nNo assertions in test case, '" << _testCaseStats->testInfo.name << "'\n" << std::endl;
             }
             if( !unusedTestCaseInfo ) {
-                stream << "[Summary for test case '" << _testCaseStats->testInfo.name << "': ";
+                m_atLeastOneTestCasePrinted = true;
+                printSummarDivider();
+                stream << "Summary for test case '" << _testCaseStats->testInfo.name << "':\n";
                 printTotals( _testCaseStats->totals );
-                stream << "]\n" << std::endl;
+                stream << "\n" << std::endl;
             }
             AccumulatingReporter::testCaseEnded( _testCaseStats );
         }
         virtual void testGroupEnded( Ptr<TestGroupStats const> const& _testGroupStats ) {
             if( !unusedGroupInfo ) {
-                stream << "[Summary for group '" << _testGroupStats->groupInfo.name << "': ";
+                printSummarDivider();
+                stream << "Summary for group '" << _testGroupStats->groupInfo.name << "':\n";
                 printTotals( _testGroupStats->totals );
-                stream << "]\n" << std::endl;
+                stream << "\n" << std::endl;
             }
             AccumulatingReporter::testGroupEnded( _testGroupStats );
         }
         virtual void testRunEnded( Ptr<TestRunStats const> const& _testRunStats ) {
-            if( !unusedTestCaseInfo ) {
-                stream << "[Summary for '" << _testRunStats->runInfo.name << "': ";
-                printTotals( _testRunStats->totals );
-                stream << "]\n" << std::endl;
-            }
+            if( m_atLeastOneTestCasePrinted )
+                printTotalsDivider();
+            stream << "Summary for all tests in '" << _testRunStats->runInfo.name << "':\n";
+            printTotals( _testRunStats->totals );
+            stream << "\n" << std::endl;
             AccumulatingReporter::testRunEnded( _testRunStats );
         }
 
-        void printLineInfo( SourceLineInfo const& lineInfo ) {
-            if( !lineInfo.empty() ) {
-                if( m_lastPrintedLine.empty() ||
-                        m_lastPrintedLine.file != lineInfo.file ||
-                        abs( static_cast<int>( m_lastPrintedLine.line ) - static_cast<int>( lineInfo.line ) ) > 20 ) {
-                    TextColour colour( TextColour::FileName );
-                    stream << lineInfo << "\n";
-                    m_lastPrintedLine = lineInfo;
-                }
-                else if( lineInfo.line != m_lastPrintedLine.line ) {
-                    TextColour colour( TextColour::FileName );
-                    stream << "line " << lineInfo.line << ":\n";
-                }
+    private:
+        void printTotalsDivider() {
+            stream << "================================================================\n";
+        }
+        void printSummarDivider() {
+            stream << "----------------------------------------------------------------\n";
+        }
+        static int countDigits( std::size_t number ) {
+            int digits = 1;
+            for( ; number != 0; digits++, number /= 10 );
+            return digits;
+        }
+
+        // Returns number of characters printed
+        int printLineInfo( SourceLineInfo const& lineInfo ) {
+            if( lineInfo.empty() )
+                return 0;
+            if( m_lastPrintedLine.empty() ||
+                    m_lastPrintedLine.file != lineInfo.file ||
+                    abs( static_cast<int>( m_lastPrintedLine.line ) - static_cast<int>( lineInfo.line ) ) > 20 ) {
+                TextColour colour( TextColour::FileName );
+                stream << lineInfo << "\n";
             }
+            TextColour colour( TextColour::FileName );
+            stream << "[" << lineInfo.line << "]  ";
+            m_lastPrintedLine = lineInfo;
+            return 3 + countDigits( lineInfo.line );
         }
         void resetLastPrintedLine() {
             m_lastPrintedLine = SourceLineInfo();
         }
+        bool m_atLeastOneTestCasePrinted;
         SourceLineInfo m_lastPrintedLine;
 
     };
