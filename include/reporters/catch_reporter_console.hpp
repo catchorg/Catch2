@@ -66,6 +66,14 @@ namespace Catch {
             static const std::string doubleDashes = "================================================================";
             return doubleDashes;
         }
+        static std::string const& getSpaces() {
+            static const std::string spaces = "                                                               ";
+            return spaces;
+        }
+        static std::string getSpaces( int spaces ) {
+            return getSpaces().substr( 0, spaces > 0 ? static_cast<std::size_t>( spaces ) : 0 );
+        }
+        
         void printHeader( std::string const& _type, std::string const& _name ) {
             std::size_t labelLen =  _type.size() + _name.size() + 8;
             std::size_t dashLen = getDashes().size();
@@ -97,18 +105,18 @@ namespace Catch {
 
             lazyPrint();
 
-            printLineInfo( result.getSourceInfo() );
+            int inset = printLineInfo( result.getSourceInfo() );
 
             if( result.hasExpression() ) {
                 TextColour colour( TextColour::OriginalExpression );
-                stream << result.getExpression();
+                stream << result.getExpression() << "\n";
                 if( result.succeeded() ) {
                     TextColour successColour( TextColour::Success );
-                    stream << " succeeded";
+                    stream << "succeeded";
                 }
                 else {
                     TextColour errorColour( TextColour::Error );
-                    stream << " failed";
+                    stream << "failed";
                     if( result.isOk() ) {
                         TextColour okAnywayColour( TextColour::Success );
                         stream << " - but was ok";
@@ -182,17 +190,12 @@ namespace Catch {
             }
 
             if( result.hasExpandedExpression() ) {
-                stream << " for: ";
-                if( result.getExpandedExpression().size() > 40 ) {
-                    stream << "\n";
-                    if( result.getExpandedExpression().size() < 70 )
-                        stream << "\t";
-                }
+                stream << "\nfor: ";
                 TextColour colour( TextColour::ReconstructedExpression );
-                stream << result.getExpandedExpression();
+                stream << getSpaces( inset-5 ) << result.getExpandedExpression();
             }
             
-            stream << std::endl;
+            stream << "\n" << std::endl;
         }
         
         void streamVariableLengthText( std::string const& prefix, std::string const& text ) {
@@ -319,21 +322,26 @@ namespace Catch {
         void printSummarDivider() {
             stream << "----------------------------------------------------------------\n";
         }
+        static int countDigits( std::size_t number ) {
+            int digits = 1;
+            for( ; number != 0; digits++, number /= 10 );
+            return digits;
+        }
 
-        void printLineInfo( SourceLineInfo const& lineInfo ) {
-            if( !lineInfo.empty() ) {
-                if( m_lastPrintedLine.empty() ||
-                        m_lastPrintedLine.file != lineInfo.file ||
-                        abs( static_cast<int>( m_lastPrintedLine.line ) - static_cast<int>( lineInfo.line ) ) > 20 ) {
-                    TextColour colour( TextColour::FileName );
-                    stream << lineInfo << "\n";
-                    m_lastPrintedLine = lineInfo;
-                }
-                else if( lineInfo.line != m_lastPrintedLine.line ) {
-                    TextColour colour( TextColour::FileName );
-                    stream << "line " << lineInfo.line << ":\n";
-                }
+        // Returns number of characters printed
+        int printLineInfo( SourceLineInfo const& lineInfo ) {
+            if( lineInfo.empty() )
+                return 0;
+            if( m_lastPrintedLine.empty() ||
+                    m_lastPrintedLine.file != lineInfo.file ||
+                    abs( static_cast<int>( m_lastPrintedLine.line ) - static_cast<int>( lineInfo.line ) ) > 20 ) {
+                TextColour colour( TextColour::FileName );
+                stream << lineInfo << "\n";
             }
+            TextColour colour( TextColour::FileName );
+            stream << "[" << lineInfo.line << "]  ";
+            m_lastPrintedLine = lineInfo;
+            return 3 + countDigits( lineInfo.line );
         }
         void resetLastPrintedLine() {
             m_lastPrintedLine = SourceLineInfo();

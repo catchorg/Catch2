@@ -121,11 +121,15 @@ inline std::string toString( bool value ) {
 
 inline std::string toString( char value ) {
     return value < ' '
-        ? toString( (unsigned int)value )
+        ? toString( static_cast<unsigned int>( value ) )
         : Detail::makeString( value );
 }
 
 inline std::string toString( signed char value ) {
+    return toString( static_cast<char>( value ) );
+}
+
+inline std::string toString( unsigned char value ) {
     return toString( static_cast<char>( value ) );
 }
 
