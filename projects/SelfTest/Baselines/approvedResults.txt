@@ -2026,8 +2026,8 @@ Summary for test case './failing/matchers/Equals':
 1 test case - failed (1 assertion - failed)
 
 -- Test case: '/succeeding/matchers/AllOf' ---------------------
-MiscTests.cpp:245:
-[245]  testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
+MiscTests.cpp:248:
+[248]  testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
 succeeded
 for:   "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
 
@@ -2036,12 +2036,12 @@ Summary for test case '/succeeding/matchers/AllOf':
 All tests passed (1 assertion in 1 test case)
 
 -- Test case: '/succeeding/matchers/AnyOf' ---------------------
-MiscTests.cpp:249:
-[249]  testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
+MiscTests.cpp:252:
+[252]  testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
 succeeded
 for:   "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
 
-[250]  testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
+[253]  testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
 succeeded
 for:   "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
 
@@ -2050,8 +2050,8 @@ Summary for test case '/succeeding/matchers/AnyOf':
 All tests passed (2 assertions in 1 test case)
 
 -- Test case: './succeeding/matchers/Equals' -------------------
-MiscTests.cpp:255:
-[255]  testStringForMatching() Equals( "this string contains 'abc' as a substring" )
+MiscTests.cpp:258:
+[258]  testStringForMatching() Equals( "this string contains 'abc' as a substring" )
 succeeded
 for:   "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 
@@ -2060,24 +2060,24 @@ Summary for test case './succeeding/matchers/Equals':
 All tests passed (1 assertion in 1 test case)
 
 -- Test case: 'example/factorial' ------------------------------
-MiscTests.cpp:266:
-[266]  Factorial(0) == 1
+MiscTests.cpp:269:
+[269]  Factorial(0) == 1
 succeeded
 for:   1 == 1
 
-[267]  Factorial(1) == 1
+[270]  Factorial(1) == 1
 succeeded
 for:   1 == 1
 
-[268]  Factorial(2) == 2
+[271]  Factorial(2) == 2
 succeeded
 for:   2 == 2
 
-[269]  Factorial(3) == 6
+[272]  Factorial(3) == 6
 succeeded
 for:   6 == 6
 
-[270]  Factorial(10) == 3628800
+[273]  Factorial(10) == 3628800
 succeeded
 for:   0x<hex digits> == 3628800
 
@@ -2094,8 +2094,8 @@ Summary for test case 'empty':
 1 test case - failed (1 assertion - failed)
 
 -- Test case: 'Nice descriptive name' --------------------------
-MiscTests.cpp:279:
-[279]  [warning: This one ran]
+MiscTests.cpp:282:
+[282]  [warning: This one ran]
 
 
 No assertions in test case, 'Nice descriptive name'
@@ -2613,7 +2613,7 @@ Summary for section 'test lists':
 1 assertion passed
 
 -- Section: 'reporter' -----------------------------------------
--- Section: '-r/basic' -----------------------------------------
+-- Section: '-r/console' ---------------------------------------
 TestMain.cpp:169:
 [169]  parseIntoConfig( argv, config )
 succeeded
@@ -2623,7 +2623,7 @@ succeeded
 for:   "console" == "console"
 
 ----------------------------------------------------------------
-Summary for section '-r/basic':
+Summary for section '-r/console':
 All 2 assertions passed
 
 ----------------------------------------------------------------
@@ -4084,7 +4084,7 @@ MiscTests.cpp:240:
     <testcase classname="global" name="empty" time="tbd"/>
     <testcase classname="global" name="Nice descriptive name" time="tbd">
       <warning type="WARN">
-MiscTests.cpp:279:
+MiscTests.cpp:282:
       </warning>
     </testcase>
     <testcase classname="global" name="first tag" time="tbd"/>
@@ -7449,7 +7449,7 @@ MiscTests.cpp" line="240">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="/succeeding/matchers/AllOf">
-MiscTests.cpp" line="245">
+MiscTests.cpp" line="248">
         <Original>
           testStringForMatching() AllOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;abc&quot; ) )
         </Original>
@@ -7460,7 +7460,7 @@ MiscTests.cpp" line="245">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="/succeeding/matchers/AnyOf">
-MiscTests.cpp" line="249">
+MiscTests.cpp" line="252">
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;not there&quot; ) )
         </Original>
@@ -7468,7 +7468,7 @@ MiscTests.cpp" line="249">
           &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;string&quot; or contains: &quot;not there&quot; )
         </Expanded>
       </Expression>
-MiscTests.cpp" line="250">
+MiscTests.cpp" line="253">
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;not there&quot; ), Catch::Contains( &quot;string&quot; ) )
         </Original>
@@ -7479,7 +7479,7 @@ MiscTests.cpp" line="250">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/matchers/Equals">
-MiscTests.cpp" line="255">
+MiscTests.cpp" line="258">
         <Original>
           testStringForMatching() Equals( &quot;this string contains 'abc' as a substring&quot; )
         </Original>
@@ -7490,7 +7490,7 @@ MiscTests.cpp" line="255">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="example/factorial">
-MiscTests.cpp" line="266">
+MiscTests.cpp" line="269">
         <Original>
           Factorial(0) == 1
         </Original>
@@ -7498,7 +7498,7 @@ MiscTests.cpp" line="266">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="267">
+MiscTests.cpp" line="270">
         <Original>
           Factorial(1) == 1
         </Original>
@@ -7506,7 +7506,7 @@ MiscTests.cpp" line="267">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="268">
+MiscTests.cpp" line="271">
         <Original>
           Factorial(2) == 2
         </Original>
@@ -7514,7 +7514,7 @@ MiscTests.cpp" line="268">
           2 == 2
         </Expanded>
       </Expression>
-MiscTests.cpp" line="269">
+MiscTests.cpp" line="272">
         <Original>
           Factorial(3) == 6
         </Original>
@@ -7522,7 +7522,7 @@ MiscTests.cpp" line="269">
           6 == 6
         </Expanded>
       </Expression>
-MiscTests.cpp" line="270">
+MiscTests.cpp" line="273">
         <Original>
           Factorial(10) == 3628800
         </Original>
@@ -7926,7 +7926,7 @@ TestMain.cpp" line="162">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="reporter">
-        <Section name="-r/basic">
+        <Section name="-r/console">
 TestMain.cpp" line="169">
             <Original>
               parseIntoConfig( argv, config )

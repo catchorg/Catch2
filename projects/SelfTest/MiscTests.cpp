@@ -239,7 +239,10 @@ TEST_CASE("./failing/matchers/Equals", "")
 {
     CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
 }
-
+//TEST_CASE("string", "Equals with NULL")
+//{
+//    REQUIRE_THAT("", Equals(NULL));
+//}
 TEST_CASE("/succeeding/matchers/AllOf", "")
 {
     CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) );

@@ -164,7 +164,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
     }
     
     SECTION( "reporter", "" ) {
-        SECTION( "-r/basic", "" ) {
+        SECTION( "-r/console", "" ) {
             const char* argv[] = { "test", "-r", "console" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             

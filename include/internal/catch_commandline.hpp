@@ -378,12 +378,12 @@ namespace Catch {
             virtual std::string optionDescription() const {
                 return
                     "A reporter is an object that formats and structures the output of running "
-                    "tests, and potentially summarises the results. By default a basic reporter "
-                    "is used that writes IDE friendly results. CATCH comes bundled with some "
+                    "tests, and potentially summarises the results. By default the console reporter "
+                    "is used which writes IDE friendly results. CATCH comes bundled with some "
                     "alternative reporters, but more can be added in client code.\n"
                     "\n"
                     "The bundled reporters are:\n"
-                    "    -r basic\n"
+                    "    -r console\n"
                     "    -r xml\n"
                     "    -r junit\n"
                     "\n"
