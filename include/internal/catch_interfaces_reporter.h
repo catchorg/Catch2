@@ -232,6 +232,11 @@ namespace Catch
             unusedGroupInfo.reset();
         }
         virtual void testRunEnded( Ptr<TestRunStats const> const& /* _testRunStats */ ) {
+            currentSectionInfo.reset();
+            unusedSectionInfo.reset();
+            unusedTestCaseInfo.reset();
+            unusedGroupInfo.reset();
+            testRunInfo.reset();
         }
 
         ReporterConfig m_config;
