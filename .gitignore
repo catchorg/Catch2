@@ -18,3 +18,4 @@ UpgradeLog.XML
 projects/XCode4/iOSTest/Build/Intermediates/PrecompiledHeaders
 projects/XCode4/iOSTest/Build/Products/Debug-iphonesimulator/iOSTest.app.dSYM/Contents/Resources/DWARF
 projects/XCode4/iOSTest/Build
+projects/XCode4/CatchSelfTest/DerivedData

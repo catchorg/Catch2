@@ -14,9 +14,9 @@
 
 namespace Catch {
 
-    struct ConsoleReporter : AccumulatingReporter {
+    struct ConsoleReporter : StreamingReporterBase {
         ConsoleReporter( ReporterConfig const& _config )
-        :   AccumulatingReporter( _config ),
+        :   StreamingReporterBase( _config ),
             m_atLeastOneTestCasePrinted( false )
         {}
 
@@ -95,9 +95,9 @@ namespace Catch {
 
         virtual void assertionStarting( AssertionInfo const& ) {
         }
-        virtual void assertionEnded( Ptr<AssertionStats const> const& _assertionStats ) {
+        virtual void assertionEnded( AssertionStats const& _assertionStats ) {
 
-            AssertionResult const& result = _assertionStats->assertionResult;
+            AssertionResult const& result = _assertionStats.assertionResult;
             
             // Drop out if result was successful and we're not printing those
             if( !m_config.includeSuccessfulResults() && result.isOk() )
@@ -257,17 +257,17 @@ namespace Catch {
             }
         }
 
-        virtual void sectionEnded( Ptr<SectionStats const> const& _sectionStats ) {
+        virtual void sectionEnded( SectionStats const& _sectionStats ) {
             resetLastPrintedLine();
-            if( _sectionStats->missingAssertions ) {
+            if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 TextColour colour( TextColour::ResultError );
-                stream << "\nNo assertions in section, '" << _sectionStats->sectionInfo.name << "'\n" << std::endl;
+                stream << "\nNo assertions in section, '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
             if( currentSectionInfo && currentSectionInfo->printed ) {
                 printSummarDivider();
-                stream << "Summary for section '" << _sectionStats->sectionInfo.name << "':\n";
-                Counts const& assertions = _sectionStats->assertions;
+                stream << "Summary for section '" << _sectionStats.sectionInfo.name << "':\n";
+                Counts const& assertions = _sectionStats.assertions;
                 if( assertions.failed ) {
                     TextColour colour( TextColour::ResultError );
                     printAssertionCounts( "assertion", assertions );
@@ -279,40 +279,40 @@ namespace Catch {
                 }
                 stream << "\n" << std::endl;
             }
-            AccumulatingReporter::sectionEnded( _sectionStats );
+            StreamingReporterBase::sectionEnded( _sectionStats );
         }
-        virtual void testCaseEnded( Ptr<TestCaseStats const> const& _testCaseStats ) {
+        virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) {
             resetLastPrintedLine();
-            if( _testCaseStats->missingAssertions ) {
+            if( _testCaseStats.missingAssertions ) {
                 lazyPrint();
                 TextColour colour( TextColour::ResultError );
-                stream << "\nNo assertions in test case, '" << _testCaseStats->testInfo.name << "'\n" << std::endl;
+                stream << "\nNo assertions in test case, '" << _testCaseStats.testInfo.name << "'\n" << std::endl;
             }
             if( !unusedTestCaseInfo ) {
                 m_atLeastOneTestCasePrinted = true;
                 printSummarDivider();
-                stream << "Summary for test case '" << _testCaseStats->testInfo.name << "':\n";
-                printTotals( _testCaseStats->totals );
+                stream << "Summary for test case '" << _testCaseStats.testInfo.name << "':\n";
+                printTotals( _testCaseStats.totals );
                 stream << "\n" << std::endl;
             }
-            AccumulatingReporter::testCaseEnded( _testCaseStats );
+            StreamingReporterBase::testCaseEnded( _testCaseStats );
         }
-        virtual void testGroupEnded( Ptr<TestGroupStats const> const& _testGroupStats ) {
+        virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) {
             if( !unusedGroupInfo ) {
                 printSummarDivider();
-                stream << "Summary for group '" << _testGroupStats->groupInfo.name << "':\n";
-                printTotals( _testGroupStats->totals );
+                stream << "Summary for group '" << _testGroupStats.groupInfo.name << "':\n";
+                printTotals( _testGroupStats.totals );
                 stream << "\n" << std::endl;
             }
-            AccumulatingReporter::testGroupEnded( _testGroupStats );
+            StreamingReporterBase::testGroupEnded( _testGroupStats );
         }
-        virtual void testRunEnded( Ptr<TestRunStats const> const& _testRunStats ) {
+        virtual void testRunEnded( TestRunStats const& _testRunStats ) {
             if( m_atLeastOneTestCasePrinted )
                 printTotalsDivider();
-            stream << "Summary for all tests in '" << _testRunStats->runInfo.name << "':\n";
-            printTotals( _testRunStats->totals );
+            stream << "Summary for all tests in '" << _testRunStats.runInfo.name << "':\n";
+            printTotals( _testRunStats.totals );
             stream << "\n" << std::endl;
-            AccumulatingReporter::testRunEnded( _testRunStats );
+            StreamingReporterBase::testRunEnded( _testRunStats );
         }
 
     private:

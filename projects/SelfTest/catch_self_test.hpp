@@ -40,11 +40,11 @@ namespace Catch {
         virtual void testCaseStarting( TestCaseInfo const& ) {}
         virtual void sectionStarting( SectionInfo const& ) {}
         virtual void assertionStarting( AssertionInfo const& ) {}
-        virtual void assertionEnded( Ptr<AssertionStats const> const& ) {}
-        virtual void sectionEnded( Ptr<SectionStats const> const& ) {}
-        virtual void testCaseEnded( Ptr<TestCaseStats const> const& ) {}
-        virtual void testGroupEnded( Ptr<TestGroupStats const> const& ) {}
-        virtual void testRunEnded( Ptr<TestRunStats const> const& ) {}
+        virtual void assertionEnded( AssertionStats const& ) {}
+        virtual void sectionEnded( SectionStats const& ) {}
+        virtual void testCaseEnded( TestCaseStats const& ) {}
+        virtual void testGroupEnded( TestGroupStats const& ) {}
+        virtual void testRunEnded( TestRunStats const& ) {}
     };
 
     class EmbeddedRunner {

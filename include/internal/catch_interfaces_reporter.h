@@ -80,7 +80,7 @@ namespace Catch
         bool printed;
     };
 
-    struct AssertionStats : SharedImpl<> {
+    struct AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
                         Totals const& _totals )
         :   assertionResult( _assertionResult ),
@@ -92,7 +92,7 @@ namespace Catch
         Totals totals;
     };
 
-    struct SectionStats : SharedImpl<> {
+    struct SectionStats {
         SectionStats(   SectionInfo const& _sectionInfo,
                         Counts const& _assertions,
                         bool _missingAssertions )
@@ -107,7 +107,7 @@ namespace Catch
         bool missingAssertions;
     };
 
-    struct TestCaseStats : SharedImpl<> {
+    struct TestCaseStats {
         TestCaseStats(  TestCaseInfo const& _testInfo,
                         Totals const& _totals,
                         std::string const& _stdOut,
@@ -131,13 +131,17 @@ namespace Catch
         bool aborting;
     };
     
-    struct TestGroupStats : SharedImpl<> {
+    struct TestGroupStats {
         TestGroupStats( GroupInfo const& _groupInfo,
                         Totals const& _totals,
                         bool _aborting )
         :   groupInfo( _groupInfo ),
             totals( _totals ),
             aborting( _aborting )
+        {}
+        TestGroupStats( GroupInfo const& _groupInfo )
+        :   groupInfo( _groupInfo ),
+            aborting( false )
         {}
         virtual ~TestGroupStats();
 
@@ -146,7 +150,7 @@ namespace Catch
         bool aborting;
     };
     
-    struct TestRunStats : SharedImpl<> {
+    struct TestRunStats {
         TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
                         bool _aborting )
@@ -154,8 +158,13 @@ namespace Catch
             totals( _totals ),
             aborting( _aborting )
         {}
+        TestRunStats( TestRunStats const& _other )
+        :   runInfo( _other.runInfo ),
+            totals( _other.totals ),
+            aborting( _other.aborting )
+        {}
         virtual ~TestRunStats();
-        
+
         TestRunInfo runInfo;
         Totals totals;
         bool aborting;
@@ -178,25 +187,21 @@ namespace Catch
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
-        virtual void assertionEnded( Ptr<AssertionStats const> const& assertionStats ) = 0;
-        virtual void sectionEnded( Ptr<SectionStats const> const& sectionStats ) = 0;
-        virtual void testCaseEnded( Ptr<TestCaseStats const> const& testCaseStats ) = 0;
-        virtual void testGroupEnded( Ptr<TestGroupStats const> const& testGroupStats ) = 0;
-        virtual void testRunEnded( Ptr<TestRunStats const> const& testRunStats ) = 0;
+        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
+        virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
+        virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
     };
-    // !TBD: Derived helper that implements the streaming interface but holds the stats
-    // - declares a new interface where methods are called at the end of each event
-    // - this would be used by the JUnit reporter, for example.
-    // - it may be used by the basic reporter, too, but that would clear down the stack
-    //   as it goes
-    struct AccumulatingReporter : SharedImpl<IStreamingReporter> {
 
-        AccumulatingReporter( ReporterConfig const& _config )
+    struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
+
+        StreamingReporterBase( ReporterConfig const& _config )
         :   m_config( _config ),
             stream( _config.stream() )
         {}
 
-        virtual ~AccumulatingReporter();
+        virtual ~StreamingReporterBase();
 
         virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
             testRunInfo = _testRunInfo;
@@ -221,17 +226,17 @@ namespace Catch
             }
         }
 
-        virtual void sectionEnded( Ptr<SectionStats const> const& /* _sectionStats */ ) {
+        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
             currentSectionInfo = currentSectionInfo->parent;
             unusedSectionInfo = currentSectionInfo;
         }
-        virtual void testCaseEnded( Ptr<TestCaseStats const> const& /* _testCaseStats */ ) {
+        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
             unusedTestCaseInfo.reset();
         }
-        virtual void testGroupEnded( Ptr<TestGroupStats const> const& /* _testGroupStats */ ) {
+        virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) {
             unusedGroupInfo.reset();
         }
-        virtual void testRunEnded( Ptr<TestRunStats const> const& /* _testRunStats */ ) {
+        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
             currentSectionInfo.reset();
             unusedSectionInfo.reset();
             unusedTestCaseInfo.reset();
@@ -246,6 +251,92 @@ namespace Catch
         Ptr<ThreadedSectionInfo> unusedSectionInfo;
         Ptr<ThreadedSectionInfo> currentSectionInfo;
         bool currentSectionOpen;
+        std::ostream& stream;
+    };
+
+    struct TestGroupNode : TestGroupStats {
+        TestGroupNode( TestGroupStats const& _stats ) : TestGroupStats( _stats ) {}
+//        TestGroupNode( GroupInfo const& _info ) : TestGroupStats( _stats ) {}
+        ~TestGroupNode();
+
+    };
+
+    struct TestRunNode : TestRunStats {
+
+        TestRunNode( TestRunStats const& _stats ) : TestRunStats( _stats ) {}
+        ~TestRunNode();
+        
+        std::vector<TestGroupNode> groups;
+    };
+    
+
+
+    // !TBD: Derived helper that implements the streaming interface but holds the stats
+    // - declares a new interface where methods are called at the end of each event
+    // - this would be used by the JUnit reporter, for example.
+    // - it may be used by the basic reporter, too, but that would clear down the stack
+    //   as it goes
+    struct CumulativeReporterBase : SharedImpl<IStreamingReporter> {
+
+        CumulativeReporterBase( ReporterConfig const& _config )
+        :   m_config( _config ),
+            stream( _config.stream() )
+        {}
+
+        virtual ~CumulativeReporterBase();
+
+        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
+//            testRunInfo = _testRunInfo;
+        }
+        virtual void testGroupStarting( GroupInfo const& _groupInfo ) {
+            testGroupNode = TestGroupNode( _groupInfo );
+        }
+
+        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) {
+//            unusedTestCaseInfo = _testInfo;
+        }
+        virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
+//            Ptr<ThreadedSectionInfo> sectionInfo = new ThreadedSectionInfo( _sectionInfo );
+//            unusedSectionInfo = sectionInfo;
+//            if( !currentSectionInfo ) {
+//                currentSectionInfo = sectionInfo;
+//            }
+//            else {
+//                currentSectionInfo->children.push_back( sectionInfo );
+//                sectionInfo->parent = currentSectionInfo;
+//                currentSectionInfo = sectionInfo;
+//            }
+        }
+
+        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
+//            currentSectionInfo = currentSectionInfo->parent;
+//            unusedSectionInfo = currentSectionInfo;
+        }
+        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
+//            unusedTestCaseInfo.reset();
+        }
+        virtual void testGroupEnded( TestGroupStats const&  _testGroupStats ) {
+//            testGroupNode-> // populate
+//            Ptr<TestGroupNode> node ( new TestGroupNode( _testGroupStats ) );
+//            unusedGroupInfo.reset();
+        }
+        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
+//            currentSectionInfo.reset();
+//            unusedSectionInfo.reset();
+//            unusedTestCaseInfo.reset();
+//            unusedGroupInfo.reset();
+//            testRunInfo.reset();
+        }
+
+        ReporterConfig m_config;
+//        Option<TestRunInfo> testRunInfo;
+//        Option<GroupInfo> unusedGroupInfo;
+//        Option<TestCaseInfo> unusedTestCaseInfo;
+//        Ptr<ThreadedSectionInfo> unusedSectionInfo;
+//        Ptr<ThreadedSectionInfo> currentSectionInfo;
+//        bool currentSectionOpen;
+//        Ptr<TestGroupNode> testGroupNode;
+        Option<TestGroupNode> testGroupNode;
         std::ostream& stream;
     };
 
@@ -302,30 +393,30 @@ namespace Catch
             // Not on legacy interface
         }
 
-        virtual void assertionEnded( Ptr<AssertionStats const> const& assertionStats ) {
-            m_legacyReporter->Result( assertionStats->assertionResult );
+        virtual void assertionEnded( AssertionStats const& assertionStats ) {
+            m_legacyReporter->Result( assertionStats.assertionResult );
         }
-        virtual void sectionEnded( Ptr<SectionStats const> const& sectionStats ) {
-            if( sectionStats->missingAssertions )
-                m_legacyReporter->NoAssertionsInSection( sectionStats->sectionInfo.name );
-            m_legacyReporter->EndSection( sectionStats->sectionInfo.name, sectionStats->assertions );
+        virtual void sectionEnded( SectionStats const& sectionStats ) {
+            if( sectionStats.missingAssertions )
+                m_legacyReporter->NoAssertionsInSection( sectionStats.sectionInfo.name );
+            m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
         }
-        virtual void testCaseEnded( Ptr<TestCaseStats const> const& testCaseStats ) {
-            if( testCaseStats->missingAssertions )
-                m_legacyReporter->NoAssertionsInTestCase( testCaseStats->testInfo.name );
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+            if( testCaseStats.missingAssertions )
+                m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
             m_legacyReporter->EndTestCase
-                (   testCaseStats->testInfo,
-                    testCaseStats->totals,
-                    testCaseStats->stdOut,
-                    testCaseStats->stdErr );
+                (   testCaseStats.testInfo,
+                    testCaseStats.totals,
+                    testCaseStats.stdOut,
+                    testCaseStats.stdErr );
         }
-        virtual void testGroupEnded( Ptr<TestGroupStats const> const& testGroupStats ) {
-            if( testGroupStats->aborting )
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+            if( testGroupStats.aborting )
                 m_legacyReporter->Aborted();
-            m_legacyReporter->EndGroup( testGroupStats->groupInfo.name, testGroupStats->totals );
+            m_legacyReporter->EndGroup( testGroupStats.groupInfo.name, testGroupStats.totals );
         }
-        virtual void testRunEnded( Ptr<TestRunStats const> const& testRunStats ) {
-            m_legacyReporter->EndTesting( testRunStats->totals );
+        virtual void testRunEnded( TestRunStats const& testRunStats ) {
+            m_legacyReporter->EndTesting( testRunStats.totals );
         }
 
     private:

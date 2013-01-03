@@ -56,9 +56,12 @@ namespace Catch {
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
     ThreadedSectionInfo::~ThreadedSectionInfo() {}
+    TestGroupNode::~TestGroupNode() {}
+    TestRunNode::~TestRunNode() {}
 
     BasicReporter::~BasicReporter() {}
-    AccumulatingReporter::~AccumulatingReporter() {}
+    StreamingReporterBase::~StreamingReporterBase() {}
+    CumulativeReporterBase::~CumulativeReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
