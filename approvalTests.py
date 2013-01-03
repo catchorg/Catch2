@@ -3,7 +3,7 @@ import sys
 import subprocess
 import re
 
-filenameParser = re.compile( r'\s*.*/(.*\.cpp)(.*)' )
+filenameParser = re.compile( r'\s*.*/(.*\..pp)(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 
 catchPath = os.path.realpath(os.path.dirname(sys.argv[0]))

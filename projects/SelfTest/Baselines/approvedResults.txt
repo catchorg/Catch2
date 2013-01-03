@@ -2123,7 +2123,7 @@ Summary for test case 'second tag':
 -- Test case: 'selftest/main' ----------------------------------
 -- Section: 'selftest/expected result' -------------------------
 -- Section: 'selftest/expected result/failing tests' -----------
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:106:
+catch_self_test.hpp:106:
 [106]   succeeded
 [with message: Tests failed, as expected]
 
@@ -2209,7 +2209,7 @@ All 25 assertions passed
 
 -- Section: 'selftest/expected result' -------------------------
 -- Section: 'selftest/expected result/succeeding tests' --------
-/Users/Phil/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/catch_self_test.hpp:95:
+catch_self_test.hpp:95:
 [95]   succeeded
 [with message: Tests passed, as expected]
 
