@@ -9007,3 +9007,1426 @@ BDDTests.cpp" line="37">
   </Group>
   <OverallResults successes="506" failures="101"/>
 </Catch>
+[Started testing: CatchSelfTest]
+[Started group: '~dummy']
+
+[Running: ./succeeding/Approx/simple]
+ApproxTests.cpp:20: d == Approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:21: d != Approx( 1.22 ) succeeded for: 1.23 != Approx( 1.22 )
+ApproxTests.cpp:22: d != Approx( 1.24 ) succeeded for: 1.23 != Approx( 1.24 )
+ApproxTests.cpp:24: Approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
+ApproxTests.cpp:25: Approx( d ) != 1.22 succeeded for: Approx( 1.23 ) != 1.22
+ApproxTests.cpp:26: Approx( d ) != 1.24 succeeded for: Approx( 1.23 ) != 1.24
+[Finished: './succeeding/Approx/simple' All tests passed (6 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/epsilon]
+ApproxTests.cpp:38: d != Approx( 1.231 ) succeeded for: 1.23 != Approx( 1.231 )
+ApproxTests.cpp:39: d == Approx( 1.231 ).epsilon( 0.1 ) succeeded for: 1.23 == Approx( 1.231 )
+[Finished: './succeeding/Approx/epsilon' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/float]
+ApproxTests.cpp:49: 1.23f == Approx( 1.23f ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:50: 0.0f == Approx( 0.0f ) succeeded for: 0 == Approx( 0 )
+[Finished: './succeeding/Approx/float' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/int]
+ApproxTests.cpp:60: 1 == Approx( 1 ) succeeded
+ApproxTests.cpp:61: 0 == Approx( 0 ) succeeded
+[Finished: './succeeding/Approx/int' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/mixed]
+ApproxTests.cpp:75: 1.0f == Approx( 1 ) succeeded for: 1 == Approx( 1 )
+ApproxTests.cpp:76: 0 == Approx( dZero) succeeded for: 0 == Approx( 0 )
+ApproxTests.cpp:77: 0 == Approx( dSmall ).epsilon( 0.001 ) succeeded for: 0 == Approx( 1e-05 )
+ApproxTests.cpp:78: 1.234f == Approx( dMedium ) succeeded for: 1.234 == Approx( 1.234 )
+ApproxTests.cpp:79: dMedium == Approx( 1.234f ) succeeded for: 1.234 == Approx( 1.234 )
+[Finished: './succeeding/Approx/mixed' All tests passed (5 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/custom]
+ApproxTests.cpp:93: d == approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:94: d == approx( 1.22 ) succeeded for: 1.23 == Approx( 1.22 )
+ApproxTests.cpp:95: d == approx( 1.24 ) succeeded for: 1.23 == Approx( 1.24 )
+ApproxTests.cpp:96: d != approx( 1.25 ) succeeded for: 1.23 != Approx( 1.25 )
+ApproxTests.cpp:98: approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
+ApproxTests.cpp:99: approx( d ) == 1.22 succeeded for: Approx( 1.23 ) == 1.22
+ApproxTests.cpp:100: approx( d ) == 1.24 succeeded for: Approx( 1.23 ) == 1.24
+ApproxTests.cpp:101: approx( d ) != 1.25 succeeded for: Approx( 1.23 ) != 1.25
+[Finished: './succeeding/Approx/custom' All tests passed (8 assertions in 1 test case)]
+
+[Running: ./succeeding/TestClass/succeedingCase]
+ClassTests.cpp:24: s == "hello" succeeded for: "hello" == "hello"
+[Finished: './succeeding/TestClass/succeedingCase' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./failing/TestClass/failingCase]
+ClassTests.cpp:28: s == "world" failed for: "hello" == "world"
+[Finished: './failing/TestClass/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/Fixture/succeedingCase]
+ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
+[Finished: './succeeding/Fixture/succeedingCase' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./failing/Fixture/failingCase]
+ClassTests.cpp:55: m_a == 2 failed for: 1 == 2
+[Finished: './failing/Fixture/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/conditions/equality]
+ConditionTests.cpp:55: data.int_seven == 7 succeeded for: 7 == 7
+ConditionTests.cpp:56: data.float_nine_point_one == Approx( 9.1f ) succeeded for: 9.1 == Approx( 9.1 )
+ConditionTests.cpp:57: data.double_pi == Approx( 3.1415926535 ) succeeded for: 3.14159 == Approx( 3.14159 )
+ConditionTests.cpp:58: data.str_hello == "hello" succeeded for: "hello" == "hello"
+ConditionTests.cpp:59: "hello" == data.str_hello succeeded for: "hello" == "hello"
+ConditionTests.cpp:60: data.str_hello.size() == 5 succeeded for: 5 == 5
+ConditionTests.cpp:63: x == Approx( 1.3 ) succeeded for: 1.3 == Approx( 1.3 )
+[Finished: './succeeding/conditions/equality' All tests passed (7 assertions in 1 test case)]
+
+[Running: ./failing/conditions/equality]
+ConditionTests.cpp:71: data.int_seven == 6 failed for: 7 == 6
+ConditionTests.cpp:72: data.int_seven == 8 failed for: 7 == 8
+ConditionTests.cpp:73: data.int_seven == 0 failed for: 7 == 0
+ConditionTests.cpp:74: data.float_nine_point_one == Approx( 9.11f ) failed for: 9.1 == Approx( 9.11 )
+ConditionTests.cpp:75: data.float_nine_point_one == Approx( 9.0f ) failed for: 9.1 == Approx( 9 )
+ConditionTests.cpp:76: data.float_nine_point_one == Approx( 1 ) failed for: 9.1 == Approx( 1 )
+ConditionTests.cpp:77: data.float_nine_point_one == Approx( 0 ) failed for: 9.1 == Approx( 0 )
+ConditionTests.cpp:78: data.double_pi == Approx( 3.1415 ) failed for: 3.14159 == Approx( 3.1415 )
+ConditionTests.cpp:79: data.str_hello == "goodbye" failed for: "hello" == "goodbye"
+ConditionTests.cpp:80: data.str_hello == "hell" failed for: "hello" == "hell"
+ConditionTests.cpp:81: data.str_hello == "hello1" failed for: "hello" == "hello1"
+ConditionTests.cpp:82: data.str_hello.size() == 6 failed for: 5 == 6
+ConditionTests.cpp:85: x == Approx( 1.301 ) failed for: 1.3 == Approx( 1.301 )
+[Finished: './failing/conditions/equality' 1 test case failed (All 13 assertions failed)]
+
+[Running: ./succeeding/conditions/inequality]
+ConditionTests.cpp:93: data.int_seven != 6 succeeded for: 7 != 6
+ConditionTests.cpp:94: data.int_seven != 8 succeeded for: 7 != 8
+ConditionTests.cpp:95: data.float_nine_point_one != Approx( 9.11f ) succeeded for: 9.1 != Approx( 9.11 )
+ConditionTests.cpp:96: data.float_nine_point_one != Approx( 9.0f ) succeeded for: 9.1 != Approx( 9 )
+ConditionTests.cpp:97: data.float_nine_point_one != Approx( 1 ) succeeded for: 9.1 != Approx( 1 )
+ConditionTests.cpp:98: data.float_nine_point_one != Approx( 0 ) succeeded for: 9.1 != Approx( 0 )
+ConditionTests.cpp:99: data.double_pi != Approx( 3.1415 ) succeeded for: 3.14159 != Approx( 3.1415 )
+ConditionTests.cpp:100: data.str_hello != "goodbye" succeeded for: "hello" != "goodbye"
+ConditionTests.cpp:101: data.str_hello != "hell" succeeded for: "hello" != "hell"
+ConditionTests.cpp:102: data.str_hello != "hello1" succeeded for: "hello" != "hello1"
+ConditionTests.cpp:103: data.str_hello.size() != 6 succeeded for: 5 != 6
+[Finished: './succeeding/conditions/inequality' All tests passed (11 assertions in 1 test case)]
+
+[Running: ./failing/conditions/inequality]
+ConditionTests.cpp:111: data.int_seven != 7 failed for: 7 != 7
+ConditionTests.cpp:112: data.float_nine_point_one != Approx( 9.1f ) failed for: 9.1 != Approx( 9.1 )
+ConditionTests.cpp:113: data.double_pi != Approx( 3.1415926535 ) failed for: 3.14159 != Approx( 3.14159 )
+ConditionTests.cpp:114: data.str_hello != "hello" failed for: "hello" != "hello"
+ConditionTests.cpp:115: data.str_hello.size() != 5 failed for: 5 != 5
+[Finished: './failing/conditions/inequality' 1 test case failed (All 5 assertions failed)]
+
+[Running: ./succeeding/conditions/ordered]
+ConditionTests.cpp:124: data.int_seven < 8 succeeded for: 7 < 8
+ConditionTests.cpp:125: data.int_seven > 6 succeeded for: 7 > 6
+ConditionTests.cpp:126: data.int_seven > 0 succeeded for: 7 > 0
+ConditionTests.cpp:127: data.int_seven > -1 succeeded for: 7 > -1
+ConditionTests.cpp:129: data.int_seven >= 7 succeeded for: 7 >= 7
+ConditionTests.cpp:130: data.int_seven >= 6 succeeded for: 7 >= 6
+ConditionTests.cpp:131: data.int_seven <= 7 succeeded for: 7 <= 7
+ConditionTests.cpp:132: data.int_seven <= 8 succeeded for: 7 <= 8
+ConditionTests.cpp:134: data.float_nine_point_one > 9 succeeded for: 9.1 > 9
+ConditionTests.cpp:135: data.float_nine_point_one < 10 succeeded for: 9.1 < 10
+ConditionTests.cpp:136: data.float_nine_point_one < 9.2 succeeded for: 9.1 < 9.2
+ConditionTests.cpp:138: data.str_hello <= "hello" succeeded for: "hello" <= "hello"
+ConditionTests.cpp:139: data.str_hello >= "hello" succeeded for: "hello" >= "hello"
+ConditionTests.cpp:141: data.str_hello < "hellp" succeeded for: "hello" < "hellp"
+ConditionTests.cpp:142: data.str_hello < "zebra" succeeded for: "hello" < "zebra"
+ConditionTests.cpp:143: data.str_hello > "hellm" succeeded for: "hello" > "hellm"
+ConditionTests.cpp:144: data.str_hello > "a" succeeded for: "hello" > "a"
+[Finished: './succeeding/conditions/ordered' All tests passed (17 assertions in 1 test case)]
+
+[Running: ./failing/conditions/ordered]
+ConditionTests.cpp:152: data.int_seven > 7 failed for: 7 > 7
+ConditionTests.cpp:153: data.int_seven < 7 failed for: 7 < 7
+ConditionTests.cpp:154: data.int_seven > 8 failed for: 7 > 8
+ConditionTests.cpp:155: data.int_seven < 6 failed for: 7 < 6
+ConditionTests.cpp:156: data.int_seven < 0 failed for: 7 < 0
+ConditionTests.cpp:157: data.int_seven < -1 failed for: 7 < -1
+ConditionTests.cpp:159: data.int_seven >= 8 failed for: 7 >= 8
+ConditionTests.cpp:160: data.int_seven <= 6 failed for: 7 <= 6
+ConditionTests.cpp:162: data.float_nine_point_one < 9 failed for: 9.1 < 9
+ConditionTests.cpp:163: data.float_nine_point_one > 10 failed for: 9.1 > 10
+ConditionTests.cpp:164: data.float_nine_point_one > 9.2 failed for: 9.1 > 9.2
+ConditionTests.cpp:166: data.str_hello > "hello" failed for: "hello" > "hello"
+ConditionTests.cpp:167: data.str_hello < "hello" failed for: "hello" < "hello"
+ConditionTests.cpp:168: data.str_hello > "hellp" failed for: "hello" > "hellp"
+ConditionTests.cpp:169: data.str_hello > "z" failed for: "hello" > "z"
+ConditionTests.cpp:170: data.str_hello < "hellm" failed for: "hello" < "hellm"
+ConditionTests.cpp:171: data.str_hello < "a" failed for: "hello" < "a"
+ConditionTests.cpp:173: data.str_hello >= "z" failed for: "hello" >= "z"
+ConditionTests.cpp:174: data.str_hello <= "a" failed for: "hello" <= "a"
+[Finished: './failing/conditions/ordered' 1 test case failed (All 19 assertions failed)]
+
+[Running: ./succeeding/conditions/int literals]
+ConditionTests.cpp:188: i == 1 succeeded for: 1 == 1
+ConditionTests.cpp:189: ui == 2 succeeded for: 2 == 2
+ConditionTests.cpp:190: l == 3 succeeded for: 3 == 3
+ConditionTests.cpp:191: ul == 4 succeeded for: 4 == 4
+ConditionTests.cpp:192: c == 5 succeeded for: 5 == 5
+ConditionTests.cpp:193: uc == 6 succeeded for: 6 == 6
+ConditionTests.cpp:195: 1 == i succeeded for: 1 == 1
+ConditionTests.cpp:196: 2 == ui succeeded for: 2 == 2
+ConditionTests.cpp:197: 3 == l succeeded for: 3 == 3
+ConditionTests.cpp:198: 4 == ul succeeded for: 4 == 4
+ConditionTests.cpp:199: 5 == c succeeded for: 5 == 5
+ConditionTests.cpp:200: 6 == uc succeeded for: 6 == 6
+ConditionTests.cpp:202: (std::numeric_limits<unsigned long>::max)() > ul succeeded for: 0x<hex digits> > 4
+[Finished: './succeeding/conditions/int literals' All tests passed (13 assertions in 1 test case)]
+
+[Running: ./succeeding/conditions//long_to_unsigned_x]
+ConditionTests.cpp:223: long_var == unsigned_char_var succeeded for: 1 == 1
+ConditionTests.cpp:224: long_var == unsigned_short_var succeeded for: 1 == 1
+ConditionTests.cpp:225: long_var == unsigned_int_var succeeded for: 1 == 1
+ConditionTests.cpp:226: long_var == unsigned_long_var succeeded for: 1 == 1
+[Finished: './succeeding/conditions//long_to_unsigned_x' All tests passed (4 assertions in 1 test case)]
+
+[Running: ./succeeding/conditions/const ints to int literal]
+ConditionTests.cpp:237: unsigned_char_var == 1 succeeded for: 1 == 1
+ConditionTests.cpp:238: unsigned_short_var == 1 succeeded for: 1 == 1
+ConditionTests.cpp:239: unsigned_int_var == 1 succeeded for: 1 == 1
+ConditionTests.cpp:240: unsigned_long_var == 1 succeeded for: 1 == 1
+[Finished: './succeeding/conditions/const ints to int literal' All tests passed (4 assertions in 1 test case)]
+
+[Running: ./succeeding/conditions/negative ints]
+ConditionTests.cpp:246: ( -1 > 2u ) succeeded for: true
+ConditionTests.cpp:247: -1 > 2u succeeded for: -1 > 2
+ConditionTests.cpp:249: ( 2u < -1 ) succeeded for: true
+ConditionTests.cpp:250: 2u < -1 succeeded for: 2 < -1
+ConditionTests.cpp:253: ( minInt > 2u ) succeeded for: true
+ConditionTests.cpp:254: minInt > 2u succeeded for: -2147483648 > 2
+[Finished: './succeeding/conditions/negative ints' All tests passed (6 assertions in 1 test case)]
+
+[Running: ./succeeding/conditions/computed ints]
+ConditionTests.cpp:269: 54 == 6*9 succeeded for: 54 == 54
+[Finished: './succeeding/conditions/computed ints' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./succeeding/conditions/ptr]
+ConditionTests.cpp:285: p == __null succeeded for: __null == 0
+ConditionTests.cpp:286: p == pNULL succeeded for: __null == __null
+ConditionTests.cpp:291: p != __null succeeded for: 0x<hex digits> != 0
+ConditionTests.cpp:294: cp != __null succeeded for: 0x<hex digits> != 0
+ConditionTests.cpp:297: cpc != __null succeeded for: 0x<hex digits> != 0
+ConditionTests.cpp:299: returnsNull() == __null succeeded for: {null string} == 0
+ConditionTests.cpp:300: returnsConstNull() == __null succeeded for: {null string} == 0
+ConditionTests.cpp:302: __null != p succeeded for: 0 != 0x<hex digits>
+[Finished: './succeeding/conditions/ptr' All tests passed (8 assertions in 1 test case)]
+
+[Running: ./succeeding/conditions/not]
+ConditionTests.cpp:317: false == false succeeded
+ConditionTests.cpp:318: true == true succeeded
+ConditionTests.cpp:319: !false succeeded for: true
+ConditionTests.cpp:320: !false succeeded
+ConditionTests.cpp:322: !falseValue succeeded for: true
+ConditionTests.cpp:323: !falseValue succeeded for: !false
+ConditionTests.cpp:325: !(1 == 2) succeeded for: true
+ConditionTests.cpp:326: !1 == 2 succeeded for: !(1 == 2)
+[Finished: './succeeding/conditions/not' All tests passed (8 assertions in 1 test case)]
+
+[Running: ./failing/conditions/not]
+ConditionTests.cpp:334: false != false failed
+ConditionTests.cpp:335: true != true failed
+ConditionTests.cpp:336: !true failed for: false
+ConditionTests.cpp:337: !true failed
+ConditionTests.cpp:339: !trueValue failed for: false
+ConditionTests.cpp:340: !trueValue failed for: !true
+ConditionTests.cpp:342: !(1 == 1) failed for: false
+ConditionTests.cpp:343: !1 == 1 failed for: !(1 == 1)
+[Finished: './failing/conditions/not' 1 test case failed (All 8 assertions failed)]
+
+[Running: ./succeeding/exceptions/explicit]
+ExceptionTests.cpp:39: thisThrows() succeeded
+ExceptionTests.cpp:40: thisDoesntThrow() succeeded
+ExceptionTests.cpp:41: thisThrows() succeeded
+[Finished: './succeeding/exceptions/explicit' All tests passed (3 assertions in 1 test case)]
+
+[Running: ./failing/exceptions/explicit]
+ExceptionTests.cpp:47: thisThrows() failed with unexpected exception with message: 'expected exception'
+ExceptionTests.cpp:48: thisDoesntThrow() failed because no exception was thrown where one was expected
+ExceptionTests.cpp:49: thisThrows() failed with unexpected exception with message: 'expected exception'
+[Finished: './failing/exceptions/explicit' 1 test case failed (All 3 assertions failed)]
+
+[Running: ./failing/exceptions/implicit]
+ExceptionTests.cpp:52: Unexpected exception with message: 'unexpected exception'
+[Finished: './failing/exceptions/implicit' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/implicit/2]
+ExceptionTests.cpp:60: 1 == 1 succeeded
+ExceptionTests.cpp:60: {Unknown expression after this line} failed with unexpected exception with message: 'unexpected exception'
+[Finished: './failing/exceptions/implicit/2' 1 test case failed (1 of 2 assertions failed)]
+
+[Running: ./succeeding/exceptions/implicit]
+
+No assertions in test case, './succeeding/exceptions/implicit'
+
+[Finished: './succeeding/exceptions/implicit' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom]
+ExceptionTests.cpp:102: Unexpected exception with message: 'custom exception'
+[Finished: './failing/exceptions/custom' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom/nothrow]
+ExceptionTests.cpp:109: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
+[Finished: './failing/exceptions/custom/nothrow' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom/throw]
+ExceptionTests.cpp:114: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
+[Finished: './failing/exceptions/custom/throw' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/exceptions/custom/double]
+ExceptionTests.cpp:118: Unexpected exception with message: '3.14'
+[Finished: './failing/exceptions/custom/double' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/exceptions/notimplemented]
+ExceptionTests.cpp:129: thisFunctionNotImplemented( 7 ) succeeded
+[Finished: './succeeding/exceptions/notimplemented' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./succeeding/generators/1]
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 200 == 200
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 202 == 202
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 204 == 204
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 206 == 206
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 208 == 208
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 210 == 210
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 212 == 212
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 2 == 2
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 4 == 4
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 6 == 6
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 8 == 8
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 10 == 10
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 30 == 30
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 40 == 40
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 42 == 42
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+GeneratorTests.cpp:26: multiply( i, 2 ) == i*2 succeeded for: 72 == 72
+GeneratorTests.cpp:27: multiply( j, 2 ) == j*2 succeeded for: 214 == 214
+[Finished: './succeeding/generators/1' All tests passed (144 assertions in 1 test case)]
+
+[Running: ./succeeding/message]
+MessageTests.cpp:14: [warning: this is a warning]
+
+No assertions in test case, './succeeding/message'
+
+[Finished: './succeeding/message' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/succeed]
+MessageTests.cpp:18:  succeeded
+[with message: this is a success]
+[Finished: './succeeding/succeed' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./failing/message/info/1]
+MessageTests.cpp:23: [info: this message should be logged]
+MessageTests.cpp:24: [info: so should this]
+MessageTests.cpp:26: a == 1 failed for: 2 == 1
+[Finished: './failing/message/info/1' 1 test case failed (1 assertion failed)]
+
+[Running: ./mixed/message/info/2]
+MessageTests.cpp:33: a == 2 succeeded for: 2 == 2
+MessageTests.cpp:31: [info: this message should be logged]
+MessageTests.cpp:35: [info: this message should be logged, too]
+MessageTests.cpp:37: a == 1 failed for: 2 == 1
+MessageTests.cpp:39: [info: and this, but later]
+MessageTests.cpp:41: a == 0 failed for: 2 == 0
+MessageTests.cpp:45: a == 2 succeeded for: 2 == 2
+[Finished: './mixed/message/info/2' 1 test case failed (2 of 4 assertions failed)]
+
+[Running: ./failing/message/fail]
+MessageTests.cpp:51: failed with message: 'This is a failure'
+[Finished: './failing/message/fail' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/message/sections]
+
+[Started section: 'one']
+MessageTests.cpp:58: failed with message: 'Message from section one'
+[End of section: 'one' 1 assertion failed]
+
+[Started section: 'two']
+MessageTests.cpp:63: failed with message: 'Message from section two'
+[End of section: 'two' 1 assertion failed]
+
+[Finished: './failing/message/sections' 1 test case failed (All 2 assertions failed)]
+Message from section one
+
+[Running: ./succeeding/message/sections/stdout]
+[Started section: 'one']
+
+No assertions in section, 'one'
+
+[End of section: 'one' 1 assertion failed]
+
+Message from section two
+[Started section: 'two']
+
+No assertions in section, 'two'
+
+[End of section: 'two' 1 assertion failed]
+
+[Finished: './succeeding/message/sections/stdout' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./mixed/message/scoped]
+MessageTests.cpp:86: i < 10 succeeded for: 0 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 1 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 2 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 3 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 4 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 5 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 6 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 7 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 8 < 10
+MessageTests.cpp:86: i < 10 succeeded for: 9 < 10
+MessageTests.cpp:86: i < 10 succeeded[info: current counter 10]
+MessageTests.cpp:86: i < 10 succeeded[info: i := 10]
+MessageTests.cpp:86: i < 10 failed for: 10 < 10
+[Finished: './mixed/message/scoped' 1 test case failed (1 of 11 assertions failed)]
+
+[Running: ./succeeding/nofail]
+MessageTests.cpp:92: 1 == 2 failed - but was ok
+
+No assertions in test case, './succeeding/nofail'
+
+[Finished: './succeeding/nofail' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/Misc/Sections]
+[Started section: 's1']
+MiscTests.cpp:25: a != b succeeded for: 1 != 2
+MiscTests.cpp:26: b != a succeeded for: 2 != 1
+[End of section: 's1' All 2 assertions passed]
+
+[Started section: 's2']
+MiscTests.cpp:31: a != b succeeded for: 1 != 2
+[End of section: 's2' 1 assertion passed]
+
+[Finished: './succeeding/Misc/Sections' All tests passed (3 assertions in 1 test case)]
+
+[Running: ./succeeding/Misc/Sections/nested]
+[Started section: 's1']
+MiscTests.cpp:42: a != b succeeded for: 1 != 2
+MiscTests.cpp:43: b != a succeeded for: 2 != 1
+[Started section: 's2']
+MiscTests.cpp:47: a != b succeeded for: 1 != 2
+[End of section: 's2' 1 assertion passed]
+
+[End of section: 's1' All 3 assertions passed]
+
+[Finished: './succeeding/Misc/Sections/nested' All tests passed (3 assertions in 1 test case)]
+
+[Running: ./mixed/Misc/Sections/nested2]
+[Started section: 's1']
+[Started section: 's2']
+MiscTests.cpp:61: a == b failed for: 1 == 2
+[End of section: 's2' 1 assertion failed]
+
+[End of section: 's1' 1 assertion failed]
+
+[Started section: 's1']
+[Started section: 's3']
+MiscTests.cpp:66: a != b succeeded for: 1 != 2
+[End of section: 's3' 1 assertion passed]
+
+[End of section: 's1' 1 assertion passed]
+
+[Started section: 's1']
+[Started section: 's4']
+MiscTests.cpp:70: a < b succeeded for: 1 < 2
+[End of section: 's4' 1 assertion passed]
+
+[End of section: 's1' 1 assertion passed]
+
+[Finished: './mixed/Misc/Sections/nested2' 1 test case failed (1 of 3 assertions failed)]
+
+[Running: ./Sections/nested/a/b]
+[Started section: 'c']
+[Started section: 'd (leaf)']
+
+No assertions in section, 'd (leaf)'
+
+[End of section: 'd (leaf)' 1 assertion failed]
+
+[End of section: 'c' 1 assertion failed]
+
+[Started section: 'c']
+[Started section: 'e (leaf)']
+
+No assertions in section, 'e (leaf)'
+
+[End of section: 'e (leaf)' 1 assertion failed]
+
+[End of section: 'c' 1 assertion failed]
+
+[Started section: 'f (leaf)']
+
+No assertions in section, 'f (leaf)'
+
+[End of section: 'f (leaf)' 1 assertion failed]
+
+[Finished: './Sections/nested/a/b' 1 test case failed (All 3 assertions failed)]
+
+[Running: ./mixed/Misc/Sections/loops]
+[Started section: 's1']
+MiscTests.cpp:103: b > a failed for: 0 > 1
+[End of section: 's1' 1 assertion failed]
+
+[Finished: './mixed/Misc/Sections/loops' 1 test case failed (1 assertion failed)]
+
+[Running: ./mixed/Misc/loops]
+MiscTests.cpp:114: [info: Testing if fib[0] (1) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:114: [info: Testing if fib[1] (1) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
+MiscTests.cpp:114: [info: Testing if fib[2] (2) is even]
+MiscTests.cpp:114: [info: Testing if fib[3] (3) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:114: [info: Testing if fib[4] (5) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
+MiscTests.cpp:114: [info: Testing if fib[5] (8) is even]
+MiscTests.cpp:114: [info: Testing if fib[6] (13) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:114: [info: Testing if fib[7] (21) is even]
+MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+[Finished: './mixed/Misc/loops' 1 test case failed (6 of 8 assertions failed)]
+Some information
+An error
+
+[Running: ./succeeding/Misc/stdout,stderr]
+
+No assertions in test case, './succeeding/Misc/stdout,stderr'
+
+[Finished: './succeeding/Misc/stdout,stderr' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/Misc/null strings]
+MiscTests.cpp:133: makeString( false ) != static_cast<char*>(__null) succeeded for: "valid string" != {null string}
+MiscTests.cpp:134: makeString( true ) == static_cast<char*>(__null) succeeded for: {null string} == {null string}
+[Finished: './succeeding/Misc/null strings' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./failing/info]
+MiscTests.cpp:139: [info: hi]
+MiscTests.cpp:141: [info: i := 7]
+MiscTests.cpp:142: false failed
+[Finished: './failing/info' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/checkedif]
+MiscTests.cpp:147: flag succeeded for: true
+MiscTests.cpp:155: testCheckedIf( true ) succeeded for: true
+[Finished: './succeeding/checkedif' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./failing/checkedif]
+MiscTests.cpp:147: flag failed for: false
+MiscTests.cpp:160: testCheckedIf( false ) failed for: false
+[Finished: './failing/checkedif' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./succeeding/checkedelse]
+MiscTests.cpp:165: flag succeeded for: true
+MiscTests.cpp:173: testCheckedElse( true ) succeeded for: true
+[Finished: './succeeding/checkedelse' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./failing/checkedelse]
+MiscTests.cpp:165: flag failed for: false
+MiscTests.cpp:178: testCheckedElse( false ) failed for: false
+[Finished: './failing/checkedelse' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./misc/xmlentitycheck]
+[Started section: 'embedded xml']
+
+No assertions in section, 'embedded xml'
+
+[End of section: 'embedded xml' 1 assertion failed]
+
+[Started section: 'encoded chars']
+
+No assertions in section, 'encoded chars'
+
+[End of section: 'encoded chars' 1 assertion failed]
+
+[Finished: './misc/xmlentitycheck' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./manual/onechar]
+MiscTests.cpp:195: [info: 3]
+MiscTests.cpp:196: false failed
+[Finished: './manual/onechar' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/atomic if]
+MiscTests.cpp:206: x == 0 succeeded for: 0 == 0
+[Finished: './succeeding/atomic if' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./succeeding/matchers]
+MiscTests.cpp:216: testStringForMatching() Contains( "string" ) succeeded for:
+	"this string contains 'abc' as a substring" contains: "string"
+MiscTests.cpp:217: testStringForMatching() Contains( "abc" ) succeeded for:
+	"this string contains 'abc' as a substring" contains: "abc"
+MiscTests.cpp:219: testStringForMatching() StartsWith( "this" ) succeeded for:
+	"this string contains 'abc' as a substring" starts with: "this"
+MiscTests.cpp:220: testStringForMatching() EndsWith( "substring" ) succeeded for:
+	"this string contains 'abc' as a substring" ends with: "substring"
+[Finished: './succeeding/matchers' All tests passed (4 assertions in 1 test case)]
+
+[Running: ./failing/matchers/Contains]
+MiscTests.cpp:225: testStringForMatching() Contains( "not there" ) failed for:
+	"this string contains 'abc' as a substring" contains: "not there"
+[Finished: './failing/matchers/Contains' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/matchers/StartsWith]
+MiscTests.cpp:230: testStringForMatching() StartsWith( "string" ) failed for:
+	"this string contains 'abc' as a substring" starts with: "string"
+[Finished: './failing/matchers/StartsWith' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/matchers/EndsWith]
+MiscTests.cpp:235: testStringForMatching() EndsWith( "this" ) failed for:
+	"this string contains 'abc' as a substring" ends with: "this"
+[Finished: './failing/matchers/EndsWith' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/matchers/Equals]
+MiscTests.cpp:240: testStringForMatching() Equals( "something else" ) failed for:
+	"this string contains 'abc' as a substring" equals: "something else"
+[Finished: './failing/matchers/Equals' 1 test case failed (1 assertion failed)]
+
+[Running: /succeeding/matchers/AllOf]
+MiscTests.cpp:248: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
+"this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
+[Finished: '/succeeding/matchers/AllOf' All tests passed (1 assertion in 1 test case)]
+
+[Running: /succeeding/matchers/AnyOf]
+MiscTests.cpp:252: testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) succeeded for:
+"this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
+MiscTests.cpp:253: testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) succeeded for:
+"this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
+[Finished: '/succeeding/matchers/AnyOf' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/matchers/Equals]
+MiscTests.cpp:258: testStringForMatching() Equals( "this string contains 'abc' as a substring" ) succeeded for:
+"this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
+[Finished: './succeeding/matchers/Equals' All tests passed (1 assertion in 1 test case)]
+
+[Running: example/factorial]
+MiscTests.cpp:269: Factorial(0) == 1 succeeded for: 1 == 1
+MiscTests.cpp:270: Factorial(1) == 1 succeeded for: 1 == 1
+MiscTests.cpp:271: Factorial(2) == 2 succeeded for: 2 == 2
+MiscTests.cpp:272: Factorial(3) == 6 succeeded for: 6 == 6
+MiscTests.cpp:273: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 3628800
+[Finished: 'example/factorial' All tests passed (5 assertions in 1 test case)]
+
+[Running: empty]
+
+No assertions in test case, 'empty'
+
+[Finished: 'empty' 1 test case failed (1 assertion failed)]
+
+[Running: Nice descriptive name]
+MiscTests.cpp:282: [warning: This one ran]
+
+No assertions in test case, 'Nice descriptive name'
+
+[Finished: 'Nice descriptive name' 1 test case failed (1 assertion failed)]
+
+[Running: first tag]
+
+No assertions in test case, 'first tag'
+
+[Finished: 'first tag' 1 test case failed (1 assertion failed)]
+
+[Running: second tag]
+
+No assertions in test case, 'second tag'
+
+[Finished: 'second tag' 1 test case failed (1 assertion failed)]
+
+[Running: selftest/main]
+[Started section: 'selftest/expected result']
+[Started section: 'selftest/expected result/failing tests']
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+catch_self_test.hpp:106:  succeeded
+[with message: Tests failed, as expected]
+[End of section: 'selftest/expected result/failing tests' All 25 assertions passed]
+
+[End of section: 'selftest/expected result' All 25 assertions passed]
+
+[Started section: 'selftest/expected result']
+[Started section: 'selftest/expected result/succeeding tests']
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+Message from section one
+Message from section two
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+Some information
+An error
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:95:  succeeded
+[with message: Tests passed, as expected]
+[End of section: 'selftest/expected result/succeeding tests' All 43 assertions passed]
+
+[End of section: 'selftest/expected result' All 43 assertions passed]
+
+Message from section one
+Message from section two
+Some information
+An error
+[Started section: 'selftest/test counts']
+[Started section: 'selftest/test counts/succeeding tests']
+TestMain.cpp:40: totals.assertions.passed == 291 succeeded for: 291 == 291
+TestMain.cpp:41: totals.assertions.failed == 0 succeeded for: 0 == 0
+[End of section: 'selftest/test counts/succeeding tests' All 2 assertions passed]
+
+[End of section: 'selftest/test counts' All 2 assertions passed]
+
+[Started section: 'selftest/test counts']
+[Started section: 'selftest/test counts/failing tests']
+TestMain.cpp:47: totals.assertions.passed == 1 succeeded for: 1 == 1
+TestMain.cpp:48: totals.assertions.failed == 72 succeeded for: 72 == 72
+[End of section: 'selftest/test counts/failing tests' All 2 assertions passed]
+
+[End of section: 'selftest/test counts' All 2 assertions passed]
+
+[Finished: 'selftest/main' All tests passed (72 assertions in 1 test case)]
+
+[Running: meta/Misc/Sections]
+TestMain.cpp:57: totals.assertions.passed == 2 succeeded for: 2 == 2
+TestMain.cpp:58: totals.assertions.failed == 1 succeeded for: 1 == 1
+[Finished: 'meta/Misc/Sections' All tests passed (2 assertions in 1 test case)]
+
+[Running: selftest/parser/2]
+[Started section: 'default']
+TestMain.cpp:97: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:99: config.shouldDebugBreak == false succeeded for: false == false
+TestMain.cpp:100: config.cutoff == -1 succeeded for: -1 == -1
+TestMain.cpp:101: config.allowThrows == true succeeded for: true == true
+TestMain.cpp:102: config.reporter.empty() succeeded for: true
+[End of section: 'default' All 5 assertions passed]
+
+[Started section: 'test lists']
+[Started section: '-t/1']
+TestMain.cpp:108: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:110: config.filters.size() == 1 succeeded for: 1 == 1
+TestMain.cpp:111: config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
+TestMain.cpp:112: config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
+[End of section: '-t/1' All 4 assertions passed]
+
+[End of section: 'test lists' All 4 assertions passed]
+
+[Started section: 'test lists']
+[Started section: '-t/exclude:1']
+TestMain.cpp:116: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:118: config.filters.size() == 1 succeeded for: 1 == 1
+TestMain.cpp:119: config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false succeeded for: false == false
+TestMain.cpp:120: config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) succeeded for: true
+[End of section: '-t/exclude:1' All 4 assertions passed]
+
+[End of section: 'test lists' All 4 assertions passed]
+
+[Started section: 'test lists']
+[Started section: '--test/1']
+TestMain.cpp:125: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:127: config.filters.size() == 1 succeeded for: 1 == 1
+TestMain.cpp:128: config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
+TestMain.cpp:129: config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
+[End of section: '--test/1' All 4 assertions passed]
+
+[End of section: 'test lists' All 4 assertions passed]
+
+[Started section: 'test lists']
+[Started section: '--test/exclude:1']
+TestMain.cpp:134: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:136: config.filters.size() == 1 succeeded for: 1 == 1
+TestMain.cpp:137: config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false succeeded for: false == false
+TestMain.cpp:138: config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) succeeded for: true
+[End of section: '--test/exclude:1' All 4 assertions passed]
+
+[End of section: 'test lists' All 4 assertions passed]
+
+[Started section: 'test lists']
+[Started section: '--test/exclude:2']
+TestMain.cpp:143: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:145: config.filters.size() == 1 succeeded for: 1 == 1
+TestMain.cpp:146: config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false succeeded for: false == false
+TestMain.cpp:147: config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) succeeded for: true
+[End of section: '--test/exclude:2' All 4 assertions passed]
+
+[End of section: 'test lists' All 4 assertions passed]
+
+[Started section: 'test lists']
+[Started section: '-t/2']
+TestMain.cpp:152: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:154: config.filters.size() == 1 succeeded for: 1 == 1
+TestMain.cpp:155: config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
+TestMain.cpp:156: config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
+TestMain.cpp:157: config.filters[0].shouldInclude( fakeTestCase( "test2" ) ) succeeded for: true
+[End of section: '-t/2' All 5 assertions passed]
+
+[End of section: 'test lists' All 5 assertions passed]
+
+[Started section: 'test lists']
+[Started section: '-t/0']
+TestMain.cpp:162: parseIntoConfigAndReturnError( argv, config ) Contains( "at least 1" ) succeeded for:
+"Error while parsing arguments. Expected at least 1 argument." contains: "at least 1"
+[End of section: '-t/0' 1 assertion passed]
+
+[End of section: 'test lists' 1 assertion passed]
+
+[Started section: 'reporter']
+[Started section: '-r/console']
+TestMain.cpp:169: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:171: config.reporter == "console" succeeded for: "console" == "console"
+[End of section: '-r/console' All 2 assertions passed]
+
+[End of section: 'reporter' All 2 assertions passed]
+
+[Started section: 'reporter']
+[Started section: '-r/xml']
+TestMain.cpp:175: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:177: config.reporter == "xml" succeeded for: "xml" == "xml"
+[End of section: '-r/xml' All 2 assertions passed]
+
+[End of section: 'reporter' All 2 assertions passed]
+
+[Started section: 'reporter']
+[Started section: '--reporter/junit']
+TestMain.cpp:181: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:183: config.reporter == "junit" succeeded for: "junit" == "junit"
+[End of section: '--reporter/junit' All 2 assertions passed]
+
+[End of section: 'reporter' All 2 assertions passed]
+
+[Started section: 'reporter']
+[Started section: '-r/error']
+TestMain.cpp:187: parseIntoConfigAndReturnError( argv, config ) Contains( "1 argument" ) succeeded for:
+"Error while parsing arguments. Expected 1 argument. Arguments were: one two" contains: "1 argument"
+[End of section: '-r/error' 1 assertion passed]
+
+[End of section: 'reporter' 1 assertion passed]
+
+[Started section: 'debugger']
+[Started section: '-b']
+TestMain.cpp:194: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:196: config.shouldDebugBreak == true succeeded for: true == true
+[End of section: '-b' All 2 assertions passed]
+
+[End of section: 'debugger' All 2 assertions passed]
+
+[Started section: 'debugger']
+[Started section: '--break']
+TestMain.cpp:200: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:202: config.shouldDebugBreak succeeded for: true
+[End of section: '--break' All 2 assertions passed]
+
+[End of section: 'debugger' All 2 assertions passed]
+
+[Started section: 'debugger']
+[Started section: '-b']
+TestMain.cpp:206: parseIntoConfigAndReturnError( argv, config ) Contains( "0 arguments" ) succeeded for:
+"Error while parsing arguments. Expected 0 arguments. Arguments were: unexpected" contains: "0 arguments"
+[End of section: '-b' 1 assertion passed]
+
+[End of section: 'debugger' 1 assertion passed]
+
+[Started section: 'abort']
+[Started section: '-a']
+TestMain.cpp:213: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:215: config.cutoff == 1 succeeded for: 1 == 1
+[End of section: '-a' All 2 assertions passed]
+
+[End of section: 'abort' All 2 assertions passed]
+
+[Started section: 'abort']
+[Started section: '-a/2']
+TestMain.cpp:219: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:221: config.cutoff == 2 succeeded for: 2 == 2
+[End of section: '-a/2' All 2 assertions passed]
+
+[End of section: 'abort' All 2 assertions passed]
+
+[Started section: 'abort']
+[Started section: '-a/error/0']
+TestMain.cpp:225: parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) succeeded for:
+"Error while parsing arguments. threshold must be a number greater than zero. Arguments were: 0" contains: "greater than zero"
+[End of section: '-a/error/0' 1 assertion passed]
+
+[End of section: 'abort' 1 assertion passed]
+
+[Started section: 'abort']
+[Started section: '-a/error/non numeric']
+TestMain.cpp:229: parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) succeeded for:
+"Error while parsing arguments. threshold must be a number greater than zero. Arguments were: oops" contains: "greater than zero"
+[End of section: '-a/error/non numeric' 1 assertion passed]
+
+[End of section: 'abort' 1 assertion passed]
+
+[Started section: 'abort']
+[Started section: '-a/error/two args']
+TestMain.cpp:233: parseIntoConfigAndReturnError( argv, config ) Contains( "0 and 1 argument" ) succeeded for:
+"Error while parsing arguments. Expected between 0 and 1 argument. Arguments were: 1 2" contains: "0 and 1 argument"
+[End of section: '-a/error/two args' 1 assertion passed]
+
+[End of section: 'abort' 1 assertion passed]
+
+[Started section: 'nothrow']
+[Started section: '-nt']
+TestMain.cpp:240: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:242: config.allowThrows == false succeeded for: false == false
+[End of section: '-nt' All 2 assertions passed]
+
+[End of section: 'nothrow' All 2 assertions passed]
+
+[Started section: 'nothrow']
+[Started section: '--nothrow']
+TestMain.cpp:246: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:248: config.allowThrows == false succeeded for: false == false
+[End of section: '--nothrow' All 2 assertions passed]
+
+[End of section: 'nothrow' All 2 assertions passed]
+
+[Started section: 'streams']
+[Started section: '-o filename']
+TestMain.cpp:255: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:257: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+TestMain.cpp:258: config.stream.empty() succeeded for: true
+[End of section: '-o filename' All 3 assertions passed]
+
+[End of section: 'streams' All 3 assertions passed]
+
+[Started section: 'streams']
+[Started section: '-o %stdout']
+TestMain.cpp:262: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:264: config.stream == "stdout" succeeded for: "stdout" == "stdout"
+TestMain.cpp:265: config.outputFilename.empty() succeeded for: true
+[End of section: '-o %stdout' All 3 assertions passed]
+
+[End of section: 'streams' All 3 assertions passed]
+
+[Started section: 'streams']
+[Started section: '--out']
+TestMain.cpp:269: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:271: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+[End of section: '--out' All 2 assertions passed]
+
+[End of section: 'streams' All 2 assertions passed]
+
+[Started section: 'combinations']
+[Started section: '-a -b']
+TestMain.cpp:278: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:280: config.cutoff == 1 succeeded for: 1 == 1
+TestMain.cpp:281: config.shouldDebugBreak succeeded for: true
+TestMain.cpp:282: config.allowThrows == false succeeded for: false == false
+[End of section: '-a -b' All 4 assertions passed]
+
+[End of section: 'combinations' All 4 assertions passed]
+
+[Finished: 'selftest/parser/2' All tests passed (66 assertions in 1 test case)]
+
+[Running: selftest/test filter]
+TestMain.cpp:291: matchAny.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
+TestMain.cpp:292: matchNone.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:297: matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:298: matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
+TestMain.cpp:300: matchHidden.shouldInclude( fakeTestCase( "./any" ) ) succeeded for: true
+TestMain.cpp:301: matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false succeeded for: false == false
+[Finished: 'selftest/test filter' All tests passed (6 assertions in 1 test case)]
+
+[Running: selftest/test filters]
+TestMain.cpp:312: matchHidden.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
+TestMain.cpp:314: filters.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:315: filters.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
+TestMain.cpp:316: filters.shouldInclude( fakeTestCase( "./anything" ) ) == false succeeded for: false == false
+[Finished: 'selftest/test filters' All tests passed (4 assertions in 1 test case)]
+
+[Running: selftest/filter/prefix wildcard]
+TestMain.cpp:322: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
+TestMain.cpp:323: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false succeeded for: false == false
+[Finished: 'selftest/filter/prefix wildcard' All tests passed (2 assertions in 1 test case)]
+
+[Running: selftest/filter/wildcard at both ends]
+TestMain.cpp:328: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
+TestMain.cpp:329: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) succeeded for: true
+TestMain.cpp:330: matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) succeeded for: true
+TestMain.cpp:331: matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false succeeded for: false == false
+[Finished: 'selftest/filter/wildcard at both ends' All tests passed (4 assertions in 1 test case)]
+
+[Running: selftest/option parsers]
+TestMain.cpp:351: opt.parseIntoConfig( parser, config ) succeeded
+TestMain.cpp:353: config.filters.size() == 1 succeeded for: 1 == 1
+TestMain.cpp:354: config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
+TestMain.cpp:355: config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
+[Finished: 'selftest/option parsers' All tests passed (4 assertions in 1 test case)]
+
+[Running: selftest/tags]
+[Started section: 'one tag']
+TestMain.cpp:369: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:370: oneTag.hasTag( "one" ) succeeded for: true
+TestMain.cpp:371: oneTag.getTags().size() == 1 succeeded for: 1 == 1
+TestMain.cpp:373: oneTag.matchesTags( p1 ) == true succeeded for: true == true
+TestMain.cpp:374: oneTag.matchesTags( p2 ) == true succeeded for: true == true
+TestMain.cpp:375: oneTag.matchesTags( p3 ) == false succeeded for: false == false
+TestMain.cpp:376: oneTag.matchesTags( p4 ) == false succeeded for: false == false
+TestMain.cpp:377: oneTag.matchesTags( p5 ) == false succeeded for: false == false
+[End of section: 'one tag' All 8 assertions passed]
+
+[Started section: 'two tags']
+TestMain.cpp:383: twoTags.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:384: twoTags.hasTag( "one" ) succeeded for: true
+TestMain.cpp:385: twoTags.hasTag( "two" ) succeeded for: true
+TestMain.cpp:386: twoTags.hasTag( "three" ) == false succeeded for: false == false
+TestMain.cpp:387: twoTags.getTags().size() == 2 succeeded for: 2 == 2
+TestMain.cpp:389: twoTags.matchesTags( p1 ) == true succeeded for: true == true
+TestMain.cpp:390: twoTags.matchesTags( p2 ) == true succeeded for: true == true
+TestMain.cpp:391: twoTags.matchesTags( p3 ) == true succeeded for: true == true
+TestMain.cpp:392: twoTags.matchesTags( p4 ) == true succeeded for: true == true
+TestMain.cpp:393: twoTags.matchesTags( p5 ) == true succeeded for: true == true
+[End of section: 'two tags' All 10 assertions passed]
+
+[Started section: 'one tag with characters either side']
+TestMain.cpp:399: oneTagWithExtras.getTestCaseInfo().description == "1234" succeeded for: "1234" == "1234"
+TestMain.cpp:400: oneTagWithExtras.hasTag( "one" ) succeeded for: true
+TestMain.cpp:401: oneTagWithExtras.hasTag( "two" ) == false succeeded for: false == false
+TestMain.cpp:402: oneTagWithExtras.getTags().size() == 1 succeeded for: 1 == 1
+[End of section: 'one tag with characters either side' All 4 assertions passed]
+
+[Started section: 'start of a tag, but not closed']
+TestMain.cpp:409: oneTagOpen.getTestCaseInfo().description == "[one" succeeded for: "[one" == "[one"
+TestMain.cpp:410: oneTagOpen.hasTag( "one" ) == false succeeded for: false == false
+TestMain.cpp:411: oneTagOpen.getTags().size() == 0 succeeded for: 0 == 0
+[End of section: 'start of a tag, but not closed' All 3 assertions passed]
+
+[Started section: 'hidden']
+TestMain.cpp:417: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:418: oneTag.hasTag( "hide" ) succeeded for: true
+TestMain.cpp:419: oneTag.isHidden() succeeded for: true
+TestMain.cpp:421: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false == false
+[End of section: 'hidden' All 4 assertions passed]
+
+[Finished: 'selftest/tags' All tests passed (29 assertions in 1 test case)]
+
+[Running: ./succeeding/Tricky/std::pair]
+TrickyTests.cpp:37: (std::pair<int, int>( 1, 2 )) == aNicePair succeeded for:
+
+	std::pair( 1, 2 )
+	==
+	std::pair( 1, 2 )
+[Finished: './succeeding/Tricky/std::pair' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./inprogress/failing/Tricky/trailing expression]
+TrickyTests.cpp:55: [warning: Uncomment the code in this test to check that it gives a sensible compiler error]
+
+No assertions in test case, './inprogress/failing/Tricky/trailing expression'
+
+[Finished: './inprogress/failing/Tricky/trailing expression' 1 test case failed (1 assertion failed)]
+
+[Running: ./inprogress/failing/Tricky/compound lhs]
+TrickyTests.cpp:71: [warning: Uncomment the code in this test to check that it gives a sensible compiler error]
+
+No assertions in test case, './inprogress/failing/Tricky/compound lhs'
+
+[Finished: './inprogress/failing/Tricky/compound lhs' 1 test case failed (1 assertion failed)]
+
+[Running: ./failing/Tricky/non streamable type]
+TrickyTests.cpp:95: &o1 == &o2 failed for: 0x<hex digits> == 0x<hex digits>
+TrickyTests.cpp:96: o1 == o2 failed for: {?} == {?}
+[Finished: './failing/Tricky/non streamable type' 1 test case failed (All 2 assertions failed)]
+
+[Running: ./failing/string literals]
+TrickyTests.cpp:106: std::string( "first" ) == "second" failed for: "first" == "second"
+[Finished: './failing/string literals' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/side-effects]
+TrickyTests.cpp:119: i++ == 7 succeeded for: 7 == 7
+TrickyTests.cpp:120: i++ == 8 succeeded for: 8 == 8
+[Finished: './succeeding/side-effects' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/koenig]
+TrickyTests.cpp:186: 0x<hex digits> == o succeeded for: 0x<hex digits> == {?}
+[Finished: './succeeding/koenig' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./succeeding/non-const==]
+TrickyTests.cpp:212: t == 1u succeeded for: {?} == 1
+[Finished: './succeeding/non-const==' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./succeeding/enum/bits]
+TrickyTests.cpp:224: 0x<hex digits> == bit30and31 succeeded for: 0x<hex digits> == 3221225472
+[Finished: './succeeding/enum/bits' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./succeeding/boolean member]
+TrickyTests.cpp:239: obj.prop != __null succeeded for: 0x<hex digits> != 0
+[Finished: './succeeding/boolean member' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./succeeding/unimplemented static bool]
+[Started section: 'compare to true']
+TrickyTests.cpp:259: is_true<true>::value == true succeeded for: true == true
+TrickyTests.cpp:260: true == is_true<true>::value succeeded for: true == true
+[End of section: 'compare to true' All 2 assertions passed]
+
+[Started section: 'compare to false']
+TrickyTests.cpp:264: is_true<false>::value == false succeeded for: false == false
+TrickyTests.cpp:265: false == is_true<false>::value succeeded for: false == false
+[End of section: 'compare to false' All 2 assertions passed]
+
+[Started section: 'negation']
+TrickyTests.cpp:270: !is_true<false>::value succeeded for: true
+[End of section: 'negation' 1 assertion passed]
+
+[Started section: 'double negation']
+TrickyTests.cpp:275: !!is_true<true>::value succeeded for: true
+[End of section: 'double negation' 1 assertion passed]
+
+[Started section: 'direct']
+TrickyTests.cpp:280: is_true<true>::value succeeded for: true
+TrickyTests.cpp:281: !is_true<false>::value succeeded for: !false
+[End of section: 'direct' All 2 assertions passed]
+
+[Finished: './succeeding/unimplemented static bool' All tests passed (8 assertions in 1 test case)]
+
+[Running: ./succeeding/SafeBool]
+TrickyTests.cpp:313: True succeeded for: true
+TrickyTests.cpp:314: !False succeeded for: true
+TrickyTests.cpp:315: !False succeeded for: !false
+[Finished: './succeeding/SafeBool' All tests passed (3 assertions in 1 test case)]
+
+[Running: scenario name]
+[Started section: 'This stuff exists']
+[Started section: 'I do this']
+[Started section: 'it should do this']
+BDDTests.cpp:37: itDoesThis() succeeded for: true
+[End of section: 'it should do this' 1 assertion passed]
+
+[End of section: 'I do this' 1 assertion passed]
+
+[End of section: 'This stuff exists' 1 assertion passed]
+
+[Finished: 'scenario name' All tests passed (1 assertion in 1 test case)]
+[End of group: '~dummy'. 44 of 95 test cases failed (101 of 607 assertions failed)]
+
+
+[Testing completed. 44 of 95 test cases failed (101 of 607 assertions failed)]
+
+[Started testing: CatchSelfTest]
+[Started group: '~dummy']
+
+[Running: ./succeeding/Approx/simple]
+ApproxTests.cpp:20: d == Approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:21: d != Approx( 1.22 ) succeeded for: 1.23 != Approx( 1.22 )
+ApproxTests.cpp:22: d != Approx( 1.24 ) succeeded for: 1.23 != Approx( 1.24 )
+ApproxTests.cpp:24: Approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
+ApproxTests.cpp:25: Approx( d ) != 1.22 succeeded for: Approx( 1.23 ) != 1.22
+ApproxTests.cpp:26: Approx( d ) != 1.24 succeeded for: Approx( 1.23 ) != 1.24
+[Finished: './succeeding/Approx/simple' All tests passed (6 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/epsilon]
+ApproxTests.cpp:38: d != Approx( 1.231 ) succeeded for: 1.23 != Approx( 1.231 )
+ApproxTests.cpp:39: d == Approx( 1.231 ).epsilon( 0.1 ) succeeded for: 1.23 == Approx( 1.231 )
+[Finished: './succeeding/Approx/epsilon' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/float]
+ApproxTests.cpp:49: 1.23f == Approx( 1.23f ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:50: 0.0f == Approx( 0.0f ) succeeded for: 0 == Approx( 0 )
+[Finished: './succeeding/Approx/float' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/int]
+ApproxTests.cpp:60: 1 == Approx( 1 ) succeeded
+ApproxTests.cpp:61: 0 == Approx( 0 ) succeeded
+[Finished: './succeeding/Approx/int' All tests passed (2 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/mixed]
+ApproxTests.cpp:75: 1.0f == Approx( 1 ) succeeded for: 1 == Approx( 1 )
+ApproxTests.cpp:76: 0 == Approx( dZero) succeeded for: 0 == Approx( 0 )
+ApproxTests.cpp:77: 0 == Approx( dSmall ).epsilon( 0.001 ) succeeded for: 0 == Approx( 1e-05 )
+ApproxTests.cpp:78: 1.234f == Approx( dMedium ) succeeded for: 1.234 == Approx( 1.234 )
+ApproxTests.cpp:79: dMedium == Approx( 1.234f ) succeeded for: 1.234 == Approx( 1.234 )
+[Finished: './succeeding/Approx/mixed' All tests passed (5 assertions in 1 test case)]
+
+[Running: ./succeeding/Approx/custom]
+ApproxTests.cpp:93: d == approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
+ApproxTests.cpp:94: d == approx( 1.22 ) succeeded for: 1.23 == Approx( 1.22 )
+ApproxTests.cpp:95: d == approx( 1.24 ) succeeded for: 1.23 == Approx( 1.24 )
+ApproxTests.cpp:96: d != approx( 1.25 ) succeeded for: 1.23 != Approx( 1.25 )
+ApproxTests.cpp:98: approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
+ApproxTests.cpp:99: approx( d ) == 1.22 succeeded for: Approx( 1.23 ) == 1.22
+ApproxTests.cpp:100: approx( d ) == 1.24 succeeded for: Approx( 1.23 ) == 1.24
+ApproxTests.cpp:101: approx( d ) != 1.25 succeeded for: Approx( 1.23 ) != 1.25
+[Finished: './succeeding/Approx/custom' All tests passed (8 assertions in 1 test case)]
+
+[Running: ./succeeding/TestClass/succeedingCase]
+ClassTests.cpp:24: s == "hello" succeeded for: "hello" == "hello"
+[Finished: './succeeding/TestClass/succeedingCase' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./failing/TestClass/failingCase]
+ClassTests.cpp:28: s == "world" failed for: "hello" == "world"
+[Finished: './failing/TestClass/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/Fixture/succeedingCase]
+ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
+[Finished: './succeeding/Fixture/succeedingCase' All tests passed (1 assertion in 1 test case)]
+
+[Running: ./failing/Fixture/failingCase]
+ClassTests.cpp:55: m_a == 2 failed for: 1 == 2
+[Finished: './failing/Fixture/failingCase' 1 test case failed (1 assertion failed)]
+
+[Running: ./succeeding/conditions/equality]
+ConditionTests.cpp:55: data.int_seven == 7 succeeded for: 7 == 7
+ConditionTests.cpp:56: data.float_nine_point_one == Approx( 9.1f ) succeeded for: 9.1 == Approx( 9.1 )
+ConditionTests.cpp:57: data.double_pi == Approx( 3.1415926535 ) succeeded for: 3.14159 == Approx( 3.14159 )
+ConditionTests.cpp:58: data.str_hello == "hello" succeeded for: "hello" == "hello"
+ConditionTests.cpp:59: "hello" == data.str_hello succeeded for: "hello" == "hello"
+ConditionTests.cpp:60: data.str_hello.size() == 5 succeeded for: 5 == 5
+ConditionTests.cpp:63: x == Approx( 1.3 ) succeeded for: 1.3 == Approx( 1.3 )
+[Finished: './succeeding/conditions/equality' All tests passed (7 assertions in 1 test case)]
+
+[Running: ./failing/conditions/equality]
+ConditionTests.cpp:71: data.int_seven == 6 failed for: 7 == 6
+ConditionTests.cpp:72: data.int_seven == 8 failed for: 7 == 8
+[Finished: './failing/conditions/equality' 1 test case failed (All 2 assertions failed)]
+[End of group: '~dummy'. 3 of 12 test cases failed (4 of 38 assertions failed)]
+
+
+[Testing aborted. 3 of 12 test cases failed (4 of 38 assertions failed)]
+
