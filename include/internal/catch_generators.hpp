@@ -30,7 +30,7 @@ public:
     BetweenGenerator( T from, T to ) : m_from( from ), m_to( to ){}
     
     virtual T getValue( std::size_t index ) const {
-        return m_from+static_cast<T>( index );
+        return m_from+static_cast<int>( index );
     }
     
     virtual std::size_t size() const {
