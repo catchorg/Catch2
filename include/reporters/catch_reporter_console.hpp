@@ -30,33 +30,6 @@ namespace Catch {
             return prefs;
 
         }
-        void lazyPrintRunInfo() {
-            printHeader( "Started testing", testRunInfo->name );
-            testRunInfo.reset();
-        }
-        void lazyPrintGroupInfo() {
-            if( !unusedGroupInfo->name.empty() )
-                printHeader( "Group", unusedGroupInfo->name );
-            unusedGroupInfo.reset();
-        }
-        void lazyPrintTestCaseInfo() {
-            printHeader( "Test case", unusedTestCaseInfo->name );
-            unusedTestCaseInfo.reset();
-        }        
-        void lazyPrintSectionInfo() {
-            std::vector<ThreadedSectionInfo*> sections;
-            for(    ThreadedSectionInfo* section = unusedSectionInfo.get();
-                    section && !section->printed;
-                    section = section->parent.get() )
-                sections.push_back( section );
-
-            typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
-            for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
-                printHeader( "Section", (*it)->name );
-                (*it)->printed = true;
-            }
-            unusedSectionInfo.reset();
-        }
 
         static std::string const& getDashes() {
             static const std::string dashes = "----------------------------------------------------------------";
@@ -75,14 +48,15 @@ namespace Catch {
         }
         
         void printHeader( std::string const& _type, std::string const& _name ) {
-            std::size_t labelLen =  _type.size() + _name.size() + 8;
-            std::size_t dashLen = getDashes().size();
-            stream  << "-- " << _type << ": '" << _name << "' "
-                    << getDashes().substr( 0, labelLen < dashLen ? dashLen - labelLen : 0 )
-                    << std::endl;
+            stream  << getDashes() << "\n"
+                    << _type << ": '" << _name << "'\n"
+                    << getDashes() << std::endl;
         }
-
+        
         void lazyPrint() {
+            bool needsNewline = unusedTestCaseInfo || ( currentSectionInfo && !currentSectionInfo->printed );
+            if( m_lazyTestCaseStats )
+                lazyPrintTestCaseStats();
             if( testRunInfo )
                 lazyPrintRunInfo();
             if( unusedGroupInfo )
@@ -91,125 +65,148 @@ namespace Catch {
                 lazyPrintTestCaseInfo();
             if( currentSectionInfo && !currentSectionInfo->printed )
                 lazyPrintSectionInfo();
+            if( needsNewline )
+                stream << "\n";
+            
         }
-
+        void lazyPrintTestCaseStats() {
+            printTestCaseStats( *m_lazyTestCaseStats );
+            m_lazyTestCaseStats.reset();
+        }
+        void lazyPrintRunInfo() {
+            stream  << "\n"  << testRunInfo->name
+                    << " is a CATCH v"  << libraryVersion.majorVersion << "."
+                    << libraryVersion.minorVersion << " b"
+                    << libraryVersion.buildNumber;
+            if( libraryVersion.branchName != "master" )
+                stream << " (" << libraryVersion.branchName << ")";
+            stream  << " host application.\n"
+                    << "Run with -? for options\n\n";
+            
+            testRunInfo.reset();
+        }
+        void lazyPrintGroupInfo() {
+            if( !unusedGroupInfo->name.empty() && unusedGroupInfo->groupsCounts > 1 ) {
+                printHeader( "Group", unusedGroupInfo->name );
+                unusedGroupInfo.reset();
+            }
+        }
+        void lazyPrintTestCaseInfo() {
+            printHeader( "Test case", unusedTestCaseInfo->name );
+            unusedTestCaseInfo.reset();
+        }
+        void lazyPrintSectionInfo() {
+            std::vector<ThreadedSectionInfo*> sections;
+            for(    ThreadedSectionInfo* section = unusedSectionInfo.get();
+                    section && !section->printed;
+                    section = section->parent.get() )
+                sections.push_back( section );
+            
+            typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
+            for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
+                printHeader( "Section", (*it)->name );
+                (*it)->printed = true;
+            }
+            unusedSectionInfo.reset();
+        }
+        
         virtual void assertionStarting( AssertionInfo const& ) {
         }
-        virtual void assertionEnded( AssertionStats const& _assertionStats ) {
 
+        virtual void assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
             
             // Drop out if result was successful and we're not printing those
             if( !m_config.includeSuccessfulResults() && result.isOk() )
                 return;
-
+            
             lazyPrint();
 
-            int inset = printLineInfo( result.getSourceInfo() );
-
-            if( result.hasExpression() ) {
-                TextColour colour( TextColour::OriginalExpression );
-                stream << result.getExpression() << "\n";
-                if( result.succeeded() ) {
-                    TextColour successColour( TextColour::Success );
-                    stream << "succeeded";
-                }
-                else {
-                    TextColour errorColour( TextColour::Error );
-                    stream << "failed";
-                    if( result.isOk() ) {
-                        TextColour okAnywayColour( TextColour::Success );
-                        stream << " - but was ok";
-                    }
-                }
+            {
+                TextColour colour( TextColour::FileName );
+                stream << result.getSourceInfo() << ":\n";
             }
-
-            switch( result.getResultType() ) {
+            
+            if( _assertionStats.totals.assertions.total() > 0 ) {
+                printOriginalExpression( result );
+                printResultType( result );
+                printReconstructedExpression( result );
+            }
+            printMessage( result );
+            stream << std::endl;
+        }
+        
+        void printResultType( AssertionResult const& _result ) {
+            if( _result.succeeded() ) {
+                TextColour successColour( TextColour::Success );
+                stream << "passed";
+            }
+            else if( _result.isOk() ) {
+                TextColour okAnywayColour( TextColour::Success );
+                stream << "failed - but was ok";
+            }
+            else {
+                TextColour errorColour( TextColour::Error );
+                stream << "failed";
+            }
+        }
+        
+        void printMessage( AssertionResult const& _result ) {
+            std::pair<std::string, std::string> message = getMessage( _result );
+            if( !message.first.empty() )
+                stream << " " << message.first << ":\n";
+            if( !message.second.empty() )
+                printWrappableString( message.second );
+        }
+        std::pair<std::string, std::string> getMessage( AssertionResult const& _result ) {
+            switch( _result.getResultType() ) {
                 case ResultWas::ThrewException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( result.hasExpression() )
-                        stream << " with unexpected";
-                    else
-                        stream << "Unexpected";
-                    stream << " exception with message: '" << result.getMessage() << "'";
-                }
-                    break;
+                    return std::make_pair( "due to unexpected exception with message", _result.getMessage() );
                 case ResultWas::DidntThrowException:
-                {
-                    TextColour colour( TextColour::Error );
-                    if( result.hasExpression() )
-                        stream << " because no exception was thrown where one was expected";
-                    else
-                        stream << "No exception thrown where one was expected";
-                }
-                    break;
+                    return std::make_pair( "because no exception was thrown where one was expected", "" );
                 case ResultWas::Info:
-                {
-                    TextColour colour( TextColour::ReconstructedExpression );
-                    streamVariableLengthText( "info", result.getMessage() );
-                }
-                    break;
+                    return std::make_pair( "with info", _result.getMessage() );
                 case ResultWas::Warning:
-                {
-                    TextColour colour( TextColour::ReconstructedExpression );
-                    streamVariableLengthText( "warning", result.getMessage() );
-                }
-                    break;
+                    return std::make_pair( "with warning", _result.getMessage() );
                 case ResultWas::ExplicitFailure:
-                {
-                    TextColour colour( TextColour::Error );
-                    stream << "failed with message: '" << result.getMessage() << "'";
-                }
-                    break;
+                    return std::make_pair( "explicitly with message", _result.getMessage() );
+
                 case ResultWas::Unknown: // These cases are here to prevent compiler warnings
                 case ResultWas::Ok:
                 case ResultWas::FailureBit:
                 case ResultWas::ExpressionFailed:
                 case ResultWas::Exception:
-                    if( !result.hasExpression() ) {
-                        if( result.succeeded() ) {
-                            TextColour colour( TextColour::Success );
-                            stream << " succeeded";
-                        }
-                        else {
-                            TextColour colour( TextColour::Error );
-                            stream << " failed";
-                            if( result.isOk() ) {
-                                TextColour okAnywayColour( TextColour::Success );
-                                stream << " - but was ok";
-                            }
-                        }
-                    }
-                    if( result.hasMessage() ) {
-                        stream << "\n";
-                        TextColour colour( TextColour::ReconstructedExpression );
-                        streamVariableLengthText( "with message", result.getMessage() );
-                    }
-                    break;
+                    if( _result.hasMessage() )
+                        return std::make_pair( "with message", _result.getMessage() );
+                    else
+                        return std::make_pair( "", "" );
             }
-
-            if( result.hasExpandedExpression() ) {
-                stream << "\nfor: ";
+        }
+        void printOriginalExpression( AssertionResult const& _result ) {
+            if( _result.hasExpression() ) {
+                TextColour colour( TextColour::OriginalExpression );
+                stream  << "  " << _result.getTestMacroName() << "( "
+                        << _result.getExpression()
+                        << " )\n";
+            }
+        }
+        void printReconstructedExpression( AssertionResult const& _result ) {
+            if( _result.hasExpandedExpression() ) {
+                stream << " with expansion:\n";
                 TextColour colour( TextColour::ReconstructedExpression );
-                stream << getSpaces( inset-5 ) << result.getExpandedExpression();
-            }
-            
-            stream << "\n" << std::endl;
-        }
-        
-        void streamVariableLengthText( std::string const& prefix, std::string const& text ) {
-            std::string trimmed = trim( text );
-            if( trimmed.find_first_of( "\r\n" ) == std::string::npos ) {
-                stream << "[" << prefix << ": " << trimmed << "]";
-            }
-            else {
-                stream  << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed
-                        << "\n[end of " << prefix << "] <<<<<<<<<<<<<<<<<<<<<<<<\n";
+                printWrappableString( _result.getExpandedExpression() );
             }
         }
         
-        void printAssertionCounts( std::string const& label, Counts const& counts ) {
+        void printWrappableString( std::string const& _string ) {
+            stream << wrapLongStrings( _string ) << "\n";
+        }
+
+        std::string wrapLongStrings( std::string const& _string ) {
+            return Catch::wrapLongStrings( _string, 70, 2 );
+        }
+        
+        void printCounts( std::string const& label, Counts const& counts ) {
             if( counts.total() == 1 ) {
                 stream << "1 " << label << " - ";
                 if( counts.failed )
@@ -242,10 +239,10 @@ namespace Catch {
             }
             else if( totals.assertions.failed ) {
                 TextColour colour( TextColour::ResultError );
-                printAssertionCounts( "test case", totals.testCases );
+                printCounts( "test case", totals.testCases );
                 if( totals.testCases.failed > 0 ) {
                     stream << " (";
-                    printAssertionCounts( "assertion", totals.assertions );
+                    printCounts( "assertion", totals.assertions );
                     stream << ")";
                 }
             }
@@ -258,48 +255,36 @@ namespace Catch {
         }
 
         virtual void sectionEnded( SectionStats const& _sectionStats ) {
-            resetLastPrintedLine();
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 TextColour colour( TextColour::ResultError );
                 stream << "\nNo assertions in section, '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
-            if( currentSectionInfo && currentSectionInfo->printed ) {
-                printSummarDivider();
-                stream << "Summary for section '" << _sectionStats.sectionInfo.name << "':\n";
-                Counts const& assertions = _sectionStats.assertions;
-                if( assertions.failed ) {
-                    TextColour colour( TextColour::ResultError );
-                    printAssertionCounts( "assertion", assertions );
-                }
-                else {
-                    TextColour colour( TextColour::ResultSuccess );
-                    stream  << ( assertions.passed > 1 ? "All " : "" )
-                            << pluralise( assertions.passed, "assertion" ) << " passed" ;
-                }
-                stream << "\n" << std::endl;
-            }
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
+        void printTestCaseStats( TestCaseStats const& _testCaseStats ) {
+            m_atLeastOneTestCasePrinted = true;
+        }
+
         virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) {
-            resetLastPrintedLine();
+
             if( _testCaseStats.missingAssertions ) {
                 lazyPrint();
                 TextColour colour( TextColour::ResultError );
                 stream << "\nNo assertions in test case, '" << _testCaseStats.testInfo.name << "'\n" << std::endl;
             }
             if( !unusedTestCaseInfo ) {
-                m_atLeastOneTestCasePrinted = true;
-                printSummarDivider();
-                stream << "Summary for test case '" << _testCaseStats.testInfo.name << "':\n";
-                printTotals( _testCaseStats.totals );
-                stream << "\n" << std::endl;
+                if( m_atLeastOneTestCasePrinted )
+                    printTestCaseStats( _testCaseStats );
+                else
+                    m_lazyTestCaseStats = _testCaseStats;
             }
+
             StreamingReporterBase::testCaseEnded( _testCaseStats );
         }
         virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) {
             if( !unusedGroupInfo ) {
-                printSummarDivider();
+                printSummaryDivider();
                 stream << "Summary for group '" << _testGroupStats.groupInfo.name << "':\n";
                 printTotals( _testGroupStats.totals );
                 stream << "\n" << std::endl;
@@ -309,7 +294,7 @@ namespace Catch {
         virtual void testRunEnded( TestRunStats const& _testRunStats ) {
             if( m_atLeastOneTestCasePrinted )
                 printTotalsDivider();
-            stream << "Summary for all tests in '" << _testRunStats.runInfo.name << "':\n";
+//            stream << "Summary for all tests in '" << _testRunStats.runInfo.name << "':\n";
             printTotals( _testRunStats.totals );
             stream << "\n" << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
@@ -317,37 +302,15 @@ namespace Catch {
 
     private:
         void printTotalsDivider() {
-            stream << "================================================================\n";
+            stream << getDoubleDashes() << "\n";
         }
-        void printSummarDivider() {
-            stream << "----------------------------------------------------------------\n";
+        void printSummaryDivider() {
+            stream << getDashes() << "\n";
         }
-        static int countDigits( std::size_t number ) {
-            int digits = 1;
-            for( ; number != 0; digits++, number /= 10 );
-            return digits;
-        }
-
-        // Returns number of characters printed
-        int printLineInfo( SourceLineInfo const& lineInfo ) {
-            if( lineInfo.empty() )
-                return 0;
-            if( m_lastPrintedLine.empty() ||
-                    m_lastPrintedLine.file != lineInfo.file ||
-                    abs( static_cast<int>( m_lastPrintedLine.line ) - static_cast<int>( lineInfo.line ) ) > 20 ) {
-                TextColour colour( TextColour::FileName );
-                stream << lineInfo << "\n";
-            }
-            TextColour colour( TextColour::FileName );
-            stream << "[" << lineInfo.line << "]  ";
-            m_lastPrintedLine = lineInfo;
-            return 3 + countDigits( lineInfo.line );
-        }
-        void resetLastPrintedLine() {
-            m_lastPrintedLine = SourceLineInfo();
-        }
+        
+    private:
         bool m_atLeastOneTestCasePrinted;
-        SourceLineInfo m_lastPrintedLine;
+        Option<TestCaseStats> m_lazyTestCaseStats;
 
     };
 

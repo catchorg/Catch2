@@ -80,27 +80,27 @@ namespace Catch {
             m_context.setConfig( m_prevConfig );
         }
 
-        void testGroupStarting( std::string const& testSpec ) {
-            m_reporter->testGroupStarting( GroupInfo( testSpec ) );
+        void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
+            m_reporter->testGroupStarting( GroupInfo( testSpec, groupIndex, groupsCount ) );
         }
-        void testGroupEnded( std::string const& testSpec, Totals const& totals ) {
-            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec ), totals, aborting() ) );
+        void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount ) {
+            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
         }
 
-        Totals runMatching( const std::string& testSpec ) {
+        Totals runMatching( const std::string& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
 
             std::vector<TestCase> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
 
             Totals totals;
             
-            testGroupStarting( testSpec );
+            testGroupStarting( testSpec, groupIndex, groupsCount );
 
             std::vector<TestCase>::const_iterator it = matchingTests.begin();
             std::vector<TestCase>::const_iterator itEnd = matchingTests.end();
             for(; it != itEnd; ++it )
                 totals += runTest( *it );
 
-            testGroupEnded( testSpec, totals );
+            testGroupEnded( testSpec, totals, groupIndex, groupsCount );
             return totals;
         }
 

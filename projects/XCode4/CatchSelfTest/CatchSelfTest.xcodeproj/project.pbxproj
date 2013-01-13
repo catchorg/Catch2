@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */; };
 		4A45DA2416161EF9004F8D6B /* catch_console_colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */; };
 		4A45DA2716161F1F004F8D6B /* catch_ptr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2616161F1F004F8D6B /* catch_ptr.cpp */; };
 		4A45DA2916161F3D004F8D6B /* catch_streambuf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2816161F3D004F8D6B /* catch_streambuf.cpp */; };
@@ -52,6 +53,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2694A1F8169FFF9B004816E3 /* catch_line_wrap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_line_wrap.h; sourceTree = "<group>"; };
+		2694A1FA169FFFEC004816E3 /* catch_line_wrap.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_line_wrap.hpp; sourceTree = "<group>"; };
+		2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = catch_line_wrap.cpp; sourceTree = "<group>"; };
 		4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_info.hpp; sourceTree = "<group>"; };
 		4A084F1D15DAD15F0027E631 /* catch_test_spec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_test_spec.h; sourceTree = "<group>"; };
 		4A3D7DD01503869D005F9203 /* catch_matchers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_matchers.hpp; sourceTree = "<group>"; };
@@ -270,6 +274,7 @@
 				4AB3D99F1616219100C9A0F8 /* catch_interfaces_config.cpp */,
 				4AB3D9A1161621B500C9A0F8 /* catch_interfaces_generators.cpp */,
 				4ACE21CA166CA1B300FB5509 /* catch_option.cpp */,
+				2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */,
 			);
 			name = SurrogateCpps;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 				4A90B59D15D24FE900EF71BC /* catch_assertionresult.hpp */,
 				4A90B59E15D2521E00EF71BC /* catch_expressionresult_builder.hpp */,
 				4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */,
+				2694A1FA169FFFEC004816E3 /* catch_line_wrap.hpp */,
 			);
 			name = impl;
 			sourceTree = "<group>";
@@ -374,6 +380,7 @@
 				4AB77CB51551AEA200857BF0 /* catch_ptr.hpp */,
 				4AEE0326161431070071E950 /* catch_streambuf.h */,
 				4ACE21C8166CA19700FB5509 /* catch_option.hpp */,
+				2694A1F8169FFF9B004816E3 /* catch_line_wrap.h */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
@@ -465,6 +472,7 @@
 				4AB3D9A01616219100C9A0F8 /* catch_interfaces_config.cpp in Sources */,
 				4AB3D9A2161621B500C9A0F8 /* catch_interfaces_generators.cpp in Sources */,
 				4ACE21CC166CA1B300FB5509 /* catch_option.cpp in Sources */,
+				2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

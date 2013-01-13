@@ -16,7 +16,7 @@ namespace Catch {
     class Command {
     public:
         Command(){}
-        
+
         explicit Command( const std::string& name ) : m_name( name ) {
         }
                 

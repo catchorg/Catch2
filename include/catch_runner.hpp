@@ -13,6 +13,7 @@
 #include "internal/catch_runner_impl.hpp"
 #include "internal/catch_test_spec.h"
 #include "internal/catch_version.h"
+#include "internal/catch_line_wrap.h"
 
 #include <fstream>
 #include <stdlib.h>
@@ -42,13 +43,10 @@ namespace Catch {
             Runner context( m_configWrapper, m_reporter ); // This Runner will be renamed Context
             Totals totals;
 
-            std::vector<TestCaseFilters>::const_iterator it = filterGroups.begin();
-            std::vector<TestCaseFilters>::const_iterator itEnd = filterGroups.end();
-
-            for(; it != itEnd && !context.aborting(); ++it ) {
-                context.testGroupStarting( it->getName() );
-                totals += runTestsForGroup( context, *it );
-                context.testGroupEnded( it->getName(), totals );
+            for( std::size_t i=0; i < filterGroups.size() && !context.aborting(); ++i ) {
+                context.testGroupStarting( filterGroups[i].getName(), i, filterGroups.size() );
+                totals += runTestsForGroup( context, filterGroups[i] );
+                context.testGroupEnded( filterGroups[i].getName(), totals, i, filterGroups.size() );
             }
             return totals;
         }
@@ -153,50 +151,6 @@ namespace Catch {
         os << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
 
-    inline void addIndent( std::ostream& os, std::size_t indent ) {
-        while( indent-- > 0 )
-            os << ' ';
-    }
-
-    inline void recursivelyWrapLine( std::ostream& os, std::string paragraph, std::size_t columns, std::size_t indent ) {
-        std::size_t width = columns-indent;
-        std::size_t tab = 0;
-        std::size_t wrapPoint = width;
-        for( std::size_t pos = 0; pos < paragraph.size(); ++pos ) {
-            if( pos == width ) {
-                addIndent( os, indent );
-                os << paragraph.substr( 0, wrapPoint ) << "\n";
-                return recursivelyWrapLine( os, paragraph.substr( wrapPoint+1 ), columns, indent+tab );
-            }
-            if( paragraph[pos] == '\t' ) {
-                    tab = pos;
-                    paragraph = paragraph.substr( 0, tab ) + paragraph.substr( tab+1 );
-                    pos--;
-            }
-            else if( paragraph[pos] == ' ' ) {
-                wrapPoint = pos;
-            }
-        }
-        addIndent( os, indent );
-        os << paragraph << "\n";
-    }
-
-    inline std::string addLineBreaks( const std::string& str, std::size_t columns, std::size_t indent = 0 ) {
-        std::ostringstream oss;
-        std::string::size_type pos = 0;
-        std::string::size_type newline = str.find_first_of( '\n' );
-        while( newline != std::string::npos ) {
-            std::string paragraph = str.substr( pos, newline-pos );
-            recursivelyWrapLine( oss, paragraph, columns, indent );
-            pos = newline+1;
-            newline = str.find_first_of( '\n', pos );
-        }
-        if( pos != str.size() )
-            recursivelyWrapLine( oss, str.substr( pos, str.size()-pos ), columns, indent );
-
-        return oss.str();
-    }
-
     inline void showHelp( const CommandParser& parser ) {
         AllOptions options;
         Options::HelpOptionParser helpOpt;
@@ -207,13 +161,12 @@ namespace Catch {
                 displayedSpecificOption = true;
                 std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
                             << opt.optionSummary() << "\n\n"
-
-                << addLineBreaks( opt.optionDescription(), 80, 2 ) << "\n" << std::endl;
+                            << wrapLongStrings( opt.optionDescription(), 80, 2 ) << "\n" << std::endl;
             }
         }
 
         if( !displayedSpecificOption ) {
-            std::cout   << "\nCATCH v"    << libraryVersion.majorVersion << "."
+            std::cout   << "\nCATCH v"  << libraryVersion.majorVersion << "."
                                         << libraryVersion.minorVersion << " build "
                                         << libraryVersion.buildNumber;
             if( libraryVersion.branchName != "master" )

@@ -49,8 +49,17 @@ namespace Catch
         std::string name;
     };
     struct GroupInfo {
-        GroupInfo( std::string const& _name ) : name( _name ) {}
+        GroupInfo(  std::string const& _name,
+                    std::size_t _groupIndex,
+                    std::size_t _groupsCount )
+        :   name( _name ),
+            groupIndex( _groupIndex ),
+            groupsCounts( _groupsCount )
+        {}
+
         std::string name;
+        std::size_t groupIndex;
+        std::size_t groupsCounts;
     };
 
     struct SectionInfo {
@@ -174,7 +183,7 @@ namespace Catch
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
 
-        // Implementing class must also provide the following static methid:
+        // Implementing class must also provide the following static method:
         // static std::string getDescription();
 
         virtual ReporterPreferences getPreferences() const = 0;

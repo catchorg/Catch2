@@ -20,12 +20,12 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
                 
         SECTION(    "selftest/expected result/failing tests", 
                     "Tests in the 'failing' branch fail" ) {
-            MetaTestRunner::runMatching( "./failing/*",  MetaTestRunner::Expected::ToFail );
+            MetaTestRunner::runMatching( "./failing/*",  MetaTestRunner::Expected::ToFail, 0, 2 );
         }
         
         SECTION(    "selftest/expected result/succeeding tests", 
                     "Tests in the 'succeeding' branch succeed" ) {
-            MetaTestRunner::runMatching( "./succeeding/*",  MetaTestRunner::Expected::ToSucceed );
+            MetaTestRunner::runMatching( "./succeeding/*",  MetaTestRunner::Expected::ToSucceed, 1, 2 );
         }
     }
 
@@ -36,14 +36,14 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
         
         SECTION(    "selftest/test counts/succeeding tests", 
                     "Number of 'succeeding' tests is fixed" ) {
-            Totals totals = runner.runMatching( "./succeeding/*" );
+            Totals totals = runner.runMatching( "./succeeding/*", 0, 2 );
             CHECK( totals.assertions.passed == 291 );
             CHECK( totals.assertions.failed == 0 );
         }
 
         SECTION(    "selftest/test counts/failing tests", 
                     "Number of 'failing' tests is fixed" ) {
-            Totals totals = runner.runMatching( "./failing/*" );        
+            Totals totals = runner.runMatching( "./failing/*", 1, 2 );
             CHECK( totals.assertions.passed == 1 );
             CHECK( totals.assertions.failed == 72 );
         }
@@ -53,7 +53,7 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
 TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
     Catch::EmbeddedRunner runner;
     
-    Catch::Totals totals = runner.runMatching( "./mixed/Misc/Sections/nested2" );
+    Catch::Totals totals = runner.runMatching( "./mixed/Misc/Sections/nested2", 0, 1 );
     CHECK( totals.assertions.passed == 2 );
     CHECK( totals.assertions.failed == 1 );
 }

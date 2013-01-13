@@ -167,7 +167,7 @@ namespace Catch {
             
             if( !assertionResult.getSourceInfo().empty() ) {
                 TextColour colour( TextColour::FileName );
-                m_config.stream() << assertionResult.getSourceInfo();
+                m_config.stream() << assertionResult.getSourceInfo() << ": ";
             }
             
             if( assertionResult.hasExpression() ) {

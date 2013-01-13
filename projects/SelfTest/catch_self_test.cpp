@@ -17,7 +17,7 @@ namespace Catch{
     
     NullStreamingReporter::~NullStreamingReporter() {}
 
-    Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& ) {
+    Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, std::size_t groupIndex, std::size_t groupsCount, const std::string& ) {
         std::ostringstream oss;
         Config config;
         config.setStreamBuf( oss.rdbuf() );
@@ -27,7 +27,7 @@ namespace Catch{
         // Scoped because Runner doesn't report EndTesting until its destructor
         {
             Runner runner( config, m_reporter.get() );
-            totals = runner.runMatching( rawTestSpec );
+            totals = runner.runMatching( rawTestSpec, groupIndex, groupsCount );
         }
         return totals;
     }

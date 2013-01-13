@@ -53,6 +53,8 @@ namespace Catch {
         EmbeddedRunner() : m_reporter( new NullStreamingReporter() ) {}
         
         Totals runMatching( const std::string& rawTestSpec,
+                            std::size_t groupIndex,
+                            std::size_t groupsCount,
                             const std::string& reporter = "console" );
         
     private:
@@ -67,12 +69,18 @@ namespace Catch {
             ToFail
         }; };
         
-        MetaTestRunner( Expected::Result expectedResult ) : m_expectedResult( expectedResult ) {}
+        MetaTestRunner( Expected::Result expectedResult, std::size_t groupIndex, std::size_t groupsCount )
+        :   m_expectedResult( expectedResult ),
+            m_groupIndex( groupIndex ),
+            m_groupsCount( groupsCount )
+        {}
         
         static void runMatching(    const std::string& testSpec, 
-                                    Expected::Result expectedResult ) {
+                                    Expected::Result expectedResult,
+                                    std::size_t groupIndex,
+                                    std::size_t groupsCount ) {
             forEach(    getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec ), 
-                        MetaTestRunner( expectedResult ) );
+                        MetaTestRunner( expectedResult, groupIndex, groupsCount ) );
         }
         
         void operator()( const TestCase& testCase ) {
@@ -81,7 +89,7 @@ namespace Catch {
             {
                 EmbeddedRunner runner;
                 name = testCase.getTestCaseInfo().name;
-                totals = runner.runMatching( name );
+                totals = runner.runMatching( name, m_groupIndex, m_groupsCount );
             }
             switch( m_expectedResult ) {
                 case Expected::ToSucceed:
@@ -111,6 +119,8 @@ namespace Catch {
 
     private:
         Expected::Result m_expectedResult;
+        std::size_t m_groupIndex;
+        std::size_t m_groupsCount;
     };
     
 
