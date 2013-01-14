@@ -61,20 +61,25 @@ namespace Catch {
         }
         
         bool printResultType( AssertionResult const& _result ) {
-            if( _result.getResultType() == ResultWas::Info ||
-                _result.getResultType() == ResultWas::Warning ) {
-            }
-            else if( _result.succeeded() ) {
-                TextColour successColour( TextColour::Success );
-                stream << "passed ";
-            }
-            else if( _result.isOk() ) {
-                TextColour okAnywayColour( TextColour::Success );
-                stream << "failed - but was ok ";
-            }
-            else {
-                TextColour errorColour( TextColour::Error );
-                stream << "failed ";
+            switch( _result.getResultType() ) {
+                case ResultWas::Info:
+                case ResultWas::Warning:
+                    break;
+                case ResultWas::Ok:
+                    {
+                        TextColour successColour( TextColour::Success );
+                        stream << "passed ";
+                    }
+                    break;
+                default:
+                    if( _result.isOk() ) {
+                        TextColour okAnywayColour( TextColour::Success );
+                        stream << "failed - but was ok ";
+                    }
+                    else {
+                        TextColour errorColour( TextColour::Error );
+                        stream << "failed ";
+                    }
             }
             return false;
         }
