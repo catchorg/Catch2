@@ -127,16 +127,19 @@ namespace Catch {
                 stream << result.getSourceInfo() << ":\n";
             }
             
+            bool endsWithNewLine = false;
             if( _assertionStats.totals.assertions.total() > 0 ) {
-                printOriginalExpression( result );
-                printResultType( result );
-                printReconstructedExpression( result );
+                endsWithNewLine = printOriginalExpression( result );
+                endsWithNewLine = printResultType( result );
+                endsWithNewLine |= printReconstructedExpression( result );
             }
-            printMessage( result );
+            endsWithNewLine |= printMessage( result );
+            if( !endsWithNewLine )
+                stream << "\n";
             stream << std::endl;
         }
         
-        void printResultType( AssertionResult const& _result ) {
+        bool printResultType( AssertionResult const& _result ) {
             if( _result.succeeded() ) {
                 TextColour successColour( TextColour::Success );
                 stream << "passed";
@@ -149,14 +152,43 @@ namespace Catch {
                 TextColour errorColour( TextColour::Error );
                 stream << "failed";
             }
+            return false;
         }
-        
-        void printMessage( AssertionResult const& _result ) {
+        bool printOriginalExpression( AssertionResult const& _result ) {
+            if( _result.hasExpression() ) {
+                TextColour colour( TextColour::OriginalExpression );
+                stream  << "  ";
+                if( !_result.getTestMacroName().empty() )
+                    stream << _result.getTestMacroName() << "( ";
+                stream << _result.getExpression();
+                if( !_result.getTestMacroName().empty() )
+                    stream << " )";
+                stream << "\n";
+                return true;
+            }
+            return false;
+        }
+        bool printReconstructedExpression( AssertionResult const& _result ) {
+            if( _result.hasExpandedExpression() ) {
+                stream << " with expansion:\n";
+                TextColour colour( TextColour::ReconstructedExpression );
+                stream << wrapLongStrings( _result.getExpandedExpression() ) << "\n";
+                return true;
+            }
+            return false;
+        }        
+        bool printMessage( AssertionResult const& _result ) {
             std::pair<std::string, std::string> message = getMessage( _result );
-            if( !message.first.empty() )
-                stream << " " << message.first << ":\n";
-            if( !message.second.empty() )
-                printWrappableString( message.second );
+            bool endsWithNewLine = false;
+            if( !message.first.empty() ) {
+                stream << " " << message.first << ":" << "\n";
+                endsWithNewLine = true;
+            }
+            if( !message.second.empty() ) {
+                stream << wrapLongStrings( message.second ) << "\n";
+                endsWithNewLine = true;
+            }
+            return endsWithNewLine;
         }
         std::pair<std::string, std::string> getMessage( AssertionResult const& _result ) {
             switch( _result.getResultType() ) {
@@ -182,26 +214,7 @@ namespace Catch {
                         return std::make_pair( "", "" );
             }
         }
-        void printOriginalExpression( AssertionResult const& _result ) {
-            if( _result.hasExpression() ) {
-                TextColour colour( TextColour::OriginalExpression );
-                stream  << "  " << _result.getTestMacroName() << "( "
-                        << _result.getExpression()
-                        << " )\n";
-            }
-        }
-        void printReconstructedExpression( AssertionResult const& _result ) {
-            if( _result.hasExpandedExpression() ) {
-                stream << " with expansion:\n";
-                TextColour colour( TextColour::ReconstructedExpression );
-                printWrappableString( _result.getExpandedExpression() );
-            }
-        }
         
-        void printWrappableString( std::string const& _string ) {
-            stream << wrapLongStrings( _string ) << "\n";
-        }
-
         std::string wrapLongStrings( std::string const& _string ) {
             return Catch::wrapLongStrings( _string, 70, 2 );
         }
