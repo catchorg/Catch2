@@ -140,17 +140,20 @@ namespace Catch {
         }
         
         bool printResultType( AssertionResult const& _result ) {
-            if( _result.succeeded() ) {
+            if( _result.getResultType() == ResultWas::Info ||
+                _result.getResultType() == ResultWas::Warning ) {
+            }
+            else if( _result.succeeded() ) {
                 TextColour successColour( TextColour::Success );
-                stream << "passed";
+                stream << "passed ";
             }
             else if( _result.isOk() ) {
                 TextColour okAnywayColour( TextColour::Success );
-                stream << "failed - but was ok";
+                stream << "failed - but was ok ";
             }
             else {
                 TextColour errorColour( TextColour::Error );
-                stream << "failed";
+                stream << "failed ";
             }
             return false;
         }
@@ -170,7 +173,7 @@ namespace Catch {
         }
         bool printReconstructedExpression( AssertionResult const& _result ) {
             if( _result.hasExpandedExpression() ) {
-                stream << " with expansion:\n";
+                stream << "with expansion:\n";
                 TextColour colour( TextColour::ReconstructedExpression );
                 stream << wrapLongStrings( _result.getExpandedExpression() ) << "\n";
                 return true;
@@ -181,7 +184,7 @@ namespace Catch {
             std::pair<std::string, std::string> message = getMessage( _result );
             bool endsWithNewLine = false;
             if( !message.first.empty() ) {
-                stream << " " << message.first << ":" << "\n";
+                stream << message.first << ":" << "\n";
                 endsWithNewLine = true;
             }
             if( !message.second.empty() ) {
@@ -197,9 +200,9 @@ namespace Catch {
                 case ResultWas::DidntThrowException:
                     return std::make_pair( "because no exception was thrown where one was expected", "" );
                 case ResultWas::Info:
-                    return std::make_pair( "with info", _result.getMessage() );
+                    return std::make_pair( "info", _result.getMessage() );
                 case ResultWas::Warning:
-                    return std::make_pair( "with warning", _result.getMessage() );
+                    return std::make_pair( "warning", _result.getMessage() );
                 case ResultWas::ExplicitFailure:
                     return std::make_pair( "explicitly with message", _result.getMessage() );
 
