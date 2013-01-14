@@ -48,40 +48,98 @@ namespace Catch {
                 stream << result.getSourceInfo() << ":\n";
             }
             
+            ResultComponents components( result );
             bool endsWithNewLine = false;
             if( _assertionStats.totals.assertions.total() > 0 ) {
-                endsWithNewLine = printOriginalExpression( result );
-                endsWithNewLine = printResultType( result );
-                endsWithNewLine |= printReconstructedExpression( result );
+                printOriginalExpression( result );
+                printResultType( components );
+                endsWithNewLine = printReconstructedExpression( result );
             }
-            endsWithNewLine |= printMessage( result );
+            endsWithNewLine |= printMessage( components );
             if( !endsWithNewLine )
                 stream << "\n";
             stream << std::endl;
         }
         
-        bool printResultType( AssertionResult const& _result ) {
-            switch( _result.getResultType() ) {
-                case ResultWas::Info:
-                case ResultWas::Warning:
-                    break;
-                case ResultWas::Ok:
-                    {
-                        TextColour successColour( TextColour::Success );
-                        stream << "passed ";
-                    }
-                    break;
-                default:
-                    if( _result.isOk() ) {
-                        TextColour okAnywayColour( TextColour::Success );
-                        stream << "failed - but was ok ";
-                    }
-                    else {
-                        TextColour errorColour( TextColour::Error );
-                        stream << "failed ";
-                    }
+        struct ResultComponents {
+            ResultComponents( AssertionResult const& _result )
+            : colour( TextColour::None )
+            {
+                switch( _result.getResultType() ) {
+                    case ResultWas::Ok:
+                        colour = TextColour::Success;
+                        passOrFail = "passed";
+                        if( _result.hasMessage() ){
+                            messageLabel = "with message";
+                            message = _result.getMessage();
+                        }
+                        break;
+                    case ResultWas::ExpressionFailed:
+                        if( _result.isOk() ) {
+                            colour = TextColour::Success;
+                            passOrFail = "failed - but was ok";
+                        }
+                        else {
+                            colour = TextColour::Error;
+                            passOrFail = "failed";
+                        }
+                        if( _result.hasMessage() ){
+                            messageLabel = "with message";
+                            message = _result.getMessage();
+                        }
+                        break;
+                    case ResultWas::ThrewException:
+                        colour = TextColour::Error;
+                        passOrFail = "failed";
+                        messageLabel = "due to unexpected exception with message";
+                        message = _result.getMessage();
+                        break;
+                    case ResultWas::DidntThrowException:
+                        colour = TextColour::Error;
+                        passOrFail = "failed";
+                        messageLabel = "because no exception was thrown where one was expected";
+                        break;
+                    case ResultWas::Info:
+                        messageLabel = "info";
+                        message = _result.getMessage();
+                        break;
+                    case ResultWas::Warning:
+                        messageLabel = "warning";
+                        message = _result.getMessage();
+                        break;
+                    case ResultWas::ExplicitFailure:
+                        passOrFail = "failed";
+                        colour = TextColour::Error;
+                        messageLabel = "explicitly with message";
+                        message = _result.getMessage();
+                        break;
+                    case ResultWas::Exception:
+                        passOrFail = "failed";
+                        colour = TextColour::Error;
+                        if( _result.hasMessage() ){
+                            messageLabel = "with message";
+                            message = _result.getMessage();
+                        }
+                        break;
+                    case ResultWas::Unknown: // These cases are here to prevent compiler warnings
+                    case ResultWas::FailureBit:
+                        passOrFail = "** internal error **";
+                        colour = TextColour::Error;
+                        break;
+                }
             }
-            return false;
+            
+            TextColour::Colours colour;
+            std::string passOrFail;
+            std::string messageLabel;
+            std::string message;
+        };
+
+        void printResultType( ResultComponents const& _components ) {
+            if( !_components.passOrFail.empty() ) {
+                TextColour colour( _components.colour );
+                stream << _components.passOrFail << " ";
+            }
         }
         bool printOriginalExpression( AssertionResult const& _result ) {
             if( _result.hasExpression() ) {
@@ -106,42 +164,17 @@ namespace Catch {
             }
             return false;
         }        
-        bool printMessage( AssertionResult const& _result ) {
-            std::pair<std::string, std::string> message = getMessage( _result );
+        bool printMessage( ResultComponents const& _components ) {
             bool endsWithNewLine = false;
-            if( !message.first.empty() ) {
-                stream << message.first << ":" << "\n";
+            if( !_components.messageLabel.empty() ) {
+                stream << _components.messageLabel << ":" << "\n";
                 endsWithNewLine = true;
             }
-            if( !message.second.empty() ) {
-                stream << wrapLongStrings( message.second ) << "\n";
+            if( !_components.message.empty() ) {
+                stream << wrapLongStrings( _components.message ) << "\n";
                 endsWithNewLine = true;
             }
             return endsWithNewLine;
-        }
-        std::pair<std::string, std::string> getMessage( AssertionResult const& _result ) {
-            switch( _result.getResultType() ) {
-                case ResultWas::ThrewException:
-                    return std::make_pair( "due to unexpected exception with message", _result.getMessage() );
-                case ResultWas::DidntThrowException:
-                    return std::make_pair( "because no exception was thrown where one was expected", "" );
-                case ResultWas::Info:
-                    return std::make_pair( "info", _result.getMessage() );
-                case ResultWas::Warning:
-                    return std::make_pair( "warning", _result.getMessage() );
-                case ResultWas::ExplicitFailure:
-                    return std::make_pair( "explicitly with message", _result.getMessage() );
-
-                case ResultWas::Unknown: // These cases are here to prevent compiler warnings
-                case ResultWas::Ok:
-                case ResultWas::FailureBit:
-                case ResultWas::ExpressionFailed:
-                case ResultWas::Exception:
-                    if( _result.hasMessage() )
-                        return std::make_pair( "with message", _result.getMessage() );
-                    else
-                        return std::make_pair( "", "" );
-            }
         }
                 
         virtual void sectionEnded( SectionStats const& _sectionStats ) {
