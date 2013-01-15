@@ -247,22 +247,49 @@ namespace Catch {
             }
         }
         void lazyPrintTestCaseInfo() {
-            printHeader( "Test case", unusedTestCaseInfo->name );
-            unusedTestCaseInfo.reset();
+            if( !currentSectionInfo ) {
+                stream  << getDashes() << "\n"
+                        << "Test case" << ": '" << unusedTestCaseInfo->name << "'\n";                            
+                stream << getDashes() << std::endl;
+                unusedTestCaseInfo.reset();
+            }
         }
         void lazyPrintSectionInfo() {
+            
             std::vector<ThreadedSectionInfo*> sections;
             for(    ThreadedSectionInfo* section = unusedSectionInfo.get();
-                    section && !section->printed;
+                    section;
                     section = section->parent.get() )
                 sections.push_back( section );
             
-            typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
-            for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
-                printHeader( "Section", (*it)->name );
-                (*it)->printed = true;
+            // Sections
+            if( !sections.empty() ) {
+                stream  << getDashes() << "\n"
+                        << "Test case" << ": '" << unusedTestCaseInfo->name << "'\n"
+                        << getDashes() << "\n";
+                
+                std::string firstInset;
+                std::string inset;
+                if( sections.size() > 1 ) {
+                    firstInset = "Sections: ";
+                    inset =      "          ";
+                }
+                else {
+                    firstInset = "Section: ";
+                    inset =      "         ";
+                }
+                typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
+                for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
+                    if( it == sections.rbegin() )
+                        stream << firstInset;
+                    else
+                        stream << inset;
+                    stream << (*it)->name << "\n";
+    //                (*it)->printed = true; // !TBD remove flag?
+                }
+                stream << getDashes() << std::endl;
+                unusedSectionInfo.reset();
             }
-            unusedSectionInfo.reset();
         }
         
         void printHeader( std::string const& _type, std::string const& _name ) {
