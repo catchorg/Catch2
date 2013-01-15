@@ -79,14 +79,12 @@ namespace Catch
     struct ThreadedSectionInfo : SectionInfo, SharedImpl<> {
         ThreadedSectionInfo( SectionInfo const& _sectionInfo, Ptr<ThreadedSectionInfo> const& _parent = Ptr<ThreadedSectionInfo>() )
         :   SectionInfo( _sectionInfo ),
-            parent( _parent ),
-            printed( false )
+            parent( _parent )
         {}
         virtual ~ThreadedSectionInfo();
 
         std::vector<Ptr<ThreadedSectionInfo> > children;
         Ptr<ThreadedSectionInfo> parent;
-        bool printed;
     };
 
     struct AssertionStats {

@@ -12,31 +12,22 @@
 
 #include "catch.hpp"
 
-#define STORY( a, b )
-#define SCENARIO( storyName, desc ) TEST_CASE( desc, "" )
-#define GIVEN( desc ) SECTION( desc, "" )
-#define WHEN( desc ) SECTION( desc, "" )
-#define THEN( desc ) SECTION( desc, "" )
+// !TBD: story scenarios map to class based tests
+#define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
+#define GIVEN( desc ) SECTION( "Given: " desc, "" )
+#define WHEN( desc ) SECTION( "When:  " desc, "" )
+#define THEN( desc ) SECTION( "Then:  " desc, "" )
 
 inline bool itDoesThis(){ return true; }
 
-STORY( storyName, "once upon a time" )
-
-SCENARIO( storyName, "scenario name" )
-{
-    GIVEN( "This stuff exists" )
-    {
+SCENARIO( "Do that thing with the thing", "[tags]" ) {
+    GIVEN( "This stuff exists" ) {
         // make stuff exist
-
-        WHEN( "I do this" )
-        {
+        WHEN( "I do this" ) {
             // do this
-
             THEN( "it should do this")
-            {
                 REQUIRE( itDoesThis() );
-            }
         }
-
+        
     }
 }

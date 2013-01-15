@@ -1780,8 +1780,7 @@ failed explicitly with message:
 ----------------------------------------------------------------
 Test case: './failing/message/sections'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'one'
+Section: one
 ----------------------------------------------------------------
 
 MessageTests.cpp:58:
@@ -1789,7 +1788,9 @@ failed explicitly with message:
   Message from section one
 
 ----------------------------------------------------------------
-Section: 'two'
+Test case: './failing/message/sections'
+----------------------------------------------------------------
+Section: two
 ----------------------------------------------------------------
 
 MessageTests.cpp:63:
@@ -1800,8 +1801,7 @@ Message from section one
 ----------------------------------------------------------------
 Test case: './succeeding/message/sections/stdout'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'one'
+Section: one
 ----------------------------------------------------------------
 
 
@@ -1809,7 +1809,9 @@ No assertions in section, 'one'
 
 Message from section two
 ----------------------------------------------------------------
-Section: 'two'
+Test case: './succeeding/message/sections/stdout'
+----------------------------------------------------------------
+Section: two
 ----------------------------------------------------------------
 
 
@@ -1898,8 +1900,7 @@ No assertions in test case, './succeeding/nofail'
 ----------------------------------------------------------------
 Test case: './succeeding/Misc/Sections'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 's1'
+Section: s1
 ----------------------------------------------------------------
 
 MiscTests.cpp:25:
@@ -1907,13 +1908,16 @@ MiscTests.cpp:25:
 passed with expansion:
   1 != 2
 
+
 MiscTests.cpp:26:
   REQUIRE( b != a )
 passed with expansion:
   2 != 1
 
 ----------------------------------------------------------------
-Section: 's2'
+Test case: './succeeding/Misc/Sections'
+----------------------------------------------------------------
+Section: s2
 ----------------------------------------------------------------
 
 MiscTests.cpp:31:
@@ -1924,8 +1928,7 @@ passed with expansion:
 ----------------------------------------------------------------
 Test case: './succeeding/Misc/Sections/nested'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 's1'
+Section: s1
 ----------------------------------------------------------------
 
 MiscTests.cpp:42:
@@ -1933,13 +1936,17 @@ MiscTests.cpp:42:
 passed with expansion:
   1 != 2
 
+
 MiscTests.cpp:43:
   REQUIRE( b != a )
 passed with expansion:
   2 != 1
 
 ----------------------------------------------------------------
-Section: 's2'
+Test case: './succeeding/Misc/Sections/nested'
+----------------------------------------------------------------
+Sections: s1
+          s2
 ----------------------------------------------------------------
 
 MiscTests.cpp:47:
@@ -1950,11 +1957,8 @@ passed with expansion:
 ----------------------------------------------------------------
 Test case: './mixed/Misc/Sections/nested2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 's1'
-----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 's2'
+Sections: s1
+          s2
 ----------------------------------------------------------------
 
 MiscTests.cpp:61:
@@ -1963,10 +1967,10 @@ failed with expansion:
   1 == 2
 
 ----------------------------------------------------------------
-Section: 's1'
+Test case: './mixed/Misc/Sections/nested2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 's3'
+Sections: s1
+          s3
 ----------------------------------------------------------------
 
 MiscTests.cpp:66:
@@ -1975,10 +1979,10 @@ passed with expansion:
   1 != 2
 
 ----------------------------------------------------------------
-Section: 's1'
+Test case: './mixed/Misc/Sections/nested2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 's4'
+Sections: s1
+          s4
 ----------------------------------------------------------------
 
 MiscTests.cpp:70:
@@ -1989,28 +1993,27 @@ passed with expansion:
 ----------------------------------------------------------------
 Test case: './Sections/nested/a/b'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'c'
-----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'd (leaf)'
+Sections: c
+          d (leaf)
 ----------------------------------------------------------------
 
 
 No assertions in section, 'd (leaf)'
 
 ----------------------------------------------------------------
-Section: 'c'
+Test case: './Sections/nested/a/b'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'e (leaf)'
+Sections: c
+          e (leaf)
 ----------------------------------------------------------------
 
 
 No assertions in section, 'e (leaf)'
 
 ----------------------------------------------------------------
-Section: 'f (leaf)'
+Test case: './Sections/nested/a/b'
+----------------------------------------------------------------
+Section: f (leaf)
 ----------------------------------------------------------------
 
 
@@ -2019,8 +2022,7 @@ No assertions in section, 'f (leaf)'
 ----------------------------------------------------------------
 Test case: './mixed/Misc/Sections/loops'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 's1'
+Section: s1
 ----------------------------------------------------------------
 
 MiscTests.cpp:103:
@@ -2202,15 +2204,16 @@ failed with expansion:
 ----------------------------------------------------------------
 Test case: './misc/xmlentitycheck'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'embedded xml'
+Section: embedded xml
 ----------------------------------------------------------------
 
 
 No assertions in section, 'embedded xml'
 
 ----------------------------------------------------------------
-Section: 'encoded chars'
+Test case: './misc/xmlentitycheck'
+----------------------------------------------------------------
+Section: encoded chars
 ----------------------------------------------------------------
 
 
@@ -2397,215 +2400,260 @@ No assertions in test case, 'second tag'
 ----------------------------------------------------------------
 Test case: 'selftest/main'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'selftest/expected result'
-----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'selftest/expected result/failing tests'
+Sections: selftest/expected result
+          selftest/expected result/failing tests
 ----------------------------------------------------------------
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
+
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
+
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
 ----------------------------------------------------------------
-Section: 'selftest/expected result'
+Test case: 'selftest/main'
 ----------------------------------------------------------------
+Sections: selftest/expected result
+          selftest/expected result/succeeding tests
 ----------------------------------------------------------------
-Section: 'selftest/expected result/succeeding tests'
-----------------------------------------------------------------
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
 
 catch_self_test.hpp:103:
 passed with message:
@@ -2613,17 +2661,21 @@ passed with message:
 
 Message from section one
 Message from section two
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
 
 catch_self_test.hpp:103:
 passed with message:
@@ -2631,61 +2683,76 @@ passed with message:
 
 Some information
 An error
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
+
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
+
 
 catch_self_test.hpp:103:
 passed with message:
@@ -2696,10 +2763,10 @@ Message from section two
 Some information
 An error
 ----------------------------------------------------------------
-Section: 'selftest/test counts'
+Test case: 'selftest/main'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'selftest/test counts/succeeding tests'
+Sections: selftest/test counts
+          selftest/test counts/succeeding tests
 ----------------------------------------------------------------
 
 TestMain.cpp:40:
@@ -2707,22 +2774,24 @@ TestMain.cpp:40:
 failed with expansion:
   293 == 291
 
+
 TestMain.cpp:41:
   CHECK( totals.assertions.failed == 0 )
 passed with expansion:
   0 == 0
 
 ----------------------------------------------------------------
-Section: 'selftest/test counts'
+Test case: 'selftest/main'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'selftest/test counts/failing tests'
+Sections: selftest/test counts
+          selftest/test counts/failing tests
 ----------------------------------------------------------------
 
 TestMain.cpp:47:
   CHECK( totals.assertions.passed == 1 )
 passed with expansion:
   1 == 1
+
 
 TestMain.cpp:48:
   CHECK( totals.assertions.failed == 72 )
@@ -2746,28 +2815,31 @@ passed with expansion:
 ----------------------------------------------------------------
 Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'default'
+Section: default
 ----------------------------------------------------------------
 
 TestMain.cpp:97:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:99:
   CHECK( config.shouldDebugBreak == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:100:
   CHECK( config.cutoff == -1 )
 passed with expansion:
   -1 == -1
 
+
 TestMain.cpp:101:
   CHECK( config.allowThrows == true )
 passed with expansion:
   true == true
+
 
 TestMain.cpp:102:
   CHECK( config.reporter.empty() )
@@ -2775,25 +2847,28 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'test lists'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-t/1'
+Sections: test lists
+          -t/1
 ----------------------------------------------------------------
 
 TestMain.cpp:108:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:110:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
+
 TestMain.cpp:111:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:112:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
@@ -2801,25 +2876,28 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'test lists'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-t/exclude:1'
+Sections: test lists
+          -t/exclude:1
 ----------------------------------------------------------------
 
 TestMain.cpp:116:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:118:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
+
 TestMain.cpp:119:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:120:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
@@ -2827,25 +2905,28 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'test lists'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '--test/1'
+Sections: test lists
+          --test/1
 ----------------------------------------------------------------
 
 TestMain.cpp:125:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:127:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
+
 TestMain.cpp:128:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:129:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
@@ -2853,25 +2934,28 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'test lists'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '--test/exclude:1'
+Sections: test lists
+          --test/exclude:1
 ----------------------------------------------------------------
 
 TestMain.cpp:134:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:136:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
+
 TestMain.cpp:137:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:138:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
@@ -2879,25 +2963,28 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'test lists'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '--test/exclude:2'
+Sections: test lists
+          --test/exclude:2
 ----------------------------------------------------------------
 
 TestMain.cpp:143:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:145:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
+
 TestMain.cpp:146:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:147:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
@@ -2905,30 +2992,34 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'test lists'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-t/2'
+Sections: test lists
+          -t/2
 ----------------------------------------------------------------
 
 TestMain.cpp:152:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:154:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
+
 
 TestMain.cpp:155:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 passed with expansion:
   false == false
 
+
 TestMain.cpp:156:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
 passed with expansion:
   true
+
 
 TestMain.cpp:157:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test2" ) ) )
@@ -2936,10 +3027,10 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'test lists'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-t/0'
+Sections: test lists
+          -t/0
 ----------------------------------------------------------------
 
 TestMain.cpp:162:
@@ -2949,15 +3040,16 @@ passed with expansion:
   contains: "at least 1"
 
 ----------------------------------------------------------------
-Section: 'reporter'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-r/console'
+Sections: reporter
+          -r/console
 ----------------------------------------------------------------
 
 TestMain.cpp:169:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:171:
   REQUIRE( config.reporter == "console" )
@@ -2965,15 +3057,16 @@ passed with expansion:
   "console" == "console"
 
 ----------------------------------------------------------------
-Section: 'reporter'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-r/xml'
+Sections: reporter
+          -r/xml
 ----------------------------------------------------------------
 
 TestMain.cpp:175:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:177:
   REQUIRE( config.reporter == "xml" )
@@ -2981,15 +3074,16 @@ passed with expansion:
   "xml" == "xml"
 
 ----------------------------------------------------------------
-Section: 'reporter'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '--reporter/junit'
+Sections: reporter
+          --reporter/junit
 ----------------------------------------------------------------
 
 TestMain.cpp:181:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:183:
   REQUIRE( config.reporter == "junit" )
@@ -2997,10 +3091,10 @@ passed with expansion:
   "junit" == "junit"
 
 ----------------------------------------------------------------
-Section: 'reporter'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-r/error'
+Sections: reporter
+          -r/error
 ----------------------------------------------------------------
 
 TestMain.cpp:187:
@@ -3010,15 +3104,16 @@ passed with expansion:
   were: one two" contains: "1 argument"
 
 ----------------------------------------------------------------
-Section: 'debugger'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-b'
+Sections: debugger
+          -b
 ----------------------------------------------------------------
 
 TestMain.cpp:194:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:196:
   REQUIRE( config.shouldDebugBreak == true )
@@ -3026,15 +3121,16 @@ passed with expansion:
   true == true
 
 ----------------------------------------------------------------
-Section: 'debugger'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '--break'
+Sections: debugger
+          --break
 ----------------------------------------------------------------
 
 TestMain.cpp:200:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:202:
   REQUIRE( config.shouldDebugBreak )
@@ -3042,10 +3138,10 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'debugger'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-b'
+Sections: debugger
+          -b
 ----------------------------------------------------------------
 
 TestMain.cpp:206:
@@ -3055,15 +3151,16 @@ passed with expansion:
   were: unexpected" contains: "0 arguments"
 
 ----------------------------------------------------------------
-Section: 'abort'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-a'
+Sections: abort
+          -a
 ----------------------------------------------------------------
 
 TestMain.cpp:213:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:215:
   REQUIRE( config.cutoff == 1 )
@@ -3071,15 +3168,16 @@ passed with expansion:
   1 == 1
 
 ----------------------------------------------------------------
-Section: 'abort'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-a/2'
+Sections: abort
+          -a/2
 ----------------------------------------------------------------
 
 TestMain.cpp:219:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:221:
   REQUIRE( config.cutoff == 2 )
@@ -3087,10 +3185,10 @@ passed with expansion:
   2 == 2
 
 ----------------------------------------------------------------
-Section: 'abort'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-a/error/0'
+Sections: abort
+          -a/error/0
 ----------------------------------------------------------------
 
 TestMain.cpp:225:
@@ -3100,10 +3198,10 @@ passed with expansion:
   than zero. Arguments were: 0" contains: "greater than zero"
 
 ----------------------------------------------------------------
-Section: 'abort'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-a/error/non numeric'
+Sections: abort
+          -a/error/non numeric
 ----------------------------------------------------------------
 
 TestMain.cpp:229:
@@ -3113,10 +3211,10 @@ passed with expansion:
   than zero. Arguments were: oops" contains: "greater than zero"
 
 ----------------------------------------------------------------
-Section: 'abort'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-a/error/two args'
+Sections: abort
+          -a/error/two args
 ----------------------------------------------------------------
 
 TestMain.cpp:233:
@@ -3126,15 +3224,16 @@ passed with expansion:
   Arguments were: 1 2" contains: "0 and 1 argument"
 
 ----------------------------------------------------------------
-Section: 'nothrow'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-nt'
+Sections: nothrow
+          -nt
 ----------------------------------------------------------------
 
 TestMain.cpp:240:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:242:
   REQUIRE( config.allowThrows == false )
@@ -3142,15 +3241,16 @@ passed with expansion:
   false == false
 
 ----------------------------------------------------------------
-Section: 'nothrow'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '--nothrow'
+Sections: nothrow
+          --nothrow
 ----------------------------------------------------------------
 
 TestMain.cpp:246:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:248:
   REQUIRE( config.allowThrows == false )
@@ -3158,20 +3258,22 @@ passed with expansion:
   false == false
 
 ----------------------------------------------------------------
-Section: 'streams'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-o filename'
+Sections: streams
+          -o filename
 ----------------------------------------------------------------
 
 TestMain.cpp:255:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:257:
   REQUIRE( config.outputFilename == "filename.ext" )
 passed with expansion:
   "filename.ext" == "filename.ext"
+
 
 TestMain.cpp:258:
   REQUIRE( config.stream.empty() )
@@ -3179,20 +3281,22 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'streams'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-o %stdout'
+Sections: streams
+          -o %stdout
 ----------------------------------------------------------------
 
 TestMain.cpp:262:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:264:
   REQUIRE( config.stream == "stdout" )
 passed with expansion:
   "stdout" == "stdout"
+
 
 TestMain.cpp:265:
   REQUIRE( config.outputFilename.empty() )
@@ -3200,15 +3304,16 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'streams'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '--out'
+Sections: streams
+          --out
 ----------------------------------------------------------------
 
 TestMain.cpp:269:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
+
 
 TestMain.cpp:271:
   REQUIRE( config.outputFilename == "filename.ext" )
@@ -3216,25 +3321,28 @@ passed with expansion:
   "filename.ext" == "filename.ext"
 
 ----------------------------------------------------------------
-Section: 'combinations'
+Test case: 'selftest/parser/2'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: '-a -b'
+Sections: combinations
+          -a -b
 ----------------------------------------------------------------
 
 TestMain.cpp:278:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
+
 TestMain.cpp:280:
   CHECK( config.cutoff == 1 )
 passed with expansion:
   1 == 1
 
+
 TestMain.cpp:281:
   CHECK( config.shouldDebugBreak )
 passed with expansion:
   true
+
 
 TestMain.cpp:282:
   CHECK( config.allowThrows == false )
@@ -3363,8 +3471,7 @@ passed with expansion:
 ----------------------------------------------------------------
 Test case: 'selftest/tags'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'one tag'
+Section: one tag
 ----------------------------------------------------------------
 
 TestMain.cpp:369:
@@ -3372,35 +3479,42 @@ TestMain.cpp:369:
 passed with expansion:
   "" == ""
 
+
 TestMain.cpp:370:
   CHECK( oneTag.hasTag( "one" ) )
 passed with expansion:
   true
+
 
 TestMain.cpp:371:
   CHECK( oneTag.getTags().size() == 1 )
 passed with expansion:
   1 == 1
 
+
 TestMain.cpp:373:
   CHECK( oneTag.matchesTags( p1 ) == true )
 passed with expansion:
   true == true
+
 
 TestMain.cpp:374:
   CHECK( oneTag.matchesTags( p2 ) == true )
 passed with expansion:
   true == true
 
+
 TestMain.cpp:375:
   CHECK( oneTag.matchesTags( p3 ) == false )
 passed with expansion:
   false == false
 
+
 TestMain.cpp:376:
   CHECK( oneTag.matchesTags( p4 ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:377:
   CHECK( oneTag.matchesTags( p5 ) == false )
@@ -3408,7 +3522,9 @@ passed with expansion:
   false == false
 
 ----------------------------------------------------------------
-Section: 'two tags'
+Test case: 'selftest/tags'
+----------------------------------------------------------------
+Section: two tags
 ----------------------------------------------------------------
 
 TestMain.cpp:383:
@@ -3416,45 +3532,54 @@ TestMain.cpp:383:
 passed with expansion:
   "" == ""
 
+
 TestMain.cpp:384:
   CHECK( twoTags.hasTag( "one" ) )
 passed with expansion:
   true
+
 
 TestMain.cpp:385:
   CHECK( twoTags.hasTag( "two" ) )
 passed with expansion:
   true
 
+
 TestMain.cpp:386:
   CHECK( twoTags.hasTag( "three" ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:387:
   CHECK( twoTags.getTags().size() == 2 )
 passed with expansion:
   2 == 2
 
+
 TestMain.cpp:389:
   CHECK( twoTags.matchesTags( p1 ) == true )
 passed with expansion:
   true == true
+
 
 TestMain.cpp:390:
   CHECK( twoTags.matchesTags( p2 ) == true )
 passed with expansion:
   true == true
 
+
 TestMain.cpp:391:
   CHECK( twoTags.matchesTags( p3 ) == true )
 passed with expansion:
   true == true
 
+
 TestMain.cpp:392:
   CHECK( twoTags.matchesTags( p4 ) == true )
 passed with expansion:
   true == true
+
 
 TestMain.cpp:393:
   CHECK( twoTags.matchesTags( p5 ) == true )
@@ -3462,7 +3587,9 @@ passed with expansion:
   true == true
 
 ----------------------------------------------------------------
-Section: 'one tag with characters either side'
+Test case: 'selftest/tags'
+----------------------------------------------------------------
+Section: one tag with characters either side
 ----------------------------------------------------------------
 
 TestMain.cpp:399:
@@ -3470,15 +3597,18 @@ TestMain.cpp:399:
 passed with expansion:
   "1234" == "1234"
 
+
 TestMain.cpp:400:
   CHECK( oneTagWithExtras.hasTag( "one" ) )
 passed with expansion:
   true
 
+
 TestMain.cpp:401:
   CHECK( oneTagWithExtras.hasTag( "two" ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:402:
   CHECK( oneTagWithExtras.getTags().size() == 1 )
@@ -3486,7 +3616,9 @@ passed with expansion:
   1 == 1
 
 ----------------------------------------------------------------
-Section: 'start of a tag, but not closed'
+Test case: 'selftest/tags'
+----------------------------------------------------------------
+Section: start of a tag, but not closed
 ----------------------------------------------------------------
 
 TestMain.cpp:409:
@@ -3494,10 +3626,12 @@ TestMain.cpp:409:
 passed with expansion:
   "[one" == "[one"
 
+
 TestMain.cpp:410:
   CHECK( oneTagOpen.hasTag( "one" ) == false )
 passed with expansion:
   false == false
+
 
 TestMain.cpp:411:
   CHECK( oneTagOpen.getTags().size() == 0 )
@@ -3505,7 +3639,9 @@ passed with expansion:
   0 == 0
 
 ----------------------------------------------------------------
-Section: 'hidden'
+Test case: 'selftest/tags'
+----------------------------------------------------------------
+Section: hidden
 ----------------------------------------------------------------
 
 TestMain.cpp:417:
@@ -3513,15 +3649,18 @@ TestMain.cpp:417:
 passed with expansion:
   "" == ""
 
+
 TestMain.cpp:418:
   CHECK( oneTag.hasTag( "hide" ) )
 passed with expansion:
   true
 
+
 TestMain.cpp:419:
   CHECK( oneTag.isHidden() )
 passed with expansion:
   true
+
 
 TestMain.cpp:421:
   CHECK( oneTag.matchesTags( "~[hide]" ) == false )
@@ -3640,8 +3779,7 @@ passed with expansion:
 ----------------------------------------------------------------
 Test case: './succeeding/unimplemented static bool'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'compare to true'
+Section: compare to true
 ----------------------------------------------------------------
 
 TrickyTests.cpp:259:
@@ -3649,13 +3787,16 @@ TrickyTests.cpp:259:
 passed with expansion:
   true == true
 
+
 TrickyTests.cpp:260:
   REQUIRE( true == is_true<true>::value )
 passed with expansion:
   true == true
 
 ----------------------------------------------------------------
-Section: 'compare to false'
+Test case: './succeeding/unimplemented static bool'
+----------------------------------------------------------------
+Section: compare to false
 ----------------------------------------------------------------
 
 TrickyTests.cpp:264:
@@ -3663,13 +3804,16 @@ TrickyTests.cpp:264:
 passed with expansion:
   false == false
 
+
 TrickyTests.cpp:265:
   REQUIRE( false == is_true<false>::value )
 passed with expansion:
   false == false
 
 ----------------------------------------------------------------
-Section: 'negation'
+Test case: './succeeding/unimplemented static bool'
+----------------------------------------------------------------
+Section: negation
 ----------------------------------------------------------------
 
 TrickyTests.cpp:270:
@@ -3678,7 +3822,9 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'double negation'
+Test case: './succeeding/unimplemented static bool'
+----------------------------------------------------------------
+Section: double negation
 ----------------------------------------------------------------
 
 TrickyTests.cpp:275:
@@ -3687,13 +3833,16 @@ passed with expansion:
   true
 
 ----------------------------------------------------------------
-Section: 'direct'
+Test case: './succeeding/unimplemented static bool'
+----------------------------------------------------------------
+Section: direct
 ----------------------------------------------------------------
 
 TrickyTests.cpp:280:
   REQUIRE( is_true<true>::value )
 passed with expansion:
   true
+
 
 TrickyTests.cpp:281:
   REQUIRE_FALSE( !is_true<false>::value )
@@ -3720,19 +3869,14 @@ passed with expansion:
   !false
 
 ----------------------------------------------------------------
-Test case: 'scenario name'
+Test case: 'Scenario: Do that thing with the thing'
 ----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'This stuff exists'
-----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'I do this'
-----------------------------------------------------------------
-----------------------------------------------------------------
-Section: 'it should do this'
+Sections: Given: This stuff exists
+          When:  I do this
+          Then:  it should do this
 ----------------------------------------------------------------
 
-BDDTests.cpp:37:
+BDDTests.cpp:29:
   REQUIRE( itDoesThis() )
 passed with expansion:
   true
@@ -4465,7 +4609,7 @@ TrickyTests.cpp:106
     <testcase classname="global" name="./succeeding/boolean member" time="tbd"/>
     <testcase classname="global" name="./succeeding/unimplemented static bool" time="tbd"/>
     <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
-    <testcase classname="global" name="scenario name" time="tbd"/>
+    <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
   </testsuite>
   <system-out>
 Message from section one
@@ -9325,11 +9469,11 @@ TrickyTests.cpp" line="315">
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="scenario name">
-      <Section name="This stuff exists">
-        <Section name="I do this">
-          <Section name="it should do this">
-BDDTests.cpp" line="37">
+    <TestCase name="Scenario: Do that thing with the thing">
+      <Section name="Given: This stuff exists">
+        <Section name="When:  I do this">
+          <Section name="Then:  it should do this">
+BDDTests.cpp" line="29">
               <Original>
                 itDoesThis()
               </Original>
@@ -10681,18 +10825,18 @@ TrickyTests.cpp:314: !False succeeded for: true
 TrickyTests.cpp:315: !False succeeded for: !false
 [Finished: './succeeding/SafeBool' All tests passed (3 assertions in 1 test case)]
 
-[Running: scenario name]
-[Started section: 'This stuff exists']
-[Started section: 'I do this']
-[Started section: 'it should do this']
-BDDTests.cpp:37: itDoesThis() succeeded for: true
-[End of section: 'it should do this' 1 assertion passed]
+[Running: Scenario: Do that thing with the thing]
+[Started section: 'Given: This stuff exists']
+[Started section: 'When:  I do this']
+[Started section: 'Then:  it should do this']
+BDDTests.cpp:29: itDoesThis() succeeded for: true
+[End of section: 'Then:  it should do this' 1 assertion passed]
 
-[End of section: 'I do this' 1 assertion passed]
+[End of section: 'When:  I do this' 1 assertion passed]
 
-[End of section: 'This stuff exists' 1 assertion passed]
+[End of section: 'Given: This stuff exists' 1 assertion passed]
 
-[Finished: 'scenario name' All tests passed (1 assertion in 1 test case)]
+[Finished: 'Scenario: Do that thing with the thing' All tests passed (1 assertion in 1 test case)]
 [End of group: '~dummy'. 45 of 96 test cases failed (102 of 610 assertions failed)]
 
 

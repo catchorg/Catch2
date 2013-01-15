@@ -213,7 +213,7 @@ namespace Catch {
         
         void lazyPrint() {
             
-            bool needsNewline = unusedTestCaseInfo || ( currentSectionInfo && !currentSectionInfo->printed );
+            bool needsNewline = unusedTestCaseInfo || currentSectionInfo;
             
             if( testRunInfo )
                 lazyPrintRunInfo();
@@ -221,7 +221,7 @@ namespace Catch {
                 lazyPrintGroupInfo();
             if( unusedTestCaseInfo )
                 lazyPrintTestCaseInfo();
-            if( currentSectionInfo && !currentSectionInfo->printed )
+            if( currentSectionInfo)
                 lazyPrintSectionInfo();
             if( needsNewline )
                 stream << "\n";
@@ -285,7 +285,6 @@ namespace Catch {
                     else
                         stream << inset;
                     stream << (*it)->name << "\n";
-    //                (*it)->printed = true; // !TBD remove flag?
                 }
                 stream << getDashes() << std::endl;
                 unusedSectionInfo.reset();
