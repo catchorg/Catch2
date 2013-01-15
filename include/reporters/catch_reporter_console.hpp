@@ -63,16 +63,15 @@ namespace Catch {
         
         struct ResultComponents {
             ResultComponents( AssertionResult const& _result )
-            : colour( TextColour::None )
+            :   colour( TextColour::None ),
+                message( _result.getMessage() )
             {
                 switch( _result.getResultType() ) {
                     case ResultWas::Ok:
                         colour = TextColour::Success;
                         passOrFail = "passed";
-                        if( _result.hasMessage() ){
+                        if( _result.hasMessage() )
                             messageLabel = "with message";
-                            message = _result.getMessage();
-                        }
                         break;
                     case ResultWas::ExpressionFailed:
                         if( _result.isOk() ) {
@@ -85,14 +84,12 @@ namespace Catch {
                         }
                         if( _result.hasMessage() ){
                             messageLabel = "with message";
-                            message = _result.getMessage();
                         }
                         break;
                     case ResultWas::ThrewException:
                         colour = TextColour::Error;
                         passOrFail = "failed";
                         messageLabel = "due to unexpected exception with message";
-                        message = _result.getMessage();
                         break;
                     case ResultWas::DidntThrowException:
                         colour = TextColour::Error;
@@ -101,27 +98,24 @@ namespace Catch {
                         break;
                     case ResultWas::Info:
                         messageLabel = "info";
-                        message = _result.getMessage();
                         break;
                     case ResultWas::Warning:
                         messageLabel = "warning";
-                        message = _result.getMessage();
                         break;
                     case ResultWas::ExplicitFailure:
                         passOrFail = "failed";
                         colour = TextColour::Error;
                         messageLabel = "explicitly with message";
-                        message = _result.getMessage();
                         break;
                     case ResultWas::Exception:
                         passOrFail = "failed";
                         colour = TextColour::Error;
-                        if( _result.hasMessage() ){
+                        if( _result.hasMessage() )
                             messageLabel = "with message";
-                            message = _result.getMessage();
-                        }
                         break;
-                    case ResultWas::Unknown: // These cases are here to prevent compiler warnings
+                        
+                    // These cases are here to prevent compiler warnings
+                    case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                         passOrFail = "** internal error **";
                         colour = TextColour::Error;
