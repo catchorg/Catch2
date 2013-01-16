@@ -244,9 +244,8 @@ namespace Catch {
         }
         void lazyPrintTestCaseInfo() {
             if( !currentSectionInfo ) {
-                stream  << getDashes() << "\n"
-                        << "Test case" << ": '" << unusedTestCaseInfo->name << "'\n";                            
-                stream << getDashes() << "\n" << std::endl;
+                printTestCaseHeader();
+                stream << std::endl;
                 unusedTestCaseInfo.reset();
             }
         }
@@ -260,9 +259,7 @@ namespace Catch {
             
             // Sections
             if( !sections.empty() ) {
-                stream  << getDashes() << "\n"
-                        << "Test case" << ": '" << unusedTestCaseInfo->name << "'\n"
-                        << getDashes() << "\n";
+                printTestCaseHeader();
                 
                 std::string firstInset;
                 std::string inset;
@@ -286,12 +283,16 @@ namespace Catch {
                 unusedSectionInfo.reset();
             }
         }
-        
+
+        void printTestCaseHeader() {
+            printHeader( "Test case", unusedTestCaseInfo->name );
+        }
         void printHeader( std::string const& _type, std::string const& _name ) {
             stream  << getDashes() << "\n"
                     << _type << ": '" << _name << "'\n"
-                    << getDashes() << std::endl;
+                    << getDashes() << "\n";
         }
+        
         void printTotals( const Totals& totals ) {
             if( totals.assertions.total() == 0 ) {
                 stream << "No tests ran";
