@@ -1908,7 +1908,6 @@ MiscTests.cpp:25:
 passed with expansion:
   1 != 2
 
-
 MiscTests.cpp:26:
   REQUIRE( b != a )
 passed with expansion:
@@ -1935,7 +1934,6 @@ MiscTests.cpp:42:
   REQUIRE( a != b )
 passed with expansion:
   1 != 2
-
 
 MiscTests.cpp:43:
   REQUIRE( b != a )
@@ -2408,121 +2406,97 @@ catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
+catch_self_test.hpp:114:
+passed with message:
+  Tests failed, as expected
 
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
 
-
 catch_self_test.hpp:114:
 passed with message:
   Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
-
-catch_self_test.hpp:114:
-passed with message:
-  Tests failed, as expected
-
 
 catch_self_test.hpp:114:
 passed with message:
@@ -2539,121 +2513,97 @@ catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
 
 catch_self_test.hpp:103:
 passed with message:
@@ -2661,21 +2611,17 @@ passed with message:
 
 Message from section one
 Message from section two
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
 
 catch_self_test.hpp:103:
 passed with message:
@@ -2683,76 +2629,61 @@ passed with message:
 
 Some information
 An error
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
+catch_self_test.hpp:103:
+passed with message:
+  Tests passed, as expected
 
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
 
-
 catch_self_test.hpp:103:
 passed with message:
   Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
-
-catch_self_test.hpp:103:
-passed with message:
-  Tests passed, as expected
-
 
 catch_self_test.hpp:103:
 passed with message:
@@ -2774,7 +2705,6 @@ TestMain.cpp:40:
 failed with expansion:
   293 == 291
 
-
 TestMain.cpp:41:
   CHECK( totals.assertions.failed == 0 )
 passed with expansion:
@@ -2791,7 +2721,6 @@ TestMain.cpp:47:
   CHECK( totals.assertions.passed == 1 )
 passed with expansion:
   1 == 1
-
 
 TestMain.cpp:48:
   CHECK( totals.assertions.failed == 72 )
@@ -2822,24 +2751,20 @@ TestMain.cpp:97:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:99:
   CHECK( config.shouldDebugBreak == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:100:
   CHECK( config.cutoff == -1 )
 passed with expansion:
   -1 == -1
 
-
 TestMain.cpp:101:
   CHECK( config.allowThrows == true )
 passed with expansion:
   true == true
-
 
 TestMain.cpp:102:
   CHECK( config.reporter.empty() )
@@ -2857,18 +2782,15 @@ TestMain.cpp:108:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:110:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
-
 TestMain.cpp:111:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:112:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
@@ -2886,18 +2808,15 @@ TestMain.cpp:116:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:118:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
-
 TestMain.cpp:119:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:120:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
@@ -2915,18 +2834,15 @@ TestMain.cpp:125:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:127:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
-
 TestMain.cpp:128:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:129:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
@@ -2944,18 +2860,15 @@ TestMain.cpp:134:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:136:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
-
 TestMain.cpp:137:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:138:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
@@ -2973,18 +2886,15 @@ TestMain.cpp:143:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:145:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
 
-
 TestMain.cpp:146:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:147:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
@@ -3002,24 +2912,20 @@ TestMain.cpp:152:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:154:
   REQUIRE( config.filters.size() == 1 )
 passed with expansion:
   1 == 1
-
 
 TestMain.cpp:155:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 passed with expansion:
   false == false
 
-
 TestMain.cpp:156:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
 passed with expansion:
   true
-
 
 TestMain.cpp:157:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test2" ) ) )
@@ -3050,7 +2956,6 @@ TestMain.cpp:169:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:171:
   REQUIRE( config.reporter == "console" )
 passed with expansion:
@@ -3067,7 +2972,6 @@ TestMain.cpp:175:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:177:
   REQUIRE( config.reporter == "xml" )
 passed with expansion:
@@ -3083,7 +2987,6 @@ Sections: reporter
 TestMain.cpp:181:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
-
 
 TestMain.cpp:183:
   REQUIRE( config.reporter == "junit" )
@@ -3114,7 +3017,6 @@ TestMain.cpp:194:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:196:
   REQUIRE( config.shouldDebugBreak == true )
 passed with expansion:
@@ -3130,7 +3032,6 @@ Sections: debugger
 TestMain.cpp:200:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
-
 
 TestMain.cpp:202:
   REQUIRE( config.shouldDebugBreak )
@@ -3161,7 +3062,6 @@ TestMain.cpp:213:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:215:
   REQUIRE( config.cutoff == 1 )
 passed with expansion:
@@ -3177,7 +3077,6 @@ Sections: abort
 TestMain.cpp:219:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
-
 
 TestMain.cpp:221:
   REQUIRE( config.cutoff == 2 )
@@ -3234,7 +3133,6 @@ TestMain.cpp:240:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:242:
   REQUIRE( config.allowThrows == false )
 passed with expansion:
@@ -3250,7 +3148,6 @@ Sections: nothrow
 TestMain.cpp:246:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
-
 
 TestMain.cpp:248:
   REQUIRE( config.allowThrows == false )
@@ -3268,12 +3165,10 @@ TestMain.cpp:255:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:257:
   REQUIRE( config.outputFilename == "filename.ext" )
 passed with expansion:
   "filename.ext" == "filename.ext"
-
 
 TestMain.cpp:258:
   REQUIRE( config.stream.empty() )
@@ -3291,12 +3186,10 @@ TestMain.cpp:262:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:264:
   REQUIRE( config.stream == "stdout" )
 passed with expansion:
   "stdout" == "stdout"
-
 
 TestMain.cpp:265:
   REQUIRE( config.outputFilename.empty() )
@@ -3314,7 +3207,6 @@ TestMain.cpp:269:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:271:
   REQUIRE( config.outputFilename == "filename.ext" )
 passed with expansion:
@@ -3331,18 +3223,15 @@ TestMain.cpp:278:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 passed
 
-
 TestMain.cpp:280:
   CHECK( config.cutoff == 1 )
 passed with expansion:
   1 == 1
 
-
 TestMain.cpp:281:
   CHECK( config.shouldDebugBreak )
 passed with expansion:
   true
-
 
 TestMain.cpp:282:
   CHECK( config.allowThrows == false )
@@ -3479,42 +3368,35 @@ TestMain.cpp:369:
 passed with expansion:
   "" == ""
 
-
 TestMain.cpp:370:
   CHECK( oneTag.hasTag( "one" ) )
 passed with expansion:
   true
-
 
 TestMain.cpp:371:
   CHECK( oneTag.getTags().size() == 1 )
 passed with expansion:
   1 == 1
 
-
 TestMain.cpp:373:
   CHECK( oneTag.matchesTags( p1 ) == true )
 passed with expansion:
   true == true
-
 
 TestMain.cpp:374:
   CHECK( oneTag.matchesTags( p2 ) == true )
 passed with expansion:
   true == true
 
-
 TestMain.cpp:375:
   CHECK( oneTag.matchesTags( p3 ) == false )
 passed with expansion:
   false == false
 
-
 TestMain.cpp:376:
   CHECK( oneTag.matchesTags( p4 ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:377:
   CHECK( oneTag.matchesTags( p5 ) == false )
@@ -3532,54 +3414,45 @@ TestMain.cpp:383:
 passed with expansion:
   "" == ""
 
-
 TestMain.cpp:384:
   CHECK( twoTags.hasTag( "one" ) )
 passed with expansion:
   true
-
 
 TestMain.cpp:385:
   CHECK( twoTags.hasTag( "two" ) )
 passed with expansion:
   true
 
-
 TestMain.cpp:386:
   CHECK( twoTags.hasTag( "three" ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:387:
   CHECK( twoTags.getTags().size() == 2 )
 passed with expansion:
   2 == 2
 
-
 TestMain.cpp:389:
   CHECK( twoTags.matchesTags( p1 ) == true )
 passed with expansion:
   true == true
-
 
 TestMain.cpp:390:
   CHECK( twoTags.matchesTags( p2 ) == true )
 passed with expansion:
   true == true
 
-
 TestMain.cpp:391:
   CHECK( twoTags.matchesTags( p3 ) == true )
 passed with expansion:
   true == true
 
-
 TestMain.cpp:392:
   CHECK( twoTags.matchesTags( p4 ) == true )
 passed with expansion:
   true == true
-
 
 TestMain.cpp:393:
   CHECK( twoTags.matchesTags( p5 ) == true )
@@ -3597,18 +3470,15 @@ TestMain.cpp:399:
 passed with expansion:
   "1234" == "1234"
 
-
 TestMain.cpp:400:
   CHECK( oneTagWithExtras.hasTag( "one" ) )
 passed with expansion:
   true
 
-
 TestMain.cpp:401:
   CHECK( oneTagWithExtras.hasTag( "two" ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:402:
   CHECK( oneTagWithExtras.getTags().size() == 1 )
@@ -3626,12 +3496,10 @@ TestMain.cpp:409:
 passed with expansion:
   "[one" == "[one"
 
-
 TestMain.cpp:410:
   CHECK( oneTagOpen.hasTag( "one" ) == false )
 passed with expansion:
   false == false
-
 
 TestMain.cpp:411:
   CHECK( oneTagOpen.getTags().size() == 0 )
@@ -3649,18 +3517,15 @@ TestMain.cpp:417:
 passed with expansion:
   "" == ""
 
-
 TestMain.cpp:418:
   CHECK( oneTag.hasTag( "hide" ) )
 passed with expansion:
   true
 
-
 TestMain.cpp:419:
   CHECK( oneTag.isHidden() )
 passed with expansion:
   true
-
 
 TestMain.cpp:421:
   CHECK( oneTag.matchesTags( "~[hide]" ) == false )
@@ -3787,7 +3652,6 @@ TrickyTests.cpp:259:
 passed with expansion:
   true == true
 
-
 TrickyTests.cpp:260:
   REQUIRE( true == is_true<true>::value )
 passed with expansion:
@@ -3803,7 +3667,6 @@ TrickyTests.cpp:264:
   REQUIRE( is_true<false>::value == false )
 passed with expansion:
   false == false
-
 
 TrickyTests.cpp:265:
   REQUIRE( false == is_true<false>::value )
@@ -3842,7 +3705,6 @@ TrickyTests.cpp:280:
   REQUIRE( is_true<true>::value )
 passed with expansion:
   true
-
 
 TrickyTests.cpp:281:
   REQUIRE_FALSE( !is_true<false>::value )

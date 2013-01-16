@@ -213,18 +213,14 @@ namespace Catch {
         
         void lazyPrint() {
             
-            bool needsNewline = unusedTestCaseInfo || currentSectionInfo;
-            
             if( testRunInfo )
                 lazyPrintRunInfo();
             if( unusedGroupInfo )
                 lazyPrintGroupInfo();
             if( unusedTestCaseInfo )
                 lazyPrintTestCaseInfo();
-            if( currentSectionInfo)
+            if( unusedSectionInfo)
                 lazyPrintSectionInfo();
-            if( needsNewline )
-                stream << "\n";
             
             m_atLeastOneTestCasePrinted = true;
         }
@@ -250,7 +246,7 @@ namespace Catch {
             if( !currentSectionInfo ) {
                 stream  << getDashes() << "\n"
                         << "Test case" << ": '" << unusedTestCaseInfo->name << "'\n";                            
-                stream << getDashes() << std::endl;
+                stream << getDashes() << "\n" << std::endl;
                 unusedTestCaseInfo.reset();
             }
         }
@@ -286,7 +282,7 @@ namespace Catch {
                         stream << inset;
                     stream << (*it)->name << "\n";
                 }
-                stream << getDashes() << std::endl;
+                stream << getDashes() << "\n" << std::endl;
                 unusedSectionInfo.reset();
             }
         }
