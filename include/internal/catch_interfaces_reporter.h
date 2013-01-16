@@ -257,7 +257,6 @@ namespace Catch
         Option<TestCaseInfo> unusedTestCaseInfo;
         Ptr<ThreadedSectionInfo> unusedSectionInfo;
         Ptr<ThreadedSectionInfo> currentSectionInfo;
-        bool currentSectionOpen;
         std::ostream& stream;
     };
 
@@ -341,7 +340,6 @@ namespace Catch
 //        Option<TestCaseInfo> unusedTestCaseInfo;
 //        Ptr<ThreadedSectionInfo> unusedSectionInfo;
 //        Ptr<ThreadedSectionInfo> currentSectionInfo;
-//        bool currentSectionOpen;
 //        Ptr<TestGroupNode> testGroupNode;
         Option<TestGroupNode> testGroupNode;
         std::ostream& stream;
