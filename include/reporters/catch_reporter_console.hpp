@@ -43,22 +43,24 @@ namespace Catch {
             
             lazyPrint();
 
-            {
-                TextColour colour( TextColour::FileName );
-                stream << result.getSourceInfo() << ":\n";
-            }
-            
             ResultComponents components( result );
             bool endsWithNewLine = false;
             if( _assertionStats.totals.assertions.total() > 0 ) {
-                printOriginalExpression( result );
                 printResultType( components );
+                printOriginalExpression( result );
+//                printResultType( components );
                 endsWithNewLine = printReconstructedExpression( result );
             }
             endsWithNewLine |= printMessage( components );
-            if( !endsWithNewLine )
-                stream << "\n";
+//            if( !endsWithNewLine )
+//                stream << "\n";
+            
+            printSourceInfo( result );
             stream << std::endl;
+        }
+        void printSourceInfo( AssertionResult const& _result ) {
+            TextColour colour( TextColour::FileName );
+            stream << _result.getSourceInfo() << "\n";
         }
         
         struct ResultComponents {
@@ -69,18 +71,18 @@ namespace Catch {
                 switch( _result.getResultType() ) {
                     case ResultWas::Ok:
                         colour = TextColour::Success;
-                        passOrFail = "passed";
+                        passOrFail = "PASSED";
                         if( _result.hasMessage() )
                             messageLabel = "with message";
                         break;
                     case ResultWas::ExpressionFailed:
                         if( _result.isOk() ) {
                             colour = TextColour::Success;
-                            passOrFail = "failed - but was ok";
+                            passOrFail = "FAILED - but was ok";
                         }
                         else {
                             colour = TextColour::Error;
-                            passOrFail = "failed";
+                            passOrFail = "FAILED";
                         }
                         if( _result.hasMessage() ){
                             messageLabel = "with message";
@@ -88,12 +90,12 @@ namespace Catch {
                         break;
                     case ResultWas::ThrewException:
                         colour = TextColour::Error;
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         messageLabel = "due to unexpected exception with message";
                         break;
                     case ResultWas::DidntThrowException:
                         colour = TextColour::Error;
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         messageLabel = "because no exception was thrown where one was expected";
                         break;
                     case ResultWas::Info:
@@ -103,12 +105,12 @@ namespace Catch {
                         messageLabel = "warning";
                         break;
                     case ResultWas::ExplicitFailure:
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         colour = TextColour::Error;
                         messageLabel = "explicitly with message";
                         break;
                     case ResultWas::Exception:
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         colour = TextColour::Error;
                         if( _result.hasMessage() )
                             messageLabel = "with message";
@@ -132,7 +134,7 @@ namespace Catch {
         void printResultType( ResultComponents const& _components ) {
             if( !_components.passOrFail.empty() ) {
                 TextColour colour( _components.colour );
-                stream << _components.passOrFail << " ";
+                stream << _components.passOrFail << ":\n";
             }
         }
         bool printOriginalExpression( AssertionResult const& _result ) {

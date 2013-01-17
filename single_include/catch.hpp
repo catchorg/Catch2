@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 13 (integration branch)
- *  Generated: 2013-01-16 09:43:42.849422
+ *  CATCH v0.9 build 14 (integration branch)
+ *  Generated: 2013-01-17 12:06:33.338396
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5777,7 +5777,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 13, "integration" );
+    Version libraryVersion( 0, 9, 14, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -6845,22 +6845,24 @@ namespace Catch {
 
             lazyPrint();
 
-            {
-                TextColour colour( TextColour::FileName );
-                stream << result.getSourceInfo() << ":\n";
-            }
-
             ResultComponents components( result );
             bool endsWithNewLine = false;
             if( _assertionStats.totals.assertions.total() > 0 ) {
-                printOriginalExpression( result );
                 printResultType( components );
+                printOriginalExpression( result );
+//                printResultType( components );
                 endsWithNewLine = printReconstructedExpression( result );
             }
             endsWithNewLine |= printMessage( components );
-            if( !endsWithNewLine )
-                stream << "\n";
+//            if( !endsWithNewLine )
+//                stream << "\n";
+
+            printSourceInfo( result );
             stream << std::endl;
+        }
+        void printSourceInfo( AssertionResult const& _result ) {
+            TextColour colour( TextColour::FileName );
+            stream << _result.getSourceInfo() << "\n";
         }
 
         struct ResultComponents {
@@ -6871,18 +6873,18 @@ namespace Catch {
                 switch( _result.getResultType() ) {
                     case ResultWas::Ok:
                         colour = TextColour::Success;
-                        passOrFail = "passed";
+                        passOrFail = "PASSED";
                         if( _result.hasMessage() )
                             messageLabel = "with message";
                         break;
                     case ResultWas::ExpressionFailed:
                         if( _result.isOk() ) {
                             colour = TextColour::Success;
-                            passOrFail = "failed - but was ok";
+                            passOrFail = "FAILED - but was ok";
                         }
                         else {
                             colour = TextColour::Error;
-                            passOrFail = "failed";
+                            passOrFail = "FAILED";
                         }
                         if( _result.hasMessage() ){
                             messageLabel = "with message";
@@ -6890,12 +6892,12 @@ namespace Catch {
                         break;
                     case ResultWas::ThrewException:
                         colour = TextColour::Error;
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         messageLabel = "due to unexpected exception with message";
                         break;
                     case ResultWas::DidntThrowException:
                         colour = TextColour::Error;
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         messageLabel = "because no exception was thrown where one was expected";
                         break;
                     case ResultWas::Info:
@@ -6905,12 +6907,12 @@ namespace Catch {
                         messageLabel = "warning";
                         break;
                     case ResultWas::ExplicitFailure:
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         colour = TextColour::Error;
                         messageLabel = "explicitly with message";
                         break;
                     case ResultWas::Exception:
-                        passOrFail = "failed";
+                        passOrFail = "FAILED";
                         colour = TextColour::Error;
                         if( _result.hasMessage() )
                             messageLabel = "with message";
@@ -6934,7 +6936,7 @@ namespace Catch {
         void printResultType( ResultComponents const& _components ) {
             if( !_components.passOrFail.empty() ) {
                 TextColour colour( _components.colour );
-                stream << _components.passOrFail << " ";
+                stream << _components.passOrFail << ":\n";
             }
         }
         bool printOriginalExpression( AssertionResult const& _result ) {
@@ -7040,13 +7042,13 @@ namespace Catch {
         }
         void lazyPrintGroupInfo() {
             if( !unusedGroupInfo->name.empty() && unusedGroupInfo->groupsCounts > 1 ) {
-                printHeader( "Group", unusedGroupInfo->name );
+                printHeader( "Group: " + unusedGroupInfo->name );
                 unusedGroupInfo.reset();
             }
         }
         void lazyPrintTestCaseInfo() {
             if( !currentSectionInfo ) {
-                printTestCaseHeader();
+                printHeader( unusedTestCaseInfo->name );
                 stream << std::endl;
                 unusedTestCaseInfo.reset();
             }
@@ -7061,38 +7063,21 @@ namespace Catch {
 
             // Sections
             if( !sections.empty() ) {
-                printTestCaseHeader();
+                printHeader( unusedTestCaseInfo->name, false );
 
-                std::string firstInset;
-                std::string inset;
-                if( sections.size() > 1 ) {
-                    firstInset = "Sections: ";
-                    inset =      "          ";
-                }
-                else {
-                    firstInset = "Section: ";
-                    inset =      "         ";
-                }
                 typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
-                for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
-                    if( it == sections.rbegin() )
-                        stream << firstInset;
-                    else
-                        stream << inset;
-                    stream << (*it)->name << "\n";
-                }
+                for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
+                    stream << "  " << (*it)->name << "\n";
                 stream << getDashes() << "\n" << std::endl;
                 unusedSectionInfo.reset();
             }
         }
 
-        void printTestCaseHeader() {
-            printHeader( "Test case", unusedTestCaseInfo->name );
-        }
-        void printHeader( std::string const& _type, std::string const& _name ) {
+        void printHeader( std::string const& _name, bool closed = true ) {
             stream  << getDashes() << "\n"
-                    << _type << ": '" << _name << "'\n"
-                    << getDashes() << "\n";
+                    << _name << "\n";
+            if( closed )
+                stream << getDashes() << "\n";
         }
 
         void printTotals( const Totals& totals ) {
@@ -7150,12 +7135,12 @@ namespace Catch {
         }
         static std::string const& getDashes() {
             static const std::string dashes
-                = "----------------------------------------------------------------";
+                = "-----------------------------------------------------------------";
             return dashes;
         }
         static std::string const& getDoubleDashes() {
             static const std::string doubleDashes
-                = "================================================================";
+                = "=================================================================";
             return doubleDashes;
         }
 

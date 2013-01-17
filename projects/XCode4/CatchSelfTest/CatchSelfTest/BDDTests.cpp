@@ -15,8 +15,8 @@
 // !TBD: story scenarios map to class based tests
 #define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
 #define GIVEN( desc ) SECTION( " Given: " desc, "" )
-#define WHEN( desc ) SECTION( "  When:  " desc, "" )
-#define THEN( desc ) SECTION( "  Then:  " desc, "" )
+#define WHEN( desc ) SECTION( "  When: " desc, "" )
+#define THEN( desc ) SECTION( "  Then: " desc, "" )
 
 inline bool itDoesThis(){ return true; }
 
