@@ -238,13 +238,13 @@ namespace Catch {
         }
         void lazyPrintGroupInfo() {
             if( !unusedGroupInfo->name.empty() && unusedGroupInfo->groupsCounts > 1 ) {
-                printHeader( "Group", unusedGroupInfo->name );
+                printHeader( "Group: " + unusedGroupInfo->name );
                 unusedGroupInfo.reset();
             }
         }
         void lazyPrintTestCaseInfo() {
             if( !currentSectionInfo ) {
-                printTestCaseHeader();
+                printHeader( unusedTestCaseInfo->name );
                 stream << std::endl;
                 unusedTestCaseInfo.reset();
             }
@@ -259,38 +259,21 @@ namespace Catch {
             
             // Sections
             if( !sections.empty() ) {
-                printTestCaseHeader();
+                printHeader( unusedTestCaseInfo->name, false );
                 
-                std::string firstInset;
-                std::string inset;
-                if( sections.size() > 1 ) {
-                    firstInset = "Sections: ";
-                    inset =      "          ";
-                }
-                else {
-                    firstInset = "Section: ";
-                    inset =      "         ";
-                }
                 typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
-                for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it ) {
-                    if( it == sections.rbegin() )
-                        stream << firstInset;
-                    else
-                        stream << inset;
-                    stream << (*it)->name << "\n";
-                }
+                for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
+                    stream << "  " << (*it)->name << "\n";
                 stream << getDashes() << "\n" << std::endl;
                 unusedSectionInfo.reset();
             }
         }
 
-        void printTestCaseHeader() {
-            printHeader( "Test case", unusedTestCaseInfo->name );
-        }
-        void printHeader( std::string const& _type, std::string const& _name ) {
+        void printHeader( std::string const& _name, bool closed = true ) {
             stream  << getDashes() << "\n"
-                    << _type << ": '" << _name << "'\n"
-                    << getDashes() << "\n";
+                    << _name << "\n";
+            if( closed )
+                stream << getDashes() << "\n";
         }
         
         void printTotals( const Totals& totals ) {
@@ -348,12 +331,12 @@ namespace Catch {
         }
         static std::string const& getDashes() {
             static const std::string dashes
-                = "----------------------------------------------------------------";
+                = "-----------------------------------------------------------------";
             return dashes;
         }
         static std::string const& getDoubleDashes() {
             static const std::string doubleDashes
-                = "================================================================";
+                = "=================================================================";
             return doubleDashes;
         }
         
