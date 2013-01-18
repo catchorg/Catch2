@@ -1,2114 +1,2114 @@
 
-CatchSelfTest is a CATCH v0.9 b13 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b15 (integration) host application.
 Run with -? for options
 
 -----------------------------------------------------------------
 ./succeeding/Approx/simple
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( d == Approx( 1.23 ) )
 with expansion:
   1.23 == Approx( 1.23 )
-ApproxTests.cpp:20
+ApproxTests.cpp:20:
 
 PASSED:
   REQUIRE( d != Approx( 1.22 ) )
 with expansion:
   1.23 != Approx( 1.22 )
-ApproxTests.cpp:21
+ApproxTests.cpp:21:
 
 PASSED:
   REQUIRE( d != Approx( 1.24 ) )
 with expansion:
   1.23 != Approx( 1.24 )
-ApproxTests.cpp:22
+ApproxTests.cpp:22:
 
 PASSED:
   REQUIRE( Approx( d ) == 1.23 )
 with expansion:
   Approx( 1.23 ) == 1.23
-ApproxTests.cpp:24
+ApproxTests.cpp:24:
 
 PASSED:
   REQUIRE( Approx( d ) != 1.22 )
 with expansion:
   Approx( 1.23 ) != 1.22
-ApproxTests.cpp:25
+ApproxTests.cpp:25:
 
 PASSED:
   REQUIRE( Approx( d ) != 1.24 )
 with expansion:
   Approx( 1.23 ) != 1.24
-ApproxTests.cpp:26
+ApproxTests.cpp:26:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/epsilon
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( d != Approx( 1.231 ) )
 with expansion:
   1.23 != Approx( 1.231 )
-ApproxTests.cpp:38
+ApproxTests.cpp:38:
 
 PASSED:
   REQUIRE( d == Approx( 1.231 ).epsilon( 0.1 ) )
 with expansion:
   1.23 == Approx( 1.231 )
-ApproxTests.cpp:39
+ApproxTests.cpp:39:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/float
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 1.23f == Approx( 1.23f ) )
 with expansion:
   1.23 == Approx( 1.23 )
-ApproxTests.cpp:49
+ApproxTests.cpp:49:
 
 PASSED:
   REQUIRE( 0.0f == Approx( 0.0f ) )
 with expansion:
   0 == Approx( 0 )
-ApproxTests.cpp:50
+ApproxTests.cpp:50:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/int
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 1 == Approx( 1 ) )
-ApproxTests.cpp:60
+ApproxTests.cpp:60:
 
 PASSED:
   REQUIRE( 0 == Approx( 0 ) )
-ApproxTests.cpp:61
+ApproxTests.cpp:61:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/mixed
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 1.0f == Approx( 1 ) )
 with expansion:
   1 == Approx( 1 )
-ApproxTests.cpp:75
+ApproxTests.cpp:75:
 
 PASSED:
   REQUIRE( 0 == Approx( dZero) )
 with expansion:
   0 == Approx( 0 )
-ApproxTests.cpp:76
+ApproxTests.cpp:76:
 
 PASSED:
   REQUIRE( 0 == Approx( dSmall ).epsilon( 0.001 ) )
 with expansion:
   0 == Approx( 1e-05 )
-ApproxTests.cpp:77
+ApproxTests.cpp:77:
 
 PASSED:
   REQUIRE( 1.234f == Approx( dMedium ) )
 with expansion:
   1.234 == Approx( 1.234 )
-ApproxTests.cpp:78
+ApproxTests.cpp:78:
 
 PASSED:
   REQUIRE( dMedium == Approx( 1.234f ) )
 with expansion:
   1.234 == Approx( 1.234 )
-ApproxTests.cpp:79
+ApproxTests.cpp:79:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/custom
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( d == approx( 1.23 ) )
 with expansion:
   1.23 == Approx( 1.23 )
-ApproxTests.cpp:93
+ApproxTests.cpp:93:
 
 PASSED:
   REQUIRE( d == approx( 1.22 ) )
 with expansion:
   1.23 == Approx( 1.22 )
-ApproxTests.cpp:94
+ApproxTests.cpp:94:
 
 PASSED:
   REQUIRE( d == approx( 1.24 ) )
 with expansion:
   1.23 == Approx( 1.24 )
-ApproxTests.cpp:95
+ApproxTests.cpp:95:
 
 PASSED:
   REQUIRE( d != approx( 1.25 ) )
 with expansion:
   1.23 != Approx( 1.25 )
-ApproxTests.cpp:96
+ApproxTests.cpp:96:
 
 PASSED:
   REQUIRE( approx( d ) == 1.23 )
 with expansion:
   Approx( 1.23 ) == 1.23
-ApproxTests.cpp:98
+ApproxTests.cpp:98:
 
 PASSED:
   REQUIRE( approx( d ) == 1.22 )
 with expansion:
   Approx( 1.23 ) == 1.22
-ApproxTests.cpp:99
+ApproxTests.cpp:99:
 
 PASSED:
   REQUIRE( approx( d ) == 1.24 )
 with expansion:
   Approx( 1.23 ) == 1.24
-ApproxTests.cpp:100
+ApproxTests.cpp:100:
 
 PASSED:
   REQUIRE( approx( d ) != 1.25 )
 with expansion:
   Approx( 1.23 ) != 1.25
-ApproxTests.cpp:101
+ApproxTests.cpp:101:
 
 -----------------------------------------------------------------
 ./succeeding/TestClass/succeedingCase
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( s == "hello" )
 with expansion:
   "hello" == "hello"
-ClassTests.cpp:24
+ClassTests.cpp:24:
 
 -----------------------------------------------------------------
 ./failing/TestClass/failingCase
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE( s == "world" )
 with expansion:
   "hello" == "world"
-ClassTests.cpp:28
+ClassTests.cpp:28:
 
 -----------------------------------------------------------------
 ./succeeding/Fixture/succeedingCase
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( m_a == 1 )
 with expansion:
   1 == 1
-ClassTests.cpp:47
+ClassTests.cpp:47:
 
 -----------------------------------------------------------------
 ./failing/Fixture/failingCase
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE( m_a == 2 )
 with expansion:
   1 == 2
-ClassTests.cpp:55
+ClassTests.cpp:55:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/equality
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( data.int_seven == 7 )
 with expansion:
   7 == 7
-ConditionTests.cpp:55
+ConditionTests.cpp:55:
 
 PASSED:
   REQUIRE( data.float_nine_point_one == Approx( 9.1f ) )
 with expansion:
   9.1 == Approx( 9.1 )
-ConditionTests.cpp:56
+ConditionTests.cpp:56:
 
 PASSED:
   REQUIRE( data.double_pi == Approx( 3.1415926535 ) )
 with expansion:
   3.14159 == Approx( 3.14159 )
-ConditionTests.cpp:57
+ConditionTests.cpp:57:
 
 PASSED:
   REQUIRE( data.str_hello == "hello" )
 with expansion:
   "hello" == "hello"
-ConditionTests.cpp:58
+ConditionTests.cpp:58:
 
 PASSED:
   REQUIRE( "hello" == data.str_hello )
 with expansion:
   "hello" == "hello"
-ConditionTests.cpp:59
+ConditionTests.cpp:59:
 
 PASSED:
   REQUIRE( data.str_hello.size() == 5 )
 with expansion:
   5 == 5
-ConditionTests.cpp:60
+ConditionTests.cpp:60:
 
 PASSED:
   REQUIRE( x == Approx( 1.3 ) )
 with expansion:
   1.3 == Approx( 1.3 )
-ConditionTests.cpp:63
+ConditionTests.cpp:63:
 
 -----------------------------------------------------------------
 ./failing/conditions/equality
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( data.int_seven == 6 )
 with expansion:
   7 == 6
-ConditionTests.cpp:71
+ConditionTests.cpp:71:
 
 FAILED:
   CHECK( data.int_seven == 8 )
 with expansion:
   7 == 8
-ConditionTests.cpp:72
+ConditionTests.cpp:72:
 
 FAILED:
   CHECK( data.int_seven == 0 )
 with expansion:
   7 == 0
-ConditionTests.cpp:73
+ConditionTests.cpp:73:
 
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.11f ) )
 with expansion:
   9.1 == Approx( 9.11 )
-ConditionTests.cpp:74
+ConditionTests.cpp:74:
 
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.0f ) )
 with expansion:
   9.1 == Approx( 9 )
-ConditionTests.cpp:75
+ConditionTests.cpp:75:
 
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 1 ) )
 with expansion:
   9.1 == Approx( 1 )
-ConditionTests.cpp:76
+ConditionTests.cpp:76:
 
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 0 ) )
 with expansion:
   9.1 == Approx( 0 )
-ConditionTests.cpp:77
+ConditionTests.cpp:77:
 
 FAILED:
   CHECK( data.double_pi == Approx( 3.1415 ) )
 with expansion:
   3.14159 == Approx( 3.1415 )
-ConditionTests.cpp:78
+ConditionTests.cpp:78:
 
 FAILED:
   CHECK( data.str_hello == "goodbye" )
 with expansion:
   "hello" == "goodbye"
-ConditionTests.cpp:79
+ConditionTests.cpp:79:
 
 FAILED:
   CHECK( data.str_hello == "hell" )
 with expansion:
   "hello" == "hell"
-ConditionTests.cpp:80
+ConditionTests.cpp:80:
 
 FAILED:
   CHECK( data.str_hello == "hello1" )
 with expansion:
   "hello" == "hello1"
-ConditionTests.cpp:81
+ConditionTests.cpp:81:
 
 FAILED:
   CHECK( data.str_hello.size() == 6 )
 with expansion:
   5 == 6
-ConditionTests.cpp:82
+ConditionTests.cpp:82:
 
 FAILED:
   CHECK( x == Approx( 1.301 ) )
 with expansion:
   1.3 == Approx( 1.301 )
-ConditionTests.cpp:85
+ConditionTests.cpp:85:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/inequality
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( data.int_seven != 6 )
 with expansion:
   7 != 6
-ConditionTests.cpp:93
+ConditionTests.cpp:93:
 
 PASSED:
   REQUIRE( data.int_seven != 8 )
 with expansion:
   7 != 8
-ConditionTests.cpp:94
+ConditionTests.cpp:94:
 
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 9.11f ) )
 with expansion:
   9.1 != Approx( 9.11 )
-ConditionTests.cpp:95
+ConditionTests.cpp:95:
 
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 9.0f ) )
 with expansion:
   9.1 != Approx( 9 )
-ConditionTests.cpp:96
+ConditionTests.cpp:96:
 
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 1 ) )
 with expansion:
   9.1 != Approx( 1 )
-ConditionTests.cpp:97
+ConditionTests.cpp:97:
 
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 0 ) )
 with expansion:
   9.1 != Approx( 0 )
-ConditionTests.cpp:98
+ConditionTests.cpp:98:
 
 PASSED:
   REQUIRE( data.double_pi != Approx( 3.1415 ) )
 with expansion:
   3.14159 != Approx( 3.1415 )
-ConditionTests.cpp:99
+ConditionTests.cpp:99:
 
 PASSED:
   REQUIRE( data.str_hello != "goodbye" )
 with expansion:
   "hello" != "goodbye"
-ConditionTests.cpp:100
+ConditionTests.cpp:100:
 
 PASSED:
   REQUIRE( data.str_hello != "hell" )
 with expansion:
   "hello" != "hell"
-ConditionTests.cpp:101
+ConditionTests.cpp:101:
 
 PASSED:
   REQUIRE( data.str_hello != "hello1" )
 with expansion:
   "hello" != "hello1"
-ConditionTests.cpp:102
+ConditionTests.cpp:102:
 
 PASSED:
   REQUIRE( data.str_hello.size() != 6 )
 with expansion:
   5 != 6
-ConditionTests.cpp:103
+ConditionTests.cpp:103:
 
 -----------------------------------------------------------------
 ./failing/conditions/inequality
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( data.int_seven != 7 )
 with expansion:
   7 != 7
-ConditionTests.cpp:111
+ConditionTests.cpp:111:
 
 FAILED:
   CHECK( data.float_nine_point_one != Approx( 9.1f ) )
 with expansion:
   9.1 != Approx( 9.1 )
-ConditionTests.cpp:112
+ConditionTests.cpp:112:
 
 FAILED:
   CHECK( data.double_pi != Approx( 3.1415926535 ) )
 with expansion:
   3.14159 != Approx( 3.14159 )
-ConditionTests.cpp:113
+ConditionTests.cpp:113:
 
 FAILED:
   CHECK( data.str_hello != "hello" )
 with expansion:
   "hello" != "hello"
-ConditionTests.cpp:114
+ConditionTests.cpp:114:
 
 FAILED:
   CHECK( data.str_hello.size() != 5 )
 with expansion:
   5 != 5
-ConditionTests.cpp:115
+ConditionTests.cpp:115:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/ordered
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( data.int_seven < 8 )
 with expansion:
   7 < 8
-ConditionTests.cpp:124
+ConditionTests.cpp:124:
 
 PASSED:
   REQUIRE( data.int_seven > 6 )
 with expansion:
   7 > 6
-ConditionTests.cpp:125
+ConditionTests.cpp:125:
 
 PASSED:
   REQUIRE( data.int_seven > 0 )
 with expansion:
   7 > 0
-ConditionTests.cpp:126
+ConditionTests.cpp:126:
 
 PASSED:
   REQUIRE( data.int_seven > -1 )
 with expansion:
   7 > -1
-ConditionTests.cpp:127
+ConditionTests.cpp:127:
 
 PASSED:
   REQUIRE( data.int_seven >= 7 )
 with expansion:
   7 >= 7
-ConditionTests.cpp:129
+ConditionTests.cpp:129:
 
 PASSED:
   REQUIRE( data.int_seven >= 6 )
 with expansion:
   7 >= 6
-ConditionTests.cpp:130
+ConditionTests.cpp:130:
 
 PASSED:
   REQUIRE( data.int_seven <= 7 )
 with expansion:
   7 <= 7
-ConditionTests.cpp:131
+ConditionTests.cpp:131:
 
 PASSED:
   REQUIRE( data.int_seven <= 8 )
 with expansion:
   7 <= 8
-ConditionTests.cpp:132
+ConditionTests.cpp:132:
 
 PASSED:
   REQUIRE( data.float_nine_point_one > 9 )
 with expansion:
   9.1 > 9
-ConditionTests.cpp:134
+ConditionTests.cpp:134:
 
 PASSED:
   REQUIRE( data.float_nine_point_one < 10 )
 with expansion:
   9.1 < 10
-ConditionTests.cpp:135
+ConditionTests.cpp:135:
 
 PASSED:
   REQUIRE( data.float_nine_point_one < 9.2 )
 with expansion:
   9.1 < 9.2
-ConditionTests.cpp:136
+ConditionTests.cpp:136:
 
 PASSED:
   REQUIRE( data.str_hello <= "hello" )
 with expansion:
   "hello" <= "hello"
-ConditionTests.cpp:138
+ConditionTests.cpp:138:
 
 PASSED:
   REQUIRE( data.str_hello >= "hello" )
 with expansion:
   "hello" >= "hello"
-ConditionTests.cpp:139
+ConditionTests.cpp:139:
 
 PASSED:
   REQUIRE( data.str_hello < "hellp" )
 with expansion:
   "hello" < "hellp"
-ConditionTests.cpp:141
+ConditionTests.cpp:141:
 
 PASSED:
   REQUIRE( data.str_hello < "zebra" )
 with expansion:
   "hello" < "zebra"
-ConditionTests.cpp:142
+ConditionTests.cpp:142:
 
 PASSED:
   REQUIRE( data.str_hello > "hellm" )
 with expansion:
   "hello" > "hellm"
-ConditionTests.cpp:143
+ConditionTests.cpp:143:
 
 PASSED:
   REQUIRE( data.str_hello > "a" )
 with expansion:
   "hello" > "a"
-ConditionTests.cpp:144
+ConditionTests.cpp:144:
 
 -----------------------------------------------------------------
 ./failing/conditions/ordered
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( data.int_seven > 7 )
 with expansion:
   7 > 7
-ConditionTests.cpp:152
+ConditionTests.cpp:152:
 
 FAILED:
   CHECK( data.int_seven < 7 )
 with expansion:
   7 < 7
-ConditionTests.cpp:153
+ConditionTests.cpp:153:
 
 FAILED:
   CHECK( data.int_seven > 8 )
 with expansion:
   7 > 8
-ConditionTests.cpp:154
+ConditionTests.cpp:154:
 
 FAILED:
   CHECK( data.int_seven < 6 )
 with expansion:
   7 < 6
-ConditionTests.cpp:155
+ConditionTests.cpp:155:
 
 FAILED:
   CHECK( data.int_seven < 0 )
 with expansion:
   7 < 0
-ConditionTests.cpp:156
+ConditionTests.cpp:156:
 
 FAILED:
   CHECK( data.int_seven < -1 )
 with expansion:
   7 < -1
-ConditionTests.cpp:157
+ConditionTests.cpp:157:
 
 FAILED:
   CHECK( data.int_seven >= 8 )
 with expansion:
   7 >= 8
-ConditionTests.cpp:159
+ConditionTests.cpp:159:
 
 FAILED:
   CHECK( data.int_seven <= 6 )
 with expansion:
   7 <= 6
-ConditionTests.cpp:160
+ConditionTests.cpp:160:
 
 FAILED:
   CHECK( data.float_nine_point_one < 9 )
 with expansion:
   9.1 < 9
-ConditionTests.cpp:162
+ConditionTests.cpp:162:
 
 FAILED:
   CHECK( data.float_nine_point_one > 10 )
 with expansion:
   9.1 > 10
-ConditionTests.cpp:163
+ConditionTests.cpp:163:
 
 FAILED:
   CHECK( data.float_nine_point_one > 9.2 )
 with expansion:
   9.1 > 9.2
-ConditionTests.cpp:164
+ConditionTests.cpp:164:
 
 FAILED:
   CHECK( data.str_hello > "hello" )
 with expansion:
   "hello" > "hello"
-ConditionTests.cpp:166
+ConditionTests.cpp:166:
 
 FAILED:
   CHECK( data.str_hello < "hello" )
 with expansion:
   "hello" < "hello"
-ConditionTests.cpp:167
+ConditionTests.cpp:167:
 
 FAILED:
   CHECK( data.str_hello > "hellp" )
 with expansion:
   "hello" > "hellp"
-ConditionTests.cpp:168
+ConditionTests.cpp:168:
 
 FAILED:
   CHECK( data.str_hello > "z" )
 with expansion:
   "hello" > "z"
-ConditionTests.cpp:169
+ConditionTests.cpp:169:
 
 FAILED:
   CHECK( data.str_hello < "hellm" )
 with expansion:
   "hello" < "hellm"
-ConditionTests.cpp:170
+ConditionTests.cpp:170:
 
 FAILED:
   CHECK( data.str_hello < "a" )
 with expansion:
   "hello" < "a"
-ConditionTests.cpp:171
+ConditionTests.cpp:171:
 
 FAILED:
   CHECK( data.str_hello >= "z" )
 with expansion:
   "hello" >= "z"
-ConditionTests.cpp:173
+ConditionTests.cpp:173:
 
 FAILED:
   CHECK( data.str_hello <= "a" )
 with expansion:
   "hello" <= "a"
-ConditionTests.cpp:174
+ConditionTests.cpp:174:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/int literals
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( i == 1 )
 with expansion:
   1 == 1
-ConditionTests.cpp:188
+ConditionTests.cpp:188:
 
 PASSED:
   REQUIRE( ui == 2 )
 with expansion:
   2 == 2
-ConditionTests.cpp:189
+ConditionTests.cpp:189:
 
 PASSED:
   REQUIRE( l == 3 )
 with expansion:
   3 == 3
-ConditionTests.cpp:190
+ConditionTests.cpp:190:
 
 PASSED:
   REQUIRE( ul == 4 )
 with expansion:
   4 == 4
-ConditionTests.cpp:191
+ConditionTests.cpp:191:
 
 PASSED:
   REQUIRE( c == 5 )
 with expansion:
   5 == 5
-ConditionTests.cpp:192
+ConditionTests.cpp:192:
 
 PASSED:
   REQUIRE( uc == 6 )
 with expansion:
   6 == 6
-ConditionTests.cpp:193
+ConditionTests.cpp:193:
 
 PASSED:
   REQUIRE( 1 == i )
 with expansion:
   1 == 1
-ConditionTests.cpp:195
+ConditionTests.cpp:195:
 
 PASSED:
   REQUIRE( 2 == ui )
 with expansion:
   2 == 2
-ConditionTests.cpp:196
+ConditionTests.cpp:196:
 
 PASSED:
   REQUIRE( 3 == l )
 with expansion:
   3 == 3
-ConditionTests.cpp:197
+ConditionTests.cpp:197:
 
 PASSED:
   REQUIRE( 4 == ul )
 with expansion:
   4 == 4
-ConditionTests.cpp:198
+ConditionTests.cpp:198:
 
 PASSED:
   REQUIRE( 5 == c )
 with expansion:
   5 == 5
-ConditionTests.cpp:199
+ConditionTests.cpp:199:
 
 PASSED:
   REQUIRE( 6 == uc )
 with expansion:
   6 == 6
-ConditionTests.cpp:200
+ConditionTests.cpp:200:
 
 PASSED:
   REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul )
 with expansion:
   0x<hex digits> > 4
-ConditionTests.cpp:202
+ConditionTests.cpp:202:
 
 -----------------------------------------------------------------
 ./succeeding/conditions//long_to_unsigned_x
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( long_var == unsigned_char_var )
 with expansion:
   1 == 1
-ConditionTests.cpp:223
+ConditionTests.cpp:223:
 
 PASSED:
   REQUIRE( long_var == unsigned_short_var )
 with expansion:
   1 == 1
-ConditionTests.cpp:224
+ConditionTests.cpp:224:
 
 PASSED:
   REQUIRE( long_var == unsigned_int_var )
 with expansion:
   1 == 1
-ConditionTests.cpp:225
+ConditionTests.cpp:225:
 
 PASSED:
   REQUIRE( long_var == unsigned_long_var )
 with expansion:
   1 == 1
-ConditionTests.cpp:226
+ConditionTests.cpp:226:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/const ints to int literal
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( unsigned_char_var == 1 )
 with expansion:
   1 == 1
-ConditionTests.cpp:237
+ConditionTests.cpp:237:
 
 PASSED:
   REQUIRE( unsigned_short_var == 1 )
 with expansion:
   1 == 1
-ConditionTests.cpp:238
+ConditionTests.cpp:238:
 
 PASSED:
   REQUIRE( unsigned_int_var == 1 )
 with expansion:
   1 == 1
-ConditionTests.cpp:239
+ConditionTests.cpp:239:
 
 PASSED:
   REQUIRE( unsigned_long_var == 1 )
 with expansion:
   1 == 1
-ConditionTests.cpp:240
+ConditionTests.cpp:240:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/negative ints
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( ( -1 > 2u ) )
 with expansion:
   true
-ConditionTests.cpp:246
+ConditionTests.cpp:246:
 
 PASSED:
   CHECK( -1 > 2u )
 with expansion:
   -1 > 2
-ConditionTests.cpp:247
+ConditionTests.cpp:247:
 
 PASSED:
   CHECK( ( 2u < -1 ) )
 with expansion:
   true
-ConditionTests.cpp:249
+ConditionTests.cpp:249:
 
 PASSED:
   CHECK( 2u < -1 )
 with expansion:
   2 < -1
-ConditionTests.cpp:250
+ConditionTests.cpp:250:
 
 PASSED:
   CHECK( ( minInt > 2u ) )
 with expansion:
   true
-ConditionTests.cpp:253
+ConditionTests.cpp:253:
 
 PASSED:
   CHECK( minInt > 2u )
 with expansion:
   -2147483648 > 2
-ConditionTests.cpp:254
+ConditionTests.cpp:254:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/computed ints
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( 54 == 6*9 )
 with expansion:
   54 == 54
-ConditionTests.cpp:269
+ConditionTests.cpp:269:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/ptr
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( p == __null )
 with expansion:
   __null == 0
-ConditionTests.cpp:285
+ConditionTests.cpp:285:
 
 PASSED:
   REQUIRE( p == pNULL )
 with expansion:
   __null == __null
-ConditionTests.cpp:286
+ConditionTests.cpp:286:
 
 PASSED:
   REQUIRE( p != __null )
 with expansion:
   0x<hex digits> != 0
-ConditionTests.cpp:291
+ConditionTests.cpp:291:
 
 PASSED:
   REQUIRE( cp != __null )
 with expansion:
   0x<hex digits> != 0
-ConditionTests.cpp:294
+ConditionTests.cpp:294:
 
 PASSED:
   REQUIRE( cpc != __null )
 with expansion:
   0x<hex digits> != 0
-ConditionTests.cpp:297
+ConditionTests.cpp:297:
 
 PASSED:
   REQUIRE( returnsNull() == __null )
 with expansion:
   {null string} == 0
-ConditionTests.cpp:299
+ConditionTests.cpp:299:
 
 PASSED:
   REQUIRE( returnsConstNull() == __null )
 with expansion:
   {null string} == 0
-ConditionTests.cpp:300
+ConditionTests.cpp:300:
 
 PASSED:
   REQUIRE( __null != p )
 with expansion:
   0 != 0x<hex digits>
-ConditionTests.cpp:302
+ConditionTests.cpp:302:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/not
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( false == false )
-ConditionTests.cpp:317
+ConditionTests.cpp:317:
 
 PASSED:
   REQUIRE( true == true )
-ConditionTests.cpp:318
+ConditionTests.cpp:318:
 
 PASSED:
   REQUIRE( !false )
 with expansion:
   true
-ConditionTests.cpp:319
+ConditionTests.cpp:319:
 
 PASSED:
   REQUIRE_FALSE( !false )
-ConditionTests.cpp:320
+ConditionTests.cpp:320:
 
 PASSED:
   REQUIRE( !falseValue )
 with expansion:
   true
-ConditionTests.cpp:322
+ConditionTests.cpp:322:
 
 PASSED:
   REQUIRE_FALSE( !falseValue )
 with expansion:
   !false
-ConditionTests.cpp:323
+ConditionTests.cpp:323:
 
 PASSED:
   REQUIRE( !(1 == 2) )
 with expansion:
   true
-ConditionTests.cpp:325
+ConditionTests.cpp:325:
 
 PASSED:
   REQUIRE_FALSE( !1 == 2 )
 with expansion:
   !(1 == 2)
-ConditionTests.cpp:326
+ConditionTests.cpp:326:
 
 -----------------------------------------------------------------
 ./failing/conditions/not
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( false != false )
-ConditionTests.cpp:334
+ConditionTests.cpp:334:
 
 FAILED:
   CHECK( true != true )
-ConditionTests.cpp:335
+ConditionTests.cpp:335:
 
 FAILED:
   CHECK( !true )
 with expansion:
   false
-ConditionTests.cpp:336
+ConditionTests.cpp:336:
 
 FAILED:
   CHECK_FALSE( !true )
-ConditionTests.cpp:337
+ConditionTests.cpp:337:
 
 FAILED:
   CHECK( !trueValue )
 with expansion:
   false
-ConditionTests.cpp:339
+ConditionTests.cpp:339:
 
 FAILED:
   CHECK_FALSE( !trueValue )
 with expansion:
   !true
-ConditionTests.cpp:340
+ConditionTests.cpp:340:
 
 FAILED:
   CHECK( !(1 == 1) )
 with expansion:
   false
-ConditionTests.cpp:342
+ConditionTests.cpp:342:
 
 FAILED:
   CHECK_FALSE( !1 == 1 )
 with expansion:
   !(1 == 1)
-ConditionTests.cpp:343
+ConditionTests.cpp:343:
 
 -----------------------------------------------------------------
 ./succeeding/exceptions/explicit
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THROWS_AS( thisThrows() )
-ExceptionTests.cpp:39
+ExceptionTests.cpp:39:
 
 PASSED:
   REQUIRE_NOTHROW( thisDoesntThrow() )
-ExceptionTests.cpp:40
+ExceptionTests.cpp:40:
 
 PASSED:
   REQUIRE_THROWS( thisThrows() )
-ExceptionTests.cpp:41
+ExceptionTests.cpp:41:
 
 -----------------------------------------------------------------
 ./failing/exceptions/explicit
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK_THROWS_AS( thisThrows() )
 due to unexpected exception with message:
   expected exception
-ExceptionTests.cpp:47
+ExceptionTests.cpp:47:
 
 FAILED:
   CHECK_THROWS_AS( thisDoesntThrow() )
 because no exception was thrown where one was expected:
-ExceptionTests.cpp:48
+ExceptionTests.cpp:48:
 
 FAILED:
   CHECK_NOTHROW( thisThrows() )
 due to unexpected exception with message:
   expected exception
-ExceptionTests.cpp:49
+ExceptionTests.cpp:49:
 
 -----------------------------------------------------------------
 ./failing/exceptions/implicit
------------------------------------------------------------------
+.................................................................
 
 FAILED:
 due to unexpected exception with message:
   unexpected exception
-ExceptionTests.cpp:52
+ExceptionTests.cpp:52:
 
 -----------------------------------------------------------------
 ./failing/exceptions/implicit/2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( 1 == 1 )
-ExceptionTests.cpp:60
+ExceptionTests.cpp:60:
 
 FAILED:
   {Unknown expression after this line}
 due to unexpected exception with message:
   unexpected exception
-ExceptionTests.cpp:60
+ExceptionTests.cpp:60:
 
 -----------------------------------------------------------------
 ./succeeding/exceptions/implicit
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in test case, './succeeding/exceptions/implicit'
 
 -----------------------------------------------------------------
 ./failing/exceptions/custom
------------------------------------------------------------------
+.................................................................
 
 FAILED:
 due to unexpected exception with message:
   custom exception
-ExceptionTests.cpp:102
+ExceptionTests.cpp:102:
 
 -----------------------------------------------------------------
 ./failing/exceptions/custom/nothrow
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE_NOTHROW( throw CustomException( "unexpected custom exception" ) )
 due to unexpected exception with message:
   unexpected custom exception
-ExceptionTests.cpp:109
+ExceptionTests.cpp:109:
 
 -----------------------------------------------------------------
 ./failing/exceptions/custom/throw
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE_THROWS_AS( throw CustomException( "custom exception - not std" ) )
 due to unexpected exception with message:
   custom exception - not std
-ExceptionTests.cpp:114
+ExceptionTests.cpp:114:
 
 -----------------------------------------------------------------
 ./failing/exceptions/custom/double
------------------------------------------------------------------
+.................................................................
 
 FAILED:
 due to unexpected exception with message:
   3.14
-ExceptionTests.cpp:118
+ExceptionTests.cpp:118:
 
 -----------------------------------------------------------------
 ./succeeding/exceptions/notimplemented
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) )
-ExceptionTests.cpp:129
+ExceptionTests.cpp:129:
 
 -----------------------------------------------------------------
 ./succeeding/generators/1
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   200 == 200
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   202 == 202
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   204 == 204
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   206 == 206
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   208 == 208
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   210 == 210
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   212 == 212
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   4 == 4
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   6 == 6
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   8 == 8
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   10 == 10
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   30 == 30
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   40 == 40
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   42 == 42
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 PASSED:
   CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
 with expansion:
   72 == 72
-GeneratorTests.cpp:26
+GeneratorTests.cpp:26:
 
 PASSED:
   CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
 with expansion:
   214 == 214
-GeneratorTests.cpp:27
+GeneratorTests.cpp:27:
 
 -----------------------------------------------------------------
 ./succeeding/generators/2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CATCH_REQUIRE( i->first == i->second-1 )
 with expansion:
   0 == 0
-GeneratorTests.cpp:40
+GeneratorTests.cpp:40:
 
 PASSED:
   CATCH_REQUIRE( i->first == i->second-1 )
 with expansion:
   2 == 2
-GeneratorTests.cpp:40
+GeneratorTests.cpp:40:
 
 -----------------------------------------------------------------
 ./succeeding/message
------------------------------------------------------------------
+.................................................................
 
 warning:
   this is a warning
-MessageTests.cpp:14
+MessageTests.cpp:14:
 
 
 No assertions in test case, './succeeding/message'
 
 -----------------------------------------------------------------
 ./succeeding/succeed
------------------------------------------------------------------
+.................................................................
 
 PASSED:
 with message:
   this is a success
-MessageTests.cpp:18
+MessageTests.cpp:18:
 
 -----------------------------------------------------------------
 ./failing/message/info/1
------------------------------------------------------------------
+.................................................................
 
 info:
   this message should be logged
-MessageTests.cpp:23
+MessageTests.cpp:23:
 
 info:
   so should this
-MessageTests.cpp:24
+MessageTests.cpp:24:
 
 FAILED:
   REQUIRE( a == 1 )
 with expansion:
   2 == 1
-MessageTests.cpp:26
+MessageTests.cpp:26:
 
 -----------------------------------------------------------------
 ./mixed/message/info/2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( a == 2 )
 with expansion:
   2 == 2
-MessageTests.cpp:33
+MessageTests.cpp:33:
 
 info:
   this message should be logged
-MessageTests.cpp:31
+MessageTests.cpp:31:
 
 info:
   this message should be logged, too
-MessageTests.cpp:35
+MessageTests.cpp:35:
 
 FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
-MessageTests.cpp:37
+MessageTests.cpp:37:
 
 info:
   and this, but later
-MessageTests.cpp:39
+MessageTests.cpp:39:
 
 FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
-MessageTests.cpp:41
+MessageTests.cpp:41:
 
 PASSED:
   CHECK( a == 2 )
 with expansion:
   2 == 2
-MessageTests.cpp:45
+MessageTests.cpp:45:
 
 -----------------------------------------------------------------
 ./failing/message/fail
------------------------------------------------------------------
+.................................................................
 
 FAILED:
 explicitly with message:
   This is a failure
-MessageTests.cpp:51
+MessageTests.cpp:51:
 
 -----------------------------------------------------------------
 ./failing/message/sections
   one
------------------------------------------------------------------
+.................................................................
 
 FAILED:
 explicitly with message:
   Message from section one
-MessageTests.cpp:58
+MessageTests.cpp:58:
 
 -----------------------------------------------------------------
 ./failing/message/sections
   two
------------------------------------------------------------------
+.................................................................
 
 FAILED:
 explicitly with message:
   Message from section two
-MessageTests.cpp:63
+MessageTests.cpp:63:
 
 Message from section one
 -----------------------------------------------------------------
 ./succeeding/message/sections/stdout
   one
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in section, 'one'
@@ -2117,98 +2117,98 @@ Message from section two
 -----------------------------------------------------------------
 ./succeeding/message/sections/stdout
   two
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in section, 'two'
 
 -----------------------------------------------------------------
 ./mixed/message/scoped
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   0 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   1 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   2 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   3 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   4 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   5 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   6 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   7 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   8 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   9 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
   REQUIRE( i < 10 )
 info:
   current counter 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
   REQUIRE( i < 10 )
 info:
   i := 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 FAILED:
   REQUIRE( i < 10 )
 with expansion:
   10 < 10
-MessageTests.cpp:86
+MessageTests.cpp:86:
 
 -----------------------------------------------------------------
 ./succeeding/nofail
------------------------------------------------------------------
+.................................................................
 
 FAILED - but was ok:
   CHECK_NOFAIL( 1 == 2 )
-MessageTests.cpp:92
+MessageTests.cpp:92:
 
 
 No assertions in test case, './succeeding/nofail'
@@ -2216,101 +2216,101 @@ No assertions in test case, './succeeding/nofail'
 -----------------------------------------------------------------
 ./succeeding/Misc/Sections
   s1
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
-MiscTests.cpp:25
+MiscTests.cpp:25:
 
 PASSED:
   REQUIRE( b != a )
 with expansion:
   2 != 1
-MiscTests.cpp:26
+MiscTests.cpp:26:
 
 -----------------------------------------------------------------
 ./succeeding/Misc/Sections
   s2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
-MiscTests.cpp:31
+MiscTests.cpp:31:
 
 -----------------------------------------------------------------
 ./succeeding/Misc/Sections/nested
   s1
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
-MiscTests.cpp:42
+MiscTests.cpp:42:
 
 PASSED:
   REQUIRE( b != a )
 with expansion:
   2 != 1
-MiscTests.cpp:43
+MiscTests.cpp:43:
 
 -----------------------------------------------------------------
 ./succeeding/Misc/Sections/nested
   s1
   s2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
-MiscTests.cpp:47
+MiscTests.cpp:47:
 
 -----------------------------------------------------------------
 ./mixed/Misc/Sections/nested2
   s1
   s2
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE( a == b )
 with expansion:
   1 == 2
-MiscTests.cpp:61
+MiscTests.cpp:61:
 
 -----------------------------------------------------------------
 ./mixed/Misc/Sections/nested2
   s1
   s3
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
-MiscTests.cpp:66
+MiscTests.cpp:66:
 
 -----------------------------------------------------------------
 ./mixed/Misc/Sections/nested2
   s1
   s4
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( a < b )
 with expansion:
   1 < 2
-MiscTests.cpp:70
+MiscTests.cpp:70:
 
 -----------------------------------------------------------------
 ./Sections/nested/a/b
   c
   d (leaf)
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in section, 'd (leaf)'
@@ -2319,7 +2319,7 @@ No assertions in section, 'd (leaf)'
 ./Sections/nested/a/b
   c
   e (leaf)
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in section, 'e (leaf)'
@@ -2327,7 +2327,7 @@ No assertions in section, 'e (leaf)'
 -----------------------------------------------------------------
 ./Sections/nested/a/b
   f (leaf)
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in section, 'f (leaf)'
@@ -2335,207 +2335,207 @@ No assertions in section, 'f (leaf)'
 -----------------------------------------------------------------
 ./mixed/Misc/Sections/loops
   s1
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( b > a )
 with expansion:
   0 > 1
-MiscTests.cpp:103
+MiscTests.cpp:103:
 
 -----------------------------------------------------------------
 ./mixed/Misc/loops
------------------------------------------------------------------
+.................................................................
 
 info:
   Testing if fib[0] (1) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 info:
   Testing if fib[1] (1) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 PASSED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   0 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 info:
   Testing if fib[2] (2) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 info:
   Testing if fib[3] (3) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 info:
   Testing if fib[4] (5) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 PASSED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   0 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 info:
   Testing if fib[5] (8) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 info:
   Testing if fib[6] (13) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 info:
   Testing if fib[7] (21) is even
-MiscTests.cpp:114
+MiscTests.cpp:114:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-MiscTests.cpp:115
+MiscTests.cpp:115:
 
 Some information
 An error
 -----------------------------------------------------------------
 ./succeeding/Misc/stdout,stderr
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in test case, './succeeding/Misc/stdout,stderr'
 
 -----------------------------------------------------------------
 ./succeeding/Misc/null strings
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( makeString( false ) != static_cast<char*>(__null) )
 with expansion:
   "valid string" != {null string}
-MiscTests.cpp:133
+MiscTests.cpp:133:
 
 PASSED:
   REQUIRE( makeString( true ) == static_cast<char*>(__null) )
 with expansion:
   {null string} == {null string}
-MiscTests.cpp:134
+MiscTests.cpp:134:
 
 -----------------------------------------------------------------
 ./failing/info
------------------------------------------------------------------
+.................................................................
 
 info:
   hi
-MiscTests.cpp:139
+MiscTests.cpp:139:
 
 info:
   i := 7
-MiscTests.cpp:141
+MiscTests.cpp:141:
 
 FAILED:
   REQUIRE( false )
-MiscTests.cpp:142
+MiscTests.cpp:142:
 
 -----------------------------------------------------------------
 ./succeeding/checkedif
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECKED_IF( flag )
 with expansion:
   true
-MiscTests.cpp:147
+MiscTests.cpp:147:
 
 PASSED:
   REQUIRE( testCheckedIf( true ) )
 with expansion:
   true
-MiscTests.cpp:155
+MiscTests.cpp:155:
 
 -----------------------------------------------------------------
 ./failing/checkedif
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECKED_IF( flag )
 with expansion:
   false
-MiscTests.cpp:147
+MiscTests.cpp:147:
 
 FAILED:
   REQUIRE( testCheckedIf( false ) )
 with expansion:
   false
-MiscTests.cpp:160
+MiscTests.cpp:160:
 
 -----------------------------------------------------------------
 ./succeeding/checkedelse
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECKED_ELSE( flag )
 with expansion:
   true
-MiscTests.cpp:165
+MiscTests.cpp:165:
 
 PASSED:
   REQUIRE( testCheckedElse( true ) )
 with expansion:
   true
-MiscTests.cpp:173
+MiscTests.cpp:173:
 
 -----------------------------------------------------------------
 ./failing/checkedelse
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECKED_ELSE( flag )
 with expansion:
   false
-MiscTests.cpp:165
+MiscTests.cpp:165:
 
 FAILED:
   REQUIRE( testCheckedElse( false ) )
 with expansion:
   false
-MiscTests.cpp:178
+MiscTests.cpp:178:
 
 -----------------------------------------------------------------
 ./misc/xmlentitycheck
   embedded xml
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in section, 'embedded xml'
@@ -2543,203 +2543,203 @@ No assertions in section, 'embedded xml'
 -----------------------------------------------------------------
 ./misc/xmlentitycheck
   encoded chars
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in section, 'encoded chars'
 
 -----------------------------------------------------------------
 ./manual/onechar
------------------------------------------------------------------
+.................................................................
 
 info:
   3
-MiscTests.cpp:195
+MiscTests.cpp:195:
 
 FAILED:
   REQUIRE( false )
-MiscTests.cpp:196
+MiscTests.cpp:196:
 
 -----------------------------------------------------------------
 ./succeeding/atomic if
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( x == 0 )
 with expansion:
   0 == 0
-MiscTests.cpp:206
+MiscTests.cpp:206:
 
 -----------------------------------------------------------------
 ./succeeding/matchers
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THAT( testStringForMatching() Contains( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string"
-MiscTests.cpp:216
+MiscTests.cpp:216:
 
 PASSED:
   CHECK_THAT( testStringForMatching() Contains( "abc" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc"
-MiscTests.cpp:217
+MiscTests.cpp:217:
 
 PASSED:
   CHECK_THAT( testStringForMatching() StartsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "this"
-MiscTests.cpp:219
+MiscTests.cpp:219:
 
 PASSED:
   CHECK_THAT( testStringForMatching() EndsWith( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "substring"
-MiscTests.cpp:220
+MiscTests.cpp:220:
 
 -----------------------------------------------------------------
 ./failing/matchers/Contains
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK_THAT( testStringForMatching() Contains( "not there" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
-MiscTests.cpp:225
+MiscTests.cpp:225:
 
 -----------------------------------------------------------------
 ./failing/matchers/StartsWith
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK_THAT( testStringForMatching() StartsWith( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
-MiscTests.cpp:230
+MiscTests.cpp:230:
 
 -----------------------------------------------------------------
 ./failing/matchers/EndsWith
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK_THAT( testStringForMatching() EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
-MiscTests.cpp:235
+MiscTests.cpp:235:
 
 -----------------------------------------------------------------
 ./failing/matchers/Equals
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK_THAT( testStringForMatching() Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
-MiscTests.cpp:240
+MiscTests.cpp:240:
 
 -----------------------------------------------------------------
 /succeeding/matchers/AllOf
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_THAT( testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string"
   and contains: "abc" )
-MiscTests.cpp:248
+MiscTests.cpp:248:
 
 -----------------------------------------------------------------
 /succeeding/matchers/AnyOf
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_THAT( testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or
   contains: "not there" )
-MiscTests.cpp:252
+MiscTests.cpp:252:
 
 PASSED:
   CHECK_THAT( testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "not there"
   or contains: "string" )
-MiscTests.cpp:253
+MiscTests.cpp:253:
 
 -----------------------------------------------------------------
 ./succeeding/matchers/Equals
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_THAT( testStringForMatching() Equals( "this string contains 'abc' as a substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string
   contains 'abc' as a substring"
-MiscTests.cpp:258
+MiscTests.cpp:258:
 
 -----------------------------------------------------------------
 example/factorial
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( Factorial(0) == 1 )
 with expansion:
   1 == 1
-MiscTests.cpp:269
+MiscTests.cpp:269:
 
 PASSED:
   REQUIRE( Factorial(1) == 1 )
 with expansion:
   1 == 1
-MiscTests.cpp:270
+MiscTests.cpp:270:
 
 PASSED:
   REQUIRE( Factorial(2) == 2 )
 with expansion:
   2 == 2
-MiscTests.cpp:271
+MiscTests.cpp:271:
 
 PASSED:
   REQUIRE( Factorial(3) == 6 )
 with expansion:
   6 == 6
-MiscTests.cpp:272
+MiscTests.cpp:272:
 
 PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
   0x<hex digits> == 3628800
-MiscTests.cpp:273
+MiscTests.cpp:273:
 
 -----------------------------------------------------------------
 empty
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in test case, 'empty'
 
 -----------------------------------------------------------------
 Nice descriptive name
------------------------------------------------------------------
+.................................................................
 
 warning:
   This one ran
-MiscTests.cpp:282
+MiscTests.cpp:282:
 
 
 No assertions in test case, 'Nice descriptive name'
 
 -----------------------------------------------------------------
 first tag
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in test case, 'first tag'
 
 -----------------------------------------------------------------
 second tag
------------------------------------------------------------------
+.................................................................
 
 
 No assertions in test case, 'second tag'
@@ -2748,362 +2748,362 @@ No assertions in test case, 'second tag'
 selftest/main
   selftest/expected result
   selftest/expected result/failing tests
------------------------------------------------------------------
+.................................................................
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 PASSED:
 with message:
   Tests failed, as expected
-catch_self_test.hpp:114
+catch_self_test.hpp:114:
 
 -----------------------------------------------------------------
 selftest/main
   selftest/expected result
   selftest/expected result/succeeding tests
------------------------------------------------------------------
+.................................................................
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 Message from section one
 Message from section two
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 Some information
 An error
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 PASSED:
 with message:
   Tests passed, as expected
-catch_self_test.hpp:103
+catch_self_test.hpp:103:
 
 Message from section one
 Message from section two
@@ -3113,911 +3113,911 @@ An error
 selftest/main
   selftest/test counts
   selftest/test counts/succeeding tests
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( totals.assertions.passed == 291 )
 with expansion:
   293 == 291
-TestMain.cpp:40
+TestMain.cpp:40:
 
 PASSED:
   CHECK( totals.assertions.failed == 0 )
 with expansion:
   0 == 0
-TestMain.cpp:41
+TestMain.cpp:41:
 
 -----------------------------------------------------------------
 selftest/main
   selftest/test counts
   selftest/test counts/failing tests
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( totals.assertions.passed == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:47
+TestMain.cpp:47:
 
 PASSED:
   CHECK( totals.assertions.failed == 72 )
 with expansion:
   72 == 72
-TestMain.cpp:48
+TestMain.cpp:48:
 
 -----------------------------------------------------------------
 meta/Misc/Sections
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( totals.assertions.passed == 2 )
 with expansion:
   2 == 2
-TestMain.cpp:57
+TestMain.cpp:57:
 
 PASSED:
   CHECK( totals.assertions.failed == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:58
+TestMain.cpp:58:
 
 -----------------------------------------------------------------
 selftest/parser/2
   default
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:97
+TestMain.cpp:97:
 
 PASSED:
   CHECK( config.shouldDebugBreak == false )
 with expansion:
   false == false
-TestMain.cpp:99
+TestMain.cpp:99:
 
 PASSED:
   CHECK( config.cutoff == -1 )
 with expansion:
   -1 == -1
-TestMain.cpp:100
+TestMain.cpp:100:
 
 PASSED:
   CHECK( config.allowThrows == true )
 with expansion:
   true == true
-TestMain.cpp:101
+TestMain.cpp:101:
 
 PASSED:
   CHECK( config.reporter.empty() )
 with expansion:
   true
-TestMain.cpp:102
+TestMain.cpp:102:
 
 -----------------------------------------------------------------
 selftest/parser/2
   test lists
   -t/1
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:108
+TestMain.cpp:108:
 
 PASSED:
   REQUIRE( config.filters.size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:110
+TestMain.cpp:110:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:111
+TestMain.cpp:111:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
 with expansion:
   true
-TestMain.cpp:112
+TestMain.cpp:112:
 
 -----------------------------------------------------------------
 selftest/parser/2
   test lists
   -t/exclude:1
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:116
+TestMain.cpp:116:
 
 PASSED:
   REQUIRE( config.filters.size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:118
+TestMain.cpp:118:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:119
+TestMain.cpp:119:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
 with expansion:
   true
-TestMain.cpp:120
+TestMain.cpp:120:
 
 -----------------------------------------------------------------
 selftest/parser/2
   test lists
   --test/1
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:125
+TestMain.cpp:125:
 
 PASSED:
   REQUIRE( config.filters.size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:127
+TestMain.cpp:127:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:128
+TestMain.cpp:128:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
 with expansion:
   true
-TestMain.cpp:129
+TestMain.cpp:129:
 
 -----------------------------------------------------------------
 selftest/parser/2
   test lists
   --test/exclude:1
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:134
+TestMain.cpp:134:
 
 PASSED:
   REQUIRE( config.filters.size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:136
+TestMain.cpp:136:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:137
+TestMain.cpp:137:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
 with expansion:
   true
-TestMain.cpp:138
+TestMain.cpp:138:
 
 -----------------------------------------------------------------
 selftest/parser/2
   test lists
   --test/exclude:2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:143
+TestMain.cpp:143:
 
 PASSED:
   REQUIRE( config.filters.size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:145
+TestMain.cpp:145:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:146
+TestMain.cpp:146:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
 with expansion:
   true
-TestMain.cpp:147
+TestMain.cpp:147:
 
 -----------------------------------------------------------------
 selftest/parser/2
   test lists
   -t/2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:152
+TestMain.cpp:152:
 
 PASSED:
   REQUIRE( config.filters.size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:154
+TestMain.cpp:154:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:155
+TestMain.cpp:155:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
 with expansion:
   true
-TestMain.cpp:156
+TestMain.cpp:156:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test2" ) ) )
 with expansion:
   true
-TestMain.cpp:157
+TestMain.cpp:157:
 
 -----------------------------------------------------------------
 selftest/parser/2
   test lists
   -t/0
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "at least 1" ) )
 with expansion:
   "Error while parsing arguments. Expected at least 1 argument."
   contains: "at least 1"
-TestMain.cpp:162
+TestMain.cpp:162:
 
 -----------------------------------------------------------------
 selftest/parser/2
   reporter
   -r/console
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:169
+TestMain.cpp:169:
 
 PASSED:
   REQUIRE( config.reporter == "console" )
 with expansion:
   "console" == "console"
-TestMain.cpp:171
+TestMain.cpp:171:
 
 -----------------------------------------------------------------
 selftest/parser/2
   reporter
   -r/xml
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:175
+TestMain.cpp:175:
 
 PASSED:
   REQUIRE( config.reporter == "xml" )
 with expansion:
   "xml" == "xml"
-TestMain.cpp:177
+TestMain.cpp:177:
 
 -----------------------------------------------------------------
 selftest/parser/2
   reporter
   --reporter/junit
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:181
+TestMain.cpp:181:
 
 PASSED:
   REQUIRE( config.reporter == "junit" )
 with expansion:
   "junit" == "junit"
-TestMain.cpp:183
+TestMain.cpp:183:
 
 -----------------------------------------------------------------
 selftest/parser/2
   reporter
   -r/error
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "1 argument" ) )
 with expansion:
   "Error while parsing arguments. Expected 1 argument. Arguments
   were: one two" contains: "1 argument"
-TestMain.cpp:187
+TestMain.cpp:187:
 
 -----------------------------------------------------------------
 selftest/parser/2
   debugger
   -b
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:194
+TestMain.cpp:194:
 
 PASSED:
   REQUIRE( config.shouldDebugBreak == true )
 with expansion:
   true == true
-TestMain.cpp:196
+TestMain.cpp:196:
 
 -----------------------------------------------------------------
 selftest/parser/2
   debugger
   --break
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:200
+TestMain.cpp:200:
 
 PASSED:
   REQUIRE( config.shouldDebugBreak )
 with expansion:
   true
-TestMain.cpp:202
+TestMain.cpp:202:
 
 -----------------------------------------------------------------
 selftest/parser/2
   debugger
   -b
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "0 arguments" ) )
 with expansion:
   "Error while parsing arguments. Expected 0 arguments. Arguments
   were: unexpected" contains: "0 arguments"
-TestMain.cpp:206
+TestMain.cpp:206:
 
 -----------------------------------------------------------------
 selftest/parser/2
   abort
   -a
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:213
+TestMain.cpp:213:
 
 PASSED:
   REQUIRE( config.cutoff == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:215
+TestMain.cpp:215:
 
 -----------------------------------------------------------------
 selftest/parser/2
   abort
   -a/2
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:219
+TestMain.cpp:219:
 
 PASSED:
   REQUIRE( config.cutoff == 2 )
 with expansion:
   2 == 2
-TestMain.cpp:221
+TestMain.cpp:221:
 
 -----------------------------------------------------------------
 selftest/parser/2
   abort
   -a/error/0
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
 with expansion:
   "Error while parsing arguments. threshold must be a number greater
   than zero. Arguments were: 0" contains: "greater than zero"
-TestMain.cpp:225
+TestMain.cpp:225:
 
 -----------------------------------------------------------------
 selftest/parser/2
   abort
   -a/error/non numeric
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
 with expansion:
   "Error while parsing arguments. threshold must be a number greater
   than zero. Arguments were: oops" contains: "greater than zero"
-TestMain.cpp:229
+TestMain.cpp:229:
 
 -----------------------------------------------------------------
 selftest/parser/2
   abort
   -a/error/two args
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "0 and 1 argument" ) )
 with expansion:
   "Error while parsing arguments. Expected between 0 and 1 argument.
   Arguments were: 1 2" contains: "0 and 1 argument"
-TestMain.cpp:233
+TestMain.cpp:233:
 
 -----------------------------------------------------------------
 selftest/parser/2
   nothrow
   -nt
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:240
+TestMain.cpp:240:
 
 PASSED:
   REQUIRE( config.allowThrows == false )
 with expansion:
   false == false
-TestMain.cpp:242
+TestMain.cpp:242:
 
 -----------------------------------------------------------------
 selftest/parser/2
   nothrow
   --nothrow
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:246
+TestMain.cpp:246:
 
 PASSED:
   REQUIRE( config.allowThrows == false )
 with expansion:
   false == false
-TestMain.cpp:248
+TestMain.cpp:248:
 
 -----------------------------------------------------------------
 selftest/parser/2
   streams
   -o filename
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:255
+TestMain.cpp:255:
 
 PASSED:
   REQUIRE( config.outputFilename == "filename.ext" )
 with expansion:
   "filename.ext" == "filename.ext"
-TestMain.cpp:257
+TestMain.cpp:257:
 
 PASSED:
   REQUIRE( config.stream.empty() )
 with expansion:
   true
-TestMain.cpp:258
+TestMain.cpp:258:
 
 -----------------------------------------------------------------
 selftest/parser/2
   streams
   -o %stdout
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:262
+TestMain.cpp:262:
 
 PASSED:
   REQUIRE( config.stream == "stdout" )
 with expansion:
   "stdout" == "stdout"
-TestMain.cpp:264
+TestMain.cpp:264:
 
 PASSED:
   REQUIRE( config.outputFilename.empty() )
 with expansion:
   true
-TestMain.cpp:265
+TestMain.cpp:265:
 
 -----------------------------------------------------------------
 selftest/parser/2
   streams
   --out
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:269
+TestMain.cpp:269:
 
 PASSED:
   REQUIRE( config.outputFilename == "filename.ext" )
 with expansion:
   "filename.ext" == "filename.ext"
-TestMain.cpp:271
+TestMain.cpp:271:
 
 -----------------------------------------------------------------
 selftest/parser/2
   combinations
   -a -b
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-TestMain.cpp:278
+TestMain.cpp:278:
 
 PASSED:
   CHECK( config.cutoff == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:280
+TestMain.cpp:280:
 
 PASSED:
   CHECK( config.shouldDebugBreak )
 with expansion:
   true
-TestMain.cpp:281
+TestMain.cpp:281:
 
 PASSED:
   CHECK( config.allowThrows == false )
 with expansion:
   false == false
-TestMain.cpp:282
+TestMain.cpp:282:
 
 -----------------------------------------------------------------
 selftest/test filter
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( matchAny.shouldInclude( fakeTestCase( "any" ) ) )
 with expansion:
   true
-TestMain.cpp:291
+TestMain.cpp:291:
 
 PASSED:
   CHECK( matchNone.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:292
+TestMain.cpp:292:
 
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:297
+TestMain.cpp:297:
 
 PASSED:
   CHECK( matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) )
 with expansion:
   true
-TestMain.cpp:298
+TestMain.cpp:298:
 
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "./any" ) ) )
 with expansion:
   true
-TestMain.cpp:300
+TestMain.cpp:300:
 
 PASSED:
   CHECK( matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:301
+TestMain.cpp:301:
 
 -----------------------------------------------------------------
 selftest/test filters
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "./something" ) ) )
 with expansion:
   true
-TestMain.cpp:312
+TestMain.cpp:312:
 
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:314
+TestMain.cpp:314:
 
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "./something" ) ) )
 with expansion:
   true
-TestMain.cpp:315
+TestMain.cpp:315:
 
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "./anything" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:316
+TestMain.cpp:316:
 
 -----------------------------------------------------------------
 selftest/filter/prefix wildcard
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
 with expansion:
   true
-TestMain.cpp:322
+TestMain.cpp:322:
 
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:323
+TestMain.cpp:323:
 
 -----------------------------------------------------------------
 selftest/filter/wildcard at both ends
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
 with expansion:
   true
-TestMain.cpp:328
+TestMain.cpp:328:
 
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) )
 with expansion:
   true
-TestMain.cpp:329
+TestMain.cpp:329:
 
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) )
 with expansion:
   true
-TestMain.cpp:330
+TestMain.cpp:330:
 
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:331
+TestMain.cpp:331:
 
 -----------------------------------------------------------------
 selftest/option parsers
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK_NOTHROW( opt.parseIntoConfig( parser, config ) )
-TestMain.cpp:351
+TestMain.cpp:351:
 
 PASSED:
   REQUIRE( config.filters.size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:353
+TestMain.cpp:353:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 with expansion:
   false == false
-TestMain.cpp:354
+TestMain.cpp:354:
 
 PASSED:
   REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) )
 with expansion:
   true
-TestMain.cpp:355
+TestMain.cpp:355:
 
 -----------------------------------------------------------------
 selftest/tags
   one tag
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( oneTag.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
-TestMain.cpp:369
+TestMain.cpp:369:
 
 PASSED:
   CHECK( oneTag.hasTag( "one" ) )
 with expansion:
   true
-TestMain.cpp:370
+TestMain.cpp:370:
 
 PASSED:
   CHECK( oneTag.getTags().size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:371
+TestMain.cpp:371:
 
 PASSED:
   CHECK( oneTag.matchesTags( p1 ) == true )
 with expansion:
   true == true
-TestMain.cpp:373
+TestMain.cpp:373:
 
 PASSED:
   CHECK( oneTag.matchesTags( p2 ) == true )
 with expansion:
   true == true
-TestMain.cpp:374
+TestMain.cpp:374:
 
 PASSED:
   CHECK( oneTag.matchesTags( p3 ) == false )
 with expansion:
   false == false
-TestMain.cpp:375
+TestMain.cpp:375:
 
 PASSED:
   CHECK( oneTag.matchesTags( p4 ) == false )
 with expansion:
   false == false
-TestMain.cpp:376
+TestMain.cpp:376:
 
 PASSED:
   CHECK( oneTag.matchesTags( p5 ) == false )
 with expansion:
   false == false
-TestMain.cpp:377
+TestMain.cpp:377:
 
 -----------------------------------------------------------------
 selftest/tags
   two tags
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( twoTags.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
-TestMain.cpp:383
+TestMain.cpp:383:
 
 PASSED:
   CHECK( twoTags.hasTag( "one" ) )
 with expansion:
   true
-TestMain.cpp:384
+TestMain.cpp:384:
 
 PASSED:
   CHECK( twoTags.hasTag( "two" ) )
 with expansion:
   true
-TestMain.cpp:385
+TestMain.cpp:385:
 
 PASSED:
   CHECK( twoTags.hasTag( "three" ) == false )
 with expansion:
   false == false
-TestMain.cpp:386
+TestMain.cpp:386:
 
 PASSED:
   CHECK( twoTags.getTags().size() == 2 )
 with expansion:
   2 == 2
-TestMain.cpp:387
+TestMain.cpp:387:
 
 PASSED:
   CHECK( twoTags.matchesTags( p1 ) == true )
 with expansion:
   true == true
-TestMain.cpp:389
+TestMain.cpp:389:
 
 PASSED:
   CHECK( twoTags.matchesTags( p2 ) == true )
 with expansion:
   true == true
-TestMain.cpp:390
+TestMain.cpp:390:
 
 PASSED:
   CHECK( twoTags.matchesTags( p3 ) == true )
 with expansion:
   true == true
-TestMain.cpp:391
+TestMain.cpp:391:
 
 PASSED:
   CHECK( twoTags.matchesTags( p4 ) == true )
 with expansion:
   true == true
-TestMain.cpp:392
+TestMain.cpp:392:
 
 PASSED:
   CHECK( twoTags.matchesTags( p5 ) == true )
 with expansion:
   true == true
-TestMain.cpp:393
+TestMain.cpp:393:
 
 -----------------------------------------------------------------
 selftest/tags
   one tag with characters either side
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( oneTagWithExtras.getTestCaseInfo().description == "1234" )
 with expansion:
   "1234" == "1234"
-TestMain.cpp:399
+TestMain.cpp:399:
 
 PASSED:
   CHECK( oneTagWithExtras.hasTag( "one" ) )
 with expansion:
   true
-TestMain.cpp:400
+TestMain.cpp:400:
 
 PASSED:
   CHECK( oneTagWithExtras.hasTag( "two" ) == false )
 with expansion:
   false == false
-TestMain.cpp:401
+TestMain.cpp:401:
 
 PASSED:
   CHECK( oneTagWithExtras.getTags().size() == 1 )
 with expansion:
   1 == 1
-TestMain.cpp:402
+TestMain.cpp:402:
 
 -----------------------------------------------------------------
 selftest/tags
   start of a tag, but not closed
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( oneTagOpen.getTestCaseInfo().description == "[one" )
 with expansion:
   "[one" == "[one"
-TestMain.cpp:409
+TestMain.cpp:409:
 
 PASSED:
   CHECK( oneTagOpen.hasTag( "one" ) == false )
 with expansion:
   false == false
-TestMain.cpp:410
+TestMain.cpp:410:
 
 PASSED:
   CHECK( oneTagOpen.getTags().size() == 0 )
 with expansion:
   0 == 0
-TestMain.cpp:411
+TestMain.cpp:411:
 
 -----------------------------------------------------------------
 selftest/tags
   hidden
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( oneTag.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
-TestMain.cpp:417
+TestMain.cpp:417:
 
 PASSED:
   CHECK( oneTag.hasTag( "hide" ) )
 with expansion:
   true
-TestMain.cpp:418
+TestMain.cpp:418:
 
 PASSED:
   CHECK( oneTag.isHidden() )
 with expansion:
   true
-TestMain.cpp:419
+TestMain.cpp:419:
 
 PASSED:
   CHECK( oneTag.matchesTags( "~[hide]" ) == false )
 with expansion:
   false == false
-TestMain.cpp:421
+TestMain.cpp:421:
 
 -----------------------------------------------------------------
 ./succeeding/Tricky/std::pair
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair )
@@ -4026,500 +4026,500 @@ with expansion:
   std::pair( 1, 2 )
   ==
   std::pair( 1, 2 )
-TrickyTests.cpp:37
+TrickyTests.cpp:37:
 
 -----------------------------------------------------------------
 ./inprogress/failing/Tricky/trailing expression
------------------------------------------------------------------
+.................................................................
 
 warning:
   Uncomment the code in this test to check that it gives a sensible
   compiler error
-TrickyTests.cpp:55
+TrickyTests.cpp:55:
 
 
 No assertions in test case, './inprogress/failing/Tricky/trailing expression'
 
 -----------------------------------------------------------------
 ./inprogress/failing/Tricky/compound lhs
------------------------------------------------------------------
+.................................................................
 
 warning:
   Uncomment the code in this test to check that it gives a sensible
   compiler error
-TrickyTests.cpp:71
+TrickyTests.cpp:71:
 
 
 No assertions in test case, './inprogress/failing/Tricky/compound lhs'
 
 -----------------------------------------------------------------
 ./failing/Tricky/non streamable type
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( &o1 == &o2 )
 with expansion:
   0x<hex digits> == 0x<hex digits>
-TrickyTests.cpp:95
+TrickyTests.cpp:95:
 
 FAILED:
   CHECK( o1 == o2 )
 with expansion:
   {?} == {?}
-TrickyTests.cpp:96
+TrickyTests.cpp:96:
 
 -----------------------------------------------------------------
 ./failing/string literals
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE( std::string( "first" ) == "second" )
 with expansion:
   "first" == "second"
-TrickyTests.cpp:106
+TrickyTests.cpp:106:
 
 -----------------------------------------------------------------
 ./succeeding/side-effects
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( i++ == 7 )
 with expansion:
   7 == 7
-TrickyTests.cpp:119
+TrickyTests.cpp:119:
 
 PASSED:
   REQUIRE( i++ == 8 )
 with expansion:
   8 == 8
-TrickyTests.cpp:120
+TrickyTests.cpp:120:
 
 -----------------------------------------------------------------
 ./succeeding/koenig
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 0x<hex digits> == o )
 with expansion:
   0x<hex digits> == {?}
-TrickyTests.cpp:186
+TrickyTests.cpp:186:
 
 -----------------------------------------------------------------
 ./succeeding/non-const==
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( t == 1u )
 with expansion:
   {?} == 1
-TrickyTests.cpp:212
+TrickyTests.cpp:212:
 
 -----------------------------------------------------------------
 ./succeeding/enum/bits
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 0x<hex digits> == bit30and31 )
 with expansion:
   0x<hex digits> == 3221225472
-TrickyTests.cpp:224
+TrickyTests.cpp:224:
 
 -----------------------------------------------------------------
 ./succeeding/boolean member
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( obj.prop != __null )
 with expansion:
   0x<hex digits> != 0
-TrickyTests.cpp:239
+TrickyTests.cpp:239:
 
 -----------------------------------------------------------------
 ./succeeding/unimplemented static bool
   compare to true
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( is_true<true>::value == true )
 with expansion:
   true == true
-TrickyTests.cpp:259
+TrickyTests.cpp:259:
 
 PASSED:
   REQUIRE( true == is_true<true>::value )
 with expansion:
   true == true
-TrickyTests.cpp:260
+TrickyTests.cpp:260:
 
 -----------------------------------------------------------------
 ./succeeding/unimplemented static bool
   compare to false
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( is_true<false>::value == false )
 with expansion:
   false == false
-TrickyTests.cpp:264
+TrickyTests.cpp:264:
 
 PASSED:
   REQUIRE( false == is_true<false>::value )
 with expansion:
   false == false
-TrickyTests.cpp:265
+TrickyTests.cpp:265:
 
 -----------------------------------------------------------------
 ./succeeding/unimplemented static bool
   negation
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( !is_true<false>::value )
 with expansion:
   true
-TrickyTests.cpp:270
+TrickyTests.cpp:270:
 
 -----------------------------------------------------------------
 ./succeeding/unimplemented static bool
   double negation
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( !!is_true<true>::value )
 with expansion:
   true
-TrickyTests.cpp:275
+TrickyTests.cpp:275:
 
 -----------------------------------------------------------------
 ./succeeding/unimplemented static bool
   direct
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( is_true<true>::value )
 with expansion:
   true
-TrickyTests.cpp:280
+TrickyTests.cpp:280:
 
 PASSED:
   REQUIRE_FALSE( !is_true<false>::value )
 with expansion:
   !false
-TrickyTests.cpp:281
+TrickyTests.cpp:281:
 
 -----------------------------------------------------------------
 ./succeeding/SafeBool
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   CHECK( True )
 with expansion:
   true
-TrickyTests.cpp:313
+TrickyTests.cpp:313:
 
 PASSED:
   CHECK( !False )
 with expansion:
   true
-TrickyTests.cpp:314
+TrickyTests.cpp:314:
 
 PASSED:
   CHECK_FALSE( !False )
 with expansion:
   !false
-TrickyTests.cpp:315
+TrickyTests.cpp:315:
 
 -----------------------------------------------------------------
 Scenario: Do that thing with the thing
    Given: This stuff exists
     When: I do this
     Then: it should do this
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( itDoesThis() )
 with expansion:
   true
-BDDTests.cpp:29
+BDDTests.cpp:29:
 
 =================================================================
 96 test cases - 45 failed (610 assertions - 102 failed)
 
 
-CatchSelfTest is a CATCH v0.9 b13 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b15 (integration) host application.
 Run with -? for options
 
 -----------------------------------------------------------------
 ./succeeding/Approx/simple
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( d == Approx( 1.23 ) )
 with expansion:
   1.23 == Approx( 1.23 )
-ApproxTests.cpp:20
+ApproxTests.cpp:20:
 
 PASSED:
   REQUIRE( d != Approx( 1.22 ) )
 with expansion:
   1.23 != Approx( 1.22 )
-ApproxTests.cpp:21
+ApproxTests.cpp:21:
 
 PASSED:
   REQUIRE( d != Approx( 1.24 ) )
 with expansion:
   1.23 != Approx( 1.24 )
-ApproxTests.cpp:22
+ApproxTests.cpp:22:
 
 PASSED:
   REQUIRE( Approx( d ) == 1.23 )
 with expansion:
   Approx( 1.23 ) == 1.23
-ApproxTests.cpp:24
+ApproxTests.cpp:24:
 
 PASSED:
   REQUIRE( Approx( d ) != 1.22 )
 with expansion:
   Approx( 1.23 ) != 1.22
-ApproxTests.cpp:25
+ApproxTests.cpp:25:
 
 PASSED:
   REQUIRE( Approx( d ) != 1.24 )
 with expansion:
   Approx( 1.23 ) != 1.24
-ApproxTests.cpp:26
+ApproxTests.cpp:26:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/epsilon
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( d != Approx( 1.231 ) )
 with expansion:
   1.23 != Approx( 1.231 )
-ApproxTests.cpp:38
+ApproxTests.cpp:38:
 
 PASSED:
   REQUIRE( d == Approx( 1.231 ).epsilon( 0.1 ) )
 with expansion:
   1.23 == Approx( 1.231 )
-ApproxTests.cpp:39
+ApproxTests.cpp:39:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/float
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 1.23f == Approx( 1.23f ) )
 with expansion:
   1.23 == Approx( 1.23 )
-ApproxTests.cpp:49
+ApproxTests.cpp:49:
 
 PASSED:
   REQUIRE( 0.0f == Approx( 0.0f ) )
 with expansion:
   0 == Approx( 0 )
-ApproxTests.cpp:50
+ApproxTests.cpp:50:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/int
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 1 == Approx( 1 ) )
-ApproxTests.cpp:60
+ApproxTests.cpp:60:
 
 PASSED:
   REQUIRE( 0 == Approx( 0 ) )
-ApproxTests.cpp:61
+ApproxTests.cpp:61:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/mixed
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( 1.0f == Approx( 1 ) )
 with expansion:
   1 == Approx( 1 )
-ApproxTests.cpp:75
+ApproxTests.cpp:75:
 
 PASSED:
   REQUIRE( 0 == Approx( dZero) )
 with expansion:
   0 == Approx( 0 )
-ApproxTests.cpp:76
+ApproxTests.cpp:76:
 
 PASSED:
   REQUIRE( 0 == Approx( dSmall ).epsilon( 0.001 ) )
 with expansion:
   0 == Approx( 1e-05 )
-ApproxTests.cpp:77
+ApproxTests.cpp:77:
 
 PASSED:
   REQUIRE( 1.234f == Approx( dMedium ) )
 with expansion:
   1.234 == Approx( 1.234 )
-ApproxTests.cpp:78
+ApproxTests.cpp:78:
 
 PASSED:
   REQUIRE( dMedium == Approx( 1.234f ) )
 with expansion:
   1.234 == Approx( 1.234 )
-ApproxTests.cpp:79
+ApproxTests.cpp:79:
 
 -----------------------------------------------------------------
 ./succeeding/Approx/custom
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( d == approx( 1.23 ) )
 with expansion:
   1.23 == Approx( 1.23 )
-ApproxTests.cpp:93
+ApproxTests.cpp:93:
 
 PASSED:
   REQUIRE( d == approx( 1.22 ) )
 with expansion:
   1.23 == Approx( 1.22 )
-ApproxTests.cpp:94
+ApproxTests.cpp:94:
 
 PASSED:
   REQUIRE( d == approx( 1.24 ) )
 with expansion:
   1.23 == Approx( 1.24 )
-ApproxTests.cpp:95
+ApproxTests.cpp:95:
 
 PASSED:
   REQUIRE( d != approx( 1.25 ) )
 with expansion:
   1.23 != Approx( 1.25 )
-ApproxTests.cpp:96
+ApproxTests.cpp:96:
 
 PASSED:
   REQUIRE( approx( d ) == 1.23 )
 with expansion:
   Approx( 1.23 ) == 1.23
-ApproxTests.cpp:98
+ApproxTests.cpp:98:
 
 PASSED:
   REQUIRE( approx( d ) == 1.22 )
 with expansion:
   Approx( 1.23 ) == 1.22
-ApproxTests.cpp:99
+ApproxTests.cpp:99:
 
 PASSED:
   REQUIRE( approx( d ) == 1.24 )
 with expansion:
   Approx( 1.23 ) == 1.24
-ApproxTests.cpp:100
+ApproxTests.cpp:100:
 
 PASSED:
   REQUIRE( approx( d ) != 1.25 )
 with expansion:
   Approx( 1.23 ) != 1.25
-ApproxTests.cpp:101
+ApproxTests.cpp:101:
 
 -----------------------------------------------------------------
 ./succeeding/TestClass/succeedingCase
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( s == "hello" )
 with expansion:
   "hello" == "hello"
-ClassTests.cpp:24
+ClassTests.cpp:24:
 
 -----------------------------------------------------------------
 ./failing/TestClass/failingCase
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE( s == "world" )
 with expansion:
   "hello" == "world"
-ClassTests.cpp:28
+ClassTests.cpp:28:
 
 -----------------------------------------------------------------
 ./succeeding/Fixture/succeedingCase
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( m_a == 1 )
 with expansion:
   1 == 1
-ClassTests.cpp:47
+ClassTests.cpp:47:
 
 -----------------------------------------------------------------
 ./failing/Fixture/failingCase
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   REQUIRE( m_a == 2 )
 with expansion:
   1 == 2
-ClassTests.cpp:55
+ClassTests.cpp:55:
 
 -----------------------------------------------------------------
 ./succeeding/conditions/equality
------------------------------------------------------------------
+.................................................................
 
 PASSED:
   REQUIRE( data.int_seven == 7 )
 with expansion:
   7 == 7
-ConditionTests.cpp:55
+ConditionTests.cpp:55:
 
 PASSED:
   REQUIRE( data.float_nine_point_one == Approx( 9.1f ) )
 with expansion:
   9.1 == Approx( 9.1 )
-ConditionTests.cpp:56
+ConditionTests.cpp:56:
 
 PASSED:
   REQUIRE( data.double_pi == Approx( 3.1415926535 ) )
 with expansion:
   3.14159 == Approx( 3.14159 )
-ConditionTests.cpp:57
+ConditionTests.cpp:57:
 
 PASSED:
   REQUIRE( data.str_hello == "hello" )
 with expansion:
   "hello" == "hello"
-ConditionTests.cpp:58
+ConditionTests.cpp:58:
 
 PASSED:
   REQUIRE( "hello" == data.str_hello )
 with expansion:
   "hello" == "hello"
-ConditionTests.cpp:59
+ConditionTests.cpp:59:
 
 PASSED:
   REQUIRE( data.str_hello.size() == 5 )
 with expansion:
   5 == 5
-ConditionTests.cpp:60
+ConditionTests.cpp:60:
 
 PASSED:
   REQUIRE( x == Approx( 1.3 ) )
 with expansion:
   1.3 == Approx( 1.3 )
-ConditionTests.cpp:63
+ConditionTests.cpp:63:
 
 -----------------------------------------------------------------
 ./failing/conditions/equality
------------------------------------------------------------------
+.................................................................
 
 FAILED:
   CHECK( data.int_seven == 6 )
 with expansion:
   7 == 6
-ConditionTests.cpp:71
+ConditionTests.cpp:71:
 
 FAILED:
   CHECK( data.int_seven == 8 )
 with expansion:
   7 == 8
-ConditionTests.cpp:72
+ConditionTests.cpp:72:
 
 =================================================================
 12 test cases - 3 failed (38 assertions - 4 failed)

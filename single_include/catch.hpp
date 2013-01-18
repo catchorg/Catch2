@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 14 (integration branch)
- *  Generated: 2013-01-17 12:06:33.338396
+ *  CATCH v0.9 build 15 (integration branch)
+ *  Generated: 2013-01-18 08:08:03.925034
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5777,7 +5777,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 14, "integration" );
+    Version libraryVersion( 0, 9, 15, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -6850,19 +6850,16 @@ namespace Catch {
             if( _assertionStats.totals.assertions.total() > 0 ) {
                 printResultType( components );
                 printOriginalExpression( result );
-//                printResultType( components );
                 endsWithNewLine = printReconstructedExpression( result );
             }
             endsWithNewLine |= printMessage( components );
-//            if( !endsWithNewLine )
-//                stream << "\n";
 
             printSourceInfo( result );
             stream << std::endl;
         }
         void printSourceInfo( AssertionResult const& _result ) {
             TextColour colour( TextColour::FileName );
-            stream << _result.getSourceInfo() << "\n";
+            stream << _result.getSourceInfo() << ":\n";
         }
 
         struct ResultComponents {
@@ -7068,7 +7065,7 @@ namespace Catch {
                 typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
                 for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
                     stream << "  " << (*it)->name << "\n";
-                stream << getDashes() << "\n" << std::endl;
+                stream << getDots() << "\n" << std::endl;
                 unusedSectionInfo.reset();
             }
         }
@@ -7077,7 +7074,7 @@ namespace Catch {
             stream  << getDashes() << "\n"
                     << _name << "\n";
             if( closed )
-                stream << getDashes() << "\n";
+                stream << getDots() << "\n";
         }
 
         void printTotals( const Totals& totals ) {
@@ -7137,6 +7134,11 @@ namespace Catch {
             static const std::string dashes
                 = "-----------------------------------------------------------------";
             return dashes;
+        }
+        static std::string const& getDots() {
+            static const std::string dots
+                = ".................................................................";
+            return dots;
         }
         static std::string const& getDoubleDashes() {
             static const std::string doubleDashes

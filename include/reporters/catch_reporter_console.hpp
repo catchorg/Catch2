@@ -48,19 +48,16 @@ namespace Catch {
             if( _assertionStats.totals.assertions.total() > 0 ) {
                 printResultType( components );
                 printOriginalExpression( result );
-//                printResultType( components );
                 endsWithNewLine = printReconstructedExpression( result );
             }
             endsWithNewLine |= printMessage( components );
-//            if( !endsWithNewLine )
-//                stream << "\n";
             
             printSourceInfo( result );
             stream << std::endl;
         }
         void printSourceInfo( AssertionResult const& _result ) {
             TextColour colour( TextColour::FileName );
-            stream << _result.getSourceInfo() << "\n";
+            stream << _result.getSourceInfo() << ":\n";
         }
         
         struct ResultComponents {
@@ -266,7 +263,7 @@ namespace Catch {
                 typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
                 for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
                     stream << "  " << (*it)->name << "\n";
-                stream << getDashes() << "\n" << std::endl;
+                stream << getDots() << "\n" << std::endl;
                 unusedSectionInfo.reset();
             }
         }
@@ -275,7 +272,7 @@ namespace Catch {
             stream  << getDashes() << "\n"
                     << _name << "\n";
             if( closed )
-                stream << getDashes() << "\n";
+                stream << getDots() << "\n";
         }
         
         void printTotals( const Totals& totals ) {
@@ -335,6 +332,11 @@ namespace Catch {
             static const std::string dashes
                 = "-----------------------------------------------------------------";
             return dashes;
+        }
+        static std::string const& getDots() {
+            static const std::string dots
+                = ".................................................................";
+            return dots;
         }
         static std::string const& getDoubleDashes() {
             static const std::string doubleDashes
