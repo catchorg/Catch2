@@ -119,7 +119,7 @@ namespace Catch {
     
     inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info ) {
 #ifndef __GNUG__
-        os << info.file << "(" << info.line << ")";
+        os << info.file << "(" << info.line << "):";
 #else                
         os << info.file << ":" << info.line;
 #endif            

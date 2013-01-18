@@ -43,133 +43,11 @@ namespace Catch {
             
             lazyPrint();
 
-            ResultComponents components( result );
-            bool endsWithNewLine = false;
-            if( _assertionStats.totals.assertions.total() > 0 ) {
-                printResultType( components );
-                printOriginalExpression( result );
-                endsWithNewLine = printReconstructedExpression( result );
-            }
-            endsWithNewLine |= printMessage( components );
-            
-            printSourceInfo( result );
+            AssertionPrinter printer( stream, _assertionStats );
+            printer.print();
             stream << std::endl;
         }
-        void printSourceInfo( AssertionResult const& _result ) {
-            TextColour colour( TextColour::FileName );
-            stream << _result.getSourceInfo() << ":\n";
-        }
-        
-        struct ResultComponents {
-            ResultComponents( AssertionResult const& _result )
-            :   colour( TextColour::None ),
-                message( _result.getMessage() )
-            {
-                switch( _result.getResultType() ) {
-                    case ResultWas::Ok:
-                        colour = TextColour::Success;
-                        passOrFail = "PASSED";
-                        if( _result.hasMessage() )
-                            messageLabel = "with message";
-                        break;
-                    case ResultWas::ExpressionFailed:
-                        if( _result.isOk() ) {
-                            colour = TextColour::Success;
-                            passOrFail = "FAILED - but was ok";
-                        }
-                        else {
-                            colour = TextColour::Error;
-                            passOrFail = "FAILED";
-                        }
-                        if( _result.hasMessage() ){
-                            messageLabel = "with message";
-                        }
-                        break;
-                    case ResultWas::ThrewException:
-                        colour = TextColour::Error;
-                        passOrFail = "FAILED";
-                        messageLabel = "due to unexpected exception with message";
-                        break;
-                    case ResultWas::DidntThrowException:
-                        colour = TextColour::Error;
-                        passOrFail = "FAILED";
-                        messageLabel = "because no exception was thrown where one was expected";
-                        break;
-                    case ResultWas::Info:
-                        messageLabel = "info";
-                        break;
-                    case ResultWas::Warning:
-                        messageLabel = "warning";
-                        break;
-                    case ResultWas::ExplicitFailure:
-                        passOrFail = "FAILED";
-                        colour = TextColour::Error;
-                        messageLabel = "explicitly with message";
-                        break;
-                    case ResultWas::Exception:
-                        passOrFail = "FAILED";
-                        colour = TextColour::Error;
-                        if( _result.hasMessage() )
-                            messageLabel = "with message";
-                        break;
                         
-                    // These cases are here to prevent compiler warnings
-                    case ResultWas::Unknown:
-                    case ResultWas::FailureBit:
-                        passOrFail = "** internal error **";
-                        colour = TextColour::Error;
-                        break;
-                }
-            }
-            
-            TextColour::Colours colour;
-            std::string passOrFail;
-            std::string messageLabel;
-            std::string message;
-        };
-
-        void printResultType( ResultComponents const& _components ) {
-            if( !_components.passOrFail.empty() ) {
-                TextColour colour( _components.colour );
-                stream << _components.passOrFail << ":\n";
-            }
-        }
-        bool printOriginalExpression( AssertionResult const& _result ) {
-            if( _result.hasExpression() ) {
-                TextColour colour( TextColour::OriginalExpression );
-                stream  << "  ";
-                if( !_result.getTestMacroName().empty() )
-                    stream << _result.getTestMacroName() << "( ";
-                stream << _result.getExpression();
-                if( !_result.getTestMacroName().empty() )
-                    stream << " )";
-                stream << "\n";
-                return true;
-            }
-            return false;
-        }
-        bool printReconstructedExpression( AssertionResult const& _result ) {
-            if( _result.hasExpandedExpression() ) {
-                stream << "with expansion:\n";
-                TextColour colour( TextColour::ReconstructedExpression );
-                stream << wrapLongStrings( _result.getExpandedExpression() ) << "\n";
-                return true;
-            }
-            return false;
-        }        
-        bool printMessage( ResultComponents const& _components ) {
-            bool endsWithNewLine = false;
-            if( !_components.messageLabel.empty() ) {
-                stream << _components.messageLabel << ":" << "\n";
-                endsWithNewLine = true;
-            }
-            if( !_components.message.empty() ) {
-                stream << wrapLongStrings( _components.message ) << "\n";
-                endsWithNewLine = true;
-            }
-            return endsWithNewLine;
-        }
-                
         virtual void sectionEnded( SectionStats const& _sectionStats ) {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
@@ -206,9 +84,132 @@ namespace Catch {
         }
 
     private:
-        std::string wrapLongStrings( std::string const& _string ) {
-            return Catch::wrapLongStrings( _string, 70, 2 );
-        }
+        
+        class AssertionPrinter {
+        public:
+            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats )
+            :   stream( _stream ),
+                stats( _stats ),
+                result( _stats.assertionResult ),
+                colour( TextColour::None ),
+                message( result.getMessage() )
+            {
+                switch( result.getResultType() ) {
+                    case ResultWas::Ok:
+                        colour = TextColour::Success;
+                        passOrFail = "PASSED";
+                        if( result.hasMessage() )
+                            messageLabel = "with message";
+                        break;
+                    case ResultWas::ExpressionFailed:
+                        if( result.isOk() ) {
+                            colour = TextColour::Success;
+                            passOrFail = "FAILED - but was ok";
+                        }
+                        else {
+                            colour = TextColour::Error;
+                            passOrFail = "FAILED";
+                        }
+                        if( result.hasMessage() ){
+                            messageLabel = "with message";
+                        }
+                        break;
+                    case ResultWas::ThrewException:
+                        colour = TextColour::Error;
+                        passOrFail = "FAILED";
+                        messageLabel = "due to unexpected exception with message";
+                        break;
+                    case ResultWas::DidntThrowException:
+                        colour = TextColour::Error;
+                        passOrFail = "FAILED";
+                        messageLabel = "because no exception was thrown where one was expected";
+                        break;
+                    case ResultWas::Info:
+                        messageLabel = "info";
+                        break;
+                    case ResultWas::Warning:
+                        messageLabel = "warning";
+                        break;
+                    case ResultWas::ExplicitFailure:
+                        passOrFail = "FAILED";
+                        colour = TextColour::Error;
+                        messageLabel = "explicitly with message";
+                        break;
+                    case ResultWas::Exception:
+                        passOrFail = "FAILED";
+                        colour = TextColour::Error;
+                        if( result.hasMessage() )
+                            messageLabel = "with message";
+                        break;
+                        
+                    // These cases are here to prevent compiler warnings
+                    case ResultWas::Unknown:
+                    case ResultWas::FailureBit:
+                        passOrFail = "** internal error **";
+                        colour = TextColour::Error;
+                        break;
+                }
+            }
+            
+            void print() const {
+                if( stats.totals.assertions.total() > 0 ) {
+                    printResultType();
+                    printOriginalExpression();
+                    printReconstructedExpression();
+                }
+                printMessage();
+                printSourceInfo();
+            }
+            
+        private:
+            void printResultType() const {
+                if( !passOrFail.empty() ) {
+                    TextColour colourGuard( colour );
+                    stream << passOrFail << ":\n";
+                }
+            }
+            void printOriginalExpression() const {
+                if( result.hasExpression() ) {
+                    TextColour colourGuard( TextColour::OriginalExpression );
+                    stream  << "  ";
+                    if( !result.getTestMacroName().empty() )
+                        stream << result.getTestMacroName() << "( ";
+                    stream << result.getExpression();
+                    if( !result.getTestMacroName().empty() )
+                        stream << " )";
+                    stream << "\n";
+                }
+            }
+            void printReconstructedExpression() const {
+                if( result.hasExpandedExpression() ) {
+                    stream << "with expansion:\n";
+                    TextColour colourGuard( TextColour::ReconstructedExpression );
+                    stream << wrapLongStrings( result.getExpandedExpression() ) << "\n";
+                }
+            }
+            void printMessage() const {
+                if( !messageLabel.empty() )
+                    stream << messageLabel << ":" << "\n";
+                if( !message.empty() )
+                    stream << wrapLongStrings( message ) << "\n";
+            }
+            void printSourceInfo() const {
+                TextColour colourGuard( TextColour::FileName );
+                stream << result.getSourceInfo() << ":\n";
+            }
+            
+            static std::string wrapLongStrings( std::string const& _string ){
+                return Catch::wrapLongStrings( _string, 70, 2 );
+            }
+            
+            std::ostream& stream;
+            AssertionStats const& stats;
+            AssertionResult const& result;
+            TextColour::Colours colour;
+            std::string passOrFail;
+            std::string messageLabel;
+            std::string message;
+        };
         
         void lazyPrint() {
             
