@@ -17,6 +17,7 @@ namespace Catch {
     struct ConsoleReporter : StreamingReporterBase {
         ConsoleReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
+            m_printedCurrentSection( false ),
             m_atLeastOneTestCasePrinted( false )
         {}
 
@@ -47,13 +48,18 @@ namespace Catch {
             printer.print();
             stream << std::endl;
         }
-                        
+
+        virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
+            m_printedCurrentSection = false;
+            StreamingReporterBase::sectionStarting( _sectionInfo );
+        }
         virtual void sectionEnded( SectionStats const& _sectionStats ) {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 TextColour colour( TextColour::ResultError );
                 stream << "\nNo assertions in section, '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
+            m_printedCurrentSection = false;
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
@@ -219,7 +225,7 @@ namespace Catch {
                 lazyPrintGroupInfo();
             if( unusedTestCaseInfo )
                 lazyPrintTestCaseInfo();
-            if( unusedSectionInfo)
+            if( currentSectionInfo && !m_printedCurrentSection )
                 lazyPrintSectionInfo();
             
             m_atLeastOneTestCasePrinted = true;
@@ -252,9 +258,9 @@ namespace Catch {
         void lazyPrintSectionInfo() {
             
             std::vector<ThreadedSectionInfo*> sections;
-            for(    ThreadedSectionInfo* section = unusedSectionInfo.get();
+            for(    ThreadedSectionInfo* section = currentSectionInfo.get();
                     section;
-                    section = section->parent.get() )
+                    section = section->parent )
                 sections.push_back( section );
             
             // Sections
@@ -265,8 +271,8 @@ namespace Catch {
                 for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
                     stream << "  " << (*it)->name << "\n";
                 stream << getDots() << "\n" << std::endl;
-                unusedSectionInfo.reset();
             }
+            m_printedCurrentSection = true;
         }
 
         void printHeader( std::string const& _name, bool closed = true ) {
@@ -343,8 +349,8 @@ namespace Catch {
         }
         
     private:
+        bool m_printedCurrentSection;
         bool m_atLeastOneTestCasePrinted;
-
     };
 
     INTERNAL_CATCH_REGISTER_REPORTER( "console", ConsoleReporter )

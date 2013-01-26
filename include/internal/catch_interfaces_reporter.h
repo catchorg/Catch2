@@ -77,14 +77,14 @@ namespace Catch
     };
 
     struct ThreadedSectionInfo : SectionInfo, SharedImpl<> {
-        ThreadedSectionInfo( SectionInfo const& _sectionInfo, Ptr<ThreadedSectionInfo> const& _parent = Ptr<ThreadedSectionInfo>() )
+        ThreadedSectionInfo( SectionInfo const& _sectionInfo, ThreadedSectionInfo* _parent = NULL )
         :   SectionInfo( _sectionInfo ),
             parent( _parent )
         {}
         virtual ~ThreadedSectionInfo();
 
         std::vector<Ptr<ThreadedSectionInfo> > children;
-        Ptr<ThreadedSectionInfo> parent;
+        ThreadedSectionInfo* parent;
     };
 
     struct AssertionStats {
@@ -222,20 +222,19 @@ namespace Catch
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
             Ptr<ThreadedSectionInfo> sectionInfo = new ThreadedSectionInfo( _sectionInfo );
-            unusedSectionInfo = sectionInfo;
             if( !currentSectionInfo ) {
                 currentSectionInfo = sectionInfo;
+                m_rootSections.push_back( currentSectionInfo );
             }
             else {
                 currentSectionInfo->children.push_back( sectionInfo );
-                sectionInfo->parent = currentSectionInfo;
+                sectionInfo->parent = currentSectionInfo.get();
                 currentSectionInfo = sectionInfo;
             }
         }
 
         virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
             currentSectionInfo = currentSectionInfo->parent;
-            unusedSectionInfo = currentSectionInfo;
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
             unusedTestCaseInfo.reset();
@@ -245,7 +244,6 @@ namespace Catch
         }
         virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
             currentSectionInfo.reset();
-            unusedSectionInfo.reset();
             unusedTestCaseInfo.reset();
             unusedGroupInfo.reset();
             testRunInfo.reset();
@@ -255,9 +253,11 @@ namespace Catch
         Option<TestRunInfo> testRunInfo;
         Option<GroupInfo> unusedGroupInfo;
         Option<TestCaseInfo> unusedTestCaseInfo;
-        Ptr<ThreadedSectionInfo> unusedSectionInfo;
         Ptr<ThreadedSectionInfo> currentSectionInfo;
         std::ostream& stream;
+        
+        // !TBD: This should really go in the TestCaseStats class
+        std::vector<Ptr<ThreadedSectionInfo> > m_rootSections;        
     };
 
     struct TestGroupNode : TestGroupStats {
@@ -303,7 +303,6 @@ namespace Catch
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
 //            Ptr<ThreadedSectionInfo> sectionInfo = new ThreadedSectionInfo( _sectionInfo );
-//            unusedSectionInfo = sectionInfo;
 //            if( !currentSectionInfo ) {
 //                currentSectionInfo = sectionInfo;
 //            }
@@ -316,7 +315,6 @@ namespace Catch
 
         virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
 //            currentSectionInfo = currentSectionInfo->parent;
-//            unusedSectionInfo = currentSectionInfo;
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
 //            unusedTestCaseInfo.reset();
@@ -328,7 +326,6 @@ namespace Catch
         }
         virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
 //            currentSectionInfo.reset();
-//            unusedSectionInfo.reset();
 //            unusedTestCaseInfo.reset();
 //            unusedGroupInfo.reset();
 //            testRunInfo.reset();
@@ -338,7 +335,6 @@ namespace Catch
 //        Option<TestRunInfo> testRunInfo;
 //        Option<GroupInfo> unusedGroupInfo;
 //        Option<TestCaseInfo> unusedTestCaseInfo;
-//        Ptr<ThreadedSectionInfo> unusedSectionInfo;
 //        Ptr<ThreadedSectionInfo> currentSectionInfo;
 //        Ptr<TestGroupNode> testGroupNode;
         Option<TestGroupNode> testGroupNode;
