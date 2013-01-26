@@ -18,6 +18,10 @@
 #include <string>
 #include <iostream>
 
+#ifndef CATCH_CONFIG_CONSOLE_WIDTH
+#define CATCH_CONFIG_CONSOLE_WIDTH 80
+#endif
+
 namespace Catch {
 
     struct Include { enum WhichResults {

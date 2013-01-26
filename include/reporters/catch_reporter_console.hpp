@@ -199,7 +199,7 @@ namespace Catch {
             }
             
             static std::string wrapLongStrings( std::string const& _string ){
-                return Catch::wrapLongStrings( _string, 70, 2 );
+                return Catch::wrapLongStrings( _string, CATCH_CONFIG_CONSOLE_WIDTH-1, 2 );
             }
             
             std::ostream& stream;
@@ -330,18 +330,15 @@ namespace Catch {
             stream << getDashes() << "\n";
         }
         static std::string const& getDashes() {
-            static const std::string dashes
-                = "-----------------------------------------------------------------";
+            static const std::string dashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '-' );
             return dashes;
         }
         static std::string const& getDots() {
-            static const std::string dots
-                = ".................................................................";
+            static const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '.' );
             return dots;
         }
         static std::string const& getDoubleDashes() {
-            static const std::string doubleDashes
-                = "=================================================================";
+            static const std::string doubleDashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
             return doubleDashes;
         }
         
