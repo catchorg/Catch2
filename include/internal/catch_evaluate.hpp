@@ -33,40 +33,52 @@ namespace Internal {
     template<typename T1, typename T2, Operator Op>
     class Evaluator{};
     
+    template<typename T>
+    inline T& catch_const_cast(const T& t) { return const_cast<T&>(t); }
+
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    inline std::nullptr_t catch_const_cast(const std::nullptr_t&) { return nullptr; }
+#endif // CATCH_CONFIG_CPP11_NULLPTR
+
+    // So the compare overloads can be operator agnostic we convey the operator as a template
+    // enum, which is used to specialise an Evaluator for doing the comparison.
+    template<typename T1, typename T2, Operator Op>
+    class Evaluator{};
+
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs) {
-            return const_cast<T1&>( lhs ) ==  const_cast<T2&>( rhs );
+            return catch_const_cast<T1>( lhs ) ==  catch_const_cast<T2>( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsNotEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) != const_cast<T2&>( rhs );
+            return catch_const_cast<T1>( lhs ) != catch_const_cast<T2>( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) < const_cast<T2&>( rhs );
+            return catch_const_cast<T1>( lhs ) < catch_const_cast<T2>( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) > const_cast<T2&>( rhs );
+            return catch_const_cast<T1>( lhs ) > catch_const_cast<T2>( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) >= const_cast<T2&>( rhs );
+            return catch_const_cast<T1>( lhs ) >= catch_const_cast<T2>( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) <= const_cast<T2&>( rhs );
+            return catch_const_cast<T1>( lhs ) <= catch_const_cast<T2>( rhs );
         }
     };
 
@@ -144,6 +156,16 @@ namespace Internal {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
         
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    // nullptr_t to T-pointer (when comparing against nullptr)
+    template<Operator Op, typename T> bool compare( std::nullptr_t lhs, T* rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
+    }
+    template<Operator Op, typename T> bool compare( T* lhs, std::nullptr_t rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
+    }
+#endif // CATCH_CONFIG_CPP11_NULLPTR
+
 } // end of namespace Internal
 } // end of namespace Catch
 
