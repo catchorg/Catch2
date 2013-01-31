@@ -37,7 +37,7 @@ namespace Internal {
     inline T& catch_const_cast(const T& t) { return const_cast<T&>(t); }
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
-    inline std::nullptr_t catch_const_cast(const std::nullptr_t&) { return nullptr; }
+    inline std::nullptr_t catch_const_cast(std::nullptr_t) { return nullptr; }
 #endif // CATCH_CONFIG_CPP11_NULLPTR
 
     // So the compare overloads can be operator agnostic we convey the operator as a template
@@ -48,37 +48,37 @@ namespace Internal {
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs) {
-            return catch_const_cast<T1>( lhs ) ==  catch_const_cast<T2>( rhs );
+            return catch_const_cast( lhs ) ==  catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsNotEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return catch_const_cast<T1>( lhs ) != catch_const_cast<T2>( rhs );
+            return catch_const_cast( lhs ) != catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return catch_const_cast<T1>( lhs ) < catch_const_cast<T2>( rhs );
+            return catch_const_cast( lhs ) < catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return catch_const_cast<T1>( lhs ) > catch_const_cast<T2>( rhs );
+            return catch_const_cast( lhs ) > catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return catch_const_cast<T1>( lhs ) >= catch_const_cast<T2>( rhs );
+            return catch_const_cast( lhs ) >= catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return catch_const_cast<T1>( lhs ) <= catch_const_cast<T2>( rhs );
+            return catch_const_cast( lhs ) <= catch_const_cast( rhs );
         }
     };
 
