@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 16 (integration branch)
- *  Generated: 2013-01-26 20:18:07.076275
+ *  CATCH v0.9 build 17 (integration branch)
+ *  Generated: 2013-01-31 12:14:41.781000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -758,6 +758,13 @@ namespace Internal {
     template<> struct OperatorTraits<IsLessThanOrEqualTo>   { static const char* getName(){ return "<="; } };
     template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
 
+    template<typename T>
+    inline T& catch_const_cast(const T& t) { return const_cast<T&>(t); }
+
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    inline std::nullptr_t catch_const_cast(std::nullptr_t) { return nullptr; }
+#endif // CATCH_CONFIG_CPP11_NULLPTR
+
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.
     template<typename T1, typename T2, Operator Op>
@@ -766,37 +773,37 @@ namespace Internal {
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs) {
-            return const_cast<T1&>( lhs ) ==  const_cast<T2&>( rhs );
+            return catch_const_cast( lhs ) ==  catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsNotEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) != const_cast<T2&>( rhs );
+            return catch_const_cast( lhs ) != catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) < const_cast<T2&>( rhs );
+            return catch_const_cast( lhs ) < catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) > const_cast<T2&>( rhs );
+            return catch_const_cast( lhs ) > catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) >= const_cast<T2&>( rhs );
+            return catch_const_cast( lhs ) >= catch_const_cast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) <= const_cast<T2&>( rhs );
+            return catch_const_cast( lhs ) <= catch_const_cast( rhs );
         }
     };
 
@@ -873,6 +880,16 @@ namespace Internal {
     template<Operator Op, typename T> bool compare( T* lhs, int rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
+
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    // pointer to nullptr_t (when comparing against nullptr)
+    template<Operator Op, typename T> bool compare( std::nullptr_t lhs, T* rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
+    }
+    template<Operator Op, typename T> bool compare( T* lhs, std::nullptr_t rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
+    }
+#endif // CATCH_CONFIG_CPP11_NULLPTR
 
 } // end of namespace Internal
 } // end of namespace Catch
@@ -5777,7 +5794,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 16, "integration" );
+    Version libraryVersion( 0, 9, 17, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
