@@ -14,6 +14,7 @@
 #include "catch_config.hpp"
 #include "catch_test_case_info.h"
 #include "catch_assertionresult.h"
+#include "catch_message.h"
 #include "catch_option.hpp"
 
 #include <string>
@@ -89,13 +90,24 @@ namespace Catch
 
     struct AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
+                        std::vector<MessageInfo> const& _infoMessages,
                         Totals const& _totals )
         :   assertionResult( _assertionResult ),
+            infoMessages( _infoMessages ),
             totals( _totals )
-        {}
+        {
+            if( assertionResult.hasMessage() ) {
+                // Copy message into messages list.
+                // !TBD This should have been done earlier, somewhere
+                MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
+                builder << assertionResult.getMessage();
+                infoMessages.push_back( builder.build() );
+            }
+        }
         virtual ~AssertionStats();
         
         AssertionResult assertionResult;
+        std::vector<MessageInfo> infoMessages;
         Totals totals;
     };
 

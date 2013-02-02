@@ -148,7 +148,7 @@ namespace Catch {
         virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
         virtual std::string argsSynopsis() const = 0;
         virtual std::string optionSummary() const = 0;
-        virtual std::string optionDescription() const { return ""; };
+        virtual std::string optionDescription() const { return ""; }
 
         std::string optionNames() const {
             std::string names;

@@ -21,19 +21,25 @@ namespace Catch {
     class AssertionResult;
     struct AssertionInfo;
     struct SectionInfo;
+    class MessageBuilder;
+    class ScopedMessageBuilder;
 
     struct IResultCapture {
     
         virtual ~IResultCapture();
         
-        virtual void testEnded( AssertionResult const& result ) = 0;
+        virtual void assertionEnded( AssertionResult const& result ) = 0;
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
         virtual void sectionEnded( SectionInfo const& name, Counts const& assertions ) = 0;
-        virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0;
-        virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
+        virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0; // !TBD Deprecated
+        virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0; // !TBD Deprecated
+        virtual void pushScopedMessage( ScopedMessageBuilder const& _builder ) = 0;
+        virtual void popScopedMessage( ScopedMessageBuilder const& _builder ) = 0;
+        
         virtual bool shouldDebugBreak() const = 0;
         
+        virtual void acceptMessage( const MessageBuilder& messageBuilder ) = 0;
         virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;        

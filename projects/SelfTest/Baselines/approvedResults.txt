@@ -1,5 +1,5 @@
 
-CatchSelfTest is a CATCH v0.9 b15 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b16 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -1055,7 +1055,7 @@ PASSED:
 ExceptionTests.cpp:60:
 
 FAILED:
-  {Unknown expression after this line}
+  {Unknown expression after the reported line}
 due to unexpected exception with message:
   unexpected exception
 ExceptionTests.cpp:60:
@@ -2002,6 +2002,7 @@ GeneratorTests.cpp:40:
 ...............................................................................
 
 warning:
+  this is a message
   this is a warning
 MessageTests.cpp:14:
 
@@ -2021,18 +2022,13 @@ MessageTests.cpp:18:
 ./failing/message/info/1
 ...............................................................................
 
-info:
-  this message should be logged
-MessageTests.cpp:23:
-
-info:
-  so should this
-MessageTests.cpp:24:
-
 FAILED:
   REQUIRE( a == 1 )
 with expansion:
   2 == 1
+with messages:
+  this message should be logged
+  so should this
 MessageTests.cpp:26:
 
 -------------------------------------------------------------------------------
@@ -2043,36 +2039,32 @@ PASSED:
   CHECK( a == 2 )
 with expansion:
   2 == 2
-MessageTests.cpp:33:
-
-info:
+with message:
   this message should be logged
-MessageTests.cpp:31:
-
-info:
-  this message should be logged, too
-MessageTests.cpp:35:
+MessageTests.cpp:33:
 
 FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
+with message:
+  this message should be logged, too
 MessageTests.cpp:37:
-
-info:
-  and this, but later
-MessageTests.cpp:39:
 
 FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
+with message:
+  and this, but later
 MessageTests.cpp:41:
 
 PASSED:
   CHECK( a == 2 )
 with expansion:
   2 == 2
+with message:
+  but not this
 MessageTests.cpp:45:
 
 -------------------------------------------------------------------------------
@@ -2130,76 +2122,99 @@ PASSED:
   REQUIRE( i < 10 )
 with expansion:
   0 < 10
+with messages:
+  current counter 0
+  i := 0
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   1 < 10
+with messages:
+  current counter 1
+  i := 1
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   2 < 10
+with messages:
+  current counter 2
+  i := 2
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   3 < 10
+with messages:
+  current counter 3
+  i := 3
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   4 < 10
+with messages:
+  current counter 4
+  i := 4
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   5 < 10
+with messages:
+  current counter 5
+  i := 5
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   6 < 10
+with messages:
+  current counter 6
+  i := 6
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   7 < 10
+with messages:
+  current counter 7
+  i := 7
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   8 < 10
+with messages:
+  current counter 8
+  i := 8
 MessageTests.cpp:86:
 
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
   9 < 10
-MessageTests.cpp:86:
-
-  REQUIRE( i < 10 )
-info:
-  current counter 10
-MessageTests.cpp:86:
-
-  REQUIRE( i < 10 )
-info:
-  i := 10
+with messages:
+  current counter 9
+  i := 9
 MessageTests.cpp:86:
 
 FAILED:
   REQUIRE( i < 10 )
 with expansion:
   10 < 10
+with messages:
+  current counter 10
+  i := 10
 MessageTests.cpp:86:
 
 -------------------------------------------------------------------------------
@@ -2347,84 +2362,68 @@ MiscTests.cpp:103:
 ./mixed/Misc/loops
 ...............................................................................
 
-info:
+FAILED:
+  CHECK( ( fib[i] % 2 ) == 0 )
+with expansion:
+  1 == 0
+with message:
   Testing if fib[0] (1) is even
-MiscTests.cpp:114:
+MiscTests.cpp:115:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-MiscTests.cpp:115:
-
-info:
+with message:
   Testing if fib[1] (1) is even
-MiscTests.cpp:114:
-
-FAILED:
-  CHECK( ( fib[i] % 2 ) == 0 )
-with expansion:
-  1 == 0
 MiscTests.cpp:115:
 
 PASSED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   0 == 0
-MiscTests.cpp:115:
-
-info:
+with message:
   Testing if fib[2] (2) is even
-MiscTests.cpp:114:
-
-info:
-  Testing if fib[3] (3) is even
-MiscTests.cpp:114:
-
-FAILED:
-  CHECK( ( fib[i] % 2 ) == 0 )
-with expansion:
-  1 == 0
 MiscTests.cpp:115:
 
-info:
-  Testing if fib[4] (5) is even
-MiscTests.cpp:114:
+FAILED:
+  CHECK( ( fib[i] % 2 ) == 0 )
+with expansion:
+  1 == 0
+with message:
+  Testing if fib[3] (3) is even
+MiscTests.cpp:115:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
+with message:
+  Testing if fib[4] (5) is even
 MiscTests.cpp:115:
 
 PASSED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   0 == 0
-MiscTests.cpp:115:
-
-info:
+with message:
   Testing if fib[5] (8) is even
-MiscTests.cpp:114:
-
-info:
-  Testing if fib[6] (13) is even
-MiscTests.cpp:114:
-
-FAILED:
-  CHECK( ( fib[i] % 2 ) == 0 )
-with expansion:
-  1 == 0
 MiscTests.cpp:115:
 
-info:
-  Testing if fib[7] (21) is even
-MiscTests.cpp:114:
+FAILED:
+  CHECK( ( fib[i] % 2 ) == 0 )
+with expansion:
+  1 == 0
+with message:
+  Testing if fib[6] (13) is even
+MiscTests.cpp:115:
 
 FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
+with message:
+  Testing if fib[7] (21) is even
 MiscTests.cpp:115:
 
 Some information
@@ -2456,16 +2455,11 @@ MiscTests.cpp:134:
 ./failing/info
 ...............................................................................
 
-info:
-  hi
-MiscTests.cpp:139:
-
-info:
-  i := 7
-MiscTests.cpp:141:
-
 FAILED:
   REQUIRE( false )
+with messages:
+  hi
+  i := 7
 MiscTests.cpp:142:
 
 -------------------------------------------------------------------------------
@@ -2552,12 +2546,10 @@ No assertions in section, 'encoded chars'
 ./manual/onechar
 ...............................................................................
 
-info:
-  3
-MiscTests.cpp:195:
-
 FAILED:
   REQUIRE( false )
+with message:
+  3
 MiscTests.cpp:196:
 
 -------------------------------------------------------------------------------
@@ -4246,7 +4238,7 @@ BDDTests.cpp:29:
 96 test cases - 45 failed (610 assertions - 102 failed)
 
 
-CatchSelfTest is a CATCH v0.9 b15 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b16 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4715,7 +4707,7 @@ ExceptionTests.cpp:52
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit/2" time="tbd">
-      <error message="{Unknown expression after this line}">
+      <error message="{Unknown expression after the reported line}">
 ExceptionTests.cpp:60
       </error>
     </testcase>
@@ -4750,29 +4742,14 @@ MessageTests.cpp:14
     </testcase>
     <testcase classname="global" name="./succeeding/succeed" time="tbd"/>
     <testcase classname="global" name="./failing/message/info/1" time="tbd">
-      <info type="INFO">
-MessageTests.cpp:23
-      </info>
-      <info type="INFO">
-MessageTests.cpp:24
-      </info>
       <failure message="2 == 1" type="REQUIRE">
 MessageTests.cpp:26
       </failure>
     </testcase>
     <testcase classname="global" name="./mixed/message/info/2" time="tbd">
-      <info type="INFO">
-MessageTests.cpp:31
-      </info>
-      <info type="INFO">
-MessageTests.cpp:35
-      </info>
       <failure message="2 == 1" type="CHECK">
 MessageTests.cpp:37
       </failure>
-      <info type="INFO">
-MessageTests.cpp:39
-      </info>
       <failure message="2 == 0" type="CHECK">
 MessageTests.cpp:41
       </failure>
@@ -4797,12 +4774,6 @@ Message from section two
       </system-out>
     </testcase>
     <testcase classname="global" name="./mixed/message/scoped" time="tbd">
-      <info message="i &lt; 10" type="REQUIRE">
-MessageTests.cpp:86
-      </info>
-      <info message="i &lt; 10" type="REQUIRE">
-MessageTests.cpp:86
-      </info>
       <failure message="10 &lt; 10" type="REQUIRE">
 MessageTests.cpp:86
       </failure>
@@ -4826,45 +4797,21 @@ MiscTests.cpp:103
       </failure>
     </testcase>
     <testcase classname="global" name="./mixed/Misc/loops" time="tbd">
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
       <failure message="1 == 0" type="CHECK">
 MiscTests.cpp:115
       </failure>
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
       <failure message="1 == 0" type="CHECK">
 MiscTests.cpp:115
       </failure>
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
       <failure message="1 == 0" type="CHECK">
 MiscTests.cpp:115
       </failure>
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
       <failure message="1 == 0" type="CHECK">
 MiscTests.cpp:115
       </failure>
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
       <failure message="1 == 0" type="CHECK">
 MiscTests.cpp:115
       </failure>
-      <info type="INFO">
-MiscTests.cpp:114
-      </info>
       <failure message="1 == 0" type="CHECK">
 MiscTests.cpp:115
       </failure>
@@ -4879,12 +4826,6 @@ An error
     </testcase>
     <testcase classname="global" name="./succeeding/Misc/null strings" time="tbd"/>
     <testcase classname="global" name="./failing/info" time="tbd">
-      <info type="INFO">
-MiscTests.cpp:139
-      </info>
-      <info type="CAPTURE">
-MiscTests.cpp:141
-      </info>
       <failure message="false" type="REQUIRE">
 MiscTests.cpp:142
       </failure>
@@ -4909,9 +4850,6 @@ MiscTests.cpp:178
     </testcase>
     <testcase classname="global" name="./misc/xmlentitycheck" time="tbd"/>
     <testcase classname="global" name="./manual/onechar" time="tbd">
-      <info type="INFO">
-MiscTests.cpp:195
-      </info>
       <failure message="false" type="REQUIRE">
 MiscTests.cpp:196
       </failure>
@@ -6403,10 +6341,10 @@ ExceptionTests.cpp" line="60">
       </Expression>
 ExceptionTests.cpp" line="60">
         <Original>
-          {Unknown expression after this line}
+          {Unknown expression after the reported line}
         </Original>
         <Expanded>
-          {Unknown expression after this line}
+          {Unknown expression after the reported line}
         </Expanded>
 ExceptionTests.cpp" line="60">
           unexpected exception
@@ -7652,12 +7590,6 @@ GeneratorTests.cpp" line="40">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/message/info/1">
-      <Info>
-        this message should be logged
-      </Info>
-      <Info>
-        so should this
-      </Info>
 MessageTests.cpp" line="26">
         <Original>
           a == 1
@@ -7677,12 +7609,6 @@ MessageTests.cpp" line="33">
           2 == 2
         </Expanded>
       </Expression>
-      <Info>
-        this message should be logged
-      </Info>
-      <Info>
-        this message should be logged, too
-      </Info>
 MessageTests.cpp" line="37">
         <Original>
           a == 1
@@ -7691,9 +7617,6 @@ MessageTests.cpp" line="37">
           2 == 1
         </Expanded>
       </Expression>
-      <Info>
-        and this, but later
-      </Info>
 MessageTests.cpp" line="41">
         <Original>
           a == 0
@@ -7822,28 +7745,6 @@ MessageTests.cpp" line="86">
         <Expanded>
           9 &lt; 10
         </Expanded>
-      </Expression>
-MessageTests.cpp" line="86">
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          i &lt; 10
-        </Expanded>
-        <Info>
-          current counter 10
-        </Info>
-      </Expression>
-MessageTests.cpp" line="86">
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          i &lt; 10
-        </Expanded>
-        <Info>
-          i := 10
-        </Info>
       </Expression>
 MessageTests.cpp" line="86">
         <Original>
@@ -8013,9 +7914,6 @@ MiscTests.cpp" line="103">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./mixed/Misc/loops">
-      <Info>
-        Testing if fib[0] (1) is even
-      </Info>
 MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
@@ -8024,9 +7922,6 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-      <Info>
-        Testing if fib[1] (1) is even
-      </Info>
 MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
@@ -8043,12 +7938,6 @@ MiscTests.cpp" line="115">
           0 == 0
         </Expanded>
       </Expression>
-      <Info>
-        Testing if fib[2] (2) is even
-      </Info>
-      <Info>
-        Testing if fib[3] (3) is even
-      </Info>
 MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
@@ -8057,9 +7946,6 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-      <Info>
-        Testing if fib[4] (5) is even
-      </Info>
 MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
@@ -8076,12 +7962,6 @@ MiscTests.cpp" line="115">
           0 == 0
         </Expanded>
       </Expression>
-      <Info>
-        Testing if fib[5] (8) is even
-      </Info>
-      <Info>
-        Testing if fib[6] (13) is even
-      </Info>
 MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
@@ -8090,9 +7970,6 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-      <Info>
-        Testing if fib[7] (21) is even
-      </Info>
 MiscTests.cpp" line="115">
         <Original>
           ( fib[i] % 2 ) == 0
@@ -8126,12 +8003,6 @@ MiscTests.cpp" line="134">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/info">
-      <Info>
-        hi
-      </Info>
-      <Info>
-        i := 7
-      </Info>
 MiscTests.cpp" line="142">
         <Original>
           false
@@ -8228,9 +8099,6 @@ MiscTests.cpp" line="178">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./manual/onechar">
-      <Info>
-        3
-      </Info>
 MiscTests.cpp" line="196">
         <Original>
           false
@@ -10136,7 +10004,7 @@ ExceptionTests.cpp:52: Unexpected exception with message: 'unexpected exception'
 
 [Running: ./failing/exceptions/implicit/2]
 ExceptionTests.cpp:60: 1 == 1 succeeded
-ExceptionTests.cpp:60: {Unknown expression after this line} failed with unexpected exception with message: 'unexpected exception'
+ExceptionTests.cpp:60: {Unknown expression after the reported line} failed with unexpected exception with message: 'unexpected exception'
 [Finished: './failing/exceptions/implicit/2' 1 test case failed (1 of 2 assertions failed)]
 
 [Running: ./succeeding/exceptions/implicit]
@@ -10330,17 +10198,12 @@ MessageTests.cpp:18:  succeeded
 [Finished: './succeeding/succeed' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./failing/message/info/1]
-MessageTests.cpp:23: [info: this message should be logged]
-MessageTests.cpp:24: [info: so should this]
 MessageTests.cpp:26: a == 1 failed for: 2 == 1
 [Finished: './failing/message/info/1' 1 test case failed (1 assertion failed)]
 
 [Running: ./mixed/message/info/2]
 MessageTests.cpp:33: a == 2 succeeded for: 2 == 2
-MessageTests.cpp:31: [info: this message should be logged]
-MessageTests.cpp:35: [info: this message should be logged, too]
 MessageTests.cpp:37: a == 1 failed for: 2 == 1
-MessageTests.cpp:39: [info: and this, but later]
 MessageTests.cpp:41: a == 0 failed for: 2 == 0
 MessageTests.cpp:45: a == 2 succeeded for: 2 == 2
 [Finished: './mixed/message/info/2' 1 test case failed (2 of 4 assertions failed)]
@@ -10389,8 +10252,6 @@ MessageTests.cpp:86: i < 10 succeeded for: 6 < 10
 MessageTests.cpp:86: i < 10 succeeded for: 7 < 10
 MessageTests.cpp:86: i < 10 succeeded for: 8 < 10
 MessageTests.cpp:86: i < 10 succeeded for: 9 < 10
-MessageTests.cpp:86: i < 10 succeeded[info: current counter 10]
-MessageTests.cpp:86: i < 10 succeeded[info: i := 10]
 MessageTests.cpp:86: i < 10 failed for: 10 < 10
 [Finished: './mixed/message/scoped' 1 test case failed (1 of 11 assertions failed)]
 
@@ -10484,21 +10345,13 @@ MiscTests.cpp:103: b > a failed for: 0 > 1
 [Finished: './mixed/Misc/Sections/loops' 1 test case failed (1 assertion failed)]
 
 [Running: ./mixed/Misc/loops]
-MiscTests.cpp:114: [info: Testing if fib[0] (1) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:114: [info: Testing if fib[1] (1) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
-MiscTests.cpp:114: [info: Testing if fib[2] (2) is even]
-MiscTests.cpp:114: [info: Testing if fib[3] (3) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:114: [info: Testing if fib[4] (5) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
-MiscTests.cpp:114: [info: Testing if fib[5] (8) is even]
-MiscTests.cpp:114: [info: Testing if fib[6] (13) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:114: [info: Testing if fib[7] (21) is even]
 MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
 [Finished: './mixed/Misc/loops' 1 test case failed (6 of 8 assertions failed)]
 Some information
@@ -10516,8 +10369,6 @@ MiscTests.cpp:134: makeString( true ) == static_cast<char*>(__null) succeeded fo
 [Finished: './succeeding/Misc/null strings' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./failing/info]
-MiscTests.cpp:139: [info: hi]
-MiscTests.cpp:141: [info: i := 7]
 MiscTests.cpp:142: false failed
 [Finished: './failing/info' 1 test case failed (1 assertion failed)]
 
@@ -10557,7 +10408,6 @@ No assertions in section, 'encoded chars'
 [Finished: './misc/xmlentitycheck' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./manual/onechar]
-MiscTests.cpp:195: [info: 3]
 MiscTests.cpp:196: false failed
 [Finished: './manual/onechar' 1 test case failed (1 assertion failed)]
 

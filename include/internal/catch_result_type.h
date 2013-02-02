@@ -32,6 +32,9 @@ namespace Catch {
     inline bool isOk( ResultWas::OfType resultType ) {
         return ( resultType & ResultWas::FailureBit ) == 0;
     }
+    inline bool isJustInfo( int flags ) {
+        return flags == ResultWas::Info;
+    }
 
     // ResultAction::Value enum
     struct ResultAction { enum Value {

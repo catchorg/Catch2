@@ -28,6 +28,7 @@
 #include "catch_tags.hpp"
 #include "catch_version.hpp"
 #include "catch_line_wrap.hpp"
+#include "catch_message.hpp"
 
 #include "../reporters/catch_reporter_basic.hpp"
 #include "../reporters/catch_reporter_xml.hpp"

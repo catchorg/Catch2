@@ -98,14 +98,18 @@ namespace Catch {
                 stats( _stats ),
                 result( _stats.assertionResult ),
                 colour( TextColour::None ),
-                message( result.getMessage() )
+                message( result.getMessage() ),
+                messages( _stats.infoMessages )
             {
                 switch( result.getResultType() ) {
                     case ResultWas::Ok:
                         colour = TextColour::Success;
                         passOrFail = "PASSED";
-                        if( result.hasMessage() )
+                        //if( result.hasMessage() )
+                        if( _stats.infoMessages.size() == 1 )
                             messageLabel = "with message";
+                        if( _stats.infoMessages.size() > 1 )
+                            messageLabel = "with messages";
                         break;
                     case ResultWas::ExpressionFailed:
                         if( result.isOk() ) {
@@ -116,9 +120,13 @@ namespace Catch {
                             colour = TextColour::Error;
                             passOrFail = "FAILED";
                         }
-                        if( result.hasMessage() ){
+                        if( _stats.infoMessages.size() == 1 )
                             messageLabel = "with message";
-                        }
+                        if( _stats.infoMessages.size() > 1 )
+                            messageLabel = "with messages";
+//                        if( result.hasMessage() ){
+//                            messageLabel = "with message";
+//                        }
                         break;
                     case ResultWas::ThrewException:
                         colour = TextColour::Error;
@@ -139,13 +147,21 @@ namespace Catch {
                     case ResultWas::ExplicitFailure:
                         passOrFail = "FAILED";
                         colour = TextColour::Error;
-                        messageLabel = "explicitly with message";
+//                        messageLabel = "explicitly with message";
+                        if( _stats.infoMessages.size() == 1 )
+                            messageLabel = "explicitly with message";
+                        if( _stats.infoMessages.size() > 1 )
+                            messageLabel = "explicitly with messages";
                         break;
                     case ResultWas::Exception:
                         passOrFail = "FAILED";
                         colour = TextColour::Error;
-                        if( result.hasMessage() )
+                        if( _stats.infoMessages.size() == 1 )
                             messageLabel = "with message";
+                        if( _stats.infoMessages.size() > 1 )
+                            messageLabel = "with messages";
+//                        if( result.hasMessage() )
+//                            messageLabel = "with message";
                         break;
                         
                     // These cases are here to prevent compiler warnings
@@ -196,8 +212,13 @@ namespace Catch {
             void printMessage() const {
                 if( !messageLabel.empty() )
                     stream << messageLabel << ":" << "\n";
-                if( !message.empty() )
-                    stream << wrapLongStrings( message ) << "\n";
+                for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
+                        it != itEnd;
+                        ++it ) {
+                    stream << wrapLongStrings( it->message ) << "\n";
+                }
+//                if( !message.empty() )
+//                    stream << wrapLongStrings( message ) << "\n";
             }
             void printSourceInfo() const {
                 TextColour colourGuard( TextColour::FileName );
@@ -215,6 +236,7 @@ namespace Catch {
             std::string passOrFail;
             std::string messageLabel;
             std::string message;
+            std::vector<MessageInfo> messages;
         };
         
         void lazyPrint() {
