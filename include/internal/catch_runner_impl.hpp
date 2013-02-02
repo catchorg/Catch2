@@ -170,32 +170,11 @@ namespace Catch {
             }
             else if( !result.isOk() ) {
                 m_totals.assertions.failed++;
-
-//                {
-//                    std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
-//                    std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
-//                    for(; it != itEnd; ++it )
-//                        m_reporter->assertionEnded( AssertionStats( (*it)->buildResult( m_lastAssertionInfo ), m_totals ) );
-//                }
-//                {
-//                    std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
-//                    std::vector<AssertionResult>::const_iterator itEnd = m_assertionResults.end();
-//                    for(; it != itEnd; ++it )
-//                        m_reporter->assertionEnded( AssertionStats( *it, m_totals ) );
-//                }
-//                m_assertionResults.clear();
             }
             
-            if( result.getResultType() == ResultWas::Info ) {
-                // !TBD: deprecated? - what does this even do?
-                m_assertionResults.push_back( result );
-                m_totals.assertions.info++;
-            }
-            else {
-                m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) );
-            }
+            m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) );
 
-            // Reset AssertionInfo
+            // Reset working state
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
             m_messages.clear();            
         }
@@ -238,14 +217,6 @@ namespace Catch {
             m_messages.clear();
         }
 
-        virtual void pushScopedInfo( ScopedInfo* scopedInfo ) {
-            m_scopedInfos.push_back( scopedInfo );
-        }
-
-        virtual void popScopedInfo( ScopedInfo* scopedInfo ) {
-            if( m_scopedInfos.back() == scopedInfo )
-                m_scopedInfos.pop_back();
-        }
         virtual void pushScopedMessage( ScopedMessageBuilder const& _builder ) {
             m_messages.push_back( _builder.build() );
         }
@@ -314,7 +285,6 @@ namespace Catch {
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
-            m_assertionResults.clear();
         }
 
     private:
@@ -326,8 +296,6 @@ namespace Catch {
         const Config& m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
-        std::vector<ScopedInfo*> m_scopedInfos; // !TBD: deprecated
-        std::vector<AssertionResult> m_assertionResults; // !TBD: deprecated
         std::vector<MessageInfo> m_messages;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;

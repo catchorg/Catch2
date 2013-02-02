@@ -16,7 +16,6 @@
 namespace Catch {
 
     class TestCase;
-    class ScopedInfo;
     class ExpressionResultBuilder;
     class AssertionResult;
     struct AssertionInfo;
@@ -32,8 +31,6 @@ namespace Catch {
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
         virtual void sectionEnded( SectionInfo const& name, Counts const& assertions ) = 0;
-        virtual void pushScopedInfo( ScopedInfo* scopedInfo ) = 0; // !TBD Deprecated
-        virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0; // !TBD Deprecated
         virtual void pushScopedMessage( ScopedMessageBuilder const& _builder ) = 0;
         virtual void popScopedMessage( ScopedMessageBuilder const& _builder ) = 0;
         
