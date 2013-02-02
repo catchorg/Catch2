@@ -1,5 +1,5 @@
 
-CatchSelfTest is a CATCH v0.9 b16 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b17 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -2040,7 +2040,7 @@ PASSED:
 with expansion:
   2 == 2
 with message:
-  this message should be logged
+  this message should not be logged
 MessageTests.cpp:33:
 
 FAILED:
@@ -2048,7 +2048,7 @@ FAILED:
 with expansion:
   2 == 1
 with message:
-  this message should be logged, too
+  this message should be logged
 MessageTests.cpp:37:
 
 FAILED:
@@ -4238,7 +4238,7 @@ BDDTests.cpp:29:
 96 test cases - 45 failed (610 assertions - 102 failed)
 
 
-CatchSelfTest is a CATCH v0.9 b16 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b17 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
