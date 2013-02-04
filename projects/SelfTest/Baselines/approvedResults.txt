@@ -2229,6 +2229,22 @@ MessageTests.cpp:92:
 No assertions in test case, './succeeding/nofail'
 
 -------------------------------------------------------------------------------
+just info
+...............................................................................
+
+
+No assertions in test case, 'just info'
+
+-------------------------------------------------------------------------------
+just failure
+...............................................................................
+
+FAILED:
+explicitly with message:
+  Previous info should not be seen
+MessageTests.cpp:101:
+
+-------------------------------------------------------------------------------
 ./succeeding/Misc/Sections
   s1
 ...............................................................................
@@ -4235,7 +4251,7 @@ with expansion:
 BDDTests.cpp:29:
 
 ===============================================================================
-96 test cases - 45 failed (610 assertions - 102 failed)
+98 test cases - 47 failed (612 assertions - 104 failed)
 
 
 CatchSelfTest is a CATCH v0.9 b17 (integration) host application.
@@ -4517,7 +4533,7 @@ ConditionTests.cpp:72:
 12 test cases - 3 failed (38 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="8" failures="77" tests="610" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="8" failures="78" tests="612" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -4781,6 +4797,12 @@ MessageTests.cpp:86
     <testcase classname="global" name="./succeeding/nofail" time="tbd">
       <failure message="1 == 2" type="CHECK_NOFAIL">
 MessageTests.cpp:92
+      </failure>
+    </testcase>
+    <testcase classname="global" name="just info" time="tbd"/>
+    <testcase classname="global" name="just failure" time="tbd">
+      <failure type="FAIL">
+MessageTests.cpp:101
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/Misc/Sections" time="tbd"/>
@@ -7767,6 +7789,15 @@ MessageTests.cpp" line="92">
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="just info">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="just failure">
+      <Failure>
+        Previous info should not be seen
+      </Failure>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="./succeeding/Misc/Sections">
       <Section name="s1" description="doesn't equal">
 MiscTests.cpp" line="25">
@@ -9754,9 +9785,9 @@ BDDTests.cpp" line="29">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="508" failures="102"/>
+    <OverallResults successes="508" failures="104"/>
   </Group>
-  <OverallResults successes="508" failures="102"/>
+  <OverallResults successes="508" failures="104"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -10261,6 +10292,16 @@ MessageTests.cpp:92: 1 == 2 failed - but was ok
 No assertions in test case, './succeeding/nofail'
 
 [Finished: './succeeding/nofail' 1 test case failed (1 assertion failed)]
+
+[Running: just info]
+
+No assertions in test case, 'just info'
+
+[Finished: 'just info' 1 test case failed (1 assertion failed)]
+
+[Running: just failure]
+MessageTests.cpp:101: failed with message: 'Previous info should not be seen'
+[Finished: 'just failure' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/Misc/Sections]
 [Started section: 's1']
@@ -11084,10 +11125,10 @@ BDDTests.cpp:29: itDoesThis() succeeded for: true
 [End of section: ' Given: This stuff exists' 1 assertion passed]
 
 [Finished: 'Scenario: Do that thing with the thing' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 45 of 96 test cases failed (102 of 610 assertions failed)]
+[End of group: '~dummy'. 47 of 98 test cases failed (104 of 612 assertions failed)]
 
 
-[Testing completed. 45 of 96 test cases failed (102 of 610 assertions failed)]
+[Testing completed. 47 of 98 test cases failed (104 of 612 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
