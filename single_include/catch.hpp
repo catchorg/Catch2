@@ -545,7 +545,6 @@ inline std::string toString( const std::string& value ) {
     return "\"" + value + "\"";
 }
 
-#ifdef wchar_t
 inline std::string toString( const std::wstring& value ) {
     std::ostringstream oss;
     oss << "\"";
@@ -554,7 +553,6 @@ inline std::string toString( const std::wstring& value ) {
     oss << "\"";
     return oss.str();
 }
-#endif
 
 inline std::string toString( const char* const value ) {
     return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
