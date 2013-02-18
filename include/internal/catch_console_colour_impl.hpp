@@ -32,7 +32,7 @@ namespace Catch {
     namespace { const char colourEscape = '\033'; }
 
     void TextColour::set( Colours colour ) {
-        if( isatty( fileno(stdout) ) ) {
+        if( isatty( fileno(stdout) ) && !isDebuggerActive() ) {
             switch( colour ) {
                 case TextColour::FileName:
                     std::cout << colourEscape << "[0m";    // white/ normal
