@@ -10,6 +10,7 @@
 
 #include "catch_expression_decomposer.hpp"
 #include "catch_expressionresult_builder.h"
+#include "catch_message.h"
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.hpp"
 #include "catch_context.h"
@@ -54,26 +55,6 @@ namespace Catch {
     
 struct TestFailureException{};
 
-class ScopedInfo {
-public:
-    ScopedInfo() : m_resultBuilder( ResultWas::Info ) {
-        getResultCapture().pushScopedInfo( this );
-    }
-    ~ScopedInfo() {
-        getResultCapture().popScopedInfo( this );
-    }
-    template<typename T>
-    ScopedInfo& operator << ( const T& value ) {
-        m_resultBuilder << value;
-        return *this; 
-    }
-    AssertionResult buildResult( const AssertionInfo& assertionInfo ) const {
-        return m_resultBuilder.buildResult( assertionInfo );
-    }
-    
-private:
-    ExpressionResultBuilder m_resultBuilder;
-};
 
 // This is just here to avoid compiler warnings with macro constants and boolean literals
 inline bool isTrue( bool value ){ return value; }
@@ -168,17 +149,24 @@ inline bool isTrue( bool value ){ return value; }
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_MSG( reason, resultType, resultDisposition, macroName ) \
+#define INTERNAL_CATCH_INFO( log, macroName ) \
+    do { \
+        Catch::getResultCapture().acceptMessage( Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log ); \
+    } while( Catch::isTrue( false ) )
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_MSG( log, messageType, resultDisposition, macroName ) \
     do { \
         INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, resultDisposition, true ) \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( messageType ) << log, resultDisposition, true ) \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, Catch::ResultDisposition::Normal ); \
-    Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
-    INTERNAL_CATCH_UNIQUE_NAME( info ) << log
+    Catch::ScopedMessageBuilder INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ); \
+    INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) << log; \
+    Catch::getResultCapture().pushScopedMessage( INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) )
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \

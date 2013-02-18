@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26847E5D16BBADB40043B9C1 /* catch_message.cpp */; };
 		2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */; };
 		4A45DA2416161EF9004F8D6B /* catch_console_colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */; };
 		4A45DA2716161F1F004F8D6B /* catch_ptr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2616161F1F004F8D6B /* catch_ptr.cpp */; };
@@ -53,6 +54,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		26847E5B16BBAB790043B9C1 /* catch_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_message.h; sourceTree = "<group>"; };
+		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
+		26847E5D16BBADB40043B9C1 /* catch_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_message.cpp; path = ../../../SelfTest/SurrogateCpps/catch_message.cpp; sourceTree = "<group>"; };
 		2694A1F8169FFF9B004816E3 /* catch_line_wrap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_line_wrap.h; sourceTree = "<group>"; };
 		2694A1FA169FFFEC004816E3 /* catch_line_wrap.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_line_wrap.hpp; sourceTree = "<group>"; };
 		2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = catch_line_wrap.cpp; sourceTree = "<group>"; };
@@ -275,6 +279,7 @@
 				4AB3D9A1161621B500C9A0F8 /* catch_interfaces_generators.cpp */,
 				4ACE21CA166CA1B300FB5509 /* catch_option.cpp */,
 				2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */,
+				26847E5D16BBADB40043B9C1 /* catch_message.cpp */,
 			);
 			name = SurrogateCpps;
 			sourceTree = "<group>";
@@ -294,6 +299,7 @@
 				4A90B59E15D2521E00EF71BC /* catch_expressionresult_builder.hpp */,
 				4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */,
 				2694A1FA169FFFEC004816E3 /* catch_line_wrap.hpp */,
+				26847E5C16BBACB60043B9C1 /* catch_message.hpp */,
 			);
 			name = impl;
 			sourceTree = "<group>";
@@ -314,6 +320,7 @@
 				4AC91CCE155CF02800DC5117 /* catch_expression_lhs.hpp */,
 				4AC91CD0155D8DA600DC5117 /* catch_expression_decomposer.hpp */,
 				4A4B0F9A15CEF84800AE2392 /* catch_notimplemented_exception.h */,
+				26847E5B16BBAB790043B9C1 /* catch_message.h */,
 			);
 			name = Assertions;
 			sourceTree = "<group>";
@@ -473,6 +480,7 @@
 				4AB3D9A2161621B500C9A0F8 /* catch_interfaces_generators.cpp in Sources */,
 				4ACE21CC166CA1B300FB5509 /* catch_option.cpp in Sources */,
 				2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */,
+				26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -155,43 +155,28 @@ namespace Catch {
         
     private: // IResultCapture
 
+        virtual void acceptMessage( const MessageBuilder& messageBuilder ) {
+            m_messages.push_back( messageBuilder.build() );
+        }
+
         virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) {
             m_lastAssertionInfo = assertionInfo;
             return actOnCurrentResult( assertionResult.buildResult( assertionInfo ) );
         }
 
-        virtual void testEnded( const AssertionResult& result ) {
+        virtual void assertionEnded( const AssertionResult& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
             else if( !result.isOk() ) {
                 m_totals.assertions.failed++;
-
-                {
-                    std::vector<ScopedInfo*>::const_iterator it = m_scopedInfos.begin();
-                    std::vector<ScopedInfo*>::const_iterator itEnd = m_scopedInfos.end();
-                    for(; it != itEnd; ++it )
-                        m_reporter->assertionEnded( AssertionStats( (*it)->buildResult( m_lastAssertionInfo ), m_totals ) );
-                }
-                {
-                    std::vector<AssertionResult>::const_iterator it = m_assertionResults.begin();
-                    std::vector<AssertionResult>::const_iterator itEnd = m_assertionResults.end();
-                    for(; it != itEnd; ++it )
-                        m_reporter->assertionEnded( AssertionStats( *it, m_totals ) );
-                }
-                m_assertionResults.clear();
             }
             
-            if( result.getResultType() == ResultWas::Info )
-            {
-                m_assertionResults.push_back( result );
-                m_totals.assertions.info++;
-            }
-            else
-                m_reporter->assertionEnded( AssertionStats( result, m_totals ) );
+            m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) );
 
-            // Reset AssertionInfo
-            m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after this line}" , m_lastAssertionInfo.resultDisposition );
+            // Reset working state
+            m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
+            m_messages.clear();            
         }
         
         virtual bool sectionStarted (
@@ -229,18 +214,18 @@ namespace Catch {
             m_runningTest->endSection( info.name );
 
             m_reporter->sectionEnded( SectionStats( info, assertions, missingAssertions ) );
+            m_messages.clear();
         }
 
-        virtual void pushScopedInfo( ScopedInfo* scopedInfo ) {
-            m_scopedInfos.push_back( scopedInfo );
+        virtual void pushScopedMessage( ScopedMessageBuilder const& _builder ) {
+            m_messages.push_back( _builder.build() );
+        }
+        
+        virtual void popScopedMessage( ScopedMessageBuilder const& _builder ) {
+            m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), _builder ), m_messages.end() );
         }
 
-        virtual void popScopedInfo( ScopedInfo* scopedInfo ) {
-            if( m_scopedInfos.back() == scopedInfo )
-                m_scopedInfos.pop_back();
-        }
-
-        virtual bool shouldDebugBreak() const {        
+        virtual bool shouldDebugBreak() const {
             return m_config.shouldDebugBreak();
         }
 
@@ -264,7 +249,7 @@ namespace Catch {
 
         ResultAction::Value actOnCurrentResult( const AssertionResult& result ) {
             m_lastResult = result;
-            testEnded( m_lastResult );
+            assertionEnded( m_lastResult );
 
             ResultAction::Value action = ResultAction::None;
             
@@ -282,6 +267,7 @@ namespace Catch {
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCase().getTestCaseInfo().lineInfo, "", ResultDisposition::Normal );
                 m_runningTest->reset();
+                
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
@@ -300,7 +286,7 @@ namespace Catch {
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
-            m_assertionResults.clear();
+            m_messages.clear();
         }
 
     private:
@@ -312,8 +298,7 @@ namespace Catch {
         const Config& m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
-        std::vector<ScopedInfo*> m_scopedInfos;
-        std::vector<AssertionResult> m_assertionResults;
+        std::vector<MessageInfo> m_messages;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;

@@ -115,7 +115,7 @@ namespace Catch {
                     }
                     break;
             }        
-        };
+        }
 
     private:
         Expected::Result m_expectedResult;
