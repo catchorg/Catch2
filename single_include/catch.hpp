@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 18 (integration branch)
- *  Generated: 2013-02-04 00:03:53.198397
+ *  CATCH v0.9 build 19 (integration branch)
+ *  Generated: 2013-02-19 19:46:31.030694
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3296,8 +3296,9 @@ namespace Catch {
                         std::string testCaseName = methodName.substr( 15 );
                         std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
+                        const char* className = class_getName( cls );
 
-                        getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), "", name.c_str(), desc.c_str(), SourceLineInfo() ) );
+                        getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
                         noTestMethods++;
                     }
                 }
@@ -4528,6 +4529,11 @@ namespace Catch {
         }
 
         virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions ) {
+            if( std::uncaught_exception() ) {
+                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions ) );
+                return;
+            }
+
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = false;
             if( assertions.total() == 0 &&
@@ -4613,10 +4619,25 @@ namespace Catch {
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
+            for( std::vector<UnfinishedSections>::const_iterator it = m_unfinishedSections.begin(),
+                        itEnd = m_unfinishedSections.end();
+                    it != itEnd;
+                    ++it )
+                sectionEnded( it->info, it->prevAssertions );
+            m_unfinishedSections.clear();
             m_messages.clear();
         }
 
     private:
+        struct UnfinishedSections {
+            UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions )
+            : info( _info ), prevAssertions( _prevAssertions )
+            {}
+
+            SectionInfo info;
+            Counts prevAssertions;
+        };
+
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
         RunningTest* m_runningTest;
@@ -4630,6 +4651,7 @@ namespace Catch {
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
+        std::vector<UnfinishedSections> m_unfinishedSections;
     };
 
 } // end namespace Catch
@@ -4726,7 +4748,7 @@ namespace Catch {
                     }
                 }
             }
-            if( testsRunForGroup == 0 )
+            if( testsRunForGroup == 0 && !filterGroup.getName().empty() )
                 std::cerr << "\n[No test cases matched with: " << filterGroup.getName() << "]" << std::endl;
             return totals;
 
@@ -5330,7 +5352,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-#if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
+#if !defined( CATCH_CONFIG_NO_COLOUR )
 
 #include <unistd.h>
 
@@ -5352,7 +5374,7 @@ namespace Catch {
     namespace { const char colourEscape = '\033'; }
 
     void TextColour::set( Colours colour ) {
-        if( isatty( fileno(stdout) ) ) {
+        if( isatty( fileno(stdout) ) && !isDebuggerActive() ) {
             switch( colour ) {
                 case TextColour::FileName:
                     std::cout << colourEscape << "[0m";    // white/ normal
@@ -5816,7 +5838,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 18, "integration" );
+    Version libraryVersion( 0, 9, 19, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
