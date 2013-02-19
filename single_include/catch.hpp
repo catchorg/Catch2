@@ -1,5 +1,5 @@
 /*
- *  Generated: 2012-11-13 22:03:59.839085
+ *  Generated: 2013-02-19 08:44:57.311773
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2550,6 +2550,8 @@ namespace Matchers {
     template<typename ExpressionT>
     struct Matcher : SharedImpl<IShared>
     {
+        typedef ExpressionT ExpressionType;
+
         virtual ~Matcher() {}
         virtual Ptr<Matcher> clone() const = 0;
         virtual bool match( const ExpressionT& expr ) const = 0;
@@ -2841,8 +2843,9 @@ namespace Catch {
                         std::string testCaseName = methodName.substr( 15 );
                         std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
+                        const char* className = class_getName( cls );
 
-                        getMutableRegistryHub().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name.c_str(), desc.c_str(), SourceLineInfo() ) );
+                        getMutableRegistryHub().registerTest( TestCaseInfo( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
                         noTestMethods++;
                     }
                 }
@@ -2856,8 +2859,10 @@ namespace Catch {
         namespace Impl {
         namespace NSStringMatchers {
 
-            struct StringHolder {
+            template<typename MatcherT>
+            struct StringHolder : MatcherImpl<MatcherT, NSString*>{
                 StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
+                StringHolder( StringHolder const& other ) : m_substr( [other.m_substr copy] ){}
                 StringHolder() {
                     arcSafeRelease( m_substr );
                 }
@@ -2865,54 +2870,50 @@ namespace Catch {
                 NSString* m_substr;
             };
 
-            struct Equals : StringHolder {
+            struct Equals : StringHolder<Equals> {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str isEqualToString:m_substr];
                 }
 
-                friend std::ostream& operator<<( std::ostream& os, const Equals& matcher ) {
-                    os << "equals string: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "equals string: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
 
-            struct Contains : StringHolder {
+            struct Contains : StringHolder<Contains> {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
-                friend std::ostream& operator<<( std::ostream& os, const Contains& matcher ) {
-                    os << "contains: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "contains string: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
 
-            struct StartsWith : StringHolder {
+            struct StartsWith : StringHolder<StartsWith> {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location == 0;
                 }
 
-                friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher ) {
-                    os << "starts with: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "starts with: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
-            struct EndsWith : StringHolder {
+            struct EndsWith : StringHolder<EndsWith> {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
-                friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher ) {
-                    os << "ends with: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "ends with: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
 
@@ -3102,7 +3103,7 @@ namespace Catch {
         virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
         virtual std::string argsSynopsis() const = 0;
         virtual std::string optionSummary() const = 0;
-        virtual std::string optionDescription() const { return ""; };
+        virtual std::string optionDescription() const { return ""; }
 
         std::string optionNames() const {
             std::string names;
