@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 19 (integration branch)
- *  Generated: 2013-02-19 19:46:31.030694
+ *  CATCH v0.9 build 20 (integration branch)
+ *  Generated: 2013-02-19 19:57:51.967870
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5352,7 +5352,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-#if !defined( CATCH_CONFIG_NO_COLOUR )
+#if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
 
 #include <unistd.h>
 
@@ -5838,7 +5838,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 19, "integration" );
+    Version libraryVersion( 0, 9, 20, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp

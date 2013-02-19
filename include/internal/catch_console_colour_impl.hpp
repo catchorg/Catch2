@@ -10,7 +10,7 @@
 
 #include "catch_console_colour.hpp"
 
-#if !defined( CATCH_CONFIG_NO_COLOUR )
+#if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
 
 #include <unistd.h>
 

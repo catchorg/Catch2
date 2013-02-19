@@ -1,5 +1,5 @@
 
-CatchSelfTest is a CATCH v0.9 b18 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b19 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4279,7 +4279,7 @@ BDDTests.cpp:29:
 99 test cases - 47 failed (616 assertions - 104 failed)
 
 
-CatchSelfTest is a CATCH v0.9 b18 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b19 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
