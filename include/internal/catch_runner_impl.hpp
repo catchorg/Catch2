@@ -201,6 +201,11 @@ namespace Catch {
         }
         
         virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions ) {
+            if( std::uncaught_exception() ) {
+                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions ) );
+                return;
+            }
+            
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = false;
             if( assertions.total() == 0 &&
@@ -286,10 +291,25 @@ namespace Catch {
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
+            for( std::vector<UnfinishedSections>::const_iterator it = m_unfinishedSections.begin(),
+                        itEnd = m_unfinishedSections.end();
+                    it != itEnd;
+                    ++it )
+                sectionEnded( it->info, it->prevAssertions );
+            m_unfinishedSections.clear();
             m_messages.clear();
         }
 
     private:
+        struct UnfinishedSections {
+            UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions )
+            : info( _info ), prevAssertions( _prevAssertions )
+            {}
+
+            SectionInfo info;
+            Counts prevAssertions;
+        };
+
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
         RunningTest* m_runningTest;
@@ -303,6 +323,7 @@ namespace Catch {
         IResultCapture* m_prevResultCapture;
         const IConfig* m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
+        std::vector<UnfinishedSections> m_unfinishedSections;
     };
     
 } // end namespace Catch

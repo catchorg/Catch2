@@ -1061,6 +1061,16 @@ due to unexpected exception with message:
 ExceptionTests.cpp:60:
 
 -------------------------------------------------------------------------------
+./failing/exceptions/implicit/3
+  section name
+...............................................................................
+
+FAILED:
+due to unexpected exception with message:
+  unexpected exception
+ExceptionTests.cpp:66:
+
+-------------------------------------------------------------------------------
 ./succeeding/exceptions/implicit
 ...............................................................................
 
@@ -1074,7 +1084,7 @@ No assertions in test case, './succeeding/exceptions/implicit'
 FAILED:
 due to unexpected exception with message:
   custom exception
-ExceptionTests.cpp:102:
+ExceptionTests.cpp:110:
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/custom/nothrow
@@ -1084,7 +1094,7 @@ FAILED:
   REQUIRE_NOTHROW( throw CustomException( "unexpected custom exception" ) )
 due to unexpected exception with message:
   unexpected custom exception
-ExceptionTests.cpp:109:
+ExceptionTests.cpp:117:
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/custom/throw
@@ -1094,7 +1104,7 @@ FAILED:
   REQUIRE_THROWS_AS( throw CustomException( "custom exception - not std" ) )
 due to unexpected exception with message:
   custom exception - not std
-ExceptionTests.cpp:114:
+ExceptionTests.cpp:122:
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/custom/double
@@ -1103,7 +1113,7 @@ ExceptionTests.cpp:114:
 FAILED:
 due to unexpected exception with message:
   3.14
-ExceptionTests.cpp:118:
+ExceptionTests.cpp:126:
 
 -------------------------------------------------------------------------------
 ./succeeding/exceptions/notimplemented
@@ -1111,7 +1121,7 @@ ExceptionTests.cpp:118:
 
 PASSED:
   REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) )
-ExceptionTests.cpp:129:
+ExceptionTests.cpp:137:
 
 -------------------------------------------------------------------------------
 ./succeeding/generators/1
@@ -2883,6 +2893,11 @@ with message:
   Tests failed, as expected
 catch_self_test.hpp:114:
 
+PASSED:
+with message:
+  Tests failed, as expected
+catch_self_test.hpp:114:
+
 -------------------------------------------------------------------------------
 selftest/main
   selftest/expected result
@@ -3158,9 +3173,9 @@ with expansion:
 TestMain.cpp:47:
 
 PASSED:
-  CHECK( totals.assertions.failed == 72 )
+  CHECK( totals.assertions.failed == 73 )
 with expansion:
-  72 == 72
+  73 == 73
 TestMain.cpp:48:
 
 -------------------------------------------------------------------------------
@@ -4261,7 +4276,7 @@ with expansion:
 BDDTests.cpp:29:
 
 ===============================================================================
-98 test cases - 46 failed (614 assertions - 103 failed)
+99 test cases - 47 failed (616 assertions - 104 failed)
 
 
 CatchSelfTest is a CATCH v0.9 b18 (integration) host application.
@@ -4543,7 +4558,7 @@ ConditionTests.cpp:72:
 12 test cases - 3 failed (38 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="8" failures="77" tests="614" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="77" tests="616" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -4737,25 +4752,30 @@ ExceptionTests.cpp:52
 ExceptionTests.cpp:60
       </error>
     </testcase>
+    <testcase classname="global" name="./failing/exceptions/implicit/3" time="tbd">
+      <error type="TEST_CASE">
+ExceptionTests.cpp:66
+      </error>
+    </testcase>
     <testcase classname="global" name="./succeeding/exceptions/implicit" time="tbd"/>
     <testcase classname="global" name="./failing/exceptions/custom" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:102
+ExceptionTests.cpp:110
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/nothrow" time="tbd">
       <error message="throw CustomException( &quot;unexpected custom exception&quot; )" type="REQUIRE_NOTHROW">
-ExceptionTests.cpp:109
+ExceptionTests.cpp:117
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/throw" time="tbd">
       <error message="throw CustomException( &quot;custom exception - not std&quot; )" type="REQUIRE_THROWS_AS">
-ExceptionTests.cpp:114
+ExceptionTests.cpp:122
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/double" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:118
+ExceptionTests.cpp:126
       </error>
     </testcase>
     <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="tbd"/>
@@ -6381,51 +6401,60 @@ ExceptionTests.cpp" line="60">
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="./failing/exceptions/implicit/3">
+      <Section name="section name">
+ExceptionTests.cpp" line="66">
+          unexpected exception
+        </Exception>
+        <OverallResults successes="0" failures="1"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="./succeeding/exceptions/implicit">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom">
-ExceptionTests.cpp" line="102">
+ExceptionTests.cpp" line="110">
         custom exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/nothrow">
-ExceptionTests.cpp" line="109">
+ExceptionTests.cpp" line="117">
         <Original>
           throw CustomException( &quot;unexpected custom exception&quot; )
         </Original>
         <Expanded>
           throw CustomException( &quot;unexpected custom exception&quot; )
         </Expanded>
-ExceptionTests.cpp" line="109">
+ExceptionTests.cpp" line="117">
           unexpected custom exception
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/throw">
-ExceptionTests.cpp" line="114">
+ExceptionTests.cpp" line="122">
         <Original>
           throw CustomException( &quot;custom exception - not std&quot; )
         </Original>
         <Expanded>
           throw CustomException( &quot;custom exception - not std&quot; )
         </Expanded>
-ExceptionTests.cpp" line="114">
+ExceptionTests.cpp" line="122">
           custom exception - not std
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/double">
-ExceptionTests.cpp" line="118">
+ExceptionTests.cpp" line="126">
         3.14
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/exceptions/notimplemented">
-ExceptionTests.cpp" line="129">
+ExceptionTests.cpp" line="137">
         <Original>
           thisFunctionNotImplemented( 7 )
         </Original>
@@ -8339,9 +8368,9 @@ MiscTests.cpp" line="273">
     <TestCase name="selftest/main">
       <Section name="selftest/expected result" description="Tests do what they claim">
         <Section name="selftest/expected result/failing tests" description="Tests in the 'failing' branch fail">
-          <OverallResults successes="25" failures="0"/>
+          <OverallResults successes="26" failures="0"/>
         </Section>
-        <OverallResults successes="25" failures="0"/>
+        <OverallResults successes="26" failures="0"/>
       </Section>
       <Section name="selftest/expected result" description="Tests do what they claim">
         <Section name="selftest/expected result/succeeding tests" description="Tests in the 'succeeding' branch succeed">
@@ -8386,10 +8415,10 @@ TestMain.cpp" line="47">
           </Expression>
 TestMain.cpp" line="48">
             <Original>
-              totals.assertions.failed == 72
+              totals.assertions.failed == 73
             </Original>
             <Expanded>
-              72 == 72
+              73 == 73
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0"/>
@@ -9792,9 +9821,9 @@ BDDTests.cpp" line="29">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="511" failures="103"/>
+    <OverallResults successes="512" failures="104"/>
   </Group>
-  <OverallResults successes="511" failures="103"/>
+  <OverallResults successes="512" failures="104"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -10045,6 +10074,14 @@ ExceptionTests.cpp:60: 1 == 1 succeeded
 ExceptionTests.cpp:60: {Unknown expression after the reported line} failed with unexpected exception with message: 'unexpected exception'
 [Finished: './failing/exceptions/implicit/2' 1 test case failed (1 of 2 assertions failed)]
 
+[Running: ./failing/exceptions/implicit/3]
+
+[Started section: 'section name']
+ExceptionTests.cpp:66: Unexpected exception with message: 'unexpected exception'
+[End of section: 'section name' 1 assertion failed]
+
+[Finished: './failing/exceptions/implicit/3' 1 test case failed (1 assertion failed)]
+
 [Running: ./succeeding/exceptions/implicit]
 
 No assertions in test case, './succeeding/exceptions/implicit'
@@ -10052,23 +10089,23 @@ No assertions in test case, './succeeding/exceptions/implicit'
 [Finished: './succeeding/exceptions/implicit' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom]
-ExceptionTests.cpp:102: Unexpected exception with message: 'custom exception'
+ExceptionTests.cpp:110: Unexpected exception with message: 'custom exception'
 [Finished: './failing/exceptions/custom' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/nothrow]
-ExceptionTests.cpp:109: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
+ExceptionTests.cpp:117: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
 [Finished: './failing/exceptions/custom/nothrow' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/throw]
-ExceptionTests.cpp:114: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
+ExceptionTests.cpp:122: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
 [Finished: './failing/exceptions/custom/throw' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/double]
-ExceptionTests.cpp:118: Unexpected exception with message: '3.14'
+ExceptionTests.cpp:126: Unexpected exception with message: '3.14'
 [Finished: './failing/exceptions/custom/double' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/exceptions/notimplemented]
-ExceptionTests.cpp:129: thisFunctionNotImplemented( 7 ) succeeded
+ExceptionTests.cpp:137: thisFunctionNotImplemented( 7 ) succeeded
 [Finished: './succeeding/exceptions/notimplemented' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/generators/1]
@@ -10251,7 +10288,6 @@ MessageTests.cpp:51: failed with message: 'This is a failure'
 [Finished: './failing/message/fail' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/message/sections]
-
 [Started section: 'one']
 MessageTests.cpp:58: failed with message: 'Message from section one'
 [End of section: 'one' 1 assertion failed]
@@ -10597,9 +10633,11 @@ catch_self_test.hpp:114:  succeeded
 [with message: Tests failed, as expected]
 catch_self_test.hpp:114:  succeeded
 [with message: Tests failed, as expected]
-[End of section: 'selftest/expected result/failing tests' All 25 assertions passed]
+catch_self_test.hpp:114:  succeeded
+[with message: Tests failed, as expected]
+[End of section: 'selftest/expected result/failing tests' All 26 assertions passed]
 
-[End of section: 'selftest/expected result' All 25 assertions passed]
+[End of section: 'selftest/expected result' All 26 assertions passed]
 
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/succeeding tests']
@@ -10718,12 +10756,12 @@ TestMain.cpp:41: totals.assertions.failed == 0 succeeded for: 0 == 0
 [Started section: 'selftest/test counts']
 [Started section: 'selftest/test counts/failing tests']
 TestMain.cpp:47: totals.assertions.passed == 1 succeeded for: 1 == 1
-TestMain.cpp:48: totals.assertions.failed == 72 succeeded for: 72 == 72
+TestMain.cpp:48: totals.assertions.failed == 73 succeeded for: 73 == 73
 [End of section: 'selftest/test counts/failing tests' All 2 assertions passed]
 
 [End of section: 'selftest/test counts' All 2 assertions passed]
 
-[Finished: 'selftest/main' All tests passed (75 assertions in 1 test case)]
+[Finished: 'selftest/main' All tests passed (76 assertions in 1 test case)]
 
 [Running: meta/Misc/Sections]
 TestMain.cpp:57: totals.assertions.passed == 2 succeeded for: 2 == 2
@@ -11136,10 +11174,10 @@ BDDTests.cpp:29: itDoesThis() succeeded for: true
 [End of section: ' Given: This stuff exists' 1 assertion passed]
 
 [Finished: 'Scenario: Do that thing with the thing' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 46 of 98 test cases failed (103 of 614 assertions failed)]
+[End of group: '~dummy'. 47 of 99 test cases failed (104 of 616 assertions failed)]
 
 
-[Testing completed. 46 of 98 test cases failed (103 of 614 assertions failed)]
+[Testing completed. 47 of 99 test cases failed (104 of 616 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
