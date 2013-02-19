@@ -243,11 +243,11 @@ TEST_CASE("./failing/matchers/Equals", "")
 //{
 //    REQUIRE_THAT("", Equals(NULL));
 //}
-TEST_CASE("/succeeding/matchers/AllOf", "")
+TEST_CASE("./succeeding/matchers/AllOf", "")
 {
     CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) );
 }
-TEST_CASE("/succeeding/matchers/AnyOf", "")
+TEST_CASE("./succeeding/matchers/AnyOf", "")
 {
     CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) );
     CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) );
