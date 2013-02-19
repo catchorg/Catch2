@@ -1,5 +1,5 @@
 
-CatchSelfTest is a CATCH v0.9 b17 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b18 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -2647,7 +2647,7 @@ with expansion:
 MiscTests.cpp:240:
 
 -------------------------------------------------------------------------------
-/succeeding/matchers/AllOf
+./succeeding/matchers/AllOf
 ...............................................................................
 
 PASSED:
@@ -2658,7 +2658,7 @@ with expansion:
 MiscTests.cpp:248:
 
 -------------------------------------------------------------------------------
-/succeeding/matchers/AnyOf
+./succeeding/matchers/AnyOf
 ...............................................................................
 
 PASSED:
@@ -3113,6 +3113,16 @@ with message:
   Tests passed, as expected
 catch_self_test.hpp:103:
 
+PASSED:
+with message:
+  Tests passed, as expected
+catch_self_test.hpp:103:
+
+PASSED:
+with message:
+  Tests passed, as expected
+catch_self_test.hpp:103:
+
 Message from section one
 Message from section two
 Some information
@@ -3123,10 +3133,10 @@ selftest/main
   selftest/test counts/succeeding tests
 ...............................................................................
 
-FAILED:
-  CHECK( totals.assertions.passed == 291 )
+PASSED:
+  CHECK( totals.assertions.passed == 296 )
 with expansion:
-  293 == 291
+  296 == 296
 TestMain.cpp:40:
 
 PASSED:
@@ -4251,10 +4261,10 @@ with expansion:
 BDDTests.cpp:29:
 
 ===============================================================================
-98 test cases - 47 failed (612 assertions - 104 failed)
+98 test cases - 46 failed (614 assertions - 103 failed)
 
 
-CatchSelfTest is a CATCH v0.9 b17 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b18 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4533,7 +4543,7 @@ ConditionTests.cpp:72:
 12 test cases - 3 failed (38 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="8" failures="78" tests="612" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="8" failures="77" tests="614" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -4898,8 +4908,8 @@ MiscTests.cpp:235
 MiscTests.cpp:240
       </failure>
     </testcase>
-    <testcase classname="global" name="/succeeding/matchers/AllOf" time="tbd"/>
-    <testcase classname="global" name="/succeeding/matchers/AnyOf" time="tbd"/>
+    <testcase classname="global" name="./succeeding/matchers/AllOf" time="tbd"/>
+    <testcase classname="global" name="./succeeding/matchers/AnyOf" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers/Equals" time="tbd"/>
     <testcase classname="global" name="example/factorial" time="tbd"/>
     <testcase classname="global" name="empty" time="tbd"/>
@@ -4911,9 +4921,6 @@ MiscTests.cpp:282
     <testcase classname="global" name="first tag" time="tbd"/>
     <testcase classname="global" name="second tag" time="tbd"/>
     <testcase classname="global" name="selftest/main" time="tbd">
-      <failure message="293 == 291" type="CHECK">
-TestMain.cpp:40
-      </failure>
       <system-out>
 Message from section one
 Message from section two
@@ -8230,7 +8237,7 @@ MiscTests.cpp" line="240">
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="/succeeding/matchers/AllOf">
+    <TestCase name="./succeeding/matchers/AllOf">
 MiscTests.cpp" line="248">
         <Original>
           testStringForMatching() AllOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;abc&quot; ) )
@@ -8241,7 +8248,7 @@ MiscTests.cpp" line="248">
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="/succeeding/matchers/AnyOf">
+    <TestCase name="./succeeding/matchers/AnyOf">
 MiscTests.cpp" line="252">
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;not there&quot; ) )
@@ -8338,9 +8345,9 @@ MiscTests.cpp" line="273">
       </Section>
       <Section name="selftest/expected result" description="Tests do what they claim">
         <Section name="selftest/expected result/succeeding tests" description="Tests in the 'succeeding' branch succeed">
-          <OverallResults successes="44" failures="0"/>
+          <OverallResults successes="46" failures="0"/>
         </Section>
-        <OverallResults successes="44" failures="0"/>
+        <OverallResults successes="46" failures="0"/>
       </Section>
       <Section name="selftest/expected result" description="Tests do what they claim">
         <OverallResults successes="0" failures="0"/>
@@ -8349,10 +8356,10 @@ MiscTests.cpp" line="273">
         <Section name="selftest/test counts/succeeding tests" description="Number of 'succeeding' tests is fixed">
 TestMain.cpp" line="40">
             <Original>
-              totals.assertions.passed == 291
+              totals.assertions.passed == 296
             </Original>
             <Expanded>
-              293 == 291
+              296 == 296
             </Expanded>
           </Expression>
 TestMain.cpp" line="41">
@@ -8363,9 +8370,9 @@ TestMain.cpp" line="41">
               0 == 0
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="1"/>
+          <OverallResults successes="2" failures="0"/>
         </Section>
-        <OverallResults successes="1" failures="1"/>
+        <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="selftest/test counts" description="Number of test cases that run is fixed">
         <Section name="selftest/test counts/failing tests" description="Number of 'failing' tests is fixed">
@@ -8389,7 +8396,7 @@ TestMain.cpp" line="48">
         </Section>
         <OverallResults successes="2" failures="0"/>
       </Section>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="meta/Misc/Sections">
 TestMain.cpp" line="57">
@@ -9785,9 +9792,9 @@ BDDTests.cpp" line="29">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="508" failures="104"/>
+    <OverallResults successes="511" failures="103"/>
   </Group>
-  <OverallResults successes="508" failures="104"/>
+  <OverallResults successes="511" failures="103"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -10487,17 +10494,17 @@ MiscTests.cpp:240: testStringForMatching() Equals( "something else" ) failed for
 	"this string contains 'abc' as a substring" equals: "something else"
 [Finished: './failing/matchers/Equals' 1 test case failed (1 assertion failed)]
 
-[Running: /succeeding/matchers/AllOf]
+[Running: ./succeeding/matchers/AllOf]
 MiscTests.cpp:248: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
-[Finished: '/succeeding/matchers/AllOf' All tests passed (1 assertion in 1 test case)]
+[Finished: './succeeding/matchers/AllOf' All tests passed (1 assertion in 1 test case)]
 
-[Running: /succeeding/matchers/AnyOf]
+[Running: ./succeeding/matchers/AnyOf]
 MiscTests.cpp:252: testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
 MiscTests.cpp:253: testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
-[Finished: '/succeeding/matchers/AnyOf' All tests passed (2 assertions in 1 test case)]
+[Finished: './succeeding/matchers/AnyOf' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./succeeding/matchers/Equals]
 MiscTests.cpp:258: testStringForMatching() Equals( "this string contains 'abc' as a substring" ) succeeded for:
@@ -10688,9 +10695,13 @@ catch_self_test.hpp:103:  succeeded
 [with message: Tests passed, as expected]
 catch_self_test.hpp:103:  succeeded
 [with message: Tests passed, as expected]
-[End of section: 'selftest/expected result/succeeding tests' All 44 assertions passed]
+catch_self_test.hpp:103:  succeeded
+[with message: Tests passed, as expected]
+catch_self_test.hpp:103:  succeeded
+[with message: Tests passed, as expected]
+[End of section: 'selftest/expected result/succeeding tests' All 46 assertions passed]
 
-[End of section: 'selftest/expected result' All 44 assertions passed]
+[End of section: 'selftest/expected result' All 46 assertions passed]
 
 Message from section one
 Message from section two
@@ -10698,11 +10709,11 @@ Some information
 An error
 [Started section: 'selftest/test counts']
 [Started section: 'selftest/test counts/succeeding tests']
-TestMain.cpp:40: totals.assertions.passed == 291 failed for: 293 == 291
+TestMain.cpp:40: totals.assertions.passed == 296 succeeded for: 296 == 296
 TestMain.cpp:41: totals.assertions.failed == 0 succeeded for: 0 == 0
-[End of section: 'selftest/test counts/succeeding tests' 1 of 2 assertions failed]
+[End of section: 'selftest/test counts/succeeding tests' All 2 assertions passed]
 
-[End of section: 'selftest/test counts' 1 of 2 assertions failed]
+[End of section: 'selftest/test counts' All 2 assertions passed]
 
 [Started section: 'selftest/test counts']
 [Started section: 'selftest/test counts/failing tests']
@@ -10712,7 +10723,7 @@ TestMain.cpp:48: totals.assertions.failed == 72 succeeded for: 72 == 72
 
 [End of section: 'selftest/test counts' All 2 assertions passed]
 
-[Finished: 'selftest/main' 1 test case failed (1 of 73 assertions failed)]
+[Finished: 'selftest/main' All tests passed (75 assertions in 1 test case)]
 
 [Running: meta/Misc/Sections]
 TestMain.cpp:57: totals.assertions.passed == 2 succeeded for: 2 == 2
@@ -11125,10 +11136,10 @@ BDDTests.cpp:29: itDoesThis() succeeded for: true
 [End of section: ' Given: This stuff exists' 1 assertion passed]
 
 [Finished: 'Scenario: Do that thing with the thing' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 47 of 98 test cases failed (104 of 612 assertions failed)]
+[End of group: '~dummy'. 46 of 98 test cases failed (103 of 614 assertions failed)]
 
 
-[Testing completed. 47 of 98 test cases failed (104 of 612 assertions failed)]
+[Testing completed. 46 of 98 test cases failed (103 of 614 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
