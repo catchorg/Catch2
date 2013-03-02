@@ -35,8 +35,10 @@ namespace Catch {
         void set( Colours colour );
         ~TextColour();
         
+#if !defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES ) && defined ( CATCH_PLATFORM_WINDOWS )
     private:
         ConsoleColourImpl* m_impl;
+#endif
     };
     
 } // end namespace Catch
