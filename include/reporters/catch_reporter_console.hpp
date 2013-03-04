@@ -279,7 +279,7 @@ namespace Catch {
             if( !currentSectionInfo ) {
                 printHeader( unusedTestCaseInfo->name );
                 stream << std::endl;
-                unusedTestCaseInfo.reset();
+//                unusedTestCaseInfo.reset();
             }
         }
         void lazyPrintSectionInfo() {
