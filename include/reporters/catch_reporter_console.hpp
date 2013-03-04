@@ -174,13 +174,18 @@ namespace Catch {
             }
             
             void print() const {
+                printSourceInfo();
                 if( stats.totals.assertions.total() > 0 ) {
+                    if( result.isOk() )
+                        stream << "\n";
                     printResultType();
                     printOriginalExpression();
                     printReconstructedExpression();
                 }
+                else {
+                    stream << "\n";
+                }
                 printMessage();
-                printSourceInfo();
             }
             
         private:
@@ -222,7 +227,7 @@ namespace Catch {
             }
             void printSourceInfo() const {
                 TextColour colourGuard( TextColour::FileName );
-                stream << result.getSourceInfo() << ":\n";
+                stream << result.getSourceInfo() << ": ";
             }
             
             static std::string wrapLongStrings( std::string const& _string ){

@@ -101,3 +101,12 @@ TEST_CASE
     REQUIRE( approx( d ) != 1.25 );
 }
 
+inline double divide( double a, double b ) {
+    return a/b;
+}
+
+TEST_CASE( "Approximate PI", "[Approx][PI]" )
+{
+    REQUIRE( divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) );
+    REQUIRE( divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) );
+}

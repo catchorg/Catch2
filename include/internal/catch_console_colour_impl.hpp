@@ -10,6 +10,10 @@
 
 #include "catch_console_colour.hpp"
 
+#if !defined(CATCH_CONFIG_USE_ANSI_COLOUR_CODES) && !defined(CATCH_PLATFORM_WINDOWS)
+#define CATCH_CONFIG_USE_ANSI_COLOUR_CODES 1
+#endif
+
 #if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
 
 #include <unistd.h>
@@ -31,8 +35,15 @@ namespace Catch {
 
     namespace { const char colourEscape = '\033'; }
 
+    inline bool shouldUseColour() {
+        static bool s_shouldUseColour
+            =   CATCH_CONFIG_USE_ANSI_COLOUR_CODES != 0 &&
+                isatty( fileno(stdout) ) &&
+                !isDebuggerActive();
+        return s_shouldUseColour;
+    }
     void TextColour::set( Colours colour ) {
-        if( isatty( fileno(stdout) ) && !isDebuggerActive() ) {
+        if( shouldUseColour() ) {
             switch( colour ) {
                 case TextColour::FileName:
                     std::cout << colourEscape << "[0m";    // white/ normal

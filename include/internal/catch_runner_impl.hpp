@@ -216,7 +216,7 @@ namespace Catch {
                 missingAssertions = true;
 
             }
-            m_runningTest->endSection( info.name );
+            m_runningTest->endSection( info.name, false );
 
             m_reporter->sectionEnded( SectionStats( info, assertions, missingAssertions ) );
             m_messages.clear();

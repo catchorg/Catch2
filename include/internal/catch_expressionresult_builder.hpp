@@ -82,12 +82,10 @@ namespace Catch {
         else if( m_exprComponents.op == "matches" )
             return m_exprComponents.lhs + " " + m_exprComponents.rhs;
         else if( m_exprComponents.op != "!" ) {
-            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 30 )
+            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 40 )
                 return m_exprComponents.lhs + " " + m_exprComponents.op + " " + m_exprComponents.rhs;
-            else if( m_exprComponents.lhs.size() < 70 && m_exprComponents.rhs.size() < 70 )
-                return "\n\t" + m_exprComponents.lhs + "\n\t" + m_exprComponents.op + "\n\t" + m_exprComponents.rhs;
             else
-                return "\n" + m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs + "\n\n";
+                return m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs;
         }
         else
             return "{can't expand - use " + info.macroName + "_FALSE( " + info.capturedExpression.substr(1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";

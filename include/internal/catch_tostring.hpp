@@ -10,6 +10,8 @@
 
 #include "catch_common.h"
 #include <sstream>
+#include <iomanip>
+#include <limits>
 
 #ifdef __OBJC__
 #include "catch_objc_arc.hpp"
@@ -22,37 +24,53 @@ namespace Detail {
         template<typename T> NonStreamable( const T& ){}
     };
     
-    // If the type does not have its own << overload for ostream then
-    // this one will be used instead
-    inline std::ostream& operator << ( std::ostream& ss, NonStreamable ){
-        return ss << "{?}";
-    }
-    
-    template<typename T>
-    inline std::string makeString( const T& value ) {
+} // end namespace Detail
+
+// If the type does not have its own << overload for ostream then
+// this one will be used instead
+inline std::ostream& operator << ( std::ostream& ss, Detail::NonStreamable ){
+    return ss << "{?}";
+}
+
+template<typename T>
+struct StringMaker {
+    static std::string convert( T const& value ) {
         std::ostringstream oss;
         oss << value;
         return oss.str();
-    }    
-
-    template<typename T>
-    inline std::string makeString( T* p ) {
+    }
+};
+template<typename T>
+struct StringMaker<T*> {
+    static std::string convert( T const* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
         oss << p;
         return oss.str();
-    }    
+    }
+};
 
-    template<typename T>
-    inline std::string makeString( const T* p ) {
-        if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+template<typename T>
+struct StringMaker<std::vector<T> > {
+    static std::string convert( std::vector<T> const& v ) {
         std::ostringstream oss;
-        oss << p;
+        oss << "{ ";
+        for( std::size_t i = 0; i < v.size(); ++ i ) {
+            oss << v[i];
+            if( i < v.size() - 1 )
+                oss << ", ";
+        }
+        oss << " }";
         return oss.str();
-    }    
+    }
+};
 
+namespace Detail {
+    template<typename T>
+    inline std::string makeString( const T& value ) {
+        return StringMaker<T>::convert( value );
+    }   
 } // end namespace Detail
 
 /// \brief converts any type to a string
@@ -64,7 +82,8 @@ namespace Detail {
 /// to provide an ostream overload for.
 template<typename T>
 std::string toString( const T& value ) {
-    return Detail::makeString( value );
+    return StringMaker<T>::convert( value );
+//    return Detail::makeString( value );
 }
     
 // Built in overloads
@@ -111,7 +130,8 @@ inline std::string toString( unsigned int value ) {
     
 inline std::string toString( const double value ) {
     std::ostringstream oss;
-    oss << value;
+    oss << std::setprecision (std::numeric_limits<double>::digits10 + 1)
+        << value;
     return oss.str();
 }    
 

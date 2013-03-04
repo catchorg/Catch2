@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 20 (integration branch)
- *  Generated: 2013-02-19 19:57:51.967870
+ *  CATCH v0.9 build 21 (integration branch)
+ *  Generated: 2013-03-04 12:17:59.865403
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -440,6 +440,8 @@ private:
 #define TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
 
 #include <sstream>
+#include <iomanip>
+#include <limits>
 
 #ifdef __OBJC__
 // #included from: catch_objc_arc.hpp
@@ -494,37 +496,53 @@ namespace Detail {
         template<typename T> NonStreamable( const T& ){}
     };
 
-    // If the type does not have its own << overload for ostream then
-    // this one will be used instead
-    inline std::ostream& operator << ( std::ostream& ss, NonStreamable ){
-        return ss << "{?}";
-    }
+} // end namespace Detail
 
-    template<typename T>
-    inline std::string makeString( const T& value ) {
+// If the type does not have its own << overload for ostream then
+// this one will be used instead
+inline std::ostream& operator << ( std::ostream& ss, Detail::NonStreamable ){
+    return ss << "{?}";
+}
+
+template<typename T>
+struct StringMaker {
+    static std::string convert( T const& value ) {
         std::ostringstream oss;
         oss << value;
         return oss.str();
     }
-
-    template<typename T>
-    inline std::string makeString( T* p ) {
+};
+template<typename T>
+struct StringMaker<T*> {
+    static std::string convert( T const* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
         oss << p;
         return oss.str();
     }
+};
 
-    template<typename T>
-    inline std::string makeString( const T* p ) {
-        if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+template<typename T>
+struct StringMaker<std::vector<T> > {
+    static std::string convert( std::vector<T> const& v ) {
         std::ostringstream oss;
-        oss << p;
+        oss << "{ ";
+        for( std::size_t i = 0; i < v.size(); ++ i ) {
+            oss << v[i];
+            if( i < v.size() - 1 )
+                oss << ", ";
+        }
+        oss << " }";
         return oss.str();
     }
+};
 
+namespace Detail {
+    template<typename T>
+    inline std::string makeString( const T& value ) {
+        return StringMaker<T>::convert( value );
+    }
 } // end namespace Detail
 
 /// \brief converts any type to a string
@@ -536,7 +554,8 @@ namespace Detail {
 /// to provide an ostream overload for.
 template<typename T>
 std::string toString( const T& value ) {
-    return Detail::makeString( value );
+    return StringMaker<T>::convert( value );
+//    return Detail::makeString( value );
 }
 
 // Built in overloads
@@ -583,7 +602,8 @@ inline std::string toString( unsigned int value ) {
 
 inline std::string toString( const double value ) {
     std::ostringstream oss;
-    oss << value;
+    oss << std::setprecision (std::numeric_limits<double>::digits10 + 1)
+        << value;
     return oss.str();
 }
 
@@ -4318,13 +4338,15 @@ namespace Catch {
             return false;
         }
 
-        void endSection( const std::string& ) {
+        void endSection( const std::string&, bool stealth ) {
             if( m_currentSection->ran() ) {
-                m_runStatus = RanAtLeastOneSection;
+                if( !stealth )
+                    m_runStatus = RanAtLeastOneSection;
                 m_changed = true;
             }
             else if( m_runStatus == EncounteredASection ) {
-                m_runStatus = RanAtLeastOneSection;
+                if( !stealth )
+                    m_runStatus = RanAtLeastOneSection;
                 m_lastSectionToRun = m_currentSection;
             }
             m_currentSection = m_currentSection->getParent();
@@ -4544,7 +4566,7 @@ namespace Catch {
                 missingAssertions = true;
 
             }
-            m_runningTest->endSection( info.name );
+            m_runningTest->endSection( info.name, false );
 
             m_reporter->sectionEnded( SectionStats( info, assertions, missingAssertions ) );
             m_messages.clear();
@@ -5352,6 +5374,10 @@ namespace Catch {
 
 } // end namespace Catch
 
+#if !defined(CATCH_CONFIG_USE_ANSI_COLOUR_CODES) && !defined(CATCH_PLATFORM_WINDOWS)
+#define CATCH_CONFIG_USE_ANSI_COLOUR_CODES 1
+#endif
+
 #if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
 
 #include <unistd.h>
@@ -5373,8 +5399,15 @@ namespace Catch {
 
     namespace { const char colourEscape = '\033'; }
 
+    inline bool shouldUseColour() {
+        static bool s_shouldUseColour
+            =   CATCH_CONFIG_USE_ANSI_COLOUR_CODES != 0 &&
+                isatty( fileno(stdout) ) &&
+                !isDebuggerActive();
+        return s_shouldUseColour;
+    }
     void TextColour::set( Colours colour ) {
-        if( isatty( fileno(stdout) ) && !isDebuggerActive() ) {
+        if( shouldUseColour() ) {
             switch( colour ) {
                 case TextColour::FileName:
                     std::cout << colourEscape << "[0m";    // white/ normal
@@ -5711,12 +5744,10 @@ namespace Catch {
         else if( m_exprComponents.op == "matches" )
             return m_exprComponents.lhs + " " + m_exprComponents.rhs;
         else if( m_exprComponents.op != "!" ) {
-            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 30 )
+            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 40 )
                 return m_exprComponents.lhs + " " + m_exprComponents.op + " " + m_exprComponents.rhs;
-            else if( m_exprComponents.lhs.size() < 70 && m_exprComponents.rhs.size() < 70 )
-                return "\n\t" + m_exprComponents.lhs + "\n\t" + m_exprComponents.op + "\n\t" + m_exprComponents.rhs;
             else
-                return "\n" + m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs + "\n\n";
+                return m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs;
         }
         else
             return "{can't expand - use " + info.macroName + "_FALSE( " + info.capturedExpression.substr(1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";
@@ -5838,7 +5869,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 20, "integration" );
+    Version libraryVersion( 0, 9, 21, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -7083,13 +7114,18 @@ namespace Catch {
             }
 
             void print() const {
+                printSourceInfo();
                 if( stats.totals.assertions.total() > 0 ) {
+                    if( result.isOk() )
+                        stream << "\n";
                     printResultType();
                     printOriginalExpression();
                     printReconstructedExpression();
                 }
+                else {
+                    stream << "\n";
+                }
                 printMessage();
-                printSourceInfo();
             }
 
         private:
@@ -7131,7 +7167,7 @@ namespace Catch {
             }
             void printSourceInfo() const {
                 TextColour colourGuard( TextColour::FileName );
-                stream << result.getSourceInfo() << ":\n";
+                stream << result.getSourceInfo() << ": ";
             }
 
             static std::string wrapLongStrings( std::string const& _string ){

@@ -78,13 +78,15 @@ namespace Catch {
             return false;
         }
         
-        void endSection( const std::string& ) {
+        void endSection( const std::string&, bool stealth ) {
             if( m_currentSection->ran() ) {
-                m_runStatus = RanAtLeastOneSection;
+                if( !stealth )
+                    m_runStatus = RanAtLeastOneSection;
                 m_changed = true;
             }
             else if( m_runStatus == EncounteredASection ) {
-                m_runStatus = RanAtLeastOneSection;
+                if( !stealth )
+                    m_runStatus = RanAtLeastOneSection;
                 m_lastSectionToRun = m_currentSection;
             }
             m_currentSection = m_currentSection->getParent();
