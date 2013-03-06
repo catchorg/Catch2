@@ -17,7 +17,7 @@ namespace Catch {
     struct ConsoleReporter : StreamingReporterBase {
         ConsoleReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
-            m_printedCurrentSection( false ),
+            m_headerPrinted( false ),
             m_atLeastOneTestCasePrinted( false )
         {}
 
@@ -50,7 +50,7 @@ namespace Catch {
         }
 
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
-            m_printedCurrentSection = false;
+            m_headerPrinted = false;
             StreamingReporterBase::sectionStarting( _sectionInfo );
         }
         virtual void sectionEnded( SectionStats const& _sectionStats ) {
@@ -59,7 +59,7 @@ namespace Catch {
                 TextColour colour( TextColour::ResultError );
                 stream << "\nNo assertions in section, '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
-            m_printedCurrentSection = false;
+            m_headerPrinted = false;
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
@@ -71,6 +71,7 @@ namespace Catch {
                 stream << "\nNo assertions in test case, '" << _testCaseStats.testInfo.name << "'\n" << std::endl;
             }
             StreamingReporterBase::testCaseEnded( _testCaseStats );
+            m_headerPrinted = false;
         }
         virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) {
             if( !unusedGroupInfo ) {
@@ -250,11 +251,11 @@ namespace Catch {
                 lazyPrintRunInfo();
             if( unusedGroupInfo )
                 lazyPrintGroupInfo();
-            if( unusedTestCaseInfo )
-                lazyPrintTestCaseInfo();
-            if( currentSectionInfo && !m_printedCurrentSection )
-                lazyPrintSectionInfo();
             
+            if( !m_headerPrinted ) {
+                printTestCaseAndSectionHeader();
+                m_headerPrinted = true;
+            }
             m_atLeastOneTestCasePrinted = true;
         }
         void lazyPrintRunInfo() {
@@ -271,42 +272,42 @@ namespace Catch {
         }
         void lazyPrintGroupInfo() {
             if( !unusedGroupInfo->name.empty() && unusedGroupInfo->groupsCounts > 1 ) {
-                printHeader( "Group: " + unusedGroupInfo->name );
+                printClosedHeader( "Group: " + unusedGroupInfo->name );
                 unusedGroupInfo.reset();
             }
         }
         void lazyPrintTestCaseInfo() {
             if( !currentSectionInfo ) {
-                printHeader( unusedTestCaseInfo->name );
+                printClosedHeader( unusedTestCaseInfo->name );
                 stream << std::endl;
-//                unusedTestCaseInfo.reset();
             }
         }
-        void lazyPrintSectionInfo() {
-            
-            std::vector<ThreadedSectionInfo*> sections;
-            for(    ThreadedSectionInfo* section = currentSectionInfo.get();
-                    section;
-                    section = section->parent )
-                sections.push_back( section );
-            
-            // Sections
-            if( !sections.empty() ) {
-                printHeader( unusedTestCaseInfo->name, false );
+        void printTestCaseAndSectionHeader() {
+            printOpenHeader( unusedTestCaseInfo->name );
+            if( currentSectionInfo ) {
+                std::vector<ThreadedSectionInfo*> sections;
+                for(    ThreadedSectionInfo* section = currentSectionInfo.get();
+                        section;
+                        section = section->parent )
+                    sections.push_back( section );
                 
-                typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
-                for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
-                    stream << "  " << (*it)->name << "\n";
-                stream << getDots() << "\n" << std::endl;
+                // Sections
+                if( !sections.empty() ) {                    
+                    typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
+                    for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
+                        stream << "  " << (*it)->name << "\n";
+                }
             }
-            m_printedCurrentSection = true;
+            stream << getDots() << "\n" << std::endl;
         }
 
-        void printHeader( std::string const& _name, bool closed = true ) {
+        void printClosedHeader( std::string const& _name ) {
+            printOpenHeader( _name );
+            stream << getDots() << "\n";
+        }
+        void printOpenHeader( std::string const& _name ) {
             stream  << getDashes() << "\n"
                     << _name << "\n";
-            if( closed )
-                stream << getDots() << "\n";
         }
         
         void printTotals( const Totals& totals ) {
@@ -376,7 +377,7 @@ namespace Catch {
         }
         
     private:
-        bool m_printedCurrentSection;
+        bool m_headerPrinted;
         bool m_atLeastOneTestCasePrinted;
     };
 

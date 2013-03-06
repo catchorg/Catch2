@@ -314,3 +314,62 @@ TEST_CASE( "./succeeding/SafeBool", "Objects that evaluated in boolean contexts 
     CHECK( !False );
     CHECK_FALSE( False );
 }
+
+TEST_CASE( "Assertions then sections", "" )
+{
+    // This was causing a failure due to the way the console reporter was handling
+    // the current section
+    
+    REQUIRE( Catch::isTrue( true ) );
+    
+    SECTION( "A section", "" )
+    {
+        REQUIRE( Catch::isTrue( true ) );
+        
+        SECTION( "Another section", "" )
+        {
+            REQUIRE( Catch::isTrue( true ) );
+        }
+        SECTION( "Another other section", "" )
+        {
+            REQUIRE( Catch::isTrue( true ) );
+        }
+    }
+}
+
+inline void sort( std::vector<int>& v ) {
+    std::sort( v.begin(), v.end() );
+}
+
+TEST_CASE( "sort", "" ) {
+    std::vector<int> v;
+    v.push_back( 3 );
+    v.push_back( 2 );
+    v.push_back( 4 );
+    
+    std::vector<int> sorted;
+    sorted.push_back( 2 );
+    sorted.push_back( 3 );
+    sorted.push_back( 4 );
+    
+    sort( v );
+    
+    REQUIRE( v == sorted );
+    
+    SECTION( "already sorted", "" ) {
+        sort( v );
+        
+        REQUIRE( v == sorted );
+        
+    }
+    SECTION( "reverse sorted", "" ) {
+        std::reverse( v.begin(), v.end() );
+        
+        REQUIRE( v != sorted );
+        
+        sort( v );
+        
+        REQUIRE( v == sorted );
+        
+    }
+}
