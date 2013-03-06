@@ -4256,54 +4256,6 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-sort
-...............................................................................
-
-TrickyTests.cpp:357:
-PASSED:
-  REQUIRE( v == sorted )
-with expansion:
-  { 2, 3, 4 } == { 2, 3, 4 }
-
--------------------------------------------------------------------------------
-sort
-  already sorted
-...............................................................................
-
-TrickyTests.cpp:362:
-PASSED:
-  REQUIRE( v == sorted )
-with expansion:
-  { 2, 3, 4 } == { 2, 3, 4 }
-
--------------------------------------------------------------------------------
-sort
-...............................................................................
-
-TrickyTests.cpp:357:
-PASSED:
-  REQUIRE( v == sorted )
-with expansion:
-  { 2, 3, 4 } == { 2, 3, 4 }
-
--------------------------------------------------------------------------------
-sort
-  reverse sorted
-...............................................................................
-
-TrickyTests.cpp:368:
-PASSED:
-  REQUIRE( v != sorted )
-with expansion:
-  { 4, 3, 2 } != { 2, 3, 4 }
-
-TrickyTests.cpp:372:
-PASSED:
-  REQUIRE( v == sorted )
-with expansion:
-  { 2, 3, 4 } == { 2, 3, 4 }
-
--------------------------------------------------------------------------------
 Scenario: Do that thing with the thing
   Given: This stuff exists
    When: I do this
@@ -4331,7 +4283,7 @@ with expansion:
   true
 
 ===============================================================================
-102 test cases - 47 failed (630 assertions - 104 failed)
+101 test cases - 47 failed (625 assertions - 104 failed)
 
 
 CatchSelfTest is a CATCH v0.9 b21 (integration) host application.
@@ -4625,7 +4577,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="77" tests="630" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="77" tests="625" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -5062,7 +5014,6 @@ TrickyTests.cpp:106
     <testcase classname="global" name="./succeeding/unimplemented static bool" time="tbd"/>
     <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
     <testcase classname="global" name="Assertions then sections" time="tbd"/>
-    <testcase classname="global" name="sort" time="tbd"/>
     <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
   </testsuite>
   <system-out>
@@ -9950,55 +9901,6 @@ TrickyTests.cpp" line="335">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="sort">
-TrickyTests.cpp" line="357">
-        <Original>
-          v == sorted
-        </Original>
-        <Expanded>
-          { 2, 3, 4 } == { 2, 3, 4 }
-        </Expanded>
-      </Expression>
-      <Section name="already sorted">
-TrickyTests.cpp" line="362">
-          <Original>
-            v == sorted
-          </Original>
-          <Expanded>
-            { 2, 3, 4 } == { 2, 3, 4 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-TrickyTests.cpp" line="357">
-        <Original>
-          v == sorted
-        </Original>
-        <Expanded>
-          { 2, 3, 4 } == { 2, 3, 4 }
-        </Expanded>
-      </Expression>
-      <Section name="reverse sorted">
-TrickyTests.cpp" line="368">
-          <Original>
-            v != sorted
-          </Original>
-          <Expanded>
-            { 4, 3, 2 } != { 2, 3, 4 }
-          </Expanded>
-        </Expression>
-TrickyTests.cpp" line="372">
-          <Original>
-            v == sorted
-          </Original>
-          <Expanded>
-            { 2, 3, 4 } == { 2, 3, 4 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Scenario: Do that thing with the thing">
       <Section name="Given: This stuff exists">
         <Section name=" When: I do this">
@@ -10030,9 +9932,9 @@ BDDTests.cpp" line="35">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="526" failures="104"/>
+    <OverallResults successes="521" failures="104"/>
   </Group>
-  <OverallResults successes="526" failures="104"/>
+  <OverallResults successes="521" failures="104"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -11393,20 +11295,6 @@ TrickyTests.cpp:335: Catch::isTrue( true ) succeeded for: true
 
 [Finished: 'Assertions then sections' All tests passed (6 assertions in 1 test case)]
 
-[Running: sort]
-TrickyTests.cpp:357: v == sorted succeeded for: { 2, 3, 4 } == { 2, 3, 4 }
-[Started section: 'already sorted']
-TrickyTests.cpp:362: v == sorted succeeded for: { 2, 3, 4 } == { 2, 3, 4 }
-[End of section: 'already sorted' 1 assertion passed]
-
-TrickyTests.cpp:357: v == sorted succeeded for: { 2, 3, 4 } == { 2, 3, 4 }
-[Started section: 'reverse sorted']
-TrickyTests.cpp:368: v != sorted succeeded for: { 4, 3, 2 } != { 2, 3, 4 }
-TrickyTests.cpp:372: v == sorted succeeded for: { 2, 3, 4 } == { 2, 3, 4 }
-[End of section: 'reverse sorted' All 2 assertions passed]
-
-[Finished: 'sort' All tests passed (5 assertions in 1 test case)]
-
 [Running: Scenario: Do that thing with the thing]
 [Started section: 'Given: This stuff exists']
 [Started section: ' When: I do this']
@@ -11423,10 +11311,10 @@ BDDTests.cpp:35: itDoesThat() succeeded for: true
 [End of section: 'Given: This stuff exists' All 2 assertions passed]
 
 [Finished: 'Scenario: Do that thing with the thing' All tests passed (2 assertions in 1 test case)]
-[End of group: '~dummy'. 47 of 102 test cases failed (104 of 630 assertions failed)]
+[End of group: '~dummy'. 47 of 101 test cases failed (104 of 625 assertions failed)]
 
 
-[Testing completed. 47 of 102 test cases failed (104 of 630 assertions failed)]
+[Testing completed. 47 of 101 test cases failed (104 of 625 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
