@@ -97,8 +97,8 @@
         return IsDebuggerPresent() != 0;
     }
 #else
-	   inline void BreakIntoDebugger(){}
-	   inline bool isDebuggerActive() { return false; }
+       inline void BreakIntoDebugger(){}
+       inline bool isDebuggerActive() { return false; }
 #endif
 
 #ifdef CATCH_PLATFORM_WINDOWS

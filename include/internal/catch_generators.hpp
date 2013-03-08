@@ -69,12 +69,12 @@ class CompositeGenerator {
 public:
     CompositeGenerator() : m_totalSize( 0 ) {}
     
-	// *** Move semantics, similar to auto_ptr ***
+    // *** Move semantics, similar to auto_ptr ***
     CompositeGenerator( CompositeGenerator& other ) 
     :   m_fileInfo( other.m_fileInfo ), 
         m_totalSize( 0 ) 
     {
-		move( other );
+        move( other );
     }
     
     CompositeGenerator& setFileInfo( const char* fileInfo ) {
@@ -101,7 +101,7 @@ public:
             index += generator->size();
         }
         CATCH_INTERNAL_ERROR( "Indexed past end of generated range" );
-		return T(); // Suppress spurious "not all control paths return a value" warning in Visual Studio - if you know how to fix this please do so
+        return T(); // Suppress spurious "not all control paths return a value" warning in Visual Studio - if you know how to fix this please do so
     }
     
     void add( const IGenerator<T>* generator ) {

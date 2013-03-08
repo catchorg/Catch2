@@ -32,7 +32,7 @@ namespace Catch {
         }
         
     private:
-        int	overflow( int c ) {
+        int overflow( int c ) {
             sync();
             
             if( c != EOF ) {
@@ -44,7 +44,7 @@ namespace Catch {
             return 0;
         }
         
-        int	sync() {
+        int sync() {
             if( pbase() != pptr() ) {
                 m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
                 setp( pbase(), epptr() );

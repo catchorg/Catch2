@@ -19,7 +19,7 @@ struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 // in an ExpressionResultBuilder object
 template<typename T>
 class ExpressionLhs {
-	void operator = ( const ExpressionLhs& );
+    void operator = ( const ExpressionLhs& );
 
 public:
     ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
