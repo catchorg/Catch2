@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 22 (integration branch)
- *  Generated: 2013-03-08 09:29:15.097480
+ *  CATCH v0.9 build 23 (integration branch)
+ *  Generated: 2013-03-11 18:35:52.716695
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2544,7 +2544,7 @@ inline bool isTrue( bool value ){ return value; }
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
         if( !Catch::shouldContinueOnFailure( resultDisposition ) ) throw Catch::TestFailureException(); \
-        if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
+        Catch::isTrue( false && originalExpr ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5345,11 +5345,7 @@ namespace Catch {
 
 namespace Catch {
 
-    struct ConsoleColourImpl;
-
-    class TextColour : NonCopyable {
-    public:
-
+    struct IConsoleColourCodes : NonCopyable {
         enum Colours {
             None,
 
@@ -5364,112 +5360,51 @@ namespace Catch {
             ReconstructedExpression
         };
 
+        virtual void set( Colours colour ) = 0;
+    };
+
+    class TextColour : public IConsoleColourCodes {
+    public:
         TextColour( Colours colour = None );
         void set( Colours colour );
         ~TextColour();
 
     private:
-        ConsoleColourImpl* m_impl;
+        IConsoleColourCodes* m_impl;
     };
 
 } // end namespace Catch
 
-#if !defined(CATCH_CONFIG_USE_ANSI_COLOUR_CODES) && !defined(CATCH_PLATFORM_WINDOWS)
-#define CATCH_CONFIG_USE_ANSI_COLOUR_CODES 1
-#endif
-
-#if defined( CATCH_CONFIG_USE_ANSI_COLOUR_CODES )
-
-#include <unistd.h>
-
-namespace Catch {
-
-    // use POSIX/ ANSI console terminal codes
-    // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
-    // https://github.com/philsquared/Catch/pull/131
-
-    TextColour::TextColour( Colours colour ) {
-        if( colour )
-            set( colour );
-    }
-
-    TextColour::~TextColour() {
-        set( TextColour::None );
-    }
-
-    namespace { const char colourEscape = '\033'; }
-
-    inline bool shouldUseColour() {
-        static bool s_shouldUseColour
-            =   CATCH_CONFIG_USE_ANSI_COLOUR_CODES != 0 &&
-                isatty( fileno(stdout) ) &&
-                !isDebuggerActive();
-        return s_shouldUseColour;
-    }
-    void TextColour::set( Colours colour ) {
-        if( shouldUseColour() ) {
-            switch( colour ) {
-                case TextColour::FileName:
-                    std::cout << colourEscape << "[0m";    // white/ normal
-                    break;
-                case TextColour::ResultError:
-                    std::cout << colourEscape << "[1;31m"; // bold red
-                    break;
-                case TextColour::ResultSuccess:
-                    std::cout << colourEscape << "[1;32m"; // bold green
-                    break;
-                case TextColour::Error:
-                    std::cout << colourEscape << "[0;31m"; // red
-                    break;
-                case TextColour::Success:
-                    std::cout << colourEscape << "[0;32m"; // green
-                    break;
-                case TextColour::OriginalExpression:
-                    std::cout << colourEscape << "[0;36m"; // cyan
-                    break;
-                case TextColour::ReconstructedExpression:
-                    std::cout << colourEscape << "[0;33m"; // yellow
-                    break;
-                case TextColour::None:
-                    std::cout << colourEscape << "[0m"; // reset
-            }
-        }
-    }
-
-} // namespace Catch
-
-#elif defined ( CATCH_PLATFORM_WINDOWS )
+#if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
 #include <windows.h>
 
-namespace Catch {
+namespace {
+    using namespace Catch;
 
-    namespace {
-
-        WORD mapConsoleColour( TextColour::Colours colour ) {
-            switch( colour ) {
-                case TextColour::FileName:
-                    return FOREGROUND_INTENSITY;                    // greyed out
-                case TextColour::ResultError:
-                    return FOREGROUND_RED | FOREGROUND_INTENSITY;   // bright red
-                case TextColour::ResultSuccess:
-                    return FOREGROUND_GREEN | FOREGROUND_INTENSITY; // bright green
-                case TextColour::Error:
-                    return FOREGROUND_RED;                          // dark red
-                case TextColour::Success:
-                    return FOREGROUND_GREEN;                        // dark green
-                case TextColour::OriginalExpression:
-                    return FOREGROUND_BLUE | FOREGROUND_GREEN;      // turquoise
-                case TextColour::ReconstructedExpression:
-                    return FOREGROUND_RED | FOREGROUND_GREEN;       // greeny-yellow
-                default: return 0;
-            }
+    WORD mapConsoleColour( IConsoleColourCodes::Colours colour ) {
+        switch( colour ) {
+            case IConsoleColourCodes::FileName:
+                return FOREGROUND_INTENSITY;                    // greyed out
+            case IConsoleColourCodes::ResultError:
+                return FOREGROUND_RED | FOREGROUND_INTENSITY;   // bright red
+            case IConsoleColourCodes::ResultSuccess:
+                return FOREGROUND_GREEN | FOREGROUND_INTENSITY; // bright green
+            case IConsoleColourCodes::Error:
+                return FOREGROUND_RED | FOREGROUND_INTENSITY;   // bright red
+            case IConsoleColourCodes::Success:
+                return FOREGROUND_GREEN;                        // dark green
+            case IConsoleColourCodes::OriginalExpression:
+                return FOREGROUND_BLUE | FOREGROUND_GREEN;      // turquoise
+            case IConsoleColourCodes::ReconstructedExpression:
+                return FOREGROUND_RED | FOREGROUND_GREEN;       // greeny-yellow
+            default: return 0;
         }
     }
 
-    struct ConsoleColourImpl {
+    struct WindowsConsoleColourCodes : IConsoleColourCodes {
 
-        ConsoleColourImpl()
+        WindowsConsoleColourCodes()
         :   hStdout( GetStdHandle(STD_OUTPUT_HANDLE) ),
             wOldColorAttrs( 0 )
         {
@@ -5477,11 +5412,11 @@ namespace Catch {
             wOldColorAttrs = csbiInfo.wAttributes;
         }
 
-        ~ConsoleColourImpl() {
+        ~WindowsConsoleColourCodes() {
             SetConsoleTextAttribute( hStdout, wOldColorAttrs );
         }
 
-        void set( TextColour::Colours colour ) {
+        void set( Colours colour ) {
             WORD consoleColour = mapConsoleColour( colour );
             if( consoleColour > 0 )
                 SetConsoleTextAttribute( hStdout, consoleColour );
@@ -5492,11 +5427,89 @@ namespace Catch {
         WORD wOldColorAttrs;
     };
 
-    TextColour::TextColour( Colours colour )
-    : m_impl( new ConsoleColourImpl() )
-    {
+    inline bool shouldUseColourForPlatform() {
+        return true;
+    }
+
+    typedef WindowsConsoleColourCodes PlatformConsoleColourCodes;
+
+} // end anon namespace
+
+#else // Not Windows - assumed to be POSIX compatible //////////////////////////
+
+#include <unistd.h>
+
+namespace {
+    using namespace Catch;
+
+    // use POSIX/ ANSI console terminal codes
+    // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
+    // https://github.com/philsquared/Catch/pull/131
+
+    struct AnsiConsoleColourCodes : IConsoleColourCodes {
+
+        ~AnsiConsoleColourCodes() {
+            set( None );
+        }
+
+        void set( Colours colour ) {
+            const char colourEscape = '\033';
+            switch( colour ) {
+                case FileName:
+                    std::cout << colourEscape << "[0m";    // white/ normal
+                    break;
+                case ResultError:
+                    std::cout << colourEscape << "[0;31m"; // red
+                    break;
+                case ResultSuccess:
+                    std::cout << colourEscape << "[0;32m"; // green
+                    break;
+                case Error:
+                    std::cout << colourEscape << "[1;31m"; // bold red
+                    break;
+                case Success:
+                    std::cout << colourEscape << "[1;32m"; // bold green
+                    break;
+                case OriginalExpression:
+                    std::cout << colourEscape << "[0;36m"; // cyan
+                    break;
+                case ReconstructedExpression:
+                    std::cout << colourEscape << "[0;33m"; // yellow
+                    break;
+                case None:
+                    std::cout << colourEscape << "[0m"; // reset
+            }
+        }
+    };
+
+    inline bool shouldUseColourForPlatform() {
+        return isatty( fileno(stdout) );
+    }
+
+    typedef AnsiConsoleColourCodes PlatformConsoleColourCodes;
+
+} // namespace Catch
+
+#endif // not Windows
+
+namespace {
+    struct NoConsoleColourCodes : IConsoleColourCodes {
+        void set( Colours ) {}
+    };
+}
+
+namespace Catch {
+
+    TextColour::TextColour( Colours colour ) : m_impl( NULL ) {
+        static bool s_shouldUseColour = shouldUseColourForPlatform() &&
+                                        !isDebuggerActive();
+        if( s_shouldUseColour )
+            m_impl = new PlatformConsoleColourCodes();
+        else
+            m_impl = new NoConsoleColourCodes();
+
         if( colour )
-            m_impl->set( colour );
+            set( colour );
     }
 
     TextColour::~TextColour() {
@@ -5508,18 +5521,6 @@ namespace Catch {
     }
 
 } // end namespace Catch
-
-#else
-
-namespace Catch {
-
-    TextColour::TextColour( Colours ){}
-    TextColour::~TextColour(){}
-    void TextColour::set( Colours ){}
-
-} // end namespace Catch
-
-#endif
 
 // #included from: catch_generators_impl.hpp
 #define TWOBLUECUBES_CATCH_GENERATORS_IMPL_HPP_INCLUDED
@@ -5869,7 +5870,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 22, "integration" );
+    Version libraryVersion( 0, 9, 23, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp

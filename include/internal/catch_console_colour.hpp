@@ -12,11 +12,7 @@
 
 namespace Catch {
 
-    struct ConsoleColourImpl;
-    
-    class TextColour : NonCopyable {
-    public:
-        
+    struct IConsoleColourCodes : NonCopyable {
         enum Colours {
             None,
             
@@ -30,13 +26,18 @@ namespace Catch {
             OriginalExpression,
             ReconstructedExpression
         };
-        
+
+        virtual void set( Colours colour ) = 0;
+    };
+
+    class TextColour : public IConsoleColourCodes {
+    public:
         TextColour( Colours colour = None );
         void set( Colours colour );
         ~TextColour();
         
     private:
-        ConsoleColourImpl* m_impl;
+        IConsoleColourCodes* m_impl;
     };
     
 } // end namespace Catch
