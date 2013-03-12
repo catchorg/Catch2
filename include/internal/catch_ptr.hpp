@@ -20,10 +20,12 @@ namespace Catch {
     public:
         Ptr() : m_p( NULL ){}
         Ptr( T* p ) : m_p( p ){
-            m_p->addRef();
+            if( m_p )
+                m_p->addRef();
         }
         Ptr( const Ptr& other ) : m_p( other.m_p ){
-            m_p->addRef();
+            if( m_p )
+                m_p->addRef();
         }
         ~Ptr(){
             if( m_p )
@@ -34,7 +36,7 @@ namespace Catch {
             swap( temp );
             return *this;
         }
-        Ptr& operator = ( Ptr& other ){
+        Ptr& operator = ( const Ptr& other ){
             Ptr temp( other );
             swap( temp );
             return *this;
@@ -50,18 +52,16 @@ namespace Catch {
             return m_p;
         }
         
-        T& operator*(){
+        T& operator*() const {
             return *m_p;
         }
-        const T& operator*() const{
-            return *m_p;
+
+        T* operator->() const {
+            return m_p;
         }
         
-        T* operator->(){
-            return m_p;
-        }
-        const T* operator->() const{
-            return m_p;
+        bool operator !() const {
+            return m_p == NULL;
         }
         
     private:
@@ -69,7 +69,7 @@ namespace Catch {
     };
     
     struct IShared : NonCopyable {
-        virtual ~IShared(){}
+        virtual ~IShared();
         virtual void addRef() = 0;
         virtual void release() = 0;
     };
@@ -78,7 +78,7 @@ namespace Catch {
     struct SharedImpl : T {
         
         SharedImpl() : m_rc( 0 ){}
-        
+
         virtual void addRef(){
             ++m_rc;
         }

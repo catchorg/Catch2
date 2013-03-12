@@ -26,7 +26,10 @@ namespace Catch {
         
         struct TestCaseStats {
         
-            TestCaseStats( const std::string& name = std::string() ) :m_name( name ){}
+            TestCaseStats( const std::string& className, const std::string& name )
+            :   m_className( className ),
+                m_name( name )
+            {}
             
             double      m_timeInSeconds;
             std::string m_status;
@@ -57,11 +60,12 @@ namespace Catch {
         };
         
     public:
-        JunitReporter( const IReporterConfig& config )
+        JunitReporter( const ReporterConfig& config )
         :   m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
-        {}        
+        {}
+        virtual ~JunitReporter();
         
         static std::string getDescription() {
             return "Reports test results in an XML format that looks like Ant's junitreport target";
@@ -87,25 +91,28 @@ namespace Catch {
         
         virtual void StartSection( const std::string&, const std::string& ){}
 
-        virtual void EndSection( const std::string&, const Counts& ){}
+        virtual void NoAssertionsInSection( const std::string& ) {}
+        virtual void NoAssertionsInTestCase( const std::string& ) {}
+
+        virtual void EndSection( const std::string&, const Counts& ) {}
         
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getName() ) );            
+            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getClassName(), testInfo.getName() ) );
         }
         
-        virtual void Result( const Catch::ResultInfo& resultInfo ) {
-            if( resultInfo.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults() ) {
+        virtual void Result( const Catch::AssertionResult& assertionResult ) {
+            if( assertionResult.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
-                if( !resultInfo.getMessage().empty() )
-                    oss << resultInfo.getMessage() << " at ";
-                oss << SourceLineInfo( resultInfo.getFilename(), resultInfo.getLine() );
+                if( !assertionResult.getMessage().empty() )
+                    oss << assertionResult.getMessage() << " at ";
+                oss << assertionResult.getSourceInfo();
                 stats.m_content = oss.str();
-                stats.m_message = resultInfo.getExpandedExpression();
-                stats.m_resultType = resultInfo.getTestMacroName();
+                stats.m_message = assertionResult.getExpandedExpression();
+                stats.m_resultType = assertionResult.getTestMacroName();
 
-                switch( resultInfo.getResultType() ) {
+                switch( assertionResult.getResultType() ) {
                     case ResultWas::ThrewException:
                         stats.m_element = "error";
                         m_currentStats->m_errorsCount++;
@@ -131,8 +138,6 @@ namespace Catch {
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
                     case ResultWas::DidntThrowException:
-                    default:
-                        stats.m_element = "unknown";
                         break;
                 }
                 testCaseStats.m_testStats.push_back( stats );                
@@ -146,8 +151,12 @@ namespace Catch {
                 m_stdErr << stdErr << "\n";
         }    
 
+        virtual void Aborted() {
+            // !TBD
+        }
+
         virtual void EndTesting( const Totals& ) {
-            std::ostream& str = m_config.stream();
+            std::ostream& str = m_config.stream;
             {
                 XmlWriter xml( str );
                 
@@ -171,7 +180,7 @@ namespace Catch {
                 }
       
                 xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ) );                
-                xml.scopedElement( "system-err" ).writeText( trim( m_stdOut.str() ) );
+                xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ) );
             }
         }
         
@@ -208,7 +217,7 @@ namespace Catch {
         }
         
     private:
-        const IReporterConfig& m_config;
+        ReporterConfig m_config;
         bool m_currentTestSuccess;
         
         Stats m_testSuiteStats;
@@ -217,8 +226,6 @@ namespace Catch {
         std::ostringstream m_stdOut;
         std::ostringstream m_stdErr;
     };
-
-    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
     
 } // end namespace Catch
 

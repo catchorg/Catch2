@@ -8,24 +8,26 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 
+#include "catch_ptr.hpp"
+
 #include <vector>
 
 namespace Catch {
-    struct ITestCase {
-        virtual ~ITestCase(){}
-        virtual void invoke () const = 0;        
-        virtual ITestCase* clone() const = 0;        
-        virtual bool operator == ( const ITestCase& other ) const = 0;        
-        virtual bool operator < ( const ITestCase& other ) const = 0;
+
+    class TestCaseFilters;
+
+    struct ITestCase : IShared {
+        virtual void invoke () const = 0;
+    protected:
+        virtual ~ITestCase();
     };
     
     class TestCaseInfo;
 
     struct ITestCaseRegistry {
-        virtual ~ITestCaseRegistry(){}
-        virtual void registerTest( const TestCaseInfo& testInfo ) = 0;        
+        virtual ~ITestCaseRegistry();
         virtual const std::vector<TestCaseInfo>& getAllTests() const = 0;
-        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) = 0;
+        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
     };
 }
 

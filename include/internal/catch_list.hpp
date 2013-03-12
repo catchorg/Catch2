@@ -12,12 +12,20 @@
 #include <limits>
 
 namespace Catch {
-    inline int List( Config& config ) {
+    inline bool matchesFilters( const std::vector<TestCaseFilters>& filters, const TestCaseInfo& testCase ) {
+        std::vector<TestCaseFilters>::const_iterator it = filters.begin();
+        std::vector<TestCaseFilters>::const_iterator itEnd = filters.end();
+        for(; it != itEnd; ++it )
+            if( !it->shouldInclude( testCase ) )
+                return false;
+        return true;
+    }
+    inline void List( const ConfigData& config ) {
         
-        if( config.listWhat() & Config::List::Reports ) {
+        if( config.listSpec & List::Reports ) {
             std::cout << "Available reports:\n";
-            IReporterRegistry::FactoryMap::const_iterator it = Context::getReporterRegistry().getFactories().begin();
-            IReporterRegistry::FactoryMap::const_iterator itEnd = Context::getReporterRegistry().getFactories().end();
+            IReporterRegistry::FactoryMap::const_iterator it = getRegistryHub().getReporterRegistry().getFactories().begin();
+            IReporterRegistry::FactoryMap::const_iterator itEnd = getRegistryHub().getReporterRegistry().getFactories().end();
             for(; it != itEnd; ++it ) {
                 // !TBD: consider listAs()
                 std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
@@ -25,27 +33,34 @@ namespace Catch {
             std::cout << std::endl;
         }
         
-        if( config.listWhat() & Config::List::Tests ) {
-            std::cout << "Available tests:\n";
-            std::vector<TestCaseInfo>::const_iterator it = Context::getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCaseInfo>::const_iterator itEnd = Context::getTestCaseRegistry().getAllTests().end();
+        if( config.listSpec & List::Tests ) {
+            if( config.filters.empty() )
+                std::cout << "All available test cases:\n";
+            else
+                std::cout << "Matching test cases:\n";
+            std::vector<TestCaseInfo>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+            std::size_t matchedTests = 0;
             for(; it != itEnd; ++it ) {
-                // !TBD: consider listAs()
-                std::cout << "\t" << it->getName() << "\n\t\t '" << it->getDescription() << "'\n";
+                if( matchesFilters( config.filters, *it ) ) {
+                    matchedTests++;
+                    // !TBD: consider listAs()
+                    std::cout << "\t" << it->getName() << "\n";
+                    if( ( config.listSpec & List::TestNames ) != List::TestNames )
+                        std::cout << "\t\t '" << it->getDescription() << "'\n";
+                }
             }
-            std::cout << std::endl;
+            if( config.filters.empty() )
+                std::cout << pluralise( matchedTests, "test case" ) << std::endl;
+            else
+                std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
         }
         
-        if( ( config.listWhat() & Config::List::All ) == 0 ) {
-            std::cerr << "Unknown list type" << std::endl;
-            return (std::numeric_limits<int>::max)();
+        if( ( config.listSpec & List::All ) == 0 ) {
+            std::ostringstream oss;
+            oss << "Unknown list type";
+            throw std::domain_error( oss.str() );
         }
-        
-        if( config.getReporter().get() )
-            std::cerr << "Reporters ignored when listing" << std::endl;
-        if( !config.testsSpecified() )
-            std::cerr << "Test specs ignored when listing" << std::endl;
-        return 0;
     }
     
 } // end namespace Catch

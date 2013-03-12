@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
 #include <sstream>
+#include <iostream>
 #include <string>
 #include <vector>
 

@@ -6,6 +6,9 @@
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  */
+#ifndef TWOBLUECUBES_ITCHRUNNERREPORTER_H_INCLUDED
+#define TWOBLUECUBES_ITCHRUNNERREPORTER_H_INCLUDED
+
 #include "catch.hpp"
 
 @protocol iTchRunnerDelegate
@@ -95,9 +98,10 @@ namespace Catch
         virtual void StartGroup( const std::string& ){}
         virtual void EndGroup( const std::string&, const Totals& ){}
         virtual void StartTestCase( const TestCaseInfo& ){}
-        virtual void StartSection( const std::string&, const std::string ){}
+        virtual void StartSection( const std::string& sectionName, const std::string& description ) {}
         virtual void EndSection( const std::string&, const Counts& ){}
         virtual void EndTestCase( const TestCaseInfo&, const Totals&, const std::string&, const std::string& ){}
+        virtual void Aborted() {}
         
     private:
         Totals m_totals;
@@ -105,3 +109,5 @@ namespace Catch
         id<iTchRunnerDelegate> m_delegate;
     };
 }
+
+#endif // TWOBLUECUBES_ITCHRUNNERREPORTER_H_INCLUDED

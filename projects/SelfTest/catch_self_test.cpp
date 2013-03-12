@@ -1,45 +1,43 @@
 /*
- *  catch_self_test.cpp
- *  Catch
- *
  *  Created by Phil on 14/02/2012.
  *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
+
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 #define CATCH_CONFIG_MAIN
 #include "catch_self_test.hpp"
 
 namespace Catch{
     
-    std::size_t EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& reporter ) {
+    Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, const std::string& ) {
         std::ostringstream oss;
         Config config;
         config.setStreamBuf( oss.rdbuf() );
         
-        //if( reporter == "mock" ) // !TBD
-            config.setReporter( m_reporter.get() );
-        
-        std::size_t result;
-        
+        Totals totals;
+
         // Scoped because Runner doesn't report EndTesting until its destructor
         {
-            Runner runner( config );
-            result = runner.runMatching( rawTestSpec );
-            m_totals = runner.getTotals();
+            Runner runner( config, m_reporter.get() );
+            totals = runner.runMatching( rawTestSpec );
         }
         m_output = oss.str();
-        return result;
+        return totals;
     }
     
-    void MockReporter::Result( const ResultInfo& resultInfo ) {
-        if( resultInfo.getResultType() == ResultWas::Ok )
+    void MockReporter::Result( const AssertionResult& assertionResult ) {
+        if( assertionResult.getResultType() == ResultWas::Ok )
             return;
+
+        m_log << assertionResult.getSourceInfo() << " ";
         
-        switch( resultInfo.getResultType() ) {          
+        switch( assertionResult.getResultType() ) {          
             case ResultWas::Info:
                 m_log << "Info";
                 break;
@@ -72,19 +70,16 @@ namespace Catch{
             case ResultWas::Exception:
                 m_log << "Exception";
                 break;
-            default:
-                m_log << "{unrecognised ResultType enum value}";
-                break;
         }
         
-        if( resultInfo.hasExpression() )
-            m_log << resultInfo.getExpression();
+        if( assertionResult.hasExpression() )
+            m_log << assertionResult.getExpression();
         
-        if( resultInfo.hasMessage() )
-            m_log << "'" << resultInfo.getMessage() << "'";
+        if( assertionResult.hasMessage() )
+            m_log << "'" << assertionResult.getMessage() << "'";
         
-        if( resultInfo.hasExpandedExpression() )
-            m_log << resultInfo.getExpandedExpression();        
+        if( assertionResult.hasExpandedExpression() )
+            m_log << assertionResult.getExpandedExpression();        
     }    
 
     void MockReporter::openLabel( const std::string& label, const std::string& arg ) {

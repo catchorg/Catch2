@@ -8,7 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 
-#import <Foundation/Foundation.h>
+#include "catch_objc_arc.hpp"
+
 #import <objc/runtime.h>
 
 #include <string>
@@ -16,39 +17,7 @@
 // NB. Any general catch headers included here must be included
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
-#include "internal/catch_test_case_info.hpp"
-
-#ifdef __has_feature
-#define CATCH_ARC_ENABLED __has_feature(objc_arc)
-#else
-#define CATCH_ARC_ENABLED 0
-#endif
-
-void arcSafeRelease( NSObject* obj );
-id performOptionalSelector( id obj, SEL sel );
-
-#if !CATCH_ARC_ENABLED
-    inline void arcSafeRelease( NSObject* obj ) {
-        [obj release];
-    }
-    inline id performOptionalSelector( id obj, SEL sel ) {
-        if( [obj respondsToSelector: sel] )
-            return [obj performSelector: sel];
-        return nil;
-    }
-    #define CATCH_UNSAFE_UNRETAINED
-#else
-    inline void arcSafeRelease( NSObject* ){}
-    inline id performOptionalSelector( id obj, SEL sel ) {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        if( [obj respondsToSelector: sel] )
-            return [obj performSelector: sel];
-    #pragma clang diagnostic pop     
-        return nil;
-    }
-    #define CATCH_UNSAFE_UNRETAINED __unsafe_unretained
-#endif
+#include "internal/catch_test_case_info.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
@@ -64,7 +33,7 @@ id performOptionalSelector( id obj, SEL sel );
 
 namespace Catch {
 
-    class OcMethod : public ITestCase {
+    class OcMethod : public SharedImpl<ITestCase> {
     
     public:
         OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel ) {}
@@ -78,22 +47,9 @@ namespace Catch {
             
             arcSafeRelease( obj );
         }
-        
-        virtual ITestCase* clone() const {
-            return new OcMethod( m_cls, m_sel );
-        }
-        
-        virtual bool operator == ( const ITestCase& other ) const {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel == m_sel;
-        }
-        
-        virtual bool operator < ( const ITestCase& other ) const {
-            const OcMethod* ocmOther = dynamic_cast<const OcMethod*> ( &other );
-            return ocmOther && ocmOther->m_sel < m_sel;
-        }
-        
     private:
+        virtual ~OcMethod() {}
+        
         Class m_cls;
         SEL m_sel;
     };
@@ -136,8 +92,9 @@ namespace Catch {
                         std::string testCaseName = methodName.substr( 15 );
                         std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
+                        const char* className = class_getName( cls );
                         
-                        Context::getTestCaseRegistry().registerTest( TestCaseInfo( new OcMethod( cls, selector ), name.c_str(), desc.c_str(), SourceLineInfo() ) );
+                        getMutableRegistryHub().registerTest( TestCaseInfo( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
                         noTestMethods++;
                     }
                 }
@@ -147,74 +104,65 @@ namespace Catch {
         return noTestMethods;
     }
     
-    inline std::string toString( NSString* const& nsstring ) {
-        if (nsstring == nil) {
-            return "nil";
-        }
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
-    }
-    
     namespace Matchers {
         namespace Impl {
         namespace NSStringMatchers {
 
-            struct StringHolder {
+            template<typename MatcherT>
+            struct StringHolder : MatcherImpl<MatcherT, NSString*>{
                 StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
+                StringHolder( StringHolder const& other ) : m_substr( [other.m_substr copy] ){}
                 StringHolder() {
                     arcSafeRelease( m_substr );
                 }
                 
-                NSString* m_substr;            
+                NSString* m_substr;
             };
             
-            struct Equals : StringHolder {
+            struct Equals : StringHolder<Equals> {
                 Equals( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str isEqualToString:m_substr];
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const Equals& matcher ) {
-                    os << "equals string: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "equals string: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
             
-            struct Contains : StringHolder {
+            struct Contains : StringHolder<Contains> {
                 Contains( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location != NSNotFound;
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const Contains& matcher ) {
-                    os << "contains: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "contains string: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
 
-            struct StartsWith : StringHolder {
+            struct StartsWith : StringHolder<StartsWith> {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location == 0;
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const StartsWith& matcher ) {
-                    os << "starts with: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "starts with: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
-            struct EndsWith : StringHolder {
+            struct EndsWith : StringHolder<EndsWith> {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
                 
-                bool operator()( NSString* str ) const {
+                virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
                 
-                friend std::ostream& operator<<( std::ostream& os, const EndsWith& matcher ) {
-                    os << "ends with: " << Catch::toString( matcher.m_substr );
-                    return os;
+                virtual std::string toString() const {
+                    return "ends with: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
             

@@ -1,22 +1,20 @@
 /*
- *  ConditionTests.cpp
- *  Catch - Test
- *
  *  Created by Phil on 08/11/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 #include "catch.hpp"
 
 #include <string>
 #include <limits>
 
-struct TestData
-{
+struct TestData {
     TestData()
     :   int_seven( 7 ),
         str_hello( "hello" ),
@@ -30,6 +28,17 @@ struct TestData
     double double_pi;
 };
 
+
+struct TestDef {
+    TestDef& operator + ( const std::string& ) {
+        return *this;
+    }
+    TestDef& operator[]( const std::string& ) {
+        return *this;
+    }
+    
+};
+
 // The "failing" tests all use the CHECK macro, which continues if the specific test fails.
 // This allows us to see all results, even if an earlier check fails
 
@@ -37,6 +46,10 @@ struct TestData
 TEST_CASE(  "./succeeding/conditions/equality", 
             "Equality checks that should succeed" )
 {
+
+    TestDef td;
+    td + "hello" + "hello";
+    
     TestData data;
     
     REQUIRE( data.int_seven == 7 );
@@ -189,10 +202,19 @@ TEST_CASE(  "./succeeding/conditions/int literals",
     REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul );
 }
 
-TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x", 
+// Disable warnings about sign conversions for the next two tests
+// (as we are deliberately invoking them)
+// - Current only disabled for GCC/ LLVM. Should add VC++ too
+#ifdef  __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+
+TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
             "comparisons between int variables" )
 {
-	long		long_var = 1L;
+	long            long_var = 1L;
 	unsigned char	unsigned_char_var = 1;
 	unsigned short	unsigned_short_var = 1;
 	unsigned int	unsigned_int_var = 1;
@@ -204,9 +226,7 @@ TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
 	REQUIRE( long_var == unsigned_long_var );
 }
 
-// These are not built normally to avoid warnings about signed/ unsigned
-#ifdef ALLOW_TESTS_THAT_WARN
-TEST_CASE(  "succeeding/conditions/negative ints", 
+TEST_CASE(  "./succeeding/conditions/negative ints",
             "Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" )
 {
     CHECK( ( -1 > 2u ) );
@@ -219,6 +239,24 @@ TEST_CASE(  "succeeding/conditions/negative ints",
     CHECK( ( minInt > 2u ) );
     CHECK( minInt > 2u );
 }
+
+template<typename T>
+struct Ex
+{
+    Ex( T ){}
+    
+    bool operator == ( const T& ) const { return true; }
+    T operator * ( const T& ) const { return T(); }
+};
+
+TEST_CASE(  "./succeeding/conditions/computed ints",
+            "Comparisons between ints where one side is computed" )
+{
+     CHECK( 54 == 6*9 );
+}
+
+#ifdef  __GNUC__
+#pragma GCC diagnostic pop
 #endif
 
 inline const char* returnsConstNull(){ return NULL; }

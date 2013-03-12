@@ -87,7 +87,7 @@ public:
     }
     
     operator T () const {
-        size_t overallIndex = Context::getGeneratorIndex( m_fileInfo, m_totalSize );
+        size_t overallIndex = getCurrentContext().getGeneratorIndex( m_fileInfo, m_totalSize );
         
         typename std::vector<const IGenerator<T>*>::const_iterator it = m_composed.begin();
         typename std::vector<const IGenerator<T>*>::const_iterator itEnd = m_composed.end();

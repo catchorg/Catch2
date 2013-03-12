@@ -10,6 +10,12 @@
 
 #include "catch.hpp"
 
+// Use this external guard here as if we're using the single header version
+// this will already be defined
+#ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
+#include "catch_interfaces_registry_hub.h"
+#endif
+
 #include "set"
 
 namespace Catch {
@@ -27,7 +33,7 @@ namespace Catch {
             addRecorder( recordSections );
         }
                 
-        MockReporter( const IReporterConfig& config ) {
+        MockReporter( const ReporterConfig& ) {
             recordAll();
         }
         
@@ -55,21 +61,24 @@ namespace Catch {
         
         virtual void StartTesting() {}
         
-        virtual void EndTesting( const Totals& totals ) {}
+        virtual void EndTesting( const Totals& ) {}
         
         virtual void StartGroup( const std::string& groupName ) {
             openLabel( recordGroups, groupName );
         }
         
-        virtual void EndGroup( const std::string& groupName, const Totals& totals ) {
+        virtual void EndGroup( const std::string& groupName, const Totals& ) {
             closeLabel( recordGroups, groupName );
         }
         
-        virtual void StartSection( const std::string& sectionName, const std::string& description ) {
+        virtual void StartSection( const std::string& sectionName, const std::string& ) {
             openLabel( recordSections, sectionName );
         }
-        
-        virtual void EndSection( const std::string& sectionName, const Counts& assertions ) {
+
+        virtual void NoAssertionsInSection( const std::string& ) {}
+        virtual void NoAssertionsInTestCase( const std::string& ) {}
+
+        virtual void EndSection( const std::string& sectionName, const Counts& ) {
             closeLabel( recordSections, sectionName );
         }
         
@@ -77,14 +86,16 @@ namespace Catch {
             openLabel( recordTestCases, testInfo.getName()  );
         }
         
+        virtual void Aborted(){}
+        
         virtual void EndTestCase(   const TestCaseInfo& testInfo, 
-                                    const Totals& totals,
-                                    const std::string& stdOut, 
-                                    const std::string& stdErr ) {
+                                    const Totals&,
+                                    const std::string&, 
+                                    const std::string& ) {
             closeLabel( recordTestCases, testInfo.getName()  );
         }
         
-        virtual void Result( const ResultInfo& resultInfo );
+        virtual void Result( const AssertionResult& assertionResult );
 
         
     private:
@@ -99,22 +110,18 @@ namespace Catch {
         std::string m_indent;
         std::ostringstream m_log;
         std::set<std::string> m_recorders;
-    };    
+    };
     
     class EmbeddedRunner {
 
     public:
         EmbeddedRunner() : m_reporter( new MockReporter() ) {}
         
-        std::size_t runMatching(    const std::string& rawTestSpec,
-                                    const std::string& reporter = "basic" );
+        Totals runMatching( const std::string& rawTestSpec,
+                            const std::string& reporter = "basic" );
         
         std::string getOutput() {
             return m_output;
-        }
-        
-        const Totals& getTotals() const {
-            return m_totals;
         }
 
         void addRecorder( const std::string& recorder ) {
@@ -124,9 +131,8 @@ namespace Catch {
         std::string getLog() const {
             return m_reporter->getLog();
         }
-        
+
     private:
-        Totals m_totals;
         std::string m_output;
         Ptr<MockReporter> m_reporter;
     };
@@ -143,14 +149,13 @@ namespace Catch {
         
         static void runMatching(    const std::string& testSpec, 
                                     Expected::Result expectedResult ) {
-            forEach(    Context::getTestCaseRegistry().getMatchingTestCases( testSpec ), 
+            forEach(    getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec ), 
                         MetaTestRunner( expectedResult ) );
         }
         
         void operator()( const TestCaseInfo& testCase ) {
             EmbeddedRunner runner;
-            runner.runMatching( testCase.getName() );
-            Totals totals = runner.getTotals();
+            Totals totals = runner.runMatching( testCase.getName() );
             switch( m_expectedResult ) {
                 case Expected::ToSucceed:
                     if( totals.assertions.failed > 0 ) {
@@ -159,6 +164,9 @@ namespace Catch {
                              << testCase.getName() 
                              << "' to succeed but there was/ were " 
                              << totals.assertions.failed << " failure(s)" );
+                    }
+                    else {
+                        SUCCEED( "Tests passed, as expected" );
                     }
                     break;
                 case Expected::ToFail:
@@ -169,9 +177,12 @@ namespace Catch {
                              << "' to fail but there was/ were " 
                              << totals.assertions.passed << " success(es)" );
                     }
+                    else {
+                        SUCCEED( "Tests failed, as expected" );
+                    }
                     break;
             }        
-        };
+        }
         
     private:
         Expected::Result m_expectedResult;

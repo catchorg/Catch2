@@ -5,11 +5,13 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
 
-#include "catch_interfaces_reporter.h"
+#include "catch_test_spec.h"
 #include "catch_context.h"
+#include "catch_interfaces_config.h"
+#include "catch_stream.hpp"
 
 #include <memory>
 #include <vector>
@@ -18,133 +20,105 @@
 
 namespace Catch {
 
-    class Config : public IReporterConfig {
+    struct Include { enum WhichResults {
+        FailedOnly, 
+        SuccessfulResults
+    }; };
+
+    struct List{ enum What {
+        None = 0,
+        
+        Reports = 1,
+        Tests = 2,
+        All = 3,
+
+        TestNames = 6,
+
+        WhatMask = 0xf,
+        
+        AsText = 0x10,
+        AsXml = 0x20,
+        
+        AsMask = 0xf0
+    }; };
+    
+    struct ConfigData {
+
+        struct WarnAbout { enum What {
+            Nothing = 0x00,
+            NoAssertions = 0x01
+        }; };
+
+        ConfigData()
+        :   listSpec( List::None ),
+            shouldDebugBreak( false ),
+            includeWhichResults( Include::FailedOnly ),
+            cutoff( -1 ),
+            allowThrows( true ),
+            warnings( WarnAbout::Nothing )
+        {}
+        
+        std::string reporter;
+        std::string outputFilename;
+        List::What listSpec;
+        std::vector<TestCaseFilters> filters;
+        bool shouldDebugBreak;
+        std::string stream;
+        Include::WhichResults includeWhichResults;
+        std::string name;
+        int cutoff;
+        bool allowThrows;
+        WarnAbout::What warnings;
+    };
+    
+    
+    class Config : public IConfig {
     private:
         Config( const Config& other );
         Config& operator = ( const Config& other );
+        virtual void dummy();
     public:
-        
-        struct Include { enum What {
-            FailedOnly, 
-            SuccessfulResults
-        }; };
 
-        struct List{ enum What {
-            None = 0,
-            
-            Reports = 1,
-            Tests = 2,
-            All = 3,
-            
-            WhatMask = 0xf,
-            
-            AsText = 0x10,
-            AsXml = 0x11,
-            
-            AsMask = 0xf0
-        }; };
-        
-        
         Config()
-        :   m_listSpec( List::None ),
-            m_shouldDebugBreak( false ),
-            m_showHelp( false ),
-            m_streambuf( NULL ),
-            m_os( std::cout.rdbuf() ),
-            m_includeWhat( Include::FailedOnly )
+        :   m_os( std::cout.rdbuf() )
         {}
         
-        ~Config() {
+        Config( const ConfigData& data )
+        :   m_data( data ),
+            m_os( std::cout.rdbuf() )
+        {}
+        
+        virtual ~Config() {
             m_os.rdbuf( std::cout.rdbuf() );
-            delete m_streambuf;
-        }
-        
-        void setReporter( const std::string& reporterName ) {
-            if( m_reporter.get() )
-                return setError( "Only one reporter may be specified" );
-            setReporter( Context::getReporterRegistry().create( reporterName, *this ) );
-        }
-        
-        void addTestSpec( const std::string& testSpec ) {
-            m_testSpecs.push_back( testSpec );
-        }
-        
-        bool testsSpecified() const {
-            return !m_testSpecs.empty();
-        }
-
-        const std::vector<std::string>& getTestSpecs() const {
-            return m_testSpecs;
-        }
-        
-        List::What getListSpec( void ) const {
-            return m_listSpec;
-        }
-
-        void setListSpec( List::What listSpec ) {
-            m_listSpec = listSpec;
+            m_stream.release();
         }
         
         void setFilename( const std::string& filename ) {
-            m_filename = filename;
+            m_data.outputFilename = filename;
         }
         
+        List::What getListSpec( void ) const {
+            return m_data.listSpec;
+        }
+
         const std::string& getFilename() const {
-            return m_filename;
+            return m_data.outputFilename ;
         }
         
-        const std::string& getMessage() const {
-            return m_message;
-        }
-        
-        void setError( const std::string& errorMessage ) {
-            m_message = errorMessage + "\n\n" + "Usage: ...";
-        }
-        
-        void setReporter( IReporter* reporter ) {
-            m_reporter = reporter;
-        }
-        
-        Ptr<IReporter> getReporter() {
-            if( !m_reporter.get() )
-                const_cast<Config*>( this )->setReporter( Context::getReporterRegistry().create( "basic", *this ) );
-            return m_reporter;
-        }
-                
         List::What listWhat() const {
-            return static_cast<List::What>( m_listSpec & List::WhatMask );
+            return static_cast<List::What>( m_data.listSpec & List::WhatMask );
         }        
         
         List::What listAs() const {
-            return static_cast<List::What>( m_listSpec & List::AsMask );
-        }        
-        
-        void setIncludeWhat( Include::What includeWhat ) {
-            m_includeWhat = includeWhat;
-        }
-        
-        void setShouldDebugBreak( bool shouldDebugBreakFlag ) {
-            m_shouldDebugBreak = shouldDebugBreakFlag;
-        }
-
-        void setName( const std::string& name ) {
-            m_name = name;
+            return static_cast<List::What>( m_data.listSpec & List::AsMask );
         }
 
         std::string getName() const {
-            return m_name;
+            return m_data.name;
         }
         
         bool shouldDebugBreak() const {
-            return m_shouldDebugBreak;
-        }
-
-        void setShowHelp( bool showHelpFlag ) {
-            m_showHelp = showHelpFlag;
-        }
-
-        bool showHelp() const {
-            return m_showHelp;
+            return m_data.shouldDebugBreak;
         }
 
         virtual std::ostream& stream() const {
@@ -156,31 +130,46 @@ namespace Catch {
         }        
 
         void useStream( const std::string& streamName ) {
-            std::streambuf* newBuf = Context::createStreamBuf( streamName );
-            setStreamBuf( newBuf );
-            delete m_streambuf;
-            m_streambuf = newBuf;
+            Stream stream = createStream( streamName );
+            setStreamBuf( stream.streamBuf );
+            m_stream.release();
+            m_stream = stream;
+        }
+
+        void addTestSpec( const std::string& testSpec ) {
+            TestCaseFilters filters( testSpec );
+            filters.addFilter( TestCaseFilter( testSpec ) );
+            m_data.filters.push_back( filters );
         }
         
         virtual bool includeSuccessfulResults() const {
-            return m_includeWhat == Include::SuccessfulResults;
+            return m_data.includeWhichResults == Include::SuccessfulResults;
         }
         
-    private:
-        Ptr<IReporter> m_reporter;
-        std::string m_filename;
-        std::string m_message;
-        List::What m_listSpec;
-        std::vector<std::string> m_testSpecs;
-        bool m_shouldDebugBreak;
-        bool m_showHelp;
-        std::streambuf* m_streambuf;
-        mutable std::ostream m_os;
-        Include::What m_includeWhat;
-        std::string m_name;
+        int getCutoff() const {
+            return m_data.cutoff;
+        }
         
+        virtual bool allowThrows() const {
+            return m_data.allowThrows;
+        }
+        
+        const ConfigData& data() const {
+            return m_data;
+        }
+        ConfigData& data() {
+            return m_data;
+        }
+
+    private:
+        ConfigData m_data;
+        
+        // !TBD Move these out of here
+        Stream m_stream;
+        mutable std::ostream m_os;
     };
+        
     
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_RUNNERCONFIG_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED

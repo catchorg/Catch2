@@ -20,26 +20,13 @@ namespace Internal {
         IsGreaterThanOrEqualTo
     };
     
-    template<Operator Op>
-    struct OperatorTraits{ static const char* getName(){ return "*error - unknown operator*"; } };
-
-    template<>
-    struct OperatorTraits<IsEqualTo>{ static const char* getName(){ return "=="; } };
-    
-    template<>
-    struct OperatorTraits<IsNotEqualTo>{ static const char* getName(){ return "!="; } };
-    
-    template<>
-    struct OperatorTraits<IsLessThan>{ static const char* getName(){ return "<"; } };
-    
-    template<>
-    struct OperatorTraits<IsGreaterThan>{ static const char* getName(){ return ">"; } };
-    
-    template<>
-    struct OperatorTraits<IsLessThanOrEqualTo>{ static const char* getName(){ return "<="; } };
-    
-    template<>
-    struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
+    template<Operator Op> struct OperatorTraits             { static const char* getName(){ return "*error*"; } };
+    template<> struct OperatorTraits<IsEqualTo>             { static const char* getName(){ return "=="; } };
+    template<> struct OperatorTraits<IsNotEqualTo>          { static const char* getName(){ return "!="; } };
+    template<> struct OperatorTraits<IsLessThan>            { static const char* getName(){ return "<"; } };
+    template<> struct OperatorTraits<IsGreaterThan>         { static const char* getName(){ return ">"; } };
+    template<> struct OperatorTraits<IsLessThanOrEqualTo>   { static const char* getName(){ return "<="; } };
+    template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
     
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.
@@ -82,18 +69,21 @@ namespace Internal {
             return const_cast<T1&>( lhs ) <= const_cast<T2&>( rhs );
         }
     };
-    
+
     template<Operator Op, typename T1, typename T2>
     bool applyEvaluator( const T1& lhs, const T2& rhs ) {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
-    
+
+    // This level of indirection allows us to specialise for integer types
+    // to avoid signed/ unsigned warnings
+
     // "base" overload
     template<Operator Op, typename T1, typename T2>
     bool compare( const T1& lhs, const T2& rhs ) {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
-    
+
     // unsigned X to int
     template<Operator Op> bool compare( unsigned int lhs, int rhs ) {
         return applyEvaluator<Op>( lhs, static_cast<unsigned int>( rhs ) );
@@ -138,26 +128,22 @@ namespace Internal {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
     }
 
-    template<Operator Op, typename T>
-    bool compare( long lhs, const T* rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( reinterpret_cast<const T*>( lhs ), rhs );
-    }
-    
-    template<Operator Op, typename T>
-    bool compare( long lhs, T* rhs ) {
+    // pointer to long (when comparing against NULL)
+    template<Operator Op, typename T> bool compare( long lhs, T* rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
     }
-
-    template<Operator Op, typename T>
-    bool compare( const T* lhs, long rhs ) {
-        return Evaluator<const T*, const T*, Op>::evaluate( lhs, reinterpret_cast<const T*>( rhs ) );
-    }
-    
-    template<Operator Op, typename T>
-    bool compare( T* lhs, long rhs ) {
+    template<Operator Op, typename T> bool compare( T* lhs, long rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
     
+    // pointer to int (when comparing against NULL)
+    template<Operator Op, typename T> bool compare( int lhs, T* rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
+    }
+    template<Operator Op, typename T> bool compare( T* lhs, int rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
+    }
+        
 } // end of namespace Internal
 } // end of namespace Catch
 

@@ -39,6 +39,8 @@
 		4A63D2C414E454CC00F615CB /* TestObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObj.h; sourceTree = "<group>"; };
 		4A63D2C514E454CC00F615CB /* TestObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObj.m; sourceTree = "<group>"; };
 		4AA0D951154C0A7A004B4193 /* catch_objc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc.hpp; path = ../../../include/internal/catch_objc.hpp; sourceTree = "<group>"; };
+		4ABEA80615C90E10009F0424 /* catch_objc_arc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_objc_arc.hpp; path = ../../../include/internal/catch_objc_arc.hpp; sourceTree = "<group>"; };
+		4ABEA80815C90E38009F0424 /* catch_tostring.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_tostring.hpp; path = ../../../include/internal/catch_tostring.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,8 @@
 		4AA0D94F154C0A63004B4193 /* Catch */ = {
 			isa = PBXGroup;
 			children = (
+				4ABEA80815C90E38009F0424 /* catch_tostring.hpp */,
+				4ABEA80615C90E10009F0424 /* catch_objc_arc.hpp */,
 				4AA0D951154C0A7A004B4193 /* catch_objc.hpp */,
 			);
 			name = Catch;
@@ -204,6 +208,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				HEADER_SEARCH_PATHS = ../../../single_include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -212,6 +217,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				HEADER_SEARCH_PATHS = ../../../single_include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

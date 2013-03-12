@@ -21,12 +21,12 @@ namespace Catch {
                     const std::string& description,
                     const SourceLineInfo& lineInfo )
         :   m_name( name ),
-            m_sectionIncluded( Context::getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
+            m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( name, description, lineInfo, m_assertions ) )
         {}
 
         ~Section() {
             if( m_sectionIncluded )
-                Context::getResultCapture().sectionEnded( m_name, m_assertions );
+                getCurrentContext().getResultCapture().sectionEnded( m_name, m_assertions );
         }
         
         // This indicates whether the section should be executed or not

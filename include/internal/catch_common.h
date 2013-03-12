@@ -16,9 +16,9 @@
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
 
 #ifdef __GNUC__
-#define ATTRIBUTE_NORETURN __attribute__ ((noreturn))
+#define CATCH_ATTRIBUTE_NORETURN __attribute__ ((noreturn))
 #else
-#define ATTRIBUTE_NORETURN
+#define CATCH_ATTRIBUTE_NORETURN
 #endif
 
 #include <sstream>
@@ -32,9 +32,20 @@ namespace Catch {
 		void operator = ( const NonCopyable& );
 	protected:
 		NonCopyable() {}
-		virtual ~NonCopyable() {}
+		virtual ~NonCopyable();
 	};
     
+    class SafeBool {
+    public:
+        typedef void (SafeBool::*type)() const;
+
+        static type makeSafe( bool value ) {
+            return value ? &SafeBool::trueValue : 0;
+        }
+    private:
+        void trueValue() const {}
+    };
+  
     template<typename ContainerT>
     inline void deleteAll( ContainerT& container ) {
         typename ContainerT::const_iterator it = container.begin();
@@ -63,7 +74,34 @@ namespace Catch {
     inline void forEach( const ContainerT& container, Function function ) {
         std::for_each( container.begin(), container.end(), function );
     }
-    
+
+    inline bool startsWith( const std::string& s, const std::string& prefix ) {
+        return s.size() >= prefix.size() && s.substr( 0, prefix.size() ) == prefix;
+    }
+    inline bool endsWith( const std::string& s, const std::string& suffix ) {
+        return s.size() >= suffix.size() && s.substr( s.size()-suffix.size(), suffix.size() ) == suffix;
+    }
+    inline bool contains( const std::string& s, const std::string& infix ) {
+        return s.find( infix ) != std::string::npos;
+    }
+
+    struct pluralise {
+        pluralise( std::size_t count, const std::string& label )
+        :   m_count( count ),
+            m_label( label )
+        {}
+
+        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
+            os << pluraliser.m_count << " " << pluraliser.m_label;
+            if( pluraliser.m_count != 1 )
+                os << "s";
+            return os;
+        }
+
+        std::size_t m_count;
+        std::string m_label;
+    };
+
     struct SourceLineInfo {
     
         SourceLineInfo() : line( 0 ){}
@@ -75,9 +113,8 @@ namespace Catch {
         :   file( other.file ),
             line( other.line )
         {}
-        void swap( SourceLineInfo& other ){
-            file.swap( other.file );
-            std::swap( line, other.line );
+        bool empty() const {
+            return file.empty();
         }
         
         std::string file;
@@ -93,16 +130,16 @@ namespace Catch {
         return os;
     }
     
-    ATTRIBUTE_NORETURN
-    inline void throwLogicError( const std::string& message, const std::string& file, std::size_t line ) {
+    CATCH_ATTRIBUTE_NORETURN
+    inline void throwLogicError( const std::string& message, const SourceLineInfo& locationInfo ) {
         std::ostringstream oss;
-        oss << "Internal Catch error: '" << message << "' at: " << SourceLineInfo( file, line );
+        oss << "Internal Catch error: '" << message << "' at: " << locationInfo;
         throw std::logic_error( oss.str() );
     }
 }
 
-#define CATCH_INTERNAL_ERROR( msg ) throwLogicError( msg, __FILE__, __LINE__ );
-#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, __LINE__ )
+#define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
+#define CATCH_INTERNAL_ERROR( msg ) ::Catch::throwLogicError( msg, CATCH_INTERNAL_LINEINFO );
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 

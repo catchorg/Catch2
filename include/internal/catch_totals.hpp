@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 
+#include <cstddef>
+
 namespace Catch {
 
     struct Counts {
@@ -18,6 +20,11 @@ namespace Catch {
             diff.passed = passed - other.passed;
             diff.failed = failed - other.failed;
             return diff;
+        }
+        Counts& operator += ( const Counts& other ) {
+            passed += other.passed;
+            failed += other.failed;
+            return *this;
         }
         
         std::size_t total() const {
@@ -36,7 +43,22 @@ namespace Catch {
             diff.testCases = testCases - other.testCases;
             return diff;
         }
-        
+
+        Totals delta( const Totals& prevTotals ) const {
+            Totals diff = *this - prevTotals;
+            if( diff.assertions.failed > 0 )
+                ++diff.testCases.failed;
+            else
+                ++diff.testCases.passed;
+            return diff;
+        }
+
+        Totals& operator += ( const Totals& other ) {
+            assertions += other.assertions;
+            testCases += other.testCases;
+            return *this;
+        }
+
         Counts assertions;
         Counts testCases;
     };

@@ -11,19 +11,21 @@
 #include <string>
 #include "catch_result_type.h"
 #include "catch_totals.hpp"
+#include "catch_common.h"
 
 namespace Catch {
 
     class TestCaseInfo;
     class ScopedInfo;
-    class ResultInfoBuilder;
-    class ResultInfo;
+    class ExpressionResultBuilder;
+    class AssertionResult;
+    struct AssertionInfo;
 
     struct IResultCapture {
     
-        virtual ~IResultCapture(){}
+        virtual ~IResultCapture();
         
-        virtual void testEnded( const ResultInfo& result ) = 0;
+        virtual void testEnded( const AssertionResult& result ) = 0;
         virtual bool sectionStarted(    const std::string& name, 
                                         const std::string& description, 
                                         const SourceLineInfo& lineInfo,
@@ -33,13 +35,10 @@ namespace Catch {
         virtual void popScopedInfo( ScopedInfo* scopedInfo ) = 0;
         virtual bool shouldDebugBreak() const = 0;
         
-        virtual ResultAction::Value acceptResult( bool result ) = 0;
-        virtual ResultAction::Value acceptResult( ResultWas::OfType result ) = 0;
-        virtual ResultAction::Value acceptExpression( const ResultInfoBuilder& resultInfo ) = 0;
-        virtual void acceptMessage( const std::string& msg ) = 0;
+        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;        
-        virtual const ResultInfo* getLastResult() const = 0;        
+        virtual const AssertionResult* getLastResult() const = 0;        
     };
 }
 

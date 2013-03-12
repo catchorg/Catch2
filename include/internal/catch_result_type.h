@@ -10,31 +10,54 @@
 
 namespace Catch {    
 
-struct ResultWas { enum OfType {
-    Unknown = -1,
-    Ok = 0,
-    Info = 1,
-    Warning = 2,
-    
-    FailureBit = 0x10,
-    
-    ExpressionFailed = FailureBit | 1,
-    ExplicitFailure = FailureBit | 2,
-    
-    Exception = 0x100 | FailureBit,
-    
-    ThrewException = Exception | 1,
-    DidntThrowException = Exception | 2
-    
-}; };
+    // ResultWas::OfType enum
+    struct ResultWas { enum OfType {
+        Unknown = -1,
+        Ok = 0,
+        Info = 1,
+        Warning = 2,
+        
+        FailureBit = 0x10,
+        
+        ExpressionFailed = FailureBit | 1,
+        ExplicitFailure = FailureBit | 2,
+        
+        Exception = 0x100 | FailureBit,
+        
+        ThrewException = Exception | 1,
+        DidntThrowException = Exception | 2
+        
+    }; };
 
-struct ResultAction { enum Value {
-    None,
-    Failed = 1,     // Failure - but no debug break if Debug bit not set
-    DebugFailed = 3 // Indicates that the debugger should break, if possible
-    
-}; };
-    
-}
+    inline bool isOk( ResultWas::OfType resultType ) {
+        return ( resultType & ResultWas::FailureBit ) == 0;
+    }
+
+    // ResultAction::Value enum
+    struct ResultAction { enum Value {
+        None,
+        Failed = 1, // Failure - but no debug break if Debug bit not set
+        Debug = 2,  // If this bit is set, invoke the debugger
+        Abort = 4   // Test run should abort    
+    }; };
+
+    // ResultDisposition::Flags enum
+    struct ResultDisposition { enum Flags {
+            Normal = 0x00,
+
+            ContinueOnFailure = 0x01,   // Failures fail test, but execution continues
+            NegateResult = 0x02,        // Prefix expressiom with !
+            SuppressFail = 0x04         // Failures are reported but do not fail the test
+    }; };
+
+    inline ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {
+        return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
+    }
+
+    inline bool shouldContinueOnFailure( int flags ) { return flags & ResultDisposition::ContinueOnFailure; }
+    inline bool shouldNegate( int flags ) { return flags & ResultDisposition::NegateResult; }
+    inline bool shouldSuppressFailure( int flags ) { return flags & ResultDisposition::SuppressFail; }
+
+} // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED

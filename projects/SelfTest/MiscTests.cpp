@@ -1,14 +1,14 @@
 /*
- *  MiscTests.cpp
- *  Catch - Test
- *
  *  Created by Phil on 29/11/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
+
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 #include "catch.hpp"
 #include "catch_self_test.hpp"
@@ -96,33 +96,27 @@ TEST_CASE( "Sections/nested3", "nested SECTION tests" )
     
     runner.runMatching( "./Sections/nested/a/b", "mock" );
     CHECK( runner.getLog() == 
-        "\\[tc] ./Sections/nested/a/b\n"
+        "\\[g] ./Sections/nested/a/b\n"
+        " \\[tc] ./Sections/nested/a/b\n"
         
-        " \\[g] test case run\n"
         "  \\ [s] c\n"
         "   \\ [s] d (leaf)\n"
         "   / [s] d (leaf)\n"
         "  / [s] c\n"
-        " /[g] test case run\n"
         
-        " \\[g] test case run\n"
         "  \\ [s] c\n"
         "   \\ [s] e (leaf)\n"
         "   / [s] e (leaf)\n"
         "  / [s] c\n"
-        " /[g] test case run\n"
         
-        " \\[g] test case run\n"
         "  \\ [s] c\n"
         "  / [s] c\n"
-        " /[g] test case run\n"
         
-        " \\[g] test case run\n"
         "  \\ [s] f (leaf)\n"
         "  / [s] f (leaf)\n"
-        " /[g] test case run\n"
         
-        "/[tc] ./Sections/nested/a/b\n" );
+        " /[tc] ./Sections/nested/a/b\n"
+        "/[g] ./Sections/nested/a/b\n" );
     
 }
 
@@ -247,8 +241,6 @@ inline const char* testStringForMatching()
     return "this string contains 'abc' as a substring";
 }
 
-using namespace Catch::Matchers;
-
 TEST_CASE("./succeeding/matchers", "") 
 {
     REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );    
@@ -272,3 +264,62 @@ TEST_CASE("./failing/matchers/EndsWith", "")
 {
     CHECK_THAT( testStringForMatching(), EndsWith( "this" ) );
 }
+
+TEST_CASE("./failing/matchers/Equals", "")
+{
+    CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
+}
+
+TEST_CASE("/succeeding/matchers/AllOf", "")
+{
+    CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) );
+}
+TEST_CASE("/succeeding/matchers/AnyOf", "")
+{
+    CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) );
+    CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) );
+}
+
+TEST_CASE("./succeeding/matchers/Equals", "")
+{
+    CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
+}
+
+inline unsigned int Factorial( unsigned int number )
+{
+//  return number <= 1 ? number : Factorial(number-1)*number;
+  return number > 1 ? Factorial(number-1)*number : 1;
+}
+
+TEST_CASE( "example/factorial", "The Factorial function should return the factorial of the number passed in" )
+{
+  REQUIRE( Factorial(0) == 1 );
+  REQUIRE( Factorial(1) == 1 );
+  REQUIRE( Factorial(2) == 2 );
+  REQUIRE( Factorial(3) == 6 );
+  REQUIRE( Factorial(10) == 3628800 );
+}
+
+TEST_CASE( "empty", "An empty test with no assertions" )
+{
+}
+
+TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][hide]" )
+{
+    WARN( "This one ran" );
+}
+TEST_CASE( "first tag", "[tag1]" )
+{
+}
+TEST_CASE( "second tag", "[tag2]" )
+{
+}
+//
+//TEST_CASE( "spawn a new process", "[hide]" )
+//{
+//    // !TBD Work in progress
+//    char line[200];
+//    FILE* output = popen("./CatchSelfTest ./failing/matchers/StartsWith", "r");
+//    while ( fgets(line, 199, output) )
+//        std::cout << line;
+//}

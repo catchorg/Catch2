@@ -1,15 +1,14 @@
 /*
- *  GeneratorTests.cpp
- *  Catch - Test
- *
  *  Created by Phil on 28/01/2011.
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 
+// This define means we have to prefix all the CATCH macros with CATCH_
+// We're using it here to test it out
+#define CATCH_CONFIG_PREFIX_ALL
 #include "catch.hpp"
 
 inline int multiply( int a, int b )
@@ -17,13 +16,13 @@ inline int multiply( int a, int b )
     return a*b;
 }
 
-TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
+CATCH_TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
 {
     using namespace Catch::Generators;
     
-    int i = GENERATE( between( 1, 5 ).then( values( 15, 20, 21 ).then( 36 ) ) );
-    int j = GENERATE( between( 100, 107 ) );
+    int i = CATCH_GENERATE( between( 1, 5 ).then( values( 15, 20, 21 ).then( 36 ) ) );
+    int j = CATCH_GENERATE( between( 100, 107 ) );
     
-    REQUIRE( multiply( i, 2 ) == i*2 );
-    REQUIRE( multiply( j, 2 ) == j*2 );
+    CATCH_REQUIRE( multiply( i, 2 ) == i*2 );
+    CATCH_REQUIRE( multiply( j, 2 ) == j*2 );
 }

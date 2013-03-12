@@ -5,8 +5,12 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+#ifndef TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
+
 #include "catch_test_registry.hpp"
-#include "catch_test_case_info.hpp"
+#include "catch_test_case_info.h"
+#include "catch_test_spec.h"
 #include "catch_context.h"
 
 #include <vector>
@@ -19,6 +23,7 @@ namespace Catch {
     class TestRegistry : public ITestCaseRegistry {
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
+        virtual ~TestRegistry();
         
         virtual void registerTest( const TestCaseInfo& testInfo ) {
             if( testInfo.getName() == "" ) {
@@ -30,6 +35,8 @@ namespace Catch {
             if( m_functions.find( testInfo ) == m_functions.end() ) {
                 m_functions.insert( testInfo );
                 m_functionsInOrder.push_back( testInfo );
+                if( !testInfo.isHidden() )
+                    m_nonHiddenFunctions.push_back( testInfo );
             }
             else {
                 const TestCaseInfo& prev = *m_functions.find( testInfo );
@@ -44,73 +51,97 @@ namespace Catch {
             return m_functionsInOrder;
         }
 
-        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) {
-            TestSpec testSpec( rawTestSpec );
-            
-            std::vector<TestCaseInfo> testList;
+        virtual const std::vector<TestCaseInfo>& getAllNonHiddenTests() const {
+            return m_nonHiddenFunctions;
+        }
+
+        // !TBD deprecated
+        virtual std::vector<TestCaseInfo> getMatchingTestCases( const std::string& rawTestSpec ) const {
+            std::vector<TestCaseInfo> matchingTests;
+            getMatchingTestCases( rawTestSpec, matchingTests );
+            return matchingTests;
+        }
+
+        // !TBD deprecated
+        virtual void getMatchingTestCases( const std::string& rawTestSpec, std::vector<TestCaseInfo>& matchingTestsOut ) const {
+            TestCaseFilter filter( rawTestSpec );
+
             std::vector<TestCaseInfo>::const_iterator it = m_functionsInOrder.begin();
             std::vector<TestCaseInfo>::const_iterator itEnd = m_functionsInOrder.end();
             for(; it != itEnd; ++it ) {
-                if( testSpec.matches( it->getName() ) ) {
-                    testList.push_back( *it );
+                if( filter.shouldInclude( *it ) ) {
+                    matchingTestsOut.push_back( *it );
                 }
             }
-            return testList;
         }
-        
+        virtual void getMatchingTestCases( const TestCaseFilters& filters, std::vector<TestCaseInfo>& matchingTestsOut ) const {
+            std::vector<TestCaseInfo>::const_iterator it = m_functionsInOrder.begin();
+            std::vector<TestCaseInfo>::const_iterator itEnd = m_functionsInOrder.end();
+            // !TBD: replace with algorithm
+            for(; it != itEnd; ++it )
+                if( filters.shouldInclude( *it ) )
+                    matchingTestsOut.push_back( *it );
+        }
+
     private:
         
         std::set<TestCaseInfo> m_functions;
         std::vector<TestCaseInfo> m_functionsInOrder;
+        std::vector<TestCaseInfo> m_nonHiddenFunctions;        
         size_t m_unnamedCount;
     };
 
     ///////////////////////////////////////////////////////////////////////////
         
-    class FreeFunctionTestCase : public ITestCase {
+    class FreeFunctionTestCase : public SharedImpl<ITestCase> {
     public:
 
         FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}
-        
+
         virtual void invoke() const {
             m_fun();
         }
-        
-        virtual ITestCase* clone() const {
-            return new FreeFunctionTestCase( m_fun );
-        }
-        
-        virtual bool operator == ( const ITestCase& other ) const {
-            const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && m_fun == ffOther->m_fun;
-        }
-        
-        virtual bool operator < ( const ITestCase& other ) const {
-            const FreeFunctionTestCase* ffOther = dynamic_cast<const FreeFunctionTestCase*> ( &other );
-            return ffOther && m_fun < ffOther->m_fun;
-        }
-        
+
     private:
+        virtual ~FreeFunctionTestCase();
+
         TestFunction m_fun;
     };
-        
+
+    inline std::string extractClassName( const std::string& classOrQualifiedMethodName ) {
+        std::string className = classOrQualifiedMethodName;
+        if( className[0] == '&' )
+        {
+            std::size_t lastColons = className.rfind( "::" );
+            std::size_t penultimateColons = className.rfind( "::", lastColons-1 );
+            if( penultimateColons == std::string::npos )
+                penultimateColons = 1;
+            className = className.substr( penultimateColons, lastColons-penultimateColons );
+        }
+        return className;
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     
     AutoReg::AutoReg(   TestFunction function, 
                         const char* name,
                         const char* description,
                         const SourceLineInfo& lineInfo ) {
-        registerTestCase( new FreeFunctionTestCase( function ), name, description, lineInfo );
+        registerTestCase( new FreeFunctionTestCase( function ), "global", name, description, lineInfo );
     }    
     
     AutoReg::~AutoReg() {}
     
-    void AutoReg::registerTestCase( ITestCase* testCase, 
-                                    const char* name, 
+    void AutoReg::registerTestCase( ITestCase* testCase,
+                                    const char* classOrQualifiedMethodName,
+                                    const char* name,
                                     const char* description,
                                     const SourceLineInfo& lineInfo ) {
-        Context::getTestCaseRegistry().registerTest( TestCaseInfo( testCase, name, description, lineInfo ) );
+        
+        getMutableRegistryHub().registerTest( TestCaseInfo( testCase, extractClassName( classOrQualifiedMethodName ), name, description, lineInfo ) );
     }
     
 } // end namespace Catch
 
+
+#endif // TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED

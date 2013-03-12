@@ -6,6 +6,8 @@
  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
  *
  */
+#ifndef TWOBLUECUBES_ITCHRUNNERMAINVIEW_H_INCLUDED
+#define TWOBLUECUBES_ITCHRUNNERMAINVIEW_H_INCLUDED
 
 #include "internal/catch_config.hpp"
 #include "internal/catch_runner_impl.hpp"
@@ -41,7 +43,7 @@
         arcSafeRelease( appName );
         appName.textColor = [[UIColor alloc] initWithRed:0.35 green:0.35 blue:1 alpha:1];
         arcSafeRelease( appName.textColor );
-        appName.textAlignment = UITextAlignmentCenter;
+        appName.textAlignment = UITextAlignmentCenter; // or NSTextAlignmentCenter
         
         appName.text = [NSString stringWithFormat:@"CATCH tests"];
 //        [self performSelector: @selector(showAlert) withObject:nil afterDelay:0.1];
@@ -143,3 +145,5 @@
 
 
 @end
+
+#endif // TWOBLUECUBES_ITCHRUNNERMAINVIEW_H_INCLUDED

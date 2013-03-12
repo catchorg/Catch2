@@ -1,13 +1,9 @@
 /*
- *  MessageTests.cpp
- *  Catch - Test
- *
  *  Created by Phil on 09/11/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
 
 #include "catch.hpp"
@@ -47,7 +43,8 @@ TEST_CASE( "./mixed/message/info/2", "INFO gets logged on failure" )
 
 TEST_CASE( "./failing/message/fail", "FAIL aborts the test" )
 {
-    FAIL( "This is a " << "failure" );    // This should output the message and abort
+    if( true )
+        FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
 
 TEST_CASE( "./failing/message/sections", "Output from all sections is reported" )
@@ -74,4 +71,19 @@ TEST_CASE( "./succeeding/message/sections/stdout", "Output from all sections is 
     {
         std::cout << "Message from section two" << std::endl;
     }
+}
+
+TEST_CASE( "./mixed/message/scoped", "" )
+{
+    for( int i=0; i<100; i++ )
+    {
+        SCOPED_INFO( "current counter " << i );
+        SCOPED_CAPTURE( i );
+        REQUIRE( i < 10 );
+    }
+}
+
+TEST_CASE( "./succeeding/nofail", "The NO_FAIL macro reports a failure but does not fail the test" )
+{
+    CHECK_NOFAIL( 1 == 2 );
 }

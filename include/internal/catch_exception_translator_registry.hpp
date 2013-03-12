@@ -5,26 +5,40 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
 
 #include "catch_interfaces_exception.h"
+
+#ifdef __OBJC__
+#import "Foundation/Foundation.h"
+#endif
 
 namespace Catch {
 
     class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry {
-
+    public:
         ~ExceptionTranslatorRegistry() {
             deleteAll( m_translators );
         }
 
-        virtual void registerTranslator( IExceptionTranslator* translator ) {
+        virtual void registerTranslator( const IExceptionTranslator* translator ) {
             m_translators.push_back( translator );
         }
         
         virtual std::string translateActiveException() const {
             try {
+#ifdef __OBJC__
+                // In Objective-C try objective-c exceptions first
+                @try {
+                    throw;
+                }
+                @catch (NSException *exception) {
+                    return toString( [exception description] );
+                }
+#else
                 throw;
+#endif
             }
             catch( std::exception& ex ) {
                 return ex.what();
@@ -40,7 +54,7 @@ namespace Catch {
             }
         }
         
-        std::string tryTranslators( std::vector<IExceptionTranslator*>::const_iterator it ) const {
+        std::string tryTranslators( std::vector<const IExceptionTranslator*>::const_iterator it ) const {
             if( it == m_translators.end() )
                 return "Unknown exception";
             
@@ -53,8 +67,8 @@ namespace Catch {
         }
         
     private:
-        std::vector<IExceptionTranslator*> m_translators;
+        std::vector<const IExceptionTranslator*> m_translators;
     };
 }
 
-#endif // TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED

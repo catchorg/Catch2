@@ -1,14 +1,14 @@
 /*
- *  ExceptionTests.cpp
- *  Catch - Test
- *
  *  Created by Phil on 09/11/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
  */
+
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 #include "catch.hpp"
 
@@ -19,7 +19,7 @@
 
 namespace
 {
-    ATTRIBUTE_NORETURN
+    CATCH_ATTRIBUTE_NORETURN
     int thisThrows();
     
     int thisThrows()
@@ -41,6 +41,7 @@ TEST_CASE( "./succeeding/exceptions/explicit", "When checked exceptions are thro
     REQUIRE_THROWS( thisThrows() );
 }
 
+CATCH_ATTRIBUTE_NORETURN
 TEST_CASE( "./failing/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )
 {
     CHECK_THROWS_AS( thisThrows(), std::string );
@@ -112,6 +113,11 @@ TEST_CASE_NORETURN( "./failing/exceptions/custom/double", "Unexpected custom exc
     throw double( 3.14 );
 }
 
+#ifdef  __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
+
 TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections report file/ line or section" )
 {
     SECTION( "the section", "" )
@@ -122,6 +128,10 @@ TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections r
         }
     }
 }
+
+#ifdef  __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produced by exceptions caught by Catch matched the expected form" )
 {
@@ -141,7 +151,16 @@ TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produce
         INFO( runner.getLog() );
 //        CHECK( runner.getLog().find( "Unexpected exception" ) != std::string::npos ); // Mock reporter doesn't say this
         CHECK_THAT( runner.getLog(), Contains( "Exception from section" ) );
-//        CHECK( runner.getLog().find( CATCH_GET_LINE_INFO( "the section2" ) ) != std::string::npos ); // Mock reporter doesn't say this
+        CHECK_THAT( runner.getLog(), Contains( CATCH_GET_LINE_INFO( "the section2" ) ) );
     }
     
+}
+
+inline int thisFunctionNotImplemented( int ) {
+    CATCH_NOT_IMPLEMENTED;
+}
+
+TEST_CASE( "./succeeding/exceptions/notimplemented", "" )
+{
+    REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
 }

@@ -41,6 +41,24 @@ OC_TEST_CASE( "OCTest/test2", "This is another test case" )
     
     REQUIRE( obj.int_val == 2 );
 }
+
+OC_TEST_CASE( "OCTest/BOOL", "tests a boolean value" )
+{
+    CHECK( [obj isTrue] == NO );
+    CHECK( [obj isFalse] == YES );
+}
+
+OC_TEST_CASE( "OCTest/throws/objc", "throws an Objective-C exception" )
+{
+    @throw [[NSException alloc] initWithName: NSGenericException
+                                      reason: @"Objective-C exception"
+                                    userInfo: nil];
+}
+OC_TEST_CASE( "OCTest/throws/stdc++", "throws a std c++ exception" )
+{
+    throw std::domain_error( "std C++ exception" );
+}
+
 ///////////////////////////////////////////////////////////////////////////
 template<typename T>
 void useObject( const T& object ){}
@@ -48,10 +66,9 @@ void useObject( const T& object ){}
 template<typename T>
 void useObject( const T* object ){}
 
-using namespace Catch::Matchers;
 OC_TEST_CASE( "OCTest/matchers", "Matches work with OC types (NSString so far)" )
 {
-    REQUIRE_THAT( @"This is a string", Equals( @"This is a string" ) );
+    REQUIRE_THAT( @"This is a string", Equals( @"This isnt a string" ) );
     REQUIRE_THAT( @"This is a string", Contains( @"is a" ) );
     REQUIRE_THAT( @"This is a string", StartsWith( @"This" ) );
     REQUIRE_THAT( @"This is a string", EndsWith( @"string" ) );

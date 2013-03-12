@@ -5,12 +5,13 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_IREPORTERREGISTRY_INCLUDED
-#define TWOBLUECUBES_CATCH_IREPORTERREGISTRY_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED
+#define TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED
 
 #include "catch_common.h"
 #include "catch_totals.hpp"
 #include "catch_ptr.hpp"
+#include "catch_config.hpp"
 
 #include <string>
 #include <ostream>
@@ -18,42 +19,80 @@
 
 namespace Catch
 {
-    struct IReporterConfig {
-        virtual ~IReporterConfig() {}        
-        virtual std::ostream& stream () const = 0;        
-        virtual bool includeSuccessfulResults () const = 0;
-        virtual std::string getName () const = 0;
+    struct ReporterConfig
+    {
+        ReporterConfig( const std::string& _name,
+                        std::ostream& _stream,
+                        bool _includeSuccessfulResults,
+                        const ConfigData& _fullConfig )
+        :   name( _name ),
+            stream( _stream ),
+            includeSuccessfulResults( _includeSuccessfulResults ),
+            fullConfig( _fullConfig )
+        {}
+        
+        ReporterConfig( const ReporterConfig& other )
+        :   name( other.name ),
+            stream( other.stream ),
+            includeSuccessfulResults( other.includeSuccessfulResults ),
+            fullConfig( other.fullConfig )
+        {}
+        
+
+        std::string name;
+        std::ostream& stream;
+        bool includeSuccessfulResults;
+        ConfigData fullConfig;
+
+    private:
+        void operator=(const ReporterConfig&);
     };
     
     class TestCaseInfo;
-    class ResultInfo;
+    class AssertionResult;
     
     struct IReporter : IShared {
-        virtual ~IReporter() {}        
-        virtual bool shouldRedirectStdout() const = 0;        
+        virtual ~IReporter();
+
+        virtual bool shouldRedirectStdout() const = 0;
+
         virtual void StartTesting() = 0;        
         virtual void EndTesting( const Totals& totals ) = 0;        
-        virtual void StartGroup( const std::string& groupName ) = 0;        
+
+        virtual void StartGroup( const std::string& groupName ) = 0;
         virtual void EndGroup( const std::string& groupName, const Totals& totals ) = 0;        
-        virtual void StartSection( const std::string& sectionName, const std::string& description ) = 0;        
-        virtual void EndSection( const std::string& sectionName, const Counts& assertions ) = 0;        
-        virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;        
-        virtual void EndTestCase( const TestCaseInfo& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;        
-        virtual void Result( const ResultInfo& result ) = 0;
+
+        virtual void StartTestCase( const TestCaseInfo& testInfo ) = 0;
+        // TestCaseResult
+        virtual void EndTestCase( const TestCaseInfo& testInfo, const Totals& totals, const std::string& stdOut, const std::string& stdErr ) = 0;
+
+        // SectionInfo
+        virtual void StartSection( const std::string& sectionName, const std::string& description ) = 0;
+        // Section Result
+        virtual void EndSection( const std::string& sectionName, const Counts& assertions ) = 0;
+
+        // - merge into SectionResult ?
+        virtual void NoAssertionsInSection( const std::string& sectionName ) = 0;
+        virtual void NoAssertionsInTestCase( const std::string& testName ) = 0;
+
+        // - merge into SectionResult, TestCaseResult, GroupResult & TestRunResult
+        virtual void Aborted() = 0;
+
+        // AssertionReslt
+        virtual void Result( const AssertionResult& result ) = 0;
     };
     
     struct IReporterFactory {
-        virtual ~IReporterFactory() {}        
-        virtual IReporter* create( const IReporterConfig& config ) const = 0;        
+        virtual ~IReporterFactory();
+        virtual IReporter* create( const ReporterConfig& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
 
     struct IReporterRegistry {
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
-        virtual ~IReporterRegistry() {}
-        virtual IReporter* create( const std::string& name, const IReporterConfig& config ) const = 0;        
-        virtual void registerReporter( const std::string& name, IReporterFactory* factory ) = 0;        
+        virtual ~IReporterRegistry();
+        virtual IReporter* create( const std::string& name, const ReporterConfig& config ) const = 0;        
         virtual const FactoryMap& getFactories() const = 0;
     };
     
@@ -65,4 +104,4 @@ namespace Catch
     }
 }
 
-#endif // TWOBLUECUBES_CATCH_IREPORTERREGISTRY_INCLUDED
+#endif // TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED

@@ -5,8 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
 
 #include "catch_common.h"
 #include "catch_interfaces_testcase.h"
@@ -14,7 +14,7 @@
 namespace Catch {
     
 template<typename C>
-class MethodTestCase : public ITestCase {
+class MethodTestCase : public SharedImpl<ITestCase> {
 
 public:
     MethodTestCase( void (C::*method)() ) : m_method( method ) {}
@@ -24,21 +24,9 @@ public:
         (obj.*m_method)();
     }
     
-    virtual ITestCase* clone() const {
-        return new MethodTestCase<C>( m_method );
-    }
-
-    virtual bool operator == ( const ITestCase& other ) const {
-        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && m_method == mtOther->m_method;
-    }
-    
-    virtual bool operator < ( const ITestCase& other ) const {
-        const MethodTestCase* mtOther = dynamic_cast<const MethodTestCase*>( &other );
-        return mtOther && &m_method < &mtOther->m_method;
-    }
-    
 private:
+    virtual ~MethodTestCase() {}
+
     void (C::*m_method)();
 };
 
@@ -46,21 +34,23 @@ typedef void(*TestFunction)();
     
 struct AutoReg {
 
-    AutoReg(    TestFunction function, 
+    AutoReg(    TestFunction function,
                 const char* name, 
                 const char* description,
                 const SourceLineInfo& lineInfo );
     
     template<typename C>
-    AutoReg(    void (C::*method)(), 
+    AutoReg(    void (C::*method)(),
+                const char* className,
                 const char* name, 
                 const char* description,
                 const SourceLineInfo& lineInfo ) {
-        registerTestCase( new MethodTestCase<C>( method ), name, description, lineInfo );
+        registerTestCase( new MethodTestCase<C>( method ), className, name, description, lineInfo );
     }
     
     void registerTestCase(  ITestCase* testCase, 
-                            const char* name, 
+                            const char* className,
+                            const char* name,
                             const char* description,
                             const SourceLineInfo& lineInfo );
     
@@ -81,13 +71,13 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
-    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() ATTRIBUTE_NORETURN; \
+    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() CATCH_ATTRIBUTE_NORETURN; \
     namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
     static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
 ///////////////////////////////////////////////////////////////////////////////
-#define CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
+#define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
+    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
 
 ///////////////////////////////////////////////////////////////////////////////
 #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
@@ -95,8 +85,8 @@ private:
         struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
             void test(); \
         }; \
-        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, TestName, Desc, CATCH_INTERNAL_LINEINFO ); \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, #ClassName, TestName, Desc, CATCH_INTERNAL_LINEINFO ); \
     } \
     void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
 
-#endif // TWOBLUECUBES_CATCH_REGISTRY_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED

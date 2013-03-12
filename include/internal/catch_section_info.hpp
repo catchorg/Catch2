@@ -5,8 +5,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_INTERNAL_CATCH_SECTION_INFO_HPP_INCLUDED
-#define TWOBLUECUBES_INTERNAL_CATCH_SECTION_INFO_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED
 
 #include "catch_common.h"
 
@@ -52,6 +52,10 @@ namespace Catch {
             return false;
         }
 
+        bool isBranch() const {
+            return m_status == Branch;
+        }
+
         void ranToCompletion() {
             if( m_status == Branch && !hasUntestedSections() )
                 m_status = TestedBranch;
@@ -95,4 +99,4 @@ namespace Catch {
     };
 }
 
-#endif // TWOBLUECUBES_INTERNAL_CATCH_SECTION_INFO_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED

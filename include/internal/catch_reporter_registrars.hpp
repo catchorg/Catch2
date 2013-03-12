@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
-#include "catch_context.h"
+#include "catch_interfaces_registry_hub.h"
 
 namespace Catch {    
 
@@ -17,7 +17,7 @@ namespace Catch {
     
         class ReporterFactory : public IReporterFactory {
 
-            virtual IReporter* create( const IReporterConfig& config ) const {
+            virtual IReporter* create( const ReporterConfig& config ) const {
                 return new T( config );
             }
             
@@ -29,7 +29,7 @@ namespace Catch {
     public:
 
         ReporterRegistrar( const std::string& name ) {
-            Context::getReporterRegistry().registerReporter( name, new ReporterFactory() );
+            getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     }; 
 }

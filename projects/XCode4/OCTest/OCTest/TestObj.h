@@ -7,6 +7,8 @@
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+#ifndef TWOBLUECUBES_TESTOBJ_H_INCLUDED
+#define TWOBLUECUBES_TESTOBJ_H_INCLUDED
 
 #import <Foundation/Foundation.h>
 
@@ -16,6 +18,11 @@
     int int_val;
 }
 
+-(BOOL) isTrue;
+-(BOOL) isFalse;
+
 @property (nonatomic, assign ) int int_val;
 
 @end
+
+#endif // TWOBLUECUBES_TESTOBJ_H_INCLUDED
