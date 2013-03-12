@@ -148,6 +148,9 @@ namespace Catch {
     }
     
     inline std::string toString( NSString* const& nsstring ) {
+        if (nsstring == nil) {
+            return "nil";
+        }
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
     
