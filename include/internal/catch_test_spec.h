@@ -10,6 +10,7 @@
 
 #include "catch_test_case_info.h"
 #include "catch_tags.hpp"
+#include "catch_common.h"
 
 #include <string>
 #include <vector>
@@ -36,6 +37,8 @@ namespace Catch {
             m_filterType( matchBehaviour ),
             m_wildcardPosition( NoWildcard )
         {
+            toLower( m_stringToMatch );
+
             if( m_filterType == IfFilterMatches::AutoDetectBehaviour ) {
                 if( startsWith( m_stringToMatch, "exclude:" ) ) {
                     m_stringToMatch = m_stringToMatch.substr( 8 );
@@ -75,7 +78,8 @@ namespace Catch {
 #endif
 
         bool isMatch( const TestCase& testCase ) const {
-            const std::string& name = testCase.getTestCaseInfo().name;
+            std::string name = testCase.getTestCaseInfo().name;
+            toLower( name );
 
             switch( m_wildcardPosition ) {
                 case NoWildcard:

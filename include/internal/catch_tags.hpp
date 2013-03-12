@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED
 
+#include "catch_common.h"
+
 #include <string>
 #include <set>
 #include <map>
@@ -68,7 +70,9 @@ namespace Catch {
 
     private:
         virtual void acceptTag( const std::string& tag ) {
-            m_tags.insert( tag );
+            std::string lcTag = tag;
+            toLower( lcTag );
+            m_tags.insert( lcTag );
         }
         virtual void acceptChar( char c ) {
             m_remainder += c;
@@ -111,7 +115,9 @@ namespace Catch {
         typedef std::map<std::string, Tag> TagMap;
     public:
         void add( const Tag& tag ) {
-            m_tags.insert( std::make_pair( tag.getName(), tag ) );
+            std::string tagName = tag.getName();
+            toLower( tagName );
+            m_tags.insert( std::make_pair( tagName, tag ) );
         }
 
         bool empty() const {

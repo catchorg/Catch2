@@ -23,7 +23,7 @@
 inline bool itDoesThis(){ return true; }
 inline bool itDoesThat(){ return true; }
 
-SCENARIO( "Do that thing with the thing", "[tags]" ) {
+SCENARIO( "Do that thing with the thing", "[Tags]" ) {
     GIVEN( "This stuff exists" ) {
         // make stuff exist
         WHEN( "I do this" ) {
@@ -35,6 +35,5 @@ SCENARIO( "Do that thing with the thing", "[tags]" ) {
                     REQUIRE( itDoesThat() );
             }
         }
-        
     }
 }

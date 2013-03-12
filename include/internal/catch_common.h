@@ -80,6 +80,9 @@ namespace Catch {
     inline bool contains( const std::string& s, const std::string& infix ) {
         return s.find( infix ) != std::string::npos;
     }
+    inline void toLower( std::string& s ) {
+        std::transform( s.begin(), s.end(), s.begin(), ::tolower );
+    }
 
     struct pluralise {
         pluralise( std::size_t count, const std::string& label )
