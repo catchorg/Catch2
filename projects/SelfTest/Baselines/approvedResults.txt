@@ -1,5 +1,5 @@
 
-CatchSelfTest is a CATCH v0.9 b23 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b24 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4286,7 +4286,7 @@ with expansion:
 101 test cases - 47 failed (625 assertions - 104 failed)
 
 
-CatchSelfTest is a CATCH v0.9 b23 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b24 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
