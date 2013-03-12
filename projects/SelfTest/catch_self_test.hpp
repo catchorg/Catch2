@@ -35,6 +35,7 @@ namespace Catch {
             return ReporterPreferences();
         }
 
+        virtual void noMatchingTestCases( std::string const& ) {}
         virtual void testRunStarting( TestRunInfo const& ) {}
         virtual void testGroupStarting( GroupInfo const& ) {}
         virtual void testCaseStarting( TestCaseInfo const& ) {}

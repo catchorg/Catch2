@@ -197,6 +197,8 @@ namespace Catch
         // static std::string getDescription();
 
         virtual ReporterPreferences getPreferences() const = 0;
+        
+        virtual void noMatchingTestCases( std::string const& spec ) = 0;
 
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
         virtual void testGroupStarting( GroupInfo const& groupInfo ) = 0;
@@ -221,6 +223,8 @@ namespace Catch
         {}
 
         virtual ~StreamingReporterBase();
+        
+        virtual void noMatchingTestCases( std::string const& ) {}
 
         virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
             testRunInfo = _testRunInfo;
@@ -390,6 +394,7 @@ namespace Catch
             return prefs;
         }
 
+        virtual void noMatchingTestCases( std::string const& ) {}
         virtual void testRunStarting( TestRunInfo const& ) {
             m_legacyReporter->StartTesting();
         }

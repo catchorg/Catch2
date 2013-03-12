@@ -31,6 +31,10 @@ namespace Catch {
             return prefs;
 
         }
+
+        virtual void noMatchingTestCases( std::string const& spec ) {
+            stream << "No test cases matched '" << spec << "'" << std::endl;
+        }
         
         virtual void assertionStarting( AssertionInfo const& ) {
         }

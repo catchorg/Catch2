@@ -70,7 +70,7 @@ namespace Catch {
                 }
             }
             if( testsRunForGroup == 0 && !filterGroup.getName().empty() )
-                std::cerr << "\n[No test cases matched with: " << filterGroup.getName() << "]" << std::endl;
+                m_reporter->noMatchingTestCases( filterGroup.getName() );
             return totals;
             
         }
