@@ -137,9 +137,15 @@ inline std::string toString( std::nullptr_t ) {
 
 #ifdef __OBJC__
     inline std::string toString( NSString const * const& nsstring ) {
+        if (nsstring == nil) {
+            return "nil";
+        }
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
     inline std::string toString( NSString * CATCH_ARC_STRONG const& nsstring ) {
+        if (nsstring == nil) {
+            return "nil";
+        }
         return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
     }
     inline std::string toString( NSObject* const& nsObject ) {
