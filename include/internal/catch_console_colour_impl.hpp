@@ -94,16 +94,16 @@ namespace {
                     std::cout << colourEscape << "[0m";    // white/ normal
                     break;
                 case ResultError:
-                    std::cout << colourEscape << "[0;31m"; // red
+                    std::cout << colourEscape << "[1;31m"; // bold red
                     break;
                 case ResultSuccess:
-                    std::cout << colourEscape << "[0;32m"; // green
+                    std::cout << colourEscape << "[1;32m"; // bold green
                     break;
                 case Error:
                     std::cout << colourEscape << "[1;31m"; // bold red
                     break;
                 case Success:
-                    std::cout << colourEscape << "[1;32m"; // bold green
+                    std::cout << colourEscape << "[0;32m"; // green
                     break;
                 case OriginalExpression:
                     std::cout << colourEscape << "[0;36m"; // cyan
