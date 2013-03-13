@@ -234,7 +234,7 @@ namespace Catch {
         
     private:
         ReporterConfig m_config;
-        bool m_currentTestSuccess;
+//        bool m_currentTestSuccess;
         
         Stats m_testSuiteStats;
         Stats* m_currentStats;

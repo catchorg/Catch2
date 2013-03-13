@@ -63,7 +63,6 @@ namespace Catch {
 
     BasicReporter::~BasicReporter() {}
     StreamingReporterBase::~StreamingReporterBase() {}
-    CumulativeReporterBase::~CumulativeReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}

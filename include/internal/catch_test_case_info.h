@@ -13,6 +13,11 @@
 #include <string>
 #include <set>
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 namespace Catch {
 
     struct ITestCase;
@@ -67,5 +72,9 @@ namespace Catch {
                             const std::string& description,
                             const SourceLineInfo& lineInfo );
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED

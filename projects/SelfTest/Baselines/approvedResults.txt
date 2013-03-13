@@ -2701,132 +2701,132 @@ selftest/main
   selftest/expected result/failing tests
 ...............................................................................
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:114:
+catch_self_test.hpp:115:
 PASSED:
 with message:
   Tests failed, as expected
@@ -2837,236 +2837,236 @@ selftest/main
   selftest/expected result/succeeding tests
 ...............................................................................
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
 Message from section one
 Message from section two
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
 Some information
 An error
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:103:
+catch_self_test.hpp:104:
 PASSED:
 with message:
   Tests passed, as expected
@@ -10699,57 +10699,57 @@ No assertions in test case, 'second tag'
 [Running: selftest/main]
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/failing tests']
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:114:  succeeded
+catch_self_test.hpp:115:  succeeded
 [with message: Tests failed, as expected]
 [End of section: 'selftest/expected result/failing tests' All 26 assertions passed]
 
@@ -10757,101 +10757,101 @@ catch_self_test.hpp:114:  succeeded
 
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/succeeding tests']
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
 Message from section one
 Message from section two
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
 Some information
 An error
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:103:  succeeded
+catch_self_test.hpp:104:  succeeded
 [with message: Tests passed, as expected]
 [End of section: 'selftest/expected result/succeeding tests' All 46 assertions passed]
 

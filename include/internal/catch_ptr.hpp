@@ -10,6 +10,11 @@
 
 #include "catch_common.h"
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 namespace Catch {
 
     // An intrusive reference counting smart pointer.
@@ -81,5 +86,9 @@ namespace Catch {
     };
     
 } // end namespace Catch
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
