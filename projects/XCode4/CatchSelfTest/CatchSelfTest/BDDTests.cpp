@@ -8,14 +8,6 @@
 
 #include "catch.hpp"
 
-// !TBD: story scenarios map to class based tests
-#define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
-#define GIVEN( desc )    SECTION( "Given: " desc, "" )
-#define WHEN( desc )     SECTION( " When: " desc, "" )
-#define AND_WHEN( desc ) SECTION( "  And: " desc, "" )
-#define THEN( desc )     SECTION( " Then: " desc, "" )
-#define AND_THEN( desc ) SECTION( "  And: " desc, "" )
-
 inline bool itDoesThis(){ return true; }
 inline bool itDoesThat(){ return true; }
 

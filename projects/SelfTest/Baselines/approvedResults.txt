@@ -973,15 +973,15 @@ with expansion:
 ./succeeding/exceptions/explicit
 ...............................................................................
 
-ExceptionTests.cpp:39:
+ExceptionTests.cpp:35:
 PASSED:
   REQUIRE_THROWS_AS( thisThrows() )
 
-ExceptionTests.cpp:40:
+ExceptionTests.cpp:36:
 PASSED:
   REQUIRE_NOTHROW( thisDoesntThrow() )
 
-ExceptionTests.cpp:41:
+ExceptionTests.cpp:37:
 PASSED:
   REQUIRE_THROWS( thisThrows() )
 
@@ -989,16 +989,16 @@ PASSED:
 ./failing/exceptions/explicit
 ...............................................................................
 
-ExceptionTests.cpp:47: FAILED:
+ExceptionTests.cpp:43: FAILED:
   CHECK_THROWS_AS( thisThrows() )
 due to unexpected exception with message:
   expected exception
 
-ExceptionTests.cpp:48: FAILED:
+ExceptionTests.cpp:44: FAILED:
   CHECK_THROWS_AS( thisDoesntThrow() )
 because no exception was thrown where one was expected:
 
-ExceptionTests.cpp:49: FAILED:
+ExceptionTests.cpp:45: FAILED:
   CHECK_NOTHROW( thisThrows() )
 due to unexpected exception with message:
   expected exception
@@ -1007,7 +1007,7 @@ due to unexpected exception with message:
 ./failing/exceptions/implicit
 ...............................................................................
 
-ExceptionTests.cpp:52: FAILED:
+ExceptionTests.cpp:48: FAILED:
 due to unexpected exception with message:
   unexpected exception
 
@@ -1015,11 +1015,11 @@ due to unexpected exception with message:
 ./failing/exceptions/implicit/2
 ...............................................................................
 
-ExceptionTests.cpp:60:
+ExceptionTests.cpp:56:
 PASSED:
   CHECK( 1 == 1 )
 
-ExceptionTests.cpp:60: FAILED:
+ExceptionTests.cpp:56: FAILED:
   {Unknown expression after the reported line}
 due to unexpected exception with message:
   unexpected exception
@@ -1029,7 +1029,7 @@ due to unexpected exception with message:
   section name
 ...............................................................................
 
-ExceptionTests.cpp:66: FAILED:
+ExceptionTests.cpp:62: FAILED:
 due to unexpected exception with message:
   unexpected exception
 
@@ -1044,7 +1044,7 @@ No assertions in test case, './succeeding/exceptions/implicit'
 ./failing/exceptions/custom
 ...............................................................................
 
-ExceptionTests.cpp:110: FAILED:
+ExceptionTests.cpp:106: FAILED:
 due to unexpected exception with message:
   custom exception
 
@@ -1052,7 +1052,7 @@ due to unexpected exception with message:
 ./failing/exceptions/custom/nothrow
 ...............................................................................
 
-ExceptionTests.cpp:117: FAILED:
+ExceptionTests.cpp:113: FAILED:
   REQUIRE_NOTHROW( throw CustomException( "unexpected custom exception" ) )
 due to unexpected exception with message:
   unexpected custom exception
@@ -1061,7 +1061,7 @@ due to unexpected exception with message:
 ./failing/exceptions/custom/throw
 ...............................................................................
 
-ExceptionTests.cpp:122: FAILED:
+ExceptionTests.cpp:118: FAILED:
   REQUIRE_THROWS_AS( throw CustomException( "custom exception - not std" ) )
 due to unexpected exception with message:
   custom exception - not std
@@ -1070,7 +1070,7 @@ due to unexpected exception with message:
 ./failing/exceptions/custom/double
 ...............................................................................
 
-ExceptionTests.cpp:126: FAILED:
+ExceptionTests.cpp:122: FAILED:
 due to unexpected exception with message:
   3.14
 
@@ -1078,7 +1078,7 @@ due to unexpected exception with message:
 ./succeeding/exceptions/notimplemented
 ...............................................................................
 
-ExceptionTests.cpp:137:
+ExceptionTests.cpp:133:
 PASSED:
   REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) )
 
@@ -2210,13 +2210,13 @@ explicitly with message:
   s1
 ...............................................................................
 
-MiscTests.cpp:25:
+MiscTests.cpp:21:
 PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
 
-MiscTests.cpp:26:
+MiscTests.cpp:22:
 PASSED:
   REQUIRE( b != a )
 with expansion:
@@ -2227,7 +2227,7 @@ with expansion:
   s2
 ...............................................................................
 
-MiscTests.cpp:31:
+MiscTests.cpp:27:
 PASSED:
   REQUIRE( a != b )
 with expansion:
@@ -2238,13 +2238,13 @@ with expansion:
   s1
 ...............................................................................
 
-MiscTests.cpp:42:
+MiscTests.cpp:38:
 PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
 
-MiscTests.cpp:43:
+MiscTests.cpp:39:
 PASSED:
   REQUIRE( b != a )
 with expansion:
@@ -2256,7 +2256,7 @@ with expansion:
   s2
 ...............................................................................
 
-MiscTests.cpp:47:
+MiscTests.cpp:43:
 PASSED:
   REQUIRE( a != b )
 with expansion:
@@ -2268,7 +2268,7 @@ with expansion:
   s2
 ...............................................................................
 
-MiscTests.cpp:61: FAILED:
+MiscTests.cpp:57: FAILED:
   REQUIRE( a == b )
 with expansion:
   1 == 2
@@ -2279,7 +2279,7 @@ with expansion:
   s3
 ...............................................................................
 
-MiscTests.cpp:66:
+MiscTests.cpp:62:
 PASSED:
   REQUIRE( a != b )
 with expansion:
@@ -2291,7 +2291,7 @@ with expansion:
   s4
 ...............................................................................
 
-MiscTests.cpp:70:
+MiscTests.cpp:66:
 PASSED:
   REQUIRE( a < b )
 with expansion:
@@ -2328,7 +2328,7 @@ No assertions in section, 'f (leaf)'
   s1
 ...............................................................................
 
-MiscTests.cpp:103: FAILED:
+MiscTests.cpp:99: FAILED:
   CHECK( b > a )
 with expansion:
   0 > 1
@@ -2337,21 +2337,21 @@ with expansion:
 ./mixed/Misc/loops
 ...............................................................................
 
-MiscTests.cpp:115: FAILED:
+MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[0] (1) is even
 
-MiscTests.cpp:115: FAILED:
+MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[1] (1) is even
 
-MiscTests.cpp:115:
+MiscTests.cpp:111:
 PASSED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
@@ -2359,21 +2359,21 @@ with expansion:
 with message:
   Testing if fib[2] (2) is even
 
-MiscTests.cpp:115: FAILED:
+MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[3] (3) is even
 
-MiscTests.cpp:115: FAILED:
+MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[4] (5) is even
 
-MiscTests.cpp:115:
+MiscTests.cpp:111:
 PASSED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
@@ -2381,14 +2381,14 @@ with expansion:
 with message:
   Testing if fib[5] (8) is even
 
-MiscTests.cpp:115: FAILED:
+MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[6] (13) is even
 
-MiscTests.cpp:115: FAILED:
+MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
@@ -2408,13 +2408,13 @@ No assertions in test case, './succeeding/Misc/stdout,stderr'
 ./succeeding/Misc/null strings
 ...............................................................................
 
-MiscTests.cpp:133:
+MiscTests.cpp:129:
 PASSED:
   REQUIRE( makeString( false ) != static_cast<char*>(__null) )
 with expansion:
   "valid string" != {null string}
 
-MiscTests.cpp:134:
+MiscTests.cpp:130:
 PASSED:
   REQUIRE( makeString( true ) == static_cast<char*>(__null) )
 with expansion:
@@ -2424,7 +2424,7 @@ with expansion:
 ./failing/info
 ...............................................................................
 
-MiscTests.cpp:142: FAILED:
+MiscTests.cpp:138: FAILED:
   REQUIRE( false )
 with messages:
   hi
@@ -2434,13 +2434,13 @@ with messages:
 ./succeeding/checkedif
 ...............................................................................
 
-MiscTests.cpp:147:
+MiscTests.cpp:143:
 PASSED:
   CHECKED_IF( flag )
 with expansion:
   true
 
-MiscTests.cpp:155:
+MiscTests.cpp:151:
 PASSED:
   REQUIRE( testCheckedIf( true ) )
 with expansion:
@@ -2450,12 +2450,12 @@ with expansion:
 ./failing/checkedif
 ...............................................................................
 
-MiscTests.cpp:147: FAILED:
+MiscTests.cpp:143: FAILED:
   CHECKED_IF( flag )
 with expansion:
   false
 
-MiscTests.cpp:160: FAILED:
+MiscTests.cpp:156: FAILED:
   REQUIRE( testCheckedIf( false ) )
 with expansion:
   false
@@ -2464,13 +2464,13 @@ with expansion:
 ./succeeding/checkedelse
 ...............................................................................
 
-MiscTests.cpp:165:
+MiscTests.cpp:161:
 PASSED:
   CHECKED_ELSE( flag )
 with expansion:
   true
 
-MiscTests.cpp:173:
+MiscTests.cpp:169:
 PASSED:
   REQUIRE( testCheckedElse( true ) )
 with expansion:
@@ -2480,12 +2480,12 @@ with expansion:
 ./failing/checkedelse
 ...............................................................................
 
-MiscTests.cpp:165: FAILED:
+MiscTests.cpp:161: FAILED:
   CHECKED_ELSE( flag )
 with expansion:
   false
 
-MiscTests.cpp:178: FAILED:
+MiscTests.cpp:174: FAILED:
   REQUIRE( testCheckedElse( false ) )
 with expansion:
   false
@@ -2510,7 +2510,7 @@ No assertions in section, 'encoded chars'
 ./manual/onechar
 ...............................................................................
 
-MiscTests.cpp:196: FAILED:
+MiscTests.cpp:192: FAILED:
   REQUIRE( false )
 with message:
   3
@@ -2519,7 +2519,7 @@ with message:
 ./succeeding/atomic if
 ...............................................................................
 
-MiscTests.cpp:206:
+MiscTests.cpp:202:
 PASSED:
   REQUIRE( x == 0 )
 with expansion:
@@ -2529,25 +2529,25 @@ with expansion:
 ./succeeding/matchers
 ...............................................................................
 
-MiscTests.cpp:216:
+MiscTests.cpp:212:
 PASSED:
   REQUIRE_THAT( testStringForMatching() Contains( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string"
 
-MiscTests.cpp:217:
+MiscTests.cpp:213:
 PASSED:
   CHECK_THAT( testStringForMatching() Contains( "abc" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc"
 
-MiscTests.cpp:219:
+MiscTests.cpp:215:
 PASSED:
   CHECK_THAT( testStringForMatching() StartsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "this"
 
-MiscTests.cpp:220:
+MiscTests.cpp:216:
 PASSED:
   CHECK_THAT( testStringForMatching() EndsWith( "substring" ) )
 with expansion:
@@ -2557,7 +2557,7 @@ with expansion:
 ./failing/matchers/Contains
 ...............................................................................
 
-MiscTests.cpp:225: FAILED:
+MiscTests.cpp:221: FAILED:
   CHECK_THAT( testStringForMatching() Contains( "not there" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
@@ -2566,7 +2566,7 @@ with expansion:
 ./failing/matchers/StartsWith
 ...............................................................................
 
-MiscTests.cpp:230: FAILED:
+MiscTests.cpp:226: FAILED:
   CHECK_THAT( testStringForMatching() StartsWith( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
@@ -2575,7 +2575,7 @@ with expansion:
 ./failing/matchers/EndsWith
 ...............................................................................
 
-MiscTests.cpp:235: FAILED:
+MiscTests.cpp:231: FAILED:
   CHECK_THAT( testStringForMatching() EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
@@ -2584,7 +2584,7 @@ with expansion:
 ./failing/matchers/Equals
 ...............................................................................
 
-MiscTests.cpp:240: FAILED:
+MiscTests.cpp:236: FAILED:
   CHECK_THAT( testStringForMatching() Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
@@ -2593,7 +2593,7 @@ with expansion:
 ./succeeding/matchers/AllOf
 ...............................................................................
 
-MiscTests.cpp:248:
+MiscTests.cpp:244:
 PASSED:
   CHECK_THAT( testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
 with expansion:
@@ -2604,14 +2604,14 @@ with expansion:
 ./succeeding/matchers/AnyOf
 ...............................................................................
 
-MiscTests.cpp:252:
+MiscTests.cpp:248:
 PASSED:
   CHECK_THAT( testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or
   contains: "not there" )
 
-MiscTests.cpp:253:
+MiscTests.cpp:249:
 PASSED:
   CHECK_THAT( testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
 with expansion:
@@ -2622,7 +2622,7 @@ with expansion:
 ./succeeding/matchers/Equals
 ...............................................................................
 
-MiscTests.cpp:258:
+MiscTests.cpp:254:
 PASSED:
   CHECK_THAT( testStringForMatching() Equals( "this string contains 'abc' as a substring" ) )
 with expansion:
@@ -2633,31 +2633,31 @@ with expansion:
 example/factorial
 ...............................................................................
 
-MiscTests.cpp:269:
+MiscTests.cpp:265:
 PASSED:
   REQUIRE( Factorial(0) == 1 )
 with expansion:
   1 == 1
 
-MiscTests.cpp:270:
+MiscTests.cpp:266:
 PASSED:
   REQUIRE( Factorial(1) == 1 )
 with expansion:
   1 == 1
 
-MiscTests.cpp:271:
+MiscTests.cpp:267:
 PASSED:
   REQUIRE( Factorial(2) == 2 )
 with expansion:
   2 == 2
 
-MiscTests.cpp:272:
+MiscTests.cpp:268:
 PASSED:
   REQUIRE( Factorial(3) == 6 )
 with expansion:
   6 == 6
 
-MiscTests.cpp:273:
+MiscTests.cpp:269:
 PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
@@ -2674,7 +2674,7 @@ No assertions in test case, 'empty'
 Nice descriptive name
 ...............................................................................
 
-MiscTests.cpp:282:
+MiscTests.cpp:278:
 warning:
   This one ran
 
@@ -2701,132 +2701,132 @@ selftest/main
   selftest/expected result/failing tests
 ...............................................................................
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
 
-catch_self_test.hpp:115:
+catch_self_test.hpp:120:
 PASSED:
 with message:
   Tests failed, as expected
@@ -2837,236 +2837,236 @@ selftest/main
   selftest/expected result/succeeding tests
 ...............................................................................
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
 Message from section one
 Message from section two
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
 Some information
 An error
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
 
-catch_self_test.hpp:104:
+catch_self_test.hpp:109:
 PASSED:
 with message:
   Tests passed, as expected
@@ -4262,7 +4262,7 @@ Scenario: Do that thing with the thing
    Then: it should do this
 ...............................................................................
 
-BDDTests.cpp:33:
+BDDTests.cpp:21:
 PASSED:
   REQUIRE( itDoesThis() )
 with expansion:
@@ -4276,7 +4276,7 @@ Scenario: Do that thing with the thing
     And: do that
 ...............................................................................
 
-BDDTests.cpp:35:
+BDDTests.cpp:23:
 PASSED:
   REQUIRE( itDoesThat() )
 with expansion:
@@ -4753,49 +4753,49 @@ ConditionTests.cpp:343
     <testcase classname="global" name="./succeeding/exceptions/explicit" time="tbd"/>
     <testcase classname="global" name="./failing/exceptions/explicit" time="tbd">
       <error message="thisThrows()" type="CHECK_THROWS_AS">
-ExceptionTests.cpp:47
+ExceptionTests.cpp:43
       </error>
       < message="thisDoesntThrow()" type="CHECK_THROWS_AS">
-ExceptionTests.cpp:48
+ExceptionTests.cpp:44
       </>
       <error message="thisThrows()" type="CHECK_NOTHROW">
-ExceptionTests.cpp:49
+ExceptionTests.cpp:45
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:52
+ExceptionTests.cpp:48
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit/2" time="tbd">
       <error message="{Unknown expression after the reported line}">
-ExceptionTests.cpp:60
+ExceptionTests.cpp:56
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit/3" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:66
+ExceptionTests.cpp:62
       </error>
     </testcase>
     <testcase classname="global" name="./succeeding/exceptions/implicit" time="tbd"/>
     <testcase classname="global" name="./failing/exceptions/custom" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:110
+ExceptionTests.cpp:106
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/nothrow" time="tbd">
       <error message="throw CustomException( &quot;unexpected custom exception&quot; )" type="REQUIRE_NOTHROW">
-ExceptionTests.cpp:117
+ExceptionTests.cpp:113
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/throw" time="tbd">
       <error message="throw CustomException( &quot;custom exception - not std&quot; )" type="REQUIRE_THROWS_AS">
-ExceptionTests.cpp:122
+ExceptionTests.cpp:118
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/double" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:126
+ExceptionTests.cpp:122
       </error>
     </testcase>
     <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="tbd"/>
@@ -4859,33 +4859,33 @@ MessageTests.cpp:101
     <testcase classname="global" name="./succeeding/Misc/Sections/nested" time="tbd"/>
     <testcase classname="global" name="./mixed/Misc/Sections/nested2" time="tbd">
       <failure message="1 == 2" type="REQUIRE">
-MiscTests.cpp:61
+MiscTests.cpp:57
       </failure>
     </testcase>
     <testcase classname="global" name="./Sections/nested/a/b" time="tbd"/>
     <testcase classname="global" name="./mixed/Misc/Sections/loops" time="tbd">
       <failure message="0 > 1" type="CHECK">
-MiscTests.cpp:103
+MiscTests.cpp:99
       </failure>
     </testcase>
     <testcase classname="global" name="./mixed/Misc/loops" time="tbd">
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:115
+MiscTests.cpp:111
       </failure>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:115
+MiscTests.cpp:111
       </failure>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:115
+MiscTests.cpp:111
       </failure>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:115
+MiscTests.cpp:111
       </failure>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:115
+MiscTests.cpp:111
       </failure>
       <failure message="1 == 0" type="CHECK">
-MiscTests.cpp:115
+MiscTests.cpp:111
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/Misc/stdout,stderr" time="tbd">
@@ -4899,53 +4899,53 @@ An error
     <testcase classname="global" name="./succeeding/Misc/null strings" time="tbd"/>
     <testcase classname="global" name="./failing/info" time="tbd">
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:142
+MiscTests.cpp:138
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/checkedif" time="tbd"/>
     <testcase classname="global" name="./failing/checkedif" time="tbd">
       <failure message="false" type="CHECKED_IF">
-MiscTests.cpp:147
+MiscTests.cpp:143
       </failure>
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:160
+MiscTests.cpp:156
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/checkedelse" time="tbd"/>
     <testcase classname="global" name="./failing/checkedelse" time="tbd">
       <failure message="false" type="CHECKED_ELSE">
-MiscTests.cpp:165
+MiscTests.cpp:161
       </failure>
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:178
+MiscTests.cpp:174
       </failure>
     </testcase>
     <testcase classname="global" name="./misc/xmlentitycheck" time="tbd"/>
     <testcase classname="global" name="./manual/onechar" time="tbd">
       <failure message="false" type="REQUIRE">
-MiscTests.cpp:196
+MiscTests.cpp:192
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/atomic if" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers" time="tbd"/>
     <testcase classname="global" name="./failing/matchers/Contains" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
-MiscTests.cpp:225
+MiscTests.cpp:221
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/matchers/StartsWith" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
-MiscTests.cpp:230
+MiscTests.cpp:226
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/matchers/EndsWith" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
-MiscTests.cpp:235
+MiscTests.cpp:231
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/matchers/Equals" time="tbd">
       <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
-MiscTests.cpp:240
+MiscTests.cpp:236
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/matchers/AllOf" time="tbd"/>
@@ -4955,7 +4955,7 @@ MiscTests.cpp:240
     <testcase classname="global" name="empty" time="tbd"/>
     <testcase classname="global" name="Nice descriptive name" time="tbd">
       <warning type="WARN">
-MiscTests.cpp:282
+MiscTests.cpp:278
       </warning>
     </testcase>
     <testcase classname="global" name="first tag" time="tbd"/>
@@ -6354,7 +6354,7 @@ ConditionTests.cpp" line="343">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/exceptions/explicit">
-ExceptionTests.cpp" line="39">
+ExceptionTests.cpp" line="35">
         <Original>
           thisThrows()
         </Original>
@@ -6362,7 +6362,7 @@ ExceptionTests.cpp" line="39">
           thisThrows()
         </Expanded>
       </Expression>
-ExceptionTests.cpp" line="40">
+ExceptionTests.cpp" line="36">
         <Original>
           thisDoesntThrow()
         </Original>
@@ -6370,7 +6370,7 @@ ExceptionTests.cpp" line="40">
           thisDoesntThrow()
         </Expanded>
       </Expression>
-ExceptionTests.cpp" line="41">
+ExceptionTests.cpp" line="37">
         <Original>
           thisThrows()
         </Original>
@@ -6381,18 +6381,18 @@ ExceptionTests.cpp" line="41">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/exceptions/explicit">
-ExceptionTests.cpp" line="47">
+ExceptionTests.cpp" line="43">
         <Original>
           thisThrows()
         </Original>
         <Expanded>
           thisThrows()
         </Expanded>
-ExceptionTests.cpp" line="47">
+ExceptionTests.cpp" line="43">
           expected exception
         </Exception>
       </Expression>
-ExceptionTests.cpp" line="48">
+ExceptionTests.cpp" line="44">
         <Original>
           thisDoesntThrow()
         </Original>
@@ -6400,27 +6400,27 @@ ExceptionTests.cpp" line="48">
           thisDoesntThrow()
         </Expanded>
       </Expression>
-ExceptionTests.cpp" line="49">
+ExceptionTests.cpp" line="45">
         <Original>
           thisThrows()
         </Original>
         <Expanded>
           thisThrows()
         </Expanded>
-ExceptionTests.cpp" line="49">
+ExceptionTests.cpp" line="45">
           expected exception
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/implicit">
-ExceptionTests.cpp" line="52">
+ExceptionTests.cpp" line="48">
         unexpected exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/implicit/2">
-ExceptionTests.cpp" line="60">
+ExceptionTests.cpp" line="56">
         <Original>
           1 == 1
         </Original>
@@ -6428,14 +6428,14 @@ ExceptionTests.cpp" line="60">
           1 == 1
         </Expanded>
       </Expression>
-ExceptionTests.cpp" line="60">
+ExceptionTests.cpp" line="56">
         <Original>
           {Unknown expression after the reported line}
         </Original>
         <Expanded>
           {Unknown expression after the reported line}
         </Expanded>
-ExceptionTests.cpp" line="60">
+ExceptionTests.cpp" line="56">
           unexpected exception
         </Exception>
       </Expression>
@@ -6443,7 +6443,7 @@ ExceptionTests.cpp" line="60">
     </TestCase>
     <TestCase name="./failing/exceptions/implicit/3">
       <Section name="section name">
-ExceptionTests.cpp" line="66">
+ExceptionTests.cpp" line="62">
           unexpected exception
         </Exception>
         <OverallResults successes="0" failures="1"/>
@@ -6454,47 +6454,47 @@ ExceptionTests.cpp" line="66">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom">
-ExceptionTests.cpp" line="110">
+ExceptionTests.cpp" line="106">
         custom exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/nothrow">
-ExceptionTests.cpp" line="117">
+ExceptionTests.cpp" line="113">
         <Original>
           throw CustomException( &quot;unexpected custom exception&quot; )
         </Original>
         <Expanded>
           throw CustomException( &quot;unexpected custom exception&quot; )
         </Expanded>
-ExceptionTests.cpp" line="117">
+ExceptionTests.cpp" line="113">
           unexpected custom exception
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/throw">
-ExceptionTests.cpp" line="122">
+ExceptionTests.cpp" line="118">
         <Original>
           throw CustomException( &quot;custom exception - not std&quot; )
         </Original>
         <Expanded>
           throw CustomException( &quot;custom exception - not std&quot; )
         </Expanded>
-ExceptionTests.cpp" line="122">
+ExceptionTests.cpp" line="118">
           custom exception - not std
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/double">
-ExceptionTests.cpp" line="126">
+ExceptionTests.cpp" line="122">
         3.14
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/exceptions/notimplemented">
-ExceptionTests.cpp" line="137">
+ExceptionTests.cpp" line="133">
         <Original>
           thisFunctionNotImplemented( 7 )
         </Original>
@@ -7876,7 +7876,7 @@ MessageTests.cpp" line="92">
     </TestCase>
     <TestCase name="./succeeding/Misc/Sections">
       <Section name="s1" description="doesn't equal">
-MiscTests.cpp" line="25">
+MiscTests.cpp" line="21">
           <Original>
             a != b
           </Original>
@@ -7884,7 +7884,7 @@ MiscTests.cpp" line="25">
             1 != 2
           </Expanded>
         </Expression>
-MiscTests.cpp" line="26">
+MiscTests.cpp" line="22">
           <Original>
             b != a
           </Original>
@@ -7895,7 +7895,7 @@ MiscTests.cpp" line="26">
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="s2" description="not equal">
-MiscTests.cpp" line="31">
+MiscTests.cpp" line="27">
           <Original>
             a != b
           </Original>
@@ -7909,7 +7909,7 @@ MiscTests.cpp" line="31">
     </TestCase>
     <TestCase name="./succeeding/Misc/Sections/nested">
       <Section name="s1" description="doesn't equal">
-MiscTests.cpp" line="42">
+MiscTests.cpp" line="38">
           <Original>
             a != b
           </Original>
@@ -7917,7 +7917,7 @@ MiscTests.cpp" line="42">
             1 != 2
           </Expanded>
         </Expression>
-MiscTests.cpp" line="43">
+MiscTests.cpp" line="39">
           <Original>
             b != a
           </Original>
@@ -7926,7 +7926,7 @@ MiscTests.cpp" line="43">
           </Expanded>
         </Expression>
         <Section name="s2" description="not equal">
-MiscTests.cpp" line="47">
+MiscTests.cpp" line="43">
             <Original>
               a != b
             </Original>
@@ -7943,7 +7943,7 @@ MiscTests.cpp" line="47">
     <TestCase name="./mixed/Misc/Sections/nested2">
       <Section name="s1" description="doesn't equal">
         <Section name="s2" description="equal">
-MiscTests.cpp" line="61">
+MiscTests.cpp" line="57">
             <Original>
               a == b
             </Original>
@@ -7957,7 +7957,7 @@ MiscTests.cpp" line="61">
       </Section>
       <Section name="s1" description="doesn't equal">
         <Section name="s3" description="not equal">
-MiscTests.cpp" line="66">
+MiscTests.cpp" line="62">
             <Original>
               a != b
             </Original>
@@ -7971,7 +7971,7 @@ MiscTests.cpp" line="66">
       </Section>
       <Section name="s1" description="doesn't equal">
         <Section name="s4" description="less than">
-MiscTests.cpp" line="70">
+MiscTests.cpp" line="66">
             <Original>
               a &lt; b
             </Original>
@@ -8008,7 +8008,7 @@ MiscTests.cpp" line="70">
     </TestCase>
     <TestCase name="./mixed/Misc/Sections/loops">
       <Section name="s1" description="b is currently: 0">
-MiscTests.cpp" line="103">
+MiscTests.cpp" line="99">
           <Original>
             b > a
           </Original>
@@ -8021,7 +8021,7 @@ MiscTests.cpp" line="103">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./mixed/Misc/loops">
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8029,7 +8029,7 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8037,7 +8037,7 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8045,7 +8045,7 @@ MiscTests.cpp" line="115">
           0 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8053,7 +8053,7 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8061,7 +8061,7 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8069,7 +8069,7 @@ MiscTests.cpp" line="115">
           0 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8077,7 +8077,7 @@ MiscTests.cpp" line="115">
           1 == 0
         </Expanded>
       </Expression>
-MiscTests.cpp" line="115">
+MiscTests.cpp" line="111">
         <Original>
           ( fib[i] % 2 ) == 0
         </Original>
@@ -8091,7 +8091,7 @@ MiscTests.cpp" line="115">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/Misc/null strings">
-MiscTests.cpp" line="133">
+MiscTests.cpp" line="129">
         <Original>
           makeString( false ) != static_cast&lt;char*>(__null)
         </Original>
@@ -8099,7 +8099,7 @@ MiscTests.cpp" line="133">
           &quot;valid string&quot; != {null string}
         </Expanded>
       </Expression>
-MiscTests.cpp" line="134">
+MiscTests.cpp" line="130">
         <Original>
           makeString( true ) == static_cast&lt;char*>(__null)
         </Original>
@@ -8110,7 +8110,7 @@ MiscTests.cpp" line="134">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/info">
-MiscTests.cpp" line="142">
+MiscTests.cpp" line="138">
         <Original>
           false
         </Original>
@@ -8121,7 +8121,7 @@ MiscTests.cpp" line="142">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/checkedif">
-MiscTests.cpp" line="147">
+MiscTests.cpp" line="143">
         <Original>
           flag
         </Original>
@@ -8129,7 +8129,7 @@ MiscTests.cpp" line="147">
           true
         </Expanded>
       </Expression>
-MiscTests.cpp" line="155">
+MiscTests.cpp" line="151">
         <Original>
           testCheckedIf( true )
         </Original>
@@ -8140,7 +8140,7 @@ MiscTests.cpp" line="155">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/checkedif">
-MiscTests.cpp" line="147">
+MiscTests.cpp" line="143">
         <Original>
           flag
         </Original>
@@ -8148,7 +8148,7 @@ MiscTests.cpp" line="147">
           false
         </Expanded>
       </Expression>
-MiscTests.cpp" line="160">
+MiscTests.cpp" line="156">
         <Original>
           testCheckedIf( false )
         </Original>
@@ -8159,7 +8159,7 @@ MiscTests.cpp" line="160">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/checkedelse">
-MiscTests.cpp" line="165">
+MiscTests.cpp" line="161">
         <Original>
           flag
         </Original>
@@ -8167,7 +8167,7 @@ MiscTests.cpp" line="165">
           true
         </Expanded>
       </Expression>
-MiscTests.cpp" line="173">
+MiscTests.cpp" line="169">
         <Original>
           testCheckedElse( true )
         </Original>
@@ -8178,7 +8178,7 @@ MiscTests.cpp" line="173">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/checkedelse">
-MiscTests.cpp" line="165">
+MiscTests.cpp" line="161">
         <Original>
           flag
         </Original>
@@ -8186,7 +8186,7 @@ MiscTests.cpp" line="165">
           false
         </Expanded>
       </Expression>
-MiscTests.cpp" line="178">
+MiscTests.cpp" line="174">
         <Original>
           testCheckedElse( false )
         </Original>
@@ -8206,7 +8206,7 @@ MiscTests.cpp" line="178">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./manual/onechar">
-MiscTests.cpp" line="196">
+MiscTests.cpp" line="192">
         <Original>
           false
         </Original>
@@ -8217,7 +8217,7 @@ MiscTests.cpp" line="196">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/atomic if">
-MiscTests.cpp" line="206">
+MiscTests.cpp" line="202">
         <Original>
           x == 0
         </Original>
@@ -8228,7 +8228,7 @@ MiscTests.cpp" line="206">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/matchers">
-MiscTests.cpp" line="216">
+MiscTests.cpp" line="212">
         <Original>
           testStringForMatching() Contains( &quot;string&quot; )
         </Original>
@@ -8236,7 +8236,7 @@ MiscTests.cpp" line="216">
           &quot;this string contains 'abc' as a substring&quot; contains: &quot;string&quot;
         </Expanded>
       </Expression>
-MiscTests.cpp" line="217">
+MiscTests.cpp" line="213">
         <Original>
           testStringForMatching() Contains( &quot;abc&quot; )
         </Original>
@@ -8244,7 +8244,7 @@ MiscTests.cpp" line="217">
           &quot;this string contains 'abc' as a substring&quot; contains: &quot;abc&quot;
         </Expanded>
       </Expression>
-MiscTests.cpp" line="219">
+MiscTests.cpp" line="215">
         <Original>
           testStringForMatching() StartsWith( &quot;this&quot; )
         </Original>
@@ -8252,7 +8252,7 @@ MiscTests.cpp" line="219">
           &quot;this string contains 'abc' as a substring&quot; starts with: &quot;this&quot;
         </Expanded>
       </Expression>
-MiscTests.cpp" line="220">
+MiscTests.cpp" line="216">
         <Original>
           testStringForMatching() EndsWith( &quot;substring&quot; )
         </Original>
@@ -8263,7 +8263,7 @@ MiscTests.cpp" line="220">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/matchers/Contains">
-MiscTests.cpp" line="225">
+MiscTests.cpp" line="221">
         <Original>
           testStringForMatching() Contains( &quot;not there&quot; )
         </Original>
@@ -8274,7 +8274,7 @@ MiscTests.cpp" line="225">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/matchers/StartsWith">
-MiscTests.cpp" line="230">
+MiscTests.cpp" line="226">
         <Original>
           testStringForMatching() StartsWith( &quot;string&quot; )
         </Original>
@@ -8285,7 +8285,7 @@ MiscTests.cpp" line="230">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/matchers/EndsWith">
-MiscTests.cpp" line="235">
+MiscTests.cpp" line="231">
         <Original>
           testStringForMatching() EndsWith( &quot;this&quot; )
         </Original>
@@ -8296,7 +8296,7 @@ MiscTests.cpp" line="235">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/matchers/Equals">
-MiscTests.cpp" line="240">
+MiscTests.cpp" line="236">
         <Original>
           testStringForMatching() Equals( &quot;something else&quot; )
         </Original>
@@ -8307,7 +8307,7 @@ MiscTests.cpp" line="240">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/matchers/AllOf">
-MiscTests.cpp" line="248">
+MiscTests.cpp" line="244">
         <Original>
           testStringForMatching() AllOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;abc&quot; ) )
         </Original>
@@ -8318,7 +8318,7 @@ MiscTests.cpp" line="248">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/matchers/AnyOf">
-MiscTests.cpp" line="252">
+MiscTests.cpp" line="248">
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;not there&quot; ) )
         </Original>
@@ -8326,7 +8326,7 @@ MiscTests.cpp" line="252">
           &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;string&quot; or contains: &quot;not there&quot; )
         </Expanded>
       </Expression>
-MiscTests.cpp" line="253">
+MiscTests.cpp" line="249">
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;not there&quot; ), Catch::Contains( &quot;string&quot; ) )
         </Original>
@@ -8337,7 +8337,7 @@ MiscTests.cpp" line="253">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/matchers/Equals">
-MiscTests.cpp" line="258">
+MiscTests.cpp" line="254">
         <Original>
           testStringForMatching() Equals( &quot;this string contains 'abc' as a substring&quot; )
         </Original>
@@ -8348,7 +8348,7 @@ MiscTests.cpp" line="258">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="example/factorial">
-MiscTests.cpp" line="269">
+MiscTests.cpp" line="265">
         <Original>
           Factorial(0) == 1
         </Original>
@@ -8356,7 +8356,7 @@ MiscTests.cpp" line="269">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="270">
+MiscTests.cpp" line="266">
         <Original>
           Factorial(1) == 1
         </Original>
@@ -8364,7 +8364,7 @@ MiscTests.cpp" line="270">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="271">
+MiscTests.cpp" line="267">
         <Original>
           Factorial(2) == 2
         </Original>
@@ -8372,7 +8372,7 @@ MiscTests.cpp" line="271">
           2 == 2
         </Expanded>
       </Expression>
-MiscTests.cpp" line="272">
+MiscTests.cpp" line="268">
         <Original>
           Factorial(3) == 6
         </Original>
@@ -8380,7 +8380,7 @@ MiscTests.cpp" line="272">
           6 == 6
         </Expanded>
       </Expression>
-MiscTests.cpp" line="273">
+MiscTests.cpp" line="269">
         <Original>
           Factorial(10) == 3628800
         </Original>
@@ -9905,7 +9905,7 @@ TrickyTests.cpp" line="335">
       <Section name="Given: This stuff exists">
         <Section name=" When: I do this">
           <Section name=" Then: it should do this">
-BDDTests.cpp" line="33">
+BDDTests.cpp" line="21">
               <Original>
                 itDoesThis()
               </Original>
@@ -9914,7 +9914,7 @@ BDDTests.cpp" line="33">
               </Expanded>
             </Expression>
             <Section name="  And: do that">
-BDDTests.cpp" line="35">
+BDDTests.cpp" line="23">
                 <Original>
                   itDoesThat()
                 </Original>
@@ -10170,30 +10170,30 @@ ConditionTests.cpp:343: !1 == 1 failed for: !(1 == 1)
 [Finished: './failing/conditions/not' 1 test case failed (All 8 assertions failed)]
 
 [Running: ./succeeding/exceptions/explicit]
-ExceptionTests.cpp:39: thisThrows() succeeded
-ExceptionTests.cpp:40: thisDoesntThrow() succeeded
-ExceptionTests.cpp:41: thisThrows() succeeded
+ExceptionTests.cpp:35: thisThrows() succeeded
+ExceptionTests.cpp:36: thisDoesntThrow() succeeded
+ExceptionTests.cpp:37: thisThrows() succeeded
 [Finished: './succeeding/exceptions/explicit' All tests passed (3 assertions in 1 test case)]
 
 [Running: ./failing/exceptions/explicit]
-ExceptionTests.cpp:47: thisThrows() failed with unexpected exception with message: 'expected exception'
-ExceptionTests.cpp:48: thisDoesntThrow() failed because no exception was thrown where one was expected
-ExceptionTests.cpp:49: thisThrows() failed with unexpected exception with message: 'expected exception'
+ExceptionTests.cpp:43: thisThrows() failed with unexpected exception with message: 'expected exception'
+ExceptionTests.cpp:44: thisDoesntThrow() failed because no exception was thrown where one was expected
+ExceptionTests.cpp:45: thisThrows() failed with unexpected exception with message: 'expected exception'
 [Finished: './failing/exceptions/explicit' 1 test case failed (All 3 assertions failed)]
 
 [Running: ./failing/exceptions/implicit]
-ExceptionTests.cpp:52: Unexpected exception with message: 'unexpected exception'
+ExceptionTests.cpp:48: Unexpected exception with message: 'unexpected exception'
 [Finished: './failing/exceptions/implicit' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/implicit/2]
-ExceptionTests.cpp:60: 1 == 1 succeeded
-ExceptionTests.cpp:60: {Unknown expression after the reported line} failed with unexpected exception with message: 'unexpected exception'
+ExceptionTests.cpp:56: 1 == 1 succeeded
+ExceptionTests.cpp:56: {Unknown expression after the reported line} failed with unexpected exception with message: 'unexpected exception'
 [Finished: './failing/exceptions/implicit/2' 1 test case failed (1 of 2 assertions failed)]
 
 [Running: ./failing/exceptions/implicit/3]
 
 [Started section: 'section name']
-ExceptionTests.cpp:66: Unexpected exception with message: 'unexpected exception'
+ExceptionTests.cpp:62: Unexpected exception with message: 'unexpected exception'
 [End of section: 'section name' 1 assertion failed]
 
 [Finished: './failing/exceptions/implicit/3' 1 test case failed (1 assertion failed)]
@@ -10205,23 +10205,23 @@ No assertions in test case, './succeeding/exceptions/implicit'
 [Finished: './succeeding/exceptions/implicit' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom]
-ExceptionTests.cpp:110: Unexpected exception with message: 'custom exception'
+ExceptionTests.cpp:106: Unexpected exception with message: 'custom exception'
 [Finished: './failing/exceptions/custom' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/nothrow]
-ExceptionTests.cpp:117: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
+ExceptionTests.cpp:113: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
 [Finished: './failing/exceptions/custom/nothrow' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/throw]
-ExceptionTests.cpp:122: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
+ExceptionTests.cpp:118: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
 [Finished: './failing/exceptions/custom/throw' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/double]
-ExceptionTests.cpp:126: Unexpected exception with message: '3.14'
+ExceptionTests.cpp:122: Unexpected exception with message: '3.14'
 [Finished: './failing/exceptions/custom/double' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/exceptions/notimplemented]
-ExceptionTests.cpp:137: thisFunctionNotImplemented( 7 ) succeeded
+ExceptionTests.cpp:133: thisFunctionNotImplemented( 7 ) succeeded
 [Finished: './succeeding/exceptions/notimplemented' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/generators/1]
@@ -10464,22 +10464,22 @@ MessageTests.cpp:101: failed with message: 'Previous info should not be seen'
 
 [Running: ./succeeding/Misc/Sections]
 [Started section: 's1']
-MiscTests.cpp:25: a != b succeeded for: 1 != 2
-MiscTests.cpp:26: b != a succeeded for: 2 != 1
+MiscTests.cpp:21: a != b succeeded for: 1 != 2
+MiscTests.cpp:22: b != a succeeded for: 2 != 1
 [End of section: 's1' All 2 assertions passed]
 
 [Started section: 's2']
-MiscTests.cpp:31: a != b succeeded for: 1 != 2
+MiscTests.cpp:27: a != b succeeded for: 1 != 2
 [End of section: 's2' 1 assertion passed]
 
 [Finished: './succeeding/Misc/Sections' All tests passed (3 assertions in 1 test case)]
 
 [Running: ./succeeding/Misc/Sections/nested]
 [Started section: 's1']
-MiscTests.cpp:42: a != b succeeded for: 1 != 2
-MiscTests.cpp:43: b != a succeeded for: 2 != 1
+MiscTests.cpp:38: a != b succeeded for: 1 != 2
+MiscTests.cpp:39: b != a succeeded for: 2 != 1
 [Started section: 's2']
-MiscTests.cpp:47: a != b succeeded for: 1 != 2
+MiscTests.cpp:43: a != b succeeded for: 1 != 2
 [End of section: 's2' 1 assertion passed]
 
 [End of section: 's1' All 3 assertions passed]
@@ -10489,21 +10489,21 @@ MiscTests.cpp:47: a != b succeeded for: 1 != 2
 [Running: ./mixed/Misc/Sections/nested2]
 [Started section: 's1']
 [Started section: 's2']
-MiscTests.cpp:61: a == b failed for: 1 == 2
+MiscTests.cpp:57: a == b failed for: 1 == 2
 [End of section: 's2' 1 assertion failed]
 
 [End of section: 's1' 1 assertion failed]
 
 [Started section: 's1']
 [Started section: 's3']
-MiscTests.cpp:66: a != b succeeded for: 1 != 2
+MiscTests.cpp:62: a != b succeeded for: 1 != 2
 [End of section: 's3' 1 assertion passed]
 
 [End of section: 's1' 1 assertion passed]
 
 [Started section: 's1']
 [Started section: 's4']
-MiscTests.cpp:70: a < b succeeded for: 1 < 2
+MiscTests.cpp:66: a < b succeeded for: 1 < 2
 [End of section: 's4' 1 assertion passed]
 
 [End of section: 's1' 1 assertion passed]
@@ -10539,20 +10539,20 @@ No assertions in section, 'f (leaf)'
 
 [Running: ./mixed/Misc/Sections/loops]
 [Started section: 's1']
-MiscTests.cpp:103: b > a failed for: 0 > 1
+MiscTests.cpp:99: b > a failed for: 0 > 1
 [End of section: 's1' 1 assertion failed]
 
 [Finished: './mixed/Misc/Sections/loops' 1 test case failed (1 assertion failed)]
 
 [Running: ./mixed/Misc/loops]
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
-MiscTests.cpp:115: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 succeeded for: 0 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 failed for: 1 == 0
+MiscTests.cpp:111: ( fib[i] % 2 ) == 0 failed for: 1 == 0
 [Finished: './mixed/Misc/loops' 1 test case failed (6 of 8 assertions failed)]
 Some information
 An error
@@ -10564,32 +10564,32 @@ No assertions in test case, './succeeding/Misc/stdout,stderr'
 [Finished: './succeeding/Misc/stdout,stderr' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/Misc/null strings]
-MiscTests.cpp:133: makeString( false ) != static_cast<char*>(__null) succeeded for: "valid string" != {null string}
-MiscTests.cpp:134: makeString( true ) == static_cast<char*>(__null) succeeded for: {null string} == {null string}
+MiscTests.cpp:129: makeString( false ) != static_cast<char*>(__null) succeeded for: "valid string" != {null string}
+MiscTests.cpp:130: makeString( true ) == static_cast<char*>(__null) succeeded for: {null string} == {null string}
 [Finished: './succeeding/Misc/null strings' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./failing/info]
-MiscTests.cpp:142: false failed
+MiscTests.cpp:138: false failed
 [Finished: './failing/info' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/checkedif]
-MiscTests.cpp:147: flag succeeded for: true
-MiscTests.cpp:155: testCheckedIf( true ) succeeded for: true
+MiscTests.cpp:143: flag succeeded for: true
+MiscTests.cpp:151: testCheckedIf( true ) succeeded for: true
 [Finished: './succeeding/checkedif' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./failing/checkedif]
-MiscTests.cpp:147: flag failed for: false
-MiscTests.cpp:160: testCheckedIf( false ) failed for: false
+MiscTests.cpp:143: flag failed for: false
+MiscTests.cpp:156: testCheckedIf( false ) failed for: false
 [Finished: './failing/checkedif' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./succeeding/checkedelse]
-MiscTests.cpp:165: flag succeeded for: true
-MiscTests.cpp:173: testCheckedElse( true ) succeeded for: true
+MiscTests.cpp:161: flag succeeded for: true
+MiscTests.cpp:169: testCheckedElse( true ) succeeded for: true
 [Finished: './succeeding/checkedelse' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./failing/checkedelse]
-MiscTests.cpp:165: flag failed for: false
-MiscTests.cpp:178: testCheckedElse( false ) failed for: false
+MiscTests.cpp:161: flag failed for: false
+MiscTests.cpp:174: testCheckedElse( false ) failed for: false
 [Finished: './failing/checkedelse' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./misc/xmlentitycheck]
@@ -10608,67 +10608,67 @@ No assertions in section, 'encoded chars'
 [Finished: './misc/xmlentitycheck' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./manual/onechar]
-MiscTests.cpp:196: false failed
+MiscTests.cpp:192: false failed
 [Finished: './manual/onechar' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/atomic if]
-MiscTests.cpp:206: x == 0 succeeded for: 0 == 0
+MiscTests.cpp:202: x == 0 succeeded for: 0 == 0
 [Finished: './succeeding/atomic if' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/matchers]
-MiscTests.cpp:216: testStringForMatching() Contains( "string" ) succeeded for:
+MiscTests.cpp:212: testStringForMatching() Contains( "string" ) succeeded for:
 	"this string contains 'abc' as a substring" contains: "string"
-MiscTests.cpp:217: testStringForMatching() Contains( "abc" ) succeeded for:
+MiscTests.cpp:213: testStringForMatching() Contains( "abc" ) succeeded for:
 	"this string contains 'abc' as a substring" contains: "abc"
-MiscTests.cpp:219: testStringForMatching() StartsWith( "this" ) succeeded for:
+MiscTests.cpp:215: testStringForMatching() StartsWith( "this" ) succeeded for:
 	"this string contains 'abc' as a substring" starts with: "this"
-MiscTests.cpp:220: testStringForMatching() EndsWith( "substring" ) succeeded for:
+MiscTests.cpp:216: testStringForMatching() EndsWith( "substring" ) succeeded for:
 	"this string contains 'abc' as a substring" ends with: "substring"
 [Finished: './succeeding/matchers' All tests passed (4 assertions in 1 test case)]
 
 [Running: ./failing/matchers/Contains]
-MiscTests.cpp:225: testStringForMatching() Contains( "not there" ) failed for:
+MiscTests.cpp:221: testStringForMatching() Contains( "not there" ) failed for:
 	"this string contains 'abc' as a substring" contains: "not there"
 [Finished: './failing/matchers/Contains' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/matchers/StartsWith]
-MiscTests.cpp:230: testStringForMatching() StartsWith( "string" ) failed for:
+MiscTests.cpp:226: testStringForMatching() StartsWith( "string" ) failed for:
 	"this string contains 'abc' as a substring" starts with: "string"
 [Finished: './failing/matchers/StartsWith' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/matchers/EndsWith]
-MiscTests.cpp:235: testStringForMatching() EndsWith( "this" ) failed for:
+MiscTests.cpp:231: testStringForMatching() EndsWith( "this" ) failed for:
 	"this string contains 'abc' as a substring" ends with: "this"
 [Finished: './failing/matchers/EndsWith' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/matchers/Equals]
-MiscTests.cpp:240: testStringForMatching() Equals( "something else" ) failed for:
+MiscTests.cpp:236: testStringForMatching() Equals( "something else" ) failed for:
 	"this string contains 'abc' as a substring" equals: "something else"
 [Finished: './failing/matchers/Equals' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/matchers/AllOf]
-MiscTests.cpp:248: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
+MiscTests.cpp:244: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
 [Finished: './succeeding/matchers/AllOf' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/matchers/AnyOf]
-MiscTests.cpp:252: testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) succeeded for:
+MiscTests.cpp:248: testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
-MiscTests.cpp:253: testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) succeeded for:
+MiscTests.cpp:249: testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) succeeded for:
 "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
 [Finished: './succeeding/matchers/AnyOf' All tests passed (2 assertions in 1 test case)]
 
 [Running: ./succeeding/matchers/Equals]
-MiscTests.cpp:258: testStringForMatching() Equals( "this string contains 'abc' as a substring" ) succeeded for:
+MiscTests.cpp:254: testStringForMatching() Equals( "this string contains 'abc' as a substring" ) succeeded for:
 "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 [Finished: './succeeding/matchers/Equals' All tests passed (1 assertion in 1 test case)]
 
 [Running: example/factorial]
-MiscTests.cpp:269: Factorial(0) == 1 succeeded for: 1 == 1
-MiscTests.cpp:270: Factorial(1) == 1 succeeded for: 1 == 1
-MiscTests.cpp:271: Factorial(2) == 2 succeeded for: 2 == 2
-MiscTests.cpp:272: Factorial(3) == 6 succeeded for: 6 == 6
-MiscTests.cpp:273: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 3628800
+MiscTests.cpp:265: Factorial(0) == 1 succeeded for: 1 == 1
+MiscTests.cpp:266: Factorial(1) == 1 succeeded for: 1 == 1
+MiscTests.cpp:267: Factorial(2) == 2 succeeded for: 2 == 2
+MiscTests.cpp:268: Factorial(3) == 6 succeeded for: 6 == 6
+MiscTests.cpp:269: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 3628800
 [Finished: 'example/factorial' All tests passed (5 assertions in 1 test case)]
 
 [Running: empty]
@@ -10678,7 +10678,7 @@ No assertions in test case, 'empty'
 [Finished: 'empty' 1 test case failed (1 assertion failed)]
 
 [Running: Nice descriptive name]
-MiscTests.cpp:282: [warning: This one ran]
+MiscTests.cpp:278: [warning: This one ran]
 
 No assertions in test case, 'Nice descriptive name'
 
@@ -10699,57 +10699,57 @@ No assertions in test case, 'second tag'
 [Running: selftest/main]
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/failing tests']
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
-catch_self_test.hpp:115:  succeeded
+catch_self_test.hpp:120:  succeeded
 [with message: Tests failed, as expected]
 [End of section: 'selftest/expected result/failing tests' All 26 assertions passed]
 
@@ -10757,101 +10757,101 @@ catch_self_test.hpp:115:  succeeded
 
 [Started section: 'selftest/expected result']
 [Started section: 'selftest/expected result/succeeding tests']
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
 Message from section one
 Message from section two
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
 Some information
 An error
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
-catch_self_test.hpp:104:  succeeded
+catch_self_test.hpp:109:  succeeded
 [with message: Tests passed, as expected]
 [End of section: 'selftest/expected result/succeeding tests' All 46 assertions passed]
 
@@ -11299,9 +11299,9 @@ TrickyTests.cpp:335: Catch::isTrue( true ) succeeded for: true
 [Started section: 'Given: This stuff exists']
 [Started section: ' When: I do this']
 [Started section: ' Then: it should do this']
-BDDTests.cpp:33: itDoesThis() succeeded for: true
+BDDTests.cpp:21: itDoesThis() succeeded for: true
 [Started section: '  And: do that']
-BDDTests.cpp:35: itDoesThat() succeeded for: true
+BDDTests.cpp:23: itDoesThat() succeeded for: true
 [End of section: '  And: do that' 1 assertion passed]
 
 [End of section: ' Then: it should do this' All 2 assertions passed]
