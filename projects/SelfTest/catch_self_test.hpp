@@ -18,6 +18,11 @@
 
 #include "set"
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 namespace Catch {
 
     class NullStreamingReporter : public SharedImpl<IStreamingReporter> {
@@ -161,6 +166,10 @@ namespace Catch {
     };
     
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #define CATCH_REGISTER_LINE_INFO( name ) ::Catch::LineInfoRegistrar INTERNAL_CATCH_UNIQUE_NAME( lineRegistrar )( name, ::Catch::SourceLineInfo( __FILE__, __LINE__ ) );
 #define CATCH_GET_LINE_INFO( name ) ::Catch::LineInfoRegistry::get().infoForName( name )
