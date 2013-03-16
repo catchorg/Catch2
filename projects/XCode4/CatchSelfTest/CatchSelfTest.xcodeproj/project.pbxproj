@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */; };
 		26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26847E5D16BBADB40043B9C1 /* catch_message.cpp */; };
 		2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */; };
 		4A45DA2416161EF9004F8D6B /* catch_console_colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */; };
@@ -54,6 +55,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VariadicMacrosTests.cpp; path = ../../../SelfTest/VariadicMacrosTests.cpp; sourceTree = "<group>"; };
 		26847E5B16BBAB790043B9C1 /* catch_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_message.h; sourceTree = "<group>"; };
 		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
 		26847E5D16BBADB40043B9C1 /* catch_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_message.cpp; path = ../../../SelfTest/SurrogateCpps/catch_message.cpp; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				4A6D0C33149B3D9E00DB3EAA /* MessageTests.cpp */,
 				4A6D0C34149B3D9E00DB3EAA /* MiscTests.cpp */,
 				4AA7FF4115F3E89D009AD7F9 /* BDDTests.cpp */,
+				266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				4ACE21CC166CA1B300FB5509 /* catch_option.cpp in Sources */,
 				2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */,
 				26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */,
+				266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

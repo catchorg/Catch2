@@ -11,9 +11,18 @@
 
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wglobal-constructors"
+#pragma clang diagnostic ignored "-Wvariadic-macros"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
+// Use variadic macros if the compiler supports them
+#if ( defined _MSC_VER && _MSC_VER >= 1400 && !defined __EDGE__) || \
+    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
+    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
+    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
+    #define CATCH_CONFIG_VARIADIC_MACROS
 #endif
 
 #include "internal/catch_notimplemented_exception.h"
@@ -76,12 +85,18 @@
 #define CATCH_CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CATCH_CAPTURE" )
 #define CATCH_SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "CATCH_SCOPED_CAPTURE" )
 
-#define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
-
-#define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
-#define CATCH_TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
-#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
-#define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
+    #define CATCH_TEST_CASE_NORETURN( ... ) INTERNAL_CATCH_TESTCASE_NORETURN( __VA_ARGS__ )
+    #define CATCH_METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
+    #define CATCH_SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
+#else
+    #define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+    #define CATCH_TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
+    #define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+    #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
+#endif
+#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
@@ -127,12 +142,18 @@
 #define CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CAPTURE" )
 #define SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "SCOPED_CAPTURE" )
 
-#define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
-
-#define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
-#define TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
-#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
-#define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    #define TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
+    #define TEST_CASE_NORETURN( ... ) INTERNAL_CATCH_TESTCASE_NORETURN( __VA_ARGS__ )
+    #define METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
+    #define SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
+#else
+    #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+    #define TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
+    #define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+    #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
+#endif
+#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
