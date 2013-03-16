@@ -104,7 +104,11 @@
 #define CATCH_GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
 // "BDD-style" convenience wrappers
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+#define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
+#else
 #define CATCH_SCENARIO( name, tags ) CATCH_TEST_CASE( "Scenario: " name, tags )
+#endif
 #define CATCH_GIVEN( desc )    CATCH_SECTION( "Given: " desc, "" )
 #define CATCH_WHEN( desc )     CATCH_SECTION( " When: " desc, "" )
 #define CATCH_AND_WHEN( desc ) CATCH_SECTION( "  And: " desc, "" )
@@ -165,7 +169,11 @@
 #define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature )
 
 // "BDD-style" convenience wrappers
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+#define SCENARIO( ... ) TEST_CASE( "Scenario: " __VA_ARGS__ )
+#else
 #define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
+#endif
 #define GIVEN( desc )    SECTION( "Given: " desc, "" )
 #define WHEN( desc )     SECTION( " When: " desc, "" )
 #define AND_WHEN( desc ) SECTION( "  And: " desc, "" )
