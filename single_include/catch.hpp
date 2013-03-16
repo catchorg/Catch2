@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 25 (integration branch)
- *  Generated: 2013-03-13 20:53:37.480746
+ *  CATCH v0.9 build 26 (integration branch)
+ *  Generated: 2013-03-16 20:19:56.120579
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -15,9 +15,18 @@
 
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wglobal-constructors"
+#pragma clang diagnostic ignored "-Wvariadic-macros"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
+// Use variadic macros if the compiler supports them
+#if ( defined _MSC_VER && _MSC_VER >= 1400 && !defined __EDGE__) || \
+    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
+    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
+    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
+    #define CATCH_CONFIG_VARIADIC_MACROS
 #endif
 
 // #included from: internal/catch_notimplemented_exception.h
@@ -379,27 +388,36 @@ private:
 
 typedef void(*TestFunction)();
 
+struct NameAndDesc {
+    NameAndDesc( const char* _name = "", const char* _description= "" )
+    : name( _name ), description( _description )
+    {}
+
+    const char* name;
+    const char* description;
+};
+
 struct AutoReg {
 
     AutoReg(    TestFunction function,
-                const char* name,
-                const char* description,
-                const SourceLineInfo& lineInfo );
+                SourceLineInfo const& lineInfo,
+                NameAndDesc const& nameAndDesc );
 
     template<typename C>
     AutoReg(    void (C::*method)(),
-                const char* className,
-                const char* name,
-                const char* description,
-                const SourceLineInfo& lineInfo ) {
-        registerTestCase( new MethodTestCase<C>( method ), className, name, description, lineInfo );
+                char const* className,
+                NameAndDesc const& nameAndDesc,
+                SourceLineInfo const& lineInfo ) {
+        registerTestCase(   new MethodTestCase<C>( method ),
+                            className,
+                            nameAndDesc,
+                            lineInfo );
     }
 
     void registerTestCase(  ITestCase* testCase,
-                            const char* className,
-                            const char* name,
-                            const char* description,
-                            const SourceLineInfo& lineInfo );
+                            char const* className,
+                            NameAndDesc const& nameAndDesc,
+                            SourceLineInfo const& lineInfo );
 
     ~AutoReg();
 
@@ -410,31 +428,61 @@ private:
 
 } // end namespace Catch
 
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
-    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
-    static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_TESTCASE( ... ) \
+        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); }\
+        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
-    static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() CATCH_ATTRIBUTE_NORETURN; \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), Name, Desc, CATCH_INTERNAL_LINEINFO ); }\
-    static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_TESTCASE_NORETURN( ... ) \
+        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() CATCH_ATTRIBUTE_NORETURN; \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); }\
+        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
-    namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Name, Desc, CATCH_INTERNAL_LINEINFO ); }
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, ... ) \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); }
 
-///////////////////////////////////////////////////////////////////////////////
-#define TEST_CASE_METHOD( ClassName, TestName, Desc )\
-    namespace{ \
-        struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
-            void test(); \
-        }; \
-        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, #ClassName, TestName, Desc, CATCH_INTERNAL_LINEINFO ); \
-    } \
-    void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
+    ///////////////////////////////////////////////////////////////////////////////
+    #define TEST_CASE_METHOD( ClassName, ... )\
+        namespace{ \
+            struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
+                void test(); \
+            }; \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, #ClassName, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); \
+        } \
+        void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
+
+#else
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
+        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); }\
+        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
+
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
+        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() CATCH_ATTRIBUTE_NORETURN; \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); }\
+        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
+
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( Name, Desc ), CATCH_INTERNAL_LINEINFO ); }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
+        namespace{ \
+            struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
+                void test(); \
+            }; \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, #ClassName, Catch::NameAndDesc( TestName, Desc ), CATCH_INTERNAL_LINEINFO ); \
+        } \
+        void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
+
+#endif
 
 // #included from: internal/catch_capture.hpp
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
@@ -2638,9 +2686,9 @@ namespace Catch {
 
     class Section {
     public:
-        Section(    const std::string& name,
-                    const std::string& description,
-                    const SourceLineInfo& lineInfo )
+        Section(    const SourceLineInfo& lineInfo,
+                    const std::string& name,
+                    const std::string& description = "" )
         :   m_info( name, description, lineInfo ),
             m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( m_info, m_assertions ) )
         {}
@@ -2665,8 +2713,13 @@ namespace Catch {
 
 } // end namespace Catch
 
-#define INTERNAL_CATCH_SECTION( name, desc ) \
-    if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( name, desc, CATCH_INTERNAL_LINEINFO ) )
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    #define INTERNAL_CATCH_SECTION( ... ) \
+        if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) )
+#else
+    #define INTERNAL_CATCH_SECTION( name, desc ) \
+        if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( CATCH_INTERNAL_LINEINFO, name, desc ) )
+#endif
 
 // #included from: internal/catch_generators.hpp
 #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
@@ -4911,7 +4964,7 @@ namespace Catch {
             std::string name = testCase.getTestCaseInfo().name;
             if( name == "" ) {
                 std::ostringstream oss;
-                oss << name << "unnamed/" << ++m_unnamedCount;
+                oss << "Anonymous test case " << ++m_unnamedCount;
                 return registerTest( testCase.withName( oss.str() ) );
             }
 
@@ -5007,21 +5060,24 @@ namespace Catch {
     ///////////////////////////////////////////////////////////////////////////
 
     AutoReg::AutoReg(   TestFunction function,
-                        const char* name,
-                        const char* description,
-                        const SourceLineInfo& lineInfo ) {
-        registerTestCase( new FreeFunctionTestCase( function ), "global", name, description, lineInfo );
+                        SourceLineInfo const& lineInfo,
+                        NameAndDesc const& nameAndDesc ) {
+        registerTestCase( new FreeFunctionTestCase( function ), "global", nameAndDesc, lineInfo );
     }
 
     AutoReg::~AutoReg() {}
 
     void AutoReg::registerTestCase( ITestCase* testCase,
-                                    const char* classOrQualifiedMethodName,
-                                    const char* name,
-                                    const char* description,
-                                    const SourceLineInfo& lineInfo ) {
+                                    char const* classOrQualifiedMethodName,
+                                    NameAndDesc const& nameAndDesc,
+                                    SourceLineInfo const& lineInfo ) {
 
-        getMutableRegistryHub().registerTest( makeTestCase( testCase, extractClassName( classOrQualifiedMethodName ), name, description, lineInfo ) );
+        getMutableRegistryHub().registerTest
+            ( makeTestCase( testCase,
+                            extractClassName( classOrQualifiedMethodName ),
+                            nameAndDesc.name,
+                            nameAndDesc.description,
+                            lineInfo ) );
     }
 
 } // end namespace Catch
@@ -5843,7 +5899,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 25, "integration" );
+    Version libraryVersion( 0, 9, 26, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -7043,9 +7099,6 @@ namespace Catch {
                             messageLabel = "with message";
                         if( _stats.infoMessages.size() > 1 )
                             messageLabel = "with messages";
-//                        if( result.hasMessage() ){
-//                            messageLabel = "with message";
-//                        }
                         break;
                     case ResultWas::ThrewException:
                         colour = TextColour::Error;
@@ -7066,7 +7119,6 @@ namespace Catch {
                     case ResultWas::ExplicitFailure:
                         passOrFail = "FAILED";
                         colour = TextColour::Error;
-//                        messageLabel = "explicitly with message";
                         if( _stats.infoMessages.size() == 1 )
                             messageLabel = "explicitly with message";
                         if( _stats.infoMessages.size() > 1 )
@@ -7079,8 +7131,6 @@ namespace Catch {
                             messageLabel = "with message";
                         if( _stats.infoMessages.size() > 1 )
                             messageLabel = "with messages";
-//                        if( result.hasMessage() )
-//                            messageLabel = "with message";
                         break;
 
                     // These cases are here to prevent compiler warnings
@@ -7141,8 +7191,6 @@ namespace Catch {
                         ++it ) {
                     stream << wrapLongStrings( it->message ) << "\n";
                 }
-//                if( !message.empty() )
-//                    stream << wrapLongStrings( message ) << "\n";
             }
             void printSourceInfo() const {
                 TextColour colourGuard( TextColour::FileName );
@@ -7177,7 +7225,8 @@ namespace Catch {
             m_atLeastOneTestCasePrinted = true;
         }
         void lazyPrintRunInfo() {
-            stream  << "\n"  << testRunInfo->name
+            stream  << "\n" << getTildes() << "\n";
+            stream  << testRunInfo->name
                     << " is a CATCH v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
                     << libraryVersion.buildNumber;
@@ -7292,6 +7341,10 @@ namespace Catch {
         static std::string const& getDoubleDashes() {
             static const std::string doubleDashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
             return doubleDashes;
+        }
+        static std::string const& getTildes() {
+            static const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '~' );
+            return dots;
         }
 
     private:
@@ -7430,12 +7483,18 @@ int main (int argc, char * const argv[]) {
 #define CATCH_CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CATCH_CAPTURE" )
 #define CATCH_SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "CATCH_SCOPED_CAPTURE" )
 
-#define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
-
-#define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
-#define CATCH_TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
-#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
-#define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
+    #define CATCH_TEST_CASE_NORETURN( ... ) INTERNAL_CATCH_TESTCASE_NORETURN( __VA_ARGS__ )
+    #define CATCH_METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
+    #define CATCH_SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
+#else
+    #define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+    #define CATCH_TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
+    #define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+    #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
+#endif
+#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
@@ -7481,12 +7540,18 @@ int main (int argc, char * const argv[]) {
 #define CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CAPTURE" )
 #define SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "SCOPED_CAPTURE" )
 
-#define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
-
-#define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
-#define TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
-#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "Anonymous test case" )
-#define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    #define TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
+    #define TEST_CASE_NORETURN( ... ) INTERNAL_CATCH_TESTCASE_NORETURN( __VA_ARGS__ )
+    #define METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
+    #define SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
+#else
+    #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+    #define TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
+    #define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+    #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
+#endif
+#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )

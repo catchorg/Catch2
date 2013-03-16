@@ -1,5 +1,6 @@
 
-CatchSelfTest is a CATCH v0.9 b25 (integration) host application.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CatchSelfTest is a CATCH v0.9 b26 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4282,11 +4283,40 @@ PASSED:
 with expansion:
   true
 
+-------------------------------------------------------------------------------
+Anonymous test case 1
+...............................................................................
+
+VariadicMacrosTests.cpp:14:
+PASSED:
+with message:
+  anonymous test case
+
+-------------------------------------------------------------------------------
+Test case with one argument
+...............................................................................
+
+VariadicMacrosTests.cpp:19:
+PASSED:
+with message:
+  no assertions
+
+-------------------------------------------------------------------------------
+Variadic macros
+  Section with one argument
+...............................................................................
+
+VariadicMacrosTests.cpp:26:
+PASSED:
+with message:
+  no assertions
+
 ===============================================================================
-101 test cases - 47 failed (625 assertions - 104 failed)
+104 test cases - 47 failed (628 assertions - 104 failed)
 
 
-CatchSelfTest is a CATCH v0.9 b25 (integration) host application.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CatchSelfTest is a CATCH v0.9 b26 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4577,7 +4607,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="77" tests="625" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="77" tests="628" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -5015,6 +5045,9 @@ TrickyTests.cpp:106
     <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
     <testcase classname="global" name="Assertions then sections" time="tbd"/>
     <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
+    <testcase classname="global" name="Anonymous test case 1" time="tbd"/>
+    <testcase classname="global" name="Test case with one argument" time="tbd"/>
+    <testcase classname="global" name="Variadic macros" time="tbd"/>
   </testsuite>
   <system-out>
 Message from section one
@@ -9932,9 +9965,21 @@ BDDTests.cpp" line="23">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="521" failures="104"/>
+    <TestCase name="Anonymous test case 1">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Test case with one argument">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Variadic macros">
+      <Section name="Section with one argument">
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <OverallResults successes="524" failures="104"/>
   </Group>
-  <OverallResults successes="521" failures="104"/>
+  <OverallResults successes="524" failures="104"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -11311,10 +11356,28 @@ BDDTests.cpp:23: itDoesThat() succeeded for: true
 [End of section: 'Given: This stuff exists' All 2 assertions passed]
 
 [Finished: 'Scenario: Do that thing with the thing' All tests passed (2 assertions in 1 test case)]
-[End of group: '~dummy'. 47 of 101 test cases failed (104 of 625 assertions failed)]
+
+[Running: Anonymous test case 1]
+VariadicMacrosTests.cpp:14:  succeeded
+[with message: anonymous test case]
+[Finished: 'Anonymous test case 1' All tests passed (1 assertion in 1 test case)]
+
+[Running: Test case with one argument]
+VariadicMacrosTests.cpp:19:  succeeded
+[with message: no assertions]
+[Finished: 'Test case with one argument' All tests passed (1 assertion in 1 test case)]
+
+[Running: Variadic macros]
+[Started section: 'Section with one argument']
+VariadicMacrosTests.cpp:26:  succeeded
+[with message: no assertions]
+[End of section: 'Section with one argument' 1 assertion passed]
+
+[Finished: 'Variadic macros' All tests passed (1 assertion in 1 test case)]
+[End of group: '~dummy'. 47 of 104 test cases failed (104 of 628 assertions failed)]
 
 
-[Testing completed. 47 of 101 test cases failed (104 of 625 assertions failed)]
+[Testing completed. 47 of 104 test cases failed (104 of 628 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
