@@ -129,9 +129,6 @@ namespace Catch {
                             messageLabel = "with message";
                         if( _stats.infoMessages.size() > 1 )
                             messageLabel = "with messages";
-//                        if( result.hasMessage() ){
-//                            messageLabel = "with message";
-//                        }
                         break;
                     case ResultWas::ThrewException:
                         colour = TextColour::Error;
@@ -152,7 +149,6 @@ namespace Catch {
                     case ResultWas::ExplicitFailure:
                         passOrFail = "FAILED";
                         colour = TextColour::Error;
-//                        messageLabel = "explicitly with message";
                         if( _stats.infoMessages.size() == 1 )
                             messageLabel = "explicitly with message";
                         if( _stats.infoMessages.size() > 1 )
@@ -165,8 +161,6 @@ namespace Catch {
                             messageLabel = "with message";
                         if( _stats.infoMessages.size() > 1 )
                             messageLabel = "with messages";
-//                        if( result.hasMessage() )
-//                            messageLabel = "with message";
                         break;
                         
                     // These cases are here to prevent compiler warnings
@@ -227,8 +221,6 @@ namespace Catch {
                         ++it ) {
                     stream << wrapLongStrings( it->message ) << "\n";
                 }
-//                if( !message.empty() )
-//                    stream << wrapLongStrings( message ) << "\n";
             }
             void printSourceInfo() const {
                 TextColour colourGuard( TextColour::FileName );
@@ -263,7 +255,8 @@ namespace Catch {
             m_atLeastOneTestCasePrinted = true;
         }
         void lazyPrintRunInfo() {
-            stream  << "\n"  << testRunInfo->name
+            stream  << "\n" << getTildes() << "\n";
+            stream  << testRunInfo->name
                     << " is a CATCH v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
                     << libraryVersion.buildNumber;
@@ -378,6 +371,10 @@ namespace Catch {
         static std::string const& getDoubleDashes() {
             static const std::string doubleDashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
             return doubleDashes;
+        }
+        static std::string const& getTildes() {
+            static const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '~' );
+            return dots;
         }
         
     private:
