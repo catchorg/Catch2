@@ -72,7 +72,7 @@ namespace Catch {
             return "";
         }        
     }
-    
+
     inline size_t registerTestMethods() {
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( NULL, 0 );

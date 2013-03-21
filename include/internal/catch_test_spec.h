@@ -53,11 +53,11 @@ namespace Catch {
                 }
             }
 
-            if( m_stringToMatch[0] == '*' ) {
+            if( startsWith( m_stringToMatch, "*" ) ) {
                 m_stringToMatch = m_stringToMatch.substr( 1 );
                 m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
             }
-            if( m_stringToMatch[m_stringToMatch.size()-1] == '*' ) {
+            if( endsWith( m_stringToMatch, "*" ) ) {
                 m_stringToMatch = m_stringToMatch.substr( 0, m_stringToMatch.size()-1 );
                 m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtEnd );
             }

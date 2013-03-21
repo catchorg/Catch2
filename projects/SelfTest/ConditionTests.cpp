@@ -204,7 +204,7 @@ TEST_CASE(  "./succeeding/conditions/int literals",
 
 // Disable warnings about sign conversions for the next two tests
 // (as we are deliberately invoking them)
-// - Current only disabled for GCC/ LLVM. Should add VC++ too
+// - Currently only disabled for GCC/ LLVM. Should add VC++ too
 #ifdef  __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
