@@ -14,7 +14,7 @@ seenHeaders = set([])
 catchPath = os.path.realpath(os.path.dirname(sys.argv[0]))
 rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
-readmePath = os.path.join( catchPath, "README" )
+readmePath = os.path.join( catchPath, "README.md" )
 #outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
 
 bumpVersion = len(sys.argv) < 2 or sys.argv[1] <> "nobump"
@@ -82,9 +82,11 @@ class Version:
 			lines.append( line.rstrip() )
 		f.close()
 		f = open( readmePath, 'w' )
-		f.write( 'CATCH v{0}.{1} build {2} ({3} branch)\n'.format( self.majorVersion, self.minorVersion, self.buildNumber, self.branchName ) )
-		for line in lines[1:]:
-			f.write( line + "\n" )
+		for line in lines:
+			if line.startswith( "## CATCH" ):
+				f.write( '## CATCH v{0}.{1} build {2} ({3} branch)\n'.format( self.majorVersion, self.minorVersion, self.buildNumber, self.branchName ) )
+			else:
+				f.write( line + "\n" )
 
 def generateSingleInclude():
 	v = Version()
