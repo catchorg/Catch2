@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 26 (integration branch)
- *  Generated: 2013-03-16 20:19:56.120579
+ *  CATCH v0.9 build 27 (integration branch)
+ *  Generated: 2013-03-21 08:59:28.031778
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1672,11 +1672,11 @@ namespace Catch {
                 }
             }
 
-            if( m_stringToMatch[0] == '*' ) {
+            if( startsWith( m_stringToMatch, "*" ) ) {
                 m_stringToMatch = m_stringToMatch.substr( 1 );
                 m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
             }
-            if( m_stringToMatch[m_stringToMatch.size()-1] == '*' ) {
+            if( endsWith( m_stringToMatch, "*" ) ) {
                 m_stringToMatch = m_stringToMatch.substr( 0, m_stringToMatch.size()-1 );
                 m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtEnd );
             }
@@ -3719,8 +3719,12 @@ namespace Catch {
                     groupName += cmd[i];
                 }
                 TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-                    filters.addFilter( TestCaseFilter( cmd[i] ) );
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                    if( startsWith( cmd[i], "[" ) || startsWith( cmd[i], "~[" ) )
+                        filters.addTags( cmd[i] );
+                    else
+                        filters.addFilter( TestCaseFilter( cmd[i] ) );
+                }
                 config.filters.push_back( filters );
             }
         };
@@ -5899,7 +5903,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 26, "integration" );
+    Version libraryVersion( 0, 9, 27, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -7502,7 +7506,11 @@ int main (int argc, char * const argv[]) {
 #define CATCH_GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
 // "BDD-style" convenience wrappers
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+#define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
+#else
 #define CATCH_SCENARIO( name, tags ) CATCH_TEST_CASE( "Scenario: " name, tags )
+#endif
 #define CATCH_GIVEN( desc )    CATCH_SECTION( "Given: " desc, "" )
 #define CATCH_WHEN( desc )     CATCH_SECTION( " When: " desc, "" )
 #define CATCH_AND_WHEN( desc ) CATCH_SECTION( "  And: " desc, "" )
@@ -7563,7 +7571,11 @@ int main (int argc, char * const argv[]) {
 #define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature )
 
 // "BDD-style" convenience wrappers
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+#define SCENARIO( ... ) TEST_CASE( "Scenario: " __VA_ARGS__ )
+#else
 #define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
+#endif
 #define GIVEN( desc )    SECTION( "Given: " desc, "" )
 #define WHEN( desc )     SECTION( " When: " desc, "" )
 #define AND_WHEN( desc ) SECTION( "  And: " desc, "" )
