@@ -262,8 +262,12 @@ namespace Catch {
                     groupName += cmd[i];
                 }
                 TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-                    filters.addFilter( TestCaseFilter( cmd[i] ) );
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
+                    if( startsWith( cmd[i], "[" ) || startsWith( cmd[i], "~[" ) )
+                        filters.addTags( cmd[i] );
+                    else
+                        filters.addFilter( TestCaseFilter( cmd[i] ) );
+                }
                 config.filters.push_back( filters );
             }
         };
