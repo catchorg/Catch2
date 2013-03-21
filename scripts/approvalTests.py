@@ -7,14 +7,14 @@ filenameParser = re.compile( r'\s*.*/(.*\..pp)(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 
 catchPath = os.path.realpath(os.path.dirname(sys.argv[0]))
-baselinesPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/approvedResults.txt' )
-rawResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/_rawResults.tmp' )
-filteredResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/unapprovedResults.txt' )
+baselinesPath = os.path.join( catchPath, '../projects/SelfTest/Baselines/approvedResults.txt' )
+rawResultsPath = os.path.join( catchPath, '../projects/SelfTest/Baselines/_rawResults.tmp' )
+filteredResultsPath = os.path.join( catchPath, '../projects/SelfTest/Baselines/unapprovedResults.txt' )
 
 if len(sys.argv) == 2:
 	cmdPath = sys.argv[1]
 else:
-	cmdPath = "projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest"
+	cmdPath = "../projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest"
 
 f = open( rawResultsPath, 'w' )
 subprocess.call([ cmdPath, "~dummy", "-s", "-w", "NoAssertions", "-r", "console" ], stdout=f, stderr=f )

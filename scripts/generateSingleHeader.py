@@ -12,9 +12,9 @@ commentParser2 = re.compile( r'^\s*\*')
 blankParser = re.compile( r'^\s*$')
 seenHeaders = set([])
 catchPath = os.path.realpath(os.path.dirname(sys.argv[0]))
-rootPath = os.path.join( catchPath, 'include/' )
+rootPath = os.path.join( catchPath, '../include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
-readmePath = os.path.join( catchPath, "README.md" )
+readmePath = os.path.join( catchPath, "../README.md" )
 #outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
 
 bumpVersion = len(sys.argv) < 2 or sys.argv[1] <> "nobump"
