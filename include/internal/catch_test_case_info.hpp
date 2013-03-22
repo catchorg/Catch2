@@ -11,6 +11,7 @@
 #include "catch_tags.hpp"
 #include "catch_test_case_info.h"
 #include "catch_interfaces_testcase.h"
+#include "catch_common.h"
 
 namespace Catch {
 
@@ -76,7 +77,7 @@ namespace Catch {
     }
 
     bool TestCase::hasTag( const std::string& tag ) const {
-        return tags.find( tag ) != tags.end();
+        return tags.find( toLower( tag ) ) != tags.end();
     }
     bool TestCase::matchesTags( const std::string& tagPattern ) const {
         TagExpression exp;

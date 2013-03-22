@@ -383,6 +383,7 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( twoTags.getTestCaseInfo().description == "" );
         CHECK( twoTags.hasTag( "one" ) );
         CHECK( twoTags.hasTag( "two" ) );
+        CHECK( twoTags.hasTag( "Two" ) );
         CHECK( twoTags.hasTag( "three" ) == false );
         CHECK( twoTags.getTags().size() == 2 );
 

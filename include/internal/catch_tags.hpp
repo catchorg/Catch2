@@ -70,9 +70,7 @@ namespace Catch {
 
     private:
         virtual void acceptTag( const std::string& tag ) {
-            std::string lcTag = tag;
-            toLower( lcTag );
-            m_tags.insert( lcTag );
+            m_tags.insert( toLower( tag ) );
         }
         virtual void acceptChar( char c ) {
             m_remainder += c;
@@ -115,9 +113,7 @@ namespace Catch {
         typedef std::map<std::string, Tag> TagMap;
     public:
         void add( const Tag& tag ) {
-            std::string tagName = tag.getName();
-            toLower( tagName );
-            m_tags.insert( std::make_pair( tagName, tag ) );
+            m_tags.insert( std::make_pair( toLower( tag.getName() ), tag ) );
         }
 
         bool empty() const {

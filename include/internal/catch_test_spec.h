@@ -33,12 +33,10 @@ namespace Catch {
         
     public:
         TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
-        :   m_stringToMatch( testSpec ),
+        :   m_stringToMatch( toLower( testSpec ) ),
             m_filterType( matchBehaviour ),
             m_wildcardPosition( NoWildcard )
         {
-            toLower( m_stringToMatch );
-
             if( m_filterType == IfFilterMatches::AutoDetectBehaviour ) {
                 if( startsWith( m_stringToMatch, "exclude:" ) ) {
                     m_stringToMatch = m_stringToMatch.substr( 8 );
@@ -79,7 +77,7 @@ namespace Catch {
 
         bool isMatch( const TestCase& testCase ) const {
             std::string name = testCase.getTestCaseInfo().name;
-            toLower( name );
+            toLowerInPlace( name );
 
             switch( m_wildcardPosition ) {
                 case NoWildcard:
