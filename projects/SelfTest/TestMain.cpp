@@ -10,6 +10,7 @@
 #endif
 
 #include "catch_self_test.hpp"
+#include "catch_line_wrap.h"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {
     using namespace Catch;
@@ -422,5 +423,37 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( oneTag.matchesTags( "~[hide]" ) == false );
 
     }
+}
+
+TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
+    // guide:                 123456789012345678
+    std::string testString = "one two three four";
     
+    SECTION( "No wrapping", "" ) {
+        CHECK( Catch::wrapLongStrings( testString, 80, 0 ) == testString );
+        CHECK( Catch::wrapLongStrings( testString, 18, 0 ) == testString );
+    }
+    SECTION( "Wrapped once", "" ) {
+        CHECK( Catch::wrapLongStrings( testString, 17, 0 ) == "one two three\nfour" );
+        CHECK( Catch::wrapLongStrings( testString, 16, 0 ) == "one two three\nfour" );
+        CHECK( Catch::wrapLongStrings( testString, 15, 0 ) == "one two three\nfour" );
+        CHECK( Catch::wrapLongStrings( testString, 14, 0 ) == "one two three\nfour" );
+        CHECK( Catch::wrapLongStrings( testString, 13, 0 ) == "one two\nthree four" );
+    }
+    SECTION( "Wrapped twice", "" ) {
+        CHECK( Catch::wrapLongStrings( testString, 9, 0 ) == "one two\nthree\nfour" );
+        CHECK( Catch::wrapLongStrings( testString, 8, 0 ) == "one two\nthree\nfour" );
+    }
+    SECTION( "Wrapped three times", "" ) {
+        CHECK( Catch::wrapLongStrings( testString, 7, 0 ) == "one\ntwo\nthree\nfour" );
+        CHECK( Catch::wrapLongStrings( testString, 5, 0 ) == "one\ntwo\nthree\nfour" );
+    }
+    SECTION( "Short wrap", "" ) {
+        CHECK( Catch::wrapLongStrings( "abcdef", 4, 0 ) == "abc-\ndef" );
+        CHECK( Catch::wrapLongStrings( "abcdefg", 4, 0 ) == "abc-\ndefg" );
+        CHECK( Catch::wrapLongStrings( "abcdefgh", 4, 0 ) == "abc-\ndef-\ngh" );
+
+        CHECK( Catch::wrapLongStrings( testString, 4, 0 ) == "one\ntwo\nthr-\nee\nfour" );
+        CHECK( Catch::wrapLongStrings( testString, 3, 0 ) == "one\ntwo\nth-\nree\nfo-\nur" );
+    }
 }
