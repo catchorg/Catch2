@@ -210,6 +210,9 @@ TEST_CASE(  "./succeeding/conditions/int literals",
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
+#ifdef _MSC_VER
+#pragma warning(disable:4389) // '==' : signed/unsigned mismatch
+#endif
 
 TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
             "comparisons between int variables" )

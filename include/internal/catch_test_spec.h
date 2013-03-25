@@ -30,7 +30,7 @@ namespace Catch {
             WildcardAtEnd = 2,
             WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
         };
-        
+
     public:
         TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
         :   m_stringToMatch( toLower( testSpec ) ),

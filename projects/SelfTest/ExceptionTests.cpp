@@ -107,6 +107,9 @@ TEST_CASE_NORETURN( "./failing/exceptions/custom", "Unexpected custom exceptions
 {
     throw CustomException( "custom exception" );
 }
+#ifdef _MSC_VER
+#pragma warning(disable:4702) // unreachable code
+#endif
 
 TEST_CASE( "./failing/exceptions/custom/nothrow", "Custom exceptions can be translated when testing for nothrow" )
 {

@@ -26,6 +26,9 @@ namespace Catch {
         const unsigned int minorVersion;
         const unsigned int buildNumber;
         const std::string branchName;
+
+	private:
+		void operator=( Version const& );
     };
 
     extern Version libraryVersion;

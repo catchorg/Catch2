@@ -47,7 +47,7 @@ TEST_CASE( "./mixed/message/info/2", "INFO gets logged on failure" )
 
 TEST_CASE( "./failing/message/fail", "FAIL aborts the test" )
 {
-    if( true )
+	if( Catch::isTrue( true ) )
         FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
 
