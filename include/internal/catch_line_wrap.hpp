@@ -12,13 +12,6 @@
 
 namespace Catch {
     
-
-    LineWrapper::LineWrapper( std::size_t _indent, std::size_t _right )
-    :   indent( _indent, ' ' ),
-        right( _right ),
-        nextTab( 0 ),
-        tab( 0 )
-    {}
     LineWrapper::LineWrapper( std::size_t _right )
     :   right( _right ),
         nextTab( 0 ),
@@ -75,18 +68,18 @@ namespace Catch {
         addLine( _str );
     }
 
-    std::ostream& LineWrapper::intoStream( std::ostream& stream ) const {
-        for( const_iterator it = begin(), itEnd = end();
+    std::ostream& operator << ( std::ostream& _stream, LineWrapper const& _lineWrapper ) {
+        for( LineWrapper::const_iterator it = _lineWrapper.begin(), itEnd = _lineWrapper.end();
             it != itEnd; ++it ) {
-            if( it != begin() )
-                stream << "\n";
-            stream << *it;
+            if( it != _lineWrapper.begin() )
+                _stream << "\n";
+            _stream << *it;
         }
-        return stream;
+        return _stream;
     }
     std::string LineWrapper::toString() const {
         std::ostringstream oss;
-        intoStream( oss );
+        oss << *this;
         return oss.str();
     }
     

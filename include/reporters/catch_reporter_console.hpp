@@ -211,7 +211,7 @@ namespace Catch {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
                     TextColour colourGuard( TextColour::ReconstructedExpression );
-                    stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ).toString() << "\n";
+                    stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ) << "\n";
                 }
             }
             void printMessage() const {
@@ -220,8 +220,7 @@ namespace Catch {
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
                         ++it ) {                    
-                    LineWrapper().setIndent(2).wrap( it->message ).intoStream( stream );
-                    stream << "\n";
+                    stream << LineWrapper().setIndent(2).wrap( it->message ) << "\n";
                 }
             }
             void printSourceInfo() const {

@@ -15,7 +15,6 @@ namespace Catch {
     
     class LineWrapper {
     public:
-        LineWrapper( std::size_t _indent, std::size_t _right );
         LineWrapper( std::size_t _right );
         LineWrapper();
 
@@ -23,14 +22,15 @@ namespace Catch {
         LineWrapper& setRight( std::size_t _right );
 
         LineWrapper& wrap( std::string const& _str );
-        
-        std::ostream& intoStream( std::ostream& stream ) const;
+
         std::string toString() const;
 
         typedef std::vector<std::string>::const_iterator const_iterator;
 
         const_iterator begin() const { return lines.begin(); }
         const_iterator end() const { return lines.end(); }
+
+        friend std::ostream& operator << ( std::ostream& _stream, LineWrapper const& _lineWrapper );
         
     private:
         void wrapInternal( std::string const& _str );
