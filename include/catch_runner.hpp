@@ -161,7 +161,7 @@ namespace Catch {
                 displayedSpecificOption = true;
                 std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
                             << opt.optionSummary() << "\n\n"
-                            << wrapLongStrings( opt.optionDescription(), 80, 2 ) << "\n" << std::endl;
+                            << LineWrapper().setIndent( 2 ).wrap( opt.optionDescription() ).toString() << "\n" << std::endl;
             }
         }
 

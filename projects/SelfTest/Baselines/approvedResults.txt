@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b27 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b28 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4167,20 +4167,21 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
+  plain string
   No wrapping
 ...............................................................................
 
-TestMain.cpp:433:
+TestMain.cpp:435:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 80, 0 ) == testString )
+  CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString )
 with expansion:
   "one two three four"
   ==
   "one two three four"
 
-TestMain.cpp:434:
+TestMain.cpp:436:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 18, 0 ) == testString )
+  CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString )
 with expansion:
   "one two three four"
   ==
@@ -4188,32 +4189,13 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
+  plain string
   Wrapped once
 ...............................................................................
 
-TestMain.cpp:437:
-PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 17, 0 ) == "one two three\nfour" )
-with expansion:
-  "one two three
-  four"
-  ==
-  "one two three
-  four"
-
-TestMain.cpp:438:
-PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 16, 0 ) == "one two three\nfour" )
-with expansion:
-  "one two three
-  four"
-  ==
-  "one two three
-  four"
-
 TestMain.cpp:439:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 15, 0 ) == "one two three\nfour" )
+  CHECK( Catch::LineWrapper( 17 ).wrap( testString ).toString() == "one two three\nfour" )
 with expansion:
   "one two three
   four"
@@ -4223,7 +4205,7 @@ with expansion:
 
 TestMain.cpp:440:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 14, 0 ) == "one two three\nfour" )
+  CHECK( Catch::LineWrapper( 16 ).wrap( testString ).toString() == "one two three\nfour" )
 with expansion:
   "one two three
   four"
@@ -4233,7 +4215,27 @@ with expansion:
 
 TestMain.cpp:441:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 13, 0 ) == "one two\nthree four" )
+  CHECK( Catch::LineWrapper( 15 ).wrap( testString ).toString() == "one two three\nfour" )
+with expansion:
+  "one two three
+  four"
+  ==
+  "one two three
+  four"
+
+TestMain.cpp:442:
+PASSED:
+  CHECK( Catch::LineWrapper( 14 ).wrap( testString ).toString() == "one two three\nfour" )
+with expansion:
+  "one two three
+  four"
+  ==
+  "one two three
+  four"
+
+TestMain.cpp:443:
+PASSED:
+  CHECK( Catch::LineWrapper( 13 ).wrap( testString ).toString() == "one two\nthree four" )
 with expansion:
   "one two
   three four"
@@ -4243,12 +4245,13 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
+  plain string
   Wrapped twice
 ...............................................................................
 
-TestMain.cpp:444:
+TestMain.cpp:446:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 9, 0 ) == "one two\nthree\nfour" )
+  CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
   "one two
   three
@@ -4258,9 +4261,9 @@ with expansion:
   three
   four"
 
-TestMain.cpp:445:
+TestMain.cpp:447:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 8, 0 ) == "one two\nthree\nfour" )
+  CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
   "one two
   three
@@ -4272,12 +4275,13 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
+  plain string
   Wrapped three times
 ...............................................................................
 
-TestMain.cpp:448:
+TestMain.cpp:450:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 7, 0 ) == "one\ntwo\nthree\nfour" )
+  CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
   "one
   two
@@ -4289,9 +4293,9 @@ with expansion:
   three
   four"
 
-TestMain.cpp:449:
+TestMain.cpp:451:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 5, 0 ) == "one\ntwo\nthree\nfour" )
+  CHECK( Catch::LineWrapper( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
   "one
   two
@@ -4305,44 +4309,45 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
+  plain string
   Short wrap
 ...............................................................................
 
-TestMain.cpp:452:
-PASSED:
-  CHECK( Catch::wrapLongStrings( "abcdef", 4, 0 ) == "abc-\ndef" )
-with expansion:
-  "abc-
-  def"
-  ==
-  "abc-
-  def"
-
-TestMain.cpp:453:
-PASSED:
-  CHECK( Catch::wrapLongStrings( "abcdefg", 4, 0 ) == "abc-\ndefg" )
-with expansion:
-  "abc-
-  defg"
-  ==
-  "abc-
-  defg"
-
 TestMain.cpp:454:
 PASSED:
-  CHECK( Catch::wrapLongStrings( "abcdefgh", 4, 0 ) == "abc-\ndef-\ngh" )
+  CHECK( Catch::LineWrapper( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" )
 with expansion:
   "abc-
-  def-
-  gh"
+  def"
   ==
   "abc-
-  def-
-  gh"
+  def"
+
+TestMain.cpp:455:
+PASSED:
+  CHECK( Catch::LineWrapper( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" )
+with expansion:
+  "abc-
+  defg"
+  ==
+  "abc-
+  defg"
 
 TestMain.cpp:456:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 4, 0 ) == "one\ntwo\nthr-\nee\nfour" )
+  CHECK( Catch::LineWrapper( 4 ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" )
+with expansion:
+  "abc-
+  def-
+  gh"
+  ==
+  "abc-
+  def-
+  gh"
+
+TestMain.cpp:458:
+PASSED:
+  CHECK( Catch::LineWrapper( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" )
 with expansion:
   "one
   two
@@ -4356,9 +4361,9 @@ with expansion:
   ee
   four"
 
-TestMain.cpp:457:
+TestMain.cpp:459:
 PASSED:
-  CHECK( Catch::wrapLongStrings( testString, 3, 0 ) == "one\ntwo\nth-\nree\nfo-\nur" )
+  CHECK( Catch::LineWrapper( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" )
 with expansion:
   "one
   two
@@ -4373,6 +4378,136 @@ with expansion:
   ree
   fo-
   ur"
+
+-------------------------------------------------------------------------------
+Long strings can be wrapped
+  With newlines
+  No wrapping
+...............................................................................
+
+TestMain.cpp:469:
+PASSED:
+  CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString )
+with expansion:
+  "one two
+  three four"
+  ==
+  "one two
+  three four"
+
+TestMain.cpp:470:
+PASSED:
+  CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString )
+with expansion:
+  "one two
+  three four"
+  ==
+  "one two
+  three four"
+
+TestMain.cpp:471:
+PASSED:
+  CHECK( Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString )
+with expansion:
+  "one two
+  three four"
+  ==
+  "one two
+  three four"
+
+-------------------------------------------------------------------------------
+Long strings can be wrapped
+  With newlines
+  Trailing newline
+...............................................................................
+
+TestMain.cpp:474:
+PASSED:
+  CHECK( Catch::LineWrapper( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
+with expansion:
+  "abcdef
+  "
+  ==
+  "abcdef
+  "
+
+TestMain.cpp:475:
+PASSED:
+  CHECK( Catch::LineWrapper( 6 ).wrap( "abcdef" ).toString() == "abcdef" )
+with expansion:
+  "abcdef" == "abcdef"
+
+TestMain.cpp:476:
+PASSED:
+  CHECK( Catch::LineWrapper( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
+with expansion:
+  "abcdef
+  "
+  ==
+  "abcdef
+  "
+
+-------------------------------------------------------------------------------
+Long strings can be wrapped
+  With newlines
+  Wrapped once
+...............................................................................
+
+TestMain.cpp:479:
+PASSED:
+  CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+with expansion:
+  "one two
+  three
+  four"
+  ==
+  "one two
+  three
+  four"
+
+TestMain.cpp:480:
+PASSED:
+  CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+with expansion:
+  "one two
+  three
+  four"
+  ==
+  "one two
+  three
+  four"
+
+TestMain.cpp:481:
+PASSED:
+  CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+with expansion:
+  "one two
+  three
+  four"
+  ==
+  "one two
+  three
+  four"
+
+-------------------------------------------------------------------------------
+Long strings can be wrapped
+  With newlines
+  Wrapped twice
+...............................................................................
+
+TestMain.cpp:484:
+PASSED:
+  CHECK( Catch::LineWrapper( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
+with expansion:
+  "one
+  two
+  three
+  four"
+  ==
+  "one
+  two
+  three
+  four"
 
 -------------------------------------------------------------------------------
 ./succeeding/Tricky/std::pair
@@ -4704,11 +4839,11 @@ with message:
   no assertions
 
 ===============================================================================
-106 test cases - 47 failed (666 assertions - 104 failed)
+106 test cases - 47 failed (676 assertions - 104 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b27 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b28 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -4999,7 +5134,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="77" tests="666" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="77" tests="676" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -10238,130 +10373,140 @@ TestMain.cpp" line="423">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Long strings can be wrapped">
-      <Section name="No wrapping">
-TestMain.cpp" line="433">
-          <Original>
-            Catch::wrapLongStrings( testString, 80, 0 ) == testString
-          </Original>
-          <Expanded>
-            &quot;one two three four&quot;
+      <Section name="plain string">
+        <Section name="No wrapping">
+TestMain.cpp" line="435">
+            <Original>
+              Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString
+            </Original>
+            <Expanded>
+              &quot;one two three four&quot;
 ==
 &quot;one two three four&quot;
-          </Expanded>
-        </Expression>
-TestMain.cpp" line="434">
-          <Original>
-            Catch::wrapLongStrings( testString, 18, 0 ) == testString
-          </Original>
-          <Expanded>
-            &quot;one two three four&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="436">
+            <Original>
+              Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString
+            </Original>
+            <Expanded>
+              &quot;one two three four&quot;
 ==
 &quot;one two three four&quot;
-          </Expanded>
-        </Expression>
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
         <OverallResults successes="2" failures="0"/>
       </Section>
-      <Section name="Wrapped once">
-TestMain.cpp" line="437">
-          <Original>
-            Catch::wrapLongStrings( testString, 17, 0 ) == &quot;one two three\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one two three
-four&quot;
-==
-&quot;one two three
-four&quot;
-          </Expanded>
-        </Expression>
-TestMain.cpp" line="438">
-          <Original>
-            Catch::wrapLongStrings( testString, 16, 0 ) == &quot;one two three\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one two three
-four&quot;
-==
-&quot;one two three
-four&quot;
-          </Expanded>
-        </Expression>
+      <Section name="plain string">
+        <Section name="Wrapped once">
 TestMain.cpp" line="439">
-          <Original>
-            Catch::wrapLongStrings( testString, 15, 0 ) == &quot;one two three\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one two three
+            <Original>
+              Catch::LineWrapper( 17 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two three
 four&quot;
 ==
 &quot;one two three
 four&quot;
-          </Expanded>
-        </Expression>
+            </Expanded>
+          </Expression>
 TestMain.cpp" line="440">
-          <Original>
-            Catch::wrapLongStrings( testString, 14, 0 ) == &quot;one two three\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one two three
+            <Original>
+              Catch::LineWrapper( 16 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two three
 four&quot;
 ==
 &quot;one two three
 four&quot;
-          </Expanded>
-        </Expression>
+            </Expanded>
+          </Expression>
 TestMain.cpp" line="441">
-          <Original>
-            Catch::wrapLongStrings( testString, 13, 0 ) == &quot;one two\nthree four&quot;
-          </Original>
-          <Expanded>
-            &quot;one two
+            <Original>
+              Catch::LineWrapper( 15 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two three
+four&quot;
+==
+&quot;one two three
+four&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="442">
+            <Original>
+              Catch::LineWrapper( 14 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two three
+four&quot;
+==
+&quot;one two three
+four&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="443">
+            <Original>
+              Catch::LineWrapper( 13 ).wrap( testString ).toString() == &quot;one two\nthree four&quot;
+            </Original>
+            <Expanded>
+              &quot;one two
 three four&quot;
 ==
 &quot;one two
 three four&quot;
-          </Expanded>
-        </Expression>
+            </Expanded>
+          </Expression>
+          <OverallResults successes="5" failures="0"/>
+        </Section>
         <OverallResults successes="5" failures="0"/>
       </Section>
-      <Section name="Wrapped twice">
-TestMain.cpp" line="444">
-          <Original>
-            Catch::wrapLongStrings( testString, 9, 0 ) == &quot;one two\nthree\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one two
+      <Section name="plain string">
+        <Section name="Wrapped twice">
+TestMain.cpp" line="446">
+            <Original>
+              Catch::LineWrapper( 9 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two
 three
 four&quot;
 ==
 &quot;one two
 three
 four&quot;
-          </Expanded>
-        </Expression>
-TestMain.cpp" line="445">
-          <Original>
-            Catch::wrapLongStrings( testString, 8, 0 ) == &quot;one two\nthree\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one two
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="447">
+            <Original>
+              Catch::LineWrapper( 8 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two
 three
 four&quot;
 ==
 &quot;one two
 three
 four&quot;
-          </Expanded>
-        </Expression>
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
         <OverallResults successes="2" failures="0"/>
       </Section>
-      <Section name="Wrapped three times">
-TestMain.cpp" line="448">
-          <Original>
-            Catch::wrapLongStrings( testString, 7, 0 ) == &quot;one\ntwo\nthree\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one
+      <Section name="plain string">
+        <Section name="Wrapped three times">
+TestMain.cpp" line="450">
+            <Original>
+              Catch::LineWrapper( 7 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one
 two
 three
 four&quot;
@@ -10370,14 +10515,14 @@ four&quot;
 two
 three
 four&quot;
-          </Expanded>
-        </Expression>
-TestMain.cpp" line="449">
-          <Original>
-            Catch::wrapLongStrings( testString, 5, 0 ) == &quot;one\ntwo\nthree\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="451">
+            <Original>
+              Catch::LineWrapper( 5 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one
 two
 three
 four&quot;
@@ -10386,55 +10531,58 @@ four&quot;
 two
 three
 four&quot;
-          </Expanded>
-        </Expression>
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
         <OverallResults successes="2" failures="0"/>
       </Section>
-      <Section name="Short wrap">
-TestMain.cpp" line="452">
-          <Original>
-            Catch::wrapLongStrings( &quot;abcdef&quot;, 4, 0 ) == &quot;abc-\ndef&quot;
-          </Original>
-          <Expanded>
-            &quot;abc-
-def&quot;
-==
-&quot;abc-
-def&quot;
-          </Expanded>
-        </Expression>
-TestMain.cpp" line="453">
-          <Original>
-            Catch::wrapLongStrings( &quot;abcdefg&quot;, 4, 0 ) == &quot;abc-\ndefg&quot;
-          </Original>
-          <Expanded>
-            &quot;abc-
-defg&quot;
-==
-&quot;abc-
-defg&quot;
-          </Expanded>
-        </Expression>
+      <Section name="plain string">
+        <Section name="Short wrap">
 TestMain.cpp" line="454">
-          <Original>
-            Catch::wrapLongStrings( &quot;abcdefgh&quot;, 4, 0 ) == &quot;abc-\ndef-\ngh&quot;
-          </Original>
-          <Expanded>
-            &quot;abc-
+            <Original>
+              Catch::LineWrapper( 4 ).wrap( &quot;abcdef&quot; ).toString() == &quot;abc-\ndef&quot;
+            </Original>
+            <Expanded>
+              &quot;abc-
+def&quot;
+==
+&quot;abc-
+def&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="455">
+            <Original>
+              Catch::LineWrapper( 4 ).wrap( &quot;abcdefg&quot; ).toString() == &quot;abc-\ndefg&quot;
+            </Original>
+            <Expanded>
+              &quot;abc-
+defg&quot;
+==
+&quot;abc-
+defg&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="456">
+            <Original>
+              Catch::LineWrapper( 4 ).wrap(&quot;abcdefgh&quot; ).toString() == &quot;abc-\ndef-\ngh&quot;
+            </Original>
+            <Expanded>
+              &quot;abc-
 def-
 gh&quot;
 ==
 &quot;abc-
 def-
 gh&quot;
-          </Expanded>
-        </Expression>
-TestMain.cpp" line="456">
-          <Original>
-            Catch::wrapLongStrings( testString, 4, 0 ) == &quot;one\ntwo\nthr-\nee\nfour&quot;
-          </Original>
-          <Expanded>
-            &quot;one
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="458">
+            <Original>
+              Catch::LineWrapper( 4 ).wrap( testString ).toString() == &quot;one\ntwo\nthr-\nee\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one
 two
 thr-
 ee
@@ -10445,14 +10593,14 @@ two
 thr-
 ee
 four&quot;
-          </Expanded>
-        </Expression>
-TestMain.cpp" line="457">
-          <Original>
-            Catch::wrapLongStrings( testString, 3, 0 ) == &quot;one\ntwo\nth-\nree\nfo-\nur&quot;
-          </Original>
-          <Expanded>
-            &quot;one
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="459">
+            <Original>
+              Catch::LineWrapper( 3 ).wrap( testString ).toString() == &quot;one\ntwo\nth-\nree\nfo-\nur&quot;
+            </Original>
+            <Expanded>
+              &quot;one
 two
 th-
 ree
@@ -10465,9 +10613,164 @@ th-
 ree
 fo-
 ur&quot;
-          </Expanded>
-        </Expression>
+            </Expanded>
+          </Expression>
+          <OverallResults successes="5" failures="0"/>
+        </Section>
         <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="plain string">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="With newlines">
+        <Section name="No wrapping">
+TestMain.cpp" line="469">
+            <Original>
+              Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString
+            </Original>
+            <Expanded>
+              &quot;one two
+three four&quot;
+==
+&quot;one two
+three four&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="470">
+            <Original>
+              Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString
+            </Original>
+            <Expanded>
+              &quot;one two
+three four&quot;
+==
+&quot;one two
+three four&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="471">
+            <Original>
+              Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString
+            </Original>
+            <Expanded>
+              &quot;one two
+three four&quot;
+==
+&quot;one two
+three four&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="With newlines">
+        <Section name="Trailing newline">
+TestMain.cpp" line="474">
+            <Original>
+              Catch::LineWrapper( 10 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
+            </Original>
+            <Expanded>
+              &quot;abcdef
+&quot;
+==
+&quot;abcdef
+&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="475">
+            <Original>
+              Catch::LineWrapper( 6 ).wrap( &quot;abcdef&quot; ).toString() == &quot;abcdef&quot;
+            </Original>
+            <Expanded>
+              &quot;abcdef&quot; == &quot;abcdef&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="476">
+            <Original>
+              Catch::LineWrapper( 6 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
+            </Original>
+            <Expanded>
+              &quot;abcdef
+&quot;
+==
+&quot;abcdef
+&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="With newlines">
+        <Section name="Wrapped once">
+TestMain.cpp" line="479">
+            <Original>
+              Catch::LineWrapper( 9 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two
+three
+four&quot;
+==
+&quot;one two
+three
+four&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="480">
+            <Original>
+              Catch::LineWrapper( 8 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two
+three
+four&quot;
+==
+&quot;one two
+three
+four&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="481">
+            <Original>
+              Catch::LineWrapper( 7 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one two
+three
+four&quot;
+==
+&quot;one two
+three
+four&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="With newlines">
+        <Section name="Wrapped twice">
+TestMain.cpp" line="484">
+            <Original>
+              Catch::LineWrapper( 6 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+            </Original>
+            <Expanded>
+              &quot;one
+two
+three
+four&quot;
+==
+&quot;one
+two
+three
+four&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -10802,9 +11105,9 @@ BDDTests.cpp" line="23">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="562" failures="104"/>
+    <OverallResults successes="572" failures="104"/>
   </Group>
-  <OverallResults successes="562" failures="104"/>
+  <OverallResults successes="572" failures="104"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -12108,43 +12411,47 @@ TestMain.cpp:423: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false 
 [Finished: 'selftest/tags' All tests passed (30 assertions in 1 test case)]
 
 [Running: Long strings can be wrapped]
+[Started section: 'plain string']
 [Started section: 'No wrapping']
-TestMain.cpp:433: Catch::wrapLongStrings( testString, 80, 0 ) == testString succeeded for:
+TestMain.cpp:435: Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
-TestMain.cpp:434: Catch::wrapLongStrings( testString, 18, 0 ) == testString succeeded for:
+TestMain.cpp:436: Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
 [End of section: 'No wrapping' All 2 assertions passed]
 
+[End of section: 'plain string' All 2 assertions passed]
+
+[Started section: 'plain string']
 [Started section: 'Wrapped once']
-TestMain.cpp:437: Catch::wrapLongStrings( testString, 17, 0 ) == "one two three\nfour" succeeded for:
+TestMain.cpp:439: Catch::LineWrapper( 17 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:438: Catch::wrapLongStrings( testString, 16, 0 ) == "one two three\nfour" succeeded for:
+TestMain.cpp:440: Catch::LineWrapper( 16 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:439: Catch::wrapLongStrings( testString, 15, 0 ) == "one two three\nfour" succeeded for:
+TestMain.cpp:441: Catch::LineWrapper( 15 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:440: Catch::wrapLongStrings( testString, 14, 0 ) == "one two three\nfour" succeeded for:
+TestMain.cpp:442: Catch::LineWrapper( 14 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:441: Catch::wrapLongStrings( testString, 13, 0 ) == "one two\nthree four" succeeded for:
+TestMain.cpp:443: Catch::LineWrapper( 13 ).wrap( testString ).toString() == "one two\nthree four" succeeded for:
 	"one two
 three four"
 ==
@@ -12152,8 +12459,11 @@ three four"
 three four"
 [End of section: 'Wrapped once' All 5 assertions passed]
 
+[End of section: 'plain string' All 5 assertions passed]
+
+[Started section: 'plain string']
 [Started section: 'Wrapped twice']
-TestMain.cpp:444: Catch::wrapLongStrings( testString, 9, 0 ) == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:446: Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -12161,7 +12471,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:445: Catch::wrapLongStrings( testString, 8, 0 ) == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:447: Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -12171,8 +12481,11 @@ three
 four"
 [End of section: 'Wrapped twice' All 2 assertions passed]
 
+[End of section: 'plain string' All 2 assertions passed]
+
+[Started section: 'plain string']
 [Started section: 'Wrapped three times']
-TestMain.cpp:448: Catch::wrapLongStrings( testString, 7, 0 ) == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:450: Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -12182,7 +12495,7 @@ four"
 two
 three
 four"
-TestMain.cpp:449: Catch::wrapLongStrings( testString, 5, 0 ) == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:451: Catch::LineWrapper( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -12194,25 +12507,28 @@ three
 four"
 [End of section: 'Wrapped three times' All 2 assertions passed]
 
+[End of section: 'plain string' All 2 assertions passed]
+
+[Started section: 'plain string']
 [Started section: 'Short wrap']
-TestMain.cpp:452: Catch::wrapLongStrings( "abcdef", 4, 0 ) == "abc-\ndef" succeeded for: "abc-
+TestMain.cpp:454: Catch::LineWrapper( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" succeeded for: "abc-
 def"
 ==
 "abc-
 def"
-TestMain.cpp:453: Catch::wrapLongStrings( "abcdefg", 4, 0 ) == "abc-\ndefg" succeeded for: "abc-
+TestMain.cpp:455: Catch::LineWrapper( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" succeeded for: "abc-
 defg"
 ==
 "abc-
 defg"
-TestMain.cpp:454: Catch::wrapLongStrings( "abcdefgh", 4, 0 ) == "abc-\ndef-\ngh" succeeded for: "abc-
+TestMain.cpp:456: Catch::LineWrapper( 4 ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" succeeded for: "abc-
 def-
 gh"
 ==
 "abc-
 def-
 gh"
-TestMain.cpp:456: Catch::wrapLongStrings( testString, 4, 0 ) == "one\ntwo\nthr-\nee\nfour" succeeded for:
+TestMain.cpp:458: Catch::LineWrapper( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" succeeded for:
 	"one
 two
 thr-
@@ -12224,7 +12540,7 @@ two
 thr-
 ee
 four"
-TestMain.cpp:457: Catch::wrapLongStrings( testString, 3, 0 ) == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
+TestMain.cpp:459: Catch::LineWrapper( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
 	"one
 two
 th-
@@ -12240,7 +12556,96 @@ fo-
 ur"
 [End of section: 'Short wrap' All 5 assertions passed]
 
-[Finished: 'Long strings can be wrapped' All tests passed (16 assertions in 1 test case)]
+[End of section: 'plain string' All 5 assertions passed]
+
+[Started section: 'With newlines']
+[Started section: 'No wrapping']
+TestMain.cpp:469: Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString succeeded for:
+	"one two
+three four"
+==
+"one two
+three four"
+TestMain.cpp:470: Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString succeeded for:
+	"one two
+three four"
+==
+"one two
+three four"
+TestMain.cpp:471: Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString succeeded for:
+	"one two
+three four"
+==
+"one two
+three four"
+[End of section: 'No wrapping' All 3 assertions passed]
+
+[End of section: 'With newlines' All 3 assertions passed]
+
+[Started section: 'With newlines']
+[Started section: 'Trailing newline']
+TestMain.cpp:474: Catch::LineWrapper( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
+"
+==
+"abcdef
+"
+TestMain.cpp:475: Catch::LineWrapper( 6 ).wrap( "abcdef" ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
+TestMain.cpp:476: Catch::LineWrapper( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
+"
+==
+"abcdef
+"
+[End of section: 'Trailing newline' All 3 assertions passed]
+
+[End of section: 'With newlines' All 3 assertions passed]
+
+[Started section: 'With newlines']
+[Started section: 'Wrapped once']
+TestMain.cpp:479: Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+	"one two
+three
+four"
+==
+"one two
+three
+four"
+TestMain.cpp:480: Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+	"one two
+three
+four"
+==
+"one two
+three
+four"
+TestMain.cpp:481: Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+	"one two
+three
+four"
+==
+"one two
+three
+four"
+[End of section: 'Wrapped once' All 3 assertions passed]
+
+[End of section: 'With newlines' All 3 assertions passed]
+
+[Started section: 'With newlines']
+[Started section: 'Wrapped twice']
+TestMain.cpp:484: Catch::LineWrapper( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+	"one
+two
+three
+four"
+==
+"one
+two
+three
+four"
+[End of section: 'Wrapped twice' 1 assertion passed]
+
+[End of section: 'With newlines' 1 assertion passed]
+
+[Finished: 'Long strings can be wrapped' All tests passed (26 assertions in 1 test case)]
 
 [Running: ./succeeding/Tricky/std::pair]
 TrickyTests.cpp:37: (std::pair<int, int>( 1, 2 )) == aNicePair succeeded for: std::pair( 1, 2 ) == std::pair( 1, 2 )
@@ -12377,10 +12782,10 @@ VariadicMacrosTests.cpp:26:  succeeded
 [End of section: 'Section with one argument' 1 assertion passed]
 
 [Finished: 'Variadic macros' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 47 of 106 test cases failed (104 of 666 assertions failed)]
+[End of group: '~dummy'. 47 of 106 test cases failed (104 of 676 assertions failed)]
 
 
-[Testing completed. 47 of 106 test cases failed (104 of 666 assertions failed)]
+[Testing completed. 47 of 106 test cases failed (104 of 676 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']

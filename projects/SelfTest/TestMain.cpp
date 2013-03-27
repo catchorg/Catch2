@@ -426,34 +426,63 @@ TEST_CASE( "selftest/tags", "" ) {
 }
 
 TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
-    // guide:                 123456789012345678
-    std::string testString = "one two three four";
-    
-    SECTION( "No wrapping", "" ) {
-        CHECK( Catch::wrapLongStrings( testString, 80, 0 ) == testString );
-        CHECK( Catch::wrapLongStrings( testString, 18, 0 ) == testString );
-    }
-    SECTION( "Wrapped once", "" ) {
-        CHECK( Catch::wrapLongStrings( testString, 17, 0 ) == "one two three\nfour" );
-        CHECK( Catch::wrapLongStrings( testString, 16, 0 ) == "one two three\nfour" );
-        CHECK( Catch::wrapLongStrings( testString, 15, 0 ) == "one two three\nfour" );
-        CHECK( Catch::wrapLongStrings( testString, 14, 0 ) == "one two three\nfour" );
-        CHECK( Catch::wrapLongStrings( testString, 13, 0 ) == "one two\nthree four" );
-    }
-    SECTION( "Wrapped twice", "" ) {
-        CHECK( Catch::wrapLongStrings( testString, 9, 0 ) == "one two\nthree\nfour" );
-        CHECK( Catch::wrapLongStrings( testString, 8, 0 ) == "one two\nthree\nfour" );
-    }
-    SECTION( "Wrapped three times", "" ) {
-        CHECK( Catch::wrapLongStrings( testString, 7, 0 ) == "one\ntwo\nthree\nfour" );
-        CHECK( Catch::wrapLongStrings( testString, 5, 0 ) == "one\ntwo\nthree\nfour" );
-    }
-    SECTION( "Short wrap", "" ) {
-        CHECK( Catch::wrapLongStrings( "abcdef", 4, 0 ) == "abc-\ndef" );
-        CHECK( Catch::wrapLongStrings( "abcdefg", 4, 0 ) == "abc-\ndefg" );
-        CHECK( Catch::wrapLongStrings( "abcdefgh", 4, 0 ) == "abc-\ndef-\ngh" );
 
-        CHECK( Catch::wrapLongStrings( testString, 4, 0 ) == "one\ntwo\nthr-\nee\nfour" );
-        CHECK( Catch::wrapLongStrings( testString, 3, 0 ) == "one\ntwo\nth-\nree\nfo-\nur" );
+    SECTION( "plain string", "" ) {
+        // guide:                 123456789012345678
+        std::string testString = "one two three four";
+        
+        SECTION( "No wrapping", "" ) {
+            CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString );
+        }
+        SECTION( "Wrapped once", "" ) {
+            CHECK( Catch::LineWrapper( 17 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper( 16 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper( 15 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper( 14 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper( 13 ).wrap( testString ).toString() == "one two\nthree four" );
+        }
+        SECTION( "Wrapped twice", "" ) {
+            CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+        }
+        SECTION( "Wrapped three times", "" ) {
+            CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
+            CHECK( Catch::LineWrapper( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
+        }
+        SECTION( "Short wrap", "" ) {
+            CHECK( Catch::LineWrapper( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" );
+            CHECK( Catch::LineWrapper( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" );
+            CHECK( Catch::LineWrapper( 4  ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" );
+
+            CHECK( Catch::LineWrapper( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" );
+            CHECK( Catch::LineWrapper( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" );
+        }
     }
+    
+    SECTION( "With newlines", "" ) {
+        
+        // guide:                 1234567890123456789
+        std::string testString = "one two\nthree four";
+        
+        SECTION( "No wrapping" , "" ) {
+            CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString );
+        }
+        SECTION( "Trailing newline" , "" ) {
+            CHECK( Catch::LineWrapper( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" );
+            CHECK( Catch::LineWrapper(  6 ).wrap( "abcdef" ).toString() == "abcdef" );
+            CHECK( Catch::LineWrapper(  6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" );
+        }
+        SECTION( "Wrapped once", "" ) {
+            CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+        }
+        SECTION( "Wrapped twice", "" ) {
+            CHECK( Catch::LineWrapper( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
+        }
+    }
+    
 }

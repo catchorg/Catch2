@@ -211,7 +211,7 @@ namespace Catch {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
                     TextColour colourGuard( TextColour::ReconstructedExpression );
-                    stream << wrapLongStrings( result.getExpandedExpression() ) << "\n";
+                    stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ).toString() << "\n";
                 }
             }
             void printMessage() const {
@@ -219,17 +219,14 @@ namespace Catch {
                     stream << messageLabel << ":" << "\n";
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
-                        ++it ) {
-                    stream << wrapLongStrings( it->message ) << "\n";
+                        ++it ) {                    
+                    LineWrapper().setIndent(2).wrap( it->message ).intoStream( stream );
+                    stream << "\n";
                 }
             }
             void printSourceInfo() const {
                 TextColour colourGuard( TextColour::FileName );
                 stream << result.getSourceInfo() << ": ";
-            }
-            
-            static std::string wrapLongStrings( std::string const& _string ){
-                return Catch::wrapLongStrings( _string, CATCH_CONFIG_CONSOLE_WIDTH-1, 2 );
             }
             
             std::ostream& stream;

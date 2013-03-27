@@ -12,60 +12,91 @@
 
 namespace Catch {
     
-    namespace {
-        inline void addIndent( std::ostream& os, std::size_t indent ) {
-            while( indent-- > 0 )
-                os << ' ';
-        }
-        
-        inline void recursivelyWrapLine( std::ostream& os, std::string paragraph, std::size_t columns, std::size_t indent ) {
-            std::size_t width = columns-indent;
-            std::size_t tab = 0;
-            std::size_t wrapPoint = width;
-            for( std::size_t pos = 0; pos < paragraph.size(); ++pos ) {
-                if( pos == width ) {
-                    addIndent( os, indent );
-                    if( paragraph[wrapPoint] == ' ' ) {
-                        os << paragraph.substr( 0, wrapPoint ) << "\n";
-                        while( paragraph[++wrapPoint] == ' ' );
-                    }
-                    else {
-                        os << paragraph.substr( 0, --wrapPoint ) << "-\n";
-                    }
-                    return recursivelyWrapLine( os, paragraph.substr( wrapPoint ), columns, indent+tab );
+
+    LineWrapper::LineWrapper( std::size_t _indent, std::size_t _right )
+    :   indent( _indent, ' ' ),
+        right( _right ),
+        nextTab( 0 ),
+        tab( 0 )
+    {}
+    LineWrapper::LineWrapper( std::size_t _right )
+    :   right( _right ),
+        nextTab( 0 ),
+        tab( 0 )
+    {}
+    LineWrapper::LineWrapper()
+    :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
+        nextTab( 0 ),
+        tab( 0 )
+    {}
+    
+    LineWrapper& LineWrapper::setIndent( std::size_t _indent ) {
+        indent = std::string( _indent, ' ' );
+        return *this;
+    }
+    LineWrapper& LineWrapper::setRight( std::size_t _right ) {
+        right = _right;
+        return *this;
+    }
+    LineWrapper& LineWrapper::wrap( std::string const& _str ) {
+        nextTab = tab = 0;
+        wrapInternal( _str );
+        return *this;
+    }
+    void LineWrapper::wrapInternal( std::string const& _str ) {
+        std::size_t width = right - indent.size();
+        std::size_t wrapPoint = width-tab;
+        for( std::size_t pos = 0; pos < _str.size(); ++pos ) {
+            if( _str[pos] == '\n' )
+            {
+                addLine( _str.substr( 0, pos ) );
+                nextTab = tab = 0;
+                return wrapInternal( _str.substr( pos+1 ) );
+            }                
+            if( pos == width-tab ) {
+                if( _str[wrapPoint] == ' ' ) {
+                    addLine( _str.substr( 0, wrapPoint ) );
+                    while( _str[++wrapPoint] == ' ' );
                 }
-                if( paragraph[pos] == '\t' ) {
-                    tab = pos;
-                    paragraph = paragraph.substr( 0, tab ) + paragraph.substr( tab+1 );
-                    pos--;
+                else {
+                    addLine( _str.substr( 0, --wrapPoint ) + '-' );
                 }
-                else if( paragraph[pos] == ' ' ) {
-                    wrapPoint = pos;
-                }
+                return wrapInternal( _str.substr( wrapPoint ) );
             }
-            addIndent( os, indent );
-            os << paragraph;
+            if( _str[pos] == '\t' ) {
+                nextTab = pos;
+                std::string withoutTab = _str.substr( 0, nextTab ) + _str.substr( nextTab+1 );
+                return wrapInternal( withoutTab );
+            }
+            else if( _str[pos] == ' ' ) {
+                wrapPoint = pos;
+            }
         }
+        addLine( _str );
     }
 
-    void wrapLongStrings( std::ostream& stream, const std::string& str, std::size_t columns, std::size_t indent ) {
-        std::string::size_type pos = 0;
-        std::string::size_type newline = str.find_first_of( '\n' );
-        while( newline != std::string::npos ) {
-            std::string paragraph = str.substr( pos, newline-pos );
-            recursivelyWrapLine( stream, paragraph, columns, indent );
-            stream << "\n";
-            pos = newline+1;
-            newline = str.find_first_of( '\n', pos );
+    std::ostream& LineWrapper::intoStream( std::ostream& stream ) const {
+        for( const_iterator it = begin(), itEnd = end();
+            it != itEnd; ++it ) {
+            if( it != begin() )
+                stream << "\n";
+            stream << *it;
         }
-        if( pos != str.size() )
-            recursivelyWrapLine( stream, str.substr( pos, str.size()-pos ), columns, indent );
+        return stream;
     }
-
-    std::string wrapLongStrings( const std::string& str, std::size_t columns, std::size_t indent ) {
+    std::string LineWrapper::toString() const {
         std::ostringstream oss;
-        wrapLongStrings( oss, str, columns, indent );
-        return oss.str();        
+        intoStream( oss );
+        return oss.str();
+    }
+    
+    void LineWrapper::addLine( const std::string& _line ) {
+        if( tab > 0 )
+            lines.push_back( indent + std::string( tab, ' ' ) + _line );
+        else
+            lines.push_back( indent + _line );
+        if( nextTab > 0 )
+            tab = nextTab;
     }
     
 } // end namespace Catch
