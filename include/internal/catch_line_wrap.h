@@ -15,7 +15,6 @@ namespace Catch {
     
     class LineWrapper {
     public:
-        LineWrapper( std::size_t _right );
         LineWrapper();
 
         LineWrapper& setIndent( std::size_t _indent );
@@ -29,17 +28,22 @@ namespace Catch {
 
         const_iterator begin() const { return lines.begin(); }
         const_iterator end() const { return lines.end(); }
+        std::size_t size() const { return lines.size(); }
+        std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
 
         friend std::ostream& operator << ( std::ostream& _stream, LineWrapper const& _lineWrapper );
         
     private:
         void wrapInternal( std::string const& _str );
         void addLine( const std::string& _line );
+        bool isWrapPoint( char c );
 
         std::string indent;
         std::size_t right;
         std::size_t nextTab;
         std::size_t tab;
+        std::string wrappableChars;
+        int recursionCount;
         std::vector<std::string> lines;
     };
     

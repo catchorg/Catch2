@@ -174,11 +174,11 @@
 #else
 #define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
 #endif
-#define GIVEN( desc )    SECTION( "Given: " desc, "" )
-#define WHEN( desc )     SECTION( " When: " desc, "" )
-#define AND_WHEN( desc ) SECTION( "  And: " desc, "" )
-#define THEN( desc )     SECTION( " Then: " desc, "" )
-#define AND_THEN( desc ) SECTION( "  And: " desc, "" )
+#define GIVEN( desc )    SECTION( "   Given: " desc, "" )
+#define WHEN( desc )     SECTION( "    When: " desc, "" )
+#define AND_WHEN( desc ) SECTION( "And when: " desc, "" )
+#define THEN( desc )     SECTION( "    Then: " desc, "" )
+#define AND_THEN( desc ) SECTION( "     And: " desc, "" )
 
 using Catch::Detail::Approx;
 

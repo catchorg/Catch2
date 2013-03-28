@@ -12,15 +12,12 @@
 
 namespace Catch {
     
-    LineWrapper::LineWrapper( std::size_t _right )
-    :   right( _right ),
-        nextTab( 0 ),
-        tab( 0 )
-    {}
     LineWrapper::LineWrapper()
     :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
         nextTab( 0 ),
-        tab( 0 )
+        tab( 0 ),
+        wrappableChars( " [({.," ),
+        recursionCount( 0 )
     {}
     
     LineWrapper& LineWrapper::setIndent( std::size_t _indent ) {
@@ -36,7 +33,12 @@ namespace Catch {
         wrapInternal( _str );
         return *this;
     }
+    bool LineWrapper::isWrapPoint( char c ) {
+        return wrappableChars.find( c ) != std::string::npos;
+    }
     void LineWrapper::wrapInternal( std::string const& _str ) {
+        assert( ++recursionCount < 100 );
+
         std::size_t width = right - indent.size();
         std::size_t wrapPoint = width-tab;
         for( std::size_t pos = 0; pos < _str.size(); ++pos ) {
@@ -51,6 +53,9 @@ namespace Catch {
                     addLine( _str.substr( 0, wrapPoint ) );
                     while( _str[++wrapPoint] == ' ' );
                 }
+                else if( isWrapPoint( _str[wrapPoint] ) ) {
+                    addLine( _str.substr( 0, wrapPoint ) );
+                }
                 else {
                     addLine( _str.substr( 0, --wrapPoint ) + '-' );
                 }
@@ -61,7 +66,7 @@ namespace Catch {
                 std::string withoutTab = _str.substr( 0, nextTab ) + _str.substr( nextTab+1 );
                 return wrapInternal( withoutTab );
             }
-            else if( _str[pos] == ' ' ) {
+            else if( isWrapPoint( _str[pos] ) ) {
                 wrapPoint = pos;
             }
         }

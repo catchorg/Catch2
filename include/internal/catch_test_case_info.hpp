@@ -44,15 +44,21 @@ namespace Catch {
         tags( _tags ),
         lineInfo( _lineInfo ),
         isHidden( _isHidden )
-    {}
+    {
+        std::ostringstream oss;
+        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it )
+            oss << "[" << *it << "]";
+        tagsAsString = oss.str();
+    }
 
     TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
     :   name( other.name ),
         className( other.className ),
         description( other.description ),
         tags( other.tags ),
+        tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
-        isHidden( other.isHidden )
+        isHidden( other.isHidden )        
     {}
 
     TestCase::TestCase( ITestCase* testCase, const TestCaseInfo& info ) : TestCaseInfo( info ), test( testCase ) {}

@@ -432,31 +432,40 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
         std::string testString = "one two three four";
         
         SECTION( "No wrapping", "" ) {
-            CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString );
-            CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString );
         }
         SECTION( "Wrapped once", "" ) {
-            CHECK( Catch::LineWrapper( 17 ).wrap( testString ).toString() == "one two three\nfour" );
-            CHECK( Catch::LineWrapper( 16 ).wrap( testString ).toString() == "one two three\nfour" );
-            CHECK( Catch::LineWrapper( 15 ).wrap( testString ).toString() == "one two three\nfour" );
-            CHECK( Catch::LineWrapper( 14 ).wrap( testString ).toString() == "one two three\nfour" );
-            CHECK( Catch::LineWrapper( 13 ).wrap( testString ).toString() == "one two\nthree four" );
+            CHECK( Catch::LineWrapper().setRight( 17 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 16 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 15 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 14 ).wrap( testString ).toString() == "one two three\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 13 ).wrap( testString ).toString() == "one two\nthree four" );
         }
         SECTION( "Wrapped twice", "" ) {
-            CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" );
-            CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" );
         }
         SECTION( "Wrapped three times", "" ) {
-            CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
-            CHECK( Catch::LineWrapper( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
         }
         SECTION( "Short wrap", "" ) {
-            CHECK( Catch::LineWrapper( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" );
-            CHECK( Catch::LineWrapper( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" );
-            CHECK( Catch::LineWrapper( 4  ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" );
+            CHECK( Catch::LineWrapper().setRight( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" );
+            CHECK( Catch::LineWrapper().setRight( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" );
+            CHECK( Catch::LineWrapper().setRight( 4  ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" );
 
-            CHECK( Catch::LineWrapper( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" );
-            CHECK( Catch::LineWrapper( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" );
+            CHECK( Catch::LineWrapper().setRight( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" );
+        }
+        SECTION( "As container", "" ) {
+            Catch::LineWrapper wrapper;
+            wrapper.setRight( 7 ).wrap( testString );
+            CHECK( wrapper.size() == 4 );
+            CHECK( wrapper[0] == "one" );
+            CHECK( wrapper[1] == "two" );
+            CHECK( wrapper[2] == "three" );
+            CHECK( wrapper[3] == "four" );
         }
     }
     
@@ -466,22 +475,22 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
         std::string testString = "one two\nthree four";
         
         SECTION( "No wrapping" , "" ) {
-            CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString );
-            CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString );
-            CHECK( Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString );
+            CHECK( Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString );
         }
         SECTION( "Trailing newline" , "" ) {
-            CHECK( Catch::LineWrapper( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" );
-            CHECK( Catch::LineWrapper(  6 ).wrap( "abcdef" ).toString() == "abcdef" );
-            CHECK( Catch::LineWrapper(  6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" );
+            CHECK( Catch::LineWrapper().setRight( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" );
+            CHECK( Catch::LineWrapper().setRight(  6 ).wrap( "abcdef" ).toString() == "abcdef" );
+            CHECK( Catch::LineWrapper().setRight(  6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" );
         }
         SECTION( "Wrapped once", "" ) {
-            CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" );
-            CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" );
-            CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" );
         }
         SECTION( "Wrapped twice", "" ) {
-            CHECK( Catch::LineWrapper( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
+            CHECK( Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" );
         }
     }
     

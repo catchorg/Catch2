@@ -124,7 +124,7 @@ namespace Catch {
 
             // Handle list request
             if( config.listSpec != List::None ) {
-                List( config );
+                list( config );
                 Catch::cleanUp();
                 return 0;
             }
