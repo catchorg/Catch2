@@ -25,3 +25,37 @@ SCENARIO( "Do that thing with the thing", "[Tags]" ) {
         }
     }
 }
+
+SCENARIO( "Vector resizing affects size and capacity", "[vector][bdd][size][capacity]" ) {
+    GIVEN( "an empty vector" ) {
+        std::vector<int> v;
+        REQUIRE( v.size() == 0 );
+        
+        WHEN( "it is made larger" ) {
+            v.resize( 10 );
+            THEN( "the size and capacity go up" ) {
+                REQUIRE( v.size() == 10 );
+                REQUIRE( v.capacity() >= 10 );
+                
+                AND_WHEN( "it is made smaller again" ) {
+                    v.resize( 5 );
+                    THEN( "the size goes down but the capacity stays the same" ) {
+                        REQUIRE( v.size() == 5 );
+                        REQUIRE( v.capacity() >= 10 );
+                    }
+                }
+            }
+        }
+        
+        WHEN( "we reserve more space" ) {
+            v.reserve( 10 );
+            THEN( "The capacity is increased but the size remains the same" ) {
+                REQUIRE( v.capacity() >= 10 );
+                REQUIRE( v.size() == 0 );
+            }
+        }
+    }
+}
+
+SCENARIO( "This is a really long scenario name to see how the list command deals with wrapping", "[very long tags][lots][long][tags][verbose]" ) {
+}
