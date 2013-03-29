@@ -253,6 +253,7 @@ namespace Catch {
         }
         void lazyPrintRunInfo() {
             stream  << "\n" << getTildes() << "\n";
+            TextColour colour( TextColour::SecondaryText );
             stream  << testRunInfo->name
                     << " is a CATCH v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"

@@ -10,6 +10,7 @@
 
 #include "catch_commandline.hpp"
 #include "catch_line_wrap.h"
+#include "catch_console_colour.hpp"
 
 #include <limits>
 #include <algorithm>
@@ -63,17 +64,31 @@ namespace Catch {
                 tagsWrapper.setRight( maxTagLen ).wrap( it->getTestCaseInfo().tagsAsString );
                 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
+                    TextColour::Colours colour = TextColour::None;
+                    if( it->getTestCaseInfo().isHidden )
+                        colour = TextColour::SecondaryText;
                     std::string nameCol;
-                    if( i < nameWrapper.size() )
+                    if( i < nameWrapper.size() ) {
                         nameCol = nameWrapper[i];
-                    else
+                    }
+                    else {
                         nameCol = "    ...";
-                    std::cout << nameCol;
+                        colour = TextColour::SecondaryText;
+                    }
+                    
+                    {
+                        TextColour colourGuard( colour );
+                        std::cout << nameCol;
+                    }
                     if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
-                        if( i == 0 )
-                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  " << tagsWrapper[i];
-                        else
-                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    " << tagsWrapper[i];
+                        if( i == 0 ) {
+                            TextColour colourGuard( TextColour::SecondaryText );
+                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  ";
+                        }
+                        else {
+                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    ";
+                        }
+                        std::cout << tagsWrapper[i];
                     }
                     std::cout << "\n";
                 }
@@ -124,10 +139,14 @@ namespace Catch {
             wrapper.setIndent(2).setRight( maxTagLen ).wrap( countIt->first );
             
             std::cout << wrapper;
+            std::size_t dots = 2;
             if( maxTagLen > wrapper.last().size() )
-            std::cout << std::string( maxTagLen - wrapper.last().size(), '.' );
-            std::cout   << ".. "
-                        << countIt->second
+                dots += maxTagLen - wrapper.last().size();
+            {
+                TextColour colourGuard( TextColour::SecondaryText );
+                std::cout << std::string( dots, '.' );
+            }
+            std::cout   << countIt->second
                         << "\n";
         }
         std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;

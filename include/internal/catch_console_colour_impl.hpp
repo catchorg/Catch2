@@ -90,6 +90,7 @@ namespace {
     const char* Cyan =          "[0;36m";
     const char* Yellow =        "[0;33m";
     const char* LightGrey =     "[0;37m";
+//    const char* DarkGrey =      "[1;30m";
 
     struct AnsiConsoleColourCodes : IConsoleColourCodes {
     
