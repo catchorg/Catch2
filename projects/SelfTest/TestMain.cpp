@@ -10,7 +10,7 @@
 #endif
 
 #include "catch_self_test.hpp"
-#include "catch_line_wrap.h"
+#include "internal/catch_line_wrap.h"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {
     using namespace Catch;
