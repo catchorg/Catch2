@@ -18,21 +18,23 @@ namespace {
     using namespace Catch;
     
     WORD mapConsoleColour( IConsoleColourCodes::Colours colour ) {
+        enum Win32Colours {
+                Grey = FOREGROUND_INTENSITY,
+                BrightRed = FOREGROUND_RED | FOREGROUND_INTENSITY,
+                BrightGreen = FOREGROUND_GREEN | FOREGROUND_INTENSITY,
+                DarkGreen = FOREGROUND_GREEN,
+                Turquoise = FOREGROUND_BLUE | FOREGROUND_GREEN,
+                Yellow = FOREGROUND_RED | FOREGROUND_GREEN
+        };
         switch( colour ) {
-            case IConsoleColourCodes::FileName:
-                return FOREGROUND_INTENSITY;                    // greyed out
-            case IConsoleColourCodes::ResultError:   
-                return FOREGROUND_RED | FOREGROUND_INTENSITY;   // bright red
-            case IConsoleColourCodes::ResultSuccess:
-                return FOREGROUND_GREEN | FOREGROUND_INTENSITY; // bright green
-            case IConsoleColourCodes::Error:
-                return FOREGROUND_RED | FOREGROUND_INTENSITY;   // bright red
-            case IConsoleColourCodes::Success:
-                return FOREGROUND_GREEN;                        // dark green      
-            case IConsoleColourCodes::OriginalExpression:
-                return FOREGROUND_BLUE | FOREGROUND_GREEN;      // turquoise
-            case IConsoleColourCodes::ReconstructedExpression:    
-                return FOREGROUND_RED | FOREGROUND_GREEN;       // greeny-yellow
+            case IConsoleColourCodes::FileName:             return Grey;
+            case IConsoleColourCodes::ResultError:          return BrightRed;
+            case IConsoleColourCodes::ResultSuccess:        return BrightGreen;
+            case IConsoleColourCodes::Error:                return BrightRed;
+            case IConsoleColourCodes::Success:              return DarkGreen;
+            case IConsoleColourCodes::OriginalExpression:   return Turquoise;
+            case IConsoleColourCodes::ReconstructedExpression: return Yellow;
+            case IConsoleColourCodes::SecondaryText:        return Grey;
             default: return 0;
         }
     }
@@ -80,40 +82,37 @@ namespace {
     // use POSIX/ ANSI console terminal codes
     // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
-        
+
+    const char* WhiteOrNormal = "[0m";
+    const char* BoldRed =       "[1;31m";
+    const char* BoldGreen =     "[1;32m";
+    const char* Green =         "[0;32m";
+    const char* Cyan =          "[0;36m";
+    const char* Yellow =        "[0;33m";
+    const char* LightGrey =     "[0;37m";
+
     struct AnsiConsoleColourCodes : IConsoleColourCodes {
     
         ~AnsiConsoleColourCodes() {
             set( None );
         }
 
-        void set( Colours colour ) {
-            const char colourEscape = '\033';
+        const char* escapeCodeForColour( Colours colour ) {
             switch( colour ) {
-                case FileName:
-                    std::cout << colourEscape << "[0m";    // white/ normal
-                    break;
-                case ResultError:
-                    std::cout << colourEscape << "[1;31m"; // bold red
-                    break;
-                case ResultSuccess:
-                    std::cout << colourEscape << "[1;32m"; // bold green
-                    break;
-                case Error:
-                    std::cout << colourEscape << "[1;31m"; // bold red
-                    break;
-                case Success:
-                    std::cout << colourEscape << "[0;32m"; // green
-                    break;
-                case OriginalExpression:
-                    std::cout << colourEscape << "[0;36m"; // cyan
-                    break;
-                case ReconstructedExpression:
-                    std::cout << colourEscape << "[0;33m"; // yellow
-                    break;
-                case None:
-                    std::cout << colourEscape << "[0m"; // reset
-            }
+                case FileName:              return WhiteOrNormal;
+                case ResultError:           return BoldRed;
+                case ResultSuccess:         return BoldGreen;
+                case Error:                 return BoldRed;
+                case Success:               return Green;
+                case OriginalExpression:    return Cyan;
+                case ReconstructedExpression: return Yellow;
+                case SecondaryText:         return LightGrey;
+                case None:                  return WhiteOrNormal;
+                }
+        }
+
+        void set( Colours colour ) {
+            std::cout << '\033' << escapeCodeForColour( colour );
         }
     };
 
