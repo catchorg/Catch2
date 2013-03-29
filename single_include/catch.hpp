@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 28 (integration branch)
- *  Generated: 2013-03-25 09:25:14.678493
+ *  CATCH v0.9 build 29 (integration branch)
+ *  Generated: 2013-03-29 13:43:27.058903
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1417,6 +1417,7 @@ namespace Catch {
         std::string className;
         std::string description;
         std::set<std::string> tags;
+        std::string tagsAsString;
         SourceLineInfo lineInfo;
         bool isHidden;
     };
@@ -1917,9 +1918,8 @@ namespace Catch {
 
         Reports = 1,
         Tests = 2,
-        All = 3,
-
-        TestNames = 6,
+        Tags = 4,
+        All = Reports | Tests | Tags,
 
         WhatMask = 0xf,
 
@@ -3786,7 +3786,8 @@ namespace Catch {
                 m_optionNames.push_back( "--list" );
             }
             virtual std::string argsSynopsis() const {
-                return "[all | tests | reporters [xml]]";
+//                return "[all | tests | reporters | tags [xml]]";
+                return "[all | tests | reporters | tags]";
             }
             virtual std::string optionSummary() const {
                 return "Lists available tests or reporters";
@@ -3795,29 +3796,32 @@ namespace Catch {
             virtual std::string optionDescription() const {
                 return
                     "With no arguments this option will list all registered tests - one per line.\n"
-                    "Supplying the xml argument formats the list as an xml document (which may be useful for "
-                    "consumption by other tools).\n"
+//                    "Supplying the xml argument formats the list as an xml document (which may be useful for "
+//                    "consumption by other tools).\n"
                     "Supplying the tests or reporters lists tests or reporters respectively - with descriptions.\n"
                     "\n"
                     "Examples:\n"
                     "\n"
                     "    -l\n"
                     "    -l tests\n"
+                    "    -l tags\n"
                     "    -l reporters xml\n"
-                    "    -l xml";
+                    ;//"    -l xml";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                config.listSpec = List::TestNames;
+                config.listSpec = List::Tests;
                 if( cmd.argsCount() >= 1 ) {
                     if( cmd[0] == "all" )
                         config.listSpec = List::All;
                     else if( cmd[0] == "tests" )
                         config.listSpec = List::Tests;
+                    else if( cmd[0] == "tags" )
+                        config.listSpec = List::Tags;
                     else if( cmd[0] == "reporters" )
                         config.listSpec = List::Reports;
                     else
-                        cmd.raiseError( "Expected [tests] or [reporters]" );
+                        cmd.raiseError( "Expected tests, reporters or tags" );
                 }
                 if( cmd.argsCount() >= 2 ) {
                     if( cmd[1] == "xml" )
@@ -3825,7 +3829,7 @@ namespace Catch {
                     else if( cmd[1] == "text" )
                         config.listSpec = static_cast<List::What>( config.listSpec | List::AsText );
                     else
-                        cmd.raiseError( "Expected [xml] or [text]" );
+                        cmd.raiseError( "Expected xml or text" );
                 }
             }
         };
@@ -4144,7 +4148,53 @@ namespace Catch {
 // #included from: internal/catch_list.hpp
 #define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
 
+// #included from: catch_line_wrap.h
+#define TWOBLUECUBES_CATCH_LINE_WRAP_H_INCLUDED
+
+#include <string>
+#include <vector>
+
+namespace Catch {
+
+    class LineWrapper {
+    public:
+        LineWrapper();
+
+        LineWrapper& setIndent( std::size_t _indent );
+        LineWrapper& setRight( std::size_t _right );
+
+        LineWrapper& wrap( std::string const& _str );
+
+        std::string toString() const;
+
+        typedef std::vector<std::string>::const_iterator const_iterator;
+
+        const_iterator begin() const { return lines.begin(); }
+        const_iterator end() const { return lines.end(); }
+        std::string const& last() const { return lines.back(); }
+        std::size_t size() const { return lines.size(); }
+        std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
+
+        friend std::ostream& operator << ( std::ostream& _stream, LineWrapper const& _lineWrapper );
+
+    private:
+        void wrapInternal( std::string const& _str );
+        void addLine( const std::string& _line );
+        bool isWrapPoint( char c );
+
+        std::string indent;
+        std::size_t right;
+        std::size_t nextTab;
+        std::size_t tab;
+        std::string wrappableChars;
+        int recursionCount;
+        std::vector<std::string> lines;
+    };
+
+} // end namespace Catch
+
 #include <limits>
+#include <algorithm>
 
 namespace Catch {
     inline bool matchesFilters( const std::vector<TestCaseFilters>& filters, const TestCase& testCase ) {
@@ -4155,47 +4205,136 @@ namespace Catch {
                 return false;
         return true;
     }
-    inline void List( const ConfigData& config ) {
 
-        if( config.listSpec & List::Reports ) {
-            std::cout << "Available reports:\n";
-            IReporterRegistry::FactoryMap::const_iterator it = getRegistryHub().getReporterRegistry().getFactories().begin();
-            IReporterRegistry::FactoryMap::const_iterator itEnd = getRegistryHub().getReporterRegistry().getFactories().end();
-            for(; it != itEnd; ++it ) {
-                // !TBD: consider listAs()
-                std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
+    inline void listTests( const ConfigData& config ) {
+        if( config.filters.empty() )
+            std::cout << "All available test cases:\n";
+        else
+            std::cout << "Matching test cases:\n";
+        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+
+        // First pass - get max tags
+        std::size_t maxTagLen = 0;
+        std::size_t maxNameLen = 0;
+        for(; it != itEnd; ++it ) {
+            if( matchesFilters( config.filters, *it ) ) {
+                maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
+                maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
             }
-            std::cout << std::endl;
         }
 
-        if( config.listSpec & List::Tests ) {
-            if( config.filters.empty() )
-                std::cout << "All available test cases:\n";
+        // Try to fit everything in. If not shrink tag column first, down to 30
+        // then shrink name column until it all fits (strings will be wrapped within column)
+        while( maxTagLen + maxNameLen > CATCH_CONFIG_CONSOLE_WIDTH-5 ) {
+            if( maxTagLen > 30 )
+                --maxTagLen;
             else
-                std::cout << "Matching test cases:\n";
-            std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
-            std::size_t matchedTests = 0;
-            for(; it != itEnd; ++it ) {
-                if( matchesFilters( config.filters, *it ) ) {
-                    matchedTests++;
-                    // !TBD: consider listAs()
-                    std::cout << "  " << it->getTestCaseInfo().name << "\n";
-                    if( ( config.listSpec & List::TestNames ) != List::TestNames )
-                        std::cout << "    '" << it->getTestCaseInfo().description << "'\n";
+                --maxNameLen;
+        }
+
+        std::size_t matchedTests = 0;
+        for( it = allTests.begin(); it != itEnd; ++it ) {
+            if( matchesFilters( config.filters, *it ) ) {
+                matchedTests++;
+                // !TBD: consider listAs()
+                LineWrapper nameWrapper;
+                nameWrapper.setRight( maxNameLen ).setIndent( 2 ).wrap( it->getTestCaseInfo().name );
+
+                LineWrapper tagsWrapper;
+                tagsWrapper.setRight( maxTagLen ).wrap( it->getTestCaseInfo().tagsAsString );
+
+                for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
+                    std::string nameCol;
+                    if( i < nameWrapper.size() )
+                        nameCol = nameWrapper[i];
+                    else
+                        nameCol = "    ...";
+                    std::cout << nameCol;
+                    if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
+                        if( i == 0 )
+                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  " << tagsWrapper[i];
+                        else
+                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    " << tagsWrapper[i];
+                    }
+                    std::cout << "\n";
                 }
             }
-            if( config.filters.empty() )
-                std::cout << pluralise( matchedTests, "test case" ) << std::endl;
-            else
-                std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
         }
+        if( config.filters.empty() )
+            std::cout << pluralise( matchedTests, "test case" ) << std::endl;
+        else
+            std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
+    }
 
-        if( ( config.listSpec & List::All ) == 0 ) {
-            std::ostringstream oss;
-            oss << "Unknown list type";
-            throw std::domain_error( oss.str() );
+    inline void listTags( const ConfigData& config ) {
+        if( config.filters.empty() )
+            std::cout << "All available tags:\n";
+        else
+            std::cout << "Matching tags:\n";
+        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+
+        std::map<std::string, int> tagCounts;
+
+        std::size_t maxTagLen = 0;
+
+        for(; it != itEnd; ++it ) {
+            if( matchesFilters( config.filters, *it ) ) {
+                for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
+                                                            tagItEnd = it->getTestCaseInfo().tags.end();
+                        tagIt != tagItEnd;
+                        ++tagIt ) {
+                    std::string tagName = "[" + *tagIt + "]";
+                    maxTagLen = (std::max)( maxTagLen, tagName.size() );
+                    std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
+                    if( countIt == tagCounts.end() )
+                        tagCounts.insert( std::make_pair( tagName, 1 ) );
+                    else
+                        countIt->second++;
+                }
+            }
         }
+        maxTagLen +=2;
+        if( maxTagLen > CATCH_CONFIG_CONSOLE_WIDTH-10 )
+            maxTagLen = CATCH_CONFIG_CONSOLE_WIDTH-10;
+
+        for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(), countItEnd = tagCounts.end();
+                countIt != countItEnd;
+                ++countIt ) {
+            LineWrapper wrapper;
+            wrapper.setIndent(2).setRight( maxTagLen ).wrap( countIt->first );
+
+            std::cout << wrapper;
+            if( maxTagLen > wrapper.last().size() )
+            std::cout << std::string( maxTagLen - wrapper.last().size(), '.' );
+            std::cout   << ".. "
+                        << countIt->second
+                        << "\n";
+        }
+        std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
+    }
+
+    inline void listReporters( const ConfigData& /*config*/ ) {
+        std::cout << "Available reports:\n";
+        IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
+        IReporterRegistry::FactoryMap::const_iterator it = factories.begin(), itEnd = factories.end();
+        for(; it != itEnd; ++it ) {
+            // !TBD: consider listAs()
+            std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
+        }
+        std::cout << std::endl;
+    }
+
+    inline void list( const ConfigData& config ) {
+        if( config.listSpec & List::Tests )
+            listTests( config );
+        if( config.listSpec & List::Tags )
+            listTags( config );
+        if( config.listSpec & List::Reports )
+            listReporters( config );
+        if( ( config.listSpec & List::All ) == 0 )
+            throw std::logic_error( "Unknown list type" );
     }
 
 } // end namespace Catch
@@ -4748,18 +4887,6 @@ namespace Catch {
     extern Version libraryVersion;
 }
 
-// #included from: internal/catch_line_wrap.h
-#define TWOBLUECUBES_CATCH_LINE_WRAP_H_INCLUDED
-
-#include <string>
-
-namespace Catch {
-
-    void wrapLongStrings( std::ostream& stream, const std::string& str, std::size_t columns, std::size_t indent = 0 );
-    std::string wrapLongStrings( const std::string& str, std::size_t columns, std::size_t indent = 0 );
-
-} // end namespace Catch
-
 #include <fstream>
 #include <stdlib.h>
 #include <limits>
@@ -4869,7 +4996,7 @@ namespace Catch {
 
             // Handle list request
             if( config.listSpec != List::None ) {
-                List( config );
+                list( config );
                 Catch::cleanUp();
                 return 0;
             }
@@ -4906,7 +5033,7 @@ namespace Catch {
                 displayedSpecificOption = true;
                 std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
                             << opt.optionSummary() << "\n\n"
-                            << wrapLongStrings( opt.optionDescription(), 80, 2 ) << "\n" << std::endl;
+                            << LineWrapper().setIndent( 2 ).wrap( opt.optionDescription() ) << "\n" << std::endl;
             }
         }
 
@@ -5839,13 +5966,19 @@ namespace Catch {
         tags( _tags ),
         lineInfo( _lineInfo ),
         isHidden( _isHidden )
-    {}
+    {
+        std::ostringstream oss;
+        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it )
+            oss << "[" << *it << "]";
+        tagsAsString = oss.str();
+    }
 
     TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
     :   name( other.name ),
         className( other.className ),
         description( other.description ),
         tags( other.tags ),
+        tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
         isHidden( other.isHidden )
     {}
@@ -5919,7 +6052,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 28, "integration" );
+    Version libraryVersion( 0, 9, 29, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -5927,60 +6060,89 @@ namespace Catch {
 
 namespace Catch {
 
-    namespace {
-        inline void addIndent( std::ostream& os, std::size_t indent ) {
-            while( indent-- > 0 )
-                os << ' ';
-        }
+    LineWrapper::LineWrapper()
+    :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
+        nextTab( 0 ),
+        tab( 0 ),
+        wrappableChars( " [({.," ),
+        recursionCount( 0 )
+    {}
 
-        inline void recursivelyWrapLine( std::ostream& os, std::string paragraph, std::size_t columns, std::size_t indent ) {
-            std::size_t width = columns-indent;
-            std::size_t tab = 0;
-            std::size_t wrapPoint = width;
-            for( std::size_t pos = 0; pos < paragraph.size(); ++pos ) {
-                if( pos == width ) {
-                    addIndent( os, indent );
-                    if( paragraph[wrapPoint] == ' ' ) {
-                        os << paragraph.substr( 0, wrapPoint ) << "\n";
-                        while( paragraph[++wrapPoint] == ' ' );
-                    }
-                    else {
-                        os << paragraph.substr( 0, --wrapPoint ) << "-\n";
-                    }
-                    return recursivelyWrapLine( os, paragraph.substr( wrapPoint ), columns, indent+tab );
-                }
-                if( paragraph[pos] == '\t' ) {
-                    tab = pos;
-                    paragraph = paragraph.substr( 0, tab ) + paragraph.substr( tab+1 );
-                    pos--;
-                }
-                else if( paragraph[pos] == ' ' ) {
-                    wrapPoint = pos;
-                }
+    LineWrapper& LineWrapper::setIndent( std::size_t _indent ) {
+        indent = std::string( _indent, ' ' );
+        return *this;
+    }
+    LineWrapper& LineWrapper::setRight( std::size_t _right ) {
+        right = _right;
+        return *this;
+    }
+    LineWrapper& LineWrapper::wrap( std::string const& _str ) {
+        nextTab = tab = 0;
+        wrapInternal( _str );
+        return *this;
+    }
+    bool LineWrapper::isWrapPoint( char c ) {
+        return wrappableChars.find( c ) != std::string::npos;
+    }
+    void LineWrapper::wrapInternal( std::string const& _str ) {
+        assert( ++recursionCount < 100 );
+
+        std::size_t width = right - indent.size();
+        std::size_t wrapPoint = width-tab;
+        for( std::size_t pos = 0; pos < _str.size(); ++pos ) {
+            if( _str[pos] == '\n' )
+            {
+                addLine( _str.substr( 0, pos ) );
+                nextTab = tab = 0;
+                return wrapInternal( _str.substr( pos+1 ) );
             }
-            addIndent( os, indent );
-            os << paragraph;
+            if( pos == width-tab ) {
+                if( _str[wrapPoint] == ' ' ) {
+                    addLine( _str.substr( 0, wrapPoint ) );
+                    while( _str[++wrapPoint] == ' ' );
+                }
+                else if( isWrapPoint( _str[wrapPoint] ) ) {
+                    addLine( _str.substr( 0, wrapPoint ) );
+                }
+                else {
+                    addLine( _str.substr( 0, --wrapPoint ) + '-' );
+                }
+                return wrapInternal( _str.substr( wrapPoint ) );
+            }
+            if( _str[pos] == '\t' ) {
+                nextTab = pos;
+                std::string withoutTab = _str.substr( 0, nextTab ) + _str.substr( nextTab+1 );
+                return wrapInternal( withoutTab );
+            }
+            else if( pos > 0 && isWrapPoint( _str[pos] ) ) {
+                wrapPoint = pos;
+            }
         }
+        addLine( _str );
     }
 
-    void wrapLongStrings( std::ostream& stream, const std::string& str, std::size_t columns, std::size_t indent ) {
-        std::string::size_type pos = 0;
-        std::string::size_type newline = str.find_first_of( '\n' );
-        while( newline != std::string::npos ) {
-            std::string paragraph = str.substr( pos, newline-pos );
-            recursivelyWrapLine( stream, paragraph, columns, indent );
-            stream << "\n";
-            pos = newline+1;
-            newline = str.find_first_of( '\n', pos );
+    std::ostream& operator << ( std::ostream& _stream, LineWrapper const& _lineWrapper ) {
+        for( LineWrapper::const_iterator it = _lineWrapper.begin(), itEnd = _lineWrapper.end();
+            it != itEnd; ++it ) {
+            if( it != _lineWrapper.begin() )
+                _stream << "\n";
+            _stream << *it;
         }
-        if( pos != str.size() )
-            recursivelyWrapLine( stream, str.substr( pos, str.size()-pos ), columns, indent );
+        return _stream;
     }
-
-    std::string wrapLongStrings( const std::string& str, std::size_t columns, std::size_t indent ) {
+    std::string LineWrapper::toString() const {
         std::ostringstream oss;
-        wrapLongStrings( oss, str, columns, indent );
+        oss << *this;
         return oss.str();
+    }
+
+    void LineWrapper::addLine( const std::string& _line ) {
+        if( tab > 0 )
+            lines.push_back( indent + std::string( tab, ' ' ) + _line );
+        else
+            lines.push_back( indent + _line );
+        if( nextTab > 0 )
+            tab = nextTab;
     }
 
 } // end namespace Catch
@@ -7207,7 +7369,7 @@ namespace Catch {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
                     TextColour colourGuard( TextColour::ReconstructedExpression );
-                    stream << wrapLongStrings( result.getExpandedExpression() ) << "\n";
+                    stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ) << "\n";
                 }
             }
             void printMessage() const {
@@ -7216,16 +7378,12 @@ namespace Catch {
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
                         ++it ) {
-                    stream << wrapLongStrings( it->message ) << "\n";
+                    stream << LineWrapper().setIndent(2).wrap( it->message ) << "\n";
                 }
             }
             void printSourceInfo() const {
                 TextColour colourGuard( TextColour::FileName );
                 stream << result.getSourceInfo() << ": ";
-            }
-
-            static std::string wrapLongStrings( std::string const& _string ){
-                return Catch::wrapLongStrings( _string, CATCH_CONFIG_CONSOLE_WIDTH-1, 2 );
             }
 
             std::ostream& stream;
@@ -7599,11 +7757,11 @@ int main (int argc, char * const argv[]) {
 #else
 #define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
 #endif
-#define GIVEN( desc )    SECTION( "Given: " desc, "" )
-#define WHEN( desc )     SECTION( " When: " desc, "" )
-#define AND_WHEN( desc ) SECTION( "  And: " desc, "" )
-#define THEN( desc )     SECTION( " Then: " desc, "" )
-#define AND_THEN( desc ) SECTION( "  And: " desc, "" )
+#define GIVEN( desc )    SECTION( "   Given: " desc, "" )
+#define WHEN( desc )     SECTION( "    When: " desc, "" )
+#define AND_WHEN( desc ) SECTION( "And when: " desc, "" )
+#define THEN( desc )     SECTION( "    Then: " desc, "" )
+#define AND_THEN( desc ) SECTION( "     And: " desc, "" )
 
 using Catch::Detail::Approx;
 
