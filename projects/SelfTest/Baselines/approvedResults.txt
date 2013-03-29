@@ -3673,8 +3673,8 @@ TestMain.cpp:226:
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
 with expansion:
-  "Error while parsing arguments. threshold must be a number greater than
-  zero. Arguments were: 0" contains: "greater than zero"
+  "Error while parsing arguments. threshold must be a number greater than zero
+  . Arguments were: 0" contains: "greater than zero"
 
 -------------------------------------------------------------------------------
 selftest/parser/2
@@ -3686,8 +3686,8 @@ TestMain.cpp:230:
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
 with expansion:
-  "Error while parsing arguments. threshold must be a number greater than
-  zero. Arguments were: oops" contains: "greater than zero"
+  "Error while parsing arguments. threshold must be a number greater than zero
+  . Arguments were: oops" contains: "greater than zero"
 
 -------------------------------------------------------------------------------
 selftest/parser/2
@@ -4173,7 +4173,7 @@ Long strings can be wrapped
 
 TestMain.cpp:435:
 PASSED:
-  CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString )
+  CHECK( Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString )
 with expansion:
   "one two three four"
   ==
@@ -4181,7 +4181,7 @@ with expansion:
 
 TestMain.cpp:436:
 PASSED:
-  CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString )
+  CHECK( Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString )
 with expansion:
   "one two three four"
   ==
@@ -4195,7 +4195,7 @@ Long strings can be wrapped
 
 TestMain.cpp:439:
 PASSED:
-  CHECK( Catch::LineWrapper( 17 ).wrap( testString ).toString() == "one two three\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 17 ).wrap( testString ).toString() == "one two three\nfour" )
 with expansion:
   "one two three
   four"
@@ -4205,7 +4205,7 @@ with expansion:
 
 TestMain.cpp:440:
 PASSED:
-  CHECK( Catch::LineWrapper( 16 ).wrap( testString ).toString() == "one two three\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 16 ).wrap( testString ).toString() == "one two three\nfour" )
 with expansion:
   "one two three
   four"
@@ -4215,7 +4215,7 @@ with expansion:
 
 TestMain.cpp:441:
 PASSED:
-  CHECK( Catch::LineWrapper( 15 ).wrap( testString ).toString() == "one two three\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 15 ).wrap( testString ).toString() == "one two three\nfour" )
 with expansion:
   "one two three
   four"
@@ -4225,7 +4225,7 @@ with expansion:
 
 TestMain.cpp:442:
 PASSED:
-  CHECK( Catch::LineWrapper( 14 ).wrap( testString ).toString() == "one two three\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 14 ).wrap( testString ).toString() == "one two three\nfour" )
 with expansion:
   "one two three
   four"
@@ -4235,7 +4235,7 @@ with expansion:
 
 TestMain.cpp:443:
 PASSED:
-  CHECK( Catch::LineWrapper( 13 ).wrap( testString ).toString() == "one two\nthree four" )
+  CHECK( Catch::LineWrapper().setRight( 13 ).wrap( testString ).toString() == "one two\nthree four" )
 with expansion:
   "one two
   three four"
@@ -4251,7 +4251,7 @@ Long strings can be wrapped
 
 TestMain.cpp:446:
 PASSED:
-  CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
   "one two
   three
@@ -4263,7 +4263,7 @@ with expansion:
 
 TestMain.cpp:447:
 PASSED:
-  CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
   "one two
   three
@@ -4281,7 +4281,7 @@ Long strings can be wrapped
 
 TestMain.cpp:450:
 PASSED:
-  CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
   "one
   two
@@ -4295,7 +4295,7 @@ with expansion:
 
 TestMain.cpp:451:
 PASSED:
-  CHECK( Catch::LineWrapper( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
   "one
   two
@@ -4315,7 +4315,7 @@ Long strings can be wrapped
 
 TestMain.cpp:454:
 PASSED:
-  CHECK( Catch::LineWrapper( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" )
+  CHECK( Catch::LineWrapper().setRight( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" )
 with expansion:
   "abc-
   def"
@@ -4325,7 +4325,7 @@ with expansion:
 
 TestMain.cpp:455:
 PASSED:
-  CHECK( Catch::LineWrapper( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" )
+  CHECK( Catch::LineWrapper().setRight( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" )
 with expansion:
   "abc-
   defg"
@@ -4335,7 +4335,7 @@ with expansion:
 
 TestMain.cpp:456:
 PASSED:
-  CHECK( Catch::LineWrapper( 4 ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" )
+  CHECK( Catch::LineWrapper().setRight( 4 ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" )
 with expansion:
   "abc-
   def-
@@ -4347,7 +4347,7 @@ with expansion:
 
 TestMain.cpp:458:
 PASSED:
-  CHECK( Catch::LineWrapper( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" )
 with expansion:
   "one
   two
@@ -4363,7 +4363,7 @@ with expansion:
 
 TestMain.cpp:459:
 PASSED:
-  CHECK( Catch::LineWrapper( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" )
+  CHECK( Catch::LineWrapper().setRight( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" )
 with expansion:
   "one
   two
@@ -4381,13 +4381,49 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
+  plain string
+  As container
+...............................................................................
+
+TestMain.cpp:464:
+PASSED:
+  CHECK( wrapper.size() == 4 )
+with expansion:
+  4 == 4
+
+TestMain.cpp:465:
+PASSED:
+  CHECK( wrapper[0] == "one" )
+with expansion:
+  "one" == "one"
+
+TestMain.cpp:466:
+PASSED:
+  CHECK( wrapper[1] == "two" )
+with expansion:
+  "two" == "two"
+
+TestMain.cpp:467:
+PASSED:
+  CHECK( wrapper[2] == "three" )
+with expansion:
+  "three" == "three"
+
+TestMain.cpp:468:
+PASSED:
+  CHECK( wrapper[3] == "four" )
+with expansion:
+  "four" == "four"
+
+-------------------------------------------------------------------------------
+Long strings can be wrapped
   With newlines
   No wrapping
 ...............................................................................
 
-TestMain.cpp:469:
+TestMain.cpp:478:
 PASSED:
-  CHECK( Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString )
+  CHECK( Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString )
 with expansion:
   "one two
   three four"
@@ -4395,9 +4431,9 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:470:
+TestMain.cpp:479:
 PASSED:
-  CHECK( Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString )
+  CHECK( Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString )
 with expansion:
   "one two
   three four"
@@ -4405,9 +4441,9 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:471:
+TestMain.cpp:480:
 PASSED:
-  CHECK( Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString )
+  CHECK( Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString )
 with expansion:
   "one two
   three four"
@@ -4421,9 +4457,9 @@ Long strings can be wrapped
   Trailing newline
 ...............................................................................
 
-TestMain.cpp:474:
+TestMain.cpp:483:
 PASSED:
-  CHECK( Catch::LineWrapper( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
+  CHECK( Catch::LineWrapper().setRight( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
 with expansion:
   "abcdef
   "
@@ -4431,15 +4467,15 @@ with expansion:
   "abcdef
   "
 
-TestMain.cpp:475:
+TestMain.cpp:484:
 PASSED:
-  CHECK( Catch::LineWrapper( 6 ).wrap( "abcdef" ).toString() == "abcdef" )
+  CHECK( Catch::LineWrapper().setRight( 6 ).wrap( "abcdef" ).toString() == "abcdef" )
 with expansion:
   "abcdef" == "abcdef"
 
-TestMain.cpp:476:
+TestMain.cpp:485:
 PASSED:
-  CHECK( Catch::LineWrapper( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
+  CHECK( Catch::LineWrapper().setRight( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
 with expansion:
   "abcdef
   "
@@ -4453,9 +4489,9 @@ Long strings can be wrapped
   Wrapped once
 ...............................................................................
 
-TestMain.cpp:479:
+TestMain.cpp:488:
 PASSED:
-  CHECK( Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
   "one two
   three
@@ -4465,9 +4501,9 @@ with expansion:
   three
   four"
 
-TestMain.cpp:480:
+TestMain.cpp:489:
 PASSED:
-  CHECK( Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
   "one two
   three
@@ -4477,9 +4513,9 @@ with expansion:
   three
   four"
 
-TestMain.cpp:481:
+TestMain.cpp:490:
 PASSED:
-  CHECK( Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
   "one two
   three
@@ -4495,9 +4531,9 @@ Long strings can be wrapped
   Wrapped twice
 ...............................................................................
 
-TestMain.cpp:484:
+TestMain.cpp:493:
 PASSED:
-  CHECK( Catch::LineWrapper( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
+  CHECK( Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
   "one
   two
@@ -4785,9 +4821,9 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Do that thing with the thing
-  Given: This stuff exists
-   When: I do this
-   Then: it should do this
+     Given: This stuff exists
+      When: I do this
+      Then: it should do this
 ...............................................................................
 
 BDDTests.cpp:21:
@@ -4798,10 +4834,10 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Do that thing with the thing
-  Given: This stuff exists
-   When: I do this
-   Then: it should do this
-    And: do that
+     Given: This stuff exists
+      When: I do this
+      Then: it should do this
+       And: do that
 ...............................................................................
 
 BDDTests.cpp:23:
@@ -4809,6 +4845,165 @@ PASSED:
   REQUIRE( itDoesThat() )
 with expansion:
   true
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+...............................................................................
+
+BDDTests.cpp:32:
+PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+      When: it is made larger
+      Then: the size and capacity go up
+...............................................................................
+
+BDDTests.cpp:37:
+PASSED:
+  REQUIRE( v.size() == 10 )
+with expansion:
+  10 == 10
+
+BDDTests.cpp:38:
+PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+      When: it is made larger
+      Then: the size and capacity go up
+  And when: it is made smaller again
+      Then: the size goes down but the capacity stays the same
+...............................................................................
+
+BDDTests.cpp:43:
+PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+BDDTests.cpp:44:
+PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+...............................................................................
+
+BDDTests.cpp:32:
+PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+      When: it is made larger
+      Then: the size and capacity go up
+...............................................................................
+
+BDDTests.cpp:37:
+PASSED:
+  REQUIRE( v.size() == 10 )
+with expansion:
+  10 == 10
+
+BDDTests.cpp:38:
+PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+...............................................................................
+
+BDDTests.cpp:32:
+PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+      When: it is made larger
+      Then: the size and capacity go up
+...............................................................................
+
+BDDTests.cpp:37:
+PASSED:
+  REQUIRE( v.size() == 10 )
+with expansion:
+  10 == 10
+
+BDDTests.cpp:38:
+PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+...............................................................................
+
+BDDTests.cpp:32:
+PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+...............................................................................
+
+BDDTests.cpp:32:
+PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: Vector resizing affects size and capacity
+     Given: an empty vector
+      When: we reserve more space
+      Then: The capacity is increased but the size remains the same
+...............................................................................
+
+BDDTests.cpp:53:
+PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+BDDTests.cpp:54:
+PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: This is a really long scenario name to see how the list command deals with wrapping
+...............................................................................
+
+
+No assertions in test case, 'Scenario: This is a really long scenario name to see how the list command deals with wrapping'
 
 -------------------------------------------------------------------------------
 Anonymous test case 1
@@ -4839,7 +5034,7 @@ with message:
   no assertions
 
 ===============================================================================
-106 test cases - 47 failed (676 assertions - 104 failed)
+108 test cases - 48 failed (697 assertions - 105 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -5134,7 +5329,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="77" tests="676" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="77" tests="697" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -5574,6 +5769,8 @@ TrickyTests.cpp:106
     <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
     <testcase classname="global" name="Assertions then sections" time="tbd"/>
     <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
+    <testcase classname="global" name="Scenario: Vector resizing affects size and capacity" time="tbd"/>
+    <testcase classname="global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="tbd"/>
     <testcase classname="global" name="Anonymous test case 1" time="tbd"/>
     <testcase classname="global" name="Test case with one argument" time="tbd"/>
     <testcase classname="global" name="Variadic macros" time="tbd"/>
@@ -10377,7 +10574,7 @@ TestMain.cpp" line="423">
         <Section name="No wrapping">
 TestMain.cpp" line="435">
             <Original>
-              Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString
+              Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString
             </Original>
             <Expanded>
               &quot;one two three four&quot;
@@ -10387,7 +10584,7 @@ TestMain.cpp" line="435">
           </Expression>
 TestMain.cpp" line="436">
             <Original>
-              Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString
+              Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString
             </Original>
             <Expanded>
               &quot;one two three four&quot;
@@ -10403,7 +10600,7 @@ TestMain.cpp" line="436">
         <Section name="Wrapped once">
 TestMain.cpp" line="439">
             <Original>
-              Catch::LineWrapper( 17 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+              Catch::LineWrapper().setRight( 17 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two three
@@ -10415,7 +10612,7 @@ four&quot;
           </Expression>
 TestMain.cpp" line="440">
             <Original>
-              Catch::LineWrapper( 16 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+              Catch::LineWrapper().setRight( 16 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two three
@@ -10427,7 +10624,7 @@ four&quot;
           </Expression>
 TestMain.cpp" line="441">
             <Original>
-              Catch::LineWrapper( 15 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+              Catch::LineWrapper().setRight( 15 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two three
@@ -10439,7 +10636,7 @@ four&quot;
           </Expression>
 TestMain.cpp" line="442">
             <Original>
-              Catch::LineWrapper( 14 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
+              Catch::LineWrapper().setRight( 14 ).wrap( testString ).toString() == &quot;one two three\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two three
@@ -10451,7 +10648,7 @@ four&quot;
           </Expression>
 TestMain.cpp" line="443">
             <Original>
-              Catch::LineWrapper( 13 ).wrap( testString ).toString() == &quot;one two\nthree four&quot;
+              Catch::LineWrapper().setRight( 13 ).wrap( testString ).toString() == &quot;one two\nthree four&quot;
             </Original>
             <Expanded>
               &quot;one two
@@ -10469,7 +10666,7 @@ three four&quot;
         <Section name="Wrapped twice">
 TestMain.cpp" line="446">
             <Original>
-              Catch::LineWrapper( 9 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two
@@ -10483,7 +10680,7 @@ four&quot;
           </Expression>
 TestMain.cpp" line="447">
             <Original>
-              Catch::LineWrapper( 8 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two
@@ -10503,7 +10700,7 @@ four&quot;
         <Section name="Wrapped three times">
 TestMain.cpp" line="450">
             <Original>
-              Catch::LineWrapper( 7 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one
@@ -10519,7 +10716,7 @@ four&quot;
           </Expression>
 TestMain.cpp" line="451">
             <Original>
-              Catch::LineWrapper( 5 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 5 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one
@@ -10541,7 +10738,7 @@ four&quot;
         <Section name="Short wrap">
 TestMain.cpp" line="454">
             <Original>
-              Catch::LineWrapper( 4 ).wrap( &quot;abcdef&quot; ).toString() == &quot;abc-\ndef&quot;
+              Catch::LineWrapper().setRight( 4 ).wrap( &quot;abcdef&quot; ).toString() == &quot;abc-\ndef&quot;
             </Original>
             <Expanded>
               &quot;abc-
@@ -10553,7 +10750,7 @@ def&quot;
           </Expression>
 TestMain.cpp" line="455">
             <Original>
-              Catch::LineWrapper( 4 ).wrap( &quot;abcdefg&quot; ).toString() == &quot;abc-\ndefg&quot;
+              Catch::LineWrapper().setRight( 4 ).wrap( &quot;abcdefg&quot; ).toString() == &quot;abc-\ndefg&quot;
             </Original>
             <Expanded>
               &quot;abc-
@@ -10565,7 +10762,7 @@ defg&quot;
           </Expression>
 TestMain.cpp" line="456">
             <Original>
-              Catch::LineWrapper( 4 ).wrap(&quot;abcdefgh&quot; ).toString() == &quot;abc-\ndef-\ngh&quot;
+              Catch::LineWrapper().setRight( 4 ).wrap(&quot;abcdefgh&quot; ).toString() == &quot;abc-\ndef-\ngh&quot;
             </Original>
             <Expanded>
               &quot;abc-
@@ -10579,7 +10776,7 @@ gh&quot;
           </Expression>
 TestMain.cpp" line="458">
             <Original>
-              Catch::LineWrapper( 4 ).wrap( testString ).toString() == &quot;one\ntwo\nthr-\nee\nfour&quot;
+              Catch::LineWrapper().setRight( 4 ).wrap( testString ).toString() == &quot;one\ntwo\nthr-\nee\nfour&quot;
             </Original>
             <Expanded>
               &quot;one
@@ -10597,7 +10794,7 @@ four&quot;
           </Expression>
 TestMain.cpp" line="459">
             <Original>
-              Catch::LineWrapper( 3 ).wrap( testString ).toString() == &quot;one\ntwo\nth-\nree\nfo-\nur&quot;
+              Catch::LineWrapper().setRight( 3 ).wrap( testString ).toString() == &quot;one\ntwo\nth-\nree\nfo-\nur&quot;
             </Original>
             <Expanded>
               &quot;one
@@ -10620,13 +10817,59 @@ ur&quot;
         <OverallResults successes="5" failures="0"/>
       </Section>
       <Section name="plain string">
+        <Section name="As container">
+TestMain.cpp" line="464">
+            <Original>
+              wrapper.size() == 4
+            </Original>
+            <Expanded>
+              4 == 4
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="465">
+            <Original>
+              wrapper[0] == &quot;one&quot;
+            </Original>
+            <Expanded>
+              &quot;one&quot; == &quot;one&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="466">
+            <Original>
+              wrapper[1] == &quot;two&quot;
+            </Original>
+            <Expanded>
+              &quot;two&quot; == &quot;two&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="467">
+            <Original>
+              wrapper[2] == &quot;three&quot;
+            </Original>
+            <Expanded>
+              &quot;three&quot; == &quot;three&quot;
+            </Expanded>
+          </Expression>
+TestMain.cpp" line="468">
+            <Original>
+              wrapper[3] == &quot;four&quot;
+            </Original>
+            <Expanded>
+              &quot;four&quot; == &quot;four&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="5" failures="0"/>
+        </Section>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="plain string">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="No wrapping">
-TestMain.cpp" line="469">
+TestMain.cpp" line="478">
             <Original>
-              Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString
+              Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString
             </Original>
             <Expanded>
               &quot;one two
@@ -10636,9 +10879,9 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="470">
+TestMain.cpp" line="479">
             <Original>
-              Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString
+              Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString
             </Original>
             <Expanded>
               &quot;one two
@@ -10648,9 +10891,9 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="471">
+TestMain.cpp" line="480">
             <Original>
-              Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString
+              Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString
             </Original>
             <Expanded>
               &quot;one two
@@ -10666,9 +10909,9 @@ three four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Trailing newline">
-TestMain.cpp" line="474">
+TestMain.cpp" line="483">
             <Original>
-              Catch::LineWrapper( 10 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
+              Catch::LineWrapper().setRight( 10 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
             </Original>
             <Expanded>
               &quot;abcdef
@@ -10678,17 +10921,17 @@ TestMain.cpp" line="474">
 &quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="475">
+TestMain.cpp" line="484">
             <Original>
-              Catch::LineWrapper( 6 ).wrap( &quot;abcdef&quot; ).toString() == &quot;abcdef&quot;
+              Catch::LineWrapper().setRight( 6 ).wrap( &quot;abcdef&quot; ).toString() == &quot;abcdef&quot;
             </Original>
             <Expanded>
               &quot;abcdef&quot; == &quot;abcdef&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="476">
+TestMain.cpp" line="485">
             <Original>
-              Catch::LineWrapper( 6 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
+              Catch::LineWrapper().setRight( 6 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
             </Original>
             <Expanded>
               &quot;abcdef
@@ -10704,9 +10947,9 @@ TestMain.cpp" line="476">
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped once">
-TestMain.cpp" line="479">
+TestMain.cpp" line="488">
             <Original>
-              Catch::LineWrapper( 9 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two
@@ -10718,9 +10961,9 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="480">
+TestMain.cpp" line="489">
             <Original>
-              Catch::LineWrapper( 8 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two
@@ -10732,9 +10975,9 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="481">
+TestMain.cpp" line="490">
             <Original>
-              Catch::LineWrapper( 7 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one two
@@ -10752,9 +10995,9 @@ four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped twice">
-TestMain.cpp" line="484">
+TestMain.cpp" line="493">
             <Original>
-              Catch::LineWrapper( 6 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+              Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
             <Expanded>
               &quot;one
@@ -11063,9 +11306,9 @@ TrickyTests.cpp" line="335">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: Do that thing with the thing">
-      <Section name="Given: This stuff exists">
-        <Section name=" When: I do this">
-          <Section name=" Then: it should do this">
+      <Section name="   Given: This stuff exists">
+        <Section name="    When: I do this">
+          <Section name="    Then: it should do this">
 BDDTests.cpp" line="21">
               <Original>
                 itDoesThis()
@@ -11074,7 +11317,7 @@ BDDTests.cpp" line="21">
                 true
               </Expanded>
             </Expression>
-            <Section name="  And: do that">
+            <Section name="     And: do that">
 BDDTests.cpp" line="23">
                 <Original>
                   itDoesThat()
@@ -11093,6 +11336,183 @@ BDDTests.cpp" line="23">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Scenario: Vector resizing affects size and capacity">
+      <Section name="   Given: an empty vector">
+BDDTests.cpp" line="32">
+          <Original>
+            v.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Section name="    When: it is made larger">
+          <Section name="    Then: the size and capacity go up">
+BDDTests.cpp" line="37">
+              <Original>
+                v.size() == 10
+              </Original>
+              <Expanded>
+                10 == 10
+              </Expanded>
+            </Expression>
+BDDTests.cpp" line="38">
+              <Original>
+                v.capacity() >= 10
+              </Original>
+              <Expanded>
+                10 >= 10
+              </Expanded>
+            </Expression>
+            <Section name="And when: it is made smaller again">
+              <Section name="    Then: the size goes down but the capacity stays the same">
+BDDTests.cpp" line="43">
+                  <Original>
+                    v.size() == 5
+                  </Original>
+                  <Expanded>
+                    5 == 5
+                  </Expanded>
+                </Expression>
+BDDTests.cpp" line="44">
+                  <Original>
+                    v.capacity() >= 10
+                  </Original>
+                  <Expanded>
+                    10 >= 10
+                  </Expanded>
+                </Expression>
+                <OverallResults successes="2" failures="0"/>
+              </Section>
+              <OverallResults successes="2" failures="0"/>
+            </Section>
+            <OverallResults successes="4" failures="0"/>
+          </Section>
+          <OverallResults successes="4" failures="0"/>
+        </Section>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="   Given: an empty vector">
+BDDTests.cpp" line="32">
+          <Original>
+            v.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Section name="    When: it is made larger">
+          <Section name="    Then: the size and capacity go up">
+BDDTests.cpp" line="37">
+              <Original>
+                v.size() == 10
+              </Original>
+              <Expanded>
+                10 == 10
+              </Expanded>
+            </Expression>
+BDDTests.cpp" line="38">
+              <Original>
+                v.capacity() >= 10
+              </Original>
+              <Expanded>
+                10 >= 10
+              </Expanded>
+            </Expression>
+            <Section name="And when: it is made smaller again">
+              <OverallResults successes="0" failures="0"/>
+            </Section>
+            <OverallResults successes="2" failures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="   Given: an empty vector">
+BDDTests.cpp" line="32">
+          <Original>
+            v.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Section name="    When: it is made larger">
+          <Section name="    Then: the size and capacity go up">
+BDDTests.cpp" line="37">
+              <Original>
+                v.size() == 10
+              </Original>
+              <Expanded>
+                10 == 10
+              </Expanded>
+            </Expression>
+BDDTests.cpp" line="38">
+              <Original>
+                v.capacity() >= 10
+              </Original>
+              <Expanded>
+                10 >= 10
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="   Given: an empty vector">
+BDDTests.cpp" line="32">
+          <Original>
+            v.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Section name="    When: it is made larger">
+          <OverallResults successes="0" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="   Given: an empty vector">
+BDDTests.cpp" line="32">
+          <Original>
+            v.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Section name="    When: we reserve more space">
+          <Section name="    Then: The capacity is increased but the size remains the same">
+BDDTests.cpp" line="53">
+              <Original>
+                v.capacity() >= 10
+              </Original>
+              <Expanded>
+                10 >= 10
+              </Expanded>
+            </Expression>
+BDDTests.cpp" line="54">
+              <Original>
+                v.size() == 0
+              </Original>
+              <Expanded>
+                0 == 0
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Scenario: This is a really long scenario name to see how the list command deals with wrapping">
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Anonymous test case 1">
       <OverallResult success="true"/>
     </TestCase>
@@ -11105,9 +11525,9 @@ BDDTests.cpp" line="23">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="572" failures="104"/>
+    <OverallResults successes="592" failures="105"/>
   </Group>
-  <OverallResults successes="572" failures="104"/>
+  <OverallResults successes="592" failures="105"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -12413,11 +12833,11 @@ TestMain.cpp:423: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false 
 [Running: Long strings can be wrapped]
 [Started section: 'plain string']
 [Started section: 'No wrapping']
-TestMain.cpp:435: Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:435: Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
-TestMain.cpp:436: Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:436: Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
@@ -12427,31 +12847,31 @@ TestMain.cpp:436: Catch::LineWrapper( 18 ).wrap( testString ).toString() == test
 
 [Started section: 'plain string']
 [Started section: 'Wrapped once']
-TestMain.cpp:439: Catch::LineWrapper( 17 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:439: Catch::LineWrapper().setRight( 17 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:440: Catch::LineWrapper( 16 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:440: Catch::LineWrapper().setRight( 16 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:441: Catch::LineWrapper( 15 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:441: Catch::LineWrapper().setRight( 15 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:442: Catch::LineWrapper( 14 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:442: Catch::LineWrapper().setRight( 14 ).wrap( testString ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:443: Catch::LineWrapper( 13 ).wrap( testString ).toString() == "one two\nthree four" succeeded for:
+TestMain.cpp:443: Catch::LineWrapper().setRight( 13 ).wrap( testString ).toString() == "one two\nthree four" succeeded for:
 	"one two
 three four"
 ==
@@ -12463,7 +12883,7 @@ three four"
 
 [Started section: 'plain string']
 [Started section: 'Wrapped twice']
-TestMain.cpp:446: Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:446: Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -12471,7 +12891,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:447: Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:447: Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -12485,7 +12905,7 @@ four"
 
 [Started section: 'plain string']
 [Started section: 'Wrapped three times']
-TestMain.cpp:450: Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:450: Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -12495,7 +12915,7 @@ four"
 two
 three
 four"
-TestMain.cpp:451: Catch::LineWrapper( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:451: Catch::LineWrapper().setRight( 5 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -12511,24 +12931,24 @@ four"
 
 [Started section: 'plain string']
 [Started section: 'Short wrap']
-TestMain.cpp:454: Catch::LineWrapper( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" succeeded for: "abc-
+TestMain.cpp:454: Catch::LineWrapper().setRight( 4 ).wrap( "abcdef" ).toString() == "abc-\ndef" succeeded for: "abc-
 def"
 ==
 "abc-
 def"
-TestMain.cpp:455: Catch::LineWrapper( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" succeeded for: "abc-
+TestMain.cpp:455: Catch::LineWrapper().setRight( 4 ).wrap( "abcdefg" ).toString() == "abc-\ndefg" succeeded for: "abc-
 defg"
 ==
 "abc-
 defg"
-TestMain.cpp:456: Catch::LineWrapper( 4 ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" succeeded for: "abc-
+TestMain.cpp:456: Catch::LineWrapper().setRight( 4 ).wrap("abcdefgh" ).toString() == "abc-\ndef-\ngh" succeeded for: "abc-
 def-
 gh"
 ==
 "abc-
 def-
 gh"
-TestMain.cpp:458: Catch::LineWrapper( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" succeeded for:
+TestMain.cpp:458: Catch::LineWrapper().setRight( 4 ).wrap( testString ).toString() == "one\ntwo\nthr-\nee\nfour" succeeded for:
 	"one
 two
 thr-
@@ -12540,7 +12960,7 @@ two
 thr-
 ee
 four"
-TestMain.cpp:459: Catch::LineWrapper( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
+TestMain.cpp:459: Catch::LineWrapper().setRight( 3 ).wrap( testString ).toString() == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
 	"one
 two
 th-
@@ -12558,21 +12978,32 @@ ur"
 
 [End of section: 'plain string' All 5 assertions passed]
 
+[Started section: 'plain string']
+[Started section: 'As container']
+TestMain.cpp:464: wrapper.size() == 4 succeeded for: 4 == 4
+TestMain.cpp:465: wrapper[0] == "one" succeeded for: "one" == "one"
+TestMain.cpp:466: wrapper[1] == "two" succeeded for: "two" == "two"
+TestMain.cpp:467: wrapper[2] == "three" succeeded for: "three" == "three"
+TestMain.cpp:468: wrapper[3] == "four" succeeded for: "four" == "four"
+[End of section: 'As container' All 5 assertions passed]
+
+[End of section: 'plain string' All 5 assertions passed]
+
 [Started section: 'With newlines']
 [Started section: 'No wrapping']
-TestMain.cpp:469: Catch::LineWrapper( 80 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:478: Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:470: Catch::LineWrapper( 18 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:479: Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:471: Catch::LineWrapper( 10 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:480: Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
@@ -12584,13 +13015,13 @@ three four"
 
 [Started section: 'With newlines']
 [Started section: 'Trailing newline']
-TestMain.cpp:474: Catch::LineWrapper( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:483: Catch::LineWrapper().setRight( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
 "
-TestMain.cpp:475: Catch::LineWrapper( 6 ).wrap( "abcdef" ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
-TestMain.cpp:476: Catch::LineWrapper( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:484: Catch::LineWrapper().setRight( 6 ).wrap( "abcdef" ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
+TestMain.cpp:485: Catch::LineWrapper().setRight( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
@@ -12601,7 +13032,7 @@ TestMain.cpp:476: Catch::LineWrapper( 6 ).wrap( "abcdef\n" ).toString() == "abcd
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped once']
-TestMain.cpp:479: Catch::LineWrapper( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:488: Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -12609,7 +13040,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:480: Catch::LineWrapper( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:489: Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -12617,7 +13048,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:481: Catch::LineWrapper( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:490: Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -12631,7 +13062,7 @@ four"
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped twice']
-TestMain.cpp:484: Catch::LineWrapper( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:493: Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -12645,7 +13076,7 @@ four"
 
 [End of section: 'With newlines' 1 assertion passed]
 
-[Finished: 'Long strings can be wrapped' All tests passed (26 assertions in 1 test case)]
+[Finished: 'Long strings can be wrapped' All tests passed (31 assertions in 1 test case)]
 
 [Running: ./succeeding/Tricky/std::pair]
 TrickyTests.cpp:37: (std::pair<int, int>( 1, 2 )) == aNicePair succeeded for: std::pair( 1, 2 ) == std::pair( 1, 2 )
@@ -12749,21 +13180,90 @@ TrickyTests.cpp:335: Catch::isTrue( true ) succeeded for: true
 [Finished: 'Assertions then sections' All tests passed (6 assertions in 1 test case)]
 
 [Running: Scenario: Do that thing with the thing]
-[Started section: 'Given: This stuff exists']
-[Started section: ' When: I do this']
-[Started section: ' Then: it should do this']
+[Started section: '   Given: This stuff exists']
+[Started section: '    When: I do this']
+[Started section: '    Then: it should do this']
 BDDTests.cpp:21: itDoesThis() succeeded for: true
-[Started section: '  And: do that']
+[Started section: '     And: do that']
 BDDTests.cpp:23: itDoesThat() succeeded for: true
-[End of section: '  And: do that' 1 assertion passed]
+[End of section: '     And: do that' 1 assertion passed]
 
-[End of section: ' Then: it should do this' All 2 assertions passed]
+[End of section: '    Then: it should do this' All 2 assertions passed]
 
-[End of section: ' When: I do this' All 2 assertions passed]
+[End of section: '    When: I do this' All 2 assertions passed]
 
-[End of section: 'Given: This stuff exists' All 2 assertions passed]
+[End of section: '   Given: This stuff exists' All 2 assertions passed]
 
 [Finished: 'Scenario: Do that thing with the thing' All tests passed (2 assertions in 1 test case)]
+
+[Running: Scenario: Vector resizing affects size and capacity]
+[Started section: '   Given: an empty vector']
+BDDTests.cpp:32: v.size() == 0 succeeded for: 0 == 0
+[Started section: '    When: it is made larger']
+[Started section: '    Then: the size and capacity go up']
+BDDTests.cpp:37: v.size() == 10 succeeded for: 10 == 10
+BDDTests.cpp:38: v.capacity() >= 10 succeeded for: 10 >= 10
+[Started section: 'And when: it is made smaller again']
+[Started section: '    Then: the size goes down but the capacity stays the same']
+BDDTests.cpp:43: v.size() == 5 succeeded for: 5 == 5
+BDDTests.cpp:44: v.capacity() >= 10 succeeded for: 10 >= 10
+[End of section: '    Then: the size goes down but the capacity stays the same' All 2 assertions passed]
+
+[End of section: 'And when: it is made smaller again' All 2 assertions passed]
+
+[End of section: '    Then: the size and capacity go up' All 4 assertions passed]
+
+[End of section: '    When: it is made larger' All 4 assertions passed]
+
+[End of section: '   Given: an empty vector' All 5 assertions passed]
+
+[Started section: '   Given: an empty vector']
+BDDTests.cpp:32: v.size() == 0 succeeded for: 0 == 0
+[Started section: '    When: it is made larger']
+[Started section: '    Then: the size and capacity go up']
+BDDTests.cpp:37: v.size() == 10 succeeded for: 10 == 10
+BDDTests.cpp:38: v.capacity() >= 10 succeeded for: 10 >= 10
+[End of section: '    Then: the size and capacity go up' All 2 assertions passed]
+
+[End of section: '    When: it is made larger' All 2 assertions passed]
+
+[End of section: '   Given: an empty vector' All 3 assertions passed]
+
+[Started section: '   Given: an empty vector']
+BDDTests.cpp:32: v.size() == 0 succeeded for: 0 == 0
+[Started section: '    When: it is made larger']
+[Started section: '    Then: the size and capacity go up']
+BDDTests.cpp:37: v.size() == 10 succeeded for: 10 == 10
+BDDTests.cpp:38: v.capacity() >= 10 succeeded for: 10 >= 10
+[End of section: '    Then: the size and capacity go up' All 2 assertions passed]
+
+[End of section: '    When: it is made larger' All 2 assertions passed]
+
+[End of section: '   Given: an empty vector' All 3 assertions passed]
+
+[Started section: '   Given: an empty vector']
+BDDTests.cpp:32: v.size() == 0 succeeded for: 0 == 0
+[End of section: '   Given: an empty vector' 1 assertion passed]
+
+[Started section: '   Given: an empty vector']
+BDDTests.cpp:32: v.size() == 0 succeeded for: 0 == 0
+[Started section: '    When: we reserve more space']
+[Started section: '    Then: The capacity is increased but the size remains the same']
+BDDTests.cpp:53: v.capacity() >= 10 succeeded for: 10 >= 10
+BDDTests.cpp:54: v.size() == 0 succeeded for: 0 == 0
+[End of section: '    Then: The capacity is increased but the size remains the same' All 2 assertions passed]
+
+[End of section: '    When: we reserve more space' All 2 assertions passed]
+
+[End of section: '   Given: an empty vector' All 3 assertions passed]
+
+[Finished: 'Scenario: Vector resizing affects size and capacity' All tests passed (15 assertions in 1 test case)]
+
+[Running: Scenario: This is a really long scenario name to see how the list command deals with wrapping]
+
+No assertions in test case, 'Scenario: This is a really long scenario name to see how the list command deals with wrapping'
+
+[Finished: 'Scenario: This is a really long scenario name to see how the list command deals with wrapping' 1 test case failed (1 assertion failed)]
 
 [Running: Anonymous test case 1]
 VariadicMacrosTests.cpp:14:  succeeded
@@ -12782,10 +13282,10 @@ VariadicMacrosTests.cpp:26:  succeeded
 [End of section: 'Section with one argument' 1 assertion passed]
 
 [Finished: 'Variadic macros' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 47 of 106 test cases failed (104 of 676 assertions failed)]
+[End of group: '~dummy'. 48 of 108 test cases failed (105 of 697 assertions failed)]
 
 
-[Testing completed. 47 of 106 test cases failed (104 of 676 assertions failed)]
+[Testing completed. 48 of 108 test cases failed (105 of 697 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']

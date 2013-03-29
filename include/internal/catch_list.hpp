@@ -36,8 +36,10 @@ namespace Catch {
         std::size_t maxTagLen = 0;
         std::size_t maxNameLen = 0;
         for(; it != itEnd; ++it ) {
-            maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
-            maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
+            if( matchesFilters( config.filters, *it ) ) {
+                maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
+                maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
+            }
         }
         
         // Try to fit everything in. If not shrink tag column first, down to 30
@@ -66,9 +68,13 @@ namespace Catch {
                         nameCol = nameWrapper[i];
                     else
                         nameCol = "    ...";
-                    std::cout << nameCol << "    " << std::string( maxNameLen - nameCol.size(), ' ' );
-                    if( i < tagsWrapper.size() )
-                        std::cout << tagsWrapper[i];
+                    std::cout << nameCol;
+                    if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
+                        if( i == 0 )
+                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  " << tagsWrapper[i];
+                        else
+                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    " << tagsWrapper[i];
+                    }
                     std::cout << "\n";
                 }
             }
@@ -77,6 +83,54 @@ namespace Catch {
             std::cout << pluralise( matchedTests, "test case" ) << std::endl;
         else
             std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
+    }
+    
+    inline void listTags( const ConfigData& config ) {
+        if( config.filters.empty() )
+            std::cout << "All available tags:\n";
+        else
+            std::cout << "Matching tags:\n";
+        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+
+        std::map<std::string, int> tagCounts;
+        
+        std::size_t maxTagLen = 0;
+
+        for(; it != itEnd; ++it ) {
+            if( matchesFilters( config.filters, *it ) ) {
+                for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
+                                                            tagItEnd = it->getTestCaseInfo().tags.end();
+                        tagIt != tagItEnd;
+                        ++tagIt ) {
+                    std::string tagName = "[" + *tagIt + "]";
+                    maxTagLen = (std::max)( maxTagLen, tagName.size() );
+                    std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
+                    if( countIt == tagCounts.end() )
+                        tagCounts.insert( std::make_pair( tagName, 1 ) );
+                    else
+                        countIt->second++;
+                }
+            }
+        }
+        maxTagLen +=2;
+        if( maxTagLen > CATCH_CONFIG_CONSOLE_WIDTH-10 )
+            maxTagLen = CATCH_CONFIG_CONSOLE_WIDTH-10;
+        
+        for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(), countItEnd = tagCounts.end();
+                countIt != countItEnd;
+                ++countIt ) {            
+            LineWrapper wrapper;
+            wrapper.setIndent(2).setRight( maxTagLen ).wrap( countIt->first );
+            
+            std::cout << wrapper;
+            if( maxTagLen > wrapper.last().size() )
+            std::cout << std::string( maxTagLen - wrapper.last().size(), '.' );
+            std::cout   << ".. "
+                        << countIt->second
+                        << "\n";
+        }
+        std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
     }
 
     inline void listReporters( const ConfigData& /*config*/ ) {
@@ -93,9 +147,11 @@ namespace Catch {
     inline void list( const ConfigData& config ) {        
         if( config.listSpec & List::Tests )
             listTests( config );
-        else if( config.listSpec & List::Reports )
+        if( config.listSpec & List::Tags )
+            listTags( config );
+        if( config.listSpec & List::Reports )
             listReporters( config );
-        else
+        if( ( config.listSpec & List::All ) == 0 )
             throw std::logic_error( "Unknown list type" );
     }
     

@@ -322,7 +322,8 @@ namespace Catch {
                 m_optionNames.push_back( "--list" );
             }
             virtual std::string argsSynopsis() const {
-                return "[all | tests | reporters [xml]]";
+//                return "[all | tests | reporters | tags [xml]]";
+                return "[all | tests | reporters | tags]";
             }
             virtual std::string optionSummary() const {
                 return "Lists available tests or reporters";
@@ -331,29 +332,32 @@ namespace Catch {
             virtual std::string optionDescription() const {
                 return
                     "With no arguments this option will list all registered tests - one per line.\n"
-                    "Supplying the xml argument formats the list as an xml document (which may be useful for "
-                    "consumption by other tools).\n"
+//                    "Supplying the xml argument formats the list as an xml document (which may be useful for "
+//                    "consumption by other tools).\n"
                     "Supplying the tests or reporters lists tests or reporters respectively - with descriptions.\n"
                     "\n"
                     "Examples:\n"
                     "\n"
                     "    -l\n"
                     "    -l tests\n"
+                    "    -l tags\n"
                     "    -l reporters xml\n"
-                    "    -l xml";
+                    ;//"    -l xml";
             }
 
             virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
-                config.listSpec = List::TestNames;
+                config.listSpec = List::Tests;
                 if( cmd.argsCount() >= 1 ) {
                     if( cmd[0] == "all" )
                         config.listSpec = List::All;
                     else if( cmd[0] == "tests" )
                         config.listSpec = List::Tests;
+                    else if( cmd[0] == "tags" )
+                        config.listSpec = List::Tags;
                     else if( cmd[0] == "reporters" )
                         config.listSpec = List::Reports;
                     else
-                        cmd.raiseError( "Expected [tests] or [reporters]" );
+                        cmd.raiseError( "Expected tests, reporters or tags" );
                 }
                 if( cmd.argsCount() >= 2 ) {
                     if( cmd[1] == "xml" )
@@ -361,7 +365,7 @@ namespace Catch {
                     else if( cmd[1] == "text" )
                         config.listSpec = static_cast<List::What>( config.listSpec | List::AsText );
                     else
-                        cmd.raiseError( "Expected [xml] or [text]" );
+                        cmd.raiseError( "Expected xml or text" );
                 }
             }
         };

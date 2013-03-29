@@ -28,6 +28,7 @@ namespace Catch {
 
         const_iterator begin() const { return lines.begin(); }
         const_iterator end() const { return lines.end(); }
+        std::string const& last() const { return lines.back(); }
         std::size_t size() const { return lines.size(); }
         std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
 

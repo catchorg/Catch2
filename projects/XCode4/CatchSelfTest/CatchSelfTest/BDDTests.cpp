@@ -57,5 +57,8 @@ SCENARIO( "Vector resizing affects size and capacity", "[vector][bdd][size][capa
     }
 }
 
-SCENARIO( "This is a really long scenario name to see how the list command deals with wrapping", "[very long tags][lots][long][tags][verbose]" ) {
+SCENARIO(   "This is a really long scenario name to see how the list command deals with wrapping",
+            "[very long tags][lots][long][tags][verbose]"
+            "[one very long tag name that should cause line wrapping writing out using the list command]"
+            "[anotherReallyLongTagNameButThisOneHasNoObviousWrapPointsSoShouldSplitWithinAWordUsingADashCharacter]" ) {
 }

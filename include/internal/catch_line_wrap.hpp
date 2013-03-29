@@ -66,7 +66,7 @@ namespace Catch {
                 std::string withoutTab = _str.substr( 0, nextTab ) + _str.substr( nextTab+1 );
                 return wrapInternal( withoutTab );
             }
-            else if( isWrapPoint( _str[pos] ) ) {
+            else if( pos > 0 && isWrapPoint( _str[pos] ) ) {
                 wrapPoint = pos;
             }
         }

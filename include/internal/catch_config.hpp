@@ -34,9 +34,8 @@ namespace Catch {
         
         Reports = 1,
         Tests = 2,
-        All = 3,
-
-        TestNames = 6,
+        Tags = 4,
+        All = Reports | Tests | Tags,
 
         WhatMask = 0xf,
         
