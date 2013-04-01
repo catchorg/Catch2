@@ -16,7 +16,7 @@ namespace Catch {
     :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
         nextTab( 0 ),
         tab( 0 ),
-        wrappableChars( " [({.," ),
+        wrappableChars( " [({.,/|\\" ),
         recursionCount( 0 )
     {}
     
