@@ -271,15 +271,13 @@ namespace Catch {
                 unusedGroupInfo.reset();
             }
         }
-        void lazyPrintTestCaseInfo() {
-            if( !currentSectionInfo ) {
-                printClosedHeader( unusedTestCaseInfo->name );
-                stream << std::endl;
-            }
-        }
         void printTestCaseAndSectionHeader() {
-            printOpenHeader( unusedTestCaseInfo->name );
+            printOpenHeader(    unusedTestCaseInfo->name,
+                                currentSectionInfo
+                                    ? currentSectionInfo->lineInfo
+                                    : unusedTestCaseInfo->lineInfo );
             if( currentSectionInfo ) {
+                TextColour colourGuard( TextColour::Headers );
                 std::vector<ThreadedSectionInfo*> sections;
                 for(    ThreadedSectionInfo* section = currentSectionInfo.get();
                         section;
@@ -300,9 +298,16 @@ namespace Catch {
             printOpenHeader( _name );
             stream << getDots() << "\n";
         }
-        void printOpenHeader( std::string const& _name ) {
-            stream  << getDashes() << "\n"
-                    << _name << "\n";
+        void printOpenHeader( std::string const& _name, SourceLineInfo const& _lineInfo = SourceLineInfo() ) {
+            stream  << getDashes() << "\n";
+            if( !_lineInfo.empty() ){
+                TextColour colourGuard( TextColour::FileName );
+                stream << _lineInfo << "\n\n";
+            }
+            {
+                TextColour colourGuard( TextColour::Headers );
+                stream << _name << "\n";
+            }
         }
         
         void printTotals( const Totals& totals ) {

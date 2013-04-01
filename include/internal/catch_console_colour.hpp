@@ -26,7 +26,8 @@ namespace Catch {
             OriginalExpression,
             ReconstructedExpression,
             
-            SecondaryText
+            SecondaryText,
+            Headers
         };
 
         virtual void set( Colours colour ) = 0;

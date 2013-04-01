@@ -22,8 +22,9 @@ namespace {
                 Grey = FOREGROUND_INTENSITY,
                 BrightRed = FOREGROUND_RED | FOREGROUND_INTENSITY,
                 BrightGreen = FOREGROUND_GREEN | FOREGROUND_INTENSITY,
+                BrightWhite = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY,
                 DarkGreen = FOREGROUND_GREEN,
-                Turquoise = FOREGROUND_BLUE | FOREGROUND_GREEN,
+                Cyan = FOREGROUND_BLUE | FOREGROUND_GREEN,
                 Yellow = FOREGROUND_RED | FOREGROUND_GREEN
         };
         switch( colour ) {
@@ -32,9 +33,10 @@ namespace {
             case IConsoleColourCodes::ResultSuccess:        return BrightGreen;
             case IConsoleColourCodes::Error:                return BrightRed;
             case IConsoleColourCodes::Success:              return DarkGreen;
-            case IConsoleColourCodes::OriginalExpression:   return Turquoise;
+            case IConsoleColourCodes::OriginalExpression:   return Cyan;
             case IConsoleColourCodes::ReconstructedExpression: return Yellow;
             case IConsoleColourCodes::SecondaryText:        return Grey;
+            case IConsoleColourCodes::Headers:              return 0;
             default: return 0;
         }
     }
@@ -84,8 +86,9 @@ namespace {
     // https://github.com/philsquared/Catch/pull/131
 
     const char* WhiteOrNormal = "[0m";
-    const char* BoldRed =       "[1;31m";
-    const char* BoldGreen =     "[1;32m";
+    const char* BrightRed =       "[1;31m";
+    const char* BrightGreen =     "[1;32m";
+//    const char* BrightWhite =     "[1;37m";
     const char* Green =         "[0;32m";
     const char* Cyan =          "[0;36m";
     const char* Yellow =        "[0;33m";
@@ -101,13 +104,14 @@ namespace {
         const char* escapeCodeForColour( Colours colour ) {
             switch( colour ) {
                 case FileName:              return WhiteOrNormal;
-                case ResultError:           return BoldRed;
-                case ResultSuccess:         return BoldGreen;
-                case Error:                 return BoldRed;
+                case ResultError:           return BrightRed;
+                case ResultSuccess:         return BrightGreen;
+                case Error:                 return BrightRed;
                 case Success:               return Green;
                 case OriginalExpression:    return Cyan;
                 case ReconstructedExpression: return Yellow;
                 case SecondaryText:         return LightGrey;
+                case Headers:               return WhiteOrNormal;
                 case None:                  return WhiteOrNormal;
                 }
         }
