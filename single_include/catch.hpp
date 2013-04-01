@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 29 (integration branch)
- *  Generated: 2013-03-29 13:43:27.058903
+ *  CATCH v0.9 build 30 (integration branch)
+ *  Generated: 2013-04-01 11:26:11.785709
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -154,7 +154,7 @@ namespace Catch {
 
     inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info ) {
 #ifndef __GNUG__
-        os << info.file << "(" << info.line << "):";
+        os << info.file << "(" << info.line << ")";
 #else
         os << info.file << ":" << info.line;
 #endif
@@ -4193,6 +4193,44 @@ namespace Catch {
 
 } // end namespace Catch
 
+// #included from: catch_console_colour.hpp
+#define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
+
+namespace Catch {
+
+    struct IConsoleColourCodes : NonCopyable {
+        enum Colours {
+            None,
+
+            FileName,
+            ResultError,
+            ResultSuccess,
+
+            Error,
+            Success,
+
+            OriginalExpression,
+            ReconstructedExpression,
+
+            SecondaryText,
+            Headers
+        };
+
+        virtual void set( Colours colour ) = 0;
+    };
+
+    class TextColour : public IConsoleColourCodes {
+    public:
+        TextColour( Colours colour = None );
+        void set( Colours colour );
+        ~TextColour();
+
+    private:
+        IConsoleColourCodes* m_impl;
+    };
+
+} // end namespace Catch
+
 #include <limits>
 #include <algorithm>
 
@@ -4245,17 +4283,31 @@ namespace Catch {
                 tagsWrapper.setRight( maxTagLen ).wrap( it->getTestCaseInfo().tagsAsString );
 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
+                    TextColour::Colours colour = TextColour::None;
+                    if( it->getTestCaseInfo().isHidden )
+                        colour = TextColour::SecondaryText;
                     std::string nameCol;
-                    if( i < nameWrapper.size() )
+                    if( i < nameWrapper.size() ) {
                         nameCol = nameWrapper[i];
-                    else
+                    }
+                    else {
                         nameCol = "    ...";
-                    std::cout << nameCol;
+                        colour = TextColour::SecondaryText;
+                    }
+
+                    {
+                        TextColour colourGuard( colour );
+                        std::cout << nameCol;
+                    }
                     if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
-                        if( i == 0 )
-                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  " << tagsWrapper[i];
-                        else
-                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    " << tagsWrapper[i];
+                        if( i == 0 ) {
+                            TextColour colourGuard( TextColour::SecondaryText );
+                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  ";
+                        }
+                        else {
+                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    ";
+                        }
+                        std::cout << tagsWrapper[i];
                     }
                     std::cout << "\n";
                 }
@@ -4306,10 +4358,14 @@ namespace Catch {
             wrapper.setIndent(2).setRight( maxTagLen ).wrap( countIt->first );
 
             std::cout << wrapper;
+            std::size_t dots = 2;
             if( maxTagLen > wrapper.last().size() )
-            std::cout << std::string( maxTagLen - wrapper.last().size(), '.' );
-            std::cout   << ".. "
-                        << countIt->second
+                dots += maxTagLen - wrapper.last().size();
+            {
+                TextColour colourGuard( TextColour::SecondaryText );
+                std::cout << std::string( dots, '.' );
+            }
+            std::cout   << countIt->second
                         << "\n";
         }
         std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
@@ -5514,41 +5570,6 @@ namespace Catch {
 // #included from: catch_console_colour_impl.hpp
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
 
-// #included from: catch_console_colour.hpp
-#define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
-
-namespace Catch {
-
-    struct IConsoleColourCodes : NonCopyable {
-        enum Colours {
-            None,
-
-            FileName,
-            ResultError,
-            ResultSuccess,
-
-            Error,
-            Success,
-
-            OriginalExpression,
-            ReconstructedExpression
-        };
-
-        virtual void set( Colours colour ) = 0;
-    };
-
-    class TextColour : public IConsoleColourCodes {
-    public:
-        TextColour( Colours colour = None );
-        void set( Colours colour );
-        ~TextColour();
-
-    private:
-        IConsoleColourCodes* m_impl;
-    };
-
-} // end namespace Catch
-
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
 #include <windows.h>
@@ -5557,21 +5578,25 @@ namespace {
     using namespace Catch;
 
     WORD mapConsoleColour( IConsoleColourCodes::Colours colour ) {
+        enum Win32Colours {
+                Grey = FOREGROUND_INTENSITY,
+                BrightRed = FOREGROUND_RED | FOREGROUND_INTENSITY,
+                BrightGreen = FOREGROUND_GREEN | FOREGROUND_INTENSITY,
+                BrightWhite = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY,
+                DarkGreen = FOREGROUND_GREEN,
+                Cyan = FOREGROUND_BLUE | FOREGROUND_GREEN,
+                Yellow = FOREGROUND_RED | FOREGROUND_GREEN
+        };
         switch( colour ) {
-            case IConsoleColourCodes::FileName:
-                return FOREGROUND_INTENSITY;                    // greyed out
-            case IConsoleColourCodes::ResultError:
-                return FOREGROUND_RED | FOREGROUND_INTENSITY;   // bright red
-            case IConsoleColourCodes::ResultSuccess:
-                return FOREGROUND_GREEN | FOREGROUND_INTENSITY; // bright green
-            case IConsoleColourCodes::Error:
-                return FOREGROUND_RED | FOREGROUND_INTENSITY;   // bright red
-            case IConsoleColourCodes::Success:
-                return FOREGROUND_GREEN;                        // dark green
-            case IConsoleColourCodes::OriginalExpression:
-                return FOREGROUND_BLUE | FOREGROUND_GREEN;      // turquoise
-            case IConsoleColourCodes::ReconstructedExpression:
-                return FOREGROUND_RED | FOREGROUND_GREEN;       // greeny-yellow
+            case IConsoleColourCodes::FileName:             return Grey;
+            case IConsoleColourCodes::ResultError:          return BrightRed;
+            case IConsoleColourCodes::ResultSuccess:        return BrightGreen;
+            case IConsoleColourCodes::Error:                return BrightRed;
+            case IConsoleColourCodes::Success:              return DarkGreen;
+            case IConsoleColourCodes::OriginalExpression:   return Cyan;
+            case IConsoleColourCodes::ReconstructedExpression: return Yellow;
+            case IConsoleColourCodes::SecondaryText:        return Grey;
+            case IConsoleColourCodes::Headers:              return 0;
             default: return 0;
         }
     }
@@ -5620,39 +5645,39 @@ namespace {
     // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
 
+    const char* WhiteOrNormal = "[0m";
+    const char* BrightRed =       "[1;31m";
+    const char* BrightGreen =     "[1;32m";
+//    const char* BrightWhite =     "[1;37m";
+    const char* Green =         "[0;32m";
+    const char* Cyan =          "[0;36m";
+    const char* Yellow =        "[0;33m";
+    const char* LightGrey =     "[0;37m";
+//    const char* DarkGrey =      "[1;30m";
+
     struct AnsiConsoleColourCodes : IConsoleColourCodes {
 
         ~AnsiConsoleColourCodes() {
             set( None );
         }
 
-        void set( Colours colour ) {
-            const char colourEscape = '\033';
+        const char* escapeCodeForColour( Colours colour ) {
             switch( colour ) {
-                case FileName:
-                    std::cout << colourEscape << "[0m";    // white/ normal
-                    break;
-                case ResultError:
-                    std::cout << colourEscape << "[1;31m"; // bold red
-                    break;
-                case ResultSuccess:
-                    std::cout << colourEscape << "[1;32m"; // bold green
-                    break;
-                case Error:
-                    std::cout << colourEscape << "[1;31m"; // bold red
-                    break;
-                case Success:
-                    std::cout << colourEscape << "[0;32m"; // green
-                    break;
-                case OriginalExpression:
-                    std::cout << colourEscape << "[0;36m"; // cyan
-                    break;
-                case ReconstructedExpression:
-                    std::cout << colourEscape << "[0;33m"; // yellow
-                    break;
-                case None:
-                    std::cout << colourEscape << "[0m"; // reset
-            }
+                case FileName:              return WhiteOrNormal;
+                case ResultError:           return BrightRed;
+                case ResultSuccess:         return BrightGreen;
+                case Error:                 return BrightRed;
+                case Success:               return Green;
+                case OriginalExpression:    return Cyan;
+                case ReconstructedExpression: return Yellow;
+                case SecondaryText:         return LightGrey;
+                case Headers:               return WhiteOrNormal;
+                case None:                  return WhiteOrNormal;
+                }
+        }
+
+        void set( Colours colour ) {
+            std::cout << '\033' << escapeCodeForColour( colour );
         }
     };
 
@@ -6052,7 +6077,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 29, "integration" );
+    Version libraryVersion( 0, 9, 30, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -6064,7 +6089,7 @@ namespace Catch {
     :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
         nextTab( 0 ),
         tab( 0 ),
-        wrappableChars( " [({.," ),
+        wrappableChars( " [({.,/|\\" ),
         recursionCount( 0 )
     {}
 
@@ -7411,6 +7436,7 @@ namespace Catch {
         }
         void lazyPrintRunInfo() {
             stream  << "\n" << getTildes() << "\n";
+            TextColour colour( TextColour::SecondaryText );
             stream  << testRunInfo->name
                     << " is a CATCH v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
@@ -7428,15 +7454,13 @@ namespace Catch {
                 unusedGroupInfo.reset();
             }
         }
-        void lazyPrintTestCaseInfo() {
-            if( !currentSectionInfo ) {
-                printClosedHeader( unusedTestCaseInfo->name );
-                stream << std::endl;
-            }
-        }
         void printTestCaseAndSectionHeader() {
-            printOpenHeader( unusedTestCaseInfo->name );
+            printOpenHeader(    unusedTestCaseInfo->name,
+                                currentSectionInfo
+                                    ? currentSectionInfo->lineInfo
+                                    : unusedTestCaseInfo->lineInfo );
             if( currentSectionInfo ) {
+                TextColour colourGuard( TextColour::Headers );
                 std::vector<ThreadedSectionInfo*> sections;
                 for(    ThreadedSectionInfo* section = currentSectionInfo.get();
                         section;
@@ -7457,9 +7481,16 @@ namespace Catch {
             printOpenHeader( _name );
             stream << getDots() << "\n";
         }
-        void printOpenHeader( std::string const& _name ) {
-            stream  << getDashes() << "\n"
-                    << _name << "\n";
+        void printOpenHeader( std::string const& _name, SourceLineInfo const& _lineInfo = SourceLineInfo() ) {
+            stream  << getDashes() << "\n";
+            if( !_lineInfo.empty() ){
+                TextColour colourGuard( TextColour::FileName );
+                stream << _lineInfo << "\n\n";
+            }
+            {
+                TextColour colourGuard( TextColour::Headers );
+                stream << _name << "\n";
+            }
         }
 
         void printTotals( const Totals& totals ) {

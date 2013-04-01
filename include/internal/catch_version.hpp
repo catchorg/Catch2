@@ -13,7 +13,7 @@
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 29, "integration" );
+    Version libraryVersion( 0, 9, 30, "integration" );
 }
 
 #endif // TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED
