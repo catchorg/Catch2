@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 30 (integration branch)
- *  Generated: 2013-04-01 11:26:11.785709
+ *  CATCH v0.9 build 31 (integration branch)
+ *  Generated: 2013-04-03 15:00:33.606753
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6077,7 +6077,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 30, "integration" );
+    Version libraryVersion( 0, 9, 31, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -7639,9 +7639,68 @@ namespace Catch {
 
 #ifndef __OBJC__
 
+#ifndef DO_NOT_USE_SIGNALS
+#include <signal.h>
+#include <iostream>
+#include <sstream>
+
+// handler for signals
+void handle_signal(int sig) {
+    std::stringstream s;
+    s << "\n\n=================\n\n";
+
+    switch (sig) {
+    case SIGINT:
+        s << "Interactive attention";
+        break;
+    case SIGILL:
+        s << "Illegal instruction";
+        break;
+    case SIGFPE:
+        s << "Floating point error";
+        break;
+    case SIGSEGV:
+        s << "Segmentation violation";
+        break;
+    case SIGTERM:
+        s << "Termination request";
+        break;
+    case SIGABRT:
+        s << "Abnormal termination (abort)";
+        break;
+    default:
+        break;
+    }
+
+    // print info about current test
+    Catch::IResultCapture& result = Catch::getCurrentContext().getResultCapture();
+    const Catch::AssertionResult* r = result.getLastResult();
+    s << "\n\nwhile executing test: \"" << result.getCurrentTestName() << "\"\n";
+    s << "\n(last successful check was: \"" << r->getExpression() << "\"\n";
+    s << " in: " << r->getSourceInfo().file << ", ";
+    s << "line: " << static_cast<int>(r->getSourceInfo().line) << ")\n\n";
+
+    std::cout << s.str();
+
+    Catch::cleanUp();
+    exit(-sig);
+}
+#endif /*!DO_NOT_USE_SIGNALS*/
+
 // Standard C/C++ main entry point
-int main (int argc, char * const argv[]) {
-    return Catch::Main( argc, argv );
+int main(int argc, char* const argv[]) {
+#ifndef DO_NOT_USE_SIGNALS
+    signal(SIGSEGV, handle_signal);
+    signal(SIGABRT, handle_signal);
+    signal(SIGINT, handle_signal);
+    signal(SIGILL, handle_signal);
+    signal(SIGFPE, handle_signal);
+    signal(SIGSEGV, handle_signal);
+    signal(SIGTERM, handle_signal);
+    signal(SIGABRT, handle_signal);
+#endif /*!DO_NOT_USE_SIGNALS*/
+
+    return Catch::Main(argc, argv);
 }
 
 #else // __OBJC__
