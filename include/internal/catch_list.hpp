@@ -118,7 +118,7 @@ namespace Catch {
                                                             tagItEnd = it->getTestCaseInfo().tags.end();
                         tagIt != tagItEnd;
                         ++tagIt ) {
-                    std::string tagName = "[" + *tagIt + "]";
+                    std::string tagName = *tagIt;
                     maxTagLen = (std::max)( maxTagLen, tagName.size() );
                     std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
                     if( countIt == tagCounts.end() )
@@ -128,7 +128,7 @@ namespace Catch {
                 }
             }
         }
-        maxTagLen +=2;
+        maxTagLen +=4;
         if( maxTagLen > CATCH_CONFIG_CONSOLE_WIDTH-10 )
             maxTagLen = CATCH_CONFIG_CONSOLE_WIDTH-10;
         
@@ -136,7 +136,7 @@ namespace Catch {
                 countIt != countItEnd;
                 ++countIt ) {            
             LineWrapper wrapper;
-            wrapper.setIndent(2).setRight( maxTagLen ).wrap( countIt->first );
+            wrapper.setIndent(2).setRight( maxTagLen ).wrap( "[" + countIt->first + "]" );
             
             std::cout << wrapper;
             std::size_t dots = 2;

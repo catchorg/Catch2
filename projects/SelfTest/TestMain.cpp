@@ -495,3 +495,121 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
     }
     
 }
+
+using namespace Catch;
+
+class ColourString {
+public:
+
+    struct ColourIndex {
+        ColourIndex( Colour::Code _colour, std::size_t _fromIndex, std::size_t _toIndex )
+        :   colour( _colour ),
+            fromIndex( _fromIndex ),
+            toIndex( _toIndex )
+        {}
+
+        Colour::Code colour;
+        std::size_t fromIndex;
+        std::size_t toIndex;
+    };
+    
+    ColourString( std::string const& _string )
+    : string( _string )
+    {}
+    ColourString( std::string const& _string, std::vector<ColourIndex> const& _colours )
+    : string( _string ), colours( _colours )
+    {}
+    
+    ColourString& addColour( Colour::Code colour, int _index ) {
+        colours.push_back( ColourIndex( colour,
+                                        resolveRelativeIndex( _index ),
+                                        resolveRelativeIndex( _index )+1 ) );
+        return *this;
+    }
+    ColourString& addColour( Colour::Code colour, int _fromIndex, int _toIndex ) {
+        colours.push_back( ColourIndex( colour,
+                                        resolveRelativeIndex(_fromIndex),
+                                        resolveLastRelativeIndex( _toIndex ) ) );
+        return *this;
+    }
+    
+    void writeToStream( std::ostream& _stream ) const {
+        std::size_t last = 0;
+        for( std::size_t i = 0; i < colours.size(); ++i ) {
+            ColourIndex const& index = colours[i];
+            if( index.fromIndex > last )
+                _stream << string.substr( last, index.fromIndex-last );
+            {
+                Colour colourGuard( index.colour );
+                _stream << string.substr( index.fromIndex, index.toIndex-index.fromIndex );
+            }
+            last = index.toIndex;
+        }
+        if( last < string.size() )
+            _stream << string.substr( last );        
+    }
+    friend std::ostream& operator << ( std::ostream& _stream, ColourString const& _colourString ) {
+        _colourString.writeToStream( _stream );
+        return _stream;
+    }
+
+private:
+
+    std::size_t resolveLastRelativeIndex( int _index ) {
+        std::size_t index = resolveRelativeIndex( _index );
+        return index == 0 ? string.size() : index;
+    }
+    std::size_t resolveRelativeIndex( int _index ) {
+        return static_cast<std::size_t>( _index >= 0
+            ? _index
+            : static_cast<int>( string.size() )+_index );
+    }
+    std::string string;
+    std::vector<ColourIndex> colours;
+};
+
+class Text
+{
+public:
+    Text( std::string const& _string ) : originalString( _string ) {
+    }
+    Text( char const* const _string ) : originalString( _string ) {
+    }
+    
+    friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+        _text.print( _stream );
+        return _stream;
+    }
+
+private:
+    void process() const {
+        
+    }
+    void print( std::ostream& stream ) const {
+        stream << originalString;
+    }
+    
+    std::string originalString;
+//    std::vector<
+};
+
+TEST_CASE( "Strings can be rendered with colour", "[colour]" ) {
+//    Text text = "`red`This is in red. `green` this is in green";
+//    std::cout << text << std::endl;
+    
+    {
+        ColourString cs( "hello" );
+        cs  .addColour( Colour::Red, 0 )
+            .addColour( Colour::Green, -1 );
+
+        std::cout << cs << std::endl;
+    }
+
+    {
+        ColourString cs( "hello" );
+        cs  .addColour( Colour::Blue, 1, -2 );
+        
+        std::cout << cs << std::endl;
+    }
+    
+}

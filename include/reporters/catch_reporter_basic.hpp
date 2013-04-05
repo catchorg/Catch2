@@ -64,7 +64,7 @@ namespace Catch {
                 m_config.stream() << "No tests ran";
             }
             else if( totals.assertions.failed ) {
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 ReportCounts( "test case", totals.testCases, allPrefix );
                 if( totals.testCases.failed > 0 ) {
                     m_config.stream() << " (";

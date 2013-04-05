@@ -12,6 +12,52 @@
 
 namespace Catch {
 
+    namespace Detail {
+        struct IColourImpl;
+    }
+
+    struct Colour {
+        enum Code {
+            None = 0,
+            
+            White,
+            Red,
+            Green,
+            Blue,
+            Cyan,
+            Yellow,
+            Grey,
+            
+            Bright = 0x10,
+            
+            BrightRed = Bright | Red,
+            BrightGreen = Bright | Green,
+            LightGrey = Bright | Grey,
+            BrightWhite = Bright | White,
+            
+            // By intention
+            FileName = Grey,
+            ResultError = BrightRed,
+            ResultSuccess = BrightGreen,
+            
+            Error = BrightRed,
+            Success = Green,
+            
+            OriginalExpression = Cyan,
+            ReconstructedExpression = Yellow,
+            
+            SecondaryText = Grey,
+            Headers = White
+        };
+
+        Colour( Code _colourCode );
+        ~Colour();
+        static void use( Code _colourCode );
+        
+    private:
+        static Detail::IColourImpl* impl;
+    };
+
     struct IConsoleColourCodes : NonCopyable {
         enum Colours {
             None,
