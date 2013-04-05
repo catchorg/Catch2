@@ -16,12 +16,19 @@ namespace Catch {
     :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
         nextTab( 0 ),
         tab( 0 ),
+        indent( 0 ),
+        initialIndent( (std::size_t)-1 ), // use indent by default
         wrappableChars( " [({.,/|\\" ),
+        tabChar( '\t' ),
         recursionCount( 0 )
     {}
     
     LineWrapper& LineWrapper::setIndent( std::size_t _indent ) {
-        indent = std::string( _indent, ' ' );
+        indent = _indent;
+        return *this;
+    }
+    LineWrapper& LineWrapper::setInitialIndent( std::size_t _initialIndent ) {
+        initialIndent = _initialIndent;
         return *this;
     }
     LineWrapper& LineWrapper::setRight( std::size_t _right ) {
@@ -33,13 +40,17 @@ namespace Catch {
         wrapInternal( _str );
         return *this;
     }
+    LineWrapper& LineWrapper::setTabChar( char _tabChar ) {
+        tabChar = _tabChar;
+        return *this;
+    }
     bool LineWrapper::isWrapPoint( char c ) {
         return wrappableChars.find( c ) != std::string::npos;
     }
     void LineWrapper::wrapInternal( std::string const& _str ) {
         assert( ++recursionCount < 100 );
 
-        std::size_t width = right - indent.size();
+        std::size_t width = right - getCurrentIndent();
         std::size_t wrapPoint = width-tab;
         for( std::size_t pos = 0; pos < _str.size(); ++pos ) {
             if( _str[pos] == '\n' )
@@ -61,7 +72,7 @@ namespace Catch {
                 }
                 return wrapInternal( _str.substr( wrapPoint ) );
             }
-            if( _str[pos] == '\t' ) {
+            if( _str[pos] == tabChar ) {
                 nextTab = pos;
                 std::string withoutTab = _str.substr( 0, nextTab ) + _str.substr( nextTab+1 );
                 return wrapInternal( withoutTab );
@@ -89,12 +100,16 @@ namespace Catch {
     }
     
     void LineWrapper::addLine( const std::string& _line ) {
-        if( tab > 0 )
-            lines.push_back( indent + std::string( tab, ' ' ) + _line );
-        else
-            lines.push_back( indent + _line );
+        lines.push_back( std::string( tab + getCurrentIndent(), ' ' ) + _line );
         if( nextTab > 0 )
             tab = nextTab;
+    }
+    
+    std::size_t LineWrapper::getCurrentIndent() const
+    {
+        return (initialIndent != (std::size_t)-1 && lines.empty() )
+            ? initialIndent
+            : indent;
     }
     
 } // end namespace Catch

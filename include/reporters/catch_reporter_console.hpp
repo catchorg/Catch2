@@ -288,7 +288,8 @@ namespace Catch {
                 if( !sections.empty() ) {                    
                     typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
                     for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
-                        stream << "  " << (*it)->name << "\n";
+                        printUserString( (*it)->name, 2 );
+
                 }
             }
             stream << getDots() << "\n" << std::endl;
@@ -306,8 +307,22 @@ namespace Catch {
             }
             {
                 Colour colourGuard( Colour::Headers );
-                stream << _name << "\n";
+                printUserString( _name );
             }
+        }
+        
+        // if string has a : in first line will set indent to follow it on
+        // subsequent lines
+        void printUserString( std::string const& _string, std::size_t indent = 0 ) {
+            std::size_t i = _string.find( ": " );
+            if( i != std::string::npos )
+                i+=2;
+            else
+                i = 0;
+            stream << LineWrapper()
+                        .setIndent( indent+i)
+                        .setInitialIndent( indent )
+                        .wrap( _string ) << "\n";
         }
         
         void printTotals( const Totals& totals ) {

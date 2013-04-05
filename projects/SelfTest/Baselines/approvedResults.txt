@@ -4706,14 +4706,34 @@ with expansion:
   "four" == "four"
 
 -------------------------------------------------------------------------------
-TestMain.cpp:477
+TestMain.cpp:470
+
+Long strings can be wrapped
+  plain string
+  Indent first line differently
+...............................................................................
+
+TestMain.cpp:475:
+PASSED:
+  CHECK( Catch::LineWrapper() .setRight( 10 ) .setIndent( 4 ) .setInitialIndent( 1 ) .wrap( testString ).toString() == " one two\n    three\n    four" )
+with expansion:
+  " one two
+      three
+      four"
+  ==
+  " one two
+      three
+      four"
+
+-------------------------------------------------------------------------------
+TestMain.cpp:485
 
 Long strings can be wrapped
   With newlines
   No wrapping
 ...............................................................................
 
-TestMain.cpp:478:
+TestMain.cpp:486:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString )
 with expansion:
@@ -4723,7 +4743,7 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:479:
+TestMain.cpp:487:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString )
 with expansion:
@@ -4733,7 +4753,7 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:480:
+TestMain.cpp:488:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString )
 with expansion:
@@ -4744,14 +4764,14 @@ with expansion:
   three four"
 
 -------------------------------------------------------------------------------
-TestMain.cpp:482
+TestMain.cpp:490
 
 Long strings can be wrapped
   With newlines
   Trailing newline
 ...............................................................................
 
-TestMain.cpp:483:
+TestMain.cpp:491:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
 with expansion:
@@ -4761,13 +4781,13 @@ with expansion:
   "abcdef
   "
 
-TestMain.cpp:484:
+TestMain.cpp:492:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 6 ).wrap( "abcdef" ).toString() == "abcdef" )
 with expansion:
   "abcdef" == "abcdef"
 
-TestMain.cpp:485:
+TestMain.cpp:493:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" )
 with expansion:
@@ -4778,14 +4798,14 @@ with expansion:
   "
 
 -------------------------------------------------------------------------------
-TestMain.cpp:487
+TestMain.cpp:495
 
 Long strings can be wrapped
   With newlines
   Wrapped once
 ...............................................................................
 
-TestMain.cpp:488:
+TestMain.cpp:496:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4797,7 +4817,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:489:
+TestMain.cpp:497:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4809,7 +4829,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:490:
+TestMain.cpp:498:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4822,14 +4842,14 @@ with expansion:
   four"
 
 -------------------------------------------------------------------------------
-TestMain.cpp:492
+TestMain.cpp:500
 
 Long strings can be wrapped
   With newlines
   Wrapped twice
 ...............................................................................
 
-TestMain.cpp:493:
+TestMain.cpp:501:
 PASSED:
   CHECK( Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
@@ -4842,6 +4862,17 @@ with expansion:
   two
   three
   four"
+
+hello
+hello
+-------------------------------------------------------------------------------
+TestMain.cpp:604
+
+Strings can be rendered with colour
+...............................................................................
+
+
+No assertions in test case, 'Strings can be rendered with colour'
 
 -------------------------------------------------------------------------------
 TrickyTests.cpp:32
@@ -5162,6 +5193,40 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+VariadicMacrosTests.cpp:12
+
+Anonymous test case 1
+...............................................................................
+
+VariadicMacrosTests.cpp:14:
+PASSED:
+with message:
+  anonymous test case
+
+-------------------------------------------------------------------------------
+VariadicMacrosTests.cpp:17
+
+Test case with one argument
+...............................................................................
+
+VariadicMacrosTests.cpp:19:
+PASSED:
+with message:
+  no assertions
+
+-------------------------------------------------------------------------------
+VariadicMacrosTests.cpp:24
+
+Variadic macros
+  Section with one argument
+...............................................................................
+
+VariadicMacrosTests.cpp:26:
+PASSED:
+with message:
+  no assertions
+
+-------------------------------------------------------------------------------
 BDDTests.cpp:19
 
 Scenario: Do that thing with the thing
@@ -5365,50 +5430,25 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-BDDTests.cpp:63
+BDDTests.cpp:66
 
-Scenario: This is a really long scenario name to see how the list command deals with wrapping
+Scenario: This is a really long scenario name to see how the list command
+          deals with wrapping
+     Given: A section name that is so long that it cannot fit in a single
+            console width
+      When: The test headers are printed as part of the normal running of the
+            scenario
+      Then: The, deliberately very long and overly verbose (you see what I did
+            there?) section names must wrap, along with an indent
 ...............................................................................
 
-
-No assertions in test case, 'Scenario: This is a really long scenario name to see how the list command deals with wrapping'
-
--------------------------------------------------------------------------------
-VariadicMacrosTests.cpp:12
-
-Anonymous test case 1
-...............................................................................
-
-VariadicMacrosTests.cpp:14:
+BDDTests.cpp:67:
 PASSED:
 with message:
-  anonymous test case
-
--------------------------------------------------------------------------------
-VariadicMacrosTests.cpp:17
-
-Test case with one argument
-...............................................................................
-
-VariadicMacrosTests.cpp:19:
-PASSED:
-with message:
-  no assertions
-
--------------------------------------------------------------------------------
-VariadicMacrosTests.cpp:24
-
-Variadic macros
-  Section with one argument
-...............................................................................
-
-VariadicMacrosTests.cpp:26:
-PASSED:
-with message:
-  no assertions
+  boo!
 
 ===============================================================================
-108 test cases - 48 failed (697 assertions - 105 failed)
+109 test cases - 48 failed (699 assertions - 105 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -5729,7 +5769,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="77" tests="697" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="77" tests="699" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -6136,6 +6176,12 @@ An error
     <testcase classname="global" name="selftest/option parsers" time="tbd"/>
     <testcase classname="global" name="selftest/tags" time="tbd"/>
     <testcase classname="global" name="Long strings can be wrapped" time="tbd"/>
+    <testcase classname="global" name="Strings can be rendered with colour" time="tbd">
+      <system-out>
+hello
+hello
+      </system-out>
+    </testcase>
     <testcase classname="global" name="./succeeding/Tricky/std::pair" time="tbd"/>
     <testcase classname="global" name="./inprogress/failing/Tricky/trailing expression" time="tbd">
       <warning type="WARN">
@@ -6168,12 +6214,12 @@ TrickyTests.cpp:106
     <testcase classname="global" name="./succeeding/unimplemented static bool" time="tbd"/>
     <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
     <testcase classname="global" name="Assertions then sections" time="tbd"/>
-    <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
-    <testcase classname="global" name="Scenario: Vector resizing affects size and capacity" time="tbd"/>
-    <testcase classname="global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="tbd"/>
     <testcase classname="global" name="Anonymous test case 1" time="tbd"/>
     <testcase classname="global" name="Test case with one argument" time="tbd"/>
     <testcase classname="global" name="Variadic macros" time="tbd"/>
+    <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
+    <testcase classname="global" name="Scenario: Vector resizing affects size and capacity" time="tbd"/>
+    <testcase classname="global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="tbd"/>
   </testsuite>
   <system-out>
 Message from section one
@@ -6187,6 +6233,9 @@ Some information
 Message from section one
 Message from section two
 Some information
+
+hello
+hello
   </system-out>
   <system-err>
 An error
@@ -11263,11 +11312,31 @@ TestMain.cpp" line="468">
         <OverallResults successes="5" failures="0"/>
       </Section>
       <Section name="plain string">
+        <Section name="Indent first line differently">
+TestMain.cpp" line="475">
+            <Original>
+              Catch::LineWrapper() .setRight( 10 ) .setIndent( 4 ) .setInitialIndent( 1 ) .wrap( testString ).toString() == &quot; one two\n    three\n    four&quot;
+            </Original>
+            <Expanded>
+              &quot; one two
+    three
+    four&quot;
+==
+&quot; one two
+    three
+    four&quot;
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="plain string">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="No wrapping">
-TestMain.cpp" line="478">
+TestMain.cpp" line="486">
             <Original>
               Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString
             </Original>
@@ -11279,7 +11348,7 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="479">
+TestMain.cpp" line="487">
             <Original>
               Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString
             </Original>
@@ -11291,7 +11360,7 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="480">
+TestMain.cpp" line="488">
             <Original>
               Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString
             </Original>
@@ -11309,7 +11378,7 @@ three four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Trailing newline">
-TestMain.cpp" line="483">
+TestMain.cpp" line="491">
             <Original>
               Catch::LineWrapper().setRight( 10 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
             </Original>
@@ -11321,7 +11390,7 @@ TestMain.cpp" line="483">
 &quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="484">
+TestMain.cpp" line="492">
             <Original>
               Catch::LineWrapper().setRight( 6 ).wrap( &quot;abcdef&quot; ).toString() == &quot;abcdef&quot;
             </Original>
@@ -11329,7 +11398,7 @@ TestMain.cpp" line="484">
               &quot;abcdef&quot; == &quot;abcdef&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="485">
+TestMain.cpp" line="493">
             <Original>
               Catch::LineWrapper().setRight( 6 ).wrap( &quot;abcdef\n&quot; ).toString() == &quot;abcdef\n&quot;
             </Original>
@@ -11347,7 +11416,7 @@ TestMain.cpp" line="485">
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped once">
-TestMain.cpp" line="488">
+TestMain.cpp" line="496">
             <Original>
               Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11361,7 +11430,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="489">
+TestMain.cpp" line="497">
             <Original>
               Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11375,7 +11444,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="490">
+TestMain.cpp" line="498">
             <Original>
               Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11395,7 +11464,7 @@ four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped twice">
-TestMain.cpp" line="493">
+TestMain.cpp" line="501">
             <Original>
               Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
@@ -11415,6 +11484,9 @@ four&quot;
         </Section>
         <OverallResults successes="1" failures="0"/>
       </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Strings can be rendered with colour">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./succeeding/Tricky/std::pair">
@@ -11705,6 +11777,18 @@ TrickyTests.cpp" line="335">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Anonymous test case 1">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Test case with one argument">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Variadic macros">
+      <Section name="Section with one argument">
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Scenario: Do that thing with the thing">
       <Section name="   Given: This stuff exists">
         <Section name="    When: I do this">
@@ -11911,23 +11995,20 @@ BDDTests.cpp" line="54">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: This is a really long scenario name to see how the list command deals with wrapping">
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Anonymous test case 1">
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Test case with one argument">
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Variadic macros">
-      <Section name="Section with one argument">
+      <Section name="   Given: A section name that is so long that it cannot fit in a single console width">
+        <Section name="    When: The test headers are printed as part of the normal running of the scenario">
+          <Section name="    Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent">
+            <OverallResults successes="1" failures="0"/>
+          </Section>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
         <OverallResults successes="1" failures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="592" failures="105"/>
+    <OverallResults successes="594" failures="105"/>
   </Group>
-  <OverallResults successes="592" failures="105"/>
+  <OverallResults successes="594" failures="105"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -13389,21 +13470,35 @@ TestMain.cpp:468: wrapper[3] == "four" succeeded for: "four" == "four"
 
 [End of section: 'plain string' All 5 assertions passed]
 
+[Started section: 'plain string']
+[Started section: 'Indent first line differently']
+TestMain.cpp:475: Catch::LineWrapper() .setRight( 10 ) .setIndent( 4 ) .setInitialIndent( 1 ) .wrap( testString ).toString() == " one two\n    three\n    four" succeeded for:
+	" one two
+    three
+    four"
+==
+" one two
+    three
+    four"
+[End of section: 'Indent first line differently' 1 assertion passed]
+
+[End of section: 'plain string' 1 assertion passed]
+
 [Started section: 'With newlines']
 [Started section: 'No wrapping']
-TestMain.cpp:478: Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:486: Catch::LineWrapper().setRight( 80 ).wrap( testString ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:479: Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:487: Catch::LineWrapper().setRight( 18 ).wrap( testString ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:480: Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString succeeded for:
+TestMain.cpp:488: Catch::LineWrapper().setRight( 10 ).wrap( testString ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
@@ -13415,13 +13510,13 @@ three four"
 
 [Started section: 'With newlines']
 [Started section: 'Trailing newline']
-TestMain.cpp:483: Catch::LineWrapper().setRight( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:491: Catch::LineWrapper().setRight( 10 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
 "
-TestMain.cpp:484: Catch::LineWrapper().setRight( 6 ).wrap( "abcdef" ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
-TestMain.cpp:485: Catch::LineWrapper().setRight( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:492: Catch::LineWrapper().setRight( 6 ).wrap( "abcdef" ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
+TestMain.cpp:493: Catch::LineWrapper().setRight( 6 ).wrap( "abcdef\n" ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
@@ -13432,7 +13527,7 @@ TestMain.cpp:485: Catch::LineWrapper().setRight( 6 ).wrap( "abcdef\n" ).toString
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped once']
-TestMain.cpp:488: Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:496: Catch::LineWrapper().setRight( 9 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -13440,7 +13535,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:489: Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:497: Catch::LineWrapper().setRight( 8 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -13448,7 +13543,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:490: Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:498: Catch::LineWrapper().setRight( 7 ).wrap( testString ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -13462,7 +13557,7 @@ four"
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped twice']
-TestMain.cpp:493: Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:501: Catch::LineWrapper().setRight( 6 ).wrap( testString ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -13476,7 +13571,15 @@ four"
 
 [End of section: 'With newlines' 1 assertion passed]
 
-[Finished: 'Long strings can be wrapped' All tests passed (31 assertions in 1 test case)]
+[Finished: 'Long strings can be wrapped' All tests passed (32 assertions in 1 test case)]
+hello
+hello
+
+[Running: Strings can be rendered with colour]
+
+No assertions in test case, 'Strings can be rendered with colour'
+
+[Finished: 'Strings can be rendered with colour' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/Tricky/std::pair]
 TrickyTests.cpp:37: (std::pair<int, int>( 1, 2 )) == aNicePair succeeded for: std::pair( 1, 2 ) == std::pair( 1, 2 )
@@ -13579,6 +13682,24 @@ TrickyTests.cpp:335: Catch::isTrue( true ) succeeded for: true
 
 [Finished: 'Assertions then sections' All tests passed (6 assertions in 1 test case)]
 
+[Running: Anonymous test case 1]
+VariadicMacrosTests.cpp:14:  succeeded
+[with message: anonymous test case]
+[Finished: 'Anonymous test case 1' All tests passed (1 assertion in 1 test case)]
+
+[Running: Test case with one argument]
+VariadicMacrosTests.cpp:19:  succeeded
+[with message: no assertions]
+[Finished: 'Test case with one argument' All tests passed (1 assertion in 1 test case)]
+
+[Running: Variadic macros]
+[Started section: 'Section with one argument']
+VariadicMacrosTests.cpp:26:  succeeded
+[with message: no assertions]
+[End of section: 'Section with one argument' 1 assertion passed]
+
+[Finished: 'Variadic macros' All tests passed (1 assertion in 1 test case)]
+
 [Running: Scenario: Do that thing with the thing]
 [Started section: '   Given: This stuff exists']
 [Started section: '    When: I do this']
@@ -13660,32 +13781,22 @@ BDDTests.cpp:54: v.size() == 0 succeeded for: 0 == 0
 [Finished: 'Scenario: Vector resizing affects size and capacity' All tests passed (15 assertions in 1 test case)]
 
 [Running: Scenario: This is a really long scenario name to see how the list command deals with wrapping]
+[Started section: '   Given: A section name that is so long that it cannot fit in a single console width']
+[Started section: '    When: The test headers are printed as part of the normal running of the scenario']
+[Started section: '    Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent']
+BDDTests.cpp:67:  succeeded
+[with message: boo!]
+[End of section: '    Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent' 1 assertion passed]
 
-No assertions in test case, 'Scenario: This is a really long scenario name to see how the list command deals with wrapping'
+[End of section: '    When: The test headers are printed as part of the normal running of the scenario' 1 assertion passed]
 
-[Finished: 'Scenario: This is a really long scenario name to see how the list command deals with wrapping' 1 test case failed (1 assertion failed)]
+[End of section: '   Given: A section name that is so long that it cannot fit in a single console width' 1 assertion passed]
 
-[Running: Anonymous test case 1]
-VariadicMacrosTests.cpp:14:  succeeded
-[with message: anonymous test case]
-[Finished: 'Anonymous test case 1' All tests passed (1 assertion in 1 test case)]
-
-[Running: Test case with one argument]
-VariadicMacrosTests.cpp:19:  succeeded
-[with message: no assertions]
-[Finished: 'Test case with one argument' All tests passed (1 assertion in 1 test case)]
-
-[Running: Variadic macros]
-[Started section: 'Section with one argument']
-VariadicMacrosTests.cpp:26:  succeeded
-[with message: no assertions]
-[End of section: 'Section with one argument' 1 assertion passed]
-
-[Finished: 'Variadic macros' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 48 of 108 test cases failed (105 of 697 assertions failed)]
+[Finished: 'Scenario: This is a really long scenario name to see how the list command deals with wrapping' All tests passed (1 assertion in 1 test case)]
+[End of group: '~dummy'. 48 of 109 test cases failed (105 of 699 assertions failed)]
 
 
-[Testing completed. 48 of 108 test cases failed (105 of 697 assertions failed)]
+[Testing completed. 48 of 109 test cases failed (105 of 699 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']

@@ -18,7 +18,9 @@ namespace Catch {
         LineWrapper();
 
         LineWrapper& setIndent( std::size_t _indent );
+        LineWrapper& setInitialIndent( std::size_t _initalIndent );
         LineWrapper& setRight( std::size_t _right );
+        LineWrapper& setTabChar( char _tabChar );
 
         LineWrapper& wrap( std::string const& _str );
 
@@ -38,12 +40,15 @@ namespace Catch {
         void wrapInternal( std::string const& _str );
         void addLine( const std::string& _line );
         bool isWrapPoint( char c );
+        std::size_t getCurrentIndent() const;
 
-        std::string indent;
         std::size_t right;
         std::size_t nextTab;
         std::size_t tab;
+        std::size_t indent;
+        std::size_t initialIndent;
         std::string wrappableChars;
+        char tabChar;
         int recursionCount;
         std::vector<std::string> lines;
     };

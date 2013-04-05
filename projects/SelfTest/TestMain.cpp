@@ -467,6 +467,14 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
             CHECK( wrapper[2] == "three" );
             CHECK( wrapper[3] == "four" );
         }
+        SECTION( "Indent first line differently", "" ) {
+            CHECK( Catch::LineWrapper()
+                        .setRight( 10 )
+                        .setIndent( 4 )
+                        .setInitialIndent( 1 )
+                        .wrap( testString ).toString() == " one two\n    three\n    four" );
+        }
+        
     }
     
     SECTION( "With newlines", "" ) {

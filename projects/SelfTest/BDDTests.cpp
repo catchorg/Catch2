@@ -61,4 +61,8 @@ SCENARIO(   "This is a really long scenario name to see how the list command dea
             "[very long tags][lots][long][tags][verbose]"
             "[one very long tag name that should cause line wrapping writing out using the list command]"
             "[anotherReallyLongTagNameButThisOneHasNoObviousWrapPointsSoShouldSplitWithinAWordUsingADashCharacter]" ) {
+    GIVEN( "A section name that is so long that it cannot fit in a single console width" )
+        WHEN( "The test headers are printed as part of the normal running of the scenario" )
+            THEN( "The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" )
+                SUCCEED("boo!");
 }
