@@ -64,60 +64,10 @@ namespace {
         WORD originalAttributes;
     };
 
-    WORD mapConsoleColour( IConsoleColourCodes::Colours colour ) {
-        enum Win32Colours {
-                Grey = FOREGROUND_INTENSITY,
-                BrightRed = FOREGROUND_RED | FOREGROUND_INTENSITY,
-                BrightGreen = FOREGROUND_GREEN | FOREGROUND_INTENSITY,
-                BrightWhite = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY,
-                DarkGreen = FOREGROUND_GREEN,
-                Cyan = FOREGROUND_BLUE | FOREGROUND_GREEN,
-                Yellow = FOREGROUND_RED | FOREGROUND_GREEN
-        };
-        switch( colour ) {
-            case IConsoleColourCodes::FileName:             return Grey;
-            case IConsoleColourCodes::ResultError:          return BrightRed;
-            case IConsoleColourCodes::ResultSuccess:        return BrightGreen;
-            case IConsoleColourCodes::Error:                return BrightRed;
-            case IConsoleColourCodes::Success:              return DarkGreen;
-            case IConsoleColourCodes::OriginalExpression:   return Cyan;
-            case IConsoleColourCodes::ReconstructedExpression: return Yellow;
-            case IConsoleColourCodes::SecondaryText:        return Grey;
-            case IConsoleColourCodes::Headers:              return 0;
-            default: return 0;
-        }
-    }
-
-    struct WindowsConsoleColourCodes : IConsoleColourCodes {
-    
-        WindowsConsoleColourCodes()
-        :   hStdout( GetStdHandle(STD_OUTPUT_HANDLE) ),
-            wOldColorAttrs( 0 )
-        {
-            GetConsoleScreenBufferInfo( hStdout, &csbiInfo );
-            wOldColorAttrs = csbiInfo.wAttributes;
-        }
-        
-        ~WindowsConsoleColourCodes() {
-            SetConsoleTextAttribute( hStdout, wOldColorAttrs );
-        }
-        
-        void set( Colours colour ) {
-            WORD consoleColour = mapConsoleColour( colour );
-            if( consoleColour > 0 )
-                SetConsoleTextAttribute( hStdout, consoleColour );
-        }
-        
-        HANDLE hStdout;
-        CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-        WORD wOldColorAttrs;
-    };
-
     inline bool shouldUseColourForPlatform() {
         return true;
     }
     
-    typedef WindowsConsoleColourCodes PlatformConsoleColourCodes;
     Win32ColourImpl platformColourImpl;
 
 } // end anon namespace
@@ -130,6 +80,10 @@ namespace {
 namespace Catch {
 namespace {
 
+    // use POSIX/ ANSI console terminal codes
+    // Thanks to Adam Strzelecki for original contribution
+    // (http://github.com/nanoant)
+    // https://github.com/philsquared/Catch/pull/131
     class PosixColourImpl : public Detail::IColourImpl {
     public:
         PosixColourImpl() {
@@ -161,63 +115,16 @@ namespace {
         }
     };
 
-    // use POSIX/ ANSI console terminal codes
-    // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
-    // https://github.com/philsquared/Catch/pull/131
-
-    const char* WhiteOrNormal = "[0m";
-    const char* BrightRed =       "[1;31m";
-    const char* BrightGreen =     "[1;32m";
-//    const char* BrightWhite =     "[1;37m";
-    const char* Green =         "[0;32m";
-    const char* Cyan =          "[0;36m";
-    const char* Yellow =        "[0;33m";
-    const char* LightGrey =     "[0;37m";
-//    const char* DarkGrey =      "[1;30m";
-
-    struct AnsiConsoleColourCodes : IConsoleColourCodes {
-    
-        ~AnsiConsoleColourCodes() {
-            set( None );
-        }
-
-        const char* escapeCodeForColour( Colours colour ) {
-            switch( colour ) {
-                case FileName:              return WhiteOrNormal;
-                case ResultError:           return BrightRed;
-                case ResultSuccess:         return BrightGreen;
-                case Error:                 return BrightRed;
-                case Success:               return Green;
-                case OriginalExpression:    return Cyan;
-                case ReconstructedExpression: return Yellow;
-                case SecondaryText:         return LightGrey;
-                case Headers:               return WhiteOrNormal;
-                case None:                  return WhiteOrNormal;
-                }
-        }
-
-        void set( Colours colour ) {
-            std::cout << '\033' << escapeCodeForColour( colour );
-        }
-    };
-
     inline bool shouldUseColourForPlatform() {
         return isatty( fileno(stdout) );
     }
     
-    typedef AnsiConsoleColourCodes PlatformConsoleColourCodes;
     PosixColourImpl platformColourImpl;
     
 } // end anon namespace
 } // end namespace Catch
 
 #endif // not Windows
-
-namespace {
-    struct NoConsoleColourCodes : Catch::IConsoleColourCodes {
-        void set( Colours ) {}
-    };
-}
 
 namespace Catch {
 
@@ -239,26 +146,6 @@ namespace Catch {
     Detail::IColourImpl* Colour::impl = shouldUseColour
             ? static_cast<Detail::IColourImpl*>( &platformColourImpl )
             : static_cast<Detail::IColourImpl*>( &noColourImpl );
-
-    TextColour::TextColour( Colours colour ) : m_impl( NULL ) {
-        static bool s_shouldUseColour = shouldUseColourForPlatform() &&
-                                        !isDebuggerActive();
-        if( s_shouldUseColour )
-            m_impl = new PlatformConsoleColourCodes();
-        else
-            m_impl = new NoConsoleColourCodes();
-
-        if( colour )
-            set( colour );
-    }
-
-    TextColour::~TextColour() {
-        delete m_impl;
-    }
-
-    void TextColour::set( Colours colour ) {
-        m_impl->set( colour );
-    }
 
 } // end namespace Catch
 

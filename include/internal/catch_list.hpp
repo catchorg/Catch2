@@ -64,25 +64,25 @@ namespace Catch {
                 tagsWrapper.setRight( maxTagLen ).wrap( it->getTestCaseInfo().tagsAsString );
                 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
-                    TextColour::Colours colour = TextColour::None;
+                    Colour::Code colour = Colour::None;
                     if( it->getTestCaseInfo().isHidden )
-                        colour = TextColour::SecondaryText;
+                        colour = Colour::SecondaryText;
                     std::string nameCol;
                     if( i < nameWrapper.size() ) {
                         nameCol = nameWrapper[i];
                     }
                     else {
                         nameCol = "    ...";
-                        colour = TextColour::SecondaryText;
+                        colour = Colour::SecondaryText;
                     }
                     
                     {
-                        TextColour colourGuard( colour );
+                        Colour colourGuard( colour );
                         std::cout << nameCol;
                     }
                     if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
                         if( i == 0 ) {
-                            TextColour colourGuard( TextColour::SecondaryText );
+                            Colour colourGuard( Colour::SecondaryText );
                             std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  ";
                         }
                         else {
@@ -143,7 +143,7 @@ namespace Catch {
             if( maxTagLen > wrapper.last().size() )
                 dots += maxTagLen - wrapper.last().size();
             {
-                TextColour colourGuard( TextColour::SecondaryText );
+                Colour colourGuard( Colour::SecondaryText );
                 std::cout << std::string( dots, '.' );
             }
             std::cout   << countIt->second

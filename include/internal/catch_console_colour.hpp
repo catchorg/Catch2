@@ -36,7 +36,7 @@ namespace Catch {
             BrightWhite = Bright | White,
             
             // By intention
-            FileName = Grey,
+            FileName = LightGrey,
             ResultError = BrightRed,
             ResultSuccess = BrightGreen,
             
@@ -46,47 +46,19 @@ namespace Catch {
             OriginalExpression = Cyan,
             ReconstructedExpression = Yellow,
             
-            SecondaryText = Grey,
+            SecondaryText = LightGrey,
             Headers = White
         };
 
+        // Use constructed object for RAII guard
         Colour( Code _colourCode );
         ~Colour();
+        
+        // Use static method for one-shot changes
         static void use( Code _colourCode );
         
     private:
         static Detail::IColourImpl* impl;
-    };
-
-    struct IConsoleColourCodes : NonCopyable {
-        enum Colours {
-            None,
-            
-            FileName,
-            ResultError,
-            ResultSuccess,
-            
-            Error,
-            Success,
-            
-            OriginalExpression,
-            ReconstructedExpression,
-            
-            SecondaryText,
-            Headers
-        };
-
-        virtual void set( Colours colour ) = 0;
-    };
-
-    class TextColour : public IConsoleColourCodes {
-    public:
-        TextColour( Colours colour = None );
-        void set( Colours colour );
-        ~TextColour();
-        
-    private:
-        IConsoleColourCodes* m_impl;
     };
     
 } // end namespace Catch

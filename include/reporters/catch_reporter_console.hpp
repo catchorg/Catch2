@@ -60,7 +60,7 @@ namespace Catch {
         virtual void sectionEnded( SectionStats const& _sectionStats ) {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 stream << "\nNo assertions in section, '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
             m_headerPrinted = false;
@@ -71,7 +71,7 @@ namespace Catch {
 
             if( _testCaseStats.missingAssertions ) {
                 lazyPrint();
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 stream << "\nNo assertions in test case, '" << _testCaseStats.testInfo.name << "'\n" << std::endl;
             }
             StreamingReporterBase::testCaseEnded( _testCaseStats );
@@ -103,13 +103,13 @@ namespace Catch {
             :   stream( _stream ),
                 stats( _stats ),
                 result( _stats.assertionResult ),
-                colour( TextColour::None ),
+                colour( Colour::None ),
                 message( result.getMessage() ),
                 messages( _stats.infoMessages )
             {
                 switch( result.getResultType() ) {
                     case ResultWas::Ok:
-                        colour = TextColour::Success;
+                        colour = Colour::Success;
                         passOrFail = "PASSED";
                         //if( result.hasMessage() )
                         if( _stats.infoMessages.size() == 1 )
@@ -119,11 +119,11 @@ namespace Catch {
                         break;
                     case ResultWas::ExpressionFailed:
                         if( result.isOk() ) {
-                            colour = TextColour::Success;
+                            colour = Colour::Success;
                             passOrFail = "FAILED - but was ok";
                         }
                         else {
-                            colour = TextColour::Error;
+                            colour = Colour::Error;
                             passOrFail = "FAILED";
                         }
                         if( _stats.infoMessages.size() == 1 )
@@ -132,12 +132,12 @@ namespace Catch {
                             messageLabel = "with messages";
                         break;
                     case ResultWas::ThrewException:
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         passOrFail = "FAILED";
                         messageLabel = "due to unexpected exception with message";
                         break;
                     case ResultWas::DidntThrowException:
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         passOrFail = "FAILED";
                         messageLabel = "because no exception was thrown where one was expected";
                         break;
@@ -149,7 +149,7 @@ namespace Catch {
                         break;
                     case ResultWas::ExplicitFailure:
                         passOrFail = "FAILED";
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         if( _stats.infoMessages.size() == 1 )
                             messageLabel = "explicitly with message";
                         if( _stats.infoMessages.size() > 1 )
@@ -157,7 +157,7 @@ namespace Catch {
                         break;
                     case ResultWas::Exception:
                         passOrFail = "FAILED";
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         if( _stats.infoMessages.size() == 1 )
                             messageLabel = "with message";
                         if( _stats.infoMessages.size() > 1 )
@@ -168,7 +168,7 @@ namespace Catch {
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                         passOrFail = "** internal error **";
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         break;
                 }
             }
@@ -191,13 +191,13 @@ namespace Catch {
         private:
             void printResultType() const {
                 if( !passOrFail.empty() ) {
-                    TextColour colourGuard( colour );
+                    Colour colourGuard( colour );
                     stream << passOrFail << ":\n";
                 }
             }
             void printOriginalExpression() const {
                 if( result.hasExpression() ) {
-                    TextColour colourGuard( TextColour::OriginalExpression );
+                    Colour colourGuard( Colour::OriginalExpression );
                     stream  << "  ";
                     if( !result.getTestMacroName().empty() )
                         stream << result.getTestMacroName() << "( ";
@@ -210,7 +210,7 @@ namespace Catch {
             void printReconstructedExpression() const {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
-                    TextColour colourGuard( TextColour::ReconstructedExpression );
+                    Colour colourGuard( Colour::ReconstructedExpression );
                     stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ) << "\n";
                 }
             }
@@ -224,14 +224,14 @@ namespace Catch {
                 }
             }
             void printSourceInfo() const {
-                TextColour colourGuard( TextColour::FileName );
+                Colour colourGuard( Colour::FileName );
                 stream << result.getSourceInfo() << ": ";
             }
             
             std::ostream& stream;
             AssertionStats const& stats;
             AssertionResult const& result;
-            TextColour::Colours colour;
+            Colour::Code colour;
             std::string passOrFail;
             std::string messageLabel;
             std::string message;
@@ -253,7 +253,7 @@ namespace Catch {
         }
         void lazyPrintRunInfo() {
             stream  << "\n" << getTildes() << "\n";
-            TextColour colour( TextColour::SecondaryText );
+            Colour colour( Colour::SecondaryText );
             stream  << testRunInfo->name
                     << " is a CATCH v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
@@ -277,7 +277,7 @@ namespace Catch {
                                     ? currentSectionInfo->lineInfo
                                     : unusedTestCaseInfo->lineInfo );
             if( currentSectionInfo ) {
-                TextColour colourGuard( TextColour::Headers );
+                Colour colourGuard( Colour::Headers );
                 std::vector<ThreadedSectionInfo*> sections;
                 for(    ThreadedSectionInfo* section = currentSectionInfo.get();
                         section;
@@ -301,11 +301,11 @@ namespace Catch {
         void printOpenHeader( std::string const& _name, SourceLineInfo const& _lineInfo = SourceLineInfo() ) {
             stream  << getDashes() << "\n";
             if( !_lineInfo.empty() ){
-                TextColour colourGuard( TextColour::FileName );
+                Colour colourGuard( Colour::FileName );
                 stream << _lineInfo << "\n\n";
             }
             {
-                TextColour colourGuard( TextColour::Headers );
+                Colour colourGuard( Colour::Headers );
                 stream << _name << "\n";
             }
         }
@@ -315,7 +315,7 @@ namespace Catch {
                 stream << "No tests ran";
             }
             else if( totals.assertions.failed ) {
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 printCounts( "test case", totals.testCases );
                 if( totals.testCases.failed > 0 ) {
                     stream << " (";
@@ -324,7 +324,7 @@ namespace Catch {
                 }
             }
             else {
-                TextColour colour( TextColour::ResultSuccess );
+                Colour colour( Colour::ResultSuccess );
                 stream << "All tests passed ("
                         << pluralise( totals.assertions.passed, "assertion" ) << " in "
                         << pluralise( totals.testCases.passed, "test case" ) << ")";

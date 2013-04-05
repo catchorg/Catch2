@@ -73,7 +73,7 @@ namespace Catch {
                 }
             }
             else {
-                TextColour colour( TextColour::ResultSuccess );
+                Colour colour( Colour::ResultSuccess );
                 m_config.stream()   << allPrefix << "tests passed ("
                                     << pluralise( totals.assertions.passed, "assertion" ) << " in "
                                     << pluralise( totals.testCases.passed, "test case" ) << ")";
@@ -130,12 +130,12 @@ namespace Catch {
 
         virtual void NoAssertionsInSection( const std::string& sectionName ) {
             startSpansLazily();
-            TextColour colour( TextColour::ResultError );
+            Colour colour( Colour::ResultError );
             m_config.stream() << "\nNo assertions in section, '" << sectionName << "'\n" << std::endl;
         }
         virtual void NoAssertionsInTestCase( const std::string& testName ) {
             startSpansLazily();
-            TextColour colour( TextColour::ResultError );
+            Colour colour( Colour::ResultError );
             m_config.stream() << "\nNo assertions in test case, '" << testName << "'\n" << std::endl;
         }
 
@@ -146,11 +146,11 @@ namespace Catch {
                 m_config.stream() << "[End of section: '" << sectionName << "' ";
                 
                 if( assertions.failed ) {
-                    TextColour colour( TextColour::ResultError );
+                    Colour colour( Colour::ResultError );
                     ReportCounts( "assertion", assertions);
                 }
                 else {
-                    TextColour colour( TextColour::ResultSuccess );
+                    Colour colour( Colour::ResultSuccess );
                     m_config.stream()   << ( assertions.passed > 1 ? "All " : "" )
                                         << pluralise( assertions.passed, "assertion" ) << " passed" ;
                 }
@@ -166,22 +166,22 @@ namespace Catch {
             startSpansLazily();
             
             if( !assertionResult.getSourceInfo().empty() ) {
-                TextColour colour( TextColour::FileName );
+                Colour colour( Colour::FileName );
                 m_config.stream() << assertionResult.getSourceInfo() << ": ";
             }
             
             if( assertionResult.hasExpression() ) {
-                TextColour colour( TextColour::OriginalExpression );
+                Colour colour( Colour::OriginalExpression );
                 m_config.stream() << assertionResult.getExpression();
                 if( assertionResult.succeeded() ) {
-                    TextColour successColour( TextColour::Success );
+                    Colour successColour( Colour::Success );
                     m_config.stream() << " succeeded";
                 }
                 else {
-                    TextColour errorColour( TextColour::Error );
+                    Colour errorColour( Colour::Error );
                     m_config.stream() << " failed";
                     if( assertionResult.isOk() ) {
-                        TextColour okAnywayColour( TextColour::Success );
+                        Colour okAnywayColour( Colour::Success );
                         m_config.stream() << " - but was ok";
                     }
                 }
@@ -189,7 +189,7 @@ namespace Catch {
             switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
                     {
-                        TextColour colour( TextColour::Error );
+                        Colour colour( Colour::Error );
                         if( assertionResult.hasExpression() )
                             m_config.stream() << " with unexpected";
                         else
@@ -199,7 +199,7 @@ namespace Catch {
                     break;
                 case ResultWas::DidntThrowException:
                     {
-                        TextColour colour( TextColour::Error );
+                        Colour colour( Colour::Error );
                         if( assertionResult.hasExpression() )
                             m_config.stream() << " because no exception was thrown where one was expected";
                         else
@@ -208,19 +208,19 @@ namespace Catch {
                     break;
                 case ResultWas::Info:
                     {
-                        TextColour colour( TextColour::ReconstructedExpression );
+                        Colour colour( Colour::ReconstructedExpression );
                         streamVariableLengthText( "info", assertionResult.getMessage() );
                     }
                     break;
                 case ResultWas::Warning:
                     {
-                        TextColour colour( TextColour::ReconstructedExpression );
+                        Colour colour( Colour::ReconstructedExpression );
                         streamVariableLengthText( "warning", assertionResult.getMessage() );
                     }
                     break;
                 case ResultWas::ExplicitFailure:
                     {
-                        TextColour colour( TextColour::Error );
+                        Colour colour( Colour::Error );
                         m_config.stream() << "failed with message: '" << assertionResult.getMessage() << "'";
                     }
                     break;
@@ -231,21 +231,21 @@ namespace Catch {
                 case ResultWas::Exception:
                     if( !assertionResult.hasExpression() ) {
                         if( assertionResult.succeeded() ) {
-                            TextColour colour( TextColour::Success );
+                            Colour colour( Colour::Success );
                             m_config.stream() << " succeeded";
                         }
                         else {
-                            TextColour colour( TextColour::Error );
+                            Colour colour( Colour::Error );
                             m_config.stream() << " failed";
                             if( assertionResult.isOk() ) {
-                                TextColour okAnywayColour( TextColour::Success );
+                                Colour okAnywayColour( Colour::Success );
                                 m_config.stream() << " - but was ok";
                             }
                         }
                     }
                     if( assertionResult.hasMessage() ) {
                         m_config.stream() << "\n";
-                        TextColour colour( TextColour::ReconstructedExpression );
+                        Colour colour( Colour::ReconstructedExpression );
                         streamVariableLengthText( "with message", assertionResult.getMessage() );
                     }
                     break;
@@ -258,7 +258,7 @@ namespace Catch {
                     if( assertionResult.getExpandedExpression().size() < 70 )
                         m_config.stream() << "\t";
                 }
-                TextColour colour( TextColour::ReconstructedExpression );
+                Colour colour( Colour::ReconstructedExpression );
                 m_config.stream() << assertionResult.getExpandedExpression();
             }
             m_config.stream() << std::endl;
