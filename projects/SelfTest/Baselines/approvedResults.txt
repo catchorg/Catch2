@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b30 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b31 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -5452,7 +5452,7 @@ with message:
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b30 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b31 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------

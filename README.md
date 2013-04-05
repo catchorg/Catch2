@@ -1,6 +1,6 @@
 ![catch logo](https://raw.github.com/philsquared/Catch/Integration/catch-logo-small.png)
 
-## CATCH v0.9 build 30 (integration branch)
+## CATCH v0.9 build 31 (integration branch)
 An automated test framework for C, C++ and Objective-C.
 
 This branch may contain code that is experimental or not yet fully tested.

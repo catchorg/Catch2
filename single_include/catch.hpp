@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 30 (integration branch)
- *  Generated: 2013-04-01 11:26:11.785709
+ *  CATCH v0.9 build 31 (integration branch)
+ *  Generated: 2013-04-05 20:56:17.492865
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4161,7 +4161,9 @@ namespace Catch {
         LineWrapper();
 
         LineWrapper& setIndent( std::size_t _indent );
+        LineWrapper& setInitialIndent( std::size_t _initalIndent );
         LineWrapper& setRight( std::size_t _right );
+        LineWrapper& setTabChar( char _tabChar );
 
         LineWrapper& wrap( std::string const& _str );
 
@@ -4181,12 +4183,15 @@ namespace Catch {
         void wrapInternal( std::string const& _str );
         void addLine( const std::string& _line );
         bool isWrapPoint( char c );
+        std::size_t getCurrentIndent() const;
 
-        std::string indent;
         std::size_t right;
         std::size_t nextTab;
         std::size_t tab;
+        std::size_t indent;
+        std::size_t initialIndent;
         std::string wrappableChars;
+        char tabChar;
         int recursionCount;
         std::vector<std::string> lines;
     };
@@ -4198,35 +4203,53 @@ namespace Catch {
 
 namespace Catch {
 
-    struct IConsoleColourCodes : NonCopyable {
-        enum Colours {
-            None,
+    namespace Detail {
+        struct IColourImpl;
+    }
 
-            FileName,
-            ResultError,
-            ResultSuccess,
+    struct Colour {
+        enum Code {
+            None = 0,
 
-            Error,
-            Success,
+            White,
+            Red,
+            Green,
+            Blue,
+            Cyan,
+            Yellow,
+            Grey,
 
-            OriginalExpression,
-            ReconstructedExpression,
+            Bright = 0x10,
 
-            SecondaryText,
-            Headers
+            BrightRed = Bright | Red,
+            BrightGreen = Bright | Green,
+            LightGrey = Bright | Grey,
+            BrightWhite = Bright | White,
+
+            // By intention
+            FileName = LightGrey,
+            ResultError = BrightRed,
+            ResultSuccess = BrightGreen,
+
+            Error = BrightRed,
+            Success = Green,
+
+            OriginalExpression = Cyan,
+            ReconstructedExpression = Yellow,
+
+            SecondaryText = LightGrey,
+            Headers = White
         };
 
-        virtual void set( Colours colour ) = 0;
-    };
+        // Use constructed object for RAII guard
+        Colour( Code _colourCode );
+        ~Colour();
 
-    class TextColour : public IConsoleColourCodes {
-    public:
-        TextColour( Colours colour = None );
-        void set( Colours colour );
-        ~TextColour();
+        // Use static method for one-shot changes
+        static void use( Code _colourCode );
 
     private:
-        IConsoleColourCodes* m_impl;
+        static Detail::IColourImpl* impl;
     };
 
 } // end namespace Catch
@@ -4283,25 +4306,25 @@ namespace Catch {
                 tagsWrapper.setRight( maxTagLen ).wrap( it->getTestCaseInfo().tagsAsString );
 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
-                    TextColour::Colours colour = TextColour::None;
+                    Colour::Code colour = Colour::None;
                     if( it->getTestCaseInfo().isHidden )
-                        colour = TextColour::SecondaryText;
+                        colour = Colour::SecondaryText;
                     std::string nameCol;
                     if( i < nameWrapper.size() ) {
                         nameCol = nameWrapper[i];
                     }
                     else {
                         nameCol = "    ...";
-                        colour = TextColour::SecondaryText;
+                        colour = Colour::SecondaryText;
                     }
 
                     {
-                        TextColour colourGuard( colour );
+                        Colour colourGuard( colour );
                         std::cout << nameCol;
                     }
                     if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
                         if( i == 0 ) {
-                            TextColour colourGuard( TextColour::SecondaryText );
+                            Colour colourGuard( Colour::SecondaryText );
                             std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  ";
                         }
                         else {
@@ -4337,7 +4360,7 @@ namespace Catch {
                                                             tagItEnd = it->getTestCaseInfo().tags.end();
                         tagIt != tagItEnd;
                         ++tagIt ) {
-                    std::string tagName = "[" + *tagIt + "]";
+                    std::string tagName = *tagIt;
                     maxTagLen = (std::max)( maxTagLen, tagName.size() );
                     std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
                     if( countIt == tagCounts.end() )
@@ -4347,7 +4370,7 @@ namespace Catch {
                 }
             }
         }
-        maxTagLen +=2;
+        maxTagLen +=4;
         if( maxTagLen > CATCH_CONFIG_CONSOLE_WIDTH-10 )
             maxTagLen = CATCH_CONFIG_CONSOLE_WIDTH-10;
 
@@ -4355,14 +4378,14 @@ namespace Catch {
                 countIt != countItEnd;
                 ++countIt ) {
             LineWrapper wrapper;
-            wrapper.setIndent(2).setRight( maxTagLen ).wrap( countIt->first );
+            wrapper.setIndent(2).setRight( maxTagLen ).wrap( "[" + countIt->first + "]" );
 
             std::cout << wrapper;
             std::size_t dots = 2;
             if( maxTagLen > wrapper.last().size() )
                 dots += maxTagLen - wrapper.last().size();
             {
-                TextColour colourGuard( TextColour::SecondaryText );
+                Colour colourGuard( Colour::SecondaryText );
                 std::cout << std::string( dots, '.' );
             }
             std::cout   << countIt->second
@@ -5570,114 +5593,101 @@ namespace Catch {
 // #included from: catch_console_colour_impl.hpp
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
 
+namespace Catch { namespace Detail {
+    struct IColourImpl {
+        virtual ~IColourImpl() {}
+        virtual void use( Colour::Code _colourCode ) = 0;
+    };
+}}
+
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
 #include <windows.h>
 
+namespace Catch {
 namespace {
-    using namespace Catch;
 
-    WORD mapConsoleColour( IConsoleColourCodes::Colours colour ) {
-        enum Win32Colours {
-                Grey = FOREGROUND_INTENSITY,
-                BrightRed = FOREGROUND_RED | FOREGROUND_INTENSITY,
-                BrightGreen = FOREGROUND_GREEN | FOREGROUND_INTENSITY,
-                BrightWhite = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY,
-                DarkGreen = FOREGROUND_GREEN,
-                Cyan = FOREGROUND_BLUE | FOREGROUND_GREEN,
-                Yellow = FOREGROUND_RED | FOREGROUND_GREEN
-        };
-        switch( colour ) {
-            case IConsoleColourCodes::FileName:             return Grey;
-            case IConsoleColourCodes::ResultError:          return BrightRed;
-            case IConsoleColourCodes::ResultSuccess:        return BrightGreen;
-            case IConsoleColourCodes::Error:                return BrightRed;
-            case IConsoleColourCodes::Success:              return DarkGreen;
-            case IConsoleColourCodes::OriginalExpression:   return Cyan;
-            case IConsoleColourCodes::ReconstructedExpression: return Yellow;
-            case IConsoleColourCodes::SecondaryText:        return Grey;
-            case IConsoleColourCodes::Headers:              return 0;
-            default: return 0;
-        }
-    }
-
-    struct WindowsConsoleColourCodes : IConsoleColourCodes {
-
-        WindowsConsoleColourCodes()
-        :   hStdout( GetStdHandle(STD_OUTPUT_HANDLE) ),
-            wOldColorAttrs( 0 )
+    class Win32ColourImpl : public Detail::IColourImpl {
+    public:
+        Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
         {
-            GetConsoleScreenBufferInfo( hStdout, &csbiInfo );
-            wOldColorAttrs = csbiInfo.wAttributes;
+            CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+            GetConsoleScreenBufferInfo( stdoutHandle, &csbiInfo );
+            originalAttributes = csbiInfo.wAttributes;
         }
 
-        ~WindowsConsoleColourCodes() {
-            SetConsoleTextAttribute( hStdout, wOldColorAttrs );
+        virtual void use( Colour::Code _colourCode ) {
+            switch( _colourCode ) {
+                case Colour::None:      return setTextAttribute( originalAttributes );
+                case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::Red:       return setTextAttribute( FOREGROUND_RED );
+                case Colour::Green:     return setTextAttribute( FOREGROUND_GREEN );
+                case Colour::Blue:      return setTextAttribute( FOREGROUND_BLUE );
+                case Colour::Cyan:      return setTextAttribute( FOREGROUND_BLUE | FOREGROUND_GREEN );
+                case Colour::Yellow:    return setTextAttribute( FOREGROUND_RED | FOREGROUND_GREEN );
+                case Colour::Grey:      return setTextAttribute( 0 );
+
+                case Colour::LightGrey:     return setTextAttribute( FOREGROUND_INTENSITY );
+                case Colour::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
+                case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
+                case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY |  FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+
+                case Colour::Bright: throw std::logic_error( "not a colour" );
+            }
         }
 
-        void set( Colours colour ) {
-            WORD consoleColour = mapConsoleColour( colour );
-            if( consoleColour > 0 )
-                SetConsoleTextAttribute( hStdout, consoleColour );
+    private:
+        void setTextAttribute( WORD _textAttribute ) {
+            SetConsoleTextAttribute( stdoutHandle, _textAttribute );
         }
-
-        HANDLE hStdout;
-        CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-        WORD wOldColorAttrs;
+        HANDLE stdoutHandle;
+        WORD originalAttributes;
     };
 
     inline bool shouldUseColourForPlatform() {
         return true;
     }
 
-    typedef WindowsConsoleColourCodes PlatformConsoleColourCodes;
+    Win32ColourImpl platformColourImpl;
 
 } // end anon namespace
+} // end namespace Catch
 
 #else // Not Windows - assumed to be POSIX compatible //////////////////////////
 
 #include <unistd.h>
 
+namespace Catch {
 namespace {
-    using namespace Catch;
 
     // use POSIX/ ANSI console terminal codes
-    // Implementation contributed by Adam Strzelecki (http://github.com/nanoant)
+    // Thanks to Adam Strzelecki for original contribution
+    // (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
+    class PosixColourImpl : public Detail::IColourImpl {
+    public:
+        virtual void use( Colour::Code _colourCode ) {
+            switch( _colourCode ) {
+                case Colour::None:
+                case Colour::White:     return setColour( "[0m" );
+                case Colour::Red:       return setColour( "[0;31m" );
+                case Colour::Green:     return setColour( "[0;32m" );
+                case Colour::Blue:      return setColour( "[0:34m" );
+                case Colour::Cyan:      return setColour( "[0;36m" );
+                case Colour::Yellow:    return setColour( "[0;33m" );
+                case Colour::Grey:      return setColour( "[1;30m" );
 
-    const char* WhiteOrNormal = "[0m";
-    const char* BrightRed =       "[1;31m";
-    const char* BrightGreen =     "[1;32m";
-//    const char* BrightWhite =     "[1;37m";
-    const char* Green =         "[0;32m";
-    const char* Cyan =          "[0;36m";
-    const char* Yellow =        "[0;33m";
-    const char* LightGrey =     "[0;37m";
-//    const char* DarkGrey =      "[1;30m";
+                case Colour::LightGrey:     return setColour( "[0;37m" );
+                case Colour::BrightRed:     return setColour( "[1;31m" );
+                case Colour::BrightGreen:   return setColour( "[1;33m" );
+                case Colour::BrightWhite:   return setColour( "[1;37m" );
 
-    struct AnsiConsoleColourCodes : IConsoleColourCodes {
-
-        ~AnsiConsoleColourCodes() {
-            set( None );
+                case Colour::Bright: throw std::logic_error( "not a colour" );
+            }
         }
-
-        const char* escapeCodeForColour( Colours colour ) {
-            switch( colour ) {
-                case FileName:              return WhiteOrNormal;
-                case ResultError:           return BrightRed;
-                case ResultSuccess:         return BrightGreen;
-                case Error:                 return BrightRed;
-                case Success:               return Green;
-                case OriginalExpression:    return Cyan;
-                case ReconstructedExpression: return Yellow;
-                case SecondaryText:         return LightGrey;
-                case Headers:               return WhiteOrNormal;
-                case None:                  return WhiteOrNormal;
-                }
-        }
-
-        void set( Colours colour ) {
-            std::cout << '\033' << escapeCodeForColour( colour );
+    private:
+        void setColour( const char* _escapeCode ) {
+            std::cout << '\033' << _escapeCode;
         }
     };
 
@@ -5685,39 +5695,33 @@ namespace {
         return isatty( fileno(stdout) );
     }
 
-    typedef AnsiConsoleColourCodes PlatformConsoleColourCodes;
+    PosixColourImpl platformColourImpl;
 
-} // namespace Catch
+} // end anon namespace
+} // end namespace Catch
 
 #endif // not Windows
 
-namespace {
-    struct NoConsoleColourCodes : IConsoleColourCodes {
-        void set( Colours ) {}
-    };
-}
-
 namespace Catch {
 
-    TextColour::TextColour( Colours colour ) : m_impl( NULL ) {
-        static bool s_shouldUseColour = shouldUseColourForPlatform() &&
-                                        !isDebuggerActive();
-        if( s_shouldUseColour )
-            m_impl = new PlatformConsoleColourCodes();
-        else
-            m_impl = new NoConsoleColourCodes();
-
-        if( colour )
-            set( colour );
+    namespace {
+        struct NoColourImpl : Detail::IColourImpl {
+            void use( Colour::Code ) {}
+        };
+        NoColourImpl noColourImpl;
+        static const bool shouldUseColour = shouldUseColourForPlatform() &&
+                                            !isDebuggerActive();
     }
 
-    TextColour::~TextColour() {
-        delete m_impl;
+    Colour::Colour( Code _colourCode ){ use( _colourCode ); }
+    Colour::~Colour(){ use( None ); }
+    void Colour::use( Code _colourCode ) {
+        impl->use( _colourCode );
     }
 
-    void TextColour::set( Colours colour ) {
-        m_impl->set( colour );
-    }
+    Detail::IColourImpl* Colour::impl = shouldUseColour
+            ? static_cast<Detail::IColourImpl*>( &platformColourImpl )
+            : static_cast<Detail::IColourImpl*>( &noColourImpl );
 
 } // end namespace Catch
 
@@ -6077,7 +6081,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 30, "integration" );
+    Version libraryVersion( 0, 9, 31, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -6089,12 +6093,19 @@ namespace Catch {
     :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
         nextTab( 0 ),
         tab( 0 ),
+        indent( 0 ),
+        initialIndent( (std::size_t)-1 ), // use indent by default
         wrappableChars( " [({.,/|\\" ),
+        tabChar( '\t' ),
         recursionCount( 0 )
     {}
 
     LineWrapper& LineWrapper::setIndent( std::size_t _indent ) {
-        indent = std::string( _indent, ' ' );
+        indent = _indent;
+        return *this;
+    }
+    LineWrapper& LineWrapper::setInitialIndent( std::size_t _initialIndent ) {
+        initialIndent = _initialIndent;
         return *this;
     }
     LineWrapper& LineWrapper::setRight( std::size_t _right ) {
@@ -6106,13 +6117,17 @@ namespace Catch {
         wrapInternal( _str );
         return *this;
     }
+    LineWrapper& LineWrapper::setTabChar( char _tabChar ) {
+        tabChar = _tabChar;
+        return *this;
+    }
     bool LineWrapper::isWrapPoint( char c ) {
         return wrappableChars.find( c ) != std::string::npos;
     }
     void LineWrapper::wrapInternal( std::string const& _str ) {
         assert( ++recursionCount < 100 );
 
-        std::size_t width = right - indent.size();
+        std::size_t width = right - getCurrentIndent();
         std::size_t wrapPoint = width-tab;
         for( std::size_t pos = 0; pos < _str.size(); ++pos ) {
             if( _str[pos] == '\n' )
@@ -6134,7 +6149,7 @@ namespace Catch {
                 }
                 return wrapInternal( _str.substr( wrapPoint ) );
             }
-            if( _str[pos] == '\t' ) {
+            if( _str[pos] == tabChar ) {
                 nextTab = pos;
                 std::string withoutTab = _str.substr( 0, nextTab ) + _str.substr( nextTab+1 );
                 return wrapInternal( withoutTab );
@@ -6162,12 +6177,16 @@ namespace Catch {
     }
 
     void LineWrapper::addLine( const std::string& _line ) {
-        if( tab > 0 )
-            lines.push_back( indent + std::string( tab, ' ' ) + _line );
-        else
-            lines.push_back( indent + _line );
+        lines.push_back( std::string( tab + getCurrentIndent(), ' ' ) + _line );
         if( nextTab > 0 )
             tab = nextTab;
+    }
+
+    std::size_t LineWrapper::getCurrentIndent() const
+    {
+        return (initialIndent != (std::size_t)-1 && lines.empty() )
+            ? initialIndent
+            : indent;
     }
 
 } // end namespace Catch
@@ -6336,7 +6355,7 @@ namespace Catch {
                 m_config.stream() << "No tests ran";
             }
             else if( totals.assertions.failed ) {
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 ReportCounts( "test case", totals.testCases, allPrefix );
                 if( totals.testCases.failed > 0 ) {
                     m_config.stream() << " (";
@@ -6345,7 +6364,7 @@ namespace Catch {
                 }
             }
             else {
-                TextColour colour( TextColour::ResultSuccess );
+                Colour colour( Colour::ResultSuccess );
                 m_config.stream()   << allPrefix << "tests passed ("
                                     << pluralise( totals.assertions.passed, "assertion" ) << " in "
                                     << pluralise( totals.testCases.passed, "test case" ) << ")";
@@ -6402,12 +6421,12 @@ namespace Catch {
 
         virtual void NoAssertionsInSection( const std::string& sectionName ) {
             startSpansLazily();
-            TextColour colour( TextColour::ResultError );
+            Colour colour( Colour::ResultError );
             m_config.stream() << "\nNo assertions in section, '" << sectionName << "'\n" << std::endl;
         }
         virtual void NoAssertionsInTestCase( const std::string& testName ) {
             startSpansLazily();
-            TextColour colour( TextColour::ResultError );
+            Colour colour( Colour::ResultError );
             m_config.stream() << "\nNo assertions in test case, '" << testName << "'\n" << std::endl;
         }
 
@@ -6418,11 +6437,11 @@ namespace Catch {
                 m_config.stream() << "[End of section: '" << sectionName << "' ";
 
                 if( assertions.failed ) {
-                    TextColour colour( TextColour::ResultError );
+                    Colour colour( Colour::ResultError );
                     ReportCounts( "assertion", assertions);
                 }
                 else {
-                    TextColour colour( TextColour::ResultSuccess );
+                    Colour colour( Colour::ResultSuccess );
                     m_config.stream()   << ( assertions.passed > 1 ? "All " : "" )
                                         << pluralise( assertions.passed, "assertion" ) << " passed" ;
                 }
@@ -6438,22 +6457,22 @@ namespace Catch {
             startSpansLazily();
 
             if( !assertionResult.getSourceInfo().empty() ) {
-                TextColour colour( TextColour::FileName );
+                Colour colour( Colour::FileName );
                 m_config.stream() << assertionResult.getSourceInfo() << ": ";
             }
 
             if( assertionResult.hasExpression() ) {
-                TextColour colour( TextColour::OriginalExpression );
+                Colour colour( Colour::OriginalExpression );
                 m_config.stream() << assertionResult.getExpression();
                 if( assertionResult.succeeded() ) {
-                    TextColour successColour( TextColour::Success );
+                    Colour successColour( Colour::Success );
                     m_config.stream() << " succeeded";
                 }
                 else {
-                    TextColour errorColour( TextColour::Error );
+                    Colour errorColour( Colour::Error );
                     m_config.stream() << " failed";
                     if( assertionResult.isOk() ) {
-                        TextColour okAnywayColour( TextColour::Success );
+                        Colour okAnywayColour( Colour::Success );
                         m_config.stream() << " - but was ok";
                     }
                 }
@@ -6461,7 +6480,7 @@ namespace Catch {
             switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
                     {
-                        TextColour colour( TextColour::Error );
+                        Colour colour( Colour::Error );
                         if( assertionResult.hasExpression() )
                             m_config.stream() << " with unexpected";
                         else
@@ -6471,7 +6490,7 @@ namespace Catch {
                     break;
                 case ResultWas::DidntThrowException:
                     {
-                        TextColour colour( TextColour::Error );
+                        Colour colour( Colour::Error );
                         if( assertionResult.hasExpression() )
                             m_config.stream() << " because no exception was thrown where one was expected";
                         else
@@ -6480,19 +6499,19 @@ namespace Catch {
                     break;
                 case ResultWas::Info:
                     {
-                        TextColour colour( TextColour::ReconstructedExpression );
+                        Colour colour( Colour::ReconstructedExpression );
                         streamVariableLengthText( "info", assertionResult.getMessage() );
                     }
                     break;
                 case ResultWas::Warning:
                     {
-                        TextColour colour( TextColour::ReconstructedExpression );
+                        Colour colour( Colour::ReconstructedExpression );
                         streamVariableLengthText( "warning", assertionResult.getMessage() );
                     }
                     break;
                 case ResultWas::ExplicitFailure:
                     {
-                        TextColour colour( TextColour::Error );
+                        Colour colour( Colour::Error );
                         m_config.stream() << "failed with message: '" << assertionResult.getMessage() << "'";
                     }
                     break;
@@ -6503,21 +6522,21 @@ namespace Catch {
                 case ResultWas::Exception:
                     if( !assertionResult.hasExpression() ) {
                         if( assertionResult.succeeded() ) {
-                            TextColour colour( TextColour::Success );
+                            Colour colour( Colour::Success );
                             m_config.stream() << " succeeded";
                         }
                         else {
-                            TextColour colour( TextColour::Error );
+                            Colour colour( Colour::Error );
                             m_config.stream() << " failed";
                             if( assertionResult.isOk() ) {
-                                TextColour okAnywayColour( TextColour::Success );
+                                Colour okAnywayColour( Colour::Success );
                                 m_config.stream() << " - but was ok";
                             }
                         }
                     }
                     if( assertionResult.hasMessage() ) {
                         m_config.stream() << "\n";
-                        TextColour colour( TextColour::ReconstructedExpression );
+                        Colour colour( Colour::ReconstructedExpression );
                         streamVariableLengthText( "with message", assertionResult.getMessage() );
                     }
                     break;
@@ -6530,7 +6549,7 @@ namespace Catch {
                     if( assertionResult.getExpandedExpression().size() < 70 )
                         m_config.stream() << "\t";
                 }
-                TextColour colour( TextColour::ReconstructedExpression );
+                Colour colour( Colour::ReconstructedExpression );
                 m_config.stream() << assertionResult.getExpandedExpression();
             }
             m_config.stream() << std::endl;
@@ -7243,7 +7262,7 @@ namespace Catch {
         virtual void sectionEnded( SectionStats const& _sectionStats ) {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 stream << "\nNo assertions in section, '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
             m_headerPrinted = false;
@@ -7254,7 +7273,7 @@ namespace Catch {
 
             if( _testCaseStats.missingAssertions ) {
                 lazyPrint();
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 stream << "\nNo assertions in test case, '" << _testCaseStats.testInfo.name << "'\n" << std::endl;
             }
             StreamingReporterBase::testCaseEnded( _testCaseStats );
@@ -7286,13 +7305,13 @@ namespace Catch {
             :   stream( _stream ),
                 stats( _stats ),
                 result( _stats.assertionResult ),
-                colour( TextColour::None ),
+                colour( Colour::None ),
                 message( result.getMessage() ),
                 messages( _stats.infoMessages )
             {
                 switch( result.getResultType() ) {
                     case ResultWas::Ok:
-                        colour = TextColour::Success;
+                        colour = Colour::Success;
                         passOrFail = "PASSED";
                         //if( result.hasMessage() )
                         if( _stats.infoMessages.size() == 1 )
@@ -7302,11 +7321,11 @@ namespace Catch {
                         break;
                     case ResultWas::ExpressionFailed:
                         if( result.isOk() ) {
-                            colour = TextColour::Success;
+                            colour = Colour::Success;
                             passOrFail = "FAILED - but was ok";
                         }
                         else {
-                            colour = TextColour::Error;
+                            colour = Colour::Error;
                             passOrFail = "FAILED";
                         }
                         if( _stats.infoMessages.size() == 1 )
@@ -7315,12 +7334,12 @@ namespace Catch {
                             messageLabel = "with messages";
                         break;
                     case ResultWas::ThrewException:
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         passOrFail = "FAILED";
                         messageLabel = "due to unexpected exception with message";
                         break;
                     case ResultWas::DidntThrowException:
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         passOrFail = "FAILED";
                         messageLabel = "because no exception was thrown where one was expected";
                         break;
@@ -7332,7 +7351,7 @@ namespace Catch {
                         break;
                     case ResultWas::ExplicitFailure:
                         passOrFail = "FAILED";
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         if( _stats.infoMessages.size() == 1 )
                             messageLabel = "explicitly with message";
                         if( _stats.infoMessages.size() > 1 )
@@ -7340,7 +7359,7 @@ namespace Catch {
                         break;
                     case ResultWas::Exception:
                         passOrFail = "FAILED";
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         if( _stats.infoMessages.size() == 1 )
                             messageLabel = "with message";
                         if( _stats.infoMessages.size() > 1 )
@@ -7351,7 +7370,7 @@ namespace Catch {
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                         passOrFail = "** internal error **";
-                        colour = TextColour::Error;
+                        colour = Colour::Error;
                         break;
                 }
             }
@@ -7374,13 +7393,13 @@ namespace Catch {
         private:
             void printResultType() const {
                 if( !passOrFail.empty() ) {
-                    TextColour colourGuard( colour );
+                    Colour colourGuard( colour );
                     stream << passOrFail << ":\n";
                 }
             }
             void printOriginalExpression() const {
                 if( result.hasExpression() ) {
-                    TextColour colourGuard( TextColour::OriginalExpression );
+                    Colour colourGuard( Colour::OriginalExpression );
                     stream  << "  ";
                     if( !result.getTestMacroName().empty() )
                         stream << result.getTestMacroName() << "( ";
@@ -7393,7 +7412,7 @@ namespace Catch {
             void printReconstructedExpression() const {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
-                    TextColour colourGuard( TextColour::ReconstructedExpression );
+                    Colour colourGuard( Colour::ReconstructedExpression );
                     stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ) << "\n";
                 }
             }
@@ -7407,14 +7426,14 @@ namespace Catch {
                 }
             }
             void printSourceInfo() const {
-                TextColour colourGuard( TextColour::FileName );
+                Colour colourGuard( Colour::FileName );
                 stream << result.getSourceInfo() << ": ";
             }
 
             std::ostream& stream;
             AssertionStats const& stats;
             AssertionResult const& result;
-            TextColour::Colours colour;
+            Colour::Code colour;
             std::string passOrFail;
             std::string messageLabel;
             std::string message;
@@ -7436,7 +7455,7 @@ namespace Catch {
         }
         void lazyPrintRunInfo() {
             stream  << "\n" << getTildes() << "\n";
-            TextColour colour( TextColour::SecondaryText );
+            Colour colour( Colour::SecondaryText );
             stream  << testRunInfo->name
                     << " is a CATCH v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
@@ -7460,7 +7479,7 @@ namespace Catch {
                                     ? currentSectionInfo->lineInfo
                                     : unusedTestCaseInfo->lineInfo );
             if( currentSectionInfo ) {
-                TextColour colourGuard( TextColour::Headers );
+                Colour colourGuard( Colour::Headers );
                 std::vector<ThreadedSectionInfo*> sections;
                 for(    ThreadedSectionInfo* section = currentSectionInfo.get();
                         section;
@@ -7471,7 +7490,8 @@ namespace Catch {
                 if( !sections.empty() ) {
                     typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
                     for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
-                        stream << "  " << (*it)->name << "\n";
+                        printUserString( (*it)->name, 2 );
+
                 }
             }
             stream << getDots() << "\n" << std::endl;
@@ -7484,13 +7504,27 @@ namespace Catch {
         void printOpenHeader( std::string const& _name, SourceLineInfo const& _lineInfo = SourceLineInfo() ) {
             stream  << getDashes() << "\n";
             if( !_lineInfo.empty() ){
-                TextColour colourGuard( TextColour::FileName );
+                Colour colourGuard( Colour::FileName );
                 stream << _lineInfo << "\n\n";
             }
             {
-                TextColour colourGuard( TextColour::Headers );
-                stream << _name << "\n";
+                Colour colourGuard( Colour::Headers );
+                printUserString( _name );
             }
+        }
+
+        // if string has a : in first line will set indent to follow it on
+        // subsequent lines
+        void printUserString( std::string const& _string, std::size_t indent = 0 ) {
+            std::size_t i = _string.find( ": " );
+            if( i != std::string::npos )
+                i+=2;
+            else
+                i = 0;
+            stream << LineWrapper()
+                        .setIndent( indent+i)
+                        .setInitialIndent( indent )
+                        .wrap( _string ) << "\n";
         }
 
         void printTotals( const Totals& totals ) {
@@ -7498,7 +7532,7 @@ namespace Catch {
                 stream << "No tests ran";
             }
             else if( totals.assertions.failed ) {
-                TextColour colour( TextColour::ResultError );
+                Colour colour( Colour::ResultError );
                 printCounts( "test case", totals.testCases );
                 if( totals.testCases.failed > 0 ) {
                     stream << " (";
@@ -7507,7 +7541,7 @@ namespace Catch {
                 }
             }
             else {
-                TextColour colour( TextColour::ResultSuccess );
+                Colour colour( Colour::ResultSuccess );
                 stream << "All tests passed ("
                         << pluralise( totals.assertions.passed, "assertion" ) << " in "
                         << pluralise( totals.testCases.passed, "test case" ) << ")";
