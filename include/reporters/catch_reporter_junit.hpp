@@ -143,10 +143,14 @@ namespace Catch {
                     case ResultWas::Ok:
                         stats.m_element = "success";
                         break;
+                    case ResultWas::DidntThrowException:
+                        stats.m_element = "failure";
+                        m_currentStats->m_failuresCount++;
+                        break;
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
-                    case ResultWas::DidntThrowException:
+                        stats.m_element = "* internal error *";
                         break;
                 }
                 testCaseStats.m_testStats.push_back( stats );                

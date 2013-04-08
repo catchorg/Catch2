@@ -155,18 +155,10 @@ namespace Catch {
                         if( _stats.infoMessages.size() > 1 )
                             messageLabel = "explicitly with messages";
                         break;
-                    case ResultWas::Exception:
-                        passOrFail = "FAILED";
-                        colour = Colour::Error;
-                        if( _stats.infoMessages.size() == 1 )
-                            messageLabel = "with message";
-                        if( _stats.infoMessages.size() > 1 )
-                            messageLabel = "with messages";
-                        break;
-                        
                     // These cases are here to prevent compiler warnings
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
+                    case ResultWas::Exception:
                         passOrFail = "** internal error **";
                         colour = Colour::Error;
                         break;

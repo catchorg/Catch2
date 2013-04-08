@@ -5769,7 +5769,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="9" failures="77" tests="699" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="9" failures="78" tests="699" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -5947,9 +5947,9 @@ ConditionTests.cpp:346
       <error message="thisThrows()" type="CHECK_THROWS_AS">
 ExceptionTests.cpp:43
       </error>
-      < message="thisDoesntThrow()" type="CHECK_THROWS_AS">
+      <failure message="thisDoesntThrow()" type="CHECK_THROWS_AS">
 ExceptionTests.cpp:44
-      </>
+      </failure>
       <error message="thisThrows()" type="CHECK_NOTHROW">
 ExceptionTests.cpp:45
       </error>
