@@ -57,8 +57,8 @@
 /* Begin PBXFileReference section */
 		266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VariadicMacrosTests.cpp; path = ../../../SelfTest/VariadicMacrosTests.cpp; sourceTree = "<group>"; };
 		266ECD73170F3C620030D735 /* BDDTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BDDTests.cpp; path = ../../../SelfTest/BDDTests.cpp; sourceTree = "<group>"; };
-		266ECD751710B2EB0030D735 /* catch_legacy_reporter_adapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_legacy_reporter_adapter.h; sourceTree = "<group>"; };
-		266ECD761710B3970030D735 /* catch_legacy_reporter_adapter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_legacy_reporter_adapter.hpp; sourceTree = "<group>"; };
+		266ECD8C1713614B0030D735 /* catch_legacy_reporter_adapter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_legacy_reporter_adapter.hpp; sourceTree = "<group>"; };
+		266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_legacy_reporter_adapter.h; sourceTree = "<group>"; };
 		26847E5B16BBAB790043B9C1 /* catch_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_message.h; sourceTree = "<group>"; };
 		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
 		26847E5D16BBADB40043B9C1 /* catch_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_message.cpp; path = ../../../SelfTest/SurrogateCpps/catch_message.cpp; sourceTree = "<group>"; };
@@ -258,8 +258,6 @@
 				4A6D0C67149B3E3D00DB3EAA /* catch_reporter_junit.hpp */,
 				4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */,
 				4AB42F84166F3E1A0099F2C8 /* catch_reporter_console.hpp */,
-				266ECD751710B2EB0030D735 /* catch_legacy_reporter_adapter.h */,
-				266ECD761710B3970030D735 /* catch_legacy_reporter_adapter.hpp */,
 			);
 			name = reporters;
 			path = ../../../../include/reporters;
@@ -386,6 +384,8 @@
 		4AC91CC2155C388300DC5117 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				266ECD8C1713614B0030D735 /* catch_legacy_reporter_adapter.hpp */,
+				266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */,
 				4A6D0C49149B3E3D00DB3EAA /* catch_common.h */,
 				4A6D0C4B149B3E3D00DB3EAA /* catch_debugger.hpp */,
 				4A6D0C60149B3E3D00DB3EAA /* catch_stream.hpp */,

@@ -29,8 +29,8 @@
 #include "catch_version.hpp"
 #include "catch_line_wrap.hpp"
 #include "catch_message.hpp"
+#include "catch_legacy_reporter_adapter.hpp"
 
-#include "../reporters/catch_legacy_reporter_adapter.hpp"
 #include "../reporters/catch_reporter_basic.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
