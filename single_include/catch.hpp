@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 31 (integration branch)
- *  Generated: 2013-04-05 20:56:17.492865
+ *  CATCH v0.9 build 32 (integration branch)
+ *  Generated: 2013-04-08 11:50:07.907187
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2402,69 +2402,6 @@ namespace Catch
         virtual void NoAssertionsInTestCase( std::string const& testName ) = 0;
         virtual void Aborted() = 0;
         virtual void Result( const AssertionResult& result ) = 0;
-    };
-
-    class LegacyReporterAdapter : public SharedImpl<IStreamingReporter>
-    {
-    public:
-        LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config )
-        :   m_legacyReporter( legacyReporter ),
-            m_config( config )
-        {}
-        virtual ~LegacyReporterAdapter();
-
-        virtual ReporterPreferences getPreferences() const {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = m_legacyReporter->shouldRedirectStdout();
-            return prefs;
-        }
-
-        virtual void noMatchingTestCases( std::string const& ) {}
-        virtual void testRunStarting( TestRunInfo const& ) {
-            m_legacyReporter->StartTesting();
-        }
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
-            m_legacyReporter->StartGroup( groupInfo.name );
-        }
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
-            m_legacyReporter->StartTestCase( testInfo );
-        }
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
-            m_legacyReporter->StartSection( sectionInfo.name, sectionInfo.description );
-        }
-        virtual void assertionStarting( AssertionInfo const& ) {
-            // Not on legacy interface
-        }
-
-        virtual void assertionEnded( AssertionStats const& assertionStats ) {
-            m_legacyReporter->Result( assertionStats.assertionResult );
-        }
-        virtual void sectionEnded( SectionStats const& sectionStats ) {
-            if( sectionStats.missingAssertions )
-                m_legacyReporter->NoAssertionsInSection( sectionStats.sectionInfo.name );
-            m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
-        }
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
-            if( testCaseStats.missingAssertions )
-                m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
-            m_legacyReporter->EndTestCase
-                (   testCaseStats.testInfo,
-                    testCaseStats.totals,
-                    testCaseStats.stdOut,
-                    testCaseStats.stdErr );
-        }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
-            if( testGroupStats.aborting )
-                m_legacyReporter->Aborted();
-            m_legacyReporter->EndGroup( testGroupStats.groupInfo.name, testGroupStats.totals );
-        }
-        virtual void testRunEnded( TestRunStats const& testRunStats ) {
-            m_legacyReporter->EndTesting( testRunStats.totals );
-        }
-
-    private:
-        Ptr<IReporter> m_legacyReporter;
-        ReporterConfig m_config;
     };
 
     struct IReporterFactory {
@@ -6081,7 +6018,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 31, "integration" );
+    Version libraryVersion( 0, 9, 32, "integration" );
 }
 
 // #included from: catch_line_wrap.hpp
@@ -6236,6 +6173,110 @@ namespace Catch {
     }
 
 } // end namespace Catch
+
+// #included from: ../reporters/catch_legacy_reporter_adapter.hpp
+#define TWOBLUECUBES_CATCH_LEGACY_REPORTER_ADAPTER_HPP_INCLUDED
+
+// #included from: catch_legacy_reporter_adapter.h
+#define TWOBLUECUBES_CATCH_LEGACY_REPORTER_ADAPTER_H_INCLUDED
+
+namespace Catch
+{
+    class LegacyReporterAdapter : public SharedImpl<IStreamingReporter>
+    {
+    public:
+        LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config );
+        virtual ~LegacyReporterAdapter();
+
+        virtual ReporterPreferences getPreferences() const;
+        virtual void noMatchingTestCases( std::string const& );
+        virtual void testRunStarting( TestRunInfo const& );
+        virtual void testGroupStarting( GroupInfo const& groupInfo );
+        virtual void testCaseStarting( TestCaseInfo const& testInfo );
+        virtual void sectionStarting( SectionInfo const& sectionInfo );
+        virtual void assertionStarting( AssertionInfo const& );
+        virtual void assertionEnded( AssertionStats const& assertionStats );
+        virtual void sectionEnded( SectionStats const& sectionStats );
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats );
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats );
+        virtual void testRunEnded( TestRunStats const& testRunStats );
+
+    private:
+        Ptr<IReporter> m_legacyReporter;
+        ReporterConfig m_config;
+    };
+}
+
+namespace Catch
+{
+    LegacyReporterAdapter::LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config )
+    :   m_legacyReporter( legacyReporter ),
+        m_config( config )
+    {}
+    LegacyReporterAdapter::~LegacyReporterAdapter() {}
+
+    ReporterPreferences LegacyReporterAdapter::getPreferences() const {
+        ReporterPreferences prefs;
+        prefs.shouldRedirectStdOut = m_legacyReporter->shouldRedirectStdout();
+        return prefs;
+    }
+
+    void LegacyReporterAdapter::noMatchingTestCases( std::string const& ) {}
+    void LegacyReporterAdapter::testRunStarting( TestRunInfo const& ) {
+        m_legacyReporter->StartTesting();
+    }
+    void LegacyReporterAdapter::testGroupStarting( GroupInfo const& groupInfo ) {
+        m_legacyReporter->StartGroup( groupInfo.name );
+    }
+    void LegacyReporterAdapter::testCaseStarting( TestCaseInfo const& testInfo ) {
+        m_legacyReporter->StartTestCase( testInfo );
+    }
+    void LegacyReporterAdapter::sectionStarting( SectionInfo const& sectionInfo ) {
+        m_legacyReporter->StartSection( sectionInfo.name, sectionInfo.description );
+    }
+    void LegacyReporterAdapter::assertionStarting( AssertionInfo const& ) {
+        // Not on legacy interface
+    }
+
+    void LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
+        if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
+            for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
+                    it != itEnd;
+                    ++it ) {
+                if( it->type == ResultWas::Info ) {
+                    ExpressionResultBuilder expressionBuilder( it->type );
+                        expressionBuilder << it->message;
+                    AssertionInfo info( it->macroName, it->lineInfo, "", ResultDisposition::Normal );
+                    AssertionResult result = expressionBuilder.buildResult( info );
+                    m_legacyReporter->Result( result );
+                }
+            }
+        }
+        m_legacyReporter->Result( assertionStats.assertionResult );
+    }
+    void LegacyReporterAdapter::sectionEnded( SectionStats const& sectionStats ) {
+        if( sectionStats.missingAssertions )
+            m_legacyReporter->NoAssertionsInSection( sectionStats.sectionInfo.name );
+        m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
+    }
+    void LegacyReporterAdapter::testCaseEnded( TestCaseStats const& testCaseStats ) {
+        if( testCaseStats.missingAssertions )
+            m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
+        m_legacyReporter->EndTestCase
+            (   testCaseStats.testInfo,
+                testCaseStats.totals,
+                testCaseStats.stdOut,
+                testCaseStats.stdErr );
+    }
+    void LegacyReporterAdapter::testGroupEnded( TestGroupStats const& testGroupStats ) {
+        if( testGroupStats.aborting )
+            m_legacyReporter->Aborted();
+        m_legacyReporter->EndGroup( testGroupStats.groupInfo.name, testGroupStats.totals );
+    }
+    void LegacyReporterAdapter::testRunEnded( TestRunStats const& testRunStats ) {
+        m_legacyReporter->EndTesting( testRunStats.totals );
+    }
+}
 
 // #included from: ../reporters/catch_reporter_basic.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED
@@ -7622,7 +7663,6 @@ namespace Catch {
     IReporterFactory::~IReporterFactory() {}
     IReporterRegistry::~IReporterRegistry() {}
     IStreamingReporter::~IStreamingReporter() {}
-    LegacyReporterAdapter::~LegacyReporterAdapter() {}
     AssertionStats::~AssertionStats() {}
     SectionStats::~SectionStats() {}
     TestCaseStats::~TestCaseStats() {}
