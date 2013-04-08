@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
 #include "catch_interfaces_registry_hub.h"
+#include "catch_legacy_reporter_adapter.h"
 
 namespace Catch {    
 

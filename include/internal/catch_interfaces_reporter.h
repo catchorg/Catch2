@@ -311,69 +311,6 @@ namespace Catch
         virtual void Result( const AssertionResult& result ) = 0;
     };
 
-    class LegacyReporterAdapter : public SharedImpl<IStreamingReporter>
-    {
-    public:
-        LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config )
-        :   m_legacyReporter( legacyReporter ),
-            m_config( config )
-        {}
-        virtual ~LegacyReporterAdapter();
-
-        virtual ReporterPreferences getPreferences() const {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = m_legacyReporter->shouldRedirectStdout();
-            return prefs;
-        }
-
-        virtual void noMatchingTestCases( std::string const& ) {}
-        virtual void testRunStarting( TestRunInfo const& ) {
-            m_legacyReporter->StartTesting();
-        }
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
-            m_legacyReporter->StartGroup( groupInfo.name );
-        }
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
-            m_legacyReporter->StartTestCase( testInfo );
-        }
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
-            m_legacyReporter->StartSection( sectionInfo.name, sectionInfo.description );
-        }
-        virtual void assertionStarting( AssertionInfo const& ) {
-            // Not on legacy interface
-        }
-
-        virtual void assertionEnded( AssertionStats const& assertionStats ) {
-            m_legacyReporter->Result( assertionStats.assertionResult );
-        }
-        virtual void sectionEnded( SectionStats const& sectionStats ) {
-            if( sectionStats.missingAssertions )
-                m_legacyReporter->NoAssertionsInSection( sectionStats.sectionInfo.name );
-            m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
-        }
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
-            if( testCaseStats.missingAssertions )
-                m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
-            m_legacyReporter->EndTestCase
-                (   testCaseStats.testInfo,
-                    testCaseStats.totals,
-                    testCaseStats.stdOut,
-                    testCaseStats.stdErr );
-        }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
-            if( testGroupStats.aborting )
-                m_legacyReporter->Aborted();
-            m_legacyReporter->EndGroup( testGroupStats.groupInfo.name, testGroupStats.totals );
-        }
-        virtual void testRunEnded( TestRunStats const& testRunStats ) {
-            m_legacyReporter->EndTesting( testRunStats.totals );
-        }
-
-    private:
-        Ptr<IReporter> m_legacyReporter;
-        ReporterConfig m_config;
-    };
-
     
     struct IReporterFactory {
         virtual ~IReporterFactory();
