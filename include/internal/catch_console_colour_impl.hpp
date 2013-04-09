@@ -96,7 +96,7 @@ namespace {
 
                 case Colour::LightGrey:     return setColour( "[0;37m" );
                 case Colour::BrightRed:     return setColour( "[1;31m" );
-                case Colour::BrightGreen:   return setColour( "[1;33m" );
+                case Colour::BrightGreen:   return setColour( "[1;32m" );
                 case Colour::BrightWhite:   return setColour( "[1;37m" );
                 
                 case Colour::Bright: throw std::logic_error( "not a colour" );
