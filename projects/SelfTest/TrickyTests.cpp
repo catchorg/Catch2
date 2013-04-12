@@ -336,3 +336,15 @@ TEST_CASE( "Assertions then sections", "" )
         }
     }
 }
+
+class Awkward
+{
+    operator int() const { return 7; }
+};
+
+//TEST_CASE( "non streamable", "" )
+//{
+//    Awkward awkward;
+//    std::string s = Catch::toString( awkward );
+//    REQUIRE( s == "{?}" );
+//}
