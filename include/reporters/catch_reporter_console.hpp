@@ -284,6 +284,15 @@ namespace Catch {
 
                 }
             }
+            SourceLineInfo lineInfo = currentSectionInfo
+                                    ? currentSectionInfo->lineInfo
+                                    : unusedTestCaseInfo->lineInfo;
+            
+            if( !lineInfo.empty() ){
+                stream << getDashes() << "\n";
+                Colour colourGuard( Colour::FileName );
+                stream << lineInfo << "\n";
+            }
             stream << getDots() << "\n" << std::endl;
         }
 
@@ -293,10 +302,6 @@ namespace Catch {
         }
         void printOpenHeader( std::string const& _name, SourceLineInfo const& _lineInfo = SourceLineInfo() ) {
             stream  << getDashes() << "\n";
-            if( !_lineInfo.empty() ){
-                Colour colourGuard( Colour::FileName );
-                stream << _lineInfo << "\n\n";
-            }
             {
                 Colour colourGuard( Colour::Headers );
                 printUserString( _name );
