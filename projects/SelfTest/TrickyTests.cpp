@@ -182,7 +182,7 @@ namespace ObjectWithConversions
         "Operators at different namespace levels not hijacked by Koenig lookup"
     )
     {        
-        Object o;        
+        Object o;
         REQUIRE(0xc0000000 == o );
     }
 }
@@ -337,14 +337,14 @@ TEST_CASE( "Assertions then sections", "" )
     }
 }
 
-class Awkward
+struct Awkward
 {
     operator int() const { return 7; }
 };
 
-//TEST_CASE( "non streamable", "" )
-//{
-//    Awkward awkward;
-//    std::string s = Catch::toString( awkward );
-//    REQUIRE( s == "{?}" );
-//}
+TEST_CASE( "non streamable", "" )
+{
+    Awkward awkward;
+    std::string s = Catch::toString( awkward );
+    REQUIRE( s == "7" ); // This is ambiguous without SFINAE
+}

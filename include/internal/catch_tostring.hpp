@@ -9,6 +9,8 @@
 #define TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
 
 #include "catch_common.h"
+#include "catch_sfinae.hpp"
+
 #include <sstream>
 #include <iomanip>
 #include <limits>
@@ -18,6 +20,49 @@
 #endif
 
 namespace Catch {
+
+#ifdef CATCH_SFINAE
+
+namespace Detail {
+
+    template<typename T>
+    class IsStreamInsertableHelper {
+        template<int N> struct TrueIfSizeable : TrueType {};
+
+        template<typename T2>
+        static TrueIfSizeable<sizeof((*(std::ostream*)0) << *((T2 const*)0))> dummy(T2*);
+        static FalseType dummy(...);
+
+    public:
+        typedef SizedIf<sizeof(dummy((T*)0))> type;
+    };
+    
+    template<typename T>
+    struct IsStreamInsertable : IsStreamInsertableHelper<T>::type {};
+
+    template<typename T>
+    void toStream( std::ostream& os, T const& value, typename IsStreamInsertable<T>::Enable* = 0 ) {
+        os << value;
+    }
+
+    template<typename T>
+    void toStream( std::ostream& os, T const&, typename IsStreamInsertable<T>::Disable* = 0 ) {
+        os << "{?}";
+    }
+   
+}
+
+template<typename T>
+struct StringMaker {
+    static std::string convert( T const& value ) {
+        std::ostringstream oss;
+        Detail::toStream( oss, value );
+        return oss.str();
+    }
+};
+
+#else
+
 namespace Detail {
 
     struct NonStreamable {
@@ -40,6 +85,10 @@ struct StringMaker {
         return oss.str();
     }
 };
+
+#endif
+
+
 template<typename T>
 struct StringMaker<T*> {
     static std::string convert( T const* p ) {
@@ -57,7 +106,7 @@ struct StringMaker<std::vector<T> > {
         std::ostringstream oss;
         oss << "{ ";
         for( std::size_t i = 0; i < v.size(); ++ i ) {
-            oss << v[i];
+            oss << toString( v[i] );
             if( i < v.size() - 1 )
                 oss << ", ";
         }
@@ -83,7 +132,6 @@ namespace Detail {
 template<typename T>
 std::string toString( const T& value ) {
     return StringMaker<T>::convert( value );
-//    return Detail::makeString( value );
 }
     
 // Built in overloads
