@@ -15,7 +15,7 @@
 #ifdef __BORLANDC__
 
 #if (__BORLANDC__ > 0x582 )
-#define CATCH_SFINAE
+//#define CATCH_SFINAE // Not confirmed
 #endif
 
 #endif // __BORLANDC__
@@ -25,7 +25,7 @@
 #ifdef __EDG_VERSION__
 
 #if (__EDG_VERSION__ > 238 )
-#define CATCH_SFINAE
+//#define CATCH_SFINAE // Not confirmed
 #endif
 
 #endif // __EDG_VERSION__
@@ -35,7 +35,7 @@
 #ifdef __DMC__
 
 #if (__DMC__ > 0x840 )
-#define CATCH_SFINAE
+//#define CATCH_SFINAE // Not confirmed
 #endif
 
 #endif // __DMC__
@@ -64,7 +64,7 @@
 #ifdef _MSC_VER
 
 #if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
-#define CATCH_SFINAE
+//#define CATCH_SFINAE // Not confirmed
 #endif
 
 #endif // _MSC_VER
