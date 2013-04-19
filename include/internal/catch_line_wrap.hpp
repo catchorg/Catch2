@@ -48,7 +48,7 @@ namespace Catch {
         return wrappableChars.find( c ) != std::string::npos;
     }
     void LineWrapper::wrapInternal( std::string const& _str ) {
-        assert( ++recursionCount < 100 );
+        assert( ++recursionCount < 1000 );
 
         std::size_t width = right - getCurrentIndent();
         std::size_t wrapPoint = width-tab;

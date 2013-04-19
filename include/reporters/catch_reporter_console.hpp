@@ -264,10 +264,7 @@ namespace Catch {
             }
         }
         void printTestCaseAndSectionHeader() {
-            printOpenHeader(    unusedTestCaseInfo->name,
-                                currentSectionInfo
-                                    ? currentSectionInfo->lineInfo
-                                    : unusedTestCaseInfo->lineInfo );
+            printOpenHeader( unusedTestCaseInfo->name );
             if( currentSectionInfo ) {
                 Colour colourGuard( Colour::Headers );
                 std::vector<ThreadedSectionInfo*> sections;
@@ -280,7 +277,7 @@ namespace Catch {
                 if( !sections.empty() ) {                    
                     typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
                     for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
-                        printUserString( (*it)->name, 2 );
+                        printHeaderString( (*it)->name, 2 );
 
                 }
             }
@@ -300,17 +297,17 @@ namespace Catch {
             printOpenHeader( _name );
             stream << getDots() << "\n";
         }
-        void printOpenHeader( std::string const& _name, SourceLineInfo const& _lineInfo = SourceLineInfo() ) {
+        void printOpenHeader( std::string const& _name ) {
             stream  << getDashes() << "\n";
             {
                 Colour colourGuard( Colour::Headers );
-                printUserString( _name );
+                printHeaderString( _name );
             }
         }
-        
+
         // if string has a : in first line will set indent to follow it on
         // subsequent lines
-        void printUserString( std::string const& _string, std::size_t indent = 0 ) {
+        void printHeaderString( std::string const& _string, std::size_t indent = 0 ) {
             std::size_t i = _string.find( ": " );
             if( i != std::string::npos )
                 i+=2;

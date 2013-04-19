@@ -67,6 +67,7 @@
 		2694A1F8169FFF9B004816E3 /* catch_line_wrap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_line_wrap.h; sourceTree = "<group>"; };
 		2694A1FA169FFFEC004816E3 /* catch_line_wrap.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_line_wrap.hpp; sourceTree = "<group>"; };
 		2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = catch_line_wrap.cpp; sourceTree = "<group>"; };
+		26DACF2F17206D3400A21326 /* catch_text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_text.h; sourceTree = "<group>"; };
 		4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_info.hpp; sourceTree = "<group>"; };
 		4A084F1D15DAD15F0027E631 /* catch_test_spec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_test_spec.h; sourceTree = "<group>"; };
 		4A3D7DD01503869D005F9203 /* catch_matchers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_matchers.hpp; sourceTree = "<group>"; };
@@ -399,6 +400,7 @@
 				2694A1F8169FFF9B004816E3 /* catch_line_wrap.h */,
 				26759472171C72A400A84BD1 /* catch_sfinae.hpp */,
 				26759473171C74C200A84BD1 /* catch_compiler_capabilities.h */,
+				26DACF2F17206D3400A21326 /* catch_text.h */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
@@ -522,7 +524,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -564,7 +566,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
