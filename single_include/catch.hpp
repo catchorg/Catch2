@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 33 (integration branch)
- *  Generated: 2013-04-11 16:33:19.541792
+ *  CATCH v0.9 build 34 (integration branch)
+ *  Generated: 2013-04-20 21:05:02.595019
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -504,6 +504,103 @@ private:
 // #included from: catch_tostring.hpp
 #define TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
 
+// #included from: catch_sfinae.hpp
+#define TWOBLUECUBES_CATCH_SFINAE_HPP_INCLUDED
+
+// Try to detect if the current compiler supports SFINAE
+// #included from: catch_compiler_capabilities.h
+#define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
+
+// Much of the following code is based on Boost (1.53)
+
+////////////////////////////////////////////////////////////////////////////////
+// Borland
+#ifdef __BORLANDC__
+
+#if (__BORLANDC__ > 0x582 )
+//#define CATCH_SFINAE // Not confirmed
+#endif
+
+#endif // __BORLANDC__
+
+////////////////////////////////////////////////////////////////////////////////
+// EDG
+#ifdef __EDG_VERSION__
+
+#if (__EDG_VERSION__ > 238 )
+//#define CATCH_SFINAE // Not confirmed
+#endif
+
+#endif // __EDG_VERSION__
+
+////////////////////////////////////////////////////////////////////////////////
+// Digital Mars
+#ifdef __DMC__
+
+#if (__DMC__ > 0x840 )
+//#define CATCH_SFINAE // Not confirmed
+#endif
+
+#endif // __DMC__
+
+////////////////////////////////////////////////////////////////////////////////
+// GCC
+#ifdef __GNUC__
+
+#if __GNUC__ < 3
+
+#if (__GNUC_MINOR__ >= 96 )
+#define CATCH_SFINAE
+#endif
+
+#elif __GNUC__ >= 3
+
+#define CATCH_SFINAE
+
+#endif // __GNUC__ < 3
+
+#endif // __GNUC__
+
+////////////////////////////////////////////////////////////////////////////////
+// Visual C++
+#ifdef _MSC_VER
+
+#if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
+//#define CATCH_SFINAE // Not confirmed
+#endif
+
+#endif // _MSC_VER
+
+
+#ifdef CATCH_SFINAE
+
+namespace Catch {
+
+    struct TrueType {
+        static const bool value = true;
+        typedef void Enable;
+        char sizer[1];
+    };
+    struct FalseType {
+        static const bool value = false;
+        typedef void Disable;
+        char sizer[2];
+    };
+
+    template<bool> struct NotABooleanExpression;
+
+    template<bool c> struct If : NotABooleanExpression<c> {};
+    template<> struct If<true> : TrueType {};
+    template<> struct If<false> : FalseType {};
+
+    template<int size> struct SizedIf;
+    template<> struct SizedIf<sizeof(TrueType)> : TrueType {};
+    template<> struct SizedIf<sizeof(FalseType)> : FalseType {};
+
+} // end namespace Catch
+
+#endif // CATCH_SFINAE
+
 #include <sstream>
 #include <iomanip>
 #include <limits>
@@ -555,6 +652,49 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 #endif
 
 namespace Catch {
+
+#ifdef CATCH_SFINAE
+
+namespace Detail {
+
+    template<typename T>
+    class IsStreamInsertableHelper {
+        template<int N> struct TrueIfSizeable : TrueType {};
+
+        template<typename T2>
+        static TrueIfSizeable<sizeof((*(std::ostream*)0) << *((T2 const*)0))> dummy(T2*);
+        static FalseType dummy(...);
+
+    public:
+        typedef SizedIf<sizeof(dummy((T*)0))> type;
+    };
+
+    template<typename T>
+    struct IsStreamInsertable : IsStreamInsertableHelper<T>::type {};
+
+    template<typename T>
+    void toStream( std::ostream& os, T const& value, typename IsStreamInsertable<T>::Enable* = 0 ) {
+        os << value;
+    }
+
+    template<typename T>
+    void toStream( std::ostream& os, T const&, typename IsStreamInsertable<T>::Disable* = 0 ) {
+        os << "{?}";
+    }
+
+}
+
+template<typename T>
+struct StringMaker {
+    static std::string convert( T const& value ) {
+        std::ostringstream oss;
+        Detail::toStream( oss, value );
+        return oss.str();
+    }
+};
+
+#else
+
 namespace Detail {
 
     struct NonStreamable {
@@ -577,6 +717,9 @@ struct StringMaker {
         return oss.str();
     }
 };
+
+#endif
+
 template<typename T>
 struct StringMaker<T*> {
     static std::string convert( T const* p ) {
@@ -594,7 +737,7 @@ struct StringMaker<std::vector<T> > {
         std::ostringstream oss;
         oss << "{ ";
         for( std::size_t i = 0; i < v.size(); ++ i ) {
-            oss << v[i];
+            oss << toString( v[i] );
             if( i < v.size() - 1 )
                 oss << ", ";
         }
@@ -620,7 +763,6 @@ namespace Detail {
 template<typename T>
 std::string toString( const T& value ) {
     return StringMaker<T>::convert( value );
-//    return Detail::makeString( value );
 }
 
 // Built in overloads
@@ -2528,7 +2670,6 @@ inline bool isTrue( bool value ){ return value; }
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
                 resultDisposition | Catch::ResultDisposition::ContinueOnFailure, expr ); \
-            throw; \
         } \
     } while( Catch::isTrue( false ) )
 
@@ -2618,7 +2759,6 @@ inline bool isTrue( bool value ){ return value; }
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
                 resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
-            throw; \
         } \
     } while( Catch::isTrue( false ) )
 
@@ -4085,26 +4225,37 @@ namespace Catch {
 // #included from: internal/catch_list.hpp
 #define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
 
-// #included from: catch_line_wrap.h
-#define TWOBLUECUBES_CATCH_LINE_WRAP_H_INCLUDED
+// #included from: catch_text.h
+#define TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
 
 #include <string>
 #include <vector>
 
 namespace Catch {
 
-    class LineWrapper {
+    struct TextAttributes {
+        TextAttributes()
+        :   initialIndent( std::string::npos ),
+            indent( 0 ),
+            width( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
+            tabChar( '\t' )
+        {}
+
+        TextAttributes& setInitialIndent( std::size_t _value )  { initialIndent = _value; return *this; }
+        TextAttributes& setIndent( std::size_t _value )         { indent = _value; return *this; }
+        TextAttributes& setWidth( std::size_t _value )          { width = _value; return *this; }
+        TextAttributes& setTabChar( char _value )               { tabChar = _value; return *this; }
+
+        std::size_t initialIndent;  // indent of first line, or npos
+        std::size_t indent;         // indent of subsequent lines, or all if initialIndent is npos
+        std::size_t width;          // maximum width of text, including indent. Longer text will wrap
+        char tabChar;               // If this char is seen the indent is changed to current pos
+    };
+
+    class Text {
     public:
-        LineWrapper();
-
-        LineWrapper& setIndent( std::size_t _indent );
-        LineWrapper& setInitialIndent( std::size_t _initalIndent );
-        LineWrapper& setRight( std::size_t _right );
-        LineWrapper& setTabChar( char _tabChar );
-
-        LineWrapper& wrap( std::string const& _str );
-
-        std::string toString() const;
+        Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() );
+        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos );
 
         typedef std::vector<std::string>::const_iterator const_iterator;
 
@@ -4113,23 +4264,13 @@ namespace Catch {
         std::string const& last() const { return lines.back(); }
         std::size_t size() const { return lines.size(); }
         std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
+        std::string toString() const;
 
-        friend std::ostream& operator << ( std::ostream& _stream, LineWrapper const& _lineWrapper );
+        friend std::ostream& operator << ( std::ostream& _stream, Text const& _text );
 
     private:
-        void wrapInternal( std::string const& _str );
-        void addLine( const std::string& _line );
-        bool isWrapPoint( char c );
-        std::size_t getCurrentIndent() const;
-
-        std::size_t right;
-        std::size_t nextTab;
-        std::size_t tab;
-        std::size_t indent;
-        std::size_t initialIndent;
-        std::string wrappableChars;
-        char tabChar;
-        int recursionCount;
+        std::string str;
+        TextAttributes attr;
         std::vector<std::string> lines;
     };
 
@@ -4236,11 +4377,11 @@ namespace Catch {
             if( matchesFilters( config.filters, *it ) ) {
                 matchedTests++;
                 // !TBD: consider listAs()
-                LineWrapper nameWrapper;
-                nameWrapper.setRight( maxNameLen ).setIndent( 2 ).wrap( it->getTestCaseInfo().name );
+                Text nameWrapper(   it->getTestCaseInfo().name,
+                                    TextAttributes().setWidth( maxNameLen ).setIndent(2) );
 
-                LineWrapper tagsWrapper;
-                tagsWrapper.setRight( maxTagLen ).wrap( it->getTestCaseInfo().tagsAsString );
+                Text tagsWrapper(   it->getTestCaseInfo().tagsAsString,
+                                    TextAttributes().setWidth( maxTagLen ) );
 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
                     Colour::Code colour = Colour::None;
@@ -4314,9 +4455,9 @@ namespace Catch {
         for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(), countItEnd = tagCounts.end();
                 countIt != countItEnd;
                 ++countIt ) {
-            LineWrapper wrapper;
-            wrapper.setIndent(2).setRight( maxTagLen ).wrap( "[" + countIt->first + "]" );
-
+            Text wrapper( "[" + countIt->first + "]", TextAttributes()
+                                                        .setIndent(2)
+                                                        .setWidth( maxTagLen ) );
             std::cout << wrapper;
             std::size_t dots = 2;
             if( maxTagLen > wrapper.last().size() )
@@ -5049,7 +5190,7 @@ namespace Catch {
                 displayedSpecificOption = true;
                 std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
                             << opt.optionSummary() << "\n\n"
-                            << LineWrapper().setIndent( 2 ).wrap( opt.optionDescription() ) << "\n" << std::endl;
+                            << Text( opt.optionDescription(), TextAttributes().setIndent( 2 ) ) << "\n" << std::endl;
             }
         }
 
@@ -6018,112 +6159,89 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 33, "integration" );
+    Version libraryVersion( 0, 9, 34, "integration" );
 }
 
-// #included from: catch_line_wrap.hpp
-#define TWOBLUECUBES_CATCH_LINE_WRAP_HPP_INCLUDED
+// #included from: catch_text.hpp
+#define TWOBLUECUBES_CATCH_TEXT_HPP_INCLUDED
+
+#include <string>
+#include <vector>
 
 namespace Catch {
 
-    LineWrapper::LineWrapper()
-    :   right( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
-        nextTab( 0 ),
-        tab( 0 ),
-        indent( 0 ),
-        initialIndent( (std::size_t)-1 ), // use indent by default
-        wrappableChars( " [({.,/|\\" ),
-        tabChar( '\t' ),
-        recursionCount( 0 )
-    {}
+    Text::Text( std::string const& _str, TextAttributes const& _attr )
+    : attr( _attr )
+    {
+        std::string wrappableChars = " [({.,/|\\-";
+        std::size_t indent = _attr.initialIndent != std::string::npos
+            ? _attr.initialIndent
+            : _attr.indent;
+        std::string remainder = _str;
 
-    LineWrapper& LineWrapper::setIndent( std::size_t _indent ) {
-        indent = _indent;
-        return *this;
-    }
-    LineWrapper& LineWrapper::setInitialIndent( std::size_t _initialIndent ) {
-        initialIndent = _initialIndent;
-        return *this;
-    }
-    LineWrapper& LineWrapper::setRight( std::size_t _right ) {
-        right = _right;
-        return *this;
-    }
-    LineWrapper& LineWrapper::wrap( std::string const& _str ) {
-        nextTab = tab = 0;
-        wrapInternal( _str );
-        return *this;
-    }
-    LineWrapper& LineWrapper::setTabChar( char _tabChar ) {
-        tabChar = _tabChar;
-        return *this;
-    }
-    bool LineWrapper::isWrapPoint( char c ) {
-        return wrappableChars.find( c ) != std::string::npos;
-    }
-    void LineWrapper::wrapInternal( std::string const& _str ) {
-        assert( ++recursionCount < 100 );
-
-        std::size_t width = right - getCurrentIndent();
-        std::size_t wrapPoint = width-tab;
-        for( std::size_t pos = 0; pos < _str.size(); ++pos ) {
-            if( _str[pos] == '\n' )
-            {
-                addLine( _str.substr( 0, pos ) );
-                nextTab = tab = 0;
-                return wrapInternal( _str.substr( pos+1 ) );
+        while( !remainder.empty() ) {
+            assert( lines.size() < 1000 );
+            std::size_t tabPos = std::string::npos;
+            std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
+            std::size_t pos = remainder.find_first_of( '\n' );
+            if( pos <= width ) {
+                width = pos;
             }
-            if( pos == width-tab ) {
-                if( _str[wrapPoint] == ' ' ) {
-                    addLine( _str.substr( 0, wrapPoint ) );
-                    while( _str[++wrapPoint] == ' ' );
-                }
-                else if( isWrapPoint( _str[wrapPoint] ) ) {
-                    addLine( _str.substr( 0, wrapPoint ) );
+            pos = remainder.find_last_of( _attr.tabChar, width );
+            if( pos != std::string::npos ) {
+                tabPos = pos;
+                if( remainder[width] == '\n' )
+                    width--;
+                remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
+            }
+
+            if( width == remainder.size() ) {
+                spliceLine( indent, remainder, width );
+            }
+            else if( remainder[width] == '\n' ) {
+                spliceLine( indent, remainder, width );
+                if( width <= 1 || remainder.size() != 1 )
+                    remainder = remainder.substr( 1 );
+                indent = _attr.indent;
+            }
+            else {
+                pos = remainder.find_last_of( wrappableChars, width );
+                if( pos != std::string::npos && pos > 0 ) {
+                    spliceLine( indent, remainder, pos );
+                    if( remainder[0] == ' ' )
+                        remainder = remainder.substr( 1 );
                 }
                 else {
-                    addLine( _str.substr( 0, --wrapPoint ) + '-' );
+                    spliceLine( indent, remainder, width-1 );
+                    lines.back() += "-";
                 }
-                return wrapInternal( _str.substr( wrapPoint ) );
-            }
-            if( _str[pos] == tabChar ) {
-                nextTab = pos;
-                std::string withoutTab = _str.substr( 0, nextTab ) + _str.substr( nextTab+1 );
-                return wrapInternal( withoutTab );
-            }
-            else if( pos > 0 && isWrapPoint( _str[pos] ) ) {
-                wrapPoint = pos;
+                if( lines.size() == 1 )
+                    indent = _attr.indent;
+                if( tabPos != std::string::npos )
+                    indent += tabPos;
             }
         }
-        addLine( _str );
     }
 
-    std::ostream& operator << ( std::ostream& _stream, LineWrapper const& _lineWrapper ) {
-        for( LineWrapper::const_iterator it = _lineWrapper.begin(), itEnd = _lineWrapper.end();
-            it != itEnd; ++it ) {
-            if( it != _lineWrapper.begin() )
-                _stream << "\n";
-            _stream << *it;
-        }
-        return _stream;
+    void Text::spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
+        lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
+        _remainder = _remainder.substr( _pos );
     }
-    std::string LineWrapper::toString() const {
+
+    std::string Text::toString() const {
         std::ostringstream oss;
         oss << *this;
         return oss.str();
     }
 
-    void LineWrapper::addLine( const std::string& _line ) {
-        lines.push_back( std::string( tab + getCurrentIndent(), ' ' ) + _line );
-        if( nextTab > 0 )
-            tab = nextTab;
-    }
-
-    std::size_t LineWrapper::getCurrentIndent() const
-    {
-        return (initialIndent != (std::size_t)-1 && lines.empty() )
-            ? initialIndent
-            : indent;
+    std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+        for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
+            it != itEnd; ++it ) {
+            if( it != _text.begin() )
+                _stream << "\n";
+            _stream << *it;
+        }
+        return _stream;
     }
 
 } // end namespace Catch
@@ -7450,7 +7568,7 @@ namespace Catch {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
                     Colour colourGuard( Colour::ReconstructedExpression );
-                    stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ) << "\n";
+                    stream << Text( result.getExpandedExpression(), TextAttributes().setIndent(2) ) << "\n";
                 }
             }
             void printMessage() const {
@@ -7459,7 +7577,7 @@ namespace Catch {
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
                         ++it ) {
-                    stream << LineWrapper().setIndent(2).wrap( it->message ) << "\n";
+                    stream << Text( it->message, TextAttributes().setIndent(2) ) << "\n";
                 }
             }
             void printSourceInfo() const {
@@ -7511,10 +7629,7 @@ namespace Catch {
             }
         }
         void printTestCaseAndSectionHeader() {
-            printOpenHeader(    unusedTestCaseInfo->name,
-                                currentSectionInfo
-                                    ? currentSectionInfo->lineInfo
-                                    : unusedTestCaseInfo->lineInfo );
+            printOpenHeader( unusedTestCaseInfo->name );
             if( currentSectionInfo ) {
                 Colour colourGuard( Colour::Headers );
                 std::vector<ThreadedSectionInfo*> sections;
@@ -7527,9 +7642,18 @@ namespace Catch {
                 if( !sections.empty() ) {
                     typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
                     for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
-                        printUserString( (*it)->name, 2 );
+                        printHeaderString( (*it)->name, 2 );
 
                 }
+            }
+            SourceLineInfo lineInfo = currentSectionInfo
+                                    ? currentSectionInfo->lineInfo
+                                    : unusedTestCaseInfo->lineInfo;
+
+            if( !lineInfo.empty() ){
+                stream << getDashes() << "\n";
+                Colour colourGuard( Colour::FileName );
+                stream << lineInfo << "\n";
             }
             stream << getDots() << "\n" << std::endl;
         }
@@ -7538,30 +7662,25 @@ namespace Catch {
             printOpenHeader( _name );
             stream << getDots() << "\n";
         }
-        void printOpenHeader( std::string const& _name, SourceLineInfo const& _lineInfo = SourceLineInfo() ) {
+        void printOpenHeader( std::string const& _name ) {
             stream  << getDashes() << "\n";
-            if( !_lineInfo.empty() ){
-                Colour colourGuard( Colour::FileName );
-                stream << _lineInfo << "\n\n";
-            }
             {
                 Colour colourGuard( Colour::Headers );
-                printUserString( _name );
+                printHeaderString( _name );
             }
         }
 
         // if string has a : in first line will set indent to follow it on
         // subsequent lines
-        void printUserString( std::string const& _string, std::size_t indent = 0 ) {
+        void printHeaderString( std::string const& _string, std::size_t indent = 0 ) {
             std::size_t i = _string.find( ": " );
             if( i != std::string::npos )
                 i+=2;
             else
                 i = 0;
-            stream << LineWrapper()
-                        .setIndent( indent+i)
-                        .setInitialIndent( indent )
-                        .wrap( _string ) << "\n";
+            stream << Text( _string, TextAttributes()
+                                        .setIndent( indent+i)
+                                        .setInitialIndent( indent ) ) << "\n";
         }
 
         void printTotals( const Totals& totals ) {
