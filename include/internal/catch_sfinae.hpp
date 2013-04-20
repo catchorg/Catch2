@@ -11,8 +11,6 @@
 // Try to detect if the current compiler supports SFINAE
 #include "catch_compiler_capabilities.h"
 
-#ifdef CATCH_SFINAE
-
 namespace Catch {
     
     struct TrueType {
@@ -26,6 +24,8 @@ namespace Catch {
         char sizer[2];
     };
 
+#ifdef CATCH_SFINAE
+
     template<bool> struct NotABooleanExpression;
 
     template<bool c> struct If : NotABooleanExpression<c> {};
@@ -35,10 +35,10 @@ namespace Catch {
     template<int size> struct SizedIf;
     template<> struct SizedIf<sizeof(TrueType)> : TrueType {};
     template<> struct SizedIf<sizeof(FalseType)> : FalseType {};
-    
-} // end namespace Catch
 
 #endif // CATCH_SFINAE
+    
+} // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_SFINAE_HPP_INCLUDED
 

@@ -342,11 +342,9 @@ struct Awkward
     operator int() const { return 7; }
 };
 
-// This now works with GCC/ Clang usinh SFINAE
-// Uncomment when it works on all compilers that are tested
-//TEST_CASE( "non streamable", "" )
-//{
-//    Awkward awkward;
-//    std::string s = Catch::toString( awkward );
-//    REQUIRE( s == "7" ); // This is ambiguous without SFINAE
-//}
+TEST_CASE( "non streamable - with conv. op", "" )
+{
+    Awkward awkward;
+    std::string s = Catch::toString( awkward );
+    REQUIRE( s == "7" );
+}

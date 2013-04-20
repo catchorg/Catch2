@@ -20,10 +20,9 @@
 #endif
 
 namespace Catch {
+namespace Detail {
 
 #ifdef CATCH_SFINAE
-
-namespace Detail {
 
     template<typename T>
     class IsStreamInsertableHelper {
@@ -40,53 +39,47 @@ namespace Detail {
     template<typename T>
     struct IsStreamInsertable : IsStreamInsertableHelper<T>::type {};
 
-    template<typename T>
-    void toStream( std::ostream& os, T const& value, typename IsStreamInsertable<T>::Enable* = 0 ) {
-        os << value;
-    }
-
-    template<typename T>
-    void toStream( std::ostream& os, T const&, typename IsStreamInsertable<T>::Disable* = 0 ) {
-        os << "{?}";
-    }
-   
-}
-
-template<typename T>
-struct StringMaker {
-    static std::string convert( T const& value ) {
-        std::ostringstream oss;
-        Detail::toStream( oss, value );
-        return oss.str();
-    }
-};
-
 #else
 
-namespace Detail {
+    struct BorgType {
+        template<typename T> BorgType( T const& );
+    };
+  
+    TrueType& testStreamable( std::ostream& );
+    FalseType testStreamable( FalseType );
+    
+    FalseType operator<<( std::ostream const&, BorgType const& );
 
-    struct NonStreamable {
-        template<typename T> NonStreamable( const T& ){}
+    template<typename T>
+    struct IsStreamInsertable {
+        static std::ostream &s;
+        static T const &t;
+        enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
+    };
+    
+#endif
+
+    template<bool C>
+    struct StringMakerBase {
+        template<typename T>
+        static std::string convert( T const& ) { return "{?}"; }
+    };
+
+    template<>
+    struct StringMakerBase<true> {
+        template<typename T>
+        static std::string convert( T const& _value ) {
+            std::ostringstream oss;
+            oss << _value;
+            return oss.str();
+        }
     };
     
 } // end namespace Detail
 
-// If the type does not have its own << overload for ostream then
-// this one will be used instead
-inline std::ostream& operator << ( std::ostream& ss, Detail::NonStreamable ){
-    return ss << "{?}";
-}
-
 template<typename T>
-struct StringMaker {
-    static std::string convert( T const& value ) {
-        std::ostringstream oss;
-        oss << value;
-        return oss.str();
-    }
-};
-
-#endif
+struct StringMaker :
+    Detail::StringMakerBase<Detail::IsStreamInsertable<T>::value> {};
 
 
 template<typename T>
