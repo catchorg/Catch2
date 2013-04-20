@@ -42,45 +42,50 @@ namespace Catch {
                 ? _attr.initialIndent
                 : _attr.indent;
             std::string remainder = _str;
-            std::size_t tabPos = std::string::npos;
             while( !remainder.empty() ) {
-                std::size_t width = _attr.width - indent;
-                std::size_t wrapPos = width;
+                assert( lines.size() < 1000 );
+                std::size_t tabPos = std::string::npos;
+                std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
                 std::size_t pos = remainder.find_first_of( '\n' );
                 if( pos <= width ) {
-                    wrapPos = pos;
-                    addLine( indent, remainder.substr( 0, pos ) );
-                    remainder = remainder.substr( pos+1 );
-                    if( remainder.empty() )
-                        addLine (indent, "" ); // Trailing newlines result in extra line
+                    width = pos;
+                }
+                pos = remainder.find_last_of( _attr.tabChar, width );
+                if( pos != std::string::npos ) {
+                    tabPos = pos;
+                    if( remainder[width] == '\n' )
+                        width--;
+                    remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
+                }
+                if( width == remainder.size() ) {
+                    addLine( indent, remainder );
+                    remainder = std::string();
+                }
+                else if( remainder[width] == '\n' ) {
+                    addLine( indent, remainder.substr( 0, width ) );
+                    indent = _attr.indent;
+                    if( width > 1 && width == remainder.size()-1 )
+                        remainder = remainder.substr( width );
+                    else
+                        remainder = remainder.substr( width+1 );
                 }
                 else {
-                    pos = remainder.find_last_of( _attr.tabChar, width );
+                    pos = remainder.find_last_of( wrappableChars, width );
                     if( pos != std::string::npos ) {
-                        tabPos = pos;
-                        remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
+                        addLine( indent, remainder.substr( 0, pos ) );
+                        if( remainder[pos] == ' ' )
+                            pos++;
+                        remainder = remainder.substr( pos );
                     }
-                    if( remainder.size() <= width ) {
-                        addLine( indent, remainder );
-                        remainder = std::string();
+                    else {
+                        addLine( indent, remainder.substr( 0, width-1 ) + "-" );
+                        remainder = remainder.substr( width-1 );
                     }
-                    else {                
-                        pos = remainder.find_last_of( wrappableChars, width );
-                        if( pos == std::string::npos ) {
-                            addLine( indent, remainder.substr( 0, width-1 ) + "-" );
-                            remainder = remainder.substr( width-1 );
-                        }
-                        else {
-                            addLine( indent, remainder.substr( 0, pos ) );
-                            if( remainder[pos] == ' ' )
-                                pos++;
-                            remainder = remainder.substr( pos );
-                        }
-                    }
+                    if( lines.size() == 1 )
+                        indent = _attr.indent;
+                    if( tabPos != std::string::npos )
+                        indent += tabPos;
                 }
-                indent = tabPos == std::string::npos
-                    ? _attr.indent
-                    : indent + tabPos;
             };
         }
         void addLine( std::size_t indent, std::string const& _line ) {

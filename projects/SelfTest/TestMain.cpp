@@ -507,10 +507,10 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
     SECTION( "With tabs", "" ) {
 
         // guide:                 1234567890123456789
-        std::string testString = "one two /tthree four five six";
+        std::string testString = "one two \tthree four five six";
         
-        CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString()
-            == "one two three/n        four/n        five/n        six" );
+        CHECK( Text( testString, TextAttributes().setWidth( 15 ) ).toString()
+            == "one two three\n        four\n        five\n        six" );
     }
     
     
@@ -609,7 +609,6 @@ TEST_CASE( "Strings can be rendered with colour", "[colour]" ) {
 }
 
 TEST_CASE( "Text can be formatted using the Text class", "" ) {
-    Text text( "hi there" );
     
     CHECK( Text( "hi there" ).toString() == "hi there" );
     
