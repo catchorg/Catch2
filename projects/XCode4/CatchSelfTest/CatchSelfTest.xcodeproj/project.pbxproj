@@ -10,7 +10,7 @@
 		266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */; };
 		266ECD74170F3C620030D735 /* BDDTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266ECD73170F3C620030D735 /* BDDTests.cpp */; };
 		26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26847E5D16BBADB40043B9C1 /* catch_message.cpp */; };
-		2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */; };
+		2694A1FD16A0000E004816E3 /* catch_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_text.cpp */; };
 		4A45DA2416161EF9004F8D6B /* catch_console_colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */; };
 		4A45DA2716161F1F004F8D6B /* catch_ptr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2616161F1F004F8D6B /* catch_ptr.cpp */; };
 		4A45DA2916161F3D004F8D6B /* catch_streambuf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2816161F3D004F8D6B /* catch_streambuf.cpp */; };
@@ -56,6 +56,7 @@
 
 /* Begin PBXFileReference section */
 		266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VariadicMacrosTests.cpp; path = ../../../SelfTest/VariadicMacrosTests.cpp; sourceTree = "<group>"; };
+		266E9AD117230ACF0061DAB2 /* catch_text.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_text.hpp; sourceTree = "<group>"; };
 		266ECD73170F3C620030D735 /* BDDTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BDDTests.cpp; path = ../../../SelfTest/BDDTests.cpp; sourceTree = "<group>"; };
 		266ECD8C1713614B0030D735 /* catch_legacy_reporter_adapter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_legacy_reporter_adapter.hpp; sourceTree = "<group>"; };
 		266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_legacy_reporter_adapter.h; sourceTree = "<group>"; };
@@ -64,9 +65,7 @@
 		26847E5B16BBAB790043B9C1 /* catch_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_message.h; sourceTree = "<group>"; };
 		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
 		26847E5D16BBADB40043B9C1 /* catch_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_message.cpp; path = ../../../SelfTest/SurrogateCpps/catch_message.cpp; sourceTree = "<group>"; };
-		2694A1F8169FFF9B004816E3 /* catch_line_wrap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_line_wrap.h; sourceTree = "<group>"; };
-		2694A1FA169FFFEC004816E3 /* catch_line_wrap.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_line_wrap.hpp; sourceTree = "<group>"; };
-		2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = catch_line_wrap.cpp; sourceTree = "<group>"; };
+		2694A1FB16A0000E004816E3 /* catch_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = catch_text.cpp; sourceTree = "<group>"; };
 		26DACF2F17206D3400A21326 /* catch_text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_text.h; sourceTree = "<group>"; };
 		4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_info.hpp; sourceTree = "<group>"; };
 		4A084F1D15DAD15F0027E631 /* catch_test_spec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_test_spec.h; sourceTree = "<group>"; };
@@ -286,7 +285,7 @@
 				4AB3D99F1616219100C9A0F8 /* catch_interfaces_config.cpp */,
 				4AB3D9A1161621B500C9A0F8 /* catch_interfaces_generators.cpp */,
 				4ACE21CA166CA1B300FB5509 /* catch_option.cpp */,
-				2694A1FB16A0000E004816E3 /* catch_line_wrap.cpp */,
+				2694A1FB16A0000E004816E3 /* catch_text.cpp */,
 				26847E5D16BBADB40043B9C1 /* catch_message.cpp */,
 			);
 			name = SurrogateCpps;
@@ -295,6 +294,7 @@
 		4AC91CB4155B9EBF00DC5117 /* impl */ = {
 			isa = PBXGroup;
 			children = (
+				266E9AD117230ACF0061DAB2 /* catch_text.hpp */,
 				4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */,
 				4A4B0F9715CE6CFB00AE2392 /* catch_registry_hub.hpp */,
 				4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */,
@@ -306,7 +306,6 @@
 				4A90B59D15D24FE900EF71BC /* catch_assertionresult.hpp */,
 				4A90B59E15D2521E00EF71BC /* catch_expressionresult_builder.hpp */,
 				4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */,
-				2694A1FA169FFFEC004816E3 /* catch_line_wrap.hpp */,
 				26847E5C16BBACB60043B9C1 /* catch_message.hpp */,
 			);
 			name = impl;
@@ -397,7 +396,6 @@
 				4AB77CB51551AEA200857BF0 /* catch_ptr.hpp */,
 				4AEE0326161431070071E950 /* catch_streambuf.h */,
 				4ACE21C8166CA19700FB5509 /* catch_option.hpp */,
-				2694A1F8169FFF9B004816E3 /* catch_line_wrap.h */,
 				26759472171C72A400A84BD1 /* catch_sfinae.hpp */,
 				26759473171C74C200A84BD1 /* catch_compiler_capabilities.h */,
 				26DACF2F17206D3400A21326 /* catch_text.h */,
@@ -491,7 +489,7 @@
 				4AB3D9A01616219100C9A0F8 /* catch_interfaces_config.cpp in Sources */,
 				4AB3D9A2161621B500C9A0F8 /* catch_interfaces_generators.cpp in Sources */,
 				4ACE21CC166CA1B300FB5509 /* catch_option.cpp in Sources */,
-				2694A1FD16A0000E004816E3 /* catch_line_wrap.cpp in Sources */,
+				2694A1FD16A0000E004816E3 /* catch_text.cpp in Sources */,
 				26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */,
 				266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */,
 				266ECD74170F3C620030D735 /* BDDTests.cpp in Sources */,

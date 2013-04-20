@@ -10,7 +10,6 @@
 #endif
 
 #include "catch_self_test.hpp"
-#include "internal/catch_line_wrap.h"
 #include "internal/catch_text.h"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {

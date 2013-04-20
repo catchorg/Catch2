@@ -203,7 +203,7 @@ namespace Catch {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
                     Colour colourGuard( Colour::ReconstructedExpression );
-                    stream << LineWrapper().setIndent(2).wrap( result.getExpandedExpression() ) << "\n";
+                    stream << Text( result.getExpandedExpression(), TextAttributes().setIndent(2) ) << "\n";
                 }
             }
             void printMessage() const {
@@ -212,7 +212,7 @@ namespace Catch {
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
                         ++it ) {                    
-                    stream << LineWrapper().setIndent(2).wrap( it->message ) << "\n";
+                    stream << Text( it->message, TextAttributes().setIndent(2) ) << "\n";
                 }
             }
             void printSourceInfo() const {
@@ -313,10 +313,9 @@ namespace Catch {
                 i+=2;
             else
                 i = 0;
-            stream << LineWrapper()
-                        .setIndent( indent+i)
-                        .setInitialIndent( indent )
-                        .wrap( _string ) << "\n";
+            stream << Text( _string, TextAttributes()
+                                        .setIndent( indent+i)
+                                        .setInitialIndent( indent ) ) << "\n";
         }
         
         void printTotals( const Totals& totals ) {

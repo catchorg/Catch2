@@ -13,7 +13,6 @@
 #include "internal/catch_runner_impl.hpp"
 #include "internal/catch_test_spec.h"
 #include "internal/catch_version.h"
-#include "internal/catch_line_wrap.h"
 #include "internal/catch_text.h"
 
 #include <fstream>
@@ -162,7 +161,6 @@ namespace Catch {
                 displayedSpecificOption = true;
                 std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
                             << opt.optionSummary() << "\n\n"
-//                            << LineWrapper().setIndent( 2 ).wrap( opt.optionDescription() ) << "\n" << std::endl;
                             << Text( opt.optionDescription(), TextAttributes().setIndent( 2 ) ) << "\n" << std::endl;
             }
         }

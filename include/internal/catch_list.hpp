@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
 
 #include "catch_commandline.hpp"
-#include "catch_line_wrap.h"
+#include "catch_text.h"
 #include "catch_console_colour.hpp"
 
 #include <limits>
@@ -57,11 +57,11 @@ namespace Catch {
             if( matchesFilters( config.filters, *it ) ) {
                 matchedTests++;
                 // !TBD: consider listAs()
-                LineWrapper nameWrapper;
-                nameWrapper.setRight( maxNameLen ).setIndent( 2 ).wrap( it->getTestCaseInfo().name );
+                Text nameWrapper(   it->getTestCaseInfo().name,
+                                    TextAttributes().setWidth( maxNameLen ).setIndent(2) );
 
-                LineWrapper tagsWrapper;
-                tagsWrapper.setRight( maxTagLen ).wrap( it->getTestCaseInfo().tagsAsString );
+                Text tagsWrapper(   it->getTestCaseInfo().tagsAsString,
+                                    TextAttributes().setWidth( maxTagLen ) );
                 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
                     Colour::Code colour = Colour::None;
@@ -135,9 +135,9 @@ namespace Catch {
         for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(), countItEnd = tagCounts.end();
                 countIt != countItEnd;
                 ++countIt ) {            
-            LineWrapper wrapper;
-            wrapper.setIndent(2).setRight( maxTagLen ).wrap( "[" + countIt->first + "]" );
-            
+            Text wrapper( "[" + countIt->first + "]", TextAttributes()
+                                                        .setIndent(2)
+                                                        .setWidth( maxTagLen ) );
             std::cout << wrapper;
             std::size_t dots = 2;
             if( maxTagLen > wrapper.last().size() )

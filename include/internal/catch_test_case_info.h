@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include "catch_common.h"
+#include "catch_ptr.hpp"
 
 #include <string>
 #include <set>

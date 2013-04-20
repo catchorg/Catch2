@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
 
+#include "catch_config.hpp"
+
 #include <string>
 #include <vector>
 
@@ -34,62 +36,8 @@ namespace Catch {
 
     class Text {
     public:
-        Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() )
-        : attr( _attr )
-        {
-            std::string wrappableChars = " [({.,/|\\-";
-            std::size_t indent = _attr.initialIndent != std::string::npos
-                ? _attr.initialIndent
-                : _attr.indent;
-            std::string remainder = _str;
-
-            while( !remainder.empty() ) {
-                assert( lines.size() < 1000 );
-                std::size_t tabPos = std::string::npos;
-                std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
-                std::size_t pos = remainder.find_first_of( '\n' );
-                if( pos <= width ) {
-                    width = pos;
-                }
-                pos = remainder.find_last_of( _attr.tabChar, width );
-                if( pos != std::string::npos ) {
-                    tabPos = pos;
-                    if( remainder[width] == '\n' )
-                        width--;
-                    remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
-                }
-                
-                if( width == remainder.size() ) {
-                    spliceLine( indent, remainder, width );
-                }
-                else if( remainder[width] == '\n' ) {
-                    spliceLine( indent, remainder, width );
-                    if( width <= 1 || remainder.size() != 1 )
-                        remainder = remainder.substr( 1 );
-                    indent = _attr.indent;
-                }
-                else {
-                    pos = remainder.find_last_of( wrappableChars, width );
-                    if( pos != std::string::npos ) {
-                        spliceLine( indent, remainder, pos );
-                        if( remainder[0] == ' ' )
-                            remainder = remainder.substr( 1 );
-                    }
-                    else {
-                        spliceLine( indent, remainder, width-1 );
-                        lines.back() += "-";
-                    }
-                    if( lines.size() == 1 )
-                        indent = _attr.indent;
-                    if( tabPos != std::string::npos )
-                        indent += tabPos;
-                }
-            }
-        }
-        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
-            lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
-            _remainder = _remainder.substr( _pos );
-        }
+        Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() );
+        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos );
         
         typedef std::vector<std::string>::const_iterator const_iterator;
 
@@ -98,21 +46,9 @@ namespace Catch {
         std::string const& last() const { return lines.back(); }
         std::size_t size() const { return lines.size(); }
         std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
+        std::string toString() const;
 
-        friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
-            for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
-                it != itEnd; ++it ) {
-                if( it != _text.begin() )
-                    _stream << "\n";
-                _stream << *it;
-            }
-            return _stream;
-        }
-        std::string toString() const {
-            std::ostringstream oss;
-            oss << *this;
-            return oss.str();
-        }
+        friend std::ostream& operator << ( std::ostream& _stream, Text const& _text );
         
     private:
         std::string str;
