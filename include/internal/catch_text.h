@@ -42,6 +42,7 @@ namespace Catch {
                 ? _attr.initialIndent
                 : _attr.indent;
             std::string remainder = _str;
+
             while( !remainder.empty() ) {
                 assert( lines.size() < 1000 );
                 std::size_t tabPos = std::string::npos;
@@ -57,40 +58,39 @@ namespace Catch {
                         width--;
                     remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
                 }
+                
                 if( width == remainder.size() ) {
-                    addLine( indent, remainder );
-                    remainder = std::string();
+                    spliceLine( indent, remainder, width );
                 }
                 else if( remainder[width] == '\n' ) {
-                    addLine( indent, remainder.substr( 0, width ) );
+                    spliceLine( indent, remainder, width );
+                    if( width <= 1 || remainder.size() != 1 )
+                        remainder = remainder.substr( 1 );
                     indent = _attr.indent;
-                    if( width > 1 && width == remainder.size()-1 )
-                        remainder = remainder.substr( width );
-                    else
-                        remainder = remainder.substr( width+1 );
                 }
                 else {
                     pos = remainder.find_last_of( wrappableChars, width );
                     if( pos != std::string::npos ) {
-                        addLine( indent, remainder.substr( 0, pos ) );
-                        if( remainder[pos] == ' ' )
-                            pos++;
-                        remainder = remainder.substr( pos );
+                        spliceLine( indent, remainder, pos );
+                        if( remainder[0] == ' ' )
+                            remainder = remainder.substr( 1 );
                     }
                     else {
-                        addLine( indent, remainder.substr( 0, width-1 ) + "-" );
-                        remainder = remainder.substr( width-1 );
+                        spliceLine( indent, remainder, width-1 );
+                        lines.back() += "-";
                     }
                     if( lines.size() == 1 )
                         indent = _attr.indent;
                     if( tabPos != std::string::npos )
                         indent += tabPos;
                 }
-            };
+            }
         }
-        void addLine( std::size_t indent, std::string const& _line ) {
-            lines.push_back( std::string( indent, ' ' ) + _line );
+        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
+            lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
+            _remainder = _remainder.substr( _pos );
         }
+        
         typedef std::vector<std::string>::const_iterator const_iterator;
 
         const_iterator begin() const { return lines.begin(); }
