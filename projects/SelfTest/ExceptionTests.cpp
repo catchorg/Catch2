@@ -66,6 +66,12 @@ TEST_CASE( "./failing/exceptions/implicit/3", "When unchecked exceptions are thr
     }
 }
 
+TEST_CASE_NORETURN( "./failing/exceptions/implicit/4", "When unchecked exceptions are thrown they are always failures" )
+{
+    CHECK( thisThrows() == 0 );
+    /*NOTREACHED*/    
+}
+
 TEST_CASE( "./succeeding/exceptions/implicit", "When unchecked exceptions are thrown, but caught, they do not affect the test" )
 {
     try

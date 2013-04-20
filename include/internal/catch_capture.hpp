@@ -88,7 +88,6 @@ inline bool isTrue( bool value ){ return value; }
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
                 resultDisposition | Catch::ResultDisposition::ContinueOnFailure, expr ); \
-            throw; \
         } \
     } while( Catch::isTrue( false ) )
 
@@ -179,7 +178,6 @@ inline bool isTrue( bool value ){ return value; }
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
                 resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
-            throw; \
         } \
     } while( Catch::isTrue( false ) )
 
