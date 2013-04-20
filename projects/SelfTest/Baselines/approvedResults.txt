@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b34 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b35 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -5264,6 +5264,18 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+non streamable - with conv. op
+-------------------------------------------------------------------------------
+TrickyTests.cpp:345
+...............................................................................
+
+TrickyTests.cpp:349:
+PASSED:
+  REQUIRE( s == "7" )
+with expansion:
+  "7" == "7"
+
+-------------------------------------------------------------------------------
 Anonymous test case 1
 -------------------------------------------------------------------------------
 VariadicMacrosTests.cpp:12
@@ -5519,11 +5531,11 @@ with message:
   boo!
 
 ===============================================================================
-111 test cases - 49 failed (705 assertions - 106 failed)
+112 test cases - 49 failed (706 assertions - 106 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b34 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b35 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -5840,7 +5852,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="78" tests="705" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="10" failures="78" tests="706" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -6339,6 +6351,7 @@ TrickyTests.cpp:106
     <testcase classname="global" name="./succeeding/unimplemented static bool" time="tbd"/>
     <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
     <testcase classname="global" name="Assertions then sections" time="tbd"/>
+    <testcase classname="global" name="non streamable - with conv. op" time="tbd"/>
     <testcase classname="global" name="Anonymous test case 1" time="tbd"/>
     <testcase classname="global" name="Test case with one argument" time="tbd"/>
     <testcase classname="global" name="Variadic macros" time="tbd"/>
@@ -12023,6 +12036,17 @@ TrickyTests.cpp" line="335">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="non streamable - with conv. op">
+TrickyTests.cpp" line="349">
+        <Original>
+          s == &quot;7&quot;
+        </Original>
+        <Expanded>
+          &quot;7&quot; == &quot;7&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Anonymous test case 1">
       <OverallResult success="true"/>
     </TestCase>
@@ -12252,9 +12276,9 @@ BDDTests.cpp" line="54">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="599" failures="106"/>
+    <OverallResults successes="600" failures="106"/>
   </Group>
-  <OverallResults successes="599" failures="106"/>
+  <OverallResults successes="600" failures="106"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -13980,6 +14004,10 @@ TrickyTests.cpp:335: Catch::isTrue( true ) succeeded for: true
 
 [Finished: 'Assertions then sections' All tests passed (6 assertions in 1 test case)]
 
+[Running: non streamable - with conv. op]
+TrickyTests.cpp:349: s == "7" succeeded for: "7" == "7"
+[Finished: 'non streamable - with conv. op' All tests passed (1 assertion in 1 test case)]
+
 [Running: Anonymous test case 1]
 VariadicMacrosTests.cpp:14:  succeeded
 [with message: anonymous test case]
@@ -14091,10 +14119,10 @@ BDDTests.cpp:67:  succeeded
 [End of section: '   Given: A section name that is so long that it cannot fit in a single console width' 1 assertion passed]
 
 [Finished: 'Scenario: This is a really long scenario name to see how the list command deals with wrapping' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 49 of 111 test cases failed (106 of 705 assertions failed)]
+[End of group: '~dummy'. 49 of 112 test cases failed (106 of 706 assertions failed)]
 
 
-[Testing completed. 49 of 111 test cases failed (106 of 705 assertions failed)]
+[Testing completed. 49 of 112 test cases failed (106 of 706 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']

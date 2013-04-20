@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 34 (integration branch)
- *  Generated: 2013-04-20 21:05:02.595019
+ *  CATCH v0.9 build 35 (integration branch)
+ *  Generated: 2013-04-20 23:19:15.811241
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -555,7 +555,7 @@ private:
 
 #elif __GNUC__ >= 3
 
-#define CATCH_SFINAE
+// #define CATCH_SFINAE // Taking this out completely for now
 
 #endif // __GNUC__ < 3
 
@@ -572,8 +572,6 @@ private:
 #endif // _MSC_VER
 
 
-#ifdef CATCH_SFINAE
-
 namespace Catch {
 
     struct TrueType {
@@ -587,6 +585,8 @@ namespace Catch {
         char sizer[2];
     };
 
+#ifdef CATCH_SFINAE
+
     template<bool> struct NotABooleanExpression;
 
     template<bool c> struct If : NotABooleanExpression<c> {};
@@ -597,9 +597,9 @@ namespace Catch {
     template<> struct SizedIf<sizeof(TrueType)> : TrueType {};
     template<> struct SizedIf<sizeof(FalseType)> : FalseType {};
 
-} // end namespace Catch
-
 #endif // CATCH_SFINAE
+
+} // end namespace Catch
 
 #include <sstream>
 #include <iomanip>
@@ -652,10 +652,12 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 #endif
 
 namespace Catch {
-
-#ifdef CATCH_SFINAE
-
 namespace Detail {
+
+// SFINAE is currently disabled by default for all compilers.
+// If the non SFINAE version of IsStreamInsertable is ambiguous for you
+// and your compiler supports SFINAE, try #defining CATCH_SFINAE
+#ifdef CATCH_SFINAE
 
     template<typename T>
     class IsStreamInsertableHelper {
@@ -672,53 +674,47 @@ namespace Detail {
     template<typename T>
     struct IsStreamInsertable : IsStreamInsertableHelper<T>::type {};
 
-    template<typename T>
-    void toStream( std::ostream& os, T const& value, typename IsStreamInsertable<T>::Enable* = 0 ) {
-        os << value;
-    }
-
-    template<typename T>
-    void toStream( std::ostream& os, T const&, typename IsStreamInsertable<T>::Disable* = 0 ) {
-        os << "{?}";
-    }
-
-}
-
-template<typename T>
-struct StringMaker {
-    static std::string convert( T const& value ) {
-        std::ostringstream oss;
-        Detail::toStream( oss, value );
-        return oss.str();
-    }
-};
-
 #else
 
-namespace Detail {
+    struct BorgType {
+        template<typename T> BorgType( T const& );
+    };
 
-    struct NonStreamable {
-        template<typename T> NonStreamable( const T& ){}
+    TrueType& testStreamable( std::ostream& );
+    FalseType testStreamable( FalseType );
+
+    FalseType operator<<( std::ostream const&, BorgType const& );
+
+    template<typename T>
+    struct IsStreamInsertable {
+        static std::ostream &s;
+        static T const &t;
+        enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
+    };
+
+#endif
+
+    template<bool C>
+    struct StringMakerBase {
+        template<typename T>
+        static std::string convert( T const& ) { return "{?}"; }
+    };
+
+    template<>
+    struct StringMakerBase<true> {
+        template<typename T>
+        static std::string convert( T const& _value ) {
+            std::ostringstream oss;
+            oss << _value;
+            return oss.str();
+        }
     };
 
 } // end namespace Detail
 
-// If the type does not have its own << overload for ostream then
-// this one will be used instead
-inline std::ostream& operator << ( std::ostream& ss, Detail::NonStreamable ){
-    return ss << "{?}";
-}
-
 template<typename T>
-struct StringMaker {
-    static std::string convert( T const& value ) {
-        std::ostringstream oss;
-        oss << value;
-        return oss.str();
-    }
-};
-
-#endif
+struct StringMaker :
+    Detail::StringMakerBase<Detail::IsStreamInsertable<T>::value> {};
 
 template<typename T>
 struct StringMaker<T*> {
@@ -6159,7 +6155,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 34, "integration" );
+    Version libraryVersion( 0, 9, 35, "integration" );
 }
 
 // #included from: catch_text.hpp
