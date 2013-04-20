@@ -52,7 +52,7 @@
 
 #elif __GNUC__ >= 3
 
-#define CATCH_SFINAE
+// #define CATCH_SFINAE // Taking this out completely for now
 
 #endif // __GNUC__ < 3
 

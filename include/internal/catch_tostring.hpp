@@ -22,6 +22,9 @@
 namespace Catch {
 namespace Detail {
 
+// SFINAE is currently disabled by default for all compilers.
+// If the non SFINAE version of IsStreamInsertable is ambiguous for you
+// and your compiler supports SFINAE, try #defining CATCH_SFINAE
 #ifdef CATCH_SFINAE
 
     template<typename T>
@@ -80,7 +83,6 @@ namespace Detail {
 template<typename T>
 struct StringMaker :
     Detail::StringMakerBase<Detail::IsStreamInsertable<T>::value> {};
-
 
 template<typename T>
 struct StringMaker<T*> {
