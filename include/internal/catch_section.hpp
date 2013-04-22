@@ -10,6 +10,7 @@
 
 #include "catch_capture.hpp"
 #include "catch_totals.hpp"
+#include "catch_compiler_capabilities.h"
 
 #include <string>
 

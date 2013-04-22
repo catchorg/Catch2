@@ -17,14 +17,6 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-// Use variadic macros if the compiler supports them
-#if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
-    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
-    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
-    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
-    #define CATCH_CONFIG_VARIADIC_MACROS
-#endif
-
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
 #include "internal/catch_test_registry.hpp"
@@ -34,6 +26,7 @@
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
 #include "internal/catch_matchers.hpp"
+#include "internal/catch_compiler_capabilities.h"
 
 // These files are included here so the single_include script doesn't put them
 // in the conditionally compiled sections

@@ -15,7 +15,7 @@
 #ifdef __BORLANDC__
 
 #if (__BORLANDC__ > 0x582 )
-//#define CATCH_SFINAE // Not confirmed
+//#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
 #endif // __BORLANDC__
@@ -25,7 +25,7 @@
 #ifdef __EDG_VERSION__
 
 #if (__EDG_VERSION__ > 238 )
-//#define CATCH_SFINAE // Not confirmed
+//#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
 #endif // __EDG_VERSION__
@@ -35,7 +35,7 @@
 #ifdef __DMC__
 
 #if (__DMC__ > 0x840 )
-//#define CATCH_SFINAE // Not confirmed
+//#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
 #endif // __DMC__
@@ -47,12 +47,12 @@
 #if __GNUC__ < 3
 
 #if (__GNUC_MINOR__ >= 96 )
-#define CATCH_SFINAE
+#define CATCH_CONFIG_SFINAE
 #endif
 
 #elif __GNUC__ >= 3
 
-// #define CATCH_SFINAE // Taking this out completely for now
+// #define CATCH_CONFIG_SFINAE // Taking this out completely for now
 
 #endif // __GNUC__ < 3
 
@@ -64,11 +64,18 @@
 #ifdef _MSC_VER
 
 #if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
-//#define CATCH_SFINAE // Not confirmed
+//#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
 #endif // _MSC_VER
 
+// Use variadic macros if the compiler supports them
+#if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
+    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
+    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
+    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
+    #define CATCH_CONFIG_VARIADIC_MACROS
+#endif
 
 #endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 

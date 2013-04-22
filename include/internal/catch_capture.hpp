@@ -16,6 +16,8 @@
 #include "catch_context.h"
 #include "catch_common.h"
 #include "catch_interfaces_registry_hub.h"
+#include "internal/catch_compiler_capabilities.h"
+
 #include <ostream>
 
 namespace Catch {

@@ -24,8 +24,8 @@ namespace Detail {
 
 // SFINAE is currently disabled by default for all compilers.
 // If the non SFINAE version of IsStreamInsertable is ambiguous for you
-// and your compiler supports SFINAE, try #defining CATCH_SFINAE
-#ifdef CATCH_SFINAE
+// and your compiler supports SFINAE, try #defining CATCH_CONFIG_SFINAE
+#ifdef CATCH_CONFIG_SFINAE
 
     template<typename T>
     class IsStreamInsertableHelper {

@@ -24,7 +24,7 @@ namespace Catch {
         char sizer[2];
     };
 
-#ifdef CATCH_SFINAE
+#ifdef CATCH_CONFIG_SFINAE
 
     template<bool> struct NotABooleanExpression;
 
@@ -36,7 +36,7 @@ namespace Catch {
     template<> struct SizedIf<sizeof(TrueType)> : TrueType {};
     template<> struct SizedIf<sizeof(FalseType)> : FalseType {};
 
-#endif // CATCH_SFINAE
+#endif // CATCH_CONFIG_SFINAE
     
 } // end namespace Catch
 
