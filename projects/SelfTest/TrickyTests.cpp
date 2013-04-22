@@ -348,3 +348,15 @@ TEST_CASE( "non streamable - with conv. op", "" )
     std::string s = Catch::toString( awkward );
     REQUIRE( s == "7" );
 }
+
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+
+#include <memory>
+
+TEST_CASE( "null_ptr", "" )
+{
+    std::unique_ptr<int> ptr;
+    REQUIRE(ptr.get() == nullptr);
+}
+
+#endif

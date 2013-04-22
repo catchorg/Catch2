@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 35 (integration branch)
- *  Generated: 2013-04-20 23:19:15.811241
+ *  CATCH v0.9 build 36 (integration branch)
+ *  Generated: 2013-04-22 18:53:02.845247
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -19,14 +19,6 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
-#endif
-
-// Use variadic macros if the compiler supports them
-#if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
-    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
-    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
-    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
-    #define CATCH_CONFIG_VARIADIC_MACROS
 #endif
 
 // #included from: internal/catch_notimplemented_exception.h
@@ -372,6 +364,77 @@ namespace Catch {
     };
 }
 
+// #included from: internal/catch_compiler_capabilities.h
+#define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
+
+// Much of the following code is based on Boost (1.53)
+
+////////////////////////////////////////////////////////////////////////////////
+// Borland
+#ifdef __BORLANDC__
+
+#if (__BORLANDC__ > 0x582 )
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // __BORLANDC__
+
+////////////////////////////////////////////////////////////////////////////////
+// EDG
+#ifdef __EDG_VERSION__
+
+#if (__EDG_VERSION__ > 238 )
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // __EDG_VERSION__
+
+////////////////////////////////////////////////////////////////////////////////
+// Digital Mars
+#ifdef __DMC__
+
+#if (__DMC__ > 0x840 )
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // __DMC__
+
+////////////////////////////////////////////////////////////////////////////////
+// GCC
+#ifdef __GNUC__
+
+#if __GNUC__ < 3
+
+#if (__GNUC_MINOR__ >= 96 )
+#define CATCH_CONFIG_SFINAE
+#endif
+
+#elif __GNUC__ >= 3
+
+// #define CATCH_CONFIG_SFINAE // Taking this out completely for now
+
+#endif // __GNUC__ < 3
+
+#endif // __GNUC__
+
+////////////////////////////////////////////////////////////////////////////////
+// Visual C++
+#ifdef _MSC_VER
+
+#if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // _MSC_VER
+
+// Use variadic macros if the compiler supports them
+#if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
+    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
+    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
+    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
+    #define CATCH_CONFIG_VARIADIC_MACROS
+#endif
+
 namespace Catch {
 
 template<typename C>
@@ -508,69 +571,6 @@ private:
 #define TWOBLUECUBES_CATCH_SFINAE_HPP_INCLUDED
 
 // Try to detect if the current compiler supports SFINAE
-// #included from: catch_compiler_capabilities.h
-#define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
-
-// Much of the following code is based on Boost (1.53)
-
-////////////////////////////////////////////////////////////////////////////////
-// Borland
-#ifdef __BORLANDC__
-
-#if (__BORLANDC__ > 0x582 )
-//#define CATCH_SFINAE // Not confirmed
-#endif
-
-#endif // __BORLANDC__
-
-////////////////////////////////////////////////////////////////////////////////
-// EDG
-#ifdef __EDG_VERSION__
-
-#if (__EDG_VERSION__ > 238 )
-//#define CATCH_SFINAE // Not confirmed
-#endif
-
-#endif // __EDG_VERSION__
-
-////////////////////////////////////////////////////////////////////////////////
-// Digital Mars
-#ifdef __DMC__
-
-#if (__DMC__ > 0x840 )
-//#define CATCH_SFINAE // Not confirmed
-#endif
-
-#endif // __DMC__
-
-////////////////////////////////////////////////////////////////////////////////
-// GCC
-#ifdef __GNUC__
-
-#if __GNUC__ < 3
-
-#if (__GNUC_MINOR__ >= 96 )
-#define CATCH_SFINAE
-#endif
-
-#elif __GNUC__ >= 3
-
-// #define CATCH_SFINAE // Taking this out completely for now
-
-#endif // __GNUC__ < 3
-
-#endif // __GNUC__
-
-////////////////////////////////////////////////////////////////////////////////
-// Visual C++
-#ifdef _MSC_VER
-
-#if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
-//#define CATCH_SFINAE // Not confirmed
-#endif
-
-#endif // _MSC_VER
-
 
 namespace Catch {
 
@@ -585,7 +585,7 @@ namespace Catch {
         char sizer[2];
     };
 
-#ifdef CATCH_SFINAE
+#ifdef CATCH_CONFIG_SFINAE
 
     template<bool> struct NotABooleanExpression;
 
@@ -597,7 +597,7 @@ namespace Catch {
     template<> struct SizedIf<sizeof(TrueType)> : TrueType {};
     template<> struct SizedIf<sizeof(FalseType)> : FalseType {};
 
-#endif // CATCH_SFINAE
+#endif // CATCH_CONFIG_SFINAE
 
 } // end namespace Catch
 
@@ -656,8 +656,8 @@ namespace Detail {
 
 // SFINAE is currently disabled by default for all compilers.
 // If the non SFINAE version of IsStreamInsertable is ambiguous for you
-// and your compiler supports SFINAE, try #defining CATCH_SFINAE
-#ifdef CATCH_SFINAE
+// and your compiler supports SFINAE, try #defining CATCH_CONFIG_SFINAE
+#ifdef CATCH_CONFIG_SFINAE
 
     template<typename T>
     class IsStreamInsertableHelper {
@@ -993,6 +993,14 @@ namespace Internal {
     template<> struct OperatorTraits<IsLessThanOrEqualTo>   { static const char* getName(){ return "<="; } };
     template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
 
+    template<typename T>
+    inline T& opCast(const T& t) { return const_cast<T&>(t); }
+
+// nullptr_t support based on pull request #154 from Konstantin Baumann
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    inline std::nullptr_t opCast(std::nullptr_t) { return nullptr; }
+#endif // CATCH_CONFIG_CPP11_NULLPTR
+
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.
     template<typename T1, typename T2, Operator Op>
@@ -1001,37 +1009,37 @@ namespace Internal {
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs) {
-            return const_cast<T1&>( lhs ) ==  const_cast<T2&>( rhs );
+            return opCast( lhs ) ==  opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsNotEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) != const_cast<T2&>( rhs );
+            return opCast( lhs ) != opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) < const_cast<T2&>( rhs );
+            return opCast( lhs ) < opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThan> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) > const_cast<T2&>( rhs );
+            return opCast( lhs ) > opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) >= const_cast<T2&>( rhs );
+            return opCast( lhs ) >= opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
         static bool evaluate( const T1& lhs, const T2& rhs ) {
-            return const_cast<T1&>( lhs ) <= const_cast<T2&>( rhs );
+            return opCast( lhs ) <= opCast( rhs );
         }
     };
 
@@ -1108,6 +1116,16 @@ namespace Internal {
     template<Operator Op, typename T> bool compare( T* lhs, int rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
+
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    // pointer to nullptr_t (when comparing against nullptr)
+    template<Operator Op, typename T> bool compare( std::nullptr_t, T* rhs ) {
+        return Evaluator<T*, T*, Op>::evaluate( NULL, rhs );
+    }
+    template<Operator Op, typename T> bool compare( T* lhs, std::nullptr_t ) {
+        return Evaluator<T*, T*, Op>::evaluate( lhs, NULL );
+    }
+#endif // CATCH_CONFIG_CPP11_NULLPTR
 
 } // end of namespace Internal
 } // end of namespace Catch
@@ -2420,7 +2438,6 @@ namespace Catch
         bool aborting;
     };
 
-    // !Work In progress
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
 
@@ -6155,7 +6172,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 35, "integration" );
+    Version libraryVersion( 0, 9, 36, "integration" );
 }
 
 // #included from: catch_text.hpp

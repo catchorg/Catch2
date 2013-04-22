@@ -189,7 +189,6 @@ namespace Catch
         bool aborting;
     };
 
-    // !Work In progress
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
 

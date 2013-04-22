@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b35 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b36 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -5278,10 +5278,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Anonymous test case 1
 -------------------------------------------------------------------------------
-VariadicMacrosTests.cpp:12
+VariadicMacrosTests.cpp:11
 ...............................................................................
 
-VariadicMacrosTests.cpp:14:
+VariadicMacrosTests.cpp:13:
 PASSED:
 with message:
   anonymous test case
@@ -5289,10 +5289,10 @@ with message:
 -------------------------------------------------------------------------------
 Test case with one argument
 -------------------------------------------------------------------------------
-VariadicMacrosTests.cpp:17
+VariadicMacrosTests.cpp:16
 ...............................................................................
 
-VariadicMacrosTests.cpp:19:
+VariadicMacrosTests.cpp:18:
 PASSED:
 with message:
   no assertions
@@ -5301,10 +5301,10 @@ with message:
 Variadic macros
   Section with one argument
 -------------------------------------------------------------------------------
-VariadicMacrosTests.cpp:24
+VariadicMacrosTests.cpp:23
 ...............................................................................
 
-VariadicMacrosTests.cpp:26:
+VariadicMacrosTests.cpp:25:
 PASSED:
 with message:
   no assertions
@@ -5535,7 +5535,7 @@ with message:
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b35 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b36 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -14009,18 +14009,18 @@ TrickyTests.cpp:349: s == "7" succeeded for: "7" == "7"
 [Finished: 'non streamable - with conv. op' All tests passed (1 assertion in 1 test case)]
 
 [Running: Anonymous test case 1]
-VariadicMacrosTests.cpp:14:  succeeded
+VariadicMacrosTests.cpp:13:  succeeded
 [with message: anonymous test case]
 [Finished: 'Anonymous test case 1' All tests passed (1 assertion in 1 test case)]
 
 [Running: Test case with one argument]
-VariadicMacrosTests.cpp:19:  succeeded
+VariadicMacrosTests.cpp:18:  succeeded
 [with message: no assertions]
 [Finished: 'Test case with one argument' All tests passed (1 assertion in 1 test case)]
 
 [Running: Variadic macros]
 [Started section: 'Section with one argument']
-VariadicMacrosTests.cpp:26:  succeeded
+VariadicMacrosTests.cpp:25:  succeeded
 [with message: no assertions]
 [End of section: 'Section with one argument' 1 assertion passed]
 
