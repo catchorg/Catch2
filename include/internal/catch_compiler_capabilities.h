@@ -47,7 +47,7 @@
 #if __GNUC__ < 3
 
 #if (__GNUC_MINOR__ >= 96 )
-#define CATCH_CONFIG_SFINAE
+//#define CATCH_CONFIG_SFINAE
 #endif
 
 #elif __GNUC__ >= 3
