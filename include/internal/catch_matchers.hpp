@@ -105,6 +105,9 @@ namespace Matchers {
 
     namespace StdString {
 
+        inline std::string makeString( const std::string& str ) { return str; }
+        inline std::string makeString( const char* str ) { return str ? std::string( str ) : std::string(); }
+        
         struct Equals : MatcherImpl<Equals, std::string> {
             Equals( const std::string& str ) : m_str( str ){}
             Equals( const Equals& other ) : m_str( other.m_str ){}
@@ -196,10 +199,30 @@ namespace Matchers {
         return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
     }
 
-    inline Impl::StdString::Equals      Equals( const std::string& str ){ return Impl::StdString::Equals( str ); }
-    inline Impl::StdString::Contains    Contains( const std::string& substr ){ return Impl::StdString::Contains( substr ); }
-    inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ){ return Impl::StdString::StartsWith( substr ); }
-    inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ){ return Impl::StdString::EndsWith( substr ); }
+    inline Impl::StdString::Equals      Equals( const std::string& str ) {
+        return Impl::StdString::Equals( str );
+    }
+    inline Impl::StdString::Equals      Equals( const char* str ) {
+        return Impl::StdString::Equals( Impl::StdString::makeString( str ) );
+    }
+    inline Impl::StdString::Contains    Contains( const std::string& substr ) {
+        return Impl::StdString::Contains( substr );
+    }
+    inline Impl::StdString::Contains    Contains( const char* substr ) {
+        return Impl::StdString::Contains( Impl::StdString::makeString( substr ) );
+    }
+    inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ) {
+        return Impl::StdString::StartsWith( substr );
+    }
+    inline Impl::StdString::StartsWith  StartsWith( const char* substr ) {
+        return Impl::StdString::StartsWith( Impl::StdString::makeString( substr ) );
+    }
+    inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ) {
+        return Impl::StdString::EndsWith( substr );
+    }
+    inline Impl::StdString::EndsWith    EndsWith( const char* substr ) {
+        return Impl::StdString::EndsWith( Impl::StdString::makeString( substr ) );
+    }
     
 } // namespace Matchers
     
