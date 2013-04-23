@@ -56,7 +56,7 @@ namespace Detail {
     template<typename T>
     struct IsStreamInsertable {
         static std::ostream &s;
-        static T const &t;
+        static T  const&t;
         enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
     };
     
@@ -112,7 +112,7 @@ struct StringMaker<std::vector<T> > {
 
 namespace Detail {
     template<typename T>
-    inline std::string makeString( const T& value ) {
+    inline std::string makeString( T const& value ) {
         return StringMaker<T>::convert( value );
     }   
 } // end namespace Detail
@@ -125,17 +125,17 @@ namespace Detail {
 /// Overload (not specialise) this template for custom typs that you don't want
 /// to provide an ostream overload for.
 template<typename T>
-std::string toString( const T& value ) {
+std::string toString( T const& value ) {
     return StringMaker<T>::convert( value );
 }
     
 // Built in overloads
 
-inline std::string toString( const std::string& value ) {
+inline std::string toString( std::string const& value ) {
     return "\"" + value + "\"";
 }
 
-inline std::string toString( const std::wstring& value ) {
+inline std::string toString( std::wstring const& value ) {
     std::ostringstream oss;
     oss << "\"";
     for(size_t i = 0; i < value.size(); ++i )

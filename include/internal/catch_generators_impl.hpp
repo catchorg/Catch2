@@ -50,7 +50,7 @@ namespace Catch {
             deleteAll( m_generatorsInOrder );
         }
         
-        IGeneratorInfo& getGeneratorInfo( const std::string& fileInfo, std::size_t size ) {
+        IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) {
             std::map<std::string, IGeneratorInfo*>::const_iterator it = m_generatorsByName.find( fileInfo );
             if( it == m_generatorsByName.end() ) {
                 IGeneratorInfo* info = new GeneratorInfo( size );

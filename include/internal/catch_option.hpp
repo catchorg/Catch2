@@ -41,7 +41,7 @@ namespace Catch {
             nullableValue = NULL;
         }
         T& operator*() { return *nullableValue; }
-        const T& operator*() const { return *nullableValue; }
+        T const& operator*() const { return *nullableValue; }
         T* operator->() { return nullableValue; }
         const T* operator->() const { return nullableValue; }
 

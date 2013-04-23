@@ -22,18 +22,18 @@ namespace Catch {
             deleteAllValues( m_factories );
         }
         
-        virtual IStreamingReporter* create( const std::string& name, const ReporterConfig& config ) const {
+        virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return NULL;
             return it->second->create( config );
         }
         
-        void registerReporter( const std::string& name, IReporterFactory* factory ) {
+        void registerReporter( std::string const& name, IReporterFactory* factory ) {
             m_factories.insert( std::make_pair( name, factory ) );
         }        
 
-        const FactoryMap& getFactories() const {
+        FactoryMap const& getFactories() const {
             return m_factories;
         }
 

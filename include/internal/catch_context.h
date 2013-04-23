@@ -29,7 +29,7 @@ namespace Catch {
         
         virtual IResultCapture& getResultCapture() = 0;
         virtual IRunner& getRunner() = 0;
-        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) = 0;
+        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;
         virtual bool advanceGeneratorsForCurrentTest() = 0;
         virtual const IConfig* getConfig() const = 0;
     };
@@ -45,7 +45,7 @@ namespace Catch {
     IContext& getCurrentContext();
     IMutableContext& getCurrentMutableContext();
     void cleanUpContext();
-    Stream createStream( const std::string& streamName );
+    Stream createStream( std::string const& streamName );
 
 }
 

@@ -28,13 +28,13 @@ namespace Catch {
             TestedLeaf
         };
         
-        RunningSection( RunningSection* parent, const std::string& name )
+        RunningSection( RunningSection* parent, std::string const& name )
         :   m_state( Unknown ),
             m_parent( parent ),
             m_name( name )
         {}
         
-        RunningSection( const std::string& name )
+        RunningSection( std::string const& name )
         :   m_state( Root ),
             m_parent( NULL ),
             m_name( name )
@@ -77,7 +77,7 @@ namespace Catch {
             return m_parent;
         }
 
-        RunningSection* findOrAddSubSection( const std::string& name, bool& changed ) {
+        RunningSection* findOrAddSubSection( std::string const& name, bool& changed ) {
             for(    SubSections::const_iterator it = m_subSections.begin();
                     it != m_subSections.end();
                     ++it)

@@ -22,26 +22,26 @@ class ExpressionResultBuilder {
 public:
     
     ExpressionResultBuilder( ResultWas::OfType resultType = ResultWas::Unknown );
-    ExpressionResultBuilder( const ExpressionResultBuilder& other );
-    ExpressionResultBuilder& operator=(const ExpressionResultBuilder& other );
+    ExpressionResultBuilder( ExpressionResultBuilder const& other );
+    ExpressionResultBuilder& operator=(ExpressionResultBuilder const& other );
 
     ExpressionResultBuilder& setResultType( ResultWas::OfType result );
     ExpressionResultBuilder& setResultType( bool result );
-    ExpressionResultBuilder& setLhs( const std::string& lhs );
-    ExpressionResultBuilder& setRhs( const std::string& rhs );
-    ExpressionResultBuilder& setOp( const std::string& op );
+    ExpressionResultBuilder& setLhs( std::string const& lhs );
+    ExpressionResultBuilder& setRhs( std::string const& rhs );
+    ExpressionResultBuilder& setOp( std::string const& op );
 
     ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition );
 
     template<typename T>
-    ExpressionResultBuilder& operator << ( const T& value ) {
+    ExpressionResultBuilder& operator << ( T const& value ) {
         m_stream << value;
         return *this;
     }
 
-    std::string reconstructExpression( const AssertionInfo& info ) const;
+    std::string reconstructExpression( AssertionInfo const& info ) const;
 
-    AssertionResult buildResult( const AssertionInfo& info ) const;
+    AssertionResult buildResult( AssertionInfo const& info ) const;
 
 private:
     AssertionResultData m_data;

@@ -67,8 +67,8 @@ struct AutoReg {
     ~AutoReg();
     
 private:
-    AutoReg( const AutoReg& );    
-    void operator= ( const AutoReg& );
+    AutoReg( AutoReg const& );    
+    void operator= ( AutoReg const& );
 };
     
 } // end namespace Catch

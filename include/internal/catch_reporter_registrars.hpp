@@ -18,7 +18,7 @@ namespace Catch {
     
         class ReporterFactory : public IReporterFactory {
 
-            virtual IStreamingReporter* create( const ReporterConfig& config ) const {
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new LegacyReporterAdapter( new T( config ), config );
             }
             
@@ -29,7 +29,7 @@ namespace Catch {
         
     public:
 
-        LegacyReporterRegistrar( const std::string& name ) {
+        LegacyReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     };
@@ -50,7 +50,7 @@ namespace Catch {
             // In fact, ideally, please contact me anyway to let me know you've hit this - as I have
             // no idea who is actually using custom reporters at all (possibly no-one!).
             // The new interface is designed to minimise exposure to interface changes in the future.
-            virtual IStreamingReporter* create( const ReporterConfig& config ) const {
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new T( config );
             }
 
@@ -61,7 +61,7 @@ namespace Catch {
 
     public:
 
-        ReporterRegistrar( const std::string& name ) {
+        ReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     }; 

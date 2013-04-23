@@ -32,7 +32,7 @@ namespace Catch {
         };
 
     public:
-        TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
+        TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
         :   m_stringToMatch( toLower( testSpec ) ),
             m_filterType( matchBehaviour ),
             m_wildcardPosition( NoWildcard )
@@ -65,7 +65,7 @@ namespace Catch {
             return m_filterType;
         }
         
-        bool shouldInclude( const TestCase& testCase ) const {
+        bool shouldInclude( TestCase const& testCase ) const {
             return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
         }
     private:
@@ -75,7 +75,7 @@ namespace Catch {
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
 
-        bool isMatch( const TestCase& testCase ) const {
+        bool isMatch( TestCase const& testCase ) const {
             std::string name = testCase.getTestCaseInfo().name;
             toLowerInPlace( name );
 
@@ -103,27 +103,27 @@ namespace Catch {
 
     class TestCaseFilters {
     public:
-        TestCaseFilters( const std::string& name ) : m_name( name ) {}
+        TestCaseFilters( std::string const& name ) : m_name( name ) {}
 
         std::string getName() const {
             return m_name;
         }
         
-        void addFilter( const TestCaseFilter& filter ) {
+        void addFilter( TestCaseFilter const& filter ) {
             if( filter.getFilterType() == IfFilterMatches::ExcludeTests )
                 m_exclusionFilters.push_back( filter );
             else
                 m_inclusionFilters.push_back( filter );
         }
 
-        void addTags( const std::string& tagPattern ) {
+        void addTags( std::string const& tagPattern ) {
             TagExpression exp;
             TagExpressionParser( exp ).parse( tagPattern );
 
             m_tagExpressions.push_back( exp );
         }
 
-        bool shouldInclude( const TestCase& testCase ) const {
+        bool shouldInclude( TestCase const& testCase ) const {
             if( !m_tagExpressions.empty() ) {
                 std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
                 std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();

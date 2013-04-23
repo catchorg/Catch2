@@ -34,7 +34,7 @@ namespace Internal {
     template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
     
     template<typename T>
-    inline T& opCast(const T& t) { return const_cast<T&>(t); }
+    inline T& opCast(T const& t) { return const_cast<T&>(t); }
 
 // nullptr_t support based on pull request #154 from Konstantin Baumann
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
@@ -49,43 +49,43 @@ namespace Internal {
     
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs) {
             return opCast( lhs ) ==  opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsNotEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) != opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThan> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) < opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThan> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) > opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) >= opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) <= opCast( rhs );
         }
     };
 
     template<Operator Op, typename T1, typename T2>
-    bool applyEvaluator( const T1& lhs, const T2& rhs ) {
+    bool applyEvaluator( T1 const& lhs, T2 const& rhs ) {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
 
@@ -94,7 +94,7 @@ namespace Internal {
 
     // "base" overload
     template<Operator Op, typename T1, typename T2>
-    bool compare( const T1& lhs, const T2& rhs ) {
+    bool compare( T1 const& lhs, T2 const& rhs ) {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
 

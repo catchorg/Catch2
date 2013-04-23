@@ -18,9 +18,9 @@ namespace Catch {
 
     class Section {
     public:
-        Section(    const SourceLineInfo& lineInfo,
-                    const std::string& name,
-                    const std::string& description = "" )
+        Section(    SourceLineInfo const& lineInfo,
+                    std::string const& name,
+                    std::string const& description = "" )
         :   m_info( name, description, lineInfo ),
             m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( m_info, m_assertions ) )
         {}

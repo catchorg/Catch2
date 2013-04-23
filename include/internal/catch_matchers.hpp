@@ -27,7 +27,7 @@ namespace Matchers {
     struct MatcherImpl : Matcher<ExpressionT> {
 
         virtual Ptr<Matcher<ExpressionT> > clone() const {
-            return Ptr<Matcher<ExpressionT> >( new DerivedT( static_cast<const DerivedT&>( *this ) ) );
+            return Ptr<Matcher<ExpressionT> >( new DerivedT( static_cast<DerivedT const&>( *this ) ) );
         }
     };
 
@@ -38,13 +38,13 @@ namespace Matchers {
         public:
 
             AllOf() {}
-            AllOf( const AllOf& other ) : m_matchers( other.m_matchers ) {}
+            AllOf( AllOf const& other ) : m_matchers( other.m_matchers ) {}
 
-            AllOf& add( const Matcher<ExpressionT>& matcher ) {
+            AllOf& add( Matcher<ExpressionT> const& matcher ) {
                 m_matchers.push_back( matcher.clone() );
                 return *this;
             }
-            virtual bool match( const ExpressionT& expr ) const
+            virtual bool match( ExpressionT const& expr ) const
             {
                 for( std::size_t i = 0; i < m_matchers.size(); ++i )
                     if( !m_matchers[i]->match( expr ) )
@@ -72,13 +72,13 @@ namespace Matchers {
         public:
 
             AnyOf() {}
-            AnyOf( const AnyOf& other ) : m_matchers( other.m_matchers ) {}
+            AnyOf( AnyOf const& other ) : m_matchers( other.m_matchers ) {}
 
-            AnyOf& add( const Matcher<ExpressionT>& matcher ) {
+            AnyOf& add( Matcher<ExpressionT> const& matcher ) {
                 m_matchers.push_back( matcher.clone() );
                 return *this;
             }
-            virtual bool match( const ExpressionT& expr ) const
+            virtual bool match( ExpressionT const& expr ) const
             {
                 for( std::size_t i = 0; i < m_matchers.size(); ++i )
                     if( m_matchers[i]->match( expr ) )
@@ -105,16 +105,16 @@ namespace Matchers {
 
     namespace StdString {
 
-        inline std::string makeString( const std::string& str ) { return str; }
+        inline std::string makeString( std::string const& str ) { return str; }
         inline std::string makeString( const char* str ) { return str ? std::string( str ) : std::string(); }
         
         struct Equals : MatcherImpl<Equals, std::string> {
-            Equals( const std::string& str ) : m_str( str ){}
-            Equals( const Equals& other ) : m_str( other.m_str ){}
+            Equals( std::string const& str ) : m_str( str ){}
+            Equals( Equals const& other ) : m_str( other.m_str ){}
 
             virtual ~Equals();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return m_str == expr;
             }
             virtual std::string toString() const {
@@ -125,12 +125,12 @@ namespace Matchers {
         };
         
         struct Contains : MatcherImpl<Contains, std::string> {
-            Contains( const std::string& substr ) : m_substr( substr ){}
-            Contains( const Contains& other ) : m_substr( other.m_substr ){}
+            Contains( std::string const& substr ) : m_substr( substr ){}
+            Contains( Contains const& other ) : m_substr( other.m_substr ){}
 
             virtual ~Contains();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return expr.find( m_substr ) != std::string::npos;
             }
             virtual std::string toString() const {
@@ -141,12 +141,12 @@ namespace Matchers {
         };
         
         struct StartsWith : MatcherImpl<StartsWith, std::string> {
-            StartsWith( const std::string& substr ) : m_substr( substr ){}
-            StartsWith( const StartsWith& other ) : m_substr( other.m_substr ){}
+            StartsWith( std::string const& substr ) : m_substr( substr ){}
+            StartsWith( StartsWith const& other ) : m_substr( other.m_substr ){}
 
             virtual ~StartsWith();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return expr.find( m_substr ) == 0;
             }
             virtual std::string toString() const {
@@ -157,12 +157,12 @@ namespace Matchers {
         };
         
         struct EndsWith : MatcherImpl<EndsWith, std::string> {
-            EndsWith( const std::string& substr ) : m_substr( substr ){}
-            EndsWith( const EndsWith& other ) : m_substr( other.m_substr ){}
+            EndsWith( std::string const& substr ) : m_substr( substr ){}
+            EndsWith( EndsWith const& other ) : m_substr( other.m_substr ){}
 
             virtual ~EndsWith();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return expr.find( m_substr ) == expr.size() - m_substr.size();
             }
             virtual std::string toString() const {
@@ -177,47 +177,47 @@ namespace Matchers {
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
     template<typename ExpressionT>
-    inline Impl::Generic::AllOf<ExpressionT> AllOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2 ) {
+    inline Impl::Generic::AllOf<ExpressionT> AllOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2 ) {
         return Impl::Generic::AllOf<ExpressionT>().add( m1 ).add( m2 );
     }
     template<typename ExpressionT>
-    inline Impl::Generic::AllOf<ExpressionT> AllOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2,
-                                                    const Impl::Matcher<ExpressionT>& m3 ) {
+    inline Impl::Generic::AllOf<ExpressionT> AllOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2,
+                                                    Impl::Matcher<ExpressionT> const& m3 ) {
         return Impl::Generic::AllOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
     }
     template<typename ExpressionT>
-    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2 ) {
+    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2 ) {
         return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 );
     }
     template<typename ExpressionT>
-    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2,
-                                                    const Impl::Matcher<ExpressionT>& m3 ) {
+    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2,
+                                                    Impl::Matcher<ExpressionT> const& m3 ) {
         return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
     }
 
-    inline Impl::StdString::Equals      Equals( const std::string& str ) {
+    inline Impl::StdString::Equals      Equals( std::string const& str ) {
         return Impl::StdString::Equals( str );
     }
     inline Impl::StdString::Equals      Equals( const char* str ) {
         return Impl::StdString::Equals( Impl::StdString::makeString( str ) );
     }
-    inline Impl::StdString::Contains    Contains( const std::string& substr ) {
+    inline Impl::StdString::Contains    Contains( std::string const& substr ) {
         return Impl::StdString::Contains( substr );
     }
     inline Impl::StdString::Contains    Contains( const char* substr ) {
         return Impl::StdString::Contains( Impl::StdString::makeString( substr ) );
     }
-    inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ) {
+    inline Impl::StdString::StartsWith  StartsWith( std::string const& substr ) {
         return Impl::StdString::StartsWith( substr );
     }
     inline Impl::StdString::StartsWith  StartsWith( const char* substr ) {
         return Impl::StdString::StartsWith( Impl::StdString::makeString( substr ) );
     }
-    inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ) {
+    inline Impl::StdString::EndsWith    EndsWith( std::string const& substr ) {
         return Impl::StdString::EndsWith( substr );
     }
     inline Impl::StdString::EndsWith    EndsWith( const char* substr ) {

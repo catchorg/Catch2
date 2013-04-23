@@ -16,9 +16,9 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo(  const std::string& _macroName,
-                        const SourceLineInfo& _lineInfo,
-                        const std::string& _capturedExpression,
+        AssertionInfo(  std::string const& _macroName,
+                        SourceLineInfo const& _lineInfo,
+                        std::string const& _capturedExpression,
                         ResultDisposition::Flags _resultDisposition );
 
         std::string macroName;
@@ -39,7 +39,7 @@ namespace Catch {
     class AssertionResult {
     public:
         AssertionResult();
-        AssertionResult( const AssertionInfo& info, const AssertionResultData& data );
+        AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
         
         bool isOk() const;

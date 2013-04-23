@@ -57,7 +57,7 @@ namespace Catch {
 
     struct OutputDebugWriter {
     
-        void operator()( const std::string &str ) {
+        void operator()( std::string const&str ) {
             writeToDebugConsole( str );
         }
     };

@@ -16,7 +16,7 @@
 #include <algorithm>
 
 namespace Catch {
-    inline bool matchesFilters( const std::vector<TestCaseFilters>& filters, const TestCase& testCase ) {
+    inline bool matchesFilters( std::vector<TestCaseFilters> const& filters, TestCase const& testCase ) {
         std::vector<TestCaseFilters>::const_iterator it = filters.begin();
         std::vector<TestCaseFilters>::const_iterator itEnd = filters.end();
         for(; it != itEnd; ++it )
@@ -25,7 +25,7 @@ namespace Catch {
         return true;
     }
 
-    inline void listTests( const ConfigData& config ) {
+    inline void listTests( ConfigData const& config ) {
         if( config.filters.empty() )
             std::cout << "All available test cases:\n";
         else
@@ -100,7 +100,7 @@ namespace Catch {
             std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
     }
     
-    inline void listTags( const ConfigData& config ) {
+    inline void listTags( ConfigData const& config ) {
         if( config.filters.empty() )
             std::cout << "All available tags:\n";
         else
@@ -152,7 +152,7 @@ namespace Catch {
         std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
     }
 
-    inline void listReporters( const ConfigData& /*config*/ ) {
+    inline void listReporters( ConfigData const& /*config*/ ) {
         std::cout << "Available reports:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator it = factories.begin(), itEnd = factories.end();
@@ -163,7 +163,7 @@ namespace Catch {
         std::cout << std::endl;
     }
     
-    inline void list( const ConfigData& config ) {        
+    inline void list( ConfigData const& config ) {        
         if( config.listSpec & List::Tests )
             listTests( config );
         if( config.listSpec & List::Tags )

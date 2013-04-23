@@ -20,16 +20,16 @@ namespace Catch {
         
         class RegistryHub : public IRegistryHub, public IMutableRegistryHub {
 
-            RegistryHub( const RegistryHub& );
-            void operator=( const RegistryHub& );
+            RegistryHub( RegistryHub const& );
+            void operator=( RegistryHub const& );
 
         public: // IRegistryHub
             RegistryHub() {
             }
-            virtual const IReporterRegistry& getReporterRegistry() const {
+            virtual IReporterRegistry const& getReporterRegistry() const {
                 return m_reporterRegistry;
             }
-            virtual const ITestCaseRegistry& getTestCaseRegistry() const {
+            virtual ITestCaseRegistry const& getTestCaseRegistry() const {
                 return m_testCaseRegistry;
             }
             virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() {
@@ -37,10 +37,10 @@ namespace Catch {
             }
 
         public: // IMutableRegistryHub
-            virtual void registerReporter( const std::string& name, IReporterFactory* factory ) {
+            virtual void registerReporter( std::string const& name, IReporterFactory* factory ) {
                 m_reporterRegistry.registerReporter( name, factory );
             }
-            virtual void registerTest( const TestCase& testInfo ) {
+            virtual void registerTest( TestCase const& testInfo ) {
                 m_testCaseRegistry.registerTest( testInfo );
             }
             virtual void registerTranslator( const IExceptionTranslator* translator ) {

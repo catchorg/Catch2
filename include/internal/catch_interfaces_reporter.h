@@ -303,11 +303,11 @@ namespace Catch
         virtual void StartTestCase( TestCaseInfo const& testInfo ) = 0;
         virtual void EndTestCase( TestCaseInfo const& testInfo, Totals const& totals, std::string const& stdOut, std::string const& stdErr ) = 0;
         virtual void StartSection( std::string const& sectionName, std::string const& description ) = 0;
-        virtual void EndSection( std::string const& sectionName, const Counts& assertions ) = 0;
+        virtual void EndSection( std::string const& sectionName, Counts const& assertions ) = 0;
         virtual void NoAssertionsInSection( std::string const& sectionName ) = 0;
         virtual void NoAssertionsInTestCase( std::string const& testName ) = 0;
         virtual void Aborted() = 0;
-        virtual void Result( const AssertionResult& result ) = 0;
+        virtual void Result( AssertionResult const& result ) = 0;
     };
 
     
@@ -322,7 +322,7 @@ namespace Catch
 
         virtual ~IReporterRegistry();
         virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const = 0;        
-        virtual const FactoryMap& getFactories() const = 0;
+        virtual FactoryMap const& getFactories() const = 0;
     };
     
     inline std::string trim( std::string const& str ) {

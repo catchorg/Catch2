@@ -36,7 +36,7 @@ namespace Catch {
         
         virtual bool shouldDebugBreak() const = 0;
         
-        virtual void acceptMessage( const MessageBuilder& messageBuilder ) = 0;
+        virtual void acceptMessage( MessageBuilder const& messageBuilder ) = 0;
         virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;        

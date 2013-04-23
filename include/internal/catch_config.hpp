@@ -77,8 +77,8 @@ namespace Catch {
     
     class Config : public IConfig {
     private:
-        Config( const Config& other );
-        Config& operator = ( const Config& other );
+        Config( Config const& other );
+        Config& operator = ( Config const& other );
         virtual void dummy();
     public:
 
@@ -86,7 +86,7 @@ namespace Catch {
         :   m_os( std::cout.rdbuf() )
         {}
         
-        Config( const ConfigData& data )
+        Config( ConfigData const& data )
         :   m_data( data ),
             m_os( std::cout.rdbuf() )
         {}
@@ -96,7 +96,7 @@ namespace Catch {
             m_stream.release();
         }
         
-        void setFilename( const std::string& filename ) {
+        void setFilename( std::string const& filename ) {
             m_data.outputFilename = filename;
         }
         
@@ -104,7 +104,7 @@ namespace Catch {
             return m_data.listSpec;
         }
 
-        const std::string& getFilename() const {
+        std::string const& getFilename() const {
             return m_data.outputFilename ;
         }
         
@@ -132,14 +132,14 @@ namespace Catch {
             m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
         }        
 
-        void useStream( const std::string& streamName ) {
+        void useStream( std::string const& streamName ) {
             Stream stream = createStream( streamName );
             setStreamBuf( stream.streamBuf );
             m_stream.release();
             m_stream = stream;
         }
 
-        void addTestSpec( const std::string& testSpec ) {
+        void addTestSpec( std::string const& testSpec ) {
             TestCaseFilters filters( testSpec );
             filters.addFilter( TestCaseFilter( testSpec ) );
             m_data.filters.push_back( filters );
@@ -157,7 +157,7 @@ namespace Catch {
             return m_data.allowThrows;
         }
         
-        const ConfigData& data() const {
+        ConfigData const& data() const {
             return m_data;
         }
         ConfigData& data() {

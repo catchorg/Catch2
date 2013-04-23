@@ -21,7 +21,7 @@ namespace Catch {
     struct IGeneratorsForTest {
         virtual ~IGeneratorsForTest();
 
-        virtual IGeneratorInfo& getGeneratorInfo( const std::string& fileInfo, std::size_t size ) = 0;
+        virtual IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) = 0;
         virtual bool moveNext() = 0;
     };
 

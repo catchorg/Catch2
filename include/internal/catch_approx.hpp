@@ -24,7 +24,7 @@ namespace Detail {
             m_value( value )
         {}
         
-        Approx( const Approx& other )
+        Approx( Approx const& other )
         :   m_epsilon( other.m_epsilon ),
             m_scale( other.m_scale ),
             m_value( other.m_value )
@@ -41,20 +41,20 @@ namespace Detail {
             return approx;
         }
         
-        friend bool operator == ( double lhs, const Approx& rhs ) {
+        friend bool operator == ( double lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
             return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
         }
         
-        friend bool operator == ( const Approx& lhs, double rhs ) {
+        friend bool operator == ( Approx const& lhs, double rhs ) {
             return operator==( rhs, lhs );
         }
         
-        friend bool operator != ( double lhs, const Approx& rhs ) {
+        friend bool operator != ( double lhs, Approx const& rhs ) {
             return !operator==( lhs, rhs );
         }
 
-        friend bool operator != ( const Approx& lhs, double rhs ) {
+        friend bool operator != ( Approx const& lhs, double rhs ) {
             return !operator==( rhs, lhs );
         }
         
@@ -82,7 +82,7 @@ namespace Detail {
 }
 
 template<>
-inline std::string toString<Detail::Approx>( const Detail::Approx& value ) {
+inline std::string toString<Detail::Approx>( Detail::Approx const& value ) {
     return value.toString();
 }
     

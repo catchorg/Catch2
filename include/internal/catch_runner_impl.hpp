@@ -51,12 +51,12 @@ namespace Catch {
 
     class Runner : public IResultCapture, public IRunner {
     
-        Runner( const Runner& );
-        void operator =( const Runner& );
+        Runner( Runner const& );
+        void operator =( Runner const& );
         
     public:
 
-        explicit Runner( const Config& config, const Ptr<IStreamingReporter>& reporter )
+        explicit Runner( Config const& config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( config.data().name ),
             m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
@@ -87,7 +87,7 @@ namespace Catch {
             m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
         }
 
-        Totals runMatching( const std::string& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
+        Totals runMatching( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
 
             std::vector<TestCase> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
 
@@ -104,7 +104,7 @@ namespace Catch {
             return totals;
         }
 
-        Totals runTest( const TestCase& testCase ) {
+        Totals runTest( TestCase const& testCase ) {
             Totals prevTotals = m_totals;
 
             std::string redirectedCout;
@@ -149,22 +149,22 @@ namespace Catch {
             return deltaTotals;
         }
 
-        const Config& config() const {
+        Config const& config() const {
             return m_config;
         }
         
     private: // IResultCapture
 
-        virtual void acceptMessage( const MessageBuilder& messageBuilder ) {
+        virtual void acceptMessage( MessageBuilder const& messageBuilder ) {
             m_messages.push_back( messageBuilder.build() );
         }
 
-        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) {
+        virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) {
             m_lastAssertionInfo = assertionInfo;
             return actOnCurrentResult( assertionResult.buildResult( assertionInfo ) );
         }
 
-        virtual void assertionEnded( const AssertionResult& result ) {
+        virtual void assertionEnded( AssertionResult const& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
@@ -252,7 +252,7 @@ namespace Catch {
 
     private:
 
-        ResultAction::Value actOnCurrentResult( const AssertionResult& result ) {
+        ResultAction::Value actOnCurrentResult( AssertionResult const& result ) {
             m_lastResult = result;
             assertionEnded( m_lastResult );
 
@@ -315,7 +315,7 @@ namespace Catch {
         RunningTest* m_runningTest;
         AssertionResult m_lastResult;
 
-        const Config& m_config;
+        Config const& m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;

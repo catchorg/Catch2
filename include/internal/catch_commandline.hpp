@@ -17,20 +17,20 @@ namespace Catch {
     public:
         Command(){}
 
-        explicit Command( const std::string& name ) : m_name( name ) {
+        explicit Command( std::string const& name ) : m_name( name ) {
         }
                 
-        Command& operator += ( const std::string& arg ) {
+        Command& operator += ( std::string const& arg ) {
             m_args.push_back( arg );
             return *this;
         }
-        Command& operator += ( const Command& other ) {
+        Command& operator += ( Command const& other ) {
             std::copy( other.m_args.begin(), other.m_args.end(), std::back_inserter( m_args ) );
             if( m_name.empty() )
                 m_name = other.m_name;
             return *this;
         }
-        Command operator + ( const Command& other ) {
+        Command operator + ( Command const& other ) {
             Command newCommand( *this );
             newCommand += other;
             return newCommand;
@@ -45,7 +45,7 @@ namespace Catch {
         std::size_t argsCount() const { return m_args.size(); }
 
         CATCH_ATTRIBUTE_NORETURN
-        void raiseError( const std::string& message ) const {
+        void raiseError( std::string const& message ) const {
             std::ostringstream oss;
             if( m_name.empty() )
                 oss << "Error while parsing " << m_name << ". " << message << ".";
@@ -76,14 +76,14 @@ namespace Catch {
                 exeName = exeName.substr( pos+1 );
             return exeName;
         }
-        Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
+        Command find( std::string const& arg1,  std::string const& arg2, std::string const& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
         }
 
-        Command find( const std::string& shortArg, const std::string& longArg ) const {
+        Command find( std::string const& shortArg, std::string const& longArg ) const {
             return find( shortArg ) + find( longArg );
         }
-        Command find( const std::string& arg ) const {
+        Command find( std::string const& arg ) const {
             if( arg.empty() )
                 return getArgs( "", 1 );
             else
@@ -97,7 +97,7 @@ namespace Catch {
         }
 
     private:
-        Command getArgs( const std::string& cmdName, std::size_t from ) const {
+        Command getArgs( std::string const& cmdName, std::size_t from ) const {
             Command command( cmdName );
             for( std::size_t i = from; i < m_argc && m_argv[i][0] != '-'; ++i  )
                 command += m_argv[i];
@@ -116,7 +116,7 @@ namespace Catch {
         
         virtual ~OptionParser() {}
 
-        Command find( const CommandParser& parser ) const {
+        Command find( CommandParser const& parser ) const {
             Command cmd;
             for( std::vector<std::string>::const_iterator it = m_optionNames.begin();
                 it != m_optionNames.end();
@@ -125,7 +125,7 @@ namespace Catch {
             return cmd;
         }
 
-        void validateArgs( const Command& args ) const {
+        void validateArgs( Command const& args ) const {
             if(  tooFewArgs( args ) || tooManyArgs( args ) ) {
                 std::ostringstream oss;
                 if( m_maxArgs == -1 )
@@ -138,14 +138,14 @@ namespace Catch {
             }
         }
 
-        void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+        void parseIntoConfig( CommandParser const& parser, ConfigData& config ) {
             if( Command cmd = find( parser ) ) {
                 validateArgs( cmd );
                 parseIntoConfig( cmd, config );
             }
         }
 
-        virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
+        virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) = 0;
         virtual std::string argsSynopsis() const = 0;
         virtual std::string optionSummary() const = 0;
         virtual std::string optionDescription() const { return ""; }
@@ -171,10 +171,10 @@ namespace Catch {
         
     protected:
 
-        bool tooFewArgs( const Command& args ) const {
+        bool tooFewArgs( Command const& args ) const {
             return args.argsCount() < static_cast<std::size_t>( m_minArgs );
         }
-        bool tooManyArgs( const Command& args ) const {
+        bool tooManyArgs( Command const& args ) const {
             return m_maxArgs >= 0 && args.argsCount() > static_cast<std::size_t>( m_maxArgs );
         }
         std::vector<std::string> m_optionNames;
@@ -201,7 +201,7 @@ namespace Catch {
                 return "";
             }
 
-            virtual void parseIntoConfig( const Command&, ConfigData& ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& ) {
                 // Does not affect config
             }
         };
@@ -254,7 +254,7 @@ namespace Catch {
                                                  "that start with 'a/b/', except 'a/b/c', which is included";
             }
                             
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 std::string groupName;
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
                     if( i != 0 )
@@ -300,7 +300,7 @@ namespace Catch {
                 "matches all tests tagged [one], except those also tagged [two]";
             }
             
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 std::string groupName;
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
                     if( i != 0 )
@@ -345,7 +345,7 @@ namespace Catch {
                     ;//"    -l xml";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 config.listSpec = List::Tests;
                 if( cmd.argsCount() >= 1 ) {
                     if( cmd[0] == "all" )
@@ -404,7 +404,7 @@ namespace Catch {
                     "of the root node.";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 config.reporter = cmd[0];
             }
         };
@@ -438,7 +438,7 @@ namespace Catch {
                     "    -o %debug    \t(The IDE's debug output window - currently only Windows' "
                                         "OutputDebugString is supported).";
             }
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 if( cmd[0][0] == '%' )
                     config.stream = cmd[0].substr( 1 );
                 else
@@ -465,7 +465,7 @@ namespace Catch {
                     "added worked first time!). To see successful, as well as failing, test results "
                     "just pass this option.";
             }
-            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
                 config.includeWhichResults = Include::SuccessfulResults;
             }
         };
@@ -491,7 +491,7 @@ namespace Catch {
                     "built your code with the DEBUG preprocessor symbol";
             }
             
-            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
                 config.shouldDebugBreak = true;
             }
         };
@@ -521,7 +521,7 @@ namespace Catch {
                     "    -n \"tests of the widget component\"";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 config.name = cmd[0];
             }
         };
@@ -550,7 +550,7 @@ namespace Catch {
                     "number causes it to abort after that number of assertion failures.";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 int threshold = 1;
                 if( cmd.argsCount() == 1 ) {
                     std::stringstream ss;
@@ -589,7 +589,7 @@ namespace Catch {
                     "as not to contribute additional noise.";
             }
 
-            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
                 config.allowThrows = false;
             }
         };
@@ -620,7 +620,7 @@ namespace Catch {
                     "    -w NoAssertions";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
                     if( cmd[i] == "NoAssertions" )
                         config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
@@ -655,7 +655,7 @@ namespace Catch {
             add<Options::HelpOptionParser>();       // Keep this one last
         }
 
-        void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+        void parseIntoConfig( CommandParser const& parser, ConfigData& config ) {
             config.name = parser.exeName();
             if( endsWith( config.name, ".exe" ) )
                config.name = config.name.substr( 0, config.name.size()-4 );

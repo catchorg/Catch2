@@ -24,14 +24,14 @@ namespace Catch {
     struct ITestCase;
 
     struct TestCaseInfo {
-        TestCaseInfo(   const std::string& _name,
-                        const std::string& _className,
-                        const std::string& _description,
-                        const std::set<std::string>& _tags,
+        TestCaseInfo(   std::string const& _name,
+                        std::string const& _className,
+                        std::string const& _description,
+                        std::set<std::string> const& _tags,
                         bool _isHidden,
-                        const SourceLineInfo& _lineInfo );
+                        SourceLineInfo const& _lineInfo );
 
-        TestCaseInfo( const TestCaseInfo& other );
+        TestCaseInfo( TestCaseInfo const& other );
 
         std::string name;
         std::string className;
@@ -45,34 +45,34 @@ namespace Catch {
     class TestCase : protected TestCaseInfo {
     public:
 
-        TestCase( ITestCase* testCase, const TestCaseInfo& info );
-        TestCase( const TestCase& other );
+        TestCase( ITestCase* testCase, TestCaseInfo const& info );
+        TestCase( TestCase const& other );
 
-        TestCase withName( const std::string& _newName ) const;
+        TestCase withName( std::string const& _newName ) const;
 
         void invoke() const;
 
-        const TestCaseInfo& getTestCaseInfo() const;
+        TestCaseInfo const& getTestCaseInfo() const;
 
         bool isHidden() const;
-        bool hasTag( const std::string& tag ) const;
-        bool matchesTags( const std::string& tagPattern ) const;
-        const std::set<std::string>& getTags() const;
+        bool hasTag( std::string const& tag ) const;
+        bool matchesTags( std::string const& tagPattern ) const;
+        std::set<std::string> const& getTags() const;
         
         void swap( TestCase& other );
-        bool operator == ( const TestCase& other ) const;
-        bool operator < ( const TestCase& other ) const;
-        TestCase& operator = ( const TestCase& other );
+        bool operator == ( TestCase const& other ) const;
+        bool operator < ( TestCase const& other ) const;
+        TestCase& operator = ( TestCase const& other );
 
     private:
         Ptr<ITestCase> test;
     };
 
     TestCase makeTestCase(  ITestCase* testCase,
-                            const std::string& className,
-                            const std::string& name,
-                            const std::string& description,
-                            const SourceLineInfo& lineInfo );
+                            std::string const& className,
+                            std::string const& name,
+                            std::string const& description,
+                            SourceLineInfo const& lineInfo );
 }
 
 #ifdef __clang__

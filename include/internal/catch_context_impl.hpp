@@ -18,8 +18,8 @@ namespace Catch {
     class Context : public IMutableContext {
 
         Context() : m_config( NULL ) {}
-        Context( const Context& );
-        void operator=( const Context& );
+        Context( Context const& );
+        void operator=( Context const& );
 
     public: // IContext
         virtual IResultCapture& getResultCapture() {
@@ -28,7 +28,7 @@ namespace Catch {
         virtual IRunner& getRunner() {
             return *m_runner;
         }
-        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) {
+        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
             return getGeneratorsForCurrentTest()
             .getGeneratorInfo( fileInfo, totalSize )
             .getCurrentIndex();
@@ -95,7 +95,7 @@ namespace Catch {
         return getCurrentMutableContext();
     }
 
-    Stream createStream( const std::string& streamName ) {
+    Stream createStream( std::string const& streamName ) {
         if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
         if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
         if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
