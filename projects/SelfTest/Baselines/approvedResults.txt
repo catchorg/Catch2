@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b36 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b37 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -2758,6 +2758,18 @@ MiscTests.cpp:236: FAILED:
   CHECK_THAT( testStringForMatching() Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
+
+-------------------------------------------------------------------------------
+string
+-------------------------------------------------------------------------------
+MiscTests.cpp:238
+...............................................................................
+
+MiscTests.cpp:240:
+PASSED:
+  REQUIRE_THAT( "" Equals(__null) )
+with expansion:
+  "" equals: ""
 
 -------------------------------------------------------------------------------
 ./succeeding/matchers/AllOf
@@ -5531,11 +5543,11 @@ with message:
   boo!
 
 ===============================================================================
-112 test cases - 49 failed (706 assertions - 106 failed)
+113 test cases - 49 failed (707 assertions - 106 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b36 (integration) host application.
+CatchSelfTest is a CATCH v0.9 b37 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -5852,7 +5864,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="78" tests="706" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="10" failures="78" tests="707" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -6276,6 +6288,7 @@ MiscTests.cpp:231
 MiscTests.cpp:236
       </failure>
     </testcase>
+    <testcase classname="global" name="string" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers/AllOf" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers/AnyOf" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers/Equals" time="tbd"/>
@@ -9714,6 +9727,17 @@ MiscTests.cpp" line="236">
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="string">
+MiscTests.cpp" line="240">
+        <Original>
+          &quot;&quot; Equals(__null)
+        </Original>
+        <Expanded>
+          &quot;&quot; equals: &quot;&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="./succeeding/matchers/AllOf">
 MiscTests.cpp" line="244">
         <Original>
@@ -12276,9 +12300,9 @@ BDDTests.cpp" line="54">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="600" failures="106"/>
+    <OverallResults successes="601" failures="106"/>
   </Group>
-  <OverallResults successes="600" failures="106"/>
+  <OverallResults successes="601" failures="106"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -13009,6 +13033,10 @@ MiscTests.cpp:231: testStringForMatching() EndsWith( "this" ) failed for:
 MiscTests.cpp:236: testStringForMatching() Equals( "something else" ) failed for:
 	"this string contains 'abc' as a substring" equals: "something else"
 [Finished: './failing/matchers/Equals' 1 test case failed (1 assertion failed)]
+
+[Running: string]
+MiscTests.cpp:240: "" Equals(__null) succeeded for: "" equals: ""
+[Finished: 'string' All tests passed (1 assertion in 1 test case)]
 
 [Running: ./succeeding/matchers/AllOf]
 MiscTests.cpp:244: testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) succeeded for:
@@ -14119,10 +14147,10 @@ BDDTests.cpp:67:  succeeded
 [End of section: '   Given: A section name that is so long that it cannot fit in a single console width' 1 assertion passed]
 
 [Finished: 'Scenario: This is a really long scenario name to see how the list command deals with wrapping' All tests passed (1 assertion in 1 test case)]
-[End of group: '~dummy'. 49 of 112 test cases failed (106 of 706 assertions failed)]
+[End of group: '~dummy'. 49 of 113 test cases failed (106 of 707 assertions failed)]
 
 
-[Testing completed. 49 of 112 test cases failed (106 of 706 assertions failed)]
+[Testing completed. 49 of 113 test cases failed (106 of 707 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
