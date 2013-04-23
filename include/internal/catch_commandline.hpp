@@ -44,7 +44,6 @@ namespace Catch {
         std::string operator[]( std::size_t i ) const { return m_args[i]; }
         std::size_t argsCount() const { return m_args.size(); }
 
-        CATCH_ATTRIBUTE_NORETURN
         void raiseError( std::string const& message ) const {
             std::ostringstream oss;
             if( m_name.empty() )
@@ -56,7 +55,8 @@ namespace Catch {
                 oss << " Arguments were:";
             for( std::size_t i = 0; i < m_args.size(); ++i )
                 oss << " " << m_args[i];
-            throw std::domain_error( oss.str() );
+            if( isTrue( true ) )
+                throw std::domain_error( oss.str() );
         }
         
     private:

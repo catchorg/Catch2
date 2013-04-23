@@ -15,15 +15,11 @@
 #define INTERNAL_CATCH_STRINGIFY2( expr ) #expr
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
 
-#ifdef __GNUC__
-#define CATCH_ATTRIBUTE_NORETURN __attribute__ ((noreturn))
-#else
-#define CATCH_ATTRIBUTE_NORETURN
-#endif
-
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
+
+#include "catch_compiler_capabilities.h"
 
 namespace Catch {
 
@@ -134,11 +130,14 @@ namespace Catch {
         return os;
     }
     
-    CATCH_ATTRIBUTE_NORETURN
+    // This is just here to avoid compiler warnings with macro constants and boolean literals
+    inline bool isTrue( bool value ){ return value; }
+    
     inline void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo ) {
         std::ostringstream oss;
         oss << locationInfo << ": Internal Catch error: '" << message << "'";
-        throw std::logic_error( oss.str() );
+        if( isTrue( true ))
+            throw std::logic_error( oss.str() );
     }
 }
 
