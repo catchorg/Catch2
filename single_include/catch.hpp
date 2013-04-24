@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 37 (integration branch)
- *  Generated: 2013-04-23 08:01:34.500704
+ *  CATCH v0.9 build 38 (integration branch)
+ *  Generated: 2013-04-24 19:08:42.283467
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -34,21 +34,86 @@
 #define INTERNAL_CATCH_STRINGIFY2( expr ) #expr
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
 
-#ifdef __GNUC__
-#define CATCH_ATTRIBUTE_NORETURN __attribute__ ((noreturn))
-#else
-#define CATCH_ATTRIBUTE_NORETURN
-#endif
-
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
 
+// #included from: catch_compiler_capabilities.h
+#define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
+
+// Much of the following code is based on Boost (1.53)
+
+////////////////////////////////////////////////////////////////////////////////
+// Borland
+#ifdef __BORLANDC__
+
+#if (__BORLANDC__ > 0x582 )
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // __BORLANDC__
+
+////////////////////////////////////////////////////////////////////////////////
+// EDG
+#ifdef __EDG_VERSION__
+
+#if (__EDG_VERSION__ > 238 )
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // __EDG_VERSION__
+
+////////////////////////////////////////////////////////////////////////////////
+// Digital Mars
+#ifdef __DMC__
+
+#if (__DMC__ > 0x840 )
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // __DMC__
+
+////////////////////////////////////////////////////////////////////////////////
+// GCC
+#ifdef __GNUC__
+
+#if __GNUC__ < 3
+
+#if (__GNUC_MINOR__ >= 96 )
+//#define CATCH_CONFIG_SFINAE
+#endif
+
+#elif __GNUC__ >= 3
+
+// #define CATCH_CONFIG_SFINAE // Taking this out completely for now
+
+#endif // __GNUC__ < 3
+
+#endif // __GNUC__
+
+////////////////////////////////////////////////////////////////////////////////
+// Visual C++
+#ifdef _MSC_VER
+
+#if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
+//#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#endif // _MSC_VER
+
+// Use variadic macros if the compiler supports them
+#if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
+    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
+    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
+    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
+    #define CATCH_CONFIG_VARIADIC_MACROS
+#endif
+
 namespace Catch {
 
     class NonCopyable {
-        NonCopyable( const NonCopyable& );
-        void operator = ( const NonCopyable& );
+        NonCopyable( NonCopyable const& );
+        void operator = ( NonCopyable const& );
     protected:
         NonCopyable() {}
         virtual ~NonCopyable();
@@ -86,17 +151,17 @@ namespace Catch {
     }
 
     template<typename ContainerT, typename Function>
-    inline void forEach( const ContainerT& container, Function function ) {
+    inline void forEach( ContainerT const& container, Function function ) {
         std::for_each( container.begin(), container.end(), function );
     }
 
-    inline bool startsWith( const std::string& s, const std::string& prefix ) {
+    inline bool startsWith( std::string const& s, std::string const& prefix ) {
         return s.size() >= prefix.size() && s.substr( 0, prefix.size() ) == prefix;
     }
-    inline bool endsWith( const std::string& s, const std::string& suffix ) {
+    inline bool endsWith( std::string const& s, std::string const& suffix ) {
         return s.size() >= suffix.size() && s.substr( s.size()-suffix.size(), suffix.size() ) == suffix;
     }
-    inline bool contains( const std::string& s, const std::string& infix ) {
+    inline bool contains( std::string const& s, std::string const& infix ) {
         return s.find( infix ) != std::string::npos;
     }
     inline void toLowerInPlace( std::string& s ) {
@@ -109,12 +174,12 @@ namespace Catch {
     }
 
     struct pluralise {
-        pluralise( std::size_t count, const std::string& label )
+        pluralise( std::size_t count, std::string const& label )
         :   m_count( count ),
             m_label( label )
         {}
 
-        friend std::ostream& operator << ( std::ostream& os, const pluralise& pluraliser ) {
+        friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser ) {
             os << pluraliser.m_count << " " << pluraliser.m_label;
             if( pluraliser.m_count != 1 )
                 os << "s";
@@ -128,11 +193,11 @@ namespace Catch {
     struct SourceLineInfo {
 
         SourceLineInfo() : line( 0 ){}
-        SourceLineInfo( const std::string& _file, std::size_t _line )
+        SourceLineInfo( std::string const& _file, std::size_t _line )
         :   file( _file ),
             line( _line )
         {}
-        SourceLineInfo( const SourceLineInfo& other )
+        SourceLineInfo( SourceLineInfo const& other )
         :   file( other.file ),
             line( other.line )
         {}
@@ -144,7 +209,7 @@ namespace Catch {
         std::size_t line;
     };
 
-    inline std::ostream& operator << ( std::ostream& os, const SourceLineInfo& info ) {
+    inline std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
 #ifndef __GNUG__
         os << info.file << "(" << info.line << ")";
 #else
@@ -153,11 +218,14 @@ namespace Catch {
         return os;
     }
 
-    CATCH_ATTRIBUTE_NORETURN
-    inline void throwLogicError( const std::string& message, const SourceLineInfo& locationInfo ) {
+    // This is just here to avoid compiler warnings with macro constants and boolean literals
+    inline bool isTrue( bool value ){ return value; }
+
+    inline void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo ) {
         std::ostringstream oss;
         oss << locationInfo << ": Internal Catch error: '" << message << "'";
-        throw std::logic_error( oss.str() );
+        if( isTrue( true ))
+            throw std::logic_error( oss.str() );
     }
 }
 
@@ -171,7 +239,7 @@ namespace Catch {
     class NotImplementedException : public std::exception
     {
     public:
-        NotImplementedException( const SourceLineInfo& lineInfo );
+        NotImplementedException( SourceLineInfo const& lineInfo );
 
         virtual ~NotImplementedException() throw() {}
 
@@ -206,7 +274,7 @@ namespace Catch {
     struct IGeneratorsForTest {
         virtual ~IGeneratorsForTest();
 
-        virtual IGeneratorInfo& getGeneratorInfo( const std::string& fileInfo, std::size_t size ) = 0;
+        virtual IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) = 0;
         virtual bool moveNext() = 0;
     };
 
@@ -233,7 +301,7 @@ namespace Catch {
 
         virtual IResultCapture& getResultCapture() = 0;
         virtual IRunner& getRunner() = 0;
-        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) = 0;
+        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;
         virtual bool advanceGeneratorsForCurrentTest() = 0;
         virtual const IConfig* getConfig() const = 0;
     };
@@ -249,7 +317,7 @@ namespace Catch {
     IContext& getCurrentContext();
     IMutableContext& getCurrentMutableContext();
     void cleanUpContext();
-    Stream createStream( const std::string& streamName );
+    Stream createStream( std::string const& streamName );
 
 }
 
@@ -359,81 +427,10 @@ namespace Catch {
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
-        virtual const std::vector<TestCase>& getAllTests() const = 0;
-        virtual std::vector<TestCase> getMatchingTestCases( const std::string& rawTestSpec ) const = 0;
+        virtual std::vector<TestCase> const& getAllTests() const = 0;
+        virtual std::vector<TestCase> getMatchingTestCases( std::string const& rawTestSpec ) const = 0;
     };
 }
-
-// #included from: internal/catch_compiler_capabilities.h
-#define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
-
-// Much of the following code is based on Boost (1.53)
-
-////////////////////////////////////////////////////////////////////////////////
-// Borland
-#ifdef __BORLANDC__
-
-#if (__BORLANDC__ > 0x582 )
-//#define CATCH_CONFIG_SFINAE // Not confirmed
-#endif
-
-#endif // __BORLANDC__
-
-////////////////////////////////////////////////////////////////////////////////
-// EDG
-#ifdef __EDG_VERSION__
-
-#if (__EDG_VERSION__ > 238 )
-//#define CATCH_CONFIG_SFINAE // Not confirmed
-#endif
-
-#endif // __EDG_VERSION__
-
-////////////////////////////////////////////////////////////////////////////////
-// Digital Mars
-#ifdef __DMC__
-
-#if (__DMC__ > 0x840 )
-//#define CATCH_CONFIG_SFINAE // Not confirmed
-#endif
-
-#endif // __DMC__
-
-////////////////////////////////////////////////////////////////////////////////
-// GCC
-#ifdef __GNUC__
-
-#if __GNUC__ < 3
-
-#if (__GNUC_MINOR__ >= 96 )
-//#define CATCH_CONFIG_SFINAE
-#endif
-
-#elif __GNUC__ >= 3
-
-// #define CATCH_CONFIG_SFINAE // Taking this out completely for now
-
-#endif // __GNUC__ < 3
-
-#endif // __GNUC__
-
-////////////////////////////////////////////////////////////////////////////////
-// Visual C++
-#ifdef _MSC_VER
-
-#if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
-//#define CATCH_CONFIG_SFINAE // Not confirmed
-#endif
-
-#endif // _MSC_VER
-
-// Use variadic macros if the compiler supports them
-#if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
-    ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
-    ( defined __GNUC__ && __GNUC__ >= 3 ) || \
-    ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
-    #define CATCH_CONFIG_VARIADIC_MACROS
-#endif
 
 namespace Catch {
 
@@ -490,8 +487,8 @@ struct AutoReg {
     ~AutoReg();
 
 private:
-    AutoReg( const AutoReg& );
-    void operator= ( const AutoReg& );
+    AutoReg( AutoReg const& );
+    void operator= ( AutoReg const& );
 };
 
 } // end namespace Catch
@@ -500,12 +497,6 @@ private:
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE( ... ) \
         static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); }\
-        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
-
-    ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TESTCASE_NORETURN( ... ) \
-        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() CATCH_ATTRIBUTE_NORETURN; \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); }\
         static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
@@ -527,12 +518,6 @@ private:
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
         static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); }\
-        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
-
-    ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TESTCASE_NORETURN( Name, Desc ) \
-        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )() CATCH_ATTRIBUTE_NORETURN; \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); }\
         static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
 
@@ -688,7 +673,7 @@ namespace Detail {
     template<typename T>
     struct IsStreamInsertable {
         static std::ostream &s;
-        static T const &t;
+        static T  const&t;
         enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
     };
 
@@ -744,7 +729,7 @@ struct StringMaker<std::vector<T> > {
 
 namespace Detail {
     template<typename T>
-    inline std::string makeString( const T& value ) {
+    inline std::string makeString( T const& value ) {
         return StringMaker<T>::convert( value );
     }
 } // end namespace Detail
@@ -757,17 +742,17 @@ namespace Detail {
 /// Overload (not specialise) this template for custom typs that you don't want
 /// to provide an ostream overload for.
 template<typename T>
-std::string toString( const T& value ) {
+std::string toString( T const& value ) {
     return StringMaker<T>::convert( value );
 }
 
 // Built in overloads
 
-inline std::string toString( const std::string& value ) {
+inline std::string toString( std::string const& value ) {
     return "\"" + value + "\"";
 }
 
-inline std::string toString( const std::wstring& value ) {
+inline std::string toString( std::wstring const& value ) {
     std::ostringstream oss;
     oss << "\"";
     for(size_t i = 0; i < value.size(); ++i )
@@ -920,9 +905,9 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo(  const std::string& _macroName,
-                        const SourceLineInfo& _lineInfo,
-                        const std::string& _capturedExpression,
+        AssertionInfo(  std::string const& _macroName,
+                        SourceLineInfo const& _lineInfo,
+                        std::string const& _capturedExpression,
                         ResultDisposition::Flags _resultDisposition );
 
         std::string macroName;
@@ -943,7 +928,7 @@ namespace Catch {
     class AssertionResult {
     public:
         AssertionResult();
-        AssertionResult( const AssertionInfo& info, const AssertionResultData& data );
+        AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
 
         bool isOk() const;
@@ -994,7 +979,7 @@ namespace Internal {
     template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
 
     template<typename T>
-    inline T& opCast(const T& t) { return const_cast<T&>(t); }
+    inline T& opCast(T const& t) { return const_cast<T&>(t); }
 
 // nullptr_t support based on pull request #154 from Konstantin Baumann
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
@@ -1008,43 +993,43 @@ namespace Internal {
 
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs) {
             return opCast( lhs ) ==  opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsNotEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) != opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThan> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) < opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThan> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) > opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) >= opCast( rhs );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
-        static bool evaluate( const T1& lhs, const T2& rhs ) {
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
             return opCast( lhs ) <= opCast( rhs );
         }
     };
 
     template<Operator Op, typename T1, typename T2>
-    bool applyEvaluator( const T1& lhs, const T2& rhs ) {
+    bool applyEvaluator( T1 const& lhs, T2 const& rhs ) {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
 
@@ -1053,7 +1038,7 @@ namespace Internal {
 
     // "base" overload
     template<Operator Op, typename T1, typename T2>
-    bool compare( const T1& lhs, const T2& rhs ) {
+    bool compare( T1 const& lhs, T2 const& rhs ) {
         return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
     }
 
@@ -1142,26 +1127,26 @@ class ExpressionResultBuilder {
 public:
 
     ExpressionResultBuilder( ResultWas::OfType resultType = ResultWas::Unknown );
-    ExpressionResultBuilder( const ExpressionResultBuilder& other );
-    ExpressionResultBuilder& operator=(const ExpressionResultBuilder& other );
+    ExpressionResultBuilder( ExpressionResultBuilder const& other );
+    ExpressionResultBuilder& operator=(ExpressionResultBuilder const& other );
 
     ExpressionResultBuilder& setResultType( ResultWas::OfType result );
     ExpressionResultBuilder& setResultType( bool result );
-    ExpressionResultBuilder& setLhs( const std::string& lhs );
-    ExpressionResultBuilder& setRhs( const std::string& rhs );
-    ExpressionResultBuilder& setOp( const std::string& op );
+    ExpressionResultBuilder& setLhs( std::string const& lhs );
+    ExpressionResultBuilder& setRhs( std::string const& rhs );
+    ExpressionResultBuilder& setOp( std::string const& op );
 
     ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition );
 
     template<typename T>
-    ExpressionResultBuilder& operator << ( const T& value ) {
+    ExpressionResultBuilder& operator << ( T const& value ) {
         m_stream << value;
         return *this;
     }
 
-    std::string reconstructExpression( const AssertionInfo& info ) const;
+    std::string reconstructExpression( AssertionInfo const& info ) const;
 
-    AssertionResult buildResult( const AssertionInfo& info ) const;
+    AssertionResult buildResult( AssertionInfo const& info ) const;
 
 private:
     AssertionResultData m_data;
@@ -1183,38 +1168,38 @@ struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 // in an ExpressionResultBuilder object
 template<typename T>
 class ExpressionLhs {
-    void operator = ( const ExpressionLhs& );
+    void operator = ( ExpressionLhs const& );
 
 public:
     ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator == ( const RhsT& rhs ) {
+    ExpressionResultBuilder& operator == ( RhsT const& rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator != ( const RhsT& rhs ) {
+    ExpressionResultBuilder& operator != ( RhsT const& rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator < ( const RhsT& rhs ) {
+    ExpressionResultBuilder& operator < ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThan>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator > ( const RhsT& rhs ) {
+    ExpressionResultBuilder& operator > ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThan>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator <= ( const RhsT& rhs ) {
+    ExpressionResultBuilder& operator <= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator >= ( const RhsT& rhs ) {
+    ExpressionResultBuilder& operator >= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
     }
 
@@ -1236,14 +1221,14 @@ public:
 
     // Only simple binary expressions are allowed on the LHS.
     // If more complex compositions are required then place the sub expression in parentheses
-    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( const RhsT& );
-    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( const RhsT& );
-    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( const RhsT& );
-    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( const RhsT& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( RhsT const& );
 
 private:
     template<Internal::Operator Op, typename RhsT>
-    ExpressionResultBuilder& captureExpression( const RhsT& rhs ) {
+    ExpressionResultBuilder& captureExpression( RhsT const& rhs ) {
         return m_result
             .setResultType( Internal::compare<Op>( m_lhs, rhs ) )
             .setLhs( Catch::toString( m_lhs ) )
@@ -1265,8 +1250,8 @@ class ExpressionDecomposer {
 public:
 
     template<typename T>
-    ExpressionLhs<const T&> operator->* ( const T & operand ) {
-        return ExpressionLhs<const T&>( operand );
+    ExpressionLhs<T const&> operator->* ( T const& operand ) {
+        return ExpressionLhs<T const&>( operand );
     }
 
     ExpressionLhs<bool> operator->* ( bool value ) {
@@ -1345,13 +1330,13 @@ namespace Catch {
     struct Counts {
         Counts() : passed( 0 ), failed( 0 ) {}
 
-        Counts operator - ( const Counts& other ) const {
+        Counts operator - ( Counts const& other ) const {
             Counts diff;
             diff.passed = passed - other.passed;
             diff.failed = failed - other.failed;
             return diff;
         }
-        Counts& operator += ( const Counts& other ) {
+        Counts& operator += ( Counts const& other ) {
             passed += other.passed;
             failed += other.failed;
             return *this;
@@ -1367,14 +1352,14 @@ namespace Catch {
 
     struct Totals {
 
-        Totals operator - ( const Totals& other ) const {
+        Totals operator - ( Totals const& other ) const {
             Totals diff;
             diff.assertions = assertions - other.assertions;
             diff.testCases = testCases - other.testCases;
             return diff;
         }
 
-        Totals delta( const Totals& prevTotals ) const {
+        Totals delta( Totals const& prevTotals ) const {
             Totals diff = *this - prevTotals;
             if( diff.assertions.failed > 0 )
                 ++diff.testCases.failed;
@@ -1383,7 +1368,7 @@ namespace Catch {
             return diff;
         }
 
-        Totals& operator += ( const Totals& other ) {
+        Totals& operator += ( Totals const& other ) {
             assertions += other.assertions;
             testCases += other.testCases;
             return *this;
@@ -1418,7 +1403,7 @@ namespace Catch {
 
         virtual bool shouldDebugBreak() const = 0;
 
-        virtual void acceptMessage( const MessageBuilder& messageBuilder ) = 0;
+        virtual void acceptMessage( MessageBuilder const& messageBuilder ) = 0;
         virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) = 0;
 
         virtual std::string getCurrentTestName() const = 0;
@@ -1522,11 +1507,11 @@ namespace Catch {
 
 #ifdef CATCH_PLATFORM_WINDOWS
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
-inline void writeToDebugConsole( const std::string& text ) {
+inline void writeToDebugConsole( std::string const& text ) {
     ::OutputDebugStringA( text.c_str() );
 }
 #else
-inline void writeToDebugConsole( const std::string& text ) {
+inline void writeToDebugConsole( std::string const& text ) {
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
 }
@@ -1560,14 +1545,14 @@ namespace Catch {
     struct ITestCase;
 
     struct TestCaseInfo {
-        TestCaseInfo(   const std::string& _name,
-                        const std::string& _className,
-                        const std::string& _description,
-                        const std::set<std::string>& _tags,
+        TestCaseInfo(   std::string const& _name,
+                        std::string const& _className,
+                        std::string const& _description,
+                        std::set<std::string> const& _tags,
                         bool _isHidden,
-                        const SourceLineInfo& _lineInfo );
+                        SourceLineInfo const& _lineInfo );
 
-        TestCaseInfo( const TestCaseInfo& other );
+        TestCaseInfo( TestCaseInfo const& other );
 
         std::string name;
         std::string className;
@@ -1581,34 +1566,34 @@ namespace Catch {
     class TestCase : protected TestCaseInfo {
     public:
 
-        TestCase( ITestCase* testCase, const TestCaseInfo& info );
-        TestCase( const TestCase& other );
+        TestCase( ITestCase* testCase, TestCaseInfo const& info );
+        TestCase( TestCase const& other );
 
-        TestCase withName( const std::string& _newName ) const;
+        TestCase withName( std::string const& _newName ) const;
 
         void invoke() const;
 
-        const TestCaseInfo& getTestCaseInfo() const;
+        TestCaseInfo const& getTestCaseInfo() const;
 
         bool isHidden() const;
-        bool hasTag( const std::string& tag ) const;
-        bool matchesTags( const std::string& tagPattern ) const;
-        const std::set<std::string>& getTags() const;
+        bool hasTag( std::string const& tag ) const;
+        bool matchesTags( std::string const& tagPattern ) const;
+        std::set<std::string> const& getTags() const;
 
         void swap( TestCase& other );
-        bool operator == ( const TestCase& other ) const;
-        bool operator < ( const TestCase& other ) const;
-        TestCase& operator = ( const TestCase& other );
+        bool operator == ( TestCase const& other ) const;
+        bool operator < ( TestCase const& other ) const;
+        TestCase& operator = ( TestCase const& other );
 
     private:
         Ptr<ITestCase> test;
     };
 
     TestCase makeTestCase(  ITestCase* testCase,
-                            const std::string& className,
-                            const std::string& name,
-                            const std::string& description,
-                            const SourceLineInfo& lineInfo );
+                            std::string const& className,
+                            std::string const& name,
+                            std::string const& description,
+                            SourceLineInfo const& lineInfo );
 }
 
 #ifdef __clang__
@@ -1632,7 +1617,7 @@ namespace Catch {
     public:
         virtual ~TagParser();
 
-        void parse( const std::string& str ) {
+        void parse( std::string const& str ) {
             std::size_t pos = 0;
             while( pos < str.size() ) {
                 char c = str[pos];
@@ -1656,7 +1641,7 @@ namespace Catch {
         }
 
     protected:
-        virtual void acceptTag( const std::string& tag ) = 0;
+        virtual void acceptTag( std::string const& tag ) = 0;
         virtual void acceptChar( char c ) = 0;
         virtual void endParse() {}
 
@@ -1677,14 +1662,14 @@ namespace Catch {
         }
 
     private:
-        virtual void acceptTag( const std::string& tag ) {
+        virtual void acceptTag( std::string const& tag ) {
             m_tags.insert( toLower( tag ) );
         }
         virtual void acceptChar( char c ) {
             m_remainder += c;
         }
 
-        TagExtracter& operator=(const TagExtracter&);
+        TagExtracter& operator=(TagExtracter const&);
 
         std::set<std::string>& m_tags;
         std::string m_remainder;
@@ -1696,7 +1681,7 @@ namespace Catch {
         :   m_isNegated( false )
         {}
 
-        Tag( const std::string& name, bool isNegated )
+        Tag( std::string const& name, bool isNegated )
         :   m_name( name ),
             m_isNegated( isNegated )
         {}
@@ -1720,7 +1705,7 @@ namespace Catch {
     class TagSet {
         typedef std::map<std::string, Tag> TagMap;
     public:
-        void add( const Tag& tag ) {
+        void add( Tag const& tag ) {
             m_tags.insert( std::make_pair( toLower( tag.getName() ), tag ) );
         }
 
@@ -1728,7 +1713,7 @@ namespace Catch {
             return m_tags.empty();
         }
 
-        bool matches( const std::set<std::string>& tags ) const {
+        bool matches( std::set<std::string> const& tags ) const {
             TagMap::const_iterator it = m_tags.begin();
             TagMap::const_iterator itEnd = m_tags.end();
             for(; it != itEnd; ++it ) {
@@ -1745,7 +1730,7 @@ namespace Catch {
 
     class TagExpression {
     public:
-        bool matches( const std::set<std::string>& tags ) const {
+        bool matches( std::set<std::string> const& tags ) const {
             std::vector<TagSet>::const_iterator it = m_tagSets.begin();
             std::vector<TagSet>::const_iterator itEnd = m_tagSets.end();
             for(; it != itEnd; ++it )
@@ -1770,7 +1755,7 @@ namespace Catch {
         ~TagExpressionParser();
 
     private:
-        virtual void acceptTag( const std::string& tag ) {
+        virtual void acceptTag( std::string const& tag ) {
             m_currentTagSet.add( Tag( tag, m_isNegated ) );
             m_isNegated = false;
         }
@@ -1789,7 +1774,7 @@ namespace Catch {
                 m_exp.m_tagSets.push_back( m_currentTagSet );
         }
 
-        TagExpressionParser& operator=(const TagExpressionParser&);
+        TagExpressionParser& operator=(TagExpressionParser const&);
 
         bool m_isNegated;
         TagSet m_currentTagSet;
@@ -1818,7 +1803,7 @@ namespace Catch {
         };
 
     public:
-        TestCaseFilter( const std::string& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
+        TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour )
         :   m_stringToMatch( toLower( testSpec ) ),
             m_filterType( matchBehaviour ),
             m_wildcardPosition( NoWildcard )
@@ -1851,7 +1836,7 @@ namespace Catch {
             return m_filterType;
         }
 
-        bool shouldInclude( const TestCase& testCase ) const {
+        bool shouldInclude( TestCase const& testCase ) const {
             return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
         }
     private:
@@ -1861,7 +1846,7 @@ namespace Catch {
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
 
-        bool isMatch( const TestCase& testCase ) const {
+        bool isMatch( TestCase const& testCase ) const {
             std::string name = testCase.getTestCaseInfo().name;
             toLowerInPlace( name );
 
@@ -1889,27 +1874,27 @@ namespace Catch {
 
     class TestCaseFilters {
     public:
-        TestCaseFilters( const std::string& name ) : m_name( name ) {}
+        TestCaseFilters( std::string const& name ) : m_name( name ) {}
 
         std::string getName() const {
             return m_name;
         }
 
-        void addFilter( const TestCaseFilter& filter ) {
+        void addFilter( TestCaseFilter const& filter ) {
             if( filter.getFilterType() == IfFilterMatches::ExcludeTests )
                 m_exclusionFilters.push_back( filter );
             else
                 m_inclusionFilters.push_back( filter );
         }
 
-        void addTags( const std::string& tagPattern ) {
+        void addTags( std::string const& tagPattern ) {
             TagExpression exp;
             TagExpressionParser( exp ).parse( tagPattern );
 
             m_tagExpressions.push_back( exp );
         }
 
-        bool shouldInclude( const TestCase& testCase ) const {
+        bool shouldInclude( TestCase const& testCase ) const {
             if( !m_tagExpressions.empty() ) {
                 std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
                 std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();
@@ -2023,7 +2008,7 @@ namespace Catch {
 
     struct OutputDebugWriter {
 
-        void operator()( const std::string &str ) {
+        void operator()( std::string const&str ) {
             writeToDebugConsole( str );
         }
     };
@@ -2116,8 +2101,8 @@ namespace Catch {
 
     class Config : public IConfig {
     private:
-        Config( const Config& other );
-        Config& operator = ( const Config& other );
+        Config( Config const& other );
+        Config& operator = ( Config const& other );
         virtual void dummy();
     public:
 
@@ -2125,7 +2110,7 @@ namespace Catch {
         :   m_os( std::cout.rdbuf() )
         {}
 
-        Config( const ConfigData& data )
+        Config( ConfigData const& data )
         :   m_data( data ),
             m_os( std::cout.rdbuf() )
         {}
@@ -2135,7 +2120,7 @@ namespace Catch {
             m_stream.release();
         }
 
-        void setFilename( const std::string& filename ) {
+        void setFilename( std::string const& filename ) {
             m_data.outputFilename = filename;
         }
 
@@ -2143,7 +2128,7 @@ namespace Catch {
             return m_data.listSpec;
         }
 
-        const std::string& getFilename() const {
+        std::string const& getFilename() const {
             return m_data.outputFilename ;
         }
 
@@ -2171,14 +2156,14 @@ namespace Catch {
             m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
         }
 
-        void useStream( const std::string& streamName ) {
+        void useStream( std::string const& streamName ) {
             Stream stream = createStream( streamName );
             setStreamBuf( stream.streamBuf );
             m_stream.release();
             m_stream = stream;
         }
 
-        void addTestSpec( const std::string& testSpec ) {
+        void addTestSpec( std::string const& testSpec ) {
             TestCaseFilters filters( testSpec );
             filters.addFilter( TestCaseFilter( testSpec ) );
             m_data.filters.push_back( filters );
@@ -2196,7 +2181,7 @@ namespace Catch {
             return m_data.allowThrows;
         }
 
-        const ConfigData& data() const {
+        ConfigData const& data() const {
             return m_data;
         }
         ConfigData& data() {
@@ -2247,7 +2232,7 @@ namespace Catch {
             nullableValue = NULL;
         }
         T& operator*() { return *nullableValue; }
-        const T& operator*() const { return *nullableValue; }
+        T const& operator*() const { return *nullableValue; }
         T* operator->() { return nullableValue; }
         const T* operator->() const { return nullableValue; }
 
@@ -2552,11 +2537,11 @@ namespace Catch
         virtual void StartTestCase( TestCaseInfo const& testInfo ) = 0;
         virtual void EndTestCase( TestCaseInfo const& testInfo, Totals const& totals, std::string const& stdOut, std::string const& stdErr ) = 0;
         virtual void StartSection( std::string const& sectionName, std::string const& description ) = 0;
-        virtual void EndSection( std::string const& sectionName, const Counts& assertions ) = 0;
+        virtual void EndSection( std::string const& sectionName, Counts const& assertions ) = 0;
         virtual void NoAssertionsInSection( std::string const& sectionName ) = 0;
         virtual void NoAssertionsInTestCase( std::string const& testName ) = 0;
         virtual void Aborted() = 0;
-        virtual void Result( const AssertionResult& result ) = 0;
+        virtual void Result( AssertionResult const& result ) = 0;
     };
 
     struct IReporterFactory {
@@ -2570,7 +2555,7 @@ namespace Catch
 
         virtual ~IReporterRegistry();
         virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const = 0;
-        virtual const FactoryMap& getFactories() const = 0;
+        virtual FactoryMap const& getFactories() const = 0;
     };
 
     inline std::string trim( std::string const& str ) {
@@ -2593,15 +2578,15 @@ namespace Catch {
     struct IRegistryHub {
         virtual ~IRegistryHub();
 
-        virtual const IReporterRegistry& getReporterRegistry() const = 0;
-        virtual const ITestCaseRegistry& getTestCaseRegistry() const = 0;
+        virtual IReporterRegistry const& getReporterRegistry() const = 0;
+        virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
         virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
     };
 
     struct IMutableRegistryHub {
         virtual ~IMutableRegistryHub();
-        virtual void registerReporter( const std::string& name, IReporterFactory* factory ) = 0;
-        virtual void registerTest( const TestCase& testInfo ) = 0;
+        virtual void registerReporter( std::string const& name, IReporterFactory* factory ) = 0;
+        virtual void registerTest( TestCase const& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
     };
 
@@ -2621,8 +2606,8 @@ namespace Catch {
     }
 
     template<typename MatcherT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
-                                                                const std::string& matcherCallAsString ) {
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
+                                                                std::string const& matcherCallAsString ) {
         std::string matcherAsString = matcher.toString();
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
@@ -2632,27 +2617,24 @@ namespace Catch {
     }
 
     template<typename MatcherT, typename ArgT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
-                                                                const ArgT& arg,
-                                                                const std::string& matcherCallAsString ) {
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
+                                                                ArgT const& arg,
+                                                                std::string const& matcherCallAsString ) {
         return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
 
     template<typename MatcherT, typename ArgT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
                                                                 ArgT* arg,
-                                                                const std::string& matcherCallAsString ) {
+                                                                std::string const& matcherCallAsString ) {
         return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
 
 struct TestFailureException{};
-
-// This is just here to avoid compiler warnings with macro constants and boolean literals
-inline bool isTrue( bool value ){ return value; }
 
 } // end namespace Catch
 
@@ -2784,9 +2766,9 @@ namespace Catch {
 
     class Section {
     public:
-        Section(    const SourceLineInfo& lineInfo,
-                    const std::string& name,
-                    const std::string& description = "" )
+        Section(    SourceLineInfo const& lineInfo,
+                    std::string const& name,
+                    std::string const& description = "" )
         :   m_info( name, description, lineInfo ),
             m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( m_info, m_assertions ) )
         {}
@@ -3073,7 +3055,7 @@ namespace Detail {
             m_value( value )
         {}
 
-        Approx( const Approx& other )
+        Approx( Approx const& other )
         :   m_epsilon( other.m_epsilon ),
             m_scale( other.m_scale ),
             m_value( other.m_value )
@@ -3090,20 +3072,20 @@ namespace Detail {
             return approx;
         }
 
-        friend bool operator == ( double lhs, const Approx& rhs ) {
+        friend bool operator == ( double lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
             return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
         }
 
-        friend bool operator == ( const Approx& lhs, double rhs ) {
+        friend bool operator == ( Approx const& lhs, double rhs ) {
             return operator==( rhs, lhs );
         }
 
-        friend bool operator != ( double lhs, const Approx& rhs ) {
+        friend bool operator != ( double lhs, Approx const& rhs ) {
             return !operator==( lhs, rhs );
         }
 
-        friend bool operator != ( const Approx& lhs, double rhs ) {
+        friend bool operator != ( Approx const& lhs, double rhs ) {
             return !operator==( rhs, lhs );
         }
 
@@ -3131,7 +3113,7 @@ namespace Detail {
 }
 
 template<>
-inline std::string toString<Detail::Approx>( const Detail::Approx& value ) {
+inline std::string toString<Detail::Approx>( Detail::Approx const& value ) {
     return value.toString();
 }
 
@@ -3159,7 +3141,7 @@ namespace Matchers {
     struct MatcherImpl : Matcher<ExpressionT> {
 
         virtual Ptr<Matcher<ExpressionT> > clone() const {
-            return Ptr<Matcher<ExpressionT> >( new DerivedT( static_cast<const DerivedT&>( *this ) ) );
+            return Ptr<Matcher<ExpressionT> >( new DerivedT( static_cast<DerivedT const&>( *this ) ) );
         }
     };
 
@@ -3170,13 +3152,13 @@ namespace Matchers {
         public:
 
             AllOf() {}
-            AllOf( const AllOf& other ) : m_matchers( other.m_matchers ) {}
+            AllOf( AllOf const& other ) : m_matchers( other.m_matchers ) {}
 
-            AllOf& add( const Matcher<ExpressionT>& matcher ) {
+            AllOf& add( Matcher<ExpressionT> const& matcher ) {
                 m_matchers.push_back( matcher.clone() );
                 return *this;
             }
-            virtual bool match( const ExpressionT& expr ) const
+            virtual bool match( ExpressionT const& expr ) const
             {
                 for( std::size_t i = 0; i < m_matchers.size(); ++i )
                     if( !m_matchers[i]->match( expr ) )
@@ -3204,13 +3186,13 @@ namespace Matchers {
         public:
 
             AnyOf() {}
-            AnyOf( const AnyOf& other ) : m_matchers( other.m_matchers ) {}
+            AnyOf( AnyOf const& other ) : m_matchers( other.m_matchers ) {}
 
-            AnyOf& add( const Matcher<ExpressionT>& matcher ) {
+            AnyOf& add( Matcher<ExpressionT> const& matcher ) {
                 m_matchers.push_back( matcher.clone() );
                 return *this;
             }
-            virtual bool match( const ExpressionT& expr ) const
+            virtual bool match( ExpressionT const& expr ) const
             {
                 for( std::size_t i = 0; i < m_matchers.size(); ++i )
                     if( m_matchers[i]->match( expr ) )
@@ -3237,16 +3219,16 @@ namespace Matchers {
 
     namespace StdString {
 
-        inline std::string makeString( const std::string& str ) { return str; }
+        inline std::string makeString( std::string const& str ) { return str; }
         inline std::string makeString( const char* str ) { return str ? std::string( str ) : std::string(); }
 
         struct Equals : MatcherImpl<Equals, std::string> {
-            Equals( const std::string& str ) : m_str( str ){}
-            Equals( const Equals& other ) : m_str( other.m_str ){}
+            Equals( std::string const& str ) : m_str( str ){}
+            Equals( Equals const& other ) : m_str( other.m_str ){}
 
             virtual ~Equals();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return m_str == expr;
             }
             virtual std::string toString() const {
@@ -3257,12 +3239,12 @@ namespace Matchers {
         };
 
         struct Contains : MatcherImpl<Contains, std::string> {
-            Contains( const std::string& substr ) : m_substr( substr ){}
-            Contains( const Contains& other ) : m_substr( other.m_substr ){}
+            Contains( std::string const& substr ) : m_substr( substr ){}
+            Contains( Contains const& other ) : m_substr( other.m_substr ){}
 
             virtual ~Contains();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return expr.find( m_substr ) != std::string::npos;
             }
             virtual std::string toString() const {
@@ -3273,12 +3255,12 @@ namespace Matchers {
         };
 
         struct StartsWith : MatcherImpl<StartsWith, std::string> {
-            StartsWith( const std::string& substr ) : m_substr( substr ){}
-            StartsWith( const StartsWith& other ) : m_substr( other.m_substr ){}
+            StartsWith( std::string const& substr ) : m_substr( substr ){}
+            StartsWith( StartsWith const& other ) : m_substr( other.m_substr ){}
 
             virtual ~StartsWith();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return expr.find( m_substr ) == 0;
             }
             virtual std::string toString() const {
@@ -3289,12 +3271,12 @@ namespace Matchers {
         };
 
         struct EndsWith : MatcherImpl<EndsWith, std::string> {
-            EndsWith( const std::string& substr ) : m_substr( substr ){}
-            EndsWith( const EndsWith& other ) : m_substr( other.m_substr ){}
+            EndsWith( std::string const& substr ) : m_substr( substr ){}
+            EndsWith( EndsWith const& other ) : m_substr( other.m_substr ){}
 
             virtual ~EndsWith();
 
-            virtual bool match( const std::string& expr ) const {
+            virtual bool match( std::string const& expr ) const {
                 return expr.find( m_substr ) == expr.size() - m_substr.size();
             }
             virtual std::string toString() const {
@@ -3309,47 +3291,47 @@ namespace Matchers {
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
     template<typename ExpressionT>
-    inline Impl::Generic::AllOf<ExpressionT> AllOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2 ) {
+    inline Impl::Generic::AllOf<ExpressionT> AllOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2 ) {
         return Impl::Generic::AllOf<ExpressionT>().add( m1 ).add( m2 );
     }
     template<typename ExpressionT>
-    inline Impl::Generic::AllOf<ExpressionT> AllOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2,
-                                                    const Impl::Matcher<ExpressionT>& m3 ) {
+    inline Impl::Generic::AllOf<ExpressionT> AllOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2,
+                                                    Impl::Matcher<ExpressionT> const& m3 ) {
         return Impl::Generic::AllOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
     }
     template<typename ExpressionT>
-    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2 ) {
+    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2 ) {
         return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 );
     }
     template<typename ExpressionT>
-    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( const Impl::Matcher<ExpressionT>& m1,
-                                                    const Impl::Matcher<ExpressionT>& m2,
-                                                    const Impl::Matcher<ExpressionT>& m3 ) {
+    inline Impl::Generic::AnyOf<ExpressionT> AnyOf( Impl::Matcher<ExpressionT> const& m1,
+                                                    Impl::Matcher<ExpressionT> const& m2,
+                                                    Impl::Matcher<ExpressionT> const& m3 ) {
         return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
     }
 
-    inline Impl::StdString::Equals      Equals( const std::string& str ) {
+    inline Impl::StdString::Equals      Equals( std::string const& str ) {
         return Impl::StdString::Equals( str );
     }
     inline Impl::StdString::Equals      Equals( const char* str ) {
         return Impl::StdString::Equals( Impl::StdString::makeString( str ) );
     }
-    inline Impl::StdString::Contains    Contains( const std::string& substr ) {
+    inline Impl::StdString::Contains    Contains( std::string const& substr ) {
         return Impl::StdString::Contains( substr );
     }
     inline Impl::StdString::Contains    Contains( const char* substr ) {
         return Impl::StdString::Contains( Impl::StdString::makeString( substr ) );
     }
-    inline Impl::StdString::StartsWith  StartsWith( const std::string& substr ) {
+    inline Impl::StdString::StartsWith  StartsWith( std::string const& substr ) {
         return Impl::StdString::StartsWith( substr );
     }
     inline Impl::StdString::StartsWith  StartsWith( const char* substr ) {
         return Impl::StdString::StartsWith( Impl::StdString::makeString( substr ) );
     }
-    inline Impl::StdString::EndsWith    EndsWith( const std::string& substr ) {
+    inline Impl::StdString::EndsWith    EndsWith( std::string const& substr ) {
         return Impl::StdString::EndsWith( substr );
     }
     inline Impl::StdString::EndsWith    EndsWith( const char* substr ) {
@@ -3427,13 +3409,13 @@ namespace Catch {
 
     namespace Detail{
 
-        inline bool startsWith( const std::string& str, const std::string& sub ) {
+        inline bool startsWith( std::string const& str, std::string const& sub ) {
             return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
         }
 
         inline std::string getAnnotation(   Class cls,
-                                            const std::string& annotationName,
-                                            const std::string& testCaseName ) {
+                                            std::string const& annotationName,
+                                            std::string const& testCaseName ) {
             NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
             SEL sel = NSSelectorFromString( selStr );
             arcSafeRelease( selStr );
@@ -3596,20 +3578,20 @@ namespace Catch {
     public:
         Command(){}
 
-        explicit Command( const std::string& name ) : m_name( name ) {
+        explicit Command( std::string const& name ) : m_name( name ) {
         }
 
-        Command& operator += ( const std::string& arg ) {
+        Command& operator += ( std::string const& arg ) {
             m_args.push_back( arg );
             return *this;
         }
-        Command& operator += ( const Command& other ) {
+        Command& operator += ( Command const& other ) {
             std::copy( other.m_args.begin(), other.m_args.end(), std::back_inserter( m_args ) );
             if( m_name.empty() )
                 m_name = other.m_name;
             return *this;
         }
-        Command operator + ( const Command& other ) {
+        Command operator + ( Command const& other ) {
             Command newCommand( *this );
             newCommand += other;
             return newCommand;
@@ -3623,8 +3605,7 @@ namespace Catch {
         std::string operator[]( std::size_t i ) const { return m_args[i]; }
         std::size_t argsCount() const { return m_args.size(); }
 
-        CATCH_ATTRIBUTE_NORETURN
-        void raiseError( const std::string& message ) const {
+        void raiseError( std::string const& message ) const {
             std::ostringstream oss;
             if( m_name.empty() )
                 oss << "Error while parsing " << m_name << ". " << message << ".";
@@ -3635,7 +3616,8 @@ namespace Catch {
                 oss << " Arguments were:";
             for( std::size_t i = 0; i < m_args.size(); ++i )
                 oss << " " << m_args[i];
-            throw std::domain_error( oss.str() );
+            if( isTrue( true ) )
+                throw std::domain_error( oss.str() );
         }
 
     private:
@@ -3655,14 +3637,14 @@ namespace Catch {
                 exeName = exeName.substr( pos+1 );
             return exeName;
         }
-        Command find( const std::string& arg1,  const std::string& arg2, const std::string& arg3 ) const {
+        Command find( std::string const& arg1,  std::string const& arg2, std::string const& arg3 ) const {
             return find( arg1 ) + find( arg2 ) + find( arg3 );
         }
 
-        Command find( const std::string& shortArg, const std::string& longArg ) const {
+        Command find( std::string const& shortArg, std::string const& longArg ) const {
             return find( shortArg ) + find( longArg );
         }
-        Command find( const std::string& arg ) const {
+        Command find( std::string const& arg ) const {
             if( arg.empty() )
                 return getArgs( "", 1 );
             else
@@ -3676,7 +3658,7 @@ namespace Catch {
         }
 
     private:
-        Command getArgs( const std::string& cmdName, std::size_t from ) const {
+        Command getArgs( std::string const& cmdName, std::size_t from ) const {
             Command command( cmdName );
             for( std::size_t i = from; i < m_argc && m_argv[i][0] != '-'; ++i  )
                 command += m_argv[i];
@@ -3695,7 +3677,7 @@ namespace Catch {
 
         virtual ~OptionParser() {}
 
-        Command find( const CommandParser& parser ) const {
+        Command find( CommandParser const& parser ) const {
             Command cmd;
             for( std::vector<std::string>::const_iterator it = m_optionNames.begin();
                 it != m_optionNames.end();
@@ -3704,7 +3686,7 @@ namespace Catch {
             return cmd;
         }
 
-        void validateArgs( const Command& args ) const {
+        void validateArgs( Command const& args ) const {
             if(  tooFewArgs( args ) || tooManyArgs( args ) ) {
                 std::ostringstream oss;
                 if( m_maxArgs == -1 )
@@ -3717,14 +3699,14 @@ namespace Catch {
             }
         }
 
-        void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+        void parseIntoConfig( CommandParser const& parser, ConfigData& config ) {
             if( Command cmd = find( parser ) ) {
                 validateArgs( cmd );
                 parseIntoConfig( cmd, config );
             }
         }
 
-        virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) = 0;
+        virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) = 0;
         virtual std::string argsSynopsis() const = 0;
         virtual std::string optionSummary() const = 0;
         virtual std::string optionDescription() const { return ""; }
@@ -3750,10 +3732,10 @@ namespace Catch {
 
     protected:
 
-        bool tooFewArgs( const Command& args ) const {
+        bool tooFewArgs( Command const& args ) const {
             return args.argsCount() < static_cast<std::size_t>( m_minArgs );
         }
-        bool tooManyArgs( const Command& args ) const {
+        bool tooManyArgs( Command const& args ) const {
             return m_maxArgs >= 0 && args.argsCount() > static_cast<std::size_t>( m_maxArgs );
         }
         std::vector<std::string> m_optionNames;
@@ -3780,7 +3762,7 @@ namespace Catch {
                 return "";
             }
 
-            virtual void parseIntoConfig( const Command&, ConfigData& ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& ) {
                 // Does not affect config
             }
         };
@@ -3832,7 +3814,7 @@ namespace Catch {
                                                  "that start with 'a/b/', except 'a/b/c', which is included";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 std::string groupName;
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
                     if( i != 0 )
@@ -3878,7 +3860,7 @@ namespace Catch {
                 "matches all tests tagged [one], except those also tagged [two]";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 std::string groupName;
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
                     if( i != 0 )
@@ -3922,7 +3904,7 @@ namespace Catch {
                     ;//"    -l xml";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 config.listSpec = List::Tests;
                 if( cmd.argsCount() >= 1 ) {
                     if( cmd[0] == "all" )
@@ -3981,7 +3963,7 @@ namespace Catch {
                     "of the root node.";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 config.reporter = cmd[0];
             }
         };
@@ -4015,7 +3997,7 @@ namespace Catch {
                     "    -o %debug    \t(The IDE's debug output window - currently only Windows' "
                                         "OutputDebugString is supported).";
             }
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 if( cmd[0][0] == '%' )
                     config.stream = cmd[0].substr( 1 );
                 else
@@ -4042,7 +4024,7 @@ namespace Catch {
                     "added worked first time!). To see successful, as well as failing, test results "
                     "just pass this option.";
             }
-            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
                 config.includeWhichResults = Include::SuccessfulResults;
             }
         };
@@ -4068,7 +4050,7 @@ namespace Catch {
                     "built your code with the DEBUG preprocessor symbol";
             }
 
-            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
                 config.shouldDebugBreak = true;
             }
         };
@@ -4098,7 +4080,7 @@ namespace Catch {
                     "    -n \"tests of the widget component\"";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 config.name = cmd[0];
             }
         };
@@ -4127,7 +4109,7 @@ namespace Catch {
                     "number causes it to abort after that number of assertion failures.";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 int threshold = 1;
                 if( cmd.argsCount() == 1 ) {
                     std::stringstream ss;
@@ -4166,7 +4148,7 @@ namespace Catch {
                     "as not to contribute additional noise.";
             }
 
-            virtual void parseIntoConfig( const Command&, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
                 config.allowThrows = false;
             }
         };
@@ -4197,7 +4179,7 @@ namespace Catch {
                     "    -w NoAssertions";
             }
 
-            virtual void parseIntoConfig( const Command& cmd, ConfigData& config ) {
+            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
                     if( cmd[i] == "NoAssertions" )
                         config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
@@ -4232,7 +4214,7 @@ namespace Catch {
             add<Options::HelpOptionParser>();       // Keep this one last
         }
 
-        void parseIntoConfig( const CommandParser& parser, ConfigData& config ) {
+        void parseIntoConfig( CommandParser const& parser, ConfigData& config ) {
             config.name = parser.exeName();
             if( endsWith( config.name, ".exe" ) )
                config.name = config.name.substr( 0, config.name.size()-4 );
@@ -4372,7 +4354,7 @@ namespace Catch {
 #include <algorithm>
 
 namespace Catch {
-    inline bool matchesFilters( const std::vector<TestCaseFilters>& filters, const TestCase& testCase ) {
+    inline bool matchesFilters( std::vector<TestCaseFilters> const& filters, TestCase const& testCase ) {
         std::vector<TestCaseFilters>::const_iterator it = filters.begin();
         std::vector<TestCaseFilters>::const_iterator itEnd = filters.end();
         for(; it != itEnd; ++it )
@@ -4381,7 +4363,7 @@ namespace Catch {
         return true;
     }
 
-    inline void listTests( const ConfigData& config ) {
+    inline void listTests( ConfigData const& config ) {
         if( config.filters.empty() )
             std::cout << "All available test cases:\n";
         else
@@ -4456,7 +4438,7 @@ namespace Catch {
             std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
     }
 
-    inline void listTags( const ConfigData& config ) {
+    inline void listTags( ConfigData const& config ) {
         if( config.filters.empty() )
             std::cout << "All available tags:\n";
         else
@@ -4508,7 +4490,7 @@ namespace Catch {
         std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
     }
 
-    inline void listReporters( const ConfigData& /*config*/ ) {
+    inline void listReporters( ConfigData const& /*config*/ ) {
         std::cout << "Available reports:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator it = factories.begin(), itEnd = factories.end();
@@ -4519,7 +4501,7 @@ namespace Catch {
         std::cout << std::endl;
     }
 
-    inline void list( const ConfigData& config ) {
+    inline void list( ConfigData const& config ) {
         if( config.listSpec & List::Tests )
             listTests( config );
         if( config.listSpec & List::Tags )
@@ -4559,13 +4541,13 @@ namespace Catch {
             TestedLeaf
         };
 
-        RunningSection( RunningSection* parent, const std::string& name )
+        RunningSection( RunningSection* parent, std::string const& name )
         :   m_state( Unknown ),
             m_parent( parent ),
             m_name( name )
         {}
 
-        RunningSection( const std::string& name )
+        RunningSection( std::string const& name )
         :   m_state( Root ),
             m_parent( NULL ),
             m_name( name )
@@ -4608,7 +4590,7 @@ namespace Catch {
             return m_parent;
         }
 
-        RunningSection* findOrAddSubSection( const std::string& name, bool& changed ) {
+        RunningSection* findOrAddSubSection( std::string const& name, bool& changed ) {
             for(    SubSections::const_iterator it = m_subSections.begin();
                     it != m_subSections.end();
                     ++it)
@@ -4654,7 +4636,7 @@ namespace Catch {
         };
 
     public:
-        explicit RunningTest( const TestCase& info )
+        explicit RunningTest( TestCase const& info )
         :   m_info( info ),
             m_runStatus( RanAtLeastOneSection ),
             m_rootSection( info.getTestCaseInfo().name ),
@@ -4694,7 +4676,7 @@ namespace Catch {
             }
         }
 
-        bool addSection( const std::string& name ) {
+        bool addSection( std::string const& name ) {
             if( m_runStatus == NothingRun )
                 m_runStatus = EncounteredASection;
 
@@ -4708,7 +4690,7 @@ namespace Catch {
             return false;
         }
 
-        void endSection( const std::string&, bool stealth ) {
+        void endSection( std::string const&, bool stealth ) {
             if( m_currentSection->ran() ) {
                 if( !stealth )
                     m_runStatus = RanAtLeastOneSection;
@@ -4722,7 +4704,7 @@ namespace Catch {
             m_currentSection = m_currentSection->getParent();
         }
 
-        const TestCase& getTestCase() const {
+        TestCase const& getTestCase() const {
             return m_info;
         }
 
@@ -4735,7 +4717,7 @@ namespace Catch {
 		RunningTest( RunningTest const& );
 		void operator=( RunningTest const& );
 
-        const TestCase& m_info;
+        TestCase const& m_info;
         RunStatus m_runStatus;
         RunningSection m_rootSection;
         RunningSection* m_currentSection;
@@ -4776,12 +4758,12 @@ namespace Catch {
 
     class Runner : public IResultCapture, public IRunner {
 
-        Runner( const Runner& );
-        void operator =( const Runner& );
+        Runner( Runner const& );
+        void operator =( Runner const& );
 
     public:
 
-        explicit Runner( const Config& config, const Ptr<IStreamingReporter>& reporter )
+        explicit Runner( Config const& config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( config.data().name ),
             m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
@@ -4812,7 +4794,7 @@ namespace Catch {
             m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
         }
 
-        Totals runMatching( const std::string& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
+        Totals runMatching( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
 
             std::vector<TestCase> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
 
@@ -4829,7 +4811,7 @@ namespace Catch {
             return totals;
         }
 
-        Totals runTest( const TestCase& testCase ) {
+        Totals runTest( TestCase const& testCase ) {
             Totals prevTotals = m_totals;
 
             std::string redirectedCout;
@@ -4873,22 +4855,22 @@ namespace Catch {
             return deltaTotals;
         }
 
-        const Config& config() const {
+        Config const& config() const {
             return m_config;
         }
 
     private: // IResultCapture
 
-        virtual void acceptMessage( const MessageBuilder& messageBuilder ) {
+        virtual void acceptMessage( MessageBuilder const& messageBuilder ) {
             m_messages.push_back( messageBuilder.build() );
         }
 
-        virtual ResultAction::Value acceptExpression( const ExpressionResultBuilder& assertionResult, const AssertionInfo& assertionInfo ) {
+        virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) {
             m_lastAssertionInfo = assertionInfo;
             return actOnCurrentResult( assertionResult.buildResult( assertionInfo ) );
         }
 
-        virtual void assertionEnded( const AssertionResult& result ) {
+        virtual void assertionEnded( AssertionResult const& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
                 m_totals.assertions.passed++;
             }
@@ -4975,7 +4957,7 @@ namespace Catch {
 
     private:
 
-        ResultAction::Value actOnCurrentResult( const AssertionResult& result ) {
+        ResultAction::Value actOnCurrentResult( AssertionResult const& result ) {
             m_lastResult = result;
             assertionEnded( m_lastResult );
 
@@ -5038,7 +5020,7 @@ namespace Catch {
         RunningTest* m_runningTest;
         AssertionResult m_lastResult;
 
-        const Config& m_config;
+        Config const& m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;
@@ -5298,7 +5280,7 @@ namespace Catch {
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
 
-        virtual void registerTest( const TestCase& testCase ) {
+        virtual void registerTest( TestCase const& testCase ) {
             std::string name = testCase.getTestCaseInfo().name;
             if( name == "" ) {
                 std::ostringstream oss;
@@ -5313,7 +5295,7 @@ namespace Catch {
                     m_nonHiddenFunctions.push_back( testCase );
             }
             else {
-                const TestCase& prev = *m_functions.find( testCase );
+                TestCase const& prev = *m_functions.find( testCase );
                 std::cerr   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
                             << "\tFirst seen at " << SourceLineInfo( prev.getTestCaseInfo().lineInfo ) << "\n"
                             << "\tRedefined at " << SourceLineInfo( testCase.getTestCaseInfo().lineInfo ) << std::endl;
@@ -5321,23 +5303,23 @@ namespace Catch {
             }
         }
 
-        virtual const std::vector<TestCase>& getAllTests() const {
+        virtual std::vector<TestCase> const& getAllTests() const {
             return m_functionsInOrder;
         }
 
-        virtual const std::vector<TestCase>& getAllNonHiddenTests() const {
+        virtual std::vector<TestCase> const& getAllNonHiddenTests() const {
             return m_nonHiddenFunctions;
         }
 
         // !TBD deprecated
-        virtual std::vector<TestCase> getMatchingTestCases( const std::string& rawTestSpec ) const {
+        virtual std::vector<TestCase> getMatchingTestCases( std::string const& rawTestSpec ) const {
             std::vector<TestCase> matchingTests;
             getMatchingTestCases( rawTestSpec, matchingTests );
             return matchingTests;
         }
 
         // !TBD deprecated
-        virtual void getMatchingTestCases( const std::string& rawTestSpec, std::vector<TestCase>& matchingTestsOut ) const {
+        virtual void getMatchingTestCases( std::string const& rawTestSpec, std::vector<TestCase>& matchingTestsOut ) const {
             TestCaseFilter filter( rawTestSpec );
 
             std::vector<TestCase>::const_iterator it = m_functionsInOrder.begin();
@@ -5348,7 +5330,7 @@ namespace Catch {
                 }
             }
         }
-        virtual void getMatchingTestCases( const TestCaseFilters& filters, std::vector<TestCase>& matchingTestsOut ) const {
+        virtual void getMatchingTestCases( TestCaseFilters const& filters, std::vector<TestCase>& matchingTestsOut ) const {
             std::vector<TestCase>::const_iterator it = m_functionsInOrder.begin();
             std::vector<TestCase>::const_iterator itEnd = m_functionsInOrder.end();
             // !TBD: replace with algorithm
@@ -5382,7 +5364,7 @@ namespace Catch {
         TestFunction m_fun;
     };
 
-    inline std::string extractClassName( const std::string& classOrQualifiedMethodName ) {
+    inline std::string extractClassName( std::string const& classOrQualifiedMethodName ) {
         std::string className = classOrQualifiedMethodName;
         if( className[0] == '&' )
         {
@@ -5435,18 +5417,18 @@ namespace Catch {
             deleteAllValues( m_factories );
         }
 
-        virtual IStreamingReporter* create( const std::string& name, const ReporterConfig& config ) const {
+        virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return NULL;
             return it->second->create( config );
         }
 
-        void registerReporter( const std::string& name, IReporterFactory* factory ) {
+        void registerReporter( std::string const& name, IReporterFactory* factory ) {
             m_factories.insert( std::make_pair( name, factory ) );
         }
 
-        const FactoryMap& getFactories() const {
+        FactoryMap const& getFactories() const {
             return m_factories;
         }
 
@@ -5525,16 +5507,16 @@ namespace Catch {
 
         class RegistryHub : public IRegistryHub, public IMutableRegistryHub {
 
-            RegistryHub( const RegistryHub& );
-            void operator=( const RegistryHub& );
+            RegistryHub( RegistryHub const& );
+            void operator=( RegistryHub const& );
 
         public: // IRegistryHub
             RegistryHub() {
             }
-            virtual const IReporterRegistry& getReporterRegistry() const {
+            virtual IReporterRegistry const& getReporterRegistry() const {
                 return m_reporterRegistry;
             }
-            virtual const ITestCaseRegistry& getTestCaseRegistry() const {
+            virtual ITestCaseRegistry const& getTestCaseRegistry() const {
                 return m_testCaseRegistry;
             }
             virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() {
@@ -5542,10 +5524,10 @@ namespace Catch {
             }
 
         public: // IMutableRegistryHub
-            virtual void registerReporter( const std::string& name, IReporterFactory* factory ) {
+            virtual void registerReporter( std::string const& name, IReporterFactory* factory ) {
                 m_reporterRegistry.registerReporter( name, factory );
             }
-            virtual void registerTest( const TestCase& testInfo ) {
+            virtual void registerTest( TestCase const& testInfo ) {
                 m_testCaseRegistry.registerTest( testInfo );
             }
             virtual void registerTranslator( const IExceptionTranslator* translator ) {
@@ -5591,7 +5573,7 @@ namespace Catch {
 
 namespace Catch {
 
-    NotImplementedException::NotImplementedException( const SourceLineInfo& lineInfo )
+    NotImplementedException::NotImplementedException( SourceLineInfo const& lineInfo )
     :   m_lineInfo( lineInfo ) {
         std::ostringstream oss;
         oss << lineInfo << ": function ";
@@ -5613,8 +5595,8 @@ namespace Catch {
     class Context : public IMutableContext {
 
         Context() : m_config( NULL ) {}
-        Context( const Context& );
-        void operator=( const Context& );
+        Context( Context const& );
+        void operator=( Context const& );
 
     public: // IContext
         virtual IResultCapture& getResultCapture() {
@@ -5623,7 +5605,7 @@ namespace Catch {
         virtual IRunner& getRunner() {
             return *m_runner;
         }
-        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) {
+        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
             return getGeneratorsForCurrentTest()
             .getGeneratorInfo( fileInfo, totalSize )
             .getCurrentIndex();
@@ -5690,7 +5672,7 @@ namespace Catch {
         return getCurrentMutableContext();
     }
 
-    Stream createStream( const std::string& streamName ) {
+    Stream createStream( std::string const& streamName ) {
         if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
         if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
         if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
@@ -5880,7 +5862,7 @@ namespace Catch {
             deleteAll( m_generatorsInOrder );
         }
 
-        IGeneratorInfo& getGeneratorInfo( const std::string& fileInfo, std::size_t size ) {
+        IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) {
             std::map<std::string, IGeneratorInfo*>::const_iterator it = m_generatorsByName.find( fileInfo );
             if( it == m_generatorsByName.end() ) {
                 IGeneratorInfo* info = new GeneratorInfo( size );
@@ -5918,9 +5900,9 @@ namespace Catch {
 
 namespace Catch {
 
-    AssertionInfo::AssertionInfo(   const std::string& _macroName,
-                                    const SourceLineInfo& _lineInfo,
-                                    const std::string& _capturedExpression,
+    AssertionInfo::AssertionInfo(   std::string const& _macroName,
+                                    SourceLineInfo const& _lineInfo,
+                                    std::string const& _capturedExpression,
                                     ResultDisposition::Flags _resultDisposition )
     :   macroName( _macroName ),
         lineInfo( _lineInfo ),
@@ -5933,7 +5915,7 @@ namespace Catch {
 
     AssertionResult::AssertionResult() {}
 
-    AssertionResult::AssertionResult( const AssertionInfo& info, const AssertionResultData& data )
+    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
     :   m_info( info ),
         m_resultData( data )
     {}
@@ -5997,13 +5979,13 @@ namespace Catch {
     ExpressionResultBuilder::ExpressionResultBuilder( ResultWas::OfType resultType ) {
         m_data.resultType = resultType;
     }
-    ExpressionResultBuilder::ExpressionResultBuilder( const ExpressionResultBuilder& other )
+    ExpressionResultBuilder::ExpressionResultBuilder( ExpressionResultBuilder const& other )
     :   m_data( other.m_data ),
         m_exprComponents( other.m_exprComponents )
     {
         m_stream << other.m_stream.str();
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::operator=(const ExpressionResultBuilder& other ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::operator=(ExpressionResultBuilder const& other ) {
         m_data = other.m_data;
         m_exprComponents = other.m_exprComponents;
         m_stream.str("");
@@ -6022,19 +6004,19 @@ namespace Catch {
         m_exprComponents.shouldNegate = shouldNegate( resultDisposition );
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setLhs( std::string const& lhs ) {
         m_exprComponents.lhs = lhs;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setRhs( const std::string& rhs ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setRhs( std::string const& rhs ) {
         m_exprComponents.rhs = rhs;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setOp( const std::string& op ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setOp( std::string const& op ) {
         m_exprComponents.op = op;
         return *this;
     }
-    AssertionResult ExpressionResultBuilder::buildResult( const AssertionInfo& info ) const
+    AssertionResult ExpressionResultBuilder::buildResult( AssertionInfo const& info ) const
     {
         assert( m_data.resultType != ResultWas::Unknown );
 
@@ -6056,7 +6038,7 @@ namespace Catch {
         }
         return AssertionResult( info, data );
     }
-    std::string ExpressionResultBuilder::reconstructExpression( const AssertionInfo& info ) const {
+    std::string ExpressionResultBuilder::reconstructExpression( AssertionInfo const& info ) const {
         if( m_exprComponents.op == "" )
             return m_exprComponents.lhs.empty() ? info.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
         else if( m_exprComponents.op == "matches" )
@@ -6081,10 +6063,10 @@ namespace Catch {
 namespace Catch {
 
     TestCase makeTestCase(  ITestCase* _testCase,
-                            const std::string& _className,
-                            const std::string& _name,
-                            const std::string& _descOrTags,
-                            const SourceLineInfo& _lineInfo )
+                            std::string const& _className,
+                            std::string const& _name,
+                            std::string const& _descOrTags,
+                            SourceLineInfo const& _lineInfo )
     {
         std::string desc = _descOrTags;
         bool isHidden( startsWith( _name, "./" ) );
@@ -6097,12 +6079,12 @@ namespace Catch {
         return TestCase( _testCase, info );
     }
 
-    TestCaseInfo::TestCaseInfo( const std::string& _name,
-                                const std::string& _className,
-                                const std::string& _description,
-                                const std::set<std::string>& _tags,
+    TestCaseInfo::TestCaseInfo( std::string const& _name,
+                                std::string const& _className,
+                                std::string const& _description,
+                                std::set<std::string> const& _tags,
                                 bool _isHidden,
-                                const SourceLineInfo& _lineInfo )
+                                SourceLineInfo const& _lineInfo )
     :   name( _name ),
         className( _className ),
         description( _description ),
@@ -6116,7 +6098,7 @@ namespace Catch {
         tagsAsString = oss.str();
     }
 
-    TestCaseInfo::TestCaseInfo( const TestCaseInfo& other )
+    TestCaseInfo::TestCaseInfo( TestCaseInfo const& other )
     :   name( other.name ),
         className( other.className ),
         description( other.description ),
@@ -6126,14 +6108,14 @@ namespace Catch {
         isHidden( other.isHidden )
     {}
 
-    TestCase::TestCase( ITestCase* testCase, const TestCaseInfo& info ) : TestCaseInfo( info ), test( testCase ) {}
+    TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
 
-    TestCase::TestCase( const TestCase& other )
+    TestCase::TestCase( TestCase const& other )
     :   TestCaseInfo( other ),
         test( other.test )
     {}
 
-    TestCase TestCase::withName( const std::string& _newName ) const {
+    TestCase TestCase::withName( std::string const& _newName ) const {
         TestCase other( *this );
         other.name = _newName;
         return other;
@@ -6147,15 +6129,15 @@ namespace Catch {
         return TestCaseInfo::isHidden;
     }
 
-    bool TestCase::hasTag( const std::string& tag ) const {
+    bool TestCase::hasTag( std::string const& tag ) const {
         return tags.find( toLower( tag ) ) != tags.end();
     }
-    bool TestCase::matchesTags( const std::string& tagPattern ) const {
+    bool TestCase::matchesTags( std::string const& tagPattern ) const {
         TagExpression exp;
         TagExpressionParser( exp ).parse( tagPattern );
         return exp.matches( tags );
     }
-    const std::set<std::string>& TestCase::getTags() const {
+    std::set<std::string> const& TestCase::getTags() const {
         return tags;
     }
 
@@ -6167,22 +6149,22 @@ namespace Catch {
         std::swap( lineInfo, other.lineInfo );
     }
 
-    bool TestCase::operator == ( const TestCase& other ) const {
+    bool TestCase::operator == ( TestCase const& other ) const {
         return  test.get() == other.test.get() &&
                 name == other.name &&
                 className == other.className;
     }
 
-    bool TestCase::operator < ( const TestCase& other ) const {
+    bool TestCase::operator < ( TestCase const& other ) const {
         return name < other.name;
     }
-    TestCase& TestCase::operator = ( const TestCase& other ) {
+    TestCase& TestCase::operator = ( TestCase const& other ) {
         TestCase temp( other );
         swap( temp );
         return *this;
     }
 
-    const TestCaseInfo& TestCase::getTestCaseInfo() const
+    TestCaseInfo const& TestCase::getTestCaseInfo() const
     {
         return *this;
     }
@@ -6195,7 +6177,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 37, "integration" );
+    Version libraryVersion( 0, 9, 38, "integration" );
 }
 
 // #included from: catch_text.hpp
@@ -6445,7 +6427,7 @@ namespace Catch {
 
         class ReporterFactory : public IReporterFactory {
 
-            virtual IStreamingReporter* create( const ReporterConfig& config ) const {
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new LegacyReporterAdapter( new T( config ), config );
             }
 
@@ -6456,7 +6438,7 @@ namespace Catch {
 
     public:
 
-        LegacyReporterRegistrar( const std::string& name ) {
+        LegacyReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     };
@@ -6477,7 +6459,7 @@ namespace Catch {
             // In fact, ideally, please contact me anyway to let me know you've hit this - as I have
             // no idea who is actually using custom reporters at all (possibly no-one!).
             // The new interface is designed to minimise exposure to interface changes in the future.
-            virtual IStreamingReporter* create( const ReporterConfig& config ) const {
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new T( config );
             }
 
@@ -6488,7 +6470,7 @@ namespace Catch {
 
     public:
 
-        ReporterRegistrar( const std::string& name ) {
+        ReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     };
@@ -6858,7 +6840,7 @@ namespace Catch {
             :   m_writer( writer )
             {}
 
-            ScopedElement( const ScopedElement& other )
+            ScopedElement( ScopedElement const& other )
             :   m_writer( other.m_writer ){
                 other.m_writer = NULL;
             }
@@ -6868,13 +6850,13 @@ namespace Catch {
                     m_writer->endElement();
             }
 
-            ScopedElement& writeText( const std::string& text, bool indent = true ) {
+            ScopedElement& writeText( std::string const& text, bool indent = true ) {
                 m_writer->writeText( text, indent );
                 return *this;
             }
 
             template<typename T>
-            ScopedElement& writeAttribute( const std::string& name, const T& attribute ) {
+            ScopedElement& writeAttribute( std::string const& name, T const& attribute ) {
                 m_writer->writeAttribute( name, attribute );
                 return *this;
             }
@@ -6900,7 +6882,7 @@ namespace Catch {
                 endElement();
         }
 
-        XmlWriter& operator = ( const XmlWriter& other ) {
+        XmlWriter& operator = ( XmlWriter const& other ) {
             XmlWriter temp( other );
             swap( temp );
             return *this;
@@ -6914,7 +6896,7 @@ namespace Catch {
             std::swap( m_os, other.m_os );
         }
 
-        XmlWriter& startElement( const std::string& name ) {
+        XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
             newlineIfNecessary();
             stream() << m_indent << "<" << name;
@@ -6924,7 +6906,7 @@ namespace Catch {
             return *this;
         }
 
-        ScopedElement scopedElement( const std::string& name ) {
+        ScopedElement scopedElement( std::string const& name ) {
             ScopedElement scoped( this );
             startElement( name );
             return scoped;
@@ -6944,7 +6926,7 @@ namespace Catch {
             return *this;
         }
 
-        XmlWriter& writeAttribute( const std::string& name, const std::string& attribute ) {
+        XmlWriter& writeAttribute( std::string const& name, std::string const& attribute ) {
             if( !name.empty() && !attribute.empty() ) {
                 stream() << " " << name << "=\"";
                 writeEncodedText( attribute );
@@ -6953,19 +6935,19 @@ namespace Catch {
             return *this;
         }
 
-        XmlWriter& writeAttribute( const std::string& name, bool attribute ) {
+        XmlWriter& writeAttribute( std::string const& name, bool attribute ) {
             stream() << " " << name << "=\"" << ( attribute ? "true" : "false" ) << "\"";
             return *this;
         }
 
         template<typename T>
-        XmlWriter& writeAttribute( const std::string& name, const T& attribute ) {
+        XmlWriter& writeAttribute( std::string const& name, T const& attribute ) {
             if( !name.empty() )
                 stream() << " " << name << "=\"" << attribute << "\"";
             return *this;
         }
 
-        XmlWriter& writeText( const std::string& text, bool indent = true ) {
+        XmlWriter& writeText( std::string const& text, bool indent = true ) {
             if( !text.empty() ){
                 bool tagWasOpen = m_tagIsOpen;
                 ensureTagClosed();
@@ -6977,7 +6959,7 @@ namespace Catch {
             return *this;
         }
 
-        XmlWriter& writeComment( const std::string& text ) {
+        XmlWriter& writeComment( std::string const& text ) {
             ensureTagClosed();
             stream() << m_indent << "<!--" << text << "-->";
             m_needsNewline = true;
@@ -7010,7 +6992,7 @@ namespace Catch {
             }
         }
 
-        void writeEncodedText( const std::string& text ) {
+        void writeEncodedText( std::string const& text ) {
             static const char* charsToEncode = "<&\"";
             std::string mtext = text;
             std::string::size_type pos = mtext.find_first_of( charsToEncode );
@@ -7926,12 +7908,10 @@ int main (int argc, char * const argv[]) {
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
-    #define CATCH_TEST_CASE_NORETURN( ... ) INTERNAL_CATCH_TESTCASE_NORETURN( __VA_ARGS__ )
     #define CATCH_METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
     #define CATCH_SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
 #else
     #define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
-    #define CATCH_TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
     #define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
     #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
 #endif
@@ -7987,12 +7967,10 @@ int main (int argc, char * const argv[]) {
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
-    #define TEST_CASE_NORETURN( ... ) INTERNAL_CATCH_TESTCASE_NORETURN( __VA_ARGS__ )
     #define METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
     #define SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
 #else
     #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
-    #define TEST_CASE_NORETURN( name, description ) INTERNAL_CATCH_TESTCASE_NORETURN( name, description )
     #define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
     #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
 #endif
