@@ -1023,37 +1023,37 @@ with expansion:
 -------------------------------------------------------------------------------
 ./succeeding/exceptions/explicit
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:33
+ExceptionTests.cpp:31
 ...............................................................................
 
-ExceptionTests.cpp:35:
+ExceptionTests.cpp:33:
 PASSED:
   REQUIRE_THROWS_AS( thisThrows() )
 
-ExceptionTests.cpp:36:
+ExceptionTests.cpp:34:
 PASSED:
   REQUIRE_NOTHROW( thisDoesntThrow() )
 
-ExceptionTests.cpp:37:
+ExceptionTests.cpp:35:
 PASSED:
   REQUIRE_THROWS( thisThrows() )
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/explicit
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:41
+ExceptionTests.cpp:38
 ...............................................................................
 
-ExceptionTests.cpp:43: FAILED:
+ExceptionTests.cpp:40: FAILED:
   CHECK_THROWS_AS( thisThrows() )
 due to unexpected exception with message:
   expected exception
 
-ExceptionTests.cpp:44: FAILED:
+ExceptionTests.cpp:41: FAILED:
   CHECK_THROWS_AS( thisDoesntThrow() )
 because no exception was thrown where one was expected:
 
-ExceptionTests.cpp:45: FAILED:
+ExceptionTests.cpp:42: FAILED:
   CHECK_NOTHROW( thisThrows() )
 due to unexpected exception with message:
   expected exception
@@ -1061,24 +1061,24 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 ./failing/exceptions/implicit
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:48
+ExceptionTests.cpp:45
 ...............................................................................
 
-ExceptionTests.cpp:48: FAILED:
+ExceptionTests.cpp:45: FAILED:
 due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/implicit/2
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:54
+ExceptionTests.cpp:51
 ...............................................................................
 
-ExceptionTests.cpp:56:
+ExceptionTests.cpp:53:
 PASSED:
   CHECK( 1 == 1 )
 
-ExceptionTests.cpp:56: FAILED:
+ExceptionTests.cpp:53: FAILED:
   {Unknown expression after the reported line}
 due to unexpected exception with message:
   unexpected exception
@@ -1087,20 +1087,20 @@ due to unexpected exception with message:
 ./failing/exceptions/implicit/3
   section name
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:62
+ExceptionTests.cpp:59
 ...............................................................................
 
-ExceptionTests.cpp:62: FAILED:
+ExceptionTests.cpp:59: FAILED:
 due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/implicit/4
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:69
+ExceptionTests.cpp:66
 ...............................................................................
 
-ExceptionTests.cpp:71: FAILED:
+ExceptionTests.cpp:68: FAILED:
   CHECK( thisThrows() == 0 )
 due to unexpected exception with message:
   expected exception
@@ -1108,7 +1108,7 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 ./succeeding/exceptions/implicit
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:75
+ExceptionTests.cpp:71
 ...............................................................................
 
 
@@ -1117,42 +1117,42 @@ No assertions in test case, './succeeding/exceptions/implicit'
 -------------------------------------------------------------------------------
 ./failing/exceptions/custom
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:112
+ExceptionTests.cpp:108
 ...............................................................................
 
-ExceptionTests.cpp:112: FAILED:
+ExceptionTests.cpp:108: FAILED:
 due to unexpected exception with message:
   custom exception
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/custom/nothrow
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:120
+ExceptionTests.cpp:119
 ...............................................................................
 
-ExceptionTests.cpp:122: FAILED:
-  REQUIRE_NOTHROW( throw CustomException( "unexpected custom exception" ) )
+ExceptionTests.cpp:121: FAILED:
+  REQUIRE_NOTHROW( throwCustom() )
 due to unexpected exception with message:
-  unexpected custom exception
+  custom exception - not std
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/custom/throw
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:125
+ExceptionTests.cpp:124
 ...............................................................................
 
-ExceptionTests.cpp:127: FAILED:
-  REQUIRE_THROWS_AS( throw CustomException( "custom exception - not std" ) )
+ExceptionTests.cpp:126: FAILED:
+  REQUIRE_THROWS_AS( throwCustom() )
 due to unexpected exception with message:
   custom exception - not std
 
 -------------------------------------------------------------------------------
 ./failing/exceptions/custom/double
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:131
+ExceptionTests.cpp:130
 ...............................................................................
 
-ExceptionTests.cpp:131: FAILED:
+ExceptionTests.cpp:130: FAILED:
 due to unexpected exception with message:
   3.14
 
@@ -6040,54 +6040,54 @@ ConditionTests.cpp:346
     <testcase classname="global" name="./succeeding/exceptions/explicit" time="tbd"/>
     <testcase classname="global" name="./failing/exceptions/explicit" time="tbd">
       <error message="thisThrows()" type="CHECK_THROWS_AS">
-ExceptionTests.cpp:43
+ExceptionTests.cpp:40
       </error>
       <failure message="thisDoesntThrow()" type="CHECK_THROWS_AS">
-ExceptionTests.cpp:44
+ExceptionTests.cpp:41
       </failure>
       <error message="thisThrows()" type="CHECK_NOTHROW">
-ExceptionTests.cpp:45
+ExceptionTests.cpp:42
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:48
+ExceptionTests.cpp:45
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit/2" time="tbd">
       <error message="{Unknown expression after the reported line}">
-ExceptionTests.cpp:56
+ExceptionTests.cpp:53
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit/3" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:62
+ExceptionTests.cpp:59
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/implicit/4" time="tbd">
       <error message="thisThrows() == 0" type="CHECK">
-ExceptionTests.cpp:71
+ExceptionTests.cpp:68
       </error>
     </testcase>
     <testcase classname="global" name="./succeeding/exceptions/implicit" time="tbd"/>
     <testcase classname="global" name="./failing/exceptions/custom" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:112
+ExceptionTests.cpp:108
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/nothrow" time="tbd">
-      <error message="throw CustomException( &quot;unexpected custom exception&quot; )" type="REQUIRE_NOTHROW">
-ExceptionTests.cpp:122
+      <error message="throwCustom()" type="REQUIRE_NOTHROW">
+ExceptionTests.cpp:121
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/throw" time="tbd">
-      <error message="throw CustomException( &quot;custom exception - not std&quot; )" type="REQUIRE_THROWS_AS">
-ExceptionTests.cpp:127
+      <error message="throwCustom()" type="REQUIRE_THROWS_AS">
+ExceptionTests.cpp:126
       </error>
     </testcase>
     <testcase classname="global" name="./failing/exceptions/custom/double" time="tbd">
       <error type="TEST_CASE">
-ExceptionTests.cpp:131
+ExceptionTests.cpp:130
       </error>
     </testcase>
     <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="tbd"/>
@@ -7713,23 +7713,23 @@ ConditionTests.cpp" line="346">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/exceptions/explicit">
+ExceptionTests.cpp" line="33">
+        <Original>
+          thisThrows()
+        </Original>
+        <Expanded>
+          thisThrows()
+        </Expanded>
+      </Expression>
+ExceptionTests.cpp" line="34">
+        <Original>
+          thisDoesntThrow()
+        </Original>
+        <Expanded>
+          thisDoesntThrow()
+        </Expanded>
+      </Expression>
 ExceptionTests.cpp" line="35">
-        <Original>
-          thisThrows()
-        </Original>
-        <Expanded>
-          thisThrows()
-        </Expanded>
-      </Expression>
-ExceptionTests.cpp" line="36">
-        <Original>
-          thisDoesntThrow()
-        </Original>
-        <Expanded>
-          thisDoesntThrow()
-        </Expanded>
-      </Expression>
-ExceptionTests.cpp" line="37">
         <Original>
           thisThrows()
         </Original>
@@ -7740,18 +7740,18 @@ ExceptionTests.cpp" line="37">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/exceptions/explicit">
-ExceptionTests.cpp" line="43">
+ExceptionTests.cpp" line="40">
         <Original>
           thisThrows()
         </Original>
         <Expanded>
           thisThrows()
         </Expanded>
-ExceptionTests.cpp" line="43">
+ExceptionTests.cpp" line="40">
           expected exception
         </Exception>
       </Expression>
-ExceptionTests.cpp" line="44">
+ExceptionTests.cpp" line="41">
         <Original>
           thisDoesntThrow()
         </Original>
@@ -7759,27 +7759,27 @@ ExceptionTests.cpp" line="44">
           thisDoesntThrow()
         </Expanded>
       </Expression>
-ExceptionTests.cpp" line="45">
+ExceptionTests.cpp" line="42">
         <Original>
           thisThrows()
         </Original>
         <Expanded>
           thisThrows()
         </Expanded>
-ExceptionTests.cpp" line="45">
+ExceptionTests.cpp" line="42">
           expected exception
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/implicit">
-ExceptionTests.cpp" line="48">
+ExceptionTests.cpp" line="45">
         unexpected exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/implicit/2">
-ExceptionTests.cpp" line="56">
+ExceptionTests.cpp" line="53">
         <Original>
           1 == 1
         </Original>
@@ -7787,14 +7787,14 @@ ExceptionTests.cpp" line="56">
           1 == 1
         </Expanded>
       </Expression>
-ExceptionTests.cpp" line="56">
+ExceptionTests.cpp" line="53">
         <Original>
           {Unknown expression after the reported line}
         </Original>
         <Expanded>
           {Unknown expression after the reported line}
         </Expanded>
-ExceptionTests.cpp" line="56">
+ExceptionTests.cpp" line="53">
           unexpected exception
         </Exception>
       </Expression>
@@ -7802,7 +7802,7 @@ ExceptionTests.cpp" line="56">
     </TestCase>
     <TestCase name="./failing/exceptions/implicit/3">
       <Section name="section name">
-ExceptionTests.cpp" line="62">
+ExceptionTests.cpp" line="59">
           unexpected exception
         </Exception>
         <OverallResults successes="0" failures="1"/>
@@ -7810,14 +7810,14 @@ ExceptionTests.cpp" line="62">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/implicit/4">
-ExceptionTests.cpp" line="71">
+ExceptionTests.cpp" line="68">
         <Original>
           thisThrows() == 0
         </Original>
         <Expanded>
           thisThrows() == 0
         </Expanded>
-ExceptionTests.cpp" line="71">
+ExceptionTests.cpp" line="68">
           expected exception
         </Exception>
       </Expression>
@@ -7827,41 +7827,41 @@ ExceptionTests.cpp" line="71">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom">
-ExceptionTests.cpp" line="112">
+ExceptionTests.cpp" line="108">
         custom exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/nothrow">
-ExceptionTests.cpp" line="122">
+ExceptionTests.cpp" line="121">
         <Original>
-          throw CustomException( &quot;unexpected custom exception&quot; )
+          throwCustom()
         </Original>
         <Expanded>
-          throw CustomException( &quot;unexpected custom exception&quot; )
+          throwCustom()
         </Expanded>
-ExceptionTests.cpp" line="122">
-          unexpected custom exception
+ExceptionTests.cpp" line="121">
+          custom exception - not std
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/throw">
-ExceptionTests.cpp" line="127">
+ExceptionTests.cpp" line="126">
         <Original>
-          throw CustomException( &quot;custom exception - not std&quot; )
+          throwCustom()
         </Original>
         <Expanded>
-          throw CustomException( &quot;custom exception - not std&quot; )
+          throwCustom()
         </Expanded>
-ExceptionTests.cpp" line="127">
+ExceptionTests.cpp" line="126">
           custom exception - not std
         </Exception>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./failing/exceptions/custom/double">
-ExceptionTests.cpp" line="131">
+ExceptionTests.cpp" line="130">
         3.14
       </Exception>
       <OverallResult success="false"/>
@@ -12538,36 +12538,36 @@ ConditionTests.cpp:346: !1 == 1 failed for: !(1 == 1)
 [Finished: './failing/conditions/not' 1 test case failed (All 8 assertions failed)]
 
 [Running: ./succeeding/exceptions/explicit]
+ExceptionTests.cpp:33: thisThrows() succeeded
+ExceptionTests.cpp:34: thisDoesntThrow() succeeded
 ExceptionTests.cpp:35: thisThrows() succeeded
-ExceptionTests.cpp:36: thisDoesntThrow() succeeded
-ExceptionTests.cpp:37: thisThrows() succeeded
 [Finished: './succeeding/exceptions/explicit' All tests passed (3 assertions in 1 test case)]
 
 [Running: ./failing/exceptions/explicit]
-ExceptionTests.cpp:43: thisThrows() failed with unexpected exception with message: 'expected exception'
-ExceptionTests.cpp:44: thisDoesntThrow() failed because no exception was thrown where one was expected
-ExceptionTests.cpp:45: thisThrows() failed with unexpected exception with message: 'expected exception'
+ExceptionTests.cpp:40: thisThrows() failed with unexpected exception with message: 'expected exception'
+ExceptionTests.cpp:41: thisDoesntThrow() failed because no exception was thrown where one was expected
+ExceptionTests.cpp:42: thisThrows() failed with unexpected exception with message: 'expected exception'
 [Finished: './failing/exceptions/explicit' 1 test case failed (All 3 assertions failed)]
 
 [Running: ./failing/exceptions/implicit]
-ExceptionTests.cpp:48: Unexpected exception with message: 'unexpected exception'
+ExceptionTests.cpp:45: Unexpected exception with message: 'unexpected exception'
 [Finished: './failing/exceptions/implicit' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/implicit/2]
-ExceptionTests.cpp:56: 1 == 1 succeeded
-ExceptionTests.cpp:56: {Unknown expression after the reported line} failed with unexpected exception with message: 'unexpected exception'
+ExceptionTests.cpp:53: 1 == 1 succeeded
+ExceptionTests.cpp:53: {Unknown expression after the reported line} failed with unexpected exception with message: 'unexpected exception'
 [Finished: './failing/exceptions/implicit/2' 1 test case failed (1 of 2 assertions failed)]
 
 [Running: ./failing/exceptions/implicit/3]
 
 [Started section: 'section name']
-ExceptionTests.cpp:62: Unexpected exception with message: 'unexpected exception'
+ExceptionTests.cpp:59: Unexpected exception with message: 'unexpected exception'
 [End of section: 'section name' 1 assertion failed]
 
 [Finished: './failing/exceptions/implicit/3' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/implicit/4]
-ExceptionTests.cpp:71: thisThrows() == 0 failed with unexpected exception with message: 'expected exception'
+ExceptionTests.cpp:68: thisThrows() == 0 failed with unexpected exception with message: 'expected exception'
 [Finished: './failing/exceptions/implicit/4' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/exceptions/implicit]
@@ -12577,19 +12577,19 @@ No assertions in test case, './succeeding/exceptions/implicit'
 [Finished: './succeeding/exceptions/implicit' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom]
-ExceptionTests.cpp:112: Unexpected exception with message: 'custom exception'
+ExceptionTests.cpp:108: Unexpected exception with message: 'custom exception'
 [Finished: './failing/exceptions/custom' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/nothrow]
-ExceptionTests.cpp:122: throw CustomException( "unexpected custom exception" ) failed with unexpected exception with message: 'unexpected custom exception'
+ExceptionTests.cpp:121: throwCustom() failed with unexpected exception with message: 'custom exception - not std'
 [Finished: './failing/exceptions/custom/nothrow' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/throw]
-ExceptionTests.cpp:127: throw CustomException( "custom exception - not std" ) failed with unexpected exception with message: 'custom exception - not std'
+ExceptionTests.cpp:126: throwCustom() failed with unexpected exception with message: 'custom exception - not std'
 [Finished: './failing/exceptions/custom/throw' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/exceptions/custom/double]
-ExceptionTests.cpp:131: Unexpected exception with message: '3.14'
+ExceptionTests.cpp:130: Unexpected exception with message: '3.14'
 [Finished: './failing/exceptions/custom/double' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/exceptions/notimplemented]
