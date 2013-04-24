@@ -16,9 +16,11 @@ seenHeaders = set([])
 rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
 readmePath = os.path.join( catchPath, "README.md" )
-#outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
+outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
 
 bumpVersion = len(sys.argv) < 2 or sys.argv[1] <> "nobump"
+
+out = open( outputPath, 'w' )
 
 def parseFile( path, filename ):
 	f = open( path + filename, 'r' )
@@ -30,7 +32,7 @@ def parseFile( path, filename ):
 			headerPath, sep, headerFile = header.rpartition( "/" )
 			if not headerFile in seenHeaders:
 				seenHeaders.add( headerFile )
-				print "// #included from: " + header
+				out.write( "// #included from: {0}\n".format( header ) )
 				if( headerPath == "internal" and path.endswith( "internal/" ) ):
 					headerPath = ""
 					sep = ""
@@ -44,7 +46,7 @@ def parseFile( path, filename ):
 			else:
 				blanks = 0
 			if blanks < 2:
-				print line.rstrip()
+				out.write( line.rstrip() + "\n" )
 
 class Version:
 	def __init__(self):
@@ -95,20 +97,21 @@ def generateSingleInclude():
 		v.incrementBuildNumber()
 		v.updateVersionFile()
 		v.updateReadmeFile()
-	print "/*"
-	print " *  CATCH v{0}.{1} build {2} ({3} branch)".format( v.majorVersion, v.minorVersion, v.buildNumber, v.branchName )
-	print " *  Generated: " + str( datetime.datetime.now() )
-	print " *  ----------------------------------------------------------"
-	print " *  This file has been merged from multiple headers. Please don't edit it directly"
-	print " *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved."
-	print " *"
-	print " *  Distributed under the Boost Software License, Version 1.0. (See accompanying"
-	print " *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)"
-	print " */"
-	print '#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED'
-	print '#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED'
+	out.write( "/*\n" )
+	out.write( " *  CATCH v{0}.{1} build {2} ({3} branch)\n".format( v.majorVersion, v.minorVersion, v.buildNumber, v.branchName ) )
+	out.write( " *  Generated: {0}\n".format( datetime.datetime.now() ) )
+	out.write( " *  ----------------------------------------------------------\n" )
+	out.write( " *  This file has been merged from multiple headers. Please don't edit it directly\n" )
+	out.write( " *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.\n" )
+	out.write( " *\n" )
+	out.write( " *  Distributed under the Boost Software License, Version 1.0. (See accompanying\n" )
+	out.write( " *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)\n" )
+	out.write( " */\n" )
+	out.write( "#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
+	out.write( "#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
+	
 	parseFile( rootPath, 'catch.hpp' )
-	print '#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED'
-	print
+	
+	out.write( "#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
 
 generateSingleInclude()
