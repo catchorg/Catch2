@@ -20,3 +20,4 @@ projects/XCode4/iOSTest/Build/Products/Debug-iphonesimulator/iOSTest.app.dSYM/Co
 projects/XCode4/iOSTest/Build
 projects/XCode4/CatchSelfTest/DerivedData
 projects/XCode4/OCTest/DerivedData
+*.pyc

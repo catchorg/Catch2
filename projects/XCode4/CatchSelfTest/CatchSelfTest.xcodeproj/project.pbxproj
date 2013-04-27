@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */; };
+		266E9AD617290E8E0061DAB2 /* CmdLineTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266E9AD417290E8E0061DAB2 /* CmdLineTests.cpp */; };
 		266ECD74170F3C620030D735 /* BDDTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266ECD73170F3C620030D735 /* BDDTests.cpp */; };
 		26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26847E5D16BBADB40043B9C1 /* catch_message.cpp */; };
 		2694A1FD16A0000E004816E3 /* catch_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_text.cpp */; };
@@ -57,6 +58,7 @@
 /* Begin PBXFileReference section */
 		266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VariadicMacrosTests.cpp; path = ../../../SelfTest/VariadicMacrosTests.cpp; sourceTree = "<group>"; };
 		266E9AD117230ACF0061DAB2 /* catch_text.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_text.hpp; sourceTree = "<group>"; };
+		266E9AD417290E8E0061DAB2 /* CmdLineTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CmdLineTests.cpp; path = ../../../SelfTest/CmdLineTests.cpp; sourceTree = "<group>"; };
 		266ECD73170F3C620030D735 /* BDDTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BDDTests.cpp; path = ../../../SelfTest/BDDTests.cpp; sourceTree = "<group>"; };
 		266ECD8C1713614B0030D735 /* catch_legacy_reporter_adapter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_legacy_reporter_adapter.hpp; sourceTree = "<group>"; };
 		266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_legacy_reporter_adapter.h; sourceTree = "<group>"; };
@@ -176,6 +178,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		266E9AD317290E710061DAB2 /* Introspective Tests */ = {
+			isa = PBXGroup;
+			children = (
+				266E9AD417290E8E0061DAB2 /* CmdLineTests.cpp */,
+			);
+			name = "Introspective Tests";
+			sourceTree = "<group>";
+		};
 		4A6D0C15149B3D3B00DB3EAA = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +208,7 @@
 				4A6D0C35149B3D9E00DB3EAA /* TestMain.cpp */,
 				4A6D0C2E149B3D9E00DB3EAA /* catch_self_test.hpp */,
 				4AE1840A14EE4F230066340D /* catch_self_test.cpp */,
+				266E9AD317290E710061DAB2 /* Introspective Tests */,
 				4A6D0C40149B3DAB00DB3EAA /* Tests */,
 				4A6D0C41149B3DE900DB3EAA /* Catch */,
 				4A6D0C26149B3D3B00DB3EAA /* CatchSelfTest.1 */,
@@ -493,6 +504,7 @@
 				26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */,
 				266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */,
 				266ECD74170F3C620030D735 /* BDDTests.cpp in Sources */,
+				266E9AD617290E8E0061DAB2 /* CmdLineTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
