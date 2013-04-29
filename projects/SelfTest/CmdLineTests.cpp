@@ -10,7 +10,6 @@
 #endif
 
 #include "catch.hpp"
-//#include "catch_ptr.hpp"
 
 namespace Catch {
 
@@ -52,6 +51,18 @@ protected:
 };
 
 template<typename T>
+bool convertInto( std::string const& _source, T& _dest ) {
+    std::stringstream ss;
+    ss << _source;
+    ss >> _dest;
+    return !ss.fail();
+}
+inline bool convertInto( std::string const& _source, std::string& _dest ) {
+    _dest = _source;
+    return true;
+}
+
+template<typename T>
 class Opt {
 public:
     Opt( std::string const& _synposis ) : m_synopsis( _synposis ) {}
@@ -87,14 +98,12 @@ private:
         virtual ~IField() {}
         virtual bool parseInto( std::string const& _arg, T& _config ) const = 0;
     };
+    
     template<typename M>
     struct Field : IField {
         Field( M const& _member ) : member( _member ) {}
         bool parseInto( std::string const& _arg, T& _config ) const {
-            std::stringstream ss;
-            ss << _arg;
-            ss >> _config.*member;
-            return !ss.fail();
+            return convertInto( _arg, _config.*member );
         }
         M member;
     };
@@ -146,40 +155,58 @@ public:
         if( !_opt.longOpt().empty() )
             m_optionsByName.insert( std::make_pair( "--" + _opt.longOpt(), &m_allOptionParsers.back() ) );
     }
-    bool parseArgs( int argc, const char* const argv[], T& config ) {
-        for( int i = 0; i < argc; ++i ) {
-            std::string fullArg = argv[i];
-            if( fullArg[0] == '-' ) {
-                std::string args, optName;
-                std::size_t pos = fullArg.find( ':' );
-                if( pos == std::string::npos ) {
-                    optName = fullArg;
-                }
-                else {
-                    optName = fullArg.substr(0, pos );
-                    args = fullArg.substr( pos+1 );
-                }
-                typename std::map<std::string, Opt<T>*>::const_iterator it = m_optionsByName.find( optName );
-                bool used = false;
-                if( it != m_optionsByName.end() ) {
-                    try {
-                        used = it->second->parseInto( args, config );
-                    }
-                    catch( std::exception& ex ) {
-                        throw std::domain_error( "Error in " + optName + " option: " + ex.what() );
-                    }
-                }
-                if( !used )
-                    m_unusedOpts.push_back( fullArg );
-            }
-            else {
-                m_args.push_back( fullArg );
-            }
-        }
-        return false;
+
+    void parseArgs( int argc, const char* const argv[], T& _config ) {
+        for( int i = 0; i < argc; ++i )
+            parseArg( argv[i], _config );
     }
 
+    void parseArgs( std::vector<std::string> const& _args, T& _config ) {
+        for( std::vector<std::string>::const_iterator
+                it = _args.begin(), itEnd = _args.end();
+                it != itEnd;
+                ++it )
+            parseArg( *it, _config );
+    }
+
+    template<typename U>
+    void parseRemainingArgs( CommandLineParser<U>& _parser, T& _config ) {
+        parseArgs( _parser.m_unusedOpts, _config );
+    }
+
+    void parseArg( std::string const& _arg, T& _config ) {
+        if( _arg[0] == '-' ) {
+            std::string args, optName;
+            std::size_t pos = _arg.find( ':' );
+            if( pos == std::string::npos ) {
+                optName = _arg;
+            }
+            else {
+                optName = _arg.substr(0, pos );
+                args = _arg.substr( pos+1 );
+            }
+            typename std::map<std::string, Opt<T>*>::const_iterator it = m_optionsByName.find( optName );
+            bool used = false;
+            if( it != m_optionsByName.end() ) {
+                try {
+                    used = it->second->parseInto( args, _config );
+                }
+                catch( std::exception& ex ) {
+                    throw std::domain_error( "Error in " + optName + " option: " + ex.what() );
+                }
+            }
+            if( !used )
+                m_unusedOpts.push_back( _arg );
+        }
+        else {
+            m_args.push_back( _arg );
+        }
+    }
+    
 private:
+    template<typename U>
+    friend class CommandLineParser;
+
     std::vector<Opt<T> > m_allOptionParsers;
     std::map<std::string, Opt<T>*> m_optionsByName;
     std::vector<std::string> m_args;
@@ -195,6 +222,10 @@ struct TestOpt {
     std::string fileName;
     std::string streamName;
     int number;
+};
+
+struct TestOpt2 {
+    std::string description;
 };
 
 TEST_CASE( "Arg" ) {
@@ -291,11 +322,9 @@ TEST_CASE( "cmdline", "" ) {
         CHECK( config.streamName == "stdout" );
     }
     
-    Catch::Opt<TestOpt> opt2( "a number" );
-    opt2.shortOpt( "n" )
-        .addArg( "<an integral value>", &TestOpt::number );
-    
-    parser.addOption( opt2 );
+    parser.addOption( Catch::Opt<TestOpt>( "a number" )
+                        .shortOpt( "n" )
+                        .addArg( "<an integral value>", &TestOpt::number ) );
     
     SECTION( "a number" ) {
         const char* argv[] = { "test", "-n:42" };
@@ -308,6 +337,26 @@ TEST_CASE( "cmdline", "" ) {
 
         CHECK_THROWS( parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config ) );
         CHECK( config.number == 0 );
+    }
+    
+    SECTION( "two parsers" ) {
+
+        TestOpt config1;
+        TestOpt2 config2;
+        Catch::CommandLineParser<TestOpt2> parser2;
+        parser2.addOption( Catch::Opt<TestOpt2>( "description" )
+                            .shortOpt( "d" )
+                            .longOpt( "description" )
+                            .addArg( "<some text>", &TestOpt2::description ) );
+        
+        const char* argv[] = { "test", "-n:42", "-d:some text" };
+
+        parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config1 );
+        CHECK( config1.number == 42 );
+        
+        parser2.parseRemainingArgs( parser, config2 );
+        CHECK( config2.description == "some text" );
+        
     }
     
 }
