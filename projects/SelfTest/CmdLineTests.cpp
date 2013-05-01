@@ -10,8 +10,11 @@
 #endif
 
 #include "catch.hpp"
+#include "catch_text.h"
 
-namespace Catch {
+namespace Clara {
+
+using namespace Catch;
 
 class ArgData {
 public:
@@ -43,6 +46,12 @@ public:
     bool operator < ( ArgData const& _other ) const {
         return m_weight < _other.m_weight;
     }
+    
+    friend std::ostream& operator << ( std::ostream& os, ArgData const& _arg ) {
+        os << _arg.m_prefix << "<" << _arg.m_name << ">" << _arg.m_postfix;
+        return os;
+    }
+
 protected:
     std::string m_prefix;
     std::string m_postfix;
@@ -91,6 +100,32 @@ public:
             }
         return false;
     }
+
+    std::string usage() const {
+        std::ostringstream oss;
+        oss << *this;
+        return oss.str();
+    }
+    friend std::ostream& operator << ( std::ostream& os, Opt const& _opt ) {
+        if( !_opt.m_shortOpt.empty() )
+            os << "-" << _opt.m_shortOpt;
+            if( !_opt.m_longOpt.empty() )
+                os << ", ";
+        if( !_opt.m_longOpt.empty() )
+            os << "--" << _opt.m_longOpt;
+        if( !_opt.m_args.empty() ) {
+            os << " : ";
+            typename std::vector<Arg>::const_iterator
+                it = _opt.m_args.begin(),
+                itEnd = _opt.m_args.end();
+            while( it != itEnd ) {
+                os << static_cast<ArgData const&>( *it );
+                if( ++it!=itEnd )
+                    os << "|";
+            }
+        }
+        return os;
+    }
     
 private:
 
@@ -99,14 +134,30 @@ private:
         virtual bool parseInto( std::string const& _arg, T& _config ) const = 0;
     };
     
-    template<typename M>
-    struct Field : IField {
-        Field( M const& _member ) : member( _member ) {}
+    template<typename F>
+    struct Field;
+
+    template<typename C, typename M>
+    struct Field<M C::*> : IField {
+        Field( M C::* _member ) : member( _member ) {}
         bool parseInto( std::string const& _arg, T& _config ) const {
             return convertInto( _arg, _config.*member );
         }
-        M member;
+        M C::* member;
     };
+    template<typename C, typename M>
+    struct Field<void (C::*)( M )> : IField {
+        Field( void (C::*_method)( M ) ) : method( _method ) {}
+        bool parseInto( std::string const& _arg, T& _config ) const {
+            M value;
+            if( !convertInto( _arg, value ) )
+                return false;
+            ( _config.*method )( value );
+            return true;
+        }
+        void (C::*method)( M );
+    };
+    
     class Arg : public ArgData {
     public:
         Arg() : m_field( NULL ) {}
@@ -119,7 +170,7 @@ private:
             if( !m_field->parseInto( strip( _arg ), _config ) )
                 throw std::domain_error( "'" + _arg + "' was not valid for <" + m_name + ">" );
         }
-        
+                
     private:
         Ptr<IField> m_field;
     };
@@ -203,6 +254,30 @@ public:
         }
     }
     
+    friend std::ostream& operator <<( std::ostream& os, CommandLineParser const& _parser ) {
+        typename std::vector<Opt<T> >::const_iterator it, itEnd = _parser.m_allOptionParsers.end();
+        std::size_t maxWidth = 0;
+        for(it = _parser.m_allOptionParsers.begin(); it != itEnd; ++it )
+            maxWidth = (std::max)( it->usage().size(), maxWidth );
+        
+        for(it = _parser.m_allOptionParsers.begin(); it != itEnd; ++it ) {
+            Text usage( it->usage(), TextAttributes().setWidth( maxWidth ) );
+            // !TBD handle longer usage strings
+            Text synopsis( it->synopsis(), TextAttributes().setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxWidth -3 ) );
+
+            for( std::size_t i = 0; i < std::max( usage.size(), synopsis.size() ); ++i ) {
+                std::string usageCol = i < usage.size() ? usage[i] : "";
+                std::cout << usageCol;
+
+                if( i < synopsis.size() && !synopsis[i].empty() )
+                    std::cout   << std::string( 2 + maxWidth - usageCol.size(), ' ' )
+                                << synopsis[i];
+                std::cout << "\n";
+            }            
+        }
+        return os;
+    }
+    
 private:
     template<typename U>
     friend class CommandLineParser;
@@ -217,11 +292,18 @@ private:
 } // end namespace Catch
 
 struct TestOpt {
-    TestOpt() : number( 0 ) {}
+    TestOpt() : number( 0 ), index( 0 ) {}
 
     std::string fileName;
     std::string streamName;
     int number;
+    int index;
+    
+    void setValidIndex( int i ) {
+        if( i < 0 || i > 10 )
+            throw std::domain_error( "index must be between 0 and 10" );
+        index = i;
+    }
 };
 
 struct TestOpt2 {
@@ -230,7 +312,7 @@ struct TestOpt2 {
 
 TEST_CASE( "Arg" ) {
     SECTION( "pre and post" ) {
-        Catch::ArgData preAndPost( "prefix<arg>postfix" );
+        Clara::ArgData preAndPost( "prefix<arg>postfix" );
         CHECK( preAndPost.prefix() == "prefix" );
         CHECK( preAndPost.postfix() == "postfix" );
         CHECK( preAndPost.name() == "arg" );
@@ -242,7 +324,7 @@ TEST_CASE( "Arg" ) {
         CHECK_FALSE( preAndPost.isMatch( "prefixpayloadpostfixx" ) );
     }
     SECTION( "pre" ) {
-        Catch::ArgData preAndPost( "prefix<arg>" );
+        Clara::ArgData preAndPost( "prefix<arg>" );
         CHECK( preAndPost.prefix() == "prefix" );
         CHECK( preAndPost.postfix() == "" );
         CHECK( preAndPost.name() == "arg" );
@@ -253,7 +335,7 @@ TEST_CASE( "Arg" ) {
         CHECK_FALSE( preAndPost.isMatch( "postfixpayload" ) );
     }
     SECTION( "post" ) {
-        Catch::ArgData preAndPost( "<arg>postfix" );
+        Clara::ArgData preAndPost( "<arg>postfix" );
         CHECK( preAndPost.prefix() == "" );
         CHECK( preAndPost.postfix() == "postfix" );
         CHECK( preAndPost.name() == "arg" );
@@ -264,7 +346,7 @@ TEST_CASE( "Arg" ) {
         CHECK_FALSE( preAndPost.isMatch( "payloadpostfixx" ) );
     }
     SECTION( "none" ) {
-        Catch::ArgData preAndPost( "<arg>" );
+        Clara::ArgData preAndPost( "<arg>" );
         CHECK( preAndPost.prefix() == "" );
         CHECK( preAndPost.postfix() == "" );
         CHECK( preAndPost.name() == "arg" );
@@ -273,32 +355,26 @@ TEST_CASE( "Arg" ) {
         CHECK( preAndPost.strip( "payload" ) == "payload" );
     }
     SECTION( "errors" ) {
-        CHECK_THROWS( Catch::ArgData( "" ) );
-        CHECK_THROWS( Catch::ArgData( "no brackets" ) );
-        CHECK_THROWS( Catch::ArgData( "<one bracket" ) );
-        CHECK_THROWS( Catch::ArgData( "one bracket>" ) );
-        CHECK_THROWS( Catch::ArgData( "><" ) );
-        CHECK_THROWS( Catch::ArgData( "<>" ) );
+        CHECK_THROWS( Clara::ArgData( "" ) );
+        CHECK_THROWS( Clara::ArgData( "no brackets" ) );
+        CHECK_THROWS( Clara::ArgData( "<one bracket" ) );
+        CHECK_THROWS( Clara::ArgData( "one bracket>" ) );
+        CHECK_THROWS( Clara::ArgData( "><" ) );
+        CHECK_THROWS( Clara::ArgData( "<>" ) );
     }
 }
 
 TEST_CASE( "cmdline", "" ) {
 
-    Catch::Opt<TestOpt> opt( "specifies output file" );
+    Clara::Opt<TestOpt> opt( "specifies output file" );
     opt.shortOpt( "o" )
         .longOpt( "output" )
         .addArg( "<filename>", &TestOpt::fileName )
         .addArg( "%<stream name>", &TestOpt::streamName );
 
     TestOpt config;
-    Catch::CommandLineParser<TestOpt> parser;
+    Clara::CommandLineParser<TestOpt> parser;
     parser.addOption( opt );
-
-//    parser.addOption( "specifies output file" )
-//        .shortOpt( "o" )
-//        .longOpt( "output" )
-//        .addArg( "<filename>", &TestOpt::fileName )
-//        .addArg( "%<stream name>", &TestOpt::streamName );
 
     SECTION( "plain filename" ) {
         const char* argv[] = { "test", "-o:filename.ext" };
@@ -322,7 +398,7 @@ TEST_CASE( "cmdline", "" ) {
         CHECK( config.streamName == "stdout" );
     }
     
-    parser.addOption( Catch::Opt<TestOpt>( "a number" )
+    parser.addOption( Clara::Opt<TestOpt>( "a number" )
                         .shortOpt( "n" )
                         .addArg( "<an integral value>", &TestOpt::number ) );
     
@@ -343,8 +419,8 @@ TEST_CASE( "cmdline", "" ) {
 
         TestOpt config1;
         TestOpt2 config2;
-        Catch::CommandLineParser<TestOpt2> parser2;
-        parser2.addOption( Catch::Opt<TestOpt2>( "description" )
+        Clara::CommandLineParser<TestOpt2> parser2;
+        parser2.addOption( Clara::Opt<TestOpt2>( "description" )
                             .shortOpt( "d" )
                             .longOpt( "description" )
                             .addArg( "<some text>", &TestOpt2::description ) );
@@ -357,6 +433,26 @@ TEST_CASE( "cmdline", "" ) {
         parser2.parseRemainingArgs( parser, config2 );
         CHECK( config2.description == "some text" );
         
+    }
+
+    SECTION( "methods" ) {
+        parser.addOption( Clara::Opt<TestOpt>( "An index, which is an integer between 0 and 10, inclusive" )
+                            .shortOpt( "i" )
+                            .addArg( "<index>", &TestOpt::setValidIndex ) );
+
+        SECTION( "in range" ) {
+            const char* argv[] = { "test", "-i:3" };
+
+            parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
+            REQUIRE( config.index == 3 );
+        }
+        SECTION( "out of range" ) {
+            const char* argv[] = { "test", "-i:42" };
+
+            REQUIRE_THROWS( parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config ) );
+        }
+        
+        std::cout << parser << std::endl;
     }
     
 }
