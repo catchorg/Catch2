@@ -196,15 +196,12 @@ private:
 };
 
 template<typename T>
-class CommandLineParser
+class Parser
 {
 public:
-    void addOption( Opt<T> const& _opt ) {
-        m_allOptionParsers.push_back( _opt );
-        if( !_opt.shortOpt().empty() )
-            m_optionsByName.insert( std::make_pair( "-" + _opt.shortOpt(), &m_allOptionParsers.back() ) );
-        if( !_opt.longOpt().empty() )
-            m_optionsByName.insert( std::make_pair( "--" + _opt.longOpt(), &m_allOptionParsers.back() ) );
+    Opt<T>& addOption( std::string const& _synposis ) {
+        m_allOptionParsers.push_back( _synposis );
+        return m_allOptionParsers.back();
     }
 
     void parseArgs( int argc, const char* const argv[], T& _config ) {
@@ -221,11 +218,13 @@ public:
     }
 
     template<typename U>
-    void parseRemainingArgs( CommandLineParser<U>& _parser, T& _config ) {
+    void parseRemainingArgs( Parser<U>& _parser, T& _config ) {
         parseArgs( _parser.m_unusedOpts, _config );
     }
 
     void parseArg( std::string const& _arg, T& _config ) {
+        ensureOptions();
+
         if( _arg[0] == '-' ) {
             std::string args, optName;
             std::size_t pos = _arg.find( ':' );
@@ -236,7 +235,7 @@ public:
                 optName = _arg.substr(0, pos );
                 args = _arg.substr( pos+1 );
             }
-            typename std::map<std::string, Opt<T>*>::const_iterator it = m_optionsByName.find( optName );
+            typename std::map<std::string, Opt<T> const*>::const_iterator it = m_optionsByName.find( optName );
             bool used = false;
             if( it != m_optionsByName.end() ) {
                 try {
@@ -254,7 +253,7 @@ public:
         }
     }
     
-    friend std::ostream& operator <<( std::ostream& os, CommandLineParser const& _parser ) {
+    friend std::ostream& operator <<( std::ostream& os, Parser const& _parser ) {
         typename std::vector<Opt<T> >::const_iterator it, itEnd = _parser.m_allOptionParsers.end();
         std::size_t maxWidth = 0;
         for(it = _parser.m_allOptionParsers.begin(); it != itEnd; ++it )
@@ -279,11 +278,23 @@ public:
     }
     
 private:
+    void ensureOptions() const {
+        if( m_allOptionParsers.size() != m_optionsByName.size() ) {
+            m_optionsByName.clear();
+            typename std::vector<Opt<T> >::const_iterator it, itEnd = m_allOptionParsers.end();
+            for( it = m_allOptionParsers.begin(); it != itEnd; ++it ) {
+                if( !it->shortOpt().empty() )
+                    m_optionsByName.insert( std::make_pair( "-" + it->shortOpt(), &*it ) );
+                if( !it->longOpt().empty() )
+                    m_optionsByName.insert( std::make_pair( "--" + it->longOpt(), &*it ) );                
+            }
+        }
+    }
     template<typename U>
-    friend class CommandLineParser;
+    friend class Parser;
 
     std::vector<Opt<T> > m_allOptionParsers;
-    std::map<std::string, Opt<T>*> m_optionsByName;
+    mutable std::map<std::string, Opt<T> const*> m_optionsByName;
     std::vector<std::string> m_args;
     std::vector<std::string> m_unusedOpts;
 };
@@ -366,15 +377,13 @@ TEST_CASE( "Arg" ) {
 
 TEST_CASE( "cmdline", "" ) {
 
-    Clara::Opt<TestOpt> opt( "specifies output file" );
-    opt.shortOpt( "o" )
+    TestOpt config;
+    Clara::Parser<TestOpt> parser;
+    parser.addOption( "specifies output file" )
+        .shortOpt( "o" )
         .longOpt( "output" )
         .addArg( "<filename>", &TestOpt::fileName )
         .addArg( "%<stream name>", &TestOpt::streamName );
-
-    TestOpt config;
-    Clara::CommandLineParser<TestOpt> parser;
-    parser.addOption( opt );
 
     SECTION( "plain filename" ) {
         const char* argv[] = { "test", "-o:filename.ext" };
@@ -398,9 +407,9 @@ TEST_CASE( "cmdline", "" ) {
         CHECK( config.streamName == "stdout" );
     }
     
-    parser.addOption( Clara::Opt<TestOpt>( "a number" )
-                        .shortOpt( "n" )
-                        .addArg( "<an integral value>", &TestOpt::number ) );
+    parser.addOption( "a number" )
+            .shortOpt( "n" )
+            .addArg( "<an integral value>", &TestOpt::number );
     
     SECTION( "a number" ) {
         const char* argv[] = { "test", "-n:42" };
@@ -419,11 +428,12 @@ TEST_CASE( "cmdline", "" ) {
 
         TestOpt config1;
         TestOpt2 config2;
-        Clara::CommandLineParser<TestOpt2> parser2;
-        parser2.addOption( Clara::Opt<TestOpt2>( "description" )
-                            .shortOpt( "d" )
-                            .longOpt( "description" )
-                            .addArg( "<some text>", &TestOpt2::description ) );
+        Clara::Parser<TestOpt2> parser2;
+
+        parser2.addOption( "description" )
+                    .shortOpt( "d" )
+                    .longOpt( "description" )
+                    .addArg( "<some text>", &TestOpt2::description );
         
         const char* argv[] = { "test", "-n:42", "-d:some text" };
 
@@ -436,9 +446,9 @@ TEST_CASE( "cmdline", "" ) {
     }
 
     SECTION( "methods" ) {
-        parser.addOption( Clara::Opt<TestOpt>( "An index, which is an integer between 0 and 10, inclusive" )
-                            .shortOpt( "i" )
-                            .addArg( "<index>", &TestOpt::setValidIndex ) );
+        parser.addOption( "An index, which is an integer between 0 and 10, inclusive" )
+                .shortOpt( "i" )
+                .addArg( "<index>", &TestOpt::setValidIndex );
 
         SECTION( "in range" ) {
             const char* argv[] = { "test", "-i:3" };
