@@ -83,6 +83,8 @@ public:
         m_args.push_back( Arg( _name, _member ) );
         return *this;
     }
+    
+    std::size_t takesArg() const { return !m_args.empty(); }
 
     std::string synopsis() const { return m_synopsis; }
     std::string shortOpt() const { return m_shortOpt; }
@@ -114,7 +116,7 @@ public:
         if( !_opt.m_longOpt.empty() )
             os << "--" << _opt.m_longOpt;
         if( !_opt.m_args.empty() ) {
-            os << " : ";
+            os << " ";
             typename std::vector<Arg>::const_iterator
                 it = _opt.m_args.begin(),
                 itEnd = _opt.m_args.end();
@@ -199,22 +201,23 @@ template<typename T>
 class Parser
 {
 public:
+    Parser()
+    :   m_separatorChars( "=: " ),
+        m_allowSpaceSeparator( m_separatorChars.find( ' ' ) != std::string::npos )
+    {}
+
     Opt<T>& addOption( std::string const& _synposis ) {
         m_allOptionParsers.push_back( _synposis );
         return m_allOptionParsers.back();
     }
 
     void parseArgs( int argc, const char* const argv[], T& _config ) {
+        std::vector<std::string> args;
+        args.reserve( static_cast<std::size_t>( argc ) );
         for( int i = 0; i < argc; ++i )
-            parseArg( argv[i], _config );
-    }
-
-    void parseArgs( std::vector<std::string> const& _args, T& _config ) {
-        for( std::vector<std::string>::const_iterator
-                it = _args.begin(), itEnd = _args.end();
-                it != itEnd;
-                ++it )
-            parseArg( *it, _config );
+            args.push_back( argv[i] );
+        
+        parseArgs( args, _config );
     }
 
     template<typename U>
@@ -222,34 +225,45 @@ public:
         parseArgs( _parser.m_unusedOpts, _config );
     }
 
-    void parseArg( std::string const& _arg, T& _config ) {
+    void parseArgs( std::vector<std::string> const& _args, T& _config ) {
         ensureOptions();
-
-        if( _arg[0] == '-' ) {
-            std::string args, optName;
-            std::size_t pos = _arg.find( ':' );
-            if( pos == std::string::npos ) {
-                optName = _arg;
+        for( std::size_t i = 0; i < _args.size(); ++i ) {
+            std::string const& arg = _args[i];
+            if( arg[0] == '-' ) {
+                std::string optArgs, optName;
+                std::size_t pos = arg.find_first_of( m_separatorChars );
+                if( pos == std::string::npos ) {
+                    optName = arg;
+                }
+                else {
+                    optName = arg.substr(0, pos );
+                    optArgs = arg.substr( pos+1 );
+                }
+                typename std::map<std::string, Opt<T> const*>::const_iterator it = m_optionsByName.find( optName );
+                bool used = false;
+                if( it != m_optionsByName.end() ) {
+                    Opt<T> const& opt = *(it->second);                    
+                    if( opt.takesArg() ) {
+                        if( optArgs.empty() ) {
+                            if( i < _args.size() && _args[i+1][0] != '-' )
+                                optArgs = _args[++i];
+                            else
+                                throw std::domain_error( "Expected argument"); // !TBD better error
+                        }
+                    }
+                    try {
+                        used = opt.parseInto( optArgs, _config );
+                    }
+                    catch( std::exception& ex ) {
+                        throw std::domain_error( "Error in " + optName + " option: " + ex.what() );
+                    }
+                }
+                if( !used )
+                    m_unusedOpts.push_back( arg );
             }
             else {
-                optName = _arg.substr(0, pos );
-                args = _arg.substr( pos+1 );
+                m_args.push_back( arg );
             }
-            typename std::map<std::string, Opt<T> const*>::const_iterator it = m_optionsByName.find( optName );
-            bool used = false;
-            if( it != m_optionsByName.end() ) {
-                try {
-                    used = it->second->parseInto( args, _config );
-                }
-                catch( std::exception& ex ) {
-                    throw std::domain_error( "Error in " + optName + " option: " + ex.what() );
-                }
-            }
-            if( !used )
-                m_unusedOpts.push_back( _arg );
-        }
-        else {
-            m_args.push_back( _arg );
         }
     }
     
@@ -297,6 +311,8 @@ private:
     mutable std::map<std::string, Opt<T> const*> m_optionsByName;
     std::vector<std::string> m_args;
     std::vector<std::string> m_unusedOpts;
+    std::string m_separatorChars;
+    bool m_allowSpaceSeparator;
 };
 
     
@@ -386,21 +402,35 @@ TEST_CASE( "cmdline", "" ) {
         .addArg( "%<stream name>", &TestOpt::streamName );
 
     SECTION( "plain filename" ) {
+        const char* argv[] = { "test", "-o filename.ext" };
+
+        parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
+        CHECK( config.fileName == "filename.ext" );
+        CHECK( config.streamName == "" );
+    }
+    SECTION( "plain filename with colon" ) {
         const char* argv[] = { "test", "-o:filename.ext" };
 
         parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.fileName == "filename.ext" );
         CHECK( config.streamName == "" );
     }
+    SECTION( "plain filename with =" ) {
+        const char* argv[] = { "test", "-o=filename.ext" };
+
+        parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
+        CHECK( config.fileName == "filename.ext" );
+        CHECK( config.streamName == "" );
+    }
     SECTION( "stream name" ) {
-        const char* argv[] = { "test", "-o:%stdout" };
+        const char* argv[] = { "test", "-o %stdout" };
 
         parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.fileName == "" );
         CHECK( config.streamName == "stdout" );
     }
     SECTION( "long opt" ) {
-        const char* argv[] = { "test", "--output:%stdout" };
+        const char* argv[] = { "test", "--output %stdout" };
 
         parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.fileName == "" );
@@ -412,13 +442,13 @@ TEST_CASE( "cmdline", "" ) {
             .addArg( "<an integral value>", &TestOpt::number );
     
     SECTION( "a number" ) {
-        const char* argv[] = { "test", "-n:42" };
+        const char* argv[] = { "test", "-n 42" };
 
         parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.number == 42 );
     }
     SECTION( "not a number" ) {
-        const char* argv[] = { "test", "-n:forty-two" };
+        const char* argv[] = { "test", "-n forty-two" };
 
         CHECK_THROWS( parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config ) );
         CHECK( config.number == 0 );
@@ -435,7 +465,7 @@ TEST_CASE( "cmdline", "" ) {
                     .longOpt( "description" )
                     .addArg( "<some text>", &TestOpt2::description );
         
-        const char* argv[] = { "test", "-n:42", "-d:some text" };
+        const char* argv[] = { "test", "-n 42", "-d some text" };
 
         parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config1 );
         CHECK( config1.number == 42 );
@@ -451,13 +481,13 @@ TEST_CASE( "cmdline", "" ) {
                 .addArg( "<index>", &TestOpt::setValidIndex );
 
         SECTION( "in range" ) {
-            const char* argv[] = { "test", "-i:3" };
+            const char* argv[] = { "test", "-i 3" };
 
             parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config );
             REQUIRE( config.index == 3 );
         }
         SECTION( "out of range" ) {
-            const char* argv[] = { "test", "-i:42" };
+            const char* argv[] = { "test", "-i 42" };
 
             REQUIRE_THROWS( parser.parseArgs( sizeof(argv)/sizeof(char*), argv, config ) );
         }
