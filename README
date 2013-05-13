@@ -1,7 +1,6 @@
 CATCH is an automated test framework for C, C++ and Objective-C.
 
-The latest stable version can be found as a single header in the Downloads section.
-(The Downloads section is now deprecated on GitHub. Until I move this somewhere else for CATCH it can still be reached here: https://github.com/philsquared/Catch/downloads)
+The latest stable version can be found here: https://raw.github.com/philsquared/Catch/master/single_include/catch.hpp
 
 For documentation see the wiki at: https://github.com/philsquared/Catch/wiki
 
