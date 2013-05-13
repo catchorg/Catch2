@@ -332,3 +332,13 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
         REQUIRE( v.capacity() >= 5 );
     }
 }
+
+// https://github.com/philsquared/Catch/issues/166
+//TEST_CASE("CatchSectionInfiniteLoop", "")
+//{
+//    SECTION("Outer", "")
+//        SECTION("Inner", "")
+//            SUCCEED("that's not flying - that's failing in style");
+//
+//    FAIL("to infinity and beyond");
+//}
