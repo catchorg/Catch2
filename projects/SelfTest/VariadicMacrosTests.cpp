@@ -8,6 +8,8 @@
 
 #include "catch.hpp"
 
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+
 TEST_CASE()
 {
     SUCCEED( "anonymous test case" );
@@ -25,3 +27,5 @@ TEST_CASE( "Variadic macros", "[variadic][sections]" )
         SUCCEED( "no assertions" );
     }
 }
+
+#endif

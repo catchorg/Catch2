@@ -74,7 +74,11 @@
     ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
     ( defined __GNUC__ && __GNUC__ >= 3 ) || \
     ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
-    #define CATCH_CONFIG_VARIADIC_MACROS
+
+#ifndef CATCH_CONFIG_NO_VARIADIC_MACROS
+#define CATCH_CONFIG_VARIADIC_MACROS
+#endif
+
 #endif
 
 #endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED

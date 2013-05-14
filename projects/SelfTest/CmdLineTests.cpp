@@ -320,6 +320,8 @@ struct TestOpt2 {
     std::string description;
 };
 
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+
 TEST_CASE( "cmdline", "" ) {
 
     TestOpt config;
@@ -525,3 +527,5 @@ TEST_CASE( "growing new Catch cli" ) {
 
     std::cout << parser << std::endl;
 }
+#endif
+

@@ -85,7 +85,7 @@ private:
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); }
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define TEST_CASE_METHOD( ClassName, ... )\
+    #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, ... )\
         namespace{ \
             struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
                 void test(); \
@@ -106,7 +106,7 @@ private:
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( Name, Desc ), CATCH_INTERNAL_LINEINFO ); }
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
+    #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, TestName, Desc )\
         namespace{ \
             struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
                 void test(); \
