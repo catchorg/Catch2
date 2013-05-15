@@ -14,292 +14,362 @@
 
 namespace Clara {
 
-template<typename T> struct RemoveConstRef{ typedef T type; };
-template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
-template<typename T> struct RemoveConstRef<T const&>{ typedef T type; };
-template<typename T> struct RemoveConstRef<T const>{ typedef T type; };
+    template<typename T> struct RemoveConstRef{ typedef T type; };
+    template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
+    template<typename T> struct RemoveConstRef<T const&>{ typedef T type; };
+    template<typename T> struct RemoveConstRef<T const>{ typedef T type; };
 
-using namespace Catch;
+    template<typename T>    struct IsBool       { static const bool value = false; };
+    template<>              struct IsBool<bool> { static const bool value = true; };
 
-template<typename T>
-bool convertInto( std::string const& _source, T& _dest ) {
-    std::stringstream ss;
-    ss << _source;
-    ss >> _dest;
-    return !ss.fail();
-}
-inline bool convertInto( std::string const& _source, std::string& _dest ) {
-    _dest = _source;
-    return true;
-}
-inline bool convertInto( std::string const& _source, bool _dest ) {
-    std::string sourceLC = toLower( _source );
-    if( sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
-        _dest = true;
-    else if( sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
-        _dest = false;
-    else
-        return false;
-    return true;
-}
-
-template<typename T>
-class Opt {
-public:
-    Opt( std::string const& _synposis ) : m_synopsis( _synposis ) {}
-    Opt& shortName( std::string const& _value ) { m_shortName = _value; return *this; }
-    Opt& longName( std::string const& _value )  { m_longName = _value; return *this; }
-
-    template<typename M>
-    Opt& optArg( std::string const& _name, M const& _member  ){
-        m_argName = _name;
-        m_field = new Field<M>( _member );
-        return *this;
+    template<typename T>
+    void convertInto( std::string const& _source, T& _dest ) {
+        std::stringstream ss;
+        ss << _source;
+        ss >> _dest;
+        if( ss.fail() )
+            throw std::runtime_error( "Unable to convert " + _source + " to destination type" );
+    }
+    inline void convertInto( std::string const& _source, std::string& _dest ) {
+        _dest = _source;
+    }
+    inline void convertInto( std::string const& _source, bool& _dest ) {
+        std::string sourceLC = _source;
+        std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), ::tolower );
+        if( sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
+            _dest = true;
+        else if( sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
+            _dest = false;
+        else
+            throw std::runtime_error( "Expected a boolean value but did recognise: '" + _source + "'" );
+    }
+    inline void convertInto( bool _source, bool& _dest ) {
+        _dest = _source;
+    }
+    template<typename T>
+    inline void convertInto( bool, T& ) {
+        throw std::runtime_error( "Invalid conversion" );
     }
 
-    template<typename M>
-    Opt& flag( M const& _member  ){
-        m_field = new FlagField<M>( _member );
-        return *this;
-    }
-    
-    std::size_t takesArg() const { return !m_argName.empty(); }
-    std::string synopsis() const { return m_synopsis; }
-    std::string shortName() const { return m_shortName; }
-    std::string longName() const { return m_longName; }
-    
-    bool parseInto( std::string const& _arg, T& _config ) const {
-        if( m_argName.empty() )
-            m_field->set( _config );
-        else if( !m_field->parseInto( _arg, _config ) )
-            throw std::domain_error( "'" + _arg + "' was not valid for <" + m_argName + ">" );                
-        return true;
-    }
-
-    std::string usage() const {
-        std::ostringstream oss;
-        writeToStream( oss );
-        return oss.str();
-    }
-    friend std::ostream& operator << ( std::ostream& os, Opt const& _opt ) {
-        _opt.writeToStream( os );
-        return os;
-    }
-    void writeToStream ( std::ostream& os ) const {
-        if( !m_shortName.empty() )
-            os << "-" << m_shortName;
-            if( !m_longName.empty() )
-                os << ", ";
-        if( !m_longName.empty() )
-            os << "--" << m_longName;
-        if( takesArg() )
-            os << " <" << m_argName << ">";
-    }    
-private:
-
-    struct IField : SharedImpl<> {
-        virtual ~IField() {}
-        virtual bool parseInto( std::string const&, T& ) const {
-            throw std::logic_error( "cannot pass argument to bool binder" );
-        }
-        virtual void set( T& ) const {
-            throw std::logic_error( "field requires an argument" );
-        }
+    template<typename ConfigT>
+    struct IBoundMember {
+        virtual ~IBoundMember() {}
+        virtual void set( ConfigT& config, std::string const& value ) const = 0;
+        virtual void setFlag( ConfigT& config ) const = 0;
+        virtual bool takesArg() const = 0;
+        virtual IBoundMember* clone() const = 0;
     };
-        
-    template<typename F>
-    struct Field;
 
-    template<typename F>
-    struct FlagField;
-
-    // Data member : with argument
-    template<typename C, typename M>
-    struct Field<M C::*> : IField {
-        Field( M C::* _member ) : member( _member ) {}
-        bool parseInto( std::string const& _arg, T& _config ) const {
-            return convertInto( _arg, _config.*member );
+    template<typename ConfigT>
+    class BoundField {
+    public:
+        BoundField( IBoundMember<ConfigT>* _boundMember ) : boundMember( _boundMember ) {}
+        BoundField( BoundField const& other ) : boundMember( other.boundMember->clone() ) {}
+        BoundField& operator = ( BoundField const& other ) {
+            IBoundMember<ConfigT> newMember = other.clone();
+            delete boundMember;
+            boundMember = newMember;
+            return *this;
         }
+        ~BoundField() { delete boundMember; }
+
+        void set( ConfigT& config, std::string const& value ) const {
+            boundMember->set( config, value );
+        }
+        void setFlag( ConfigT& config ) const {
+            boundMember->setFlag( config );
+        }
+        bool takesArg() const { return boundMember->takesArg(); }
+    private:
+        IBoundMember<ConfigT>* boundMember;
+    };
+
+
+    template<typename C, typename M>
+    struct BoundDataMember : IBoundMember<C>{
+        BoundDataMember( M C::* _member ) : member( _member ) {}
+        virtual void set( C& p, std::string const& stringValue ) const {
+            convertInto( stringValue, p.*member );
+        }
+        virtual void setFlag( C& p ) const {
+            convertInto( true, p.*member );
+        }
+        virtual bool takesArg() const { return !IsBool<M>::value; }
+        virtual IBoundMember<C>* clone() const { return new BoundDataMember( *this ); }
         M C::* member;
     };
-    // Data member : flag
     template<typename C, typename M>
-    struct FlagField<M C::*> : IField {
-        FlagField( M C::* _member ) : member( _member ) {}
-        void set( T& _config ) const {
-            _config.*member = true;
-        }
-        M C::* member;
-    };
-    
-    // Unary method : with argument
-    template<typename C, typename M>
-    struct Field<void (C::*)( M )> : IField {
-        Field( void (C::*_method)( M ) ) : method( _method ) {}
-        bool parseInto( std::string const& _arg, T& _config ) const {
+    struct BoundUnaryMethod : IBoundMember<C>{
+        BoundUnaryMethod( void (C::*_member)( M ) ) : member( _member ) {}
+        virtual void set( C& p, std::string const& stringValue ) const {
             typename RemoveConstRef<M>::type value;
-            if( !convertInto( _arg, value ) )
-                return false;
-            ( _config.*method )( value );
-            return true;
+            convertInto( stringValue, value );
+            (p.*member)( value );
         }
-        void (C::*method)( M );
-    };
-
-    // Unary method : flag
-    template<typename C, typename M>
-    struct FlagField<void (C::*)( M )> : IField {
-        FlagField( void (C::*_method)( M ) ) : method( _method ) {}
-        void set( T& _config ) const {
-            ( _config.*method )( true );
+        virtual void setFlag( C& p ) const {
+            typename RemoveConstRef<M>::type value;
+            convertInto( true, value );
+            (p.*member)( value );
         }
-        void (C::*method)( M );
+        virtual bool takesArg() const { return !IsBool<M>::value; }
+        virtual IBoundMember<C>* clone() const { return new BoundUnaryMethod( *this ); }
+        void (C::*member)( M );
     };
-
-    // Nullary method : flag
     template<typename C>
-    struct FlagField<void (C::*)()> : IField {
-        FlagField( void (C::*_method)() ) : method( _method ) {}
-        void set( T& _config ) const {
-            ( _config.*method )();
+    struct BoundNullaryMethod : IBoundMember<C>{
+        BoundNullaryMethod( void (C::*_member)() ) : member( _member ) {}
+        virtual void set( C& p, std::string const& stringValue ) const {
+            bool value;
+            convertInto( stringValue, value );
+            if( value )
+                (p.*member)();
         }
-        void (C::*method)();
+        virtual void setFlag( C& p ) const {
+            (p.*member)();
+        }
+        virtual bool takesArg() const { return false; }
+        virtual IBoundMember<C>* clone() const { return new BoundNullaryMethod( *this ); }
+        void (C::*member)();
     };
     
-    std::string m_synopsis;
-    std::string m_shortName;
-    std::string m_longName;
-    std::string m_argName;
-    Ptr<IField> m_field;
-};
-
-template<typename T>
-class Parser
-{
-public:
-    Parser()
-    :   m_separatorChars( "=: " ),
-        m_allowSpaceSeparator( m_separatorChars.find( ' ' ) != std::string::npos )
-    {}
-    template<typename M>
-    Parser( std::string const&, M ) // !TBD
-    :   m_separatorChars( "=: " ),
-        m_allowSpaceSeparator( m_separatorChars.find( ' ' ) != std::string::npos )
-    {}
-    template<typename M>
-    Parser& operator()( std::string const&, M ) { return *this; } // !TBD
-
-    Opt<T>& addOption( std::string const& _synposis ) {
-        m_allOptionParsers.push_back( _synposis );
-        return m_allOptionParsers.back();
+    template<typename C, typename M>
+    BoundField<C> makeBoundField( M C::* _member ) {
+        return BoundField<C>( new BoundDataMember<C,M>( _member ) );
+    }
+    template<typename C, typename M>
+    BoundField<C> makeBoundField( void (C::*_member)( M ) ) {
+        return BoundField<C>( new BoundUnaryMethod<C,M>( _member ) );
+    }
+    template<typename C>
+    BoundField<C> makeBoundField( void (C::*_member)() ) {
+        return BoundField<C>( new BoundNullaryMethod<C>( _member ) );
     }
 
-    void parseInto( int argc, const char* const argv[], T& _config ) {
-        std::vector<std::string> args;
-        args.reserve( static_cast<std::size_t>( argc ) );
-        for( int i = 0; i < argc; ++i )
-            args.push_back( argv[i] );
+
+    template<typename ConfigT>
+    class CommandLine {
+        struct ArgToken {
+            enum TokenType {
+                Positional,
+                ShortOpt,
+                LongOpt
+            };
+            ArgToken() : type( Positional ) {}
+            ArgToken( TokenType _type, std::string const& _arg )
+                : type( _type ), arg( _arg ) {}
+
+            TokenType type;
+            std::string arg;
+        };
+
+        class ArgBinder {
+        public:
+            ArgBinder( CommandLine* cl ) : m_cl( cl ) {}
+
+            template<typename F>
+            ArgBinder& bind( F f ) {
+                if( !m_cl->opts.empty() )
+                    m_cl->opts.back().validate();
+                m_cl->opts.push_back( Opt( makeBoundField( f ) ) );
+                return *this;
+            }
+
+            ArgBinder& shortOpt( std::string const& name ) {
+                m_cl->opts.back().shortNames.push_back( name );
+                return *this;
+            }
+            ArgBinder& longOpt( std::string const& name ) {
+                m_cl->opts.back().longName = name;
+                return *this;
+            }
+            ArgBinder& describe( std::string const& description ) {
+                m_cl->opts.back().description = description;
+                return *this;
+            }
+            ArgBinder& argName( std::string const& argName ) {
+                m_cl->opts.back().argName = argName;
+                return *this;
+            }
+            ArgBinder& position( int /*position*/ ) {
+                // !TBD: Support for positional args in fixed positions
+                return *this;
+            }
+        private:
+            CommandLine* m_cl;
+        };
+
+        struct Opt {
+            public:
+                Opt( BoundField<ConfigT> const& _boundField ) : boundField( _boundField ) {}
+
+                bool hasShortName( std::string const& shortName ) const {
+                    for(    std::vector<std::string>::const_iterator
+                                it = shortNames.begin(), itEnd = shortNames.end();
+                            it != itEnd;
+                            ++it )
+                        if( *it == shortName )
+                            return true;
+                    return false;
+                }
+                bool hasLongName( std::string const& _longName ) const {
+                    return _longName == longName;
+                }
+                bool takesArg() const {
+                    return !argName.empty();
+                }
+                bool isPositional() const {
+                    return shortNames.empty() && longName.empty();
+                }
+                std::string dbgName() const {
+                    if( !longName.empty() )
+                        return "--" + longName;
+                    if( !shortNames.empty() )
+                        return "-" + shortNames[0];
+                    return "positional args";
+                }
+
+                void validate() const {
+                    if( boundField.takesArg() && !takesArg() )
+                        throw std::logic_error( dbgName() + " must specify an arg name" );
+                }
+            
+                std::string commands() const {
+                    std::ostringstream oss;
+                    bool first = true;
+                    std::vector<std::string>::const_iterator it = shortNames.begin(), itEnd = shortNames.end();
+                    for(; it != itEnd; ++it ) {
+                        if( first )
+                            first = false;
+                        else
+                            oss << ", ";
+                        oss << "-" << *it;
+                    }
+                    if( !longName.empty() ) {
+                        if( !first )
+                            oss << ", ";
+                        oss << "--" << longName;
+                    }
+                    if( !argName.empty() )
+                        oss << " <" << argName << ">";
+                    return oss.str();
+                }
+            
+                BoundField<ConfigT> boundField;
+                std::vector<std::string> shortNames;
+                std::string longName;
+                std::string description;
+                std::string argName;
+        };
+
+    public:
+        template<typename F>
+        ArgBinder bind( F f ) {
+            ArgBinder binder( this );
+            binder.bind( f );
+            return binder;
+        }
+
+        void parseInto( int argc, char const* argv[], ConfigT& config ) const {
+            if( opts.empty() )
+                throw std::logic_error( "No options or arguments specified" );
+            opts.back().validate();
+            
+            std::vector<ArgToken> tokens;
+            parseIntoTokens( argc, argv, tokens );            
+            setFromTokens( tokens, config );
+        }
+
+        void usage( std::ostream& os ) const {
+            typename std::vector<Opt>::const_iterator itBegin = opts.begin(), itEnd = opts.end(), it;
+            std::size_t maxWidth = 0;
+            for( it = itBegin; it != itEnd; ++it )
+                maxWidth = (std::max)( maxWidth, it->commands().size() );
+
+            for( it = itBegin; it != itEnd; ++it ) {
+                Catch::Text usage( it->commands(), Catch::TextAttributes().setWidth( maxWidth ) );
+                // !TBD handle longer usage strings
+                Catch::Text desc( it->description, Catch::TextAttributes().setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxWidth -3 ) );
+
+                for( std::size_t i = 0; i < std::max( usage.size(), desc.size() ); ++i ) {
+                    std::string usageCol = i < usage.size() ? usage[i] : "";
+                    os << usageCol;
+
+                    if( i < desc.size() && !desc[i].empty() )
+                        os  << std::string( 2 + maxWidth - usageCol.size(), ' ' )
+                            << desc[i];
+                    os << "\n";
+                }                
+            }
+            
+        }
+        std::string usage() const {
+            std::ostringstream oss;
+            usage( oss );
+            return oss.str();
+        }
+        friend std::ostream& operator << ( std::ostream& os, CommandLine const& parser ) {
+            parser.usage( os );
+            return os;
+        }
         
-        parseInto( args, _config );
-    }
-
-    template<typename U>
-    void parseRemainingArgs( Parser<U>& _parser, T& _config ) {
-        parseInto( _parser.m_unusedOpts, _config );
-    }
-
-    void parseInto( std::vector<std::string> const& _args, T& _config ) {
-        ensureOptions();
-        for( std::size_t i = 0; i < _args.size(); ++i ) {
-            std::string const& arg = _args[i];
-            if( arg[0] == '-' ) {
-                std::string optArgs, optName;
-                std::size_t pos = arg.find_first_of( m_separatorChars );
-                if( pos == std::string::npos ) {
-                    optName = arg;
-                }
-                else {
-                    optName = arg.substr(0, pos );
-                    optArgs = arg.substr( pos+1 );
-                }
-                typename std::map<std::string, Opt<T> const*>::const_iterator it = m_optionsByName.find( optName );
-                bool used = false;
-                if( it != m_optionsByName.end() ) {
-                    Opt<T> const& opt = *(it->second);                    
-                    if( opt.takesArg() ) {
-                        if( optArgs.empty() ) {
-                            if( i < _args.size() && _args[i+1][0] != '-' )
-                                optArgs = _args[++i];
-                            else
-                                throw std::domain_error( "Expected argument"); // !TBD better error
+    private:
+        void parseIntoTokens( int argc, char const* argv[], std::vector<ArgToken>& tokens ) const {
+            for( int i = 1; i < argc; ++i ) {
+                std::string arg = argv[i];
+                while( !arg.empty() ) {
+                    ArgToken token( ArgToken::Positional, arg );
+                    arg = "";
+                    if( token.arg[0] == '-' ) {
+                        if( token.arg.size() > 1 && token.arg[1] == '-' )
+                            token = ArgToken( ArgToken::LongOpt, token.arg.substr( 2 ) );
+                        else
+                            token = ArgToken( ArgToken::ShortOpt, token.arg.substr( 1 ) );
+                    }
+                    if( token.type != ArgToken::Positional ) {
+                        std::size_t pos = token.arg.find_first_of( " \t=:" );
+                        if( pos != std::string::npos ) {
+                            arg = token.arg.substr( pos+1 );
+                            token.arg = token.arg.substr( 0, pos );
                         }
                     }
-                    try {
-                        used = opt.parseInto( optArgs, _config );
-                    }
-                    catch( std::exception& ex ) {
-                        throw std::domain_error( "Error in " + optName + " option: " + ex.what() );
-                    }
+                    tokens.push_back( token );
                 }
-                if( !used )
-                    m_unusedOpts.push_back( arg );
-            }
-            else {
-                m_args.push_back( arg );
-            }
-        }
-    }
-    
-    friend std::ostream& operator <<( std::ostream& os, Parser const& _parser ) {
-        typename std::vector<Opt<T> >::const_iterator it, itEnd = _parser.m_allOptionParsers.end();
-        std::size_t maxWidth = 0;
-        for(it = _parser.m_allOptionParsers.begin(); it != itEnd; ++it )
-            maxWidth = (std::max)( it->usage().size(), maxWidth );
-        
-        for(it = _parser.m_allOptionParsers.begin(); it != itEnd; ++it ) {
-            Text usage( it->usage(), TextAttributes().setWidth( maxWidth ) );
-            // !TBD handle longer usage strings
-            Text synopsis( it->synopsis(), TextAttributes().setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxWidth -3 ) );
-
-            for( std::size_t i = 0; i < std::max( usage.size(), synopsis.size() ); ++i ) {
-                std::string usageCol = i < usage.size() ? usage[i] : "";
-                std::cout << usageCol;
-
-                if( i < synopsis.size() && !synopsis[i].empty() )
-                    std::cout   << std::string( 2 + maxWidth - usageCol.size(), ' ' )
-                                << synopsis[i];
-                std::cout << "\n";
             }            
         }
-        return os;
-    }
-    
-private:
-    void ensureOptions() const {
-        if( m_allOptionParsers.size() != m_optionsByName.size() ) {
-            m_optionsByName.clear();
-            typename std::vector<Opt<T> >::const_iterator it, itEnd = m_allOptionParsers.end();
-            for( it = m_allOptionParsers.begin(); it != itEnd; ++it ) {
-                if( !it->shortName().empty() )
-                    m_optionsByName.insert( std::make_pair( "-" + it->shortName(), &*it ) );
-                if( !it->longName().empty() )
-                    m_optionsByName.insert( std::make_pair( "--" + it->longName(), &*it ) );                
+        void setFromTokens( std::vector<ArgToken>const & tokens, ConfigT& config ) const {
+            for( std::size_t i = 0; i < tokens.size(); ++i ) {
+                ArgToken const& token = tokens[i];
+                typename std::vector<Opt>::const_iterator it = opts.begin(), itEnd = opts.end();
+                for(; it != itEnd; ++it ) {
+                    Opt const& opt = *it;
+                    
+                    if( ( token.type == ArgToken::ShortOpt && opt.hasShortName( token.arg ) ) ||
+                        ( token.type == ArgToken::LongOpt && opt.hasLongName( token.arg ) ) ) {
+                        if( opt.takesArg() ) {
+                            if( i == tokens.size()-1 || tokens[i+1].type != ArgToken::Positional )
+                                throw std::domain_error( "Expected argument to option " + token.arg );
+                            opt.boundField.set( config, tokens[++i].arg );
+                        }
+                        else {
+                            opt.boundField.setFlag( config );
+                        }
+                        break;
+                    }
+                    else if( token.type == ArgToken::Positional && opt.isPositional() ) {
+                        opt.boundField.set( config, token.arg );
+                        break;
+                    }
+                }
+                if( it == itEnd )
+                    unhandledTokens.push_back( token );
             }
         }
-    }
-    template<typename U>
-    friend class Parser;
-
-    std::vector<Opt<T> > m_allOptionParsers;
-    mutable std::map<std::string, Opt<T> const*> m_optionsByName;
-    std::vector<std::string> m_args;
-    std::vector<std::string> m_unusedOpts;
-    std::string m_separatorChars;
-    bool m_allowSpaceSeparator;
-};
-
+        
+        std::vector<Opt> opts;
+        mutable std::vector<ArgToken> unhandledTokens; // !TBD
+    };
     
-} // end namespace Catch
+} // end namespace Clara
 
 struct TestOpt {
     TestOpt() : number( 0 ), index( 0 ), flag( false ) {}
@@ -325,11 +395,12 @@ struct TestOpt2 {
 TEST_CASE( "cmdline", "" ) {
 
     TestOpt config;
-    Clara::Parser<TestOpt> parser;
-    parser.addOption( "specifies output file" )
-        .shortName( "o" )
-        .longName( "output" )
-        .optArg( "<filename>", &TestOpt::fileName );
+    Clara::CommandLine<TestOpt> parser;
+    parser.bind( &TestOpt::fileName )
+        .describe( "specifies output file" )
+        .shortOpt( "o" )
+        .longOpt( "output" )
+        .argName( "<filename>" );
 
     SECTION( "plain filename" ) {
         const char* argv[] = { "test", "-o filename.ext" };
@@ -356,9 +427,9 @@ TEST_CASE( "cmdline", "" ) {
         CHECK( config.fileName == "%stdout" );
     }
     
-    parser.addOption( "a number" )
-            .shortName( "n" )
-            .optArg( "<an integral value>", &TestOpt::number );
+    parser.bind( &TestOpt::number )
+            .shortOpt( "n" )
+            .argName( "<an integral value>" );
     
     SECTION( "a number" ) {
         const char* argv[] = { "test", "-n 42" };
@@ -377,27 +448,30 @@ TEST_CASE( "cmdline", "" ) {
 
         TestOpt config1;
         TestOpt2 config2;
-        Clara::Parser<TestOpt2> parser2;
+        Clara::CommandLine<TestOpt2> parser2;
 
-        parser2.addOption( "description" )
-                    .shortName( "d" )
-                    .longName( "description" )
-                    .optArg( "<some text>", &TestOpt2::description );
+        parser2.bind( &TestOpt2::description )
+            .describe( "description" )
+            .shortOpt( "d" )
+            .longOpt( "description" )
+            .argName( "<some text>" );
         
         const char* argv[] = { "test", "-n 42", "-d some text" };
 
         parser.parseInto( sizeof(argv)/sizeof(char*), argv, config1 );
         CHECK( config1.number == 42 );
-        
-        parser2.parseRemainingArgs( parser, config2 );
-        CHECK( config2.description == "some text" );
+
+// !TBD
+//        parser2.parseRemainingArgs( parser, config2 );
+//        CHECK( config2.description == "some text" );
         
     }
 
     SECTION( "methods" ) {
-        parser.addOption( "An index, which is an integer between 0 and 10, inclusive" )
-                .shortName( "i" )
-                .optArg( "<index>", &TestOpt::setValidIndex );
+        parser.bind( &TestOpt::setValidIndex )
+            .describe( "An index, which is an integer between 0 and 10, inclusive" )
+            .shortOpt( "i" )
+            .argName( "<index>" );
 
         SECTION( "in range" ) {
             const char* argv[] = { "test", "-i 3" };
@@ -413,9 +487,9 @@ TEST_CASE( "cmdline", "" ) {
     }
     
     SECTION( "flags" ) {
-        parser.addOption( "A flag" )
-                .shortName( "f" )
-                .flag( &TestOpt::flag );
+        parser.bind( &TestOpt::flag )
+            .describe( "A flag" )
+            .shortOpt( "f" );
         
         SECTION( "set" ) {
             const char* argv[] = { "test", "-f" };
@@ -453,79 +527,85 @@ struct Config {
 
 
 TEST_CASE( "growing new Catch cli" ) {
-    Clara::Parser<Config> parser;
+    Clara::CommandLine<Config> parser;
 
-    Clara::Parser<Config>
-        ( "-h, --help                         display usage information",           &Config::showHelp )
-        ( "-l, --list                         list all (or matching) test cases",   &Config::listTests )
-        ( "-t, --tags                         list all (or matching) tags",         &Config::listTags )
-        ( "-p, --passing                      show passing test output",            &Config::showPassingTests )
-        ( "-b, --break                        break into debugger on failure",      &Config::breakIntoDebugger )
-        ( "-e, --nothrow                      Skip exception tests",                &Config::noThrow )
-        ( "-o, --out <file name>              output filename",                     &Config::fileName )
-        ( "-n, --name <name>                  suite name",                          &Config::suiteName )
-        ( "-a, --abort                        abort at first failure",              &Config::abortAfterFirst )
-        ( "-x, --abortx <number of failures>  abort after x failures",              &Config::abortAfterX )
-        ( "-w, --warn <warning name>          enables warnings",                    &Config::addWarning );
-//        .parseInto( argc, argv, config );
+    parser.bind( &Config::showHelp )
+        .describe( "display usage information" )
+        .shortOpt( "?")
+        .shortOpt( "h")
+        .longOpt( "help" );
 
-    parser.addOption( "display usage information" )
-        .shortName( "?")
-        .shortName( "h")
-        .longName( "help" )
-        .flag( &Config::showHelp );
+    parser.bind( &Config::listTests )
+        .describe( "list all (or matching) test cases" )
+        .shortOpt( "l")
+        .longOpt( "list" );
 
-    parser.addOption( "list all (or matching) test cases" )
-        .shortName( "l")
-        .longName( "list" )
-        .flag( &Config::listTests );
+    parser.bind( &Config::listTags )
+        .describe( "list all (or matching) tags" )
+        .shortOpt( "t")
+        .longOpt( "tags" );
 
-    parser.addOption( "list all (or matching) tags" )
-        .shortName( "t")
-        .longName( "tags" )
-        .flag( &Config::listTags );
+    parser.bind( &Config::showPassingTests )
+        .describe( "show passing test output" )
+        .shortOpt( "p")
+        .longOpt( "passing" );
 
-    parser.addOption( "show passing test output" )
-        .shortName( "p")
-        .longName( "passing" )
-        .flag( &Config::showPassingTests );
+    parser.bind( &Config::breakIntoDebugger )
+        .describe( "break into debugger on failure" )
+        .shortOpt( "b")
+        .longOpt( "break" );
 
-    parser.addOption( "break into debugger on failure" )
-        .shortName( "b")
-        .longName( "break" )
-        .flag( &Config::breakIntoDebugger );
+    parser.bind( &Config::noThrow )
+        .describe( "Skip exception tests" )
+        .shortOpt( "e")
+        .longOpt( "nothrow" );
 
-    parser.addOption( "Skip exception tests" )
-        .shortName( "e")
-        .longName( "nothrow" )
-        .flag( &Config::noThrow );
+    parser.bind( &Config::fileName )
+        .describe( "output filename" )
+        .shortOpt( "o")
+        .longOpt( "out" )
+        .argName( "file name" );
 
-    parser.addOption( "output filename" )
-        .shortName( "o")
-        .longName( "out" )
-        .optArg( "<file name>", &Config::fileName );
+    parser.bind( &Config::suiteName )
+        .describe( "suite name" )
+        .shortOpt( "n")
+        .longOpt( "name" )
+        .argName( "name" );
 
-    parser.addOption( "suite name" )
-        .shortName( "n")
-        .longName( "name" )
-        .optArg( "<name>", &Config::suiteName );
+    parser.bind( &Config::abortAfterFirst )
+        .describe( "abort at first failure" )
+        .shortOpt( "a")
+        .longOpt( "abort" );
 
-    parser.addOption( "abort at first failure" )
-        .shortName( "a")
-        .longName( "abort" )
-        .flag( &Config::abortAfterFirst );
+    parser.bind( &Config::abortAfterX )
+        .describe( "abort after x failures" )
+        .shortOpt( "x")
+        .longOpt( "abortx" )
+        .argName( "number of failures" );
 
-    parser.addOption( "abort after x failures" )
-        .shortName( "x")
-        .longName( "abortx" )
-        .optArg( "<number of failures>", &Config::abortAfterX );
-
-    parser.addOption( "enables warnings" )
-        .shortName( "w")
-        .longName( "warn" )
-        .optArg( "<warning name>", &Config::addWarning );
+    parser.bind( &Config::addWarning )
+        .describe( "enables warnings" )
+        .shortOpt( "w")
+        .longOpt( "warn" )
+        .argName( "warning name" );
 
     std::cout << parser << std::endl;
 }
+
+// !TBD still support this?
+//    Clara::Parser<Config>
+//        ( "-h, --help                         display usage information",           &Config::showHelp )
+//        ( "-l, --list                         list all (or matching) test cases",   &Config::listTests )
+//        ( "-t, --tags                         list all (or matching) tags",         &Config::listTags )
+//        ( "-p, --passing                      show passing test output",            &Config::showPassingTests )
+//        ( "-b, --break                        break into debugger on failure",      &Config::breakIntoDebugger )
+//        ( "-e, --nothrow                      Skip exception tests",                &Config::noThrow )
+//        ( "-o, --out <file name>              output filename",                     &Config::fileName )
+//        ( "-n, --name <name>                  suite name",                          &Config::suiteName )
+//        ( "-a, --abort                        abort at first failure",              &Config::abortAfterFirst )
+//        ( "-x, --abortx <number of failures>  abort after x failures",              &Config::abortAfterX )
+//        ( "-w, --warn <warning name>          enables warnings",                    &Config::addWarning );
+//        .parseInto( argc, argv, config );
+
 #endif
 
