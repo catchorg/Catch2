@@ -262,6 +262,8 @@ namespace Clara {
         };
 
     public:
+        CommandLine() : seperators( " \t=:" ) {}
+
         template<typename F>
         ArgBinder bind( F f ) {
             ArgBinder binder( this );
@@ -320,13 +322,19 @@ namespace Clara {
                     ArgToken token( ArgToken::Positional, arg );
                     arg = "";
                     if( token.arg[0] == '-' ) {
-                        if( token.arg.size() > 1 && token.arg[1] == '-' )
+                        if( token.arg.size() > 1 && token.arg[1] == '-' ) {
                             token = ArgToken( ArgToken::LongOpt, token.arg.substr( 2 ) );
-                        else
+                        }
+                        else {
                             token = ArgToken( ArgToken::ShortOpt, token.arg.substr( 1 ) );
+                            if( token.arg.size() > 1 && seperators.find( token.arg[1] ) == std::string::npos ) {
+                                arg = "-" + token.arg.substr( 1 );
+                                token.arg = token.arg.substr( 0, 1 );
+                            }
+                        }
                     }
                     if( token.type != ArgToken::Positional ) {
-                        std::size_t pos = token.arg.find_first_of( " \t=:" );
+                        std::size_t pos = token.arg.find_first_of( seperators );
                         if( pos != std::string::npos ) {
                             arg = token.arg.substr( pos+1 );
                             token.arg = token.arg.substr( 0, pos );
@@ -365,6 +373,7 @@ namespace Clara {
             }
         }
         
+        std::string seperators;
         std::vector<Opt> opts;
         mutable std::vector<ArgToken> unhandledTokens; // !TBD
     };
@@ -507,6 +516,16 @@ TEST_CASE( "cmdline", "" ) {
 }
 
 struct Config {
+    Config()
+    :   listTests( false ),
+        listTags( false ),
+        showPassingTests( false ),
+        breakIntoDebugger( false ),
+        noThrow( false ),
+        showHelp( false ),
+        abortAfter( 0 )
+    {}
+
     bool listTests;
     bool listTags;
     bool showPassingTests;
@@ -590,6 +609,21 @@ TEST_CASE( "growing new Catch cli" ) {
         .argName( "warning name" );
 
     std::cout << parser << std::endl;
+    
+    Config config;
+
+    const char* argv[] = { "test", "-peb" };
+    int argc = sizeof(argv)/sizeof(char*);
+    
+    parser.parseInto( argc, argv, config );
+    
+    CHECK( config.showPassingTests );
+    CHECK( config.noThrow );
+    CHECK( config.breakIntoDebugger );
+    
+//
+//        REQUIRE_THROWS( parser.parseInto( sizeof(argv)/sizeof(char*), argv, config ) );
+    
 }
 
 // !TBD still support this?
