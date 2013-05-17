@@ -375,6 +375,13 @@ namespace Clara {
     
 } // end namespace Clara
 
+// Helper to deduce size from array literals and pass on to parser
+template<size_t size, typename ConfigT>
+std::vector<Clara::Parser::Token> parseInto( Clara::CommandLine<ConfigT>& cli, char const* (&argv)[size], ConfigT& config ) {
+    return cli.parseInto( size, argv, config );
+}
+
+
 struct TestOpt {
     TestOpt() : number( 0 ), index( 0 ), flag( false ) {}
 
@@ -408,26 +415,26 @@ TEST_CASE( "cmdline" ) {
 
     SECTION( "plain filename" ) {
         const char* argv[] = { "test", "-o filename.ext" };
-
-        cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
+        parseInto( cli, argv, config );
+        
         CHECK( config.fileName == "filename.ext" );
     }
     SECTION( "plain filename with colon" ) {
         const char* argv[] = { "test", "-o:filename.ext" };
+        parseInto( cli, argv, config );
 
-        cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.fileName == "filename.ext" );
     }
     SECTION( "plain filename with =" ) {
         const char* argv[] = { "test", "-o=filename.ext" };
+        parseInto( cli, argv, config );
 
-        cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.fileName == "filename.ext" );
     }
     SECTION( "long opt" ) {
         const char* argv[] = { "test", "--output %stdout" };
+        parseInto( cli, argv, config );
 
-        cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.fileName == "%stdout" );
     }
     
@@ -437,14 +444,14 @@ TEST_CASE( "cmdline" ) {
     
     SECTION( "a number" ) {
         const char* argv[] = { "test", "-n 42" };
+        parseInto( cli, argv, config );
 
-        cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
         CHECK( config.number == 42 );
     }
     SECTION( "not a number" ) {
         const char* argv[] = { "test", "-n forty-two" };
+        CHECK_THROWS( parseInto( cli, argv, config ) );
 
-        CHECK_THROWS( cli.parseInto( sizeof(argv)/sizeof(char*), argv, config ) );
         CHECK( config.number == 0 );
     }
     
@@ -461,8 +468,8 @@ TEST_CASE( "cmdline" ) {
             .argName( "<some text>" );
         
         const char* argv[] = { "test", "-n 42", "-d some text" };
+        std::vector<Clara::Parser::Token> unusedTokens = parseInto( cli, argv, config1 );
 
-        std::vector<Clara::Parser::Token> unusedTokens = cli.parseInto( sizeof(argv)/sizeof(char*), argv, config1 );
         CHECK( config1.number == 42 );
 
         REQUIRE_FALSE( unusedTokens.empty() );
@@ -478,14 +485,14 @@ TEST_CASE( "cmdline" ) {
 
         SECTION( "in range" ) {
             const char* argv[] = { "test", "-i 3" };
+            parseInto( cli, argv, config );
 
-            cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
             REQUIRE( config.index == 3 );
         }
         SECTION( "out of range" ) {
             const char* argv[] = { "test", "-i 42" };
 
-            REQUIRE_THROWS( cli.parseInto( sizeof(argv)/sizeof(char*), argv, config ) );
+            REQUIRE_THROWS( parseInto( cli, argv, config ) );
         }
     }
     
@@ -496,14 +503,14 @@ TEST_CASE( "cmdline" ) {
         
         SECTION( "set" ) {
             const char* argv[] = { "test", "-f" };
+            parseInto( cli, argv, config );
 
-            cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
             REQUIRE( config.flag );
         }
         SECTION( "not set" ) {
             const char* argv[] = { "test" };
+            parseInto( cli, argv, config );
 
-            cli.parseInto( sizeof(argv)/sizeof(char*), argv, config );
             REQUIRE( config.flag == false );
         }
     }
@@ -542,95 +549,104 @@ struct Config {
 };
 
 
-TEST_CASE( "growing new Catch cli" ) {
-    Clara::CommandLine<Config> cli;
+SCENARIO( "New Catch commandline interface", "[cli]" ) {
 
-    cli.bind( &Config::showHelp )
-        .describe( "display usage information" )
-        .shortOpt( "?")
-        .shortOpt( "h")
-        .longOpt( "help" );
+    GIVEN( "A built cli parser for Catch" ) {
+        Clara::CommandLine<Config> cli;
 
-    cli.bind( &Config::listTests )
-        .describe( "list all (or matching) test cases" )
-        .shortOpt( "l")
-        .longOpt( "list" );
+        cli.bind( &Config::showHelp )
+            .describe( "display usage information" )
+            .shortOpt( "?")
+            .shortOpt( "h")
+            .longOpt( "help" );
 
-    cli.bind( &Config::listTags )
-        .describe( "list all (or matching) tags" )
-        .shortOpt( "t")
-        .longOpt( "tags" );
+        cli.bind( &Config::listTests )
+            .describe( "list all (or matching) test cases" )
+            .shortOpt( "l")
+            .longOpt( "list" );
 
-    cli.bind( &Config::showPassingTests )
-        .describe( "show passing test output" )
-        .shortOpt( "p")
-        .longOpt( "passing" );
+        cli.bind( &Config::listTags )
+            .describe( "list all (or matching) tags" )
+            .shortOpt( "t")
+            .longOpt( "tags" );
 
-    cli.bind( &Config::breakIntoDebugger )
-        .describe( "break into debugger on failure" )
-        .shortOpt( "b")
-        .longOpt( "break" );
+        cli.bind( &Config::showPassingTests )
+            .describe( "show passing test output" )
+            .shortOpt( "p")
+            .longOpt( "passing" );
 
-    cli.bind( &Config::noThrow )
-        .describe( "Skip exception tests" )
-        .shortOpt( "e")
-        .longOpt( "nothrow" );
+        cli.bind( &Config::breakIntoDebugger )
+            .describe( "break into debugger on failure" )
+            .shortOpt( "b")
+            .longOpt( "break" );
 
-    cli.bind( &Config::fileName )
-        .describe( "output filename" )
-        .shortOpt( "o")
-        .longOpt( "out" )
-        .argName( "file name" );
+        cli.bind( &Config::noThrow )
+            .describe( "Skip exception tests" )
+            .shortOpt( "e")
+            .longOpt( "nothrow" );
 
-    cli.bind( &Config::reporter )
-        .describe( "e.g. console | xml | junit" )
-        .shortOpt( "r")
-        .longOpt( "reporter" )
-        .argName( "reporter name[:filename]" );
+        cli.bind( &Config::fileName )
+            .describe( "output filename" )
+            .shortOpt( "o")
+            .longOpt( "out" )
+            .argName( "file name" );
 
-    cli.bind( &Config::suiteName )
-        .describe( "suite name" )
-        .shortOpt( "n")
-        .longOpt( "name" )
-        .argName( "name" );
+        cli.bind( &Config::reporter )
+            .describe( "e.g. console | xml | junit" )
+            .shortOpt( "r")
+            .longOpt( "reporter" )
+            .argName( "reporter name[:filename]" );
 
-    cli.bind( &Config::abortAfterFirst )
-        .describe( "abort at first failure" )
-        .shortOpt( "a")
-        .longOpt( "abort" );
+        cli.bind( &Config::suiteName )
+            .describe( "suite name" )
+            .shortOpt( "n")
+            .longOpt( "name" )
+            .argName( "name" );
 
-    cli.bind( &Config::abortAfterX )
-        .describe( "abort after x failures" )
-        .shortOpt( "x")
-        .longOpt( "abortx" )
-        .argName( "number of failures" );
+        cli.bind( &Config::abortAfterFirst )
+            .describe( "abort at first failure" )
+            .shortOpt( "a")
+            .longOpt( "abort" );
 
-    cli.bind( &Config::addWarning )
-        .describe( "enables warnings" )
-        .shortOpt( "w")
-        .longOpt( "warn" )
-        .argName( "warning name" );
+        cli.bind( &Config::abortAfterX )
+            .describe( "abort after x failures" )
+            .shortOpt( "x")
+            .longOpt( "abortx" )
+            .argName( "number of failures" );
 
-    cli.bind( &Config::addTestOrTags )
-        .describe( "which test or tests to use" )
-        .argName( "test name, pattern or tags" );
+        cli.bind( &Config::addWarning )
+            .describe( "enables warnings" )
+            .shortOpt( "w")
+            .longOpt( "warn" )
+            .argName( "warning name" );
 
-    std::cout << cli << std::endl;
+        cli.bind( &Config::addTestOrTags )
+            .describe( "which test or tests to use" )
+            .argName( "test name, pattern or tags" );
+
+        WHEN( "It is streamed" )
+        THEN( "It prints the usage strings" )
+            std::cout << cli << std::endl;
+        
+        Config config;
+
+        WHEN( "Multiple flags are combined" ) {
+
+            CHECK_FALSE( config.showPassingTests );
+            CHECK_FALSE( config.noThrow );
+            CHECK_FALSE( config.breakIntoDebugger );
+
+            const char* argv[] = { "test", "-peb" };
+            parseInto( cli, argv, config );
+            
+            THEN( "All the flags are set" ) {
+                CHECK( config.showPassingTests );
+                CHECK( config.noThrow );
+                CHECK( config.breakIntoDebugger );
+            }
+        }
     
-    Config config;
-
-    const char* argv[] = { "test", "-peb" };
-    int argc = sizeof(argv)/sizeof(char*);
-    
-    cli.parseInto( argc, argv, config );
-    
-    CHECK( config.showPassingTests );
-    CHECK( config.noThrow );
-    CHECK( config.breakIntoDebugger );
-    
-//
-//        REQUIRE_THROWS( cli.parseInto( sizeof(argv)/sizeof(char*), argv, config ) );
-    
+    }
 }
 
 // !TBD still support this?
