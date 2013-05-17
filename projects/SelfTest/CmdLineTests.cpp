@@ -531,6 +531,7 @@ struct Config {
     std::string reporterName;
     std::string fileName;
     std::string suiteName;
+    std::string reporter;
     std::vector<std::string> warnings;
     std::vector<std::string> testsOrTags;
     
@@ -580,6 +581,12 @@ TEST_CASE( "growing new Catch cli" ) {
         .shortOpt( "o")
         .longOpt( "out" )
         .argName( "file name" );
+
+    cli.bind( &Config::reporter )
+        .describe( "e.g. console | xml | junit" )
+        .shortOpt( "r")
+        .longOpt( "reporter" )
+        .argName( "reporter name[:filename]" );
 
     cli.bind( &Config::suiteName )
         .describe( "suite name" )
