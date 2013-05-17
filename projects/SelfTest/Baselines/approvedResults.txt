@@ -954,7 +954,7 @@ with expansion:
 
 ConditionTests.cpp:323:
 PASSED:
-  REQUIRE_FALSE( !false )
+  REQUIRE_FALSE( false )
 
 ConditionTests.cpp:325:
 PASSED:
@@ -964,7 +964,7 @@ with expansion:
 
 ConditionTests.cpp:326:
 PASSED:
-  REQUIRE_FALSE( !falseValue )
+  REQUIRE_FALSE( falseValue )
 with expansion:
   !false
 
@@ -976,7 +976,7 @@ with expansion:
 
 ConditionTests.cpp:329:
 PASSED:
-  REQUIRE_FALSE( !1 == 2 )
+  REQUIRE_FALSE( 1 == 2 )
 with expansion:
   !(1 == 2)
 
@@ -998,7 +998,7 @@ with expansion:
   false
 
 ConditionTests.cpp:340: FAILED:
-  CHECK_FALSE( !true )
+  CHECK_FALSE( true )
 
 ConditionTests.cpp:342: FAILED:
   CHECK( !trueValue )
@@ -1006,7 +1006,7 @@ with expansion:
   false
 
 ConditionTests.cpp:343: FAILED:
-  CHECK_FALSE( !trueValue )
+  CHECK_FALSE( trueValue )
 with expansion:
   !true
 
@@ -1016,7 +1016,7 @@ with expansion:
   false
 
 ConditionTests.cpp:346: FAILED:
-  CHECK_FALSE( !1 == 1 )
+  CHECK_FALSE( 1 == 1 )
 with expansion:
   !(1 == 1)
 
@@ -5169,7 +5169,7 @@ with expansion:
 
 TrickyTests.cpp:281:
 PASSED:
-  REQUIRE_FALSE( !is_true<false>::value )
+  REQUIRE_FALSE( is_true<false>::value )
 with expansion:
   !false
 
@@ -5193,7 +5193,7 @@ with expansion:
 
 TrickyTests.cpp:315:
 PASSED:
-  CHECK_FALSE( !False )
+  CHECK_FALSE( False )
 with expansion:
   !false
 
@@ -5639,7 +5639,7 @@ with expansion:
 
 CmdLineTests.cpp:475:
 PASSED:
-  REQUIRE_FALSE( !unusedTokens.empty() )
+  REQUIRE_FALSE( unusedTokens.empty() )
 with expansion:
   !false
 
@@ -5739,19 +5739,19 @@ CmdLineTests.cpp:633
 
 CmdLineTests.cpp:635:
 PASSED:
-  CHECK_FALSE( !config.showPassingTests )
+  CHECK_FALSE( config.showPassingTests )
 with expansion:
   !false
 
 CmdLineTests.cpp:636:
 PASSED:
-  CHECK_FALSE( !config.noThrow )
+  CHECK_FALSE( config.noThrow )
 with expansion:
   !false
 
 CmdLineTests.cpp:637:
 PASSED:
-  CHECK_FALSE( !config.breakIntoDebugger )
+  CHECK_FALSE( config.breakIntoDebugger )
 with expansion:
   !false
 

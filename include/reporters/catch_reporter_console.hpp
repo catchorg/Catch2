@@ -191,11 +191,7 @@ namespace Catch {
                 if( result.hasExpression() ) {
                     Colour colourGuard( Colour::OriginalExpression );
                     stream  << "  ";
-                    if( !result.getTestMacroName().empty() )
-                        stream << result.getTestMacroName() << "( ";
-                    stream << result.getExpression();
-                    if( !result.getTestMacroName().empty() )
-                        stream << " )";
+                    stream << result.getExpressionInMacro();
                     stream << "\n";
                 }
             }

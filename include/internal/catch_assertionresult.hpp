@@ -21,10 +21,7 @@ namespace Catch {
         lineInfo( _lineInfo ),
         capturedExpression( _capturedExpression ),
         resultDisposition( _resultDisposition )
-    {
-        if( shouldNegate( resultDisposition ) )
-            capturedExpression = "!" + _capturedExpression;
-    }
+    {}
 
     AssertionResult::AssertionResult() {}
 
@@ -58,7 +55,16 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpression() const {
-        return m_info.capturedExpression;
+        if( shouldNegate( m_info.resultDisposition ) )
+            return "!" + m_info.capturedExpression;
+        else
+            return m_info.capturedExpression;
+    }
+    std::string AssertionResult::getExpressionInMacro() const {
+        if( m_info.macroName.empty() )
+            return m_info.capturedExpression;
+        else
+            return m_info.macroName + "( " + m_info.capturedExpression + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {

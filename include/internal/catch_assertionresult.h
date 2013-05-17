@@ -48,6 +48,7 @@ namespace Catch {
         bool hasExpression() const;
         bool hasMessage() const;
         std::string getExpression() const;
+        std::string getExpressionInMacro() const;
         bool hasExpandedExpression() const;
         std::string getExpandedExpression() const;
         std::string getMessage() const;
