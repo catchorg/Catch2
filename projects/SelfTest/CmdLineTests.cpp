@@ -52,41 +52,41 @@ namespace Clara {
         }
 
         template<typename ConfigT>
-        struct IBoundMember {
-            virtual ~IBoundMember() {}
+        struct IArgFunction {
+            virtual ~IArgFunction() {}
             virtual void set( ConfigT& config, std::string const& value ) const = 0;
             virtual void setFlag( ConfigT& config ) const = 0;
             virtual bool takesArg() const = 0;
-            virtual IBoundMember* clone() const = 0;
+            virtual IArgFunction* clone() const = 0;
         };
 
         template<typename ConfigT>
-        class BoundField {
+        class BoundArgFunction {
         public:
-            BoundField( IBoundMember<ConfigT>* _boundMember ) : boundMember( _boundMember ) {}
-            BoundField( BoundField const& other ) : boundMember( other.boundMember->clone() ) {}
-            BoundField& operator = ( BoundField const& other ) {
-                IBoundMember<ConfigT> newMember = other.clone();
-                delete boundMember;
-                boundMember = newMember;
+            BoundArgFunction( IArgFunction<ConfigT>* _functionObj ) : functionObj( _functionObj ) {}
+            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj->clone() ) {}
+            BoundArgFunction& operator = ( BoundArgFunction const& other ) {
+                IArgFunction<ConfigT> newFunctionObj = other.clone();
+                delete functionObj;
+                functionObj = newFunctionObj;
                 return *this;
             }
-            ~BoundField() { delete boundMember; }
+            ~BoundArgFunction() { delete functionObj; }
 
             void set( ConfigT& config, std::string const& value ) const {
-                boundMember->set( config, value );
+                functionObj->set( config, value );
             }
             void setFlag( ConfigT& config ) const {
-                boundMember->setFlag( config );
+                functionObj->setFlag( config );
             }
-            bool takesArg() const { return boundMember->takesArg(); }
+            bool takesArg() const { return functionObj->takesArg(); }
         private:
-            IBoundMember<ConfigT>* boundMember;
+            IArgFunction<ConfigT>* functionObj;
         };
 
 
         template<typename C, typename M>
-        struct BoundDataMember : IBoundMember<C>{
+        struct BoundDataMember : IArgFunction<C>{
             BoundDataMember( M C::* _member ) : member( _member ) {}
             virtual void set( C& p, std::string const& stringValue ) const {
                 convertInto( stringValue, p.*member );
@@ -95,11 +95,11 @@ namespace Clara {
                 convertInto( true, p.*member );
             }
             virtual bool takesArg() const { return !IsBool<M>::value; }
-            virtual IBoundMember<C>* clone() const { return new BoundDataMember( *this ); }
+            virtual IArgFunction<C>* clone() const { return new BoundDataMember( *this ); }
             M C::* member;
         };
         template<typename C, typename M>
-        struct BoundUnaryMethod : IBoundMember<C>{
+        struct BoundUnaryMethod : IArgFunction<C>{
             BoundUnaryMethod( void (C::*_member)( M ) ) : member( _member ) {}
             virtual void set( C& p, std::string const& stringValue ) const {
                 typename RemoveConstRef<M>::type value;
@@ -112,11 +112,11 @@ namespace Clara {
                 (p.*member)( value );
             }
             virtual bool takesArg() const { return !IsBool<M>::value; }
-            virtual IBoundMember<C>* clone() const { return new BoundUnaryMethod( *this ); }
+            virtual IArgFunction<C>* clone() const { return new BoundUnaryMethod( *this ); }
             void (C::*member)( M );
         };
         template<typename C>
-        struct BoundNullaryMethod : IBoundMember<C>{
+        struct BoundNullaryMethod : IArgFunction<C>{
             BoundNullaryMethod( void (C::*_member)() ) : member( _member ) {}
             virtual void set( C& p, std::string const& stringValue ) const {
                 bool value;
@@ -128,21 +128,42 @@ namespace Clara {
                 (p.*member)();
             }
             virtual bool takesArg() const { return false; }
-            virtual IBoundMember<C>* clone() const { return new BoundNullaryMethod( *this ); }
+            virtual IArgFunction<C>* clone() const { return new BoundNullaryMethod( *this ); }
             void (C::*member)();
+        };
+
+        template<typename C>
+        struct BoundUnaryFunction : IArgFunction<C>{
+            BoundUnaryFunction( void (*_function)( C& ) ) : function( _function ) {}
+            virtual void set( C& obj, std::string const& stringValue ) const {
+                bool value;
+                convertInto( stringValue, value );
+                if( value )
+                    function( obj );
+            }
+            virtual void setFlag( C& p ) const {
+                function( p );
+            }
+            virtual bool takesArg() const { return false; }
+            virtual IArgFunction<C>* clone() const { return new BoundUnaryFunction( *this ); }
+            void (*function)( C& );
         };
         
         template<typename C, typename M>
-        BoundField<C> makeBoundField( M C::* _member ) {
-            return BoundField<C>( new BoundDataMember<C,M>( _member ) );
+        BoundArgFunction<C> makeBoundField( M C::* _member ) {
+            return BoundArgFunction<C>( new BoundDataMember<C,M>( _member ) );
         }
         template<typename C, typename M>
-        BoundField<C> makeBoundField( void (C::*_member)( M ) ) {
-            return BoundField<C>( new BoundUnaryMethod<C,M>( _member ) );
+        BoundArgFunction<C> makeBoundField( void (C::*_member)( M ) ) {
+            return BoundArgFunction<C>( new BoundUnaryMethod<C,M>( _member ) );
         }
         template<typename C>
-        BoundField<C> makeBoundField( void (C::*_member)() ) {
-            return BoundField<C>( new BoundNullaryMethod<C>( _member ) );
+        BoundArgFunction<C> makeBoundField( void (C::*_member)() ) {
+            return BoundArgFunction<C>( new BoundNullaryMethod<C>( _member ) );
+        }
+        template<typename C>
+        BoundArgFunction<C> makeBoundField( void (*_function)( C& ) ) {
+            return BoundArgFunction<C>( new BoundUnaryFunction<C>( _function ) );
         }
     } // namespace Detail
 
@@ -228,7 +249,7 @@ namespace Clara {
         };
 
         struct Arg {
-            Arg( Detail::BoundField<ConfigT> const& _boundField ) : boundField( _boundField ) {}
+            Arg( Detail::BoundArgFunction<ConfigT> const& _boundField ) : boundField( _boundField ) {}
 
             bool hasShortName( std::string const& shortName ) const {
                 for(    std::vector<std::string>::const_iterator
@@ -280,7 +301,7 @@ namespace Clara {
                 return oss.str();
             }
         
-            Detail::BoundField<ConfigT> boundField;
+            Detail::BoundArgFunction<ConfigT> boundField;
             std::vector<std::string> shortNames;
             std::string longName;
             std::string description;
@@ -542,11 +563,13 @@ struct Config {
     std::vector<std::string> warnings;
     std::vector<std::string> testsOrTags;
     
-    void abortAfterFirst() { abortAfter = 1; }
+//    void abortAfterFirst() { abortAfter = 1; }
     void abortAfterX( int x ) { abortAfter = x; }
     void addWarning( std::string const& _warning ) { warnings.push_back( _warning ); }
     void addTestOrTags( std::string const& _testSpec ) { testsOrTags.push_back( _testSpec ); }    
 };
+
+inline void abortAfterFirst( Config& config ) { config.abortAfter = 1; }
 
 
 SCENARIO( "New Catch commandline interface", "[cli]" ) {
@@ -589,10 +612,10 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             .describe( "output filename" )
             .shortOpt( "o")
             .longOpt( "out" )
-            .argName( "file name" );
+            .argName( "filename" );
 
         cli.bind( &Config::reporter )
-            .describe( "e.g. console | xml | junit" )
+            .describe( "reporter to use - defaults to console" )
             .shortOpt( "r")
             .longOpt( "reporter" )
             .argName( "reporter name[:filename]" );
@@ -603,7 +626,7 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             .longOpt( "name" )
             .argName( "name" );
 
-        cli.bind( &Config::abortAfterFirst )
+        cli.bind( &abortAfterFirst )
             .describe( "abort at first failure" )
             .shortOpt( "a")
             .longOpt( "abort" );
@@ -644,6 +667,14 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
                 CHECK( config.noThrow );
                 CHECK( config.breakIntoDebugger );
             }
+        }
+        WHEN( "A flag is set via a nullary method" ) {
+            CHECK( config.abortAfter == 0 );
+
+            const char* argv[] = { "test", "-a" };
+            parseInto( cli, argv, config );
+            
+            REQUIRE( config.abortAfter == 1 );
         }
     
     }
