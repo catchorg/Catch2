@@ -584,11 +584,6 @@ struct Config {
     std::string reporter;
     std::vector<std::string> warnings;
     std::vector<std::string> testsOrTags;
-    
-//    void abortAfterFirst() { abortAfter = 1; }
-//    void abortAfterX( int x ) { abortAfter = x; }
-//    void addWarning( std::string const& _warning ) { warnings.push_back( _warning ); }
-//    void addTestOrTags( std::string const& _testSpec ) { testsOrTags.push_back( _testSpec ); }    
 };
 
 inline void abortAfterFirst( Config& config ) { config.abortAfter = 1; }
@@ -699,7 +694,8 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             const char* argv[] = { "test", "-a" };
             parseInto( cli, argv, config );
             
-            REQUIRE( config.abortAfter == 1 );
+            THEN( "The flag is set" )
+                REQUIRE( config.abortAfter == 1 );
         }
         WHEN( "A flag is set via a unary method" ) {
             CHECK( config.abortAfter == 0 );
@@ -707,7 +703,18 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             const char* argv[] = { "test", "-x", "2" };
             parseInto( cli, argv, config );
             
-            REQUIRE( config.abortAfter == 2 );
+            THEN( "The flag is set" )
+                REQUIRE( config.abortAfter == 2 );
+        }
+        WHEN( "A positional argument is supplied" ) {
+
+            const char* argv[] = { "test", "[hello]" };
+            parseInto( cli, argv, config );
+            
+            THEN( "The argument is in the testOrTags collection" ) {
+                REQUIRE( config.testsOrTags.size() == 1 );
+                REQUIRE( config.testsOrTags[0] == "[hello]" );
+            }
         }
     
     }
