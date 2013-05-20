@@ -149,6 +149,24 @@ namespace Clara {
             void (*function)( C& );
         };
         
+        template<typename C, typename T>
+        struct BoundBinaryFunction : IArgFunction<C>{
+            BoundBinaryFunction( void (*_function)( C&, T ) ) : function( _function ) {}
+            virtual void set( C& obj, std::string const& stringValue ) const {
+                typename RemoveConstRef<T>::type value;
+                convertInto( stringValue, value );
+                function( obj, value );
+            }
+            virtual void setFlag( C& obj ) const {
+                typename RemoveConstRef<T>::type value;
+                convertInto( true, value );
+                function( obj, value );
+            }
+            virtual bool takesArg() const { return !IsBool<T>::value; }
+            virtual IArgFunction<C>* clone() const { return new BoundBinaryFunction( *this ); }
+            void (*function)( C&, T );
+        };
+        
         template<typename C, typename M>
         BoundArgFunction<C> makeBoundField( M C::* _member ) {
             return BoundArgFunction<C>( new BoundDataMember<C,M>( _member ) );
@@ -164,6 +182,10 @@ namespace Clara {
         template<typename C>
         BoundArgFunction<C> makeBoundField( void (*_function)( C& ) ) {
             return BoundArgFunction<C>( new BoundUnaryFunction<C>( _function ) );
+        }
+        template<typename C, typename T>
+        BoundArgFunction<C> makeBoundField( void (*_function)( C&, T ) ) {
+            return BoundArgFunction<C>( new BoundBinaryFunction<C, T>( _function ) );
         }
     } // namespace Detail
 
@@ -564,12 +586,15 @@ struct Config {
     std::vector<std::string> testsOrTags;
     
 //    void abortAfterFirst() { abortAfter = 1; }
-    void abortAfterX( int x ) { abortAfter = x; }
-    void addWarning( std::string const& _warning ) { warnings.push_back( _warning ); }
-    void addTestOrTags( std::string const& _testSpec ) { testsOrTags.push_back( _testSpec ); }    
+//    void abortAfterX( int x ) { abortAfter = x; }
+//    void addWarning( std::string const& _warning ) { warnings.push_back( _warning ); }
+//    void addTestOrTags( std::string const& _testSpec ) { testsOrTags.push_back( _testSpec ); }    
 };
 
 inline void abortAfterFirst( Config& config ) { config.abortAfter = 1; }
+inline void abortAfterX( Config& config, int x ) { config.abortAfter = x; }
+inline void addWarning( Config& config, std::string const& _warning ) { config.warnings.push_back( _warning ); }
+inline void addTestOrTags( Config& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }    
 
 
 SCENARIO( "New Catch commandline interface", "[cli]" ) {
@@ -631,19 +656,19 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             .shortOpt( "a")
             .longOpt( "abort" );
 
-        cli.bind( &Config::abortAfterX )
+        cli.bind( &abortAfterX )
             .describe( "abort after x failures" )
             .shortOpt( "x")
             .longOpt( "abortx" )
             .argName( "number of failures" );
 
-        cli.bind( &Config::addWarning )
+        cli.bind( &addWarning )
             .describe( "enables warnings" )
             .shortOpt( "w")
             .longOpt( "warn" )
             .argName( "warning name" );
 
-        cli.bind( &Config::addTestOrTags )
+        cli.bind( &addTestOrTags )
             .describe( "which test or tests to use" )
             .argName( "test name, pattern or tags" );
 
@@ -675,6 +700,14 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             parseInto( cli, argv, config );
             
             REQUIRE( config.abortAfter == 1 );
+        }
+        WHEN( "A flag is set via a unary method" ) {
+            CHECK( config.abortAfter == 0 );
+
+            const char* argv[] = { "test", "-x", "2" };
+            parseInto( cli, argv, config );
+            
+            REQUIRE( config.abortAfter == 2 );
         }
     
     }
