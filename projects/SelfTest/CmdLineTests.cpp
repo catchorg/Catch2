@@ -315,8 +315,11 @@ namespace Clara {
             ~ArgBinder() {
                 if( m_cl ) {
                     m_arg.validate();
-                    if( m_arg.isFixedPositional() )
-                        m_cl->m_positionalArgs.push_back( m_arg );
+                    if( m_arg.isFixedPositional() ) {
+                        m_cl->m_positionalArgs.insert( std::make_pair( m_arg.position, m_arg ) );
+                        if( m_arg.position > m_cl->m_highestSpecifiedArgPosition )
+                            m_cl->m_highestSpecifiedArgPosition = m_arg.position;
+                    }
                     else if( m_arg.isAnyPositional() ) {
                         if( m_cl->m_arg.get() )
                             throw std::logic_error( "Only one unpositional argument can be added" );
@@ -352,43 +355,89 @@ namespace Clara {
         };
 
     public:
+    
+        CommandLine() : m_highestSpecifiedArgPosition( 0 ) {}
+
         template<typename F>
         ArgBinder bind( F f ) {
             ArgBinder binder( this, f );
             return binder;
         }
 
-        void usage( std::ostream& os ) const {
+        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = CATCH_CONFIG_CONSOLE_WIDTH ) const {
             typename std::vector<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
             std::size_t maxWidth = 0;
             for( it = itBegin; it != itEnd; ++it )
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Catch::Text usage( it->commands(), Catch::TextAttributes().setWidth( maxWidth ) );
+                Catch::Text usage( it->commands(), Catch::TextAttributes()
+                                                        .setWidth( maxWidth+indent )
+                                                        .setIndent( indent ) );
                 // !TBD handle longer usage strings
-                Catch::Text desc( it->description, Catch::TextAttributes().setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxWidth -3 ) );
+                Catch::Text desc( it->description, Catch::TextAttributes()
+                                                        .setWidth( width - maxWidth -3 ) );
 
                 for( std::size_t i = 0; i < std::max( usage.size(), desc.size() ); ++i ) {
                     std::string usageCol = i < usage.size() ? usage[i] : "";
                     os << usageCol;
 
                     if( i < desc.size() && !desc[i].empty() )
-                        os  << std::string( 2 + maxWidth - usageCol.size(), ' ' )
+                        os  << std::string( indent + 2 + maxWidth - usageCol.size(), ' ' )
                             << desc[i];
                     os << "\n";
                 }                
             }            
         }
-        std::string usage() const {
+        std::string optUsage() const {
             std::ostringstream oss;
-            usage( oss );
+            optUsage( oss );
             return oss.str();
         }
-        friend std::ostream& operator << ( std::ostream& os, CommandLine const& parser ) {
-            parser.usage( os );
-            return os;
+        
+        void argSynopsis( std::ostream& os ) const {
+            for( int i = 1; i <= m_highestSpecifiedArgPosition; ++i ) {
+                if( i > 1 )
+                    os << " ";
+                typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( i );
+                if( it != m_positionalArgs.end() )
+                    os << "<" << it->second.argName << ">";
+                else if( m_arg.get() )
+                    os << "<" << m_arg->argName << ">";
+                else
+                    throw std::logic_error( "non consecutive positional arguments with no floating args" );
+            }
+            // !TBD No indication of mandatory args
+            if( m_arg.get() ) {
+                if( m_highestSpecifiedArgPosition > 1 )
+                    os << " ";
+                os << "[<" << m_arg->argName << "> ...]";
+            }
         }
+        std::string argSynopsis() const {
+            std::ostringstream oss;
+            argSynopsis( oss );
+            return oss.str();
+        }
+        
+
+        void usage( std::ostream& os, std::string const& procName ) const {
+            os << "usage:\n";
+            os << "  " << procName << " ";
+            argSynopsis( os );
+            if( !m_options.empty() ) {
+                os << " [options]\n\n";
+                os << "where options are: \n";
+                optUsage( os, 2 );
+                
+            }
+            os << "\n";
+        }
+        std::string usage( std::string const& procName ) const {
+            std::ostringstream oss;
+            usage( oss, procName );
+            return oss.str();
+        }        
         
         std::vector<Parser::Token> parseInto( int argc, char const* argv[], ConfigT& config ) const {
             std::vector<Parser::Token> tokens;
@@ -438,18 +487,13 @@ namespace Clara {
             int position = 1;
             for( std::size_t i = 0; i < tokens.size(); ++i ) {
                 Parser::Token const& token = tokens[i];
-                typename std::vector<Arg>::const_iterator it = m_positionalArgs.begin(), itEnd = m_positionalArgs.end();
-                for(; it != itEnd; ++it ) {
-                    Arg const& arg = *it;                    
-                    if( token.type == Parser::Token::Positional )
-                        if( arg.position == position ) {
-                            position++;
-                            arg.boundField.set( config, token.data );
-                            break;
-                        }
-                }
-                if( it == itEnd )
+                typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( position );
+                if( it != m_positionalArgs.end() )
+                    it->second.boundField.set( config, token.data );
+                else
                     unusedTokens.push_back( token );
+                if( token.type == Parser::Token::Positional )
+                    position++;                
             }
             return unusedTokens;
         }
@@ -469,8 +513,9 @@ namespace Clara {
         
     private:
         std::vector<Arg> m_options;
-        std::vector<Arg> m_positionalArgs;
+        std::map<int, Arg> m_positionalArgs;
         std::auto_ptr<Arg> m_arg;
+        int m_highestSpecifiedArgPosition;
     };
     
 } // end namespace Clara
@@ -514,7 +559,7 @@ TEST_CASE( "cmdline" ) {
         .describe( "specifies output file" )
         .shortOpt( "o" )
         .longOpt( "output" )
-        .argName( "<filename>" );
+        .argName( "filename" );
 
     SECTION( "plain filename" ) {
         const char* argv[] = { "test", "-o filename.ext" };
@@ -543,7 +588,7 @@ TEST_CASE( "cmdline" ) {
     
     cli.bind( &TestOpt::number )
             .shortOpt( "n" )
-            .argName( "<an integral value>" );
+            .argName( "an integral value" );
     
     SECTION( "a number" ) {
         const char* argv[] = { "test", "-n 42" };
@@ -568,7 +613,7 @@ TEST_CASE( "cmdline" ) {
             .describe( "description" )
             .shortOpt( "d" )
             .longOpt( "description" )
-            .argName( "<some text>" );
+            .argName( "some text" );
         
         const char* argv[] = { "test", "-n 42", "-d some text" };
         std::vector<Clara::Parser::Token> unusedTokens = parseInto( cli, argv, config1 );
@@ -584,7 +629,7 @@ TEST_CASE( "cmdline" ) {
         cli.bind( &TestOpt::setValidIndex )
             .describe( "An index, which is an integer between 0 and 10, inclusive" )
             .shortOpt( "i" )
-            .argName( "<index>" );
+            .argName( "index" );
 
         SECTION( "in range" ) {
             const char* argv[] = { "test", "-i 3" };
@@ -629,6 +674,8 @@ TEST_CASE( "cmdline" ) {
             .describe( "First position" )
             .argName( "first arg" )
             .position( 1 );
+
+        std::cout << cli.usage( "testApp" ) << std::endl;
 
         const char* argv[] = { "test", "-f", "1st", "-o", "filename", "2nd", "3rd" };
         parseInto( cli, argv, config );
@@ -747,9 +794,9 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             .describe( "which test or tests to use" )
             .argName( "test name, pattern or tags" );
 
-        WHEN( "It is streamed" )
+        WHEN( "We ask for usage strings" )
         THEN( "It prints the usage strings" )
-            std::cout << cli << std::endl;
+            std::cout << cli.usage( "CatchTestApp" ) << std::endl;
         
         Config config;
 
@@ -798,6 +845,7 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
         }
     
     }
+    // !TBD: print positional args in usage
 }
 
 // !TBD still support this?
