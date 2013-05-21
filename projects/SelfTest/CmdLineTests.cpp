@@ -235,43 +235,8 @@ namespace Clara {
     template<typename ConfigT>
     class CommandLine {
 
-        class ArgBinder {
-        public:
-            ArgBinder( CommandLine* cl ) : m_cl( cl ) {}
-
-            template<typename F>
-            ArgBinder& bind( F f ) {
-                if( !m_cl->m_args.empty() )
-                    m_cl->m_args.back().validate();
-                m_cl->m_args.push_back( Arg( Detail::makeBoundField( f ) ) );
-                return *this;
-            }
-            ArgBinder& shortOpt( std::string const& name ) {
-                m_cl->m_args.back().shortNames.push_back( name );
-                return *this;
-            }
-            ArgBinder& longOpt( std::string const& name ) {
-                m_cl->m_args.back().longName = name;
-                return *this;
-            }
-            ArgBinder& describe( std::string const& description ) {
-                m_cl->m_args.back().description = description;
-                return *this;
-            }
-            ArgBinder& argName( std::string const& argName ) {
-                m_cl->m_args.back().argName = argName;
-                return *this;
-            }
-            ArgBinder& position( int /*position*/ ) {
-                // !TBD: Support for positional args in fixed positions
-                return *this;
-            }
-        private:
-            CommandLine* m_cl;
-        };
-
         struct Arg {
-            Arg( Detail::BoundArgFunction<ConfigT> const& _boundField ) : boundField( _boundField ) {}
+            Arg( Detail::BoundArgFunction<ConfigT> const& _boundField ) : boundField( _boundField ), position( -1 ) {}
 
             bool hasShortName( std::string const& shortName ) const {
                 for(    std::vector<std::string>::const_iterator
@@ -288,8 +253,11 @@ namespace Clara {
             bool takesArg() const {
                 return !argName.empty();
             }
-            bool isPositional() const {
-                return shortNames.empty() && longName.empty();
+            bool isFixedPositional() const {
+                return position != -1;
+            }
+            bool isAnyPositional() const {
+                return position == -1 && shortNames.empty() && longName.empty();
             }
             std::string dbgName() const {
                 if( !longName.empty() )
@@ -328,18 +296,70 @@ namespace Clara {
             std::string longName;
             std::string description;
             std::string argName;
+            int position;
+        };
+
+        class ArgBinder {
+        public:
+            template<typename F>
+            ArgBinder( CommandLine* cl, F f )
+            :   m_cl( cl ),
+                m_arg( Detail::makeBoundField( f ) )
+            {}
+            ArgBinder( ArgBinder& other )
+            :   m_cl( other.m_cl ),
+                m_arg( other.m_arg )
+            {
+                other.m_cl = NULL;
+            }
+            ~ArgBinder() {
+                if( m_cl ) {
+                    m_arg.validate();
+                    if( m_arg.isFixedPositional() )
+                        m_cl->m_positionalArgs.push_back( m_arg );
+                    else if( m_arg.isAnyPositional() ) {
+                        if( m_cl->m_arg.get() )
+                            throw std::logic_error( "Only one unpositional argument can be added" );
+                        m_cl->m_arg = std::auto_ptr<Arg>( new Arg( m_arg ) );
+                    }
+                    else
+                        m_cl->m_options.push_back( m_arg );
+                }
+            }
+            ArgBinder& shortOpt( std::string const& name ) {
+                m_arg.shortNames.push_back( name );
+                return *this;
+            }
+            ArgBinder& longOpt( std::string const& name ) {
+                m_arg.longName = name;
+                return *this;
+            }
+            ArgBinder& describe( std::string const& description ) {
+                m_arg.description = description;
+                return *this;
+            }
+            ArgBinder& argName( std::string const& argName ) {
+                m_arg.argName = argName;
+                return *this;
+            }
+            ArgBinder& position( int position ) {
+                m_arg.position = position;
+                return *this;
+            }
+        private:
+            CommandLine* m_cl;
+            Arg m_arg;
         };
 
     public:
         template<typename F>
         ArgBinder bind( F f ) {
-            ArgBinder binder( this );
-            binder.bind( f );
+            ArgBinder binder( this, f );
             return binder;
         }
 
         void usage( std::ostream& os ) const {
-            typename std::vector<Arg>::const_iterator itBegin = m_args.begin(), itEnd = m_args.end(), it;
+            typename std::vector<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
             std::size_t maxWidth = 0;
             for( it = itBegin; it != itEnd; ++it )
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
@@ -378,14 +398,20 @@ namespace Clara {
         }
 
         std::vector<Parser::Token> populate( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
-            if( m_args.empty() )
+            if( m_options.empty() && m_positionalArgs.empty() )
                 throw std::logic_error( "No options or arguments specified" );
-            m_args.back().validate();
 
+            std::vector<Parser::Token> unusedTokens = populateOptions( tokens, config );
+            unusedTokens = populateFixedArgs( unusedTokens, config );
+            unusedTokens = populateFloatingArgs( unusedTokens, config );
+            return unusedTokens;
+        }
+
+        std::vector<Parser::Token> populateOptions( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
             std::vector<Parser::Token> unusedTokens;
             for( std::size_t i = 0; i < tokens.size(); ++i ) {
                 Parser::Token const& token = tokens[i];
-                typename std::vector<Arg>::const_iterator it = m_args.begin(), itEnd = m_args.end();
+                typename std::vector<Arg>::const_iterator it = m_options.begin(), itEnd = m_options.end();
                 for(; it != itEnd; ++it ) {
                     Arg const& arg = *it;
                     
@@ -401,19 +427,50 @@ namespace Clara {
                         }
                         break;
                     }
-                    else if( token.type == Parser::Token::Positional && arg.isPositional() ) {
-                        arg.boundField.set( config, token.data );
-                        break;
-                    }
                 }
                 if( it == itEnd )
                     unusedTokens.push_back( token );
             }
             return unusedTokens;
         }
+        std::vector<Parser::Token> populateFixedArgs( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+            std::vector<Parser::Token> unusedTokens;
+            int position = 1;
+            for( std::size_t i = 0; i < tokens.size(); ++i ) {
+                Parser::Token const& token = tokens[i];
+                typename std::vector<Arg>::const_iterator it = m_positionalArgs.begin(), itEnd = m_positionalArgs.end();
+                for(; it != itEnd; ++it ) {
+                    Arg const& arg = *it;                    
+                    if( token.type == Parser::Token::Positional )
+                        if( arg.position == position ) {
+                            position++;
+                            arg.boundField.set( config, token.data );
+                            break;
+                        }
+                }
+                if( it == itEnd )
+                    unusedTokens.push_back( token );
+            }
+            return unusedTokens;
+        }
+        std::vector<Parser::Token> populateFloatingArgs( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+            if( !m_arg.get() )
+                return tokens;
+            std::vector<Parser::Token> unusedTokens;
+            for( std::size_t i = 0; i < tokens.size(); ++i ) {
+                Parser::Token const& token = tokens[i];
+                if( token.type == Parser::Token::Positional )
+                    m_arg->boundField.set( config, token.data );
+                else
+                    unusedTokens.push_back( token );
+            }
+            return unusedTokens;
+        }
         
     private:
-        std::vector<Arg> m_args;
+        std::vector<Arg> m_options;
+        std::vector<Arg> m_positionalArgs;
+        std::auto_ptr<Arg> m_arg;
     };
     
 } // end namespace Clara
@@ -432,6 +489,9 @@ struct TestOpt {
     int number;
     int index;
     bool flag;
+    std::string firstPos;
+    std::string secondPos;
+    std::string unpositional;
     
     void setValidIndex( int i ) {
         if( i < 0 || i > 10 )
@@ -556,6 +616,26 @@ TEST_CASE( "cmdline" ) {
 
             REQUIRE( config.flag == false );
         }
+    }
+    SECTION( "positional" ) {
+        cli.bind( &TestOpt::secondPos )
+            .describe( "Second position" )
+            .argName( "second arg" )
+            .position( 2 );
+        cli.bind( &TestOpt::unpositional )
+            .argName( "any arg" )
+            .describe( "Unpositional" );
+        cli.bind( &TestOpt::firstPos )
+            .describe( "First position" )
+            .argName( "first arg" )
+            .position( 1 );
+
+        const char* argv[] = { "test", "-f", "1st", "-o", "filename", "2nd", "3rd" };
+        parseInto( cli, argv, config );
+
+        REQUIRE( config.firstPos == "1st" );
+        REQUIRE( config.secondPos == "2nd" );
+        REQUIRE( config.unpositional == "3rd" );
     }
 }
 
