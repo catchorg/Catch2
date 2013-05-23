@@ -422,14 +422,11 @@ namespace Clara {
         
 
         void usage( std::ostream& os, std::string const& procName ) const {
-            os << "usage:\n";
-            os << "  " << procName << " ";
+            os << "usage:\n  " << procName << " ";
             argSynopsis( os );
             if( !m_options.empty() ) {
-                os << " [options]\n\n";
-                os << "where options are: \n";
-                optUsage( os, 2 );
-                
+                os << " [options]\n\nwhere options are: \n";
+                optUsage( os, 2 );                
             }
             os << "\n";
         }
@@ -561,19 +558,19 @@ TEST_CASE( "cmdline" ) {
         .longOpt( "output" )
         .argName( "filename" );
 
-    SECTION( "plain filename" ) {
+    SECTION( "arg separated by spaces" ) {
         const char* argv[] = { "test", "-o filename.ext" };
         parseInto( cli, argv, config );
         
         CHECK( config.fileName == "filename.ext" );
     }
-    SECTION( "plain filename with colon" ) {
+    SECTION( "arg separated by colon" ) {
         const char* argv[] = { "test", "-o:filename.ext" };
         parseInto( cli, argv, config );
 
         CHECK( config.fileName == "filename.ext" );
     }
-    SECTION( "plain filename with =" ) {
+    SECTION( "arg separated by =" ) {
         const char* argv[] = { "test", "-o=filename.ext" };
         parseInto( cli, argv, config );
 
@@ -765,7 +762,7 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             .describe( "reporter to use - defaults to console" )
             .shortOpt( "r")
             .longOpt( "reporter" )
-            .argName( "reporter name[:filename]" );
+            .argName( "name[:filename]" );
 
         cli.bind( &Config::suiteName )
             .describe( "suite name" )
@@ -843,25 +840,6 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
                 REQUIRE( config.testsOrTags[0] == "[hello]" );
             }
         }
-    
     }
-    // !TBD: print positional args in usage
 }
-
-// !TBD still support this?
-//    Clara::Parser<Config>
-//        ( "-h, --help                         display usage information",           &Config::showHelp )
-//        ( "-l, --list                         list all (or matching) test cases",   &Config::listTests )
-//        ( "-t, --tags                         list all (or matching) tags",         &Config::listTags )
-//        ( "-p, --passing                      show passing test output",            &Config::showPassingTests )
-//        ( "-b, --break                        break into debugger on failure",      &Config::breakIntoDebugger )
-//        ( "-e, --nothrow                      Skip exception tests",                &Config::noThrow )
-//        ( "-o, --out <file name>              output filename",                     &Config::fileName )
-//        ( "-n, --name <name>                  suite name",                          &Config::suiteName )
-//        ( "-a, --abort                        abort at first failure",              &Config::abortAfterFirst )
-//        ( "-x, --abortx <number of failures>  abort after x failures",              &Config::abortAfterX )
-//        ( "-w, --warn <warning name>          enables warnings",                    &Config::addWarning );
-//        .parseInto( argc, argv, config );
-
 #endif
-
