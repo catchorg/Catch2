@@ -687,21 +687,26 @@ struct Config {
     Config()
     :   listTests( false ),
         listTags( false ),
-        showPassingTests( false ),
+        showSuccessfulTests( false ),
         breakIntoDebugger( false ),
         noThrow( false ),
         showHelp( false ),
-        abortAfter( 0 )
+        abortAfter( 0 ),
+        verbosity( Normal )
     {}
 
     bool listTests;
     bool listTags;
-    bool showPassingTests;
+    bool listReporters;
+
+    bool showSuccessfulTests;
     bool breakIntoDebugger;
     bool noThrow;
     bool showHelp;
-    
+
     int abortAfter;
+    enum Verbosity { NoOutput = 0, Quiet, Normal };
+    Verbosity verbosity;
     std::string reporterName;
     std::string fileName;
     std::string suiteName;
@@ -714,6 +719,7 @@ inline void abortAfterFirst( Config& config ) { config.abortAfter = 1; }
 inline void abortAfterX( Config& config, int x ) { config.abortAfter = x; }
 inline void addWarning( Config& config, std::string const& _warning ) { config.warnings.push_back( _warning ); }
 inline void addTestOrTags( Config& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }    
+inline void setVerbosity( Config& config, int level ) { config.verbosity = (Config::Verbosity)level; }
 
 
 SCENARIO( "New Catch commandline interface", "[cli]" ) {
@@ -730,17 +736,21 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
         cli.bind( &Config::listTests )
             .describe( "list all (or matching) test cases" )
             .shortOpt( "l")
-            .longOpt( "list" );
+            .longOpt( "list-tests" );
 
         cli.bind( &Config::listTags )
             .describe( "list all (or matching) tags" )
             .shortOpt( "t")
-            .longOpt( "tags" );
+            .longOpt( "list-tags" );
 
-        cli.bind( &Config::showPassingTests )
-            .describe( "show passing test output" )
-            .shortOpt( "p")
-            .longOpt( "passing" );
+        cli.bind( &Config::listTags )
+            .describe( "list all reporters" )
+            .longOpt( "list-reporters" );
+
+        cli.bind( &Config::showSuccessfulTests )
+            .describe( "include successful tests in output" )
+            .shortOpt( "s")
+            .longOpt( "success" );
 
         cli.bind( &Config::breakIntoDebugger )
             .describe( "break into debugger on failure" )
@@ -782,10 +792,16 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             .argName( "number of failures" );
 
         cli.bind( &addWarning )
-            .describe( "enables warnings" )
+            .describe( "enable warnings" )
             .shortOpt( "w")
             .longOpt( "warn" )
             .argName( "warning name" );
+
+        cli.bind( &setVerbosity )
+            .describe( "level of verbosity (0=no output)" )
+            .shortOpt( "v")
+            .longOpt( "verbosity" )
+            .argName( "level" );
 
         cli.bind( &addTestOrTags )
             .describe( "which test or tests to use" )
@@ -799,15 +815,15 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
 
         WHEN( "Multiple flags are combined" ) {
 
-            CHECK_FALSE( config.showPassingTests );
+            CHECK_FALSE( config.showSuccessfulTests );
             CHECK_FALSE( config.noThrow );
             CHECK_FALSE( config.breakIntoDebugger );
 
-            const char* argv[] = { "test", "-peb" };
+            const char* argv[] = { "test", "-seb" };
             parseInto( cli, argv, config );
             
             THEN( "All the flags are set" ) {
-                CHECK( config.showPassingTests );
+                CHECK( config.showSuccessfulTests );
                 CHECK( config.noThrow );
                 CHECK( config.breakIntoDebugger );
             }
@@ -839,6 +855,15 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
                 REQUIRE( config.testsOrTags.size() == 1 );
                 REQUIRE( config.testsOrTags[0] == "[hello]" );
             }
+        }
+        WHEN( "And enum opt is set by numeric value" ) {
+            CHECK( config.verbosity == Config::Normal );
+
+            const char* argv[] = { "test", "-v 0" };
+            parseInto( cli, argv, config );
+            
+            THEN( "The member is set to the enum value" )
+                REQUIRE( config.verbosity == Config::NoOutput );
         }
     }
 }
