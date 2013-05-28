@@ -24,8 +24,8 @@ namespace Catch {
     class Runner2 { // This will become Runner when Runner becomes Context
 
     public:
-        Runner2( Ptr<Config> const& config )
-        :   m_config( config )
+        Runner2( ConfigData const& config )
+        :   m_config( new Config( config ) )
         {
             openStream();
             makeReporter();
@@ -110,13 +110,11 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    inline int Main( Ptr<Config> const& config ) {
+    inline int Main( ConfigData const& configData ) {
         int result = 0;
         try
         {
-            Runner2 runner( config );
-
-            const ConfigData& configData = config->data();
+            Runner2 runner( configData );
 
             // Handle list request
             if( configData.listSpec != List::None ) {
@@ -173,7 +171,7 @@ namespace Catch {
         }
     }
     
-    inline int Main( int argc, char* const argv[], Ptr<Config> const& config ) {
+    inline int Main( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
 
         try {
             CommandParser parser( argc, argv );
@@ -189,7 +187,7 @@ namespace Catch {
 
             AllOptions options;
 
-            options.parseIntoConfig( parser, config->data() );
+            options.parseIntoConfig( parser, configData );
         }
         catch( std::exception& ex ) {
             std::cerr << ex.what() << "\n\nUsage: ...\n\n";
@@ -198,15 +196,7 @@ namespace Catch {
             return (std::numeric_limits<int>::max)();
         }
                 
-        return Main( config );
-    }
-    
-    inline int Main( int argc, char* const argv[] ) {
-        Ptr<Config> config = new Config();
-// !TBD: This doesn't always work, for some reason
-//        if( isDebuggerActive() )
-//            config.useStream( "debug" );
-        return Main( argc, argv, config );
+        return Main( configData );
     }
     
 } // end namespace Catch
