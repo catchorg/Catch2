@@ -22,7 +22,7 @@ namespace Catch{
 
         // Scoped because Runner doesn't report EndTesting until its destructor
         {
-            Runner runner( config, m_reporter.get() );
+            Runner runner( config.get(), m_reporter.get() );
             totals = runner.runMatching( rawTestSpec, groupIndex, groupsCount );
         }
         return totals;

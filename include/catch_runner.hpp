@@ -39,7 +39,7 @@ namespace Catch {
                 filterGroups.push_back( filterGroup );
             }
 
-            Runner context( m_config, m_reporter ); // This Runner will be renamed Context
+            Runner context( m_config.get(), m_reporter ); // This Runner will be renamed Context
             Totals totals;
 
             for( std::size_t i=0; i < filterGroups.size() && !context.aborting(); ++i ) {

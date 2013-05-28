@@ -23,7 +23,9 @@ namespace Catch {
         virtual std::ostream& stream() const = 0;
         virtual std::string name() const = 0;
         virtual bool includeSuccessfulResults() const = 0;
+        virtual bool shouldDebugBreak() const = 0;
         virtual bool warnAboutMissingAssertions() const = 0;
+        virtual int abortAfter() const = 0;
     };
 }
 

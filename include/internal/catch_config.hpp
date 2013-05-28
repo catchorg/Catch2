@@ -141,7 +141,7 @@ namespace Catch {
             m_data.filters.push_back( filters );
         }
                 
-        int getCutoff() const {
+        int abortAfter() const {
             return m_data.cutoff;
         }
         
