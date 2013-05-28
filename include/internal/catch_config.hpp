@@ -88,7 +88,8 @@ namespace Catch {
         
         Config( ConfigData const& data )
         :   m_data( data ),
-            m_os( std::cout.rdbuf() )
+            m_os( std::cout.rdbuf() ),
+            m_filters( data.filters )
         {}
         
         virtual ~Config() {
@@ -134,6 +135,10 @@ namespace Catch {
             m_stream.release();
             m_stream = stream;
         }
+        
+        std::string getStreamName() const { return m_data.stream; }
+
+        std::string getReporterName() const { return m_data.reporter; }
 
         void addTestSpec( std::string const& testSpec ) {
             TestCaseFilters filters( testSpec );
@@ -145,11 +150,8 @@ namespace Catch {
             return m_data.cutoff;
         }
         
-        ConfigData const& data() const {
-            return m_data;
-        }
-        ConfigData& data() {
-            return m_data;
+        std::vector<TestCaseFilters> const& filters() const {
+            return m_filters;
         }
 
         // IConfig interface
@@ -162,9 +164,9 @@ namespace Catch {
     private:
         ConfigData m_data;
         
-        // !TBD Move these out of here
         Stream m_stream;
         mutable std::ostream m_os;
+        std::vector<TestCaseFilters> m_filters;
     };
         
     

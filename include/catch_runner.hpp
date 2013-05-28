@@ -33,7 +33,7 @@ namespace Catch {
 
         Totals runTests() {
 
-            std::vector<TestCaseFilters> filterGroups = m_config->data().filters;
+            std::vector<TestCaseFilters> filterGroups = m_config->filters();
             if( filterGroups.empty() ) {
                 TestCaseFilters filterGroup( "" );
                 filterGroups.push_back( filterGroup );
@@ -76,8 +76,8 @@ namespace Catch {
 
     private:
         void openStream() {
-            if( !m_config->data().stream.empty() )
-                m_config->useStream( m_config->data().stream );
+            if( !m_config->getStreamName().empty() )
+                m_config->useStream( m_config->getStreamName() );
 
             // Open output file, if specified
             if( !m_config->getFilename().empty() ) {
@@ -91,9 +91,9 @@ namespace Catch {
             }
         }
         void makeReporter() {
-            std::string reporterName = m_config->data().reporter.empty()
+            std::string reporterName = m_config->getReporterName().empty()
                 ? "console"
-                : m_config->data().reporter;
+                : m_config->getReporterName();
 
             m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, m_config.get() );
             if( !m_reporter ) {
