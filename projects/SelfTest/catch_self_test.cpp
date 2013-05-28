@@ -15,8 +15,8 @@ namespace Catch{
 
     Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, std::size_t groupIndex, std::size_t groupsCount, const std::string& ) {
         std::ostringstream oss;
-        Config config;
-        config.setStreamBuf( oss.rdbuf() );
+        Ptr<Config> config = new Config();
+        config->setStreamBuf( oss.rdbuf() );
         
         Totals totals;
 

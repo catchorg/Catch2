@@ -19,7 +19,7 @@ namespace Catch {
         class ReporterFactory : public IReporterFactory {
 
             virtual IStreamingReporter* create( ReporterConfig const& config ) const {
-                return new LegacyReporterAdapter( new T( config ), config );
+                return new LegacyReporterAdapter( new T( config ) );
             }
             
             virtual std::string getDescription() const {

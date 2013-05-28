@@ -24,9 +24,8 @@ namespace Catch {
     class Runner2 { // This will become Runner when Runner becomes Context
 
     public:
-        Runner2( Config& configWrapper )
-        :   m_configWrapper( configWrapper ),
-            m_config( configWrapper.data() )
+        Runner2( Ptr<Config> const& config )
+        :   m_config( config )
         {
             openStream();
             makeReporter();
@@ -34,13 +33,13 @@ namespace Catch {
 
         Totals runTests() {
 
-            std::vector<TestCaseFilters> filterGroups = m_config.filters;
+            std::vector<TestCaseFilters> filterGroups = m_config->data().filters;
             if( filterGroups.empty() ) {
                 TestCaseFilters filterGroup( "" );
                 filterGroups.push_back( filterGroup );
             }
 
-            Runner context( m_configWrapper, m_reporter ); // This Runner will be renamed Context
+            Runner context( m_config, m_reporter ); // This Runner will be renamed Context
             Totals totals;
 
             for( std::size_t i=0; i < filterGroups.size() && !context.aborting(); ++i ) {
@@ -77,28 +76,26 @@ namespace Catch {
 
     private:
         void openStream() {
-            if( !m_config.stream.empty() )
-                m_configWrapper.useStream( m_config.stream );
+            if( !m_config->data().stream.empty() )
+                m_config->useStream( m_config->data().stream );
 
             // Open output file, if specified
-            if( !m_config.outputFilename.empty() ) {
-                m_ofs.open( m_config.outputFilename.c_str() );
+            if( !m_config->getFilename().empty() ) {
+                m_ofs.open( m_config->getFilename().c_str() );
                 if( m_ofs.fail() ) {
                     std::ostringstream oss;
-                    oss << "Unable to open file: '" << m_config.outputFilename << "'";
+                    oss << "Unable to open file: '" << m_config->getFilename() << "'";
                     throw std::domain_error( oss.str() );
                 }
-                m_configWrapper.setStreamBuf( m_ofs.rdbuf() );
+                m_config->setStreamBuf( m_ofs.rdbuf() );
             }
         }
         void makeReporter() {
-            std::string reporterName = m_config.reporter.empty()
-            ? "console"
-            : m_config.reporter;
+            std::string reporterName = m_config->data().reporter.empty()
+                ? "console"
+                : m_config->data().reporter;
 
-            ReporterConfig reporterConfig( m_configWrapper.stream(), m_config );
-
-            m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
+            m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, m_config.get() );
             if( !m_reporter ) {
                 std::ostringstream oss;
                 oss << "No reporter registered with name: '" << reporterName << "'";
@@ -107,24 +104,23 @@ namespace Catch {
         }
         
     private:
-        Config& m_configWrapper;
-        const ConfigData& m_config;
+        Ptr<Config> m_config;
         std::ofstream m_ofs;
         Ptr<IStreamingReporter> m_reporter;
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    inline int Main( Config& configWrapper ) {
+    inline int Main( Ptr<Config> const& config ) {
         int result = 0;
         try
         {
-            Runner2 runner( configWrapper );
+            Runner2 runner( config );
 
-            const ConfigData& config = configWrapper.data();
+            const ConfigData& configData = config->data();
 
             // Handle list request
-            if( config.listSpec != List::None ) {
-                list( config );
+            if( configData.listSpec != List::None ) {
+                list( configData );
                 Catch::cleanUp();
                 return 0;
             }
@@ -177,7 +173,7 @@ namespace Catch {
         }
     }
     
-    inline int Main( int argc, char* const argv[], Config& config ) {
+    inline int Main( int argc, char* const argv[], Ptr<Config> const& config ) {
 
         try {
             CommandParser parser( argc, argv );
@@ -193,7 +189,7 @@ namespace Catch {
 
             AllOptions options;
 
-            options.parseIntoConfig( parser, config.data() );
+            options.parseIntoConfig( parser, config->data() );
         }
         catch( std::exception& ex ) {
             std::cerr << ex.what() << "\n\nUsage: ...\n\n";
@@ -206,7 +202,7 @@ namespace Catch {
     }
     
     inline int Main( int argc, char* const argv[] ) {
-        Config config;
+        Ptr<Config> config = new Config();
 // !TBD: This doesn't always work, for some reason
 //        if( isDebuggerActive() )
 //            config.useStream( "debug" );

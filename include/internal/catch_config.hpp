@@ -75,7 +75,7 @@ namespace Catch {
     };
     
     
-    class Config : public IConfig {
+    class Config : public SharedImpl<IConfig> {
     private:
         Config( Config const& other );
         Config& operator = ( Config const& other );
@@ -123,10 +123,6 @@ namespace Catch {
         bool shouldDebugBreak() const {
             return m_data.shouldDebugBreak;
         }
-
-        virtual std::ostream& stream() const {
-            return m_os;
-        }
         
         void setStreamBuf( std::streambuf* buf ) {
             m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
@@ -144,17 +140,9 @@ namespace Catch {
             filters.addFilter( TestCaseFilter( testSpec ) );
             m_data.filters.push_back( filters );
         }
-        
-        virtual bool includeSuccessfulResults() const {
-            return m_data.includeWhichResults == Include::SuccessfulResults;
-        }
-        
+                
         int getCutoff() const {
             return m_data.cutoff;
-        }
-        
-        virtual bool allowThrows() const {
-            return m_data.allowThrows;
         }
         
         ConfigData const& data() const {
@@ -163,6 +151,13 @@ namespace Catch {
         ConfigData& data() {
             return m_data;
         }
+
+        // IConfig interface
+        virtual bool allowThrows() const        { return m_data.allowThrows; }
+        virtual std::ostream& stream() const    { return m_os; }
+        virtual std::string name() const        { return m_data.name; }
+        virtual bool includeSuccessfulResults() const   { return m_data.includeWhichResults == Include::SuccessfulResults; }
+        virtual bool warnAboutMissingAssertions() const { return m_data.warnings & ConfigData::WarnAbout::NoAssertions; }
 
     private:
         ConfigData m_data;

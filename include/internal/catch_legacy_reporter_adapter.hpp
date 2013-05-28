@@ -12,9 +12,8 @@
 
 namespace Catch
 {
-    LegacyReporterAdapter::LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config )
-    :   m_legacyReporter( legacyReporter ),
-        m_config( config )
+    LegacyReporterAdapter::LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter )
+    :   m_legacyReporter( legacyReporter )
     {}
     LegacyReporterAdapter::~LegacyReporterAdapter() {}
 

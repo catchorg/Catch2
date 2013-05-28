@@ -15,7 +15,7 @@ namespace Catch
     class LegacyReporterAdapter : public SharedImpl<IStreamingReporter>
     {
     public:
-        LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config );
+        LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter );
         virtual ~LegacyReporterAdapter();
 
         virtual ReporterPreferences getPreferences() const;
@@ -33,7 +33,6 @@ namespace Catch
 
     private:
         Ptr<IReporter> m_legacyReporter;
-        ReporterConfig m_config;
     };
 }
 

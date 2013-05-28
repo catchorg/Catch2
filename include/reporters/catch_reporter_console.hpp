@@ -43,7 +43,7 @@ namespace Catch {
             AssertionResult const& result = _assertionStats.assertionResult;
             
             // Drop out if result was successful and we're not printing those
-            if( !m_config.includeSuccessfulResults() && result.isOk() )
+            if( !m_config->includeSuccessfulResults() && result.isOk() )
                 return;
             
             lazyPrint();

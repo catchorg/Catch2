@@ -160,7 +160,7 @@ namespace Catch {
         }
         
         virtual void Result( const AssertionResult& assertionResult ) {
-            if( !m_config.includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
+            if( !m_config.fullConfig()->includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
                 return;
             
             startSpansLazily();
@@ -289,10 +289,10 @@ namespace Catch {
         
         void startSpansLazily() {
             if( !m_testingSpan.emitted ) {
-                if( m_config.name().empty() )
+                if( m_config.fullConfig()->name().empty() )
                     m_config.stream() << "[Started testing]" << std::endl;
                 else
-                    m_config.stream() << "[Started testing: " << m_config.name() << "]" << std::endl;
+                    m_config.stream() << "[Started testing: " << m_config.fullConfig()->name() << "]" << std::endl;
                 m_testingSpan.emitted = true;
             }
             

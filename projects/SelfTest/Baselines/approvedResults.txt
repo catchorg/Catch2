@@ -5544,12 +5544,12 @@ with message:
 
 -------------------------------------------------------------------------------
 cmdline
-  plain filename
+  arg separated by spaces
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:416
+CmdLineTests.cpp:58
 ...............................................................................
 
-CmdLineTests.cpp:420:
+CmdLineTests.cpp:62:
 PASSED:
   CHECK( config.fileName == "filename.ext" )
 with expansion:
@@ -5557,12 +5557,12 @@ with expansion:
 
 -------------------------------------------------------------------------------
 cmdline
-  plain filename with colon
+  arg separated by colon
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:422
+CmdLineTests.cpp:64
 ...............................................................................
 
-CmdLineTests.cpp:426:
+CmdLineTests.cpp:68:
 PASSED:
   CHECK( config.fileName == "filename.ext" )
 with expansion:
@@ -5570,12 +5570,12 @@ with expansion:
 
 -------------------------------------------------------------------------------
 cmdline
-  plain filename with =
+  arg separated by =
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:428
+CmdLineTests.cpp:70
 ...............................................................................
 
-CmdLineTests.cpp:432:
+CmdLineTests.cpp:74:
 PASSED:
   CHECK( config.fileName == "filename.ext" )
 with expansion:
@@ -5585,10 +5585,10 @@ with expansion:
 cmdline
   long opt
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:434
+CmdLineTests.cpp:76
 ...............................................................................
 
-CmdLineTests.cpp:438:
+CmdLineTests.cpp:80:
 PASSED:
   CHECK( config.fileName == "%stdout" )
 with expansion:
@@ -5598,10 +5598,10 @@ with expansion:
 cmdline
   a number
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:445
+CmdLineTests.cpp:87
 ...............................................................................
 
-CmdLineTests.cpp:449:
+CmdLineTests.cpp:91:
 PASSED:
   CHECK( config.number == 42 )
 with expansion:
@@ -5611,14 +5611,14 @@ with expansion:
 cmdline
   not a number
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:451
+CmdLineTests.cpp:93
 ...............................................................................
 
-CmdLineTests.cpp:453:
+CmdLineTests.cpp:95:
 PASSED:
   CHECK_THROWS( parseInto( cli, argv, config ) )
 
-CmdLineTests.cpp:455:
+CmdLineTests.cpp:97:
 PASSED:
   CHECK( config.number == 0 )
 with expansion:
@@ -5628,22 +5628,22 @@ with expansion:
 cmdline
   two parsers
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:458
+CmdLineTests.cpp:100
 ...............................................................................
 
-CmdLineTests.cpp:473:
+CmdLineTests.cpp:115:
 PASSED:
   CHECK( config1.number == 42 )
 with expansion:
   42 == 42
 
-CmdLineTests.cpp:475:
+CmdLineTests.cpp:117:
 PASSED:
   REQUIRE_FALSE( unusedTokens.empty() )
 with expansion:
   !false
 
-CmdLineTests.cpp:477:
+CmdLineTests.cpp:119:
 PASSED:
   CHECK( config2.description == "some text" )
 with expansion:
@@ -5654,10 +5654,10 @@ cmdline
   methods
   in range
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:486
+CmdLineTests.cpp:128
 ...............................................................................
 
-CmdLineTests.cpp:490:
+CmdLineTests.cpp:132:
 PASSED:
   REQUIRE( config.index == 3 )
 with expansion:
@@ -5668,10 +5668,10 @@ cmdline
   methods
   out of range
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:492
+CmdLineTests.cpp:134
 ...............................................................................
 
-CmdLineTests.cpp:495:
+CmdLineTests.cpp:137:
 PASSED:
   REQUIRE_THROWS( parseInto( cli, argv, config ) )
 
@@ -5680,10 +5680,10 @@ cmdline
   flags
   set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:504
+CmdLineTests.cpp:146
 ...............................................................................
 
-CmdLineTests.cpp:508:
+CmdLineTests.cpp:150:
 PASSED:
   REQUIRE( config.flag )
 with expansion:
@@ -5694,36 +5694,75 @@ cmdline
   flags
   not set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:510
+CmdLineTests.cpp:152
 ...............................................................................
 
-CmdLineTests.cpp:514:
+CmdLineTests.cpp:156:
 PASSED:
   REQUIRE( config.flag == false )
 with expansion:
   false == false
 
--?, -h, --help                             display usage information
--l, --list                                 list all (or matching) test cases
--t, --tags                                 list all (or matching) tags
--p, --passing                              show passing test output
--b, --break                                break into debugger on failure
--e, --nothrow                              Skip exception tests
--o, --out <file name>                      output filename
--r, --reporter <reporter name[:filename]>  e.g. console | xml | junit
--n, --name <name>                          suite name
--a, --abort                                abort at first failure
--x, --abortx <number of failures>          abort after x failures
--w, --warn <warning name>                  enables warnings
- <test name, pattern or tags>              which test or tests to use
+usage:
+  testApp <first arg> <second arg> [<any arg> ...] [options]
+
+where options are:
+  -o, --output <filename>  specifies output file
+  -n <an integral value>
+
+
+-------------------------------------------------------------------------------
+cmdline
+  positional
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:159
+...............................................................................
+
+CmdLineTests.cpp:177:
+PASSED:
+  REQUIRE( config.firstPos == "1st" )
+with expansion:
+  "1st" == "1st"
+
+CmdLineTests.cpp:178:
+PASSED:
+  REQUIRE( config.secondPos == "2nd" )
+with expansion:
+  "2nd" == "2nd"
+
+CmdLineTests.cpp:179:
+PASSED:
+  REQUIRE( config.unpositional == "3rd" )
+with expansion:
+  "3rd" == "3rd"
+
+usage:
+  CatchTestApp [<test name, pattern or tags> ...] [options]
+
+where options are:
+  -?, -h, --help                     display usage information
+  -l, --list-tests                   list all (or matching) test cases
+  -t, --list-tags                    list all (or matching) tags
+  --list-reporters                   list all reporters
+  -s, --success                      include successful tests in output
+  -b, --break                        break into debugger on failure
+  -e, --nothrow                      Skip exception tests
+  -o, --out <filename>               output filename
+  -r, --reporter <name[:filename]>   reporter to use - defaults to console
+  -n, --name <name>                  suite name
+  -a, --abort                        abort at first failure
+  -x, --abortx <number of failures>  abort after x failures
+  -w, --warn <warning name>          enable warnings
+  -v, --verbosity <level>            level of verbosity (0=no output)
+
 
 -------------------------------------------------------------------------------
 Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
-      When: It is streamed
+      When: We ask for usage strings
       Then: It prints the usage strings
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:628
+CmdLineTests.cpp:324
 ...............................................................................
 
 
@@ -5734,22 +5773,22 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: Multiple flags are combined
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:633
+CmdLineTests.cpp:329
 ...............................................................................
 
-CmdLineTests.cpp:635:
+CmdLineTests.cpp:331:
 PASSED:
-  CHECK_FALSE( config.showPassingTests )
+  CHECK_FALSE( config.showSuccessfulTests )
 with expansion:
   !false
 
-CmdLineTests.cpp:636:
+CmdLineTests.cpp:332:
 PASSED:
   CHECK_FALSE( config.noThrow )
 with expansion:
   !false
 
-CmdLineTests.cpp:637:
+CmdLineTests.cpp:333:
 PASSED:
   CHECK_FALSE( config.breakIntoDebugger )
 with expansion:
@@ -5761,29 +5800,191 @@ Scenario: New Catch commandline interface
       When: Multiple flags are combined
       Then: All the flags are set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:642
+CmdLineTests.cpp:338
 ...............................................................................
 
-CmdLineTests.cpp:643:
+CmdLineTests.cpp:339:
 PASSED:
-  CHECK( config.showPassingTests )
+  CHECK( config.showSuccessfulTests )
 with expansion:
   true
 
-CmdLineTests.cpp:644:
+CmdLineTests.cpp:340:
 PASSED:
   CHECK( config.noThrow )
 with expansion:
   true
 
-CmdLineTests.cpp:645:
+CmdLineTests.cpp:341:
 PASSED:
   CHECK( config.breakIntoDebugger )
 with expansion:
   true
 
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: Multiple flags are combined
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:329
+...............................................................................
+
+CmdLineTests.cpp:331:
+PASSED:
+  CHECK_FALSE( config.showSuccessfulTests )
+with expansion:
+  !false
+
+CmdLineTests.cpp:332:
+PASSED:
+  CHECK_FALSE( config.noThrow )
+with expansion:
+  !false
+
+CmdLineTests.cpp:333:
+PASSED:
+  CHECK_FALSE( config.breakIntoDebugger )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: A flag is set via a nullary method
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:344
+...............................................................................
+
+CmdLineTests.cpp:345:
+PASSED:
+  CHECK( config.abortAfter == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: A flag is set via a nullary method
+      Then: The flag is set
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:350
+...............................................................................
+
+CmdLineTests.cpp:351:
+PASSED:
+  REQUIRE( config.abortAfter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: A flag is set via a nullary method
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:344
+...............................................................................
+
+CmdLineTests.cpp:345:
+PASSED:
+  CHECK( config.abortAfter == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: A flag is set via a unary method
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:353
+...............................................................................
+
+CmdLineTests.cpp:354:
+PASSED:
+  CHECK( config.abortAfter == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: A flag is set via a unary method
+      Then: The flag is set
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:359
+...............................................................................
+
+CmdLineTests.cpp:360:
+PASSED:
+  REQUIRE( config.abortAfter == 2 )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: A flag is set via a unary method
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:353
+...............................................................................
+
+CmdLineTests.cpp:354:
+PASSED:
+  CHECK( config.abortAfter == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: A positional argument is supplied
+      Then: The argument is in the testOrTags collection
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:367
+...............................................................................
+
+CmdLineTests.cpp:368:
+PASSED:
+  REQUIRE( config.testsOrTags.size() == 1 )
+with expansion:
+  1 == 1
+
+CmdLineTests.cpp:369:
+PASSED:
+  REQUIRE( config.testsOrTags[0] == "[hello]" )
+with expansion:
+  "[hello]" == "[hello]"
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: And enum opt is set by numeric value
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:372
+...............................................................................
+
+CmdLineTests.cpp:373:
+PASSED:
+  CHECK( config.verbosity == Config::Verbosity::Normal )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+Scenario: New Catch commandline interface
+     Given: A built cli parser for Catch
+      When: And enum opt is set by numeric value
+      Then: The member is set to the enum value
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:378
+...............................................................................
+
+CmdLineTests.cpp:379:
+PASSED:
+  REQUIRE( config.verbosity == Config::Verbosity::NoOutput )
+with expansion:
+  0 == 0
+
 ===============================================================================
-115 test cases - 50 failed (728 assertions - 107 failed)
+115 test cases - 50 failed (744 assertions - 107 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -6104,7 +6305,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="78" tests="728" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="10" failures="78" tests="744" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -6611,22 +6812,36 @@ TrickyTests.cpp:106
     <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
     <testcase classname="global" name="Scenario: Vector resizing affects size and capacity" time="tbd"/>
     <testcase classname="global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="tbd"/>
-    <testcase classname="global" name="cmdline" time="tbd"/>
+    <testcase classname="global" name="cmdline" time="tbd">
+      <system-out>
+usage:
+  testApp &lt;first arg> &lt;second arg> [&lt;any arg> ...] [options]
+
+where options are:
+  -o, --output &lt;filename>  specifies output file
+  -n &lt;an integral value>
+      </system-out>
+    </testcase>
     <testcase classname="global" name="Scenario: New Catch commandline interface" time="tbd">
       <system-out>
--?, -h, --help                             display usage information
--l, --list                                 list all (or matching) test cases
--t, --tags                                 list all (or matching) tags
--p, --passing                              show passing test output
--b, --break                                break into debugger on failure
--e, --nothrow                              Skip exception tests
--o, --out &lt;file name>                      output filename
--r, --reporter &lt;reporter name[:filename]>  e.g. console | xml | junit
--n, --name &lt;name>                          suite name
--a, --abort                                abort at first failure
--x, --abortx &lt;number of failures>          abort after x failures
--w, --warn &lt;warning name>                  enables warnings
- &lt;test name, pattern or tags>              which test or tests to use
+usage:
+  CatchTestApp [&lt;test name, pattern or tags> ...] [options]
+
+where options are:
+  -?, -h, --help                     display usage information
+  -l, --list-tests                   list all (or matching) test cases
+  -t, --list-tags                    list all (or matching) tags
+  --list-reporters                   list all reporters
+  -s, --success                      include successful tests in output
+  -b, --break                        break into debugger on failure
+  -e, --nothrow                      Skip exception tests
+  -o, --out &lt;filename>               output filename
+  -r, --reporter &lt;name[:filename]>   reporter to use - defaults to console
+  -n, --name &lt;name>                  suite name
+  -a, --abort                        abort at first failure
+  -x, --abortx &lt;number of failures>  abort after x failures
+  -w, --warn &lt;warning name>          enable warnings
+  -v, --verbosity &lt;level>            level of verbosity (0=no output)
       </system-out>
     </testcase>
   </testsuite>
@@ -6646,19 +6861,33 @@ Some information
 hello
 hello
 
--?, -h, --help                             display usage information
--l, --list                                 list all (or matching) test cases
--t, --tags                                 list all (or matching) tags
--p, --passing                              show passing test output
--b, --break                                break into debugger on failure
--e, --nothrow                              Skip exception tests
--o, --out &lt;file name>                      output filename
--r, --reporter &lt;reporter name[:filename]>  e.g. console | xml | junit
--n, --name &lt;name>                          suite name
--a, --abort                                abort at first failure
--x, --abortx &lt;number of failures>          abort after x failures
--w, --warn &lt;warning name>                  enables warnings
- &lt;test name, pattern or tags>              which test or tests to use
+usage:
+  testApp &lt;first arg> &lt;second arg> [&lt;any arg> ...] [options]
+
+where options are:
+  -o, --output &lt;filename>  specifies output file
+  -n &lt;an integral value>
+
+
+
+usage:
+  CatchTestApp [&lt;test name, pattern or tags> ...] [options]
+
+where options are:
+  -?, -h, --help                     display usage information
+  -l, --list-tests                   list all (or matching) test cases
+  -t, --list-tags                    list all (or matching) tags
+  --list-reporters                   list all reporters
+  -s, --success                      include successful tests in output
+  -b, --break                        break into debugger on failure
+  -e, --nothrow                      Skip exception tests
+  -o, --out &lt;filename>               output filename
+  -r, --reporter &lt;name[:filename]>   reporter to use - defaults to console
+  -n, --name &lt;name>                  suite name
+  -a, --abort                        abort at first failure
+  -x, --abortx &lt;number of failures>  abort after x failures
+  -w, --warn &lt;warning name>          enable warnings
+  -v, --verbosity &lt;level>            level of verbosity (0=no output)
   </system-out>
   <system-err>
 An error
@@ -12573,8 +12802,8 @@ BDDTests.cpp" line="54">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="cmdline">
-      <Section name="plain filename">
-CmdLineTests.cpp" line="420">
+      <Section name="arg separated by spaces">
+CmdLineTests.cpp" line="62">
           <Original>
             config.fileName == &quot;filename.ext&quot;
           </Original>
@@ -12584,8 +12813,8 @@ CmdLineTests.cpp" line="420">
         </Expression>
         <OverallResults successes="1" failures="0"/>
       </Section>
-      <Section name="plain filename with colon">
-CmdLineTests.cpp" line="426">
+      <Section name="arg separated by colon">
+CmdLineTests.cpp" line="68">
           <Original>
             config.fileName == &quot;filename.ext&quot;
           </Original>
@@ -12595,8 +12824,8 @@ CmdLineTests.cpp" line="426">
         </Expression>
         <OverallResults successes="1" failures="0"/>
       </Section>
-      <Section name="plain filename with =">
-CmdLineTests.cpp" line="432">
+      <Section name="arg separated by =">
+CmdLineTests.cpp" line="74">
           <Original>
             config.fileName == &quot;filename.ext&quot;
           </Original>
@@ -12607,7 +12836,7 @@ CmdLineTests.cpp" line="432">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="long opt">
-CmdLineTests.cpp" line="438">
+CmdLineTests.cpp" line="80">
           <Original>
             config.fileName == &quot;%stdout&quot;
           </Original>
@@ -12618,7 +12847,7 @@ CmdLineTests.cpp" line="438">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="a number">
-CmdLineTests.cpp" line="449">
+CmdLineTests.cpp" line="91">
           <Original>
             config.number == 42
           </Original>
@@ -12629,7 +12858,7 @@ CmdLineTests.cpp" line="449">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="not a number">
-CmdLineTests.cpp" line="453">
+CmdLineTests.cpp" line="95">
           <Original>
             parseInto( cli, argv, config )
           </Original>
@@ -12637,7 +12866,7 @@ CmdLineTests.cpp" line="453">
             parseInto( cli, argv, config )
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="455">
+CmdLineTests.cpp" line="97">
           <Original>
             config.number == 0
           </Original>
@@ -12648,7 +12877,7 @@ CmdLineTests.cpp" line="455">
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="two parsers">
-CmdLineTests.cpp" line="473">
+CmdLineTests.cpp" line="115">
           <Original>
             config1.number == 42
           </Original>
@@ -12656,7 +12885,7 @@ CmdLineTests.cpp" line="473">
             42 == 42
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="475">
+CmdLineTests.cpp" line="117">
           <Original>
             !unusedTokens.empty()
           </Original>
@@ -12664,7 +12893,7 @@ CmdLineTests.cpp" line="475">
             !false
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="477">
+CmdLineTests.cpp" line="119">
           <Original>
             config2.description == &quot;some text&quot;
           </Original>
@@ -12676,7 +12905,7 @@ CmdLineTests.cpp" line="477">
       </Section>
       <Section name="methods">
         <Section name="in range">
-CmdLineTests.cpp" line="490">
+CmdLineTests.cpp" line="132">
             <Original>
               config.index == 3
             </Original>
@@ -12690,7 +12919,7 @@ CmdLineTests.cpp" line="490">
       </Section>
       <Section name="methods">
         <Section name="out of range">
-CmdLineTests.cpp" line="495">
+CmdLineTests.cpp" line="137">
             <Original>
               parseInto( cli, argv, config )
             </Original>
@@ -12707,7 +12936,7 @@ CmdLineTests.cpp" line="495">
       </Section>
       <Section name="flags">
         <Section name="set">
-CmdLineTests.cpp" line="508">
+CmdLineTests.cpp" line="150">
             <Original>
               config.flag
             </Original>
@@ -12721,7 +12950,7 @@ CmdLineTests.cpp" line="508">
       </Section>
       <Section name="flags">
         <Section name="not set">
-CmdLineTests.cpp" line="514">
+CmdLineTests.cpp" line="156">
             <Original>
               config.flag == false
             </Original>
@@ -12733,11 +12962,41 @@ CmdLineTests.cpp" line="514">
         </Section>
         <OverallResults successes="1" failures="0"/>
       </Section>
+      <Section name="flags">
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="positional">
+CmdLineTests.cpp" line="177">
+          <Original>
+            config.firstPos == &quot;1st&quot;
+          </Original>
+          <Expanded>
+            &quot;1st&quot; == &quot;1st&quot;
+          </Expanded>
+        </Expression>
+CmdLineTests.cpp" line="178">
+          <Original>
+            config.secondPos == &quot;2nd&quot;
+          </Original>
+          <Expanded>
+            &quot;2nd&quot; == &quot;2nd&quot;
+          </Expanded>
+        </Expression>
+CmdLineTests.cpp" line="179">
+          <Original>
+            config.unpositional == &quot;3rd&quot;
+          </Original>
+          <Expanded>
+            &quot;3rd&quot; == &quot;3rd&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: New Catch commandline interface">
       <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: It is streamed">
+        <Section name="    When: We ask for usage strings">
           <Section name="    Then: It prints the usage strings">
             <OverallResults successes="0" failures="1"/>
           </Section>
@@ -12746,22 +13005,22 @@ CmdLineTests.cpp" line="514">
         <OverallResults successes="0" failures="1"/>
       </Section>
       <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: It is streamed">
+        <Section name="    When: We ask for usage strings">
           <OverallResults successes="0" failures="0"/>
         </Section>
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: Multiple flags are combined">
-CmdLineTests.cpp" line="635">
+CmdLineTests.cpp" line="331">
             <Original>
-              !config.showPassingTests
+              !config.showSuccessfulTests
             </Original>
             <Expanded>
               !false
             </Expanded>
           </Expression>
-CmdLineTests.cpp" line="636">
+CmdLineTests.cpp" line="332">
             <Original>
               !config.noThrow
             </Original>
@@ -12769,7 +13028,7 @@ CmdLineTests.cpp" line="636">
               !false
             </Expanded>
           </Expression>
-CmdLineTests.cpp" line="637">
+CmdLineTests.cpp" line="333">
             <Original>
               !config.breakIntoDebugger
             </Original>
@@ -12778,15 +13037,15 @@ CmdLineTests.cpp" line="637">
             </Expanded>
           </Expression>
           <Section name="    Then: All the flags are set">
-CmdLineTests.cpp" line="643">
+CmdLineTests.cpp" line="339">
               <Original>
-                config.showPassingTests
+                config.showSuccessfulTests
               </Original>
               <Expanded>
                 true
               </Expanded>
             </Expression>
-CmdLineTests.cpp" line="644">
+CmdLineTests.cpp" line="340">
               <Original>
                 config.noThrow
               </Original>
@@ -12794,7 +13053,7 @@ CmdLineTests.cpp" line="644">
                 true
               </Expanded>
             </Expression>
-CmdLineTests.cpp" line="645">
+CmdLineTests.cpp" line="341">
               <Original>
                 config.breakIntoDebugger
               </Original>
@@ -12808,11 +13067,175 @@ CmdLineTests.cpp" line="645">
         </Section>
         <OverallResults successes="6" failures="0"/>
       </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: Multiple flags are combined">
+CmdLineTests.cpp" line="331">
+            <Original>
+              !config.showSuccessfulTests
+            </Original>
+            <Expanded>
+              !false
+            </Expanded>
+          </Expression>
+CmdLineTests.cpp" line="332">
+            <Original>
+              !config.noThrow
+            </Original>
+            <Expanded>
+              !false
+            </Expanded>
+          </Expression>
+CmdLineTests.cpp" line="333">
+            <Original>
+              !config.breakIntoDebugger
+            </Original>
+            <Expanded>
+              !false
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: A flag is set via a nullary method">
+CmdLineTests.cpp" line="345">
+            <Original>
+              config.abortAfter == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <Section name="    Then: The flag is set">
+CmdLineTests.cpp" line="351">
+              <Original>
+                config.abortAfter == 1
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+            <OverallResults successes="1" failures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: A flag is set via a nullary method">
+CmdLineTests.cpp" line="345">
+            <Original>
+              config.abortAfter == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: A flag is set via a unary method">
+CmdLineTests.cpp" line="354">
+            <Original>
+              config.abortAfter == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <Section name="    Then: The flag is set">
+CmdLineTests.cpp" line="360">
+              <Original>
+                config.abortAfter == 2
+              </Original>
+              <Expanded>
+                2 == 2
+              </Expanded>
+            </Expression>
+            <OverallResults successes="1" failures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: A flag is set via a unary method">
+CmdLineTests.cpp" line="354">
+            <Original>
+              config.abortAfter == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: A positional argument is supplied">
+          <Section name="    Then: The argument is in the testOrTags collection">
+CmdLineTests.cpp" line="368">
+              <Original>
+                config.testsOrTags.size() == 1
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+CmdLineTests.cpp" line="369">
+              <Original>
+                config.testsOrTags[0] == &quot;[hello]&quot;
+              </Original>
+              <Expanded>
+                &quot;[hello]&quot; == &quot;[hello]&quot;
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: A positional argument is supplied">
+          <OverallResults successes="0" failures="0"/>
+        </Section>
+        <OverallResults successes="0" failures="0"/>
+      </Section>
+      <Section name="   Given: A built cli parser for Catch">
+        <Section name="    When: And enum opt is set by numeric value">
+CmdLineTests.cpp" line="373">
+            <Original>
+              config.verbosity == Config::Verbosity::Normal
+            </Original>
+            <Expanded>
+              2 == 2
+            </Expanded>
+          </Expression>
+          <Section name="    Then: The member is set to the enum value">
+CmdLineTests.cpp" line="379">
+              <Original>
+                config.verbosity == Config::Verbosity::NoOutput
+              </Original>
+              <Expanded>
+                0 == 0
+              </Expanded>
+            </Expression>
+            <OverallResults successes="1" failures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="621" failures="107"/>
+    <OverallResults successes="637" failures="107"/>
   </Group>
-  <OverallResults successes="621" failures="107"/>
+  <OverallResults successes="637" failures="107"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -14659,114 +15082,201 @@ BDDTests.cpp:67:  succeeded
 [Finished: 'Scenario: This is a really long scenario name to see how the list command deals with wrapping' All tests passed (1 assertion in 1 test case)]
 
 [Running: cmdline]
-[Started section: 'plain filename']
-CmdLineTests.cpp:420: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
-[End of section: 'plain filename' 1 assertion passed]
+[Started section: 'arg separated by spaces']
+CmdLineTests.cpp:62: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+[End of section: 'arg separated by spaces' 1 assertion passed]
 
-[Started section: 'plain filename with colon']
-CmdLineTests.cpp:426: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
-[End of section: 'plain filename with colon' 1 assertion passed]
+[Started section: 'arg separated by colon']
+CmdLineTests.cpp:68: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+[End of section: 'arg separated by colon' 1 assertion passed]
 
-[Started section: 'plain filename with =']
-CmdLineTests.cpp:432: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
-[End of section: 'plain filename with =' 1 assertion passed]
+[Started section: 'arg separated by =']
+CmdLineTests.cpp:74: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+[End of section: 'arg separated by =' 1 assertion passed]
 
 [Started section: 'long opt']
-CmdLineTests.cpp:438: config.fileName == "%stdout" succeeded for: "%stdout" == "%stdout"
+CmdLineTests.cpp:80: config.fileName == "%stdout" succeeded for: "%stdout" == "%stdout"
 [End of section: 'long opt' 1 assertion passed]
 
 [Started section: 'a number']
-CmdLineTests.cpp:449: config.number == 42 succeeded for: 42 == 42
+CmdLineTests.cpp:91: config.number == 42 succeeded for: 42 == 42
 [End of section: 'a number' 1 assertion passed]
 
 [Started section: 'not a number']
-CmdLineTests.cpp:453: parseInto( cli, argv, config ) succeeded
-CmdLineTests.cpp:455: config.number == 0 succeeded for: 0 == 0
+CmdLineTests.cpp:95: parseInto( cli, argv, config ) succeeded
+CmdLineTests.cpp:97: config.number == 0 succeeded for: 0 == 0
 [End of section: 'not a number' All 2 assertions passed]
 
 [Started section: 'two parsers']
-CmdLineTests.cpp:473: config1.number == 42 succeeded for: 42 == 42
-CmdLineTests.cpp:475: !unusedTokens.empty() succeeded for: !false
-CmdLineTests.cpp:477: config2.description == "some text" succeeded for: "some text" == "some text"
+CmdLineTests.cpp:115: config1.number == 42 succeeded for: 42 == 42
+CmdLineTests.cpp:117: !unusedTokens.empty() succeeded for: !false
+CmdLineTests.cpp:119: config2.description == "some text" succeeded for: "some text" == "some text"
 [End of section: 'two parsers' All 3 assertions passed]
 
 [Started section: 'methods']
 [Started section: 'in range']
-CmdLineTests.cpp:490: config.index == 3 succeeded for: 3 == 3
+CmdLineTests.cpp:132: config.index == 3 succeeded for: 3 == 3
 [End of section: 'in range' 1 assertion passed]
 
 [End of section: 'methods' 1 assertion passed]
 
 [Started section: 'methods']
 [Started section: 'out of range']
-CmdLineTests.cpp:495: parseInto( cli, argv, config ) succeeded
+CmdLineTests.cpp:137: parseInto( cli, argv, config ) succeeded
 [End of section: 'out of range' 1 assertion passed]
 
 [End of section: 'methods' 1 assertion passed]
 
 [Started section: 'flags']
 [Started section: 'set']
-CmdLineTests.cpp:508: config.flag succeeded for: true
+CmdLineTests.cpp:150: config.flag succeeded for: true
 [End of section: 'set' 1 assertion passed]
 
 [End of section: 'flags' 1 assertion passed]
 
 [Started section: 'flags']
 [Started section: 'not set']
-CmdLineTests.cpp:514: config.flag == false succeeded for: false == false
+CmdLineTests.cpp:156: config.flag == false succeeded for: false == false
 [End of section: 'not set' 1 assertion passed]
 
 [End of section: 'flags' 1 assertion passed]
 
-[Finished: 'cmdline' All tests passed (14 assertions in 1 test case)]
--?, -h, --help                             display usage information
--l, --list                                 list all (or matching) test cases
--t, --tags                                 list all (or matching) tags
--p, --passing                              show passing test output
--b, --break                                break into debugger on failure
--e, --nothrow                              Skip exception tests
--o, --out <file name>                      output filename
--r, --reporter <reporter name[:filename]>  e.g. console | xml | junit
--n, --name <name>                          suite name
--a, --abort                                abort at first failure
--x, --abortx <number of failures>          abort after x failures
--w, --warn <warning name>                  enables warnings
- <test name, pattern or tags>              which test or tests to use
+usage:
+  testApp <first arg> <second arg> [<any arg> ...] [options]
+
+where options are:
+  -o, --output <filename>  specifies output file
+  -n <an integral value>
+
+
+[Started section: 'positional']
+CmdLineTests.cpp:177: config.firstPos == "1st" succeeded for: "1st" == "1st"
+CmdLineTests.cpp:178: config.secondPos == "2nd" succeeded for: "2nd" == "2nd"
+CmdLineTests.cpp:179: config.unpositional == "3rd" succeeded for: "3rd" == "3rd"
+[End of section: 'positional' All 3 assertions passed]
+
+[Finished: 'cmdline' All tests passed (17 assertions in 1 test case)]
+usage:
+  CatchTestApp [<test name, pattern or tags> ...] [options]
+
+where options are:
+  -?, -h, --help                     display usage information
+  -l, --list-tests                   list all (or matching) test cases
+  -t, --list-tags                    list all (or matching) tags
+  --list-reporters                   list all reporters
+  -s, --success                      include successful tests in output
+  -b, --break                        break into debugger on failure
+  -e, --nothrow                      Skip exception tests
+  -o, --out <filename>               output filename
+  -r, --reporter <name[:filename]>   reporter to use - defaults to console
+  -n, --name <name>                  suite name
+  -a, --abort                        abort at first failure
+  -x, --abortx <number of failures>  abort after x failures
+  -w, --warn <warning name>          enable warnings
+  -v, --verbosity <level>            level of verbosity (0=no output)
+
 
 
 [Running: Scenario: New Catch commandline interface]
 [Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: It is streamed']
+[Started section: '    When: We ask for usage strings']
 [Started section: '    Then: It prints the usage strings']
 
 No assertions in section, '    Then: It prints the usage strings'
 
 [End of section: '    Then: It prints the usage strings' 1 assertion failed]
 
-[End of section: '    When: It is streamed' 1 assertion failed]
+[End of section: '    When: We ask for usage strings' 1 assertion failed]
 
 [End of section: '   Given: A built cli parser for Catch' 1 assertion failed]
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: Multiple flags are combined']
-CmdLineTests.cpp:635: !config.showPassingTests succeeded for: !false
-CmdLineTests.cpp:636: !config.noThrow succeeded for: !false
-CmdLineTests.cpp:637: !config.breakIntoDebugger succeeded for: !false
+CmdLineTests.cpp:331: !config.showSuccessfulTests succeeded for: !false
+CmdLineTests.cpp:332: !config.noThrow succeeded for: !false
+CmdLineTests.cpp:333: !config.breakIntoDebugger succeeded for: !false
 [Started section: '    Then: All the flags are set']
-CmdLineTests.cpp:643: config.showPassingTests succeeded for: true
-CmdLineTests.cpp:644: config.noThrow succeeded for: true
-CmdLineTests.cpp:645: config.breakIntoDebugger succeeded for: true
+CmdLineTests.cpp:339: config.showSuccessfulTests succeeded for: true
+CmdLineTests.cpp:340: config.noThrow succeeded for: true
+CmdLineTests.cpp:341: config.breakIntoDebugger succeeded for: true
 [End of section: '    Then: All the flags are set' All 3 assertions passed]
 
 [End of section: '    When: Multiple flags are combined' All 6 assertions passed]
 
 [End of section: '   Given: A built cli parser for Catch' All 6 assertions passed]
 
-[Finished: 'Scenario: New Catch commandline interface' 1 test case failed (1 of 7 assertions failed)]
-[End of group: '~dummy'. 50 of 115 test cases failed (107 of 728 assertions failed)]
+[Started section: '   Given: A built cli parser for Catch']
+[Started section: '    When: Multiple flags are combined']
+CmdLineTests.cpp:331: !config.showSuccessfulTests succeeded for: !false
+CmdLineTests.cpp:332: !config.noThrow succeeded for: !false
+CmdLineTests.cpp:333: !config.breakIntoDebugger succeeded for: !false
+[End of section: '    When: Multiple flags are combined' All 3 assertions passed]
+
+[End of section: '   Given: A built cli parser for Catch' All 3 assertions passed]
+
+[Started section: '   Given: A built cli parser for Catch']
+[Started section: '    When: A flag is set via a nullary method']
+CmdLineTests.cpp:345: config.abortAfter == 0 succeeded for: 0 == 0
+[Started section: '    Then: The flag is set']
+CmdLineTests.cpp:351: config.abortAfter == 1 succeeded for: 1 == 1
+[End of section: '    Then: The flag is set' 1 assertion passed]
+
+[End of section: '    When: A flag is set via a nullary method' All 2 assertions passed]
+
+[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
+
+[Started section: '   Given: A built cli parser for Catch']
+[Started section: '    When: A flag is set via a nullary method']
+CmdLineTests.cpp:345: config.abortAfter == 0 succeeded for: 0 == 0
+[End of section: '    When: A flag is set via a nullary method' 1 assertion passed]
+
+[End of section: '   Given: A built cli parser for Catch' 1 assertion passed]
+
+[Started section: '   Given: A built cli parser for Catch']
+[Started section: '    When: A flag is set via a unary method']
+CmdLineTests.cpp:354: config.abortAfter == 0 succeeded for: 0 == 0
+[Started section: '    Then: The flag is set']
+CmdLineTests.cpp:360: config.abortAfter == 2 succeeded for: 2 == 2
+[End of section: '    Then: The flag is set' 1 assertion passed]
+
+[End of section: '    When: A flag is set via a unary method' All 2 assertions passed]
+
+[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
+
+[Started section: '   Given: A built cli parser for Catch']
+[Started section: '    When: A flag is set via a unary method']
+CmdLineTests.cpp:354: config.abortAfter == 0 succeeded for: 0 == 0
+[End of section: '    When: A flag is set via a unary method' 1 assertion passed]
+
+[End of section: '   Given: A built cli parser for Catch' 1 assertion passed]
+
+[Started section: '   Given: A built cli parser for Catch']
+[Started section: '    When: A positional argument is supplied']
+[Started section: '    Then: The argument is in the testOrTags collection']
+CmdLineTests.cpp:368: config.testsOrTags.size() == 1 succeeded for: 1 == 1
+CmdLineTests.cpp:369: config.testsOrTags[0] == "[hello]" succeeded for: "[hello]" == "[hello]"
+[End of section: '    Then: The argument is in the testOrTags collection' All 2 assertions passed]
+
+[End of section: '    When: A positional argument is supplied' All 2 assertions passed]
+
+[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
+
+[Started section: '   Given: A built cli parser for Catch']
+[Started section: '    When: And enum opt is set by numeric value']
+CmdLineTests.cpp:373: config.verbosity == Config::Verbosity::Normal succeeded for: 2 == 2
+[Started section: '    Then: The member is set to the enum value']
+CmdLineTests.cpp:379: config.verbosity == Config::Verbosity::NoOutput succeeded for: 0 == 0
+[End of section: '    Then: The member is set to the enum value' 1 assertion passed]
+
+[End of section: '    When: And enum opt is set by numeric value' All 2 assertions passed]
+
+[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
+
+[Finished: 'Scenario: New Catch commandline interface' 1 test case failed (1 of 20 assertions failed)]
+[End of group: '~dummy'. 50 of 115 test cases failed (107 of 744 assertions failed)]
 
 
-[Testing completed. 50 of 115 test cases failed (107 of 728 assertions failed)]
+[Testing completed. 50 of 115 test cases failed (107 of 744 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']

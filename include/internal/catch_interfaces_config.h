@@ -8,13 +8,22 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 
+#include <iostream>
+#include <string>
+
+#include "catch_ptr.hpp"
+
 namespace Catch {
 
-    struct IConfig {
+    struct IConfig : IShared {
     
         virtual ~IConfig();
         
         virtual bool allowThrows() const = 0;
+        virtual std::ostream& stream() const = 0;
+        virtual std::string name() const = 0;
+        virtual bool includeSuccessfulResults() const = 0;
+        virtual bool warnAboutMissingAssertions() const = 0;
     };
 }
 

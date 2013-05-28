@@ -65,7 +65,7 @@ namespace Catch {
         };
         
     public:
-        JunitReporter( const ReporterConfig& config )
+        JunitReporter( ReporterConfig const& config )
         :   m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
@@ -86,7 +86,7 @@ namespace Catch {
         
         virtual void StartGroup( const std::string& groupName ) {
             if( groupName.empty() )
-                m_statsForSuites.push_back( Stats( m_config.name() ) );
+                m_statsForSuites.push_back( Stats( m_config.fullConfig()->name() ) );
             else
                 m_statsForSuites.push_back( Stats( groupName ) );
             m_currentStats = &m_statsForSuites.back();
@@ -110,7 +110,7 @@ namespace Catch {
         }
         
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( assertionResult.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults() ) {
+            if( assertionResult.getResultType() != ResultWas::Ok || m_config.fullConfig()->includeSuccessfulResults() ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
@@ -238,7 +238,6 @@ namespace Catch {
         
     private:
         ReporterConfig m_config;
-//        bool m_currentTestSuccess;
         
         Stats m_testSuiteStats;
         Stats* m_currentStats;

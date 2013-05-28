@@ -24,17 +24,18 @@
 namespace Catch
 {
     struct ReporterConfig {
-        ReporterConfig( std::ostream& _stream, ConfigData const& _fullConfig )
+        explicit ReporterConfig( Ptr<IConfig> const& _fullConfig )
+        :   m_stream( &_fullConfig->stream() ), m_fullConfig( _fullConfig ) {}
+
+        ReporterConfig( Ptr<IConfig> const& _fullConfig, std::ostream& _stream )
         :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
-        std::ostream& stream() const            { return *m_stream; }
-        std::string name() const                { return m_fullConfig.name; }
-        bool includeSuccessfulResults() const   { return m_fullConfig.includeWhichResults == Include::SuccessfulResults; }
-        bool warnAboutMissingAssertions() const { return m_fullConfig.warnings & ConfigData::WarnAbout::NoAssertions; }
+        std::ostream& stream() const    { return *m_stream; }
+        Ptr<IConfig> fullConfig() const { return m_fullConfig; }
 
     private:
         std::ostream* m_stream;
-        ConfigData m_fullConfig;
+        Ptr<IConfig> m_fullConfig;
     };
 
     struct ReporterPreferences {
@@ -217,7 +218,7 @@ namespace Catch
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
 
         StreamingReporterBase( ReporterConfig const& _config )
-        :   m_config( _config ),
+        :   m_config( _config.fullConfig() ),
             stream( _config.stream() )
         {}
 
@@ -264,7 +265,7 @@ namespace Catch
             testRunInfo.reset();
         }
 
-        ReporterConfig m_config;
+        Ptr<IConfig> m_config;
         Option<TestRunInfo> testRunInfo;
         Option<GroupInfo> unusedGroupInfo;
         Option<TestCaseInfo> unusedTestCaseInfo;
@@ -321,7 +322,7 @@ namespace Catch
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const = 0;        
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;        
         virtual FactoryMap const& getFactories() const = 0;
     };
     

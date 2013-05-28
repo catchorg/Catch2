@@ -56,8 +56,8 @@ namespace Catch {
         
     public:
 
-        explicit Runner( Config const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config.data().name ),
+        explicit Runner( Ptr<Config> const& config, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( config->name() ),
             m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
             m_config( config ),
@@ -67,7 +67,7 @@ namespace Catch {
             m_prevConfig( m_context.getConfig() )
         {
             m_context.setRunner( this );
-            m_context.setConfig( &m_config );
+            m_context.setConfig( m_config.get() );
             m_context.setResultCapture( this );
             m_reporter->testRunStarting( m_runInfo );
         }
@@ -127,7 +127,7 @@ namespace Catch {
             Totals deltaTotals = m_totals.delta( prevTotals );
             bool missingAssertions = false;
             if( deltaTotals.assertions.total() == 0  &&
-               ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
+               ( m_config->data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
                 m_totals.assertions.failed++;
                 deltaTotals = m_totals.delta( prevTotals );
                 missingAssertions = true;
@@ -149,7 +149,7 @@ namespace Catch {
             return deltaTotals;
         }
 
-        Config const& config() const {
+        Ptr<Config> config() const {
             return m_config;
         }
         
@@ -209,7 +209,7 @@ namespace Catch {
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = false;
             if( assertions.total() == 0 &&
-               ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
+               ( m_config->data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
                !m_runningTest->isBranchSection() ) {
                 m_totals.assertions.failed++;
                 assertions.failed++;
@@ -231,7 +231,7 @@ namespace Catch {
         }
 
         virtual bool shouldDebugBreak() const {
-            return m_config.shouldDebugBreak();
+            return m_config->shouldDebugBreak();
         }
 
         virtual std::string getCurrentTestName() const {
@@ -247,7 +247,7 @@ namespace Catch {
     public:
         // !TBD We need to do this another way!
         bool aborting() const {
-            return m_totals.assertions.failed == static_cast<std::size_t>( m_config.getCutoff() );
+            return m_totals.assertions.failed == static_cast<std::size_t>( m_config->getCutoff() );
         }
 
     private:
@@ -315,13 +315,13 @@ namespace Catch {
         RunningTest* m_runningTest;
         AssertionResult m_lastResult;
 
-        Config const& m_config;
+        Ptr<Config> m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
-        const IConfig* m_prevConfig;
+        Ptr<IConfig> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
         std::vector<UnfinishedSections> m_unfinishedSections;
     };
