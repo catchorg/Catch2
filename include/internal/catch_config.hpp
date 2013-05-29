@@ -44,21 +44,24 @@ namespace Catch {
             showSuccessfulTests( false ),
             shouldDebugBreak( false ),
             noThrow( false ),
+            showHelp( false ),
             cutoff( -1 ),
+            verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing )
         {}
         
         bool listTests;
         bool listTags;
         bool listReporters;
+
         bool showSuccessfulTests;
         bool shouldDebugBreak;
         bool noThrow;
-//        bool showHelp; // !TBD
+        bool showHelp;
 
         int cutoff;
 
-//        Verbosity::Level verbosity;
+        Verbosity::Level verbosity;
         WarnAbout::What warnings;
 
         std::string reporter;

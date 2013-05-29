@@ -194,7 +194,8 @@ struct Config {
         noThrow( false ),
         showHelp( false ),
         abortAfter( 0 ),
-        verbosity( Verbosity::Normal )
+        verbosity( Verbosity::Normal ),
+        warnings( Warning::Nothing )
     {}
 
     bool listTests;
