@@ -47,6 +47,11 @@ namespace Catch {
     
     struct ConfigData {
 
+        struct Verbosity { enum Level {
+            NoOutput = 0,
+            Quiet,
+            Normal
+        }; };
         struct WarnAbout { enum What {
             Nothing = 0x00,
             NoAssertions = 0x01
@@ -54,24 +59,31 @@ namespace Catch {
 
         ConfigData()
         :   listSpec( List::None ),
-            shouldDebugBreak( false ),
             includeWhichResults( Include::FailedOnly ),
-            cutoff( -1 ),
+            shouldDebugBreak( false ),
             allowThrows( true ),
+            cutoff( -1 ),
             warnings( WarnAbout::Nothing )
         {}
         
+        List::What listSpec; // !TBD Split into bools
+        Include::WhichResults includeWhichResults; // !TBD bool
+        bool shouldDebugBreak;
+        bool allowThrows; // !TBD invert
+//        bool showHelp; // !TBD
+
+        int cutoff;
+
+//        Verbosity::Level verbosity;
+        WarnAbout::What warnings;
+
         std::string reporter;
         std::string outputFilename;
-        List::What listSpec;
-        std::vector<TestCaseFilters> filters;
-        bool shouldDebugBreak;
-        std::string stream;
-        Include::WhichResults includeWhichResults;
         std::string name;
-        int cutoff;
-        bool allowThrows;
-        WarnAbout::What warnings;
+
+        std::vector<TestCaseFilters> filters; // !TBD strings
+
+        std::string stream;
     };
     
     

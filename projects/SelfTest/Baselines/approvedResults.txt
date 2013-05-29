@@ -5762,7 +5762,7 @@ Scenario: New Catch commandline interface
       When: We ask for usage strings
       Then: It prints the usage strings
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:324
+CmdLineTests.cpp:323
 ...............................................................................
 
 
@@ -5773,22 +5773,22 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: Multiple flags are combined
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:329
+CmdLineTests.cpp:328
 ...............................................................................
 
-CmdLineTests.cpp:331:
+CmdLineTests.cpp:330:
 PASSED:
   CHECK_FALSE( config.showSuccessfulTests )
 with expansion:
   !false
 
-CmdLineTests.cpp:332:
+CmdLineTests.cpp:331:
 PASSED:
   CHECK_FALSE( config.noThrow )
 with expansion:
   !false
 
-CmdLineTests.cpp:333:
+CmdLineTests.cpp:332:
 PASSED:
   CHECK_FALSE( config.breakIntoDebugger )
 with expansion:
@@ -5800,22 +5800,22 @@ Scenario: New Catch commandline interface
       When: Multiple flags are combined
       Then: All the flags are set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:338
+CmdLineTests.cpp:337
 ...............................................................................
 
-CmdLineTests.cpp:339:
+CmdLineTests.cpp:338:
 PASSED:
   CHECK( config.showSuccessfulTests )
 with expansion:
   true
 
-CmdLineTests.cpp:340:
+CmdLineTests.cpp:339:
 PASSED:
   CHECK( config.noThrow )
 with expansion:
   true
 
-CmdLineTests.cpp:341:
+CmdLineTests.cpp:340:
 PASSED:
   CHECK( config.breakIntoDebugger )
 with expansion:
@@ -5826,22 +5826,22 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: Multiple flags are combined
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:329
+CmdLineTests.cpp:328
 ...............................................................................
 
-CmdLineTests.cpp:331:
+CmdLineTests.cpp:330:
 PASSED:
   CHECK_FALSE( config.showSuccessfulTests )
 with expansion:
   !false
 
-CmdLineTests.cpp:332:
+CmdLineTests.cpp:331:
 PASSED:
   CHECK_FALSE( config.noThrow )
 with expansion:
   !false
 
-CmdLineTests.cpp:333:
+CmdLineTests.cpp:332:
 PASSED:
   CHECK_FALSE( config.breakIntoDebugger )
 with expansion:
@@ -5852,10 +5852,10 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: A flag is set via a nullary method
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:344
+CmdLineTests.cpp:343
 ...............................................................................
 
-CmdLineTests.cpp:345:
+CmdLineTests.cpp:344:
 PASSED:
   CHECK( config.abortAfter == 0 )
 with expansion:
@@ -5867,10 +5867,10 @@ Scenario: New Catch commandline interface
       When: A flag is set via a nullary method
       Then: The flag is set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:350
+CmdLineTests.cpp:349
 ...............................................................................
 
-CmdLineTests.cpp:351:
+CmdLineTests.cpp:350:
 PASSED:
   REQUIRE( config.abortAfter == 1 )
 with expansion:
@@ -5881,10 +5881,10 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: A flag is set via a nullary method
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:344
+CmdLineTests.cpp:343
 ...............................................................................
 
-CmdLineTests.cpp:345:
+CmdLineTests.cpp:344:
 PASSED:
   CHECK( config.abortAfter == 0 )
 with expansion:
@@ -5895,10 +5895,10 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: A flag is set via a unary method
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:353
+CmdLineTests.cpp:352
 ...............................................................................
 
-CmdLineTests.cpp:354:
+CmdLineTests.cpp:353:
 PASSED:
   CHECK( config.abortAfter == 0 )
 with expansion:
@@ -5910,10 +5910,10 @@ Scenario: New Catch commandline interface
       When: A flag is set via a unary method
       Then: The flag is set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:359
+CmdLineTests.cpp:358
 ...............................................................................
 
-CmdLineTests.cpp:360:
+CmdLineTests.cpp:359:
 PASSED:
   REQUIRE( config.abortAfter == 2 )
 with expansion:
@@ -5924,10 +5924,10 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: A flag is set via a unary method
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:353
+CmdLineTests.cpp:352
 ...............................................................................
 
-CmdLineTests.cpp:354:
+CmdLineTests.cpp:353:
 PASSED:
   CHECK( config.abortAfter == 0 )
 with expansion:
@@ -5939,16 +5939,16 @@ Scenario: New Catch commandline interface
       When: A positional argument is supplied
       Then: The argument is in the testOrTags collection
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:367
+CmdLineTests.cpp:366
 ...............................................................................
 
-CmdLineTests.cpp:368:
+CmdLineTests.cpp:367:
 PASSED:
   REQUIRE( config.testsOrTags.size() == 1 )
 with expansion:
   1 == 1
 
-CmdLineTests.cpp:369:
+CmdLineTests.cpp:368:
 PASSED:
   REQUIRE( config.testsOrTags[0] == "[hello]" )
 with expansion:
@@ -5959,10 +5959,10 @@ Scenario: New Catch commandline interface
      Given: A built cli parser for Catch
       When: And enum opt is set by numeric value
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:372
+CmdLineTests.cpp:371
 ...............................................................................
 
-CmdLineTests.cpp:373:
+CmdLineTests.cpp:372:
 PASSED:
   CHECK( config.verbosity == Config::Verbosity::Normal )
 with expansion:
@@ -5974,10 +5974,10 @@ Scenario: New Catch commandline interface
       When: And enum opt is set by numeric value
       Then: The member is set to the enum value
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:378
+CmdLineTests.cpp:377
 ...............................................................................
 
-CmdLineTests.cpp:379:
+CmdLineTests.cpp:378:
 PASSED:
   REQUIRE( config.verbosity == Config::Verbosity::NoOutput )
 with expansion:
@@ -13012,7 +13012,7 @@ CmdLineTests.cpp" line="179">
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: Multiple flags are combined">
-CmdLineTests.cpp" line="331">
+CmdLineTests.cpp" line="330">
             <Original>
               !config.showSuccessfulTests
             </Original>
@@ -13020,7 +13020,7 @@ CmdLineTests.cpp" line="331">
               !false
             </Expanded>
           </Expression>
-CmdLineTests.cpp" line="332">
+CmdLineTests.cpp" line="331">
             <Original>
               !config.noThrow
             </Original>
@@ -13028,7 +13028,7 @@ CmdLineTests.cpp" line="332">
               !false
             </Expanded>
           </Expression>
-CmdLineTests.cpp" line="333">
+CmdLineTests.cpp" line="332">
             <Original>
               !config.breakIntoDebugger
             </Original>
@@ -13037,7 +13037,7 @@ CmdLineTests.cpp" line="333">
             </Expanded>
           </Expression>
           <Section name="    Then: All the flags are set">
-CmdLineTests.cpp" line="339">
+CmdLineTests.cpp" line="338">
               <Original>
                 config.showSuccessfulTests
               </Original>
@@ -13045,7 +13045,7 @@ CmdLineTests.cpp" line="339">
                 true
               </Expanded>
             </Expression>
-CmdLineTests.cpp" line="340">
+CmdLineTests.cpp" line="339">
               <Original>
                 config.noThrow
               </Original>
@@ -13053,7 +13053,7 @@ CmdLineTests.cpp" line="340">
                 true
               </Expanded>
             </Expression>
-CmdLineTests.cpp" line="341">
+CmdLineTests.cpp" line="340">
               <Original>
                 config.breakIntoDebugger
               </Original>
@@ -13069,7 +13069,7 @@ CmdLineTests.cpp" line="341">
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: Multiple flags are combined">
-CmdLineTests.cpp" line="331">
+CmdLineTests.cpp" line="330">
             <Original>
               !config.showSuccessfulTests
             </Original>
@@ -13077,7 +13077,7 @@ CmdLineTests.cpp" line="331">
               !false
             </Expanded>
           </Expression>
-CmdLineTests.cpp" line="332">
+CmdLineTests.cpp" line="331">
             <Original>
               !config.noThrow
             </Original>
@@ -13085,7 +13085,7 @@ CmdLineTests.cpp" line="332">
               !false
             </Expanded>
           </Expression>
-CmdLineTests.cpp" line="333">
+CmdLineTests.cpp" line="332">
             <Original>
               !config.breakIntoDebugger
             </Original>
@@ -13099,7 +13099,7 @@ CmdLineTests.cpp" line="333">
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: A flag is set via a nullary method">
-CmdLineTests.cpp" line="345">
+CmdLineTests.cpp" line="344">
             <Original>
               config.abortAfter == 0
             </Original>
@@ -13108,7 +13108,7 @@ CmdLineTests.cpp" line="345">
             </Expanded>
           </Expression>
           <Section name="    Then: The flag is set">
-CmdLineTests.cpp" line="351">
+CmdLineTests.cpp" line="350">
               <Original>
                 config.abortAfter == 1
               </Original>
@@ -13124,7 +13124,7 @@ CmdLineTests.cpp" line="351">
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: A flag is set via a nullary method">
-CmdLineTests.cpp" line="345">
+CmdLineTests.cpp" line="344">
             <Original>
               config.abortAfter == 0
             </Original>
@@ -13138,7 +13138,7 @@ CmdLineTests.cpp" line="345">
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: A flag is set via a unary method">
-CmdLineTests.cpp" line="354">
+CmdLineTests.cpp" line="353">
             <Original>
               config.abortAfter == 0
             </Original>
@@ -13147,7 +13147,7 @@ CmdLineTests.cpp" line="354">
             </Expanded>
           </Expression>
           <Section name="    Then: The flag is set">
-CmdLineTests.cpp" line="360">
+CmdLineTests.cpp" line="359">
               <Original>
                 config.abortAfter == 2
               </Original>
@@ -13163,7 +13163,7 @@ CmdLineTests.cpp" line="360">
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: A flag is set via a unary method">
-CmdLineTests.cpp" line="354">
+CmdLineTests.cpp" line="353">
             <Original>
               config.abortAfter == 0
             </Original>
@@ -13178,7 +13178,7 @@ CmdLineTests.cpp" line="354">
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: A positional argument is supplied">
           <Section name="    Then: The argument is in the testOrTags collection">
-CmdLineTests.cpp" line="368">
+CmdLineTests.cpp" line="367">
               <Original>
                 config.testsOrTags.size() == 1
               </Original>
@@ -13186,7 +13186,7 @@ CmdLineTests.cpp" line="368">
                 1 == 1
               </Expanded>
             </Expression>
-CmdLineTests.cpp" line="369">
+CmdLineTests.cpp" line="368">
               <Original>
                 config.testsOrTags[0] == &quot;[hello]&quot;
               </Original>
@@ -13208,7 +13208,7 @@ CmdLineTests.cpp" line="369">
       </Section>
       <Section name="   Given: A built cli parser for Catch">
         <Section name="    When: And enum opt is set by numeric value">
-CmdLineTests.cpp" line="373">
+CmdLineTests.cpp" line="372">
             <Original>
               config.verbosity == Config::Verbosity::Normal
             </Original>
@@ -13217,7 +13217,7 @@ CmdLineTests.cpp" line="373">
             </Expanded>
           </Expression>
           <Section name="    Then: The member is set to the enum value">
-CmdLineTests.cpp" line="379">
+CmdLineTests.cpp" line="378">
               <Original>
                 config.verbosity == Config::Verbosity::NoOutput
               </Original>
@@ -15192,13 +15192,13 @@ No assertions in section, '    Then: It prints the usage strings'
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: Multiple flags are combined']
-CmdLineTests.cpp:331: !config.showSuccessfulTests succeeded for: !false
-CmdLineTests.cpp:332: !config.noThrow succeeded for: !false
-CmdLineTests.cpp:333: !config.breakIntoDebugger succeeded for: !false
+CmdLineTests.cpp:330: !config.showSuccessfulTests succeeded for: !false
+CmdLineTests.cpp:331: !config.noThrow succeeded for: !false
+CmdLineTests.cpp:332: !config.breakIntoDebugger succeeded for: !false
 [Started section: '    Then: All the flags are set']
-CmdLineTests.cpp:339: config.showSuccessfulTests succeeded for: true
-CmdLineTests.cpp:340: config.noThrow succeeded for: true
-CmdLineTests.cpp:341: config.breakIntoDebugger succeeded for: true
+CmdLineTests.cpp:338: config.showSuccessfulTests succeeded for: true
+CmdLineTests.cpp:339: config.noThrow succeeded for: true
+CmdLineTests.cpp:340: config.breakIntoDebugger succeeded for: true
 [End of section: '    Then: All the flags are set' All 3 assertions passed]
 
 [End of section: '    When: Multiple flags are combined' All 6 assertions passed]
@@ -15207,18 +15207,18 @@ CmdLineTests.cpp:341: config.breakIntoDebugger succeeded for: true
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: Multiple flags are combined']
-CmdLineTests.cpp:331: !config.showSuccessfulTests succeeded for: !false
-CmdLineTests.cpp:332: !config.noThrow succeeded for: !false
-CmdLineTests.cpp:333: !config.breakIntoDebugger succeeded for: !false
+CmdLineTests.cpp:330: !config.showSuccessfulTests succeeded for: !false
+CmdLineTests.cpp:331: !config.noThrow succeeded for: !false
+CmdLineTests.cpp:332: !config.breakIntoDebugger succeeded for: !false
 [End of section: '    When: Multiple flags are combined' All 3 assertions passed]
 
 [End of section: '   Given: A built cli parser for Catch' All 3 assertions passed]
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: A flag is set via a nullary method']
-CmdLineTests.cpp:345: config.abortAfter == 0 succeeded for: 0 == 0
+CmdLineTests.cpp:344: config.abortAfter == 0 succeeded for: 0 == 0
 [Started section: '    Then: The flag is set']
-CmdLineTests.cpp:351: config.abortAfter == 1 succeeded for: 1 == 1
+CmdLineTests.cpp:350: config.abortAfter == 1 succeeded for: 1 == 1
 [End of section: '    Then: The flag is set' 1 assertion passed]
 
 [End of section: '    When: A flag is set via a nullary method' All 2 assertions passed]
@@ -15227,16 +15227,16 @@ CmdLineTests.cpp:351: config.abortAfter == 1 succeeded for: 1 == 1
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: A flag is set via a nullary method']
-CmdLineTests.cpp:345: config.abortAfter == 0 succeeded for: 0 == 0
+CmdLineTests.cpp:344: config.abortAfter == 0 succeeded for: 0 == 0
 [End of section: '    When: A flag is set via a nullary method' 1 assertion passed]
 
 [End of section: '   Given: A built cli parser for Catch' 1 assertion passed]
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: A flag is set via a unary method']
-CmdLineTests.cpp:354: config.abortAfter == 0 succeeded for: 0 == 0
+CmdLineTests.cpp:353: config.abortAfter == 0 succeeded for: 0 == 0
 [Started section: '    Then: The flag is set']
-CmdLineTests.cpp:360: config.abortAfter == 2 succeeded for: 2 == 2
+CmdLineTests.cpp:359: config.abortAfter == 2 succeeded for: 2 == 2
 [End of section: '    Then: The flag is set' 1 assertion passed]
 
 [End of section: '    When: A flag is set via a unary method' All 2 assertions passed]
@@ -15245,7 +15245,7 @@ CmdLineTests.cpp:360: config.abortAfter == 2 succeeded for: 2 == 2
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: A flag is set via a unary method']
-CmdLineTests.cpp:354: config.abortAfter == 0 succeeded for: 0 == 0
+CmdLineTests.cpp:353: config.abortAfter == 0 succeeded for: 0 == 0
 [End of section: '    When: A flag is set via a unary method' 1 assertion passed]
 
 [End of section: '   Given: A built cli parser for Catch' 1 assertion passed]
@@ -15253,8 +15253,8 @@ CmdLineTests.cpp:354: config.abortAfter == 0 succeeded for: 0 == 0
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: A positional argument is supplied']
 [Started section: '    Then: The argument is in the testOrTags collection']
-CmdLineTests.cpp:368: config.testsOrTags.size() == 1 succeeded for: 1 == 1
-CmdLineTests.cpp:369: config.testsOrTags[0] == "[hello]" succeeded for: "[hello]" == "[hello]"
+CmdLineTests.cpp:367: config.testsOrTags.size() == 1 succeeded for: 1 == 1
+CmdLineTests.cpp:368: config.testsOrTags[0] == "[hello]" succeeded for: "[hello]" == "[hello]"
 [End of section: '    Then: The argument is in the testOrTags collection' All 2 assertions passed]
 
 [End of section: '    When: A positional argument is supplied' All 2 assertions passed]
@@ -15263,9 +15263,9 @@ CmdLineTests.cpp:369: config.testsOrTags[0] == "[hello]" succeeded for: "[hello]
 
 [Started section: '   Given: A built cli parser for Catch']
 [Started section: '    When: And enum opt is set by numeric value']
-CmdLineTests.cpp:373: config.verbosity == Config::Verbosity::Normal succeeded for: 2 == 2
+CmdLineTests.cpp:372: config.verbosity == Config::Verbosity::Normal succeeded for: 2 == 2
 [Started section: '    Then: The member is set to the enum value']
-CmdLineTests.cpp:379: config.verbosity == Config::Verbosity::NoOutput succeeded for: 0 == 0
+CmdLineTests.cpp:378: config.verbosity == Config::Verbosity::NoOutput succeeded for: 0 == 0
 [End of section: '    Then: The member is set to the enum value' 1 assertion passed]
 
 [End of section: '    When: And enum opt is set by numeric value' All 2 assertions passed]

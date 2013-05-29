@@ -213,7 +213,6 @@ struct Config {
     std::string reporterName;
     std::string fileName;
     std::string suiteName;
-    std::string reporter;
 
     std::vector<std::string> testsOrTags;
 };
@@ -281,7 +280,7 @@ SCENARIO( "New Catch commandline interface", "[cli]" ) {
             .longOpt( "out" )
             .argName( "filename" );
 
-        cli.bind( &Config::reporter )
+        cli.bind( &Config::reporterName )
             .describe( "reporter to use - defaults to console" )
             .shortOpt( "r")
             .longOpt( "reporter" )
