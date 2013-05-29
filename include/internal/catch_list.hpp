@@ -25,8 +25,8 @@ namespace Catch {
         return true;
     }
 
-    inline void listTests( ConfigData const& config ) {
-        if( config.filters.empty() )
+    inline void listTests( Ptr<Config> const& config ) {
+        if( config->filters().empty() )
             std::cout << "All available test cases:\n";
         else
             std::cout << "Matching test cases:\n";
@@ -37,7 +37,7 @@ namespace Catch {
         std::size_t maxTagLen = 0;
         std::size_t maxNameLen = 0;
         for(; it != itEnd; ++it ) {
-            if( matchesFilters( config.filters, *it ) ) {
+            if( matchesFilters( config->filters(), *it ) ) {
                 maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
                 maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
             }
@@ -54,7 +54,7 @@ namespace Catch {
 
         std::size_t matchedTests = 0;
         for( it = allTests.begin(); it != itEnd; ++it ) {
-            if( matchesFilters( config.filters, *it ) ) {
+            if( matchesFilters( config->filters(), *it ) ) {
                 matchedTests++;
                 // !TBD: consider listAs()
                 Text nameWrapper(   it->getTestCaseInfo().name,
@@ -94,14 +94,14 @@ namespace Catch {
                 }
             }
         }
-        if( config.filters.empty() )
+        if( config->filters().empty() )
             std::cout << pluralise( matchedTests, "test case" ) << std::endl;
         else
             std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
     }
     
-    inline void listTags( ConfigData const& config ) {
-        if( config.filters.empty() )
+    inline void listTags( Ptr<Config> const& config ) {
+        if( config->filters().empty() )
             std::cout << "All available tags:\n";
         else
             std::cout << "Matching tags:\n";
@@ -113,7 +113,7 @@ namespace Catch {
         std::size_t maxTagLen = 0;
 
         for(; it != itEnd; ++it ) {
-            if( matchesFilters( config.filters, *it ) ) {
+            if( matchesFilters( config->filters(), *it ) ) {
                 for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
                                                             tagItEnd = it->getTestCaseInfo().tags.end();
                         tagIt != tagItEnd;
@@ -152,7 +152,7 @@ namespace Catch {
         std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
     }
 
-    inline void listReporters( ConfigData const& /*config*/ ) {
+    inline void listReporters( Ptr<Config> const& /*config*/ ) {
         std::cout << "Available reports:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator it = factories.begin(), itEnd = factories.end();
@@ -163,15 +163,21 @@ namespace Catch {
         std::cout << std::endl;
     }
     
-    inline void list( ConfigData const& config ) {        
-        if( config.listSpec & List::Tests )
+    inline bool list( Ptr<Config> const& config ) {
+        bool listed = false;
+        if( config->listTests() ) {
             listTests( config );
-        if( config.listSpec & List::Tags )
+            listed = true;
+        }
+        if( config->listTags() ) {
             listTags( config );
-        if( config.listSpec & List::Reports )
+            listed = true;
+        }
+        if( config->listReporters() ) {
             listReporters( config );
-        if( ( config.listSpec & List::All ) == 0 )
-            throw std::logic_error( "Unknown list type" );
+            listed = true;
+        }
+        return listed;
     }
     
 } // end namespace Catch

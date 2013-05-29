@@ -24,8 +24,8 @@ namespace Catch {
     class Runner2 { // This will become Runner when Runner becomes Context
 
     public:
-        Runner2( ConfigData const& config )
-        :   m_config( new Config( config ) )
+        Runner2( Ptr<Config> const& config )
+        :   m_config( config )
         {
             openStream();
             makeReporter();
@@ -110,15 +110,14 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    inline int Main( ConfigData const& configData ) {
+    inline int Main( Ptr<Config> const& config ) {
         int result = 0;
         try
         {
-            Runner2 runner( configData );
+            Runner2 runner( config );
 
             // Handle list request
-            if( configData.listSpec != List::None ) {
-                list( configData );
+            if( list( config ) ) {
                 Catch::cleanUp();
                 return 0;
             }
@@ -195,8 +194,8 @@ namespace Catch {
             Catch::cleanUp();
             return (std::numeric_limits<int>::max)();
         }
-                
-        return Main( configData );
+        Ptr<Config> config = new Config( configData );
+        return Main( config );
     }
     
 } // end namespace Catch

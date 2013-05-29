@@ -101,22 +101,14 @@ namespace Catch {
             m_data.outputFilename = filename;
         }
         
-        List::What getListSpec( void ) const {
-            return m_data.listSpec;
-        }
-
         std::string const& getFilename() const {
             return m_data.outputFilename ;
         }
         
-        List::What listWhat() const {
-            return static_cast<List::What>( m_data.listSpec & List::WhatMask );
-        }        
+        bool listTests() const { return m_data.listSpec & List::Tests; }
+        bool listTags() const { return m_data.listSpec & List::Tags; }
+        bool listReporters() const { return m_data.listSpec & List::Reports; }
         
-        List::What listAs() const {
-            return static_cast<List::What>( m_data.listSpec & List::AsMask );
-        }
-
         std::string getName() const {
             return m_data.name;
         }
