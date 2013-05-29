@@ -188,6 +188,7 @@ struct Config {
     Config()
     :   listTests( false ),
         listTags( false ),
+        listReporters( false ),
         showSuccessfulTests( false ),
         breakIntoDebugger( false ),
         noThrow( false ),

@@ -23,27 +23,6 @@
 #endif
 
 namespace Catch {
-
-    struct Include { enum WhichResults {
-        FailedOnly, 
-        SuccessfulResults
-    }; };
-
-    struct List{ enum What {
-        None = 0,
-        
-        Reports = 1,
-        Tests = 2,
-        Tags = 4,
-        All = Reports | Tests | Tags,
-
-        WhatMask = 0xf,
-        
-        AsText = 0x10,
-        AsXml = 0x20,
-        
-        AsMask = 0xf0
-    }; };
     
     struct ConfigData {
 
@@ -52,13 +31,16 @@ namespace Catch {
             Quiet,
             Normal
         }; };
+
         struct WarnAbout { enum What {
             Nothing = 0x00,
             NoAssertions = 0x01
         }; };
 
         ConfigData()
-        :   listSpec( List::None ),
+        :   listTests( false ),
+            listTags( false ),
+            listReporters( false ),
             showSuccessfulTests( false ),
             shouldDebugBreak( false ),
             noThrow( false ),
@@ -66,7 +48,9 @@ namespace Catch {
             warnings( WarnAbout::Nothing )
         {}
         
-        List::What listSpec; // !TBD Split into bools
+        bool listTests;
+        bool listTags;
+        bool listReporters;
         bool showSuccessfulTests;
         bool shouldDebugBreak;
         bool noThrow;
@@ -117,9 +101,9 @@ namespace Catch {
             return m_data.outputFilename ;
         }
         
-        bool listTests() const { return m_data.listSpec & List::Tests; }
-        bool listTags() const { return m_data.listSpec & List::Tags; }
-        bool listReporters() const { return m_data.listSpec & List::Reports; }
+        bool listTests() const { return m_data.listTests; }
+        bool listTags() const { return m_data.listTags; }
+        bool listReporters() const { return m_data.listReporters; }
         
         std::string getName() const {
             return m_data.name;

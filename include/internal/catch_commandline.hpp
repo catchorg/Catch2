@@ -317,7 +317,7 @@ namespace Catch {
         
         class ListOptionParser : public OptionParser {
         public:
-            ListOptionParser() : OptionParser( 0, 2 ) {
+            ListOptionParser() : OptionParser( 0, 1 ) {
                 m_optionNames.push_back( "-l" );
                 m_optionNames.push_back( "--list" );
             }
@@ -346,26 +346,20 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                config.listSpec = List::Tests;
                 if( cmd.argsCount() >= 1 ) {
-                    if( cmd[0] == "all" )
-                        config.listSpec = List::All;
+                    if( cmd[0] == "all" ) {
+                        config.listTests = true;
+                        config.listTags = true;
+                        config.listReporters = true;
+                    }
                     else if( cmd[0] == "tests" )
-                        config.listSpec = List::Tests;
+                        config.listTests = true;
                     else if( cmd[0] == "tags" )
-                        config.listSpec = List::Tags;
+                        config.listTags = true;
                     else if( cmd[0] == "reporters" )
-                        config.listSpec = List::Reports;
+                        config.listReporters = true;
                     else
                         cmd.raiseError( "Expected tests, reporters or tags" );
-                }
-                if( cmd.argsCount() >= 2 ) {
-                    if( cmd[1] == "xml" )
-                        config.listSpec = static_cast<List::What>( config.listSpec | List::AsXml );
-                    else if( cmd[1] == "text" )
-                        config.listSpec = static_cast<List::What>( config.listSpec | List::AsText );
-                    else
-                        cmd.raiseError( "Expected xml or text" );
                 }
             }
         };
