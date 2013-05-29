@@ -108,54 +108,60 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             const char* argv[] = { "test", "-t", "test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
+            Catch::Config cfg( config );
+            REQUIRE( cfg.filters().size() == 1 );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) );
         }
         SECTION( "-t/exclude:1", "Specify one test case exclusion using -t exclude:" ) {
             const char* argv[] = { "test", "-t", "exclude:test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
+            Catch::Config cfg( config );
+            REQUIRE( cfg.filters().size() == 1 );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
         }
 
         SECTION( "--test/1", "Specify one test case using --test" ) {
             const char* argv[] = { "test", "--test", "test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
+            Catch::Config cfg( config );
+            REQUIRE( cfg.filters().size() == 1 );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) );
         }
 
         SECTION( "--test/exclude:1", "Specify one test case exclusion using --test exclude:" ) {
             const char* argv[] = { "test", "--test", "exclude:test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
+            Catch::Config cfg( config );
+            REQUIRE( cfg.filters().size() == 1 );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
         }
 
         SECTION( "--test/exclude:2", "Specify one test case exclusion using --test ~" ) {
             const char* argv[] = { "test", "--test", "~test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
+            Catch::Config cfg( config );
+            REQUIRE( cfg.filters().size() == 1 );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
         }
         
         SECTION( "-t/2", "Specify two test cases using -t" ) {
             const char* argv[] = { "test", "-t", "test1", "test2" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.filters.size() == 1 );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
-            REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test2" ) ) );
+            Catch::Config cfg( config );
+            REQUIRE( cfg.filters().size() == 1 );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) );
+            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test2" ) ) );
         }
 
         SECTION( "-t/0", "When no test names are supplied it is an error" ) {
@@ -351,9 +357,10 @@ TEST_CASE( "selftest/option parsers", "" )
 
     CHECK_NOTHROW( opt.parseIntoConfig( parser, config ) );
 
-    REQUIRE( config.filters.size() == 1 );
-    REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
-    REQUIRE( config.filters[0].shouldInclude( fakeTestCase( "test1" ) ) );
+    Catch::Config cfg( config );
+    REQUIRE( cfg.filters().size() == 1 );
+    REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
+    REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) );
 }
 
 TEST_CASE( "selftest/tags", "" ) {

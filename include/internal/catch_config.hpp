@@ -65,7 +65,7 @@ namespace Catch {
         std::string outputFilename;
         std::string name;
 
-        std::vector<TestCaseFilters> filters; // !TBD strings
+        std::vector<std::string> testsOrTags;
 
         std::string stream;
     };
@@ -84,9 +84,24 @@ namespace Catch {
         
         Config( ConfigData const& data )
         :   m_data( data ),
-            m_os( std::cout.rdbuf() ),
-            m_filters( data.filters )
-        {}
+            m_os( std::cout.rdbuf() )
+        {
+            std::string groupName;
+            for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
+                if( i != 0 )
+                    groupName += " ";
+                groupName += data.testsOrTags[i];
+            }
+            TestCaseFilters filters( groupName );
+            for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
+                std::string filter = data.testsOrTags[i];
+                if( startsWith( filter, "[" ) || startsWith( filter, "~[" ) )
+                    filters.addTags( filter );
+                else
+                    filters.addFilter( TestCaseFilter( filter ) );
+            }
+            m_filterSets.push_back( filters );
+        }
         
         virtual ~Config() {
             m_os.rdbuf( std::cout.rdbuf() );
@@ -131,7 +146,7 @@ namespace Catch {
         void addTestSpec( std::string const& testSpec ) {
             TestCaseFilters filters( testSpec );
             filters.addFilter( TestCaseFilter( testSpec ) );
-            m_data.filters.push_back( filters );
+            m_filterSets.push_back( filters );
         }
                 
         int abortAfter() const {
@@ -139,7 +154,7 @@ namespace Catch {
         }
         
         std::vector<TestCaseFilters> const& filters() const {
-            return m_filters;
+            return m_filterSets;
         }
 
         // IConfig interface
@@ -154,7 +169,7 @@ namespace Catch {
         
         Stream m_stream;
         mutable std::ostream m_os;
-        std::vector<TestCaseFilters> m_filters;
+        std::vector<TestCaseFilters> m_filterSets;
     };
         
     

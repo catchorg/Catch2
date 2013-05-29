@@ -255,20 +255,8 @@ namespace Catch {
             }
                             
             virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                std::string groupName;
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( i != 0 )
-                        groupName += " ";
-                    groupName += cmd[i];
-                }
-                TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( startsWith( cmd[i], "[" ) || startsWith( cmd[i], "~[" ) )
-                        filters.addTags( cmd[i] );
-                    else
-                        filters.addFilter( TestCaseFilter( cmd[i] ) );
-                }
-                config.filters.push_back( filters );
+                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
+                    config.testsOrTags.push_back( cmd[i] );
             }
         };
 
@@ -301,16 +289,8 @@ namespace Catch {
             }
             
             virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                std::string groupName;
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( i != 0 )
-                        groupName += " ";
-                    groupName += cmd[i];
-                }
-                TestCaseFilters filters( groupName );
                 for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-                    filters.addTags( cmd[i] );
-                config.filters.push_back( filters );
+                    config.testsOrTags.push_back( cmd[i] );
             }
         };
 
