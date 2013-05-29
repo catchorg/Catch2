@@ -413,10 +413,7 @@ namespace Catch {
                                         "OutputDebugString is supported).";
             }
             virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                if( cmd[0][0] == '%' )
-                    config.stream = cmd[0].substr( 1 );
-                else
-                    config.outputFilename = cmd[0];
+                config.outputFilename = cmd[0];
             }
         };
         

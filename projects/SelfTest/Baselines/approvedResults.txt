@@ -4014,7 +4014,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 selftest/parser/2
-  streams
+  output filename
   -o filename
 -------------------------------------------------------------------------------
 TestMain.cpp:260
@@ -4030,49 +4030,19 @@ PASSED:
 with expansion:
   "filename.ext" == "filename.ext"
 
-TestMain.cpp:265:
-PASSED:
-  REQUIRE( config.stream.empty() )
-with expansion:
-  true
-
 -------------------------------------------------------------------------------
 selftest/parser/2
-  streams
-  -o %stdout
--------------------------------------------------------------------------------
-TestMain.cpp:267
-...............................................................................
-
-TestMain.cpp:269:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:271:
-PASSED:
-  REQUIRE( config.stream == "stdout" )
-with expansion:
-  "stdout" == "stdout"
-
-TestMain.cpp:272:
-PASSED:
-  REQUIRE( config.outputFilename.empty() )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  streams
+  output filename
   --out
 -------------------------------------------------------------------------------
-TestMain.cpp:274
+TestMain.cpp:266
 ...............................................................................
 
-TestMain.cpp:276:
+TestMain.cpp:268:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:278:
+TestMain.cpp:270:
 PASSED:
   REQUIRE( config.outputFilename == "filename.ext" )
 with expansion:
@@ -4083,26 +4053,26 @@ selftest/parser/2
   combinations
   -a -b
 -------------------------------------------------------------------------------
-TestMain.cpp:283
+TestMain.cpp:275
 ...............................................................................
 
-TestMain.cpp:285:
+TestMain.cpp:277:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:287:
+TestMain.cpp:279:
 PASSED:
   CHECK( config.cutoff == 1 )
 with expansion:
   1 == 1
 
-TestMain.cpp:288:
+TestMain.cpp:280:
 PASSED:
   CHECK( config.shouldDebugBreak )
 with expansion:
   true
 
-TestMain.cpp:289:
+TestMain.cpp:281:
 PASSED:
   CHECK( config.noThrow == true )
 with expansion:
@@ -4111,40 +4081,40 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/test filter
 -------------------------------------------------------------------------------
-TestMain.cpp:294
+TestMain.cpp:286
 ...............................................................................
 
-TestMain.cpp:298:
+TestMain.cpp:290:
 PASSED:
   CHECK( matchAny.shouldInclude( fakeTestCase( "any" ) ) )
 with expansion:
   true
 
-TestMain.cpp:299:
+TestMain.cpp:291:
 PASSED:
   CHECK( matchNone.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:304:
+TestMain.cpp:296:
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:305:
+TestMain.cpp:297:
 PASSED:
   CHECK( matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) )
 with expansion:
   true
 
-TestMain.cpp:307:
+TestMain.cpp:299:
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "./any" ) ) )
 with expansion:
   true
 
-TestMain.cpp:308:
+TestMain.cpp:300:
 PASSED:
   CHECK( matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false )
 with expansion:
@@ -4153,28 +4123,28 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/test filters
 -------------------------------------------------------------------------------
-TestMain.cpp:311
+TestMain.cpp:303
 ...............................................................................
 
-TestMain.cpp:319:
+TestMain.cpp:311:
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "./something" ) ) )
 with expansion:
   true
 
-TestMain.cpp:321:
+TestMain.cpp:313:
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:322:
+TestMain.cpp:314:
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "./something" ) ) )
 with expansion:
   true
 
-TestMain.cpp:323:
+TestMain.cpp:315:
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "./anything" ) ) == false )
 with expansion:
@@ -4183,16 +4153,16 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/filter/prefix wildcard
 -------------------------------------------------------------------------------
-TestMain.cpp:326
+TestMain.cpp:318
 ...............................................................................
 
-TestMain.cpp:329:
+TestMain.cpp:321:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
 with expansion:
   true
 
-TestMain.cpp:330:
+TestMain.cpp:322:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false )
 with expansion:
@@ -4201,28 +4171,28 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/filter/wildcard at both ends
 -------------------------------------------------------------------------------
-TestMain.cpp:332
+TestMain.cpp:324
 ...............................................................................
 
-TestMain.cpp:335:
+TestMain.cpp:327:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
 with expansion:
   true
 
-TestMain.cpp:336:
+TestMain.cpp:328:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) )
 with expansion:
   true
 
-TestMain.cpp:337:
+TestMain.cpp:329:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) )
 with expansion:
   true
 
-TestMain.cpp:338:
+TestMain.cpp:330:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false )
 with expansion:
@@ -4231,26 +4201,26 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/option parsers
 -------------------------------------------------------------------------------
-TestMain.cpp:347
+TestMain.cpp:339
 ...............................................................................
 
-TestMain.cpp:358:
+TestMain.cpp:350:
 PASSED:
   CHECK_NOTHROW( opt.parseIntoConfig( parser, config ) )
 
-TestMain.cpp:361:
+TestMain.cpp:353:
 PASSED:
   REQUIRE( cfg.filters().size() == 1 )
 with expansion:
   1 == 1
 
-TestMain.cpp:362:
+TestMain.cpp:354:
 PASSED:
   REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:363:
+TestMain.cpp:355:
 PASSED:
   REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) )
 with expansion:
@@ -4260,52 +4230,52 @@ with expansion:
 selftest/tags
   one tag
 -------------------------------------------------------------------------------
-TestMain.cpp:374
+TestMain.cpp:366
 ...............................................................................
 
-TestMain.cpp:377:
+TestMain.cpp:369:
 PASSED:
   CHECK( oneTag.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
 
-TestMain.cpp:378:
+TestMain.cpp:370:
 PASSED:
   CHECK( oneTag.hasTag( "one" ) )
 with expansion:
   true
 
-TestMain.cpp:379:
+TestMain.cpp:371:
 PASSED:
   CHECK( oneTag.getTags().size() == 1 )
 with expansion:
   1 == 1
 
-TestMain.cpp:381:
+TestMain.cpp:373:
 PASSED:
   CHECK( oneTag.matchesTags( p1 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:382:
+TestMain.cpp:374:
 PASSED:
   CHECK( oneTag.matchesTags( p2 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:383:
+TestMain.cpp:375:
 PASSED:
   CHECK( oneTag.matchesTags( p3 ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:384:
+TestMain.cpp:376:
 PASSED:
   CHECK( oneTag.matchesTags( p4 ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:385:
+TestMain.cpp:377:
 PASSED:
   CHECK( oneTag.matchesTags( p5 ) == false )
 with expansion:
@@ -4315,70 +4285,70 @@ with expansion:
 selftest/tags
   two tags
 -------------------------------------------------------------------------------
-TestMain.cpp:388
+TestMain.cpp:380
 ...............................................................................
 
-TestMain.cpp:391:
+TestMain.cpp:383:
 PASSED:
   CHECK( twoTags.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
 
-TestMain.cpp:392:
+TestMain.cpp:384:
 PASSED:
   CHECK( twoTags.hasTag( "one" ) )
 with expansion:
   true
 
-TestMain.cpp:393:
+TestMain.cpp:385:
 PASSED:
   CHECK( twoTags.hasTag( "two" ) )
 with expansion:
   true
 
-TestMain.cpp:394:
+TestMain.cpp:386:
 PASSED:
   CHECK( twoTags.hasTag( "Two" ) )
 with expansion:
   true
 
-TestMain.cpp:395:
+TestMain.cpp:387:
 PASSED:
   CHECK( twoTags.hasTag( "three" ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:396:
+TestMain.cpp:388:
 PASSED:
   CHECK( twoTags.getTags().size() == 2 )
 with expansion:
   2 == 2
 
-TestMain.cpp:398:
+TestMain.cpp:390:
 PASSED:
   CHECK( twoTags.matchesTags( p1 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:399:
+TestMain.cpp:391:
 PASSED:
   CHECK( twoTags.matchesTags( p2 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:400:
+TestMain.cpp:392:
 PASSED:
   CHECK( twoTags.matchesTags( p3 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:401:
+TestMain.cpp:393:
 PASSED:
   CHECK( twoTags.matchesTags( p4 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:402:
+TestMain.cpp:394:
 PASSED:
   CHECK( twoTags.matchesTags( p5 ) == true )
 with expansion:
@@ -4388,28 +4358,28 @@ with expansion:
 selftest/tags
   one tag with characters either side
 -------------------------------------------------------------------------------
-TestMain.cpp:405
+TestMain.cpp:397
 ...............................................................................
 
-TestMain.cpp:408:
+TestMain.cpp:400:
 PASSED:
   CHECK( oneTagWithExtras.getTestCaseInfo().description == "1234" )
 with expansion:
   "1234" == "1234"
 
-TestMain.cpp:409:
+TestMain.cpp:401:
 PASSED:
   CHECK( oneTagWithExtras.hasTag( "one" ) )
 with expansion:
   true
 
-TestMain.cpp:410:
+TestMain.cpp:402:
 PASSED:
   CHECK( oneTagWithExtras.hasTag( "two" ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:411:
+TestMain.cpp:403:
 PASSED:
   CHECK( oneTagWithExtras.getTags().size() == 1 )
 with expansion:
@@ -4419,22 +4389,22 @@ with expansion:
 selftest/tags
   start of a tag, but not closed
 -------------------------------------------------------------------------------
-TestMain.cpp:414
+TestMain.cpp:406
 ...............................................................................
 
-TestMain.cpp:418:
+TestMain.cpp:410:
 PASSED:
   CHECK( oneTagOpen.getTestCaseInfo().description == "[one" )
 with expansion:
   "[one" == "[one"
 
-TestMain.cpp:419:
+TestMain.cpp:411:
 PASSED:
   CHECK( oneTagOpen.hasTag( "one" ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:420:
+TestMain.cpp:412:
 PASSED:
   CHECK( oneTagOpen.getTags().size() == 0 )
 with expansion:
@@ -4444,28 +4414,28 @@ with expansion:
 selftest/tags
   hidden
 -------------------------------------------------------------------------------
-TestMain.cpp:423
+TestMain.cpp:415
 ...............................................................................
 
-TestMain.cpp:426:
+TestMain.cpp:418:
 PASSED:
   CHECK( oneTag.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
 
-TestMain.cpp:427:
+TestMain.cpp:419:
 PASSED:
   CHECK( oneTag.hasTag( "hide" ) )
 with expansion:
   true
 
-TestMain.cpp:428:
+TestMain.cpp:420:
 PASSED:
   CHECK( oneTag.isHidden() )
 with expansion:
   true
 
-TestMain.cpp:430:
+TestMain.cpp:422:
 PASSED:
   CHECK( oneTag.matchesTags( "~[hide]" ) == false )
 with expansion:
@@ -4476,10 +4446,10 @@ Long strings can be wrapped
   plain string
   No wrapping
 -------------------------------------------------------------------------------
-TestMain.cpp:442
+TestMain.cpp:434
 ...............................................................................
 
-TestMain.cpp:443:
+TestMain.cpp:435:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
 with expansion:
@@ -4487,7 +4457,7 @@ with expansion:
   ==
   "one two three four"
 
-TestMain.cpp:444:
+TestMain.cpp:436:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString )
 with expansion:
@@ -4500,10 +4470,10 @@ Long strings can be wrapped
   plain string
   Wrapped once
 -------------------------------------------------------------------------------
-TestMain.cpp:446
+TestMain.cpp:438
 ...............................................................................
 
-TestMain.cpp:447:
+TestMain.cpp:439:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4513,7 +4483,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:448:
+TestMain.cpp:440:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4523,7 +4493,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:449:
+TestMain.cpp:441:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4533,7 +4503,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:450:
+TestMain.cpp:442:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4543,7 +4513,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:451:
+TestMain.cpp:443:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" )
 with expansion:
@@ -4558,10 +4528,10 @@ Long strings can be wrapped
   plain string
   Wrapped twice
 -------------------------------------------------------------------------------
-TestMain.cpp:453
+TestMain.cpp:445
 ...............................................................................
 
-TestMain.cpp:454:
+TestMain.cpp:446:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4573,7 +4543,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:455:
+TestMain.cpp:447:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4585,7 +4555,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:456:
+TestMain.cpp:448:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4602,10 +4572,10 @@ Long strings can be wrapped
   plain string
   Wrapped three times
 -------------------------------------------------------------------------------
-TestMain.cpp:458
+TestMain.cpp:450
 ...............................................................................
 
-TestMain.cpp:459:
+TestMain.cpp:451:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
@@ -4619,7 +4589,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:460:
+TestMain.cpp:452:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
@@ -4638,10 +4608,10 @@ Long strings can be wrapped
   plain string
   Short wrap
 -------------------------------------------------------------------------------
-TestMain.cpp:462
+TestMain.cpp:454
 ...............................................................................
 
-TestMain.cpp:463:
+TestMain.cpp:455:
 PASSED:
   CHECK( Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" )
 with expansion:
@@ -4651,7 +4621,7 @@ with expansion:
   "abc-
   def"
 
-TestMain.cpp:464:
+TestMain.cpp:456:
 PASSED:
   CHECK( Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" )
 with expansion:
@@ -4661,7 +4631,7 @@ with expansion:
   "abc-
   defg"
 
-TestMain.cpp:465:
+TestMain.cpp:457:
 PASSED:
   CHECK( Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" )
 with expansion:
@@ -4673,7 +4643,7 @@ with expansion:
   def-
   gh"
 
-TestMain.cpp:467:
+TestMain.cpp:459:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" )
 with expansion:
@@ -4689,7 +4659,7 @@ with expansion:
   ee
   four"
 
-TestMain.cpp:468:
+TestMain.cpp:460:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" )
 with expansion:
@@ -4712,34 +4682,34 @@ Long strings can be wrapped
   plain string
   As container
 -------------------------------------------------------------------------------
-TestMain.cpp:470
+TestMain.cpp:462
 ...............................................................................
 
-TestMain.cpp:472:
+TestMain.cpp:464:
 PASSED:
   REQUIRE( text.size() == 4 )
 with expansion:
   4 == 4
 
-TestMain.cpp:473:
+TestMain.cpp:465:
 PASSED:
   CHECK( text[0] == "one" )
 with expansion:
   "one" == "one"
 
-TestMain.cpp:474:
+TestMain.cpp:466:
 PASSED:
   CHECK( text[1] == "two" )
 with expansion:
   "two" == "two"
 
-TestMain.cpp:475:
+TestMain.cpp:467:
 PASSED:
   CHECK( text[2] == "three" )
 with expansion:
   "three" == "three"
 
-TestMain.cpp:476:
+TestMain.cpp:468:
 PASSED:
   CHECK( text[3] == "four" )
 with expansion:
@@ -4750,10 +4720,10 @@ Long strings can be wrapped
   plain string
   Indent first line differently
 -------------------------------------------------------------------------------
-TestMain.cpp:478
+TestMain.cpp:470
 ...............................................................................
 
-TestMain.cpp:483:
+TestMain.cpp:475:
 PASSED:
   CHECK( text.toString() == " one two\n    three\n    four" )
 with expansion:
@@ -4770,10 +4740,10 @@ Long strings can be wrapped
   With newlines
   No wrapping
 -------------------------------------------------------------------------------
-TestMain.cpp:493
+TestMain.cpp:485
 ...............................................................................
 
-TestMain.cpp:494:
+TestMain.cpp:486:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
 with expansion:
@@ -4783,7 +4753,7 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:495:
+TestMain.cpp:487:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString )
 with expansion:
@@ -4793,7 +4763,7 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:496:
+TestMain.cpp:488:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString )
 with expansion:
@@ -4808,10 +4778,10 @@ Long strings can be wrapped
   With newlines
   Trailing newline
 -------------------------------------------------------------------------------
-TestMain.cpp:498
+TestMain.cpp:490
 ...............................................................................
 
-TestMain.cpp:499:
+TestMain.cpp:491:
 PASSED:
   CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" )
 with expansion:
@@ -4821,13 +4791,13 @@ with expansion:
   "abcdef
   "
 
-TestMain.cpp:500:
+TestMain.cpp:492:
 PASSED:
   CHECK( Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" )
 with expansion:
   "abcdef" == "abcdef"
 
-TestMain.cpp:501:
+TestMain.cpp:493:
 PASSED:
   CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" )
 with expansion:
@@ -4842,10 +4812,10 @@ Long strings can be wrapped
   With newlines
   Wrapped once
 -------------------------------------------------------------------------------
-TestMain.cpp:503
+TestMain.cpp:495
 ...............................................................................
 
-TestMain.cpp:504:
+TestMain.cpp:496:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4857,7 +4827,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:505:
+TestMain.cpp:497:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4869,7 +4839,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:506:
+TestMain.cpp:498:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4886,10 +4856,10 @@ Long strings can be wrapped
   With newlines
   Wrapped twice
 -------------------------------------------------------------------------------
-TestMain.cpp:508
+TestMain.cpp:500
 ...............................................................................
 
-TestMain.cpp:509:
+TestMain.cpp:501:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
@@ -4907,10 +4877,10 @@ with expansion:
 Long strings can be wrapped
   With tabs
 -------------------------------------------------------------------------------
-TestMain.cpp:513
+TestMain.cpp:505
 ...............................................................................
 
-TestMain.cpp:519:
+TestMain.cpp:511:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six" )
 with expansion:
@@ -4929,7 +4899,7 @@ hello
 -------------------------------------------------------------------------------
 Strings can be rendered with colour
 -------------------------------------------------------------------------------
-TestMain.cpp:598
+TestMain.cpp:590
 ...............................................................................
 
 
@@ -4938,16 +4908,16 @@ No assertions in test case, 'Strings can be rendered with colour'
 -------------------------------------------------------------------------------
 Text can be formatted using the Text class
 -------------------------------------------------------------------------------
-TestMain.cpp:617
+TestMain.cpp:609
 ...............................................................................
 
-TestMain.cpp:619:
+TestMain.cpp:611:
 PASSED:
   CHECK( Text( "hi there" ).toString() == "hi there" )
 with expansion:
   "hi there" == "hi there"
 
-TestMain.cpp:624:
+TestMain.cpp:616:
 PASSED:
   CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" )
 with expansion:
@@ -5984,7 +5954,7 @@ with expansion:
   0 == 0
 
 ===============================================================================
-115 test cases - 50 failed (744 assertions - 107 failed)
+115 test cases - 50 failed (740 assertions - 107 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -6305,7 +6275,7 @@ with expansion:
 13 test cases - 3 failed (40 assertions - 4 failed)
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="78" tests="744" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="10" failures="78" tests="740" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -11185,7 +11155,7 @@ TestMain.cpp" line="255">
       <Section name="nothrow">
         <OverallResults successes="0" failures="0"/>
       </Section>
-      <Section name="streams">
+      <Section name="output filename">
         <Section name="-o filename">
 TestMain.cpp" line="262">
             <Original>
@@ -11203,51 +11173,13 @@ TestMain.cpp" line="264">
               &quot;filename.ext&quot; == &quot;filename.ext&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="265">
-            <Original>
-              config.stream.empty()
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="2" failures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="2" failures="0"/>
       </Section>
-      <Section name="streams">
-        <Section name="-o %stdout">
-TestMain.cpp" line="269">
-            <Original>
-              parseIntoConfig( argv, config )
-            </Original>
-            <Expanded>
-              parseIntoConfig( argv, config )
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="271">
-            <Original>
-              config.stream == &quot;stdout&quot;
-            </Original>
-            <Expanded>
-              &quot;stdout&quot; == &quot;stdout&quot;
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="272">
-            <Original>
-              config.outputFilename.empty()
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0"/>
-      </Section>
-      <Section name="streams">
+      <Section name="output filename">
         <Section name="--out">
-TestMain.cpp" line="276">
+TestMain.cpp" line="268">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11255,7 +11187,7 @@ TestMain.cpp" line="276">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="278">
+TestMain.cpp" line="270">
             <Original>
               config.outputFilename == &quot;filename.ext&quot;
             </Original>
@@ -11267,12 +11199,12 @@ TestMain.cpp" line="278">
         </Section>
         <OverallResults successes="2" failures="0"/>
       </Section>
-      <Section name="streams">
+      <Section name="output filename">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="combinations">
         <Section name="-a -b">
-TestMain.cpp" line="285">
+TestMain.cpp" line="277">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11280,7 +11212,7 @@ TestMain.cpp" line="285">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="287">
+TestMain.cpp" line="279">
             <Original>
               config.cutoff == 1
             </Original>
@@ -11288,7 +11220,7 @@ TestMain.cpp" line="287">
               1 == 1
             </Expanded>
           </Expression>
-TestMain.cpp" line="288">
+TestMain.cpp" line="280">
             <Original>
               config.shouldDebugBreak
             </Original>
@@ -11296,7 +11228,7 @@ TestMain.cpp" line="288">
               true
             </Expanded>
           </Expression>
-TestMain.cpp" line="289">
+TestMain.cpp" line="281">
             <Original>
               config.noThrow == true
             </Original>
@@ -11311,7 +11243,7 @@ TestMain.cpp" line="289">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/test filter">
-TestMain.cpp" line="298">
+TestMain.cpp" line="290">
         <Original>
           matchAny.shouldInclude( fakeTestCase( &quot;any&quot; ) )
         </Original>
@@ -11319,7 +11251,7 @@ TestMain.cpp" line="298">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="299">
+TestMain.cpp" line="291">
         <Original>
           matchNone.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
         </Original>
@@ -11327,7 +11259,7 @@ TestMain.cpp" line="299">
           false == false
         </Expanded>
       </Expression>
-TestMain.cpp" line="304">
+TestMain.cpp" line="296">
         <Original>
           matchHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
         </Original>
@@ -11335,7 +11267,7 @@ TestMain.cpp" line="304">
           false == false
         </Expanded>
       </Expression>
-TestMain.cpp" line="305">
+TestMain.cpp" line="297">
         <Original>
           matchNonHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) )
         </Original>
@@ -11343,7 +11275,7 @@ TestMain.cpp" line="305">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="307">
+TestMain.cpp" line="299">
         <Original>
           matchHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) )
         </Original>
@@ -11351,7 +11283,7 @@ TestMain.cpp" line="307">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="308">
+TestMain.cpp" line="300">
         <Original>
           matchNonHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) ) == false
         </Original>
@@ -11362,7 +11294,7 @@ TestMain.cpp" line="308">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/test filters">
-TestMain.cpp" line="319">
+TestMain.cpp" line="311">
         <Original>
           matchHidden.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
         </Original>
@@ -11370,7 +11302,7 @@ TestMain.cpp" line="319">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="321">
+TestMain.cpp" line="313">
         <Original>
           filters.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
         </Original>
@@ -11378,7 +11310,7 @@ TestMain.cpp" line="321">
           false == false
         </Expanded>
       </Expression>
-TestMain.cpp" line="322">
+TestMain.cpp" line="314">
         <Original>
           filters.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
         </Original>
@@ -11386,7 +11318,7 @@ TestMain.cpp" line="322">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="323">
+TestMain.cpp" line="315">
         <Original>
           filters.shouldInclude( fakeTestCase( &quot;./anything&quot; ) ) == false
         </Original>
@@ -11397,7 +11329,7 @@ TestMain.cpp" line="323">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/filter/prefix wildcard">
-TestMain.cpp" line="329">
+TestMain.cpp" line="321">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
         </Original>
@@ -11405,7 +11337,7 @@ TestMain.cpp" line="329">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="330">
+TestMain.cpp" line="322">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) ) == false
         </Original>
@@ -11416,7 +11348,7 @@ TestMain.cpp" line="330">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/filter/wildcard at both ends">
-TestMain.cpp" line="335">
+TestMain.cpp" line="327">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
         </Original>
@@ -11424,7 +11356,7 @@ TestMain.cpp" line="335">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="336">
+TestMain.cpp" line="328">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) )
         </Original>
@@ -11432,7 +11364,7 @@ TestMain.cpp" line="336">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="337">
+TestMain.cpp" line="329">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;badgers are big&quot; ) )
         </Original>
@@ -11440,7 +11372,7 @@ TestMain.cpp" line="337">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="338">
+TestMain.cpp" line="330">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;hedgehogs&quot; ) ) == false
         </Original>
@@ -11451,7 +11383,7 @@ TestMain.cpp" line="338">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/option parsers">
-TestMain.cpp" line="358">
+TestMain.cpp" line="350">
         <Original>
           opt.parseIntoConfig( parser, config )
         </Original>
@@ -11459,7 +11391,7 @@ TestMain.cpp" line="358">
           opt.parseIntoConfig( parser, config )
         </Expanded>
       </Expression>
-TestMain.cpp" line="361">
+TestMain.cpp" line="353">
         <Original>
           cfg.filters().size() == 1
         </Original>
@@ -11467,7 +11399,7 @@ TestMain.cpp" line="361">
           1 == 1
         </Expanded>
       </Expression>
-TestMain.cpp" line="362">
+TestMain.cpp" line="354">
         <Original>
           cfg.filters()[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
         </Original>
@@ -11475,7 +11407,7 @@ TestMain.cpp" line="362">
           false == false
         </Expanded>
       </Expression>
-TestMain.cpp" line="363">
+TestMain.cpp" line="355">
         <Original>
           cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
         </Original>
@@ -11487,7 +11419,7 @@ TestMain.cpp" line="363">
     </TestCase>
     <TestCase name="selftest/tags">
       <Section name="one tag">
-TestMain.cpp" line="377">
+TestMain.cpp" line="369">
           <Original>
             oneTag.getTestCaseInfo().description == &quot;&quot;
           </Original>
@@ -11495,7 +11427,7 @@ TestMain.cpp" line="377">
             &quot;&quot; == &quot;&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="378">
+TestMain.cpp" line="370">
           <Original>
             oneTag.hasTag( &quot;one&quot; )
           </Original>
@@ -11503,7 +11435,7 @@ TestMain.cpp" line="378">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="379">
+TestMain.cpp" line="371">
           <Original>
             oneTag.getTags().size() == 1
           </Original>
@@ -11511,7 +11443,7 @@ TestMain.cpp" line="379">
             1 == 1
           </Expanded>
         </Expression>
-TestMain.cpp" line="381">
+TestMain.cpp" line="373">
           <Original>
             oneTag.matchesTags( p1 ) == true
           </Original>
@@ -11519,7 +11451,7 @@ TestMain.cpp" line="381">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="382">
+TestMain.cpp" line="374">
           <Original>
             oneTag.matchesTags( p2 ) == true
           </Original>
@@ -11527,7 +11459,7 @@ TestMain.cpp" line="382">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="383">
+TestMain.cpp" line="375">
           <Original>
             oneTag.matchesTags( p3 ) == false
           </Original>
@@ -11535,7 +11467,7 @@ TestMain.cpp" line="383">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="384">
+TestMain.cpp" line="376">
           <Original>
             oneTag.matchesTags( p4 ) == false
           </Original>
@@ -11543,7 +11475,7 @@ TestMain.cpp" line="384">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="385">
+TestMain.cpp" line="377">
           <Original>
             oneTag.matchesTags( p5 ) == false
           </Original>
@@ -11554,7 +11486,7 @@ TestMain.cpp" line="385">
         <OverallResults successes="8" failures="0"/>
       </Section>
       <Section name="two tags">
-TestMain.cpp" line="391">
+TestMain.cpp" line="383">
           <Original>
             twoTags.getTestCaseInfo().description == &quot;&quot;
           </Original>
@@ -11562,7 +11494,7 @@ TestMain.cpp" line="391">
             &quot;&quot; == &quot;&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="392">
+TestMain.cpp" line="384">
           <Original>
             twoTags.hasTag( &quot;one&quot; )
           </Original>
@@ -11570,7 +11502,7 @@ TestMain.cpp" line="392">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="393">
+TestMain.cpp" line="385">
           <Original>
             twoTags.hasTag( &quot;two&quot; )
           </Original>
@@ -11578,7 +11510,7 @@ TestMain.cpp" line="393">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="394">
+TestMain.cpp" line="386">
           <Original>
             twoTags.hasTag( &quot;Two&quot; )
           </Original>
@@ -11586,7 +11518,7 @@ TestMain.cpp" line="394">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="395">
+TestMain.cpp" line="387">
           <Original>
             twoTags.hasTag( &quot;three&quot; ) == false
           </Original>
@@ -11594,7 +11526,7 @@ TestMain.cpp" line="395">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="396">
+TestMain.cpp" line="388">
           <Original>
             twoTags.getTags().size() == 2
           </Original>
@@ -11602,7 +11534,7 @@ TestMain.cpp" line="396">
             2 == 2
           </Expanded>
         </Expression>
-TestMain.cpp" line="398">
+TestMain.cpp" line="390">
           <Original>
             twoTags.matchesTags( p1 ) == true
           </Original>
@@ -11610,7 +11542,7 @@ TestMain.cpp" line="398">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="399">
+TestMain.cpp" line="391">
           <Original>
             twoTags.matchesTags( p2 ) == true
           </Original>
@@ -11618,7 +11550,7 @@ TestMain.cpp" line="399">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="400">
+TestMain.cpp" line="392">
           <Original>
             twoTags.matchesTags( p3 ) == true
           </Original>
@@ -11626,7 +11558,7 @@ TestMain.cpp" line="400">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="401">
+TestMain.cpp" line="393">
           <Original>
             twoTags.matchesTags( p4 ) == true
           </Original>
@@ -11634,7 +11566,7 @@ TestMain.cpp" line="401">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="402">
+TestMain.cpp" line="394">
           <Original>
             twoTags.matchesTags( p5 ) == true
           </Original>
@@ -11645,7 +11577,7 @@ TestMain.cpp" line="402">
         <OverallResults successes="11" failures="0"/>
       </Section>
       <Section name="one tag with characters either side">
-TestMain.cpp" line="408">
+TestMain.cpp" line="400">
           <Original>
             oneTagWithExtras.getTestCaseInfo().description == &quot;1234&quot;
           </Original>
@@ -11653,7 +11585,7 @@ TestMain.cpp" line="408">
             &quot;1234&quot; == &quot;1234&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="409">
+TestMain.cpp" line="401">
           <Original>
             oneTagWithExtras.hasTag( &quot;one&quot; )
           </Original>
@@ -11661,7 +11593,7 @@ TestMain.cpp" line="409">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="410">
+TestMain.cpp" line="402">
           <Original>
             oneTagWithExtras.hasTag( &quot;two&quot; ) == false
           </Original>
@@ -11669,7 +11601,7 @@ TestMain.cpp" line="410">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="411">
+TestMain.cpp" line="403">
           <Original>
             oneTagWithExtras.getTags().size() == 1
           </Original>
@@ -11680,7 +11612,7 @@ TestMain.cpp" line="411">
         <OverallResults successes="4" failures="0"/>
       </Section>
       <Section name="start of a tag, but not closed">
-TestMain.cpp" line="418">
+TestMain.cpp" line="410">
           <Original>
             oneTagOpen.getTestCaseInfo().description == &quot;[one&quot;
           </Original>
@@ -11688,7 +11620,7 @@ TestMain.cpp" line="418">
             &quot;[one&quot; == &quot;[one&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="419">
+TestMain.cpp" line="411">
           <Original>
             oneTagOpen.hasTag( &quot;one&quot; ) == false
           </Original>
@@ -11696,7 +11628,7 @@ TestMain.cpp" line="419">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="420">
+TestMain.cpp" line="412">
           <Original>
             oneTagOpen.getTags().size() == 0
           </Original>
@@ -11707,7 +11639,7 @@ TestMain.cpp" line="420">
         <OverallResults successes="3" failures="0"/>
       </Section>
       <Section name="hidden">
-TestMain.cpp" line="426">
+TestMain.cpp" line="418">
           <Original>
             oneTag.getTestCaseInfo().description == &quot;&quot;
           </Original>
@@ -11715,7 +11647,7 @@ TestMain.cpp" line="426">
             &quot;&quot; == &quot;&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="427">
+TestMain.cpp" line="419">
           <Original>
             oneTag.hasTag( &quot;hide&quot; )
           </Original>
@@ -11723,7 +11655,7 @@ TestMain.cpp" line="427">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="428">
+TestMain.cpp" line="420">
           <Original>
             oneTag.isHidden()
           </Original>
@@ -11731,7 +11663,7 @@ TestMain.cpp" line="428">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="430">
+TestMain.cpp" line="422">
           <Original>
             oneTag.matchesTags( &quot;~[hide]&quot; ) == false
           </Original>
@@ -11746,7 +11678,7 @@ TestMain.cpp" line="430">
     <TestCase name="Long strings can be wrapped">
       <Section name="plain string">
         <Section name="No wrapping">
-TestMain.cpp" line="443">
+TestMain.cpp" line="435">
             <Original>
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
             </Original>
@@ -11756,7 +11688,7 @@ TestMain.cpp" line="443">
 &quot;one two three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="444">
+TestMain.cpp" line="436">
             <Original>
               Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
             </Original>
@@ -11772,7 +11704,7 @@ TestMain.cpp" line="444">
       </Section>
       <Section name="plain string">
         <Section name="Wrapped once">
-TestMain.cpp" line="447">
+TestMain.cpp" line="439">
             <Original>
               Text( testString, TextAttributes().setWidth( 17 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11784,7 +11716,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="448">
+TestMain.cpp" line="440">
             <Original>
               Text( testString, TextAttributes().setWidth( 16 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11796,7 +11728,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="449">
+TestMain.cpp" line="441">
             <Original>
               Text( testString, TextAttributes().setWidth( 14 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11808,7 +11740,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="450">
+TestMain.cpp" line="442">
             <Original>
               Text( testString, TextAttributes().setWidth( 13 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11820,7 +11752,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="451">
+TestMain.cpp" line="443">
             <Original>
               Text( testString, TextAttributes().setWidth( 12 ) ).toString() == &quot;one two\nthree four&quot;
             </Original>
@@ -11838,7 +11770,7 @@ three four&quot;
       </Section>
       <Section name="plain string">
         <Section name="Wrapped twice">
-TestMain.cpp" line="454">
+TestMain.cpp" line="446">
             <Original>
               Text( testString, TextAttributes().setWidth( 9 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11852,7 +11784,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="455">
+TestMain.cpp" line="447">
             <Original>
               Text( testString, TextAttributes().setWidth( 8 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11866,7 +11798,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="456">
+TestMain.cpp" line="448">
             <Original>
               Text( testString, TextAttributes().setWidth( 7 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11886,7 +11818,7 @@ four&quot;
       </Section>
       <Section name="plain string">
         <Section name="Wrapped three times">
-TestMain.cpp" line="459">
+TestMain.cpp" line="451">
             <Original>
               Text( testString, TextAttributes().setWidth( 6 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
@@ -11902,7 +11834,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="460">
+TestMain.cpp" line="452">
             <Original>
               Text( testString, TextAttributes().setWidth( 5 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
@@ -11924,7 +11856,7 @@ four&quot;
       </Section>
       <Section name="plain string">
         <Section name="Short wrap">
-TestMain.cpp" line="463">
+TestMain.cpp" line="455">
             <Original>
               Text( &quot;abcdef&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndef&quot;
             </Original>
@@ -11936,7 +11868,7 @@ def&quot;
 def&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="464">
+TestMain.cpp" line="456">
             <Original>
               Text( &quot;abcdefg&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndefg&quot;
             </Original>
@@ -11948,7 +11880,7 @@ defg&quot;
 defg&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="465">
+TestMain.cpp" line="457">
             <Original>
               Text( &quot;abcdefgh&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndef-\ngh&quot;
             </Original>
@@ -11962,7 +11894,7 @@ def-
 gh&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="467">
+TestMain.cpp" line="459">
             <Original>
               Text( testString, TextAttributes().setWidth( 4 ) ).toString() == &quot;one\ntwo\nthr-\nee\nfour&quot;
             </Original>
@@ -11980,7 +11912,7 @@ ee
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="468">
+TestMain.cpp" line="460">
             <Original>
               Text( testString, TextAttributes().setWidth( 3 ) ).toString() == &quot;one\ntwo\nth-\nree\nfo-\nur&quot;
             </Original>
@@ -12006,7 +11938,7 @@ ur&quot;
       </Section>
       <Section name="plain string">
         <Section name="As container">
-TestMain.cpp" line="472">
+TestMain.cpp" line="464">
             <Original>
               text.size() == 4
             </Original>
@@ -12014,7 +11946,7 @@ TestMain.cpp" line="472">
               4 == 4
             </Expanded>
           </Expression>
-TestMain.cpp" line="473">
+TestMain.cpp" line="465">
             <Original>
               text[0] == &quot;one&quot;
             </Original>
@@ -12022,7 +11954,7 @@ TestMain.cpp" line="473">
               &quot;one&quot; == &quot;one&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="474">
+TestMain.cpp" line="466">
             <Original>
               text[1] == &quot;two&quot;
             </Original>
@@ -12030,7 +11962,7 @@ TestMain.cpp" line="474">
               &quot;two&quot; == &quot;two&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="475">
+TestMain.cpp" line="467">
             <Original>
               text[2] == &quot;three&quot;
             </Original>
@@ -12038,7 +11970,7 @@ TestMain.cpp" line="475">
               &quot;three&quot; == &quot;three&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="476">
+TestMain.cpp" line="468">
             <Original>
               text[3] == &quot;four&quot;
             </Original>
@@ -12052,7 +11984,7 @@ TestMain.cpp" line="476">
       </Section>
       <Section name="plain string">
         <Section name="Indent first line differently">
-TestMain.cpp" line="483">
+TestMain.cpp" line="475">
             <Original>
               text.toString() == &quot; one two\n    three\n    four&quot;
             </Original>
@@ -12075,7 +12007,7 @@ TestMain.cpp" line="483">
       </Section>
       <Section name="With newlines">
         <Section name="No wrapping">
-TestMain.cpp" line="494">
+TestMain.cpp" line="486">
             <Original>
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
             </Original>
@@ -12087,7 +12019,7 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="495">
+TestMain.cpp" line="487">
             <Original>
               Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
             </Original>
@@ -12099,7 +12031,7 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="496">
+TestMain.cpp" line="488">
             <Original>
               Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString
             </Original>
@@ -12117,7 +12049,7 @@ three four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Trailing newline">
-TestMain.cpp" line="499">
+TestMain.cpp" line="491">
             <Original>
               Text( &quot;abcdef\n&quot;, TextAttributes().setWidth( 10 ) ).toString() == &quot;abcdef\n&quot;
             </Original>
@@ -12129,7 +12061,7 @@ TestMain.cpp" line="499">
 &quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="500">
+TestMain.cpp" line="492">
             <Original>
               Text( &quot;abcdef&quot;, TextAttributes().setWidth( 6 ) ).toString() == &quot;abcdef&quot;
             </Original>
@@ -12137,7 +12069,7 @@ TestMain.cpp" line="500">
               &quot;abcdef&quot; == &quot;abcdef&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="501">
+TestMain.cpp" line="493">
             <Original>
               Text( &quot;abcdef\n&quot;, TextAttributes().setWidth( 6 ) ).toString() == &quot;abcdef\n&quot;
             </Original>
@@ -12155,7 +12087,7 @@ TestMain.cpp" line="501">
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped once">
-TestMain.cpp" line="504">
+TestMain.cpp" line="496">
             <Original>
               Text( testString, TextAttributes().setWidth( 9 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -12169,7 +12101,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="505">
+TestMain.cpp" line="497">
             <Original>
               Text( testString, TextAttributes().setWidth( 8 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -12183,7 +12115,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="506">
+TestMain.cpp" line="498">
             <Original>
               Text( testString, TextAttributes().setWidth( 7 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -12203,7 +12135,7 @@ four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped twice">
-TestMain.cpp" line="509">
+TestMain.cpp" line="501">
             <Original>
               Text( testString, TextAttributes().setWidth( 6 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
@@ -12227,7 +12159,7 @@ four&quot;
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="With tabs">
-TestMain.cpp" line="519">
+TestMain.cpp" line="511">
           <Original>
             Text( testString, TextAttributes().setWidth( 15 ) ).toString() == &quot;one two three\n        four\n        five\n        six&quot;
           </Original>
@@ -12251,7 +12183,7 @@ TestMain.cpp" line="519">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Text can be formatted using the Text class">
-TestMain.cpp" line="619">
+TestMain.cpp" line="611">
         <Original>
           Text( &quot;hi there&quot; ).toString() == &quot;hi there&quot;
         </Original>
@@ -12259,7 +12191,7 @@ TestMain.cpp" line="619">
           &quot;hi there&quot; == &quot;hi there&quot;
         </Expanded>
       </Expression>
-TestMain.cpp" line="624">
+TestMain.cpp" line="616">
         <Original>
           Text( &quot;hi there&quot;, narrow ).toString() == &quot;hi\nthere&quot;
         </Original>
@@ -13233,9 +13165,9 @@ CmdLineTests.cpp" line="380">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="637" failures="107"/>
+    <OverallResults successes="633" failures="107"/>
   </Group>
-  <OverallResults successes="637" failures="107"/>
+  <OverallResults successes="633" failures="107"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -14443,123 +14375,113 @@ TestMain.cpp:255: config.noThrow == true succeeded for: true == true
 
 [End of section: 'nothrow' All 2 assertions passed]
 
-[Started section: 'streams']
+[Started section: 'output filename']
 [Started section: '-o filename']
 TestMain.cpp:262: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:264: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
-TestMain.cpp:265: config.stream.empty() succeeded for: true
-[End of section: '-o filename' All 3 assertions passed]
+[End of section: '-o filename' All 2 assertions passed]
 
-[End of section: 'streams' All 3 assertions passed]
+[End of section: 'output filename' All 2 assertions passed]
 
-[Started section: 'streams']
-[Started section: '-o %stdout']
-TestMain.cpp:269: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:271: config.stream == "stdout" succeeded for: "stdout" == "stdout"
-TestMain.cpp:272: config.outputFilename.empty() succeeded for: true
-[End of section: '-o %stdout' All 3 assertions passed]
-
-[End of section: 'streams' All 3 assertions passed]
-
-[Started section: 'streams']
+[Started section: 'output filename']
 [Started section: '--out']
-TestMain.cpp:276: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:278: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+TestMain.cpp:268: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:270: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
 [End of section: '--out' All 2 assertions passed]
 
-[End of section: 'streams' All 2 assertions passed]
+[End of section: 'output filename' All 2 assertions passed]
 
 [Started section: 'combinations']
 [Started section: '-a -b']
-TestMain.cpp:285: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:287: config.cutoff == 1 succeeded for: 1 == 1
-TestMain.cpp:288: config.shouldDebugBreak succeeded for: true
-TestMain.cpp:289: config.noThrow == true succeeded for: true == true
+TestMain.cpp:277: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:279: config.cutoff == 1 succeeded for: 1 == 1
+TestMain.cpp:280: config.shouldDebugBreak succeeded for: true
+TestMain.cpp:281: config.noThrow == true succeeded for: true == true
 [End of section: '-a -b' All 4 assertions passed]
 
 [End of section: 'combinations' All 4 assertions passed]
 
-[Finished: 'selftest/parser/2' All tests passed (66 assertions in 1 test case)]
+[Finished: 'selftest/parser/2' All tests passed (62 assertions in 1 test case)]
 
 [Running: selftest/test filter]
-TestMain.cpp:298: matchAny.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
-TestMain.cpp:299: matchNone.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
-TestMain.cpp:304: matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
-TestMain.cpp:305: matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
-TestMain.cpp:307: matchHidden.shouldInclude( fakeTestCase( "./any" ) ) succeeded for: true
-TestMain.cpp:308: matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false succeeded for: false == false
+TestMain.cpp:290: matchAny.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
+TestMain.cpp:291: matchNone.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:296: matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:297: matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
+TestMain.cpp:299: matchHidden.shouldInclude( fakeTestCase( "./any" ) ) succeeded for: true
+TestMain.cpp:300: matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false succeeded for: false == false
 [Finished: 'selftest/test filter' All tests passed (6 assertions in 1 test case)]
 
 [Running: selftest/test filters]
-TestMain.cpp:319: matchHidden.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
-TestMain.cpp:321: filters.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
-TestMain.cpp:322: filters.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
-TestMain.cpp:323: filters.shouldInclude( fakeTestCase( "./anything" ) ) == false succeeded for: false == false
+TestMain.cpp:311: matchHidden.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
+TestMain.cpp:313: filters.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:314: filters.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
+TestMain.cpp:315: filters.shouldInclude( fakeTestCase( "./anything" ) ) == false succeeded for: false == false
 [Finished: 'selftest/test filters' All tests passed (4 assertions in 1 test case)]
 
 [Running: selftest/filter/prefix wildcard]
-TestMain.cpp:329: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
-TestMain.cpp:330: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false succeeded for: false == false
+TestMain.cpp:321: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
+TestMain.cpp:322: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false succeeded for: false == false
 [Finished: 'selftest/filter/prefix wildcard' All tests passed (2 assertions in 1 test case)]
 
 [Running: selftest/filter/wildcard at both ends]
-TestMain.cpp:335: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
-TestMain.cpp:336: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) succeeded for: true
-TestMain.cpp:337: matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) succeeded for: true
-TestMain.cpp:338: matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false succeeded for: false == false
+TestMain.cpp:327: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
+TestMain.cpp:328: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) succeeded for: true
+TestMain.cpp:329: matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) succeeded for: true
+TestMain.cpp:330: matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false succeeded for: false == false
 [Finished: 'selftest/filter/wildcard at both ends' All tests passed (4 assertions in 1 test case)]
 
 [Running: selftest/option parsers]
-TestMain.cpp:358: opt.parseIntoConfig( parser, config ) succeeded
-TestMain.cpp:361: cfg.filters().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:362: cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
-TestMain.cpp:363: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
+TestMain.cpp:350: opt.parseIntoConfig( parser, config ) succeeded
+TestMain.cpp:353: cfg.filters().size() == 1 succeeded for: 1 == 1
+TestMain.cpp:354: cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
+TestMain.cpp:355: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
 [Finished: 'selftest/option parsers' All tests passed (4 assertions in 1 test case)]
 
 [Running: selftest/tags]
 [Started section: 'one tag']
-TestMain.cpp:377: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
-TestMain.cpp:378: oneTag.hasTag( "one" ) succeeded for: true
-TestMain.cpp:379: oneTag.getTags().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:381: oneTag.matchesTags( p1 ) == true succeeded for: true == true
-TestMain.cpp:382: oneTag.matchesTags( p2 ) == true succeeded for: true == true
-TestMain.cpp:383: oneTag.matchesTags( p3 ) == false succeeded for: false == false
-TestMain.cpp:384: oneTag.matchesTags( p4 ) == false succeeded for: false == false
-TestMain.cpp:385: oneTag.matchesTags( p5 ) == false succeeded for: false == false
+TestMain.cpp:369: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:370: oneTag.hasTag( "one" ) succeeded for: true
+TestMain.cpp:371: oneTag.getTags().size() == 1 succeeded for: 1 == 1
+TestMain.cpp:373: oneTag.matchesTags( p1 ) == true succeeded for: true == true
+TestMain.cpp:374: oneTag.matchesTags( p2 ) == true succeeded for: true == true
+TestMain.cpp:375: oneTag.matchesTags( p3 ) == false succeeded for: false == false
+TestMain.cpp:376: oneTag.matchesTags( p4 ) == false succeeded for: false == false
+TestMain.cpp:377: oneTag.matchesTags( p5 ) == false succeeded for: false == false
 [End of section: 'one tag' All 8 assertions passed]
 
 [Started section: 'two tags']
-TestMain.cpp:391: twoTags.getTestCaseInfo().description == "" succeeded for: "" == ""
-TestMain.cpp:392: twoTags.hasTag( "one" ) succeeded for: true
-TestMain.cpp:393: twoTags.hasTag( "two" ) succeeded for: true
-TestMain.cpp:394: twoTags.hasTag( "Two" ) succeeded for: true
-TestMain.cpp:395: twoTags.hasTag( "three" ) == false succeeded for: false == false
-TestMain.cpp:396: twoTags.getTags().size() == 2 succeeded for: 2 == 2
-TestMain.cpp:398: twoTags.matchesTags( p1 ) == true succeeded for: true == true
-TestMain.cpp:399: twoTags.matchesTags( p2 ) == true succeeded for: true == true
-TestMain.cpp:400: twoTags.matchesTags( p3 ) == true succeeded for: true == true
-TestMain.cpp:401: twoTags.matchesTags( p4 ) == true succeeded for: true == true
-TestMain.cpp:402: twoTags.matchesTags( p5 ) == true succeeded for: true == true
+TestMain.cpp:383: twoTags.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:384: twoTags.hasTag( "one" ) succeeded for: true
+TestMain.cpp:385: twoTags.hasTag( "two" ) succeeded for: true
+TestMain.cpp:386: twoTags.hasTag( "Two" ) succeeded for: true
+TestMain.cpp:387: twoTags.hasTag( "three" ) == false succeeded for: false == false
+TestMain.cpp:388: twoTags.getTags().size() == 2 succeeded for: 2 == 2
+TestMain.cpp:390: twoTags.matchesTags( p1 ) == true succeeded for: true == true
+TestMain.cpp:391: twoTags.matchesTags( p2 ) == true succeeded for: true == true
+TestMain.cpp:392: twoTags.matchesTags( p3 ) == true succeeded for: true == true
+TestMain.cpp:393: twoTags.matchesTags( p4 ) == true succeeded for: true == true
+TestMain.cpp:394: twoTags.matchesTags( p5 ) == true succeeded for: true == true
 [End of section: 'two tags' All 11 assertions passed]
 
 [Started section: 'one tag with characters either side']
-TestMain.cpp:408: oneTagWithExtras.getTestCaseInfo().description == "1234" succeeded for: "1234" == "1234"
-TestMain.cpp:409: oneTagWithExtras.hasTag( "one" ) succeeded for: true
-TestMain.cpp:410: oneTagWithExtras.hasTag( "two" ) == false succeeded for: false == false
-TestMain.cpp:411: oneTagWithExtras.getTags().size() == 1 succeeded for: 1 == 1
+TestMain.cpp:400: oneTagWithExtras.getTestCaseInfo().description == "1234" succeeded for: "1234" == "1234"
+TestMain.cpp:401: oneTagWithExtras.hasTag( "one" ) succeeded for: true
+TestMain.cpp:402: oneTagWithExtras.hasTag( "two" ) == false succeeded for: false == false
+TestMain.cpp:403: oneTagWithExtras.getTags().size() == 1 succeeded for: 1 == 1
 [End of section: 'one tag with characters either side' All 4 assertions passed]
 
 [Started section: 'start of a tag, but not closed']
-TestMain.cpp:418: oneTagOpen.getTestCaseInfo().description == "[one" succeeded for: "[one" == "[one"
-TestMain.cpp:419: oneTagOpen.hasTag( "one" ) == false succeeded for: false == false
-TestMain.cpp:420: oneTagOpen.getTags().size() == 0 succeeded for: 0 == 0
+TestMain.cpp:410: oneTagOpen.getTestCaseInfo().description == "[one" succeeded for: "[one" == "[one"
+TestMain.cpp:411: oneTagOpen.hasTag( "one" ) == false succeeded for: false == false
+TestMain.cpp:412: oneTagOpen.getTags().size() == 0 succeeded for: 0 == 0
 [End of section: 'start of a tag, but not closed' All 3 assertions passed]
 
 [Started section: 'hidden']
-TestMain.cpp:426: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
-TestMain.cpp:427: oneTag.hasTag( "hide" ) succeeded for: true
-TestMain.cpp:428: oneTag.isHidden() succeeded for: true
-TestMain.cpp:430: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false == false
+TestMain.cpp:418: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:419: oneTag.hasTag( "hide" ) succeeded for: true
+TestMain.cpp:420: oneTag.isHidden() succeeded for: true
+TestMain.cpp:422: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false == false
 [End of section: 'hidden' All 4 assertions passed]
 
 [Finished: 'selftest/tags' All tests passed (30 assertions in 1 test case)]
@@ -14567,11 +14489,11 @@ TestMain.cpp:430: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false 
 [Running: Long strings can be wrapped]
 [Started section: 'plain string']
 [Started section: 'No wrapping']
-TestMain.cpp:443: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
+TestMain.cpp:435: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
-TestMain.cpp:444: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
+TestMain.cpp:436: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
@@ -14581,31 +14503,31 @@ TestMain.cpp:444: Text( testString, TextAttributes().setWidth( 18 ) ).toString()
 
 [Started section: 'plain string']
 [Started section: 'Wrapped once']
-TestMain.cpp:447: Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:439: Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:448: Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:440: Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:449: Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:441: Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:450: Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:442: Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:451: Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" succeeded for:
+TestMain.cpp:443: Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" succeeded for:
 	"one two
 three four"
 ==
@@ -14617,7 +14539,7 @@ three four"
 
 [Started section: 'plain string']
 [Started section: 'Wrapped twice']
-TestMain.cpp:454: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:446: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14625,7 +14547,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:455: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:447: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14633,7 +14555,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:456: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:448: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14647,7 +14569,7 @@ four"
 
 [Started section: 'plain string']
 [Started section: 'Wrapped three times']
-TestMain.cpp:459: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:451: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -14657,7 +14579,7 @@ four"
 two
 three
 four"
-TestMain.cpp:460: Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:452: Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -14673,24 +14595,24 @@ four"
 
 [Started section: 'plain string']
 [Started section: 'Short wrap']
-TestMain.cpp:463: Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" succeeded for: "abc-
+TestMain.cpp:455: Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" succeeded for: "abc-
 def"
 ==
 "abc-
 def"
-TestMain.cpp:464: Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" succeeded for: "abc-
+TestMain.cpp:456: Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" succeeded for: "abc-
 defg"
 ==
 "abc-
 defg"
-TestMain.cpp:465: Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" succeeded for: "abc-
+TestMain.cpp:457: Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" succeeded for: "abc-
 def-
 gh"
 ==
 "abc-
 def-
 gh"
-TestMain.cpp:467: Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" succeeded for:
+TestMain.cpp:459: Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" succeeded for:
 	"one
 two
 thr-
@@ -14702,7 +14624,7 @@ two
 thr-
 ee
 four"
-TestMain.cpp:468: Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
+TestMain.cpp:460: Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
 	"one
 two
 th-
@@ -14722,18 +14644,18 @@ ur"
 
 [Started section: 'plain string']
 [Started section: 'As container']
-TestMain.cpp:472: text.size() == 4 succeeded for: 4 == 4
-TestMain.cpp:473: text[0] == "one" succeeded for: "one" == "one"
-TestMain.cpp:474: text[1] == "two" succeeded for: "two" == "two"
-TestMain.cpp:475: text[2] == "three" succeeded for: "three" == "three"
-TestMain.cpp:476: text[3] == "four" succeeded for: "four" == "four"
+TestMain.cpp:464: text.size() == 4 succeeded for: 4 == 4
+TestMain.cpp:465: text[0] == "one" succeeded for: "one" == "one"
+TestMain.cpp:466: text[1] == "two" succeeded for: "two" == "two"
+TestMain.cpp:467: text[2] == "three" succeeded for: "three" == "three"
+TestMain.cpp:468: text[3] == "four" succeeded for: "four" == "four"
 [End of section: 'As container' All 5 assertions passed]
 
 [End of section: 'plain string' All 5 assertions passed]
 
 [Started section: 'plain string']
 [Started section: 'Indent first line differently']
-TestMain.cpp:483: text.toString() == " one two\n    three\n    four" succeeded for:
+TestMain.cpp:475: text.toString() == " one two\n    three\n    four" succeeded for:
 	" one two
     three
     four"
@@ -14747,19 +14669,19 @@ TestMain.cpp:483: text.toString() == " one two\n    three\n    four" succeeded f
 
 [Started section: 'With newlines']
 [Started section: 'No wrapping']
-TestMain.cpp:494: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
+TestMain.cpp:486: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:495: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
+TestMain.cpp:487: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:496: Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString succeeded for:
+TestMain.cpp:488: Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
@@ -14771,13 +14693,13 @@ three four"
 
 [Started section: 'With newlines']
 [Started section: 'Trailing newline']
-TestMain.cpp:499: Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:491: Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
 "
-TestMain.cpp:500: Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
-TestMain.cpp:501: Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:492: Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
+TestMain.cpp:493: Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
@@ -14788,7 +14710,7 @@ TestMain.cpp:501: Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() 
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped once']
-TestMain.cpp:504: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:496: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14796,7 +14718,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:505: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:497: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14804,7 +14726,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:506: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:498: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14818,7 +14740,7 @@ four"
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped twice']
-TestMain.cpp:509: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:501: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -14833,7 +14755,7 @@ four"
 [End of section: 'With newlines' 1 assertion passed]
 
 [Started section: 'With tabs']
-TestMain.cpp:519: Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six" succeeded for:
+TestMain.cpp:511: Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six" succeeded for:
 "one two three
         four
         five
@@ -14856,8 +14778,8 @@ No assertions in test case, 'Strings can be rendered with colour'
 [Finished: 'Strings can be rendered with colour' 1 test case failed (1 assertion failed)]
 
 [Running: Text can be formatted using the Text class]
-TestMain.cpp:619: Text( "hi there" ).toString() == "hi there" succeeded for: "hi there" == "hi there"
-TestMain.cpp:624: Text( "hi there", narrow ).toString() == "hi\nthere" succeeded for: "hi
+TestMain.cpp:611: Text( "hi there" ).toString() == "hi there" succeeded for: "hi there" == "hi there"
+TestMain.cpp:616: Text( "hi there", narrow ).toString() == "hi\nthere" succeeded for: "hi
 there"
 ==
 "hi
@@ -15273,10 +15195,10 @@ CmdLineTests.cpp:380: config.verbosity == Config::Verbosity::NoOutput succeeded 
 [End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
 
 [Finished: 'Scenario: New Catch commandline interface' 1 test case failed (1 of 20 assertions failed)]
-[End of group: '~dummy'. 50 of 115 test cases failed (107 of 744 assertions failed)]
+[End of group: '~dummy'. 50 of 115 test cases failed (107 of 740 assertions failed)]
 
 
-[Testing completed. 50 of 115 test cases failed (107 of 744 assertions failed)]
+[Testing completed. 50 of 115 test cases failed (107 of 740 assertions failed)]
 
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']

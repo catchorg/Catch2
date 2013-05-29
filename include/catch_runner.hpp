@@ -76,9 +76,6 @@ namespace Catch {
 
     private:
         void openStream() {
-            if( !m_config->getStreamName().empty() )
-                m_config->useStream( m_config->getStreamName() );
-
             // Open output file, if specified
             if( !m_config->getFilename().empty() ) {
                 m_ofs.open( m_config->getFilename().c_str() );
