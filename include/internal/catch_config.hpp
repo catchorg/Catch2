@@ -59,17 +59,17 @@ namespace Catch {
 
         ConfigData()
         :   listSpec( List::None ),
-            includeWhichResults( Include::FailedOnly ),
+            showSuccessfulTests( false ),
             shouldDebugBreak( false ),
-            allowThrows( true ),
+            noThrow( false ),
             cutoff( -1 ),
             warnings( WarnAbout::Nothing )
         {}
         
         List::What listSpec; // !TBD Split into bools
-        Include::WhichResults includeWhichResults; // !TBD bool
+        bool showSuccessfulTests;
         bool shouldDebugBreak;
-        bool allowThrows; // !TBD invert
+        bool noThrow;
 //        bool showHelp; // !TBD
 
         int cutoff;
@@ -159,10 +159,10 @@ namespace Catch {
         }
 
         // IConfig interface
-        virtual bool allowThrows() const        { return m_data.allowThrows; }
+        virtual bool allowThrows() const        { return !m_data.noThrow; }
         virtual std::ostream& stream() const    { return m_os; }
         virtual std::string name() const        { return m_data.name; }
-        virtual bool includeSuccessfulResults() const   { return m_data.includeWhichResults == Include::SuccessfulResults; }
+        virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & ConfigData::WarnAbout::NoAssertions; }
 
     private:

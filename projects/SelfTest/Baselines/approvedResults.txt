@@ -3564,9 +3564,9 @@ with expansion:
 
 TestMain.cpp:102:
 PASSED:
-  CHECK( config.allowThrows == true )
+  CHECK( config.noThrow == false )
 with expansion:
-  true == true
+  false == false
 
 TestMain.cpp:103:
 PASSED:
@@ -3990,9 +3990,9 @@ PASSED:
 
 TestMain.cpp:243:
 PASSED:
-  REQUIRE( config.allowThrows == false )
+  REQUIRE( config.noThrow == true )
 with expansion:
-  false == false
+  true == true
 
 -------------------------------------------------------------------------------
 selftest/parser/2
@@ -4008,9 +4008,9 @@ PASSED:
 
 TestMain.cpp:249:
 PASSED:
-  REQUIRE( config.allowThrows == false )
+  REQUIRE( config.noThrow == true )
 with expansion:
-  false == false
+  true == true
 
 -------------------------------------------------------------------------------
 selftest/parser/2
@@ -4104,9 +4104,9 @@ with expansion:
 
 TestMain.cpp:283:
 PASSED:
-  CHECK( config.allowThrows == false )
+  CHECK( config.noThrow == true )
 with expansion:
-  false == false
+  true == true
 
 -------------------------------------------------------------------------------
 selftest/test filter
@@ -10636,10 +10636,10 @@ TestMain.cpp" line="101">
         </Expression>
 TestMain.cpp" line="102">
           <Original>
-            config.allowThrows == true
+            config.noThrow == false
           </Original>
           <Expanded>
-            true == true
+            false == false
           </Expanded>
         </Expression>
 TestMain.cpp" line="103">
@@ -11150,10 +11150,10 @@ TestMain.cpp" line="241">
           </Expression>
 TestMain.cpp" line="243">
             <Original>
-              config.allowThrows == false
+              config.noThrow == true
             </Original>
             <Expanded>
-              false == false
+              true == true
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0"/>
@@ -11172,10 +11172,10 @@ TestMain.cpp" line="247">
           </Expression>
 TestMain.cpp" line="249">
             <Original>
-              config.allowThrows == false
+              config.noThrow == true
             </Original>
             <Expanded>
-              false == false
+              true == true
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0"/>
@@ -11298,10 +11298,10 @@ TestMain.cpp" line="282">
           </Expression>
 TestMain.cpp" line="283">
             <Original>
-              config.allowThrows == false
+              config.noThrow == true
             </Original>
             <Expanded>
-              false == false
+              true == true
             </Expanded>
           </Expression>
           <OverallResults successes="4" failures="0"/>
@@ -14258,7 +14258,7 @@ TestMain.cpp:59: totals.assertions.failed == 1 succeeded for: 1 == 1
 TestMain.cpp:98: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:100: config.shouldDebugBreak == false succeeded for: false == false
 TestMain.cpp:101: config.cutoff == -1 succeeded for: -1 == -1
-TestMain.cpp:102: config.allowThrows == true succeeded for: true == true
+TestMain.cpp:102: config.noThrow == false succeeded for: false == false
 TestMain.cpp:103: config.reporter.empty() succeeded for: true
 [End of section: 'default' All 5 assertions passed]
 
@@ -14430,7 +14430,7 @@ TestMain.cpp:234: parseIntoConfigAndReturnError( argv, config ) Contains( "0 and
 [Started section: 'nothrow']
 [Started section: '-nt']
 TestMain.cpp:241: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:243: config.allowThrows == false succeeded for: false == false
+TestMain.cpp:243: config.noThrow == true succeeded for: true == true
 [End of section: '-nt' All 2 assertions passed]
 
 [End of section: 'nothrow' All 2 assertions passed]
@@ -14438,7 +14438,7 @@ TestMain.cpp:243: config.allowThrows == false succeeded for: false == false
 [Started section: 'nothrow']
 [Started section: '--nothrow']
 TestMain.cpp:247: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:249: config.allowThrows == false succeeded for: false == false
+TestMain.cpp:249: config.noThrow == true succeeded for: true == true
 [End of section: '--nothrow' All 2 assertions passed]
 
 [End of section: 'nothrow' All 2 assertions passed]
@@ -14474,7 +14474,7 @@ TestMain.cpp:272: config.outputFilename == "filename.ext" succeeded for: "filena
 TestMain.cpp:279: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:281: config.cutoff == 1 succeeded for: 1 == 1
 TestMain.cpp:282: config.shouldDebugBreak succeeded for: true
-TestMain.cpp:283: config.allowThrows == false succeeded for: false == false
+TestMain.cpp:283: config.noThrow == true succeeded for: true == true
 [End of section: '-a -b' All 4 assertions passed]
 
 [End of section: 'combinations' All 4 assertions passed]

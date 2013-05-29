@@ -466,7 +466,7 @@ namespace Catch {
                     "just pass this option.";
             }
             virtual void parseIntoConfig( Command const&, ConfigData& config ) {
-                config.includeWhichResults = Include::SuccessfulResults;
+                config.showSuccessfulTests = true;
             }
         };
         
@@ -590,7 +590,7 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( Command const&, ConfigData& config ) {
-                config.allowThrows = false;
+                config.noThrow = true;
             }
         };
 
