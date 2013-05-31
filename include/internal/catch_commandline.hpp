@@ -379,7 +379,7 @@ namespace Catch {
             }
 
             virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                config.reporter = cmd[0];
+                config.reporterName = cmd[0];
             }
         };
 
@@ -530,7 +530,7 @@ namespace Catch {
                     if( ss.fail() || threshold <= 0 )
                         cmd.raiseError( "threshold must be a number greater than zero" );
                 }
-                config.cutoff = threshold;
+                config.abortAfter = threshold;
             }
         };
 

@@ -3558,7 +3558,7 @@ with expansion:
 
 TestMain.cpp:101:
 PASSED:
-  CHECK( config.cutoff == -1 )
+  CHECK( config.abortAfter == -1 )
 with expansion:
   -1 == -1
 
@@ -3570,7 +3570,7 @@ with expansion:
 
 TestMain.cpp:103:
 PASSED:
-  CHECK( config.reporter.empty() )
+  CHECK( config.reporterName.empty() )
 with expansion:
   true
 
@@ -3789,7 +3789,7 @@ PASSED:
 
 TestMain.cpp:178:
 PASSED:
-  REQUIRE( config.reporter == "console" )
+  REQUIRE( config.reporterName == "console" )
 with expansion:
   "console" == "console"
 
@@ -3807,7 +3807,7 @@ PASSED:
 
 TestMain.cpp:184:
 PASSED:
-  REQUIRE( config.reporter == "xml" )
+  REQUIRE( config.reporterName == "xml" )
 with expansion:
   "xml" == "xml"
 
@@ -3825,7 +3825,7 @@ PASSED:
 
 TestMain.cpp:190:
 PASSED:
-  REQUIRE( config.reporter == "junit" )
+  REQUIRE( config.reporterName == "junit" )
 with expansion:
   "junit" == "junit"
 
@@ -3909,7 +3909,7 @@ PASSED:
 
 TestMain.cpp:222:
 PASSED:
-  REQUIRE( config.cutoff == 1 )
+  REQUIRE( config.abortAfter == 1 )
 with expansion:
   1 == 1
 
@@ -3927,7 +3927,7 @@ PASSED:
 
 TestMain.cpp:228:
 PASSED:
-  REQUIRE( config.cutoff == 2 )
+  REQUIRE( config.abortAfter == 2 )
 with expansion:
   2 == 2
 
@@ -4062,7 +4062,7 @@ PASSED:
 
 TestMain.cpp:279:
 PASSED:
-  CHECK( config.cutoff == 1 )
+  CHECK( config.abortAfter == 1 )
 with expansion:
   1 == 1
 
@@ -10598,7 +10598,7 @@ TestMain.cpp" line="100">
         </Expression>
 TestMain.cpp" line="101">
           <Original>
-            config.cutoff == -1
+            config.abortAfter == -1
           </Original>
           <Expanded>
             -1 == -1
@@ -10614,7 +10614,7 @@ TestMain.cpp" line="102">
         </Expression>
 TestMain.cpp" line="103">
           <Original>
-            config.reporter.empty()
+            config.reporterName.empty()
           </Original>
           <Expanded>
             true
@@ -10887,7 +10887,7 @@ TestMain.cpp" line="176">
           </Expression>
 TestMain.cpp" line="178">
             <Original>
-              config.reporter == &quot;console&quot;
+              config.reporterName == &quot;console&quot;
             </Original>
             <Expanded>
               &quot;console&quot; == &quot;console&quot;
@@ -10909,7 +10909,7 @@ TestMain.cpp" line="182">
           </Expression>
 TestMain.cpp" line="184">
             <Original>
-              config.reporter == &quot;xml&quot;
+              config.reporterName == &quot;xml&quot;
             </Original>
             <Expanded>
               &quot;xml&quot; == &quot;xml&quot;
@@ -10931,7 +10931,7 @@ TestMain.cpp" line="188">
           </Expression>
 TestMain.cpp" line="190">
             <Original>
-              config.reporter == &quot;junit&quot;
+              config.reporterName == &quot;junit&quot;
             </Original>
             <Expanded>
               &quot;junit&quot; == &quot;junit&quot;
@@ -11031,7 +11031,7 @@ TestMain.cpp" line="220">
           </Expression>
 TestMain.cpp" line="222">
             <Original>
-              config.cutoff == 1
+              config.abortAfter == 1
             </Original>
             <Expanded>
               1 == 1
@@ -11053,7 +11053,7 @@ TestMain.cpp" line="226">
           </Expression>
 TestMain.cpp" line="228">
             <Original>
-              config.cutoff == 2
+              config.abortAfter == 2
             </Original>
             <Expanded>
               2 == 2
@@ -11092,7 +11092,7 @@ TestMain.cpp" line="236">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="abort">
-        <Section name="-a/error/two args" description="cutoff only takes one argument">
+        <Section name="-a/error/two args" description="abortAfter only takes one argument">
 TestMain.cpp" line="240">
             <Original>
               parseIntoConfigAndReturnError( argv, config ) Contains( &quot;0 and 1 argument&quot; )
@@ -11214,7 +11214,7 @@ TestMain.cpp" line="277">
           </Expression>
 TestMain.cpp" line="279">
             <Original>
-              config.cutoff == 1
+              config.abortAfter == 1
             </Original>
             <Expanded>
               1 == 1
@@ -14189,9 +14189,9 @@ TestMain.cpp:59: totals.assertions.failed == 1 succeeded for: 1 == 1
 [Started section: 'default']
 TestMain.cpp:98: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:100: config.shouldDebugBreak == false succeeded for: false == false
-TestMain.cpp:101: config.cutoff == -1 succeeded for: -1 == -1
+TestMain.cpp:101: config.abortAfter == -1 succeeded for: -1 == -1
 TestMain.cpp:102: config.noThrow == false succeeded for: false == false
-TestMain.cpp:103: config.reporter.empty() succeeded for: true
+TestMain.cpp:103: config.reporterName.empty() succeeded for: true
 [End of section: 'default' All 5 assertions passed]
 
 [Started section: 'test lists']
@@ -14266,7 +14266,7 @@ TestMain.cpp:169: parseIntoConfigAndReturnError( argv, config ) Contains( "at le
 [Started section: 'reporter']
 [Started section: '-r/console']
 TestMain.cpp:176: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:178: config.reporter == "console" succeeded for: "console" == "console"
+TestMain.cpp:178: config.reporterName == "console" succeeded for: "console" == "console"
 [End of section: '-r/console' All 2 assertions passed]
 
 [End of section: 'reporter' All 2 assertions passed]
@@ -14274,7 +14274,7 @@ TestMain.cpp:178: config.reporter == "console" succeeded for: "console" == "cons
 [Started section: 'reporter']
 [Started section: '-r/xml']
 TestMain.cpp:182: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:184: config.reporter == "xml" succeeded for: "xml" == "xml"
+TestMain.cpp:184: config.reporterName == "xml" succeeded for: "xml" == "xml"
 [End of section: '-r/xml' All 2 assertions passed]
 
 [End of section: 'reporter' All 2 assertions passed]
@@ -14282,7 +14282,7 @@ TestMain.cpp:184: config.reporter == "xml" succeeded for: "xml" == "xml"
 [Started section: 'reporter']
 [Started section: '--reporter/junit']
 TestMain.cpp:188: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:190: config.reporter == "junit" succeeded for: "junit" == "junit"
+TestMain.cpp:190: config.reporterName == "junit" succeeded for: "junit" == "junit"
 [End of section: '--reporter/junit' All 2 assertions passed]
 
 [End of section: 'reporter' All 2 assertions passed]
@@ -14322,7 +14322,7 @@ TestMain.cpp:213: parseIntoConfigAndReturnError( argv, config ) Contains( "0 arg
 [Started section: 'abort']
 [Started section: '-a']
 TestMain.cpp:220: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:222: config.cutoff == 1 succeeded for: 1 == 1
+TestMain.cpp:222: config.abortAfter == 1 succeeded for: 1 == 1
 [End of section: '-a' All 2 assertions passed]
 
 [End of section: 'abort' All 2 assertions passed]
@@ -14330,7 +14330,7 @@ TestMain.cpp:222: config.cutoff == 1 succeeded for: 1 == 1
 [Started section: 'abort']
 [Started section: '-a/2']
 TestMain.cpp:226: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:228: config.cutoff == 2 succeeded for: 2 == 2
+TestMain.cpp:228: config.abortAfter == 2 succeeded for: 2 == 2
 [End of section: '-a/2' All 2 assertions passed]
 
 [End of section: 'abort' All 2 assertions passed]
@@ -14394,7 +14394,7 @@ TestMain.cpp:270: config.outputFilename == "filename.ext" succeeded for: "filena
 [Started section: 'combinations']
 [Started section: '-a -b']
 TestMain.cpp:277: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:279: config.cutoff == 1 succeeded for: 1 == 1
+TestMain.cpp:279: config.abortAfter == 1 succeeded for: 1 == 1
 TestMain.cpp:280: config.shouldDebugBreak succeeded for: true
 TestMain.cpp:281: config.noThrow == true succeeded for: true == true
 [End of section: '-a -b' All 4 assertions passed]

@@ -45,7 +45,7 @@ namespace Catch {
             shouldDebugBreak( false ),
             noThrow( false ),
             showHelp( false ),
-            cutoff( -1 ),
+            abortAfter( -1 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing )
         {}
@@ -59,12 +59,12 @@ namespace Catch {
         bool noThrow;
         bool showHelp;
 
-        int cutoff;
+        int abortAfter;
 
         Verbosity::Level verbosity;
         WarnAbout::What warnings;
 
-        std::string reporter;
+        std::string reporterName;
         std::string outputFilename;
         std::string name;
 
@@ -140,16 +140,16 @@ namespace Catch {
             m_stream = stream;
         }
         
-        std::string getReporterName() const { return m_data.reporter; }
+        std::string getReporterName() const { return m_data.reporterName; }
 
         void addTestSpec( std::string const& testSpec ) {
             TestCaseFilters filters( testSpec );
             filters.addFilter( TestCaseFilter( testSpec ) );
             m_filterSets.push_back( filters );
         }
-                
+
         int abortAfter() const {
-            return m_data.cutoff;
+            return m_data.abortAfter;
         }
         
         std::vector<TestCaseFilters> const& filters() const {

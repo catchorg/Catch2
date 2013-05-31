@@ -98,9 +98,9 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
         CHECK_NOTHROW( parseIntoConfig( argv, config ) );
         
         CHECK( config.shouldDebugBreak == false );
-        CHECK( config.cutoff == -1 );
+        CHECK( config.abortAfter == -1 );
         CHECK( config.noThrow == false );
-        CHECK( config.reporter.empty() );
+        CHECK( config.reporterName.empty() );
     }
     
     SECTION( "test lists", "" ) {
@@ -175,19 +175,19 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             const char* argv[] = { "test", "-r", "console" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.reporter == "console" );
+            REQUIRE( config.reporterName == "console" );
         }
         SECTION( "-r/xml", "" ) {
             const char* argv[] = { "test", "-r", "xml" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.reporter == "xml" );
+            REQUIRE( config.reporterName == "xml" );
         }
         SECTION( "--reporter/junit", "" ) {
             const char* argv[] = { "test", "--reporter", "junit" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.reporter == "junit" );
+            REQUIRE( config.reporterName == "junit" );
         }
         SECTION( "-r/error", "reporter config only accepts one argument" ) {
             const char* argv[] = { "test", "-r", "one", "two" };
@@ -219,13 +219,13 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             const char* argv[] = { "test", "-a" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.cutoff == 1 );
+            REQUIRE( config.abortAfter == 1 );
         }
         SECTION( "-a/2", "" ) {
             const char* argv[] = { "test", "-a", "2" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.cutoff == 2 );
+            REQUIRE( config.abortAfter == 2 );
         }
         SECTION( "-a/error/0", "" ) {
             const char* argv[] = { "test", "-a", "0" };
@@ -235,7 +235,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             const char* argv[] = { "test", "-a", "oops" };
             REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" ) );
         }
-        SECTION( "-a/error/two args", "cutoff only takes one argument" ) {
+        SECTION( "-a/error/two args", "abortAfter only takes one argument" ) {
             const char* argv[] = { "test", "-a", "1", "2" };
             REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "0 and 1 argument" ) );
         }
@@ -276,7 +276,7 @@ TEST_CASE( "selftest/parser/2", "ConfigData" ) {
             const char* argv[] = { "test", "-a", "-b", "-nt" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            CHECK( config.cutoff == 1 );
+            CHECK( config.abortAfter == 1 );
             CHECK( config.shouldDebugBreak );
             CHECK( config.noThrow == true );
         }
