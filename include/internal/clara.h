@@ -197,7 +197,7 @@ namespace Clara {
             std::string data;
         };
 
-        void parseIntoTokens( int argc, char const* argv[], std::vector<Parser::Token>& tokens ) const {
+        void parseIntoTokens( int argc, char const * const * argv, std::vector<Parser::Token>& tokens ) const {
             for( int i = 1; i < argc; ++i )
                 parseIntoTokens( argv[i] , tokens);
         }        
@@ -434,7 +434,7 @@ namespace Clara {
             return oss.str();
         }        
         
-        std::vector<Parser::Token> parseInto( int argc, char const* argv[], ConfigT& config ) const {
+        std::vector<Parser::Token> parseInto( int argc, char const * const * argv, ConfigT& config ) const {
             std::vector<Parser::Token> tokens;
             Parser parser;
             parser.parseIntoTokens( argc, argv, tokens );

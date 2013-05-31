@@ -166,7 +166,7 @@ namespace Catch {
             showUsage( std::cout );
         }
     }
-    
+
     inline int Main( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
 
         try {
@@ -181,9 +181,7 @@ namespace Catch {
                 return 0;
             }
 
-            AllOptions options;
-
-            options.parseIntoConfig( parser, configData );
+            parseCommandLine( argc, argv, configData );
         }
         catch( std::exception& ex ) {
             std::cerr << ex.what() << "\n\nUsage: ...\n\n";

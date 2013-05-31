@@ -16,7 +16,7 @@
 
 // Helper to deduce size from array literals and pass on to parser
 template<size_t size, typename ConfigT>
-std::vector<Clara::Parser::Token> parseInto( Clara::CommandLine<ConfigT>& cli, char const* (&argv)[size], ConfigT& config ) {
+std::vector<Clara::Parser::Token> parseInto( Clara::CommandLine<ConfigT>& cli, char const * (&argv)[size], ConfigT& config ) {
     return cli.parseInto( size, argv, config );
 }
 
@@ -56,7 +56,7 @@ TEST_CASE( "cmdline" ) {
         .argName( "filename" );
 
     SECTION( "arg separated by spaces" ) {
-        const char* argv[] = { "test", "-o filename.ext" };
+        char const * argv[] = { "test", "-o filename.ext" };
         parseInto( cli, argv, config );
         
         CHECK( config.fileName == "filename.ext" );
