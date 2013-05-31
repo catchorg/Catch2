@@ -58,7 +58,7 @@ namespace Catch {
                 matchedTests++;
                 // !TBD: consider listAs()
                 Text nameWrapper(   it->getTestCaseInfo().name,
-                                    TextAttributes().setWidth( maxNameLen ).setIndent(2) );
+                                    TextAttributes().setWidth( maxNameLen+2 ).setIndent(2) );
 
                 Text tagsWrapper(   it->getTestCaseInfo().tagsAsString,
                                     TextAttributes().setWidth( maxTagLen ) );
