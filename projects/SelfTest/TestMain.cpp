@@ -299,25 +299,6 @@ int getArgc( const char * (&)[size] ) {
     return size;
 }
 
-TEST_CASE( "selftest/option parsers", "" )
-{
-    Catch::ConfigData config;
-    
-    Catch::SharedImpl<Catch::Options::TestCaseOptionParser> tcOpt;
-    Catch::OptionParser& opt = tcOpt;
-
-    const char* argv[] = { "test", "-t", "test1" };
-
-    Catch::CommandParser parser( getArgc( argv ), argv );
-
-    CHECK_NOTHROW( opt.parseIntoConfig( parser, config ) );
-
-    Catch::Config cfg( config );
-    REQUIRE( cfg.filters().size() == 1 );
-    REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
-    REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) );
-}
-
 TEST_CASE( "selftest/tags", "" ) {
 
     std::string p1 = "[one]";
