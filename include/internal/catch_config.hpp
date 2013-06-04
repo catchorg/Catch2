@@ -156,6 +156,8 @@ namespace Catch {
         std::vector<TestCaseFilters> const& filters() const {
             return m_filterSets;
         }
+        
+        bool showHelp() const { return m_data.showHelp; }
 
         // IConfig interface
         virtual bool allowThrows() const        { return !m_data.noThrow; }

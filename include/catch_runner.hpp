@@ -131,7 +131,8 @@ namespace Catch {
         return result;
     }
 
-    inline void showHelp( Clara::CommandLine<ConfigData> const& cli, std::string const& processName ) {
+    inline void showHelp( std::string const& processName ) {
+        Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
 
         std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
                                     << libraryVersion.minorVersion << " build "
@@ -143,16 +144,30 @@ namespace Catch {
         cli.usage( std::cout, processName );
         std::cout << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
+    inline Ptr<Config> processConfig( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
+        Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
+        std::vector<Clara::Parser::Token> unused = cli.parseInto( argc, argv, configData );
+        if( !unused.empty() ) {
+            std::vector<Clara::Parser::Token>::const_iterator
+                it = unused.begin(),
+                itEnd = unused.end();
+            std::string msg;
+            for(; it != itEnd; ++it )
+                msg += "  unrecognised option: " + it->data + "\n";
+            throw std::runtime_error( msg.substr( 0, msg.size()-1 ) );
+        }
+        Ptr<Config> config = new Config( configData );
+        return config;        
+    }
 
     inline int Main( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
 
-        Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
+        Ptr<Config> config;
 
         try {
-            cli.parseInto( argc, argv, configData );
-
-            if( configData.showHelp ) {
-                showHelp( cli, argv[0] );
+            config = processConfig( argc, argv, configData );
+            if( config->showHelp() ) {
+                showHelp( argv[0] );
                 Catch::cleanUp();        
                 return 0;
             }
@@ -160,11 +175,10 @@ namespace Catch {
         catch( std::exception& ex ) {
             std::cerr   << "\nError in input:\n"
                         << "  " << ex.what() << "\n\n";
-            cli.usage( std::cout, argv[0] );
+            makeCommandLineParser().usage( std::cout, argv[0] );
             Catch::cleanUp();
             return (std::numeric_limits<int>::max)();
         }
-        Ptr<Config> config = new Config( configData );
         return Main( config );
     }
     
