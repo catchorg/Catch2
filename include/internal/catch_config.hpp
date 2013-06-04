@@ -67,6 +67,7 @@ namespace Catch {
         std::string reporterName;
         std::string outputFilename;
         std::string name;
+        std::string processName;
 
         std::vector<std::string> testsOrTags;
     };

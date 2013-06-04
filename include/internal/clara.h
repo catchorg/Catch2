@@ -64,7 +64,7 @@ namespace Clara {
             BoundArgFunction( IArgFunction<ConfigT>* _functionObj ) : functionObj( _functionObj ) {}
             BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj->clone() ) {}
             BoundArgFunction& operator = ( BoundArgFunction const& other ) {
-                IArgFunction<ConfigT> newFunctionObj = other.clone();
+                IArgFunction<ConfigT>* newFunctionObj = other.functionObj->clone();
                 delete functionObj;
                 functionObj = newFunctionObj;
                 return *this;
@@ -82,6 +82,14 @@ namespace Clara {
             IArgFunction<ConfigT>* functionObj;
         };
 
+
+        template<typename C>
+        struct NullBinder : IArgFunction<C>{
+            virtual void set( C&, std::string const& ) const {}
+            virtual void setFlag( C& ) const {}
+            virtual bool takesArg() const { return true; }
+            virtual IArgFunction<C>* clone() const { return new NullBinder( *this ); }
+        };
 
         template<typename C, typename M>
         struct BoundDataMember : IArgFunction<C>{
@@ -354,12 +362,28 @@ namespace Clara {
 
     public:
     
-        CommandLine() : m_highestSpecifiedArgPosition( 0 ) {}
+        CommandLine()
+        :   m_boundProcessName( new Detail::NullBinder<ConfigT>() ),
+            m_highestSpecifiedArgPosition( 0 )
+        {}
+        CommandLine( CommandLine const& other )
+        :   m_boundProcessName( other.m_boundProcessName ),
+            m_options ( other.m_options ),
+            m_positionalArgs( other.m_positionalArgs ),
+            m_highestSpecifiedArgPosition( other.m_highestSpecifiedArgPosition )
+        {
+            if( other.m_arg.get() )
+                m_arg = std::auto_ptr<Arg>( new Arg( *other.m_arg ) );
+        }
 
         template<typename F>
         ArgBinder bind( F f ) {
             ArgBinder binder( this, f );
             return binder;
+        }
+        template<typename F>
+        void bindProcessName( F f ) {
+            m_boundProcessName = Detail::makeBoundField( f );
         }
 
         void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = CATCH_CONFIG_CONSOLE_WIDTH ) const {
@@ -418,7 +442,6 @@ namespace Clara {
             return oss.str();
         }
         
-
         void usage( std::ostream& os, std::string const& procName ) const {
             os << "usage:\n  " << procName << " ";
             argSynopsis( os );
@@ -435,6 +458,7 @@ namespace Clara {
         }        
         
         std::vector<Parser::Token> parseInto( int argc, char const * const * argv, ConfigT& config ) const {
+            m_boundProcessName.set( config, argv[0] );
             std::vector<Parser::Token> tokens;
             Parser parser;
             parser.parseIntoTokens( argc, argv, tokens );
@@ -458,18 +482,23 @@ namespace Clara {
                 typename std::vector<Arg>::const_iterator it = m_options.begin(), itEnd = m_options.end();
                 for(; it != itEnd; ++it ) {
                     Arg const& arg = *it;
-                    
-                    if( ( token.type == Parser::Token::ShortOpt && arg.hasShortName( token.data ) ) ||
-                        ( token.type == Parser::Token::LongOpt && arg.hasLongName( token.data ) ) ) {
-                        if( arg.takesArg() ) {
-                            if( i == tokens.size()-1 || tokens[i+1].type != Parser::Token::Positional )
-                                throw std::domain_error( "Expected argument to option " + token.data );
-                            arg.boundField.set( config, tokens[++i].data );
+                        
+                    try {
+                        if( ( token.type == Parser::Token::ShortOpt && arg.hasShortName( token.data ) ) ||
+                            ( token.type == Parser::Token::LongOpt && arg.hasLongName( token.data ) ) ) {
+                            if( arg.takesArg() ) {
+                                if( i == tokens.size()-1 || tokens[i+1].type != Parser::Token::Positional )
+                                    throw std::domain_error( "Expected argument to option " + token.data );
+                                arg.boundField.set( config, tokens[++i].data );
+                            }
+                            else {
+                                arg.boundField.setFlag( config );
+                            }
+                            break;
                         }
-                        else {
-                            arg.boundField.setFlag( config );
-                        }
-                        break;
+                    }
+                    catch( std::exception& ex ) {
+                        throw std::runtime_error( std::string( ex.what() ) + " while parsing: (" + arg.commands() + ")" );
                     }
                 }
                 if( it == itEnd )
@@ -507,6 +536,7 @@ namespace Clara {
         }
         
     private:
+        Detail::BoundArgFunction<ConfigT> m_boundProcessName;
         std::vector<Arg> m_options;
         std::map<int, Arg> m_positionalArgs;
         std::auto_ptr<Arg> m_arg;

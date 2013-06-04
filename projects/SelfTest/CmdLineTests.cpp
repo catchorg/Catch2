@@ -24,6 +24,7 @@ std::vector<Clara::Parser::Token> parseInto( Clara::CommandLine<ConfigT>& cli, c
 struct TestOpt {
     TestOpt() : number( 0 ), index( 0 ), flag( false ) {}
 
+    std::string processName;
     std::string fileName;
     int number;
     int index;
@@ -49,12 +50,19 @@ TEST_CASE( "cmdline" ) {
 
     TestOpt config;
     Clara::CommandLine<TestOpt> cli;
+    cli.bindProcessName( &TestOpt::processName );
     cli.bind( &TestOpt::fileName )
         .describe( "specifies output file" )
         .shortOpt( "o" )
         .longOpt( "output" )
         .argName( "filename" );
 
+    SECTION( "process name" ) {
+        char const * argv[] = { "test", "-o filename.ext" };
+        parseInto( cli, argv, config );
+        
+        CHECK( config.processName == "test" );
+    }
     SECTION( "arg separated by spaces" ) {
         char const * argv[] = { "test", "-o filename.ext" };
         parseInto( cli, argv, config );
@@ -169,7 +177,7 @@ TEST_CASE( "cmdline" ) {
             .argName( "first arg" )
             .position( 1 );
 
-        std::cout << cli.usage( "testApp" ) << std::endl;
+//        std::cout << cli.usage( "testApp" ) << std::endl;
 
         const char* argv[] = { "test", "-f", "1st", "-o", "filename", "2nd", "3rd" };
         parseInto( cli, argv, config );
@@ -180,205 +188,4 @@ TEST_CASE( "cmdline" ) {
     }
 }
 
-struct Config {
-
-    struct Verbosity { enum Level { NoOutput = 0, Quiet, Normal }; };
-    struct Warning { enum Types { Nothing = 0x00, NoAssertions = 0x01 }; };
-
-    Config()
-    :   listTests( false ),
-        listTags( false ),
-        listReporters( false ),
-        showSuccessfulTests( false ),
-        breakIntoDebugger( false ),
-        noThrow( false ),
-        showHelp( false ),
-        abortAfter( 0 ),
-        verbosity( Verbosity::Normal ),
-        warnings( Warning::Nothing )
-    {}
-
-    bool listTests;
-    bool listTags;
-    bool listReporters;
-
-    bool showSuccessfulTests;
-    bool breakIntoDebugger;
-    bool noThrow;
-    bool showHelp;
-
-    int abortAfter;
-
-    Verbosity::Level verbosity;
-    Warning::Types warnings;
-
-    std::string reporterName;
-    std::string fileName;
-    std::string suiteName;
-
-    std::vector<std::string> testsOrTags;
-};
-
-inline void abortAfterFirst( Config& config ) { config.abortAfter = 1; }
-inline void abortAfterX( Config& config, int x ) { config.abortAfter = x; }
-inline void addTestOrTags( Config& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }
-
-inline void addWarning( Config& config, std::string const& _warning ) {
-    if( _warning == "NoAssertions" )
-        config.warnings = (Config::Warning::Types)( config.warnings | Config::Warning::NoAssertions );
-    else
-        throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
-
-}
-inline void setVerbosity( Config& config, int level ) {
-    // !TBD: accept strings?
-    config.verbosity = (Config::Verbosity::Level)level;
-}
-
-
-SCENARIO( "New Catch commandline interface", "[cli]" ) {
-
-    GIVEN( "A built cli parser for Catch" ) {
-        Clara::CommandLine<Config> cli;
-
-        cli.bind( &Config::showHelp )
-            .describe( "display usage information" )
-            .shortOpt( "?")
-            .shortOpt( "h")
-            .longOpt( "help" );
-
-        cli.bind( &Config::listTests )
-            .describe( "list all (or matching) test cases" )
-            .shortOpt( "l")
-            .longOpt( "list-tests" );
-
-        cli.bind( &Config::listTags )
-            .describe( "list all (or matching) tags" )
-            .shortOpt( "t")
-            .longOpt( "list-tags" );
-
-        cli.bind( &Config::listTags )
-            .describe( "list all reporters" )
-            .longOpt( "list-reporters" );
-
-        cli.bind( &Config::showSuccessfulTests )
-            .describe( "include successful tests in output" )
-            .shortOpt( "s")
-            .longOpt( "success" );
-
-        cli.bind( &Config::breakIntoDebugger )
-            .describe( "break into debugger on failure" )
-            .shortOpt( "b")
-            .longOpt( "break" );
-
-        cli.bind( &Config::noThrow )
-            .describe( "Skip exception tests" )
-            .shortOpt( "e")
-            .longOpt( "nothrow" );
-
-        cli.bind( &Config::fileName )
-            .describe( "output filename" )
-            .shortOpt( "o")
-            .longOpt( "out" )
-            .argName( "filename" );
-
-        cli.bind( &Config::reporterName )
-            .describe( "reporter to use - defaults to console" )
-            .shortOpt( "r")
-            .longOpt( "reporter" )
-            .argName( "name[:filename]" );
-
-        cli.bind( &Config::suiteName )
-            .describe( "suite name" )
-            .shortOpt( "n")
-            .longOpt( "name" )
-            .argName( "name" );
-
-        cli.bind( &abortAfterFirst )
-            .describe( "abort at first failure" )
-            .shortOpt( "a")
-            .longOpt( "abort" );
-
-        cli.bind( &abortAfterX )
-            .describe( "abort after x failures" )
-            .shortOpt( "x")
-            .longOpt( "abortx" )
-            .argName( "number of failures" );
-
-        cli.bind( &addWarning )
-            .describe( "enable warnings" )
-            .shortOpt( "w")
-            .longOpt( "warn" )
-            .argName( "warning name" );
-
-        cli.bind( &setVerbosity )
-            .describe( "level of verbosity (0=no output)" )
-            .shortOpt( "v")
-            .longOpt( "verbosity" )
-            .argName( "level" );
-
-        cli.bind( &addTestOrTags )
-            .describe( "which test or tests to use" )
-            .argName( "test name, pattern or tags" );
-
-        WHEN( "We ask for usage strings" )
-        THEN( "It prints the usage strings" )
-            std::cout << cli.usage( "CatchTestApp" ) << std::endl;
-        
-        Config config;
-
-        WHEN( "Multiple flags are combined" ) {
-
-            CHECK_FALSE( config.showSuccessfulTests );
-            CHECK_FALSE( config.noThrow );
-            CHECK_FALSE( config.breakIntoDebugger );
-
-            const char* argv[] = { "test", "-seb" };
-            parseInto( cli, argv, config );
-            
-            THEN( "All the flags are set" ) {
-                CHECK( config.showSuccessfulTests );
-                CHECK( config.noThrow );
-                CHECK( config.breakIntoDebugger );
-            }
-        }
-        WHEN( "A flag is set via a nullary method" ) {
-            CHECK( config.abortAfter == 0 );
-
-            const char* argv[] = { "test", "-a" };
-            parseInto( cli, argv, config );
-            
-            THEN( "The flag is set" )
-                REQUIRE( config.abortAfter == 1 );
-        }
-        WHEN( "A flag is set via a unary method" ) {
-            CHECK( config.abortAfter == 0 );
-
-            const char* argv[] = { "test", "-x", "2" };
-            parseInto( cli, argv, config );
-            
-            THEN( "The flag is set" )
-                REQUIRE( config.abortAfter == 2 );
-        }
-        WHEN( "A positional argument is supplied" ) {
-
-            const char* argv[] = { "test", "[hello]" };
-            parseInto( cli, argv, config );
-            
-            THEN( "The argument is in the testOrTags collection" ) {
-                REQUIRE( config.testsOrTags.size() == 1 );
-                REQUIRE( config.testsOrTags[0] == "[hello]" );
-            }
-        }
-        WHEN( "And enum opt is set by numeric value" ) {
-            CHECK( config.verbosity == Config::Verbosity::Normal );
-
-            const char* argv[] = { "test", "-v 0" };
-            parseInto( cli, argv, config );
-            
-            THEN( "The member is set to the enum value" )
-                REQUIRE( config.verbosity == Config::Verbosity::NoOutput );
-        }
-    }
-}
 #endif

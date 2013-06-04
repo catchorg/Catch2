@@ -131,61 +131,36 @@ namespace Catch {
         return result;
     }
 
-    inline void showUsage( std::ostream& os ) {
-        AllOptions options;
+    inline void showHelp( Clara::CommandLine<ConfigData> const& cli, std::string const& processName ) {
 
-        for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
-            OptionParser& opt = **it;
-            os << "  " << opt.optionNames() << " " << opt.argsSynopsis() << "\n";
-        }
-        os << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
-    }
+        std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
+                                    << libraryVersion.minorVersion << " build "
+                                    << libraryVersion.buildNumber;
+        if( libraryVersion.branchName != "master" )
+            std::cout << " (" << libraryVersion.branchName << " branch)";
+        std::cout << "\n";
 
-    inline void showHelp( const CommandParser& parser ) {
-        AllOptions options;
-        Options::HelpOptionParser helpOpt;
-        bool displayedSpecificOption = false;
-        for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
-            OptionParser& opt = **it;
-            if( opt.find( parser ) && opt.optionNames() != helpOpt.optionNames() ) {
-                displayedSpecificOption = true;
-                std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
-                            << opt.optionSummary() << "\n\n"
-                            << Text( opt.optionDescription(), TextAttributes().setIndent( 2 ) ) << "\n" << std::endl;
-            }
-        }
-
-        if( !displayedSpecificOption ) {
-            std::cout   << "\nCATCH v"  << libraryVersion.majorVersion << "."
-                                        << libraryVersion.minorVersion << " build "
-                                        << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
-                std::cout << " (" << libraryVersion.branchName << " branch)";
-
-            std::cout << "\n\n" << parser.exeName() << " is a CATCH host application. Options are as follows:\n\n";
-            showUsage( std::cout );
-        }
+        cli.usage( std::cout, processName );
+        std::cout << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
 
     inline int Main( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
 
+        Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
+
         try {
-            CommandParser parser( argc, argv );
+            cli.parseInto( argc, argv, configData );
 
-            if( Command cmd = Options::HelpOptionParser().find( parser ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-
-                showHelp( parser );
+            if( configData.showHelp ) {
+                showHelp( cli, argv[0] );
                 Catch::cleanUp();        
                 return 0;
             }
-
-            parseCommandLine( argc, argv, configData );
         }
         catch( std::exception& ex ) {
-            std::cerr << ex.what() << "\n\nUsage: ...\n\n";
-            showUsage( std::cerr );
+            std::cerr   << "\nError in input:\n"
+                        << "  " << ex.what() << "\n\n";
+            cli.usage( std::cout, argv[0] );
             Catch::cleanUp();
             return (std::numeric_limits<int>::max)();
         }

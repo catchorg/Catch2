@@ -655,7 +655,11 @@ namespace Catch {
     };
     
     inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
-    inline void abortAfterX( ConfigData& config, int x ) { config.abortAfter = x; }
+    inline void abortAfterX( ConfigData& config, int x ) {
+        if( x < 1 )
+            throw std::runtime_error( "Value after -x or --abortAfter must be greater than zero" );
+        config.abortAfter = x;
+    }
     inline void addTestOrTags( ConfigData& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
@@ -670,9 +674,11 @@ namespace Catch {
         config.verbosity = (ConfigData::Verbosity::Level)level;
     }
     
-    inline void parseCommandLine( int argc, char* const argv[], ConfigData& config ) {
+    inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
         Clara::CommandLine<ConfigData> cli;
+
+        cli.bindProcessName( &ConfigData::processName );
 
         cli.bind( &ConfigData::showHelp )
             .describe( "display usage information" )
@@ -690,7 +696,7 @@ namespace Catch {
             .shortOpt( "t")
             .longOpt( "list-tags" );
 
-        cli.bind( &ConfigData::listTags )
+        cli.bind( &ConfigData::listReporters )
             .describe( "list all reporters" )
             .longOpt( "list-reporters" );
 
@@ -754,12 +760,7 @@ namespace Catch {
             .describe( "which test or tests to use" )
             .argName( "test name, pattern or tags" );
 
-//        cli.parseInto( argc, argv, config );
-
-        // Legacy way
-        CommandParser parser( argc, argv );
-        AllOptions options;
-        options.parseIntoConfig( parser, config );
+        return cli;
     }
         
 } // end namespace Catch
