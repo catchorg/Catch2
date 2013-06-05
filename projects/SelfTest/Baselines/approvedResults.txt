@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b38 (integration) host application.
+CatchSelfTest is a Catch v0.9 b38 (integration) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -2818,36 +2818,36 @@ with expansion:
   'abc' as a substring"
 
 -------------------------------------------------------------------------------
-example/factorial
+Factorials are computed
 -------------------------------------------------------------------------------
 MiscTests.cpp:263
 ...............................................................................
 
-MiscTests.cpp:265:
+MiscTests.cpp:264:
 PASSED:
   REQUIRE( Factorial(0) == 1 )
 with expansion:
   1 == 1
 
-MiscTests.cpp:266:
+MiscTests.cpp:265:
 PASSED:
   REQUIRE( Factorial(1) == 1 )
 with expansion:
   1 == 1
 
-MiscTests.cpp:267:
+MiscTests.cpp:266:
 PASSED:
   REQUIRE( Factorial(2) == 2 )
 with expansion:
   2 == 2
 
-MiscTests.cpp:268:
+MiscTests.cpp:267:
 PASSED:
   REQUIRE( Factorial(3) == 6 )
 with expansion:
   6 == 6
 
-MiscTests.cpp:269:
+MiscTests.cpp:268:
 PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
@@ -2856,7 +2856,7 @@ with expansion:
 -------------------------------------------------------------------------------
 empty
 -------------------------------------------------------------------------------
-MiscTests.cpp:272
+MiscTests.cpp:271
 ...............................................................................
 
 
@@ -2865,10 +2865,10 @@ No assertions in test case, 'empty'
 -------------------------------------------------------------------------------
 Nice descriptive name
 -------------------------------------------------------------------------------
-MiscTests.cpp:276
+MiscTests.cpp:275
 ...............................................................................
 
-MiscTests.cpp:278:
+MiscTests.cpp:277:
 warning:
   This one ran
 
@@ -2878,7 +2878,7 @@ No assertions in test case, 'Nice descriptive name'
 -------------------------------------------------------------------------------
 first tag
 -------------------------------------------------------------------------------
-MiscTests.cpp:280
+MiscTests.cpp:279
 ...............................................................................
 
 
@@ -2887,7 +2887,7 @@ No assertions in test case, 'first tag'
 -------------------------------------------------------------------------------
 second tag
 -------------------------------------------------------------------------------
-MiscTests.cpp:283
+MiscTests.cpp:282
 ...............................................................................
 
 
@@ -2896,16 +2896,16 @@ No assertions in test case, 'second tag'
 -------------------------------------------------------------------------------
 vectors can be sized and resized
 -------------------------------------------------------------------------------
-MiscTests.cpp:296
+MiscTests.cpp:295
 ...............................................................................
 
-MiscTests.cpp:300:
+MiscTests.cpp:299:
 PASSED:
   REQUIRE( v.size() == 5 )
 with expansion:
   5 == 5
 
-MiscTests.cpp:301:
+MiscTests.cpp:300:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -2915,16 +2915,16 @@ with expansion:
 vectors can be sized and resized
   resizing bigger changes size and capacity
 -------------------------------------------------------------------------------
-MiscTests.cpp:303
+MiscTests.cpp:302
 ...............................................................................
 
-MiscTests.cpp:306:
+MiscTests.cpp:305:
 PASSED:
   REQUIRE( v.size() == 10 )
 with expansion:
   10 == 10
 
-MiscTests.cpp:307:
+MiscTests.cpp:306:
 PASSED:
   REQUIRE( v.capacity() >= 10 )
 with expansion:
@@ -2933,16 +2933,16 @@ with expansion:
 -------------------------------------------------------------------------------
 vectors can be sized and resized
 -------------------------------------------------------------------------------
-MiscTests.cpp:296
+MiscTests.cpp:295
 ...............................................................................
 
-MiscTests.cpp:300:
+MiscTests.cpp:299:
 PASSED:
   REQUIRE( v.size() == 5 )
 with expansion:
   5 == 5
 
-MiscTests.cpp:301:
+MiscTests.cpp:300:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -2952,16 +2952,16 @@ with expansion:
 vectors can be sized and resized
   resizing smaller changes size but not capacity
 -------------------------------------------------------------------------------
-MiscTests.cpp:309
+MiscTests.cpp:308
 ...............................................................................
 
-MiscTests.cpp:312:
+MiscTests.cpp:311:
 PASSED:
   REQUIRE( v.size() == 0 )
 with expansion:
   0 == 0
 
-MiscTests.cpp:313:
+MiscTests.cpp:312:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -2972,10 +2972,10 @@ vectors can be sized and resized
   resizing smaller changes size but not capacity
   We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
-MiscTests.cpp:315
+MiscTests.cpp:314
 ...............................................................................
 
-MiscTests.cpp:319:
+MiscTests.cpp:318:
 PASSED:
   REQUIRE( v.capacity() == 0 )
 with expansion:
@@ -2984,16 +2984,16 @@ with expansion:
 -------------------------------------------------------------------------------
 vectors can be sized and resized
 -------------------------------------------------------------------------------
-MiscTests.cpp:296
+MiscTests.cpp:295
 ...............................................................................
 
-MiscTests.cpp:300:
+MiscTests.cpp:299:
 PASSED:
   REQUIRE( v.size() == 5 )
 with expansion:
   5 == 5
 
-MiscTests.cpp:301:
+MiscTests.cpp:300:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -3003,16 +3003,16 @@ with expansion:
 vectors can be sized and resized
   resizing smaller changes size but not capacity
 -------------------------------------------------------------------------------
-MiscTests.cpp:309
+MiscTests.cpp:308
 ...............................................................................
 
-MiscTests.cpp:312:
+MiscTests.cpp:311:
 PASSED:
   REQUIRE( v.size() == 0 )
 with expansion:
   0 == 0
 
-MiscTests.cpp:313:
+MiscTests.cpp:312:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -3021,16 +3021,16 @@ with expansion:
 -------------------------------------------------------------------------------
 vectors can be sized and resized
 -------------------------------------------------------------------------------
-MiscTests.cpp:296
+MiscTests.cpp:295
 ...............................................................................
 
-MiscTests.cpp:300:
+MiscTests.cpp:299:
 PASSED:
   REQUIRE( v.size() == 5 )
 with expansion:
   5 == 5
 
-MiscTests.cpp:301:
+MiscTests.cpp:300:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -3040,16 +3040,16 @@ with expansion:
 vectors can be sized and resized
   reserving bigger changes capacity but not size
 -------------------------------------------------------------------------------
-MiscTests.cpp:322
+MiscTests.cpp:321
 ...............................................................................
 
-MiscTests.cpp:325:
+MiscTests.cpp:324:
 PASSED:
   REQUIRE( v.size() == 5 )
 with expansion:
   5 == 5
 
-MiscTests.cpp:326:
+MiscTests.cpp:325:
 PASSED:
   REQUIRE( v.capacity() >= 10 )
 with expansion:
@@ -3058,16 +3058,16 @@ with expansion:
 -------------------------------------------------------------------------------
 vectors can be sized and resized
 -------------------------------------------------------------------------------
-MiscTests.cpp:296
+MiscTests.cpp:295
 ...............................................................................
 
-MiscTests.cpp:300:
+MiscTests.cpp:299:
 PASSED:
   REQUIRE( v.size() == 5 )
 with expansion:
   5 == 5
 
-MiscTests.cpp:301:
+MiscTests.cpp:300:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -3077,16 +3077,16 @@ with expansion:
 vectors can be sized and resized
   reserving smaller does not change size or capacity
 -------------------------------------------------------------------------------
-MiscTests.cpp:328
+MiscTests.cpp:327
 ...............................................................................
 
-MiscTests.cpp:331:
+MiscTests.cpp:330:
 PASSED:
   REQUIRE( v.size() == 5 )
 with expansion:
   5 == 5
 
-MiscTests.cpp:332:
+MiscTests.cpp:331:
 PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
@@ -3540,8 +3540,8 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
-selftest/parser/2
-  default
+Process can be configured on command line
+  default - no arguments
 -------------------------------------------------------------------------------
 TestMain.cpp:96
 ...............................................................................
@@ -3575,9 +3575,9 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   test lists
-  -t/1
+  1 test
 -------------------------------------------------------------------------------
 TestMain.cpp:107
 ...............................................................................
@@ -3605,9 +3605,9 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   test lists
-  -t/exclude:1
+  Specify one test case exclusion using exclude:
 -------------------------------------------------------------------------------
 TestMain.cpp:116
 ...............................................................................
@@ -3635,9 +3635,9 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   test lists
-  --test/1
+  Specify one test case exclusion using ~
 -------------------------------------------------------------------------------
 TestMain.cpp:126
 ...............................................................................
@@ -3654,20 +3654,20 @@ with expansion:
 
 TestMain.cpp:132:
 PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
+  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
 with expansion:
   false == false
 
 TestMain.cpp:133:
 PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) )
+  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
 with expansion:
   true
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   test lists
-  --test/exclude:1
+  Specify two test cases using -t
 -------------------------------------------------------------------------------
 TestMain.cpp:136
 ...............................................................................
@@ -3684,395 +3684,275 @@ with expansion:
 
 TestMain.cpp:142:
 PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
+  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
 with expansion:
   false == false
 
 TestMain.cpp:143:
 PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  test lists
-  --test/exclude:2
--------------------------------------------------------------------------------
-TestMain.cpp:146
-...............................................................................
-
-TestMain.cpp:148:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:151:
-PASSED:
-  REQUIRE( cfg.filters().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:152:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:153:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  test lists
-  -t/2
--------------------------------------------------------------------------------
-TestMain.cpp:156
-...............................................................................
-
-TestMain.cpp:158:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:161:
-PASSED:
-  REQUIRE( cfg.filters().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:162:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:163:
-PASSED:
   REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) )
 with expansion:
   true
 
-TestMain.cpp:164:
+TestMain.cpp:144:
 PASSED:
   REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test2" ) ) )
 with expansion:
   true
 
 -------------------------------------------------------------------------------
-selftest/parser/2
-  test lists
-  -t/0
--------------------------------------------------------------------------------
-TestMain.cpp:167
-...............................................................................
-
-TestMain.cpp:169:
-PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "at least 1" ) )
-with expansion:
-  "Error while parsing arguments. Expected at least 1 argument." contains: "at
-  least 1"
-
--------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   reporter
   -r/console
 -------------------------------------------------------------------------------
-TestMain.cpp:174
+TestMain.cpp:149
 ...............................................................................
 
-TestMain.cpp:176:
+TestMain.cpp:151:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:178:
+TestMain.cpp:153:
 PASSED:
   REQUIRE( config.reporterName == "console" )
 with expansion:
   "console" == "console"
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   reporter
   -r/xml
 -------------------------------------------------------------------------------
-TestMain.cpp:180
+TestMain.cpp:155
 ...............................................................................
 
-TestMain.cpp:182:
+TestMain.cpp:157:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:184:
+TestMain.cpp:159:
 PASSED:
   REQUIRE( config.reporterName == "xml" )
 with expansion:
   "xml" == "xml"
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   reporter
   --reporter/junit
 -------------------------------------------------------------------------------
-TestMain.cpp:186
+TestMain.cpp:161
 ...............................................................................
 
-TestMain.cpp:188:
+TestMain.cpp:163:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:190:
+TestMain.cpp:165:
 PASSED:
   REQUIRE( config.reporterName == "junit" )
 with expansion:
   "junit" == "junit"
 
 -------------------------------------------------------------------------------
-selftest/parser/2
-  reporter
-  -r/error
--------------------------------------------------------------------------------
-TestMain.cpp:192
-...............................................................................
-
-TestMain.cpp:194:
-PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "1 argument" ) )
-with expansion:
-  "Error while parsing arguments. Expected 1 argument. Arguments were: one two"
-  contains: "1 argument"
-
--------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   debugger
   -b
 -------------------------------------------------------------------------------
-TestMain.cpp:199
+TestMain.cpp:170
 ...............................................................................
 
-TestMain.cpp:201:
+TestMain.cpp:172:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:203:
+TestMain.cpp:174:
 PASSED:
   REQUIRE( config.shouldDebugBreak == true )
 with expansion:
   true == true
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   debugger
   --break
 -------------------------------------------------------------------------------
-TestMain.cpp:205
+TestMain.cpp:176
 ...............................................................................
 
-TestMain.cpp:207:
+TestMain.cpp:178:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:209:
+TestMain.cpp:180:
 PASSED:
   REQUIRE( config.shouldDebugBreak )
 with expansion:
   true
 
 -------------------------------------------------------------------------------
-selftest/parser/2
-  debugger
-  -b
--------------------------------------------------------------------------------
-TestMain.cpp:211
-...............................................................................
-
-TestMain.cpp:213:
-PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "0 arguments" ) )
-with expansion:
-  "Error while parsing arguments. Expected 0 arguments. Arguments were:
-  unexpected" contains: "0 arguments"
-
--------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   abort
-  -a
+  -a aborts after first failure
 -------------------------------------------------------------------------------
-TestMain.cpp:218
+TestMain.cpp:185
 ...............................................................................
 
-TestMain.cpp:220:
+TestMain.cpp:187:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:222:
+TestMain.cpp:189:
 PASSED:
   REQUIRE( config.abortAfter == 1 )
 with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   abort
-  -a/2
+  -x 2 aborts after two failures
 -------------------------------------------------------------------------------
-TestMain.cpp:224
+TestMain.cpp:191
 ...............................................................................
 
-TestMain.cpp:226:
+TestMain.cpp:193:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:228:
+TestMain.cpp:195:
 PASSED:
   REQUIRE( config.abortAfter == 2 )
 with expansion:
   2 == 2
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   abort
-  -a/error/0
+  -x must be greater than zero
 -------------------------------------------------------------------------------
-TestMain.cpp:230
+TestMain.cpp:197
 ...............................................................................
 
-TestMain.cpp:232:
+TestMain.cpp:199:
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
 with expansion:
-  "Error while parsing arguments. threshold must be a number greater than zero.
-  Arguments were: 0" contains: "greater than zero"
+  "Value after -x or --abortAfter must be greater than zero while parsing: (-x,
+  --abortx <number of failures>)" contains: "greater than zero"
 
 -------------------------------------------------------------------------------
-selftest/parser/2
+Process can be configured on command line
   abort
-  -a/error/non numeric
+  -x must be numeric
 -------------------------------------------------------------------------------
-TestMain.cpp:234
+TestMain.cpp:201
 ...............................................................................
 
-TestMain.cpp:236:
+TestMain.cpp:203:
 PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
+  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "-x" ) )
 with expansion:
-  "Error while parsing arguments. threshold must be a number greater than zero.
-  Arguments were: oops" contains: "greater than zero"
+  "Unable to convert oops to destination type while parsing: (-x, --abortx
+  <number of failures>)" contains: "-x"
 
 -------------------------------------------------------------------------------
-selftest/parser/2
-  abort
-  -a/error/two args
+Process can be configured on command line
+  nothrow
+  -e
+-------------------------------------------------------------------------------
+TestMain.cpp:208
+...............................................................................
+
+TestMain.cpp:210:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:212:
+PASSED:
+  REQUIRE( config.noThrow == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  nothrow
+  --nothrow
+-------------------------------------------------------------------------------
+TestMain.cpp:214
+...............................................................................
+
+TestMain.cpp:216:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:218:
+PASSED:
+  REQUIRE( config.noThrow == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  output filename
+  -o filename
+-------------------------------------------------------------------------------
+TestMain.cpp:223
+...............................................................................
+
+TestMain.cpp:225:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:227:
+PASSED:
+  REQUIRE( config.outputFilename == "filename.ext" )
+with expansion:
+  "filename.ext" == "filename.ext"
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  output filename
+  --out
+-------------------------------------------------------------------------------
+TestMain.cpp:229
+...............................................................................
+
+TestMain.cpp:231:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:233:
+PASSED:
+  REQUIRE( config.outputFilename == "filename.ext" )
+with expansion:
+  "filename.ext" == "filename.ext"
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  combinations
+  Single character flags can be combined
 -------------------------------------------------------------------------------
 TestMain.cpp:238
 ...............................................................................
 
 TestMain.cpp:240:
 PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "0 and 1 argument" ) )
-with expansion:
-  "Error while parsing arguments. Expected between 0 and 1 argument. Arguments
-  were: 1 2" contains: "0 and 1 argument"
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  nothrow
-  -nt
--------------------------------------------------------------------------------
-TestMain.cpp:245
-...............................................................................
-
-TestMain.cpp:247:
-PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
 
-TestMain.cpp:249:
-PASSED:
-  REQUIRE( config.noThrow == true )
-with expansion:
-  true == true
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  nothrow
-  --nothrow
--------------------------------------------------------------------------------
-TestMain.cpp:251
-...............................................................................
-
-TestMain.cpp:253:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:255:
-PASSED:
-  REQUIRE( config.noThrow == true )
-with expansion:
-  true == true
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  output filename
-  -o filename
--------------------------------------------------------------------------------
-TestMain.cpp:260
-...............................................................................
-
-TestMain.cpp:262:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:264:
-PASSED:
-  REQUIRE( config.outputFilename == "filename.ext" )
-with expansion:
-  "filename.ext" == "filename.ext"
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  output filename
-  --out
--------------------------------------------------------------------------------
-TestMain.cpp:266
-...............................................................................
-
-TestMain.cpp:268:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:270:
-PASSED:
-  REQUIRE( config.outputFilename == "filename.ext" )
-with expansion:
-  "filename.ext" == "filename.ext"
-
--------------------------------------------------------------------------------
-selftest/parser/2
-  combinations
-  -a -b
--------------------------------------------------------------------------------
-TestMain.cpp:275
-...............................................................................
-
-TestMain.cpp:277:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:279:
+TestMain.cpp:242:
 PASSED:
   CHECK( config.abortAfter == 1 )
 with expansion:
   1 == 1
 
-TestMain.cpp:280:
+TestMain.cpp:243:
 PASSED:
   CHECK( config.shouldDebugBreak )
 with expansion:
   true
 
-TestMain.cpp:281:
+TestMain.cpp:244:
 PASSED:
   CHECK( config.noThrow == true )
 with expansion:
@@ -4081,40 +3961,40 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/test filter
 -------------------------------------------------------------------------------
-TestMain.cpp:286
+TestMain.cpp:249
 ...............................................................................
 
-TestMain.cpp:290:
+TestMain.cpp:253:
 PASSED:
   CHECK( matchAny.shouldInclude( fakeTestCase( "any" ) ) )
 with expansion:
   true
 
-TestMain.cpp:291:
+TestMain.cpp:254:
 PASSED:
   CHECK( matchNone.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:296:
+TestMain.cpp:259:
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:297:
+TestMain.cpp:260:
 PASSED:
   CHECK( matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) )
 with expansion:
   true
 
-TestMain.cpp:299:
+TestMain.cpp:262:
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "./any" ) ) )
 with expansion:
   true
 
-TestMain.cpp:300:
+TestMain.cpp:263:
 PASSED:
   CHECK( matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false )
 with expansion:
@@ -4123,28 +4003,28 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/test filters
 -------------------------------------------------------------------------------
-TestMain.cpp:303
+TestMain.cpp:266
 ...............................................................................
 
-TestMain.cpp:311:
+TestMain.cpp:274:
 PASSED:
   CHECK( matchHidden.shouldInclude( fakeTestCase( "./something" ) ) )
 with expansion:
   true
 
-TestMain.cpp:313:
+TestMain.cpp:276:
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "any" ) ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:314:
+TestMain.cpp:277:
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "./something" ) ) )
 with expansion:
   true
 
-TestMain.cpp:315:
+TestMain.cpp:278:
 PASSED:
   CHECK( filters.shouldInclude( fakeTestCase( "./anything" ) ) == false )
 with expansion:
@@ -4153,16 +4033,16 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/filter/prefix wildcard
 -------------------------------------------------------------------------------
-TestMain.cpp:318
+TestMain.cpp:281
 ...............................................................................
 
-TestMain.cpp:321:
+TestMain.cpp:284:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
 with expansion:
   true
 
-TestMain.cpp:322:
+TestMain.cpp:285:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false )
 with expansion:
@@ -4171,111 +4051,83 @@ with expansion:
 -------------------------------------------------------------------------------
 selftest/filter/wildcard at both ends
 -------------------------------------------------------------------------------
-TestMain.cpp:324
+TestMain.cpp:287
 ...............................................................................
 
-TestMain.cpp:327:
+TestMain.cpp:290:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
 with expansion:
   true
 
-TestMain.cpp:328:
+TestMain.cpp:291:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) )
 with expansion:
   true
 
-TestMain.cpp:329:
+TestMain.cpp:292:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) )
 with expansion:
   true
 
-TestMain.cpp:330:
+TestMain.cpp:293:
 PASSED:
   CHECK( matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false )
 with expansion:
   false == false
 
 -------------------------------------------------------------------------------
-selftest/option parsers
--------------------------------------------------------------------------------
-TestMain.cpp:339
-...............................................................................
-
-TestMain.cpp:350:
-PASSED:
-  CHECK_NOTHROW( opt.parseIntoConfig( parser, config ) )
-
-TestMain.cpp:353:
-PASSED:
-  REQUIRE( cfg.filters().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:354:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:355:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
 selftest/tags
   one tag
 -------------------------------------------------------------------------------
-TestMain.cpp:366
+TestMain.cpp:310
 ...............................................................................
 
-TestMain.cpp:369:
+TestMain.cpp:313:
 PASSED:
   CHECK( oneTag.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
 
-TestMain.cpp:370:
+TestMain.cpp:314:
 PASSED:
   CHECK( oneTag.hasTag( "one" ) )
 with expansion:
   true
 
-TestMain.cpp:371:
+TestMain.cpp:315:
 PASSED:
   CHECK( oneTag.getTags().size() == 1 )
 with expansion:
   1 == 1
 
-TestMain.cpp:373:
+TestMain.cpp:317:
 PASSED:
   CHECK( oneTag.matchesTags( p1 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:374:
+TestMain.cpp:318:
 PASSED:
   CHECK( oneTag.matchesTags( p2 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:375:
+TestMain.cpp:319:
 PASSED:
   CHECK( oneTag.matchesTags( p3 ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:376:
+TestMain.cpp:320:
 PASSED:
   CHECK( oneTag.matchesTags( p4 ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:377:
+TestMain.cpp:321:
 PASSED:
   CHECK( oneTag.matchesTags( p5 ) == false )
 with expansion:
@@ -4285,70 +4137,70 @@ with expansion:
 selftest/tags
   two tags
 -------------------------------------------------------------------------------
-TestMain.cpp:380
+TestMain.cpp:324
 ...............................................................................
 
-TestMain.cpp:383:
+TestMain.cpp:327:
 PASSED:
   CHECK( twoTags.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
 
-TestMain.cpp:384:
+TestMain.cpp:328:
 PASSED:
   CHECK( twoTags.hasTag( "one" ) )
 with expansion:
   true
 
-TestMain.cpp:385:
+TestMain.cpp:329:
 PASSED:
   CHECK( twoTags.hasTag( "two" ) )
 with expansion:
   true
 
-TestMain.cpp:386:
+TestMain.cpp:330:
 PASSED:
   CHECK( twoTags.hasTag( "Two" ) )
 with expansion:
   true
 
-TestMain.cpp:387:
+TestMain.cpp:331:
 PASSED:
   CHECK( twoTags.hasTag( "three" ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:388:
+TestMain.cpp:332:
 PASSED:
   CHECK( twoTags.getTags().size() == 2 )
 with expansion:
   2 == 2
 
-TestMain.cpp:390:
+TestMain.cpp:334:
 PASSED:
   CHECK( twoTags.matchesTags( p1 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:391:
+TestMain.cpp:335:
 PASSED:
   CHECK( twoTags.matchesTags( p2 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:392:
+TestMain.cpp:336:
 PASSED:
   CHECK( twoTags.matchesTags( p3 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:393:
+TestMain.cpp:337:
 PASSED:
   CHECK( twoTags.matchesTags( p4 ) == true )
 with expansion:
   true == true
 
-TestMain.cpp:394:
+TestMain.cpp:338:
 PASSED:
   CHECK( twoTags.matchesTags( p5 ) == true )
 with expansion:
@@ -4358,28 +4210,28 @@ with expansion:
 selftest/tags
   one tag with characters either side
 -------------------------------------------------------------------------------
-TestMain.cpp:397
+TestMain.cpp:341
 ...............................................................................
 
-TestMain.cpp:400:
+TestMain.cpp:344:
 PASSED:
   CHECK( oneTagWithExtras.getTestCaseInfo().description == "1234" )
 with expansion:
   "1234" == "1234"
 
-TestMain.cpp:401:
+TestMain.cpp:345:
 PASSED:
   CHECK( oneTagWithExtras.hasTag( "one" ) )
 with expansion:
   true
 
-TestMain.cpp:402:
+TestMain.cpp:346:
 PASSED:
   CHECK( oneTagWithExtras.hasTag( "two" ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:403:
+TestMain.cpp:347:
 PASSED:
   CHECK( oneTagWithExtras.getTags().size() == 1 )
 with expansion:
@@ -4389,22 +4241,22 @@ with expansion:
 selftest/tags
   start of a tag, but not closed
 -------------------------------------------------------------------------------
-TestMain.cpp:406
+TestMain.cpp:350
 ...............................................................................
 
-TestMain.cpp:410:
+TestMain.cpp:354:
 PASSED:
   CHECK( oneTagOpen.getTestCaseInfo().description == "[one" )
 with expansion:
   "[one" == "[one"
 
-TestMain.cpp:411:
+TestMain.cpp:355:
 PASSED:
   CHECK( oneTagOpen.hasTag( "one" ) == false )
 with expansion:
   false == false
 
-TestMain.cpp:412:
+TestMain.cpp:356:
 PASSED:
   CHECK( oneTagOpen.getTags().size() == 0 )
 with expansion:
@@ -4414,28 +4266,28 @@ with expansion:
 selftest/tags
   hidden
 -------------------------------------------------------------------------------
-TestMain.cpp:415
+TestMain.cpp:359
 ...............................................................................
 
-TestMain.cpp:418:
+TestMain.cpp:362:
 PASSED:
   CHECK( oneTag.getTestCaseInfo().description == "" )
 with expansion:
   "" == ""
 
-TestMain.cpp:419:
+TestMain.cpp:363:
 PASSED:
   CHECK( oneTag.hasTag( "hide" ) )
 with expansion:
   true
 
-TestMain.cpp:420:
+TestMain.cpp:364:
 PASSED:
   CHECK( oneTag.isHidden() )
 with expansion:
   true
 
-TestMain.cpp:422:
+TestMain.cpp:366:
 PASSED:
   CHECK( oneTag.matchesTags( "~[hide]" ) == false )
 with expansion:
@@ -4446,10 +4298,10 @@ Long strings can be wrapped
   plain string
   No wrapping
 -------------------------------------------------------------------------------
-TestMain.cpp:434
+TestMain.cpp:378
 ...............................................................................
 
-TestMain.cpp:435:
+TestMain.cpp:379:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
 with expansion:
@@ -4457,7 +4309,7 @@ with expansion:
   ==
   "one two three four"
 
-TestMain.cpp:436:
+TestMain.cpp:380:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString )
 with expansion:
@@ -4470,10 +4322,10 @@ Long strings can be wrapped
   plain string
   Wrapped once
 -------------------------------------------------------------------------------
-TestMain.cpp:438
+TestMain.cpp:382
 ...............................................................................
 
-TestMain.cpp:439:
+TestMain.cpp:383:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4483,7 +4335,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:440:
+TestMain.cpp:384:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4493,7 +4345,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:441:
+TestMain.cpp:385:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4503,7 +4355,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:442:
+TestMain.cpp:386:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" )
 with expansion:
@@ -4513,7 +4365,7 @@ with expansion:
   "one two three
   four"
 
-TestMain.cpp:443:
+TestMain.cpp:387:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" )
 with expansion:
@@ -4528,10 +4380,10 @@ Long strings can be wrapped
   plain string
   Wrapped twice
 -------------------------------------------------------------------------------
-TestMain.cpp:445
+TestMain.cpp:389
 ...............................................................................
 
-TestMain.cpp:446:
+TestMain.cpp:390:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4543,7 +4395,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:447:
+TestMain.cpp:391:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4555,7 +4407,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:448:
+TestMain.cpp:392:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4572,10 +4424,10 @@ Long strings can be wrapped
   plain string
   Wrapped three times
 -------------------------------------------------------------------------------
-TestMain.cpp:450
+TestMain.cpp:394
 ...............................................................................
 
-TestMain.cpp:451:
+TestMain.cpp:395:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
@@ -4589,7 +4441,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:452:
+TestMain.cpp:396:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
@@ -4608,10 +4460,10 @@ Long strings can be wrapped
   plain string
   Short wrap
 -------------------------------------------------------------------------------
-TestMain.cpp:454
+TestMain.cpp:398
 ...............................................................................
 
-TestMain.cpp:455:
+TestMain.cpp:399:
 PASSED:
   CHECK( Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" )
 with expansion:
@@ -4621,7 +4473,7 @@ with expansion:
   "abc-
   def"
 
-TestMain.cpp:456:
+TestMain.cpp:400:
 PASSED:
   CHECK( Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" )
 with expansion:
@@ -4631,7 +4483,7 @@ with expansion:
   "abc-
   defg"
 
-TestMain.cpp:457:
+TestMain.cpp:401:
 PASSED:
   CHECK( Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" )
 with expansion:
@@ -4643,7 +4495,7 @@ with expansion:
   def-
   gh"
 
-TestMain.cpp:459:
+TestMain.cpp:403:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" )
 with expansion:
@@ -4659,7 +4511,7 @@ with expansion:
   ee
   four"
 
-TestMain.cpp:460:
+TestMain.cpp:404:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" )
 with expansion:
@@ -4682,34 +4534,34 @@ Long strings can be wrapped
   plain string
   As container
 -------------------------------------------------------------------------------
-TestMain.cpp:462
+TestMain.cpp:406
 ...............................................................................
 
-TestMain.cpp:464:
+TestMain.cpp:408:
 PASSED:
   REQUIRE( text.size() == 4 )
 with expansion:
   4 == 4
 
-TestMain.cpp:465:
+TestMain.cpp:409:
 PASSED:
   CHECK( text[0] == "one" )
 with expansion:
   "one" == "one"
 
-TestMain.cpp:466:
+TestMain.cpp:410:
 PASSED:
   CHECK( text[1] == "two" )
 with expansion:
   "two" == "two"
 
-TestMain.cpp:467:
+TestMain.cpp:411:
 PASSED:
   CHECK( text[2] == "three" )
 with expansion:
   "three" == "three"
 
-TestMain.cpp:468:
+TestMain.cpp:412:
 PASSED:
   CHECK( text[3] == "four" )
 with expansion:
@@ -4720,10 +4572,10 @@ Long strings can be wrapped
   plain string
   Indent first line differently
 -------------------------------------------------------------------------------
-TestMain.cpp:470
+TestMain.cpp:414
 ...............................................................................
 
-TestMain.cpp:475:
+TestMain.cpp:419:
 PASSED:
   CHECK( text.toString() == " one two\n    three\n    four" )
 with expansion:
@@ -4740,10 +4592,10 @@ Long strings can be wrapped
   With newlines
   No wrapping
 -------------------------------------------------------------------------------
-TestMain.cpp:485
+TestMain.cpp:429
 ...............................................................................
 
-TestMain.cpp:486:
+TestMain.cpp:430:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
 with expansion:
@@ -4753,7 +4605,7 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:487:
+TestMain.cpp:431:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString )
 with expansion:
@@ -4763,7 +4615,7 @@ with expansion:
   "one two
   three four"
 
-TestMain.cpp:488:
+TestMain.cpp:432:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString )
 with expansion:
@@ -4778,10 +4630,10 @@ Long strings can be wrapped
   With newlines
   Trailing newline
 -------------------------------------------------------------------------------
-TestMain.cpp:490
+TestMain.cpp:434
 ...............................................................................
 
-TestMain.cpp:491:
+TestMain.cpp:435:
 PASSED:
   CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" )
 with expansion:
@@ -4791,13 +4643,13 @@ with expansion:
   "abcdef
   "
 
-TestMain.cpp:492:
+TestMain.cpp:436:
 PASSED:
   CHECK( Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" )
 with expansion:
   "abcdef" == "abcdef"
 
-TestMain.cpp:493:
+TestMain.cpp:437:
 PASSED:
   CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" )
 with expansion:
@@ -4812,10 +4664,10 @@ Long strings can be wrapped
   With newlines
   Wrapped once
 -------------------------------------------------------------------------------
-TestMain.cpp:495
+TestMain.cpp:439
 ...............................................................................
 
-TestMain.cpp:496:
+TestMain.cpp:440:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4827,7 +4679,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:497:
+TestMain.cpp:441:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4839,7 +4691,7 @@ with expansion:
   three
   four"
 
-TestMain.cpp:498:
+TestMain.cpp:442:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" )
 with expansion:
@@ -4856,10 +4708,10 @@ Long strings can be wrapped
   With newlines
   Wrapped twice
 -------------------------------------------------------------------------------
-TestMain.cpp:500
+TestMain.cpp:444
 ...............................................................................
 
-TestMain.cpp:501:
+TestMain.cpp:445:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" )
 with expansion:
@@ -4877,10 +4729,10 @@ with expansion:
 Long strings can be wrapped
   With tabs
 -------------------------------------------------------------------------------
-TestMain.cpp:505
+TestMain.cpp:449
 ...............................................................................
 
-TestMain.cpp:511:
+TestMain.cpp:455:
 PASSED:
   CHECK( Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six" )
 with expansion:
@@ -4899,7 +4751,7 @@ hello
 -------------------------------------------------------------------------------
 Strings can be rendered with colour
 -------------------------------------------------------------------------------
-TestMain.cpp:590
+TestMain.cpp:534
 ...............................................................................
 
 
@@ -4908,16 +4760,16 @@ No assertions in test case, 'Strings can be rendered with colour'
 -------------------------------------------------------------------------------
 Text can be formatted using the Text class
 -------------------------------------------------------------------------------
-TestMain.cpp:609
+TestMain.cpp:553
 ...............................................................................
 
-TestMain.cpp:611:
+TestMain.cpp:555:
 PASSED:
   CHECK( Text( "hi there" ).toString() == "hi there" )
 with expansion:
   "hi there" == "hi there"
 
-TestMain.cpp:616:
+TestMain.cpp:560:
 PASSED:
   CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" )
 with expansion:
@@ -5514,12 +5366,25 @@ with message:
 
 -------------------------------------------------------------------------------
 cmdline
-  arg separated by spaces
+  process name
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:58
+CmdLineTests.cpp:60
 ...............................................................................
 
-CmdLineTests.cpp:62:
+CmdLineTests.cpp:64:
+PASSED:
+  CHECK( config.processName == "test" )
+with expansion:
+  "test" == "test"
+
+-------------------------------------------------------------------------------
+cmdline
+  arg separated by spaces
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:66
+...............................................................................
+
+CmdLineTests.cpp:70:
 PASSED:
   CHECK( config.fileName == "filename.ext" )
 with expansion:
@@ -5529,10 +5394,10 @@ with expansion:
 cmdline
   arg separated by colon
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:64
+CmdLineTests.cpp:72
 ...............................................................................
 
-CmdLineTests.cpp:68:
+CmdLineTests.cpp:76:
 PASSED:
   CHECK( config.fileName == "filename.ext" )
 with expansion:
@@ -5542,10 +5407,10 @@ with expansion:
 cmdline
   arg separated by =
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:70
+CmdLineTests.cpp:78
 ...............................................................................
 
-CmdLineTests.cpp:74:
+CmdLineTests.cpp:82:
 PASSED:
   CHECK( config.fileName == "filename.ext" )
 with expansion:
@@ -5555,10 +5420,10 @@ with expansion:
 cmdline
   long opt
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:76
+CmdLineTests.cpp:84
 ...............................................................................
 
-CmdLineTests.cpp:80:
+CmdLineTests.cpp:88:
 PASSED:
   CHECK( config.fileName == "%stdout" )
 with expansion:
@@ -5568,10 +5433,10 @@ with expansion:
 cmdline
   a number
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:87
+CmdLineTests.cpp:95
 ...............................................................................
 
-CmdLineTests.cpp:91:
+CmdLineTests.cpp:99:
 PASSED:
   CHECK( config.number == 42 )
 with expansion:
@@ -5581,14 +5446,14 @@ with expansion:
 cmdline
   not a number
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:93
+CmdLineTests.cpp:101
 ...............................................................................
 
-CmdLineTests.cpp:95:
+CmdLineTests.cpp:103:
 PASSED:
   CHECK_THROWS( parseInto( cli, argv, config ) )
 
-CmdLineTests.cpp:97:
+CmdLineTests.cpp:105:
 PASSED:
   CHECK( config.number == 0 )
 with expansion:
@@ -5598,22 +5463,22 @@ with expansion:
 cmdline
   two parsers
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:100
+CmdLineTests.cpp:108
 ...............................................................................
 
-CmdLineTests.cpp:115:
+CmdLineTests.cpp:123:
 PASSED:
   CHECK( config1.number == 42 )
 with expansion:
   42 == 42
 
-CmdLineTests.cpp:117:
+CmdLineTests.cpp:125:
 PASSED:
   REQUIRE_FALSE( unusedTokens.empty() )
 with expansion:
   !false
 
-CmdLineTests.cpp:119:
+CmdLineTests.cpp:127:
 PASSED:
   CHECK( config2.description == "some text" )
 with expansion:
@@ -5624,10 +5489,10 @@ cmdline
   methods
   in range
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:128
+CmdLineTests.cpp:136
 ...............................................................................
 
-CmdLineTests.cpp:132:
+CmdLineTests.cpp:140:
 PASSED:
   REQUIRE( config.index == 3 )
 with expansion:
@@ -5638,10 +5503,10 @@ cmdline
   methods
   out of range
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:134
+CmdLineTests.cpp:142
 ...............................................................................
 
-CmdLineTests.cpp:137:
+CmdLineTests.cpp:145:
 PASSED:
   REQUIRE_THROWS( parseInto( cli, argv, config ) )
 
@@ -5650,10 +5515,10 @@ cmdline
   flags
   set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:146
+CmdLineTests.cpp:154
 ...............................................................................
 
-CmdLineTests.cpp:150:
+CmdLineTests.cpp:158:
 PASSED:
   REQUIRE( config.flag )
 with expansion:
@@ -5664,618 +5529,48 @@ cmdline
   flags
   not set
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:152
+CmdLineTests.cpp:160
 ...............................................................................
 
-CmdLineTests.cpp:156:
+CmdLineTests.cpp:164:
 PASSED:
   REQUIRE( config.flag == false )
 with expansion:
   false == false
 
-usage:
-  testApp <first arg> <second arg> [<any arg> ...] [options]
-
-where options are:
-  -o, --output <filename>  specifies output file
-  -n <an integral value>
-
-
 -------------------------------------------------------------------------------
 cmdline
   positional
 -------------------------------------------------------------------------------
-CmdLineTests.cpp:159
+CmdLineTests.cpp:167
 ...............................................................................
 
-CmdLineTests.cpp:177:
+CmdLineTests.cpp:185:
 PASSED:
   REQUIRE( config.firstPos == "1st" )
 with expansion:
   "1st" == "1st"
 
-CmdLineTests.cpp:178:
+CmdLineTests.cpp:186:
 PASSED:
   REQUIRE( config.secondPos == "2nd" )
 with expansion:
   "2nd" == "2nd"
 
-CmdLineTests.cpp:179:
+CmdLineTests.cpp:187:
 PASSED:
   REQUIRE( config.unpositional == "3rd" )
 with expansion:
   "3rd" == "3rd"
 
-usage:
-  CatchTestApp [<test name, pattern or tags> ...] [options]
-
-where options are:
-  -?, -h, --help                     display usage information
-  -l, --list-tests                   list all (or matching) test cases
-  -t, --list-tags                    list all (or matching) tags
-  --list-reporters                   list all reporters
-  -s, --success                      include successful tests in output
-  -b, --break                        break into debugger on failure
-  -e, --nothrow                      Skip exception tests
-  -o, --out <filename>               output filename
-  -r, --reporter <name[:filename]>   reporter to use - defaults to console
-  -n, --name <name>                  suite name
-  -a, --abort                        abort at first failure
-  -x, --abortx <number of failures>  abort after x failures
-  -w, --warn <warning name>          enable warnings
-  -v, --verbosity <level>            level of verbosity (0=no output)
-
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: We ask for usage strings
-      Then: It prints the usage strings
--------------------------------------------------------------------------------
-CmdLineTests.cpp:325
-...............................................................................
-
-
-No assertions in section, '    Then: It prints the usage strings'
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: Multiple flags are combined
--------------------------------------------------------------------------------
-CmdLineTests.cpp:330
-...............................................................................
-
-CmdLineTests.cpp:332:
-PASSED:
-  CHECK_FALSE( config.showSuccessfulTests )
-with expansion:
-  !false
-
-CmdLineTests.cpp:333:
-PASSED:
-  CHECK_FALSE( config.noThrow )
-with expansion:
-  !false
-
-CmdLineTests.cpp:334:
-PASSED:
-  CHECK_FALSE( config.breakIntoDebugger )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: Multiple flags are combined
-      Then: All the flags are set
--------------------------------------------------------------------------------
-CmdLineTests.cpp:339
-...............................................................................
-
-CmdLineTests.cpp:340:
-PASSED:
-  CHECK( config.showSuccessfulTests )
-with expansion:
-  true
-
-CmdLineTests.cpp:341:
-PASSED:
-  CHECK( config.noThrow )
-with expansion:
-  true
-
-CmdLineTests.cpp:342:
-PASSED:
-  CHECK( config.breakIntoDebugger )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: Multiple flags are combined
--------------------------------------------------------------------------------
-CmdLineTests.cpp:330
-...............................................................................
-
-CmdLineTests.cpp:332:
-PASSED:
-  CHECK_FALSE( config.showSuccessfulTests )
-with expansion:
-  !false
-
-CmdLineTests.cpp:333:
-PASSED:
-  CHECK_FALSE( config.noThrow )
-with expansion:
-  !false
-
-CmdLineTests.cpp:334:
-PASSED:
-  CHECK_FALSE( config.breakIntoDebugger )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: A flag is set via a nullary method
--------------------------------------------------------------------------------
-CmdLineTests.cpp:345
-...............................................................................
-
-CmdLineTests.cpp:346:
-PASSED:
-  CHECK( config.abortAfter == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: A flag is set via a nullary method
-      Then: The flag is set
--------------------------------------------------------------------------------
-CmdLineTests.cpp:351
-...............................................................................
-
-CmdLineTests.cpp:352:
-PASSED:
-  REQUIRE( config.abortAfter == 1 )
-with expansion:
-  1 == 1
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: A flag is set via a nullary method
--------------------------------------------------------------------------------
-CmdLineTests.cpp:345
-...............................................................................
-
-CmdLineTests.cpp:346:
-PASSED:
-  CHECK( config.abortAfter == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: A flag is set via a unary method
--------------------------------------------------------------------------------
-CmdLineTests.cpp:354
-...............................................................................
-
-CmdLineTests.cpp:355:
-PASSED:
-  CHECK( config.abortAfter == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: A flag is set via a unary method
-      Then: The flag is set
--------------------------------------------------------------------------------
-CmdLineTests.cpp:360
-...............................................................................
-
-CmdLineTests.cpp:361:
-PASSED:
-  REQUIRE( config.abortAfter == 2 )
-with expansion:
-  2 == 2
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: A flag is set via a unary method
--------------------------------------------------------------------------------
-CmdLineTests.cpp:354
-...............................................................................
-
-CmdLineTests.cpp:355:
-PASSED:
-  CHECK( config.abortAfter == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: A positional argument is supplied
-      Then: The argument is in the testOrTags collection
--------------------------------------------------------------------------------
-CmdLineTests.cpp:368
-...............................................................................
-
-CmdLineTests.cpp:369:
-PASSED:
-  REQUIRE( config.testsOrTags.size() == 1 )
-with expansion:
-  1 == 1
-
-CmdLineTests.cpp:370:
-PASSED:
-  REQUIRE( config.testsOrTags[0] == "[hello]" )
-with expansion:
-  "[hello]" == "[hello]"
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: And enum opt is set by numeric value
--------------------------------------------------------------------------------
-CmdLineTests.cpp:373
-...............................................................................
-
-CmdLineTests.cpp:374:
-PASSED:
-  CHECK( config.verbosity == Config::Verbosity::Normal )
-with expansion:
-  2 == 2
-
--------------------------------------------------------------------------------
-Scenario: New Catch commandline interface
-     Given: A built cli parser for Catch
-      When: And enum opt is set by numeric value
-      Then: The member is set to the enum value
--------------------------------------------------------------------------------
-CmdLineTests.cpp:379
-...............................................................................
-
-CmdLineTests.cpp:380:
-PASSED:
-  REQUIRE( config.verbosity == Config::Verbosity::NoOutput )
-with expansion:
-  0 == 0
-
 ===============================================================================
-115 test cases - 50 failed (740 assertions - 107 failed)
+113 test cases - 49 failed (705 assertions - 106 failed)
 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a CATCH v0.9 b38 (integration) host application.
-Run with -? for options
-
--------------------------------------------------------------------------------
-./succeeding/Approx/simple
--------------------------------------------------------------------------------
-ApproxTests.cpp:16
-...............................................................................
-
-ApproxTests.cpp:20:
-PASSED:
-  REQUIRE( d == Approx( 1.23 ) )
-with expansion:
-  1.23 == Approx( 1.23 )
-
-ApproxTests.cpp:21:
-PASSED:
-  REQUIRE( d != Approx( 1.22 ) )
-with expansion:
-  1.23 != Approx( 1.22 )
-
-ApproxTests.cpp:22:
-PASSED:
-  REQUIRE( d != Approx( 1.24 ) )
-with expansion:
-  1.23 != Approx( 1.24 )
-
-ApproxTests.cpp:24:
-PASSED:
-  REQUIRE( Approx( d ) == 1.23 )
-with expansion:
-  Approx( 1.23 ) == 1.23
-
-ApproxTests.cpp:25:
-PASSED:
-  REQUIRE( Approx( d ) != 1.22 )
-with expansion:
-  Approx( 1.23 ) != 1.22
-
-ApproxTests.cpp:26:
-PASSED:
-  REQUIRE( Approx( d ) != 1.24 )
-with expansion:
-  Approx( 1.23 ) != 1.24
-
--------------------------------------------------------------------------------
-./succeeding/Approx/epsilon
--------------------------------------------------------------------------------
-ApproxTests.cpp:34
-...............................................................................
-
-ApproxTests.cpp:38:
-PASSED:
-  REQUIRE( d != Approx( 1.231 ) )
-with expansion:
-  1.23 != Approx( 1.231 )
-
-ApproxTests.cpp:39:
-PASSED:
-  REQUIRE( d == Approx( 1.231 ).epsilon( 0.1 ) )
-with expansion:
-  1.23 == Approx( 1.231 )
-
--------------------------------------------------------------------------------
-./succeeding/Approx/float
--------------------------------------------------------------------------------
-ApproxTests.cpp:47
-...............................................................................
-
-ApproxTests.cpp:49:
-PASSED:
-  REQUIRE( 1.23f == Approx( 1.23f ) )
-with expansion:
-  1.23 == Approx( 1.23 )
-
-ApproxTests.cpp:50:
-PASSED:
-  REQUIRE( 0.0f == Approx( 0.0f ) )
-with expansion:
-  0 == Approx( 0 )
-
--------------------------------------------------------------------------------
-./succeeding/Approx/int
--------------------------------------------------------------------------------
-ApproxTests.cpp:58
-...............................................................................
-
-ApproxTests.cpp:60:
-PASSED:
-  REQUIRE( 1 == Approx( 1 ) )
-
-ApproxTests.cpp:61:
-PASSED:
-  REQUIRE( 0 == Approx( 0 ) )
-
--------------------------------------------------------------------------------
-./succeeding/Approx/mixed
--------------------------------------------------------------------------------
-ApproxTests.cpp:69
-...............................................................................
-
-ApproxTests.cpp:75:
-PASSED:
-  REQUIRE( 1.0f == Approx( 1 ) )
-with expansion:
-  1 == Approx( 1 )
-
-ApproxTests.cpp:76:
-PASSED:
-  REQUIRE( 0 == Approx( dZero) )
-with expansion:
-  0 == Approx( 0 )
-
-ApproxTests.cpp:77:
-PASSED:
-  REQUIRE( 0 == Approx( dSmall ).epsilon( 0.001 ) )
-with expansion:
-  0 == Approx( 1e-05 )
-
-ApproxTests.cpp:78:
-PASSED:
-  REQUIRE( 1.234f == Approx( dMedium ) )
-with expansion:
-  1.234 == Approx( 1.234 )
-
-ApproxTests.cpp:79:
-PASSED:
-  REQUIRE( dMedium == Approx( 1.234f ) )
-with expansion:
-  1.234 == Approx( 1.234 )
-
--------------------------------------------------------------------------------
-./succeeding/Approx/custom
--------------------------------------------------------------------------------
-ApproxTests.cpp:87
-...............................................................................
-
-ApproxTests.cpp:93:
-PASSED:
-  REQUIRE( d == approx( 1.23 ) )
-with expansion:
-  1.23 == Approx( 1.23 )
-
-ApproxTests.cpp:94:
-PASSED:
-  REQUIRE( d == approx( 1.22 ) )
-with expansion:
-  1.23 == Approx( 1.22 )
-
-ApproxTests.cpp:95:
-PASSED:
-  REQUIRE( d == approx( 1.24 ) )
-with expansion:
-  1.23 == Approx( 1.24 )
-
-ApproxTests.cpp:96:
-PASSED:
-  REQUIRE( d != approx( 1.25 ) )
-with expansion:
-  1.23 != Approx( 1.25 )
-
-ApproxTests.cpp:98:
-PASSED:
-  REQUIRE( approx( d ) == 1.23 )
-with expansion:
-  Approx( 1.23 ) == 1.23
-
-ApproxTests.cpp:99:
-PASSED:
-  REQUIRE( approx( d ) == 1.22 )
-with expansion:
-  Approx( 1.23 ) == 1.22
-
-ApproxTests.cpp:100:
-PASSED:
-  REQUIRE( approx( d ) == 1.24 )
-with expansion:
-  Approx( 1.23 ) == 1.24
-
-ApproxTests.cpp:101:
-PASSED:
-  REQUIRE( approx( d ) != 1.25 )
-with expansion:
-  Approx( 1.23 ) != 1.25
-
--------------------------------------------------------------------------------
-Approximate PI
--------------------------------------------------------------------------------
-ApproxTests.cpp:108
-...............................................................................
-
-ApproxTests.cpp:110:
-PASSED:
-  REQUIRE( divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) )
-with expansion:
-  3.142857142857143 == Approx( 3.141 )
-
-ApproxTests.cpp:111:
-PASSED:
-  REQUIRE( divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) )
-with expansion:
-  3.142857142857143 != Approx( 3.141 )
-
--------------------------------------------------------------------------------
-./succeeding/TestClass/succeedingCase
--------------------------------------------------------------------------------
-ClassTests.cpp:34
-...............................................................................
-
-ClassTests.cpp:24:
-PASSED:
-  REQUIRE( s == "hello" )
-with expansion:
-  "hello" == "hello"
-
--------------------------------------------------------------------------------
-./failing/TestClass/failingCase
--------------------------------------------------------------------------------
-ClassTests.cpp:35
-...............................................................................
-
-ClassTests.cpp:28: FAILED:
-  REQUIRE( s == "world" )
-with expansion:
-  "hello" == "world"
-
--------------------------------------------------------------------------------
-./succeeding/Fixture/succeedingCase
--------------------------------------------------------------------------------
-ClassTests.cpp:45
-...............................................................................
-
-ClassTests.cpp:47:
-PASSED:
-  REQUIRE( m_a == 1 )
-with expansion:
-  1 == 1
-
--------------------------------------------------------------------------------
-./failing/Fixture/failingCase
--------------------------------------------------------------------------------
-ClassTests.cpp:53
-...............................................................................
-
-ClassTests.cpp:55: FAILED:
-  REQUIRE( m_a == 2 )
-with expansion:
-  1 == 2
-
--------------------------------------------------------------------------------
-./succeeding/conditions/equality
--------------------------------------------------------------------------------
-ConditionTests.cpp:47
-...............................................................................
-
-ConditionTests.cpp:55:
-PASSED:
-  REQUIRE( data.int_seven == 7 )
-with expansion:
-  7 == 7
-
-ConditionTests.cpp:56:
-PASSED:
-  REQUIRE( data.float_nine_point_one == Approx( 9.1f ) )
-with expansion:
-  9.1 == Approx( 9.1 )
-
-ConditionTests.cpp:57:
-PASSED:
-  REQUIRE( data.double_pi == Approx( 3.1415926535 ) )
-with expansion:
-  3.1415926535 == Approx( 3.14159 )
-
-ConditionTests.cpp:58:
-PASSED:
-  REQUIRE( data.str_hello == "hello" )
-with expansion:
-  "hello" == "hello"
-
-ConditionTests.cpp:59:
-PASSED:
-  REQUIRE( "hello" == data.str_hello )
-with expansion:
-  "hello" == "hello"
-
-ConditionTests.cpp:60:
-PASSED:
-  REQUIRE( data.str_hello.size() == 5 )
-with expansion:
-  5 == 5
-
-ConditionTests.cpp:63:
-PASSED:
-  REQUIRE( x == Approx( 1.3 ) )
-with expansion:
-  1.3 == Approx( 1.3 )
-
--------------------------------------------------------------------------------
-./failing/conditions/equality
--------------------------------------------------------------------------------
-ConditionTests.cpp:67
-...............................................................................
-
-ConditionTests.cpp:71: FAILED:
-  CHECK( data.int_seven == 6 )
-with expansion:
-  7 == 6
-
-ConditionTests.cpp:72: FAILED:
-  CHECK( data.int_seven == 8 )
-with expansion:
-  7 == 8
-
-===============================================================================
-13 test cases - 3 failed (40 assertions - 4 failed)
+No test cases matched '~dummy 4'
+No tests ran
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="78" tests="740" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="10" failures="78" tests="705" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -6703,11 +5998,11 @@ MiscTests.cpp:236
     <testcase classname="global" name="./succeeding/matchers/AllOf" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers/AnyOf" time="tbd"/>
     <testcase classname="global" name="./succeeding/matchers/Equals" time="tbd"/>
-    <testcase classname="global" name="example/factorial" time="tbd"/>
+    <testcase classname="global" name="Factorials are computed" time="tbd"/>
     <testcase classname="global" name="empty" time="tbd"/>
     <testcase classname="global" name="Nice descriptive name" time="tbd">
       <warning type="WARN">
-MiscTests.cpp:278
+MiscTests.cpp:277
       </warning>
     </testcase>
     <testcase classname="global" name="first tag" time="tbd"/>
@@ -6728,12 +6023,11 @@ An error
       </system-err>
     </testcase>
     <testcase classname="global" name="meta/Misc/Sections" time="tbd"/>
-    <testcase classname="global" name="selftest/parser/2" time="tbd"/>
+    <testcase classname="global" name="Process can be configured on command line" time="tbd"/>
     <testcase classname="global" name="selftest/test filter" time="tbd"/>
     <testcase classname="global" name="selftest/test filters" time="tbd"/>
     <testcase classname="global" name="selftest/filter/prefix wildcard" time="tbd"/>
     <testcase classname="global" name="selftest/filter/wildcard at both ends" time="tbd"/>
-    <testcase classname="global" name="selftest/option parsers" time="tbd"/>
     <testcase classname="global" name="selftest/tags" time="tbd"/>
     <testcase classname="global" name="Long strings can be wrapped" time="tbd"/>
     <testcase classname="global" name="Strings can be rendered with colour" time="tbd">
@@ -6782,38 +6076,7 @@ TrickyTests.cpp:106
     <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
     <testcase classname="global" name="Scenario: Vector resizing affects size and capacity" time="tbd"/>
     <testcase classname="global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="tbd"/>
-    <testcase classname="global" name="cmdline" time="tbd">
-      <system-out>
-usage:
-  testApp &lt;first arg> &lt;second arg> [&lt;any arg> ...] [options]
-
-where options are:
-  -o, --output &lt;filename>  specifies output file
-  -n &lt;an integral value>
-      </system-out>
-    </testcase>
-    <testcase classname="global" name="Scenario: New Catch commandline interface" time="tbd">
-      <system-out>
-usage:
-  CatchTestApp [&lt;test name, pattern or tags> ...] [options]
-
-where options are:
-  -?, -h, --help                     display usage information
-  -l, --list-tests                   list all (or matching) test cases
-  -t, --list-tags                    list all (or matching) tags
-  --list-reporters                   list all reporters
-  -s, --success                      include successful tests in output
-  -b, --break                        break into debugger on failure
-  -e, --nothrow                      Skip exception tests
-  -o, --out &lt;filename>               output filename
-  -r, --reporter &lt;name[:filename]>   reporter to use - defaults to console
-  -n, --name &lt;name>                  suite name
-  -a, --abort                        abort at first failure
-  -x, --abortx &lt;number of failures>  abort after x failures
-  -w, --warn &lt;warning name>          enable warnings
-  -v, --verbosity &lt;level>            level of verbosity (0=no output)
-      </system-out>
-    </testcase>
+    <testcase classname="global" name="cmdline" time="tbd"/>
   </testsuite>
   <system-out>
 Message from section one
@@ -6830,34 +6093,6 @@ Some information
 
 hello
 hello
-
-usage:
-  testApp &lt;first arg> &lt;second arg> [&lt;any arg> ...] [options]
-
-where options are:
-  -o, --output &lt;filename>  specifies output file
-  -n &lt;an integral value>
-
-
-
-usage:
-  CatchTestApp [&lt;test name, pattern or tags> ...] [options]
-
-where options are:
-  -?, -h, --help                     display usage information
-  -l, --list-tests                   list all (or matching) test cases
-  -t, --list-tags                    list all (or matching) tags
-  --list-reporters                   list all reporters
-  -s, --success                      include successful tests in output
-  -b, --break                        break into debugger on failure
-  -e, --nothrow                      Skip exception tests
-  -o, --out &lt;filename>               output filename
-  -r, --reporter &lt;name[:filename]>   reporter to use - defaults to console
-  -n, --name &lt;name>                  suite name
-  -a, --abort                        abort at first failure
-  -x, --abortx &lt;number of failures>  abort after x failures
-  -w, --warn &lt;warning name>          enable warnings
-  -v, --verbosity &lt;level>            level of verbosity (0=no output)
   </system-out>
   <system-err>
 An error
@@ -10250,8 +9485,8 @@ MiscTests.cpp" line="254">
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="example/factorial">
-MiscTests.cpp" line="265">
+    <TestCase name="Factorials are computed">
+MiscTests.cpp" line="264">
         <Original>
           Factorial(0) == 1
         </Original>
@@ -10259,7 +9494,7 @@ MiscTests.cpp" line="265">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="266">
+MiscTests.cpp" line="265">
         <Original>
           Factorial(1) == 1
         </Original>
@@ -10267,7 +9502,7 @@ MiscTests.cpp" line="266">
           1 == 1
         </Expanded>
       </Expression>
-MiscTests.cpp" line="267">
+MiscTests.cpp" line="266">
         <Original>
           Factorial(2) == 2
         </Original>
@@ -10275,7 +9510,7 @@ MiscTests.cpp" line="267">
           2 == 2
         </Expanded>
       </Expression>
-MiscTests.cpp" line="268">
+MiscTests.cpp" line="267">
         <Original>
           Factorial(3) == 6
         </Original>
@@ -10283,7 +9518,7 @@ MiscTests.cpp" line="268">
           6 == 6
         </Expanded>
       </Expression>
-MiscTests.cpp" line="269">
+MiscTests.cpp" line="268">
         <Original>
           Factorial(10) == 3628800
         </Original>
@@ -10309,7 +9544,7 @@ MiscTests.cpp" line="269">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="vectors can be sized and resized">
-MiscTests.cpp" line="300">
+MiscTests.cpp" line="299">
         <Original>
           v.size() == 5
         </Original>
@@ -10317,7 +9552,7 @@ MiscTests.cpp" line="300">
           5 == 5
         </Expanded>
       </Expression>
-MiscTests.cpp" line="301">
+MiscTests.cpp" line="300">
         <Original>
           v.capacity() >= 5
         </Original>
@@ -10326,7 +9561,7 @@ MiscTests.cpp" line="301">
         </Expanded>
       </Expression>
       <Section name="resizing bigger changes size and capacity">
-MiscTests.cpp" line="306">
+MiscTests.cpp" line="305">
           <Original>
             v.size() == 10
           </Original>
@@ -10334,7 +9569,7 @@ MiscTests.cpp" line="306">
             10 == 10
           </Expanded>
         </Expression>
-MiscTests.cpp" line="307">
+MiscTests.cpp" line="306">
           <Original>
             v.capacity() >= 10
           </Original>
@@ -10344,7 +9579,7 @@ MiscTests.cpp" line="307">
         </Expression>
         <OverallResults successes="2" failures="0"/>
       </Section>
-MiscTests.cpp" line="300">
+MiscTests.cpp" line="299">
         <Original>
           v.size() == 5
         </Original>
@@ -10352,7 +9587,7 @@ MiscTests.cpp" line="300">
           5 == 5
         </Expanded>
       </Expression>
-MiscTests.cpp" line="301">
+MiscTests.cpp" line="300">
         <Original>
           v.capacity() >= 5
         </Original>
@@ -10361,7 +9596,7 @@ MiscTests.cpp" line="301">
         </Expanded>
       </Expression>
       <Section name="resizing smaller changes size but not capacity">
-MiscTests.cpp" line="312">
+MiscTests.cpp" line="311">
           <Original>
             v.size() == 0
           </Original>
@@ -10369,7 +9604,7 @@ MiscTests.cpp" line="312">
             0 == 0
           </Expanded>
         </Expression>
-MiscTests.cpp" line="313">
+MiscTests.cpp" line="312">
           <Original>
             v.capacity() >= 5
           </Original>
@@ -10378,7 +9613,7 @@ MiscTests.cpp" line="313">
           </Expanded>
         </Expression>
         <Section name="We can use the 'swap trick' to reset the capacity">
-MiscTests.cpp" line="319">
+MiscTests.cpp" line="318">
             <Original>
               v.capacity() == 0
             </Original>
@@ -10390,7 +9625,7 @@ MiscTests.cpp" line="319">
         </Section>
         <OverallResults successes="3" failures="0"/>
       </Section>
-MiscTests.cpp" line="300">
+MiscTests.cpp" line="299">
         <Original>
           v.size() == 5
         </Original>
@@ -10398,7 +9633,7 @@ MiscTests.cpp" line="300">
           5 == 5
         </Expanded>
       </Expression>
-MiscTests.cpp" line="301">
+MiscTests.cpp" line="300">
         <Original>
           v.capacity() >= 5
         </Original>
@@ -10407,7 +9642,7 @@ MiscTests.cpp" line="301">
         </Expanded>
       </Expression>
       <Section name="resizing smaller changes size but not capacity">
-MiscTests.cpp" line="312">
+MiscTests.cpp" line="311">
           <Original>
             v.size() == 0
           </Original>
@@ -10415,7 +9650,7 @@ MiscTests.cpp" line="312">
             0 == 0
           </Expanded>
         </Expression>
-MiscTests.cpp" line="313">
+MiscTests.cpp" line="312">
           <Original>
             v.capacity() >= 5
           </Original>
@@ -10425,7 +9660,7 @@ MiscTests.cpp" line="313">
         </Expression>
         <OverallResults successes="2" failures="0"/>
       </Section>
-MiscTests.cpp" line="300">
+MiscTests.cpp" line="299">
         <Original>
           v.size() == 5
         </Original>
@@ -10433,7 +9668,7 @@ MiscTests.cpp" line="300">
           5 == 5
         </Expanded>
       </Expression>
-MiscTests.cpp" line="301">
+MiscTests.cpp" line="300">
         <Original>
           v.capacity() >= 5
         </Original>
@@ -10442,7 +9677,7 @@ MiscTests.cpp" line="301">
         </Expanded>
       </Expression>
       <Section name="reserving bigger changes capacity but not size">
-MiscTests.cpp" line="325">
+MiscTests.cpp" line="324">
           <Original>
             v.size() == 5
           </Original>
@@ -10450,7 +9685,7 @@ MiscTests.cpp" line="325">
             5 == 5
           </Expanded>
         </Expression>
-MiscTests.cpp" line="326">
+MiscTests.cpp" line="325">
           <Original>
             v.capacity() >= 10
           </Original>
@@ -10460,7 +9695,7 @@ MiscTests.cpp" line="326">
         </Expression>
         <OverallResults successes="2" failures="0"/>
       </Section>
-MiscTests.cpp" line="300">
+MiscTests.cpp" line="299">
         <Original>
           v.size() == 5
         </Original>
@@ -10468,7 +9703,7 @@ MiscTests.cpp" line="300">
           5 == 5
         </Expanded>
       </Expression>
-MiscTests.cpp" line="301">
+MiscTests.cpp" line="300">
         <Original>
           v.capacity() >= 5
         </Original>
@@ -10477,7 +9712,7 @@ MiscTests.cpp" line="301">
         </Expanded>
       </Expression>
       <Section name="reserving smaller does not change size or capacity">
-MiscTests.cpp" line="331">
+MiscTests.cpp" line="330">
           <Original>
             v.size() == 5
           </Original>
@@ -10485,7 +9720,7 @@ MiscTests.cpp" line="331">
             5 == 5
           </Expanded>
         </Expression>
-MiscTests.cpp" line="332">
+MiscTests.cpp" line="331">
           <Original>
             v.capacity() >= 5
           </Original>
@@ -10578,8 +9813,8 @@ TestMain.cpp" line="59">
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="selftest/parser/2">
-      <Section name="default">
+    <TestCase name="Process can be configured on command line">
+      <Section name="default - no arguments">
 TestMain.cpp" line="98">
           <Original>
             parseIntoConfig( argv, config )
@@ -10623,7 +9858,7 @@ TestMain.cpp" line="103">
         <OverallResults successes="5" failures="0"/>
       </Section>
       <Section name="test lists">
-        <Section name="-t/1" description="Specify one test case using -t">
+        <Section name="1 test" description="Specify one test case using">
 TestMain.cpp" line="109">
             <Original>
               parseIntoConfig( argv, config )
@@ -10661,7 +9896,7 @@ TestMain.cpp" line="114">
         <OverallResults successes="4" failures="0"/>
       </Section>
       <Section name="test lists">
-        <Section name="-t/exclude:1" description="Specify one test case exclusion using -t exclude:">
+        <Section name="Specify one test case exclusion using exclude:">
 TestMain.cpp" line="118">
             <Original>
               parseIntoConfig( argv, config )
@@ -10699,7 +9934,7 @@ TestMain.cpp" line="123">
         <OverallResults successes="4" failures="0"/>
       </Section>
       <Section name="test lists">
-        <Section name="--test/1" description="Specify one test case using --test">
+        <Section name="Specify one test case exclusion using ~">
 TestMain.cpp" line="128">
             <Original>
               parseIntoConfig( argv, config )
@@ -10718,7 +9953,7 @@ TestMain.cpp" line="131">
           </Expression>
 TestMain.cpp" line="132">
             <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
+              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -10726,7 +9961,7 @@ TestMain.cpp" line="132">
           </Expression>
 TestMain.cpp" line="133">
             <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
+              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
             </Original>
             <Expanded>
               true
@@ -10737,7 +9972,7 @@ TestMain.cpp" line="133">
         <OverallResults successes="4" failures="0"/>
       </Section>
       <Section name="test lists">
-        <Section name="--test/exclude:1" description="Specify one test case exclusion using --test exclude:">
+        <Section name="Specify two test cases using -t">
 TestMain.cpp" line="138">
             <Original>
               parseIntoConfig( argv, config )
@@ -10756,7 +9991,7 @@ TestMain.cpp" line="141">
           </Expression>
 TestMain.cpp" line="142">
             <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
+              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -10764,89 +9999,13 @@ TestMain.cpp" line="142">
           </Expression>
 TestMain.cpp" line="143">
             <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <OverallResults successes="4" failures="0"/>
-        </Section>
-        <OverallResults successes="4" failures="0"/>
-      </Section>
-      <Section name="test lists">
-        <Section name="--test/exclude:2" description="Specify one test case exclusion using --test ~">
-TestMain.cpp" line="148">
-            <Original>
-              parseIntoConfig( argv, config )
-            </Original>
-            <Expanded>
-              parseIntoConfig( argv, config )
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="151">
-            <Original>
-              cfg.filters().size() == 1
-            </Original>
-            <Expanded>
-              1 == 1
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="152">
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
-            </Original>
-            <Expanded>
-              false == false
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="153">
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <OverallResults successes="4" failures="0"/>
-        </Section>
-        <OverallResults successes="4" failures="0"/>
-      </Section>
-      <Section name="test lists">
-        <Section name="-t/2" description="Specify two test cases using -t">
-TestMain.cpp" line="158">
-            <Original>
-              parseIntoConfig( argv, config )
-            </Original>
-            <Expanded>
-              parseIntoConfig( argv, config )
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="161">
-            <Original>
-              cfg.filters().size() == 1
-            </Original>
-            <Expanded>
-              1 == 1
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="162">
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
-            </Original>
-            <Expanded>
-              false == false
-            </Expanded>
-          </Expression>
-TestMain.cpp" line="163">
-            <Original>
               cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
             </Original>
             <Expanded>
               true
             </Expanded>
           </Expression>
-TestMain.cpp" line="164">
+TestMain.cpp" line="144">
             <Original>
               cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test2&quot; ) )
             </Original>
@@ -10859,25 +10018,11 @@ TestMain.cpp" line="164">
         <OverallResults successes="5" failures="0"/>
       </Section>
       <Section name="test lists">
-        <Section name="-t/0" description="When no test names are supplied it is an error">
-TestMain.cpp" line="169">
-            <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;at least 1&quot; )
-            </Original>
-            <Expanded>
-              &quot;Error while parsing arguments. Expected at least 1 argument.&quot; contains: &quot;at least 1&quot;
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="test lists">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="reporter">
         <Section name="-r/console">
-TestMain.cpp" line="176">
+TestMain.cpp" line="151">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -10885,7 +10030,7 @@ TestMain.cpp" line="176">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="178">
+TestMain.cpp" line="153">
             <Original>
               config.reporterName == &quot;console&quot;
             </Original>
@@ -10899,7 +10044,7 @@ TestMain.cpp" line="178">
       </Section>
       <Section name="reporter">
         <Section name="-r/xml">
-TestMain.cpp" line="182">
+TestMain.cpp" line="157">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -10907,7 +10052,7 @@ TestMain.cpp" line="182">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="184">
+TestMain.cpp" line="159">
             <Original>
               config.reporterName == &quot;xml&quot;
             </Original>
@@ -10921,7 +10066,7 @@ TestMain.cpp" line="184">
       </Section>
       <Section name="reporter">
         <Section name="--reporter/junit">
-TestMain.cpp" line="188">
+TestMain.cpp" line="163">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -10929,7 +10074,7 @@ TestMain.cpp" line="188">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="190">
+TestMain.cpp" line="165">
             <Original>
               config.reporterName == &quot;junit&quot;
             </Original>
@@ -10942,25 +10087,11 @@ TestMain.cpp" line="190">
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="reporter">
-        <Section name="-r/error" description="reporter config only accepts one argument">
-TestMain.cpp" line="194">
-            <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;1 argument&quot; )
-            </Original>
-            <Expanded>
-              &quot;Error while parsing arguments. Expected 1 argument. Arguments were: one two&quot; contains: &quot;1 argument&quot;
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="reporter">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="debugger">
         <Section name="-b">
-TestMain.cpp" line="201">
+TestMain.cpp" line="172">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -10968,7 +10099,7 @@ TestMain.cpp" line="201">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="203">
+TestMain.cpp" line="174">
             <Original>
               config.shouldDebugBreak == true
             </Original>
@@ -10982,7 +10113,7 @@ TestMain.cpp" line="203">
       </Section>
       <Section name="debugger">
         <Section name="--break">
-TestMain.cpp" line="207">
+TestMain.cpp" line="178">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -10990,7 +10121,7 @@ TestMain.cpp" line="207">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="209">
+TestMain.cpp" line="180">
             <Original>
               config.shouldDebugBreak
             </Original>
@@ -11003,25 +10134,11 @@ TestMain.cpp" line="209">
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="debugger">
-        <Section name="-b" description="break option has no arguments">
-TestMain.cpp" line="213">
-            <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;0 arguments&quot; )
-            </Original>
-            <Expanded>
-              &quot;Error while parsing arguments. Expected 0 arguments. Arguments were: unexpected&quot; contains: &quot;0 arguments&quot;
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="debugger">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="abort">
-        <Section name="-a">
-TestMain.cpp" line="220">
+        <Section name="-a aborts after first failure">
+TestMain.cpp" line="187">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11029,7 +10146,7 @@ TestMain.cpp" line="220">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="222">
+TestMain.cpp" line="189">
             <Original>
               config.abortAfter == 1
             </Original>
@@ -11042,8 +10159,8 @@ TestMain.cpp" line="222">
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="abort">
-        <Section name="-a/2">
-TestMain.cpp" line="226">
+        <Section name="-x 2 aborts after two failures">
+TestMain.cpp" line="193">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11051,7 +10168,7 @@ TestMain.cpp" line="226">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="228">
+TestMain.cpp" line="195">
             <Original>
               config.abortAfter == 2
             </Original>
@@ -11064,13 +10181,13 @@ TestMain.cpp" line="228">
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="abort">
-        <Section name="-a/error/0">
-TestMain.cpp" line="232">
+        <Section name="-x must be greater than zero">
+TestMain.cpp" line="199">
             <Original>
               parseIntoConfigAndReturnError( argv, config ) Contains( &quot;greater than zero&quot; )
             </Original>
             <Expanded>
-              &quot;Error while parsing arguments. threshold must be a number greater than zero. Arguments were: 0&quot; contains: &quot;greater than zero&quot;
+              &quot;Value after -x or --abortAfter must be greater than zero while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;greater than zero&quot;
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0"/>
@@ -11078,27 +10195,13 @@ TestMain.cpp" line="232">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="abort">
-        <Section name="-a/error/non numeric">
-TestMain.cpp" line="236">
+        <Section name="-x must be numeric">
+TestMain.cpp" line="203">
             <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;greater than zero&quot; )
+              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;-x&quot; )
             </Original>
             <Expanded>
-              &quot;Error while parsing arguments. threshold must be a number greater than zero. Arguments were: oops&quot; contains: &quot;greater than zero&quot;
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="abort">
-        <Section name="-a/error/two args" description="abortAfter only takes one argument">
-TestMain.cpp" line="240">
-            <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;0 and 1 argument&quot; )
-            </Original>
-            <Expanded>
-              &quot;Error while parsing arguments. Expected between 0 and 1 argument. Arguments were: 1 2&quot; contains: &quot;0 and 1 argument&quot;
+              &quot;Unable to convert oops to destination type while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;-x&quot;
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0"/>
@@ -11109,8 +10212,8 @@ TestMain.cpp" line="240">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="nothrow">
-        <Section name="-nt">
-TestMain.cpp" line="247">
+        <Section name="-e">
+TestMain.cpp" line="210">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11118,7 +10221,7 @@ TestMain.cpp" line="247">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="249">
+TestMain.cpp" line="212">
             <Original>
               config.noThrow == true
             </Original>
@@ -11132,7 +10235,7 @@ TestMain.cpp" line="249">
       </Section>
       <Section name="nothrow">
         <Section name="--nothrow">
-TestMain.cpp" line="253">
+TestMain.cpp" line="216">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11140,7 +10243,7 @@ TestMain.cpp" line="253">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="255">
+TestMain.cpp" line="218">
             <Original>
               config.noThrow == true
             </Original>
@@ -11157,7 +10260,7 @@ TestMain.cpp" line="255">
       </Section>
       <Section name="output filename">
         <Section name="-o filename">
-TestMain.cpp" line="262">
+TestMain.cpp" line="225">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11165,7 +10268,7 @@ TestMain.cpp" line="262">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="264">
+TestMain.cpp" line="227">
             <Original>
               config.outputFilename == &quot;filename.ext&quot;
             </Original>
@@ -11179,7 +10282,7 @@ TestMain.cpp" line="264">
       </Section>
       <Section name="output filename">
         <Section name="--out">
-TestMain.cpp" line="268">
+TestMain.cpp" line="231">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11187,7 +10290,7 @@ TestMain.cpp" line="268">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="270">
+TestMain.cpp" line="233">
             <Original>
               config.outputFilename == &quot;filename.ext&quot;
             </Original>
@@ -11203,8 +10306,8 @@ TestMain.cpp" line="270">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="combinations">
-        <Section name="-a -b">
-TestMain.cpp" line="277">
+        <Section name="Single character flags can be combined">
+TestMain.cpp" line="240">
             <Original>
               parseIntoConfig( argv, config )
             </Original>
@@ -11212,7 +10315,7 @@ TestMain.cpp" line="277">
               parseIntoConfig( argv, config )
             </Expanded>
           </Expression>
-TestMain.cpp" line="279">
+TestMain.cpp" line="242">
             <Original>
               config.abortAfter == 1
             </Original>
@@ -11220,7 +10323,7 @@ TestMain.cpp" line="279">
               1 == 1
             </Expanded>
           </Expression>
-TestMain.cpp" line="280">
+TestMain.cpp" line="243">
             <Original>
               config.shouldDebugBreak
             </Original>
@@ -11228,7 +10331,7 @@ TestMain.cpp" line="280">
               true
             </Expanded>
           </Expression>
-TestMain.cpp" line="281">
+TestMain.cpp" line="244">
             <Original>
               config.noThrow == true
             </Original>
@@ -11243,7 +10346,7 @@ TestMain.cpp" line="281">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/test filter">
-TestMain.cpp" line="290">
+TestMain.cpp" line="253">
         <Original>
           matchAny.shouldInclude( fakeTestCase( &quot;any&quot; ) )
         </Original>
@@ -11251,7 +10354,7 @@ TestMain.cpp" line="290">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="291">
+TestMain.cpp" line="254">
         <Original>
           matchNone.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
         </Original>
@@ -11259,7 +10362,7 @@ TestMain.cpp" line="291">
           false == false
         </Expanded>
       </Expression>
-TestMain.cpp" line="296">
+TestMain.cpp" line="259">
         <Original>
           matchHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
         </Original>
@@ -11267,7 +10370,7 @@ TestMain.cpp" line="296">
           false == false
         </Expanded>
       </Expression>
-TestMain.cpp" line="297">
+TestMain.cpp" line="260">
         <Original>
           matchNonHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) )
         </Original>
@@ -11275,7 +10378,7 @@ TestMain.cpp" line="297">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="299">
+TestMain.cpp" line="262">
         <Original>
           matchHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) )
         </Original>
@@ -11283,7 +10386,7 @@ TestMain.cpp" line="299">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="300">
+TestMain.cpp" line="263">
         <Original>
           matchNonHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) ) == false
         </Original>
@@ -11294,7 +10397,7 @@ TestMain.cpp" line="300">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/test filters">
-TestMain.cpp" line="311">
+TestMain.cpp" line="274">
         <Original>
           matchHidden.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
         </Original>
@@ -11302,7 +10405,7 @@ TestMain.cpp" line="311">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="313">
+TestMain.cpp" line="276">
         <Original>
           filters.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
         </Original>
@@ -11310,7 +10413,7 @@ TestMain.cpp" line="313">
           false == false
         </Expanded>
       </Expression>
-TestMain.cpp" line="314">
+TestMain.cpp" line="277">
         <Original>
           filters.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
         </Original>
@@ -11318,7 +10421,7 @@ TestMain.cpp" line="314">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="315">
+TestMain.cpp" line="278">
         <Original>
           filters.shouldInclude( fakeTestCase( &quot;./anything&quot; ) ) == false
         </Original>
@@ -11329,7 +10432,7 @@ TestMain.cpp" line="315">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/filter/prefix wildcard">
-TestMain.cpp" line="321">
+TestMain.cpp" line="284">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
         </Original>
@@ -11337,7 +10440,7 @@ TestMain.cpp" line="321">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="322">
+TestMain.cpp" line="285">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) ) == false
         </Original>
@@ -11348,7 +10451,7 @@ TestMain.cpp" line="322">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="selftest/filter/wildcard at both ends">
-TestMain.cpp" line="327">
+TestMain.cpp" line="290">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
         </Original>
@@ -11356,7 +10459,7 @@ TestMain.cpp" line="327">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="328">
+TestMain.cpp" line="291">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) )
         </Original>
@@ -11364,7 +10467,7 @@ TestMain.cpp" line="328">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="329">
+TestMain.cpp" line="292">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;badgers are big&quot; ) )
         </Original>
@@ -11372,7 +10475,7 @@ TestMain.cpp" line="329">
           true
         </Expanded>
       </Expression>
-TestMain.cpp" line="330">
+TestMain.cpp" line="293">
         <Original>
           matchBadgers.shouldInclude( fakeTestCase( &quot;hedgehogs&quot; ) ) == false
         </Original>
@@ -11382,44 +10485,9 @@ TestMain.cpp" line="330">
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="selftest/option parsers">
-TestMain.cpp" line="350">
-        <Original>
-          opt.parseIntoConfig( parser, config )
-        </Original>
-        <Expanded>
-          opt.parseIntoConfig( parser, config )
-        </Expanded>
-      </Expression>
-TestMain.cpp" line="353">
-        <Original>
-          cfg.filters().size() == 1
-        </Original>
-        <Expanded>
-          1 == 1
-        </Expanded>
-      </Expression>
-TestMain.cpp" line="354">
-        <Original>
-          cfg.filters()[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-TestMain.cpp" line="355">
-        <Original>
-          cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="selftest/tags">
       <Section name="one tag">
-TestMain.cpp" line="369">
+TestMain.cpp" line="313">
           <Original>
             oneTag.getTestCaseInfo().description == &quot;&quot;
           </Original>
@@ -11427,7 +10495,7 @@ TestMain.cpp" line="369">
             &quot;&quot; == &quot;&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="370">
+TestMain.cpp" line="314">
           <Original>
             oneTag.hasTag( &quot;one&quot; )
           </Original>
@@ -11435,7 +10503,7 @@ TestMain.cpp" line="370">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="371">
+TestMain.cpp" line="315">
           <Original>
             oneTag.getTags().size() == 1
           </Original>
@@ -11443,7 +10511,7 @@ TestMain.cpp" line="371">
             1 == 1
           </Expanded>
         </Expression>
-TestMain.cpp" line="373">
+TestMain.cpp" line="317">
           <Original>
             oneTag.matchesTags( p1 ) == true
           </Original>
@@ -11451,7 +10519,7 @@ TestMain.cpp" line="373">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="374">
+TestMain.cpp" line="318">
           <Original>
             oneTag.matchesTags( p2 ) == true
           </Original>
@@ -11459,7 +10527,7 @@ TestMain.cpp" line="374">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="375">
+TestMain.cpp" line="319">
           <Original>
             oneTag.matchesTags( p3 ) == false
           </Original>
@@ -11467,7 +10535,7 @@ TestMain.cpp" line="375">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="376">
+TestMain.cpp" line="320">
           <Original>
             oneTag.matchesTags( p4 ) == false
           </Original>
@@ -11475,7 +10543,7 @@ TestMain.cpp" line="376">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="377">
+TestMain.cpp" line="321">
           <Original>
             oneTag.matchesTags( p5 ) == false
           </Original>
@@ -11486,7 +10554,7 @@ TestMain.cpp" line="377">
         <OverallResults successes="8" failures="0"/>
       </Section>
       <Section name="two tags">
-TestMain.cpp" line="383">
+TestMain.cpp" line="327">
           <Original>
             twoTags.getTestCaseInfo().description == &quot;&quot;
           </Original>
@@ -11494,7 +10562,7 @@ TestMain.cpp" line="383">
             &quot;&quot; == &quot;&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="384">
+TestMain.cpp" line="328">
           <Original>
             twoTags.hasTag( &quot;one&quot; )
           </Original>
@@ -11502,7 +10570,7 @@ TestMain.cpp" line="384">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="385">
+TestMain.cpp" line="329">
           <Original>
             twoTags.hasTag( &quot;two&quot; )
           </Original>
@@ -11510,7 +10578,7 @@ TestMain.cpp" line="385">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="386">
+TestMain.cpp" line="330">
           <Original>
             twoTags.hasTag( &quot;Two&quot; )
           </Original>
@@ -11518,7 +10586,7 @@ TestMain.cpp" line="386">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="387">
+TestMain.cpp" line="331">
           <Original>
             twoTags.hasTag( &quot;three&quot; ) == false
           </Original>
@@ -11526,7 +10594,7 @@ TestMain.cpp" line="387">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="388">
+TestMain.cpp" line="332">
           <Original>
             twoTags.getTags().size() == 2
           </Original>
@@ -11534,7 +10602,7 @@ TestMain.cpp" line="388">
             2 == 2
           </Expanded>
         </Expression>
-TestMain.cpp" line="390">
+TestMain.cpp" line="334">
           <Original>
             twoTags.matchesTags( p1 ) == true
           </Original>
@@ -11542,7 +10610,7 @@ TestMain.cpp" line="390">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="391">
+TestMain.cpp" line="335">
           <Original>
             twoTags.matchesTags( p2 ) == true
           </Original>
@@ -11550,7 +10618,7 @@ TestMain.cpp" line="391">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="392">
+TestMain.cpp" line="336">
           <Original>
             twoTags.matchesTags( p3 ) == true
           </Original>
@@ -11558,7 +10626,7 @@ TestMain.cpp" line="392">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="393">
+TestMain.cpp" line="337">
           <Original>
             twoTags.matchesTags( p4 ) == true
           </Original>
@@ -11566,7 +10634,7 @@ TestMain.cpp" line="393">
             true == true
           </Expanded>
         </Expression>
-TestMain.cpp" line="394">
+TestMain.cpp" line="338">
           <Original>
             twoTags.matchesTags( p5 ) == true
           </Original>
@@ -11577,7 +10645,7 @@ TestMain.cpp" line="394">
         <OverallResults successes="11" failures="0"/>
       </Section>
       <Section name="one tag with characters either side">
-TestMain.cpp" line="400">
+TestMain.cpp" line="344">
           <Original>
             oneTagWithExtras.getTestCaseInfo().description == &quot;1234&quot;
           </Original>
@@ -11585,7 +10653,7 @@ TestMain.cpp" line="400">
             &quot;1234&quot; == &quot;1234&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="401">
+TestMain.cpp" line="345">
           <Original>
             oneTagWithExtras.hasTag( &quot;one&quot; )
           </Original>
@@ -11593,7 +10661,7 @@ TestMain.cpp" line="401">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="402">
+TestMain.cpp" line="346">
           <Original>
             oneTagWithExtras.hasTag( &quot;two&quot; ) == false
           </Original>
@@ -11601,7 +10669,7 @@ TestMain.cpp" line="402">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="403">
+TestMain.cpp" line="347">
           <Original>
             oneTagWithExtras.getTags().size() == 1
           </Original>
@@ -11612,7 +10680,7 @@ TestMain.cpp" line="403">
         <OverallResults successes="4" failures="0"/>
       </Section>
       <Section name="start of a tag, but not closed">
-TestMain.cpp" line="410">
+TestMain.cpp" line="354">
           <Original>
             oneTagOpen.getTestCaseInfo().description == &quot;[one&quot;
           </Original>
@@ -11620,7 +10688,7 @@ TestMain.cpp" line="410">
             &quot;[one&quot; == &quot;[one&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="411">
+TestMain.cpp" line="355">
           <Original>
             oneTagOpen.hasTag( &quot;one&quot; ) == false
           </Original>
@@ -11628,7 +10696,7 @@ TestMain.cpp" line="411">
             false == false
           </Expanded>
         </Expression>
-TestMain.cpp" line="412">
+TestMain.cpp" line="356">
           <Original>
             oneTagOpen.getTags().size() == 0
           </Original>
@@ -11639,7 +10707,7 @@ TestMain.cpp" line="412">
         <OverallResults successes="3" failures="0"/>
       </Section>
       <Section name="hidden">
-TestMain.cpp" line="418">
+TestMain.cpp" line="362">
           <Original>
             oneTag.getTestCaseInfo().description == &quot;&quot;
           </Original>
@@ -11647,7 +10715,7 @@ TestMain.cpp" line="418">
             &quot;&quot; == &quot;&quot;
           </Expanded>
         </Expression>
-TestMain.cpp" line="419">
+TestMain.cpp" line="363">
           <Original>
             oneTag.hasTag( &quot;hide&quot; )
           </Original>
@@ -11655,7 +10723,7 @@ TestMain.cpp" line="419">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="420">
+TestMain.cpp" line="364">
           <Original>
             oneTag.isHidden()
           </Original>
@@ -11663,7 +10731,7 @@ TestMain.cpp" line="420">
             true
           </Expanded>
         </Expression>
-TestMain.cpp" line="422">
+TestMain.cpp" line="366">
           <Original>
             oneTag.matchesTags( &quot;~[hide]&quot; ) == false
           </Original>
@@ -11678,7 +10746,7 @@ TestMain.cpp" line="422">
     <TestCase name="Long strings can be wrapped">
       <Section name="plain string">
         <Section name="No wrapping">
-TestMain.cpp" line="435">
+TestMain.cpp" line="379">
             <Original>
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
             </Original>
@@ -11688,7 +10756,7 @@ TestMain.cpp" line="435">
 &quot;one two three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="436">
+TestMain.cpp" line="380">
             <Original>
               Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
             </Original>
@@ -11704,7 +10772,7 @@ TestMain.cpp" line="436">
       </Section>
       <Section name="plain string">
         <Section name="Wrapped once">
-TestMain.cpp" line="439">
+TestMain.cpp" line="383">
             <Original>
               Text( testString, TextAttributes().setWidth( 17 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11716,7 +10784,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="440">
+TestMain.cpp" line="384">
             <Original>
               Text( testString, TextAttributes().setWidth( 16 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11728,7 +10796,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="441">
+TestMain.cpp" line="385">
             <Original>
               Text( testString, TextAttributes().setWidth( 14 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11740,7 +10808,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="442">
+TestMain.cpp" line="386">
             <Original>
               Text( testString, TextAttributes().setWidth( 13 ) ).toString() == &quot;one two three\nfour&quot;
             </Original>
@@ -11752,7 +10820,7 @@ four&quot;
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="443">
+TestMain.cpp" line="387">
             <Original>
               Text( testString, TextAttributes().setWidth( 12 ) ).toString() == &quot;one two\nthree four&quot;
             </Original>
@@ -11770,7 +10838,7 @@ three four&quot;
       </Section>
       <Section name="plain string">
         <Section name="Wrapped twice">
-TestMain.cpp" line="446">
+TestMain.cpp" line="390">
             <Original>
               Text( testString, TextAttributes().setWidth( 9 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11784,7 +10852,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="447">
+TestMain.cpp" line="391">
             <Original>
               Text( testString, TextAttributes().setWidth( 8 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11798,7 +10866,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="448">
+TestMain.cpp" line="392">
             <Original>
               Text( testString, TextAttributes().setWidth( 7 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -11818,7 +10886,7 @@ four&quot;
       </Section>
       <Section name="plain string">
         <Section name="Wrapped three times">
-TestMain.cpp" line="451">
+TestMain.cpp" line="395">
             <Original>
               Text( testString, TextAttributes().setWidth( 6 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
@@ -11834,7 +10902,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="452">
+TestMain.cpp" line="396">
             <Original>
               Text( testString, TextAttributes().setWidth( 5 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
@@ -11856,7 +10924,7 @@ four&quot;
       </Section>
       <Section name="plain string">
         <Section name="Short wrap">
-TestMain.cpp" line="455">
+TestMain.cpp" line="399">
             <Original>
               Text( &quot;abcdef&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndef&quot;
             </Original>
@@ -11868,7 +10936,7 @@ def&quot;
 def&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="456">
+TestMain.cpp" line="400">
             <Original>
               Text( &quot;abcdefg&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndefg&quot;
             </Original>
@@ -11880,7 +10948,7 @@ defg&quot;
 defg&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="457">
+TestMain.cpp" line="401">
             <Original>
               Text( &quot;abcdefgh&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndef-\ngh&quot;
             </Original>
@@ -11894,7 +10962,7 @@ def-
 gh&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="459">
+TestMain.cpp" line="403">
             <Original>
               Text( testString, TextAttributes().setWidth( 4 ) ).toString() == &quot;one\ntwo\nthr-\nee\nfour&quot;
             </Original>
@@ -11912,7 +10980,7 @@ ee
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="460">
+TestMain.cpp" line="404">
             <Original>
               Text( testString, TextAttributes().setWidth( 3 ) ).toString() == &quot;one\ntwo\nth-\nree\nfo-\nur&quot;
             </Original>
@@ -11938,7 +11006,7 @@ ur&quot;
       </Section>
       <Section name="plain string">
         <Section name="As container">
-TestMain.cpp" line="464">
+TestMain.cpp" line="408">
             <Original>
               text.size() == 4
             </Original>
@@ -11946,7 +11014,7 @@ TestMain.cpp" line="464">
               4 == 4
             </Expanded>
           </Expression>
-TestMain.cpp" line="465">
+TestMain.cpp" line="409">
             <Original>
               text[0] == &quot;one&quot;
             </Original>
@@ -11954,7 +11022,7 @@ TestMain.cpp" line="465">
               &quot;one&quot; == &quot;one&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="466">
+TestMain.cpp" line="410">
             <Original>
               text[1] == &quot;two&quot;
             </Original>
@@ -11962,7 +11030,7 @@ TestMain.cpp" line="466">
               &quot;two&quot; == &quot;two&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="467">
+TestMain.cpp" line="411">
             <Original>
               text[2] == &quot;three&quot;
             </Original>
@@ -11970,7 +11038,7 @@ TestMain.cpp" line="467">
               &quot;three&quot; == &quot;three&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="468">
+TestMain.cpp" line="412">
             <Original>
               text[3] == &quot;four&quot;
             </Original>
@@ -11984,7 +11052,7 @@ TestMain.cpp" line="468">
       </Section>
       <Section name="plain string">
         <Section name="Indent first line differently">
-TestMain.cpp" line="475">
+TestMain.cpp" line="419">
             <Original>
               text.toString() == &quot; one two\n    three\n    four&quot;
             </Original>
@@ -12007,7 +11075,7 @@ TestMain.cpp" line="475">
       </Section>
       <Section name="With newlines">
         <Section name="No wrapping">
-TestMain.cpp" line="486">
+TestMain.cpp" line="430">
             <Original>
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
             </Original>
@@ -12019,7 +11087,7 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="487">
+TestMain.cpp" line="431">
             <Original>
               Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
             </Original>
@@ -12031,7 +11099,7 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="488">
+TestMain.cpp" line="432">
             <Original>
               Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString
             </Original>
@@ -12049,7 +11117,7 @@ three four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Trailing newline">
-TestMain.cpp" line="491">
+TestMain.cpp" line="435">
             <Original>
               Text( &quot;abcdef\n&quot;, TextAttributes().setWidth( 10 ) ).toString() == &quot;abcdef\n&quot;
             </Original>
@@ -12061,7 +11129,7 @@ TestMain.cpp" line="491">
 &quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="492">
+TestMain.cpp" line="436">
             <Original>
               Text( &quot;abcdef&quot;, TextAttributes().setWidth( 6 ) ).toString() == &quot;abcdef&quot;
             </Original>
@@ -12069,7 +11137,7 @@ TestMain.cpp" line="492">
               &quot;abcdef&quot; == &quot;abcdef&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="493">
+TestMain.cpp" line="437">
             <Original>
               Text( &quot;abcdef\n&quot;, TextAttributes().setWidth( 6 ) ).toString() == &quot;abcdef\n&quot;
             </Original>
@@ -12087,7 +11155,7 @@ TestMain.cpp" line="493">
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped once">
-TestMain.cpp" line="496">
+TestMain.cpp" line="440">
             <Original>
               Text( testString, TextAttributes().setWidth( 9 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -12101,7 +11169,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="497">
+TestMain.cpp" line="441">
             <Original>
               Text( testString, TextAttributes().setWidth( 8 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -12115,7 +11183,7 @@ three
 four&quot;
             </Expanded>
           </Expression>
-TestMain.cpp" line="498">
+TestMain.cpp" line="442">
             <Original>
               Text( testString, TextAttributes().setWidth( 7 ) ).toString() == &quot;one two\nthree\nfour&quot;
             </Original>
@@ -12135,7 +11203,7 @@ four&quot;
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped twice">
-TestMain.cpp" line="501">
+TestMain.cpp" line="445">
             <Original>
               Text( testString, TextAttributes().setWidth( 6 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
             </Original>
@@ -12159,7 +11227,7 @@ four&quot;
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="With tabs">
-TestMain.cpp" line="511">
+TestMain.cpp" line="455">
           <Original>
             Text( testString, TextAttributes().setWidth( 15 ) ).toString() == &quot;one two three\n        four\n        five\n        six&quot;
           </Original>
@@ -12183,7 +11251,7 @@ TestMain.cpp" line="511">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Text can be formatted using the Text class">
-TestMain.cpp" line="611">
+TestMain.cpp" line="555">
         <Original>
           Text( &quot;hi there&quot; ).toString() == &quot;hi there&quot;
         </Original>
@@ -12191,7 +11259,7 @@ TestMain.cpp" line="611">
           &quot;hi there&quot; == &quot;hi there&quot;
         </Expanded>
       </Expression>
-TestMain.cpp" line="616">
+TestMain.cpp" line="560">
         <Original>
           Text( &quot;hi there&quot;, narrow ).toString() == &quot;hi\nthere&quot;
         </Original>
@@ -12734,8 +11802,19 @@ BDDTests.cpp" line="54">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="cmdline">
+      <Section name="process name">
+CmdLineTests.cpp" line="64">
+          <Original>
+            config.processName == &quot;test&quot;
+          </Original>
+          <Expanded>
+            &quot;test&quot; == &quot;test&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0"/>
+      </Section>
       <Section name="arg separated by spaces">
-CmdLineTests.cpp" line="62">
+CmdLineTests.cpp" line="70">
           <Original>
             config.fileName == &quot;filename.ext&quot;
           </Original>
@@ -12746,7 +11825,7 @@ CmdLineTests.cpp" line="62">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="arg separated by colon">
-CmdLineTests.cpp" line="68">
+CmdLineTests.cpp" line="76">
           <Original>
             config.fileName == &quot;filename.ext&quot;
           </Original>
@@ -12757,7 +11836,7 @@ CmdLineTests.cpp" line="68">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="arg separated by =">
-CmdLineTests.cpp" line="74">
+CmdLineTests.cpp" line="82">
           <Original>
             config.fileName == &quot;filename.ext&quot;
           </Original>
@@ -12768,7 +11847,7 @@ CmdLineTests.cpp" line="74">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="long opt">
-CmdLineTests.cpp" line="80">
+CmdLineTests.cpp" line="88">
           <Original>
             config.fileName == &quot;%stdout&quot;
           </Original>
@@ -12779,7 +11858,7 @@ CmdLineTests.cpp" line="80">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="a number">
-CmdLineTests.cpp" line="91">
+CmdLineTests.cpp" line="99">
           <Original>
             config.number == 42
           </Original>
@@ -12790,7 +11869,7 @@ CmdLineTests.cpp" line="91">
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="not a number">
-CmdLineTests.cpp" line="95">
+CmdLineTests.cpp" line="103">
           <Original>
             parseInto( cli, argv, config )
           </Original>
@@ -12798,7 +11877,7 @@ CmdLineTests.cpp" line="95">
             parseInto( cli, argv, config )
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="97">
+CmdLineTests.cpp" line="105">
           <Original>
             config.number == 0
           </Original>
@@ -12809,7 +11888,7 @@ CmdLineTests.cpp" line="97">
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="two parsers">
-CmdLineTests.cpp" line="115">
+CmdLineTests.cpp" line="123">
           <Original>
             config1.number == 42
           </Original>
@@ -12817,7 +11896,7 @@ CmdLineTests.cpp" line="115">
             42 == 42
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="117">
+CmdLineTests.cpp" line="125">
           <Original>
             !unusedTokens.empty()
           </Original>
@@ -12825,7 +11904,7 @@ CmdLineTests.cpp" line="117">
             !false
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="119">
+CmdLineTests.cpp" line="127">
           <Original>
             config2.description == &quot;some text&quot;
           </Original>
@@ -12837,7 +11916,7 @@ CmdLineTests.cpp" line="119">
       </Section>
       <Section name="methods">
         <Section name="in range">
-CmdLineTests.cpp" line="132">
+CmdLineTests.cpp" line="140">
             <Original>
               config.index == 3
             </Original>
@@ -12851,7 +11930,7 @@ CmdLineTests.cpp" line="132">
       </Section>
       <Section name="methods">
         <Section name="out of range">
-CmdLineTests.cpp" line="137">
+CmdLineTests.cpp" line="145">
             <Original>
               parseInto( cli, argv, config )
             </Original>
@@ -12868,7 +11947,7 @@ CmdLineTests.cpp" line="137">
       </Section>
       <Section name="flags">
         <Section name="set">
-CmdLineTests.cpp" line="150">
+CmdLineTests.cpp" line="158">
             <Original>
               config.flag
             </Original>
@@ -12882,7 +11961,7 @@ CmdLineTests.cpp" line="150">
       </Section>
       <Section name="flags">
         <Section name="not set">
-CmdLineTests.cpp" line="156">
+CmdLineTests.cpp" line="164">
             <Original>
               config.flag == false
             </Original>
@@ -12898,7 +11977,7 @@ CmdLineTests.cpp" line="156">
         <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="positional">
-CmdLineTests.cpp" line="177">
+CmdLineTests.cpp" line="185">
           <Original>
             config.firstPos == &quot;1st&quot;
           </Original>
@@ -12906,7 +11985,7 @@ CmdLineTests.cpp" line="177">
             &quot;1st&quot; == &quot;1st&quot;
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="178">
+CmdLineTests.cpp" line="186">
           <Original>
             config.secondPos == &quot;2nd&quot;
           </Original>
@@ -12914,7 +11993,7 @@ CmdLineTests.cpp" line="178">
             &quot;2nd&quot; == &quot;2nd&quot;
           </Expanded>
         </Expression>
-CmdLineTests.cpp" line="179">
+CmdLineTests.cpp" line="187">
           <Original>
             config.unpositional == &quot;3rd&quot;
           </Original>
@@ -12926,248 +12005,9 @@ CmdLineTests.cpp" line="179">
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Scenario: New Catch commandline interface">
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: We ask for usage strings">
-          <Section name="    Then: It prints the usage strings">
-            <OverallResults successes="0" failures="1"/>
-          </Section>
-          <OverallResults successes="0" failures="1"/>
-        </Section>
-        <OverallResults successes="0" failures="1"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: We ask for usage strings">
-          <OverallResults successes="0" failures="0"/>
-        </Section>
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: Multiple flags are combined">
-CmdLineTests.cpp" line="332">
-            <Original>
-              !config.showSuccessfulTests
-            </Original>
-            <Expanded>
-              !false
-            </Expanded>
-          </Expression>
-CmdLineTests.cpp" line="333">
-            <Original>
-              !config.noThrow
-            </Original>
-            <Expanded>
-              !false
-            </Expanded>
-          </Expression>
-CmdLineTests.cpp" line="334">
-            <Original>
-              !config.breakIntoDebugger
-            </Original>
-            <Expanded>
-              !false
-            </Expanded>
-          </Expression>
-          <Section name="    Then: All the flags are set">
-CmdLineTests.cpp" line="340">
-              <Original>
-                config.showSuccessfulTests
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-CmdLineTests.cpp" line="341">
-              <Original>
-                config.noThrow
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-CmdLineTests.cpp" line="342">
-              <Original>
-                config.breakIntoDebugger
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <OverallResults successes="3" failures="0"/>
-          </Section>
-          <OverallResults successes="6" failures="0"/>
-        </Section>
-        <OverallResults successes="6" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: Multiple flags are combined">
-CmdLineTests.cpp" line="332">
-            <Original>
-              !config.showSuccessfulTests
-            </Original>
-            <Expanded>
-              !false
-            </Expanded>
-          </Expression>
-CmdLineTests.cpp" line="333">
-            <Original>
-              !config.noThrow
-            </Original>
-            <Expanded>
-              !false
-            </Expanded>
-          </Expression>
-CmdLineTests.cpp" line="334">
-            <Original>
-              !config.breakIntoDebugger
-            </Original>
-            <Expanded>
-              !false
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: A flag is set via a nullary method">
-CmdLineTests.cpp" line="346">
-            <Original>
-              config.abortAfter == 0
-            </Original>
-            <Expanded>
-              0 == 0
-            </Expanded>
-          </Expression>
-          <Section name="    Then: The flag is set">
-CmdLineTests.cpp" line="352">
-              <Original>
-                config.abortAfter == 1
-              </Original>
-              <Expanded>
-                1 == 1
-              </Expanded>
-            </Expression>
-            <OverallResults successes="1" failures="0"/>
-          </Section>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: A flag is set via a nullary method">
-CmdLineTests.cpp" line="346">
-            <Original>
-              config.abortAfter == 0
-            </Original>
-            <Expanded>
-              0 == 0
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: A flag is set via a unary method">
-CmdLineTests.cpp" line="355">
-            <Original>
-              config.abortAfter == 0
-            </Original>
-            <Expanded>
-              0 == 0
-            </Expanded>
-          </Expression>
-          <Section name="    Then: The flag is set">
-CmdLineTests.cpp" line="361">
-              <Original>
-                config.abortAfter == 2
-              </Original>
-              <Expanded>
-                2 == 2
-              </Expanded>
-            </Expression>
-            <OverallResults successes="1" failures="0"/>
-          </Section>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: A flag is set via a unary method">
-CmdLineTests.cpp" line="355">
-            <Original>
-              config.abortAfter == 0
-            </Original>
-            <Expanded>
-              0 == 0
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: A positional argument is supplied">
-          <Section name="    Then: The argument is in the testOrTags collection">
-CmdLineTests.cpp" line="369">
-              <Original>
-                config.testsOrTags.size() == 1
-              </Original>
-              <Expanded>
-                1 == 1
-              </Expanded>
-            </Expression>
-CmdLineTests.cpp" line="370">
-              <Original>
-                config.testsOrTags[0] == &quot;[hello]&quot;
-              </Original>
-              <Expanded>
-                &quot;[hello]&quot; == &quot;[hello]&quot;
-              </Expanded>
-            </Expression>
-            <OverallResults successes="2" failures="0"/>
-          </Section>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: A positional argument is supplied">
-          <OverallResults successes="0" failures="0"/>
-        </Section>
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="   Given: A built cli parser for Catch">
-        <Section name="    When: And enum opt is set by numeric value">
-CmdLineTests.cpp" line="374">
-            <Original>
-              config.verbosity == Config::Verbosity::Normal
-            </Original>
-            <Expanded>
-              2 == 2
-            </Expanded>
-          </Expression>
-          <Section name="    Then: The member is set to the enum value">
-CmdLineTests.cpp" line="380">
-              <Original>
-                config.verbosity == Config::Verbosity::NoOutput
-              </Original>
-              <Expanded>
-                0 == 0
-              </Expanded>
-            </Expression>
-            <OverallResults successes="1" failures="0"/>
-          </Section>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
-    <OverallResults successes="633" failures="107"/>
+    <OverallResults successes="599" failures="106"/>
   </Group>
-  <OverallResults successes="633" failures="107"/>
+  <OverallResults successes="599" failures="106"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -13920,13 +12760,13 @@ MiscTests.cpp:254: testStringForMatching() Equals( "this string contains 'abc' a
 "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 [Finished: './succeeding/matchers/Equals' All tests passed (1 assertion in 1 test case)]
 
-[Running: example/factorial]
-MiscTests.cpp:265: Factorial(0) == 1 succeeded for: 1 == 1
-MiscTests.cpp:266: Factorial(1) == 1 succeeded for: 1 == 1
-MiscTests.cpp:267: Factorial(2) == 2 succeeded for: 2 == 2
-MiscTests.cpp:268: Factorial(3) == 6 succeeded for: 6 == 6
-MiscTests.cpp:269: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 3628800
-[Finished: 'example/factorial' All tests passed (5 assertions in 1 test case)]
+[Running: Factorials are computed]
+MiscTests.cpp:264: Factorial(0) == 1 succeeded for: 1 == 1
+MiscTests.cpp:265: Factorial(1) == 1 succeeded for: 1 == 1
+MiscTests.cpp:266: Factorial(2) == 2 succeeded for: 2 == 2
+MiscTests.cpp:267: Factorial(3) == 6 succeeded for: 6 == 6
+MiscTests.cpp:268: Factorial(10) == 3628800 succeeded for: 0x<hex digits> == 3628800
+[Finished: 'Factorials are computed' All tests passed (5 assertions in 1 test case)]
 
 [Running: empty]
 
@@ -13935,7 +12775,7 @@ No assertions in test case, 'empty'
 [Finished: 'empty' 1 test case failed (1 assertion failed)]
 
 [Running: Nice descriptive name]
-MiscTests.cpp:278: [warning: This one ran]
+MiscTests.cpp:277: [warning: This one ran]
 
 No assertions in test case, 'Nice descriptive name'
 
@@ -13954,43 +12794,43 @@ No assertions in test case, 'second tag'
 [Finished: 'second tag' 1 test case failed (1 assertion failed)]
 
 [Running: vectors can be sized and resized]
-MiscTests.cpp:300: v.size() == 5 succeeded for: 5 == 5
-MiscTests.cpp:301: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:299: v.size() == 5 succeeded for: 5 == 5
+MiscTests.cpp:300: v.capacity() >= 5 succeeded for: 5 >= 5
 [Started section: 'resizing bigger changes size and capacity']
-MiscTests.cpp:306: v.size() == 10 succeeded for: 10 == 10
-MiscTests.cpp:307: v.capacity() >= 10 succeeded for: 10 >= 10
+MiscTests.cpp:305: v.size() == 10 succeeded for: 10 == 10
+MiscTests.cpp:306: v.capacity() >= 10 succeeded for: 10 >= 10
 [End of section: 'resizing bigger changes size and capacity' All 2 assertions passed]
 
-MiscTests.cpp:300: v.size() == 5 succeeded for: 5 == 5
-MiscTests.cpp:301: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:299: v.size() == 5 succeeded for: 5 == 5
+MiscTests.cpp:300: v.capacity() >= 5 succeeded for: 5 >= 5
 [Started section: 'resizing smaller changes size but not capacity']
-MiscTests.cpp:312: v.size() == 0 succeeded for: 0 == 0
-MiscTests.cpp:313: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:311: v.size() == 0 succeeded for: 0 == 0
+MiscTests.cpp:312: v.capacity() >= 5 succeeded for: 5 >= 5
 [Started section: 'We can use the 'swap trick' to reset the capacity']
-MiscTests.cpp:319: v.capacity() == 0 succeeded for: 0 == 0
+MiscTests.cpp:318: v.capacity() == 0 succeeded for: 0 == 0
 [End of section: 'We can use the 'swap trick' to reset the capacity' 1 assertion passed]
 
 [End of section: 'resizing smaller changes size but not capacity' All 3 assertions passed]
 
-MiscTests.cpp:300: v.size() == 5 succeeded for: 5 == 5
-MiscTests.cpp:301: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:299: v.size() == 5 succeeded for: 5 == 5
+MiscTests.cpp:300: v.capacity() >= 5 succeeded for: 5 >= 5
 [Started section: 'resizing smaller changes size but not capacity']
-MiscTests.cpp:312: v.size() == 0 succeeded for: 0 == 0
-MiscTests.cpp:313: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:311: v.size() == 0 succeeded for: 0 == 0
+MiscTests.cpp:312: v.capacity() >= 5 succeeded for: 5 >= 5
 [End of section: 'resizing smaller changes size but not capacity' All 2 assertions passed]
 
-MiscTests.cpp:300: v.size() == 5 succeeded for: 5 == 5
-MiscTests.cpp:301: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:299: v.size() == 5 succeeded for: 5 == 5
+MiscTests.cpp:300: v.capacity() >= 5 succeeded for: 5 >= 5
 [Started section: 'reserving bigger changes capacity but not size']
-MiscTests.cpp:325: v.size() == 5 succeeded for: 5 == 5
-MiscTests.cpp:326: v.capacity() >= 10 succeeded for: 10 >= 10
+MiscTests.cpp:324: v.size() == 5 succeeded for: 5 == 5
+MiscTests.cpp:325: v.capacity() >= 10 succeeded for: 10 >= 10
 [End of section: 'reserving bigger changes capacity but not size' All 2 assertions passed]
 
-MiscTests.cpp:300: v.size() == 5 succeeded for: 5 == 5
-MiscTests.cpp:301: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:299: v.size() == 5 succeeded for: 5 == 5
+MiscTests.cpp:300: v.capacity() >= 5 succeeded for: 5 >= 5
 [Started section: 'reserving smaller does not change size or capacity']
-MiscTests.cpp:331: v.size() == 5 succeeded for: 5 == 5
-MiscTests.cpp:332: v.capacity() >= 5 succeeded for: 5 >= 5
+MiscTests.cpp:330: v.size() == 5 succeeded for: 5 == 5
+MiscTests.cpp:331: v.capacity() >= 5 succeeded for: 5 >= 5
 [End of section: 'reserving smaller does not change size or capacity' All 2 assertions passed]
 
 [Finished: 'vectors can be sized and resized' All tests passed (21 assertions in 1 test case)]
@@ -14185,303 +13025,244 @@ TestMain.cpp:58: totals.assertions.passed == 2 succeeded for: 2 == 2
 TestMain.cpp:59: totals.assertions.failed == 1 succeeded for: 1 == 1
 [Finished: 'meta/Misc/Sections' All tests passed (2 assertions in 1 test case)]
 
-[Running: selftest/parser/2]
-[Started section: 'default']
+[Running: Process can be configured on command line]
+[Started section: 'default - no arguments']
 TestMain.cpp:98: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:100: config.shouldDebugBreak == false succeeded for: false == false
 TestMain.cpp:101: config.abortAfter == -1 succeeded for: -1 == -1
 TestMain.cpp:102: config.noThrow == false succeeded for: false == false
 TestMain.cpp:103: config.reporterName.empty() succeeded for: true
-[End of section: 'default' All 5 assertions passed]
+[End of section: 'default - no arguments' All 5 assertions passed]
 
 [Started section: 'test lists']
-[Started section: '-t/1']
+[Started section: '1 test']
 TestMain.cpp:109: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:112: cfg.filters().size() == 1 succeeded for: 1 == 1
 TestMain.cpp:113: cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
 TestMain.cpp:114: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
-[End of section: '-t/1' All 4 assertions passed]
+[End of section: '1 test' All 4 assertions passed]
 
 [End of section: 'test lists' All 4 assertions passed]
 
 [Started section: 'test lists']
-[Started section: '-t/exclude:1']
+[Started section: 'Specify one test case exclusion using exclude:']
 TestMain.cpp:118: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:121: cfg.filters().size() == 1 succeeded for: 1 == 1
 TestMain.cpp:122: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false succeeded for: false == false
 TestMain.cpp:123: cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) succeeded for: true
-[End of section: '-t/exclude:1' All 4 assertions passed]
+[End of section: 'Specify one test case exclusion using exclude:' All 4 assertions passed]
 
 [End of section: 'test lists' All 4 assertions passed]
 
 [Started section: 'test lists']
-[Started section: '--test/1']
+[Started section: 'Specify one test case exclusion using ~']
 TestMain.cpp:128: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:131: cfg.filters().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:132: cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
-TestMain.cpp:133: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
-[End of section: '--test/1' All 4 assertions passed]
+TestMain.cpp:132: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false succeeded for: false == false
+TestMain.cpp:133: cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) succeeded for: true
+[End of section: 'Specify one test case exclusion using ~' All 4 assertions passed]
 
 [End of section: 'test lists' All 4 assertions passed]
 
 [Started section: 'test lists']
-[Started section: '--test/exclude:1']
+[Started section: 'Specify two test cases using -t']
 TestMain.cpp:138: parseIntoConfig( argv, config ) succeeded
 TestMain.cpp:141: cfg.filters().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:142: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false succeeded for: false == false
-TestMain.cpp:143: cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) succeeded for: true
-[End of section: '--test/exclude:1' All 4 assertions passed]
-
-[End of section: 'test lists' All 4 assertions passed]
-
-[Started section: 'test lists']
-[Started section: '--test/exclude:2']
-TestMain.cpp:148: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:151: cfg.filters().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:152: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false succeeded for: false == false
-TestMain.cpp:153: cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) succeeded for: true
-[End of section: '--test/exclude:2' All 4 assertions passed]
-
-[End of section: 'test lists' All 4 assertions passed]
-
-[Started section: 'test lists']
-[Started section: '-t/2']
-TestMain.cpp:158: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:161: cfg.filters().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:162: cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
-TestMain.cpp:163: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
-TestMain.cpp:164: cfg.filters()[0].shouldInclude( fakeTestCase( "test2" ) ) succeeded for: true
-[End of section: '-t/2' All 5 assertions passed]
+TestMain.cpp:142: cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
+TestMain.cpp:143: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
+TestMain.cpp:144: cfg.filters()[0].shouldInclude( fakeTestCase( "test2" ) ) succeeded for: true
+[End of section: 'Specify two test cases using -t' All 5 assertions passed]
 
 [End of section: 'test lists' All 5 assertions passed]
 
-[Started section: 'test lists']
-[Started section: '-t/0']
-TestMain.cpp:169: parseIntoConfigAndReturnError( argv, config ) Contains( "at least 1" ) succeeded for:
-"Error while parsing arguments. Expected at least 1 argument." contains: "at least 1"
-[End of section: '-t/0' 1 assertion passed]
-
-[End of section: 'test lists' 1 assertion passed]
-
 [Started section: 'reporter']
 [Started section: '-r/console']
-TestMain.cpp:176: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:178: config.reporterName == "console" succeeded for: "console" == "console"
+TestMain.cpp:151: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:153: config.reporterName == "console" succeeded for: "console" == "console"
 [End of section: '-r/console' All 2 assertions passed]
 
 [End of section: 'reporter' All 2 assertions passed]
 
 [Started section: 'reporter']
 [Started section: '-r/xml']
-TestMain.cpp:182: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:184: config.reporterName == "xml" succeeded for: "xml" == "xml"
+TestMain.cpp:157: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:159: config.reporterName == "xml" succeeded for: "xml" == "xml"
 [End of section: '-r/xml' All 2 assertions passed]
 
 [End of section: 'reporter' All 2 assertions passed]
 
 [Started section: 'reporter']
 [Started section: '--reporter/junit']
-TestMain.cpp:188: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:190: config.reporterName == "junit" succeeded for: "junit" == "junit"
+TestMain.cpp:163: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:165: config.reporterName == "junit" succeeded for: "junit" == "junit"
 [End of section: '--reporter/junit' All 2 assertions passed]
 
 [End of section: 'reporter' All 2 assertions passed]
 
-[Started section: 'reporter']
-[Started section: '-r/error']
-TestMain.cpp:194: parseIntoConfigAndReturnError( argv, config ) Contains( "1 argument" ) succeeded for:
-"Error while parsing arguments. Expected 1 argument. Arguments were: one two" contains: "1 argument"
-[End of section: '-r/error' 1 assertion passed]
-
-[End of section: 'reporter' 1 assertion passed]
-
 [Started section: 'debugger']
 [Started section: '-b']
-TestMain.cpp:201: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:203: config.shouldDebugBreak == true succeeded for: true == true
+TestMain.cpp:172: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:174: config.shouldDebugBreak == true succeeded for: true == true
 [End of section: '-b' All 2 assertions passed]
 
 [End of section: 'debugger' All 2 assertions passed]
 
 [Started section: 'debugger']
 [Started section: '--break']
-TestMain.cpp:207: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:209: config.shouldDebugBreak succeeded for: true
+TestMain.cpp:178: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:180: config.shouldDebugBreak succeeded for: true
 [End of section: '--break' All 2 assertions passed]
 
 [End of section: 'debugger' All 2 assertions passed]
 
-[Started section: 'debugger']
-[Started section: '-b']
-TestMain.cpp:213: parseIntoConfigAndReturnError( argv, config ) Contains( "0 arguments" ) succeeded for:
-"Error while parsing arguments. Expected 0 arguments. Arguments were: unexpected" contains: "0 arguments"
-[End of section: '-b' 1 assertion passed]
-
-[End of section: 'debugger' 1 assertion passed]
-
 [Started section: 'abort']
-[Started section: '-a']
-TestMain.cpp:220: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:222: config.abortAfter == 1 succeeded for: 1 == 1
-[End of section: '-a' All 2 assertions passed]
+[Started section: '-a aborts after first failure']
+TestMain.cpp:187: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:189: config.abortAfter == 1 succeeded for: 1 == 1
+[End of section: '-a aborts after first failure' All 2 assertions passed]
 
 [End of section: 'abort' All 2 assertions passed]
 
 [Started section: 'abort']
-[Started section: '-a/2']
-TestMain.cpp:226: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:228: config.abortAfter == 2 succeeded for: 2 == 2
-[End of section: '-a/2' All 2 assertions passed]
+[Started section: '-x 2 aborts after two failures']
+TestMain.cpp:193: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:195: config.abortAfter == 2 succeeded for: 2 == 2
+[End of section: '-x 2 aborts after two failures' All 2 assertions passed]
 
 [End of section: 'abort' All 2 assertions passed]
 
 [Started section: 'abort']
-[Started section: '-a/error/0']
-TestMain.cpp:232: parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) succeeded for:
-"Error while parsing arguments. threshold must be a number greater than zero. Arguments were: 0" contains: "greater than zero"
-[End of section: '-a/error/0' 1 assertion passed]
+[Started section: '-x must be greater than zero']
+TestMain.cpp:199: parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) succeeded for:
+"Value after -x or --abortAfter must be greater than zero while parsing: (-x, --abortx <number of failures>)" contains: "greater than zero"
+[End of section: '-x must be greater than zero' 1 assertion passed]
 
 [End of section: 'abort' 1 assertion passed]
 
 [Started section: 'abort']
-[Started section: '-a/error/non numeric']
-TestMain.cpp:236: parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) succeeded for:
-"Error while parsing arguments. threshold must be a number greater than zero. Arguments were: oops" contains: "greater than zero"
-[End of section: '-a/error/non numeric' 1 assertion passed]
-
-[End of section: 'abort' 1 assertion passed]
-
-[Started section: 'abort']
-[Started section: '-a/error/two args']
-TestMain.cpp:240: parseIntoConfigAndReturnError( argv, config ) Contains( "0 and 1 argument" ) succeeded for:
-"Error while parsing arguments. Expected between 0 and 1 argument. Arguments were: 1 2" contains: "0 and 1 argument"
-[End of section: '-a/error/two args' 1 assertion passed]
+[Started section: '-x must be numeric']
+TestMain.cpp:203: parseIntoConfigAndReturnError( argv, config ) Contains( "-x" ) succeeded for:
+"Unable to convert oops to destination type while parsing: (-x, --abortx <number of failures>)" contains: "-x"
+[End of section: '-x must be numeric' 1 assertion passed]
 
 [End of section: 'abort' 1 assertion passed]
 
 [Started section: 'nothrow']
-[Started section: '-nt']
-TestMain.cpp:247: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:249: config.noThrow == true succeeded for: true == true
-[End of section: '-nt' All 2 assertions passed]
+[Started section: '-e']
+TestMain.cpp:210: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:212: config.noThrow == true succeeded for: true == true
+[End of section: '-e' All 2 assertions passed]
 
 [End of section: 'nothrow' All 2 assertions passed]
 
 [Started section: 'nothrow']
 [Started section: '--nothrow']
-TestMain.cpp:253: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:255: config.noThrow == true succeeded for: true == true
+TestMain.cpp:216: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:218: config.noThrow == true succeeded for: true == true
 [End of section: '--nothrow' All 2 assertions passed]
 
 [End of section: 'nothrow' All 2 assertions passed]
 
 [Started section: 'output filename']
 [Started section: '-o filename']
-TestMain.cpp:262: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:264: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+TestMain.cpp:225: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:227: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
 [End of section: '-o filename' All 2 assertions passed]
 
 [End of section: 'output filename' All 2 assertions passed]
 
 [Started section: 'output filename']
 [Started section: '--out']
-TestMain.cpp:268: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:270: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+TestMain.cpp:231: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:233: config.outputFilename == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
 [End of section: '--out' All 2 assertions passed]
 
 [End of section: 'output filename' All 2 assertions passed]
 
 [Started section: 'combinations']
-[Started section: '-a -b']
-TestMain.cpp:277: parseIntoConfig( argv, config ) succeeded
-TestMain.cpp:279: config.abortAfter == 1 succeeded for: 1 == 1
-TestMain.cpp:280: config.shouldDebugBreak succeeded for: true
-TestMain.cpp:281: config.noThrow == true succeeded for: true == true
-[End of section: '-a -b' All 4 assertions passed]
+[Started section: 'Single character flags can be combined']
+TestMain.cpp:240: parseIntoConfig( argv, config ) succeeded
+TestMain.cpp:242: config.abortAfter == 1 succeeded for: 1 == 1
+TestMain.cpp:243: config.shouldDebugBreak succeeded for: true
+TestMain.cpp:244: config.noThrow == true succeeded for: true == true
+[End of section: 'Single character flags can be combined' All 4 assertions passed]
 
 [End of section: 'combinations' All 4 assertions passed]
 
-[Finished: 'selftest/parser/2' All tests passed (62 assertions in 1 test case)]
+[Finished: 'Process can be configured on command line' All tests passed (50 assertions in 1 test case)]
 
 [Running: selftest/test filter]
-TestMain.cpp:290: matchAny.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
-TestMain.cpp:291: matchNone.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
-TestMain.cpp:296: matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
-TestMain.cpp:297: matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
-TestMain.cpp:299: matchHidden.shouldInclude( fakeTestCase( "./any" ) ) succeeded for: true
-TestMain.cpp:300: matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false succeeded for: false == false
+TestMain.cpp:253: matchAny.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
+TestMain.cpp:254: matchNone.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:259: matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:260: matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) succeeded for: true
+TestMain.cpp:262: matchHidden.shouldInclude( fakeTestCase( "./any" ) ) succeeded for: true
+TestMain.cpp:263: matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false succeeded for: false == false
 [Finished: 'selftest/test filter' All tests passed (6 assertions in 1 test case)]
 
 [Running: selftest/test filters]
-TestMain.cpp:311: matchHidden.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
-TestMain.cpp:313: filters.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
-TestMain.cpp:314: filters.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
-TestMain.cpp:315: filters.shouldInclude( fakeTestCase( "./anything" ) ) == false succeeded for: false == false
+TestMain.cpp:274: matchHidden.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
+TestMain.cpp:276: filters.shouldInclude( fakeTestCase( "any" ) ) == false succeeded for: false == false
+TestMain.cpp:277: filters.shouldInclude( fakeTestCase( "./something" ) ) succeeded for: true
+TestMain.cpp:278: filters.shouldInclude( fakeTestCase( "./anything" ) ) == false succeeded for: false == false
 [Finished: 'selftest/test filters' All tests passed (4 assertions in 1 test case)]
 
 [Running: selftest/filter/prefix wildcard]
-TestMain.cpp:321: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
-TestMain.cpp:322: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false succeeded for: false == false
+TestMain.cpp:284: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
+TestMain.cpp:285: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false succeeded for: false == false
 [Finished: 'selftest/filter/prefix wildcard' All tests passed (2 assertions in 1 test case)]
 
 [Running: selftest/filter/wildcard at both ends]
-TestMain.cpp:327: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
-TestMain.cpp:328: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) succeeded for: true
-TestMain.cpp:329: matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) succeeded for: true
-TestMain.cpp:330: matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false succeeded for: false == false
+TestMain.cpp:290: matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) succeeded for: true
+TestMain.cpp:291: matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) succeeded for: true
+TestMain.cpp:292: matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) succeeded for: true
+TestMain.cpp:293: matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false succeeded for: false == false
 [Finished: 'selftest/filter/wildcard at both ends' All tests passed (4 assertions in 1 test case)]
-
-[Running: selftest/option parsers]
-TestMain.cpp:350: opt.parseIntoConfig( parser, config ) succeeded
-TestMain.cpp:353: cfg.filters().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:354: cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false succeeded for: false == false
-TestMain.cpp:355: cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) succeeded for: true
-[Finished: 'selftest/option parsers' All tests passed (4 assertions in 1 test case)]
 
 [Running: selftest/tags]
 [Started section: 'one tag']
-TestMain.cpp:369: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
-TestMain.cpp:370: oneTag.hasTag( "one" ) succeeded for: true
-TestMain.cpp:371: oneTag.getTags().size() == 1 succeeded for: 1 == 1
-TestMain.cpp:373: oneTag.matchesTags( p1 ) == true succeeded for: true == true
-TestMain.cpp:374: oneTag.matchesTags( p2 ) == true succeeded for: true == true
-TestMain.cpp:375: oneTag.matchesTags( p3 ) == false succeeded for: false == false
-TestMain.cpp:376: oneTag.matchesTags( p4 ) == false succeeded for: false == false
-TestMain.cpp:377: oneTag.matchesTags( p5 ) == false succeeded for: false == false
+TestMain.cpp:313: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:314: oneTag.hasTag( "one" ) succeeded for: true
+TestMain.cpp:315: oneTag.getTags().size() == 1 succeeded for: 1 == 1
+TestMain.cpp:317: oneTag.matchesTags( p1 ) == true succeeded for: true == true
+TestMain.cpp:318: oneTag.matchesTags( p2 ) == true succeeded for: true == true
+TestMain.cpp:319: oneTag.matchesTags( p3 ) == false succeeded for: false == false
+TestMain.cpp:320: oneTag.matchesTags( p4 ) == false succeeded for: false == false
+TestMain.cpp:321: oneTag.matchesTags( p5 ) == false succeeded for: false == false
 [End of section: 'one tag' All 8 assertions passed]
 
 [Started section: 'two tags']
-TestMain.cpp:383: twoTags.getTestCaseInfo().description == "" succeeded for: "" == ""
-TestMain.cpp:384: twoTags.hasTag( "one" ) succeeded for: true
-TestMain.cpp:385: twoTags.hasTag( "two" ) succeeded for: true
-TestMain.cpp:386: twoTags.hasTag( "Two" ) succeeded for: true
-TestMain.cpp:387: twoTags.hasTag( "three" ) == false succeeded for: false == false
-TestMain.cpp:388: twoTags.getTags().size() == 2 succeeded for: 2 == 2
-TestMain.cpp:390: twoTags.matchesTags( p1 ) == true succeeded for: true == true
-TestMain.cpp:391: twoTags.matchesTags( p2 ) == true succeeded for: true == true
-TestMain.cpp:392: twoTags.matchesTags( p3 ) == true succeeded for: true == true
-TestMain.cpp:393: twoTags.matchesTags( p4 ) == true succeeded for: true == true
-TestMain.cpp:394: twoTags.matchesTags( p5 ) == true succeeded for: true == true
+TestMain.cpp:327: twoTags.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:328: twoTags.hasTag( "one" ) succeeded for: true
+TestMain.cpp:329: twoTags.hasTag( "two" ) succeeded for: true
+TestMain.cpp:330: twoTags.hasTag( "Two" ) succeeded for: true
+TestMain.cpp:331: twoTags.hasTag( "three" ) == false succeeded for: false == false
+TestMain.cpp:332: twoTags.getTags().size() == 2 succeeded for: 2 == 2
+TestMain.cpp:334: twoTags.matchesTags( p1 ) == true succeeded for: true == true
+TestMain.cpp:335: twoTags.matchesTags( p2 ) == true succeeded for: true == true
+TestMain.cpp:336: twoTags.matchesTags( p3 ) == true succeeded for: true == true
+TestMain.cpp:337: twoTags.matchesTags( p4 ) == true succeeded for: true == true
+TestMain.cpp:338: twoTags.matchesTags( p5 ) == true succeeded for: true == true
 [End of section: 'two tags' All 11 assertions passed]
 
 [Started section: 'one tag with characters either side']
-TestMain.cpp:400: oneTagWithExtras.getTestCaseInfo().description == "1234" succeeded for: "1234" == "1234"
-TestMain.cpp:401: oneTagWithExtras.hasTag( "one" ) succeeded for: true
-TestMain.cpp:402: oneTagWithExtras.hasTag( "two" ) == false succeeded for: false == false
-TestMain.cpp:403: oneTagWithExtras.getTags().size() == 1 succeeded for: 1 == 1
+TestMain.cpp:344: oneTagWithExtras.getTestCaseInfo().description == "1234" succeeded for: "1234" == "1234"
+TestMain.cpp:345: oneTagWithExtras.hasTag( "one" ) succeeded for: true
+TestMain.cpp:346: oneTagWithExtras.hasTag( "two" ) == false succeeded for: false == false
+TestMain.cpp:347: oneTagWithExtras.getTags().size() == 1 succeeded for: 1 == 1
 [End of section: 'one tag with characters either side' All 4 assertions passed]
 
 [Started section: 'start of a tag, but not closed']
-TestMain.cpp:410: oneTagOpen.getTestCaseInfo().description == "[one" succeeded for: "[one" == "[one"
-TestMain.cpp:411: oneTagOpen.hasTag( "one" ) == false succeeded for: false == false
-TestMain.cpp:412: oneTagOpen.getTags().size() == 0 succeeded for: 0 == 0
+TestMain.cpp:354: oneTagOpen.getTestCaseInfo().description == "[one" succeeded for: "[one" == "[one"
+TestMain.cpp:355: oneTagOpen.hasTag( "one" ) == false succeeded for: false == false
+TestMain.cpp:356: oneTagOpen.getTags().size() == 0 succeeded for: 0 == 0
 [End of section: 'start of a tag, but not closed' All 3 assertions passed]
 
 [Started section: 'hidden']
-TestMain.cpp:418: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
-TestMain.cpp:419: oneTag.hasTag( "hide" ) succeeded for: true
-TestMain.cpp:420: oneTag.isHidden() succeeded for: true
-TestMain.cpp:422: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false == false
+TestMain.cpp:362: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
+TestMain.cpp:363: oneTag.hasTag( "hide" ) succeeded for: true
+TestMain.cpp:364: oneTag.isHidden() succeeded for: true
+TestMain.cpp:366: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false == false
 [End of section: 'hidden' All 4 assertions passed]
 
 [Finished: 'selftest/tags' All tests passed (30 assertions in 1 test case)]
@@ -14489,11 +13270,11 @@ TestMain.cpp:422: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false 
 [Running: Long strings can be wrapped]
 [Started section: 'plain string']
 [Started section: 'No wrapping']
-TestMain.cpp:435: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
+TestMain.cpp:379: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
-TestMain.cpp:436: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
+TestMain.cpp:380: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
 	"one two three four"
 ==
 "one two three four"
@@ -14503,31 +13284,31 @@ TestMain.cpp:436: Text( testString, TextAttributes().setWidth( 18 ) ).toString()
 
 [Started section: 'plain string']
 [Started section: 'Wrapped once']
-TestMain.cpp:439: Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:383: Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:440: Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:384: Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:441: Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:385: Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:442: Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" succeeded for:
+TestMain.cpp:386: Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" succeeded for:
 	"one two three
 four"
 ==
 "one two three
 four"
-TestMain.cpp:443: Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" succeeded for:
+TestMain.cpp:387: Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" succeeded for:
 	"one two
 three four"
 ==
@@ -14539,7 +13320,7 @@ three four"
 
 [Started section: 'plain string']
 [Started section: 'Wrapped twice']
-TestMain.cpp:446: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:390: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14547,7 +13328,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:447: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:391: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14555,7 +13336,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:448: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:392: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14569,7 +13350,7 @@ four"
 
 [Started section: 'plain string']
 [Started section: 'Wrapped three times']
-TestMain.cpp:451: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:395: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -14579,7 +13360,7 @@ four"
 two
 three
 four"
-TestMain.cpp:452: Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:396: Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -14595,24 +13376,24 @@ four"
 
 [Started section: 'plain string']
 [Started section: 'Short wrap']
-TestMain.cpp:455: Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" succeeded for: "abc-
+TestMain.cpp:399: Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" succeeded for: "abc-
 def"
 ==
 "abc-
 def"
-TestMain.cpp:456: Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" succeeded for: "abc-
+TestMain.cpp:400: Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" succeeded for: "abc-
 defg"
 ==
 "abc-
 defg"
-TestMain.cpp:457: Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" succeeded for: "abc-
+TestMain.cpp:401: Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" succeeded for: "abc-
 def-
 gh"
 ==
 "abc-
 def-
 gh"
-TestMain.cpp:459: Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" succeeded for:
+TestMain.cpp:403: Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" succeeded for:
 	"one
 two
 thr-
@@ -14624,7 +13405,7 @@ two
 thr-
 ee
 four"
-TestMain.cpp:460: Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
+TestMain.cpp:404: Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" succeeded for:
 	"one
 two
 th-
@@ -14644,18 +13425,18 @@ ur"
 
 [Started section: 'plain string']
 [Started section: 'As container']
-TestMain.cpp:464: text.size() == 4 succeeded for: 4 == 4
-TestMain.cpp:465: text[0] == "one" succeeded for: "one" == "one"
-TestMain.cpp:466: text[1] == "two" succeeded for: "two" == "two"
-TestMain.cpp:467: text[2] == "three" succeeded for: "three" == "three"
-TestMain.cpp:468: text[3] == "four" succeeded for: "four" == "four"
+TestMain.cpp:408: text.size() == 4 succeeded for: 4 == 4
+TestMain.cpp:409: text[0] == "one" succeeded for: "one" == "one"
+TestMain.cpp:410: text[1] == "two" succeeded for: "two" == "two"
+TestMain.cpp:411: text[2] == "three" succeeded for: "three" == "three"
+TestMain.cpp:412: text[3] == "four" succeeded for: "four" == "four"
 [End of section: 'As container' All 5 assertions passed]
 
 [End of section: 'plain string' All 5 assertions passed]
 
 [Started section: 'plain string']
 [Started section: 'Indent first line differently']
-TestMain.cpp:475: text.toString() == " one two\n    three\n    four" succeeded for:
+TestMain.cpp:419: text.toString() == " one two\n    three\n    four" succeeded for:
 	" one two
     three
     four"
@@ -14669,19 +13450,19 @@ TestMain.cpp:475: text.toString() == " one two\n    three\n    four" succeeded f
 
 [Started section: 'With newlines']
 [Started section: 'No wrapping']
-TestMain.cpp:486: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
+TestMain.cpp:430: Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:487: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
+TestMain.cpp:431: Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
 "one two
 three four"
-TestMain.cpp:488: Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString succeeded for:
+TestMain.cpp:432: Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString succeeded for:
 	"one two
 three four"
 ==
@@ -14693,13 +13474,13 @@ three four"
 
 [Started section: 'With newlines']
 [Started section: 'Trailing newline']
-TestMain.cpp:491: Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:435: Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
 "
-TestMain.cpp:492: Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
-TestMain.cpp:493: Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" succeeded for: "abcdef
+TestMain.cpp:436: Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" succeeded for: "abcdef" == "abcdef"
+TestMain.cpp:437: Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" succeeded for: "abcdef
 "
 ==
 "abcdef
@@ -14710,7 +13491,7 @@ TestMain.cpp:493: Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() 
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped once']
-TestMain.cpp:496: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:440: Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14718,7 +13499,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:497: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:441: Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14726,7 +13507,7 @@ four"
 "one two
 three
 four"
-TestMain.cpp:498: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
+TestMain.cpp:442: Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" succeeded for:
 	"one two
 three
 four"
@@ -14740,7 +13521,7 @@ four"
 
 [Started section: 'With newlines']
 [Started section: 'Wrapped twice']
-TestMain.cpp:501: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
+TestMain.cpp:445: Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" succeeded for:
 	"one
 two
 three
@@ -14755,7 +13536,7 @@ four"
 [End of section: 'With newlines' 1 assertion passed]
 
 [Started section: 'With tabs']
-TestMain.cpp:511: Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six" succeeded for:
+TestMain.cpp:455: Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six" succeeded for:
 "one two three
         four
         five
@@ -14778,8 +13559,8 @@ No assertions in test case, 'Strings can be rendered with colour'
 [Finished: 'Strings can be rendered with colour' 1 test case failed (1 assertion failed)]
 
 [Running: Text can be formatted using the Text class]
-TestMain.cpp:611: Text( "hi there" ).toString() == "hi there" succeeded for: "hi there" == "hi there"
-TestMain.cpp:616: Text( "hi there", narrow ).toString() == "hi\nthere" succeeded for: "hi
+TestMain.cpp:555: Text( "hi there" ).toString() == "hi there" succeeded for: "hi there" == "hi there"
+TestMain.cpp:560: Text( "hi there", narrow ).toString() == "hi\nthere" succeeded for: "hi
 there"
 ==
 "hi
@@ -15004,285 +13785,81 @@ BDDTests.cpp:67:  succeeded
 [Finished: 'Scenario: This is a really long scenario name to see how the list command deals with wrapping' All tests passed (1 assertion in 1 test case)]
 
 [Running: cmdline]
+[Started section: 'process name']
+CmdLineTests.cpp:64: config.processName == "test" succeeded for: "test" == "test"
+[End of section: 'process name' 1 assertion passed]
+
 [Started section: 'arg separated by spaces']
-CmdLineTests.cpp:62: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+CmdLineTests.cpp:70: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
 [End of section: 'arg separated by spaces' 1 assertion passed]
 
 [Started section: 'arg separated by colon']
-CmdLineTests.cpp:68: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+CmdLineTests.cpp:76: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
 [End of section: 'arg separated by colon' 1 assertion passed]
 
 [Started section: 'arg separated by =']
-CmdLineTests.cpp:74: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
+CmdLineTests.cpp:82: config.fileName == "filename.ext" succeeded for: "filename.ext" == "filename.ext"
 [End of section: 'arg separated by =' 1 assertion passed]
 
 [Started section: 'long opt']
-CmdLineTests.cpp:80: config.fileName == "%stdout" succeeded for: "%stdout" == "%stdout"
+CmdLineTests.cpp:88: config.fileName == "%stdout" succeeded for: "%stdout" == "%stdout"
 [End of section: 'long opt' 1 assertion passed]
 
 [Started section: 'a number']
-CmdLineTests.cpp:91: config.number == 42 succeeded for: 42 == 42
+CmdLineTests.cpp:99: config.number == 42 succeeded for: 42 == 42
 [End of section: 'a number' 1 assertion passed]
 
 [Started section: 'not a number']
-CmdLineTests.cpp:95: parseInto( cli, argv, config ) succeeded
-CmdLineTests.cpp:97: config.number == 0 succeeded for: 0 == 0
+CmdLineTests.cpp:103: parseInto( cli, argv, config ) succeeded
+CmdLineTests.cpp:105: config.number == 0 succeeded for: 0 == 0
 [End of section: 'not a number' All 2 assertions passed]
 
 [Started section: 'two parsers']
-CmdLineTests.cpp:115: config1.number == 42 succeeded for: 42 == 42
-CmdLineTests.cpp:117: !unusedTokens.empty() succeeded for: !false
-CmdLineTests.cpp:119: config2.description == "some text" succeeded for: "some text" == "some text"
+CmdLineTests.cpp:123: config1.number == 42 succeeded for: 42 == 42
+CmdLineTests.cpp:125: !unusedTokens.empty() succeeded for: !false
+CmdLineTests.cpp:127: config2.description == "some text" succeeded for: "some text" == "some text"
 [End of section: 'two parsers' All 3 assertions passed]
 
 [Started section: 'methods']
 [Started section: 'in range']
-CmdLineTests.cpp:132: config.index == 3 succeeded for: 3 == 3
+CmdLineTests.cpp:140: config.index == 3 succeeded for: 3 == 3
 [End of section: 'in range' 1 assertion passed]
 
 [End of section: 'methods' 1 assertion passed]
 
 [Started section: 'methods']
 [Started section: 'out of range']
-CmdLineTests.cpp:137: parseInto( cli, argv, config ) succeeded
+CmdLineTests.cpp:145: parseInto( cli, argv, config ) succeeded
 [End of section: 'out of range' 1 assertion passed]
 
 [End of section: 'methods' 1 assertion passed]
 
 [Started section: 'flags']
 [Started section: 'set']
-CmdLineTests.cpp:150: config.flag succeeded for: true
+CmdLineTests.cpp:158: config.flag succeeded for: true
 [End of section: 'set' 1 assertion passed]
 
 [End of section: 'flags' 1 assertion passed]
 
 [Started section: 'flags']
 [Started section: 'not set']
-CmdLineTests.cpp:156: config.flag == false succeeded for: false == false
+CmdLineTests.cpp:164: config.flag == false succeeded for: false == false
 [End of section: 'not set' 1 assertion passed]
 
 [End of section: 'flags' 1 assertion passed]
 
-usage:
-  testApp <first arg> <second arg> [<any arg> ...] [options]
-
-where options are:
-  -o, --output <filename>  specifies output file
-  -n <an integral value>
-
-
 [Started section: 'positional']
-CmdLineTests.cpp:177: config.firstPos == "1st" succeeded for: "1st" == "1st"
-CmdLineTests.cpp:178: config.secondPos == "2nd" succeeded for: "2nd" == "2nd"
-CmdLineTests.cpp:179: config.unpositional == "3rd" succeeded for: "3rd" == "3rd"
+CmdLineTests.cpp:185: config.firstPos == "1st" succeeded for: "1st" == "1st"
+CmdLineTests.cpp:186: config.secondPos == "2nd" succeeded for: "2nd" == "2nd"
+CmdLineTests.cpp:187: config.unpositional == "3rd" succeeded for: "3rd" == "3rd"
 [End of section: 'positional' All 3 assertions passed]
 
-[Finished: 'cmdline' All tests passed (17 assertions in 1 test case)]
-usage:
-  CatchTestApp [<test name, pattern or tags> ...] [options]
-
-where options are:
-  -?, -h, --help                     display usage information
-  -l, --list-tests                   list all (or matching) test cases
-  -t, --list-tags                    list all (or matching) tags
-  --list-reporters                   list all reporters
-  -s, --success                      include successful tests in output
-  -b, --break                        break into debugger on failure
-  -e, --nothrow                      Skip exception tests
-  -o, --out <filename>               output filename
-  -r, --reporter <name[:filename]>   reporter to use - defaults to console
-  -n, --name <name>                  suite name
-  -a, --abort                        abort at first failure
-  -x, --abortx <number of failures>  abort after x failures
-  -w, --warn <warning name>          enable warnings
-  -v, --verbosity <level>            level of verbosity (0=no output)
+[Finished: 'cmdline' All tests passed (18 assertions in 1 test case)]
+[End of group: '~dummy'. 49 of 113 test cases failed (106 of 705 assertions failed)]
 
 
-
-[Running: Scenario: New Catch commandline interface]
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: We ask for usage strings']
-[Started section: '    Then: It prints the usage strings']
-
-No assertions in section, '    Then: It prints the usage strings'
-
-[End of section: '    Then: It prints the usage strings' 1 assertion failed]
-
-[End of section: '    When: We ask for usage strings' 1 assertion failed]
-
-[End of section: '   Given: A built cli parser for Catch' 1 assertion failed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: Multiple flags are combined']
-CmdLineTests.cpp:332: !config.showSuccessfulTests succeeded for: !false
-CmdLineTests.cpp:333: !config.noThrow succeeded for: !false
-CmdLineTests.cpp:334: !config.breakIntoDebugger succeeded for: !false
-[Started section: '    Then: All the flags are set']
-CmdLineTests.cpp:340: config.showSuccessfulTests succeeded for: true
-CmdLineTests.cpp:341: config.noThrow succeeded for: true
-CmdLineTests.cpp:342: config.breakIntoDebugger succeeded for: true
-[End of section: '    Then: All the flags are set' All 3 assertions passed]
-
-[End of section: '    When: Multiple flags are combined' All 6 assertions passed]
-
-[End of section: '   Given: A built cli parser for Catch' All 6 assertions passed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: Multiple flags are combined']
-CmdLineTests.cpp:332: !config.showSuccessfulTests succeeded for: !false
-CmdLineTests.cpp:333: !config.noThrow succeeded for: !false
-CmdLineTests.cpp:334: !config.breakIntoDebugger succeeded for: !false
-[End of section: '    When: Multiple flags are combined' All 3 assertions passed]
-
-[End of section: '   Given: A built cli parser for Catch' All 3 assertions passed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: A flag is set via a nullary method']
-CmdLineTests.cpp:346: config.abortAfter == 0 succeeded for: 0 == 0
-[Started section: '    Then: The flag is set']
-CmdLineTests.cpp:352: config.abortAfter == 1 succeeded for: 1 == 1
-[End of section: '    Then: The flag is set' 1 assertion passed]
-
-[End of section: '    When: A flag is set via a nullary method' All 2 assertions passed]
-
-[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: A flag is set via a nullary method']
-CmdLineTests.cpp:346: config.abortAfter == 0 succeeded for: 0 == 0
-[End of section: '    When: A flag is set via a nullary method' 1 assertion passed]
-
-[End of section: '   Given: A built cli parser for Catch' 1 assertion passed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: A flag is set via a unary method']
-CmdLineTests.cpp:355: config.abortAfter == 0 succeeded for: 0 == 0
-[Started section: '    Then: The flag is set']
-CmdLineTests.cpp:361: config.abortAfter == 2 succeeded for: 2 == 2
-[End of section: '    Then: The flag is set' 1 assertion passed]
-
-[End of section: '    When: A flag is set via a unary method' All 2 assertions passed]
-
-[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: A flag is set via a unary method']
-CmdLineTests.cpp:355: config.abortAfter == 0 succeeded for: 0 == 0
-[End of section: '    When: A flag is set via a unary method' 1 assertion passed]
-
-[End of section: '   Given: A built cli parser for Catch' 1 assertion passed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: A positional argument is supplied']
-[Started section: '    Then: The argument is in the testOrTags collection']
-CmdLineTests.cpp:369: config.testsOrTags.size() == 1 succeeded for: 1 == 1
-CmdLineTests.cpp:370: config.testsOrTags[0] == "[hello]" succeeded for: "[hello]" == "[hello]"
-[End of section: '    Then: The argument is in the testOrTags collection' All 2 assertions passed]
-
-[End of section: '    When: A positional argument is supplied' All 2 assertions passed]
-
-[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
-
-[Started section: '   Given: A built cli parser for Catch']
-[Started section: '    When: And enum opt is set by numeric value']
-CmdLineTests.cpp:374: config.verbosity == Config::Verbosity::Normal succeeded for: 2 == 2
-[Started section: '    Then: The member is set to the enum value']
-CmdLineTests.cpp:380: config.verbosity == Config::Verbosity::NoOutput succeeded for: 0 == 0
-[End of section: '    Then: The member is set to the enum value' 1 assertion passed]
-
-[End of section: '    When: And enum opt is set by numeric value' All 2 assertions passed]
-
-[End of section: '   Given: A built cli parser for Catch' All 2 assertions passed]
-
-[Finished: 'Scenario: New Catch commandline interface' 1 test case failed (1 of 20 assertions failed)]
-[End of group: '~dummy'. 50 of 115 test cases failed (107 of 740 assertions failed)]
+[Testing completed. 49 of 113 test cases failed (106 of 705 assertions failed)]
 
 
-[Testing completed. 50 of 115 test cases failed (107 of 740 assertions failed)]
-
-[Started testing: CatchSelfTest]
-[Started group: '~dummy']
-
-[Running: ./succeeding/Approx/simple]
-ApproxTests.cpp:20: d == Approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
-ApproxTests.cpp:21: d != Approx( 1.22 ) succeeded for: 1.23 != Approx( 1.22 )
-ApproxTests.cpp:22: d != Approx( 1.24 ) succeeded for: 1.23 != Approx( 1.24 )
-ApproxTests.cpp:24: Approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
-ApproxTests.cpp:25: Approx( d ) != 1.22 succeeded for: Approx( 1.23 ) != 1.22
-ApproxTests.cpp:26: Approx( d ) != 1.24 succeeded for: Approx( 1.23 ) != 1.24
-[Finished: './succeeding/Approx/simple' All tests passed (6 assertions in 1 test case)]
-
-[Running: ./succeeding/Approx/epsilon]
-ApproxTests.cpp:38: d != Approx( 1.231 ) succeeded for: 1.23 != Approx( 1.231 )
-ApproxTests.cpp:39: d == Approx( 1.231 ).epsilon( 0.1 ) succeeded for: 1.23 == Approx( 1.231 )
-[Finished: './succeeding/Approx/epsilon' All tests passed (2 assertions in 1 test case)]
-
-[Running: ./succeeding/Approx/float]
-ApproxTests.cpp:49: 1.23f == Approx( 1.23f ) succeeded for: 1.23 == Approx( 1.23 )
-ApproxTests.cpp:50: 0.0f == Approx( 0.0f ) succeeded for: 0 == Approx( 0 )
-[Finished: './succeeding/Approx/float' All tests passed (2 assertions in 1 test case)]
-
-[Running: ./succeeding/Approx/int]
-ApproxTests.cpp:60: 1 == Approx( 1 ) succeeded
-ApproxTests.cpp:61: 0 == Approx( 0 ) succeeded
-[Finished: './succeeding/Approx/int' All tests passed (2 assertions in 1 test case)]
-
-[Running: ./succeeding/Approx/mixed]
-ApproxTests.cpp:75: 1.0f == Approx( 1 ) succeeded for: 1 == Approx( 1 )
-ApproxTests.cpp:76: 0 == Approx( dZero) succeeded for: 0 == Approx( 0 )
-ApproxTests.cpp:77: 0 == Approx( dSmall ).epsilon( 0.001 ) succeeded for: 0 == Approx( 1e-05 )
-ApproxTests.cpp:78: 1.234f == Approx( dMedium ) succeeded for: 1.234 == Approx( 1.234 )
-ApproxTests.cpp:79: dMedium == Approx( 1.234f ) succeeded for: 1.234 == Approx( 1.234 )
-[Finished: './succeeding/Approx/mixed' All tests passed (5 assertions in 1 test case)]
-
-[Running: ./succeeding/Approx/custom]
-ApproxTests.cpp:93: d == approx( 1.23 ) succeeded for: 1.23 == Approx( 1.23 )
-ApproxTests.cpp:94: d == approx( 1.22 ) succeeded for: 1.23 == Approx( 1.22 )
-ApproxTests.cpp:95: d == approx( 1.24 ) succeeded for: 1.23 == Approx( 1.24 )
-ApproxTests.cpp:96: d != approx( 1.25 ) succeeded for: 1.23 != Approx( 1.25 )
-ApproxTests.cpp:98: approx( d ) == 1.23 succeeded for: Approx( 1.23 ) == 1.23
-ApproxTests.cpp:99: approx( d ) == 1.22 succeeded for: Approx( 1.23 ) == 1.22
-ApproxTests.cpp:100: approx( d ) == 1.24 succeeded for: Approx( 1.23 ) == 1.24
-ApproxTests.cpp:101: approx( d ) != 1.25 succeeded for: Approx( 1.23 ) != 1.25
-[Finished: './succeeding/Approx/custom' All tests passed (8 assertions in 1 test case)]
-
-[Running: Approximate PI]
-ApproxTests.cpp:110: divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) succeeded for: 3.142857142857143 == Approx( 3.141 )
-ApproxTests.cpp:111: divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) succeeded for: 3.142857142857143 != Approx( 3.141 )
-[Finished: 'Approximate PI' All tests passed (2 assertions in 1 test case)]
-
-[Running: ./succeeding/TestClass/succeedingCase]
-ClassTests.cpp:24: s == "hello" succeeded for: "hello" == "hello"
-[Finished: './succeeding/TestClass/succeedingCase' All tests passed (1 assertion in 1 test case)]
-
-[Running: ./failing/TestClass/failingCase]
-ClassTests.cpp:28: s == "world" failed for: "hello" == "world"
-[Finished: './failing/TestClass/failingCase' 1 test case failed (1 assertion failed)]
-
-[Running: ./succeeding/Fixture/succeedingCase]
-ClassTests.cpp:47: m_a == 1 succeeded for: 1 == 1
-[Finished: './succeeding/Fixture/succeedingCase' All tests passed (1 assertion in 1 test case)]
-
-[Running: ./failing/Fixture/failingCase]
-ClassTests.cpp:55: m_a == 2 failed for: 1 == 2
-[Finished: './failing/Fixture/failingCase' 1 test case failed (1 assertion failed)]
-
-[Running: ./succeeding/conditions/equality]
-ConditionTests.cpp:55: data.int_seven == 7 succeeded for: 7 == 7
-ConditionTests.cpp:56: data.float_nine_point_one == Approx( 9.1f ) succeeded for: 9.1 == Approx( 9.1 )
-ConditionTests.cpp:57: data.double_pi == Approx( 3.1415926535 ) succeeded for: 3.1415926535 == Approx( 3.14159 )
-ConditionTests.cpp:58: data.str_hello == "hello" succeeded for: "hello" == "hello"
-ConditionTests.cpp:59: "hello" == data.str_hello succeeded for: "hello" == "hello"
-ConditionTests.cpp:60: data.str_hello.size() == 5 succeeded for: 5 == 5
-ConditionTests.cpp:63: x == Approx( 1.3 ) succeeded for: 1.3 == Approx( 1.3 )
-[Finished: './succeeding/conditions/equality' All tests passed (7 assertions in 1 test case)]
-
-[Running: ./failing/conditions/equality]
-ConditionTests.cpp:71: data.int_seven == 6 failed for: 7 == 6
-ConditionTests.cpp:72: data.int_seven == 8 failed for: 7 == 8
-[Finished: './failing/conditions/equality' 1 test case failed (All 2 assertions failed)]
-[End of group: '~dummy'. 3 of 13 test cases failed (4 of 40 assertions failed)]
-
-
-[Testing aborted. 3 of 13 test cases failed (4 of 40 assertions failed)]
+[Testing completed. No tests ran]
 
