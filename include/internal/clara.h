@@ -458,7 +458,11 @@ namespace Clara {
         }        
         
         std::vector<Parser::Token> parseInto( int argc, char const * const * argv, ConfigT& config ) const {
-            m_boundProcessName.set( config, argv[0] );
+            std::string processName = argv[0];
+            std::size_t lastSlash = processName.find_last_of( "/\\" );
+            if( lastSlash != std::string::npos )
+                processName = processName.substr( lastSlash+1 );
+            m_boundProcessName.set( config, processName );
             std::vector<Parser::Token> tokens;
             Parser parser;
             parser.parseIntoTokens( argc, argv, tokens );

@@ -20,9 +20,9 @@ namespace Catch{
         
         Totals totals;
 
-        // Scoped because Runner doesn't report EndTesting until its destructor
+        // Scoped because RunContext doesn't report EndTesting until its destructor
         {
-            Runner runner( config.get(), m_reporter.get() );
+            RunContext runner( config.get(), m_reporter.get() );
             totals = runner.runMatching( rawTestSpec, groupIndex, groupsCount );
         }
         return totals;

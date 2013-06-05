@@ -49,14 +49,14 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class Runner : public IResultCapture, public IRunner {
+    class RunContext : public IResultCapture, public IRunner {
     
-        Runner( Runner const& );
-        void operator =( Runner const& );
+        RunContext( RunContext const& );
+        void operator =( RunContext const& );
         
     public:
 
-        explicit Runner( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
+        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( config->name() ),
             m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
@@ -72,7 +72,7 @@ namespace Catch {
             m_reporter->testRunStarting( m_runInfo );
         }
         
-        virtual ~Runner() {
+        virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );

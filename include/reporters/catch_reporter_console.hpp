@@ -243,7 +243,7 @@ namespace Catch {
             stream  << "\n" << getTildes() << "\n";
             Colour colour( Colour::SecondaryText );
             stream  << testRunInfo->name
-                    << " is a CATCH v"  << libraryVersion.majorVersion << "."
+                    << " is a Catch v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
                     << libraryVersion.buildNumber;
             if( libraryVersion.branchName != "master" )

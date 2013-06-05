@@ -21,10 +21,10 @@
 
 namespace Catch {
 
-    class Runner2 { // This will become Runner when Runner becomes Context
+    class Runner {
 
     public:
-        Runner2( Ptr<Config> const& config )
+        Runner( Ptr<Config> const& config )
         :   m_config( config )
         {
             openStream();
@@ -39,7 +39,8 @@ namespace Catch {
                 filterGroups.push_back( filterGroup );
             }
 
-            Runner context( m_config.get(), m_reporter ); // This Runner will be renamed Context
+            RunContext context( m_config.get(), m_reporter );
+
             Totals totals;
 
             for( std::size_t i=0; i < filterGroups.size() && !context.aborting(); ++i ) {
@@ -50,7 +51,7 @@ namespace Catch {
             return totals;
         }
 
-        Totals runTestsForGroup( Runner& context, const TestCaseFilters& filterGroup ) {
+        Totals runTestsForGroup( RunContext& context, const TestCaseFilters& filterGroup ) {
             Totals totals;
             std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
             std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
@@ -111,7 +112,7 @@ namespace Catch {
         int result = 0;
         try
         {
-            Runner2 runner( config );
+            Runner runner( config );
 
             // Handle list request
             if( list( config ) ) {
@@ -144,7 +145,7 @@ namespace Catch {
         cli.usage( std::cout, processName );
         std::cout << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
-    inline Ptr<Config> processConfig( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
+    inline Ptr<Config> processConfig( int argc, char* const argv[], ConfigData& configData ) {
         Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
         std::vector<Clara::Parser::Token> unused = cli.parseInto( argc, argv, configData );
         if( !unused.empty() ) {
@@ -159,6 +160,10 @@ namespace Catch {
         Ptr<Config> config = new Config( configData );
         return config;        
     }
+    inline Ptr<Config> processConfig( int argc, char* const argv[] ) {
+        ConfigData configData;
+        return processConfig( argc, argv, configData );
+    }
 
     inline int Main( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
 
@@ -167,7 +172,7 @@ namespace Catch {
         try {
             config = processConfig( argc, argv, configData );
             if( config->showHelp() ) {
-                showHelp( argv[0] );
+                showHelp( config->getProcessName() );
                 Catch::cleanUp();        
                 return 0;
             }
@@ -175,7 +180,7 @@ namespace Catch {
         catch( std::exception& ex ) {
             std::cerr   << "\nError in input:\n"
                         << "  " << ex.what() << "\n\n";
-            makeCommandLineParser().usage( std::cout, argv[0] );
+            makeCommandLineParser().usage( std::cout, configData.processName );
             Catch::cleanUp();
             return (std::numeric_limits<int>::max)();
         }

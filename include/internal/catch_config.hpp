@@ -122,10 +122,10 @@ namespace Catch {
         bool listTags() const { return m_data.listTags; }
         bool listReporters() const { return m_data.listReporters; }
         
-        std::string getName() const {
-            return m_data.name;
+        std::string getProcessName() const {
+            return m_data.processName;
         }
-        
+
         bool shouldDebugBreak() const {
             return m_data.shouldDebugBreak;
         }
@@ -162,7 +162,7 @@ namespace Catch {
         // IConfig interface
         virtual bool allowThrows() const        { return !m_data.noThrow; }
         virtual std::ostream& stream() const    { return m_os; }
-        virtual std::string name() const        { return m_data.name; }
+        virtual std::string name() const        { return m_data.name.empty() ? m_data.processName : m_data.name; }
         virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & ConfigData::WarnAbout::NoAssertions; }
 
