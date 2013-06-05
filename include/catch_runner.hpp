@@ -108,30 +108,6 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    inline int Main( Ptr<Config> const& config ) {
-        int result = 0;
-        try
-        {
-            Runner runner( config );
-
-            // Handle list request
-            if( list( config ) ) {
-                Catch::cleanUp();
-                return 0;
-            }
-
-            result = static_cast<int>( runner.runTests().assertions.failed );
-
-        }
-        catch( std::exception& ex ) {
-            std::cerr << ex.what() << std::endl;
-            result = (std::numeric_limits<int>::max)();
-        }
-
-        Catch::cleanUp();
-        return result;
-    }
-
     inline void showHelp( std::string const& processName ) {
         Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
 
@@ -145,47 +121,80 @@ namespace Catch {
         cli.usage( std::cout, processName );
         std::cout << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
     }
-    inline Ptr<Config> processConfig( int argc, char* const argv[], ConfigData& configData ) {
-        Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
-        std::vector<Clara::Parser::Token> unused = cli.parseInto( argc, argv, configData );
-        if( !unused.empty() ) {
-            std::vector<Clara::Parser::Token>::const_iterator
-                it = unused.begin(),
-                itEnd = unused.end();
-            std::string msg;
-            for(; it != itEnd; ++it )
-                msg += "  unrecognised option: " + it->data + "\n";
-            throw std::runtime_error( msg.substr( 0, msg.size()-1 ) );
+
+    class Session {
+        static bool alreadyInstantiated;
+        
+    public:
+        Session() {
+            if( alreadyInstantiated ) {
+                std::string msg = "Only one instance of Catch::Session can ever be used";
+                std::cerr << msg << std::endl;
+                throw std::logic_error( msg );
+            }
+            alreadyInstantiated = true;
         }
-        Ptr<Config> config = new Config( configData );
-        return config;        
-    }
-    inline Ptr<Config> processConfig( int argc, char* const argv[] ) {
-        ConfigData configData;
-        return processConfig( argc, argv, configData );
-    }
+        ~Session() {
+            Catch::cleanUp();
+        }
+        
+        int run( Ptr<Config> const& config ) {
+            try
+            {
+                Runner runner( config );
 
-    inline int Main( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
+                // Handle list request
+                if( list( config ) )
+                    return 0;
 
-        Ptr<Config> config;
-
-        try {
-            config = processConfig( argc, argv, configData );
-            if( config->showHelp() ) {
-                showHelp( config->getProcessName() );
-                Catch::cleanUp();        
-                return 0;
+                return static_cast<int>( runner.runTests().assertions.failed );
+            }
+            catch( std::exception& ex ) {
+                std::cerr << ex.what() << std::endl;
+                return (std::numeric_limits<int>::max)();
             }
         }
-        catch( std::exception& ex ) {
-            std::cerr   << "\nError in input:\n"
-                        << "  " << ex.what() << "\n\n";
-            makeCommandLineParser().usage( std::cout, configData.processName );
-            Catch::cleanUp();
-            return (std::numeric_limits<int>::max)();
+        
+        Ptr<Config> processConfig( int argc, char* const argv[], ConfigData& configData ) {
+            Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
+            std::vector<Clara::Parser::Token> unused = cli.parseInto( argc, argv, configData );
+            if( !unused.empty() ) {
+                std::vector<Clara::Parser::Token>::const_iterator
+                    it = unused.begin(),
+                    itEnd = unused.end();
+                std::string msg;
+                for(; it != itEnd; ++it )
+                    msg += "  unrecognised option: " + it->data + "\n";
+                throw std::runtime_error( msg.substr( 0, msg.size()-1 ) );
+            }
+            Ptr<Config> config = new Config( configData );
+            return config;        
         }
-        return Main( config );
-    }
+        Ptr<Config> processConfig( int argc, char* const argv[] ) {
+            ConfigData configData;
+            return processConfig( argc, argv, configData );
+        }        
+        int run( int argc, char* const argv[], ConfigData configData = ConfigData() ) {
+
+            Ptr<Config> config;
+
+            try {
+                config = processConfig( argc, argv, configData );
+                if( config->showHelp() ) {
+                    showHelp( config->getProcessName() );
+                    return 0;
+                }
+            }
+            catch( std::exception& ex ) {
+                std::cerr   << "\nError in input:\n"
+                            << "  " << ex.what() << "\n\n";
+                makeCommandLineParser().usage( std::cout, configData.processName );
+                return (std::numeric_limits<int>::max)();
+            }
+            return run( config );
+        }
+    };
+    bool Session::alreadyInstantiated = false;
     
 } // end namespace Catch
 

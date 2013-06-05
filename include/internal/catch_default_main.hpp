@@ -11,8 +11,8 @@
 #ifndef __OBJC__
 
 // Standard C/C++ main entry point
-int main (int argc, char * const argv[]) {
-    return Catch::Main( argc, argv );    
+int main (int argc, char * const argv[]) {    
+    return Catch::Session().run( argc, argv );
 }
 
 #else // __OBJC__
@@ -24,7 +24,7 @@ int main (int argc, char * const argv[]) {
 #endif
     
     Catch::registerTestMethods();    
-    int result = Catch::Main( argc, (char* const*)argv );
+    int result = Catch::Session().run( argc, (char* const*)argv );
     
 #if !CATCH_ARC_ENABLED
     [pool drain];
