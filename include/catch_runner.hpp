@@ -108,20 +108,6 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    inline void showHelp( std::string const& processName ) {
-        Clara::CommandLine<ConfigData> cli = makeCommandLineParser();
-
-        std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
-                                    << libraryVersion.minorVersion << " build "
-                                    << libraryVersion.buildNumber;
-        if( libraryVersion.branchName != "master" )
-            std::cout << " (" << libraryVersion.branchName << " branch)";
-        std::cout << "\n";
-
-        cli.usage( std::cout, processName );
-        std::cout << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
-    }
-
     class Session {
         static bool alreadyInstantiated;
         
@@ -141,7 +127,19 @@ namespace Catch {
         ~Session() {
             Catch::cleanUp();
         }
+        
+        void showHelp( std::string const& processName ) {
+            std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
+                                        << libraryVersion.minorVersion << " build "
+                                        << libraryVersion.buildNumber;
+            if( libraryVersion.branchName != "master" )
+                std::cout << " (" << libraryVersion.branchName << " branch)";
+            std::cout << "\n";
 
+            cli.usage( std::cout, processName );
+            std::cout << "For more detail usage please see the project docs\n" << std::endl;
+        }
+        
         int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
                 unusedTokens = cli.parseInto( argc, argv, configData );

@@ -110,11 +110,11 @@ namespace Catch {
             .longOpt( "warn" )
             .argName( "warning name" );
 
-        cli.bind( &setVerbosity )
-            .describe( "level of verbosity (0=no output)" )
-            .shortOpt( "v")
-            .longOpt( "verbosity" )
-            .argName( "level" );
+//        cli.bind( &setVerbosity )
+//            .describe( "level of verbosity (0=no output)" )
+//            .shortOpt( "v")
+//            .longOpt( "verbosity" )
+//            .argName( "level" );
 
         cli.bind( &addTestOrTags )
             .describe( "which test or tests to use" )
