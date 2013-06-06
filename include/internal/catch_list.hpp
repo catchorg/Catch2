@@ -25,7 +25,7 @@ namespace Catch {
         return true;
     }
 
-    inline void listTests( Ptr<Config> const& config ) {
+    inline std::size_t listTests( Ptr<Config> const& config ) {
         if( config->filters().empty() )
             std::cout << "All available test cases:\n";
         else
@@ -98,9 +98,10 @@ namespace Catch {
             std::cout << pluralise( matchedTests, "test case" ) << std::endl;
         else
             std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
+        return matchedTests;
     }
     
-    inline void listTags( Ptr<Config> const& config ) {
+    inline std::size_t listTags( Ptr<Config> const& config ) {
         if( config->filters().empty() )
             std::cout << "All available tags:\n";
         else
@@ -150,34 +151,28 @@ namespace Catch {
                         << "\n";
         }
         std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
+        return tagCounts.size();
     }
 
-    inline void listReporters( Ptr<Config> const& /*config*/ ) {
+    inline std::size_t listReporters( Ptr<Config> const& /*config*/ ) {
         std::cout << "Available reports:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator it = factories.begin(), itEnd = factories.end();
-        for(; it != itEnd; ++it ) {
-            // !TBD: consider listAs()
+        for(; it != itEnd; ++it )
             std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
-        }
         std::cout << std::endl;
+        return factories.size();
     }
     
-    inline bool list( Ptr<Config> const& config ) {
-        bool listed = false;
-        if( config->listTests() ) {
-            listTests( config );
-            listed = true;
-        }
-        if( config->listTags() ) {
-            listTags( config );
-            listed = true;
-        }
-        if( config->listReporters() ) {
-            listReporters( config );
-            listed = true;
-        }
-        return listed;
+    inline Option<std::size_t> list( Ptr<Config> const& config ) {
+        Option<std::size_t> listedCount;
+        if( config->listTests() )
+            listedCount = listedCount.valueOr(0) + listTests( config );
+        if( config->listTags() )
+            listedCount = listedCount.valueOr(0) + listTags( config );
+        if( config->listReporters() )
+            listedCount = listedCount.valueOr(0) + listReporters( config );
+        return listedCount;
     }
     
 } // end namespace Catch

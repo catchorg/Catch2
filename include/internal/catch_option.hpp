@@ -45,9 +45,13 @@ namespace Catch {
         T* operator->() { return nullableValue; }
         const T* operator->() const { return nullableValue; }
 
+        T valueOr( T const& defaultValue ) const {
+            return nullableValue ? *nullableValue : defaultValue;
+        }
+
         bool some() const { return nullableValue != NULL; }
         bool none() const { return nullableValue == NULL; }
-
+        
         bool operator !() const { return nullableValue == NULL; }
         operator SafeBool::type() const {
             return SafeBool::makeSafe( some() );
@@ -57,7 +61,6 @@ namespace Catch {
         T* nullableValue;
         char storage[sizeof(T)];
     };
-
 
 } // end namespace Catch
 

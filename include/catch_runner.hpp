@@ -194,8 +194,8 @@ namespace Catch {
                 Runner runner( config );
 
                 // Handle list request
-                if( list( config ) )
-                    return 0;
+                if( Option<std::size_t> listed = list( config ) )
+                    return static_cast<int>( *listed );
 
                 return static_cast<int>( runner.runTests().assertions.failed );
             }
