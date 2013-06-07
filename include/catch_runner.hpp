@@ -151,7 +151,10 @@ namespace Catch {
             }
             catch( std::exception& ex ) {
                 std::cerr   << "\nError in input:\n"
-                            << "  " << ex.what() << "\n\n";
+                            << Text( ex.what(), TextAttributes()
+                                                    .setInitialIndent(2)
+                                                    .setIndent(4) )
+                            << "\n\n";
                 m_cli.usage( std::cout, m_configData.processName );
                 return (std::numeric_limits<int>::max)();
             }

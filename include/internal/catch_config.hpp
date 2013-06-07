@@ -88,21 +88,23 @@ namespace Catch {
         :   m_data( data ),
             m_os( std::cout.rdbuf() )
         {
-            std::string groupName;
-            for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
-                if( i != 0 )
-                    groupName += " ";
-                groupName += data.testsOrTags[i];
+            if( !data.testsOrTags.empty() ) {
+                std::string groupName;
+                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
+                    if( i != 0 )
+                        groupName += " ";
+                    groupName += data.testsOrTags[i];
+                }
+                TestCaseFilters filters( groupName );
+                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
+                    std::string filter = data.testsOrTags[i];
+                    if( startsWith( filter, "[" ) || startsWith( filter, "~[" ) )
+                        filters.addTags( filter );
+                    else
+                        filters.addFilter( TestCaseFilter( filter ) );
+                }
+                m_filterSets.push_back( filters );
             }
-            TestCaseFilters filters( groupName );
-            for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
-                std::string filter = data.testsOrTags[i];
-                if( startsWith( filter, "[" ) || startsWith( filter, "~[" ) )
-                    filters.addTags( filter );
-                else
-                    filters.addFilter( TestCaseFilter( filter ) );
-            }
-            m_filterSets.push_back( filters );
         }
         
         virtual ~Config() {

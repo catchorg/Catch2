@@ -56,12 +56,17 @@ namespace Catch {
         for( it = allTests.begin(); it != itEnd; ++it ) {
             if( matchesFilters( config.filters(), *it ) ) {
                 matchedTests++;
-                // !TBD: consider listAs()
                 Text nameWrapper(   it->getTestCaseInfo().name,
-                                    TextAttributes().setWidth( maxNameLen ).setIndent(2) );
+                                    TextAttributes()
+                                        .setWidth( maxNameLen )
+                                        .setInitialIndent(2)
+                                        .setIndent(4) );
 
                 Text tagsWrapper(   it->getTestCaseInfo().tagsAsString,
-                                    TextAttributes().setWidth( maxTagLen ) );
+                                    TextAttributes()
+                                        .setWidth( maxTagLen )
+                                        .setInitialIndent(0)
+                                        .setIndent( 2 ) );
                 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
                     Colour::Code colour = Colour::None;
