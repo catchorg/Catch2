@@ -205,11 +205,10 @@ namespace Catch {
             }
         }
         
-        private:
-            Clara::CommandLine<ConfigData> cli;
-            std::vector<Clara::Parser::Token> unusedTokens;
-            ConfigData configData;
-            Ptr<Config> config;
+        Clara::CommandLine<ConfigData> cli;
+        std::vector<Clara::Parser::Token> unusedTokens;
+        ConfigData configData;
+        Ptr<Config> config;
     };
 
     bool Session::alreadyInstantiated = false;
