@@ -1,6 +1,6 @@
 /*
- *  CATCH v0.9 build 38 (integration branch)
- *  Generated: 2013-04-24 19:08:42.283467
+ *  CATCH v0.9 build 39 (integration branch)
+ *  Generated: 2013-06-07 19:06:43.206650
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -106,7 +106,11 @@
     ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
     ( defined __GNUC__ && __GNUC__ >= 3 ) || \
     ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
-    #define CATCH_CONFIG_VARIADIC_MACROS
+
+#ifndef CATCH_CONFIG_NO_VARIADIC_MACROS
+#define CATCH_CONFIG_VARIADIC_MACROS
+#endif
+
 #endif
 
 namespace Catch {
@@ -282,51 +286,6 @@ namespace Catch {
 
 } // end namespace Catch
 
-#include <memory>
-#include <vector>
-#include <stdlib.h>
-
-namespace Catch {
-
-    class TestCase;
-    class Stream;
-    struct IResultCapture;
-    struct IRunner;
-    struct IGeneratorsForTest;
-    struct IConfig;
-
-    struct IContext
-    {
-        virtual ~IContext();
-
-        virtual IResultCapture& getResultCapture() = 0;
-        virtual IRunner& getRunner() = 0;
-        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;
-        virtual bool advanceGeneratorsForCurrentTest() = 0;
-        virtual const IConfig* getConfig() const = 0;
-    };
-
-    struct IMutableContext : IContext
-    {
-        virtual ~IMutableContext();
-        virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
-        virtual void setRunner( IRunner* runner ) = 0;
-        virtual void setConfig( const IConfig* config ) = 0;
-    };
-
-    IContext& getCurrentContext();
-    IMutableContext& getCurrentMutableContext();
-    void cleanUpContext();
-    Stream createStream( std::string const& streamName );
-
-}
-
-// #included from: internal/catch_test_registry.hpp
-#define TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
-
-// #included from: catch_interfaces_testcase.h
-#define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
-
 // #included from: catch_ptr.hpp
 #define TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
 
@@ -410,6 +369,51 @@ namespace Catch {
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
+
+#include <memory>
+#include <vector>
+#include <stdlib.h>
+
+namespace Catch {
+
+    class TestCase;
+    class Stream;
+    struct IResultCapture;
+    struct IRunner;
+    struct IGeneratorsForTest;
+    struct IConfig;
+
+    struct IContext
+    {
+        virtual ~IContext();
+
+        virtual IResultCapture& getResultCapture() = 0;
+        virtual IRunner& getRunner() = 0;
+        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;
+        virtual bool advanceGeneratorsForCurrentTest() = 0;
+        virtual Ptr<IConfig const> getConfig() const = 0;
+    };
+
+    struct IMutableContext : IContext
+    {
+        virtual ~IMutableContext();
+        virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
+        virtual void setRunner( IRunner* runner ) = 0;
+        virtual void setConfig( Ptr<IConfig const> const& config ) = 0;
+    };
+
+    IContext& getCurrentContext();
+    IMutableContext& getCurrentMutableContext();
+    void cleanUpContext();
+    Stream createStream( std::string const& streamName );
+
+}
+
+// #included from: internal/catch_test_registry.hpp
+#define TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
+
+// #included from: catch_interfaces_testcase.h
+#define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 
 #include <vector>
 
@@ -496,44 +500,44 @@ private:
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE( ... ) \
-        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); }\
-        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
+        static void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )(); \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  ____C_A_T_C_H____T_E_S_T____ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); }\
+        static void INTERNAL_CATCH_UNIQUE_NAME(  ____C_A_T_C_H____T_E_S_T____ )()
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, ... ) \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); }
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define TEST_CASE_METHOD( ClassName, ... )\
+    #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, ... )\
         namespace{ \
-            struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
+            struct INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ) : ClassName{ \
                 void test(); \
             }; \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, #ClassName, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test, #ClassName, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); \
         } \
-        void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
+        void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
 #else
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
-        static void INTERNAL_CATCH_UNIQUE_NAME( TestCaseFunction_catch_internal_ )(); \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); }\
-        static void INTERNAL_CATCH_UNIQUE_NAME(  TestCaseFunction_catch_internal_ )()
+        static void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )(); \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME(  ____C_A_T_C_H____T_E_S_T____ ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); }\
+        static void INTERNAL_CATCH_UNIQUE_NAME(  ____C_A_T_C_H____T_E_S_T____ )()
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( Name, Desc ), CATCH_INTERNAL_LINEINFO ); }
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define TEST_CASE_METHOD( ClassName, TestName, Desc )\
+    #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, TestName, Desc )\
         namespace{ \
-            struct INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ ) : ClassName{ \
+            struct INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ) : ClassName{ \
                 void test(); \
             }; \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test, #ClassName, Catch::NameAndDesc( TestName, Desc ), CATCH_INTERNAL_LINEINFO ); \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test, #ClassName, Catch::NameAndDesc( TestName, Desc ), CATCH_INTERNAL_LINEINFO ); \
         } \
-        void INTERNAL_CATCH_UNIQUE_NAME( TestCaseMethod_catch_internal_ )::test()
+        void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
 #endif
 
@@ -937,6 +941,7 @@ namespace Catch {
         bool hasExpression() const;
         bool hasMessage() const;
         std::string getExpression() const;
+        std::string getExpressionInMacro() const;
         bool hasExpandedExpression() const;
         std::string getExpandedExpression() const;
         std::string getMessage() const;
@@ -1937,13 +1942,22 @@ namespace Catch {
 // #included from: catch_interfaces_config.h
 #define TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 
+#include <iostream>
+#include <string>
+
 namespace Catch {
 
-    struct IConfig {
+    struct IConfig : IShared {
 
         virtual ~IConfig();
 
         virtual bool allowThrows() const = 0;
+        virtual std::ostream& stream() const = 0;
+        virtual std::string name() const = 0;
+        virtual bool includeSuccessfulResults() const = 0;
+        virtual bool shouldDebugBreak() const = 0;
+        virtual bool warnAboutMissingAssertions() const = 0;
+        virtual int abortAfter() const = 0;
     };
 }
 
@@ -2049,28 +2063,13 @@ namespace Catch {
 
 namespace Catch {
 
-    struct Include { enum WhichResults {
-        FailedOnly,
-        SuccessfulResults
-    }; };
-
-    struct List{ enum What {
-        None = 0,
-
-        Reports = 1,
-        Tests = 2,
-        Tags = 4,
-        All = Reports | Tests | Tags,
-
-        WhatMask = 0xf,
-
-        AsText = 0x10,
-        AsXml = 0x20,
-
-        AsMask = 0xf0
-    }; };
-
     struct ConfigData {
+
+        struct Verbosity { enum Level {
+            NoOutput = 0,
+            Quiet,
+            Normal
+        }; };
 
         struct WarnAbout { enum What {
             Nothing = 0x00,
@@ -2078,28 +2077,41 @@ namespace Catch {
         }; };
 
         ConfigData()
-        :   listSpec( List::None ),
+        :   listTests( false ),
+            listTags( false ),
+            listReporters( false ),
+            showSuccessfulTests( false ),
             shouldDebugBreak( false ),
-            includeWhichResults( Include::FailedOnly ),
-            cutoff( -1 ),
-            allowThrows( true ),
+            noThrow( false ),
+            showHelp( false ),
+            abortAfter( -1 ),
+            verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing )
         {}
 
-        std::string reporter;
-        std::string outputFilename;
-        List::What listSpec;
-        std::vector<TestCaseFilters> filters;
+        bool listTests;
+        bool listTags;
+        bool listReporters;
+
+        bool showSuccessfulTests;
         bool shouldDebugBreak;
-        std::string stream;
-        Include::WhichResults includeWhichResults;
-        std::string name;
-        int cutoff;
-        bool allowThrows;
+        bool noThrow;
+        bool showHelp;
+
+        int abortAfter;
+
+        Verbosity::Level verbosity;
         WarnAbout::What warnings;
+
+        std::string reporterName;
+        std::string outputFilename;
+        std::string name;
+        std::string processName;
+
+        std::vector<std::string> testsOrTags;
     };
 
-    class Config : public IConfig {
+    class Config : public SharedImpl<IConfig> {
     private:
         Config( Config const& other );
         Config& operator = ( Config const& other );
@@ -2113,7 +2125,25 @@ namespace Catch {
         Config( ConfigData const& data )
         :   m_data( data ),
             m_os( std::cout.rdbuf() )
-        {}
+        {
+            if( !data.testsOrTags.empty() ) {
+                std::string groupName;
+                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
+                    if( i != 0 )
+                        groupName += " ";
+                    groupName += data.testsOrTags[i];
+                }
+                TestCaseFilters filters( groupName );
+                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
+                    std::string filter = data.testsOrTags[i];
+                    if( startsWith( filter, "[" ) || startsWith( filter, "~[" ) )
+                        filters.addTags( filter );
+                    else
+                        filters.addFilter( TestCaseFilter( filter ) );
+                }
+                m_filterSets.push_back( filters );
+            }
+        }
 
         virtual ~Config() {
             m_os.rdbuf( std::cout.rdbuf() );
@@ -2124,32 +2154,20 @@ namespace Catch {
             m_data.outputFilename = filename;
         }
 
-        List::What getListSpec( void ) const {
-            return m_data.listSpec;
-        }
-
         std::string const& getFilename() const {
             return m_data.outputFilename ;
         }
 
-        List::What listWhat() const {
-            return static_cast<List::What>( m_data.listSpec & List::WhatMask );
-        }
+        bool listTests() const { return m_data.listTests; }
+        bool listTags() const { return m_data.listTags; }
+        bool listReporters() const { return m_data.listReporters; }
 
-        List::What listAs() const {
-            return static_cast<List::What>( m_data.listSpec & List::AsMask );
-        }
-
-        std::string getName() const {
-            return m_data.name;
+        std::string getProcessName() const {
+            return m_data.processName;
         }
 
         bool shouldDebugBreak() const {
             return m_data.shouldDebugBreak;
-        }
-
-        virtual std::ostream& stream() const {
-            return m_os;
         }
 
         void setStreamBuf( std::streambuf* buf ) {
@@ -2163,37 +2181,37 @@ namespace Catch {
             m_stream = stream;
         }
 
+        std::string getReporterName() const { return m_data.reporterName; }
+
         void addTestSpec( std::string const& testSpec ) {
             TestCaseFilters filters( testSpec );
             filters.addFilter( TestCaseFilter( testSpec ) );
-            m_data.filters.push_back( filters );
+            m_filterSets.push_back( filters );
         }
 
-        virtual bool includeSuccessfulResults() const {
-            return m_data.includeWhichResults == Include::SuccessfulResults;
+        int abortAfter() const {
+            return m_data.abortAfter;
         }
 
-        int getCutoff() const {
-            return m_data.cutoff;
+        std::vector<TestCaseFilters> const& filters() const {
+            return m_filterSets;
         }
 
-        virtual bool allowThrows() const {
-            return m_data.allowThrows;
-        }
+        bool showHelp() const { return m_data.showHelp; }
 
-        ConfigData const& data() const {
-            return m_data;
-        }
-        ConfigData& data() {
-            return m_data;
-        }
+        // IConfig interface
+        virtual bool allowThrows() const        { return !m_data.noThrow; }
+        virtual std::ostream& stream() const    { return m_os; }
+        virtual std::string name() const        { return m_data.name.empty() ? m_data.processName : m_data.name; }
+        virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
+        virtual bool warnAboutMissingAssertions() const { return m_data.warnings & ConfigData::WarnAbout::NoAssertions; }
 
     private:
         ConfigData m_data;
 
-        // !TBD Move these out of here
         Stream m_stream;
         mutable std::ostream m_os;
+        std::vector<TestCaseFilters> m_filterSets;
     };
 
 } // end namespace Catch
@@ -2236,6 +2254,10 @@ namespace Catch {
         T* operator->() { return nullableValue; }
         const T* operator->() const { return nullableValue; }
 
+        T valueOr( T const& defaultValue ) const {
+            return nullableValue ? *nullableValue : defaultValue;
+        }
+
         bool some() const { return nullableValue != NULL; }
         bool none() const { return nullableValue == NULL; }
 
@@ -2258,17 +2280,18 @@ namespace Catch {
 namespace Catch
 {
     struct ReporterConfig {
-        ReporterConfig( std::ostream& _stream, ConfigData const& _fullConfig )
+        explicit ReporterConfig( Ptr<IConfig> const& _fullConfig )
+        :   m_stream( &_fullConfig->stream() ), m_fullConfig( _fullConfig ) {}
+
+        ReporterConfig( Ptr<IConfig> const& _fullConfig, std::ostream& _stream )
         :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
-        std::ostream& stream() const            { return *m_stream; }
-        std::string name() const                { return m_fullConfig.name; }
-        bool includeSuccessfulResults() const   { return m_fullConfig.includeWhichResults == Include::SuccessfulResults; }
-        bool warnAboutMissingAssertions() const { return m_fullConfig.warnings & ConfigData::WarnAbout::NoAssertions; }
+        std::ostream& stream() const    { return *m_stream; }
+        Ptr<IConfig> fullConfig() const { return m_fullConfig; }
 
     private:
         std::ostream* m_stream;
-        ConfigData m_fullConfig;
+        Ptr<IConfig> m_fullConfig;
     };
 
     struct ReporterPreferences {
@@ -2451,7 +2474,7 @@ namespace Catch
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
 
         StreamingReporterBase( ReporterConfig const& _config )
-        :   m_config( _config ),
+        :   m_config( _config.fullConfig() ),
             stream( _config.stream() )
         {}
 
@@ -2498,7 +2521,7 @@ namespace Catch
             testRunInfo.reset();
         }
 
-        ReporterConfig m_config;
+        Ptr<IConfig> m_config;
         Option<TestRunInfo> testRunInfo;
         Option<GroupInfo> unusedGroupInfo;
         Option<TestCaseInfo> unusedTestCaseInfo;
@@ -2554,7 +2577,7 @@ namespace Catch
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const = 0;
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
     };
 
@@ -3572,676 +3595,8 @@ return @ desc; \
 // #included from: internal/catch_commandline.hpp
 #define TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
 
-namespace Catch {
-
-    class Command {
-    public:
-        Command(){}
-
-        explicit Command( std::string const& name ) : m_name( name ) {
-        }
-
-        Command& operator += ( std::string const& arg ) {
-            m_args.push_back( arg );
-            return *this;
-        }
-        Command& operator += ( Command const& other ) {
-            std::copy( other.m_args.begin(), other.m_args.end(), std::back_inserter( m_args ) );
-            if( m_name.empty() )
-                m_name = other.m_name;
-            return *this;
-        }
-        Command operator + ( Command const& other ) {
-            Command newCommand( *this );
-            newCommand += other;
-            return newCommand;
-        }
-
-        operator SafeBool::type() const {
-            return SafeBool::makeSafe( !m_name.empty() || !m_args.empty() );
-        }
-
-        std::string name() const { return m_name; }
-        std::string operator[]( std::size_t i ) const { return m_args[i]; }
-        std::size_t argsCount() const { return m_args.size(); }
-
-        void raiseError( std::string const& message ) const {
-            std::ostringstream oss;
-            if( m_name.empty() )
-                oss << "Error while parsing " << m_name << ". " << message << ".";
-            else
-                oss << "Error while parsing arguments. " << message << ".";
-
-            if( m_args.size() > 0 )
-                oss << " Arguments were:";
-            for( std::size_t i = 0; i < m_args.size(); ++i )
-                oss << " " << m_args[i];
-            if( isTrue( true ) )
-                throw std::domain_error( oss.str() );
-        }
-
-    private:
-
-        std::string m_name;
-        std::vector<std::string> m_args;
-    };
-
-    class CommandParser {
-    public:
-        CommandParser( int argc, char const * const * argv ) : m_argc( static_cast<std::size_t>( argc ) ), m_argv( argv ) {}
-
-        std::string exeName() const {
-            std::string exeName = m_argv[0];
-            std::string::size_type pos = exeName.find_last_of( "/\\" );
-            if( pos != std::string::npos )
-                exeName = exeName.substr( pos+1 );
-            return exeName;
-        }
-        Command find( std::string const& arg1,  std::string const& arg2, std::string const& arg3 ) const {
-            return find( arg1 ) + find( arg2 ) + find( arg3 );
-        }
-
-        Command find( std::string const& shortArg, std::string const& longArg ) const {
-            return find( shortArg ) + find( longArg );
-        }
-        Command find( std::string const& arg ) const {
-            if( arg.empty() )
-                return getArgs( "", 1 );
-            else
-                for( std::size_t i = 1; i < m_argc; ++i  )
-                    if( m_argv[i] == arg )
-                        return getArgs( m_argv[i], i+1 );
-            return Command();
-        }
-        Command getDefaultArgs() const {
-            return getArgs( "", 1 );
-        }
-
-    private:
-        Command getArgs( std::string const& cmdName, std::size_t from ) const {
-            Command command( cmdName );
-            for( std::size_t i = from; i < m_argc && m_argv[i][0] != '-'; ++i  )
-                command += m_argv[i];
-            return command;
-        }
-
-        std::size_t m_argc;
-        char const * const * m_argv;
-    };
-
-    class OptionParser : public SharedImpl<IShared> {
-    public:
-        OptionParser( int minArgs = 0, int maxArgs = 0 )
-        : m_minArgs( minArgs ), m_maxArgs( maxArgs )
-        {}
-
-        virtual ~OptionParser() {}
-
-        Command find( CommandParser const& parser ) const {
-            Command cmd;
-            for( std::vector<std::string>::const_iterator it = m_optionNames.begin();
-                it != m_optionNames.end();
-                ++it )
-                cmd += parser.find( *it );
-            return cmd;
-        }
-
-        void validateArgs( Command const& args ) const {
-            if(  tooFewArgs( args ) || tooManyArgs( args ) ) {
-                std::ostringstream oss;
-                if( m_maxArgs == -1 )
-                    oss <<"Expected at least " << pluralise( static_cast<std::size_t>( m_minArgs ), "argument" );
-                else if( m_minArgs == m_maxArgs )
-                    oss <<"Expected " << pluralise( static_cast<std::size_t>( m_minArgs ), "argument" );
-                else
-                    oss <<"Expected between " << m_minArgs << " and " << m_maxArgs << " argument";
-                args.raiseError( oss.str() );
-            }
-        }
-
-        void parseIntoConfig( CommandParser const& parser, ConfigData& config ) {
-            if( Command cmd = find( parser ) ) {
-                validateArgs( cmd );
-                parseIntoConfig( cmd, config );
-            }
-        }
-
-        virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) = 0;
-        virtual std::string argsSynopsis() const = 0;
-        virtual std::string optionSummary() const = 0;
-        virtual std::string optionDescription() const { return ""; }
-
-        std::string optionNames() const {
-            std::string names;
-            for(    std::vector<std::string>::const_iterator it = m_optionNames.begin();
-                    it != m_optionNames.end();
-                    ++it ) {
-                if( !it->empty() ) {
-                    if( !names.empty() )
-                        names += ", ";
-                    names += *it;
-                }
-                else {
-                    names = "[" + names;
-                }
-            }
-            if( names[0] == '[' )
-                names += "]";
-            return names;
-        }
-
-    protected:
-
-        bool tooFewArgs( Command const& args ) const {
-            return args.argsCount() < static_cast<std::size_t>( m_minArgs );
-        }
-        bool tooManyArgs( Command const& args ) const {
-            return m_maxArgs >= 0 && args.argsCount() > static_cast<std::size_t>( m_maxArgs );
-        }
-        std::vector<std::string> m_optionNames;
-        int m_minArgs;
-        int m_maxArgs;
-    };
-
-    namespace Options {
-
-        class HelpOptionParser : public OptionParser {
-        public:
-            HelpOptionParser() {
-                m_optionNames.push_back( "-?" );
-                m_optionNames.push_back( "-h" );
-                m_optionNames.push_back( "--help" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "[<option for help on> ...]";
-            }
-            virtual std::string optionSummary() const {
-                return "Shows this usage summary, or help on a specific option, or options, if supplied";
-            }
-            virtual std::string optionDescription() const {
-                return "";
-            }
-
-            virtual void parseIntoConfig( Command const&, ConfigData& ) {
-                // Does not affect config
-            }
-        };
-
-        class TestCaseOptionParser : public OptionParser {
-        public:
-            TestCaseOptionParser() : OptionParser( 1, -1 ) {
-                m_optionNames.push_back( "-t" );
-                m_optionNames.push_back( "--test" );
-                m_optionNames.push_back( "" ); // default option
-            }
-            virtual std::string argsSynopsis() const {
-                return "<testspec> [<testspec>...]";
-            }
-            virtual std::string optionSummary() const {
-                return "Specifies which test case or cases to run";
-            }
-
-            // Lines are split at the nearest prior space char to the 80 char column.
-            // Tab chars are removed from the output but their positions are used to align
-            // subsequently wrapped lines
-            virtual std::string optionDescription() const {
-                return
-                    "This option allows one ore more test specs to be supplied. Each spec either fully "
-                    "specifies a test case or is a pattern containing wildcards to match a set of test "
-                    "cases. If this option is not provided then all test cases, except those prefixed "
-                    "by './' are run\n"
-                    "\n"
-                    "Specs must be enclosed in \"quotes\" if they contain spaces. If they do not "
-                    "contain spaces the quotes are optional.\n"
-                    "\n"
-                    "Wildcards consist of the * character at the beginning, end, or both and can substitute for "
-                    "any number of any characters (including none)\n"
-                    "\n"
-                    "If spec is prefixed with exclude: or the ~ character then the pattern matches an exclusion. "
-                    "This means that tests matching the pattern are excluded from the set - even if a prior "
-                    "inclusion spec included them. Subsequent inclusion specs will take precedence, however. "
-                    "Inclusions and exclusions are evaluated in left-to-right order.\n"
-                    "\n"
-                    "Examples:\n"
-                    "\n"
-                    "    -t thisTestOnly        \tMatches the test case called, 'thisTestOnly'\n"
-                    "    -t \"this test only\"    \tMatches the test case called, 'this test only'\n"
-                    "    -t these/*             \tMatches all cases starting with 'these/'\n"
-                    "    -t exclude:notThis     \tMatches all tests except, 'notThis'\n"
-                    "    -t ~notThis            \tMatches all tests except, 'notThis'\n"
-                    "    -t ~*private*          \tMatches all tests except those that contain 'private'\n"
-                    "    -t a/* ~a/b/* a/b/c    \tMatches all tests that start with 'a/', except those "
-                                                 "that start with 'a/b/', except 'a/b/c', which is included";
-            }
-
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                std::string groupName;
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( i != 0 )
-                        groupName += " ";
-                    groupName += cmd[i];
-                }
-                TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( startsWith( cmd[i], "[" ) || startsWith( cmd[i], "~[" ) )
-                        filters.addTags( cmd[i] );
-                    else
-                        filters.addFilter( TestCaseFilter( cmd[i] ) );
-                }
-                config.filters.push_back( filters );
-            }
-        };
-
-        class TagOptionParser : public OptionParser {
-        public:
-            TagOptionParser() : OptionParser( 1, -1 ) {
-                m_optionNames.push_back( "-g" );
-                m_optionNames.push_back( "--tag" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "<tagspec> [,<tagspec>...]";
-            }
-            virtual std::string optionSummary() const {
-                return "Matches test cases against tags or tag patterns";
-            }
-
-            // Lines are split at the nearest prior space char to the 80 char column.
-            // Tab chars are removed from the output but their positions are used to align
-            // subsequently wrapped lines
-            virtual std::string optionDescription() const {
-                return
-                "This option allows one or more tags or tag patterns to be specified.\n"
-                "Each tag is enclosed in square brackets. A series of tags form an AND expression "
-                "wheras a comma seperated sequence forms an OR expression. e.g.:\n\n"
-                "    -g [one][two],[three]\n\n"
-                "This matches all tests tagged [one] and [two], as well as all tests tagged [three].\n\n"
-                "Tags can be negated with the ~ character. This removes matching tests from the set. e.g.:\n\n"
-                "    -g [one]~[two]\n\n"
-                "matches all tests tagged [one], except those also tagged [two]";
-            }
-
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                std::string groupName;
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( i != 0 )
-                        groupName += " ";
-                    groupName += cmd[i];
-                }
-                TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i )
-                    filters.addTags( cmd[i] );
-                config.filters.push_back( filters );
-            }
-        };
-
-        class ListOptionParser : public OptionParser {
-        public:
-            ListOptionParser() : OptionParser( 0, 2 ) {
-                m_optionNames.push_back( "-l" );
-                m_optionNames.push_back( "--list" );
-            }
-            virtual std::string argsSynopsis() const {
-//                return "[all | tests | reporters | tags [xml]]";
-                return "[all | tests | reporters | tags]";
-            }
-            virtual std::string optionSummary() const {
-                return "Lists available tests or reporters";
-            }
-
-            virtual std::string optionDescription() const {
-                return
-                    "With no arguments this option will list all registered tests - one per line.\n"
-//                    "Supplying the xml argument formats the list as an xml document (which may be useful for "
-//                    "consumption by other tools).\n"
-                    "Supplying the tests or reporters lists tests or reporters respectively - with descriptions.\n"
-                    "\n"
-                    "Examples:\n"
-                    "\n"
-                    "    -l\n"
-                    "    -l tests\n"
-                    "    -l tags\n"
-                    "    -l reporters xml\n"
-                    ;//"    -l xml";
-            }
-
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                config.listSpec = List::Tests;
-                if( cmd.argsCount() >= 1 ) {
-                    if( cmd[0] == "all" )
-                        config.listSpec = List::All;
-                    else if( cmd[0] == "tests" )
-                        config.listSpec = List::Tests;
-                    else if( cmd[0] == "tags" )
-                        config.listSpec = List::Tags;
-                    else if( cmd[0] == "reporters" )
-                        config.listSpec = List::Reports;
-                    else
-                        cmd.raiseError( "Expected tests, reporters or tags" );
-                }
-                if( cmd.argsCount() >= 2 ) {
-                    if( cmd[1] == "xml" )
-                        config.listSpec = static_cast<List::What>( config.listSpec | List::AsXml );
-                    else if( cmd[1] == "text" )
-                        config.listSpec = static_cast<List::What>( config.listSpec | List::AsText );
-                    else
-                        cmd.raiseError( "Expected xml or text" );
-                }
-            }
-        };
-
-        class ReporterOptionParser : public OptionParser {
-        public:
-            ReporterOptionParser() : OptionParser( 1, 1 ) {
-                m_optionNames.push_back( "-r" );
-                m_optionNames.push_back( "--reporter" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "<reporter name>";
-            }
-            virtual std::string optionSummary() const {
-                return "Specifies type of reporter";
-            }
-
-            virtual std::string optionDescription() const {
-                return
-                    "A reporter is an object that formats and structures the output of running "
-                    "tests, and potentially summarises the results. By default the console reporter "
-                    "is used which writes IDE friendly results. CATCH comes bundled with some "
-                    "alternative reporters, but more can be added in client code.\n"
-                    "\n"
-                    "The bundled reporters are:\n"
-                    "    -r console\n"
-                    "    -r xml\n"
-                    "    -r junit\n"
-                    "\n"
-                    "The JUnit reporter is an xml format that follows the structure of the JUnit "
-                    "XML Report ANT task, as consumed by a number of third-party tools, "
-                    "including Continuous Integration servers such as Jenkins.\n"
-                    "If not otherwise needed, the standard XML reporter is preferred as this is "
-                    "a streaming reporter, whereas the Junit reporter needs to hold all its "
-                    "results until the end so it can write the overall results into attributes "
-                    "of the root node.";
-            }
-
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                config.reporter = cmd[0];
-            }
-        };
-
-        class OutputOptionParser : public OptionParser {
-        public:
-            OutputOptionParser() : OptionParser( 1, 1 ) {
-                m_optionNames.push_back( "-o" );
-                m_optionNames.push_back( "--out" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "<file name>|<%stream name>";
-            }
-            virtual std::string optionSummary() const {
-                return "Sends output to a file or stream";
-            }
-            virtual std::string optionDescription() const {
-                return
-                    "Use this option to send all output to a file or a stream. By default output is "
-                    "sent to stdout (note that uses of stdout and stderr from within test cases are "
-                    "redirected and included in the report - so even stderr will effectively end up "
-                    "on stdout). If the name begins with % it is interpreted as a stream. "
-                    "Otherwise it is treated as a filename.\n"
-                    "\n"
-                    "Examples are:\n"
-                    "\n"
-                    "    -o filename.txt\n"
-                    "    -o \"long filename.txt\"\n"
-                    "    -o %stdout\n"
-                    "    -o %stderr\n"
-                    "    -o %debug    \t(The IDE's debug output window - currently only Windows' "
-                                        "OutputDebugString is supported).";
-            }
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                if( cmd[0][0] == '%' )
-                    config.stream = cmd[0].substr( 1 );
-                else
-                    config.outputFilename = cmd[0];
-            }
-        };
-
-        class SuccessOptionParser : public OptionParser {
-        public:
-            SuccessOptionParser() {
-                m_optionNames.push_back( "-s" );
-                m_optionNames.push_back( "--success" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "";
-            }
-            virtual std::string optionSummary() const {
-                return "Shows results for successful tests";
-            }
-            virtual std::string optionDescription() const {
-                return
-                    "Usually you only want to see reporting for failed tests. Sometimes it's useful "
-                    "to see all the output (especially when you don't trust that that test you just "
-                    "added worked first time!). To see successful, as well as failing, test results "
-                    "just pass this option.";
-            }
-            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
-                config.includeWhichResults = Include::SuccessfulResults;
-            }
-        };
-
-        class DebugBreakOptionParser : public OptionParser {
-        public:
-            DebugBreakOptionParser() {
-                m_optionNames.push_back( "-b" );
-                m_optionNames.push_back( "--break" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "";
-            }
-            virtual std::string optionSummary() const {
-                return "Breaks into the debugger on failure";
-            }
-            virtual std::string optionDescription() const {
-                return
-                    "In some IDEs (currently XCode and Visual Studio) it is possible for CATCH to "
-                    "break into the debugger on a test failure. This can be very helpful during "
-                    "debug sessions - especially when there is more than one path through a "
-                    "particular test. In addition to the command line option, ensure you have "
-                    "built your code with the DEBUG preprocessor symbol";
-            }
-
-            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
-                config.shouldDebugBreak = true;
-            }
-        };
-
-        class NameOptionParser : public OptionParser {
-        public:
-            NameOptionParser() : OptionParser( 1, 1 ) {
-                m_optionNames.push_back( "-n" );
-                m_optionNames.push_back( "--name" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "<name>";
-            }
-            virtual std::string optionSummary() const {
-                return "Names a test run";
-            }
-            virtual std::string optionDescription() const {
-                return
-                    "If a name is supplied it will be used by the reporter to provide an overall "
-                    "name for the test run. This can be useful if you are sending to a file, for "
-                    "example, and need to distinguish different test runs - either from different "
-                    "Catch executables or runs of the same executable with different options.\n"
-                    "\n"
-                    "Examples:\n"
-                    "\n"
-                    "    -n testRun\n"
-                    "    -n \"tests of the widget component\"";
-            }
-
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                config.name = cmd[0];
-            }
-        };
-
-        class AbortOptionParser : public OptionParser {
-        public:
-            AbortOptionParser() : OptionParser( 0, 1 ) {
-                m_optionNames.push_back( "-a" );
-                m_optionNames.push_back( "--abort" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "[#]";
-            }
-            virtual std::string optionSummary() const {
-                return "Aborts after a certain number of failures";
-            }
-            virtual std::string optionDescription() const {
-                return
-                    "If a REQUIRE assertion fails the test case aborts, but subsequent test cases "
-                    "are still run. If a CHECK assertion fails even the current test case is not "
-                    "aborted.\n"
-                    "\n"
-                    "Sometimes this results in a flood of failure messages and you'd rather just "
-                    "see the first few. Specifying -a or --abort on its own will abort the whole "
-                    "test run on the first failed assertion of any kind. Following it with a "
-                    "number causes it to abort after that number of assertion failures.";
-            }
-
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                int threshold = 1;
-                if( cmd.argsCount() == 1 ) {
-                    std::stringstream ss;
-                    ss << cmd[0];
-                    ss >> threshold;
-                    if( ss.fail() || threshold <= 0 )
-                        cmd.raiseError( "threshold must be a number greater than zero" );
-                }
-                config.cutoff = threshold;
-            }
-        };
-
-        class NoThrowOptionParser : public OptionParser {
-        public:
-            NoThrowOptionParser() {
-                m_optionNames.push_back( "-nt" );
-                m_optionNames.push_back( "--nothrow" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "";
-            }
-            virtual std::string optionSummary() const {
-                return "Elides assertions expected to throw";
-            }
-            virtual std::string optionDescription() const {
-                return
-                    "Skips all assertions that test that an exception is thrown, "
-                    "e.g. REQUIRE_THROWS.\n"
-                    "\n"
-                    "These can be a nuisance in certain debugging environments that may break when "
-                    "exceptions are thrown (while this is usually optional for handled exceptions, "
-                    "it can be useful to have enabled if you are trying to track down something "
-                    "unexpected).\n"
-                    "\n"
-                    "When running with this option the throw checking assertions are skipped so "
-                    "as not to contribute additional noise.";
-            }
-
-            virtual void parseIntoConfig( Command const&, ConfigData& config ) {
-                config.allowThrows = false;
-            }
-        };
-
-        class WarningsOptionParser : public OptionParser {
-        public:
-            WarningsOptionParser() : OptionParser( 1, -1 ) {
-                m_optionNames.push_back( "-w" );
-                m_optionNames.push_back( "--warnings" );
-            }
-            virtual std::string argsSynopsis() const {
-                return "<warning>";
-            }
-            virtual std::string optionSummary() const {
-                return "Enable warnings";
-            }
-            virtual std::string optionDescription() const {
-                return
-                    "Enables the named warnings. If the warnings are violated the test case is "
-                    "failed.\n"
-                    "\n"
-                    "At present only one warning has been provided: NoAssertions. If this warning "
-                    "is enabled then any test case that completes without an assertions (CHECK, "
-                    "REQUIRE etc) being encountered violates the warning.\n"
-                    "\n"
-                    "e.g.:\n"
-                    "\n"
-                    "    -w NoAssertions";
-            }
-
-            virtual void parseIntoConfig( Command const& cmd, ConfigData& config ) {
-                for( std::size_t i = 0; i < cmd.argsCount(); ++i ) {
-                    if( cmd[i] == "NoAssertions" )
-                        config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
-                    else
-                        cmd.raiseError( "Unrecognised warning: " + cmd[i] );
-                }
-            }
-        };
-    }
-
-    class AllOptions
-    {
-    public:
-        typedef std::vector<Ptr<OptionParser> > Parsers;
-        typedef Parsers::const_iterator const_iterator;
-        typedef Parsers::const_iterator iterator;
-
-        AllOptions() {
-            add<Options::TestCaseOptionParser>();   // Keep this one first
-
-            add<Options::TagOptionParser>();
-            add<Options::ListOptionParser>();
-            add<Options::ReporterOptionParser>();
-            add<Options::OutputOptionParser>();
-            add<Options::SuccessOptionParser>();
-            add<Options::DebugBreakOptionParser>();
-            add<Options::NameOptionParser>();
-            add<Options::AbortOptionParser>();
-            add<Options::NoThrowOptionParser>();
-            add<Options::WarningsOptionParser>();
-
-            add<Options::HelpOptionParser>();       // Keep this one last
-        }
-
-        void parseIntoConfig( CommandParser const& parser, ConfigData& config ) {
-            config.name = parser.exeName();
-            if( endsWith( config.name, ".exe" ) )
-               config.name = config.name.substr( 0, config.name.size()-4 );
-            for( const_iterator it = m_parsers.begin(); it != m_parsers.end(); ++it )
-                (*it)->parseIntoConfig( parser, config );
-        }
-
-        const_iterator begin() const {
-            return m_parsers.begin();
-        }
-        const_iterator end() const {
-            return m_parsers.end();
-        }
-    private:
-
-        template<typename T>
-        void add() {
-            m_parsers.push_back( new T() );
-        }
-        Parsers m_parsers;
-
-    };
-
-} // end namespace Catch
-
-// #included from: internal/catch_list.hpp
-#define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
+// #included from: clara.h
+#define TWOBLUECUBES_CLARA_H_INCLUDED
 
 // #included from: catch_text.h
 #define TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
@@ -4293,6 +3648,660 @@ namespace Catch {
     };
 
 } // end namespace Catch
+
+namespace Clara {
+    namespace Detail {
+        template<typename T> struct RemoveConstRef{ typedef T type; };
+        template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
+        template<typename T> struct RemoveConstRef<T const&>{ typedef T type; };
+        template<typename T> struct RemoveConstRef<T const>{ typedef T type; };
+
+        template<typename T>    struct IsBool       { static const bool value = false; };
+        template<>              struct IsBool<bool> { static const bool value = true; };
+
+        template<typename T>
+        void convertInto( std::string const& _source, T& _dest ) {
+            std::stringstream ss;
+            ss << _source;
+            ss >> _dest;
+            if( ss.fail() )
+                throw std::runtime_error( "Unable to convert " + _source + " to destination type" );
+        }
+        inline void convertInto( std::string const& _source, std::string& _dest ) {
+            _dest = _source;
+        }
+        inline void convertInto( std::string const& _source, bool& _dest ) {
+            std::string sourceLC = _source;
+            std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), ::tolower );
+            if( sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
+                _dest = true;
+            else if( sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
+                _dest = false;
+            else
+                throw std::runtime_error( "Expected a boolean value but did recognise: '" + _source + "'" );
+        }
+        inline void convertInto( bool _source, bool& _dest ) {
+            _dest = _source;
+        }
+        template<typename T>
+        inline void convertInto( bool, T& ) {
+            throw std::runtime_error( "Invalid conversion" );
+        }
+
+        template<typename ConfigT>
+        struct IArgFunction {
+            virtual ~IArgFunction() {}
+            virtual void set( ConfigT& config, std::string const& value ) const = 0;
+            virtual void setFlag( ConfigT& config ) const = 0;
+            virtual bool takesArg() const = 0;
+            virtual IArgFunction* clone() const = 0;
+        };
+
+        template<typename ConfigT>
+        class BoundArgFunction {
+        public:
+            BoundArgFunction( IArgFunction<ConfigT>* _functionObj ) : functionObj( _functionObj ) {}
+            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj->clone() ) {}
+            BoundArgFunction& operator = ( BoundArgFunction const& other ) {
+                IArgFunction<ConfigT>* newFunctionObj = other.functionObj->clone();
+                delete functionObj;
+                functionObj = newFunctionObj;
+                return *this;
+            }
+            ~BoundArgFunction() { delete functionObj; }
+
+            void set( ConfigT& config, std::string const& value ) const {
+                functionObj->set( config, value );
+            }
+            void setFlag( ConfigT& config ) const {
+                functionObj->setFlag( config );
+            }
+            bool takesArg() const { return functionObj->takesArg(); }
+        private:
+            IArgFunction<ConfigT>* functionObj;
+        };
+
+        template<typename C>
+        struct NullBinder : IArgFunction<C>{
+            virtual void set( C&, std::string const& ) const {}
+            virtual void setFlag( C& ) const {}
+            virtual bool takesArg() const { return true; }
+            virtual IArgFunction<C>* clone() const { return new NullBinder( *this ); }
+        };
+
+        template<typename C, typename M>
+        struct BoundDataMember : IArgFunction<C>{
+            BoundDataMember( M C::* _member ) : member( _member ) {}
+            virtual void set( C& p, std::string const& stringValue ) const {
+                convertInto( stringValue, p.*member );
+            }
+            virtual void setFlag( C& p ) const {
+                convertInto( true, p.*member );
+            }
+            virtual bool takesArg() const { return !IsBool<M>::value; }
+            virtual IArgFunction<C>* clone() const { return new BoundDataMember( *this ); }
+            M C::* member;
+        };
+        template<typename C, typename M>
+        struct BoundUnaryMethod : IArgFunction<C>{
+            BoundUnaryMethod( void (C::*_member)( M ) ) : member( _member ) {}
+            virtual void set( C& p, std::string const& stringValue ) const {
+                typename RemoveConstRef<M>::type value;
+                convertInto( stringValue, value );
+                (p.*member)( value );
+            }
+            virtual void setFlag( C& p ) const {
+                typename RemoveConstRef<M>::type value;
+                convertInto( true, value );
+                (p.*member)( value );
+            }
+            virtual bool takesArg() const { return !IsBool<M>::value; }
+            virtual IArgFunction<C>* clone() const { return new BoundUnaryMethod( *this ); }
+            void (C::*member)( M );
+        };
+        template<typename C>
+        struct BoundNullaryMethod : IArgFunction<C>{
+            BoundNullaryMethod( void (C::*_member)() ) : member( _member ) {}
+            virtual void set( C& p, std::string const& stringValue ) const {
+                bool value;
+                convertInto( stringValue, value );
+                if( value )
+                    (p.*member)();
+            }
+            virtual void setFlag( C& p ) const {
+                (p.*member)();
+            }
+            virtual bool takesArg() const { return false; }
+            virtual IArgFunction<C>* clone() const { return new BoundNullaryMethod( *this ); }
+            void (C::*member)();
+        };
+
+        template<typename C>
+        struct BoundUnaryFunction : IArgFunction<C>{
+            BoundUnaryFunction( void (*_function)( C& ) ) : function( _function ) {}
+            virtual void set( C& obj, std::string const& stringValue ) const {
+                bool value;
+                convertInto( stringValue, value );
+                if( value )
+                    function( obj );
+            }
+            virtual void setFlag( C& p ) const {
+                function( p );
+            }
+            virtual bool takesArg() const { return false; }
+            virtual IArgFunction<C>* clone() const { return new BoundUnaryFunction( *this ); }
+            void (*function)( C& );
+        };
+
+        template<typename C, typename T>
+        struct BoundBinaryFunction : IArgFunction<C>{
+            BoundBinaryFunction( void (*_function)( C&, T ) ) : function( _function ) {}
+            virtual void set( C& obj, std::string const& stringValue ) const {
+                typename RemoveConstRef<T>::type value;
+                convertInto( stringValue, value );
+                function( obj, value );
+            }
+            virtual void setFlag( C& obj ) const {
+                typename RemoveConstRef<T>::type value;
+                convertInto( true, value );
+                function( obj, value );
+            }
+            virtual bool takesArg() const { return !IsBool<T>::value; }
+            virtual IArgFunction<C>* clone() const { return new BoundBinaryFunction( *this ); }
+            void (*function)( C&, T );
+        };
+
+        template<typename C, typename M>
+        BoundArgFunction<C> makeBoundField( M C::* _member ) {
+            return BoundArgFunction<C>( new BoundDataMember<C,M>( _member ) );
+        }
+        template<typename C, typename M>
+        BoundArgFunction<C> makeBoundField( void (C::*_member)( M ) ) {
+            return BoundArgFunction<C>( new BoundUnaryMethod<C,M>( _member ) );
+        }
+        template<typename C>
+        BoundArgFunction<C> makeBoundField( void (C::*_member)() ) {
+            return BoundArgFunction<C>( new BoundNullaryMethod<C>( _member ) );
+        }
+        template<typename C>
+        BoundArgFunction<C> makeBoundField( void (*_function)( C& ) ) {
+            return BoundArgFunction<C>( new BoundUnaryFunction<C>( _function ) );
+        }
+        template<typename C, typename T>
+        BoundArgFunction<C> makeBoundField( void (*_function)( C&, T ) ) {
+            return BoundArgFunction<C>( new BoundBinaryFunction<C, T>( _function ) );
+        }
+    } // namespace Detail
+
+    struct Parser {
+        Parser() : separators( " \t=:" ) {}
+
+        struct Token {
+            enum Type { Positional, ShortOpt, LongOpt };
+            Token( Type _type, std::string const& _data ) : type( _type ), data( _data ) {}
+            Type type;
+            std::string data;
+        };
+
+        void parseIntoTokens( int argc, char const * const * argv, std::vector<Parser::Token>& tokens ) const {
+            for( int i = 1; i < argc; ++i )
+                parseIntoTokens( argv[i] , tokens);
+        }
+        void parseIntoTokens( std::string arg, std::vector<Parser::Token>& tokens ) const {
+            while( !arg.empty() ) {
+                Parser::Token token( Parser::Token::Positional, arg );
+                arg = "";
+                if( token.data[0] == '-' ) {
+                    if( token.data.size() > 1 && token.data[1] == '-' ) {
+                        token = Parser::Token( Parser::Token::LongOpt, token.data.substr( 2 ) );
+                    }
+                    else {
+                        token = Parser::Token( Parser::Token::ShortOpt, token.data.substr( 1 ) );
+                        if( token.data.size() > 1 && separators.find( token.data[1] ) == std::string::npos ) {
+                            arg = "-" + token.data.substr( 1 );
+                            token.data = token.data.substr( 0, 1 );
+                        }
+                    }
+                }
+                if( token.type != Parser::Token::Positional ) {
+                    std::size_t pos = token.data.find_first_of( separators );
+                    if( pos != std::string::npos ) {
+                        arg = token.data.substr( pos+1 );
+                        token.data = token.data.substr( 0, pos );
+                    }
+                }
+                tokens.push_back( token );
+            }
+        }
+        std::string separators;
+    };
+
+    template<typename ConfigT>
+    class CommandLine {
+
+        struct Arg {
+            Arg( Detail::BoundArgFunction<ConfigT> const& _boundField ) : boundField( _boundField ), position( -1 ) {}
+
+            bool hasShortName( std::string const& shortName ) const {
+                for(    std::vector<std::string>::const_iterator
+                            it = shortNames.begin(), itEnd = shortNames.end();
+                        it != itEnd;
+                        ++it )
+                    if( *it == shortName )
+                        return true;
+                return false;
+            }
+            bool hasLongName( std::string const& _longName ) const {
+                return _longName == longName;
+            }
+            bool takesArg() const {
+                return !argName.empty();
+            }
+            bool isFixedPositional() const {
+                return position != -1;
+            }
+            bool isAnyPositional() const {
+                return position == -1 && shortNames.empty() && longName.empty();
+            }
+            std::string dbgName() const {
+                if( !longName.empty() )
+                    return "--" + longName;
+                if( !shortNames.empty() )
+                    return "-" + shortNames[0];
+                return "positional args";
+            }
+            void validate() const {
+                if( boundField.takesArg() && !takesArg() )
+                    throw std::logic_error( dbgName() + " must specify an arg name" );
+            }
+            std::string commands() const {
+                std::ostringstream oss;
+                bool first = true;
+                std::vector<std::string>::const_iterator it = shortNames.begin(), itEnd = shortNames.end();
+                for(; it != itEnd; ++it ) {
+                    if( first )
+                        first = false;
+                    else
+                        oss << ", ";
+                    oss << "-" << *it;
+                }
+                if( !longName.empty() ) {
+                    if( !first )
+                        oss << ", ";
+                    oss << "--" << longName;
+                }
+                if( !argName.empty() )
+                    oss << " <" << argName << ">";
+                return oss.str();
+            }
+
+            Detail::BoundArgFunction<ConfigT> boundField;
+            std::vector<std::string> shortNames;
+            std::string longName;
+            std::string description;
+            std::string argName;
+            int position;
+        };
+
+        class ArgBinder {
+        public:
+            template<typename F>
+            ArgBinder( CommandLine* cl, F f )
+            :   m_cl( cl ),
+                m_arg( Detail::makeBoundField( f ) )
+            {}
+            ArgBinder( ArgBinder& other )
+            :   m_cl( other.m_cl ),
+                m_arg( other.m_arg )
+            {
+                other.m_cl = NULL;
+            }
+            ~ArgBinder() {
+                if( m_cl ) {
+                    m_arg.validate();
+                    if( m_arg.isFixedPositional() ) {
+                        m_cl->m_positionalArgs.insert( std::make_pair( m_arg.position, m_arg ) );
+                        if( m_arg.position > m_cl->m_highestSpecifiedArgPosition )
+                            m_cl->m_highestSpecifiedArgPosition = m_arg.position;
+                    }
+                    else if( m_arg.isAnyPositional() ) {
+                        if( m_cl->m_arg.get() )
+                            throw std::logic_error( "Only one unpositional argument can be added" );
+                        m_cl->m_arg = std::auto_ptr<Arg>( new Arg( m_arg ) );
+                    }
+                    else
+                        m_cl->m_options.push_back( m_arg );
+                }
+            }
+            ArgBinder& shortOpt( std::string const& name ) {
+                m_arg.shortNames.push_back( name );
+                return *this;
+            }
+            ArgBinder& longOpt( std::string const& name ) {
+                m_arg.longName = name;
+                return *this;
+            }
+            ArgBinder& describe( std::string const& description ) {
+                m_arg.description = description;
+                return *this;
+            }
+            ArgBinder& argName( std::string const& argName ) {
+                m_arg.argName = argName;
+                return *this;
+            }
+            ArgBinder& position( int position ) {
+                m_arg.position = position;
+                return *this;
+            }
+        private:
+            CommandLine* m_cl;
+            Arg m_arg;
+        };
+
+    public:
+
+        CommandLine()
+        :   m_boundProcessName( new Detail::NullBinder<ConfigT>() ),
+            m_highestSpecifiedArgPosition( 0 )
+        {}
+        CommandLine( CommandLine const& other )
+        :   m_boundProcessName( other.m_boundProcessName ),
+            m_options ( other.m_options ),
+            m_positionalArgs( other.m_positionalArgs ),
+            m_highestSpecifiedArgPosition( other.m_highestSpecifiedArgPosition )
+        {
+            if( other.m_arg.get() )
+                m_arg = std::auto_ptr<Arg>( new Arg( *other.m_arg ) );
+        }
+
+        template<typename F>
+        ArgBinder bind( F f ) {
+            ArgBinder binder( this, f );
+            return binder;
+        }
+        template<typename F>
+        void bindProcessName( F f ) {
+            m_boundProcessName = Detail::makeBoundField( f );
+        }
+
+        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = CATCH_CONFIG_CONSOLE_WIDTH ) const {
+            typename std::vector<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
+            std::size_t maxWidth = 0;
+            for( it = itBegin; it != itEnd; ++it )
+                maxWidth = (std::max)( maxWidth, it->commands().size() );
+
+            for( it = itBegin; it != itEnd; ++it ) {
+                Catch::Text usage( it->commands(), Catch::TextAttributes()
+                                                        .setWidth( maxWidth+indent )
+                                                        .setIndent( indent ) );
+                // !TBD handle longer usage strings
+                Catch::Text desc( it->description, Catch::TextAttributes()
+                                                        .setWidth( width - maxWidth -3 ) );
+
+                for( std::size_t i = 0; i < std::max( usage.size(), desc.size() ); ++i ) {
+                    std::string usageCol = i < usage.size() ? usage[i] : "";
+                    os << usageCol;
+
+                    if( i < desc.size() && !desc[i].empty() )
+                        os  << std::string( indent + 2 + maxWidth - usageCol.size(), ' ' )
+                            << desc[i];
+                    os << "\n";
+                }
+            }
+        }
+        std::string optUsage() const {
+            std::ostringstream oss;
+            optUsage( oss );
+            return oss.str();
+        }
+
+        void argSynopsis( std::ostream& os ) const {
+            for( int i = 1; i <= m_highestSpecifiedArgPosition; ++i ) {
+                if( i > 1 )
+                    os << " ";
+                typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( i );
+                if( it != m_positionalArgs.end() )
+                    os << "<" << it->second.argName << ">";
+                else if( m_arg.get() )
+                    os << "<" << m_arg->argName << ">";
+                else
+                    throw std::logic_error( "non consecutive positional arguments with no floating args" );
+            }
+            // !TBD No indication of mandatory args
+            if( m_arg.get() ) {
+                if( m_highestSpecifiedArgPosition > 1 )
+                    os << " ";
+                os << "[<" << m_arg->argName << "> ...]";
+            }
+        }
+        std::string argSynopsis() const {
+            std::ostringstream oss;
+            argSynopsis( oss );
+            return oss.str();
+        }
+
+        void usage( std::ostream& os, std::string const& procName ) const {
+            os << "usage:\n  " << procName << " ";
+            argSynopsis( os );
+            if( !m_options.empty() ) {
+                os << " [options]\n\nwhere options are: \n";
+                optUsage( os, 2 );
+            }
+            os << "\n";
+        }
+        std::string usage( std::string const& procName ) const {
+            std::ostringstream oss;
+            usage( oss, procName );
+            return oss.str();
+        }
+
+        std::vector<Parser::Token> parseInto( int argc, char const * const * argv, ConfigT& config ) const {
+            std::string processName = argv[0];
+            std::size_t lastSlash = processName.find_last_of( "/\\" );
+            if( lastSlash != std::string::npos )
+                processName = processName.substr( lastSlash+1 );
+            m_boundProcessName.set( config, processName );
+            std::vector<Parser::Token> tokens;
+            Parser parser;
+            parser.parseIntoTokens( argc, argv, tokens );
+            return populate( tokens, config );
+        }
+
+        std::vector<Parser::Token> populate( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+            if( m_options.empty() && m_positionalArgs.empty() )
+                throw std::logic_error( "No options or arguments specified" );
+
+            std::vector<Parser::Token> unusedTokens = populateOptions( tokens, config );
+            unusedTokens = populateFixedArgs( unusedTokens, config );
+            unusedTokens = populateFloatingArgs( unusedTokens, config );
+            return unusedTokens;
+        }
+
+        std::vector<Parser::Token> populateOptions( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+            std::vector<Parser::Token> unusedTokens;
+            for( std::size_t i = 0; i < tokens.size(); ++i ) {
+                Parser::Token const& token = tokens[i];
+                typename std::vector<Arg>::const_iterator it = m_options.begin(), itEnd = m_options.end();
+                for(; it != itEnd; ++it ) {
+                    Arg const& arg = *it;
+
+                    try {
+                        if( ( token.type == Parser::Token::ShortOpt && arg.hasShortName( token.data ) ) ||
+                            ( token.type == Parser::Token::LongOpt && arg.hasLongName( token.data ) ) ) {
+                            if( arg.takesArg() ) {
+                                if( i == tokens.size()-1 || tokens[i+1].type != Parser::Token::Positional )
+                                    throw std::domain_error( "Expected argument to option " + token.data );
+                                arg.boundField.set( config, tokens[++i].data );
+                            }
+                            else {
+                                arg.boundField.setFlag( config );
+                            }
+                            break;
+                        }
+                    }
+                    catch( std::exception& ex ) {
+                        throw std::runtime_error( std::string( ex.what() ) + " while parsing: (" + arg.commands() + ")" );
+                    }
+                }
+                if( it == itEnd )
+                    unusedTokens.push_back( token );
+            }
+            return unusedTokens;
+        }
+        std::vector<Parser::Token> populateFixedArgs( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+            std::vector<Parser::Token> unusedTokens;
+            int position = 1;
+            for( std::size_t i = 0; i < tokens.size(); ++i ) {
+                Parser::Token const& token = tokens[i];
+                typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( position );
+                if( it != m_positionalArgs.end() )
+                    it->second.boundField.set( config, token.data );
+                else
+                    unusedTokens.push_back( token );
+                if( token.type == Parser::Token::Positional )
+                    position++;
+            }
+            return unusedTokens;
+        }
+        std::vector<Parser::Token> populateFloatingArgs( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+            if( !m_arg.get() )
+                return tokens;
+            std::vector<Parser::Token> unusedTokens;
+            for( std::size_t i = 0; i < tokens.size(); ++i ) {
+                Parser::Token const& token = tokens[i];
+                if( token.type == Parser::Token::Positional )
+                    m_arg->boundField.set( config, token.data );
+                else
+                    unusedTokens.push_back( token );
+            }
+            return unusedTokens;
+        }
+
+    private:
+        Detail::BoundArgFunction<ConfigT> m_boundProcessName;
+        std::vector<Arg> m_options;
+        std::map<int, Arg> m_positionalArgs;
+        std::auto_ptr<Arg> m_arg;
+        int m_highestSpecifiedArgPosition;
+    };
+
+} // end namespace Clara
+
+namespace Catch {
+
+    inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
+    inline void abortAfterX( ConfigData& config, int x ) {
+        if( x < 1 )
+            throw std::runtime_error( "Value after -x or --abortAfter must be greater than zero" );
+        config.abortAfter = x;
+    }
+    inline void addTestOrTags( ConfigData& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }
+
+    inline void addWarning( ConfigData& config, std::string const& _warning ) {
+        if( _warning == "NoAssertions" )
+            config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
+        else
+            throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
+
+    }
+    inline void setVerbosity( ConfigData& config, int level ) {
+        // !TBD: accept strings?
+        config.verbosity = (ConfigData::Verbosity::Level)level;
+    }
+
+    inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
+
+        Clara::CommandLine<ConfigData> cli;
+
+        cli.bindProcessName( &ConfigData::processName );
+
+        cli.bind( &ConfigData::showHelp )
+            .describe( "display usage information" )
+            .shortOpt( "?")
+            .shortOpt( "h")
+            .longOpt( "help" );
+
+        cli.bind( &ConfigData::listTests )
+            .describe( "list all (or matching) test cases" )
+            .shortOpt( "l")
+            .longOpt( "list-tests" );
+
+        cli.bind( &ConfigData::listTags )
+            .describe( "list all (or matching) tags" )
+            .shortOpt( "t")
+            .longOpt( "list-tags" );
+
+        cli.bind( &ConfigData::listReporters )
+            .describe( "list all reporters" )
+            .longOpt( "list-reporters" );
+
+        cli.bind( &ConfigData::showSuccessfulTests )
+            .describe( "include successful tests in output" )
+            .shortOpt( "s")
+            .longOpt( "success" );
+
+        cli.bind( &ConfigData::shouldDebugBreak )
+            .describe( "break into debugger on failure" )
+            .shortOpt( "b")
+            .longOpt( "break" );
+
+        cli.bind( &ConfigData::noThrow )
+            .describe( "Skip exception tests" )
+            .shortOpt( "e")
+            .longOpt( "nothrow" );
+
+        cli.bind( &ConfigData::outputFilename )
+            .describe( "output filename" )
+            .shortOpt( "o")
+            .longOpt( "out" )
+            .argName( "filename" );
+
+        cli.bind( &ConfigData::reporterName )
+            .describe( "reporter to use - defaults to console" )
+            .shortOpt( "r")
+            .longOpt( "reporter" )
+            .argName( "name[:filename]" );
+
+        cli.bind( &ConfigData::name )
+            .describe( "suite name" )
+            .shortOpt( "n")
+            .longOpt( "name" )
+            .argName( "name" );
+
+        cli.bind( &abortAfterFirst )
+            .describe( "abort at first failure" )
+            .shortOpt( "a")
+            .longOpt( "abort" );
+
+        cli.bind( &abortAfterX )
+            .describe( "abort after x failures" )
+            .shortOpt( "x")
+            .longOpt( "abortx" )
+            .argName( "number of failures" );
+
+        cli.bind( &addWarning )
+            .describe( "enable warnings" )
+            .shortOpt( "w")
+            .longOpt( "warn" )
+            .argName( "warning name" );
+
+//        cli.bind( &setVerbosity )
+//            .describe( "level of verbosity (0=no output)" )
+//            .shortOpt( "v")
+//            .longOpt( "verbosity" )
+//            .argName( "level" );
+
+        cli.bind( &addTestOrTags )
+            .describe( "which test or tests to use" )
+            .argName( "test name, pattern or tags" );
+
+        return cli;
+    }
+
+} // end namespace Catch
+
+// #included from: internal/catch_list.hpp
+#define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
 
 // #included from: catch_console_colour.hpp
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
@@ -4363,8 +4372,8 @@ namespace Catch {
         return true;
     }
 
-    inline void listTests( ConfigData const& config ) {
-        if( config.filters.empty() )
+    inline std::size_t listTests( Config const& config ) {
+        if( config.filters().empty() )
             std::cout << "All available test cases:\n";
         else
             std::cout << "Matching test cases:\n";
@@ -4375,7 +4384,7 @@ namespace Catch {
         std::size_t maxTagLen = 0;
         std::size_t maxNameLen = 0;
         for(; it != itEnd; ++it ) {
-            if( matchesFilters( config.filters, *it ) ) {
+            if( matchesFilters( config.filters(), *it ) ) {
                 maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
                 maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
             }
@@ -4392,14 +4401,19 @@ namespace Catch {
 
         std::size_t matchedTests = 0;
         for( it = allTests.begin(); it != itEnd; ++it ) {
-            if( matchesFilters( config.filters, *it ) ) {
+            if( matchesFilters( config.filters(), *it ) ) {
                 matchedTests++;
-                // !TBD: consider listAs()
                 Text nameWrapper(   it->getTestCaseInfo().name,
-                                    TextAttributes().setWidth( maxNameLen ).setIndent(2) );
+                                    TextAttributes()
+                                        .setWidth( maxNameLen )
+                                        .setInitialIndent(2)
+                                        .setIndent(4) );
 
                 Text tagsWrapper(   it->getTestCaseInfo().tagsAsString,
-                                    TextAttributes().setWidth( maxTagLen ) );
+                                    TextAttributes()
+                                        .setWidth( maxTagLen )
+                                        .setInitialIndent(0)
+                                        .setIndent( 2 ) );
 
                 for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
                     Colour::Code colour = Colour::None;
@@ -4432,14 +4446,15 @@ namespace Catch {
                 }
             }
         }
-        if( config.filters.empty() )
-            std::cout << pluralise( matchedTests, "test case" ) << std::endl;
+        if( config.filters().empty() )
+            std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
-            std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
+            std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+        return matchedTests;
     }
 
-    inline void listTags( ConfigData const& config ) {
-        if( config.filters.empty() )
+    inline std::size_t listTags( Config const& config ) {
+        if( config.filters().empty() )
             std::cout << "All available tags:\n";
         else
             std::cout << "Matching tags:\n";
@@ -4451,7 +4466,7 @@ namespace Catch {
         std::size_t maxTagLen = 0;
 
         for(; it != itEnd; ++it ) {
-            if( matchesFilters( config.filters, *it ) ) {
+            if( matchesFilters( config.filters(), *it ) ) {
                 for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
                                                             tagItEnd = it->getTestCaseInfo().tags.end();
                         tagIt != tagItEnd;
@@ -4487,29 +4502,42 @@ namespace Catch {
             std::cout   << countIt->second
                         << "\n";
         }
-        std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
+        std::cout << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
+        return tagCounts.size();
     }
 
-    inline void listReporters( ConfigData const& /*config*/ ) {
+    inline std::size_t listReporters( Config const& /*config*/ ) {
         std::cout << "Available reports:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
-        IReporterRegistry::FactoryMap::const_iterator it = factories.begin(), itEnd = factories.end();
-        for(; it != itEnd; ++it ) {
-            // !TBD: consider listAs()
-            std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
+        IReporterRegistry::FactoryMap::const_iterator itBegin = factories.begin(), itEnd = factories.end(), it;
+        std::size_t maxNameLen = 0;
+        for(it = itBegin; it != itEnd; ++it )
+            maxNameLen = (std::max)( maxNameLen, it->first.size() );
+
+        for(it = itBegin; it != itEnd; ++it ) {
+            Text wrapper( it->second->getDescription(), TextAttributes()
+                                                        .setInitialIndent( 0 )
+                                                        .setIndent( 7+maxNameLen )
+                                                        .setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 ) );
+            std::cout << "  "
+                    << it->first
+                    << ":"
+                    << std::string( maxNameLen - it->first.size() + 2, ' ' )
+                    << wrapper << "\n";
         }
         std::cout << std::endl;
+        return factories.size();
     }
 
-    inline void list( ConfigData const& config ) {
-        if( config.listSpec & List::Tests )
-            listTests( config );
-        if( config.listSpec & List::Tags )
-            listTags( config );
-        if( config.listSpec & List::Reports )
-            listReporters( config );
-        if( ( config.listSpec & List::All ) == 0 )
-            throw std::logic_error( "Unknown list type" );
+    inline Option<std::size_t> list( Config const& config ) {
+        Option<std::size_t> listedCount;
+        if( config.listTests() )
+            listedCount = listedCount.valueOr(0) + listTests( config );
+        if( config.listTags() )
+            listedCount = listedCount.valueOr(0) + listTags( config );
+        if( config.listReporters() )
+            listedCount = listedCount.valueOr(0) + listReporters( config );
+        return listedCount;
     }
 
 } // end namespace Catch
@@ -4756,15 +4784,15 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class Runner : public IResultCapture, public IRunner {
+    class RunContext : public IResultCapture, public IRunner {
 
-        Runner( Runner const& );
-        void operator =( Runner const& );
+        RunContext( RunContext const& );
+        void operator =( RunContext const& );
 
     public:
 
-        explicit Runner( Config const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config.data().name ),
+        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( config->name() ),
             m_context( getCurrentMutableContext() ),
             m_runningTest( NULL ),
             m_config( config ),
@@ -4774,12 +4802,12 @@ namespace Catch {
             m_prevConfig( m_context.getConfig() )
         {
             m_context.setRunner( this );
-            m_context.setConfig( &m_config );
+            m_context.setConfig( m_config );
             m_context.setResultCapture( this );
             m_reporter->testRunStarting( m_runInfo );
         }
 
-        virtual ~Runner() {
+        virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
@@ -4833,8 +4861,7 @@ namespace Catch {
 
             Totals deltaTotals = m_totals.delta( prevTotals );
             bool missingAssertions = false;
-            if( deltaTotals.assertions.total() == 0  &&
-               ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) ) {
+            if( deltaTotals.assertions.total() == 0  && m_config->warnAboutMissingAssertions() ) {
                 m_totals.assertions.failed++;
                 deltaTotals = m_totals.delta( prevTotals );
                 missingAssertions = true;
@@ -4855,7 +4882,7 @@ namespace Catch {
             return deltaTotals;
         }
 
-        Config const& config() const {
+        Ptr<IConfig const> config() const {
             return m_config;
         }
 
@@ -4914,8 +4941,8 @@ namespace Catch {
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = false;
             if( assertions.total() == 0 &&
-               ( m_config.data().warnings & ConfigData::WarnAbout::NoAssertions ) &&
-               !m_runningTest->isBranchSection() ) {
+                    m_config->warnAboutMissingAssertions() &&
+                    !m_runningTest->isBranchSection() ) {
                 m_totals.assertions.failed++;
                 assertions.failed++;
                 missingAssertions = true;
@@ -4936,7 +4963,7 @@ namespace Catch {
         }
 
         virtual bool shouldDebugBreak() const {
-            return m_config.shouldDebugBreak();
+            return m_config->shouldDebugBreak();
         }
 
         virtual std::string getCurrentTestName() const {
@@ -4952,7 +4979,7 @@ namespace Catch {
     public:
         // !TBD We need to do this another way!
         bool aborting() const {
-            return m_totals.assertions.failed == static_cast<std::size_t>( m_config.getCutoff() );
+            return m_totals.assertions.failed == static_cast<std::size_t>( m_config->abortAfter() );
         }
 
     private:
@@ -5020,13 +5047,13 @@ namespace Catch {
         RunningTest* m_runningTest;
         AssertionResult m_lastResult;
 
-        Config const& m_config;
+        Ptr<IConfig const> m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;
         IRunner* m_prevRunner;
         IResultCapture* m_prevResultCapture;
-        const IConfig* m_prevConfig;
+        Ptr<IConfig const> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
         std::vector<UnfinishedSections> m_unfinishedSections;
     };
@@ -5068,12 +5095,11 @@ namespace Catch {
 
 namespace Catch {
 
-    class Runner2 { // This will become Runner when Runner becomes Context
+    class Runner {
 
     public:
-        Runner2( Config& configWrapper )
-        :   m_configWrapper( configWrapper ),
-            m_config( configWrapper.data() )
+        Runner( Ptr<Config> const& config )
+        :   m_config( config )
         {
             openStream();
             makeReporter();
@@ -5081,13 +5107,14 @@ namespace Catch {
 
         Totals runTests() {
 
-            std::vector<TestCaseFilters> filterGroups = m_config.filters;
+            std::vector<TestCaseFilters> filterGroups = m_config->filters();
             if( filterGroups.empty() ) {
                 TestCaseFilters filterGroup( "" );
                 filterGroups.push_back( filterGroup );
             }
 
-            Runner context( m_configWrapper, m_reporter ); // This Runner will be renamed Context
+            RunContext context( m_config.get(), m_reporter );
+
             Totals totals;
 
             for( std::size_t i=0; i < filterGroups.size() && !context.aborting(); ++i ) {
@@ -5098,7 +5125,7 @@ namespace Catch {
             return totals;
         }
 
-        Totals runTestsForGroup( Runner& context, const TestCaseFilters& filterGroup ) {
+        Totals runTestsForGroup( RunContext& context, const TestCaseFilters& filterGroup ) {
             Totals totals;
             std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
             std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
@@ -5124,28 +5151,23 @@ namespace Catch {
 
     private:
         void openStream() {
-            if( !m_config.stream.empty() )
-                m_configWrapper.useStream( m_config.stream );
-
             // Open output file, if specified
-            if( !m_config.outputFilename.empty() ) {
-                m_ofs.open( m_config.outputFilename.c_str() );
+            if( !m_config->getFilename().empty() ) {
+                m_ofs.open( m_config->getFilename().c_str() );
                 if( m_ofs.fail() ) {
                     std::ostringstream oss;
-                    oss << "Unable to open file: '" << m_config.outputFilename << "'";
+                    oss << "Unable to open file: '" << m_config->getFilename() << "'";
                     throw std::domain_error( oss.str() );
                 }
-                m_configWrapper.setStreamBuf( m_ofs.rdbuf() );
+                m_config->setStreamBuf( m_ofs.rdbuf() );
             }
         }
         void makeReporter() {
-            std::string reporterName = m_config.reporter.empty()
-            ? "console"
-            : m_config.reporter;
+            std::string reporterName = m_config->getReporterName().empty()
+                ? "console"
+                : m_config->getReporterName();
 
-            ReporterConfig reporterConfig( m_configWrapper.stream(), m_config );
-
-            m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, reporterConfig );
+            m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, m_config.get() );
             if( !m_reporter ) {
                 std::ostringstream oss;
                 oss << "No reporter registered with name: '" << reporterName << "'";
@@ -5154,111 +5176,134 @@ namespace Catch {
         }
 
     private:
-        Config& m_configWrapper;
-        const ConfigData& m_config;
+        Ptr<Config> m_config;
         std::ofstream m_ofs;
         Ptr<IStreamingReporter> m_reporter;
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    inline int Main( Config& configWrapper ) {
-        int result = 0;
-        try
-        {
-            Runner2 runner( configWrapper );
+    class Session {
+        static bool alreadyInstantiated;
 
-            const ConfigData& config = configWrapper.data();
+    public:
 
-            // Handle list request
-            if( config.listSpec != List::None ) {
-                list( config );
-                Catch::cleanUp();
-                return 0;
+        struct OnUnusedOptions { enum DoWhat { Ignore, Fail }; };
+
+        Session()
+        : m_cli( makeCommandLineParser() ) {
+            if( alreadyInstantiated ) {
+                std::string msg = "Only one instance of Catch::Session can ever be used";
+                std::cerr << msg << std::endl;
+                throw std::logic_error( msg );
             }
-
-            result = static_cast<int>( runner.runTests().assertions.failed );
-
+            alreadyInstantiated = true;
         }
-        catch( std::exception& ex ) {
-            std::cerr << ex.what() << std::endl;
-            result = (std::numeric_limits<int>::max)();
+        ~Session() {
+            Catch::cleanUp();
         }
 
-        Catch::cleanUp();
-        return result;
-    }
-
-    inline void showUsage( std::ostream& os ) {
-        AllOptions options;
-
-        for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
-            OptionParser& opt = **it;
-            os << "  " << opt.optionNames() << " " << opt.argsSynopsis() << "\n";
-        }
-        os << "\nFor more detail usage please see: https://github.com/philsquared/Catch/wiki/Command-line\n" << std::endl;
-    }
-
-    inline void showHelp( const CommandParser& parser ) {
-        AllOptions options;
-        Options::HelpOptionParser helpOpt;
-        bool displayedSpecificOption = false;
-        for( AllOptions::const_iterator it = options.begin(); it != options.end(); ++it ) {
-            OptionParser& opt = **it;
-            if( opt.find( parser ) && opt.optionNames() != helpOpt.optionNames() ) {
-                displayedSpecificOption = true;
-                std::cout   << "\n" << opt.optionNames() << " " << opt.argsSynopsis() << "\n\n"
-                            << opt.optionSummary() << "\n\n"
-                            << Text( opt.optionDescription(), TextAttributes().setIndent( 2 ) ) << "\n" << std::endl;
-            }
-        }
-
-        if( !displayedSpecificOption ) {
-            std::cout   << "\nCATCH v"  << libraryVersion.majorVersion << "."
+        void showHelp( std::string const& processName ) {
+            std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
                                         << libraryVersion.minorVersion << " build "
                                         << libraryVersion.buildNumber;
             if( libraryVersion.branchName != "master" )
                 std::cout << " (" << libraryVersion.branchName << " branch)";
+            std::cout << "\n";
 
-            std::cout << "\n\n" << parser.exeName() << " is a CATCH host application. Options are as follows:\n\n";
-            showUsage( std::cout );
+            m_cli.usage( std::cout, processName );
+            std::cout << "For more detail usage please see the project docs\n" << std::endl;
         }
-    }
 
-    inline int Main( int argc, char* const argv[], Config& config ) {
-
-        try {
-            CommandParser parser( argc, argv );
-
-            if( Command cmd = Options::HelpOptionParser().find( parser ) ) {
-                if( cmd.argsCount() != 0 )
-                    cmd.raiseError( "Does not accept arguments" );
-
-                showHelp( parser );
-                Catch::cleanUp();
-                return 0;
+        int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
+            try {
+                m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
+                if( unusedOptionBehaviour == OnUnusedOptions::Fail )
+                    enforceNoUsedTokens();
+                if( m_configData.showHelp )
+                    showHelp( m_configData.processName );
+                m_config.reset();
             }
-
-            AllOptions options;
-
-            options.parseIntoConfig( parser, config.data() );
+            catch( std::exception& ex ) {
+                std::cerr   << "\nError in input:\n"
+                            << Text( ex.what(), TextAttributes()
+                                                    .setInitialIndent(2)
+                                                    .setIndent(4) )
+                            << "\n\n";
+                m_cli.usage( std::cout, m_configData.processName );
+                return (std::numeric_limits<int>::max)();
+            }
+            return 0;
         }
-        catch( std::exception& ex ) {
-            std::cerr << ex.what() << "\n\nUsage: ...\n\n";
-            showUsage( std::cerr );
-            Catch::cleanUp();
-            return (std::numeric_limits<int>::max)();
+
+        void useConfigData( ConfigData const& _configData ) {
+            m_configData = _configData;
+            m_config.reset();
         }
 
-        return Main( config );
-    }
+        void enforceNoUsedTokens() const {
+            if( !m_unusedTokens.empty() ) {
+                std::vector<Clara::Parser::Token>::const_iterator
+                    it = m_unusedTokens.begin(),
+                    itEnd = m_unusedTokens.end();
+                std::string msg;
+                for(; it != itEnd; ++it )
+                    msg += "  unrecognised option: " + it->data + "\n";
+                throw std::runtime_error( msg.substr( 0, msg.size()-1 ) );
+            }
+        }
 
-    inline int Main( int argc, char* const argv[] ) {
-        Config config;
-// !TBD: This doesn't always work, for some reason
-//        if( isDebuggerActive() )
-//            config.useStream( "debug" );
-        return Main( argc, argv, config );
-    }
+        int run( int argc, char* const argv[] ) {
+
+            int returnCode = applyCommandLine( argc, argv );
+            if( returnCode == 0 )
+                returnCode = run();
+            return returnCode;
+        }
+
+        int run() {
+            if( m_configData.showHelp )
+                return 0;
+
+            try
+            {
+                config(); // Force config to be constructed
+                Runner runner( m_config );
+
+                // Handle list request
+                if( Option<std::size_t> listed = list( config() ) )
+                    return static_cast<int>( *listed );
+
+                return static_cast<int>( runner.runTests().assertions.failed );
+            }
+            catch( std::exception& ex ) {
+                std::cerr << ex.what() << std::endl;
+                return (std::numeric_limits<int>::max)();
+            }
+        }
+
+        Clara::CommandLine<ConfigData> const& cli() const {
+            return m_cli;
+        }
+        std::vector<Clara::Parser::Token> const& unusedTokens() const {
+            return m_unusedTokens;
+        }
+        ConfigData& configData() {
+            return m_configData;
+        }
+        Config& config() {
+            if( !m_config )
+                m_config = new Config( m_configData );
+            return *m_config;
+        }
+
+    private:
+        Clara::CommandLine<ConfigData> m_cli;
+        std::vector<Clara::Parser::Token> m_unusedTokens;
+        ConfigData m_configData;
+        Ptr<Config> m_config;
+    };
+
+    bool Session::alreadyInstantiated = false;
 
 } // end namespace Catch
 
@@ -5417,11 +5462,11 @@ namespace Catch {
             deleteAllValues( m_factories );
         }
 
-        virtual IStreamingReporter* create( std::string const& name, ReporterConfig const& config ) const {
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return NULL;
-            return it->second->create( config );
+            return it->second->create( ReporterConfig( config ) );
         }
 
         void registerReporter( std::string const& name, IReporterFactory* factory ) {
@@ -5615,7 +5660,7 @@ namespace Catch {
             return generators && generators->moveNext();
         }
 
-        virtual const IConfig* getConfig() const {
+        virtual Ptr<IConfig const> getConfig() const {
             return m_config;
         }
 
@@ -5626,7 +5671,7 @@ namespace Catch {
         virtual void setRunner( IRunner* runner ) {
             m_runner = runner;
         }
-        virtual void setConfig( const IConfig* config ) {
+        virtual void setConfig( Ptr<IConfig const> const& config ) {
             m_config = config;
         }
 
@@ -5656,7 +5701,7 @@ namespace Catch {
     private:
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
-        const IConfig* m_config;
+        Ptr<IConfig const> m_config;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
 
@@ -5908,10 +5953,7 @@ namespace Catch {
         lineInfo( _lineInfo ),
         capturedExpression( _capturedExpression ),
         resultDisposition( _resultDisposition )
-    {
-        if( shouldNegate( resultDisposition ) )
-            capturedExpression = "!" + _capturedExpression;
-    }
+    {}
 
     AssertionResult::AssertionResult() {}
 
@@ -5945,7 +5987,16 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpression() const {
-        return m_info.capturedExpression;
+        if( shouldNegate( m_info.resultDisposition ) )
+            return "!" + m_info.capturedExpression;
+        else
+            return m_info.capturedExpression;
+    }
+    std::string AssertionResult::getExpressionInMacro() const {
+        if( m_info.macroName.empty() )
+            return m_info.capturedExpression;
+        else
+            return m_info.macroName + "( " + m_info.capturedExpression + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {
@@ -6177,7 +6228,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 0, 9, 38, "integration" );
+    Version libraryVersion( 0, 9, 39, "integration" );
 }
 
 // #included from: catch_text.hpp
@@ -6321,7 +6372,7 @@ namespace Catch
     class LegacyReporterAdapter : public SharedImpl<IStreamingReporter>
     {
     public:
-        LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config );
+        LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter );
         virtual ~LegacyReporterAdapter();
 
         virtual ReporterPreferences getPreferences() const;
@@ -6339,15 +6390,13 @@ namespace Catch
 
     private:
         Ptr<IReporter> m_legacyReporter;
-        ReporterConfig m_config;
     };
 }
 
 namespace Catch
 {
-    LegacyReporterAdapter::LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter, ReporterConfig const& config )
-    :   m_legacyReporter( legacyReporter ),
-        m_config( config )
+    LegacyReporterAdapter::LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter )
+    :   m_legacyReporter( legacyReporter )
     {}
     LegacyReporterAdapter::~LegacyReporterAdapter() {}
 
@@ -6428,7 +6477,7 @@ namespace Catch {
         class ReporterFactory : public IReporterFactory {
 
             virtual IStreamingReporter* create( ReporterConfig const& config ) const {
-                return new LegacyReporterAdapter( new T( config ), config );
+                return new LegacyReporterAdapter( new T( config ) );
             }
 
             virtual std::string getDescription() const {
@@ -6628,7 +6677,7 @@ namespace Catch {
         }
 
         virtual void Result( const AssertionResult& assertionResult ) {
-            if( !m_config.includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
+            if( !m_config.fullConfig()->includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
                 return;
 
             startSpansLazily();
@@ -6757,10 +6806,10 @@ namespace Catch {
 
         void startSpansLazily() {
             if( !m_testingSpan.emitted ) {
-                if( m_config.name().empty() )
+                if( m_config.fullConfig()->name().empty() )
                     m_config.stream() << "[Started testing]" << std::endl;
                 else
-                    m_config.stream() << "[Started testing: " << m_config.name() << "]" << std::endl;
+                    m_config.stream() << "[Started testing: " << m_config.fullConfig()->name() << "]" << std::endl;
                 m_testingSpan.emitted = true;
             }
 
@@ -7027,7 +7076,7 @@ namespace Catch {
 namespace Catch {
     class XmlReporter : public SharedImpl<IReporter> {
     public:
-        XmlReporter( const ReporterConfig& config ) : m_config( config ) {}
+        XmlReporter( ReporterConfig const& config ) : m_config( config ) {}
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
@@ -7043,8 +7092,8 @@ namespace Catch {
         virtual void StartTesting() {
             m_xml = XmlWriter( m_config.stream() );
             m_xml.startElement( "Catch" );
-            if( !m_config.name().empty() )
-                m_xml.writeAttribute( "name", m_config.name() );
+            if( !m_config.fullConfig()->name().empty() )
+                m_xml.writeAttribute( "name", m_config.fullConfig()->name() );
         }
 
         virtual void EndTesting( const Totals& totals ) {
@@ -7087,7 +7136,7 @@ namespace Catch {
         }
 
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( !m_config.includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
+            if( !m_config.fullConfig()->includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
                 return;
 
             if( assertionResult.hasExpression() ) {
@@ -7208,7 +7257,7 @@ namespace Catch {
         };
 
     public:
-        JunitReporter( const ReporterConfig& config )
+        JunitReporter( ReporterConfig const& config )
         :   m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
@@ -7229,7 +7278,7 @@ namespace Catch {
 
         virtual void StartGroup( const std::string& groupName ) {
             if( groupName.empty() )
-                m_statsForSuites.push_back( Stats( m_config.name() ) );
+                m_statsForSuites.push_back( Stats( m_config.fullConfig()->name() ) );
             else
                 m_statsForSuites.push_back( Stats( groupName ) );
             m_currentStats = &m_statsForSuites.back();
@@ -7253,7 +7302,7 @@ namespace Catch {
         }
 
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( assertionResult.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults() ) {
+            if( assertionResult.getResultType() != ResultWas::Ok || m_config.fullConfig()->includeSuccessfulResults() ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
@@ -7380,7 +7429,6 @@ namespace Catch {
 
     private:
         ReporterConfig m_config;
-//        bool m_currentTestSuccess;
 
         Stats m_testSuiteStats;
         Stats* m_currentStats;
@@ -7426,7 +7474,7 @@ namespace Catch {
             AssertionResult const& result = _assertionStats.assertionResult;
 
             // Drop out if result was successful and we're not printing those
-            if( !m_config.includeSuccessfulResults() && result.isOk() )
+            if( !m_config->includeSuccessfulResults() && result.isOk() )
                 return;
 
             lazyPrint();
@@ -7574,11 +7622,7 @@ namespace Catch {
                 if( result.hasExpression() ) {
                     Colour colourGuard( Colour::OriginalExpression );
                     stream  << "  ";
-                    if( !result.getTestMacroName().empty() )
-                        stream << result.getTestMacroName() << "( ";
-                    stream << result.getExpression();
-                    if( !result.getTestMacroName().empty() )
-                        stream << " )";
+                    stream << result.getExpressionInMacro();
                     stream << "\n";
                 }
             }
@@ -7630,7 +7674,7 @@ namespace Catch {
             stream  << "\n" << getTildes() << "\n";
             Colour colour( Colour::SecondaryText );
             stream  << testRunInfo->name
-                    << " is a CATCH v"  << libraryVersion.majorVersion << "."
+                    << " is a Catch v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
                     << libraryVersion.buildNumber;
             if( libraryVersion.branchName != "master" )
@@ -7848,7 +7892,7 @@ namespace Catch {
 
 // Standard C/C++ main entry point
 int main (int argc, char * const argv[]) {
-    return Catch::Main( argc, argv );
+    return Catch::Session().run( argc, argv );
 }
 
 #else // __OBJC__
@@ -7860,7 +7904,7 @@ int main (int argc, char * const argv[]) {
 #endif
 
     Catch::registerTestMethods();
-    int result = Catch::Main( argc, (char* const*)argv );
+    int result = Catch::Session().run( argc, (char* const*)argv );
 
 #if !CATCH_ARC_ENABLED
     [pool drain];
@@ -7908,10 +7952,12 @@ int main (int argc, char * const argv[]) {
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
+    #define CATCH_TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, __VA_ARGS__ )
     #define CATCH_METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
     #define CATCH_SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
 #else
     #define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+    #define CATCH_TEST_CASE_METHOD( className, name, description ) INTERNAL_CATCH_TEST_CASE_METHOD( className, name, description )
     #define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
     #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
 #endif
@@ -7967,10 +8013,12 @@ int main (int argc, char * const argv[]) {
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
+    #define TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, __VA_ARGS__ )
     #define METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
     #define SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
 #else
     #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
+    #define TEST_CASE_METHOD( className, name, description ) INTERNAL_CATCH_TEST_CASE_METHOD( className, name, description )
     #define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
     #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
 #endif
