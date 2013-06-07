@@ -71,7 +71,7 @@ namespace Catch {
             .longOpt( "break" );
 
         cli.bind( &ConfigData::noThrow )
-            .describe( "Skip exception tests" )
+            .describe( "skip exception tests" )
             .shortOpt( "e")
             .longOpt( "nothrow" );
 

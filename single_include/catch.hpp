@@ -1,6 +1,6 @@
 /*
  *  CATCH v0.9 build 39 (integration branch)
- *  Generated: 2013-06-07 19:06:43.206650
+ *  Generated: 2013-06-07 21:13:43.938994
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4246,7 +4246,7 @@ namespace Catch {
             .longOpt( "break" );
 
         cli.bind( &ConfigData::noThrow )
-            .describe( "Skip exception tests" )
+            .describe( "skip exception tests" )
             .shortOpt( "e")
             .longOpt( "nothrow" );
 
