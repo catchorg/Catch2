@@ -95,9 +95,9 @@ namespace Catch {
             }
         }
         if( config.filters().empty() )
-            std::cout << pluralise( matchedTests, "test case" ) << std::endl;
+            std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
-            std::cout << pluralise( matchedTests, "matching test case" ) << std::endl;
+            std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
         return matchedTests;
     }
     
@@ -150,16 +150,29 @@ namespace Catch {
             std::cout   << countIt->second
                         << "\n";
         }
-        std::cout << pluralise( tagCounts.size(), "tag" ) << std::endl;
+        std::cout << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
         return tagCounts.size();
     }
 
     inline std::size_t listReporters( Config const& /*config*/ ) {
         std::cout << "Available reports:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
-        IReporterRegistry::FactoryMap::const_iterator it = factories.begin(), itEnd = factories.end();
-        for(; it != itEnd; ++it )
-            std::cout << "\t" << it->first << "\n\t\t'" << it->second->getDescription() << "'\n";
+        IReporterRegistry::FactoryMap::const_iterator itBegin = factories.begin(), itEnd = factories.end(), it;
+        std::size_t maxNameLen = 0;
+        for(it = itBegin; it != itEnd; ++it )
+            maxNameLen = (std::max)( maxNameLen, it->first.size() );
+    
+        for(it = itBegin; it != itEnd; ++it ) {
+            Text wrapper( it->second->getDescription(), TextAttributes()
+                                                        .setInitialIndent( 0 )
+                                                        .setIndent( 7+maxNameLen )
+                                                        .setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 ) );
+            std::cout << "  "
+                    << it->first
+                    << ":"
+                    << std::string( maxNameLen - it->first.size() + 2, ' ' )
+                    << wrapper << "\n";
+        }
         std::cout << std::endl;
         return factories.size();
     }
