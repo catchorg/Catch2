@@ -116,7 +116,7 @@ namespace Catch {
         struct OnUnusedOptions { enum DoWhat { Ignore, Fail }; };
 
         Session()
-        : cli( makeCommandLineParser() ) {
+        : m_cli( makeCommandLineParser() ) {
             if( alreadyInstantiated ) {
                 std::string msg = "Only one instance of Catch::Session can ever be used";
                 std::cerr << msg << std::endl;
@@ -136,38 +136,38 @@ namespace Catch {
                 std::cout << " (" << libraryVersion.branchName << " branch)";
             std::cout << "\n";
 
-            cli.usage( std::cout, processName );
+            m_cli.usage( std::cout, processName );
             std::cout << "For more detail usage please see the project docs\n" << std::endl;
         }
         
         int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
-                unusedTokens = cli.parseInto( argc, argv, configData );
+                m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
                 if( unusedOptionBehaviour == OnUnusedOptions::Fail )
                     enforceNoUsedTokens();
-                if( configData.showHelp )
-                    showHelp( configData.processName );
-                config.reset();
+                if( m_configData.showHelp )
+                    showHelp( m_configData.processName );
+                m_config.reset();
             }
             catch( std::exception& ex ) {
                 std::cerr   << "\nError in input:\n"
                             << "  " << ex.what() << "\n\n";
-                cli.usage( std::cout, configData.processName );
+                m_cli.usage( std::cout, m_configData.processName );
                 return (std::numeric_limits<int>::max)();
             }
             return 0;
         }
 
         void useConfigData( ConfigData const& _configData ) {
-            configData = _configData;
-            config.reset();
+            m_configData = _configData;
+            m_config.reset();
         }
 
         void enforceNoUsedTokens() const {
-            if( !unusedTokens.empty() ) {
+            if( !m_unusedTokens.empty() ) {
                 std::vector<Clara::Parser::Token>::const_iterator
-                    it = unusedTokens.begin(),
-                    itEnd = unusedTokens.end();
+                    it = m_unusedTokens.begin(),
+                    itEnd = m_unusedTokens.end();
                 std::string msg;
                 for(; it != itEnd; ++it )
                     msg += "  unrecognised option: " + it->data + "\n";
@@ -184,17 +184,16 @@ namespace Catch {
         }
 
         int run() {
-            if( configData.showHelp )
+            if( m_configData.showHelp )
                 return 0;
 
             try
             {
-                if( !config )
-                    config = new Config( configData );
-                Runner runner( config );
+                config(); // Force config to be constructed
+                Runner runner( m_config );
 
                 // Handle list request
-                if( Option<std::size_t> listed = list( config ) )
+                if( Option<std::size_t> listed = list( config() ) )
                     return static_cast<int>( *listed );
 
                 return static_cast<int>( runner.runTests().assertions.failed );
@@ -205,10 +204,26 @@ namespace Catch {
             }
         }
         
-        Clara::CommandLine<ConfigData> cli;
-        std::vector<Clara::Parser::Token> unusedTokens;
-        ConfigData configData;
-        Ptr<Config> config;
+        Clara::CommandLine<ConfigData> const& cli() const {
+            return m_cli;
+        }
+        std::vector<Clara::Parser::Token> const& unusedTokens() const {
+            return m_unusedTokens;
+        }
+        ConfigData& configData() {
+            return m_configData;
+        }
+        Config& config() {
+            if( !m_config )
+                m_config = new Config( m_configData );
+            return *m_config;
+        }
+        
+    private:        
+        Clara::CommandLine<ConfigData> m_cli;
+        std::vector<Clara::Parser::Token> m_unusedTokens;
+        ConfigData m_configData;
+        Ptr<Config> m_config;
     };
 
     bool Session::alreadyInstantiated = false;
