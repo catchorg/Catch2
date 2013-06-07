@@ -1,3 +1,5 @@
+# Why do we need yet another C++ test framework?
+
 Good question. For C++ there are quite a number of established frameworks, including (but not limited to), [CppUnit](http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page), [Google Test](http://code.google.com/p/googletest/), [Boost.Test](http://www.boost.org/doc/libs/1_49_0/libs/test/doc/html/index.html), [Aeryn](https://launchpad.net/aeryn), [Cute](http://r2.ifs.hsr.ch/cute), [Fructose](http://fructose.sourceforge.net/) and [many, many more](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#C.2B.2B). Even for Objective-C there are a few, including OCUnit - which now comes bundled with XCode.
 
 So what does Catch bring to the party that differentiates it from these? Apart from a Catchy name, of course.
@@ -9,7 +11,7 @@ So what does Catch bring to the party that differentiates it from these? Apart f
 * Write test cases as, self-registering, functions or methods.
 * Divide test cases into sections, each of which is run in isolation (eliminates the need for fixtures!)
 * Use BDD-style GIVEN-WHEN-THEN in place of test cases and sections.
-* Only one core assertion macro for comparisons. Standard C/c++ operators are used for the comparison - yet the full expression is decomposed and lhs and rhs values are logged.
+* Only one core assertion macro for comparisons. Standard C/C++ operators are used for the comparison - yet the full expression is decomposed and lhs and rhs values are logged.
 
 ## Other core features
 

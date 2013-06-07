@@ -9,7 +9,7 @@ Catch stands for C++ Automated Test Cases in Headers and is a multi-paradigm aut
 ## How to use it
 This documentation comprises these three parts:
 
-* [Why do we need yet another C++ Unit Test System?](docs/why-catch.md)
+* [Why do we need yet another C++ Test Framework?](docs/why-catch.md)
 * [Tutorial](docs/tutorial.md) - getting started
 * [Reference section](docs/reference-index.md) - all the details
 
