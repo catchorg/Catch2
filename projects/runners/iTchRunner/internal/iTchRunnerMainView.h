@@ -77,7 +77,7 @@
 
 // This is a copy & paste from Catch::Runner2 to get us bootstrapped (this is due to all be
 // replaced anyway)
-inline Catch::Totals runTestsForGroup( Catch::Runner& context, const Catch::TestCaseFilters& filterGroup ) {
+inline Catch::Totals runTestsForGroup( Catch::RunContext& context, const Catch::TestCaseFilters& filterGroup ) {
     using namespace Catch;
     Totals totals;
     std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
@@ -102,10 +102,10 @@ inline Catch::Totals runTestsForGroup( Catch::Runner& context, const Catch::Test
 ///////////////////////////////////////////////////////////////////////////////
 -(void) actionSheet: (UIActionSheet*) sheet clickedButtonAtIndex: (NSInteger) index
 {
-    Catch::Config config;
+    Catch::Ptr<Catch::Config> config = new Catch::Config();
     Catch::IReporter* reporter = new Catch::iTchRunnerReporter( self );
-    Catch::LegacyReporterAdapter* reporterAdapter = new Catch::LegacyReporterAdapter( reporter, Catch::ReporterConfig( config.stream(), config.data() ) );
-    Catch::Runner runner( config, reporterAdapter );
+    Catch::LegacyReporterAdapter* reporterAdapter = new Catch::LegacyReporterAdapter( reporter );
+    Catch::RunContext runner( config.get(), reporterAdapter );
 
 
     std::vector<Catch::TestCaseFilters> filterGroups;
@@ -117,10 +117,12 @@ inline Catch::Totals runTestsForGroup( Catch::Runner& context, const Catch::Test
     std::vector<Catch::TestCaseFilters>::const_iterator it = filterGroups.begin();
     std::vector<Catch::TestCaseFilters>::const_iterator itEnd = filterGroups.end();
 
-    for(; it != itEnd && !runner.aborting(); ++it ) {
-        runner.testGroupStarting( it->getName() );
+    std::size_t groupCount = filterGroups.size();
+    std::size_t groupIndex = 0;
+    for(; it != itEnd && !runner.aborting(); ++it, ++index ) {
+        runner.testGroupStarting( it->getName(), groupIndex, groupCount );
         totals += runTestsForGroup( runner, *it );
-        runner.testGroupEnded( it->getName(), totals );
+        runner.testGroupEnded( it->getName(), totals, groupIndex, groupCount );
     }
 
 
