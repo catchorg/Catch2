@@ -19,6 +19,7 @@ namespace Catch { namespace Detail {
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
+#define NOMINMAX
 #include <windows.h>
 
 namespace Catch {
@@ -47,7 +48,7 @@ namespace {
                 case Colour::LightGrey:     return setTextAttribute( FOREGROUND_INTENSITY );
                 case Colour::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
                 case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
-                case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY |  FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
 
                 case Colour::Bright: throw std::logic_error( "not a colour" );
             }
