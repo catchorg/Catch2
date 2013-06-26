@@ -85,7 +85,8 @@ namespace Catch {
             .describe( "reporter to use - defaults to console" )
             .shortOpt( "r")
             .longOpt( "reporter" )
-            .argName( "name[:filename]" );
+//            .argName( "name[:filename]" );
+            .argName( "name" );
 
         cli.bind( &ConfigData::name )
             .describe( "suite name" )
