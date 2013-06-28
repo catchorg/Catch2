@@ -272,7 +272,7 @@ TEST_CASE( "empty", "An empty test with no assertions" )
 {
 }
 
-TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][hide]" )
+TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][.]" )
 {
     WARN( "This one ran" );
 }
@@ -283,7 +283,7 @@ TEST_CASE( "second tag", "[tag2]" )
 {
 }
 //
-//TEST_CASE( "spawn a new process", "[hide]" )
+//TEST_CASE( "spawn a new process", "[.]" )
 //{
 //    // !TBD Work in progress
 //    char line[200];

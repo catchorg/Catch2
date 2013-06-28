@@ -305,7 +305,7 @@ TEST_CASE( "selftest/tags", "" ) {
     std::string p2 = "[one],[two]";
     std::string p3 = "[one][two]";
     std::string p4 = "[one][two],[three]";
-    std::string p5 = "[one][two]~[hide],[three]";
+    std::string p5 = "[one][two]~[.],[three]";
     
     SECTION( "one tag", "" ) {
         Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[one]", CATCH_INTERNAL_LINEINFO );
@@ -357,13 +357,13 @@ TEST_CASE( "selftest/tags", "" ) {
     }
 
     SECTION( "hidden", "" ) {
-        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[hide]", CATCH_INTERNAL_LINEINFO );
+        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[.]", CATCH_INTERNAL_LINEINFO );
 
         CHECK( oneTag.getTestCaseInfo().description == "" );
-        CHECK( oneTag.hasTag( "hide" ) );
+        CHECK( oneTag.hasTag( "." ) );
         CHECK( oneTag.isHidden() );
 
-        CHECK( oneTag.matchesTags( "~[hide]" ) == false );
+        CHECK( oneTag.matchesTags( "~[.]" ) == false );
 
     }
 }

@@ -25,7 +25,7 @@ namespace Catch {
         bool isHidden( startsWith( _name, "./" ) );
         std::set<std::string> tags;
         TagExtracter( tags ).parse( desc );
-        if( tags.find( "hide" ) != tags.end() )
+        if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
             isHidden = true;
 
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );

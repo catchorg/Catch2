@@ -92,11 +92,11 @@ TEST_CASE( "./succeeding/nofail", "The NO_FAIL macro reports a failure but does 
     CHECK_NOFAIL( 1 == 2 );
 }
 
-TEST_CASE( "just info", "[info][isolated info][hide]" )
+TEST_CASE( "just info", "[info][isolated info][.]" )
 {
     INFO( "this should never be seen" );
 }
-TEST_CASE( "just failure", "[fail][isolated info][hide]" )
+TEST_CASE( "just failure", "[fail][isolated info][.]" )
 {
     FAIL( "Previous info should not be seen" );
 }
