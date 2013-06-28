@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 1 (master branch)
- *  Generated: 2013-06-28 14:07:23.869597
+ *  Generated: 2013-06-28 17:08:06.313616
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1294,29 +1294,29 @@ namespace Catch {
         static unsigned int globalCount;
     };
 
-    class MessageBuilder : public MessageInfo {
-    public:
-        MessageBuilder( std::string const& _macroName,
-                       SourceLineInfo const& _lineInfo,
-                       ResultWas::OfType _type );
-
-        MessageInfo build() const;
+    struct MessageBuilder {
+        MessageBuilder( std::string const& macroName,
+                        SourceLineInfo const& lineInfo,
+                        ResultWas::OfType type )
+        : m_info( macroName, lineInfo, type )
+        {}
 
         template<typename T>
-        MessageBuilder& operator << ( T const& _value ) {
-            stream << _value;
+        MessageBuilder& operator << ( T const& value ) {
+            m_stream << value;
             return *this;
         }
-    private:
-        std::ostringstream stream;
+
+        MessageInfo m_info;
+        std::ostringstream m_stream;
     };
 
-    class ScopedMessageBuilder : public MessageBuilder {
+    class ScopedMessage {
     public:
-        ScopedMessageBuilder(   std::string const& _macroName,
-                                SourceLineInfo const& _lineInfo,
-                                ResultWas::OfType _type );
-        ~ScopedMessageBuilder();
+        ScopedMessage( MessageBuilder const& builder );
+        ~ScopedMessage();
+
+        MessageInfo m_info;
     };
 
 } // end namespace Catch
@@ -1392,7 +1392,7 @@ namespace Catch {
     class AssertionResult;
     struct AssertionInfo;
     struct SectionInfo;
-    class MessageBuilder;
+    struct MessageInfo;
     class ScopedMessageBuilder;
 
     struct IResultCapture {
@@ -1403,12 +1403,11 @@ namespace Catch {
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
         virtual void sectionEnded( SectionInfo const& name, Counts const& assertions ) = 0;
-        virtual void pushScopedMessage( ScopedMessageBuilder const& _builder ) = 0;
-        virtual void popScopedMessage( ScopedMessageBuilder const& _builder ) = 0;
+        virtual void pushScopedMessage( MessageInfo const& message ) = 0;
+        virtual void popScopedMessage( MessageInfo const& message ) = 0;
 
         virtual bool shouldDebugBreak() const = 0;
 
-        virtual void acceptMessage( MessageBuilder const& messageBuilder ) = 0;
         virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) = 0;
 
         virtual std::string getCurrentTestName() const = 0;
@@ -2358,7 +2357,9 @@ namespace Catch
                 // !TBD This should have been done earlier, somewhere
                 MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
                 builder << assertionResult.getMessage();
-                infoMessages.push_back( builder.build() );
+                builder.m_info.message = builder.m_stream.str();
+
+                infoMessages.push_back( builder.m_info );
             }
         }
         virtual ~AssertionStats();
@@ -2464,7 +2465,7 @@ namespace Catch
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
-        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
@@ -2748,12 +2749,6 @@ struct TestFailureException{};
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_INFO( log, macroName ) \
-    do { \
-        Catch::getResultCapture().acceptMessage( Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log ); \
-    } while( Catch::isTrue( false ) )
-
-///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( log, messageType, resultDisposition, macroName ) \
     do { \
         INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
@@ -2761,10 +2756,8 @@ struct TestFailureException{};
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    Catch::ScopedMessageBuilder INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ); \
-    INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) << log; \
-    Catch::getResultCapture().pushScopedMessage( INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) )
+#define INTERNAL_CATCH_INFO( log, macroName ) \
+    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
@@ -4889,10 +4882,6 @@ namespace Catch {
 
     private: // IResultCapture
 
-        virtual void acceptMessage( MessageBuilder const& messageBuilder ) {
-            m_messages.push_back( messageBuilder.build() );
-        }
-
         virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) {
             m_lastAssertionInfo = assertionInfo;
             return actOnCurrentResult( assertionResult.buildResult( assertionInfo ) );
@@ -4906,11 +4895,11 @@ namespace Catch {
                 m_totals.assertions.failed++;
             }
 
-            m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) );
+            if( m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) ) )
+                m_messages.clear();
 
             // Reset working state
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
-            m_messages.clear();
         }
 
         virtual bool sectionStarted (
@@ -4955,12 +4944,12 @@ namespace Catch {
             m_messages.clear();
         }
 
-        virtual void pushScopedMessage( ScopedMessageBuilder const& _builder ) {
-            m_messages.push_back( _builder.build() );
+        virtual void pushScopedMessage( MessageInfo const& message ) {
+            m_messages.push_back( message );
         }
 
-        virtual void popScopedMessage( ScopedMessageBuilder const& _builder ) {
-            m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), _builder ), m_messages.end() );
+        virtual void popScopedMessage( MessageInfo const& message ) {
+            m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), message ), m_messages.end() );
         }
 
         virtual bool shouldDebugBreak() const {
@@ -6125,7 +6114,7 @@ namespace Catch {
         bool isHidden( startsWith( _name, "./" ) );
         std::set<std::string> tags;
         TagExtracter( tags ).parse( desc );
-        if( tags.find( "hide" ) != tags.end() )
+        if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
             isHidden = true;
 
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
@@ -6336,29 +6325,14 @@ namespace Catch {
 
     ////////////////////////////////////////////////////////////////////////////
 
-    MessageBuilder::MessageBuilder( std::string const& _macroName,
-                                    SourceLineInfo const& _lineInfo,
-                                    ResultWas::OfType _type )
-    :   MessageInfo( _macroName, _lineInfo, _type )
-    {}
-
-    MessageInfo MessageBuilder::build() const {
-        MessageInfo message = *this;
-        message.message = stream.str();
-        return message;
+    ScopedMessage::ScopedMessage( MessageBuilder const& builder )
+    : m_info( builder.m_info )
+    {
+        m_info.message = builder.m_stream.str();
+        getResultCapture().pushScopedMessage( m_info );
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-
-    ScopedMessageBuilder::ScopedMessageBuilder
-        (   std::string const& _macroName,
-            SourceLineInfo const& _lineInfo,
-            ResultWas::OfType _type )
-    : MessageBuilder( _macroName, _lineInfo, _type )
-    {}
-
-    ScopedMessageBuilder::~ScopedMessageBuilder() {
-        getResultCapture().popScopedMessage( *this );
+    ScopedMessage::~ScopedMessage() {
+        getResultCapture().popScopedMessage( m_info );
     }
 
 } // end namespace Catch
@@ -6384,7 +6358,7 @@ namespace Catch
         virtual void testCaseStarting( TestCaseInfo const& testInfo );
         virtual void sectionStarting( SectionInfo const& sectionInfo );
         virtual void assertionStarting( AssertionInfo const& );
-        virtual void assertionEnded( AssertionStats const& assertionStats );
+        virtual bool assertionEnded( AssertionStats const& assertionStats );
         virtual void sectionEnded( SectionStats const& sectionStats );
         virtual void testCaseEnded( TestCaseStats const& testCaseStats );
         virtual void testGroupEnded( TestGroupStats const& testGroupStats );
@@ -6425,7 +6399,7 @@ namespace Catch
         // Not on legacy interface
     }
 
-    void LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
+    bool LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
         if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
             for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
                     it != itEnd;
@@ -6440,6 +6414,7 @@ namespace Catch
             }
         }
         m_legacyReporter->Result( assertionStats.assertionResult );
+        return true;
     }
     void LegacyReporterAdapter::sectionEnded( SectionStats const& sectionStats ) {
         if( sectionStats.missingAssertions )
@@ -7472,18 +7447,19 @@ namespace Catch {
         virtual void assertionStarting( AssertionInfo const& ) {
         }
 
-        virtual void assertionEnded( AssertionStats const& _assertionStats ) {
+        virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
 
             // Drop out if result was successful and we're not printing those
             if( !m_config->includeSuccessfulResults() && result.isOk() )
-                return;
+                return false;
 
             lazyPrint();
 
             AssertionPrinter printer( stream, _assertionStats );
             printer.print();
             stream << std::endl;
+            return true;
         }
 
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
@@ -7948,9 +7924,9 @@ int main (int argc, char * const argv[]) {
 #define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, "CATCH_WARN" )
 #define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL" )
 #define CATCH_SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED" )
-#define CATCH_SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg, "CATCH_SCOPED_INFO" )
+#define CATCH_SCOPED_INFO( msg ) INTERNAL_CATCH_INFO( msg, "CATCH_INFO" )
 #define CATCH_CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CATCH_CAPTURE" )
-#define CATCH_SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "CATCH_SCOPED_CAPTURE" )
+#define CATCH_SCOPED_CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CATCH_CAPTURE" )
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
@@ -8009,9 +7985,9 @@ int main (int argc, char * const argv[]) {
 #define WARN( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, "WARN" )
 #define FAIL( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL" )
 #define SUCCEED( msg ) INTERNAL_CATCH_MSG( msg, Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED" )
-#define SCOPED_INFO( msg ) INTERNAL_CATCH_SCOPED_INFO( msg, "SCOPED_INFO" )
+#define SCOPED_INFO( msg ) INTERNAL_CATCH_INFO( msg, "INFO" )
 #define CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CAPTURE" )
-#define SCOPED_CAPTURE( msg ) INTERNAL_CATCH_SCOPED_INFO( #msg " := " << msg, "SCOPED_CAPTURE" )
+#define SCOPED_CAPTURE( msg ) INTERNAL_CATCH_INFO( #msg " := " << msg, "CAPTURE" )
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )

@@ -102,7 +102,9 @@ namespace Catch
                 // !TBD This should have been done earlier, somewhere
                 MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
                 builder << assertionResult.getMessage();
-                infoMessages.push_back( builder.build() );
+                builder.m_info.message = builder.m_stream.str();
+
+                infoMessages.push_back( builder.m_info );
             }
         }
         virtual ~AssertionStats();

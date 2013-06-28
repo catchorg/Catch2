@@ -35,30 +35,29 @@ namespace Catch {
         static unsigned int globalCount;
     };
     
-    
-    class MessageBuilder : public MessageInfo {
-    public:
-        MessageBuilder( std::string const& _macroName,
-                       SourceLineInfo const& _lineInfo,
-                       ResultWas::OfType _type );
-        
-        MessageInfo build() const;
+    struct MessageBuilder {
+        MessageBuilder( std::string const& macroName,
+                        SourceLineInfo const& lineInfo,
+                        ResultWas::OfType type )
+        : m_info( macroName, lineInfo, type )
+        {}
         
         template<typename T>
-        MessageBuilder& operator << ( T const& _value ) {
-            stream << _value;
+        MessageBuilder& operator << ( T const& value ) {
+            m_stream << value;
             return *this;
         }
-    private:
-        std::ostringstream stream;
+
+        MessageInfo m_info;
+        std::ostringstream m_stream;
     };
-    
-    class ScopedMessageBuilder : public MessageBuilder {
+
+    class ScopedMessage {
     public:
-        ScopedMessageBuilder(   std::string const& _macroName,
-                                SourceLineInfo const& _lineInfo,
-                                ResultWas::OfType _type );
-        ~ScopedMessageBuilder();
+        ScopedMessage( MessageBuilder const& builder );
+        ~ScopedMessage();
+
+        MessageInfo m_info;
     };
 
 } // end namespace Catch

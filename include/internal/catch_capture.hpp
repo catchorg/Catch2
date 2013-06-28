@@ -145,11 +145,6 @@ struct TestFailureException{};
         } \
     } while( Catch::isTrue( false ) )
 
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_INFO( log, macroName ) \
-    do { \
-        Catch::getResultCapture().acceptMessage( Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log ); \
-    } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( log, messageType, resultDisposition, macroName ) \
@@ -159,10 +154,8 @@ struct TestFailureException{};
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    Catch::ScopedMessageBuilder INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ); \
-    INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) << log; \
-    Catch::getResultCapture().pushScopedMessage( INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) )
+#define INTERNAL_CATCH_INFO( log, macroName ) \
+    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 
 ///////////////////////////////////////////////////////////////////////////////

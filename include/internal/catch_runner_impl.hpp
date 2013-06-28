@@ -154,10 +154,6 @@ namespace Catch {
         
     private: // IResultCapture
 
-        virtual void acceptMessage( MessageBuilder const& messageBuilder ) {
-            m_messages.push_back( messageBuilder.build() );
-        }
-
         virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) {
             m_lastAssertionInfo = assertionInfo;
             return actOnCurrentResult( assertionResult.buildResult( assertionInfo ) );
@@ -221,12 +217,12 @@ namespace Catch {
             m_messages.clear();
         }
 
-        virtual void pushScopedMessage( ScopedMessageBuilder const& _builder ) {
-            m_messages.push_back( _builder.build() );
+        virtual void pushScopedMessage( MessageInfo const& message ) {
+            m_messages.push_back( message );
         }
         
-        virtual void popScopedMessage( ScopedMessageBuilder const& _builder ) {
-            m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), _builder ), m_messages.end() );
+        virtual void popScopedMessage( MessageInfo const& message ) {
+            m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), message ), m_messages.end() );
         }
 
         virtual bool shouldDebugBreak() const {

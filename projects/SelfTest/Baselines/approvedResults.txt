@@ -390,10 +390,10 @@ with messages:
 -------------------------------------------------------------------------------
 ./mixed/message/info/2
 -------------------------------------------------------------------------------
-MessageTests.cpp:29
+MessageTests.cpp:30
 ...............................................................................
 
-MessageTests.cpp:37: FAILED:
+MessageTests.cpp:39: FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
@@ -401,7 +401,7 @@ with messages:
   this message may be logged later
   this message should be logged
 
-MessageTests.cpp:41: FAILED:
+MessageTests.cpp:43: FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
@@ -411,10 +411,10 @@ with message:
 -------------------------------------------------------------------------------
 ./failing/message/fail
 -------------------------------------------------------------------------------
-MessageTests.cpp:48
+MessageTests.cpp:50
 ...............................................................................
 
-MessageTests.cpp:51: FAILED:
+MessageTests.cpp:53: FAILED:
 explicitly with message:
   This is a failure
 
@@ -422,10 +422,10 @@ explicitly with message:
 ./failing/message/sections
   one
 -------------------------------------------------------------------------------
-MessageTests.cpp:56
+MessageTests.cpp:58
 ...............................................................................
 
-MessageTests.cpp:58: FAILED:
+MessageTests.cpp:60: FAILED:
 explicitly with message:
   Message from section one
 
@@ -433,10 +433,10 @@ explicitly with message:
 ./failing/message/sections
   two
 -------------------------------------------------------------------------------
-MessageTests.cpp:61
+MessageTests.cpp:63
 ...............................................................................
 
-MessageTests.cpp:63: FAILED:
+MessageTests.cpp:65: FAILED:
 explicitly with message:
   Message from section two
 
@@ -445,10 +445,10 @@ Message from section two
 -------------------------------------------------------------------------------
 ./mixed/message/scoped
 -------------------------------------------------------------------------------
-MessageTests.cpp:80
+MessageTests.cpp:82
 ...............................................................................
 
-MessageTests.cpp:86: FAILED:
+MessageTests.cpp:88: FAILED:
   REQUIRE( i < 10 )
 with expansion:
   10 < 10
@@ -459,10 +459,10 @@ with messages:
 -------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
-MessageTests.cpp:99
+MessageTests.cpp:101
 ...............................................................................
 
-MessageTests.cpp:101: FAILED:
+MessageTests.cpp:103: FAILED:
 explicitly with message:
   Previous info should not be seen
 
@@ -515,8 +515,7 @@ MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-with messages:
-  Testing if fib[2] (2) is even
+with message:
   Testing if fib[3] (3) is even
 
 MiscTests.cpp:111: FAILED:
@@ -530,8 +529,7 @@ MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-with messages:
-  Testing if fib[5] (8) is even
+with message:
   Testing if fib[6] (13) is even
 
 MiscTests.cpp:111: FAILED:
@@ -2780,10 +2778,10 @@ with messages:
 -------------------------------------------------------------------------------
 ./mixed/message/info/2
 -------------------------------------------------------------------------------
-MessageTests.cpp:29
+MessageTests.cpp:30
 ...............................................................................
 
-MessageTests.cpp:33:
+MessageTests.cpp:35:
 PASSED:
   CHECK( a == 2 )
 with expansion:
@@ -2791,21 +2789,21 @@ with expansion:
 with message:
   this message may be logged later
 
-MessageTests.cpp:37: FAILED:
+MessageTests.cpp:39: FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
 with message:
   this message should be logged
 
-MessageTests.cpp:41: FAILED:
+MessageTests.cpp:43: FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
 with message:
   and this, but later
 
-MessageTests.cpp:45:
+MessageTests.cpp:47:
 PASSED:
   CHECK( a == 2 )
 with expansion:
@@ -2816,10 +2814,10 @@ with message:
 -------------------------------------------------------------------------------
 ./failing/message/fail
 -------------------------------------------------------------------------------
-MessageTests.cpp:48
+MessageTests.cpp:50
 ...............................................................................
 
-MessageTests.cpp:51: FAILED:
+MessageTests.cpp:53: FAILED:
 explicitly with message:
   This is a failure
 
@@ -2827,10 +2825,10 @@ explicitly with message:
 ./failing/message/sections
   one
 -------------------------------------------------------------------------------
-MessageTests.cpp:56
+MessageTests.cpp:58
 ...............................................................................
 
-MessageTests.cpp:58: FAILED:
+MessageTests.cpp:60: FAILED:
 explicitly with message:
   Message from section one
 
@@ -2838,10 +2836,10 @@ explicitly with message:
 ./failing/message/sections
   two
 -------------------------------------------------------------------------------
-MessageTests.cpp:61
+MessageTests.cpp:63
 ...............................................................................
 
-MessageTests.cpp:63: FAILED:
+MessageTests.cpp:65: FAILED:
 explicitly with message:
   Message from section two
 
@@ -2850,7 +2848,7 @@ Message from section one
 ./succeeding/message/sections/stdout
   one
 -------------------------------------------------------------------------------
-MessageTests.cpp:69
+MessageTests.cpp:71
 ...............................................................................
 
 
@@ -2861,7 +2859,7 @@ Message from section two
 ./succeeding/message/sections/stdout
   two
 -------------------------------------------------------------------------------
-MessageTests.cpp:74
+MessageTests.cpp:76
 ...............................................................................
 
 
@@ -2870,10 +2868,10 @@ No assertions in section, 'two'
 -------------------------------------------------------------------------------
 ./mixed/message/scoped
 -------------------------------------------------------------------------------
-MessageTests.cpp:80
+MessageTests.cpp:82
 ...............................................................................
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2882,7 +2880,7 @@ with messages:
   current counter 0
   i := 0
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2891,7 +2889,7 @@ with messages:
   current counter 1
   i := 1
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2900,7 +2898,7 @@ with messages:
   current counter 2
   i := 2
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2909,7 +2907,7 @@ with messages:
   current counter 3
   i := 3
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2918,7 +2916,7 @@ with messages:
   current counter 4
   i := 4
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2927,7 +2925,7 @@ with messages:
   current counter 5
   i := 5
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2936,7 +2934,7 @@ with messages:
   current counter 6
   i := 6
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2945,7 +2943,7 @@ with messages:
   current counter 7
   i := 7
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2954,7 +2952,7 @@ with messages:
   current counter 8
   i := 8
 
-MessageTests.cpp:86:
+MessageTests.cpp:88:
 PASSED:
   REQUIRE( i < 10 )
 with expansion:
@@ -2963,7 +2961,7 @@ with messages:
   current counter 9
   i := 9
 
-MessageTests.cpp:86: FAILED:
+MessageTests.cpp:88: FAILED:
   REQUIRE( i < 10 )
 with expansion:
   10 < 10
@@ -2974,10 +2972,10 @@ with messages:
 -------------------------------------------------------------------------------
 ./succeeding/nofail
 -------------------------------------------------------------------------------
-MessageTests.cpp:90
+MessageTests.cpp:92
 ...............................................................................
 
-MessageTests.cpp:92:
+MessageTests.cpp:94:
 FAILED - but was ok:
   CHECK_NOFAIL( 1 == 2 )
 
@@ -2987,7 +2985,7 @@ No assertions in test case, './succeeding/nofail'
 -------------------------------------------------------------------------------
 just info
 -------------------------------------------------------------------------------
-MessageTests.cpp:95
+MessageTests.cpp:97
 ...............................................................................
 
 
@@ -2996,10 +2994,10 @@ No assertions in test case, 'just info'
 -------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
-MessageTests.cpp:99
+MessageTests.cpp:101
 ...............................................................................
 
-MessageTests.cpp:101: FAILED:
+MessageTests.cpp:103: FAILED:
 explicitly with message:
   Previous info should not be seen
 
@@ -6505,29 +6503,29 @@ MessageTests.cpp:26
     </testcase>
     <testcase classname="global" name="./mixed/message/info/2" time="tbd">
       <info type="INFO">
-MessageTests.cpp:35
+MessageTests.cpp:37
       </info>
       <failure message="2 == 1" type="CHECK">
-MessageTests.cpp:37
+MessageTests.cpp:39
       </failure>
       <info type="INFO">
-MessageTests.cpp:39
+MessageTests.cpp:41
       </info>
       <failure message="2 == 0" type="CHECK">
-MessageTests.cpp:41
+MessageTests.cpp:43
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/message/fail" time="tbd">
       <failure type="FAIL">
-MessageTests.cpp:51
+MessageTests.cpp:53
       </failure>
     </testcase>
     <testcase classname="global" name="./failing/message/sections" time="tbd">
       <failure type="FAIL">
-MessageTests.cpp:58
+MessageTests.cpp:60
       </failure>
       <failure type="FAIL">
-MessageTests.cpp:63
+MessageTests.cpp:65
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/message/sections/stdout" time="tbd">
@@ -6537,25 +6535,25 @@ Message from section two
       </system-out>
     </testcase>
     <testcase classname="global" name="./mixed/message/scoped" time="tbd">
-      <info type="SCOPED_INFO">
-MessageTests.cpp:84
+      <info type="INFO">
+MessageTests.cpp:86
       </info>
-      <info type="SCOPED_CAPTURE">
-MessageTests.cpp:85
+      <info type="CAPTURE">
+MessageTests.cpp:87
       </info>
       <failure message="10 &lt; 10" type="REQUIRE">
-MessageTests.cpp:86
+MessageTests.cpp:88
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/nofail" time="tbd">
       <failure message="1 == 2" type="CHECK_NOFAIL">
-MessageTests.cpp:92
+MessageTests.cpp:94
       </failure>
     </testcase>
     <testcase classname="global" name="just info" time="tbd"/>
     <testcase classname="global" name="just failure" time="tbd">
       <failure type="FAIL">
-MessageTests.cpp:101
+MessageTests.cpp:103
       </failure>
     </testcase>
     <testcase classname="global" name="./succeeding/Misc/Sections" time="tbd"/>
@@ -9471,7 +9469,7 @@ MessageTests.cpp" line="26">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./mixed/message/info/2">
-MessageTests.cpp" line="33">
+MessageTests.cpp" line="35">
         <Original>
           a == 2
         </Original>
@@ -9482,7 +9480,7 @@ MessageTests.cpp" line="33">
       <Info>
         this message should be logged
       </Info>
-MessageTests.cpp" line="37">
+MessageTests.cpp" line="39">
         <Original>
           a == 1
         </Original>
@@ -9493,7 +9491,7 @@ MessageTests.cpp" line="37">
       <Info>
         and this, but later
       </Info>
-MessageTests.cpp" line="41">
+MessageTests.cpp" line="43">
         <Original>
           a == 0
         </Original>
@@ -9501,7 +9499,7 @@ MessageTests.cpp" line="41">
           2 == 0
         </Expanded>
       </Expression>
-MessageTests.cpp" line="45">
+MessageTests.cpp" line="47">
         <Original>
           a == 2
         </Original>
@@ -9542,7 +9540,7 @@ MessageTests.cpp" line="45">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="./mixed/message/scoped">
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9550,7 +9548,7 @@ MessageTests.cpp" line="86">
           0 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9558,7 +9556,7 @@ MessageTests.cpp" line="86">
           1 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9566,7 +9564,7 @@ MessageTests.cpp" line="86">
           2 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9574,7 +9572,7 @@ MessageTests.cpp" line="86">
           3 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9582,7 +9580,7 @@ MessageTests.cpp" line="86">
           4 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9590,7 +9588,7 @@ MessageTests.cpp" line="86">
           5 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9598,7 +9596,7 @@ MessageTests.cpp" line="86">
           6 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9606,7 +9604,7 @@ MessageTests.cpp" line="86">
           7 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9614,7 +9612,7 @@ MessageTests.cpp" line="86">
           8 &lt; 10
         </Expanded>
       </Expression>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9628,7 +9626,7 @@ MessageTests.cpp" line="86">
       <Info>
         i := 10
       </Info>
-MessageTests.cpp" line="86">
+MessageTests.cpp" line="88">
         <Original>
           i &lt; 10
         </Original>
@@ -9639,7 +9637,7 @@ MessageTests.cpp" line="86">
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="./succeeding/nofail">
-MessageTests.cpp" line="92">
+MessageTests.cpp" line="94">
         <Original>
           1 == 2
         </Original>
@@ -13157,25 +13155,25 @@ MessageTests.cpp:26: a == 1 failed for: 2 == 1
 [Finished: './failing/message/info/1' 1 test case failed (1 assertion failed)]
 
 [Running: ./mixed/message/info/2]
-MessageTests.cpp:33: a == 2 succeeded for: 2 == 2
-MessageTests.cpp:35: [info: this message should be logged]
-MessageTests.cpp:37: a == 1 failed for: 2 == 1
-MessageTests.cpp:39: [info: and this, but later]
-MessageTests.cpp:41: a == 0 failed for: 2 == 0
-MessageTests.cpp:45: a == 2 succeeded for: 2 == 2
+MessageTests.cpp:35: a == 2 succeeded for: 2 == 2
+MessageTests.cpp:37: [info: this message should be logged]
+MessageTests.cpp:39: a == 1 failed for: 2 == 1
+MessageTests.cpp:41: [info: and this, but later]
+MessageTests.cpp:43: a == 0 failed for: 2 == 0
+MessageTests.cpp:47: a == 2 succeeded for: 2 == 2
 [Finished: './mixed/message/info/2' 1 test case failed (2 of 4 assertions failed)]
 
 [Running: ./failing/message/fail]
-MessageTests.cpp:51: failed with message: 'This is a failure'
+MessageTests.cpp:53: failed with message: 'This is a failure'
 [Finished: './failing/message/fail' 1 test case failed (1 assertion failed)]
 
 [Running: ./failing/message/sections]
 [Started section: 'one']
-MessageTests.cpp:58: failed with message: 'Message from section one'
+MessageTests.cpp:60: failed with message: 'Message from section one'
 [End of section: 'one' 1 assertion failed]
 
 [Started section: 'two']
-MessageTests.cpp:63: failed with message: 'Message from section two'
+MessageTests.cpp:65: failed with message: 'Message from section two'
 [End of section: 'two' 1 assertion failed]
 
 [Finished: './failing/message/sections' 1 test case failed (All 2 assertions failed)]
@@ -13198,23 +13196,23 @@ No assertions in section, 'two'
 [Finished: './succeeding/message/sections/stdout' 1 test case failed (All 2 assertions failed)]
 
 [Running: ./mixed/message/scoped]
-MessageTests.cpp:86: i < 10 succeeded for: 0 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 1 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 2 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 3 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 4 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 5 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 6 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 7 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 8 < 10
-MessageTests.cpp:86: i < 10 succeeded for: 9 < 10
-MessageTests.cpp:84: [info: current counter 10]
-MessageTests.cpp:85: [info: i := 10]
-MessageTests.cpp:86: i < 10 failed for: 10 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 0 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 1 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 2 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 3 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 4 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 5 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 6 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 7 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 8 < 10
+MessageTests.cpp:88: i < 10 succeeded for: 9 < 10
+MessageTests.cpp:86: [info: current counter 10]
+MessageTests.cpp:87: [info: i := 10]
+MessageTests.cpp:88: i < 10 failed for: 10 < 10
 [Finished: './mixed/message/scoped' 1 test case failed (1 of 11 assertions failed)]
 
 [Running: ./succeeding/nofail]
-MessageTests.cpp:92: 1 == 2 failed - but was ok
+MessageTests.cpp:94: 1 == 2 failed - but was ok
 
 No assertions in test case, './succeeding/nofail'
 
@@ -13227,7 +13225,7 @@ No assertions in test case, 'just info'
 [Finished: 'just info' 1 test case failed (1 assertion failed)]
 
 [Running: just failure]
-MessageTests.cpp:101: failed with message: 'Previous info should not be seen'
+MessageTests.cpp:103: failed with message: 'Previous info should not be seen'
 [Finished: 'just failure' 1 test case failed (1 assertion failed)]
 
 [Running: ./succeeding/Misc/Sections]
