@@ -16,7 +16,7 @@ These macros come in three forms:
 
 **INFO(** _message expression_ **)**
 
-The message is logged to a buffer, but only reported if a subsequent failure occurs within the same test case. This allows you to log contextual information in case of failures which is not shown during a successful test run. The buffer is cleared on the next successful assertion.
+The message is logged to a buffer, but only reported with the next assertion that is logged. This allows you to log contextual information in case of failures which is not shown during a successful test run (for the console reporter, without -s).
 
 **SCOPED_INFO(** _message expression_ **)**
 
