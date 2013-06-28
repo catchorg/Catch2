@@ -13,22 +13,19 @@
 namespace Catch {
 
 
-    AssertionInfo::AssertionInfo(   const std::string& _macroName,
-                                    const SourceLineInfo& _lineInfo,
-                                    const std::string& _capturedExpression,
+    AssertionInfo::AssertionInfo(   std::string const& _macroName,
+                                    SourceLineInfo const& _lineInfo,
+                                    std::string const& _capturedExpression,
                                     ResultDisposition::Flags _resultDisposition )
     :   macroName( _macroName ),
         lineInfo( _lineInfo ),
         capturedExpression( _capturedExpression ),
         resultDisposition( _resultDisposition )
-    {
-        if( shouldNegate( resultDisposition ) )
-            capturedExpression = "!" + _capturedExpression;
-    }
+    {}
 
     AssertionResult::AssertionResult() {}
 
-    AssertionResult::AssertionResult( const AssertionInfo& info, const AssertionResultData& data )
+    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
     :   m_info( info ),
         m_resultData( data )
     {}
@@ -58,7 +55,16 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpression() const {
-        return m_info.capturedExpression;
+        if( shouldNegate( m_info.resultDisposition ) )
+            return "!" + m_info.capturedExpression;
+        else
+            return m_info.capturedExpression;
+    }
+    std::string AssertionResult::getExpressionInMacro() const {
+        if( m_info.macroName.empty() )
+            return m_info.capturedExpression;
+        else
+            return m_info.macroName + "( " + m_info.capturedExpression + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {

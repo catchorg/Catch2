@@ -13,6 +13,8 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_xmlwriter.hpp"
 
+#include <assert.h>
+
 namespace Catch {
 
     class JunitReporter : public SharedImpl<IReporter> {
@@ -35,7 +37,10 @@ namespace Catch {
             std::string m_status;
             std::string m_className;
             std::string m_name;
+            std::string m_stdOut;
+            std::string m_stdErr;
             std::vector<TestStats> m_testStats;
+            std::vector<TestCaseStats> m_sections;
         };
         
         struct Stats {
@@ -60,7 +65,7 @@ namespace Catch {
         };
         
     public:
-        JunitReporter( const ReporterConfig& config )
+        JunitReporter( ReporterConfig const& config )
         :   m_config( config ),
             m_testSuiteStats( "AllTests" ),
             m_currentStats( &m_testSuiteStats )
@@ -79,8 +84,11 @@ namespace Catch {
 
         virtual void StartTesting(){}
         
-        virtual void StartGroup( const std::string& groupName ) {            
-            m_statsForSuites.push_back( Stats( groupName ) );
+        virtual void StartGroup( const std::string& groupName ) {
+            if( groupName.empty() )
+                m_statsForSuites.push_back( Stats( m_config.fullConfig()->name() ) );
+            else
+                m_statsForSuites.push_back( Stats( groupName ) );
             m_currentStats = &m_statsForSuites.back();
         }
 
@@ -97,11 +105,12 @@ namespace Catch {
         virtual void EndSection( const std::string&, const Counts& ) {}
         
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.getClassName(), testInfo.getName() ) );
+            m_currentStats->m_testCaseStats.push_back( TestCaseStats( testInfo.className, testInfo.name ) );
+            m_currentTestCaseStats.push_back( &m_currentStats->m_testCaseStats.back() );
         }
         
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( assertionResult.getResultType() != ResultWas::Ok || m_config.includeSuccessfulResults ) {
+            if( assertionResult.getResultType() != ResultWas::Ok || m_config.fullConfig()->includeSuccessfulResults() ) {
                 TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
                 TestStats stats;
                 std::ostringstream oss;
@@ -134,10 +143,14 @@ namespace Catch {
                     case ResultWas::Ok:
                         stats.m_element = "success";
                         break;
+                    case ResultWas::DidntThrowException:
+                        stats.m_element = "failure";
+                        m_currentStats->m_failuresCount++;
+                        break;
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
-                    case ResultWas::DidntThrowException:
+                        stats.m_element = "* internal error *";
                         break;
                 }
                 testCaseStats.m_testStats.push_back( stats );                
@@ -145,6 +158,11 @@ namespace Catch {
         }
         
         virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string& stdOut, const std::string& stdErr ) {
+            m_currentTestCaseStats.pop_back();
+            assert( m_currentTestCaseStats.empty() );
+            TestCaseStats& testCaseStats = m_currentStats->m_testCaseStats.back();
+            testCaseStats.m_stdOut = stdOut;
+            testCaseStats.m_stdErr = stdErr;
             if( !stdOut.empty() )
                 m_stdOut << stdOut << "\n";
             if( !stdErr.empty() )
@@ -156,40 +174,35 @@ namespace Catch {
         }
 
         virtual void EndTesting( const Totals& ) {
-            std::ostream& str = m_config.stream;
-            {
-                XmlWriter xml( str );
+            XmlWriter xml( m_config.stream() );
+            
+            if( m_statsForSuites.size() > 0 )
+                xml.startElement( "testsuites" );
+                        
+            std::vector<Stats>::const_iterator it = m_statsForSuites.begin();
+            std::vector<Stats>::const_iterator itEnd = m_statsForSuites.end();
+            
+            for(; it != itEnd; ++it ) {
+                XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
+                xml.writeAttribute( "name", it->m_name );
+                xml.writeAttribute( "errors", it->m_errorsCount );
+                xml.writeAttribute( "failures", it->m_failuresCount );
+                xml.writeAttribute( "tests", it->m_testsCount );
+                xml.writeAttribute( "hostname", "tbd" );
+                xml.writeAttribute( "time", "tbd" );
+                xml.writeAttribute( "timestamp", "tbd" );
                 
-                if( m_statsForSuites.size() > 0 )
-                    xml.startElement( "testsuites" );
-                            
-                std::vector<Stats>::const_iterator it = m_statsForSuites.begin();
-                std::vector<Stats>::const_iterator itEnd = m_statsForSuites.end();
-                
-                for(; it != itEnd; ++it ) {
-                    XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
-                    xml.writeAttribute( "name", it->m_name );
-                    xml.writeAttribute( "errors", it->m_errorsCount );
-                    xml.writeAttribute( "failures", it->m_failuresCount );
-                    xml.writeAttribute( "tests", it->m_testsCount );
-                    xml.writeAttribute( "hostname", "tbd" );
-                    xml.writeAttribute( "time", "tbd" );
-                    xml.writeAttribute( "timestamp", "tbd" );
-                    
-                    OutputTestCases( xml, *it );
-                }
-      
-                xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ) );                
-                xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ) );
+                OutputTestCases( xml, *it );
             }
+  
+            xml.scopedElement( "system-out" ).writeText( trim( m_stdOut.str() ), false );
+            xml.scopedElement( "system-err" ).writeText( trim( m_stdErr.str() ), false );
         }
         
         void OutputTestCases( XmlWriter& xml, const Stats& stats ) {
             std::vector<TestCaseStats>::const_iterator it = stats.m_testCaseStats.begin();
             std::vector<TestCaseStats>::const_iterator itEnd = stats.m_testCaseStats.end();
             for(; it != itEnd; ++it ) {
-                xml.writeBlankLine();
-                xml.writeComment( "Test case" );
                 
                 XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
                 xml.writeAttribute( "classname", it->m_className );
@@ -197,6 +210,13 @@ namespace Catch {
                 xml.writeAttribute( "time", "tbd" );
 
                 OutputTestResult( xml, *it );
+
+                std::string stdOut = trim( it->m_stdOut );
+                if( !stdOut.empty() )
+                    xml.scopedElement( "system-out" ).writeText( stdOut, false );
+                std::string stdErr = trim( it->m_stdErr );
+                if( !stdErr.empty() )
+                    xml.scopedElement( "system-err" ).writeText( stdErr, false );
             }
         }
 
@@ -218,11 +238,11 @@ namespace Catch {
         
     private:
         ReporterConfig m_config;
-        bool m_currentTestSuccess;
         
         Stats m_testSuiteStats;
         Stats* m_currentStats;
         std::vector<Stats> m_statsForSuites;
+        std::vector<const TestCaseStats*> m_currentTestCaseStats;
         std::ostringstream m_stdOut;
         std::ostringstream m_stdErr;
     };

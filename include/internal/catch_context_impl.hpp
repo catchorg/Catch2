@@ -18,8 +18,8 @@ namespace Catch {
     class Context : public IMutableContext {
 
         Context() : m_config( NULL ) {}
-        Context( const Context& );
-        void operator=( const Context& );
+        Context( Context const& );
+        void operator=( Context const& );
 
     public: // IContext
         virtual IResultCapture& getResultCapture() {
@@ -28,7 +28,7 @@ namespace Catch {
         virtual IRunner& getRunner() {
             return *m_runner;
         }
-        virtual size_t getGeneratorIndex( const std::string& fileInfo, size_t totalSize ) {
+        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
             return getGeneratorsForCurrentTest()
             .getGeneratorInfo( fileInfo, totalSize )
             .getCurrentIndex();
@@ -38,7 +38,7 @@ namespace Catch {
             return generators && generators->moveNext();
         }
 
-        virtual const IConfig* getConfig() const {
+        virtual Ptr<IConfig const> getConfig() const {
             return m_config;
         }
 
@@ -49,7 +49,7 @@ namespace Catch {
         virtual void setRunner( IRunner* runner ) {
             m_runner = runner;
         }
-        virtual void setConfig( const IConfig* config ) {
+        virtual void setConfig( Ptr<IConfig const> const& config ) {
             m_config = config;
         }
         
@@ -79,7 +79,7 @@ namespace Catch {
     private:
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
-        const IConfig* m_config;
+        Ptr<IConfig const> m_config;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
     
@@ -95,7 +95,7 @@ namespace Catch {
         return getCurrentMutableContext();
     }
 
-    Stream createStream( const std::string& streamName ) {
+    Stream createStream( std::string const& streamName ) {
         if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
         if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
         if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );

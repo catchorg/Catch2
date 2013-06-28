@@ -9,53 +9,74 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include "catch_common.h"
+#include "catch_ptr.hpp"
 
 #include <string>
 #include <set>
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 namespace Catch {
 
     struct ITestCase;
 
-    class TestCaseInfo {
+    struct TestCaseInfo {
+        TestCaseInfo(   std::string const& _name,
+                        std::string const& _className,
+                        std::string const& _description,
+                        std::set<std::string> const& _tags,
+                        bool _isHidden,
+                        SourceLineInfo const& _lineInfo );
+
+        TestCaseInfo( TestCaseInfo const& other );
+
+        std::string name;
+        std::string className;
+        std::string description;
+        std::set<std::string> tags;
+        std::string tagsAsString;
+        SourceLineInfo lineInfo;
+        bool isHidden;
+    };
+    
+    class TestCase : protected TestCaseInfo {
     public:
-        TestCaseInfo();
 
-        TestCaseInfo(   ITestCase* testCase,
-                        const std::string& className,
-                        const std::string& name,
-                        const std::string& description,
-                        const SourceLineInfo& lineInfo );
+        TestCase( ITestCase* testCase, TestCaseInfo const& info );
+        TestCase( TestCase const& other );
 
-
-        TestCaseInfo( const TestCaseInfo& other, const std::string& name );
-        TestCaseInfo( const TestCaseInfo& other );
+        TestCase withName( std::string const& _newName ) const;
 
         void invoke() const;
 
-        const std::string& getClassName() const;
-        const std::string& getName() const;
-        const std::string& getDescription() const;
-        const SourceLineInfo& getLineInfo() const;
+        TestCaseInfo const& getTestCaseInfo() const;
+
         bool isHidden() const;
-        bool hasTag( const std::string& tag ) const;
-        bool matchesTags( const std::string& tagPattern ) const;
-        const std::set<std::string>& getTags() const;
+        bool hasTag( std::string const& tag ) const;
+        bool matchesTags( std::string const& tagPattern ) const;
+        std::set<std::string> const& getTags() const;
         
-        void swap( TestCaseInfo& other );
-        bool operator == ( const TestCaseInfo& other ) const;
-        bool operator < ( const TestCaseInfo& other ) const;
-        TestCaseInfo& operator = ( const TestCaseInfo& other );
+        void swap( TestCase& other );
+        bool operator == ( TestCase const& other ) const;
+        bool operator < ( TestCase const& other ) const;
+        TestCase& operator = ( TestCase const& other );
 
     private:
-        Ptr<ITestCase> m_test;
-        std::string m_className;
-        std::string m_name;
-        std::string m_description;
-        std::set<std::string> m_tags;
-        SourceLineInfo m_lineInfo;
-        bool m_isHidden;
+        Ptr<ITestCase> test;
     };
+
+    TestCase makeTestCase(  ITestCase* testCase,
+                            std::string const& className,
+                            std::string const& name,
+                            std::string const& description,
+                            SourceLineInfo const& lineInfo );
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED

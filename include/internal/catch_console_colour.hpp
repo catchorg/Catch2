@@ -12,31 +12,53 @@
 
 namespace Catch {
 
-    struct ConsoleColourImpl;
-    
-    class TextColour : NonCopyable {
-    public:
-        
-        enum Colours {
-            None,
+    namespace Detail {
+        struct IColourImpl;
+    }
+
+    struct Colour {
+        enum Code {
+            None = 0,
             
-            FileName,
-            ResultError,
-            ResultSuccess,
+            White,
+            Red,
+            Green,
+            Blue,
+            Cyan,
+            Yellow,
+            Grey,
             
-            Error,
-            Success,
+            Bright = 0x10,
             
-            OriginalExpression,
-            ReconstructedExpression
+            BrightRed = Bright | Red,
+            BrightGreen = Bright | Green,
+            LightGrey = Bright | Grey,
+            BrightWhite = Bright | White,
+            
+            // By intention
+            FileName = LightGrey,
+            ResultError = BrightRed,
+            ResultSuccess = BrightGreen,
+            
+            Error = BrightRed,
+            Success = Green,
+            
+            OriginalExpression = Cyan,
+            ReconstructedExpression = Yellow,
+            
+            SecondaryText = LightGrey,
+            Headers = White
         };
+
+        // Use constructed object for RAII guard
+        Colour( Code _colourCode );
+        ~Colour();
         
-        TextColour( Colours colour = None );
-        void set( Colours colour );
-        ~TextColour();
+        // Use static method for one-shot changes
+        static void use( Code _colourCode );
         
     private:
-        ConsoleColourImpl* m_impl;
+        static Detail::IColourImpl* impl;
     };
     
 } // end namespace Catch

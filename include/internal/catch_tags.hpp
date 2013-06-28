@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED
 
+#include "catch_common.h"
+
 #include <string>
 #include <set>
 #include <map>
@@ -22,7 +24,7 @@ namespace Catch {
     public:
         virtual ~TagParser();
 
-        void parse( const std::string& str ) {
+        void parse( std::string const& str ) {
             std::size_t pos = 0;
             while( pos < str.size() ) {
                 char c = str[pos];
@@ -46,7 +48,7 @@ namespace Catch {
         }
 
     protected:
-        virtual void acceptTag( const std::string& tag ) = 0;
+        virtual void acceptTag( std::string const& tag ) = 0;
         virtual void acceptChar( char c ) = 0;
         virtual void endParse() {}
 
@@ -67,14 +69,14 @@ namespace Catch {
         }
 
     private:
-        virtual void acceptTag( const std::string& tag ) {
-            m_tags.insert( tag );
+        virtual void acceptTag( std::string const& tag ) {
+            m_tags.insert( toLower( tag ) );
         }
         virtual void acceptChar( char c ) {
             m_remainder += c;
         }
 
-        TagExtracter& operator=(const TagExtracter&);
+        TagExtracter& operator=(TagExtracter const&);
         
         std::set<std::string>& m_tags;
         std::string m_remainder;
@@ -86,7 +88,7 @@ namespace Catch {
         :   m_isNegated( false )
         {}
 
-        Tag( const std::string& name, bool isNegated )
+        Tag( std::string const& name, bool isNegated )
         :   m_name( name ),
             m_isNegated( isNegated )
         {}
@@ -110,15 +112,15 @@ namespace Catch {
     class TagSet {
         typedef std::map<std::string, Tag> TagMap;
     public:
-        void add( const Tag& tag ) {
-            m_tags.insert( std::make_pair( tag.getName(), tag ) );
+        void add( Tag const& tag ) {
+            m_tags.insert( std::make_pair( toLower( tag.getName() ), tag ) );
         }
 
         bool empty() const {
             return m_tags.empty();
         }
 
-        bool matches( const std::set<std::string>& tags ) const {
+        bool matches( std::set<std::string> const& tags ) const {
             TagMap::const_iterator it = m_tags.begin();
             TagMap::const_iterator itEnd = m_tags.end();
             for(; it != itEnd; ++it ) {
@@ -135,7 +137,7 @@ namespace Catch {
 
     class TagExpression {
     public:
-        bool matches( const std::set<std::string>& tags ) const {
+        bool matches( std::set<std::string> const& tags ) const {
             std::vector<TagSet>::const_iterator it = m_tagSets.begin();
             std::vector<TagSet>::const_iterator itEnd = m_tagSets.end();
             for(; it != itEnd; ++it )
@@ -160,7 +162,7 @@ namespace Catch {
         ~TagExpressionParser();
 
     private:
-        virtual void acceptTag( const std::string& tag ) {
+        virtual void acceptTag( std::string const& tag ) {
             m_currentTagSet.add( Tag( tag, m_isNegated ) );
             m_isNegated = false;
         }
@@ -179,7 +181,7 @@ namespace Catch {
                 m_exp.m_tagSets.push_back( m_currentTagSet );
         }
 
-        TagExpressionParser& operator=(const TagExpressionParser&);
+        TagExpressionParser& operator=(TagExpressionParser const&);
 
         bool m_isNegated;
         TagSet m_currentTagSet;

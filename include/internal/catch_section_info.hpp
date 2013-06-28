@@ -15,10 +15,12 @@
 
 namespace Catch {
 
-    class SectionInfo {
+    class RunningSection {
     public:
+
+        typedef std::vector<RunningSection*> SubSections;
     
-        enum Status {
+        enum State {
             Root,
             Unknown,
             Branch,
@@ -26,76 +28,85 @@ namespace Catch {
             TestedLeaf
         };
         
-        SectionInfo( SectionInfo* parent )
-        :   m_status( Unknown ),
-            m_parent( parent )
+        RunningSection( RunningSection* parent, std::string const& name )
+        :   m_state( Unknown ),
+            m_parent( parent ),
+            m_name( name )
         {}
         
-        SectionInfo()
-        :   m_status( Root ),
-            m_parent( NULL )
+        RunningSection( std::string const& name )
+        :   m_state( Root ),
+            m_parent( NULL ),
+            m_name( name )
         {}
         
-        ~SectionInfo() {
-            deleteAllValues( m_subSections );
+        ~RunningSection() {
+            deleteAll( m_subSections );
         }
-        
+
+        std::string getName() const {
+            return m_name;
+        }
+
         bool shouldRun() const {
-            return m_status < TestedBranch;
+            return m_state < TestedBranch;
         }
         
-        bool ran() {
-            if( m_status < Branch ) {
-                m_status = TestedLeaf;
+        bool isBranch() const {
+            return m_state == Branch;
+        }
+
+        const RunningSection* getParent() const {
+            return m_parent;
+        }
+
+        bool hasUntestedSections() const {
+            if( m_state == Unknown )
                 return true;
-            }            
+            for(    SubSections::const_iterator it = m_subSections.begin();
+                    it != m_subSections.end();
+                    ++it)
+                if( (*it)->hasUntestedSections() )
+                    return true;
             return false;
         }
 
-        bool isBranch() const {
-            return m_status == Branch;
+        // Mutable methods:
+
+        RunningSection* getParent() {
+            return m_parent;
+        }
+
+        RunningSection* findOrAddSubSection( std::string const& name, bool& changed ) {
+            for(    SubSections::const_iterator it = m_subSections.begin();
+                    it != m_subSections.end();
+                    ++it)
+                if( (*it)->getName() == name )
+                    return *it;
+            RunningSection* subSection = new RunningSection( this, name );
+            m_subSections.push_back( subSection );
+            m_state = Branch;
+            changed = true;
+            return subSection;
+        }
+
+        bool ran() {
+            if( m_state >= Branch )
+                return false;
+            m_state = TestedLeaf;
+            return true;
         }
 
         void ranToCompletion() {
-            if( m_status == Branch && !hasUntestedSections() )
-                m_status = TestedBranch;
+            if( m_state == Branch && !hasUntestedSections() )
+                m_state = TestedBranch;
         }
-                
-        SectionInfo* findSubSection( const std::string& name ) {
-            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.find( name );
-            return it != m_subSections.end()
-                        ? it->second
-                        : NULL;
-        }
-        
-        SectionInfo* addSubSection( const std::string& name ) {
-            SectionInfo* subSection = new SectionInfo( this );
-            m_subSections.insert( std::make_pair( name, subSection ) );
-            m_status = Branch;
-            return subSection;
-        }
-        
-        SectionInfo* getParent() {
-            return m_parent;
-        }
-        
-        bool hasUntestedSections() const {
-            if( m_status == Unknown )
-                return true;
-            
-            std::map<std::string, SectionInfo*>::const_iterator it = m_subSections.begin();
-            std::map<std::string, SectionInfo*>::const_iterator itEnd = m_subSections.end();
-            for(; it != itEnd; ++it ) {
-                if( it->second->hasUntestedSections() )
-                    return true;
-            }
-            return false;
-        }
-        
+
     private:
-        Status m_status;
-        std::map<std::string, SectionInfo*> m_subSections;
-        SectionInfo* m_parent;
+        State m_state;
+        RunningSection* m_parent;
+        std::string m_name;
+        SubSections m_subSections;
     };
 }
 

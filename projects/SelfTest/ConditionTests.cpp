@@ -204,11 +204,14 @@ TEST_CASE(  "./succeeding/conditions/int literals",
 
 // Disable warnings about sign conversions for the next two tests
 // (as we are deliberately invoking them)
-// - Current only disabled for GCC/ LLVM. Should add VC++ too
+// - Currently only disabled for GCC/ LLVM. Should add VC++ too
 #ifdef  __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+#ifdef _MSC_VER
+#pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #endif
 
 TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
@@ -224,6 +227,20 @@ TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
 	REQUIRE( long_var == unsigned_short_var );
 	REQUIRE( long_var == unsigned_int_var );
 	REQUIRE( long_var == unsigned_long_var );
+}
+
+TEST_CASE(  "./succeeding/conditions/const ints to int literal",
+            "comparisons between const int variables" )
+{
+	const unsigned char     unsigned_char_var = 1;
+	const unsigned short    unsigned_short_var = 1;
+	const unsigned int      unsigned_int_var = 1;
+	const unsigned long     unsigned_long_var = 1L;
+
+	REQUIRE( unsigned_char_var == 1 );
+	REQUIRE( unsigned_short_var == 1 );
+	REQUIRE( unsigned_int_var == 1 );
+	REQUIRE( unsigned_long_var == 1 );
 }
 
 TEST_CASE(  "./succeeding/conditions/negative ints",

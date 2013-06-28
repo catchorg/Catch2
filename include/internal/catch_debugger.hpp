@@ -97,17 +97,17 @@
         return IsDebuggerPresent() != 0;
     }
 #else
-	   inline void BreakIntoDebugger(){}
-	   inline bool isDebuggerActive() { return false; }
+       inline void BreakIntoDebugger(){}
+       inline bool isDebuggerActive() { return false; }
 #endif
 
 #ifdef CATCH_PLATFORM_WINDOWS
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
-inline void writeToDebugConsole( const std::string& text ) {
+inline void writeToDebugConsole( std::string const& text ) {
     ::OutputDebugStringA( text.c_str() );
 }
 #else
-inline void writeToDebugConsole( const std::string& text ) {
+inline void writeToDebugConsole( std::string const& text ) {
     // !TBD: Need a version for Mac/ XCode and other IDEs
     std::cout << text;
 }

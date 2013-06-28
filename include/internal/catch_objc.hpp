@@ -56,13 +56,13 @@ namespace Catch {
     
     namespace Detail{
     
-        inline bool startsWith( const std::string& str, const std::string& sub ) {
+        inline bool startsWith( std::string const& str, std::string const& sub ) {
             return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
         }
         
         inline std::string getAnnotation(   Class cls, 
-                                            const std::string& annotationName, 
-                                            const std::string& testCaseName ) {
+                                            std::string const& annotationName, 
+                                            std::string const& testCaseName ) {
             NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
             SEL sel = NSSelectorFromString( selStr );
             arcSafeRelease( selStr );
@@ -72,7 +72,7 @@ namespace Catch {
             return "";
         }        
     }
-    
+
     inline size_t registerTestMethods() {
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( NULL, 0 );
@@ -94,7 +94,7 @@ namespace Catch {
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
                         const char* className = class_getName( cls );
                         
-                        getMutableRegistryHub().registerTest( TestCaseInfo( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
+                        getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
                         noTestMethods++;
                     }
                 }

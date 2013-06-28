@@ -15,13 +15,13 @@ namespace Catch {
     struct Counts {
         Counts() : passed( 0 ), failed( 0 ) {}
 
-        Counts operator - ( const Counts& other ) const {
+        Counts operator - ( Counts const& other ) const {
             Counts diff;
             diff.passed = passed - other.passed;
             diff.failed = failed - other.failed;
             return diff;
         }
-        Counts& operator += ( const Counts& other ) {
+        Counts& operator += ( Counts const& other ) {
             passed += other.passed;
             failed += other.failed;
             return *this;
@@ -37,14 +37,14 @@ namespace Catch {
     
     struct Totals {
     
-        Totals operator - ( const Totals& other ) const {
+        Totals operator - ( Totals const& other ) const {
             Totals diff;
             diff.assertions = assertions - other.assertions;
             diff.testCases = testCases - other.testCases;
             return diff;
         }
 
-        Totals delta( const Totals& prevTotals ) const {
+        Totals delta( Totals const& prevTotals ) const {
             Totals diff = *this - prevTotals;
             if( diff.assertions.failed > 0 )
                 ++diff.testCases.failed;
@@ -53,7 +53,7 @@ namespace Catch {
             return diff;
         }
 
-        Totals& operator += ( const Totals& other ) {
+        Totals& operator += ( Totals const& other ) {
             assertions += other.assertions;
             testCases += other.testCases;
             return *this;

@@ -17,8 +17,8 @@ class ExpressionDecomposer {
 public:
 
     template<typename T>
-    ExpressionLhs<const T&> operator->* ( const T & operand ) {
-        return ExpressionLhs<const T&>( operand );
+    ExpressionLhs<T const&> operator->* ( T const& operand ) {
+        return ExpressionLhs<T const&>( operand );
     }
 
     ExpressionLhs<bool> operator->* ( bool value ) {

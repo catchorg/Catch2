@@ -10,11 +10,14 @@
 
 #include "catch_expression_decomposer.hpp"
 #include "catch_expressionresult_builder.h"
+#include "catch_message.h"
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.hpp"
 #include "catch_context.h"
 #include "catch_common.h"
 #include "catch_interfaces_registry_hub.h"
+#include "internal/catch_compiler_capabilities.h"
+
 #include <ostream>
 
 namespace Catch {
@@ -24,8 +27,8 @@ namespace Catch {
     }
     
     template<typename MatcherT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
-                                                                const std::string& matcherCallAsString ) {
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
+                                                                std::string const& matcherCallAsString ) {
         std::string matcherAsString = matcher.toString();
         if( matcherAsString == "{?}" )
             matcherAsString = matcherCallAsString;
@@ -35,48 +38,24 @@ namespace Catch {
     }
 
     template<typename MatcherT, typename ArgT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
-                                                                const ArgT& arg,
-                                                                const std::string& matcherCallAsString ) {
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
+                                                                ArgT const& arg,
+                                                                std::string const& matcherCallAsString ) {
         return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
 
     template<typename MatcherT, typename ArgT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( const MatcherT& matcher,
+    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
                                                                 ArgT* arg,
-                                                                const std::string& matcherCallAsString ) {
+                                                                std::string const& matcherCallAsString ) {
         return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
     
 struct TestFailureException{};
-
-class ScopedInfo {
-public:
-    ScopedInfo() : m_resultBuilder( ResultWas::Info ) {
-        getResultCapture().pushScopedInfo( this );
-    }
-    ~ScopedInfo() {
-        getResultCapture().popScopedInfo( this );
-    }
-    template<typename T>
-    ScopedInfo& operator << ( const T& value ) {
-        m_resultBuilder << value;
-        return *this; 
-    }
-    AssertionResult buildResult( const AssertionInfo& assertionInfo ) const {
-        return m_resultBuilder.buildResult( assertionInfo );
-    }
-    
-private:
-    ExpressionResultBuilder m_resultBuilder;
-};
-
-// This is just here to avoid compiler warnings with macro constants and boolean literals
-inline bool isTrue( bool value ){ return value; }
 
 } // end namespace Catch
 
@@ -89,7 +68,7 @@ inline bool isTrue( bool value ){ return value; }
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
         if( !Catch::shouldContinueOnFailure( resultDisposition ) ) throw Catch::TestFailureException(); \
-        if( Catch::isTrue( false ) ){ bool this_is_here_to_invoke_warnings = ( originalExpr ); Catch::isTrue( this_is_here_to_invoke_warnings ); } \
+        Catch::isTrue( false && originalExpr ); \
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -107,7 +86,6 @@ inline bool isTrue( bool value ){ return value; }
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
                 resultDisposition | Catch::ResultDisposition::ContinueOnFailure, expr ); \
-            throw; \
         } \
     } while( Catch::isTrue( false ) )
 
@@ -168,17 +146,24 @@ inline bool isTrue( bool value ){ return value; }
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_MSG( reason, resultType, resultDisposition, macroName ) \
+#define INTERNAL_CATCH_INFO( log, macroName ) \
+    do { \
+        Catch::getResultCapture().acceptMessage( Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log ); \
+    } while( Catch::isTrue( false ) )
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_MSG( log, messageType, resultDisposition, macroName ) \
     do { \
         INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( resultType ) << reason, resultDisposition, true ) \
+        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( messageType ) << log, resultDisposition, true ) \
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    INTERNAL_CATCH_ACCEPT_INFO( "", macroName, Catch::ResultDisposition::Normal ); \
-    Catch::ScopedInfo INTERNAL_CATCH_UNIQUE_NAME( info ); \
-    INTERNAL_CATCH_UNIQUE_NAME( info ) << log
+    Catch::ScopedMessageBuilder INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ); \
+    INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) << log; \
+    Catch::getResultCapture().pushScopedMessage( INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) )
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
@@ -191,7 +176,6 @@ inline bool isTrue( bool value ){ return value; }
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
                 resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
-            throw; \
         } \
     } while( Catch::isTrue( false ) )
 

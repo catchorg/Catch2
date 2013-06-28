@@ -16,7 +16,7 @@
 namespace Catch {
     class XmlReporter : public SharedImpl<IReporter> {
     public:
-        XmlReporter( const ReporterConfig& config ) : m_config( config ) {}
+        XmlReporter( ReporterConfig const& config ) : m_config( config ) {}
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
@@ -30,10 +30,10 @@ namespace Catch {
         }        
 
         virtual void StartTesting() {
-            m_xml = XmlWriter( m_config.stream );
+            m_xml = XmlWriter( m_config.stream() );
             m_xml.startElement( "Catch" );
-            if( !m_config.name.empty() )
-                m_xml.writeAttribute( "name", m_config.name );
+            if( !m_config.fullConfig()->name().empty() )
+                m_xml.writeAttribute( "name", m_config.fullConfig()->name() );
         }
         
         virtual void EndTesting( const Totals& totals ) {
@@ -71,12 +71,12 @@ namespace Catch {
         }
         
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.getName() );
+            m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.name );
             m_currentTestSuccess = true;
         }
         
         virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( !m_config.includeSuccessfulResults && assertionResult.getResultType() == ResultWas::Ok )
+            if( !m_config.fullConfig()->includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
                 return;
 
             if( assertionResult.hasExpression() ) {

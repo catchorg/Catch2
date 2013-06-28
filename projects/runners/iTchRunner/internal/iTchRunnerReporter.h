@@ -13,7 +13,7 @@
 
 @protocol iTchRunnerDelegate
 
--(void) testWasRun: (const Catch::ResultInfo*) result;    
+-(void) testWasRun: (const Catch::AssertionResult*) result;    
 
 @end
 
@@ -87,7 +87,7 @@ namespace Catch
         ///////////////////////////////////////////////////////////////////////////
         virtual void Result
         (
-            const ResultInfo& result
+            const AssertionResult& result
         )
         {
             [m_delegate testWasRun: &result];
@@ -102,7 +102,9 @@ namespace Catch
         virtual void EndSection( const std::string&, const Counts& ){}
         virtual void EndTestCase( const TestCaseInfo&, const Totals&, const std::string&, const std::string& ){}
         virtual void Aborted() {}
-        
+        virtual void NoAssertionsInSection( std::string const& sectionName ) {}
+        virtual void NoAssertionsInTestCase( std::string const& testName ) {}
+
     private:
         Totals m_totals;
         

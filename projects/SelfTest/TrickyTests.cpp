@@ -182,7 +182,7 @@ namespace ObjectWithConversions
         "Operators at different namespace levels not hijacked by Koenig lookup"
     )
     {        
-        Object o;        
+        Object o;
         REQUIRE(0xc0000000 == o );
     }
 }
@@ -314,3 +314,49 @@ TEST_CASE( "./succeeding/SafeBool", "Objects that evaluated in boolean contexts 
     CHECK( !False );
     CHECK_FALSE( False );
 }
+
+TEST_CASE( "Assertions then sections", "" )
+{
+    // This was causing a failure due to the way the console reporter was handling
+    // the current section
+    
+    REQUIRE( Catch::isTrue( true ) );
+    
+    SECTION( "A section", "" )
+    {
+        REQUIRE( Catch::isTrue( true ) );
+        
+        SECTION( "Another section", "" )
+        {
+            REQUIRE( Catch::isTrue( true ) );
+        }
+        SECTION( "Another other section", "" )
+        {
+            REQUIRE( Catch::isTrue( true ) );
+        }
+    }
+}
+
+struct Awkward
+{
+    operator int() const { return 7; }
+};
+
+TEST_CASE( "non streamable - with conv. op", "" )
+{
+    Awkward awkward;
+    std::string s = Catch::toString( awkward );
+    REQUIRE( s == "7" );
+}
+
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+
+#include <memory>
+
+TEST_CASE( "null_ptr", "" )
+{
+    std::unique_ptr<int> ptr;
+    REQUIRE(ptr.get() == nullptr);
+}
+
+#endif

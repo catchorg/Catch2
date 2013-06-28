@@ -16,7 +16,7 @@ namespace Catch {
     class NotImplementedException : public std::exception
     {
     public:
-        NotImplementedException( const SourceLineInfo& lineInfo );
+        NotImplementedException( SourceLineInfo const& lineInfo );
 
         virtual ~NotImplementedException() throw() {}
 

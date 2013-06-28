@@ -24,7 +24,7 @@ namespace Catch {
             :   m_writer( writer )
             {}
             
-            ScopedElement( const ScopedElement& other )
+            ScopedElement( ScopedElement const& other )
             :   m_writer( other.m_writer ){
                 other.m_writer = NULL;
             }
@@ -34,13 +34,13 @@ namespace Catch {
                     m_writer->endElement();
             }
 
-            ScopedElement& writeText( const std::string& text ) {
-                m_writer->writeText( text );
+            ScopedElement& writeText( std::string const& text, bool indent = true ) {
+                m_writer->writeText( text, indent );
                 return *this;
             }
 
             template<typename T>
-            ScopedElement& writeAttribute( const std::string& name, const T& attribute ) {
+            ScopedElement& writeAttribute( std::string const& name, T const& attribute ) {
                 m_writer->writeAttribute( name, attribute );
                 return *this;
             }
@@ -66,7 +66,7 @@ namespace Catch {
                 endElement();
         }
 
-        XmlWriter& operator = ( const XmlWriter& other ) {
+        XmlWriter& operator = ( XmlWriter const& other ) {
             XmlWriter temp( other );
             swap( temp );
             return *this;
@@ -80,7 +80,7 @@ namespace Catch {
             std::swap( m_os, other.m_os );
         }
         
-        XmlWriter& startElement( const std::string& name ) {
+        XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
             newlineIfNecessary();
             stream() << m_indent << "<" << name;
@@ -90,7 +90,7 @@ namespace Catch {
             return *this;
         }
 
-        ScopedElement scopedElement( const std::string& name ) {
+        ScopedElement scopedElement( std::string const& name ) {
             ScopedElement scoped( this );
             startElement( name );
             return scoped;
@@ -110,7 +110,7 @@ namespace Catch {
             return *this;
         }
         
-        XmlWriter& writeAttribute( const std::string& name, const std::string& attribute ) {
+        XmlWriter& writeAttribute( std::string const& name, std::string const& attribute ) {
             if( !name.empty() && !attribute.empty() ) {
                 stream() << " " << name << "=\"";
                 writeEncodedText( attribute );
@@ -119,23 +119,23 @@ namespace Catch {
             return *this;
         }
 
-        XmlWriter& writeAttribute( const std::string& name, bool attribute ) {
+        XmlWriter& writeAttribute( std::string const& name, bool attribute ) {
             stream() << " " << name << "=\"" << ( attribute ? "true" : "false" ) << "\"";
             return *this;
         }
         
         template<typename T>
-        XmlWriter& writeAttribute( const std::string& name, const T& attribute ) {
+        XmlWriter& writeAttribute( std::string const& name, T const& attribute ) {
             if( !name.empty() )
                 stream() << " " << name << "=\"" << attribute << "\"";
             return *this;
         }
         
-        XmlWriter& writeText( const std::string& text ) {
+        XmlWriter& writeText( std::string const& text, bool indent = true ) {
             if( !text.empty() ){
                 bool tagWasOpen = m_tagIsOpen;
                 ensureTagClosed();
-                if( tagWasOpen )
+                if( tagWasOpen && indent )
                     stream() << m_indent;
                 writeEncodedText( text );
                 m_needsNewline = true;
@@ -143,7 +143,7 @@ namespace Catch {
             return *this;
         }
         
-        XmlWriter& writeComment( const std::string& text ) {
+        XmlWriter& writeComment( std::string const& text ) {
             ensureTagClosed();
             stream() << m_indent << "<!--" << text << "-->";
             m_needsNewline = true;
@@ -176,7 +176,7 @@ namespace Catch {
             }
         }
         
-        void writeEncodedText( const std::string& text ) {
+        void writeEncodedText( std::string const& text ) {
             static const char* charsToEncode = "<&\"";
             std::string mtext = text;
             std::string::size_type pos = mtext.find_first_of( charsToEncode );

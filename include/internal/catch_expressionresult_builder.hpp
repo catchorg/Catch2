@@ -17,13 +17,13 @@ namespace Catch {
     ExpressionResultBuilder::ExpressionResultBuilder( ResultWas::OfType resultType ) {
         m_data.resultType = resultType;
     }
-    ExpressionResultBuilder::ExpressionResultBuilder( const ExpressionResultBuilder& other )
+    ExpressionResultBuilder::ExpressionResultBuilder( ExpressionResultBuilder const& other )
     :   m_data( other.m_data ),
         m_exprComponents( other.m_exprComponents )
     {
         m_stream << other.m_stream.str();
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::operator=(const ExpressionResultBuilder& other ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::operator=(ExpressionResultBuilder const& other ) {
         m_data = other.m_data;
         m_exprComponents = other.m_exprComponents;
         m_stream.str("");
@@ -42,19 +42,19 @@ namespace Catch {
         m_exprComponents.shouldNegate = shouldNegate( resultDisposition );
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setLhs( const std::string& lhs ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setLhs( std::string const& lhs ) {
         m_exprComponents.lhs = lhs;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setRhs( const std::string& rhs ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setRhs( std::string const& rhs ) {
         m_exprComponents.rhs = rhs;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setOp( const std::string& op ) {
+    ExpressionResultBuilder& ExpressionResultBuilder::setOp( std::string const& op ) {
         m_exprComponents.op = op;
         return *this;
     }
-    AssertionResult ExpressionResultBuilder::buildResult( const AssertionInfo& info ) const
+    AssertionResult ExpressionResultBuilder::buildResult( AssertionInfo const& info ) const
     {
         assert( m_data.resultType != ResultWas::Unknown );
 
@@ -76,18 +76,18 @@ namespace Catch {
         }
         return AssertionResult( info, data );
     }
-    std::string ExpressionResultBuilder::reconstructExpression( const AssertionInfo& info ) const {
+    std::string ExpressionResultBuilder::reconstructExpression( AssertionInfo const& info ) const {
         if( m_exprComponents.op == "" )
             return m_exprComponents.lhs.empty() ? info.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
         else if( m_exprComponents.op == "matches" )
             return m_exprComponents.lhs + " " + m_exprComponents.rhs;
         else if( m_exprComponents.op != "!" ) {
-            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 30 )
+            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 40 &&
+                m_exprComponents.lhs.find("\n") == std::string::npos &&
+                m_exprComponents.rhs.find("\n") == std::string::npos )
                 return m_exprComponents.lhs + " " + m_exprComponents.op + " " + m_exprComponents.rhs;
-            else if( m_exprComponents.lhs.size() < 70 && m_exprComponents.rhs.size() < 70 )
-                return "\n\t" + m_exprComponents.lhs + "\n\t" + m_exprComponents.op + "\n\t" + m_exprComponents.rhs;
             else
-                return "\n" + m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs + "\n\n";
+                return m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs;
         }
         else
             return "{can't expand - use " + info.macroName + "_FALSE( " + info.capturedExpression.substr(1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";

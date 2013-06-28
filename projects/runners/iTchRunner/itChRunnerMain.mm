@@ -6,6 +6,7 @@
 //  Copyright Two Blue Cubes Ltd 2011. All rights reserved.
 //
 
+#define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 #import "internal/iTchRunnerAppDelegate.h"
 

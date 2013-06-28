@@ -26,3 +26,17 @@ CATCH_TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
     CATCH_REQUIRE( multiply( i, 2 ) == i*2 );
     CATCH_REQUIRE( multiply( j, 2 ) == j*2 );
 }
+
+struct IntPair { int first, second; };
+
+CATCH_TEST_CASE( "./succeeding/generators/2", "Generator over a range of pairs" )
+{
+    using namespace Catch::Generators;
+ 
+    IntPair p[] = { { 0, 1 }, { 2, 3 } };
+    
+    IntPair* i = CATCH_GENERATE( between( p, &p[1] ) );
+    
+    CATCH_REQUIRE( i->first == i->second-1 );
+    
+}

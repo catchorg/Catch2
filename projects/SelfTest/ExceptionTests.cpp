@@ -6,10 +6,6 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wpadded"
-#endif
-
 #include "catch.hpp"
 
 #include <string>
@@ -19,13 +15,11 @@
 
 namespace
 {
-    CATCH_ATTRIBUTE_NORETURN
-    int thisThrows();
-    
-    int thisThrows()
+    inline int thisThrows()
     {
-        throw std::domain_error( "expected exception" );
-        /*NOTREACHED*/    
+		if( Catch::isTrue( true ) )
+		    throw std::domain_error( "expected exception" );
+		return 1;
     }
 
     int thisDoesntThrow()
@@ -41,7 +35,6 @@ TEST_CASE( "./succeeding/exceptions/explicit", "When checked exceptions are thro
     REQUIRE_THROWS( thisThrows() );
 }
 
-CATCH_ATTRIBUTE_NORETURN
 TEST_CASE( "./failing/exceptions/explicit", "When checked exceptions are thrown they can be expected or unexpected" )
 {
     CHECK_THROWS_AS( thisThrows(), std::string );
@@ -49,10 +42,30 @@ TEST_CASE( "./failing/exceptions/explicit", "When checked exceptions are thrown 
     CHECK_NOTHROW( thisThrows() );
 }
 
-TEST_CASE_NORETURN( "./failing/exceptions/implicit", "When unchecked exceptions are thrown they are always failures" )
+TEST_CASE( "./failing/exceptions/implicit", "When unchecked exceptions are thrown they are always failures" )
 {
-    throw std::domain_error( "unexpected exception" );
-    /*NOTREACHED*/    
+	if( Catch::isTrue( true ) )
+	    throw std::domain_error( "unexpected exception" );
+}
+
+TEST_CASE( "./failing/exceptions/implicit/2", "An unchecked exception reports the line of the last assertion" )
+{
+    CHECK( 1 == 1 );
+	if( Catch::isTrue( true ) )
+	    throw std::domain_error( "unexpected exception" );
+}
+TEST_CASE( "./failing/exceptions/implicit/3", "When unchecked exceptions are thrown they are always failures" )
+{
+    SECTION( "section name", "" )
+    {
+		if( Catch::isTrue( true ) )
+			throw std::domain_error( "unexpected exception" );
+    }
+}
+
+TEST_CASE( "./failing/exceptions/implicit/4", "When unchecked exceptions are thrown they are always failures" )
+{
+    CHECK( thisThrows() == 0 );
 }
 
 TEST_CASE( "./succeeding/exceptions/implicit", "When unchecked exceptions are thrown, but caught, they do not affect the test" )
@@ -92,68 +105,32 @@ CATCH_TRANSLATE_EXCEPTION( double& ex )
     return Catch::toString( ex );
 }
 
-TEST_CASE_NORETURN( "./failing/exceptions/custom", "Unexpected custom exceptions can be translated" )
+TEST_CASE( "./failing/exceptions/custom", "Unexpected custom exceptions can be translated" )
 {
-    throw CustomException( "custom exception" );
+	if( Catch::isTrue( true ) )
+	    throw CustomException( "custom exception" );
+}
+
+inline void throwCustom() {
+	if( Catch::isTrue( true ) )
+		throw CustomException( "custom exception - not std" );
 }
 
 TEST_CASE( "./failing/exceptions/custom/nothrow", "Custom exceptions can be translated when testing for nothrow" )
 {
-    REQUIRE_NOTHROW( throw CustomException( "unexpected custom exception" ) );
+    REQUIRE_NOTHROW( throwCustom() );
 }
 
 TEST_CASE( "./failing/exceptions/custom/throw", "Custom exceptions can be translated when testing for throwing as something else" )
 {
-    REQUIRE_THROWS_AS( throw CustomException( "custom exception - not std" ), std::exception );
+    REQUIRE_THROWS_AS( throwCustom(), std::exception );
 }
 
 
-TEST_CASE_NORETURN( "./failing/exceptions/custom/double", "Unexpected custom exceptions can be translated"  )
+TEST_CASE( "./failing/exceptions/custom/double", "Unexpected custom exceptions can be translated"  )
 {
-    throw double( 3.14 );
-}
-
-#ifdef  __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
-
-TEST_CASE( "./failing/exceptions/in-section", "Exceptions thrown from sections report file/ line or section" )
-{
-    SECTION( "the section", "" )
-    {
-        CATCH_REGISTER_LINE_INFO( "the section2" ) SECTION( "the section2", "" )
-        {
-            throw std::domain_error( "Exception from section" );
-        }
-    }
-}
-
-#ifdef  __GNUC__
-#pragma GCC diagnostic pop
-#endif
-
-TEST_CASE( "./succeeding/exceptions/error messages", "The error messages produced by exceptions caught by Catch matched the expected form" )
-{
-    Catch::EmbeddedRunner runner;
-    using namespace Catch::Matchers;
-    
-    SECTION( "custom, unexpected", "" )
-    {    
-        runner.runMatching( "./failing/exceptions/custom" );
-//        CHECK_THAT( runner.getLog(), Contains( "Unexpected exception" ) ); // Mock reporter doesn't say this
-        CHECK_THAT( runner.getLog(), Contains( "custom exception" ) );
-    }
-    
-    SECTION( "in section", "" )
-    {    
-        runner.runMatching( "./failing/exceptions/in-section" );
-        INFO( runner.getLog() );
-//        CHECK( runner.getLog().find( "Unexpected exception" ) != std::string::npos ); // Mock reporter doesn't say this
-        CHECK_THAT( runner.getLog(), Contains( "Exception from section" ) );
-        CHECK_THAT( runner.getLog(), Contains( CATCH_GET_LINE_INFO( "the section2" ) ) );
-    }
-    
+	if( Catch::isTrue( true ) )
+	    throw double( 3.14 );
 }
 
 inline int thisFunctionNotImplemented( int ) {

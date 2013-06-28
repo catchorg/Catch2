@@ -13,7 +13,7 @@
 #include <string>
 
 namespace Catch {
-    class TestCaseInfo;
+    class TestCase;
     
     struct IRunner {
         virtual ~IRunner();
