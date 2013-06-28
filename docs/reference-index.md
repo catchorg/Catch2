@@ -6,6 +6,7 @@ Before looking at this material be sure to read the [tutorial](tutorial.md)
 * [Assertion Macros](assertions.md)
 * [Logging Macros](logging.md)
 * [Supplying your own main()](own-main.md)
+* [Test fixtures](test-fixtures.md)
 
 ---
 
