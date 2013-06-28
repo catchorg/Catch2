@@ -397,7 +397,8 @@ MessageTests.cpp:37: FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
-with message:
+with messages:
+  this message may be logged later
   this message should be logged
 
 MessageTests.cpp:41: FAILED:
@@ -514,7 +515,8 @@ MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-with message:
+with messages:
+  Testing if fib[2] (2) is even
   Testing if fib[3] (3) is even
 
 MiscTests.cpp:111: FAILED:
@@ -528,7 +530,8 @@ MiscTests.cpp:111: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
-with message:
+with messages:
+  Testing if fib[5] (8) is even
   Testing if fib[6] (13) is even
 
 MiscTests.cpp:111: FAILED:
@@ -2786,7 +2789,7 @@ PASSED:
 with expansion:
   2 == 2
 with message:
-  this message should not be logged
+  this message may be logged later
 
 MessageTests.cpp:37: FAILED:
   CHECK( a == 1 )

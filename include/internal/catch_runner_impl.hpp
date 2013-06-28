@@ -171,11 +171,11 @@ namespace Catch {
                 m_totals.assertions.failed++;
             }
             
-            m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) );
+            if( m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) ) )
+                m_messages.clear();
 
             // Reset working state
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
-            m_messages.clear();            
         }
         
         virtual bool sectionStarted (

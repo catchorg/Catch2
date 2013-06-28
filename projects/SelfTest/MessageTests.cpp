@@ -28,7 +28,7 @@ TEST_CASE( "./failing/message/info/1", "INFO gets logged on failure" )
 
 TEST_CASE( "./mixed/message/info/2", "INFO gets logged on failure" )
 {
-    INFO( "this message should not be logged" );
+    INFO( "this message may be logged later" );
     int a = 2;
     CHECK( a == 2 );
 

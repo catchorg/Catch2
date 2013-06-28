@@ -40,7 +40,7 @@ namespace Catch
         // Not on legacy interface
     }
 
-    void LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
+    bool LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
         if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
             for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
                     it != itEnd;
@@ -55,6 +55,7 @@ namespace Catch
             }
         }    
         m_legacyReporter->Result( assertionStats.assertionResult );
+        return true;
     }
     void LegacyReporterAdapter::sectionEnded( SectionStats const& sectionStats ) {
         if( sectionStats.missingAssertions )

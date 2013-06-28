@@ -39,18 +39,19 @@ namespace Catch {
         virtual void assertionStarting( AssertionInfo const& ) {
         }
 
-        virtual void assertionEnded( AssertionStats const& _assertionStats ) {
+        virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
             
             // Drop out if result was successful and we're not printing those
             if( !m_config->includeSuccessfulResults() && result.isOk() )
-                return;
+                return false;
             
             lazyPrint();
 
             AssertionPrinter printer( stream, _assertionStats );
             printer.print();
             stream << std::endl;
+            return true;
         }
 
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
