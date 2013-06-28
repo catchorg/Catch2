@@ -4277,7 +4277,7 @@ with expansion:
 
 TestMain.cpp:363:
 PASSED:
-  CHECK( oneTag.hasTag( "hide" ) )
+  CHECK( oneTag.hasTag( "." ) )
 with expansion:
   true
 
@@ -4289,7 +4289,7 @@ with expansion:
 
 TestMain.cpp:366:
 PASSED:
-  CHECK( oneTag.matchesTags( "~[hide]" ) == false )
+  CHECK( oneTag.matchesTags( "~[.]" ) == false )
 with expansion:
   false == false
 
@@ -10717,7 +10717,7 @@ TestMain.cpp" line="362">
         </Expression>
 TestMain.cpp" line="363">
           <Original>
-            oneTag.hasTag( &quot;hide&quot; )
+            oneTag.hasTag( &quot;.&quot; )
           </Original>
           <Expanded>
             true
@@ -10733,7 +10733,7 @@ TestMain.cpp" line="364">
         </Expression>
 TestMain.cpp" line="366">
           <Original>
-            oneTag.matchesTags( &quot;~[hide]&quot; ) == false
+            oneTag.matchesTags( &quot;~[.]&quot; ) == false
           </Original>
           <Expanded>
             false == false
@@ -13260,9 +13260,9 @@ TestMain.cpp:356: oneTagOpen.getTags().size() == 0 succeeded for: 0 == 0
 
 [Started section: 'hidden']
 TestMain.cpp:362: oneTag.getTestCaseInfo().description == "" succeeded for: "" == ""
-TestMain.cpp:363: oneTag.hasTag( "hide" ) succeeded for: true
+TestMain.cpp:363: oneTag.hasTag( "." ) succeeded for: true
 TestMain.cpp:364: oneTag.isHidden() succeeded for: true
-TestMain.cpp:366: oneTag.matchesTags( "~[hide]" ) == false succeeded for: false == false
+TestMain.cpp:366: oneTag.matchesTags( "~[.]" ) == false succeeded for: false == false
 [End of section: 'hidden' All 4 assertions passed]
 
 [Finished: 'selftest/tags' All tests passed (30 assertions in 1 test case)]
