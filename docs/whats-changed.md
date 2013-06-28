@@ -15,6 +15,7 @@ This page has been added following quite a large (hopefully the last such) merge
 	* New command line parser. Under the hood it is a complete rewrite - now powered by a command line library that will soon be spun out as a separate project: Clara. The options themselves are largely the same but there are some notable differences (as already discussed).
 	* Completely overhauled output from the textual reporter (now the Console reporter). This now features a much clearer, cleaner format, including good use of indentation.
 
+More information can be found in [this blog post](http://www.levelofindirection.com/journal/2013/6/28/catch-10.html).
 If you find any issues please raise issue tickets on the [issue tracker on GitHub](https://github.com/philsquared/Catch/issues) as before. For general questions, comments and suggestions, though, please use the [new forums on Google Groups](https://groups.google.com/forum/?fromgroups#!forum/catch-forum).
 
 ---
