@@ -1,15 +1,19 @@
-SOURCES		= ApproxTests.cpp ClassTests.cpp ConditionTests.cpp \
-		  ExceptionTests.cpp GeneratorTests.cpp MessageTests.cpp \
-		  MiscTests.cpp TestMain.cpp TrickyTests.cpp \
-		  catch_self_test.cpp
+SOURCES		= ApproxTests.cpp BDDTests.cpp catch_self_test.cpp ClassTests.cpp \
+	CmdLineTests.cpp ConditionTests.cpp ExceptionTests.cpp GeneratorTests.cpp \
+	MessageTests.cpp MiscTests.cpp TestMain.cpp TrickyTests.cpp \
+	VariadicMacrosTests.cpp
+
 OBJECTS		= $(patsubst %.cpp, %.o, $(SOURCES))
 
 CXXFLAGS	= -I../../include
 
-main: $(OBJECTS)
+catch_self_test: $(OBJECTS)
 	$(CXX) -o $@ $^
 
 clean:
-	rm -f $(OBJECTS) main
+	rm -f $(OBJECTS) catch_self_test
 
-.PHONY: main clean
+check: catch_self_test
+	./catch_self_test
+
+.PHONY: catch_self_test clean check
