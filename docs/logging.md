@@ -16,15 +16,11 @@ These macros come in three forms:
 
 **INFO(** _message expression_ **)**
 
-The message is logged to a buffer, but only reported with the next assertion that is logged. This allows you to log contextual information in case of failures which is not shown during a successful test run (for the console reporter, without -s).
-
-**SCOPED_INFO(** _message expression_ **)**
-
-As INFO, but is only in effect during the current scope. If a failure occurs beyond the end of the scope the message is not logged. In a looped block the message is reset on each iteration.
+The message is logged to a buffer, but only reported with the next assertion that is logged. This allows you to log contextual information in case of failures which is not shown during a successful test run (for the console reporter, without -s). Messages are removed from the buffer at the end of their scope, so may be used, for example, in loops.
 
 **WARN(** _message expression_ **)**
 
-The message is always reported.
+The message is always reported but does not fail the test.
 
 **FAIL(** _message expression_ **)**
 
@@ -44,6 +40,12 @@ CAPTURE( theAnswer );
 This would log something like:
 
 <pre>"theAnswer := 42"</pre>
+
+## Deprecated macros
+
+**SCOPED_INFO and SCOPED_CAPTURE**
+
+These macros are now deprecated and are just aliases for INFO and CAPTURE (which were not previously scoped).
 
 ---
 
