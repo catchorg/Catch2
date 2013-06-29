@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 1 (master branch)
- *  Generated: 2013-06-28 17:08:06.313616
+ *  CATCH v1.0 build 2 (master branch)
+ *  Generated: 2013-06-29 12:10:25.613092
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1126,6 +1126,8 @@ namespace Internal {
 
 namespace Catch {
 
+struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
+
 // Wraps the (stringised versions of) the lhs, operator and rhs of an expression - as well as
 // the result of evaluating it. This is used to build an AssertionResult object
 class ExpressionResultBuilder {
@@ -1153,6 +1155,9 @@ public:
 
     AssertionResult buildResult( AssertionInfo const& info ) const;
 
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( RhsT const& );
+
 private:
     AssertionResultData m_data;
     struct ExprComponents {
@@ -1166,8 +1171,6 @@ private:
 } // end namespace Catch
 
 namespace Catch {
-
-struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 
 // Wraps the LHS of an expression and captures the operator and RHS (if any) - wrapping them all
 // in an ExpressionResultBuilder object
@@ -1230,6 +1233,8 @@ public:
     template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( RhsT const& );
     template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( RhsT const& );
     template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( RhsT const& );
 
 private:
     template<Internal::Operator Op, typename RhsT>
@@ -4031,7 +4036,7 @@ namespace Clara {
                 Catch::Text desc( it->description, Catch::TextAttributes()
                                                         .setWidth( width - maxWidth -3 ) );
 
-                for( std::size_t i = 0; i < std::max( usage.size(), desc.size() ); ++i ) {
+                for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
                     std::string usageCol = i < usage.size() ? usage[i] : "";
                     os << usageCol;
 
@@ -4409,7 +4414,7 @@ namespace Catch {
                                         .setInitialIndent(0)
                                         .setIndent( 2 ) );
 
-                for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
+                for( std::size_t i = 0; i < (std::max)( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
                     Colour::Code colour = Colour::None;
                     if( it->getTestCaseInfo().isHidden )
                         colour = Colour::SecondaryText;
@@ -6219,7 +6224,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 1, "master" );
+    Version libraryVersion( 1, 0, 2, "master" );
 }
 
 // #included from: catch_text.hpp
