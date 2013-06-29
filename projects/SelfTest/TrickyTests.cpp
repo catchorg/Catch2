@@ -33,9 +33,7 @@ TEST_CASE
 {
     std::pair<int, int> aNicePair( 1, 2 );
 
-    // !TBD: would be nice if this could compile without the extra parentheses
-    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );
-    
+    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );    
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,13 +43,8 @@ TEST_CASE
     "Where the is more to the expression after the RHS"
 )
 {
-    /*
-    int a = 1;
-    int b = 2;
-
-    // This only captures part of the expression, but issues a warning about the rest
-    REQUIRE( a == 2 || b == 2 );
-     */
+//    int a = 1, b = 2;
+//    REQUIRE( a == 2 || b == 2 );
     WARN( "Uncomment the code in this test to check that it gives a sensible compiler error" );
 }
 ///////////////////////////////////////////////////////////////////////////////

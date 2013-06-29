@@ -16,6 +16,8 @@
 
 namespace Catch {
 
+struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
+
 // Wraps the (stringised versions of) the lhs, operator and rhs of an expression - as well as
 // the result of evaluating it. This is used to build an AssertionResult object
 class ExpressionResultBuilder {
@@ -42,6 +44,9 @@ public:
     std::string reconstructExpression( AssertionInfo const& info ) const;
 
     AssertionResult buildResult( AssertionInfo const& info ) const;
+
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( RhsT const& );
 
 private:
     AssertionResultData m_data;
