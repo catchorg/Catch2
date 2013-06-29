@@ -5,7 +5,7 @@ import re
 
 from scriptCommon import catchPath
 
-filenameParser = re.compile( r'\s*.*/(.*\..pp)(.*)' )
+filenameParser = re.compile( r'\s*.*/(.*\..pp):([0-9]*)(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 
 #catchPath = os.path.dirname(os.path.realpath( os.path.dirname(sys.argv[0])))
@@ -34,7 +34,7 @@ filteredFile = open( filteredResultsPath, 'w' )
 for line in rawFile:
 	m = filenameParser.match( line )
 	if m:
-		line = m.group(1) + m.group(2)
+		line = m.group(1) + m.group(3)
 
 	while True:
 		m = hexParser.match( line )
