@@ -126,19 +126,22 @@ namespace Catch {
             void use( Colour::Code ) {}
         };
         NoColourImpl noColourImpl;        
-        static const bool shouldUseColour = shouldUseColourForPlatform() &&
-                                            !isDebuggerActive();
     }
 
     Colour::Colour( Code _colourCode ){ use( _colourCode ); }
     Colour::~Colour(){ use( None ); }
     void Colour::use( Code _colourCode ) {
+
+		if (impl == NULL) {
+			impl = (shouldUseColourForPlatform() && !isDebuggerActive())
+            	? static_cast<Detail::IColourImpl*>( &platformColourImpl )
+            	: static_cast<Detail::IColourImpl*>( &noColourImpl );
+		}
+
         impl->use( _colourCode );
     }
 
-    Detail::IColourImpl* Colour::impl = shouldUseColour
-            ? static_cast<Detail::IColourImpl*>( &platformColourImpl )
-            : static_cast<Detail::IColourImpl*>( &noColourImpl );
+    Detail::IColourImpl* Colour::impl = NULL;
 
 } // end namespace Catch
 
