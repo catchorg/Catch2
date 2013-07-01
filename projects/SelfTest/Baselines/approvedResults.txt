@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a Catch v1.0 b3 host application.
+CatchSelfTest is a Catch v1.0 b4 host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -678,11 +678,11 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-113 test cases - 34 failed (686 assertions - 87 failed)
+119 test cases - 34 failed (693 assertions - 87 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a Catch v1.0 b3 host application.
+CatchSelfTest is a Catch v1.0 b4 host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -5792,6 +5792,72 @@ with expansion:
   "7" == "7"
 
 -------------------------------------------------------------------------------
+Comparing function pointers
+-------------------------------------------------------------------------------
+TrickyTests.cpp
+...............................................................................
+
+TrickyTests.cpp:
+PASSED:
+  REQUIRE( a )
+with expansion:
+  true
+
+TrickyTests.cpp:
+PASSED:
+  REQUIRE( a == &foo )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+pointer to class
+-------------------------------------------------------------------------------
+TrickyTests.cpp
+...............................................................................
+
+TrickyTests.cpp:
+PASSED:
+  REQUIRE( p == 0 )
+with expansion:
+  __null == 0
+
+-------------------------------------------------------------------------------
+X/level/0/a
+-------------------------------------------------------------------------------
+TrickyTests.cpp
+...............................................................................
+
+TrickyTests.cpp:
+PASSED:
+
+-------------------------------------------------------------------------------
+X/level/0/b
+-------------------------------------------------------------------------------
+TrickyTests.cpp
+...............................................................................
+
+TrickyTests.cpp:
+PASSED:
+
+-------------------------------------------------------------------------------
+X/level/1/a
+-------------------------------------------------------------------------------
+TrickyTests.cpp
+...............................................................................
+
+TrickyTests.cpp:
+PASSED:
+
+-------------------------------------------------------------------------------
+X/level/1/b
+-------------------------------------------------------------------------------
+TrickyTests.cpp
+...............................................................................
+
+TrickyTests.cpp:
+PASSED:
+
+-------------------------------------------------------------------------------
 Anonymous test case 1
 -------------------------------------------------------------------------------
 VariadicMacrosTests.cpp
@@ -6246,13 +6312,13 @@ with expansion:
   "3rd" == "3rd"
 
 ===============================================================================
-113 test cases - 49 failed (705 assertions - 106 failed)
+119 test cases - 49 failed (712 assertions - 106 failed)
 
 No test cases matched '~dummy 4'
 No tests ran
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="78" tests="705" hostname="tbd" time="tbd" timestamp="tbd">
+  <testsuite name="~dummy" errors="10" failures="78" tests="712" hostname="tbd" time="tbd" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
@@ -6752,6 +6818,12 @@ TrickyTests.cpp
     <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
     <testcase classname="global" name="Assertions then sections" time="tbd"/>
     <testcase classname="global" name="non streamable - with conv. op" time="tbd"/>
+    <testcase classname="global" name="Comparing function pointers" time="tbd"/>
+    <testcase classname="global" name="pointer to class" time="tbd"/>
+    <testcase classname="global" name="X/level/0/a" time="tbd"/>
+    <testcase classname="global" name="X/level/0/b" time="tbd"/>
+    <testcase classname="global" name="X/level/1/a" time="tbd"/>
+    <testcase classname="global" name="X/level/1/b" time="tbd"/>
     <testcase classname="global" name="Anonymous test case 1" time="tbd"/>
     <testcase classname="global" name="Test case with one argument" time="tbd"/>
     <testcase classname="global" name="Variadic macros" time="tbd"/>
@@ -12254,6 +12326,48 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Comparing function pointers">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp" >
+        <Original>
+          a
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp" >
+        <Original>
+          a == &amp;foo
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="pointer to class">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/XCode4/CatchSelfTest/CatchSelfTest/../../../SelfTest/TrickyTests.cpp" >
+        <Original>
+          p == 0
+        </Original>
+        <Expanded>
+          __null == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="X/level/0/a">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="X/level/0/b">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="X/level/1/a">
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="X/level/1/b">
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Anonymous test case 1">
       <OverallResult success="true"/>
     </TestCase>
@@ -12687,9 +12801,9 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="599" failures="106"/>
+    <OverallResults successes="606" failures="106"/>
   </Group>
-  <OverallResults successes="599" failures="106"/>
+  <OverallResults successes="606" failures="106"/>
 </Catch>
 [Started testing: CatchSelfTest]
 [Started group: '~dummy']
@@ -14354,6 +14468,31 @@ TrickyTests.cpp: Catch::isTrue( true ) succeeded for: true
 TrickyTests.cpp: s == "7" succeeded for: "7" == "7"
 [Finished: 'non streamable - with conv. op' All tests passed (1 assertion in 1 test case)]
 
+[Running: Comparing function pointers]
+TrickyTests.cpp: a succeeded for: true
+TrickyTests.cpp: a == &foo succeeded for: 1 == 1
+[Finished: 'Comparing function pointers' All tests passed (2 assertions in 1 test case)]
+
+[Running: pointer to class]
+TrickyTests.cpp: p == 0 succeeded for: __null == 0
+[Finished: 'pointer to class' All tests passed (1 assertion in 1 test case)]
+
+[Running: X/level/0/a]
+TrickyTests.cpp:  succeeded
+[Finished: 'X/level/0/a' All tests passed (1 assertion in 1 test case)]
+
+[Running: X/level/0/b]
+TrickyTests.cpp:  succeeded
+[Finished: 'X/level/0/b' All tests passed (1 assertion in 1 test case)]
+
+[Running: X/level/1/a]
+TrickyTests.cpp:  succeeded
+[Finished: 'X/level/1/a' All tests passed (1 assertion in 1 test case)]
+
+[Running: X/level/1/b]
+TrickyTests.cpp:  succeeded
+[Finished: 'X/level/1/b' All tests passed (1 assertion in 1 test case)]
+
 [Running: Anonymous test case 1]
 VariadicMacrosTests.cpp:  succeeded
 [with message: anonymous test case]
@@ -14537,10 +14676,10 @@ CmdLineTests.cpp: config.unpositional == "3rd" succeeded for: "3rd" == "3rd"
 [End of section: 'positional' All 3 assertions passed]
 
 [Finished: 'cmdline' All tests passed (18 assertions in 1 test case)]
-[End of group: '~dummy'. 49 of 113 test cases failed (106 of 705 assertions failed)]
+[End of group: '~dummy'. 49 of 119 test cases failed (106 of 712 assertions failed)]
 
 
-[Testing completed. 49 of 113 test cases failed (106 of 705 assertions failed)]
+[Testing completed. 49 of 119 test cases failed (106 of 712 assertions failed)]
 
 
 [Testing completed. No tests ran]

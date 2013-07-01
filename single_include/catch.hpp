@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 3 (master branch)
- *  Generated: 2013-06-29 20:29:59.351244
+ *  CATCH v1.0 build 4 (master branch)
+ *  Generated: 2013-07-01 19:01:40.450418
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -707,7 +707,8 @@ struct StringMaker :
 
 template<typename T>
 struct StringMaker<T*> {
-    static std::string convert( T const* p ) {
+	template<typename U>
+	static std::string convert( U* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
@@ -5741,7 +5742,12 @@ namespace Catch { namespace Detail {
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+
+#ifdef __AFXDLL
+#include <AfxWin.h>
+#else
 #include <windows.h>
+#endif
 
 namespace Catch {
 namespace {
@@ -6226,7 +6232,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 3, "master" );
+    Version libraryVersion( 1, 0, 4, "master" );
 }
 
 // #included from: catch_text.hpp
