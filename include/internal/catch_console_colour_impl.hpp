@@ -22,7 +22,12 @@ namespace Catch { namespace Detail {
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+
+#ifdef __AFXDLL
+#include <AfxWin.h>
+#else
 #include <windows.h>
+#endif
 
 namespace Catch {
 namespace {
