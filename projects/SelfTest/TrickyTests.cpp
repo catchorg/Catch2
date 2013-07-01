@@ -342,6 +342,28 @@ TEST_CASE( "non streamable - with conv. op", "" )
     REQUIRE( s == "7" );
 }
 
+inline void foo() {}
+
+typedef void (*fooptr_t)();
+
+TEST_CASE( "Comparing function pointers", "[function pointer]" )
+{
+    // This was giving a warning in VS2010
+    // #179
+    fooptr_t a = foo;
+
+    REQUIRE( a );
+    REQUIRE( a == &foo );
+}
+
+class ClassName {};
+
+TEST_CASE( "pointer to class", "" )
+{
+   ClassName *p = 0;
+   REQUIRE( p != 0 );
+}
+
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
 
 #include <memory>
