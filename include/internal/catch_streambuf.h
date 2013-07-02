@@ -14,7 +14,7 @@ namespace Catch {
 
     class StreamBufBase : public std::streambuf {
     public:
-        virtual ~StreamBufBase();
+        virtual ~StreamBufBase() throw();
     };
 }
 

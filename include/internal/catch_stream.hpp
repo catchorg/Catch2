@@ -27,7 +27,7 @@ namespace Catch {
             setp( data, data + sizeof(data) );
         }
 
-        ~StreamBufImpl() {
+        ~StreamBufImpl() throw() {
             sync();
         }
         

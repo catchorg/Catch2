@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 4 (master branch)
- *  Generated: 2013-07-01 19:01:40.450418
+ *  CATCH v1.0 build 5 (master branch)
+ *  Generated: 2013-07-02 08:47:24.946227
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1978,7 +1978,7 @@ namespace Catch {
 
     class StreamBufBase : public std::streambuf {
     public:
-        virtual ~StreamBufBase();
+        virtual ~StreamBufBase() throw();
     };
 }
 
@@ -1997,7 +1997,7 @@ namespace Catch {
             setp( data, data + sizeof(data) );
         }
 
-        ~StreamBufImpl() {
+        ~StreamBufImpl() throw() {
             sync();
         }
 
@@ -6232,7 +6232,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 4, "master" );
+    Version libraryVersion( 1, 0, 5, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -7818,7 +7818,7 @@ namespace Catch {
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
-    StreamBufBase::~StreamBufBase() {}
+    StreamBufBase::~StreamBufBase() throw() {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestCase::~ITestCase() {}

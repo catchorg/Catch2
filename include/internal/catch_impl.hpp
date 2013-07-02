@@ -39,7 +39,7 @@
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
-    StreamBufBase::~StreamBufBase() {}
+    StreamBufBase::~StreamBufBase() throw() {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestCase::~ITestCase() {}
