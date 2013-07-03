@@ -102,8 +102,8 @@ namespace Catch {
         }
         
     private:
-		RunningTest( RunningTest const& );
-		void operator=( RunningTest const& );
+        RunningTest( RunningTest const& );
+        void operator=( RunningTest const& );
 
         TestCase const& m_info;
         RunStatus m_runStatus;

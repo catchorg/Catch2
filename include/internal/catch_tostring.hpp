@@ -86,8 +86,8 @@ struct StringMaker :
 
 template<typename T>
 struct StringMaker<T*> {
-	template<typename U>
-	static std::string convert( U* p ) {
+    template<typename U>
+    static std::string convert( U* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;

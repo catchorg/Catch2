@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 5 (master branch)
- *  Generated: 2013-07-02 08:47:24.946227
+ *  Generated: 2013-07-03 08:24:00.747039
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -707,8 +707,8 @@ struct StringMaker :
 
 template<typename T>
 struct StringMaker<T*> {
-	template<typename U>
-	static std::string convert( U* p ) {
+    template<typename U>
+    static std::string convert( U* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
@@ -4742,8 +4742,8 @@ namespace Catch {
         }
 
     private:
-		RunningTest( RunningTest const& );
-		void operator=( RunningTest const& );
+        RunningTest( RunningTest const& );
+        void operator=( RunningTest const& );
 
         TestCase const& m_info;
         RunStatus m_runStatus;
@@ -5078,8 +5078,8 @@ namespace Catch {
         const unsigned int buildNumber;
         const std::string branchName;
 
-	private:
-		void operator=( Version const& );
+    private:
+        void operator=( Version const& );
     };
 
     extern Version libraryVersion;
@@ -7519,7 +7519,7 @@ namespace Catch {
     private:
 
         class AssertionPrinter {
-			void operator= ( AssertionPrinter const& );
+            void operator= ( AssertionPrinter const& );
         public:
             AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats )
             :   stream( _stream ),
