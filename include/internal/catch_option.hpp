@@ -23,7 +23,7 @@ namespace Catch {
         Option( Option const& _other )
         : nullableValue( _other ? new( storage ) T( *_other ) : NULL )
         {}
-        
+
         ~Option() {
             reset();
         }
@@ -51,7 +51,7 @@ namespace Catch {
 
         bool some() const { return nullableValue != NULL; }
         bool none() const { return nullableValue == NULL; }
-        
+
         bool operator !() const { return nullableValue == NULL; }
         operator SafeBool::type() const {
             return SafeBool::makeSafe( some() );

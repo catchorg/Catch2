@@ -24,7 +24,7 @@ namespace Catch {
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
-        
+
         virtual void registerTest( TestCase const& testCase ) {
             std::string name = testCase.getTestCaseInfo().name;
             if( name == "" ) {
@@ -47,7 +47,7 @@ namespace Catch {
                 exit(1);
             }
         }
-        
+
         virtual std::vector<TestCase> const& getAllTests() const {
             return m_functionsInOrder;
         }
@@ -85,15 +85,15 @@ namespace Catch {
         }
 
     private:
-        
+
         std::set<TestCase> m_functions;
         std::vector<TestCase> m_functionsInOrder;
-        std::vector<TestCase> m_nonHiddenFunctions;        
+        std::vector<TestCase> m_nonHiddenFunctions;
         size_t m_unnamedCount;
     };
 
     ///////////////////////////////////////////////////////////////////////////
-        
+
     class FreeFunctionTestCase : public SharedImpl<ITestCase> {
     public:
 
@@ -121,22 +121,22 @@ namespace Catch {
         }
         return className;
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
-    
+
     AutoReg::AutoReg(   TestFunction function,
                         SourceLineInfo const& lineInfo,
                         NameAndDesc const& nameAndDesc ) {
         registerTestCase( new FreeFunctionTestCase( function ), "global", nameAndDesc, lineInfo );
-    }    
-    
+    }
+
     AutoReg::~AutoReg() {}
-    
+
     void AutoReg::registerTestCase( ITestCase* testCase,
                                     char const* classOrQualifiedMethodName,
                                     NameAndDesc const& nameAndDesc,
                                     SourceLineInfo const& lineInfo ) {
-        
+
         getMutableRegistryHub().registerTest
             ( makeTestCase( testCase,
                             extractClassName( classOrQualifiedMethodName ),
@@ -144,7 +144,7 @@ namespace Catch {
                             nameAndDesc.description,
                             lineInfo ) );
     }
-    
+
 } // end namespace Catch
 
 

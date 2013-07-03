@@ -34,34 +34,34 @@
 namespace Catch {
 
     class OcMethod : public SharedImpl<ITestCase> {
-    
+
     public:
         OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel ) {}
-        
+
         virtual void invoke() const {
             id obj = [[m_cls alloc] init];
-            
+
             performOptionalSelector( obj, @selector(setUp)  );
             performOptionalSelector( obj, m_sel );
             performOptionalSelector( obj, @selector(tearDown)  );
-            
+
             arcSafeRelease( obj );
         }
     private:
         virtual ~OcMethod() {}
-        
+
         Class m_cls;
         SEL m_sel;
     };
-    
+
     namespace Detail{
-    
+
         inline bool startsWith( std::string const& str, std::string const& sub ) {
             return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
         }
-        
-        inline std::string getAnnotation(   Class cls, 
-                                            std::string const& annotationName, 
+
+        inline std::string getAnnotation(   Class cls,
+                                            std::string const& annotationName,
                                             std::string const& testCaseName ) {
             NSString* selStr = [[NSString alloc] initWithFormat:@"Catch_%s_%s", annotationName.c_str(), testCaseName.c_str()];
             SEL sel = NSSelectorFromString( selStr );
@@ -70,16 +70,16 @@ namespace Catch {
             if( value )
                 return [(NSString*)value UTF8String];
             return "";
-        }        
+        }
     }
 
     inline size_t registerTestMethods() {
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( NULL, 0 );
-        
+
         Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
         objc_getClassList( classes, noClasses );
-        
+
         for( int c = 0; c < noClasses; c++ ) {
             Class cls = classes[c];
             {
@@ -93,17 +93,17 @@ namespace Catch {
                         std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
                         const char* className = class_getName( cls );
-                        
+
                         getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
                         noTestMethods++;
                     }
                 }
-                free(methods);              
+                free(methods);
             }
         }
         return noTestMethods;
     }
-    
+
     namespace Matchers {
         namespace Impl {
         namespace NSStringMatchers {
@@ -115,29 +115,29 @@ namespace Catch {
                 StringHolder() {
                     arcSafeRelease( m_substr );
                 }
-                
+
                 NSString* m_substr;
             };
-            
+
             struct Equals : StringHolder<Equals> {
                 Equals( NSString* substr ) : StringHolder( substr ){}
-                
+
                 virtual bool match( ExpressionType const& str ) const {
                     return [str isEqualToString:m_substr];
                 }
-                
+
                 virtual std::string toString() const {
                     return "equals string: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
-            
+
             struct Contains : StringHolder<Contains> {
                 Contains( NSString* substr ) : StringHolder( substr ){}
-                
+
                 virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location != NSNotFound;
                 }
-                
+
                 virtual std::string toString() const {
                     return "contains string: \"" + Catch::toString( m_substr ) + "\"";
                 }
@@ -145,46 +145,46 @@ namespace Catch {
 
             struct StartsWith : StringHolder<StartsWith> {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
-                
+
                 virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location == 0;
                 }
-                
+
                 virtual std::string toString() const {
                     return "starts with: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
             struct EndsWith : StringHolder<EndsWith> {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
-                
+
                 virtual bool match( ExpressionType const& str ) const {
                     return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
-                
+
                 virtual std::string toString() const {
                     return "ends with: \"" + Catch::toString( m_substr ) + "\"";
                 }
             };
-            
+
         } // namespace NSStringMatchers
         } // namespace Impl
-        
+
         inline Impl::NSStringMatchers::Equals
             Equals( NSString* substr ){ return Impl::NSStringMatchers::Equals( substr ); }
-        
+
         inline Impl::NSStringMatchers::Contains
             Contains( NSString* substr ){ return Impl::NSStringMatchers::Contains( substr ); }
-        
+
         inline Impl::NSStringMatchers::StartsWith
             StartsWith( NSString* substr ){ return Impl::NSStringMatchers::StartsWith( substr ); }
-        
+
         inline Impl::NSStringMatchers::EndsWith
             EndsWith( NSString* substr ){ return Impl::NSStringMatchers::EndsWith( substr ); }
-        
+
     } // namespace Matchers
-    
+
     using namespace Matchers;
-    
+
 } // namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////

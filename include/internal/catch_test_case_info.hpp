@@ -58,7 +58,7 @@ namespace Catch {
         tags( other.tags ),
         tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
-        isHidden( other.isHidden )        
+        isHidden( other.isHidden )
     {}
 
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}

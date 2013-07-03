@@ -22,7 +22,7 @@ struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 // the result of evaluating it. This is used to build an AssertionResult object
 class ExpressionResultBuilder {
 public:
-    
+
     ExpressionResultBuilder( ResultWas::OfType resultType = ResultWas::Unknown );
     ExpressionResultBuilder( ExpressionResultBuilder const& other );
     ExpressionResultBuilder& operator=(ExpressionResultBuilder const& other );

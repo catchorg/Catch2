@@ -13,7 +13,7 @@
 #include "catch_common.h"
 
 namespace Catch {
-    
+
     struct MessageInfo {
         MessageInfo(    std::string const& _macroName,
                         SourceLineInfo const& _lineInfo,
@@ -24,7 +24,7 @@ namespace Catch {
         ResultWas::OfType type;
         std::string message;
         unsigned int sequence;
-        
+
         bool operator == ( MessageInfo const& other ) const {
             return sequence == other.sequence;
         }
@@ -34,14 +34,14 @@ namespace Catch {
     private:
         static unsigned int globalCount;
     };
-    
+
     struct MessageBuilder {
         MessageBuilder( std::string const& macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type )
         : m_info( macroName, lineInfo, type )
         {}
-        
+
         template<typename T>
         MessageBuilder& operator << ( T const& value ) {
             m_stream << value;

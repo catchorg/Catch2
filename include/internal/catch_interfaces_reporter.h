@@ -108,7 +108,7 @@ namespace Catch
             }
         }
         virtual ~AssertionStats();
-        
+
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
         Totals totals;
@@ -152,7 +152,7 @@ namespace Catch
         bool missingAssertions;
         bool aborting;
     };
-    
+
     struct TestGroupStats {
         TestGroupStats( GroupInfo const& _groupInfo,
                         Totals const& _totals,
@@ -171,7 +171,7 @@ namespace Catch
         Totals totals;
         bool aborting;
     };
-    
+
     struct TestRunStats {
         TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
@@ -199,7 +199,7 @@ namespace Catch
         // static std::string getDescription();
 
         virtual ReporterPreferences getPreferences() const = 0;
-        
+
         virtual void noMatchingTestCases( std::string const& spec ) = 0;
 
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
@@ -225,7 +225,7 @@ namespace Catch
         {}
 
         virtual ~StreamingReporterBase();
-        
+
         virtual void noMatchingTestCases( std::string const& ) {}
 
         virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
@@ -273,9 +273,9 @@ namespace Catch
         Option<TestCaseInfo> unusedTestCaseInfo;
         Ptr<ThreadedSectionInfo> currentSectionInfo;
         std::ostream& stream;
-        
+
         // !TBD: This should really go in the TestCaseStats class
-        std::vector<Ptr<ThreadedSectionInfo> > m_rootSections;        
+        std::vector<Ptr<ThreadedSectionInfo> > m_rootSections;
     };
 
     struct TestGroupNode : TestGroupStats {
@@ -289,17 +289,17 @@ namespace Catch
 
         TestRunNode( TestRunStats const& _stats ) : TestRunStats( _stats ) {}
         ~TestRunNode();
-        
+
         std::vector<TestGroupNode> groups;
     };
-    
+
     // Deprecated
     struct IReporter : IShared {
         virtual ~IReporter();
 
         virtual bool shouldRedirectStdout() const = 0;
 
-        virtual void StartTesting() = 0;        
+        virtual void StartTesting() = 0;
         virtual void EndTesting( Totals const& totals ) = 0;
         virtual void StartGroup( std::string const& groupName ) = 0;
         virtual void EndGroup( std::string const& groupName, Totals const& totals ) = 0;
@@ -313,7 +313,7 @@ namespace Catch
         virtual void Result( AssertionResult const& result ) = 0;
     };
 
-    
+
     struct IReporterFactory {
         virtual ~IReporterFactory();
         virtual IStreamingReporter* create( ReporterConfig const& config ) const = 0;
@@ -324,14 +324,14 @@ namespace Catch
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;        
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
     };
-    
+
     inline std::string trim( std::string const& str ) {
         std::string::size_type start = str.find_first_not_of( "\n\r\t " );
         std::string::size_type end = str.find_last_not_of( "\n\r\t " );
-        
+
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }
 }

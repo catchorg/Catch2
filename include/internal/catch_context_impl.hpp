@@ -52,7 +52,7 @@ namespace Catch {
         virtual void setConfig( Ptr<IConfig const> const& config ) {
             m_config = config;
         }
-        
+
         friend IMutableContext& getCurrentMutableContext();
 
     private:
@@ -82,7 +82,7 @@ namespace Catch {
         Ptr<IConfig const> m_config;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
-    
+
     namespace {
         Context* currentContext = NULL;
     }

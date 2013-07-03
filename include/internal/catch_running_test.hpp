@@ -1,4 +1,4 @@
-/*  
+/*
  *  Created by Phil Nash on 4/5/2012
  *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
  *
@@ -14,7 +14,7 @@
 namespace Catch {
 
     class RunningTest {
-    
+
         enum RunStatus {
             NothingRun,
             EncounteredASection,
@@ -22,7 +22,7 @@ namespace Catch {
             RanToCompletionWithSections,
             RanToCompletionWithNoSections
         };
-        
+
     public:
         explicit RunningTest( TestCase const& info )
         :   m_info( info ),
@@ -31,12 +31,12 @@ namespace Catch {
             m_currentSection( &m_rootSection ),
             m_changed( false )
         {}
-        
+
         bool wasSectionSeen() const {
-            return  m_runStatus == RanAtLeastOneSection || 
+            return  m_runStatus == RanAtLeastOneSection ||
                     m_runStatus == RanToCompletionWithSections;
         }
-        
+
         bool isBranchSection() const {
             return  m_currentSection &&
                     m_currentSection->isBranch();
@@ -53,7 +53,7 @@ namespace Catch {
             m_changed = false;
             m_lastSectionToRun = NULL;
         }
-        
+
         void ranToCompletion() {
             if( m_runStatus != RanAtLeastOneSection && m_runStatus != EncounteredASection )
                 m_runStatus = RanToCompletionWithNoSections;
@@ -63,11 +63,11 @@ namespace Catch {
                 m_changed = true;
             }
         }
-        
+
         bool addSection( std::string const& name ) {
             if( m_runStatus == NothingRun )
                 m_runStatus = EncounteredASection;
-            
+
             RunningSection* thisSection = m_currentSection->findOrAddSubSection( name, m_changed );
 
             if( !wasSectionSeen() && thisSection->shouldRun() ) {
@@ -77,7 +77,7 @@ namespace Catch {
             }
             return false;
         }
-        
+
         void endSection( std::string const&, bool stealth ) {
             if( m_currentSection->ran() ) {
                 if( !stealth )
@@ -91,7 +91,7 @@ namespace Catch {
             }
             m_currentSection = m_currentSection->getParent();
         }
-        
+
         TestCase const& getTestCase() const {
             return m_info;
         }
@@ -100,7 +100,7 @@ namespace Catch {
             return  m_runStatus == RanAtLeastOneSection ||
                     ( m_rootSection.hasUntestedSections() && m_changed );
         }
-        
+
     private:
         RunningTest( RunningTest const& );
         void operator=( RunningTest const& );

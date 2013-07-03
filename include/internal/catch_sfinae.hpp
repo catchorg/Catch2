@@ -12,7 +12,7 @@
 #include "catch_compiler_capabilities.h"
 
 namespace Catch {
-    
+
     struct TrueType {
         static const bool value = true;
         typedef void Enable;
@@ -37,7 +37,7 @@ namespace Catch {
     template<> struct SizedIf<sizeof(FalseType)> : FalseType {};
 
 #endif // CATCH_CONFIG_SFINAE
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_SFINAE_HPP_INCLUDED

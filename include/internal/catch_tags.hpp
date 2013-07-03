@@ -77,7 +77,7 @@ namespace Catch {
         }
 
         TagExtracter& operator=(TagExtracter const&);
-        
+
         std::set<std::string>& m_tags;
         std::string m_remainder;
     };
@@ -130,7 +130,7 @@ namespace Catch {
             }
             return true;
         }
-        
+
     private:
         TagMap m_tags;
     };
@@ -151,7 +151,7 @@ namespace Catch {
 
         std::vector<TagSet> m_tagSets;
     };
-    
+
     class TagExpressionParser : public TagParser {
     public:
         TagExpressionParser( TagExpression& exp )
@@ -187,7 +187,7 @@ namespace Catch {
         TagSet m_currentTagSet;
         TagExpression& m_exp;
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED

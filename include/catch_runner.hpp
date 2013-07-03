@@ -72,7 +72,7 @@ namespace Catch {
             if( testsRunForGroup == 0 && !filterGroup.getName().empty() )
                 m_reporter->noMatchingTestCases( filterGroup.getName() );
             return totals;
-            
+
         }
 
     private:
@@ -100,7 +100,7 @@ namespace Catch {
                 throw std::domain_error( oss.str() );
             }
         }
-        
+
     private:
         Ptr<Config> m_config;
         std::ofstream m_ofs;
@@ -110,9 +110,9 @@ namespace Catch {
 
     class Session {
         static bool alreadyInstantiated;
-        
+
     public:
-    
+
         struct OnUnusedOptions { enum DoWhat { Ignore, Fail }; };
 
         Session()
@@ -127,7 +127,7 @@ namespace Catch {
         ~Session() {
             Catch::cleanUp();
         }
-        
+
         void showHelp( std::string const& processName ) {
             std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
                                         << libraryVersion.minorVersion << " build "
@@ -139,7 +139,7 @@ namespace Catch {
             m_cli.usage( std::cout, processName );
             std::cout << "For more detail usage please see the project docs\n" << std::endl;
         }
-        
+
         int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
                 m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
@@ -177,7 +177,7 @@ namespace Catch {
                 throw std::runtime_error( msg.substr( 0, msg.size()-1 ) );
             }
         }
-        
+
         int run( int argc, char* const argv[] ) {
 
             int returnCode = applyCommandLine( argc, argv );
@@ -206,7 +206,7 @@ namespace Catch {
                 return (std::numeric_limits<int>::max)();
             }
         }
-        
+
         Clara::CommandLine<ConfigData> const& cli() const {
             return m_cli;
         }
@@ -221,8 +221,8 @@ namespace Catch {
                 m_config = new Config( m_configData );
             return *m_config;
         }
-        
-    private:        
+
+    private:
         Clara::CommandLine<ConfigData> m_cli;
         std::vector<Clara::Parser::Token> m_unusedTokens;
         ConfigData m_configData;
@@ -230,7 +230,7 @@ namespace Catch {
     };
 
     bool Session::alreadyInstantiated = false;
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED

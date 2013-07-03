@@ -53,7 +53,7 @@ namespace Catch
                     m_legacyReporter->Result( result );
                 }
             }
-        }    
+        }
         m_legacyReporter->Result( assertionStats.assertionResult );
         return true;
     }

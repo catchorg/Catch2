@@ -25,21 +25,21 @@
 namespace Catch {
 
     class StreamRedirect {
-    
+
     public:
         StreamRedirect( std::ostream& stream, std::string& targetString )
         :   m_stream( stream ),
             m_prevBuf( stream.rdbuf() ),
-            m_targetString( targetString ) 
-        {            
+            m_targetString( targetString )
+        {
             stream.rdbuf( m_oss.rdbuf() );
         }
-        
+
         ~StreamRedirect() {
             m_targetString += m_oss.str();
             m_stream.rdbuf( m_prevBuf );
         }
-        
+
     private:
         std::ostream& m_stream;
         std::streambuf* m_prevBuf;
@@ -50,10 +50,10 @@ namespace Catch {
     ///////////////////////////////////////////////////////////////////////////
 
     class RunContext : public IResultCapture, public IRunner {
-    
+
         RunContext( RunContext const& );
         void operator =( RunContext const& );
-        
+
     public:
 
         explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
@@ -71,7 +71,7 @@ namespace Catch {
             m_context.setResultCapture( this );
             m_reporter->testRunStarting( m_runInfo );
         }
-        
+
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
@@ -92,7 +92,7 @@ namespace Catch {
             std::vector<TestCase> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
 
             Totals totals;
-            
+
             testGroupStarting( testSpec, groupIndex, groupsCount );
 
             std::vector<TestCase>::const_iterator it = matchingTests.begin();
@@ -113,7 +113,7 @@ namespace Catch {
             TestCaseInfo testInfo = testCase.getTestCaseInfo();
 
             m_reporter->testCaseStarting( testInfo );
-            
+
             m_runningTest = new RunningTest( testCase );
 
             do {
@@ -151,7 +151,7 @@ namespace Catch {
         Ptr<IConfig const> config() const {
             return m_config;
         }
-        
+
     private: // IResultCapture
 
         virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) {
@@ -166,14 +166,14 @@ namespace Catch {
             else if( !result.isOk() ) {
                 m_totals.assertions.failed++;
             }
-            
+
             if( m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) ) )
                 m_messages.clear();
 
             // Reset working state
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
         }
-        
+
         virtual bool sectionStarted (
             SectionInfo const& sectionInfo,
             Counts& assertions
@@ -191,16 +191,16 @@ namespace Catch {
             m_reporter->sectionStarting( sectionInfo );
 
             assertions = m_totals.assertions;
-            
+
             return true;
         }
-        
+
         virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions ) {
             if( std::uncaught_exception() ) {
                 m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions ) );
                 return;
             }
-            
+
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = false;
             if( assertions.total() == 0 &&
@@ -220,7 +220,7 @@ namespace Catch {
         virtual void pushScopedMessage( MessageInfo const& message ) {
             m_messages.push_back( message );
         }
-        
+
         virtual void popScopedMessage( MessageInfo const& message ) {
             m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), message ), m_messages.end() );
         }
@@ -236,7 +236,7 @@ namespace Catch {
         }
 
         virtual const AssertionResult* getLastResult() const {
-            return &m_lastResult;            
+            return &m_lastResult;
         }
 
     public:
@@ -252,7 +252,7 @@ namespace Catch {
             assertionEnded( m_lastResult );
 
             ResultAction::Value action = ResultAction::None;
-            
+
             if( !m_lastResult.isOk() ) {
                 action = ResultAction::Failed;
                 if( shouldDebugBreak() )
@@ -267,7 +267,7 @@ namespace Catch {
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCase().getTestCaseInfo().lineInfo, "", ResultDisposition::Normal );
                 m_runningTest->reset();
-                
+
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
@@ -320,7 +320,7 @@ namespace Catch {
         AssertionInfo m_lastAssertionInfo;
         std::vector<UnfinishedSections> m_unfinishedSections;
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED

@@ -17,7 +17,7 @@
 namespace Catch {
 
     namespace {
-        
+
         class RegistryHub : public IRegistryHub, public IMutableRegistryHub {
 
             RegistryHub( RegistryHub const& );

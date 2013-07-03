@@ -35,17 +35,17 @@ namespace Catch {
         virtual void noMatchingTestCases( std::string const& spec ) {
             stream << "No test cases matched '" << spec << "'" << std::endl;
         }
-        
+
         virtual void assertionStarting( AssertionInfo const& ) {
         }
 
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
-            
+
             // Drop out if result was successful and we're not printing those
             if( !m_config->includeSuccessfulResults() && result.isOk() )
                 return false;
-            
+
             lazyPrint();
 
             AssertionPrinter printer( stream, _assertionStats );
@@ -96,7 +96,7 @@ namespace Catch {
         }
 
     private:
-        
+
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:
@@ -165,7 +165,7 @@ namespace Catch {
                         break;
                 }
             }
-            
+
             void print() const {
                 printSourceInfo();
                 if( stats.totals.assertions.total() > 0 ) {
@@ -180,7 +180,7 @@ namespace Catch {
                 }
                 printMessage();
             }
-            
+
         private:
             void printResultType() const {
                 if( !passOrFail.empty() ) {
@@ -208,7 +208,7 @@ namespace Catch {
                     stream << messageLabel << ":" << "\n";
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
-                        ++it ) {                    
+                        ++it ) {
                     stream << Text( it->message, TextAttributes().setIndent(2) ) << "\n";
                 }
             }
@@ -216,7 +216,7 @@ namespace Catch {
                 Colour colourGuard( Colour::FileName );
                 stream << result.getSourceInfo() << ": ";
             }
-            
+
             std::ostream& stream;
             AssertionStats const& stats;
             AssertionResult const& result;
@@ -226,14 +226,14 @@ namespace Catch {
             std::string message;
             std::vector<MessageInfo> messages;
         };
-        
+
         void lazyPrint() {
-            
+
             if( testRunInfo )
                 lazyPrintRunInfo();
             if( unusedGroupInfo )
                 lazyPrintGroupInfo();
-            
+
             if( !m_headerPrinted ) {
                 printTestCaseAndSectionHeader();
                 m_headerPrinted = true;
@@ -251,7 +251,7 @@ namespace Catch {
                 stream << " (" << libraryVersion.branchName << ")";
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
-            
+
             testRunInfo.reset();
         }
         void lazyPrintGroupInfo() {
@@ -269,9 +269,9 @@ namespace Catch {
                         section;
                         section = section->parent )
                     sections.push_back( section );
-                
+
                 // Sections
-                if( !sections.empty() ) {                    
+                if( !sections.empty() ) {
                     typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
                     for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
                         printHeaderString( (*it)->name, 2 );
@@ -281,7 +281,7 @@ namespace Catch {
             SourceLineInfo lineInfo = currentSectionInfo
                                     ? currentSectionInfo->lineInfo
                                     : unusedTestCaseInfo->lineInfo;
-            
+
             if( !lineInfo.empty() ){
                 stream << getDashes() << "\n";
                 Colour colourGuard( Colour::FileName );
@@ -314,7 +314,7 @@ namespace Catch {
                                         .setIndent( indent+i)
                                         .setInitialIndent( indent ) ) << "\n";
         }
-        
+
         void printTotals( const Totals& totals ) {
             if( totals.assertions.total() == 0 ) {
                 stream << "No tests ran";
@@ -361,7 +361,7 @@ namespace Catch {
                 }
             }
         }
-                
+
         void printTotalsDivider() {
             stream << getDoubleDashes() << "\n";
         }
@@ -384,7 +384,7 @@ namespace Catch {
             static const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '~' );
             return dots;
         }
-        
+
     private:
         bool m_headerPrinted;
         bool m_atLeastOneTestCasePrinted;

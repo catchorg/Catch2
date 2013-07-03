@@ -23,7 +23,7 @@
 #endif
 
 namespace Catch {
-    
+
     struct ConfigData {
 
         struct Verbosity { enum Level {
@@ -49,7 +49,7 @@ namespace Catch {
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing )
         {}
-        
+
         bool listTests;
         bool listTags;
         bool listReporters;
@@ -71,8 +71,8 @@ namespace Catch {
 
         std::vector<std::string> testsOrTags;
     };
-    
-    
+
+
     class Config : public SharedImpl<IConfig> {
     private:
         Config( Config const& other );
@@ -83,7 +83,7 @@ namespace Catch {
         Config()
         :   m_os( std::cout.rdbuf() )
         {}
-        
+
         Config( ConfigData const& data )
         :   m_data( data ),
             m_os( std::cout.rdbuf() )
@@ -106,24 +106,24 @@ namespace Catch {
                 m_filterSets.push_back( filters );
             }
         }
-        
+
         virtual ~Config() {
             m_os.rdbuf( std::cout.rdbuf() );
             m_stream.release();
         }
-        
+
         void setFilename( std::string const& filename ) {
             m_data.outputFilename = filename;
         }
-        
+
         std::string const& getFilename() const {
             return m_data.outputFilename ;
         }
-        
+
         bool listTests() const { return m_data.listTests; }
         bool listTags() const { return m_data.listTags; }
         bool listReporters() const { return m_data.listReporters; }
-        
+
         std::string getProcessName() const {
             return m_data.processName;
         }
@@ -131,10 +131,10 @@ namespace Catch {
         bool shouldDebugBreak() const {
             return m_data.shouldDebugBreak;
         }
-        
+
         void setStreamBuf( std::streambuf* buf ) {
             m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
-        }        
+        }
 
         void useStream( std::string const& streamName ) {
             Stream stream = createStream( streamName );
@@ -142,7 +142,7 @@ namespace Catch {
             m_stream.release();
             m_stream = stream;
         }
-        
+
         std::string getReporterName() const { return m_data.reporterName; }
 
         void addTestSpec( std::string const& testSpec ) {
@@ -154,11 +154,11 @@ namespace Catch {
         int abortAfter() const {
             return m_data.abortAfter;
         }
-        
+
         std::vector<TestCaseFilters> const& filters() const {
             return m_filterSets;
         }
-        
+
         bool showHelp() const { return m_data.showHelp; }
 
         // IConfig interface
@@ -170,13 +170,13 @@ namespace Catch {
 
     private:
         ConfigData m_data;
-        
+
         Stream m_stream;
         mutable std::ostream m_os;
         std::vector<TestCaseFilters> m_filterSets;
     };
-        
-    
+
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED

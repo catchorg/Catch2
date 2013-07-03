@@ -154,7 +154,7 @@ namespace Clara {
             virtual IArgFunction<C>* clone() const { return new BoundUnaryFunction( *this ); }
             void (*function)( C& );
         };
-        
+
         template<typename C, typename T>
         struct BoundBinaryFunction : IArgFunction<C>{
             BoundBinaryFunction( void (*_function)( C&, T ) ) : function( _function ) {}
@@ -172,7 +172,7 @@ namespace Clara {
             virtual IArgFunction<C>* clone() const { return new BoundBinaryFunction( *this ); }
             void (*function)( C&, T );
         };
-        
+
         template<typename C, typename M>
         BoundArgFunction<C> makeBoundField( M C::* _member ) {
             return BoundArgFunction<C>( new BoundDataMember<C,M>( _member ) );
@@ -208,7 +208,7 @@ namespace Clara {
         void parseIntoTokens( int argc, char const * const * argv, std::vector<Parser::Token>& tokens ) const {
             for( int i = 1; i < argc; ++i )
                 parseIntoTokens( argv[i] , tokens);
-        }        
+        }
         void parseIntoTokens( std::string arg, std::vector<Parser::Token>& tokens ) const {
             while( !arg.empty() ) {
                 Parser::Token token( Parser::Token::Positional, arg );
@@ -275,7 +275,7 @@ namespace Clara {
             void validate() const {
                 if( boundField.takesArg() && !takesArg() )
                     throw std::logic_error( dbgName() + " must specify an arg name" );
-            }        
+            }
             std::string commands() const {
                 std::ostringstream oss;
                 bool first = true;
@@ -296,7 +296,7 @@ namespace Clara {
                     oss << " <" << argName << ">";
                 return oss.str();
             }
-        
+
             Detail::BoundArgFunction<ConfigT> boundField;
             std::vector<std::string> shortNames;
             std::string longName;
@@ -361,7 +361,7 @@ namespace Clara {
         };
 
     public:
-    
+
         CommandLine()
         :   m_boundProcessName( new Detail::NullBinder<ConfigT>() ),
             m_highestSpecifiedArgPosition( 0 )
@@ -408,15 +408,15 @@ namespace Clara {
                         os  << std::string( indent + 2 + maxWidth - usageCol.size(), ' ' )
                             << desc[i];
                     os << "\n";
-                }                
-            }            
+                }
+            }
         }
         std::string optUsage() const {
             std::ostringstream oss;
             optUsage( oss );
             return oss.str();
         }
-        
+
         void argSynopsis( std::ostream& os ) const {
             for( int i = 1; i <= m_highestSpecifiedArgPosition; ++i ) {
                 if( i > 1 )
@@ -441,13 +441,13 @@ namespace Clara {
             argSynopsis( oss );
             return oss.str();
         }
-        
+
         void usage( std::ostream& os, std::string const& procName ) const {
             os << "usage:\n  " << procName << " ";
             argSynopsis( os );
             if( !m_options.empty() ) {
                 os << " [options]\n\nwhere options are: \n";
-                optUsage( os, 2 );                
+                optUsage( os, 2 );
             }
             os << "\n";
         }
@@ -455,8 +455,8 @@ namespace Clara {
             std::ostringstream oss;
             usage( oss, procName );
             return oss.str();
-        }        
-        
+        }
+
         std::vector<Parser::Token> parseInto( int argc, char const * const * argv, ConfigT& config ) const {
             std::string processName = argv[0];
             std::size_t lastSlash = processName.find_last_of( "/\\" );
@@ -486,7 +486,7 @@ namespace Clara {
                 typename std::vector<Arg>::const_iterator it = m_options.begin(), itEnd = m_options.end();
                 for(; it != itEnd; ++it ) {
                     Arg const& arg = *it;
-                        
+
                     try {
                         if( ( token.type == Parser::Token::ShortOpt && arg.hasShortName( token.data ) ) ||
                             ( token.type == Parser::Token::LongOpt && arg.hasLongName( token.data ) ) ) {
@@ -521,7 +521,7 @@ namespace Clara {
                 else
                     unusedTokens.push_back( token );
                 if( token.type == Parser::Token::Positional )
-                    position++;                
+                    position++;
             }
             return unusedTokens;
         }
@@ -538,7 +538,7 @@ namespace Clara {
             }
             return unusedTokens;
         }
-        
+
     private:
         Detail::BoundArgFunction<ConfigT> m_boundProcessName;
         std::vector<Arg> m_options;
@@ -546,7 +546,7 @@ namespace Clara {
         std::auto_ptr<Arg> m_arg;
         int m_highestSpecifiedArgPosition;
     };
-    
+
 } // end namespace Clara
 
 

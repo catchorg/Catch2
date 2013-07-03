@@ -29,7 +29,7 @@ namespace Catch {
             if( m_sectionIncluded )
                 getCurrentContext().getResultCapture().sectionEnded( m_info, m_assertions );
         }
-        
+
         // This indicates whether the section should be executed or not
         operator bool() {
             return m_sectionIncluded;
@@ -37,12 +37,12 @@ namespace Catch {
 
     private:
         SectionInfo m_info;
-        
+
         std::string m_name;
         Counts m_assertions;
         bool m_sectionIncluded;
     };
-    
+
 } // end namespace Catch
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS

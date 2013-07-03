@@ -13,7 +13,7 @@
 #include "clara.h"
 
 namespace Catch {
-    
+
     inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
     inline void abortAfterX( ConfigData& config, int x ) {
         if( x < 1 )
@@ -33,7 +33,7 @@ namespace Catch {
         // !TBD: accept strings?
         config.verbosity = (ConfigData::Verbosity::Level)level;
     }
-    
+
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
         Clara::CommandLine<ConfigData> cli;
@@ -123,7 +123,7 @@ namespace Catch {
 
         return cli;
     }
-        
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED

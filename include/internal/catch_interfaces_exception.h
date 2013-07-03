@@ -10,19 +10,19 @@
 
 #include <string>
 #include "catch_interfaces_registry_hub.h"
-                                              
+
 namespace Catch {
-    
+
     typedef std::string(*exceptionTranslateFunction)();
 
     struct IExceptionTranslator {
         virtual ~IExceptionTranslator();
         virtual std::string translate() const = 0;
     };
-    
+
     struct IExceptionTranslatorRegistry {
         virtual ~IExceptionTranslatorRegistry();
-        
+
         virtual std::string translateActiveException() const = 0;
     };
 
@@ -30,11 +30,11 @@ namespace Catch {
         template<typename T>
         class ExceptionTranslator : public IExceptionTranslator {
         public:
-            
+
             ExceptionTranslator( std::string(*translateFunction)( T& ) )
             : m_translateFunction( translateFunction )
             {}
-            
+
             virtual std::string translate() const {
                 try {
                     throw;
@@ -43,11 +43,11 @@ namespace Catch {
                     return m_translateFunction( ex );
                 }
             }
-            
+
         protected:
             std::string(*m_translateFunction)( T& );
         };
-        
+
     public:
         template<typename T>
         ExceptionTranslatorRegistrar( std::string(*translateFunction)( T& ) ) {

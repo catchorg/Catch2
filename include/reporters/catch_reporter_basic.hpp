@@ -16,23 +16,23 @@
 namespace Catch {
 
     class BasicReporter : public SharedImpl<IReporter> {
-    
+
         struct SpanInfo {
 
-            SpanInfo() 
+            SpanInfo()
             :   emitted( false )
             {}
-            
-            SpanInfo( const std::string& spanName ) 
+
+            SpanInfo( const std::string& spanName )
             :   name( spanName ),
                 emitted( false )
             {}
-            
-            SpanInfo( const SpanInfo& other ) 
+
+            SpanInfo( const SpanInfo& other )
             :   name( other.name ),
                 emitted( other.emitted )
             {}
-            
+
             std::string name;
             bool emitted;
         };
@@ -45,7 +45,7 @@ namespace Catch {
         {}
 
         virtual ~BasicReporter();
-        
+
         static std::string getDescription() {
             return "Reports test results as lines of text";
         }
@@ -81,10 +81,10 @@ namespace Catch {
         }
 
     private: // IReporter
-        
+
         virtual bool shouldRedirectStdout() const {
             return false;
-        }        
+        }
 
         virtual void StartTesting() {
             m_testingSpan = SpanInfo();
@@ -119,11 +119,11 @@ namespace Catch {
                 m_groupSpan = SpanInfo();
             }
         }
-        
+
         virtual void StartTestCase( const TestCaseInfo& testInfo ) {
             m_testSpan = testInfo.name;
         }
-        
+
         virtual void StartSection( const std::string& sectionName, const std::string& ) {
             m_sectionSpans.push_back( SpanInfo( sectionName ) );
         }
@@ -144,7 +144,7 @@ namespace Catch {
             SpanInfo& sectionSpan = m_sectionSpans.back();
             if( sectionSpan.emitted && !sectionSpan.name.empty() ) {
                 m_config.stream() << "[End of section: '" << sectionName << "' ";
-                
+
                 if( assertions.failed ) {
                     Colour colour( Colour::ResultError );
                     ReportCounts( "assertion", assertions);
@@ -158,18 +158,18 @@ namespace Catch {
             }
             m_sectionSpans.pop_back();
         }
-        
+
         virtual void Result( const AssertionResult& assertionResult ) {
             if( !m_config.fullConfig()->includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
                 return;
-            
+
             startSpansLazily();
-            
+
             if( !assertionResult.getSourceInfo().empty() ) {
                 Colour colour( Colour::FileName );
                 m_config.stream() << assertionResult.getSourceInfo() << ": ";
             }
-            
+
             if( assertionResult.hasExpression() ) {
                 Colour colour( Colour::OriginalExpression );
                 m_config.stream() << assertionResult.getExpression();
@@ -250,7 +250,7 @@ namespace Catch {
                     }
                     break;
             }
-            
+
             if( assertionResult.hasExpandedExpression() ) {
                 m_config.stream() << " for: ";
                 if( assertionResult.getExpandedExpression().size() > 40 ) {
@@ -263,30 +263,30 @@ namespace Catch {
             }
             m_config.stream() << std::endl;
         }
-        
-        virtual void EndTestCase(   const TestCaseInfo& testInfo, 
+
+        virtual void EndTestCase(   const TestCaseInfo& testInfo,
                                     const Totals& totals,
-                                    const std::string& stdOut, 
+                                    const std::string& stdOut,
                                     const std::string& stdErr ) {
             if( !stdOut.empty() ) {
                 startSpansLazily();
                 streamVariableLengthText( "stdout", stdOut );
             }
-            
+
             if( !stdErr.empty() ) {
                 startSpansLazily();
                 streamVariableLengthText( "stderr", stdErr );
             }
-            
+
             if( m_testSpan.emitted ) {
                 m_config.stream() << "[Finished: '" << testInfo.name << "' ";
                 ReportCounts( totals );
                 m_config.stream() << "]" << std::endl;
             }
-        }    
-        
+        }
+
     private: // helpers
-        
+
         void startSpansLazily() {
             if( !m_testingSpan.emitted ) {
                 if( m_config.fullConfig()->name().empty() )
@@ -295,17 +295,17 @@ namespace Catch {
                     m_config.stream() << "[Started testing: " << m_config.fullConfig()->name() << "]" << std::endl;
                 m_testingSpan.emitted = true;
             }
-            
+
             if( !m_groupSpan.emitted && !m_groupSpan.name.empty() ) {
                 m_config.stream() << "[Started group: '" << m_groupSpan.name << "']" << std::endl;
                 m_groupSpan.emitted = true;
             }
-            
+
             if( !m_testSpan.emitted ) {
                 m_config.stream() << std::endl << "[Running: " << m_testSpan.name << "]" << std::endl;
                 m_testSpan.emitted = true;
             }
-            
+
             if( !m_sectionSpans.empty() ) {
                 SpanInfo& sectionSpan = m_sectionSpans.back();
                 if( !sectionSpan.emitted && !sectionSpan.name.empty() ) {
@@ -320,34 +320,34 @@ namespace Catch {
                         if( !prevSpan.emitted && !prevSpan.name.empty() ) {
                             m_config.stream() << "[Started section: '" << prevSpan.name << "']" << std::endl;
                             prevSpan.emitted = true;
-                        }                        
+                        }
                     }
                 }
             }
         }
-        
+
         void streamVariableLengthText( const std::string& prefix, const std::string& text ) {
             std::string trimmed = trim( text );
             if( trimmed.find_first_of( "\r\n" ) == std::string::npos ) {
                 m_config.stream() << "[" << prefix << ": " << trimmed << "]";
             }
             else {
-                m_config.stream() << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed 
+                m_config.stream() << "\n[" << prefix << "] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << trimmed
                 << "\n[end of " << prefix << "] <<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
         }
-        
+
     private:
         ReporterConfig m_config;
         bool m_firstSectionInTestCase;
-        
+
         SpanInfo m_testingSpan;
         SpanInfo m_groupSpan;
         SpanInfo m_testSpan;
         std::vector<SpanInfo> m_sectionSpans;
         bool m_aborted;
     };
-        
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_BASIC_HPP_INCLUDED

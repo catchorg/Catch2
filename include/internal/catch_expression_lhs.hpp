@@ -31,22 +31,22 @@ public:
     ExpressionResultBuilder& operator != ( RhsT const& rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator < ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThan>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator > ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThan>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator <= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator >= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
@@ -55,11 +55,11 @@ public:
     ExpressionResultBuilder& operator == ( bool rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
-    
+
     ExpressionResultBuilder& operator != ( bool rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
-    
+
     ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition ) {
         bool value = m_lhs ? true : false;
         return m_result

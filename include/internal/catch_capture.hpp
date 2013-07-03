@@ -25,7 +25,7 @@ namespace Catch {
     inline IResultCapture& getResultCapture() {
         return getCurrentContext().getResultCapture();
     }
-    
+
     template<typename MatcherT>
     ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
                                                                 std::string const& matcherCallAsString ) {
@@ -54,7 +54,7 @@ namespace Catch {
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
-    
+
 struct TestFailureException{};
 
 } // end namespace Catch

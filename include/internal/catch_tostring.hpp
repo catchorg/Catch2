@@ -38,7 +38,7 @@ namespace Detail {
     public:
         typedef SizedIf<sizeof(dummy((T*)0))> type;
     };
-    
+
     template<typename T>
     struct IsStreamInsertable : IsStreamInsertableHelper<T>::type {};
 
@@ -47,10 +47,10 @@ namespace Detail {
     struct BorgType {
         template<typename T> BorgType( T const& );
     };
-  
+
     TrueType& testStreamable( std::ostream& );
     FalseType testStreamable( FalseType );
-    
+
     FalseType operator<<( std::ostream const&, BorgType const& );
 
     template<typename T>
@@ -59,7 +59,7 @@ namespace Detail {
         static T  const&t;
         enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
     };
-    
+
 #endif
 
     template<bool C>
@@ -77,7 +77,7 @@ namespace Detail {
             return oss.str();
         }
     };
-    
+
 } // end namespace Detail
 
 template<typename T>
@@ -115,13 +115,13 @@ namespace Detail {
     template<typename T>
     inline std::string makeString( T const& value ) {
         return StringMaker<T>::convert( value );
-    }   
+    }
 } // end namespace Detail
 
 /// \brief converts any type to a string
 ///
-/// The default template forwards on to ostringstream - except when an 
-/// ostringstream overload does not exist - in which case it attempts to detect 
+/// The default template forwards on to ostringstream - except when an
+/// ostringstream overload does not exist - in which case it attempts to detect
 /// that and writes {?}.
 /// Overload (not specialise) this template for custom typs that you don't want
 /// to provide an ostream overload for.
@@ -129,7 +129,7 @@ template<typename T>
 std::string toString( T const& value ) {
     return StringMaker<T>::convert( value );
 }
-    
+
 // Built in overloads
 
 inline std::string toString( std::string const& value ) {
@@ -147,11 +147,11 @@ inline std::string toString( std::wstring const& value ) {
 
 inline std::string toString( const char* const value ) {
     return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
-}   
+}
 
 inline std::string toString( char* const value ) {
     return Catch::toString( static_cast<const char*>( value ) );
-}        
+}
 
 inline std::string toString( int value ) {
     std::ostringstream oss;
@@ -167,17 +167,17 @@ inline std::string toString( unsigned long value ) {
         oss << value;
     return oss.str();
 }
-    
+
 inline std::string toString( unsigned int value ) {
     return toString( static_cast<unsigned long>( value ) );
 }
-    
+
 inline std::string toString( const double value ) {
     std::ostringstream oss;
     oss << std::setprecision (std::numeric_limits<double>::digits10 + 1)
         << value;
     return oss.str();
-}    
+}
 
 inline std::string toString( bool value ) {
     return value ? "true" : "false";

@@ -19,37 +19,37 @@
 namespace Catch {
 
     struct GeneratorInfo : IGeneratorInfo {
-    
+
         GeneratorInfo( std::size_t size )
         :   m_size( size ),
             m_currentIndex( 0 )
         {}
-        
-        bool moveNext() {        
+
+        bool moveNext() {
             if( ++m_currentIndex == m_size ) {
                 m_currentIndex = 0;
                 return false;
             }
             return true;
         }
-        
+
         std::size_t getCurrentIndex() const {
             return m_currentIndex;
         }
-        
+
         std::size_t m_size;
         std::size_t m_currentIndex;
     };
-    
+
     ///////////////////////////////////////////////////////////////////////////
-    
+
     class GeneratorsForTest : public IGeneratorsForTest {
-        
+
     public:
         ~GeneratorsForTest() {
             deleteAll( m_generatorsInOrder );
         }
-        
+
         IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) {
             std::map<std::string, IGeneratorInfo*>::const_iterator it = m_generatorsByName.find( fileInfo );
             if( it == m_generatorsByName.end() ) {
@@ -60,7 +60,7 @@ namespace Catch {
             }
             return *it->second;
         }
-        
+
         bool moveNext() {
             std::vector<IGeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
             std::vector<IGeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
@@ -70,7 +70,7 @@ namespace Catch {
             }
             return false;
         }
-        
+
     private:
         std::map<std::string, IGeneratorInfo*> m_generatorsByName;
         std::vector<IGeneratorInfo*> m_generatorsInOrder;

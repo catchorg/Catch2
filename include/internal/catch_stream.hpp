@@ -21,7 +21,7 @@ namespace Catch {
     class StreamBufImpl : public StreamBufBase {
         char data[bufferSize];
         WriterF m_writer;
-        
+
     public:
         StreamBufImpl() {
             setp( data, data + sizeof(data) );
@@ -30,20 +30,20 @@ namespace Catch {
         ~StreamBufImpl() throw() {
             sync();
         }
-        
+
     private:
         int overflow( int c ) {
             sync();
-            
+
             if( c != EOF ) {
                 if( pbase() == epptr() )
                     m_writer( std::string( 1, static_cast<char>( c ) ) );
                 else
                     sputc( static_cast<char>( c ) );
-            }            
+            }
             return 0;
         }
-        
+
         int sync() {
             if( pbase() != pptr() ) {
                 m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
@@ -52,11 +52,11 @@ namespace Catch {
             return 0;
         }
     };
-    
+
     ///////////////////////////////////////////////////////////////////////////
 
     struct OutputDebugWriter {
-    
+
         void operator()( std::string const&str ) {
             writeToDebugConsole( str );
         }
@@ -67,7 +67,7 @@ namespace Catch {
         Stream()
         : streamBuf( NULL ), isOwned( false )
         {}
-        
+
         Stream( std::streambuf* _streamBuf, bool _isOwned )
         : streamBuf( _streamBuf ), isOwned( _isOwned )
         {}

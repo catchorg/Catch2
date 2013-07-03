@@ -41,7 +41,7 @@ namespace Catch {
         AssertionResult();
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
-        
+
         bool isOk() const;
         bool succeeded() const;
         ResultWas::OfType getResultType() const;
@@ -59,7 +59,7 @@ namespace Catch {
         AssertionInfo m_info;
         AssertionResultData m_resultData;
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED

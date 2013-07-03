@@ -14,7 +14,7 @@
 #include <vector>
 
 namespace Catch {
-    
+
     struct TextAttributes {
         TextAttributes()
         :   initialIndent( std::string::npos ),
@@ -22,7 +22,7 @@ namespace Catch {
             width( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
             tabChar( '\t' )
         {}
-        
+
         TextAttributes& setInitialIndent( std::size_t _value )  { initialIndent = _value; return *this; }
         TextAttributes& setIndent( std::size_t _value )         { indent = _value; return *this; }
         TextAttributes& setWidth( std::size_t _value )          { width = _value; return *this; }
@@ -38,7 +38,7 @@ namespace Catch {
     public:
         Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() );
         void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos );
-        
+
         typedef std::vector<std::string>::const_iterator const_iterator;
 
         const_iterator begin() const { return lines.begin(); }
@@ -49,13 +49,13 @@ namespace Catch {
         std::string toString() const;
 
         friend std::ostream& operator << ( std::ostream& _stream, Text const& _text );
-        
+
     private:
         std::string str;
         TextAttributes attr;
         std::vector<std::string> lines;
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
