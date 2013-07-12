@@ -24,14 +24,14 @@ namespace Catch {
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
         if( _warning == "NoAssertions" )
-            config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
+            config.warnings = static_cast<ConfigData::WarnAbout::What>( config.warnings | ConfigData::WarnAbout::NoAssertions );
         else
             throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
 
     }
     inline void setVerbosity( ConfigData& config, int level ) {
         // !TBD: accept strings?
-        config.verbosity = (ConfigData::Verbosity::Level)level;
+        config.verbosity = static_cast<ConfigData::Verbosity::Level>(level);
     }
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
