@@ -11,7 +11,7 @@ catch_self_test: $(OBJECTS)
 	$(CXX) -o $@ $^
 
 clean:
-	rm -f $(OBJECTS) catch_self_test
+	$(RM) $(OBJECTS) catch_self_test
 
 check: catch_self_test
 	./catch_self_test
