@@ -16,4 +16,4 @@ clean:
 check: catch_self_test
 	./catch_self_test
 
-.PHONY: catch_self_test clean check
+.PHONY: clean check
