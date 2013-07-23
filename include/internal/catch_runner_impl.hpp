@@ -286,6 +286,8 @@ namespace Catch {
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
+            // If sections ended prematurely due to an exception we stored their
+            // infos here so we can tear them down outside the unwind process.
             for( std::vector<UnfinishedSections>::const_iterator it = m_unfinishedSections.begin(),
                         itEnd = m_unfinishedSections.end();
                     it != itEnd;

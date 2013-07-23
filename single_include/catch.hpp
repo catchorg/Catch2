@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 5 (master branch)
- *  Generated: 2013-07-03 08:24:00.747039
+ *  Generated: 2013-07-05 08:38:07.926803
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3498,7 +3498,8 @@ namespace Catch {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str isEqualToString:m_substr];
+                    return  (str != nil || m_substr == nil ) &&
+                            [str isEqualToString:m_substr];
                 }
 
                 virtual std::string toString() const {
@@ -3510,7 +3511,8 @@ namespace Catch {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str rangeOfString:m_substr].location != NSNotFound;
+                    return  (str != nil || m_substr == nil ) &&
+                            [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
                 virtual std::string toString() const {
@@ -3522,7 +3524,8 @@ namespace Catch {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str rangeOfString:m_substr].location == 0;
+                    return  (str != nil || m_substr == nil ) &&
+                            [str rangeOfString:m_substr].location == 0;
                 }
 
                 virtual std::string toString() const {
@@ -3533,7 +3536,8 @@ namespace Catch {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
+                    return  (str != nil || m_substr == nil ) &&
+                            [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
                 virtual std::string toString() const {

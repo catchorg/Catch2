@@ -123,7 +123,8 @@ namespace Catch {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str isEqualToString:m_substr];
+                    return  (str != nil || m_substr == nil ) &&
+                            [str isEqualToString:m_substr];
                 }
 
                 virtual std::string toString() const {
@@ -135,7 +136,8 @@ namespace Catch {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str rangeOfString:m_substr].location != NSNotFound;
+                    return  (str != nil || m_substr == nil ) &&
+                            [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
                 virtual std::string toString() const {
@@ -147,7 +149,8 @@ namespace Catch {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str rangeOfString:m_substr].location == 0;
+                    return  (str != nil || m_substr == nil ) &&
+                            [str rangeOfString:m_substr].location == 0;
                 }
 
                 virtual std::string toString() const {
@@ -158,7 +161,8 @@ namespace Catch {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
                 virtual bool match( ExpressionType const& str ) const {
-                    return [str rangeOfString:m_substr].location == [str length] - [m_substr length];
+                    return  (str != nil || m_substr == nil ) &&
+                            [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
                 virtual std::string toString() const {
