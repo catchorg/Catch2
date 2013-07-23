@@ -93,6 +93,17 @@ namespace Catch {
             .longOpt( "name" )
             .argName( "name" );
 
+        cli.bind( &ConfigData::showTimings )
+            .describe( "print out performance timings per test case and group" )
+            .shortOpt( "p")
+            .longOpt( "performance-timings" );
+
+        cli.bind( &ConfigData::timingsThreshold )
+            .describe( "print out only the timings exceeding this given threshold value [in seconds]" )
+            .shortOpt( "q")
+            .longOpt( "performance-timings-theshold" )
+            .argName( "threshold" );
+
         cli.bind( &abortAfterFirst )
             .describe( "abort at first failure" )
             .shortOpt( "a")

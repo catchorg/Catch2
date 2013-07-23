@@ -74,6 +74,12 @@ namespace Catch {
                 Colour colour( Colour::ResultError );
                 stream << "\nNo assertions in test case, '" << _testCaseStats.testInfo.name << "'\n" << std::endl;
             }
+
+            if( m_config->showTimings() && (_testCaseStats.timeSecs >= m_config->timingsThreshold()) ) {
+                Colour colour( Colour::SecondaryText );
+                stream << "Time spent in test case '" << _testCaseStats.testInfo.name << "': [timing: " << _testCaseStats.timeSecs << " secs]." << std::endl;
+            }
+
             StreamingReporterBase::testCaseEnded( _testCaseStats );
             m_headerPrinted = false;
         }
@@ -84,12 +90,21 @@ namespace Catch {
                 printTotals( _testGroupStats.totals );
                 stream << "\n" << std::endl;
             }
+
+            if( m_config->showTimings() && (_testGroupStats.timeSecs >= m_config->timingsThreshold()) ) {
+                Colour colour( Colour::SecondaryText );
+                stream << "Time spent in test group '" << _testGroupStats.groupInfo.name << "': [timing: " << _testGroupStats.timeSecs << " secs]." << std::endl;
+            }
+
             StreamingReporterBase::testGroupEnded( _testGroupStats );
         }
         virtual void testRunEnded( TestRunStats const& _testRunStats ) {
             if( m_atLeastOneTestCasePrinted )
                 printTotalsDivider();
             printTotals( _testRunStats.totals );
+            if( m_config->showTimings() ) {
+                stream << " [timing: " << _testRunStats.timeSecs << " secs.]";
+            }
             stream << "\n" << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }

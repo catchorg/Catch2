@@ -45,6 +45,8 @@ namespace Catch {
             shouldDebugBreak( false ),
             noThrow( false ),
             showHelp( false ),
+            showTimings( false ),
+            timingsThreshold( 0.0 ),
             abortAfter( -1 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing )
@@ -58,6 +60,9 @@ namespace Catch {
         bool shouldDebugBreak;
         bool noThrow;
         bool showHelp;
+
+        bool showTimings;
+        double timingsThreshold;
 
         int abortAfter;
 
@@ -167,7 +172,8 @@ namespace Catch {
         virtual std::string name() const        { return m_data.name.empty() ? m_data.processName : m_data.name; }
         virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & ConfigData::WarnAbout::NoAssertions; }
-
+        virtual bool showTimings() const        { return m_data.showTimings; }
+        virtual double timingsThreshold() const { return m_data.timingsThreshold; }
     private:
         ConfigData m_data;
         

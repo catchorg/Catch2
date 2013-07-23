@@ -25,6 +25,8 @@ namespace Catch {
         virtual bool includeSuccessfulResults() const = 0;
         virtual bool shouldDebugBreak() const = 0;
         virtual bool warnAboutMissingAssertions() const = 0;
+        virtual bool showTimings() const = 0;
+        virtual double timingsThreshold() const = 0;
         virtual int abortAfter() const = 0;
     };
 }

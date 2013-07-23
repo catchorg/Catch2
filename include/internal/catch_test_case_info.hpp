@@ -51,16 +51,6 @@ namespace Catch {
         tagsAsString = oss.str();
     }
 
-    TestCaseInfo::TestCaseInfo( TestCaseInfo const& other )
-    :   name( other.name ),
-        className( other.className ),
-        description( other.description ),
-        tags( other.tags ),
-        tagsAsString( other.tagsAsString ),
-        lineInfo( other.lineInfo ),
-        isHidden( other.isHidden )        
-    {}
-
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
 
     TestCase::TestCase( TestCase const& other )

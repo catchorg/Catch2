@@ -22,7 +22,19 @@
 #include <set>
 #include <string>
 
+// C++11 specific start
+#include <chrono>
+// C++11 specific end
+
 namespace Catch {
+
+    // C++11 specific start
+    typedef decltype(std::chrono::high_resolution_clock::now()) time_point;
+    static inline time_point time_now() { return std::chrono::high_resolution_clock::now(); }
+    static inline double time_diff_secs(time_point const& end, time_point const& start) {
+        return (1e-6 * std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
+    }
+    // C++11 specific end
 
     class StreamRedirect {
     
@@ -64,7 +76,9 @@ namespace Catch {
             m_reporter( reporter ),
             m_prevRunner( &m_context.getRunner() ),
             m_prevResultCapture( &m_context.getResultCapture() ),
-            m_prevConfig( m_context.getConfig() )
+            m_prevConfig( m_context.getConfig() ),
+            m_startRun( time_now() ),
+            m_startGroup( m_startRun )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -73,7 +87,8 @@ namespace Catch {
         }
         
         virtual ~RunContext() {
-            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
+            double timing = time_diff_secs( time_now() , m_startRun );
+            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, timing, aborting() ) );
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -82,9 +97,11 @@ namespace Catch {
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
             m_reporter->testGroupStarting( GroupInfo( testSpec, groupIndex, groupsCount ) );
+            m_startGroup = time_now();
         }
         void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount ) {
-            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
+            double timing = time_diff_secs( time_now() , m_startGroup );
+            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, timing, aborting() ) );
         }
 
         Totals runMatching( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
@@ -116,6 +133,7 @@ namespace Catch {
             
             m_runningTest = new RunningTest( testCase );
 
+            time_point timeStart = time_now();
             do {
                 do {
                     runCurrentTest( redirectedCout, redirectedCerr );
@@ -123,6 +141,7 @@ namespace Catch {
                 while( m_runningTest->hasUntestedSections() && !aborting() );
             }
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
+            time_point timeEnd = time_now();
 
             Totals deltaTotals = m_totals.delta( prevTotals );
             bool missingAssertions = false;
@@ -136,6 +155,7 @@ namespace Catch {
 
             m_reporter->testCaseEnded( TestCaseStats(   testInfo,
                                                         deltaTotals,
+                                                        time_diff_secs( timeEnd, timeStart ),
                                                         redirectedCout,
                                                         redirectedCerr,
                                                         missingAssertions,
@@ -323,6 +343,8 @@ namespace Catch {
         Ptr<IConfig const> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
         std::vector<UnfinishedSections> m_unfinishedSections;
+        time_point m_startRun;
+        time_point m_startGroup;
     };
     
 } // end namespace Catch
