@@ -90,6 +90,7 @@ namespace Catch {
             if( m_atLeastOneTestCasePrinted )
                 printTotalsDivider();
             printTotals( _testRunStats.totals );
+            stream << " [timing: " << _testRunStats.timeSecs << " secs.]";
             stream << "\n" << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }

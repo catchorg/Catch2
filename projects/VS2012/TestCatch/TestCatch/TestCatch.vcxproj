@@ -139,6 +139,7 @@
     <ClInclude Include="..\..\..\..\include\internal\catch_test_registry.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_xmlwriter.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_basic.hpp" />
+    <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_console.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_junit.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_xml.hpp" />
   </ItemGroup>
