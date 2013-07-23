@@ -44,7 +44,7 @@ namespace Catch {
     private:
         static void OutputTestSuites( XmlWriter& xml, AccumTestRunStats const& stats ) {
             xml.startElement( "testsuites" );
-            
+            xml.writeAttribute( "name", stats.testRun.runInfo.name );
             xml.writeAttribute( "time", stats.testRun.timeSecs );
 
             std::vector<AccumTestGroupStats>::const_iterator it = stats.testGroups.begin();
