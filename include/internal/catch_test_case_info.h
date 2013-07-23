@@ -24,14 +24,13 @@ namespace Catch {
     struct ITestCase;
 
     struct TestCaseInfo {
+        TestCaseInfo() : isHidden( false ) {}
         TestCaseInfo(   std::string const& _name,
                         std::string const& _className,
                         std::string const& _description,
                         std::set<std::string> const& _tags,
                         bool _isHidden,
                         SourceLineInfo const& _lineInfo );
-
-        TestCaseInfo( TestCaseInfo const& other );
 
         std::string name;
         std::string className;

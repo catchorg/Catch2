@@ -17,6 +17,7 @@
 #include "catch_message.h"
 #include "catch_option.hpp"
 
+#include <cassert>
 #include <string>
 #include <ostream>
 #include <map>
@@ -47,10 +48,11 @@ namespace Catch
     };
 
     struct TestRunInfo {
-        TestRunInfo( std::string const& _name ) : name( _name ) {}
+        TestRunInfo( std::string const& _name = "" ) : name( _name ) {}
         std::string name;
     };
     struct GroupInfo {
+        GroupInfo() : groupIndex( 0 ), groupsCounts( 0 ) {}
         GroupInfo(  std::string const& _name,
                     std::size_t _groupIndex,
                     std::size_t _groupsCount )
@@ -65,6 +67,7 @@ namespace Catch
     };
 
     struct SectionInfo {
+        SectionInfo() {}
         SectionInfo(    std::string const& _name,
                         std::string const& _description,
                         SourceLineInfo const& _lineInfo )
@@ -113,6 +116,7 @@ namespace Catch
     };
 
     struct SectionStats {
+        SectionStats() : missingAssertions( false ) {}
         SectionStats(   SectionInfo const& _sectionInfo,
                         Counts const& _assertions,
                         bool _missingAssertions )
@@ -128,14 +132,20 @@ namespace Catch
     };
 
     struct TestCaseStats {
+        TestCaseStats()
+        : missingAssertions( false ),
+            aborting( false)
+        {}
         TestCaseStats(  TestCaseInfo const& _testInfo,
                         Totals const& _totals,
+                        double _timeSecs,
                         std::string const& _stdOut,
                         std::string const& _stdErr,
                         bool _missingAssertions,
                         bool _aborting )
         : testInfo( _testInfo ),
             totals( _totals ),
+            timeSecs( _timeSecs ),
             stdOut( _stdOut ),
             stdErr( _stdErr ),
             missingAssertions( _missingAssertions ),
@@ -145,6 +155,7 @@ namespace Catch
 
         TestCaseInfo testInfo;
         Totals totals;
+        double timeSecs;
         std::string stdOut;
         std::string stdErr;
         bool missingAssertions;
@@ -152,41 +163,51 @@ namespace Catch
     };
     
     struct TestGroupStats {
+        TestGroupStats()
+        : aborting( false )
+        {}
+
         TestGroupStats( GroupInfo const& _groupInfo,
                         Totals const& _totals,
+                        double _timeSecs,
                         bool _aborting )
         :   groupInfo( _groupInfo ),
             totals( _totals ),
+            timeSecs( _timeSecs ),
             aborting( _aborting )
         {}
         TestGroupStats( GroupInfo const& _groupInfo )
         :   groupInfo( _groupInfo ),
+            timeSecs( 0.0 ),
             aborting( false )
         {}
         virtual ~TestGroupStats();
 
         GroupInfo groupInfo;
         Totals totals;
+        double timeSecs;
         bool aborting;
     };
     
     struct TestRunStats {
+        TestRunStats()
+        :   timeSecs( 0.0 ),
+            aborting( false )
+        {}
         TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
+                        double _timeSecs,
                         bool _aborting )
         :   runInfo( _runInfo ),
             totals( _totals ),
+            timeSecs( _timeSecs ),
             aborting( _aborting )
-        {}
-        TestRunStats( TestRunStats const& _other )
-        :   runInfo( _other.runInfo ),
-            totals( _other.totals ),
-            aborting( _other.aborting )
         {}
         virtual ~TestRunStats();
 
         TestRunInfo runInfo;
         Totals totals;
+        double timeSecs;
         bool aborting;
     };
 
@@ -276,21 +297,83 @@ namespace Catch
         std::vector<Ptr<ThreadedSectionInfo> > m_rootSections;        
     };
 
-    struct TestGroupNode : TestGroupStats {
-        TestGroupNode( TestGroupStats const& _stats ) : TestGroupStats( _stats ) {}
-//        TestGroupNode( GroupInfo const& _info ) : TestGroupStats( _stats ) {}
-        ~TestGroupNode();
+    struct AccumulatingReporterBase : SharedImpl<IStreamingReporter> {
+    protected:
+        struct AccumTestCaseStats {
+            TestCaseStats testCase;
+            std::vector<AssertionStats> tests;
+        };
+        struct AccumTestGroupStats {
+            TestGroupStats testGroup;
+            std::vector<AccumTestCaseStats> testCases;
+        };
+        struct AccumTestRunStats {
+            TestRunStats testRun;
+            std::vector<AccumTestGroupStats> testGroups;
+        };
 
-    };
-
-    struct TestRunNode : TestRunStats {
-
-        TestRunNode( TestRunStats const& _stats ) : TestRunStats( _stats ) {}
-        ~TestRunNode();
+    public:
+        virtual ~AccumulatingReporterBase();
         
-        std::vector<TestGroupNode> groups;
+        virtual void testRunStarting( TestRunInfo const& testRunInfo ) {
+            (void)testRunInfo;
+            assert( m_accumGroups.empty() );
+            assert( m_accumCases.empty() );
+            assert( m_accumTests.empty() );
+        }
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
+            (void)groupInfo;
+            assert( m_accumCases.empty() );
+            assert( m_accumTests.empty() );
+        }
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
+            (void)testInfo;
+            assert( m_accumTests.empty() );
+        }
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+            (void)sectionInfo;
+        }
+        virtual void assertionStarting( AssertionInfo const& assertionInfo ) {
+            (void)assertionInfo;
+        }
+
+        virtual void assertionEnded( AssertionStats const& assertionStats ) {
+            m_accumTests.push_back( assertionStats );
+        }
+        virtual void sectionEnded( SectionStats const& sectionStats ) {
+            (void)sectionStats;
+        }
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+            AccumTestCaseStats stats;
+            stats.testCase = testCaseStats;
+            std::swap(stats.tests, m_accumTests);
+            m_accumCases.push_back( stats );
+        }
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+            assert( m_accumTests.empty() );
+            AccumTestGroupStats stats;
+            stats.testGroup = testGroupStats;
+            std::swap(stats.testCases, m_accumCases);
+            m_accumGroups.push_back( stats );
+        }
+        virtual void testRunEnded( TestRunStats const& testRunStats ) {
+            assert( m_accumTests.empty() );
+            assert( m_accumCases.empty() );
+            AccumTestRunStats stats;
+            stats.testRun = testRunStats;
+            std::swap(stats.testGroups, m_accumGroups);
+
+            processResults( stats );
+        }
+
+        virtual void processResults( AccumTestRunStats const& testRun ) = 0;
+
+    private:
+        std::vector<AccumTestGroupStats>   m_accumGroups;
+        std::vector<AccumTestCaseStats>    m_accumCases;
+        std::vector<AssertionStats>        m_accumTests;
     };
-    
+
     // Deprecated
     struct IReporter : IShared {
         virtual ~IReporter();
@@ -327,8 +410,9 @@ namespace Catch
     };
     
     inline std::string trim( std::string const& str ) {
-        std::string::size_type start = str.find_first_not_of( "\n\r\t " );
-        std::string::size_type end = str.find_last_not_of( "\n\r\t " );
+        const char* const stripAway = "\n\r\t ";
+        std::string::size_type start = str.find_first_not_of( stripAway );
+        std::string::size_type end = str.find_last_not_of( stripAway );
         
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }

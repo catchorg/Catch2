@@ -58,11 +58,10 @@ namespace Catch {
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
     ThreadedSectionInfo::~ThreadedSectionInfo() {}
-    TestGroupNode::~TestGroupNode() {}
-    TestRunNode::~TestRunNode() {}
 
     BasicReporter::~BasicReporter() {}
     StreamingReporterBase::~StreamingReporterBase() {}
+    AccumulatingReporterBase::~AccumulatingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
@@ -86,7 +85,7 @@ namespace Catch {
 
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "basic", BasicReporter )
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
-    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "junit", JunitReporter )
+    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
 }
 
