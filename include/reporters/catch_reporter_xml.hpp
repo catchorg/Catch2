@@ -16,7 +16,7 @@
 namespace Catch {
     class XmlReporter : public SharedImpl<IReporter> {
     public:
-        XmlReporter( ReporterConfig const& config ) : m_config( config ) {}
+        XmlReporter( ReporterConfig const& config ) : m_config( config ), m_sectionDepth( 0 ) {}
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
@@ -56,18 +56,22 @@ namespace Catch {
         }
 
         virtual void StartSection( const std::string& sectionName, const std::string& description ) {
-            m_xml.startElement( "Section" )
-                .writeAttribute( "name", sectionName )
-                .writeAttribute( "description", description );
+            if( m_sectionDepth++ > 0 ) {
+                m_xml.startElement( "Section" )
+                    .writeAttribute( "name", sectionName )
+                    .writeAttribute( "description", description );
+            }
         }
         virtual void NoAssertionsInSection( const std::string& ) {}
         virtual void NoAssertionsInTestCase( const std::string& ) {}
 
         virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions ) {
-            m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", assertions.passed )
-                .writeAttribute( "failures", assertions.failed );
-            m_xml.endElement();
+            if( --m_sectionDepth > 0 ) {
+                m_xml.scopedElement( "OverallResults" )
+                    .writeAttribute( "successes", assertions.passed )
+                    .writeAttribute( "failures", assertions.failed );
+                m_xml.endElement();
+            }
         }
 
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
@@ -138,6 +142,7 @@ namespace Catch {
         ReporterConfig m_config;
         bool m_currentTestSuccess;
         XmlWriter m_xml;
+        int m_sectionDepth;
     };
 
 } // end namespace Catch

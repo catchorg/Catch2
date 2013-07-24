@@ -271,12 +271,10 @@ namespace Catch {
                     sections.push_back( section );
 
                 // Sections
-                if( !sections.empty() ) {
-                    typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
-                    for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
-                        printHeaderString( (*it)->name, 2 );
-
-                }
+                std::vector<ThreadedSectionInfo*>::const_reverse_iterator
+                    it = sections.rbegin(), itEnd = sections.rend();
+                for( ++it; it != itEnd; ++it ) // Skip first section (test case)
+                    printHeaderString( (*it)->name, 2 );
             }
             SourceLineInfo lineInfo = currentSectionInfo
                                     ? currentSectionInfo->lineInfo

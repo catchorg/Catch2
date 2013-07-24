@@ -34,12 +34,18 @@ namespace Catch {
                 nullableValue = new( storage ) T( *_other );
             return *this;
         }
+        Option& operator = ( T const& _value ) {
+            reset();
+            nullableValue = new( storage ) T( _value );
+            return *this;
+        }
 
         void reset() {
             if( nullableValue )
                 nullableValue->~T();
             nullableValue = NULL;
         }
+
         T& operator*() { return *nullableValue; }
         T const& operator*() const { return *nullableValue; }
         T* operator->() { return nullableValue; }

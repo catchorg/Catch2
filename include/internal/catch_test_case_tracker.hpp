@@ -57,6 +57,9 @@ namespace SectionTracking {
         TrackedSection* getParent() {
             return m_parent;
         }
+        bool hasChildren() const {
+            return !m_children.empty();
+        }
 
     private:
         std::string m_name;
@@ -98,6 +101,9 @@ namespace SectionTracking {
             m_completedASectionThisRun = true;
         }
 
+        bool currentSectinHasChildren() const {
+            return m_currentSection->hasChildren();
+        }
 
     private:
         TrackedSection* m_currentSection;
@@ -109,11 +115,11 @@ namespace SectionTracking {
 
         TestCaseTracker( std::string const& testCaseName )
         :   m_testCase( testCaseName, NULL ),
-            sections( m_testCase )
+            m_sections( m_testCase )
         {}
 
         void enter() {
-            sections = SectionTracker( m_testCase );
+            m_sections = SectionTracker( m_testCase );
             m_testCase.enter();
         }
         void leave() {
@@ -121,19 +127,23 @@ namespace SectionTracking {
         }
 
         bool enterSection( std::string const& name ) {
-            return sections.enterSection( name );
+            return m_sections.enterSection( name );
         }
         void leaveSection() {
-            sections.leaveSection();
+            m_sections.leaveSection();
         }
         
         bool isCompleted() const {
             return m_testCase.runState() == TrackedSection::Completed;
         }
 
+        bool currentSectionHasChildren() const {
+            return m_sections.currentSectinHasChildren();
+        }
+
     private:
         TrackedSection m_testCase;
-        SectionTracker sections;
+        SectionTracker m_sections;
     };
 
 } // namespace SectionTracking

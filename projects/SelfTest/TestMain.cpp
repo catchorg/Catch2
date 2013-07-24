@@ -38,15 +38,15 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
         SECTION(    "selftest/test counts/succeeding tests", 
                     "Number of 'succeeding' tests is fixed" ) {
             Totals totals = runner.runMatching( "./succeeding/*", 0, 2 );
-            CHECK( totals.assertions.passed == 296 );
+            CHECK( totals.assertions.passed == 298 );
             CHECK( totals.assertions.failed == 0 );
         }
 
         SECTION(    "selftest/test counts/failing tests", 
                     "Number of 'failing' tests is fixed" ) {
             Totals totals = runner.runMatching( "./failing/*", 1, 2 );
-            CHECK( totals.assertions.passed == 1 );
-            CHECK( totals.assertions.failed == 74 );
+            CHECK( totals.assertions.passed == 2 );
+            CHECK( totals.assertions.failed == 77 );
         }
     }
 }
