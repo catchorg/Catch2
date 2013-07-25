@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 6 (master branch)
- *  Generated: 2013-07-25 08:10:27.710799
+ *  Generated: 2013-07-25 08:17:49.210246
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4669,6 +4669,8 @@ namespace SectionTracking {
                 m_tracker.leaveTestCase();
             }
         private:
+            Guard( Guard const& );
+            void operator = ( Guard const& );
             TestCaseTracker& m_tracker;
         };
 
