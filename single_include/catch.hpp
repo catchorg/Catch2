@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 5 (master branch)
- *  Generated: 2013-07-05 08:38:07.926803
+ *  CATCH v1.0 build 6 (master branch)
+ *  Generated: 2013-07-25 08:10:27.710799
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2248,12 +2248,18 @@ namespace Catch {
                 nullableValue = new( storage ) T( *_other );
             return *this;
         }
+        Option& operator = ( T const& _value ) {
+            reset();
+            nullableValue = new( storage ) T( _value );
+            return *this;
+        }
 
         void reset() {
             if( nullableValue )
                 nullableValue->~T();
             nullableValue = NULL;
         }
+
         T& operator*() { return *nullableValue; }
         T const& operator*() const { return *nullableValue; }
         T* operator->() { return nullableValue; }
@@ -4549,214 +4555,143 @@ namespace Catch {
 // #included from: internal/catch_runner_impl.hpp
 #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 
-// #included from: catch_running_test.hpp
-#define TWOBLUECUBES_CATCH_RUNNING_TEST_HPP_INCLUDED
-
-// #included from: catch_section_info.hpp
-#define TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED
+// #included from: catch_test_case_tracker.hpp
+#define TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
 #include <map>
 #include <string>
+#include <assert.h>
 
 namespace Catch {
+namespace SectionTracking {
 
-    class RunningSection {
+    class TrackedSection {
+
+        typedef std::map<std::string, TrackedSection> TrackedSections;
+
     public:
-
-        typedef std::vector<RunningSection*> SubSections;
-
-        enum State {
-            Root,
-            Unknown,
-            Branch,
-            TestedBranch,
-            TestedLeaf
+        enum RunState {
+            NotStarted,
+            Executing,
+            ExecutingChildren,
+            Completed
         };
 
-        RunningSection( RunningSection* parent, std::string const& name )
-        :   m_state( Unknown ),
-            m_parent( parent ),
-            m_name( name )
+        TrackedSection( std::string const& name, TrackedSection* parent )
+        :   m_name( name ), m_runState( NotStarted ), m_parent( parent )
         {}
 
-        RunningSection( std::string const& name )
-        :   m_state( Root ),
-            m_parent( NULL ),
-            m_name( name )
-        {}
+        RunState runState() const { return m_runState; }
 
-        ~RunningSection() {
-            deleteAll( m_subSections );
+        void addChild( std::string const& childName ) {
+            m_children.insert( std::make_pair( childName, TrackedSection( childName, this ) ) );
+        }
+        TrackedSection* getChild( std::string const& childName ) {
+            return &m_children.find( childName )->second;
         }
 
-        std::string getName() const {
-            return m_name;
+        void enter() {
+            if( m_runState == NotStarted )
+                m_runState = Executing;
         }
-
-        bool shouldRun() const {
-            return m_state < TestedBranch;
+        void leave() {
+            for( TrackedSections::const_iterator it = m_children.begin(), itEnd = m_children.end();
+                    it != itEnd;
+                    ++it )
+                if( it->second.runState() != Completed ) {
+                    m_runState = ExecutingChildren;
+                    return;
+                }
+            m_runState = Completed;
         }
-
-        bool isBranch() const {
-            return m_state == Branch;
-        }
-
-        const RunningSection* getParent() const {
+        TrackedSection* getParent() {
             return m_parent;
         }
-
-        bool hasUntestedSections() const {
-            if( m_state == Unknown )
-                return true;
-            for(    SubSections::const_iterator it = m_subSections.begin();
-                    it != m_subSections.end();
-                    ++it)
-                if( (*it)->hasUntestedSections() )
-                    return true;
-            return false;
-        }
-
-        // Mutable methods:
-
-        RunningSection* getParent() {
-            return m_parent;
-        }
-
-        RunningSection* findOrAddSubSection( std::string const& name, bool& changed ) {
-            for(    SubSections::const_iterator it = m_subSections.begin();
-                    it != m_subSections.end();
-                    ++it)
-                if( (*it)->getName() == name )
-                    return *it;
-            RunningSection* subSection = new RunningSection( this, name );
-            m_subSections.push_back( subSection );
-            m_state = Branch;
-            changed = true;
-            return subSection;
-        }
-
-        bool ran() {
-            if( m_state >= Branch )
-                return false;
-            m_state = TestedLeaf;
-            return true;
-        }
-
-        void ranToCompletion() {
-            if( m_state == Branch && !hasUntestedSections() )
-                m_state = TestedBranch;
+        bool hasChildren() const {
+            return !m_children.empty();
         }
 
     private:
-        State m_state;
-        RunningSection* m_parent;
         std::string m_name;
-        SubSections m_subSections;
+        RunState m_runState;
+        TrackedSections m_children;
+        TrackedSection* m_parent;
+
     };
-}
 
-namespace Catch {
-
-    class RunningTest {
-
-        enum RunStatus {
-            NothingRun,
-            EncounteredASection,
-            RanAtLeastOneSection,
-            RanToCompletionWithSections,
-            RanToCompletionWithNoSections
-        };
-
+    class TestCaseTracker {
     public:
-        explicit RunningTest( TestCase const& info )
-        :   m_info( info ),
-            m_runStatus( RanAtLeastOneSection ),
-            m_rootSection( info.getTestCaseInfo().name ),
-            m_currentSection( &m_rootSection ),
-            m_changed( false )
+        TestCaseTracker( std::string const& testCaseName )
+        :   m_testCase( testCaseName, NULL ),
+            m_currentSection( &m_testCase ),
+            m_completedASectionThisRun( false )
         {}
 
-        bool wasSectionSeen() const {
-            return  m_runStatus == RanAtLeastOneSection ||
-                    m_runStatus == RanToCompletionWithSections;
-        }
-
-        bool isBranchSection() const {
-            return  m_currentSection &&
-                    m_currentSection->isBranch();
-        }
-
-        bool hasSections() const {
-            return  m_runStatus == RanAtLeastOneSection ||
-                    m_runStatus == RanToCompletionWithSections ||
-                    m_runStatus == EncounteredASection;
-        }
-
-        void reset() {
-            m_runStatus = NothingRun;
-            m_changed = false;
-            m_lastSectionToRun = NULL;
-        }
-
-        void ranToCompletion() {
-            if( m_runStatus != RanAtLeastOneSection && m_runStatus != EncounteredASection )
-                m_runStatus = RanToCompletionWithNoSections;
-            m_runStatus = RanToCompletionWithSections;
-            if( m_lastSectionToRun ) {
-                m_lastSectionToRun->ranToCompletion();
-                m_changed = true;
+        bool enterSection( std::string const& name ) {
+            if( m_completedASectionThisRun )
+                return false;
+            if( m_currentSection->runState() == TrackedSection::Executing ) {
+                m_currentSection->addChild( name );
+                return false;
+            }
+            else {
+                TrackedSection* child = m_currentSection->getChild( name );
+                if( child->runState() != TrackedSection::Completed ) {
+                    m_currentSection = child;
+                    m_currentSection->enter();
+                    return true;
+                }
+                return false;
             }
         }
-
-        bool addSection( std::string const& name ) {
-            if( m_runStatus == NothingRun )
-                m_runStatus = EncounteredASection;
-
-            RunningSection* thisSection = m_currentSection->findOrAddSubSection( name, m_changed );
-
-            if( !wasSectionSeen() && thisSection->shouldRun() ) {
-                m_currentSection = thisSection;
-                m_lastSectionToRun = NULL;
-                return true;
-            }
-            return false;
-        }
-
-        void endSection( std::string const&, bool stealth ) {
-            if( m_currentSection->ran() ) {
-                if( !stealth )
-                    m_runStatus = RanAtLeastOneSection;
-                m_changed = true;
-            }
-            else if( m_runStatus == EncounteredASection ) {
-                if( !stealth )
-                    m_runStatus = RanAtLeastOneSection;
-                m_lastSectionToRun = m_currentSection;
-            }
+        void leaveSection() {
+            m_currentSection->leave();
             m_currentSection = m_currentSection->getParent();
+            assert( m_currentSection != NULL );
+            m_completedASectionThisRun = true;
         }
 
-        TestCase const& getTestCase() const {
-            return m_info;
+        bool currentSectionHasChildren() const {
+            return m_currentSection->hasChildren();
+        }
+        bool isCompleted() const {
+            return m_testCase.runState() == TrackedSection::Completed;
         }
 
-        bool hasUntestedSections() const {
-            return  m_runStatus == RanAtLeastOneSection ||
-                    ( m_rootSection.hasUntestedSections() && m_changed );
-        }
+        class Guard {
+        public:
+            Guard( TestCaseTracker& tracker )
+            : m_tracker( tracker )
+            {
+                m_tracker.enterTestCase();
+            }
+            ~Guard() {
+                m_tracker.leaveTestCase();
+            }
+        private:
+            TestCaseTracker& m_tracker;
+        };
 
     private:
-        RunningTest( RunningTest const& );
-        void operator=( RunningTest const& );
+        void enterTestCase() {
+            m_currentSection = &m_testCase;
+            m_completedASectionThisRun = false;
+            m_testCase.enter();
+        }
+        void leaveTestCase() {
+            m_testCase.leave();
+        }
 
-        TestCase const& m_info;
-        RunStatus m_runStatus;
-        RunningSection m_rootSection;
-        RunningSection* m_currentSection;
-        RunningSection* m_lastSectionToRun;
-        bool m_changed;
+        TrackedSection m_testCase;
+        TrackedSection* m_currentSection;
+        bool m_completedASectionThisRun;
     };
-}
+
+} // namespace SectionTracking
+
+using SectionTracking::TestCaseTracker;
+
+} // namespace Catch
 
 #include <set>
 #include <string>
@@ -4798,7 +4733,7 @@ namespace Catch {
         explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_runningTest( NULL ),
+            m_activeTestCase( NULL ),
             m_config( config ),
             m_reporter( reporter ),
             m_prevRunner( &m_context.getRunner() ),
@@ -4853,13 +4788,14 @@ namespace Catch {
 
             m_reporter->testCaseStarting( testInfo );
 
-            m_runningTest = new RunningTest( testCase );
+            m_activeTestCase = &testCase;
+            m_testCaseTracker = TestCaseTracker( testInfo.name );
 
             do {
                 do {
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
-                while( m_runningTest->hasUntestedSections() && !aborting() );
+                while( !m_testCaseTracker->isCompleted() && !aborting() );
             }
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
@@ -4880,8 +4816,8 @@ namespace Catch {
                                                         missingAssertions,
                                                         aborting() ) );
 
-            delete m_runningTest;
-            m_runningTest = NULL;
+            m_activeTestCase = NULL;
+            m_testCaseTracker.reset();
 
             return deltaTotals;
         }
@@ -4920,7 +4856,7 @@ namespace Catch {
             std::ostringstream oss;
             oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
 
-            if( !m_runningTest->addSection( oss.str() ) )
+            if( !m_testCaseTracker->enterSection( oss.str() ) )
                 return false;
 
             m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
@@ -4942,13 +4878,13 @@ namespace Catch {
             bool missingAssertions = false;
             if( assertions.total() == 0 &&
                     m_config->warnAboutMissingAssertions() &&
-                    !m_runningTest->isBranchSection() ) {
+                    !m_testCaseTracker->currentSectionHasChildren() ) {
                 m_totals.assertions.failed++;
                 assertions.failed++;
                 missingAssertions = true;
 
             }
-            m_runningTest->endSection( info.name, false );
+            m_testCaseTracker->leaveSection();
 
             m_reporter->sectionEnded( SectionStats( info, assertions, missingAssertions ) );
             m_messages.clear();
@@ -4967,8 +4903,8 @@ namespace Catch {
         }
 
         virtual std::string getCurrentTestName() const {
-            return m_runningTest
-                ? m_runningTest->getTestCase().getTestCaseInfo().name
+            return m_activeTestCase
+                ? m_activeTestCase->getTestCaseInfo().name
                 : "";
         }
 
@@ -5001,19 +4937,21 @@ namespace Catch {
         }
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
+            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
+            SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
+            m_reporter->sectionStarting( testCaseSection );
             try {
-                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", m_runningTest->getTestCase().getTestCaseInfo().lineInfo, "", ResultDisposition::Normal );
-                m_runningTest->reset();
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
+                TestCaseTracker::Guard guard( *m_testCaseTracker );
 
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                    m_runningTest->getTestCase().invoke();
+                    m_activeTestCase->invoke();
                 }
                 else {
-                    m_runningTest->getTestCase().invoke();
+                    m_activeTestCase->invoke();
                 }
-                m_runningTest->ranToCompletion();
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
@@ -5023,6 +4961,8 @@ namespace Catch {
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
+            // If sections ended prematurely due to an exception we stored their
+            // infos here so we can tear them down outside the unwind process.
             for( std::vector<UnfinishedSections>::const_iterator it = m_unfinishedSections.begin(),
                         itEnd = m_unfinishedSections.end();
                     it != itEnd;
@@ -5030,6 +4970,8 @@ namespace Catch {
                 sectionEnded( it->info, it->prevAssertions );
             m_unfinishedSections.clear();
             m_messages.clear();
+            SectionStats testCaseSectionStats( testCaseSection, Counts(), 0 ); // !TBD
+            m_reporter->sectionEnded( testCaseSectionStats );
         }
 
     private:
@@ -5044,7 +4986,8 @@ namespace Catch {
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
-        RunningTest* m_runningTest;
+        TestCase const* m_activeTestCase;
+        Option<TestCaseTracker> m_testCaseTracker;
         AssertionResult m_lastResult;
 
         Ptr<IConfig const> m_config;
@@ -5684,8 +5627,8 @@ namespace Catch {
             std::map<std::string, IGeneratorsForTest*>::const_iterator it =
             m_generatorsByTestName.find( testName );
             return it != m_generatorsByTestName.end()
-            ? it->second
-            : NULL;
+                ? it->second
+                : NULL;
         }
 
         IGeneratorsForTest& getGeneratorsForCurrentTest() {
@@ -6236,7 +6179,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 5, "master" );
+    Version libraryVersion( 1, 0, 6, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -7070,7 +7013,7 @@ namespace Catch {
 namespace Catch {
     class XmlReporter : public SharedImpl<IReporter> {
     public:
-        XmlReporter( ReporterConfig const& config ) : m_config( config ) {}
+        XmlReporter( ReporterConfig const& config ) : m_config( config ), m_sectionDepth( 0 ) {}
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
@@ -7110,18 +7053,22 @@ namespace Catch {
         }
 
         virtual void StartSection( const std::string& sectionName, const std::string& description ) {
-            m_xml.startElement( "Section" )
-                .writeAttribute( "name", sectionName )
-                .writeAttribute( "description", description );
+            if( m_sectionDepth++ > 0 ) {
+                m_xml.startElement( "Section" )
+                    .writeAttribute( "name", sectionName )
+                    .writeAttribute( "description", description );
+            }
         }
         virtual void NoAssertionsInSection( const std::string& ) {}
         virtual void NoAssertionsInTestCase( const std::string& ) {}
 
         virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions ) {
-            m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", assertions.passed )
-                .writeAttribute( "failures", assertions.failed );
-            m_xml.endElement();
+            if( --m_sectionDepth > 0 ) {
+                m_xml.scopedElement( "OverallResults" )
+                    .writeAttribute( "successes", assertions.passed )
+                    .writeAttribute( "failures", assertions.failed );
+                m_xml.endElement();
+            }
         }
 
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
@@ -7192,6 +7139,7 @@ namespace Catch {
         ReporterConfig m_config;
         bool m_currentTestSuccess;
         XmlWriter m_xml;
+        int m_sectionDepth;
     };
 
 } // end namespace Catch
@@ -7696,12 +7644,10 @@ namespace Catch {
                     sections.push_back( section );
 
                 // Sections
-                if( !sections.empty() ) {
-                    typedef std::vector<ThreadedSectionInfo*>::const_reverse_iterator It;
-                    for( It it = sections.rbegin(), itEnd = sections.rend(); it != itEnd; ++it )
-                        printHeaderString( (*it)->name, 2 );
-
-                }
+                std::vector<ThreadedSectionInfo*>::const_reverse_iterator
+                    it = sections.rbegin(), itEnd = sections.rend();
+                for( ++it; it != itEnd; ++it ) // Skip first section (test case)
+                    printHeaderString( (*it)->name, 2 );
             }
             SourceLineInfo lineInfo = currentSectionInfo
                                     ? currentSectionInfo->lineInfo

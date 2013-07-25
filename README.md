@@ -1,6 +1,6 @@
 ![catch logo](catch-logo-small.png)
 
-*v1.0 build 5 (master branch)*
+*v1.0 build 6 (master branch)*
 
 # New release with significant changes
 
