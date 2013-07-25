@@ -16,7 +16,6 @@
 #include "catch_test_case_info.h"
 #include "catch_capture.hpp"
 #include "catch_totals.hpp"
-#include "catch_running_test.hpp"
 #include "catch_test_spec.h"
 #include "catch_test_case_tracker.hpp"
 
@@ -60,7 +59,7 @@ namespace Catch {
         explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_runningTest( NULL ),
+            m_activeTestCase( NULL ),
             m_config( config ),
             m_reporter( reporter ),
             m_prevRunner( &m_context.getRunner() ),
@@ -115,14 +114,13 @@ namespace Catch {
 
             m_reporter->testCaseStarting( testInfo );
 
-            m_runningTest = new RunningTest( testCase ); // deprecated
+            m_activeTestCase = &testCase;
             m_testCaseTracker = TestCaseTracker( testInfo.name );
 
             do {
                 do {
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
-//                while( m_runningTest->hasUntestedSections() && !aborting() );
                 while( !m_testCaseTracker->isCompleted() && !aborting() );
             }
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
@@ -145,8 +143,7 @@ namespace Catch {
                                                         aborting() ) );
 
 
-            delete m_runningTest;
-            m_runningTest = NULL;
+            m_activeTestCase = NULL;
             m_testCaseTracker.reset();
 
             return deltaTotals;
@@ -189,9 +186,6 @@ namespace Catch {
             if( !m_testCaseTracker->enterSection( oss.str() ) )
                 return false;
 
-//            if( !m_runningTest->addSection( oss.str() ) ) // deprecated
-//                return false;
-
             m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
             m_reporter->sectionStarting( sectionInfo );
@@ -212,13 +206,11 @@ namespace Catch {
             if( assertions.total() == 0 &&
                     m_config->warnAboutMissingAssertions() &&
                     !m_testCaseTracker->currentSectionHasChildren() ) {
-//                    m_runningTest->isBranchSection() ) { // deprecated
                 m_totals.assertions.failed++;
                 assertions.failed++;
                 missingAssertions = true;
 
             }
-//            m_runningTest->endSection( info.name, false ); // deprecated
             m_testCaseTracker->leaveSection();
 
             m_reporter->sectionEnded( SectionStats( info, assertions, missingAssertions ) );
@@ -238,8 +230,8 @@ namespace Catch {
         }
 
         virtual std::string getCurrentTestName() const {
-            return m_runningTest
-                ? m_runningTest->getTestCase().getTestCaseInfo().name
+            return m_activeTestCase
+                ? m_activeTestCase->getTestCaseInfo().name
                 : "";
         }
 
@@ -272,23 +264,21 @@ namespace Catch {
         }
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
-            TestCaseInfo const& testCaseInfo = m_runningTest->getTestCase().getTestCaseInfo();
+            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
             SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
             m_reporter->sectionStarting( testCaseSection );
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
-                //m_runningTest->reset(); // deprecated
                 m_testCaseTracker->enter();
 
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                    m_runningTest->getTestCase().invoke();
+                    m_activeTestCase->invoke();
                 }
                 else {
-                    m_runningTest->getTestCase().invoke();
+                    m_activeTestCase->invoke();
                 }
-                //m_runningTest->ranToCompletion(); // deprecated
                 m_testCaseTracker->leave();
             }
             catch( TestFailureException& ) {
@@ -326,7 +316,7 @@ namespace Catch {
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
-        RunningTest* m_runningTest; // deprecated
+        TestCase const* m_activeTestCase;
         Option<TestCaseTracker> m_testCaseTracker;
         AssertionResult m_lastResult;
 
