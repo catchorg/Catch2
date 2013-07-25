@@ -26,132 +26,139 @@ TEST_CASE( "section tracking" ) {
 
     SECTION( "test case with no sections" ) {
 
-        testCaseTracker.enter();
-        CHECK_FALSE( testCaseTracker.isCompleted() );
-
-        testCaseTracker.leave();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
+            CHECK_FALSE( testCaseTracker.isCompleted() );
+        }
         CHECK( testCaseTracker.isCompleted() );
     }
 
     SECTION( "test case with one section" ) {
 
-        // Enter test case
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section? - no, not yet
-        CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
-        CHECK_FALSE( testCaseTracker.isCompleted() );
+            // Enter section? - no, not yet
+            CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
+            CHECK_FALSE( testCaseTracker.isCompleted() );
 
-        // Leave test case - incomplete (still need to visit section)
-        testCaseTracker.leave();
+            // Leave test case - incomplete (still need to visit section)
+        }
         CHECK_FALSE( testCaseTracker.isCompleted() );
 
         // ...
 
         // Enter test case again
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section? - yes
-        CHECK( testCaseTracker.enterSection( section1Name ) );
+            // Enter section? - yes
+            CHECK( testCaseTracker.enterSection( section1Name ) );
 
-        // Leave section and test case - now complete
-        testCaseTracker.leaveSection();
-        testCaseTracker.leave();
+            // Leave section and test case - now complete
+            testCaseTracker.leaveSection();
+        }
         CHECK( testCaseTracker.isCompleted() );
     }
 
     SECTION( "test case with two consecutive sections" ) {
 
         // Enter test case
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section 1? - no, not yet
-        CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
+            // Enter section 1? - no, not yet
+            CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
 
-        // Enter section 2? - no, not yet
-        CHECK_FALSE( testCaseTracker.enterSection( section2Name ) );
+            // Enter section 2? - no, not yet
+            CHECK_FALSE( testCaseTracker.enterSection( section2Name ) );
 
-        // Leave test case - incomplete (still need to visit sections)
-        testCaseTracker.leave();
+            // Leave test case - incomplete (still need to visit sections)
+        }
         CHECK_FALSE( testCaseTracker.isCompleted() );
 
         // ...
 
         // Enter test case again
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section 1? - yes
-        CHECK( testCaseTracker.enterSection( section1Name ) );
-        testCaseTracker.leaveSection();
+            // Enter section 1? - yes
+            CHECK( testCaseTracker.enterSection( section1Name ) );
+            testCaseTracker.leaveSection();
 
-        // Enter section 2? - no, not yet
-        CHECK_FALSE( testCaseTracker.enterSection( section2Name ) );
+            // Enter section 2? - no, not yet
+            CHECK_FALSE( testCaseTracker.enterSection( section2Name ) );
 
-        // Leave test case - incomplete (still need to visit section 2)
-        testCaseTracker.leave();
+            // Leave test case - incomplete (still need to visit section 2)
+        }
         CHECK_FALSE( testCaseTracker.isCompleted() );
 
         // ...
 
         // Enter test case again
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section 1? - no, already done now
-        CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
+            // Enter section 1? - no, already done now
+            CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
 
-        // Enter section 2? - yes - finally
-        CHECK( testCaseTracker.enterSection( section2Name ) );
-        testCaseTracker.leaveSection();
+            // Enter section 2? - yes - finally
+            CHECK( testCaseTracker.enterSection( section2Name ) );
+            testCaseTracker.leaveSection();
 
-        // Leave test case - now complete
-        testCaseTracker.leave();
+            // Leave test case - now complete
+        }
         CHECK( testCaseTracker.isCompleted() );        
     }
 
     SECTION( "test case with one section within another" ) {
 
         // Enter test case
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section 1? - no, not yet
-        CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
+            // Enter section 1? - no, not yet
+            CHECK_FALSE( testCaseTracker.enterSection( section1Name ) );
 
-        // Leave test case - incomplete (still need to visit sections)
-        testCaseTracker.leave();
+            // Leave test case - incomplete (still need to visit sections)
+        }
         CHECK_FALSE( testCaseTracker.isCompleted() );
 
         // ...
 
         // Enter test case again
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section 1? - yes
-        CHECK( testCaseTracker.enterSection( section1Name ) );
+            // Enter section 1? - yes
+            CHECK( testCaseTracker.enterSection( section1Name ) );
 
-        // Enter section 2? - no, not yet
-        CHECK_FALSE( testCaseTracker.enterSection( section2Name ) );
+            // Enter section 2? - no, not yet
+            CHECK_FALSE( testCaseTracker.enterSection( section2Name ) );
 
-        testCaseTracker.leaveSection(); // section 1 - incomplete (section 2)
+            testCaseTracker.leaveSection(); // section 1 - incomplete (section 2)
 
-        // Leave test case - incomplete
-        testCaseTracker.leave();
+            // Leave test case - incomplete
+        }
         CHECK_FALSE( testCaseTracker.isCompleted() );
 
         // ...
 
         // Enter test case again
-        testCaseTracker.enter();
+        {
+            TestCaseTracker::Guard guard( testCaseTracker );
 
-        // Enter section 1? - yes - so we can execute section 2
-        CHECK( testCaseTracker.enterSection( section1Name ) );
+            // Enter section 1? - yes - so we can execute section 2
+            CHECK( testCaseTracker.enterSection( section1Name ) );
 
-        // Enter section 2? - yes - finally
-        CHECK( testCaseTracker.enterSection( section2Name ) );
-        testCaseTracker.leaveSection(); // section 2
-        testCaseTracker.leaveSection(); // section 1
+            // Enter section 2? - yes - finally
+            CHECK( testCaseTracker.enterSection( section2Name ) );
+            testCaseTracker.leaveSection(); // section 2
+            testCaseTracker.leaveSection(); // section 1
 
-        // Leave test case - now complete
-        testCaseTracker.leave();
+            // Leave test case - now complete
+        }
         CHECK( testCaseTracker.isCompleted() );        
     }
 }

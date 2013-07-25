@@ -69,13 +69,14 @@ namespace SectionTracking {
         
     };
 
-    class SectionTracker {
+    class TestCaseTracker {
     public:
-        SectionTracker( TrackedSection& testCase )
-        :   m_currentSection( &testCase ),
+        TestCaseTracker( std::string const& testCaseName )
+        :   m_testCase( testCaseName, NULL ),
+            m_currentSection( &m_testCase ),
             m_completedASectionThisRun( false )
         {}
-        
+
         bool enterSection( std::string const& name ) {
             if( m_completedASectionThisRun )
                 return false;
@@ -93,7 +94,6 @@ namespace SectionTracking {
                 return false;
             }
         }
-
         void leaveSection() {
             m_currentSection->leave();
             m_currentSection = m_currentSection->getParent();
@@ -101,49 +101,40 @@ namespace SectionTracking {
             m_completedASectionThisRun = true;
         }
 
-        bool currentSectinHasChildren() const {
+        bool currentSectionHasChildren() const {
             return m_currentSection->hasChildren();
         }
-
-    private:
-        TrackedSection* m_currentSection;
-        bool m_completedASectionThisRun;
-    };
-
-    class TestCaseTracker {
-    public:
-
-        TestCaseTracker( std::string const& testCaseName )
-        :   m_testCase( testCaseName, NULL ),
-            m_sections( m_testCase )
-        {}
-
-        void enter() {
-            m_sections = SectionTracker( m_testCase );
-            m_testCase.enter();
-        }
-        void leave() {
-            m_testCase.leave();
-        }
-
-        bool enterSection( std::string const& name ) {
-            return m_sections.enterSection( name );
-        }
-        void leaveSection() {
-            m_sections.leaveSection();
-        }
-        
         bool isCompleted() const {
             return m_testCase.runState() == TrackedSection::Completed;
         }
 
-        bool currentSectionHasChildren() const {
-            return m_sections.currentSectinHasChildren();
-        }
+        class Guard {
+        public:
+            Guard( TestCaseTracker& tracker )
+            : m_tracker( tracker )
+            {
+                m_tracker.enterTestCase();
+            }
+            ~Guard() {
+                m_tracker.leaveTestCase();
+            }
+        private:
+            TestCaseTracker& m_tracker;
+        };
 
     private:
+        void enterTestCase() {
+            m_currentSection = &m_testCase;
+            m_completedASectionThisRun = false;
+            m_testCase.enter();
+        }
+        void leaveTestCase() {
+            m_testCase.leave();
+        }
+
         TrackedSection m_testCase;
-        SectionTracker m_sections;
+        TrackedSection* m_currentSection;
+        bool m_completedASectionThisRun;
     };
 
 } // namespace SectionTracking

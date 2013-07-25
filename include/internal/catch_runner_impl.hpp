@@ -269,7 +269,7 @@ namespace Catch {
             m_reporter->sectionStarting( testCaseSection );
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
-                m_testCaseTracker->enter();
+                TestCaseTracker::Guard guard( *m_testCaseTracker );
 
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
@@ -279,14 +279,11 @@ namespace Catch {
                 else {
                     m_activeTestCase->invoke();
                 }
-                m_testCaseTracker->leave();
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
-                m_testCaseTracker->leave(); // !TBD: RAII
             }
             catch(...) {
-                m_testCaseTracker->leave();
                 ExpressionResultBuilder exResult( ResultWas::ThrewException );
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
