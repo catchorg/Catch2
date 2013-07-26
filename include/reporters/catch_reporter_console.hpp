@@ -73,12 +73,6 @@ namespace Catch {
         }
 
         virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) {
-
-            if( _testCaseStats.missingAssertions ) {
-                lazyPrint();
-                Colour colour( Colour::ResultError );
-                stream << "\nNo assertions in test case, '" << _testCaseStats.testInfo.name << "'\n" << std::endl;
-            }
             StreamingReporterBase::testCaseEnded( _testCaseStats );
             m_headerPrinted = false;
         }

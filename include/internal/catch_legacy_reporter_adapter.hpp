@@ -63,8 +63,6 @@ namespace Catch
         m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
     }
     void LegacyReporterAdapter::testCaseEnded( TestCaseStats const& testCaseStats ) {
-        if( testCaseStats.missingAssertions )
-            m_legacyReporter->NoAssertionsInTestCase( testCaseStats.testInfo.name );
         m_legacyReporter->EndTestCase
             (   testCaseStats.testInfo,
                 testCaseStats.totals,

@@ -126,22 +126,12 @@ namespace Catch {
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
-            bool missingAssertions = false;
-            if( deltaTotals.assertions.total() == 0  && m_config->warnAboutMissingAssertions() ) {
-                m_totals.assertions.failed++;
-                deltaTotals = m_totals.delta( prevTotals );
-                missingAssertions = true;
-            }
-
             m_totals.testCases += deltaTotals.testCases;
-
             m_reporter->testCaseEnded( TestCaseStats(   testInfo,
                                                         deltaTotals,
                                                         redirectedCout,
                                                         redirectedCerr,
-                                                        missingAssertions,
                                                         aborting() ) );
-
 
             m_activeTestCase = NULL;
             m_testCaseTracker.reset();

@@ -134,13 +134,11 @@ namespace Catch
                         Totals const& _totals,
                         std::string const& _stdOut,
                         std::string const& _stdErr,
-                        bool _missingAssertions,
                         bool _aborting )
         : testInfo( _testInfo ),
             totals( _totals ),
             stdOut( _stdOut ),
             stdErr( _stdErr ),
-            missingAssertions( _missingAssertions ),
             aborting( _aborting )
         {}
         virtual ~TestCaseStats();
@@ -149,7 +147,6 @@ namespace Catch
         Totals totals;
         std::string stdOut;
         std::string stdErr;
-        bool missingAssertions;
         bool aborting;
     };
 
