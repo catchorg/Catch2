@@ -194,6 +194,15 @@ namespace Catch {
 
             return true;
         }
+        bool testForMissingAssertions( Counts& assertions ) {
+            if( assertions.total() != 0 ||
+                    !m_config->warnAboutMissingAssertions() ||
+                    m_testCaseTracker->currentSectionHasChildren() )
+                return false;
+            m_totals.assertions.failed++;
+            assertions.failed++;
+            return true;
+        }
 
         virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions ) {
             if( std::uncaught_exception() ) {
@@ -202,15 +211,8 @@ namespace Catch {
             }
 
             Counts assertions = m_totals.assertions - prevAssertions;
-            bool missingAssertions = false;
-            if( assertions.total() == 0 &&
-                    m_config->warnAboutMissingAssertions() &&
-                    !m_testCaseTracker->currentSectionHasChildren() ) {
-                m_totals.assertions.failed++;
-                assertions.failed++;
-                missingAssertions = true;
+            bool missingAssertions = testForMissingAssertions( assertions );
 
-            }
             m_testCaseTracker->leaveSection();
 
             m_reporter->sectionEnded( SectionStats( info, assertions, missingAssertions ) );
@@ -300,16 +302,7 @@ namespace Catch {
             m_messages.clear();
 
             Counts assertions = m_totals.assertions - prevAssertions;
-// !TBD?
-            bool missingAssertions = false;
-            if( assertions.total() == 0 &&
-                    m_config->warnAboutMissingAssertions() &&
-                    !m_testCaseTracker->currentSectionHasChildren() ) {
-                m_totals.assertions.failed++;
-                assertions.failed++;
-                missingAssertions = true;
-
-            }
+            bool missingAssertions = testForMissingAssertions( assertions );
 
             SectionStats testCaseSectionStats( testCaseSection, assertions, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
