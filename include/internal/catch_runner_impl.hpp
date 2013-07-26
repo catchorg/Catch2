@@ -267,6 +267,7 @@ namespace Catch {
             TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
             SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
             m_reporter->sectionStarting( testCaseSection );
+            Counts prevAssertions = m_totals.assertions;
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
@@ -297,7 +298,20 @@ namespace Catch {
                 sectionEnded( it->info, it->prevAssertions );
             m_unfinishedSections.clear();
             m_messages.clear();
-            SectionStats testCaseSectionStats( testCaseSection, Counts(), 0 ); // !TBD
+
+            Counts assertions = m_totals.assertions - prevAssertions;
+// !TBD?
+            bool missingAssertions = false;
+            if( assertions.total() == 0 &&
+                    m_config->warnAboutMissingAssertions() &&
+                    !m_testCaseTracker->currentSectionHasChildren() ) {
+                m_totals.assertions.failed++;
+                assertions.failed++;
+                missingAssertions = true;
+
+            }
+
+            SectionStats testCaseSectionStats( testCaseSection, assertions, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
         }
 

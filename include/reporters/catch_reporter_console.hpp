@@ -62,7 +62,11 @@ namespace Catch {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 Colour colour( Colour::ResultError );
-                stream << "\nNo assertions in section, '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
+                if( currentSectionInfo->parent )
+                    stream << "\nNo assertions in section";
+                else
+                    stream << "\nNo assertions in test case";
+                stream << " '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
             m_headerPrinted = false;
             StreamingReporterBase::sectionEnded( _sectionStats );
@@ -262,6 +266,7 @@ namespace Catch {
         }
         void printTestCaseAndSectionHeader() {
             printOpenHeader( unusedTestCaseInfo->name );
+            assert( currentSectionInfo );
             if( currentSectionInfo ) {
                 Colour colourGuard( Colour::Headers );
                 std::vector<ThreadedSectionInfo*> sections;
