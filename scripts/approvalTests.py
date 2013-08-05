@@ -16,8 +16,9 @@ rawResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/_rawResul
 filteredResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/unapprovedResults.txt' )
 
 print "len(sys.argv) = " + str(len(sys.argv))
-print "sys.argv[0] = " + sys.argv[0]
-print "sys.argv[1] = " + sys.argv[1]
+print "sys.argv[0] = |" + sys.argv[0] + "|"
+print "sys.argv[1] = |" + sys.argv[1] + "|"
+print "sys.argv[2] = |" + sys.argv[2] + "|"
 
 if len(sys.argv) == 2:
 	cmdPath = sys.argv[1]
