@@ -2,6 +2,9 @@
 
 *v1.0 build 6 (master branch)*
 
+[![Build Status](https://travis-ci.org/AIM360/Catch.png?branch=master)](https://travis-ci.org/AIM360/Catch) Travis CI build status for the `master` branch of this fork
+[![Build Status](https://travis-ci.org/AIM360/Catch.png?branch=Integration)](https://travis-ci.org/AIM360/Catch) Travis CI build status for the `Integration` branch of this fork
+
 # New release with significant changes
 
 [Please see this page for details - including some breaking changes](docs/whats-changed.md)
