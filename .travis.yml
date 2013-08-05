@@ -16,4 +16,5 @@ install:
 
 script:
   - cd Build
+  - ./SelfTest
   - ctest -VV
