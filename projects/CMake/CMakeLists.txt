@@ -33,4 +33,5 @@ add_executable(SelfTest ${SOURCES})
 
 # configure unit tests via ctest
 enable_testing()
-add_test(NAME SelfTest_run COMMAND python ${SCRIPTS_DIR}/approvalTests.py "${CMAKE_CURRENT_BINARY_DIR}/SelfTest")
+add_test(NAME SelfTest_run COMMAND SelfTest)
+#add_test(NAME SelfTest_run COMMAND python ${SCRIPTS_DIR}/approvalTests.py "${CMAKE_CURRENT_BINARY_DIR}/SelfTest")
