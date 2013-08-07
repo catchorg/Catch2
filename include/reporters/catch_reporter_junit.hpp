@@ -82,7 +82,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void StartTesting(){}
+        virtual void StartTesting() {}
 
         virtual void StartGroup( const std::string& groupName ) {
             if( groupName.empty() )
@@ -189,7 +189,10 @@ namespace Catch {
                 xml.writeAttribute( "failures", it->m_failuresCount );
                 xml.writeAttribute( "tests", it->m_testsCount );
                 xml.writeAttribute( "hostname", "tbd" );
-                xml.writeAttribute( "time", "tbd" );
+                if( m_config.fullConfig()->showDurations() == ShowDurations::Never )
+                    xml.writeAttribute( "time", it->m_timeInSeconds );
+                else
+                    xml.writeAttribute( "time", "" );
                 xml.writeAttribute( "timestamp", "tbd" );
 
                 OutputTestCases( xml, *it );
@@ -207,7 +210,10 @@ namespace Catch {
                 XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
                 xml.writeAttribute( "classname", it->m_className );
                 xml.writeAttribute( "name", it->m_name );
-                xml.writeAttribute( "time", "tbd" );
+                if( m_config.fullConfig()->showDurations() == ShowDurations::Never )
+                    xml.writeAttribute( "time", "" );
+                else
+                    xml.writeAttribute( "time", stats.m_timeInSeconds );
 
                 OutputTestResult( xml, *it );
 

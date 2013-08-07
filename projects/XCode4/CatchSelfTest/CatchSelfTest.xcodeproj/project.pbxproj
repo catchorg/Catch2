@@ -57,6 +57,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		263FD06017AF8DF200988A20 /* catch_timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_timer.hpp; sourceTree = "<group>"; };
+		263FD06117AF8DF200988A20 /* catch_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_timer.h; sourceTree = "<group>"; };
 		266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VariadicMacrosTests.cpp; path = ../../../SelfTest/VariadicMacrosTests.cpp; sourceTree = "<group>"; };
 		266E9AD117230ACF0061DAB2 /* catch_text.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_text.hpp; sourceTree = "<group>"; };
 		266E9AD417290E8E0061DAB2 /* CmdLineTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CmdLineTests.cpp; path = ../../../SelfTest/CmdLineTests.cpp; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 		4AC91CB4155B9EBF00DC5117 /* impl */ = {
 			isa = PBXGroup;
 			children = (
+				263FD06017AF8DF200988A20 /* catch_timer.hpp */,
 				266E9AD117230ACF0061DAB2 /* catch_text.hpp */,
 				4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */,
 				4A4B0F9715CE6CFB00AE2392 /* catch_registry_hub.hpp */,
@@ -423,6 +426,7 @@
 				26759472171C72A400A84BD1 /* catch_sfinae.hpp */,
 				26759473171C74C200A84BD1 /* catch_compiler_capabilities.h */,
 				26DACF2F17206D3400A21326 /* catch_text.h */,
+				263FD06117AF8DF200988A20 /* catch_timer.h */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";

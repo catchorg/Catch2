@@ -30,6 +30,7 @@
 #include "catch_text.hpp"
 #include "catch_message.hpp"
 #include "catch_legacy_reporter_adapter.hpp"
+#include "catch_timer.hpp"
 
 #include "../reporters/catch_reporter_basic.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
@@ -57,7 +58,6 @@ namespace Catch {
     TestCaseStats::~TestCaseStats() {}
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
-    ThreadedSectionInfo::~ThreadedSectionInfo() {}
     TestGroupNode::~TestGroupNode() {}
     TestRunNode::~TestRunNode() {}
 

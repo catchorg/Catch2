@@ -18,6 +18,7 @@
 #include "catch_totals.hpp"
 #include "catch_test_spec.h"
 #include "catch_test_case_tracker.hpp"
+#include "catch_timer.h"
 
 #include <set>
 #include <string>
@@ -194,9 +195,9 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions ) {
+        virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions, double _durationInSeconds ) {
             if( std::uncaught_exception() ) {
-                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions ) );
+                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions, _durationInSeconds ) );
                 return;
             }
 
@@ -205,7 +206,7 @@ namespace Catch {
 
             m_testCaseTracker->leaveSection();
 
-            m_reporter->sectionEnded( SectionStats( info, assertions, missingAssertions ) );
+            m_reporter->sectionEnded( SectionStats( info, assertions, _durationInSeconds, missingAssertions ) );
             m_messages.clear();
         }
 
@@ -260,10 +261,13 @@ namespace Catch {
             SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
             m_reporter->sectionStarting( testCaseSection );
             Counts prevAssertions = m_totals.assertions;
+            double duration = 0;
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
 
+                Timer timer;
+                timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
@@ -272,6 +276,7 @@ namespace Catch {
                 else {
                     m_activeTestCase->invoke();
                 }
+                duration = timer.getElapsedSeconds();
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
@@ -287,25 +292,26 @@ namespace Catch {
                         itEnd = m_unfinishedSections.end();
                     it != itEnd;
                     ++it )
-                sectionEnded( it->info, it->prevAssertions );
+                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
             m_unfinishedSections.clear();
             m_messages.clear();
 
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
-            SectionStats testCaseSectionStats( testCaseSection, assertions, missingAssertions );
+            SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
         }
 
     private:
         struct UnfinishedSections {
-            UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions )
-            : info( _info ), prevAssertions( _prevAssertions )
+            UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions, double _durationInSeconds )
+            : info( _info ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )
             {}
 
             SectionInfo info;
             Counts prevAssertions;
+            double durationInSeconds;
         };
 
         TestRunInfo m_runInfo;

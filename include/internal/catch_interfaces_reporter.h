@@ -46,6 +46,20 @@ namespace Catch
         bool shouldRedirectStdOut;
     };
 
+
+    template<typename T>
+    struct Node : SharedImpl<> {
+        Node( T const& _value, Node* _parent = NULL )
+        :   value( _value ),
+            parent( _parent )
+        {}
+        virtual ~Node() {}
+
+        T value;
+        std::vector<Ptr<Node> > children;
+        Node* parent;
+    };
+
     struct TestRunInfo {
         TestRunInfo( std::string const& _name ) : name( _name ) {}
         std::string name;
@@ -78,17 +92,6 @@ namespace Catch
         SourceLineInfo lineInfo;
     };
 
-    struct ThreadedSectionInfo : SectionInfo, SharedImpl<> {
-        ThreadedSectionInfo( SectionInfo const& _sectionInfo, ThreadedSectionInfo* _parent = NULL )
-        :   SectionInfo( _sectionInfo ),
-            parent( _parent )
-        {}
-        virtual ~ThreadedSectionInfo();
-
-        std::vector<Ptr<ThreadedSectionInfo> > children;
-        ThreadedSectionInfo* parent;
-    };
-
     struct AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
                         std::vector<MessageInfo> const& _infoMessages,
@@ -117,15 +120,18 @@ namespace Catch
     struct SectionStats {
         SectionStats(   SectionInfo const& _sectionInfo,
                         Counts const& _assertions,
+                        double _durationInSeconds,
                         bool _missingAssertions )
         :   sectionInfo( _sectionInfo ),
             assertions( _assertions ),
+            durationInSeconds( _durationInSeconds ),
             missingAssertions( _missingAssertions )
         {}
         virtual ~SectionStats();
 
         SectionInfo sectionInfo;
         Counts assertions;
+        double durationInSeconds;
         bool missingAssertions;
     };
 
@@ -189,6 +195,7 @@ namespace Catch
         bool aborting;
     };
 
+
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
 
@@ -236,7 +243,7 @@ namespace Catch
             unusedTestCaseInfo = _testInfo;
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
-            Ptr<ThreadedSectionInfo> sectionInfo = new ThreadedSectionInfo( _sectionInfo );
+            Ptr<Node<SectionInfo> > sectionInfo = new Node<SectionInfo>( _sectionInfo );
             if( !currentSectionInfo ) {
                 currentSectionInfo = sectionInfo;
                 m_rootSections.push_back( currentSectionInfo );
@@ -268,11 +275,11 @@ namespace Catch
         Option<TestRunInfo> testRunInfo;
         Option<GroupInfo> unusedGroupInfo;
         Option<TestCaseInfo> unusedTestCaseInfo;
-        Ptr<ThreadedSectionInfo> currentSectionInfo;
+        Ptr<Node<SectionInfo> > currentSectionInfo;
         std::ostream& stream;
 
         // !TBD: This should really go in the TestCaseStats class
-        std::vector<Ptr<ThreadedSectionInfo> > m_rootSections;
+        std::vector<Ptr<Node<SectionInfo> > > m_rootSections;
     };
 
     struct TestGroupNode : TestGroupStats {

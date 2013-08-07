@@ -670,6 +670,8 @@ MiscTests.cpp: FAILED:
 explicitly with message:
   to infinity and beyond
 
+starting...
+finished in 0.322593
 Message from section one
 Message from section two
 Some information
@@ -708,7 +710,7 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-121 test cases - 35 failed (737 assertions - 90 failed)
+122 test cases - 35 failed (738 assertions - 90 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -4316,6 +4318,19 @@ MiscTests.cpp: FAILED:
 explicitly with message:
   to infinity and beyond
 
+starting...
+finished in 0.323247
+-------------------------------------------------------------------------------
+Timer
+-------------------------------------------------------------------------------
+MiscTests.cpp
+...............................................................................
+
+MiscTests.cpp:
+PASSED:
+with message:
+  yay
+
 -------------------------------------------------------------------------------
 selftest/main
   selftest/expected result
@@ -7169,34 +7184,34 @@ with expansion:
   true
 
 ===============================================================================
-121 test cases - 50 failed (756 assertions - 109 failed)
+122 test cases - 50 failed (757 assertions - 109 failed)
 
 No test cases matched '~dummy 4'
 No tests ran
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="81" tests="756" hostname="tbd" time="tbd" timestamp="tbd">
-    <testcase classname="global" name="./succeeding/Approx/simple" time="tbd"/>
-    <testcase classname="global" name="./succeeding/Approx/epsilon" time="tbd"/>
-    <testcase classname="global" name="./succeeding/Approx/float" time="tbd"/>
-    <testcase classname="global" name="./succeeding/Approx/int" time="tbd"/>
-    <testcase classname="global" name="./succeeding/Approx/mixed" time="tbd"/>
-    <testcase classname="global" name="./succeeding/Approx/custom" time="tbd"/>
-    <testcase classname="global" name="Approximate PI" time="tbd"/>
-    <testcase classname="TestClass" name="./succeeding/TestClass/succeedingCase" time="tbd"/>
-    <testcase classname="TestClass" name="./failing/TestClass/failingCase" time="tbd">
+  <testsuite name="~dummy" errors="10" failures="81" tests="757" hostname="tbd" time="" timestamp="tbd">
+    <testcase classname="global" name="./succeeding/Approx/simple" time="0"/>
+    <testcase classname="global" name="./succeeding/Approx/epsilon" time="0"/>
+    <testcase classname="global" name="./succeeding/Approx/float" time="0"/>
+    <testcase classname="global" name="./succeeding/Approx/int" time="0"/>
+    <testcase classname="global" name="./succeeding/Approx/mixed" time="0"/>
+    <testcase classname="global" name="./succeeding/Approx/custom" time="0"/>
+    <testcase classname="global" name="Approximate PI" time="0"/>
+    <testcase classname="TestClass" name="./succeeding/TestClass/succeedingCase" time="0"/>
+    <testcase classname="TestClass" name="./failing/TestClass/failingCase" time="0">
       <failure message="&quot;hello&quot; == &quot;world&quot;" type="REQUIRE">
 ClassTests.cpp
       </failure>
     </testcase>
-    <testcase classname="Fixture" name="./succeeding/Fixture/succeedingCase" time="tbd"/>
-    <testcase classname="Fixture" name="./failing/Fixture/failingCase" time="tbd">
+    <testcase classname="Fixture" name="./succeeding/Fixture/succeedingCase" time="0"/>
+    <testcase classname="Fixture" name="./failing/Fixture/failingCase" time="0">
       <failure message="1 == 2" type="REQUIRE">
 ClassTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/conditions/equality" time="tbd"/>
-    <testcase classname="global" name="./failing/conditions/equality" time="tbd">
+    <testcase classname="global" name="./succeeding/conditions/equality" time="0"/>
+    <testcase classname="global" name="./failing/conditions/equality" time="0">
       <failure message="7 == 6" type="CHECK">
 ConditionTests.cpp
       </failure>
@@ -7237,8 +7252,8 @@ ConditionTests.cpp
 ConditionTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/conditions/inequality" time="tbd"/>
-    <testcase classname="global" name="./failing/conditions/inequality" time="tbd">
+    <testcase classname="global" name="./succeeding/conditions/inequality" time="0"/>
+    <testcase classname="global" name="./failing/conditions/inequality" time="0">
       <failure message="7 != 7" type="CHECK">
 ConditionTests.cpp
       </failure>
@@ -7255,8 +7270,8 @@ ConditionTests.cpp
 ConditionTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/conditions/ordered" time="tbd"/>
-    <testcase classname="global" name="./failing/conditions/ordered" time="tbd">
+    <testcase classname="global" name="./succeeding/conditions/ordered" time="0"/>
+    <testcase classname="global" name="./failing/conditions/ordered" time="0">
       <failure message="7 > 7" type="CHECK">
 ConditionTests.cpp
       </failure>
@@ -7315,14 +7330,14 @@ ConditionTests.cpp
 ConditionTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/conditions/int literals" time="tbd"/>
-    <testcase classname="global" name="./succeeding/conditions//long_to_unsigned_x" time="tbd"/>
-    <testcase classname="global" name="./succeeding/conditions/const ints to int literal" time="tbd"/>
-    <testcase classname="global" name="./succeeding/conditions/negative ints" time="tbd"/>
-    <testcase classname="global" name="./succeeding/conditions/computed ints" time="tbd"/>
-    <testcase classname="global" name="./succeeding/conditions/ptr" time="tbd"/>
-    <testcase classname="global" name="./succeeding/conditions/not" time="tbd"/>
-    <testcase classname="global" name="./failing/conditions/not" time="tbd">
+    <testcase classname="global" name="./succeeding/conditions/int literals" time="0"/>
+    <testcase classname="global" name="./succeeding/conditions//long_to_unsigned_x" time="0"/>
+    <testcase classname="global" name="./succeeding/conditions/const ints to int literal" time="0"/>
+    <testcase classname="global" name="./succeeding/conditions/negative ints" time="0"/>
+    <testcase classname="global" name="./succeeding/conditions/computed ints" time="0"/>
+    <testcase classname="global" name="./succeeding/conditions/ptr" time="0"/>
+    <testcase classname="global" name="./succeeding/conditions/not" time="0"/>
+    <testcase classname="global" name="./failing/conditions/not" time="0">
       <failure message="false != false" type="CHECK">
 ConditionTests.cpp
       </failure>
@@ -7348,8 +7363,8 @@ ConditionTests.cpp
 ConditionTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/exceptions/explicit" time="tbd"/>
-    <testcase classname="global" name="./failing/exceptions/explicit" time="tbd">
+    <testcase classname="global" name="./succeeding/exceptions/explicit" time="0"/>
+    <testcase classname="global" name="./failing/exceptions/explicit" time="0">
       <error message="thisThrows()" type="CHECK_THROWS_AS">
 ExceptionTests.cpp
       </error>
@@ -7360,51 +7375,51 @@ ExceptionTests.cpp
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./failing/exceptions/implicit" time="tbd">
+    <testcase classname="global" name="./failing/exceptions/implicit" time="0">
       <error type="TEST_CASE">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./failing/exceptions/implicit/2" time="tbd">
+    <testcase classname="global" name="./failing/exceptions/implicit/2" time="0">
       <error message="{Unknown expression after the reported line}">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./failing/exceptions/implicit/3" time="tbd">
+    <testcase classname="global" name="./failing/exceptions/implicit/3" time="0">
       <error type="TEST_CASE">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./failing/exceptions/implicit/4" time="tbd">
+    <testcase classname="global" name="./failing/exceptions/implicit/4" time="0">
       <error message="thisThrows() == 0" type="CHECK">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./succeeding/exceptions/implicit" time="tbd"/>
-    <testcase classname="global" name="./failing/exceptions/custom" time="tbd">
+    <testcase classname="global" name="./succeeding/exceptions/implicit" time="0"/>
+    <testcase classname="global" name="./failing/exceptions/custom" time="0">
       <error type="TEST_CASE">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./failing/exceptions/custom/nothrow" time="tbd">
+    <testcase classname="global" name="./failing/exceptions/custom/nothrow" time="0">
       <error message="throwCustom()" type="REQUIRE_NOTHROW">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./failing/exceptions/custom/throw" time="tbd">
+    <testcase classname="global" name="./failing/exceptions/custom/throw" time="0">
       <error message="throwCustom()" type="REQUIRE_THROWS_AS">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./failing/exceptions/custom/double" time="tbd">
+    <testcase classname="global" name="./failing/exceptions/custom/double" time="0">
       <error type="TEST_CASE">
 ExceptionTests.cpp
       </error>
     </testcase>
-    <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="tbd"/>
-    <testcase classname="global" name="./succeeding/generators/1" time="tbd"/>
-    <testcase classname="global" name="./succeeding/generators/2" time="tbd"/>
-    <testcase classname="global" name="./succeeding/message" time="tbd">
+    <testcase classname="global" name="./succeeding/exceptions/notimplemented" time="0"/>
+    <testcase classname="global" name="./succeeding/generators/1" time="0"/>
+    <testcase classname="global" name="./succeeding/generators/2" time="0"/>
+    <testcase classname="global" name="./succeeding/message" time="0">
       <info type="INFO">
 MessageTests.cpp
       </info>
@@ -7412,8 +7427,8 @@ MessageTests.cpp
 MessageTests.cpp
       </warning>
     </testcase>
-    <testcase classname="global" name="./succeeding/succeed" time="tbd"/>
-    <testcase classname="global" name="./failing/message/info/1" time="tbd">
+    <testcase classname="global" name="./succeeding/succeed" time="0"/>
+    <testcase classname="global" name="./failing/message/info/1" time="0">
       <info type="INFO">
 MessageTests.cpp
       </info>
@@ -7424,7 +7439,7 @@ MessageTests.cpp
 MessageTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./mixed/message/info/2" time="tbd">
+    <testcase classname="global" name="./mixed/message/info/2" time="0">
       <info type="INFO">
 MessageTests.cpp
       </info>
@@ -7438,12 +7453,12 @@ MessageTests.cpp
 MessageTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./failing/message/fail" time="tbd">
+    <testcase classname="global" name="./failing/message/fail" time="0">
       <failure type="FAIL">
 MessageTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./failing/message/sections" time="tbd">
+    <testcase classname="global" name="./failing/message/sections" time="0">
       <failure type="FAIL">
 MessageTests.cpp
       </failure>
@@ -7451,13 +7466,13 @@ MessageTests.cpp
 MessageTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/message/sections/stdout" time="tbd">
+    <testcase classname="global" name="./succeeding/message/sections/stdout" time="0">
       <system-out>
 Message from section one
 Message from section two
       </system-out>
     </testcase>
-    <testcase classname="global" name="./mixed/message/scoped" time="tbd">
+    <testcase classname="global" name="./mixed/message/scoped" time="0">
       <info type="INFO">
 MessageTests.cpp
       </info>
@@ -7468,31 +7483,31 @@ MessageTests.cpp
 MessageTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/nofail" time="tbd">
+    <testcase classname="global" name="./succeeding/nofail" time="0">
       <failure message="1 == 2" type="CHECK_NOFAIL">
 MessageTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="just info" time="tbd"/>
-    <testcase classname="global" name="just failure" time="tbd">
+    <testcase classname="global" name="just info" time="0"/>
+    <testcase classname="global" name="just failure" time="0">
       <failure type="FAIL">
 MessageTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/Misc/Sections" time="tbd"/>
-    <testcase classname="global" name="./succeeding/Misc/Sections/nested" time="tbd"/>
-    <testcase classname="global" name="./mixed/Misc/Sections/nested2" time="tbd">
+    <testcase classname="global" name="./succeeding/Misc/Sections" time="0"/>
+    <testcase classname="global" name="./succeeding/Misc/Sections/nested" time="0"/>
+    <testcase classname="global" name="./mixed/Misc/Sections/nested2" time="0">
       <failure message="1 == 2" type="REQUIRE">
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./Sections/nested/a/b" time="tbd"/>
-    <testcase classname="global" name="./mixed/Misc/Sections/loops" time="tbd">
+    <testcase classname="global" name="./Sections/nested/a/b" time="0"/>
+    <testcase classname="global" name="./mixed/Misc/Sections/loops" time="0">
       <failure message="0 > 1" type="CHECK">
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./mixed/Misc/loops" time="tbd">
+    <testcase classname="global" name="./mixed/Misc/loops" time="0">
       <info type="INFO">
 MiscTests.cpp
       </info>
@@ -7530,7 +7545,7 @@ MiscTests.cpp
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/Misc/stdout,stderr" time="tbd">
+    <testcase classname="global" name="./succeeding/Misc/stdout,stderr" time="0">
       <system-out>
 Some information
       </system-out>
@@ -7538,8 +7553,8 @@ Some information
 An error
       </system-err>
     </testcase>
-    <testcase classname="global" name="./succeeding/Misc/null strings" time="tbd"/>
-    <testcase classname="global" name="./failing/info" time="tbd">
+    <testcase classname="global" name="./succeeding/Misc/null strings" time="0"/>
+    <testcase classname="global" name="./failing/info" time="0">
       <info type="INFO">
 MiscTests.cpp
       </info>
@@ -7550,8 +7565,8 @@ MiscTests.cpp
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/checkedif" time="tbd"/>
-    <testcase classname="global" name="./failing/checkedif" time="tbd">
+    <testcase classname="global" name="./succeeding/checkedif" time="0"/>
+    <testcase classname="global" name="./failing/checkedif" time="0">
       <failure message="false" type="CHECKED_IF">
 MiscTests.cpp
       </failure>
@@ -7559,8 +7574,8 @@ MiscTests.cpp
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/checkedelse" time="tbd"/>
-    <testcase classname="global" name="./failing/checkedelse" time="tbd">
+    <testcase classname="global" name="./succeeding/checkedelse" time="0"/>
+    <testcase classname="global" name="./failing/checkedelse" time="0">
       <failure message="false" type="CHECKED_ELSE">
 MiscTests.cpp
       </failure>
@@ -7568,8 +7583,8 @@ MiscTests.cpp
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./misc/xmlentitycheck" time="tbd"/>
-    <testcase classname="global" name="./manual/onechar" time="tbd">
+    <testcase classname="global" name="./misc/xmlentitycheck" time="0"/>
+    <testcase classname="global" name="./manual/onechar" time="0">
       <info type="INFO">
 MiscTests.cpp
       </info>
@@ -7577,43 +7592,43 @@ MiscTests.cpp
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/atomic if" time="tbd"/>
-    <testcase classname="global" name="./succeeding/matchers" time="tbd"/>
-    <testcase classname="global" name="./failing/matchers/Contains" time="tbd">
+    <testcase classname="global" name="./succeeding/atomic if" time="0"/>
+    <testcase classname="global" name="./succeeding/matchers" time="0"/>
+    <testcase classname="global" name="./failing/matchers/Contains" time="0">
       <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./failing/matchers/StartsWith" time="tbd">
+    <testcase classname="global" name="./failing/matchers/StartsWith" time="0">
       <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./failing/matchers/EndsWith" time="tbd">
+    <testcase classname="global" name="./failing/matchers/EndsWith" time="0">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./failing/matchers/Equals" time="tbd">
+    <testcase classname="global" name="./failing/matchers/Equals" time="0">
       <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="string" time="tbd"/>
-    <testcase classname="global" name="./succeeding/matchers/AllOf" time="tbd"/>
-    <testcase classname="global" name="./succeeding/matchers/AnyOf" time="tbd"/>
-    <testcase classname="global" name="./succeeding/matchers/Equals" time="tbd"/>
-    <testcase classname="global" name="Factorials are computed" time="tbd"/>
-    <testcase classname="global" name="empty" time="tbd"/>
-    <testcase classname="global" name="Nice descriptive name" time="tbd">
+    <testcase classname="global" name="string" time="0"/>
+    <testcase classname="global" name="./succeeding/matchers/AllOf" time="0"/>
+    <testcase classname="global" name="./succeeding/matchers/AnyOf" time="0"/>
+    <testcase classname="global" name="./succeeding/matchers/Equals" time="0"/>
+    <testcase classname="global" name="Factorials are computed" time="0"/>
+    <testcase classname="global" name="empty" time="0"/>
+    <testcase classname="global" name="Nice descriptive name" time="0">
       <warning type="WARN">
 MiscTests.cpp
       </warning>
     </testcase>
-    <testcase classname="global" name="first tag" time="tbd"/>
-    <testcase classname="global" name="second tag" time="tbd"/>
-    <testcase classname="global" name="vectors can be sized and resized" time="tbd"/>
-    <testcase classname="global" name="./failing/CatchSectionInfiniteLoop" time="tbd">
+    <testcase classname="global" name="first tag" time="0"/>
+    <testcase classname="global" name="second tag" time="0"/>
+    <testcase classname="global" name="vectors can be sized and resized" time="0"/>
+    <testcase classname="global" name="./failing/CatchSectionInfiniteLoop" time="0">
       <failure type="FAIL">
 MiscTests.cpp
       </failure>
@@ -7624,7 +7639,13 @@ MiscTests.cpp
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="selftest/main" time="tbd">
+    <testcase classname="global" name="Timer" time="0">
+      <system-out>
+starting...
+finished in 0.322247
+      </system-out>
+    </testcase>
+    <testcase classname="global" name="selftest/main" time="0">
       <system-out>
 Message from section one
 Message from section two
@@ -7638,33 +7659,33 @@ An error
 An error
       </system-err>
     </testcase>
-    <testcase classname="global" name="meta/Misc/Sections" time="tbd"/>
-    <testcase classname="global" name="Process can be configured on command line" time="tbd"/>
-    <testcase classname="global" name="selftest/test filter" time="tbd"/>
-    <testcase classname="global" name="selftest/test filters" time="tbd"/>
-    <testcase classname="global" name="selftest/filter/prefix wildcard" time="tbd"/>
-    <testcase classname="global" name="selftest/filter/wildcard at both ends" time="tbd"/>
-    <testcase classname="global" name="selftest/tags" time="tbd"/>
-    <testcase classname="global" name="Long strings can be wrapped" time="tbd"/>
-    <testcase classname="global" name="Strings can be rendered with colour" time="tbd">
+    <testcase classname="global" name="meta/Misc/Sections" time="0"/>
+    <testcase classname="global" name="Process can be configured on command line" time="0"/>
+    <testcase classname="global" name="selftest/test filter" time="0"/>
+    <testcase classname="global" name="selftest/test filters" time="0"/>
+    <testcase classname="global" name="selftest/filter/prefix wildcard" time="0"/>
+    <testcase classname="global" name="selftest/filter/wildcard at both ends" time="0"/>
+    <testcase classname="global" name="selftest/tags" time="0"/>
+    <testcase classname="global" name="Long strings can be wrapped" time="0"/>
+    <testcase classname="global" name="Strings can be rendered with colour" time="0">
       <system-out>
 hello
 hello
       </system-out>
     </testcase>
-    <testcase classname="global" name="Text can be formatted using the Text class" time="tbd"/>
-    <testcase classname="global" name="./succeeding/Tricky/std::pair" time="tbd"/>
-    <testcase classname="global" name="./inprogress/failing/Tricky/trailing expression" time="tbd">
+    <testcase classname="global" name="Text can be formatted using the Text class" time="0"/>
+    <testcase classname="global" name="./succeeding/Tricky/std::pair" time="0"/>
+    <testcase classname="global" name="./inprogress/failing/Tricky/trailing expression" time="0">
       <warning type="WARN">
 TrickyTests.cpp
       </warning>
     </testcase>
-    <testcase classname="global" name="./inprogress/failing/Tricky/compound lhs" time="tbd">
+    <testcase classname="global" name="./inprogress/failing/Tricky/compound lhs" time="0">
       <warning type="WARN">
 TrickyTests.cpp
       </warning>
     </testcase>
-    <testcase classname="global" name="./failing/Tricky/non streamable type" time="tbd">
+    <testcase classname="global" name="./failing/Tricky/non streamable type" time="0">
       <failure message="0x<hex digits> == 0x<hex digits>" type="CHECK">
 TrickyTests.cpp
       </failure>
@@ -7672,40 +7693,43 @@ TrickyTests.cpp
 TrickyTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./failing/string literals" time="tbd">
+    <testcase classname="global" name="./failing/string literals" time="0">
       <failure message="&quot;first&quot; == &quot;second&quot;" type="REQUIRE">
 TrickyTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="./succeeding/side-effects" time="tbd"/>
-    <testcase classname="global" name="./succeeding/koenig" time="tbd"/>
-    <testcase classname="global" name="./succeeding/non-const==" time="tbd"/>
-    <testcase classname="global" name="./succeeding/enum/bits" time="tbd"/>
-    <testcase classname="global" name="./succeeding/boolean member" time="tbd"/>
-    <testcase classname="global" name="./succeeding/unimplemented static bool" time="tbd"/>
-    <testcase classname="global" name="./succeeding/SafeBool" time="tbd"/>
-    <testcase classname="global" name="Assertions then sections" time="tbd"/>
-    <testcase classname="global" name="non streamable - with conv. op" time="tbd"/>
-    <testcase classname="global" name="Comparing function pointers" time="tbd"/>
-    <testcase classname="global" name="pointer to class" time="tbd"/>
-    <testcase classname="global" name="X/level/0/a" time="tbd"/>
-    <testcase classname="global" name="X/level/0/b" time="tbd"/>
-    <testcase classname="global" name="X/level/1/a" time="tbd"/>
-    <testcase classname="global" name="X/level/1/b" time="tbd"/>
-    <testcase classname="global" name="Anonymous test case 1" time="tbd"/>
-    <testcase classname="global" name="Test case with one argument" time="tbd"/>
-    <testcase classname="global" name="Variadic macros" time="tbd"/>
-    <testcase classname="global" name="Scenario: Do that thing with the thing" time="tbd"/>
-    <testcase classname="global" name="Scenario: Vector resizing affects size and capacity" time="tbd"/>
-    <testcase classname="global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="tbd"/>
-    <testcase classname="global" name="cmdline" time="tbd"/>
-    <testcase classname="global" name="section tracking" time="tbd"/>
+    <testcase classname="global" name="./succeeding/side-effects" time="0"/>
+    <testcase classname="global" name="./succeeding/koenig" time="0"/>
+    <testcase classname="global" name="./succeeding/non-const==" time="0"/>
+    <testcase classname="global" name="./succeeding/enum/bits" time="0"/>
+    <testcase classname="global" name="./succeeding/boolean member" time="0"/>
+    <testcase classname="global" name="./succeeding/unimplemented static bool" time="0"/>
+    <testcase classname="global" name="./succeeding/SafeBool" time="0"/>
+    <testcase classname="global" name="Assertions then sections" time="0"/>
+    <testcase classname="global" name="non streamable - with conv. op" time="0"/>
+    <testcase classname="global" name="Comparing function pointers" time="0"/>
+    <testcase classname="global" name="pointer to class" time="0"/>
+    <testcase classname="global" name="X/level/0/a" time="0"/>
+    <testcase classname="global" name="X/level/0/b" time="0"/>
+    <testcase classname="global" name="X/level/1/a" time="0"/>
+    <testcase classname="global" name="X/level/1/b" time="0"/>
+    <testcase classname="global" name="Anonymous test case 1" time="0"/>
+    <testcase classname="global" name="Test case with one argument" time="0"/>
+    <testcase classname="global" name="Variadic macros" time="0"/>
+    <testcase classname="global" name="Scenario: Do that thing with the thing" time="0"/>
+    <testcase classname="global" name="Scenario: Vector resizing affects size and capacity" time="0"/>
+    <testcase classname="global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="0"/>
+    <testcase classname="global" name="cmdline" time="0"/>
+    <testcase classname="global" name="section tracking" time="0"/>
   </testsuite>
   <system-out>
 Message from section one
 Message from section two
 
 Some information
+
+starting...
+finished in 0.322247
 
 Message from section one
 Message from section two
@@ -11414,6 +11438,9 @@ An error
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Timer">
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="selftest/main">
       <Section name="selftest/expected result" description="Tests do what they claim">
         <OverallResults successes="0" failures="0"/>
@@ -14069,7 +14096,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="647" failures="109"/>
+    <OverallResults successes="648" failures="109"/>
   </Group>
-  <OverallResults successes="647" failures="109"/>
+  <OverallResults successes="648" failures="109"/>
 </Catch>

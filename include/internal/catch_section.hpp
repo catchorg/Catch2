@@ -11,6 +11,7 @@
 #include "catch_capture.hpp"
 #include "catch_totals.hpp"
 #include "catch_compiler_capabilities.h"
+#include "catch_timer.h"
 
 #include <string>
 
@@ -23,11 +24,13 @@ namespace Catch {
                     std::string const& description = "" )
         :   m_info( name, description, lineInfo ),
             m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( m_info, m_assertions ) )
-        {}
+        {
+            m_timer.start();
+        }
 
         ~Section() {
             if( m_sectionIncluded )
-                getCurrentContext().getResultCapture().sectionEnded( m_info, m_assertions );
+                getCurrentContext().getResultCapture().sectionEnded( m_info, m_assertions, m_timer.getElapsedSeconds() );
         }
 
         // This indicates whether the section should be executed or not
@@ -41,6 +44,7 @@ namespace Catch {
         std::string m_name;
         Counts m_assertions;
         bool m_sectionIncluded;
+        Timer m_timer;
     };
 
 } // end namespace Catch

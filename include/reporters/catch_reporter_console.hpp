@@ -69,6 +69,8 @@ namespace Catch {
                 stream << " '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
             m_headerPrinted = false;
+            if( m_config->showDurations() == ShowDurations::Always )
+                stream << "Completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
@@ -263,20 +265,20 @@ namespace Catch {
             assert( currentSectionInfo );
             if( currentSectionInfo ) {
                 Colour colourGuard( Colour::Headers );
-                std::vector<ThreadedSectionInfo*> sections;
-                for(    ThreadedSectionInfo* section = currentSectionInfo.get();
+                std::vector<Node<SectionInfo>*> sections;
+                for(    Node<SectionInfo>* section = currentSectionInfo.get();
                         section;
                         section = section->parent )
                     sections.push_back( section );
 
                 // Sections
-                std::vector<ThreadedSectionInfo*>::const_reverse_iterator
+                std::vector<Node<SectionInfo>*>::const_reverse_iterator
                     it = sections.rbegin(), itEnd = sections.rend();
                 for( ++it; it != itEnd; ++it ) // Skip first section (test case)
-                    printHeaderString( (*it)->name, 2 );
+                    printHeaderString( (*it)->value.name, 2 );
             }
             SourceLineInfo lineInfo = currentSectionInfo
-                                    ? currentSectionInfo->lineInfo
+                                    ? currentSectionInfo->value.lineInfo
                                     : unusedTestCaseInfo->lineInfo;
 
             if( !lineInfo.empty() ){

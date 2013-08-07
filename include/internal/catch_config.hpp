@@ -26,17 +26,6 @@ namespace Catch {
 
     struct ConfigData {
 
-        struct Verbosity { enum Level {
-            NoOutput = 0,
-            Quiet,
-            Normal
-        }; };
-
-        struct WarnAbout { enum What {
-            Nothing = 0x00,
-            NoAssertions = 0x01
-        }; };
-
         ConfigData()
         :   listTests( false ),
             listTags( false ),
@@ -47,7 +36,8 @@ namespace Catch {
             showHelp( false ),
             abortAfter( -1 ),
             verbosity( Verbosity::Normal ),
-            warnings( WarnAbout::Nothing )
+            warnings( WarnAbout::Nothing ),
+            showDurations( ShowDurations::DefaultForReporter )
         {}
 
         bool listTests;
@@ -63,6 +53,7 @@ namespace Catch {
 
         Verbosity::Level verbosity;
         WarnAbout::What warnings;
+        ShowDurations::OrNot showDurations;
 
         std::string reporterName;
         std::string outputFilename;
@@ -166,7 +157,9 @@ namespace Catch {
         virtual std::ostream& stream() const    { return m_os; }
         virtual std::string name() const        { return m_data.name.empty() ? m_data.processName : m_data.name; }
         virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
-        virtual bool warnAboutMissingAssertions() const { return m_data.warnings & ConfigData::WarnAbout::NoAssertions; }
+        virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
+        virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
+
 
     private:
         ConfigData m_data;

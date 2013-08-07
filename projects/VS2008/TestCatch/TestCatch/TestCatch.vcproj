@@ -360,6 +360,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\SelfTest\CmdLineTests.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\SelfTest\ConditionTests.cpp"
 				>
 			</File>
@@ -377,6 +381,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\SelfTest\MiscTests.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\SelfTest\SectionTrackerTests.cpp"
 				>
 			</File>
 			<File

@@ -24,15 +24,21 @@ namespace Catch {
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
         if( _warning == "NoAssertions" )
-            config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
+            config.warnings = (WarnAbout::What)( config.warnings | WarnAbout::NoAssertions );
         else
             throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
 
     }
     inline void setVerbosity( ConfigData& config, int level ) {
         // !TBD: accept strings?
-        config.verbosity = (ConfigData::Verbosity::Level)level;
+        config.verbosity = (Verbosity::Level)level;
     }
+    inline void setShowDurations( ConfigData& config, bool _showDurations ) {
+        config.showDurations = _showDurations
+            ? ShowDurations::Always
+            : ShowDurations::Never;
+    }
+    
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
@@ -120,6 +126,12 @@ namespace Catch {
         cli.bind( &addTestOrTags )
             .describe( "which test or tests to use" )
             .argName( "test name, pattern or tags" );
+
+        cli.bind( &setShowDurations )
+            .describe( "show test durations" )
+            .shortOpt( "d")
+            .longOpt( "durations" )
+            .argName( "durations" );
 
         return cli;
     }
