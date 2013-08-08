@@ -47,7 +47,7 @@ namespace Catch
     };
 
 
-    template<typename T>
+    template<typename T, typename ChildT=T>
     struct Node : SharedImpl<> {
         Node( T const& _value, Node* _parent = NULL )
         :   value( _value ),
@@ -223,6 +223,8 @@ namespace Catch
 
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
 
+        typedef Ptr<Node<SectionInfo> > SectionInfoNode;
+
         StreamingReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
             stream( _config.stream() )
@@ -244,28 +246,20 @@ namespace Catch
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
             Ptr<Node<SectionInfo> > sectionInfo = new Node<SectionInfo>( _sectionInfo );
-            if( !currentSectionInfo ) {
-                currentSectionInfo = sectionInfo;
-                m_rootSections.push_back( currentSectionInfo );
-            }
-            else {
-                currentSectionInfo->children.push_back( sectionInfo );
-                sectionInfo->parent = currentSectionInfo.get();
-                currentSectionInfo = sectionInfo;
-            }
+            m_sectionStack.push_back( sectionInfo );
         }
 
         virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
-            currentSectionInfo = currentSectionInfo->parent;
+            m_sectionStack.pop_back();
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
             unusedTestCaseInfo.reset();
+            assert( m_sectionStack.empty() );
         }
         virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) {
             unusedGroupInfo.reset();
         }
         virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
-            currentSectionInfo.reset();
             unusedTestCaseInfo.reset();
             unusedGroupInfo.reset();
             testRunInfo.reset();
@@ -275,26 +269,27 @@ namespace Catch
         Option<TestRunInfo> testRunInfo;
         Option<GroupInfo> unusedGroupInfo;
         Option<TestCaseInfo> unusedTestCaseInfo;
-        Ptr<Node<SectionInfo> > currentSectionInfo;
         std::ostream& stream;
 
-        // !TBD: This should really go in the TestCaseStats class
-        std::vector<Ptr<Node<SectionInfo> > > m_rootSections;
+        std::vector<SectionInfoNode> m_sectionStack;
     };
 
-    struct TestGroupNode : TestGroupStats {
-        TestGroupNode( TestGroupStats const& _stats ) : TestGroupStats( _stats ) {}
-//        TestGroupNode( GroupInfo const& _info ) : TestGroupStats( _stats ) {}
-        ~TestGroupNode();
+    struct CumulativeReporterBase : StreamingReporterBase {
+        virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) = 0;
 
-    };
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
-    struct TestRunNode : TestRunStats {
+        virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
-        TestRunNode( TestRunStats const& _stats ) : TestRunStats( _stats ) {}
-        ~TestRunNode();
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
+        virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
+        virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 
-        std::vector<TestGroupNode> groups;
+        std::vector<Ptr<Node<TestGroupStats> > > m_groups;
     };
 
     // Deprecated
@@ -333,8 +328,9 @@ namespace Catch
     };
 
     inline std::string trim( std::string const& str ) {
-        std::string::size_type start = str.find_first_not_of( "\n\r\t " );
-        std::string::size_type end = str.find_last_not_of( "\n\r\t " );
+        static char const* whitespaceChars = "\n\r\t ";
+        std::string::size_type start = str.find_first_not_of( whitespaceChars );
+        std::string::size_type end = str.find_last_not_of( whitespaceChars );
 
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }

@@ -62,7 +62,7 @@ namespace Catch {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 Colour colour( Colour::ResultError );
-                if( currentSectionInfo->parent )
+                if( m_sectionStack.size() > 1 )
                     stream << "\nNo assertions in section";
                 else
                     stream << "\nNo assertions in test case";
@@ -261,25 +261,20 @@ namespace Catch {
             }
         }
         void printTestCaseAndSectionHeader() {
+            assert( !m_sectionStack.empty() );
             printOpenHeader( unusedTestCaseInfo->name );
-            assert( currentSectionInfo );
-            if( currentSectionInfo ) {
-                Colour colourGuard( Colour::Headers );
-                std::vector<Node<SectionInfo>*> sections;
-                for(    Node<SectionInfo>* section = currentSectionInfo.get();
-                        section;
-                        section = section->parent )
-                    sections.push_back( section );
 
-                // Sections
-                std::vector<Node<SectionInfo>*>::const_reverse_iterator
-                    it = sections.rbegin(), itEnd = sections.rend();
-                for( ++it; it != itEnd; ++it ) // Skip first section (test case)
+            if( m_sectionStack.size() > 1 ) {
+                Colour colourGuard( Colour::Headers );
+
+                std::vector<SectionInfoNode>::const_iterator
+                    it = m_sectionStack.begin()+1, // Skip first section (test case)
+                    itEnd = m_sectionStack.end();
+                for( ; it != itEnd; ++it )
                     printHeaderString( (*it)->value.name, 2 );
             }
-            SourceLineInfo lineInfo = currentSectionInfo
-                                    ? currentSectionInfo->value.lineInfo
-                                    : unusedTestCaseInfo->lineInfo;
+
+            SourceLineInfo lineInfo = m_sectionStack.front()->value.lineInfo;
 
             if( !lineInfo.empty() ){
                 stream << getDashes() << "\n";

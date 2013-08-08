@@ -670,8 +670,6 @@ MiscTests.cpp: FAILED:
 explicitly with message:
   to infinity and beyond
 
-starting...
-finished in 0.322593
 Message from section one
 Message from section two
 Some information
@@ -710,7 +708,7 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-122 test cases - 35 failed (738 assertions - 90 failed)
+121 test cases - 35 failed (737 assertions - 90 failed)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -4318,19 +4316,6 @@ MiscTests.cpp: FAILED:
 explicitly with message:
   to infinity and beyond
 
-starting...
-finished in 0.323247
--------------------------------------------------------------------------------
-Timer
--------------------------------------------------------------------------------
-MiscTests.cpp
-...............................................................................
-
-MiscTests.cpp:
-PASSED:
-with message:
-  yay
-
 -------------------------------------------------------------------------------
 selftest/main
   selftest/expected result
@@ -7184,13 +7169,13 @@ with expansion:
   true
 
 ===============================================================================
-122 test cases - 50 failed (757 assertions - 109 failed)
+121 test cases - 50 failed (756 assertions - 109 failed)
 
 No test cases matched '~dummy 4'
 No tests ran
 
 <testsuites>
-  <testsuite name="~dummy" errors="10" failures="81" tests="757" hostname="tbd" time="" timestamp="tbd">
+  <testsuite name="~dummy" errors="10" failures="81" tests="756" hostname="tbd" time="" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="0"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="0"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="0"/>
@@ -7639,12 +7624,6 @@ MiscTests.cpp
 MiscTests.cpp
       </failure>
     </testcase>
-    <testcase classname="global" name="Timer" time="0">
-      <system-out>
-starting...
-finished in 0.322247
-      </system-out>
-    </testcase>
     <testcase classname="global" name="selftest/main" time="0">
       <system-out>
 Message from section one
@@ -7727,9 +7706,6 @@ Message from section one
 Message from section two
 
 Some information
-
-starting...
-finished in 0.322247
 
 Message from section one
 Message from section two
@@ -11438,9 +11414,6 @@ An error
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Timer">
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="selftest/main">
       <Section name="selftest/expected result" description="Tests do what they claim">
         <OverallResults successes="0" failures="0"/>
@@ -14096,7 +14069,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="648" failures="109"/>
+    <OverallResults successes="647" failures="109"/>
   </Group>
-  <OverallResults successes="648" failures="109"/>
+  <OverallResults successes="647" failures="109"/>
 </Catch>

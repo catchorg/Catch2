@@ -343,24 +343,24 @@ TEST_CASE("./failing/CatchSectionInfiniteLoop", "")
 }
 
 
-#include "internal/catch_timer.h"
-
-TEST_CASE( "Timer", "[work-in-progress]" )
-{
-    Catch::Timer t;
-    t.start();
-
-    std::cout << "starting..." << std::endl;
-
-    double d = 0;
-    for( int i = 0; i < 100000; ++i )
-        for( int j = 0; j < 1000; ++j )
-            d += (double)i*(double)j;
-
-    double duration = t.getElapsedSeconds();
-
-    std::cout << "finished in " << duration << std::endl;
-
-    SUCCEED("yay");
-    
-}
+//#include "internal/catch_timer.h"
+//
+//TEST_CASE( "Timer", "[work-in-progress]" )
+//{
+//    Catch::Timer t;
+//    t.start();
+//
+//    std::cout << "starting..." << std::endl;
+//
+//    double d = 0;
+//    for( int i = 0; i < 100000; ++i )
+//        for( int j = 0; j < 1000; ++j )
+//            d += (double)i*(double)j;
+//
+//    double duration = t.getElapsedSeconds();
+//
+//    std::cout << "finished in " << duration << std::endl;
+//
+//    SUCCEED("yay");
+//    
+//}

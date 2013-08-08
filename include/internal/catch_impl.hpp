@@ -58,8 +58,6 @@ namespace Catch {
     TestCaseStats::~TestCaseStats() {}
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
-    TestGroupNode::~TestGroupNode() {}
-    TestRunNode::~TestRunNode() {}
 
     BasicReporter::~BasicReporter() {}
     StreamingReporterBase::~StreamingReporterBase() {}
