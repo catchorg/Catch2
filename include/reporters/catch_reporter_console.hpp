@@ -79,7 +79,7 @@ namespace Catch {
             m_headerPrinted = false;
         }
         virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) {
-            if( !unusedGroupInfo ) {
+            if( currentGroupInfo.used ) {
                 printSummaryDivider();
                 stream << "Summary for group '" << _testGroupStats.groupInfo.name << "':\n";
                 printTotals( _testGroupStats.totals );
@@ -229,9 +229,9 @@ namespace Catch {
 
         void lazyPrint() {
 
-            if( testRunInfo )
+            if( !currentTestRunInfo.used )
                 lazyPrintRunInfo();
-            if( unusedGroupInfo )
+            if( !currentGroupInfo.used )
                 lazyPrintGroupInfo();
 
             if( !m_headerPrinted ) {
@@ -243,7 +243,7 @@ namespace Catch {
         void lazyPrintRunInfo() {
             stream  << "\n" << getTildes() << "\n";
             Colour colour( Colour::SecondaryText );
-            stream  << testRunInfo->name
+            stream  << currentTestRunInfo->name
                     << " is a Catch v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
                     << libraryVersion.buildNumber;
@@ -252,17 +252,17 @@ namespace Catch {
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
 
-            testRunInfo.reset();
+            currentTestRunInfo.used = true;
         }
         void lazyPrintGroupInfo() {
-            if( !unusedGroupInfo->name.empty() && unusedGroupInfo->groupsCounts > 1 ) {
-                printClosedHeader( "Group: " + unusedGroupInfo->name );
-                unusedGroupInfo.reset();
+            if( !currentGroupInfo->name.empty() && currentGroupInfo->groupsCounts > 1 ) {
+                printClosedHeader( "Group: " + currentGroupInfo->name );
+                currentGroupInfo.used = true;
             }
         }
         void printTestCaseAndSectionHeader() {
             assert( !m_sectionStack.empty() );
-            printOpenHeader( unusedTestCaseInfo->name );
+            printOpenHeader( currentTestCaseInfo->name );
 
             if( m_sectionStack.size() > 1 ) {
                 Colour colourGuard( Colour::Headers );

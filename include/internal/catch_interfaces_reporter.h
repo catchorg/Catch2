@@ -60,6 +60,21 @@ namespace Catch
         Node* parent;
     };
 
+    template<typename T>
+    struct LazyStat : Option<T> {
+        LazyStat() : used( false ) {}
+        LazyStat& operator=( T const& _value ) {
+            Option<T>::operator=( _value );
+            used = false;
+            return *this;
+        }
+        void reset() {
+            Option<T>::reset();
+            used = false;
+        }
+        bool used;
+    };
+
     struct TestRunInfo {
         TestRunInfo( std::string const& _name ) : name( _name ) {}
         std::string name;
@@ -235,14 +250,14 @@ namespace Catch
         virtual void noMatchingTestCases( std::string const& ) {}
 
         virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
-            testRunInfo = _testRunInfo;
+            currentTestRunInfo = _testRunInfo;
         }
         virtual void testGroupStarting( GroupInfo const& _groupInfo ) {
-            unusedGroupInfo = _groupInfo;
+            currentGroupInfo = _groupInfo;
         }
 
         virtual void testCaseStarting( TestCaseInfo const& _testInfo ) {
-            unusedTestCaseInfo = _testInfo;
+            currentTestCaseInfo = _testInfo;
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
             Ptr<Node<SectionInfo> > sectionInfo = new Node<SectionInfo>( _sectionInfo );
@@ -253,22 +268,22 @@ namespace Catch
             m_sectionStack.pop_back();
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
-            unusedTestCaseInfo.reset();
+            currentTestCaseInfo.reset();
             assert( m_sectionStack.empty() );
         }
         virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) {
-            unusedGroupInfo.reset();
+            currentGroupInfo.reset();
         }
         virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
-            unusedTestCaseInfo.reset();
-            unusedGroupInfo.reset();
-            testRunInfo.reset();
+            currentTestCaseInfo.reset();
+            currentGroupInfo.reset();
+            currentTestRunInfo.reset();
         }
 
         Ptr<IConfig> m_config;
-        Option<TestRunInfo> testRunInfo;
-        Option<GroupInfo> unusedGroupInfo;
-        Option<TestCaseInfo> unusedTestCaseInfo;
+        LazyStat<TestRunInfo> currentTestRunInfo;
+        LazyStat<GroupInfo> currentGroupInfo;
+        LazyStat<TestCaseInfo> currentTestCaseInfo;
         std::ostream& stream;
 
         std::vector<SectionInfoNode> m_sectionStack;
