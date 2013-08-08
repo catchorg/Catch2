@@ -347,12 +347,12 @@ namespace Clara {
                 m_arg.description = description;
                 return *this;
             }
-            ArgBinder& argName( std::string const& argName ) {
-                m_arg.argName = argName;
+            ArgBinder& argName( std::string const& _argName ) {
+                m_arg.argName = _argName;
                 return *this;
             }
-            ArgBinder& position( int position ) {
-                m_arg.position = position;
+            ArgBinder& position( int _position ) {
+                m_arg.position = _position;
                 return *this;
             }
         private:
@@ -393,20 +393,20 @@ namespace Clara {
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Catch::Text usage( it->commands(), Catch::TextAttributes()
+                Catch::Text usageString( it->commands(), Catch::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
                 // !TBD handle longer usage strings
-                Catch::Text desc( it->description, Catch::TextAttributes()
+                Catch::Text descString( it->description, Catch::TextAttributes()
                                                         .setWidth( width - maxWidth -3 ) );
 
-                for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
-                    std::string usageCol = i < usage.size() ? usage[i] : "";
+                for( std::size_t i = 0; i < (std::max)( usageString.size(), descString.size() ); ++i ) {
+                    std::string usageCol = i < usageString.size() ? usageString[i] : "";
                     os << usageCol;
 
-                    if( i < desc.size() && !desc[i].empty() )
+                    if( i < descString.size() && !descString[i].empty() )
                         os  << std::string( indent + 2 + maxWidth - usageCol.size(), ' ' )
-                            << desc[i];
+                            << descString[i];
                     os << "\n";
                 }
             }

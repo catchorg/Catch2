@@ -56,11 +56,11 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config->name() ),
+        explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
             m_activeTestCase( NULL ),
-            m_config( config ),
+            m_config( _config ),
             m_reporter( reporter ),
             m_prevRunner( &m_context.getRunner() ),
             m_prevResultCapture( &m_context.getResultCapture() ),
@@ -256,9 +256,9 @@ namespace Catch {
             if( !m_lastResult.isOk() ) {
                 action = ResultAction::Failed;
                 if( shouldDebugBreak() )
-                    action = (ResultAction::Value)( action | ResultAction::Debug );
+                    action = static_cast<ResultAction::Value>( action | ResultAction::Debug );
                 if( aborting() )
-                    action = (ResultAction::Value)( action | ResultAction::Abort );
+                    action = static_cast<ResultAction::Value>( action | ResultAction::Abort );
             }
             return action;
         }

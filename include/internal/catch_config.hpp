@@ -95,15 +95,15 @@ namespace Catch {
                         groupName += " ";
                     groupName += data.testsOrTags[i];
                 }
-                TestCaseFilters filters( groupName );
+                TestCaseFilters filterSet( groupName );
                 for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
                     std::string filter = data.testsOrTags[i];
                     if( startsWith( filter, "[" ) || startsWith( filter, "~[" ) )
-                        filters.addTags( filter );
+                        filterSet.addTags( filter );
                     else
-                        filters.addFilter( TestCaseFilter( filter ) );
+                        filterSet.addFilter( TestCaseFilter( filter ) );
                 }
-                m_filterSets.push_back( filters );
+                m_filterSets.push_back( filterSet );
             }
         }
 
@@ -137,18 +137,18 @@ namespace Catch {
         }
 
         void useStream( std::string const& streamName ) {
-            Stream stream = createStream( streamName );
-            setStreamBuf( stream.streamBuf );
+            Stream tempStream = createStream( streamName );
+            setStreamBuf( tempStream.streamBuf );
             m_stream.release();
-            m_stream = stream;
+            m_stream = tempStream;
         }
 
         std::string getReporterName() const { return m_data.reporterName; }
 
         void addTestSpec( std::string const& testSpec ) {
-            TestCaseFilters filters( testSpec );
-            filters.addFilter( TestCaseFilter( testSpec ) );
-            m_filterSets.push_back( filters );
+            TestCaseFilters filterSet( testSpec );
+            filterSet.addFilter( TestCaseFilter( testSpec ) );
+            m_filterSets.push_back( filterSet );
         }
 
         int abortAfter() const {

@@ -88,9 +88,9 @@ namespace Catch {
         :   m_isNegated( false )
         {}
 
-        Tag( std::string const& name, bool isNegated )
+        Tag( std::string const& name, bool _isNegated )
         :   m_name( name ),
-            m_isNegated( isNegated )
+            m_isNegated( _isNegated )
         {}
 
         std::string getName() const {
