@@ -8,6 +8,7 @@ from scriptCommon import catchPath
 filenameParser = re.compile( r'\s*.*/(.*\..pp):([0-9]*)(.*)' )
 lineNumberParser = re.compile( r'(.*)line="[0-9]*"(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
+durationsParser = re.compile( r'(.*)time="[0-9]*\.[0-9]*"(.*)' )
 
 #catchPath = os.path.dirname(os.path.realpath( os.path.dirname(sys.argv[0])))
 
@@ -45,6 +46,10 @@ for line in rawFile:
 			line = m.group(1) + "0x<hex digits>" + m.group(3)
 		else:
 			break
+	m = durationsParser.match( line )
+	if m:
+		line = m.group(1) + 'time="{duration}"' + m.group(2)
+
 	filteredFile.write( line.rstrip() + "\n" )
 filteredFile.close()
 rawFile.close()
