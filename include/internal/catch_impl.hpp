@@ -58,6 +58,8 @@ namespace Catch {
     TestCaseStats::~TestCaseStats() {}
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
+    CumulativeReporterBase::SectionNode::~SectionNode() {}
+    CumulativeReporterBase::~CumulativeReporterBase() {}
 
     BasicReporter::~BasicReporter() {}
     StreamingReporterBase::~StreamingReporterBase() {}
@@ -84,7 +86,7 @@ namespace Catch {
 
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "basic", BasicReporter )
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
-    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "junit", JunitReporter )
+    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "junit2", JunitReporter2 )
 
 }
 

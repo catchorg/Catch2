@@ -67,7 +67,6 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
 #include "../../include/internal/catch_test_spec.h"
 #include "../../include/reporters/catch_reporter_basic.hpp"
 #include "../../include/reporters/catch_reporter_xml.hpp"
-#include "../../include/reporters/catch_reporter_junit.hpp"
 
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {

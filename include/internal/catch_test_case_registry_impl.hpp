@@ -127,7 +127,7 @@ namespace Catch {
     AutoReg::AutoReg(   TestFunction function,
                         SourceLineInfo const& lineInfo,
                         NameAndDesc const& nameAndDesc ) {
-        registerTestCase( new FreeFunctionTestCase( function ), "global", nameAndDesc, lineInfo );
+        registerTestCase( new FreeFunctionTestCase( function ), "", nameAndDesc, lineInfo );
     }
 
     AutoReg::~AutoReg() {}

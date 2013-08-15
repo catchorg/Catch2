@@ -29,7 +29,6 @@ namespace Catch {
             ReporterPreferences prefs;
             prefs.shouldRedirectStdOut = false;
             return prefs;
-
         }
 
         virtual void noMatchingTestCases( std::string const& spec ) {
@@ -267,14 +266,14 @@ namespace Catch {
             if( m_sectionStack.size() > 1 ) {
                 Colour colourGuard( Colour::Headers );
 
-                std::vector<SectionInfoNode>::const_iterator
+                std::vector<SectionInfo>::const_iterator
                     it = m_sectionStack.begin()+1, // Skip first section (test case)
                     itEnd = m_sectionStack.end();
                 for( ; it != itEnd; ++it )
-                    printHeaderString( (*it)->value.name, 2 );
+                    printHeaderString( it->name, 2 );
             }
 
-            SourceLineInfo lineInfo = m_sectionStack.front()->value.lineInfo;
+            SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
 
             if( !lineInfo.empty() ){
                 stream << getDashes() << "\n";

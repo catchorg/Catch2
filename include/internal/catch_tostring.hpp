@@ -174,9 +174,17 @@ inline std::string toString( unsigned int value ) {
 
 inline std::string toString( const double value ) {
     std::ostringstream oss;
-    oss << std::setprecision (std::numeric_limits<double>::digits10 + 1)
+    oss << std::setprecision( 10 )
+        << std::fixed
         << value;
-    return oss.str();
+    std::string d = oss.str();
+    std::size_t i = d.find_last_not_of( '0' );
+    if( i != std::string::npos && i != d.size()-1 ) {
+        if( d[i] == '.' )
+            i++;
+        d = d.substr( 0, i+1 );
+    }
+    return d;
 }
 
 inline std::string toString( bool value ) {
