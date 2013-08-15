@@ -137,7 +137,6 @@
 		4A6D0C62149B3E3D00DB3EAA /* catch_test_case_registry_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_test_case_registry_impl.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C63149B3E3D00DB3EAA /* catch_test_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_test_registry.hpp; sourceTree = "<group>"; };
 		4A6D0C64149B3E3D00DB3EAA /* catch_xmlwriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_xmlwriter.hpp; sourceTree = "<group>"; };
-		4A6D0C66149B3E3D00DB3EAA /* catch_reporter_basic.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_basic.hpp; sourceTree = "<group>"; };
 		4A6D0C67149B3E3D00DB3EAA /* catch_reporter_junit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_junit.hpp; sourceTree = "<group>"; };
 		4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_xml.hpp; sourceTree = "<group>"; };
 		4A7ADB4314F631E10094FE10 /* catch_totals.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_totals.hpp; sourceTree = "<group>"; };
@@ -282,7 +281,6 @@
 		4A6D0C65149B3E3D00DB3EAA /* reporters */ = {
 			isa = PBXGroup;
 			children = (
-				4A6D0C66149B3E3D00DB3EAA /* catch_reporter_basic.hpp */,
 				4A6D0C67149B3E3D00DB3EAA /* catch_reporter_junit.hpp */,
 				4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */,
 				4AB42F84166F3E1A0099F2C8 /* catch_reporter_console.hpp */,

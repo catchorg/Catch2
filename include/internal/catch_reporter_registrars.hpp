@@ -17,7 +17,6 @@ namespace Catch {
     class LegacyReporterRegistrar {
 
         class ReporterFactory : public IReporterFactory {
-
             virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new LegacyReporterAdapter( new T( config ) );
             }

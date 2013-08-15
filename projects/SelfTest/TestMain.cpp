@@ -11,6 +11,7 @@
 
 #include "catch_self_test.hpp"
 #include "internal/catch_text.h"
+#include "internal/catch_console_colour.hpp"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {
     using namespace Catch;
@@ -65,7 +66,6 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
 
 #include "../../include/internal/catch_commandline.hpp"
 #include "../../include/internal/catch_test_spec.h"
-#include "../../include/reporters/catch_reporter_basic.hpp"
 #include "../../include/reporters/catch_reporter_xml.hpp"
 
 template<size_t size>
