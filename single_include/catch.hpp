@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 7 (master branch)
- *  Generated: 2013-08-16 08:00:49.964403
+ *  CATCH v1.0 build 8 (master branch)
+ *  Generated: 2013-08-16 18:58:15.279754
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3835,12 +3835,12 @@ namespace Clara {
         inline void convertInto( std::string const& _source, bool& _dest ) {
             std::string sourceLC = _source;
             std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), ::tolower );
-            if( sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
+            if( sourceLC == "y" || sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
                 _dest = true;
-            else if( sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
+            else if( sourceLC == "n" || sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
                 _dest = false;
             else
-                throw std::runtime_error( "Expected a boolean value but did recognise: '" + _source + "'" );
+                throw std::runtime_error( "Expected a boolean value but did not recognise:\n  '" + _source + "'" );
         }
         inline void convertInto( bool _source, bool& _dest ) {
             _dest = _source;
@@ -4057,7 +4057,7 @@ namespace Clara {
                 return _longName == longName;
             }
             bool takesArg() const {
-                return !argName.empty();
+                return !hint.empty();
             }
             bool isFixedPositional() const {
                 return position != -1;
@@ -4092,8 +4092,8 @@ namespace Clara {
                         oss << ", ";
                     oss << "--" << longName;
                 }
-                if( !argName.empty() )
-                    oss << " <" << argName << ">";
+                if( !hint.empty() )
+                    oss << " <" << hint << ">";
                 return oss.str();
             }
 
@@ -4101,7 +4101,7 @@ namespace Clara {
             std::vector<std::string> shortNames;
             std::string longName;
             std::string description;
-            std::string argName;
+            std::string hint;
             int position;
         };
 
@@ -4147,8 +4147,8 @@ namespace Clara {
                 m_arg.description = description;
                 return *this;
             }
-            ArgBinder& argName( std::string const& argName ) {
-                m_arg.argName = argName;
+            ArgBinder& hint( std::string const& hint ) {
+                m_arg.hint = hint;
                 return *this;
             }
             ArgBinder& position( int position ) {
@@ -4223,9 +4223,9 @@ namespace Clara {
                     os << " ";
                 typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( i );
                 if( it != m_positionalArgs.end() )
-                    os << "<" << it->second.argName << ">";
+                    os << "<" << it->second.hint << ">";
                 else if( m_arg.get() )
-                    os << "<" << m_arg->argName << ">";
+                    os << "<" << m_arg->hint << ">";
                 else
                     throw std::logic_error( "non consecutive positional arguments with no floating args" );
             }
@@ -4233,7 +4233,7 @@ namespace Clara {
             if( m_arg.get() ) {
                 if( m_highestSpecifiedArgPosition > 1 )
                     os << " ";
-                os << "[<" << m_arg->argName << "> ...]";
+                os << "[<" << m_arg->hint << "> ...]";
             }
         }
         std::string argSynopsis() const {
@@ -4302,7 +4302,7 @@ namespace Clara {
                         }
                     }
                     catch( std::exception& ex ) {
-                        throw std::runtime_error( std::string( ex.what() ) + " while parsing: (" + arg.commands() + ")" );
+                        throw std::runtime_error( std::string( ex.what() ) + "\n- while parsing: (" + arg.commands() + ")" );
                     }
                 }
                 if( it == itEnd )
@@ -4421,20 +4421,20 @@ namespace Catch {
             .describe( "output filename" )
             .shortOpt( "o")
             .longOpt( "out" )
-            .argName( "filename" );
+            .hint( "filename" );
 
         cli.bind( &ConfigData::reporterName )
             .describe( "reporter to use - defaults to console" )
             .shortOpt( "r")
             .longOpt( "reporter" )
-//            .argName( "name[:filename]" );
-            .argName( "name" );
+//            .hint( "name[:filename]" );
+            .hint( "name" );
 
         cli.bind( &ConfigData::name )
             .describe( "suite name" )
             .shortOpt( "n")
             .longOpt( "name" )
-            .argName( "name" );
+            .hint( "name" );
 
         cli.bind( &abortAfterFirst )
             .describe( "abort at first failure" )
@@ -4445,29 +4445,29 @@ namespace Catch {
             .describe( "abort after x failures" )
             .shortOpt( "x")
             .longOpt( "abortx" )
-            .argName( "number of failures" );
+            .hint( "number of failures" );
 
         cli.bind( &addWarning )
             .describe( "enable warnings" )
             .shortOpt( "w")
             .longOpt( "warn" )
-            .argName( "warning name" );
+            .hint( "warning name" );
 
 //        cli.bind( &setVerbosity )
 //            .describe( "level of verbosity (0=no output)" )
 //            .shortOpt( "v")
 //            .longOpt( "verbosity" )
-//            .argName( "level" );
+//            .hint( "level" );
 
         cli.bind( &addTestOrTags )
             .describe( "which test or tests to use" )
-            .argName( "test name, pattern or tags" );
+            .hint( "test name, pattern or tags" );
 
         cli.bind( &setShowDurations )
             .describe( "show test durations" )
             .shortOpt( "d")
             .longOpt( "durations" )
-            .argName( "durations" );
+            .hint( "yes/no" );
 
         return cli;
     }
@@ -5336,11 +5336,12 @@ namespace Catch {
                 m_config.reset();
             }
             catch( std::exception& ex ) {
-                std::cerr   << "\nError in input:\n"
-                            << Text( ex.what(), TextAttributes()
-                                                    .setInitialIndent(2)
-                                                    .setIndent(4) )
-                            << "\n\n";
+                {
+                    Colour colourGuard( Colour::Red );
+                    std::cerr   << "\nError in input:\n"
+                                << Text( ex.what(), TextAttributes().setIndent(2) )
+                                << "\n\n";
+                }
                 m_cli.usage( std::cout, m_configData.processName );
                 return (std::numeric_limits<int>::max)();
             }
@@ -6348,7 +6349,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 7, "master" );
+    Version libraryVersion( 1, 0, 8, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -7294,9 +7295,11 @@ namespace Catch {
                     stream << "\nNo assertions in test case";
                 stream << " '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
-            m_headerPrinted = false;
-            if( m_config->showDurations() == ShowDurations::Always )
-                stream << "Completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
+            if( m_headerPrinted ) {
+                if( m_config->showDurations() == ShowDurations::Always )
+                    stream << "Completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
+                m_headerPrinted = false;
+            }
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 

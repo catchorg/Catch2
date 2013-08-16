@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a Catch v1.0 b7 host application.
+CatchSelfTest is a Catch v1.0 b8 host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -712,7 +712,7 @@ with expansion:
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a Catch v1.0 b7 host application.
+CatchSelfTest is a Catch v1.0 b8 host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -5067,8 +5067,9 @@ TestMain.cpp:
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
 with expansion:
-  "Value after -x or --abortAfter must be greater than zero while parsing: (-x,
-  --abortx <number of failures>)" contains: "greater than zero"
+  "Value after -x or --abortAfter must be greater than zero
+  - while parsing: (-x, --abortx <number of failures>)" contains: "greater than
+  zero"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -5082,8 +5083,8 @@ TestMain.cpp:
 PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "-x" ) )
 with expansion:
-  "Unable to convert oops to destination type while parsing: (-x, --abortx
-  <number of failures>)" contains: "-x"
+  "Unable to convert oops to destination type
+  - while parsing: (-x, --abortx <number of failures>)" contains: "-x"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -11903,7 +11904,8 @@ An error
               parseIntoConfigAndReturnError( argv, config ) Contains( &quot;greater than zero&quot; )
             </Original>
             <Expanded>
-              &quot;Value after -x or --abortAfter must be greater than zero while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;greater than zero&quot;
+              &quot;Value after -x or --abortAfter must be greater than zero
+- while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;greater than zero&quot;
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0"/>
@@ -11917,7 +11919,8 @@ An error
               parseIntoConfigAndReturnError( argv, config ) Contains( &quot;-x&quot; )
             </Original>
             <Expanded>
-              &quot;Unable to convert oops to destination type while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;-x&quot;
+              &quot;Unable to convert oops to destination type
+- while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;-x&quot;
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0"/>
