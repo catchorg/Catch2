@@ -67,9 +67,11 @@ namespace Catch {
                     stream << "\nNo assertions in test case";
                 stream << " '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
-            m_headerPrinted = false;
-            if( m_config->showDurations() == ShowDurations::Always )
-                stream << "Completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
+            if( m_headerPrinted ) {
+                if( m_config->showDurations() == ShowDurations::Always )
+                    stream << "Completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
+                m_headerPrinted = false;
+            }
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
