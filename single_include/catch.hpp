@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 7 (master branch)
- *  Generated: 2013-08-15 19:08:20.526513
+ *  Generated: 2013-08-16 08:00:49.964403
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2307,6 +2307,7 @@ namespace Catch {
 #include <string>
 #include <ostream>
 #include <map>
+#include <assert.h>
 
 namespace Catch
 {
