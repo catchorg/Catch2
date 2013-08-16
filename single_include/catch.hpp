@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 8 (master branch)
- *  Generated: 2013-08-16 18:58:15.279754
+ *  Generated: 2013-08-16 19:08:52.941769
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1436,11 +1436,14 @@ namespace Catch {
 
 #include <iostream>
 
+// #included from: catch_platform.h
+#define TWOBLUECUBES_CATCH_PLATFORM_H_INCLUDED
+
 #if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
 #define CATCH_PLATFORM_MAC
 #elif  defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 #define CATCH_PLATFORM_IPHONE
-#elif defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
+#elif defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
 #define CATCH_PLATFORM_WINDOWS
 #endif
 
@@ -2916,7 +2919,7 @@ struct TestFailureException{};
 // #included from: catch_timer.h
 #define TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 
-#ifdef WIN32
+#ifdef CATCH_PLATFORM_WINDOWS
 typedef unsigned long long uint64_t;
 #else
 #include <stdint.h>
@@ -6575,7 +6578,7 @@ namespace Catch
 #pragma clang diagnostic ignored "-Wc++11-long-long"
 #endif
 
-#ifdef WIN32
+#ifdef CATCH_PLATFORM_WINDOWS
 #include <windows.h>
 #else
 #include <sys/time.h>
@@ -6584,7 +6587,7 @@ namespace Catch
 namespace Catch {
 
     namespace {
-#ifdef WIN32
+#ifdef CATCH_PLATFORM_WINDOWS
         uint64_t getCurrentTicks() {
             static uint64_t hz=0, hzo=0;
             if (!hz) {
