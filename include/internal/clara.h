@@ -34,12 +34,12 @@ namespace Clara {
         inline void convertInto( std::string const& _source, bool& _dest ) {
             std::string sourceLC = _source;
             std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), ::tolower );
-            if( sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
+            if( sourceLC == "y" || sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
                 _dest = true;
-            else if( sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
+            else if( sourceLC == "n" || sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
                 _dest = false;
             else
-                throw std::runtime_error( "Expected a boolean value but did recognise: '" + _source + "'" );
+                throw std::runtime_error( "Expected a boolean value but did not recognise:\n  '" + _source + "'" );
         }
         inline void convertInto( bool _source, bool& _dest ) {
             _dest = _source;
@@ -257,7 +257,7 @@ namespace Clara {
                 return _longName == longName;
             }
             bool takesArg() const {
-                return !argName.empty();
+                return !hint.empty();
             }
             bool isFixedPositional() const {
                 return position != -1;
@@ -292,8 +292,8 @@ namespace Clara {
                         oss << ", ";
                     oss << "--" << longName;
                 }
-                if( !argName.empty() )
-                    oss << " <" << argName << ">";
+                if( !hint.empty() )
+                    oss << " <" << hint << ">";
                 return oss.str();
             }
 
@@ -301,7 +301,7 @@ namespace Clara {
             std::vector<std::string> shortNames;
             std::string longName;
             std::string description;
-            std::string argName;
+            std::string hint;
             int position;
         };
 
@@ -347,8 +347,8 @@ namespace Clara {
                 m_arg.description = description;
                 return *this;
             }
-            ArgBinder& argName( std::string const& argName ) {
-                m_arg.argName = argName;
+            ArgBinder& hint( std::string const& hint ) {
+                m_arg.hint = hint;
                 return *this;
             }
             ArgBinder& position( int position ) {
@@ -423,9 +423,9 @@ namespace Clara {
                     os << " ";
                 typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( i );
                 if( it != m_positionalArgs.end() )
-                    os << "<" << it->second.argName << ">";
+                    os << "<" << it->second.hint << ">";
                 else if( m_arg.get() )
-                    os << "<" << m_arg->argName << ">";
+                    os << "<" << m_arg->hint << ">";
                 else
                     throw std::logic_error( "non consecutive positional arguments with no floating args" );
             }
@@ -433,7 +433,7 @@ namespace Clara {
             if( m_arg.get() ) {
                 if( m_highestSpecifiedArgPosition > 1 )
                     os << " ";
-                os << "[<" << m_arg->argName << "> ...]";
+                os << "[<" << m_arg->hint << "> ...]";
             }
         }
         std::string argSynopsis() const {
@@ -502,7 +502,7 @@ namespace Clara {
                         }
                     }
                     catch( std::exception& ex ) {
-                        throw std::runtime_error( std::string( ex.what() ) + " while parsing: (" + arg.commands() + ")" );
+                        throw std::runtime_error( std::string( ex.what() ) + "\n- while parsing: (" + arg.commands() + ")" );
                     }
                 }
                 if( it == itEnd )

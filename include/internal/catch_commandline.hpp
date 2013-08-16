@@ -85,20 +85,20 @@ namespace Catch {
             .describe( "output filename" )
             .shortOpt( "o")
             .longOpt( "out" )
-            .argName( "filename" );
+            .hint( "filename" );
 
         cli.bind( &ConfigData::reporterName )
             .describe( "reporter to use - defaults to console" )
             .shortOpt( "r")
             .longOpt( "reporter" )
-//            .argName( "name[:filename]" );
-            .argName( "name" );
+//            .hint( "name[:filename]" );
+            .hint( "name" );
 
         cli.bind( &ConfigData::name )
             .describe( "suite name" )
             .shortOpt( "n")
             .longOpt( "name" )
-            .argName( "name" );
+            .hint( "name" );
 
         cli.bind( &abortAfterFirst )
             .describe( "abort at first failure" )
@@ -109,29 +109,29 @@ namespace Catch {
             .describe( "abort after x failures" )
             .shortOpt( "x")
             .longOpt( "abortx" )
-            .argName( "number of failures" );
+            .hint( "number of failures" );
 
         cli.bind( &addWarning )
             .describe( "enable warnings" )
             .shortOpt( "w")
             .longOpt( "warn" )
-            .argName( "warning name" );
+            .hint( "warning name" );
 
 //        cli.bind( &setVerbosity )
 //            .describe( "level of verbosity (0=no output)" )
 //            .shortOpt( "v")
 //            .longOpt( "verbosity" )
-//            .argName( "level" );
+//            .hint( "level" );
 
         cli.bind( &addTestOrTags )
             .describe( "which test or tests to use" )
-            .argName( "test name, pattern or tags" );
+            .hint( "test name, pattern or tags" );
 
         cli.bind( &setShowDurations )
             .describe( "show test durations" )
             .shortOpt( "d")
             .longOpt( "durations" )
-            .argName( "durations" );
+            .hint( "yes/no" );
 
         return cli;
     }
