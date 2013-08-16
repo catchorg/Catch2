@@ -12,13 +12,7 @@
 
 #include <iostream>
 
-#if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
-#define CATCH_PLATFORM_MAC
-#elif  defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-#define CATCH_PLATFORM_IPHONE
-#elif defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
-#define CATCH_PLATFORM_WINDOWS
-#endif
+#include "catch_platform.h"
 
 #ifdef CATCH_PLATFORM_MAC
 

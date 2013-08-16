@@ -8,7 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 
-#ifdef WIN32
+#include "catch_platform.h"
+
+#ifdef CATCH_PLATFORM_WINDOWS
 typedef unsigned long long uint64_t;
 #else
 #include <stdint.h>

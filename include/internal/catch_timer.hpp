@@ -7,13 +7,14 @@
  */
 
 #include "catch_timer.h"
+#include "catch_platform.h"
 
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wc++11-long-long"
 #endif
 
-#ifdef WIN32
+#ifdef CATCH_PLATFORM_WINDOWS
 #include <windows.h>
 #else
 #include <sys/time.h>
@@ -22,7 +23,7 @@
 namespace Catch {
 
     namespace {
-#ifdef WIN32
+#ifdef CATCH_PLATFORM_WINDOWS
         uint64_t getCurrentTicks() {
             static uint64_t hz=0, hzo=0;
             if (!hz) {

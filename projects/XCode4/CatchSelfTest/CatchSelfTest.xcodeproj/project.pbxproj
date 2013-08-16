@@ -73,6 +73,7 @@
 		26948284179A9AB900ED166E /* SectionTrackerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SectionTrackerTests.cpp; path = ../../../SelfTest/SectionTrackerTests.cpp; sourceTree = "<group>"; };
 		26948287179EF7F900ED166E /* catch_test_case_tracker.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_tracker.hpp; sourceTree = "<group>"; };
 		2694A1FB16A0000E004816E3 /* catch_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = catch_text.cpp; sourceTree = "<group>"; };
+		26AEAF1617BEA18E009E32C9 /* catch_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_platform.h; sourceTree = "<group>"; };
 		26C5F3EC17514B970056FB3C /* clara.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = clara.h; path = ../../../../include/internal/clara.h; sourceTree = "<group>"; };
 		26DACF2F17206D3400A21326 /* catch_text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_text.h; sourceTree = "<group>"; };
 		4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_info.hpp; sourceTree = "<group>"; };
@@ -425,6 +426,7 @@
 				26759473171C74C200A84BD1 /* catch_compiler_capabilities.h */,
 				26DACF2F17206D3400A21326 /* catch_text.h */,
 				263FD06117AF8DF200988A20 /* catch_timer.h */,
+				26AEAF1617BEA18E009E32C9 /* catch_platform.h */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
