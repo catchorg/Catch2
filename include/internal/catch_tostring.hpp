@@ -100,6 +100,11 @@ struct StringMaker<T*> {
 };
 
 template<typename T>
+std::string toString( T const& value ) {
+    return StringMaker<T>::convert( value );
+}
+
+template<typename T>
 struct StringMaker<std::vector<T> > {
     static std::string convert( std::vector<T> const& v ) {
         std::ostringstream oss;
@@ -128,10 +133,7 @@ namespace Detail {
 /// that and writes {?}.
 /// Overload (not specialise) this template for custom typs that you don't want
 /// to provide an ostream overload for.
-template<typename T>
-std::string toString( T const& value ) {
-    return StringMaker<T>::convert( value );
-}
+
 
 // Built in overloads
 
