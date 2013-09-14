@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a Catch v1.0 b9 host application.
+CatchSelfTest is a Catch v1.0 b10 host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
@@ -712,7 +712,7 @@ with expansion:
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a Catch v1.0 b9 host application.
+CatchSelfTest is a Catch v1.0 b10 host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------

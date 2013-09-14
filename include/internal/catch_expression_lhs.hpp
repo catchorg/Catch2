@@ -10,6 +10,7 @@
 
 #include "catch_expressionresult_builder.h"
 #include "catch_evaluate.hpp"
+#include "catch_tostring.hpp"
 
 namespace Catch {
 

@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
 
-#include "catch_capture.hpp"
+#include "catch_tostring.hpp"
 
 #include <cmath>
 #include <limits>

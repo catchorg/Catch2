@@ -81,6 +81,9 @@ namespace Detail {
 } // end namespace Detail
 
 template<typename T>
+std::string toString( T const& value );
+
+template<typename T>
 struct StringMaker :
     Detail::StringMakerBase<Detail::IsStreamInsertable<T>::value> {};
 

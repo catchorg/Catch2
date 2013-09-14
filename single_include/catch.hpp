@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 9 (master branch)
- *  Generated: 2013-09-07 12:04:25.989589
+ *  CATCH v1.0 build 10 (master branch)
+ *  Generated: 2013-09-14 19:56:34.776409
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -702,6 +702,9 @@ namespace Detail {
     };
 
 } // end namespace Detail
+
+template<typename T>
+std::string toString( T const& value );
 
 template<typename T>
 struct StringMaker :
@@ -6352,7 +6355,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 9, "master" );
+    Version libraryVersion( 1, 0, 10, "master" );
 }
 
 // #included from: catch_text.hpp

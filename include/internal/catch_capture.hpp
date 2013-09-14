@@ -15,6 +15,7 @@
 #include "catch_debugger.hpp"
 #include "catch_context.h"
 #include "catch_common.h"
+#include "catch_tostring.hpp"
 #include "catch_interfaces_registry_hub.h"
 #include "internal/catch_compiler_capabilities.h"
 
