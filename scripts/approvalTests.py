@@ -16,10 +16,12 @@ baselinesPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/approvedRe
 rawResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/_rawResults.tmp' )
 filteredResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/unapprovedResults.txt' )
 
-if len(sys.argv) == 2:
+if len(sys.argv) >= 2:
 	cmdPath = sys.argv[1]
 else:
 	cmdPath = os.path.join( catchPath, 'projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
+
+print "Using executable: " + cmdPath
 
 f = open( rawResultsPath, 'w' )
 subprocess.call([ cmdPath, "~dummy", "-r", "console" ], stdout=f, stderr=f )
