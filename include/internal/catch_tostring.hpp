@@ -99,18 +99,15 @@ struct StringMaker<T*> {
     }
 };
 
-template<typename T>
-struct StringMaker<std::vector<T> > {
-    static std::string convert( std::vector<T> const& v ) {
-        std::ostringstream oss;
-        oss << "{ ";
-        for( std::size_t i = 0; i < v.size(); ++ i ) {
-            oss << toString( v[i] );
-            if( i < v.size() - 1 )
-                oss << ", ";
-        }
-        oss << " }";
-        return oss.str();
+namespace Detail {
+    template<typename InputIterator>
+    std::string rangeToString( InputIterator first, InputIterator last );
+}
+
+template<typename T, typename Allocator>
+struct StringMaker<std::vector<T, Allocator> > {
+    static std::string convert( std::vector<T,Allocator> const& v ) {
+        return Detail::rangeToString( v.begin(), v.end() );
     }
 };
 
@@ -229,6 +226,22 @@ inline std::string toString( std::nullptr_t ) {
         return toString( [nsObject description] );
     }
 #endif
+
+    namespace Detail {
+    template<typename InputIterator>
+    std::string rangeToString( InputIterator first, InputIterator last ) {
+        std::ostringstream oss;
+        oss << "{ ";
+        if( first != last ) {
+            oss << toString( *first );
+            for( ++first ; first != last ; ++first ) {
+                oss << ", " << toString( *first );
+            }
+        }
+        oss << " }";
+        return oss.str();
+    }
+}
 
 } // end namespace Catch
 
