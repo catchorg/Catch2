@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 10 (master branch)
- *  Generated: 2013-09-17 22:21:47.780755
+ *  Generated: 2013-09-21 19:07:52.759646
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -724,18 +724,7 @@ struct StringMaker<T*> {
 
 namespace Detail {
     template<typename InputIterator>
-    std::string rangeToString( InputIterator first, InputIterator last ) {
-        std::ostringstream oss;
-        oss << "{ ";
-        if( first != last ) {
-            oss << toString( *first );
-            for( ++first ; first != last ; ++first ) {
-                oss << ", " << toString( *first );
-            }
-        }
-        oss << " }";
-        return oss.str();
-    }
+    std::string rangeToString( InputIterator first, InputIterator last );
 }
 
 template<typename T, typename Allocator>
@@ -860,6 +849,22 @@ inline std::string toString( std::nullptr_t ) {
         return toString( [nsObject description] );
     }
 #endif
+
+    namespace Detail {
+    template<typename InputIterator>
+    std::string rangeToString( InputIterator first, InputIterator last ) {
+        std::ostringstream oss;
+        oss << "{ ";
+        if( first != last ) {
+            oss << toString( *first );
+            for( ++first ; first != last ; ++first ) {
+                oss << ", " << toString( *first );
+            }
+        }
+        oss << " }";
+        return oss.str();
+    }
+}
 
 } // end namespace Catch
 
