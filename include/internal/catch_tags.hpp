@@ -121,9 +121,10 @@ namespace Catch {
         }
 
         bool matches( std::set<std::string> const& tags ) const {
-            TagMap::const_iterator it = m_tags.begin();
-            TagMap::const_iterator itEnd = m_tags.end();
-            for(; it != itEnd; ++it ) {
+            for(    TagMap::const_iterator
+                        it = m_tags.begin(), itEnd = m_tags.end();
+                    it != itEnd;
+                    ++it ) {
                 bool found = tags.find( it->first ) != tags.end();
                 if( found == it->second.isNegated() )
                     return false;
@@ -138,9 +139,10 @@ namespace Catch {
     class TagExpression {
     public:
         bool matches( std::set<std::string> const& tags ) const {
-            std::vector<TagSet>::const_iterator it = m_tagSets.begin();
-            std::vector<TagSet>::const_iterator itEnd = m_tagSets.end();
-            for(; it != itEnd; ++it )
+            for(    std::vector<TagSet>::const_iterator
+                        it = m_tagSets.begin(), itEnd = m_tagSets.end();
+                    it != itEnd;
+                    ++it )
                 if( it->matches( tags ) )
                     return true;
             return false;
@@ -173,6 +175,7 @@ namespace Catch {
                     break;
                 case ',':
                     m_exp.m_tagSets.push_back( m_currentTagSet );
+                    m_currentTagSet = TagSet();
                     break;
             }
         }

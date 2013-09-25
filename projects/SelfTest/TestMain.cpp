@@ -86,7 +86,7 @@ std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::Co
     return "";
 }
 
-inline Catch::TestCase fakeTestCase( const char* name ){ return Catch::makeTestCase( NULL, "", name, "", CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 
@@ -335,6 +335,15 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( twoTags.matchesTags( p3 ) == true );
         CHECK( twoTags.matchesTags( p4 ) == true );
         CHECK( twoTags.matchesTags( p5 ) == true );
+    }
+    SECTION( "complex", "" ) {
+        CHECK( fakeTestCase( "test", "[one][.]" ).matchesTags( p1 ) );
+        CHECK_FALSE( fakeTestCase( "test", "[one][.]" ).matchesTags( p5 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p4 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p5 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( "[three]~[one]" ) );
+        CHECK( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]" ) );
+        CHECK_FALSE( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]~[not_apple]" ) );
     }
 
     SECTION( "one tag with characters either side", "" ) {
