@@ -7,7 +7,8 @@ from scriptCommon import catchPath
 
 rootPath = os.path.join( catchPath, 'projects/SelfTest/Baselines' )
 
-filenameParser = re.compile( r'.*?/(.*\..pp):([0-9]*)(.*)' )
+filenameParser = re.compile( r'.*/(.*\..pp:)(.*)' )
+filelineParser = re.compile( r'(.*\..pp:)([0-9]*)(.*)' )
 lineNumberParser = re.compile( r'(.*)line="[0-9]*"(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 durationsParser = re.compile( r'(.*)time="[0-9]*\.[0-9]*"(.*)' )
@@ -22,7 +23,10 @@ overallResult = 0
 def filterLine( line ):
 	m = filenameParser.match( line )
 	if m:
-		line = m.group(1) + m.group(3)
+		line = m.group(1) + m.group(2)
+		m = filelineParser.match( line )
+		if m:
+			line = m.group(1) + "<line number>" + m.group(3)
 	else:
 		m = lineNumberParser.match( line )
 		if m:
