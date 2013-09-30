@@ -5,7 +5,9 @@ import re
 
 from scriptCommon import catchPath
 
-filenameParser = re.compile( r'\s*.*/(.*\..pp):([0-9]*)(.*)' )
+rootPath = os.path.join( catchPath, 'projects/SelfTest/Baselines' )
+
+filenameParser = re.compile( r'.*?/(.*\..pp):([0-9]*)(.*)' )
 lineNumberParser = re.compile( r'(.*)line="[0-9]*"(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 durationsParser = re.compile( r'(.*)time="[0-9]*\.[0-9]*"(.*)' )
@@ -40,9 +42,9 @@ def filterLine( line ):
 def approve( baseName, args ):
 	global overallResult
 	args[0:0] = [cmdPath]
-	baselinesPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/{0}.approved.txt'.format( baseName ) )
-	rawResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/_{0}.tmp'.format( baseName ) )
-	filteredResultsPath = os.path.join( catchPath, 'projects/SelfTest/Baselines/{0}.unapproved.txt'.format( baseName ) )
+	baselinesPath = os.path.join( rootPath, '{0}.approved.txt'.format( baseName ) )
+	rawResultsPath = os.path.join( rootPath, '_{0}.tmp'.format( baseName ) )
+	filteredResultsPath = os.path.join( rootPath, '{0}.unapproved.txt'.format( baseName ) )
 
 	f = open( rawResultsPath, 'w' )
 	subprocess.call( args, stdout=f, stderr=f )
