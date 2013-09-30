@@ -12,6 +12,7 @@ filelineParser = re.compile( r'(.*\..pp:)([0-9]*)(.*)' )
 lineNumberParser = re.compile( r'(.*)line="[0-9]*"(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 durationsParser = re.compile( r'(.*)time="[0-9]*\.[0-9]*"(.*)' )
+versionParser = re.compile( r'(.*?)Catch v[0-9]*.[0-9]* b[0-9]*(.*)' )
 
 if len(sys.argv) == 2:
 	cmdPath = sys.argv[1]
@@ -31,6 +32,9 @@ def filterLine( line ):
 		m = lineNumberParser.match( line )
 		if m:
 			line = m.group(1) + m.group(2)
+	m = versionParser.match( line )
+	if m:
+		line = m.group(1) + "<version>" + m.group(2)
 
 	while True:
 		m = hexParser.match( line )
