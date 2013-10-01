@@ -21,7 +21,7 @@ namespace Catch {
     protected:
         virtual ~ITestCase();
     };
-    
+
     class TestCase;
 
     struct ITestCaseRegistry {

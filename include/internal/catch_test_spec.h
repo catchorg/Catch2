@@ -16,7 +16,7 @@
 #include <vector>
 
 namespace Catch {
-    
+
     struct IfFilterMatches{ enum DoWhat {
         AutoDetectBehaviour,
         IncludeTests,
@@ -64,7 +64,7 @@ namespace Catch {
         IfFilterMatches::DoWhat getFilterType() const {
             return m_filterType;
         }
-        
+
         bool shouldInclude( TestCase const& testCase ) const {
             return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
         }
@@ -108,7 +108,7 @@ namespace Catch {
         std::string getName() const {
             return m_name;
         }
-        
+
         void addFilter( TestCaseFilter const& filter ) {
             if( filter.getFilterType() == IfFilterMatches::ExcludeTests )
                 m_exclusionFilters.push_back( filter );
@@ -146,7 +146,7 @@ namespace Catch {
             else if( m_exclusionFilters.empty() && m_tagExpressions.empty() ) {
                 return !testCase.isHidden();
             }
-            
+
             std::vector<TestCaseFilter>::const_iterator it = m_exclusionFilters.begin();
             std::vector<TestCaseFilter>::const_iterator itEnd = m_exclusionFilters.end();
             for(; it != itEnd; ++it )

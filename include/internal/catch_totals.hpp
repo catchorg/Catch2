@@ -26,17 +26,17 @@ namespace Catch {
             failed += other.failed;
             return *this;
         }
-        
+
         std::size_t total() const {
             return passed + failed;
         }
-        
+
         std::size_t passed;
         std::size_t failed;
     };
-    
+
     struct Totals {
-    
+
         Totals operator - ( Totals const& other ) const {
             Totals diff;
             diff.assertions = assertions - other.assertions;

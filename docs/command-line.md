@@ -12,7 +12,7 @@ Note that options are described according to the following pattern:
 <a href="#nothrow">  `    -e, --nothrow`</a><br />
 <a href="#usage">    `    -h, -?, --help`</a><br />
 
-<a name="test" />
+<a id="test"></a>
 ## Specifying which tests to run
 
 <pre>&lt;test-spec> ...</pre>
@@ -49,7 +49,7 @@ A series of tags form an AND expression wheras a comma seperated sequence forms 
 This matches all tests tagged `[one]` and `[two]`, as well as all tests tagged `[three]`
 
 
-<a name="reporter" />
+<a id="reporter"></a>
 ## Choosing a reporter to use
 
 <pre>-r, --reporter &lt;reporter></pre>
@@ -64,21 +64,21 @@ The bundled reporters are:
 
 The JUnit reporter is an xml format that follows the structure of the JUnit XML Report ANT task, as consumed by a number of third-party tools, including Continuous Integration servers such as Hudson. If not otherwise needed, the standard XML reporter is preferred as this is a streaming reporter, whereas the Junit reporter needs to hold all its results until the end so it can write the overall results into attributes of the root node.
 
-<a name="break" />
+<a id="break"></a>
 ## Breaking into the debugger
 <pre>-b, --break</pre>
 
 In some IDEs (currently XCode and Visual Studio) it is possible for Catch to break into the debugger on a test failure. This can be very helpful during debug sessions - especially when there is more than one path through a particular test.
 In addition to the command line option, ensure you have built your code with the DEBUG preprocessor symbol
 
-<a name="success" />
+<a id="success"></a>
 ## Showing results for successful tests
 <pre>-s, --success</pre>
 
 Usually you only want to see reporting for failed tests. Sometimes it's useful to see *all* the output (especially when you don't trust that that test you just added worked first time!).
 To see successul, as well as failing, test results just pass this option. Note that each reporter may treat this option differently. The Junit reporter, for example, logs all results regardless.
 
-<a name="abort" />
+<a id="abort"></a>
 ## Aborting after a certain number of failures
 <pre>-a, --abort
 -x, --abortx [&lt;failure threshold>]
@@ -89,7 +89,7 @@ If a ```CHECK``` assertion fails even the current test case is not aborted.
 
 Sometimes this results in a flood of failure messages and you'd rather just see the first few. Specifying ```-a``` or ```--abort``` on its own will abort the whole test run on the first failed assertion of any kind. Use ```-x``` or ```--abortx``` followed by a number to abort after that number of assertion failures.
 
-<a name="list" />
+<a id="list"></a>
 ## Listing available tests, tags or reporters
 <pre>-l, --list-tests
 -t, --list-tags
@@ -103,20 +103,20 @@ If one or more test-specs have been supplied too then only the matching tests wi
 
 ```--list-reporters``` lists the available reporters.
 
-<a name="output" />
+<a id="output"></a>
 ## Sending output to a file
 <pre>-o, --out &lt;filename>
 </pre>
 
 Use this option to send all output to a file. By default output is sent to stdout (note that uses of stdout and stderr *from within test cases* are redirected and included in the report - so even stderr will effectively end up on stdout).
 
-<a name="name" />
+<a id="name"></a>
 ## Naming a test run
 <pre>-n, --name &lt;name for test run></pre>
 
 If a name is supplied it will be used by the reporter to provide an overall name for the test run. This can be useful if you are sending to a file, for example, and need to distinguish different test runs - either from different Catch executables or runs of the same executable with different options. If not supplied the name is defaulted to the name of the executable.
 
-<a name="nothrow" />
+<a id="nothrow"></a>
 ## Eliding assertions expected to throw
 <pre>-e, --nothrow</pre>
 
@@ -126,7 +126,7 @@ These can be a nuisance in certain debugging environments that may break when ex
 
 When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
 
-<a name="usage" />
+<a id="usage"></a>
 ## Usage
 <pre>-h, -?, --help</pre>
 

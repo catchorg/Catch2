@@ -59,7 +59,7 @@ namespace Catch {
         assert( m_data.resultType != ResultWas::Unknown );
 
         AssertionResultData data = m_data;
-        
+
         // Flip bool results if shouldNegate is set
         if( m_exprComponents.shouldNegate && data.resultType == ResultWas::Ok )
             data.resultType = ResultWas::ExpressionFailed;

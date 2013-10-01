@@ -15,10 +15,27 @@
 
 namespace Catch {
 
+    struct Verbosity { enum Level {
+        NoOutput = 0,
+        Quiet,
+        Normal
+    }; };
+
+    struct WarnAbout { enum What {
+        Nothing = 0x00,
+        NoAssertions = 0x01
+    }; };
+
+    struct ShowDurations { enum OrNot {
+        DefaultForReporter,
+        Always,
+        Never
+    }; };
+
     struct IConfig : IShared {
-    
+
         virtual ~IConfig();
-        
+
         virtual bool allowThrows() const = 0;
         virtual std::ostream& stream() const = 0;
         virtual std::string name() const = 0;
@@ -26,6 +43,7 @@ namespace Catch {
         virtual bool shouldDebugBreak() const = 0;
         virtual bool warnAboutMissingAssertions() const = 0;
         virtual int abortAfter() const = 0;
+        virtual ShowDurations::OrNot showDurations() const = 0;
     };
 }
 

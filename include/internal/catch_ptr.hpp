@@ -58,20 +58,20 @@ namespace Catch {
         T* operator->() const { return m_p; }
         bool operator !() const { return m_p == NULL; }
         operator SafeBool::type() const { return SafeBool::makeSafe( m_p != NULL ); }
-        
+
     private:
         T* m_p;
     };
-    
+
     struct IShared : NonCopyable {
         virtual ~IShared();
         virtual void addRef() const = 0;
         virtual void release() const = 0;
     };
-    
+
     template<typename T = IShared>
     struct SharedImpl : T {
-        
+
         SharedImpl() : m_rc( 0 ){}
 
         virtual void addRef() const {
@@ -81,10 +81,10 @@ namespace Catch {
             if( --m_rc == 0 )
                 delete this;
         }
-        
+
         mutable unsigned int m_rc;
     };
-    
+
 } // end namespace Catch
 
 #ifdef __clang__

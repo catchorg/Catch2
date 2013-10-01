@@ -27,7 +27,7 @@ namespace Catch {
     struct IContext
     {
         virtual ~IContext();
-        
+
         virtual IResultCapture& getResultCapture() = 0;
         virtual IRunner& getRunner() = 0;
         virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;

@@ -30,8 +30,8 @@
 #include "catch_text.hpp"
 #include "catch_message.hpp"
 #include "catch_legacy_reporter_adapter.hpp"
+#include "catch_timer.hpp"
 
-#include "../reporters/catch_reporter_basic.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
 #include "../reporters/catch_reporter_console.hpp"
@@ -39,7 +39,7 @@
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
-    StreamBufBase::~StreamBufBase() {}
+    StreamBufBase::~StreamBufBase() throw() {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestCase::~ITestCase() {}
@@ -57,11 +57,9 @@ namespace Catch {
     TestCaseStats::~TestCaseStats() {}
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
-    ThreadedSectionInfo::~ThreadedSectionInfo() {}
-    TestGroupNode::~TestGroupNode() {}
-    TestRunNode::~TestRunNode() {}
+    CumulativeReporterBase::SectionNode::~SectionNode() {}
+    CumulativeReporterBase::~CumulativeReporterBase() {}
 
-    BasicReporter::~BasicReporter() {}
     StreamingReporterBase::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     IRunner::~IRunner() {}
@@ -84,10 +82,7 @@ namespace Catch {
 
     void Config::dummy() {}
 
-    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "basic", BasicReporter )
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
-    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "junit", JunitReporter )
-
 }
 
 #ifdef __clang__

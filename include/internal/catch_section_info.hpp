@@ -1,4 +1,4 @@
-/*  
+/*
  *  Created by Phil Nash on 4/5/2012
  *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
  *
@@ -19,7 +19,7 @@ namespace Catch {
     public:
 
         typedef std::vector<RunningSection*> SubSections;
-    
+
         enum State {
             Root,
             Unknown,
@@ -27,19 +27,19 @@ namespace Catch {
             TestedBranch,
             TestedLeaf
         };
-        
+
         RunningSection( RunningSection* parent, std::string const& name )
         :   m_state( Unknown ),
             m_parent( parent ),
             m_name( name )
         {}
-        
+
         RunningSection( std::string const& name )
         :   m_state( Root ),
             m_parent( NULL ),
             m_name( name )
         {}
-        
+
         ~RunningSection() {
             deleteAll( m_subSections );
         }
@@ -51,7 +51,7 @@ namespace Catch {
         bool shouldRun() const {
             return m_state < TestedBranch;
         }
-        
+
         bool isBranch() const {
             return m_state == Branch;
         }

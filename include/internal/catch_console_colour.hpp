@@ -19,7 +19,7 @@ namespace Catch {
     struct Colour {
         enum Code {
             None = 0,
-            
+
             White,
             Red,
             Green,
@@ -27,25 +27,25 @@ namespace Catch {
             Cyan,
             Yellow,
             Grey,
-            
+
             Bright = 0x10,
-            
+
             BrightRed = Bright | Red,
             BrightGreen = Bright | Green,
             LightGrey = Bright | Grey,
             BrightWhite = Bright | White,
-            
+
             // By intention
             FileName = LightGrey,
             ResultError = BrightRed,
             ResultSuccess = BrightGreen,
-            
+
             Error = BrightRed,
             Success = Green,
-            
+
             OriginalExpression = Cyan,
             ReconstructedExpression = Yellow,
-            
+
             SecondaryText = LightGrey,
             Headers = White
         };
@@ -53,14 +53,14 @@ namespace Catch {
         // Use constructed object for RAII guard
         Colour( Code _colourCode );
         ~Colour();
-        
+
         // Use static method for one-shot changes
         static void use( Code _colourCode );
-        
+
     private:
         static Detail::IColourImpl* impl;
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED

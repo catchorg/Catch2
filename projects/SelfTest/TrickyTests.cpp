@@ -33,9 +33,7 @@ TEST_CASE
 {
     std::pair<int, int> aNicePair( 1, 2 );
 
-    // !TBD: would be nice if this could compile without the extra parentheses
-    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );
-    
+    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );    
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,13 +43,8 @@ TEST_CASE
     "Where the is more to the expression after the RHS"
 )
 {
-    /*
-    int a = 1;
-    int b = 2;
-
-    // This only captures part of the expression, but issues a warning about the rest
-    REQUIRE( a == 2 || b == 2 );
-     */
+//    int a = 1, b = 2;
+//    REQUIRE( a == 2 || b == 2 );
     WARN( "Uncomment the code in this test to check that it gives a sensible compiler error" );
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -349,6 +342,28 @@ TEST_CASE( "non streamable - with conv. op", "" )
     REQUIRE( s == "7" );
 }
 
+inline void foo() {}
+
+typedef void (*fooptr_t)();
+
+TEST_CASE( "Comparing function pointers", "[function pointer]" )
+{
+    // This was giving a warning in VS2010
+    // #179
+    fooptr_t a = foo;
+
+    REQUIRE( a );
+    REQUIRE( a == &foo );
+}
+
+class ClassName {};
+
+TEST_CASE( "pointer to class", "" )
+{
+   ClassName *p = 0;
+   REQUIRE( p == 0 );
+}
+
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
 
 #include <memory>
@@ -360,3 +375,8 @@ TEST_CASE( "null_ptr", "" )
 }
 
 #endif
+
+TEST_CASE( "X/level/0/a", "" ) { SUCCEED(""); }
+TEST_CASE( "X/level/0/b", "[fizz]" ) { SUCCEED(""); }
+TEST_CASE( "X/level/1/a", "" ) { SUCCEED(""); }
+TEST_CASE( "X/level/1/b", "" ) { SUCCEED("");}

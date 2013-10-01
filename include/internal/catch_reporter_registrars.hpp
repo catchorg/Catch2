@@ -11,22 +11,21 @@
 #include "catch_interfaces_registry_hub.h"
 #include "catch_legacy_reporter_adapter.h"
 
-namespace Catch {    
+namespace Catch {
 
     template<typename T>
     class LegacyReporterRegistrar {
-    
-        class ReporterFactory : public IReporterFactory {
 
+        class ReporterFactory : public IReporterFactory {
             virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new LegacyReporterAdapter( new T( config ) );
             }
-            
+
             virtual std::string getDescription() const {
                 return T::getDescription();
             }
         };
-        
+
     public:
 
         LegacyReporterRegistrar( std::string const& name ) {
@@ -64,12 +63,12 @@ namespace Catch {
         ReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
-    }; 
+    };
 }
 
 #define INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) \
-    Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
-    Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED

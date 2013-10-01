@@ -19,11 +19,19 @@ namespace Catch { namespace Detail {
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#ifdef __AFXDLL
+#include <AfxWin.h>
+#else
 #include <windows.h>
+#endif
 
 namespace Catch {
 namespace {
-    
+
     class Win32ColourImpl : public Detail::IColourImpl {
     public:
         Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
@@ -47,13 +55,13 @@ namespace {
                 case Colour::LightGrey:     return setTextAttribute( FOREGROUND_INTENSITY );
                 case Colour::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
                 case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
-                case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY |  FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
 
                 case Colour::Bright: throw std::logic_error( "not a colour" );
             }
         }
 
-    private:    
+    private:
         void setTextAttribute( WORD _textAttribute ) {
             SetConsoleTextAttribute( stdoutHandle, _textAttribute );
         }
@@ -64,7 +72,7 @@ namespace {
     inline bool shouldUseColourForPlatform() {
         return true;
     }
-    
+
     Win32ColourImpl platformColourImpl;
 
 } // end anon namespace
@@ -98,11 +106,11 @@ namespace {
                 case Colour::BrightRed:     return setColour( "[1;31m" );
                 case Colour::BrightGreen:   return setColour( "[1;32m" );
                 case Colour::BrightWhite:   return setColour( "[1;37m" );
-                
+
                 case Colour::Bright: throw std::logic_error( "not a colour" );
             }
         }
-    private:    
+    private:
         void setColour( const char* _escapeCode ) {
             std::cout << '\033' << _escapeCode;
         }
@@ -111,9 +119,9 @@ namespace {
     inline bool shouldUseColourForPlatform() {
         return isatty( fileno(stdout) );
     }
-    
+
     PosixColourImpl platformColourImpl;
-    
+
 } // end anon namespace
 } // end namespace Catch
 
@@ -125,7 +133,7 @@ namespace Catch {
         struct NoColourImpl : Detail::IColourImpl {
             void use( Colour::Code ) {}
         };
-        NoColourImpl noColourImpl;        
+        NoColourImpl noColourImpl;
         static const bool shouldUseColour = shouldUseColourForPlatform() &&
                                             !isDebuggerActive();
     }

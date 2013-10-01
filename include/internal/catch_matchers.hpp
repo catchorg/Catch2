@@ -66,7 +66,7 @@ namespace Matchers {
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
-        
+
         template<typename ExpressionT>
         class AnyOf : public MatcherImpl<AnyOf<ExpressionT>, ExpressionT> {
         public:
@@ -100,14 +100,14 @@ namespace Matchers {
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
-        
+
     }
 
     namespace StdString {
 
         inline std::string makeString( std::string const& str ) { return str; }
         inline std::string makeString( const char* str ) { return str ? std::string( str ) : std::string(); }
-        
+
         struct Equals : MatcherImpl<Equals, std::string> {
             Equals( std::string const& str ) : m_str( str ){}
             Equals( Equals const& other ) : m_str( other.m_str ){}
@@ -123,7 +123,7 @@ namespace Matchers {
 
             std::string m_str;
         };
-        
+
         struct Contains : MatcherImpl<Contains, std::string> {
             Contains( std::string const& substr ) : m_substr( substr ){}
             Contains( Contains const& other ) : m_substr( other.m_substr ){}
@@ -139,7 +139,7 @@ namespace Matchers {
 
             std::string m_substr;
         };
-        
+
         struct StartsWith : MatcherImpl<StartsWith, std::string> {
             StartsWith( std::string const& substr ) : m_substr( substr ){}
             StartsWith( StartsWith const& other ) : m_substr( other.m_substr ){}
@@ -155,7 +155,7 @@ namespace Matchers {
 
             std::string m_substr;
         };
-        
+
         struct EndsWith : MatcherImpl<EndsWith, std::string> {
             EndsWith( std::string const& substr ) : m_substr( substr ){}
             EndsWith( EndsWith const& other ) : m_substr( other.m_substr ){}
@@ -223,11 +223,11 @@ namespace Matchers {
     inline Impl::StdString::EndsWith    EndsWith( const char* substr ) {
         return Impl::StdString::EndsWith( Impl::StdString::makeString( substr ) );
     }
-    
+
 } // namespace Matchers
-    
+
 using namespace Matchers;
-    
+
 } // namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED

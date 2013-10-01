@@ -55,7 +55,7 @@ TEST_CASE( "cmdline" ) {
         .describe( "specifies output file" )
         .shortOpt( "o" )
         .longOpt( "output" )
-        .argName( "filename" );
+        .hint( "filename" );
 
     SECTION( "process name" ) {
         char const * argv[] = { "test", "-o filename.ext" };
@@ -90,7 +90,7 @@ TEST_CASE( "cmdline" ) {
     
     cli.bind( &TestOpt::number )
             .shortOpt( "n" )
-            .argName( "an integral value" );
+            .hint( "an integral value" );
     
     SECTION( "a number" ) {
         const char* argv[] = { "test", "-n 42" };
@@ -115,7 +115,7 @@ TEST_CASE( "cmdline" ) {
             .describe( "description" )
             .shortOpt( "d" )
             .longOpt( "description" )
-            .argName( "some text" );
+            .hint( "some text" );
         
         const char* argv[] = { "test", "-n 42", "-d some text" };
         std::vector<Clara::Parser::Token> unusedTokens = parseInto( cli, argv, config1 );
@@ -131,7 +131,7 @@ TEST_CASE( "cmdline" ) {
         cli.bind( &TestOpt::setValidIndex )
             .describe( "An index, which is an integer between 0 and 10, inclusive" )
             .shortOpt( "i" )
-            .argName( "index" );
+            .hint( "index" );
 
         SECTION( "in range" ) {
             const char* argv[] = { "test", "-i 3" };
@@ -167,14 +167,14 @@ TEST_CASE( "cmdline" ) {
     SECTION( "positional" ) {
         cli.bind( &TestOpt::secondPos )
             .describe( "Second position" )
-            .argName( "second arg" )
+            .hint( "second arg" )
             .position( 2 );
         cli.bind( &TestOpt::unpositional )
-            .argName( "any arg" )
+            .hint( "any arg" )
             .describe( "Unpositional" );
         cli.bind( &TestOpt::firstPos )
             .describe( "First position" )
-            .argName( "first arg" )
+            .hint( "first arg" )
             .position( 1 );
 
 //        std::cout << cli.usage( "testApp" ) << std::endl;
@@ -187,5 +187,6 @@ TEST_CASE( "cmdline" ) {
         REQUIRE( config.unpositional == "3rd" );
     }
 }
+
 
 #endif

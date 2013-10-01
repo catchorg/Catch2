@@ -25,7 +25,7 @@ namespace Catch
         virtual void testCaseStarting( TestCaseInfo const& testInfo );
         virtual void sectionStarting( SectionInfo const& sectionInfo );
         virtual void assertionStarting( AssertionInfo const& );
-        virtual void assertionEnded( AssertionStats const& assertionStats );
+        virtual bool assertionEnded( AssertionStats const& assertionStats );
         virtual void sectionEnded( SectionStats const& sectionStats );
         virtual void testCaseEnded( TestCaseStats const& testCaseStats );
         virtual void testGroupEnded( TestGroupStats const& testGroupStats );

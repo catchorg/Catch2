@@ -23,7 +23,7 @@ namespace Catch {
         Option( Option const& _other )
         : nullableValue( _other ? new( storage ) T( *_other ) : NULL )
         {}
-        
+
         ~Option() {
             reset();
         }
@@ -34,12 +34,18 @@ namespace Catch {
                 nullableValue = new( storage ) T( *_other );
             return *this;
         }
+        Option& operator = ( T const& _value ) {
+            reset();
+            nullableValue = new( storage ) T( _value );
+            return *this;
+        }
 
         void reset() {
             if( nullableValue )
                 nullableValue->~T();
             nullableValue = NULL;
         }
+
         T& operator*() { return *nullableValue; }
         T const& operator*() const { return *nullableValue; }
         T* operator->() { return nullableValue; }
@@ -51,7 +57,7 @@ namespace Catch {
 
         bool some() const { return nullableValue != NULL; }
         bool none() const { return nullableValue == NULL; }
-        
+
         bool operator !() const { return nullableValue == NULL; }
         operator SafeBool::type() const {
             return SafeBool::makeSafe( some() );

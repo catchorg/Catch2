@@ -15,6 +15,7 @@
 #include "catch_debugger.hpp"
 #include "catch_context.h"
 #include "catch_common.h"
+#include "catch_tostring.hpp"
 #include "catch_interfaces_registry_hub.h"
 #include "internal/catch_compiler_capabilities.h"
 
@@ -25,7 +26,7 @@ namespace Catch {
     inline IResultCapture& getResultCapture() {
         return getCurrentContext().getResultCapture();
     }
-    
+
     template<typename MatcherT>
     ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
                                                                 std::string const& matcherCallAsString ) {
@@ -54,7 +55,7 @@ namespace Catch {
             .setLhs( Catch::toString( arg ) )
             .setResultType( matcher.match( arg ) );
     }
-    
+
 struct TestFailureException{};
 
 } // end namespace Catch
@@ -145,11 +146,6 @@ struct TestFailureException{};
         } \
     } while( Catch::isTrue( false ) )
 
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_INFO( log, macroName ) \
-    do { \
-        Catch::getResultCapture().acceptMessage( Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log ); \
-    } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( log, messageType, resultDisposition, macroName ) \
@@ -159,10 +155,8 @@ struct TestFailureException{};
     } while( Catch::isTrue( false ) )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_SCOPED_INFO( log, macroName ) \
-    Catch::ScopedMessageBuilder INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ); \
-    INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) << log; \
-    Catch::getResultCapture().pushScopedMessage( INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) )
+#define INTERNAL_CATCH_INFO( log, macroName ) \
+    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 
 ///////////////////////////////////////////////////////////////////////////////

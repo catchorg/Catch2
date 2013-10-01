@@ -77,7 +77,7 @@ namespace Catch {
         }
 
         TagExtracter& operator=(TagExtracter const&);
-        
+
         std::set<std::string>& m_tags;
         std::string m_remainder;
     };
@@ -121,16 +121,17 @@ namespace Catch {
         }
 
         bool matches( std::set<std::string> const& tags ) const {
-            TagMap::const_iterator it = m_tags.begin();
-            TagMap::const_iterator itEnd = m_tags.end();
-            for(; it != itEnd; ++it ) {
+            for(    TagMap::const_iterator
+                        it = m_tags.begin(), itEnd = m_tags.end();
+                    it != itEnd;
+                    ++it ) {
                 bool found = tags.find( it->first ) != tags.end();
                 if( found == it->second.isNegated() )
                     return false;
             }
             return true;
         }
-        
+
     private:
         TagMap m_tags;
     };
@@ -138,9 +139,10 @@ namespace Catch {
     class TagExpression {
     public:
         bool matches( std::set<std::string> const& tags ) const {
-            std::vector<TagSet>::const_iterator it = m_tagSets.begin();
-            std::vector<TagSet>::const_iterator itEnd = m_tagSets.end();
-            for(; it != itEnd; ++it )
+            for(    std::vector<TagSet>::const_iterator
+                        it = m_tagSets.begin(), itEnd = m_tagSets.end();
+                    it != itEnd;
+                    ++it )
                 if( it->matches( tags ) )
                     return true;
             return false;
@@ -151,7 +153,7 @@ namespace Catch {
 
         std::vector<TagSet> m_tagSets;
     };
-    
+
     class TagExpressionParser : public TagParser {
     public:
         TagExpressionParser( TagExpression& exp )
@@ -173,6 +175,7 @@ namespace Catch {
                     break;
                 case ',':
                     m_exp.m_tagSets.push_back( m_currentTagSet );
+                    m_currentTagSet = TagSet();
                     break;
             }
         }
@@ -187,7 +190,7 @@ namespace Catch {
         TagSet m_currentTagSet;
         TagExpression& m_exp;
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED

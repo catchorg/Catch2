@@ -76,7 +76,8 @@ OC_TEST_CASE( "OCTest/matchers", "Matches work with OC types (NSString so far)" 
 
 OC_TEST_CASE( "OCTest/matchers/nil", "nil NSString should not crash the test" )
 {
-    REQUIRE_THAT( (NSString*)nil, Equals( @"This should fail, but not crash" ) );
+    CHECK_THAT( (NSString*)nil, Equals( @"This should fail, but not crash" ) );
+    CHECK_THAT( (NSString*)nil, StartsWith( @"anything" ) );
 }
 
 @end

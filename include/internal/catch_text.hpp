@@ -12,7 +12,7 @@
 #include <vector>
 
 namespace Catch {
-    
+
     Text::Text( std::string const& _str, TextAttributes const& _attr )
     : attr( _attr )
     {
@@ -37,7 +37,7 @@ namespace Catch {
                     width--;
                 remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
             }
-            
+
             if( width == remainder.size() ) {
                 spliceLine( indent, remainder, width );
             }
@@ -86,7 +86,7 @@ namespace Catch {
         }
         return _stream;
     }
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_TEXT_HPP_INCLUDED

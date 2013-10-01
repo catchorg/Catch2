@@ -13,7 +13,7 @@
 #include "clara.h"
 
 namespace Catch {
-    
+
     inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
     inline void abortAfterX( ConfigData& config, int x ) {
         if( x < 1 )
@@ -24,16 +24,22 @@ namespace Catch {
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
         if( _warning == "NoAssertions" )
-            config.warnings = (ConfigData::WarnAbout::What)( config.warnings | ConfigData::WarnAbout::NoAssertions );
+            config.warnings = (WarnAbout::What)( config.warnings | WarnAbout::NoAssertions );
         else
             throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
 
     }
     inline void setVerbosity( ConfigData& config, int level ) {
         // !TBD: accept strings?
-        config.verbosity = (ConfigData::Verbosity::Level)level;
+        config.verbosity = (Verbosity::Level)level;
+    }
+    inline void setShowDurations( ConfigData& config, bool _showDurations ) {
+        config.showDurations = _showDurations
+            ? ShowDurations::Always
+            : ShowDurations::Never;
     }
     
+
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
         Clara::CommandLine<ConfigData> cli;
@@ -79,19 +85,20 @@ namespace Catch {
             .describe( "output filename" )
             .shortOpt( "o")
             .longOpt( "out" )
-            .argName( "filename" );
+            .hint( "filename" );
 
         cli.bind( &ConfigData::reporterName )
             .describe( "reporter to use - defaults to console" )
             .shortOpt( "r")
             .longOpt( "reporter" )
-            .argName( "name[:filename]" );
+//            .hint( "name[:filename]" );
+            .hint( "name" );
 
         cli.bind( &ConfigData::name )
             .describe( "suite name" )
             .shortOpt( "n")
             .longOpt( "name" )
-            .argName( "name" );
+            .hint( "name" );
 
         cli.bind( &abortAfterFirst )
             .describe( "abort at first failure" )
@@ -102,27 +109,33 @@ namespace Catch {
             .describe( "abort after x failures" )
             .shortOpt( "x")
             .longOpt( "abortx" )
-            .argName( "number of failures" );
+            .hint( "number of failures" );
 
         cli.bind( &addWarning )
             .describe( "enable warnings" )
             .shortOpt( "w")
             .longOpt( "warn" )
-            .argName( "warning name" );
+            .hint( "warning name" );
 
 //        cli.bind( &setVerbosity )
 //            .describe( "level of verbosity (0=no output)" )
 //            .shortOpt( "v")
 //            .longOpt( "verbosity" )
-//            .argName( "level" );
+//            .hint( "level" );
 
         cli.bind( &addTestOrTags )
             .describe( "which test or tests to use" )
-            .argName( "test name, pattern or tags" );
+            .hint( "test name, pattern or tags" );
+
+        cli.bind( &setShowDurations )
+            .describe( "show test durations" )
+            .shortOpt( "d")
+            .longOpt( "durations" )
+            .hint( "yes/no" );
 
         return cli;
     }
-        
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED

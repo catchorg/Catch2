@@ -11,7 +11,7 @@
 #include "catch_message.h"
 
 namespace Catch {
-        
+
     MessageInfo::MessageInfo(   std::string const& _macroName,
                                 SourceLineInfo const& _lineInfo,
                                 ResultWas::OfType _type )
@@ -20,38 +20,24 @@ namespace Catch {
         type( _type ),
         sequence( ++globalCount )
     {}
-    
+
     // This may need protecting if threading support is added
     unsigned int MessageInfo::globalCount = 0;
-    
-    ////////////////////////////////////////////////////////////////////////////
-    
-    MessageBuilder::MessageBuilder( std::string const& _macroName,
-                                    SourceLineInfo const& _lineInfo,
-                                    ResultWas::OfType _type )
-    :   MessageInfo( _macroName, _lineInfo, _type )
-    {}
-    
-    MessageInfo MessageBuilder::build() const {
-        MessageInfo message = *this;
-        message.message = stream.str();
-        return message;
-    }
+
 
     ////////////////////////////////////////////////////////////////////////////
-    
-    ScopedMessageBuilder::ScopedMessageBuilder
-        (   std::string const& _macroName,
-            SourceLineInfo const& _lineInfo,
-            ResultWas::OfType _type )
-    : MessageBuilder( _macroName, _lineInfo, _type )
-    {}
-    
-    ScopedMessageBuilder::~ScopedMessageBuilder() {
-        getResultCapture().popScopedMessage( *this );
+
+    ScopedMessage::ScopedMessage( MessageBuilder const& builder )
+    : m_info( builder.m_info )
+    {
+        m_info.message = builder.m_stream.str();
+        getResultCapture().pushScopedMessage( m_info );
     }
-    
-    
+    ScopedMessage::~ScopedMessage() {
+        getResultCapture().popScopedMessage( m_info );
+    }
+
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_MESSAGE_HPP_INCLUDED

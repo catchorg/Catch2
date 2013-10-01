@@ -46,7 +46,7 @@ namespace Catch {
         virtual void testCaseStarting( TestCaseInfo const& ) {}
         virtual void sectionStarting( SectionInfo const& ) {}
         virtual void assertionStarting( AssertionInfo const& ) {}
-        virtual void assertionEnded( AssertionStats const& ) {}
+        virtual bool assertionEnded( AssertionStats const& ) { return false; }
         virtual void sectionEnded( SectionStats const& ) {}
         virtual void testCaseEnded( TestCaseStats const& ) {}
         virtual void testGroupEnded( TestGroupStats const& ) {}

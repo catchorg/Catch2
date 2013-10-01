@@ -13,18 +13,18 @@
 #include "internal/catch_compiler_capabilities.h"
 
 namespace Catch {
-    
+
 template<typename C>
 class MethodTestCase : public SharedImpl<ITestCase> {
 
 public:
     MethodTestCase( void (C::*method)() ) : m_method( method ) {}
-    
+
     virtual void invoke() const {
         C obj;
         (obj.*m_method)();
     }
-    
+
 private:
     virtual ~MethodTestCase() {}
 
@@ -47,7 +47,7 @@ struct AutoReg {
     AutoReg(    TestFunction function,
                 SourceLineInfo const& lineInfo,
                 NameAndDesc const& nameAndDesc );
-    
+
     template<typename C>
     AutoReg(    void (C::*method)(),
                 char const* className,
@@ -58,19 +58,19 @@ struct AutoReg {
                             nameAndDesc,
                             lineInfo );
     }
-    
-    void registerTestCase(  ITestCase* testCase, 
+
+    void registerTestCase(  ITestCase* testCase,
                             char const* className,
                             NameAndDesc const& nameAndDesc,
                             SourceLineInfo const& lineInfo );
-    
+
     ~AutoReg();
-    
+
 private:
-    AutoReg( AutoReg const& );    
+    AutoReg( AutoReg const& );
     void operator= ( AutoReg const& );
 };
-    
+
 } // end namespace Catch
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS

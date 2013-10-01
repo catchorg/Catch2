@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
 #define TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
 
-namespace Catch {    
+namespace Catch {
 
     // ResultWas::OfType enum
     struct ResultWas { enum OfType {
@@ -16,17 +16,17 @@ namespace Catch {
         Ok = 0,
         Info = 1,
         Warning = 2,
-        
+
         FailureBit = 0x10,
-        
+
         ExpressionFailed = FailureBit | 1,
         ExplicitFailure = FailureBit | 2,
-        
+
         Exception = 0x100 | FailureBit,
-        
+
         ThrewException = Exception | 1,
         DidntThrowException = Exception | 2
-        
+
     }; };
 
     inline bool isOk( ResultWas::OfType resultType ) {
@@ -41,7 +41,7 @@ namespace Catch {
         None,
         Failed = 1, // Failure - but no debug break if Debug bit not set
         Debug = 2,  // If this bit is set, invoke the debugger
-        Abort = 4   // Test run should abort    
+        Abort = 4   // Test run should abort
     }; };
 
     // ResultDisposition::Flags enum

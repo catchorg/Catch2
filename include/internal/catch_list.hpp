@@ -39,10 +39,10 @@ namespace Catch {
         for(; it != itEnd; ++it ) {
             if( matchesFilters( config.filters(), *it ) ) {
                 maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
-                maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
+                maxNameLen = (std::max)( it->getTestCaseInfo().name.size() + 2, maxNameLen );
             }
         }
-        
+
         // Try to fit everything in. If not shrink tag column first, down to 30
         // then shrink name column until it all fits (strings will be wrapped within column)
         while( maxTagLen + maxNameLen > CATCH_CONFIG_CONSOLE_WIDTH-5 ) {
@@ -67,8 +67,8 @@ namespace Catch {
                                         .setWidth( maxTagLen )
                                         .setInitialIndent(0)
                                         .setIndent( 2 ) );
-                
-                for( std::size_t i = 0; i < std::max( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
+
+                for( std::size_t i = 0; i < (std::max)( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
                     Colour::Code colour = Colour::None;
                     if( it->getTestCaseInfo().isHidden )
                         colour = Colour::SecondaryText;
@@ -80,7 +80,7 @@ namespace Catch {
                         nameCol = "    ...";
                         colour = Colour::SecondaryText;
                     }
-                    
+
                     {
                         Colour colourGuard( colour );
                         std::cout << nameCol;
@@ -105,7 +105,7 @@ namespace Catch {
             std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
         return matchedTests;
     }
-    
+
     inline std::size_t listTags( Config const& config ) {
         if( config.filters().empty() )
             std::cout << "All available tags:\n";
@@ -115,7 +115,7 @@ namespace Catch {
         std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
 
         std::map<std::string, int> tagCounts;
-        
+
         std::size_t maxTagLen = 0;
 
         for(; it != itEnd; ++it ) {
@@ -137,10 +137,10 @@ namespace Catch {
         maxTagLen +=4;
         if( maxTagLen > CATCH_CONFIG_CONSOLE_WIDTH-10 )
             maxTagLen = CATCH_CONFIG_CONSOLE_WIDTH-10;
-        
+
         for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(), countItEnd = tagCounts.end();
                 countIt != countItEnd;
-                ++countIt ) {            
+                ++countIt ) {
             Text wrapper( "[" + countIt->first + "]", TextAttributes()
                                                         .setIndent(2)
                                                         .setWidth( maxTagLen ) );
@@ -166,7 +166,7 @@ namespace Catch {
         std::size_t maxNameLen = 0;
         for(it = itBegin; it != itEnd; ++it )
             maxNameLen = (std::max)( maxNameLen, it->first.size() );
-    
+
         for(it = itBegin; it != itEnd; ++it ) {
             Text wrapper( it->second->getDescription(), TextAttributes()
                                                         .setInitialIndent( 0 )
@@ -181,7 +181,7 @@ namespace Catch {
         std::cout << std::endl;
         return factories.size();
     }
-    
+
     inline Option<std::size_t> list( Config const& config ) {
         Option<std::size_t> listedCount;
         if( config.listTests() )
@@ -192,7 +192,7 @@ namespace Catch {
             listedCount = listedCount.valueOr(0) + listReporters( config );
         return listedCount;
     }
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED

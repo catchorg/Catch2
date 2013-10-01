@@ -10,10 +10,9 @@
 
 #include "catch_expressionresult_builder.h"
 #include "catch_evaluate.hpp"
+#include "catch_tostring.hpp"
 
 namespace Catch {
-
-struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
 
 // Wraps the LHS of an expression and captures the operator and RHS (if any) - wrapping them all
 // in an ExpressionResultBuilder object
@@ -33,22 +32,22 @@ public:
     ExpressionResultBuilder& operator != ( RhsT const& rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator < ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThan>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator > ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThan>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator <= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
-    
+
     template<typename RhsT>
     ExpressionResultBuilder& operator >= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
@@ -57,11 +56,11 @@ public:
     ExpressionResultBuilder& operator == ( bool rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
-    
+
     ExpressionResultBuilder& operator != ( bool rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
-    
+
     ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition ) {
         bool value = m_lhs ? true : false;
         return m_result
@@ -76,6 +75,8 @@ public:
     template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( RhsT const& );
     template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( RhsT const& );
     template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( RhsT const& );
+    template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( RhsT const& );
 
 private:
     template<Internal::Operator Op, typename RhsT>

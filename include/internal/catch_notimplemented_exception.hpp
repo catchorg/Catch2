@@ -24,7 +24,7 @@ namespace Catch {
     const char* NotImplementedException::what() const throw() {
         return m_what.c_str();
     }
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_HPP_INCLUDED

@@ -38,7 +38,7 @@ namespace Detail {
     public:
         typedef SizedIf<sizeof(dummy((T*)0))> type;
     };
-    
+
     template<typename T>
     struct IsStreamInsertable : IsStreamInsertableHelper<T>::type {};
 
@@ -47,10 +47,10 @@ namespace Detail {
     struct BorgType {
         template<typename T> BorgType( T const& );
     };
-  
+
     TrueType& testStreamable( std::ostream& );
     FalseType testStreamable( FalseType );
-    
+
     FalseType operator<<( std::ostream const&, BorgType const& );
 
     template<typename T>
@@ -59,7 +59,7 @@ namespace Detail {
         static T  const&t;
         enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
     };
-    
+
 #endif
 
     template<bool C>
@@ -77,8 +77,11 @@ namespace Detail {
             return oss.str();
         }
     };
-    
+
 } // end namespace Detail
+
+template<typename T>
+std::string toString( T const& value );
 
 template<typename T>
 struct StringMaker :
@@ -86,7 +89,8 @@ struct StringMaker :
 
 template<typename T>
 struct StringMaker<T*> {
-    static std::string convert( T const* p ) {
+    template<typename U>
+    static std::string convert( U* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
@@ -95,18 +99,15 @@ struct StringMaker<T*> {
     }
 };
 
-template<typename T>
-struct StringMaker<std::vector<T> > {
-    static std::string convert( std::vector<T> const& v ) {
-        std::ostringstream oss;
-        oss << "{ ";
-        for( std::size_t i = 0; i < v.size(); ++ i ) {
-            oss << toString( v[i] );
-            if( i < v.size() - 1 )
-                oss << ", ";
-        }
-        oss << " }";
-        return oss.str();
+namespace Detail {
+    template<typename InputIterator>
+    std::string rangeToString( InputIterator first, InputIterator last );
+}
+
+template<typename T, typename Allocator>
+struct StringMaker<std::vector<T, Allocator> > {
+    static std::string convert( std::vector<T,Allocator> const& v ) {
+        return Detail::rangeToString( v.begin(), v.end() );
     }
 };
 
@@ -114,13 +115,13 @@ namespace Detail {
     template<typename T>
     inline std::string makeString( T const& value ) {
         return StringMaker<T>::convert( value );
-    }   
+    }
 } // end namespace Detail
 
 /// \brief converts any type to a string
 ///
-/// The default template forwards on to ostringstream - except when an 
-/// ostringstream overload does not exist - in which case it attempts to detect 
+/// The default template forwards on to ostringstream - except when an
+/// ostringstream overload does not exist - in which case it attempts to detect
 /// that and writes {?}.
 /// Overload (not specialise) this template for custom typs that you don't want
 /// to provide an ostream overload for.
@@ -128,7 +129,7 @@ template<typename T>
 std::string toString( T const& value ) {
     return StringMaker<T>::convert( value );
 }
-    
+
 // Built in overloads
 
 inline std::string toString( std::string const& value ) {
@@ -146,11 +147,11 @@ inline std::string toString( std::wstring const& value ) {
 
 inline std::string toString( const char* const value ) {
     return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
-}   
+}
 
 inline std::string toString( char* const value ) {
     return Catch::toString( static_cast<const char*>( value ) );
-}        
+}
 
 inline std::string toString( int value ) {
     std::ostringstream oss;
@@ -166,17 +167,25 @@ inline std::string toString( unsigned long value ) {
         oss << value;
     return oss.str();
 }
-    
+
 inline std::string toString( unsigned int value ) {
     return toString( static_cast<unsigned long>( value ) );
 }
-    
+
 inline std::string toString( const double value ) {
     std::ostringstream oss;
-    oss << std::setprecision (std::numeric_limits<double>::digits10 + 1)
+    oss << std::setprecision( 10 )
+        << std::fixed
         << value;
-    return oss.str();
-}    
+    std::string d = oss.str();
+    std::size_t i = d.find_last_not_of( '0' );
+    if( i != std::string::npos && i != d.size()-1 ) {
+        if( d[i] == '.' )
+            i++;
+        d = d.substr( 0, i+1 );
+    }
+    return d;
+}
 
 inline std::string toString( bool value ) {
     return value ? "true" : "false";
@@ -217,6 +226,22 @@ inline std::string toString( std::nullptr_t ) {
         return toString( [nsObject description] );
     }
 #endif
+
+    namespace Detail {
+    template<typename InputIterator>
+    std::string rangeToString( InputIterator first, InputIterator last ) {
+        std::ostringstream oss;
+        oss << "{ ";
+        if( first != last ) {
+            oss << toString( *first );
+            for( ++first ; first != last ; ++first ) {
+                oss << ", " << toString( *first );
+            }
+        }
+        oss << " }";
+        return oss.str();
+    }
+}
 
 } // end namespace Catch
 

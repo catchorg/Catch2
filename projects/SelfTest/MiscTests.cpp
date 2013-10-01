@@ -272,7 +272,7 @@ TEST_CASE( "empty", "An empty test with no assertions" )
 {
 }
 
-TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][hide]" )
+TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][.]" )
 {
     WARN( "This one ran" );
 }
@@ -283,7 +283,7 @@ TEST_CASE( "second tag", "[tag2]" )
 {
 }
 //
-//TEST_CASE( "spawn a new process", "[hide]" )
+//TEST_CASE( "spawn a new process", "[.]" )
 //{
 //    // !TBD Work in progress
 //    char line[200];
@@ -333,11 +333,34 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 }
 
 // https://github.com/philsquared/Catch/issues/166
-//TEST_CASE("CatchSectionInfiniteLoop", "")
-//{
-//    SECTION("Outer", "")
-//        SECTION("Inner", "")
-//            SUCCEED("that's not flying - that's failing in style");
+TEST_CASE("./failing/CatchSectionInfiniteLoop", "")
+{
+    SECTION("Outer", "")
+        SECTION("Inner", "")
+            SUCCEED("that's not flying - that's failing in style");
+
+    FAIL("to infinity and beyond");
+}
+
+
+//#include "internal/catch_timer.h"
 //
-//    FAIL("to infinity and beyond");
+//TEST_CASE( "Timer", "[work-in-progress]" )
+//{
+//    Catch::Timer t;
+//    t.start();
+//
+//    std::cout << "starting..." << std::endl;
+//
+//    double d = 0;
+//    for( int i = 0; i < 100000; ++i )
+//        for( int j = 0; j < 1000; ++j )
+//            d += (double)i*(double)j;
+//
+//    double duration = t.getElapsedSeconds();
+//
+//    std::cout << "finished in " << duration << std::endl;
+//
+//    SUCCEED("yay");
+//    
 //}

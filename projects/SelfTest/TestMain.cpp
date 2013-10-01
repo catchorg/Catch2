@@ -11,6 +11,7 @@
 
 #include "catch_self_test.hpp"
 #include "internal/catch_text.h"
+#include "internal/catch_console_colour.hpp"
 
 TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {
     using namespace Catch;
@@ -38,15 +39,15 @@ TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results"
         SECTION(    "selftest/test counts/succeeding tests", 
                     "Number of 'succeeding' tests is fixed" ) {
             Totals totals = runner.runMatching( "./succeeding/*", 0, 2 );
-            CHECK( totals.assertions.passed == 296 );
+            CHECK( totals.assertions.passed == 298 );
             CHECK( totals.assertions.failed == 0 );
         }
 
         SECTION(    "selftest/test counts/failing tests", 
                     "Number of 'failing' tests is fixed" ) {
             Totals totals = runner.runMatching( "./failing/*", 1, 2 );
-            CHECK( totals.assertions.passed == 1 );
-            CHECK( totals.assertions.failed == 74 );
+            CHECK( totals.assertions.passed == 2 );
+            CHECK( totals.assertions.failed == 77 );
         }
     }
 }
@@ -65,9 +66,7 @@ TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
 
 #include "../../include/internal/catch_commandline.hpp"
 #include "../../include/internal/catch_test_spec.h"
-#include "../../include/reporters/catch_reporter_basic.hpp"
 #include "../../include/reporters/catch_reporter_xml.hpp"
-#include "../../include/reporters/catch_reporter_junit.hpp"
 
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
@@ -87,7 +86,7 @@ std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::Co
     return "";
 }
 
-inline Catch::TestCase fakeTestCase( const char* name ){ return Catch::makeTestCase( NULL, "", name, "", CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 
@@ -305,7 +304,7 @@ TEST_CASE( "selftest/tags", "" ) {
     std::string p2 = "[one],[two]";
     std::string p3 = "[one][two]";
     std::string p4 = "[one][two],[three]";
-    std::string p5 = "[one][two]~[hide],[three]";
+    std::string p5 = "[one][two]~[.],[three]";
     
     SECTION( "one tag", "" ) {
         Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[one]", CATCH_INTERNAL_LINEINFO );
@@ -337,6 +336,15 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( twoTags.matchesTags( p4 ) == true );
         CHECK( twoTags.matchesTags( p5 ) == true );
     }
+    SECTION( "complex", "" ) {
+        CHECK( fakeTestCase( "test", "[one][.]" ).matchesTags( p1 ) );
+        CHECK_FALSE( fakeTestCase( "test", "[one][.]" ).matchesTags( p5 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p4 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p5 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( "[three]~[one]" ) );
+        CHECK( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]" ) );
+        CHECK_FALSE( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]~[not_apple]" ) );
+    }
 
     SECTION( "one tag with characters either side", "" ) {
 
@@ -357,13 +365,13 @@ TEST_CASE( "selftest/tags", "" ) {
     }
 
     SECTION( "hidden", "" ) {
-        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[hide]", CATCH_INTERNAL_LINEINFO );
+        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[.]", CATCH_INTERNAL_LINEINFO );
 
         CHECK( oneTag.getTestCaseInfo().description == "" );
-        CHECK( oneTag.hasTag( "hide" ) );
+        CHECK( oneTag.hasTag( "." ) );
         CHECK( oneTag.isHidden() );
 
-        CHECK( oneTag.matchesTags( "~[hide]" ) == false );
+        CHECK( oneTag.matchesTags( "~[.]" ) == false );
 
     }
 }

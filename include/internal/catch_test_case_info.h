@@ -41,7 +41,7 @@ namespace Catch {
         SourceLineInfo lineInfo;
         bool isHidden;
     };
-    
+
     class TestCase : protected TestCaseInfo {
     public:
 
@@ -58,7 +58,7 @@ namespace Catch {
         bool hasTag( std::string const& tag ) const;
         bool matchesTags( std::string const& tagPattern ) const;
         std::set<std::string> const& getTags() const;
-        
+
         void swap( TestCase& other );
         bool operator == ( TestCase const& other ) const;
         bool operator < ( TestCase const& other ) const;

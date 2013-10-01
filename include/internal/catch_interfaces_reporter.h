@@ -20,6 +20,7 @@
 #include <string>
 #include <ostream>
 #include <map>
+#include <assert.h>
 
 namespace Catch
 {
@@ -44,6 +45,21 @@ namespace Catch
         {}
 
         bool shouldRedirectStdOut;
+    };
+
+    template<typename T>
+    struct LazyStat : Option<T> {
+        LazyStat() : used( false ) {}
+        LazyStat& operator=( T const& _value ) {
+            Option<T>::operator=( _value );
+            used = false;
+            return *this;
+        }
+        void reset() {
+            Option<T>::reset();
+            used = false;
+        }
+        bool used;
     };
 
     struct TestRunInfo {
@@ -78,17 +94,6 @@ namespace Catch
         SourceLineInfo lineInfo;
     };
 
-    struct ThreadedSectionInfo : SectionInfo, SharedImpl<> {
-        ThreadedSectionInfo( SectionInfo const& _sectionInfo, ThreadedSectionInfo* _parent = NULL )
-        :   SectionInfo( _sectionInfo ),
-            parent( _parent )
-        {}
-        virtual ~ThreadedSectionInfo();
-
-        std::vector<Ptr<ThreadedSectionInfo> > children;
-        ThreadedSectionInfo* parent;
-    };
-
     struct AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
                         std::vector<MessageInfo> const& _infoMessages,
@@ -102,11 +107,13 @@ namespace Catch
                 // !TBD This should have been done earlier, somewhere
                 MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
                 builder << assertionResult.getMessage();
-                infoMessages.push_back( builder.build() );
+                builder.m_info.message = builder.m_stream.str();
+
+                infoMessages.push_back( builder.m_info );
             }
         }
         virtual ~AssertionStats();
-        
+
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
         Totals totals;
@@ -115,15 +122,18 @@ namespace Catch
     struct SectionStats {
         SectionStats(   SectionInfo const& _sectionInfo,
                         Counts const& _assertions,
+                        double _durationInSeconds,
                         bool _missingAssertions )
         :   sectionInfo( _sectionInfo ),
             assertions( _assertions ),
+            durationInSeconds( _durationInSeconds ),
             missingAssertions( _missingAssertions )
         {}
         virtual ~SectionStats();
 
         SectionInfo sectionInfo;
         Counts assertions;
+        double durationInSeconds;
         bool missingAssertions;
     };
 
@@ -132,13 +142,11 @@ namespace Catch
                         Totals const& _totals,
                         std::string const& _stdOut,
                         std::string const& _stdErr,
-                        bool _missingAssertions,
                         bool _aborting )
         : testInfo( _testInfo ),
             totals( _totals ),
             stdOut( _stdOut ),
             stdErr( _stdErr ),
-            missingAssertions( _missingAssertions ),
             aborting( _aborting )
         {}
         virtual ~TestCaseStats();
@@ -147,10 +155,9 @@ namespace Catch
         Totals totals;
         std::string stdOut;
         std::string stdErr;
-        bool missingAssertions;
         bool aborting;
     };
-    
+
     struct TestGroupStats {
         TestGroupStats( GroupInfo const& _groupInfo,
                         Totals const& _totals,
@@ -169,7 +176,7 @@ namespace Catch
         Totals totals;
         bool aborting;
     };
-    
+
     struct TestRunStats {
         TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
@@ -190,6 +197,7 @@ namespace Catch
         bool aborting;
     };
 
+
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
 
@@ -197,7 +205,7 @@ namespace Catch
         // static std::string getDescription();
 
         virtual ReporterPreferences getPreferences() const = 0;
-        
+
         virtual void noMatchingTestCases( std::string const& spec ) = 0;
 
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
@@ -208,7 +216,7 @@ namespace Catch
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
-        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
@@ -223,81 +231,180 @@ namespace Catch
         {}
 
         virtual ~StreamingReporterBase();
-        
+
         virtual void noMatchingTestCases( std::string const& ) {}
 
         virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
-            testRunInfo = _testRunInfo;
+            currentTestRunInfo = _testRunInfo;
         }
         virtual void testGroupStarting( GroupInfo const& _groupInfo ) {
-            unusedGroupInfo = _groupInfo;
+            currentGroupInfo = _groupInfo;
         }
 
         virtual void testCaseStarting( TestCaseInfo const& _testInfo ) {
-            unusedTestCaseInfo = _testInfo;
+            currentTestCaseInfo = _testInfo;
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
-            Ptr<ThreadedSectionInfo> sectionInfo = new ThreadedSectionInfo( _sectionInfo );
-            if( !currentSectionInfo ) {
-                currentSectionInfo = sectionInfo;
-                m_rootSections.push_back( currentSectionInfo );
-            }
-            else {
-                currentSectionInfo->children.push_back( sectionInfo );
-                sectionInfo->parent = currentSectionInfo.get();
-                currentSectionInfo = sectionInfo;
-            }
+            m_sectionStack.push_back( _sectionInfo );
         }
 
         virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
-            currentSectionInfo = currentSectionInfo->parent;
+            m_sectionStack.pop_back();
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
-            unusedTestCaseInfo.reset();
+            currentTestCaseInfo.reset();
+            assert( m_sectionStack.empty() );
         }
         virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) {
-            unusedGroupInfo.reset();
+            currentGroupInfo.reset();
         }
         virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
-            currentSectionInfo.reset();
-            unusedTestCaseInfo.reset();
-            unusedGroupInfo.reset();
-            testRunInfo.reset();
+            currentTestCaseInfo.reset();
+            currentGroupInfo.reset();
+            currentTestRunInfo.reset();
         }
 
         Ptr<IConfig> m_config;
-        Option<TestRunInfo> testRunInfo;
-        Option<GroupInfo> unusedGroupInfo;
-        Option<TestCaseInfo> unusedTestCaseInfo;
-        Ptr<ThreadedSectionInfo> currentSectionInfo;
         std::ostream& stream;
-        
-        // !TBD: This should really go in the TestCaseStats class
-        std::vector<Ptr<ThreadedSectionInfo> > m_rootSections;        
+
+        LazyStat<TestRunInfo> currentTestRunInfo;
+        LazyStat<GroupInfo> currentGroupInfo;
+        LazyStat<TestCaseInfo> currentTestCaseInfo;
+
+        std::vector<SectionInfo> m_sectionStack;
     };
 
-    struct TestGroupNode : TestGroupStats {
-        TestGroupNode( TestGroupStats const& _stats ) : TestGroupStats( _stats ) {}
-//        TestGroupNode( GroupInfo const& _info ) : TestGroupStats( _stats ) {}
-        ~TestGroupNode();
+    struct CumulativeReporterBase : SharedImpl<IStreamingReporter> {
+        template<typename T, typename ChildNodeT>
+        struct Node : SharedImpl<> {
+            explicit Node( T const& _value ) : value( _value ) {}
+            virtual ~Node() {}
+
+            typedef std::vector<Ptr<ChildNodeT> > ChildNodes;
+            T value;
+            ChildNodes children;
+        };
+        struct SectionNode : SharedImpl<> {
+            explicit SectionNode( SectionStats const& _stats ) : stats( _stats ) {}
+            virtual ~SectionNode();
+
+            bool operator == ( SectionNode const& other ) const {
+                return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
+            }
+            bool operator == ( Ptr<SectionNode> const& other ) const {
+                return operator==( *other );
+            }
+
+            SectionStats stats;
+            typedef std::vector<Ptr<SectionNode> > ChildSections;
+            typedef std::vector<AssertionStats> Assertions;
+            ChildSections childSections;
+            Assertions assertions;
+            std::string stdOut;
+            std::string stdErr;
+        };
+        friend bool operator == ( Ptr<SectionNode> const& node, SectionInfo const& other ) {
+            return node->stats.sectionInfo.lineInfo == other.lineInfo;
+        }
+
+        typedef Node<TestCaseStats, SectionNode> TestCaseNode;
+        typedef Node<TestGroupStats, TestCaseNode> TestGroupNode;
+        typedef Node<TestRunStats, TestGroupNode> TestRunNode;
+
+        CumulativeReporterBase( ReporterConfig const& _config )
+        :   m_config( _config.fullConfig() ),
+            stream( _config.stream() )
+        {}
+        ~CumulativeReporterBase();
+
+        virtual void testRunStarting( TestRunInfo const& ) {}
+        virtual void testGroupStarting( GroupInfo const& ) {}
+
+        virtual void testCaseStarting( TestCaseInfo const& ) {}
+
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+            SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
+            Ptr<SectionNode> node;
+            if( m_sectionStack.empty() ) {
+                if( !m_rootSection )
+                    m_rootSection = new SectionNode( incompleteStats );
+                node = m_rootSection;
+            }
+            else {
+                SectionNode& parentNode = *m_sectionStack.back();
+                SectionNode::ChildSections::const_iterator it =
+                    std::find( parentNode.childSections.begin(), parentNode.childSections.end(), sectionInfo );
+                if( it == parentNode.childSections.end() ) {
+                    node = new SectionNode( incompleteStats );
+                    parentNode.childSections.push_back( node );
+                }
+                else
+                    node = *it;
+            }
+            m_sectionStack.push_back( node );
+            m_deepestSection = node;
+        }
+
+        virtual void assertionStarting( AssertionInfo const& ) {}
+
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) {
+            assert( !m_sectionStack.empty() );
+            SectionNode& sectionNode = *m_sectionStack.back();
+            sectionNode.assertions.push_back( assertionStats );
+            return true;
+        }
+        virtual void sectionEnded( SectionStats const& sectionStats ) {
+            assert( !m_sectionStack.empty() );
+            SectionNode& node = *m_sectionStack.back();
+            node.stats = sectionStats;
+            m_sectionStack.pop_back();
+        }
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+            Ptr<TestCaseNode> node = new TestCaseNode( testCaseStats );
+            assert( m_sectionStack.size() == 0 );
+            node->children.push_back( m_rootSection );
+            m_testCases.push_back( node );
+            m_rootSection.reset();
+
+            assert( m_deepestSection );
+            m_deepestSection->stdOut = testCaseStats.stdOut;
+            m_deepestSection->stdErr = testCaseStats.stdErr;
+        }
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+            Ptr<TestGroupNode> node = new TestGroupNode( testGroupStats );
+            node->children.swap( m_testCases );
+            m_testGroups.push_back( node );
+        }
+        virtual void testRunEnded( TestRunStats const& testRunStats ) {
+            Ptr<TestRunNode> node = new TestRunNode( testRunStats );
+            node->children.swap( m_testGroups );
+            m_testRuns.push_back( node );
+            testRunEnded();
+        }
+        virtual void testRunEnded() = 0;
+
+        Ptr<IConfig> m_config;
+        std::ostream& stream;
+        std::vector<AssertionStats> m_assertions;
+        std::vector<std::vector<Ptr<SectionNode> > > m_sections;
+        std::vector<Ptr<TestCaseNode> > m_testCases;
+        std::vector<Ptr<TestGroupNode> > m_testGroups;
+
+        std::vector<Ptr<TestRunNode> > m_testRuns;
+
+        Ptr<SectionNode> m_rootSection;
+        Ptr<SectionNode> m_deepestSection;
+        std::vector<Ptr<SectionNode> > m_sectionStack;
 
     };
 
-    struct TestRunNode : TestRunStats {
-
-        TestRunNode( TestRunStats const& _stats ) : TestRunStats( _stats ) {}
-        ~TestRunNode();
-        
-        std::vector<TestGroupNode> groups;
-    };
-    
     // Deprecated
     struct IReporter : IShared {
         virtual ~IReporter();
 
         virtual bool shouldRedirectStdout() const = 0;
 
-        virtual void StartTesting() = 0;        
+        virtual void StartTesting() = 0;
         virtual void EndTesting( Totals const& totals ) = 0;
         virtual void StartGroup( std::string const& groupName ) = 0;
         virtual void EndGroup( std::string const& groupName, Totals const& totals ) = 0;
@@ -311,7 +418,7 @@ namespace Catch
         virtual void Result( AssertionResult const& result ) = 0;
     };
 
-    
+
     struct IReporterFactory {
         virtual ~IReporterFactory();
         virtual IStreamingReporter* create( ReporterConfig const& config ) const = 0;
@@ -322,14 +429,15 @@ namespace Catch
         typedef std::map<std::string, IReporterFactory*> FactoryMap;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;        
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
     };
-    
+
     inline std::string trim( std::string const& str ) {
-        std::string::size_type start = str.find_first_not_of( "\n\r\t " );
-        std::string::size_type end = str.find_last_not_of( "\n\r\t " );
-        
+        static char const* whitespaceChars = "\n\r\t ";
+        std::string::size_type start = str.find_first_not_of( whitespaceChars );
+        std::string::size_type end = str.find_last_not_of( whitespaceChars );
+
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }
 }

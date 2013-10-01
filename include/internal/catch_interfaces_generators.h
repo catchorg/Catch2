@@ -17,7 +17,7 @@ namespace Catch {
         virtual bool moveNext() = 0;
         virtual std::size_t getCurrentIndex() const = 0;
     };
-    
+
     struct IGeneratorsForTest {
         virtual ~IGeneratorsForTest();
 

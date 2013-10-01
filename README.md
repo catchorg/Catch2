@@ -1,6 +1,10 @@
 ![catch logo](catch-logo-small.png)
 
-*v0.9 build 39 (integration branch)*
+*v1.0 build 10 (master branch)*
+
+# New release with significant changes
+
+[Please see this page for details - including some breaking changes](docs/whats-changed.md)
 
 ## What's the Catch?
 
@@ -13,11 +17,7 @@ This documentation comprises these three parts:
 * [Tutorial](docs/tutorial.md) - getting started
 * [Reference section](docs/reference-index.md) - all the details
 
-## What state is Catch in - can I use it now?
-
-For now Catch is still classed as "in developer preview". However it has already been widely used for over two years. It has proven fairly stable and is in use in some demanding projects. Think of it in the same way that Google uses the term "beta".
-At time of writing I'm working towards locking down the public facing interfaces so I can finally give it a 1.0 designation.
-
+The documentation will continue until morale improves
 
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
