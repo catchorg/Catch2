@@ -15,6 +15,11 @@
 #include <limits>
 #include <algorithm>
 
+#if ! defined ( CATCH_PLATFORM_WINDOWS )
+#include <sys/ioctl.h>
+#include <unistd.h>
+#endif
+
 namespace Catch {
     inline bool matchesFilters( std::vector<TestCaseFilters> const& filters, TestCase const& testCase ) {
         std::vector<TestCaseFilters>::const_iterator it = filters.begin();
@@ -45,7 +50,14 @@ namespace Catch {
 
         // Try to fit everything in. If not shrink tag column first, down to 30
         // then shrink name column until it all fits (strings will be wrapped within column)
-        while( maxTagLen + maxNameLen > CATCH_CONFIG_CONSOLE_WIDTH-5 ) {
+        std::size_t consoleWidth = CATCH_CONFIG_CONSOLE_WIDTH;
+#if ! defined ( CATCH_PLATFORM_WINDOWS )
+        struct winsize w;
+        int stdoutfd = fileno( stdout );
+        if( isatty (stdoutfd) && ioctl(stdoutfd, TIOCGWINSZ, &w) == 0 )
+          consoleWidth = w.ws_col;
+#endif
+        while( maxTagLen + maxNameLen > consoleWidth-5 ) {
             if( maxTagLen > 30 )
                 --maxTagLen;
             else
