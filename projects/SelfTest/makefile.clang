@@ -1,0 +1,19 @@
+CXX=clang++
+CXXFLAGS=-std=c++11 -stdlib=libc++ -Wall -Wextra -Wpedantic -I../../include
+SOURCES=$(wildcard *.cpp)
+OBJECTS=$(patsubst %.cpp,%.o,$(SOURCES))
+TARGET=catch_self_test
+
+.PHONY: all
+all: test
+
+.PHONY: clean
+clean:
+	$(RM) $(TARGET) *.o
+
+test: $(TARGET)
+	./$(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
