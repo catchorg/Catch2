@@ -58,7 +58,7 @@ namespace Catch {
                 matchedTests++;
                 Text nameWrapper(   it->getTestCaseInfo().name,
                                     TextAttributes()
-                                        .setWidth( maxNameLen )
+                                        .setWidth( maxNameLen+2 )
                                         .setInitialIndent(2)
                                         .setIndent(4) );
 
