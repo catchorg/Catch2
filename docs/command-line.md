@@ -1,4 +1,4 @@
-CATCH works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
+Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Note that options are described according to the following pattern:
 
 <a href="#test">     `    <test-spec> ...`</a><br />

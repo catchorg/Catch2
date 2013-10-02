@@ -50,8 +50,8 @@ Expects that no exception is thrown during evaluation of the expression.
 
 To support Matchers a slightly different form is used. Matchers will be more fully documented elsewhere. *Note that Matchers are still at early stage development and are subject to change.*
 
-**REQUIRE_THAT(** _lhs_, __matcher call__ **)** and  
-**CHECK_THAT(** _lhs_, __matcher call__ **)**  
+**REQUIRE_THAT(** _lhs_, _matcher call_ **)** and  
+**CHECK_THAT(** _lhs_, _matcher call_ **)**  
 
 
 ---
