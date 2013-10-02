@@ -1,12 +1,12 @@
 # Test cases and sections
 
-While Catch fully supports the traditional, *x*Unit, style of class-based fixtures containing test case methods this is not the preferred style.
+While Catch fully supports the traditional, xUnit, style of class-based fixtures containing test case methods this is not the preferred style.
 
 Instead Catch provides a powerful mechanism for nesting test case sections within a test case. For a more detailed discussion see the [tutorial](tutorial.md#testCasesAndSections).
 
 Test cases and sections are very easy to use in practice:
 
-**TEST_CASE(** _test name_ [**,** _tags_ ] **)**
+**TEST_CASE(** _test name_ \[**,** _tags_ \] **)**
 **SECTION(** _section name_ **)**
 
 _test name_ and _section name_ are free form, quoted, strings. The optional _tags_ argument is a quoted string containing one or more tags enclosed in square brackets. Tags are discussed below. Test names must be unique within the Catch executable.
@@ -17,11 +17,11 @@ For examples see the [Tutorial](tutorial.md)
 
 -{placeholder for documentation of tags}-
 
-## User Story/ BDD-style test cases
+## BDD-style test cases
 
-In addition to Catch's take on the classic style of test cases, Catch supports an alternative syntax that allow tests to be written as "executable specifications" (one of the early goals of [BDD](http://dannorth.net/introducing-bdd/)). This set of macros map on to ```TEST_CASE```s and ```SECTION```s, with a little internal support to make them smoother to work with.
+In addition to Catch's take on the classic style of test cases, Catch supports an alternative syntax that allow tests to be written as "executable specifications" (one of the early goals of [Behaviour Driven Development](http://dannorth.net/introducing-bdd/)). This set of macros map on to ```TEST_CASE```s and ```SECTION```s, with a little internal support to make them smoother to work with.
 
-**SCENARIO(** _scenario name_ [**,** _tags_ ] **)**
+**SCENARIO(** _scenario name_ \[**,** _tags_ \] **)**
 
 This macro maps onto ```TEST_CASE``` and works in the same way, except that the test case name will be prefixed by "Scenario: "
 
