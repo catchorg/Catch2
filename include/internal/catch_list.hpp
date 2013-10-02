@@ -39,7 +39,7 @@ namespace Catch {
         for(; it != itEnd; ++it ) {
             if( matchesFilters( config.filters(), *it ) ) {
                 maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
-                maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
+                maxNameLen = (std::max)( it->getTestCaseInfo().name.size() + 2, maxNameLen );
             }
         }
 
