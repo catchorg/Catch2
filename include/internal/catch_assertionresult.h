@@ -15,7 +15,7 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        AssertionInfo() {}
+        AssertionInfo() : macroName(nullptr), capturedExpression(nullptr) {}
         AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         char const * _capturedExpression,

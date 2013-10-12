@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 11 (master branch)
- *  Generated: 2013-10-12 10:11:15.393000
+ *  CATCH v1.0 build 12 (master branch)
+ *  Generated: 2013-10-12 15:20:33.039000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -196,7 +196,7 @@ namespace Catch {
 
     struct SourceLineInfo {
 
-        SourceLineInfo() : line( 0 ){}
+        SourceLineInfo() : file( nullptr ), line( 0 ){}
         SourceLineInfo( char const * _file, std::size_t _line )
         :   file( _file ),
             line( _line )
@@ -206,7 +206,7 @@ namespace Catch {
             line( other.line )
         {}
         bool empty() const {
-            return file == 0  ||  *file == 0;
+            return file == nullptr  ||  *file == 0;
         }
         bool operator == ( SourceLineInfo const& other ) const {
             return line == other.line && ((empty() && other.empty())  ||  strcmp(file, other.file) == 0);
@@ -935,7 +935,7 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        AssertionInfo() {}
+        AssertionInfo() : macroName(nullptr), capturedExpression(nullptr) {}
         AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         char const * _capturedExpression,
@@ -6122,7 +6122,7 @@ namespace Catch {
     }
 
     bool AssertionResult::hasExpression() const {
-        return m_info.capturedExpression != 0  &&  *m_info.capturedExpression != 0;
+        return m_info.capturedExpression  &&  *m_info.capturedExpression;
     }
 
     bool AssertionResult::hasMessage() const {
@@ -6136,7 +6136,7 @@ namespace Catch {
             return m_info.capturedExpression;
     }
     std::string AssertionResult::getExpressionInMacro() const {
-        if( m_info.macroName == 0 || *m_info.macroName == 0)
+        if( m_info.macroName == nullptr || *m_info.macroName == 0)
             return m_info.capturedExpression;
         else
             return std::string(m_info.macroName) + "( " + m_info.capturedExpression + " )";
@@ -6371,7 +6371,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 11, "master" );
+    Version libraryVersion( 1, 0, 12, "master" );
 }
 
 // #included from: catch_text.hpp

@@ -47,7 +47,7 @@ namespace Catch {
     }
 
     bool AssertionResult::hasExpression() const {
-        return m_info.capturedExpression != 0  &&  *m_info.capturedExpression != 0;
+        return m_info.capturedExpression  &&  *m_info.capturedExpression;
     }
 
     bool AssertionResult::hasMessage() const {
@@ -61,7 +61,7 @@ namespace Catch {
             return m_info.capturedExpression;
     }
     std::string AssertionResult::getExpressionInMacro() const {
-        if( m_info.macroName == 0 || *m_info.macroName == 0)
+        if( m_info.macroName == nullptr || *m_info.macroName == 0)
             return m_info.capturedExpression;
         else
             return std::string(m_info.macroName) + "( " + m_info.capturedExpression + " )";
