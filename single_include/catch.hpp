@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 10 (master branch)
- *  Generated: 2013-09-21 19:07:52.759646
+ *  CATCH v1.0 build 11 (master branch)
+ *  Generated: 2013-10-12 10:11:15.393000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -197,7 +197,7 @@ namespace Catch {
     struct SourceLineInfo {
 
         SourceLineInfo() : line( 0 ){}
-        SourceLineInfo( std::string const& _file, std::size_t _line )
+        SourceLineInfo( char const * _file, std::size_t _line )
         :   file( _file ),
             line( _line )
         {}
@@ -206,12 +206,12 @@ namespace Catch {
             line( other.line )
         {}
         bool empty() const {
-            return file.empty();
+            return file == 0  ||  *file == 0;
         }
         bool operator == ( SourceLineInfo const& other ) const {
-            return line == other.line && file == other.file;
+            return line == other.line && ((empty() && other.empty())  ||  strcmp(file, other.file) == 0);
         }
-        std::string file;
+        char const * file;
         std::size_t line;
     };
 
@@ -936,14 +936,14 @@ namespace Catch {
     struct AssertionInfo
     {
         AssertionInfo() {}
-        AssertionInfo(  std::string const& _macroName,
+        AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
-                        std::string const& _capturedExpression,
+                        char const * _capturedExpression,
                         ResultDisposition::Flags _resultDisposition );
 
-        std::string macroName;
+        char const * macroName;
         SourceLineInfo lineInfo;
-        std::string capturedExpression;
+        char const * capturedExpression;
         ResultDisposition::Flags resultDisposition;
     };
 
@@ -973,7 +973,7 @@ namespace Catch {
         std::string getExpandedExpression() const;
         std::string getMessage() const;
         SourceLineInfo getSourceInfo() const;
-        std::string getTestMacroName() const;
+        char const * getTestMacroName() const;
 
     protected:
         AssertionInfo m_info;
@@ -1306,11 +1306,11 @@ public:
 namespace Catch {
 
     struct MessageInfo {
-        MessageInfo(    std::string const& _macroName,
+        MessageInfo(    char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         ResultWas::OfType _type );
 
-        std::string macroName;
+        char const * macroName;
         SourceLineInfo lineInfo;
         ResultWas::OfType type;
         std::string message;
@@ -1327,7 +1327,7 @@ namespace Catch {
     };
 
     struct MessageBuilder {
-        MessageBuilder( std::string const& macroName,
+        MessageBuilder( char const * macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type )
         : m_info( macroName, lineInfo, type )
@@ -1753,9 +1753,10 @@ namespace Catch {
         }
 
         bool matches( std::set<std::string> const& tags ) const {
-            TagMap::const_iterator it = m_tags.begin();
-            TagMap::const_iterator itEnd = m_tags.end();
-            for(; it != itEnd; ++it ) {
+            for(    TagMap::const_iterator
+                        it = m_tags.begin(), itEnd = m_tags.end();
+                    it != itEnd;
+                    ++it ) {
                 bool found = tags.find( it->first ) != tags.end();
                 if( found == it->second.isNegated() )
                     return false;
@@ -1770,9 +1771,10 @@ namespace Catch {
     class TagExpression {
     public:
         bool matches( std::set<std::string> const& tags ) const {
-            std::vector<TagSet>::const_iterator it = m_tagSets.begin();
-            std::vector<TagSet>::const_iterator itEnd = m_tagSets.end();
-            for(; it != itEnd; ++it )
+            for(    std::vector<TagSet>::const_iterator
+                        it = m_tagSets.begin(), itEnd = m_tagSets.end();
+                    it != itEnd;
+                    ++it )
                 if( it->matches( tags ) )
                     return true;
             return false;
@@ -1805,6 +1807,7 @@ namespace Catch {
                     break;
                 case ',':
                     m_exp.m_tagSets.push_back( m_currentTagSet );
+                    m_currentTagSet = TagSet();
                     break;
             }
         }
@@ -4598,7 +4601,7 @@ namespace Catch {
                 matchedTests++;
                 Text nameWrapper(   it->getTestCaseInfo().name,
                                     TextAttributes()
-                                        .setWidth( maxNameLen )
+                                        .setWidth( maxNameLen+2 )
                                         .setInitialIndent(2)
                                         .setIndent(4) );
 
@@ -6085,9 +6088,9 @@ namespace Catch {
 
 namespace Catch {
 
-    AssertionInfo::AssertionInfo(   std::string const& _macroName,
+    AssertionInfo::AssertionInfo(   char const * _macroName,
                                     SourceLineInfo const& _lineInfo,
-                                    std::string const& _capturedExpression,
+                                    char const * _capturedExpression,
                                     ResultDisposition::Flags _resultDisposition )
     :   macroName( _macroName ),
         lineInfo( _lineInfo ),
@@ -6119,7 +6122,7 @@ namespace Catch {
     }
 
     bool AssertionResult::hasExpression() const {
-        return !m_info.capturedExpression.empty();
+        return m_info.capturedExpression != 0  &&  *m_info.capturedExpression != 0;
     }
 
     bool AssertionResult::hasMessage() const {
@@ -6128,15 +6131,15 @@ namespace Catch {
 
     std::string AssertionResult::getExpression() const {
         if( shouldNegate( m_info.resultDisposition ) )
-            return "!" + m_info.capturedExpression;
+            return std::string("!") + m_info.capturedExpression;
         else
             return m_info.capturedExpression;
     }
     std::string AssertionResult::getExpressionInMacro() const {
-        if( m_info.macroName.empty() )
+        if( m_info.macroName == 0 || *m_info.macroName == 0)
             return m_info.capturedExpression;
         else
-            return m_info.macroName + "( " + m_info.capturedExpression + " )";
+            return std::string(m_info.macroName) + "( " + m_info.capturedExpression + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {
@@ -6154,7 +6157,7 @@ namespace Catch {
         return m_info.lineInfo;
     }
 
-    std::string AssertionResult::getTestMacroName() const {
+    char const *AssertionResult::getTestMacroName() const {
         return m_info.macroName;
     }
 
@@ -6243,7 +6246,7 @@ namespace Catch {
                 return m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs;
         }
         else
-            return "{can't expand - use " + info.macroName + "_FALSE( " + info.capturedExpression.substr(1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";
+            return "{can't expand - use " + std::string(info.macroName) + "_FALSE( " + *(info.capturedExpression+1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";
     }
 
 } // end namespace Catch
@@ -6368,7 +6371,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 10, "master" );
+    Version libraryVersion( 1, 0, 11, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -6460,7 +6463,7 @@ namespace Catch {
 
 namespace Catch {
 
-    MessageInfo::MessageInfo(   std::string const& _macroName,
+    MessageInfo::MessageInfo(   char const * _macroName,
                                 SourceLineInfo const& _lineInfo,
                                 ResultWas::OfType _type )
     :   macroName( _macroName ),
@@ -6703,9 +6706,9 @@ namespace Catch {
 }
 
 #define INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) \
-    Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
-    Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 
 // #included from: ../internal/catch_xmlwriter.hpp
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
