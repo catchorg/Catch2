@@ -105,7 +105,7 @@ namespace Catch {
     struct SourceLineInfo {
 
         SourceLineInfo() : line( 0 ){}
-        SourceLineInfo( std::string const& _file, std::size_t _line )
+        SourceLineInfo( char const * _file, std::size_t _line )
         :   file( _file ),
             line( _line )
         {}
@@ -114,12 +114,12 @@ namespace Catch {
             line( other.line )
         {}
         bool empty() const {
-            return file.empty();
+            return file == 0  ||  *file == 0;
         }
         bool operator == ( SourceLineInfo const& other ) const {
-            return line == other.line && file == other.file;
+            return line == other.line && ((empty() && other.empty())  ||  strcmp(file, other.file) == 0);
         }
-        std::string file;
+        char const * file;
         std::size_t line;
     };
 
