@@ -15,11 +15,11 @@
 namespace Catch {
 
     struct MessageInfo {
-        MessageInfo(    std::string const& _macroName,
+        MessageInfo(    char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         ResultWas::OfType _type );
 
-        std::string macroName;
+        char const * macroName;
         SourceLineInfo lineInfo;
         ResultWas::OfType type;
         std::string message;
@@ -36,7 +36,7 @@ namespace Catch {
     };
 
     struct MessageBuilder {
-        MessageBuilder( std::string const& macroName,
+        MessageBuilder( char const * macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type )
         : m_info( macroName, lineInfo, type )

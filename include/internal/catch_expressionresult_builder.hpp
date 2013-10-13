@@ -90,7 +90,7 @@ namespace Catch {
                 return m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs;
         }
         else
-            return "{can't expand - use " + info.macroName + "_FALSE( " + info.capturedExpression.substr(1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";
+            return "{can't expand - use " + std::string(info.macroName) + "_FALSE( " + *(info.capturedExpression+1) + " ) instead of " + info.macroName + "( " + info.capturedExpression + " ) for better diagnostics}";
     }
 
 } // end namespace Catch

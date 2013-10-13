@@ -13,9 +13,9 @@
 namespace Catch {
 
 
-    AssertionInfo::AssertionInfo(   std::string const& _macroName,
+    AssertionInfo::AssertionInfo(   char const * _macroName,
                                     SourceLineInfo const& _lineInfo,
-                                    std::string const& _capturedExpression,
+                                    char const * _capturedExpression,
                                     ResultDisposition::Flags _resultDisposition )
     :   macroName( _macroName ),
         lineInfo( _lineInfo ),
@@ -47,7 +47,7 @@ namespace Catch {
     }
 
     bool AssertionResult::hasExpression() const {
-        return !m_info.capturedExpression.empty();
+        return m_info.capturedExpression  &&  *m_info.capturedExpression;
     }
 
     bool AssertionResult::hasMessage() const {
@@ -56,15 +56,15 @@ namespace Catch {
 
     std::string AssertionResult::getExpression() const {
         if( shouldNegate( m_info.resultDisposition ) )
-            return "!" + m_info.capturedExpression;
+            return std::string("!") + m_info.capturedExpression;
         else
             return m_info.capturedExpression;
     }
     std::string AssertionResult::getExpressionInMacro() const {
-        if( m_info.macroName.empty() )
+        if( m_info.macroName == nullptr || *m_info.macroName == 0)
             return m_info.capturedExpression;
         else
-            return m_info.macroName + "( " + m_info.capturedExpression + " )";
+            return std::string(m_info.macroName) + "( " + m_info.capturedExpression + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {
@@ -82,7 +82,7 @@ namespace Catch {
         return m_info.lineInfo;
     }
 
-    std::string AssertionResult::getTestMacroName() const {
+    char const *AssertionResult::getTestMacroName() const {
         return m_info.macroName;
     }
 

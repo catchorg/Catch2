@@ -12,7 +12,7 @@
 
 namespace Catch {
 
-    MessageInfo::MessageInfo(   std::string const& _macroName,
+    MessageInfo::MessageInfo(   char const * _macroName,
                                 SourceLineInfo const& _lineInfo,
                                 ResultWas::OfType _type )
     :   macroName( _macroName ),
