@@ -43,7 +43,7 @@ a* ~ab* abc             Matches all tests that start with 'a', except those that
 </pre>
 
 Names within square brackets are interpreted as tags.
-A series of tags form an AND expression wheras a comma seperated sequence forms an OR expression. e.g.:
+A series of tags form an AND expression wheras a comma-separated sequence forms an OR expression. e.g.:
 
 <pre>[one][two],[three]</pre>
 This matches all tests tagged `[one]` and `[two]`, as well as all tests tagged `[three]`
