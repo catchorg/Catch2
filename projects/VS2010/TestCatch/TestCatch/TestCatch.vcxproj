@@ -91,6 +91,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\SelfTest\ApproxTests.cpp" />
+    <ClCompile Include="..\..\..\SelfTest\BDDTests.cpp" />
+    <ClCompile Include="..\..\..\SelfTest\CmdLineTests.cpp" />
+    <ClCompile Include="..\..\..\SelfTest\SectionTrackerTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\TestMain.cpp" />
     <ClCompile Include="..\..\..\SelfTest\catch_self_test.cpp" />
     <ClCompile Include="..\..\..\SelfTest\ClassTests.cpp" />
@@ -100,6 +104,7 @@
     <ClCompile Include="..\..\..\SelfTest\MessageTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\MiscTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\TrickyTests.cpp" />
+    <ClCompile Include="..\..\..\SelfTest\VariadicMacrosTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\catch.hpp" />
