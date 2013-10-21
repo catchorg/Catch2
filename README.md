@@ -2,7 +2,7 @@
 
 *v1.0 build 11 (master branch)*
 
-[![Build Status](https://travis-ci.org/AIM360/Catch.png)](https://travis-ci.org/AIM360/Catch) Travis CI build status for this fork
+Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.png)](https://travis-ci.org/philsquared/Catch)
 
 # New release with significant changes
 
