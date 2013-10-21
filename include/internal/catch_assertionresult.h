@@ -15,15 +15,15 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        AssertionInfo() {}
-        AssertionInfo(  std::string const& _macroName,
+        AssertionInfo() : macroName(nullptr), capturedExpression(nullptr) {}
+        AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
-                        std::string const& _capturedExpression,
+                        char const * _capturedExpression,
                         ResultDisposition::Flags _resultDisposition );
 
-        std::string macroName;
+        char const * macroName;
         SourceLineInfo lineInfo;
-        std::string capturedExpression;
+        char const * capturedExpression;
         ResultDisposition::Flags resultDisposition;
     };
 
@@ -53,7 +53,7 @@ namespace Catch {
         std::string getExpandedExpression() const;
         std::string getMessage() const;
         SourceLineInfo getSourceInfo() const;
-        std::string getTestMacroName() const;
+        char const * getTestMacroName() const;
 
     protected:
         AssertionInfo m_info;
