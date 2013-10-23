@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="10" failures="99" tests="763" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="~_" errors="10" failures="99" tests="772" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="./succeeding/Approx/simple" time="{duration}"/>
     <testcase classname="global" name="./succeeding/Approx/epsilon" time="{duration}"/>
     <testcase classname="global" name="./succeeding/Approx/float" time="{duration}"/>
@@ -466,7 +466,8 @@ An error
     <testcase classname="global" name="selftest/test filters" time="{duration}"/>
     <testcase classname="global" name="selftest/filter/prefix wildcard" time="{duration}"/>
     <testcase classname="global" name="selftest/filter/wildcard at both ends" time="{duration}"/>
-    <testcase classname="selftest/tags" name="one tag" time="{duration}"/>
+    <testcase classname="selftest/tags" name="single [one] tag" time="{duration}"/>
+    <testcase classname="selftest/tags" name="single [two] tag" time="{duration}"/>
     <testcase classname="selftest/tags" name="two tags" time="{duration}"/>
     <testcase classname="selftest/tags" name="complex" time="{duration}"/>
     <testcase classname="selftest/tags" name="one tag with characters either side" time="{duration}"/>
@@ -491,6 +492,7 @@ hello
       </system-out>
     </testcase>
     <testcase classname="global" name="Text can be formatted using the Text class" time="{duration}"/>
+    <testcase classname="global" name="Long text is truncted" time="{duration}"/>
     <testcase classname="global" name="./succeeding/Tricky/std::pair" time="{duration}"/>
     <testcase classname="global" name="./inprogress/failing/Tricky/trailing expression" time="{duration}"/>
     <testcase classname="global" name="./inprogress/failing/Tricky/compound lhs" time="{duration}"/>
