@@ -23,7 +23,10 @@ namespace Catch {
         std::string remainder = _str;
 
         while( !remainder.empty() ) {
-            assert( lines.size() < 1000 );
+            if( lines.size() >= 1000 ) {
+                lines.push_back( "... message truncated due to excessive size" );
+                return;
+            }
             std::size_t tabPos = std::string::npos;
             std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
             std::size_t pos = remainder.find_first_of( '\n' );

@@ -67,8 +67,8 @@ namespace Catch {
 }
 
 #define INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) \
-    Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
-    Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED

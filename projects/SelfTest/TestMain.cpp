@@ -86,7 +86,7 @@ std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::Co
     return "";
 }
 
-inline Catch::TestCase fakeTestCase( const char* name ){ return Catch::makeTestCase( NULL, "", name, "", CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 
@@ -298,7 +298,7 @@ int getArgc( const char * (&)[size] ) {
     return size;
 }
 
-TEST_CASE( "selftest/tags", "" ) {
+TEST_CASE( "selftest/tags", "[tags]" ) {
 
     std::string p1 = "[one]";
     std::string p2 = "[one],[two]";
@@ -306,7 +306,7 @@ TEST_CASE( "selftest/tags", "" ) {
     std::string p4 = "[one][two],[three]";
     std::string p5 = "[one][two]~[.],[three]";
     
-    SECTION( "one tag", "" ) {
+    SECTION( "single [one] tag", "" ) {
         Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[one]", CATCH_INTERNAL_LINEINFO );
 
         CHECK( oneTag.getTestCaseInfo().description == "" );
@@ -314,6 +314,20 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( oneTag.getTags().size() == 1 );
 
         CHECK( oneTag.matchesTags( p1 ) == true );
+        CHECK( oneTag.matchesTags( p2 ) == true );
+        CHECK( oneTag.matchesTags( p3 ) == false );
+        CHECK( oneTag.matchesTags( p4 ) == false );
+        CHECK( oneTag.matchesTags( p5 ) == false );
+    }
+
+    SECTION( "single [two] tag", "" ) {
+        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[two]", CATCH_INTERNAL_LINEINFO );
+
+        CHECK( oneTag.getTestCaseInfo().description == "" );
+        CHECK( oneTag.hasTag( "two" ) );
+        CHECK( oneTag.getTags().size() == 1 );
+
+        CHECK( oneTag.matchesTags( p1 ) == false );
         CHECK( oneTag.matchesTags( p2 ) == true );
         CHECK( oneTag.matchesTags( p3 ) == false );
         CHECK( oneTag.matchesTags( p4 ) == false );
@@ -335,6 +349,15 @@ TEST_CASE( "selftest/tags", "" ) {
         CHECK( twoTags.matchesTags( p3 ) == true );
         CHECK( twoTags.matchesTags( p4 ) == true );
         CHECK( twoTags.matchesTags( p5 ) == true );
+    }
+    SECTION( "complex", "" ) {
+        CHECK( fakeTestCase( "test", "[one][.]" ).matchesTags( p1 ) );
+        CHECK_FALSE( fakeTestCase( "test", "[one][.]" ).matchesTags( p5 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p4 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p5 ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( "[three]~[one]" ) );
+        CHECK( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]" ) );
+        CHECK_FALSE( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]~[not_apple]" ) );
     }
 
     SECTION( "one tag with characters either side", "" ) {
@@ -557,4 +580,16 @@ TEST_CASE( "Text can be formatted using the Text class", "" ) {
     narrow.setWidth( 6 );
     
     CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" );
+}
+
+TEST_CASE( "Long text is truncted", "[Text][Truncated]" ) {
+
+    std::string longLine( 90, '*' );
+
+    std::ostringstream oss;
+    for(int i = 0; i < 600; ++i )
+        oss << longLine << longLine << "\n";
+    Text t( oss.str() );
+    CHECK_THAT( t.toString(), EndsWith( "... message truncated due to excessive size" ) );
+    
 }

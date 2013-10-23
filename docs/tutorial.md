@@ -87,9 +87,60 @@ Of course there are still more issues to do deal with. For example we'll hit pro
 Although this was a simple test it's been enough to demonstrate a few things about how Catch is used. Let's take moment to consider those before we move on.
 
 1. All we did was ```#define``` one identifier and ```#include``` one header and we got everything - even an implementation of ```main()``` that will [respond to command line arguments](command-line.md). You can only use that ```#define``` in one implementation file, for (hopefully) obvious reasons. Once you have more than one file with unit tests in you'll just ```#include "catch.hpp"``` and go. Usually it's a good idea to have a dedicated implementation file that just has ```#define CATCH_CONFIG_MAIN``` and ```#include "catch.hpp"```. You can also provide your own implementation of main and drive Catch yourself (see [Supplying-your-own-main()](own-main.md).
-2. We introduce test cases with the TEST_CASE macro. This macro takes two arguments - a hierarchical test name (forward slash separated, by convention) and a free-form description. The test name should be unique - and ideally will logically group related tests together like folders in a file system. You can run sets of tests by specifying a wildcarded test name.
-3. The name and description arguments are just strings. We haven't had to declare a function or method - or explicitly register the test case anywhere. Behind the scenes a function with a generated name is defined for you, and automatically registered using static registry classes. By abstracting the function name away we can name our tests without the constraints of identifier names.
+2. We introduce test cases with the TEST_CASE macro. This macro takes one or two arguments - a free form test name and, optionally, one or more tags (for more see <a href="#testCasesAndSections">Test cases and Sections</a>, below. The test name must be unique. You can run sets of tests by specifying a wildcarded test name or a tag expression. See the [command line docs](command-line.md) for more information on running tests.
+3. The name and tags arguments are just strings. We haven't had to declare a function or method - or explicitly register the test case anywhere. Behind the scenes a function with a generated name is defined for you, and automatically registered using static registry classes. By abstracting the function name away we can name our tests without the constraints of identifier names.
 4. We write our individual test assertions using the REQUIRE macro. Rather than a separate macro for each type of condition we express the condition naturally using C/C++ syntax. Behind the scenes a simple set of expression templates captures the left-hand-side and right-hand-side of the expression so we can display the values in our test report. As we'll see later there _are_ other assertion macros - but because of this technique the number of them is drastically reduced.
+
+<a id="testCasesAndSections"></a>
+## Test cases and sections
+
+Most test frameworks have a class-based fixture mechanism. That is, test cases map to methods on a class and common setup and teardown can be performed in ```setup()``` and ```teardown()``` methods (or constructor/ destructor in languages, like C++, that support deterministic destruction).
+
+While Catch fully supports this way of working there are a few problems with the approach. In particular the way your code must be split up, and the blunt granularity (you can only have one setup/ teardown pair across a set of methods - sometimes you want slightly different setup in each method - or you may want several levels of setup. We'll revisit that concept shortly and, hopefully, make it clearer). It was <a href="http://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">problems like these</a> that led James Newkirk, who led the team that built NUnit, to start again from scratch and <a href="http://jamesnewkirk.typepad.com/posts/2007/09/announcing-xuni.html">build xUnit</a>).
+
+Catch takes a different approach (to both NUnut and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explaned through an example:
+
+```c++
+TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
+
+    std::vector<int> v( 5 );
+    
+    REQUIRE( v.size() == 5 );
+    REQUIRE( v.capacity() >= 5 );
+    
+    SECTION( "resizing bigger changes size and capacity" ) {
+        v.resize( 10 );
+        
+        REQUIRE( v.size() == 10 );
+        REQUIRE( v.capacity() >= 10 );
+    }
+    SECTION( "resizing smaller changes size but not capacity" ) {
+        v.resize( 0 );
+        
+        REQUIRE( v.size() == 0 );
+        REQUIRE( v.capacity() >= 5 );
+    }
+    SECTION( "reserving bigger changes capacity but not size" ) {
+        v.reserve( 10 );
+        
+        REQUIRE( v.size() == 5 );
+        REQUIRE( v.capacity() >= 10 );
+    }
+    SECTION( "reserving smaller does not change size or capacity" ) {
+        v.reserve( 0 );
+        
+        REQUIRE( v.size() == 5 );
+        REQUIRE( v.capacity() >= 5 );
+    }
+}
+```
+
+For each ```SECTION``` the ```TEST_CASE``` is executed from the start - so as we enter each section we know that size is 5 and capacity is at least 5. We enforced those requirements with the ```REQUIRE```s at the top level so we can be confident in them.
+This works because the ```SECTION``` macro contains an if statement that calls back into Catch to see if the section should be executed. One leaf section is executed on each run through a ```TEST_CASE```. The other sections are skipped. Next time through the next section is executed, and so on until no new sections are encountered.
+
+So far so good - this is already an improvement on the setup/ teardown approach because now we see our setup code inline and we can use the stack.
+
+-{placeholder for documentation on nested sections}-
 
 ## Next steps
 For more specific information see the [Reference pages](reference-index.md)
