@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 10 (master branch)
- *  Generated: 2013-09-21 19:07:52.759646
+ *  CATCH v1.0 build 12 (master branch)
+ *  Generated: 2013-10-27 21:27:32.987316
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -26,6 +26,9 @@
 
 // #included from: catch_common.h
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
+
+#define INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter ) name##counter
+#define INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, counter ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter )
 
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
@@ -1753,9 +1756,10 @@ namespace Catch {
         }
 
         bool matches( std::set<std::string> const& tags ) const {
-            TagMap::const_iterator it = m_tags.begin();
-            TagMap::const_iterator itEnd = m_tags.end();
-            for(; it != itEnd; ++it ) {
+            for(    TagMap::const_iterator
+                        it = m_tags.begin(), itEnd = m_tags.end();
+                    it != itEnd;
+                    ++it ) {
                 bool found = tags.find( it->first ) != tags.end();
                 if( found == it->second.isNegated() )
                     return false;
@@ -1770,9 +1774,10 @@ namespace Catch {
     class TagExpression {
     public:
         bool matches( std::set<std::string> const& tags ) const {
-            std::vector<TagSet>::const_iterator it = m_tagSets.begin();
-            std::vector<TagSet>::const_iterator itEnd = m_tagSets.end();
-            for(; it != itEnd; ++it )
+            for(    std::vector<TagSet>::const_iterator
+                        it = m_tagSets.begin(), itEnd = m_tagSets.end();
+                    it != itEnd;
+                    ++it )
                 if( it->matches( tags ) )
                     return true;
             return false;
@@ -1805,6 +1810,7 @@ namespace Catch {
                     break;
                 case ',':
                     m_exp.m_tagSets.push_back( m_currentTagSet );
+                    m_currentTagSet = TagSet();
                     break;
             }
         }
@@ -2913,7 +2919,7 @@ struct TestFailureException{};
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( log, macroName ) \
-    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
+    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME_COUNTER( scopedMessage, __COUNTER__ ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
@@ -6368,7 +6374,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 10, "master" );
+    Version libraryVersion( 1, 0, 12, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -6703,9 +6709,9 @@ namespace Catch {
 }
 
 #define INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) \
-    Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
-    Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name );
+    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 
 // #included from: ../internal/catch_xmlwriter.hpp
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
