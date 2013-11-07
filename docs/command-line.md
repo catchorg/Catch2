@@ -11,7 +11,7 @@ Note that options are described according to the following pattern:
 <a href="#name">     `    -n, --name`</a><br />
 <a href="#nothrow">  `    -e, --nothrow`</a><br />
 <a href="#warn">     `    -w, --warn`</a><br />
-<a href="#durations">`    -d, --durations`</a><br />
+<a href="#reporting-timings">`    -d, --durations`</a><br />
 <a href="#usage">    `    -h, -?, --help`</a><br />
 
 <a id="test"></a>
@@ -136,7 +136,7 @@ Enables reporting of warnings (only one, at time of this writing). If a warning 
 
 The ony available warning, presently, is ```NoAssertions```. This warning fails a test case, or (leaf) section if no assertions (```REQUIRE```/ ```CHECK``` etc) are encountered.
 
-<a id="durations"></a>
+<a id="reporting-timings"></a>
 ## Reporting timings
 <pre>-d, --durations &lt;yes/no></pre>
 
