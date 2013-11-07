@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 13 (master branch)
- *  Generated: 2013-11-07 16:58:21.484284
+ *  Generated: 2013-11-07 17:03:06.904693
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2932,7 +2932,7 @@ struct TestFailureException{};
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( log, macroName ) \
-    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME_COUNTER( scopedMessage, __COUNTER__ ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
+    Catch::ScopedMessage INTERNAL_CATCH_TRUE_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \

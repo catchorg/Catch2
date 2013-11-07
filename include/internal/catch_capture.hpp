@@ -156,7 +156,7 @@ struct TestFailureException{};
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( log, macroName ) \
-    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME_COUNTER( scopedMessage, __COUNTER__ ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
+    Catch::ScopedMessage INTERNAL_CATCH_TRUE_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 
 ///////////////////////////////////////////////////////////////////////////////
