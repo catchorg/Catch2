@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 11 (master branch)
- *  Generated: 2013-10-23 15:34:32.120349
+ *  CATCH v1.0 build 13 (master branch)
+ *  Generated: 2013-11-07 17:03:06.904693
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -27,9 +27,25 @@
 // #included from: catch_common.h
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
-#define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
-#define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
-#define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __LINE__ )
+#define INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter ) name##counter
+#define INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, counter ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter )
+#define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __LINE__ )
+
+// try to define truly unique name independent of line it has been introduced
+#if defined(_MSC_VER) && (_MSC_VER >= 1300)
+    // __COUNTER__ introduced in VS 7 (VS.NET 2002)
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#elif defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ >= 3)
+    // __COUNTER__ introduced in gcc 4.3
+    // http://gcc.gnu.org/gcc-4.3/changes.html
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#elif defined(__clang__) && (__clang_major__ >= 3)
+    // really haven't found when __COUNTER__ was introduced in clang, but 3.0 definetely have it
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#else
+    // since there's no __COUNTER__ use __LINE__ as a more or less reasonable substitute
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __LINE__ )
+#endif
 
 #define INTERNAL_CATCH_STRINGIFY2( expr ) #expr
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
@@ -2916,7 +2932,7 @@ struct TestFailureException{};
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( log, macroName ) \
-    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
+    Catch::ScopedMessage INTERNAL_CATCH_TRUE_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
@@ -6371,7 +6387,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 11, "master" );
+    Version libraryVersion( 1, 0, 13, "master" );
 }
 
 // #included from: catch_text.hpp

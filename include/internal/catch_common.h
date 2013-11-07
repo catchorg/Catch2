@@ -8,9 +8,26 @@
 #ifndef TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
-#define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
-#define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
-#define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __LINE__ )
+#define INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter ) name##counter
+#define INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, counter ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter )
+#define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __LINE__ )
+
+// try to define truly unique name independent of line it has been introduced
+#if defined(_MSC_VER) && (_MSC_VER >= 1300)
+    // __COUNTER__ introduced in VS 7 (VS.NET 2002)
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#elif defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ >= 3)
+    // __COUNTER__ introduced in gcc 4.3
+    // http://gcc.gnu.org/gcc-4.3/changes.html
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#elif defined(__clang__) && (__clang_major__ >= 3)
+    // really haven't found when __COUNTER__ was introduced in clang, but 3.0 definetely have it 
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#else
+    // since there's no __COUNTER__ use __LINE__ as a more or less reasonable substitute
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __LINE__ )
+#endif
+
 
 #define INTERNAL_CATCH_STRINGIFY2( expr ) #expr
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
