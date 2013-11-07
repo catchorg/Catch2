@@ -14,6 +14,7 @@
 #include <sstream>
 #include <iomanip>
 #include <limits>
+#include <vector>
 
 #ifdef __OBJC__
 #include "catch_objc_arc.hpp"
