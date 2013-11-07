@@ -1,20 +1,20 @@
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Note that options are described according to the following pattern:
 
-<a href="#test">     `    <test-spec> ...`</a><br />
-<a href="#reporter"> `    -r, --reporter`</a><br />
-<a href="#break">    `    -b, --break`</a><br />
-<a href="#success">  `    -s, --success`</a><br />
-<a href="#abort">    `    -a, --abort`</a><br />
-<a href="#list">     `    -l, --list`</a><br />
-<a href="#output">   `    -o, --out`</a><br />
-<a href="#name">     `    -n, --name`</a><br />
-<a href="#nothrow">  `    -e, --nothrow`</a><br />
-<a href="#warn">     `    -w, --warn`</a><br />
-<a href="#reporting-timings">`    -d, --durations`</a><br />
-<a href="#usage">    `    -h, -?, --help`</a><br />
+<a href="#specifying-which-tests-to-run">               `    <test-spec> ...`</a><br />
+<a href="#choosing-a-reporter-to-use">                  `    -r, --reporter`</a><br />
+<a href="#breaking-into-the-debugger">                  `    -b, --break`</a><br />
+<a href="#showing-results-for-successful-tests">        `    -s, --success`</a><br />
+<a href="#aborting-after-a-certain-number-of-failures"> `    -a, --abort`</a><br />
+<a href="#listing-available-tests-tags-or-reporters">   `    -l, --list`</a><br />
+<a href="#sending-output-to-a-file">                    `    -o, --out`</a><br />
+<a href="#naming-a-test-run">                           `    -n, --name`</a><br />
+<a href="#eliding-assertions-expected-to-throw">        `    -e, --nothrow`</a><br />
+<a href="#warnings">                                    `    -w, --warn`</a><br />
+<a href="#reporting-timings">                           `    -d, --durations`</a><br />
+<a href="#usage">                                       `    -h, -?, --help`</a><br />
 
-<a id="test"></a>
+<a id="specifying-which-tests-to-run"></a>
 ## Specifying which tests to run
 
 <pre>&lt;test-spec> ...</pre>
@@ -51,7 +51,7 @@ A series of tags form an AND expression wheras a comma-separated sequence forms 
 This matches all tests tagged `[one]` and `[two]`, as well as all tests tagged `[three]`
 
 
-<a id="reporter"></a>
+<a id="choosing-a-reporter-to-use"></a>
 ## Choosing a reporter to use
 
 <pre>-r, --reporter &lt;reporter></pre>
@@ -66,21 +66,21 @@ The bundled reporters are:
 
 The JUnit reporter is an xml format that follows the structure of the JUnit XML Report ANT task, as consumed by a number of third-party tools, including Continuous Integration servers such as Hudson. If not otherwise needed, the standard XML reporter is preferred as this is a streaming reporter, whereas the Junit reporter needs to hold all its results until the end so it can write the overall results into attributes of the root node.
 
-<a id="break"></a>
+<a id="breaking-into-the-debugger"></a>
 ## Breaking into the debugger
 <pre>-b, --break</pre>
 
 In some IDEs (currently XCode and Visual Studio) it is possible for Catch to break into the debugger on a test failure. This can be very helpful during debug sessions - especially when there is more than one path through a particular test.
 In addition to the command line option, ensure you have built your code with the DEBUG preprocessor symbol
 
-<a id="success"></a>
+<a id="showing-results-for-successful-tests"></a>
 ## Showing results for successful tests
 <pre>-s, --success</pre>
 
 Usually you only want to see reporting for failed tests. Sometimes it's useful to see *all* the output (especially when you don't trust that that test you just added worked first time!).
 To see successul, as well as failing, test results just pass this option. Note that each reporter may treat this option differently. The Junit reporter, for example, logs all results regardless.
 
-<a id="abort"></a>
+<a id="aborting-after-a-certain-number-of-failures"></a>
 ## Aborting after a certain number of failures
 <pre>-a, --abort
 -x, --abortx [&lt;failure threshold>]
@@ -91,7 +91,7 @@ If a ```CHECK``` assertion fails even the current test case is not aborted.
 
 Sometimes this results in a flood of failure messages and you'd rather just see the first few. Specifying ```-a``` or ```--abort``` on its own will abort the whole test run on the first failed assertion of any kind. Use ```-x``` or ```--abortx``` followed by a number to abort after that number of assertion failures.
 
-<a id="list"></a>
+<a id="listing-available-tests-tags-or-reporters"></a>
 ## Listing available tests, tags or reporters
 <pre>-l, --list-tests
 -t, --list-tags
@@ -105,20 +105,20 @@ If one or more test-specs have been supplied too then only the matching tests wi
 
 ```--list-reporters``` lists the available reporters.
 
-<a id="output"></a>
+<a id="sending-output-to-a-file"></a>
 ## Sending output to a file
 <pre>-o, --out &lt;filename>
 </pre>
 
 Use this option to send all output to a file. By default output is sent to stdout (note that uses of stdout and stderr *from within test cases* are redirected and included in the report - so even stderr will effectively end up on stdout).
 
-<a id="name"></a>
+<a id="naming-a-test-run"></a>
 ## Naming a test run
 <pre>-n, --name &lt;name for test run></pre>
 
 If a name is supplied it will be used by the reporter to provide an overall name for the test run. This can be useful if you are sending to a file, for example, and need to distinguish different test runs - either from different Catch executables or runs of the same executable with different options. If not supplied the name is defaulted to the name of the executable.
 
-<a id="nothrow"></a>
+<a id="eliding-assertions-expected-to-throw"></a>
 ## Eliding assertions expected to throw
 <pre>-e, --nothrow</pre>
 
@@ -128,7 +128,7 @@ These can be a nuisance in certain debugging environments that may break when ex
 
 When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
 
-<a id="warn"></a>
+<a id="warnings"></a>
 ## Warnings
 <pre>-w, --warn &lt;warning name></pre>
 
