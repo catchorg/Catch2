@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 12 (master branch)
- *  Generated: 2013-10-27 21:27:32.987316
+ *  CATCH v1.0 build 13 (master branch)
+ *  Generated: 2013-11-07 16:58:21.484284
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -29,10 +29,23 @@
 
 #define INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter ) name##counter
 #define INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, counter ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER2( name, counter )
+#define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __LINE__ )
 
-#define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
-#define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
-#define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __LINE__ )
+// try to define truly unique name independent of line it has been introduced
+#if defined(_MSC_VER) && (_MSC_VER >= 1300)
+    // __COUNTER__ introduced in VS 7 (VS.NET 2002)
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#elif defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ >= 3)
+    // __COUNTER__ introduced in gcc 4.3
+    // http://gcc.gnu.org/gcc-4.3/changes.html
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#elif defined(__clang__) && (__clang_major__ >= 3)
+    // really haven't found when __COUNTER__ was introduced in clang, but 3.0 definetely have it
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __COUNTER__ )
+#else
+    // since there's no __COUNTER__ use __LINE__ as a more or less reasonable substitute
+    #define INTERNAL_CATCH_TRUE_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_COUNTER( name, __LINE__ )
+#endif
 
 #define INTERNAL_CATCH_STRINGIFY2( expr ) #expr
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
@@ -4604,7 +4617,7 @@ namespace Catch {
                 matchedTests++;
                 Text nameWrapper(   it->getTestCaseInfo().name,
                                     TextAttributes()
-                                        .setWidth( maxNameLen )
+                                        .setWidth( maxNameLen+2 )
                                         .setInitialIndent(2)
                                         .setIndent(4) );
 
@@ -5777,7 +5790,7 @@ namespace Catch {
 
     class Context : public IMutableContext {
 
-        Context() : m_config( NULL ) {}
+        Context() : m_config( NULL ), m_runner( NULL ), m_resultCapture( NULL ) {}
         Context( Context const& );
         void operator=( Context const& );
 
@@ -5837,9 +5850,9 @@ namespace Catch {
         }
 
     private:
+        Ptr<IConfig const> m_config;
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
-        Ptr<IConfig const> m_config;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
 
@@ -6374,7 +6387,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 12, "master" );
+    Version libraryVersion( 1, 0, 13, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -6395,7 +6408,10 @@ namespace Catch {
         std::string remainder = _str;
 
         while( !remainder.empty() ) {
-            assert( lines.size() < 1000 );
+            if( lines.size() >= 1000 ) {
+                lines.push_back( "... message truncated due to excessive size" );
+                return;
+            }
             std::size_t tabPos = std::string::npos;
             std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
             std::size_t pos = remainder.find_first_of( '\n' );
