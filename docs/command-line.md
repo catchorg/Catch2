@@ -10,6 +10,8 @@ Note that options are described according to the following pattern:
 <a href="#output">   `    -o, --out`</a><br />
 <a href="#name">     `    -n, --name`</a><br />
 <a href="#nothrow">  `    -e, --nothrow`</a><br />
+<a href="#warn">     `    -w, --warn`</a><br />
+<a href="#durations">`    -d, --durations`</a><br />
 <a href="#usage">    `    -h, -?, --help`</a><br />
 
 <a id="test"></a>
@@ -125,6 +127,20 @@ Skips all assertions that test that an exception is thrown, e.g. ```REQUIRE_THRO
 These can be a nuisance in certain debugging environments that may break when exceptions are thrown (while this is usually optional for handled exceptions, it can be useful to have enabled if you are trying to track down something unexpected).
 
 When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
+
+<a id="warn"></a>
+## Warnings
+<pre>-w, --warn &lt;warning name></pre>
+
+Enables reporting of warnings (only one, at time of this writing). If a warning is issued it fails the test.
+
+The ony available warning, presently, is ```NoAssertions```. This warning fails a test case, or (leaf) section if no assertions (```REQUIRE```/ ```CHECK``` etc) are encountered.
+
+<a id="durations"></a>
+## Reporting timings
+<pre>-d, --durations &lt;yes/no></pre>
+
+When set to ```yes``` Catch will report the duration of each test case, in milliseconds. Note that it does this regardless of whether a test case passes or fails. Note, also, the certain reporters (e.g. Junit) always report test case durations regardless of this option being set or not.
 
 <a id="usage"></a>
 ## Usage
