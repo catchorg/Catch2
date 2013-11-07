@@ -86,12 +86,13 @@ namespace Catch {
                         std::cout << nameCol;
                     }
                     if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
+                        size_t padLen( maxNameLen > nameCol.size() ? maxNameLen - nameCol.size() : 0 );
                         if( i == 0 ) {
                             Colour colourGuard( Colour::SecondaryText );
-                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  ";
+                            std::cout << "  " << std::string( padLen, '.' ) << "  ";
                         }
                         else {
-                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    ";
+                            std::cout << std::string( padLen, ' ' ) << "    ";
                         }
                         std::cout << tagsWrapper[i];
                     }
