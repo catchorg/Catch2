@@ -2,11 +2,13 @@
 *.pbxuser
 *.mode1v3
 *.ncb
+*.sdf
 *.suo
 Debug
 Release
 *.user
 *.xcuserstate
+*.o
 .DS_Store
 xcuserdata
 CatchSelfTest.xcscheme

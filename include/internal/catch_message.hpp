@@ -12,28 +12,32 @@
 
 namespace Catch {
 
-    MessageInfo::MessageInfo(   std::string const& _macroName,
+    template <typename T>
+    struct MessageInfoCounter {
+        // This may need protecting if threading support is added
+        static T globalCount;
+    };
+    template <typename T>
+    T MessageInfoCounter<T>::globalCount = T();
+
+    INTERNAL_CATCH_INLINE MessageInfo::MessageInfo(   std::string const& _macroName,
                                 SourceLineInfo const& _lineInfo,
                                 ResultWas::OfType _type )
     :   macroName( _macroName ),
         lineInfo( _lineInfo ),
         type( _type ),
-        sequence( ++globalCount )
+        sequence( ++MessageInfoCounter<unsigned int>::globalCount )
     {}
-
-    // This may need protecting if threading support is added
-    unsigned int MessageInfo::globalCount = 0;
-
 
     ////////////////////////////////////////////////////////////////////////////
 
-    ScopedMessage::ScopedMessage( MessageBuilder const& builder )
+    INTERNAL_CATCH_INLINE ScopedMessage::ScopedMessage( MessageBuilder const& builder )
     : m_info( builder.m_info )
     {
         m_info.message = builder.m_stream.str();
         getResultCapture().pushScopedMessage( m_info );
     }
-    ScopedMessage::~ScopedMessage() {
+    INTERNAL_CATCH_INLINE ScopedMessage::~ScopedMessage() {
         getResultCapture().popScopedMessage( m_info );
     }
 

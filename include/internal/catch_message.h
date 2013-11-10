@@ -31,8 +31,6 @@ namespace Catch {
         bool operator < ( MessageInfo const& other ) const {
             return sequence < other.sequence;
         }
-    private:
-        static unsigned int globalCount;
     };
 
     struct MessageBuilder {

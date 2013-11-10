@@ -38,6 +38,7 @@
 #endif
 
 #if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
+#define INTERNAL_CATCH_INLINE
 #include "internal/catch_impl.hpp"
 #endif
 
