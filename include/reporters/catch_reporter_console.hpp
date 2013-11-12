@@ -315,8 +315,13 @@ namespace Catch {
         }
 
         void printTotals( const Totals& totals ) {
-            if( totals.assertions.total() == 0 ) {
+            if( totals.testCases.total() == 0 ) {
                 stream << "No tests ran";
+            }
+            else if( totals.assertions.total() == 0 ) {
+                Colour colour( Colour::Yellow );
+                printCounts( "test case", totals.testCases );
+                stream << " (no assertions)";
             }
             else if( totals.assertions.failed ) {
                 Colour colour( Colour::ResultError );
