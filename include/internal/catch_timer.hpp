@@ -24,7 +24,7 @@ namespace Catch {
 
     namespace {
 #ifdef CATCH_PLATFORM_WINDOWS
-        uint64_t getCurrentTicks() {
+        INTERNAL_CATCH_INLINE uint64_t getCurrentTicks() {
             static uint64_t hz=0, hzo=0;
             if (!hz) {
                 QueryPerformanceFrequency((LARGE_INTEGER*)&hz);
@@ -35,7 +35,7 @@ namespace Catch {
             return ((t-hzo)*1000000)/hz;
         }
 #else
-        uint64_t getCurrentTicks() {
+        INTERNAL_CATCH_INLINE uint64_t getCurrentTicks() {
             timeval t;
             gettimeofday(&t,NULL);
             return (uint64_t)t.tv_sec * 1000000ull + (uint64_t)t.tv_usec;
@@ -43,16 +43,16 @@ namespace Catch {
 #endif
     }
 
-    void Timer::start() {
+    INTERNAL_CATCH_INLINE void Timer::start() {
         m_ticks = getCurrentTicks();
     }
-    unsigned int Timer::getElapsedNanoseconds() const {
+    INTERNAL_CATCH_INLINE unsigned int Timer::getElapsedNanoseconds() const {
         return (unsigned int)(getCurrentTicks() - m_ticks);
     }
-    unsigned int Timer::getElapsedMilliseconds() const {
+    INTERNAL_CATCH_INLINE unsigned int Timer::getElapsedMilliseconds() const {
         return (unsigned int)((getCurrentTicks() - m_ticks)/1000);
     }
-    double Timer::getElapsedSeconds() const {
+    INTERNAL_CATCH_INLINE double Timer::getElapsedSeconds() const {
         return (getCurrentTicks() - m_ticks)/1000000.0;
     }
 

@@ -86,16 +86,16 @@ namespace Catch {
     namespace {
         Context* currentContext = NULL;
     }
-    IMutableContext& getCurrentMutableContext() {
+    INTERNAL_CATCH_INLINE IMutableContext& getCurrentMutableContext() {
         if( !currentContext )
             currentContext = new Context();
         return *currentContext;
     }
-    IContext& getCurrentContext() {
+    INTERNAL_CATCH_INLINE IContext& getCurrentContext() {
         return getCurrentMutableContext();
     }
 
-    Stream createStream( std::string const& streamName ) {
+    INTERNAL_CATCH_INLINE Stream createStream( std::string const& streamName ) {
         if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
         if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
         if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
@@ -103,7 +103,7 @@ namespace Catch {
         throw std::domain_error( "Unknown stream: " + streamName );
     }
 
-    void cleanUpContext() {
+    INTERNAL_CATCH_INLINE void cleanUpContext() {
         delete currentContext;
         currentContext = NULL;
     }

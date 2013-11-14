@@ -13,7 +13,7 @@
 
 namespace Catch {
 
-    Text::Text( std::string const& _str, TextAttributes const& _attr )
+    INTERNAL_CATCH_INLINE Text::Text( std::string const& _str, TextAttributes const& _attr )
     : attr( _attr )
     {
         std::string wrappableChars = " [({.,/|\\-";
@@ -69,18 +69,18 @@ namespace Catch {
         }
     }
 
-    void Text::spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
+    INTERNAL_CATCH_INLINE void Text::spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
         lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
         _remainder = _remainder.substr( _pos );
     }
 
-    std::string Text::toString() const {
+    INTERNAL_CATCH_INLINE std::string Text::toString() const {
         std::ostringstream oss;
         oss << *this;
         return oss.str();
     }
 
-    std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+    INTERNAL_CATCH_INLINE std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
         for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
             it != itEnd; ++it ) {
             if( it != _text.begin() )

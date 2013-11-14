@@ -180,6 +180,8 @@
     <ClInclude Include="..\..\..\..\include\internal\catch_totals.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_version.h" />
     <ClInclude Include="..\..\..\..\include\internal\catch_version.hpp" />
+    <ClInclude Include="..\..\..\..\include\internal\catch_vs_managed_impl.hpp" />
+    <ClInclude Include="..\..\..\..\include\internal\catch_vs_native_impl.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_xmlwriter.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_console.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_junit.hpp" />

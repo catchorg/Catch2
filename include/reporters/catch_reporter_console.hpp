@@ -249,11 +249,11 @@ namespace Catch {
             stream  << "\n" << getTildes() << "\n";
             Colour colour( Colour::SecondaryText );
             stream  << currentTestRunInfo->name
-                    << " is a Catch v"  << libraryVersion.majorVersion << "."
-                    << libraryVersion.minorVersion << " b"
-                    << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
-                stream << " (" << libraryVersion.branchName << ")";
+                    << " is a Catch v"  << libraryVersion::value.majorVersion << "."
+                    << libraryVersion::value.minorVersion << " b"
+                    << libraryVersion::value.buildNumber;
+            if( libraryVersion::value.branchName != "master" )
+                stream << " (" << libraryVersion::value.branchName << ")";
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
 

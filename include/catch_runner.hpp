@@ -129,11 +129,11 @@ namespace Catch {
         }
 
         void showHelp( std::string const& processName ) {
-            std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
-                                        << libraryVersion.minorVersion << " build "
-                                        << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
-                std::cout << " (" << libraryVersion.branchName << " branch)";
+            std::cout << "\nCatch v"    << libraryVersion::value.majorVersion << "."
+                                        << libraryVersion::value.minorVersion << " build "
+                                        << libraryVersion::value.buildNumber;
+            if( libraryVersion::value.branchName != "master" )
+                std::cout << " (" << libraryVersion::value.branchName << " branch)";
             std::cout << "\n";
 
             m_cli.usage( std::cout, processName );

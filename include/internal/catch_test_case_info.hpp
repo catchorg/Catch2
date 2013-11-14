@@ -15,7 +15,7 @@
 
 namespace Catch {
 
-    TestCase makeTestCase(  ITestCase* _testCase,
+    INTERNAL_CATCH_INLINE TestCase makeTestCase(  ITestCase* _testCase,
                             std::string const& _className,
                             std::string const& _name,
                             std::string const& _descOrTags,
@@ -32,7 +32,7 @@ namespace Catch {
         return TestCase( _testCase, info );
     }
 
-    TestCaseInfo::TestCaseInfo( std::string const& _name,
+    INTERNAL_CATCH_INLINE TestCaseInfo::TestCaseInfo( std::string const& _name,
                                 std::string const& _className,
                                 std::string const& _description,
                                 std::set<std::string> const& _tags,
@@ -51,7 +51,7 @@ namespace Catch {
         tagsAsString = oss.str();
     }
 
-    TestCaseInfo::TestCaseInfo( TestCaseInfo const& other )
+    INTERNAL_CATCH_INLINE TestCaseInfo::TestCaseInfo( TestCaseInfo const& other )
     :   name( other.name ),
         className( other.className ),
         description( other.description ),
@@ -61,40 +61,40 @@ namespace Catch {
         isHidden( other.isHidden )
     {}
 
-    TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
+    INTERNAL_CATCH_INLINE TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
 
-    TestCase::TestCase( TestCase const& other )
+    INTERNAL_CATCH_INLINE TestCase::TestCase( TestCase const& other )
     :   TestCaseInfo( other ),
         test( other.test )
     {}
 
-    TestCase TestCase::withName( std::string const& _newName ) const {
+    INTERNAL_CATCH_INLINE TestCase TestCase::withName( std::string const& _newName ) const {
         TestCase other( *this );
         other.name = _newName;
         return other;
     }
 
-    void TestCase::invoke() const {
+    INTERNAL_CATCH_INLINE void TestCase::invoke() const {
         test->invoke();
     }
 
-    bool TestCase::isHidden() const {
+    INTERNAL_CATCH_INLINE bool TestCase::isHidden() const {
         return TestCaseInfo::isHidden;
     }
 
-    bool TestCase::hasTag( std::string const& tag ) const {
+    INTERNAL_CATCH_INLINE bool TestCase::hasTag( std::string const& tag ) const {
         return tags.find( toLower( tag ) ) != tags.end();
     }
-    bool TestCase::matchesTags( std::string const& tagPattern ) const {
+    INTERNAL_CATCH_INLINE bool TestCase::matchesTags( std::string const& tagPattern ) const {
         TagExpression exp;
         TagExpressionParser( exp ).parse( tagPattern );
         return exp.matches( tags );
     }
-    std::set<std::string> const& TestCase::getTags() const {
+    INTERNAL_CATCH_INLINE std::set<std::string> const& TestCase::getTags() const {
         return tags;
     }
 
-    void TestCase::swap( TestCase& other ) {
+    INTERNAL_CATCH_INLINE void TestCase::swap( TestCase& other ) {
         test.swap( other.test );
         className.swap( other.className );
         name.swap( other.name );
@@ -102,22 +102,22 @@ namespace Catch {
         std::swap( lineInfo, other.lineInfo );
     }
 
-    bool TestCase::operator == ( TestCase const& other ) const {
+    INTERNAL_CATCH_INLINE bool TestCase::operator == ( TestCase const& other ) const {
         return  test.get() == other.test.get() &&
                 name == other.name &&
                 className == other.className;
     }
 
-    bool TestCase::operator < ( TestCase const& other ) const {
+    INTERNAL_CATCH_INLINE bool TestCase::operator < ( TestCase const& other ) const {
         return name < other.name;
     }
-    TestCase& TestCase::operator = ( TestCase const& other ) {
+    INTERNAL_CATCH_INLINE TestCase& TestCase::operator = ( TestCase const& other ) {
         TestCase temp( other );
         swap( temp );
         return *this;
     }
 
-    TestCaseInfo const& TestCase::getTestCaseInfo() const
+    INTERNAL_CATCH_INLINE TestCaseInfo const& TestCase::getTestCaseInfo() const
     {
         return *this;
     }
