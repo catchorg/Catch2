@@ -140,7 +140,82 @@ This works because the ```SECTION``` macro contains an if statement that calls b
 
 So far so good - this is already an improvement on the setup/ teardown approach because now we see our setup code inline and we can use the stack.
 
--{placeholder for documentation on nested sections}-
+The power of sections really shows, however, when we need to execute a sequence of, checked, operations. Continuing the vector example we might want to verify that after reserving a larger capacity, if we reserve smaller capacity (but still larger than the current size) then the capacity is not, in fact, changed. We can do that, naturally, like so:
+
+    SECTION( "reserving bigger changes capacity but not size" ) {
+        v.reserve( 10 );
+        
+        REQUIRE( v.size() == 5 );
+        REQUIRE( v.capacity() >= 10 );
+    
+        SECTION( "reserving smaller again does not change capacity" ) {
+            v.reserve( 7 );
+            
+            REQUIRE( v.capacity() >= 10 );
+        }
+    }
+
+Sections can be nested to an arbitrary depth (limited only by your stack size). Each leaf section (i.e. a section that contains no nested sections) will be executed exactly once, on a separate path of execution from any other leaf section (so no leaf section can interfere with another). Obviously a failure in a parent section will prevent nested sections from running - but that's the idea.
+
+## BDD-Style
+
+If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively (for more details see [Test cases and sections](test-cases-and-sections.md)).
+
+The vector example can be adjusted to use these macros like so:
+
+```c++
+SCENARIO( "vectors can be sized and resized", "[vector]" ) {
+
+    GIVEN( "A vector with some items" ) {
+        std::vector<int> v( 5 );
+        
+        REQUIRE( v.size() == 5 );
+        REQUIRE( v.capacity() >= 5 );
+        
+        WHEN( "the size is increased" ) {
+            v.resize( 10 );
+            
+            THEN( "the size and capacity change" ) {
+                REQUIRE( v.size() == 10 );
+                REQUIRE( v.capacity() >= 10 );
+            }
+        }
+        WHEN( "the size is reduced" ) {
+            v.resize( 0 );
+            
+            THEN( "the size changes but not capacity" ) {
+                REQUIRE( v.size() == 0 );
+                REQUIRE( v.capacity() >= 5 );
+            }
+        }
+        WHEN( "more capacity is reserved" ) {
+            v.reserve( 10 );
+            
+            THEN( "the capacity changes but not the size" ) {
+                REQUIRE( v.size() == 5 );
+                REQUIRE( v.capacity() >= 10 );
+            }
+        }
+        WHEN( "less capacity is reserved" ) {
+            v.reserve( 0 );
+            
+            THEN( "neither size nor capacity are changed" ) {
+                REQUIRE( v.size() == 5 );
+                REQUIRE( v.capacity() >= 5 );
+            }
+        }
+    }
+}
+```
+
+A nice consequence of this is that when these tests are run the test names are reported like this:
+
+```
+Scenario: vectors can be sized and resized
+     Given: A vector with some items
+      When: more capacity is reserved
+      Then: the capacity changes but not the size
+```
 
 ## Next steps
 For more specific information see the [Reference pages](reference-index.md)

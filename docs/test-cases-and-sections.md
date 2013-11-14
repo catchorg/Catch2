@@ -15,7 +15,22 @@ For examples see the [Tutorial](tutorial.md)
 
 ## Tags
 
--{placeholder for documentation of tags}-
+Tags allow an arbitrary number of additional strings to be associated with a test case. Test cases can be selected (for running, or just for listing) by tag - or even by an expression that combines several tags. At their most basic level they provide a simple way to group several related tests together.
+
+As an example - given the following test cases:
+
+	TEST_CASE( "A", "[widget]" ) { /* ... */ }
+	TEST_CASE( "B", "[widget]" ) { /* ... */ }
+	TEST_CASE( "C", "[gadget]" ) { /* ... */ }
+	TEST_CASE( "D", "[widget][gadget]" ) { /* ... */ }
+
+The tag expression, ```"[widget]"``` selects A, B & D. ```"[gadget]"``` selects C & D. ```"[widget][gadget]"``` selects just D and ```"[widget],[gadget]"``` selects all four test cases.
+
+For more detail on command line selection see [the command line docs](command-line.md#specifying-which-tests-to-run)
+
+A special tag name, ```[hide]``` causes test cases to be skipped from the default list (ie when no test cases have been explicitly selected through tag expressions or name wildcards). ```[.]``` is an alias for ```[hide]```.
+
+Tag names are not case sensitive.
 
 ## BDD-style test cases
 
