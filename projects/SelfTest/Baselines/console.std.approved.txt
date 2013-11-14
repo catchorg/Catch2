@@ -374,6 +374,16 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
+./succeeding/message
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+warning:
+  this is a warning
+
+-------------------------------------------------------------------------------
 ./failing/message/info/1
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -641,6 +651,16 @@ with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
 -------------------------------------------------------------------------------
+Nice descriptive name
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+warning:
+  This one ran
+
+-------------------------------------------------------------------------------
 ./failing/CatchSectionInfiniteLoop
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -680,6 +700,28 @@ Some information
 An error
 hello
 hello
+-------------------------------------------------------------------------------
+./inprogress/failing/Tricky/trailing expression
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+warning:
+  Uncomment the code in this test to check that it gives a sensible compiler
+  error
+
+-------------------------------------------------------------------------------
+./inprogress/failing/Tricky/compound lhs
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+warning:
+  Uncomment the code in this test to check that it gives a sensible compiler
+  error
+
 -------------------------------------------------------------------------------
 ./failing/Tricky/non streamable type
 -------------------------------------------------------------------------------
