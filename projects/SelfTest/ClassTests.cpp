@@ -8,7 +8,7 @@
 
 #include "catch.hpp"
 
-namespace
+namespace ClassTests
 {
     class TestClass
     {
@@ -28,12 +28,12 @@ namespace
             REQUIRE( s == "world" );
         }
     };
+
+    // Note: TestClass conflicts with template class with same name in VS2012 native tests
+    METHOD_AS_TEST_CASE( ClassTests::TestClass::succeedingCase, "./succeeding/TestClass/succeedingCase", "A method based test run that succeeds [class]" )
+    METHOD_AS_TEST_CASE( ClassTests::TestClass::failingCase, "./failing/TestClass/failingCase", "A method based test run that fails [class]" )
+
 }
-
-
-METHOD_AS_TEST_CASE( TestClass::succeedingCase, "./succeeding/TestClass/succeedingCase", "A method based test run that succeeds [class]" )
-METHOD_AS_TEST_CASE( TestClass::failingCase, "./failing/TestClass/failingCase", "A method based test run that fails [class]" )
-
 
 struct Fixture
 {

@@ -277,9 +277,15 @@ namespace Catch {
                 }
                 duration = timer.getElapsedSeconds();
             }
-            catch( TestFailureException& ) {
+#ifdef INTERNAL_CATCH_VS_MANAGED // detect CLR
+            catch(AssertFailedException^) {
+                throw;  // CLR always rethrows - stop on first assert
+            }
+#else
+            catch( INTERNAL_CATCH_TEST_FAILURE_EXCEPTION ) {
                 // This just means the test was aborted due to failure
             }
+#endif
             catch(...) {
                 ExpressionResultBuilder exResult( ResultWas::ThrewException );
                 exResult << translateActiveException();
