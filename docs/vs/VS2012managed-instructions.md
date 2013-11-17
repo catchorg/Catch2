@@ -60,4 +60,4 @@ If you want to run Catch normally from the console, just create a new Windows Co
 
 ---
 
-[Home](../README.md)
+[Home](../../README.md)
