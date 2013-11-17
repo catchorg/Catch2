@@ -4,7 +4,7 @@ What does this mean? It means that (with a little care) you can use the same sou
 
 ## VS2010 - Managed tests
 
-In VS2010 we can use the managed C++ tests created by the VS wizard - [see this page for instructions on how to do this](VS2010instructions)....
+In VS2010 we can use the managed C++ tests created by the VS wizard - [see this page for instructions on how to do this](VS2010instructions.md)....
 
 ...and you'll end up with something like this:
 ![VS2010 failing test example](VS2010failingtest.png)
@@ -13,7 +13,7 @@ In VS2010 we can use the managed C++ tests created by the VS wizard - [see this 
 
 ## VS2012 - Managed and Native tests
 
-We can do the same for VS2012 - [see this page for instructions on how to do this for managed tests](VS2012managed-instructions) and [this page for native tests](VS2012native-instructions)....
+We can do the same for VS2012 - [see this page for instructions on how to do this for managed tests](VS2012managed-instructions.md) and [this page for native tests](VS2012native-instructions.md)....
 
 ...and you'll end up with something like this:
 ![VS2012 failing test example](VS2012failingtest.png)
