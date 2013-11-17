@@ -19,7 +19,7 @@ Next, add Catch to the 'includes':
 
 ## Now write a test
 
-[Note that it is best to put your tests in a namespace for those tests, as described here!](vs-index.md)
+[Note that to avoid name clashes it is best to put your tests in a namespace for those tests, as described here!](vs-index.md)
 
 Next, delete the test code that the wizard provided in UnitTest1.cpp and write your own...
 
