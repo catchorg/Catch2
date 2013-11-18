@@ -45,6 +45,10 @@ Now if you click the link for (in this case) "...unittest1.cpp: line 12" you get
 
 And that's it!
 
+## Running tests from the command line
+
+Tests can also be run from the command line.  [For VS2010 see these details](VS2010commandline.md)
+
 ## Creating a Catch console project
 
 If you want to run Catch normally from the console, just create a new Windows Console app (you will need to turn off Unicode for this!) and add an additional .cpp file for `'main()'`.  I usually add a file called main.cpp, like this:
