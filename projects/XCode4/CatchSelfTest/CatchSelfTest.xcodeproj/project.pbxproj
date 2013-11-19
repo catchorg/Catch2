@@ -36,7 +36,6 @@
 		4AB3D9A01616219100C9A0F8 /* catch_interfaces_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AB3D99F1616219100C9A0F8 /* catch_interfaces_config.cpp */; };
 		4AB3D9A2161621B500C9A0F8 /* catch_interfaces_generators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AB3D9A1161621B500C9A0F8 /* catch_interfaces_generators.cpp */; };
 		4ACE21CC166CA1B300FB5509 /* catch_option.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ACE21CA166CA1B300FB5509 /* catch_option.cpp */; };
-		4AE1840B14EE4F230066340D /* catch_self_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1840A14EE4F230066340D /* catch_self_test.cpp */; };
 		4AEE032016142F910071E950 /* catch_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE031F16142F910071E950 /* catch_common.cpp */; };
 		4AEE032316142FC70071E950 /* catch_debugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE032216142FC70071E950 /* catch_debugger.cpp */; };
 		4AEE032516142FF10071E950 /* catch_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE032416142FF10071E950 /* catch_stream.cpp */; };
@@ -95,7 +94,6 @@
 		4A6D0C20149B3D3B00DB3EAA /* CatchSelfTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CatchSelfTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A6D0C26149B3D3B00DB3EAA /* CatchSelfTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CatchSelfTest.1; sourceTree = "<group>"; };
 		4A6D0C2D149B3D9E00DB3EAA /* ApproxTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ApproxTests.cpp; path = ../../../SelfTest/ApproxTests.cpp; sourceTree = "<group>"; };
-		4A6D0C2E149B3D9E00DB3EAA /* catch_self_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; name = catch_self_test.hpp; path = ../../../SelfTest/catch_self_test.hpp; sourceTree = "<group>"; };
 		4A6D0C2F149B3D9E00DB3EAA /* ClassTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClassTests.cpp; path = ../../../SelfTest/ClassTests.cpp; sourceTree = "<group>"; };
 		4A6D0C30149B3D9E00DB3EAA /* ConditionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConditionTests.cpp; path = ../../../SelfTest/ConditionTests.cpp; sourceTree = "<group>"; };
 		4A6D0C31149B3D9E00DB3EAA /* ExceptionTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExceptionTests.cpp; path = ../../../SelfTest/ExceptionTests.cpp; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 		4AC91CD0155D8DA600DC5117 /* catch_expression_decomposer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_expression_decomposer.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4ACE21C8166CA19700FB5509 /* catch_option.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_option.hpp; sourceTree = "<group>"; };
 		4ACE21CA166CA1B300FB5509 /* catch_option.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_option.cpp; path = ../../../SelfTest/SurrogateCpps/catch_option.cpp; sourceTree = "<group>"; };
-		4AE1840A14EE4F230066340D /* catch_self_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_self_test.cpp; path = ../../../SelfTest/catch_self_test.cpp; sourceTree = "<group>"; };
 		4AEE031F16142F910071E950 /* catch_common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_common.cpp; path = ../../../SelfTest/SurrogateCpps/catch_common.cpp; sourceTree = "<group>"; };
 		4AEE032216142FC70071E950 /* catch_debugger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_debugger.cpp; path = ../../../SelfTest/SurrogateCpps/catch_debugger.cpp; sourceTree = "<group>"; };
 		4AEE032416142FF10071E950 /* catch_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_stream.cpp; path = ../../../SelfTest/SurrogateCpps/catch_stream.cpp; sourceTree = "<group>"; };
@@ -220,8 +217,6 @@
 			isa = PBXGroup;
 			children = (
 				4A6D0C35149B3D9E00DB3EAA /* TestMain.cpp */,
-				4A6D0C2E149B3D9E00DB3EAA /* catch_self_test.hpp */,
-				4AE1840A14EE4F230066340D /* catch_self_test.cpp */,
 				266E9AD317290E710061DAB2 /* Introspective Tests */,
 				4A6D0C40149B3DAB00DB3EAA /* Tests */,
 				4A6D0C41149B3DE900DB3EAA /* Catch */,
@@ -499,7 +494,6 @@
 				4A6D0C3D149B3D9E00DB3EAA /* MiscTests.cpp in Sources */,
 				4A6D0C3E149B3D9E00DB3EAA /* TestMain.cpp in Sources */,
 				4A6D0C3F149B3D9E00DB3EAA /* TrickyTests.cpp in Sources */,
-				4AE1840B14EE4F230066340D /* catch_self_test.cpp in Sources */,
 				4A8E4DD2160A352200194CBD /* catch_tags.cpp in Sources */,
 				4AEE032016142F910071E950 /* catch_common.cpp in Sources */,
 				4AEE032316142FC70071E950 /* catch_debugger.cpp in Sources */,

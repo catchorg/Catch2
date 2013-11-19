@@ -11,8 +11,6 @@
 #include <string>
 #include <stdexcept>
 
-#include "catch_self_test.hpp"
-
 namespace
 {
     inline int thisThrows()

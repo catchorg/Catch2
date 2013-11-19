@@ -5,22 +5,21 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wpadded"
-#endif
-
-#include "catch_self_test.hpp"
-#include "internal/catch_text.h"
-#include "internal/catch_console_colour.hpp"
-
-
-#ifdef __clang__
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-#include "../../include/internal/catch_commandline.hpp"
-#include "../../include/internal/catch_test_spec.h"
-#include "../../include/reporters/catch_reporter_xml.hpp"
+#include "internal/catch_text.h"
+#include "internal/catch_console_colour.hpp"
+#include "internal/catch_commandline.hpp"
+#include "internal/catch_test_spec.h"
+
+#include "reporters/catch_reporter_xml.hpp"
 
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
