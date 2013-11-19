@@ -145,9 +145,6 @@
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_junit.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_xml.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-TEST_CASE( "./succeeding/Misc/Sections", "random SECTION tests" )
+TEST_CASE( "random SECTION tests", "[.][sections][failing]" )
 {
     int a = 1;
     int b = 2;
@@ -28,7 +28,7 @@ TEST_CASE( "./succeeding/Misc/Sections", "random SECTION tests" )
     }
 }
 
-TEST_CASE( "./succeeding/Misc/Sections/nested", "nested SECTION tests" )
+TEST_CASE( "nested SECTION tests", "[.][sections][failing]" )
 {
     int a = 1;
     int b = 2;
@@ -45,7 +45,7 @@ TEST_CASE( "./succeeding/Misc/Sections/nested", "nested SECTION tests" )
     }
 }
 
-TEST_CASE( "./mixed/Misc/Sections/nested2", "nested SECTION tests" )
+TEST_CASE( "more nested SECTION tests", "[sections][failing][.]" )
 {
     int a = 1;
     int b = 2;
@@ -68,7 +68,7 @@ TEST_CASE( "./mixed/Misc/Sections/nested2", "nested SECTION tests" )
     }
 }
 
-TEST_CASE( "./Sections/nested/a/b", "nested SECTION tests" )
+TEST_CASE( "even more nested SECTION tests", "[sections]" )
 {
     SECTION( "c", "" )
     {
@@ -86,7 +86,7 @@ TEST_CASE( "./Sections/nested/a/b", "nested SECTION tests" )
     }
 }
 
-TEST_CASE( "./mixed/Misc/Sections/loops", "looped SECTION tests" )
+TEST_CASE( "looped SECTION tests", "[.][failing][sections]" )
 {
     int a = 1;
     
@@ -101,7 +101,7 @@ TEST_CASE( "./mixed/Misc/Sections/loops", "looped SECTION tests" )
     }
 }
 
-TEST_CASE( "./mixed/Misc/loops", "looped tests" )
+TEST_CASE( "looped tests", "[.][failing]" )
 {
     static const int fib[]  = { 1, 1, 2, 3, 5, 8, 13, 21 };
     
@@ -112,7 +112,7 @@ TEST_CASE( "./mixed/Misc/loops", "looped tests" )
     }
 }
 
-TEST_CASE( "./succeeding/Misc/stdout,stderr", "Sends stuff to stdout and stderr" )
+TEST_CASE( "Sends stuff to stdout and stderr", "" )
 {
     std::cout << "Some information" << std::endl;
     
@@ -124,19 +124,12 @@ inline const char* makeString( bool makeNull )
     return makeNull ? NULL : "valid string";
 }
 
-TEST_CASE( "./succeeding/Misc/null strings", "" )
+TEST_CASE( "null strings", "" )
 {
     REQUIRE( makeString( false ) != static_cast<char*>(NULL));
     REQUIRE( makeString( true ) == static_cast<char*>(NULL));
 }
 
-TEST_CASE( "./failing/info", "sends information to INFO" )
-{
-    INFO( "hi" );
-    int i = 7;
-    CAPTURE( i );
-    REQUIRE( false );
-}
 
 inline bool testCheckedIf( bool flag )
 {
@@ -146,12 +139,12 @@ inline bool testCheckedIf( bool flag )
         return false;
 }
 
-TEST_CASE( "./succeeding/checkedif", "" )
+TEST_CASE( "checkedIf", "" )
 {
     REQUIRE( testCheckedIf( true ) );
 }
 
-TEST_CASE( "./failing/checkedif", "" )
+TEST_CASE( "checkedIf, failing", "[failing][.]" )
 {
     REQUIRE( testCheckedIf( false ) );
 }
@@ -164,17 +157,17 @@ inline bool testCheckedElse( bool flag )
     return true;
 }
 
-TEST_CASE( "./succeeding/checkedelse", "" )
+TEST_CASE( "checkedElse", "" )
 {
     REQUIRE( testCheckedElse( true ) );
 }
 
-TEST_CASE( "./failing/checkedelse", "" )
+TEST_CASE( "checkedElse, failing", "[failing][.]" )
 {
     REQUIRE( testCheckedElse( false ) );
 }
 
-TEST_CASE( "./misc/xmlentitycheck", "" )
+TEST_CASE( "xmlentitycheck", "" )
 {
     SECTION( "embedded xml", "<test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" )
     {
@@ -186,13 +179,13 @@ TEST_CASE( "./misc/xmlentitycheck", "" )
     }
 }
 
-TEST_CASE( "./manual/onechar", "send a single char to INFO" )
+TEST_CASE( "send a single char to INFO", "[failing][.]" )
 {
     INFO(3);
     REQUIRE(false);    
 }
 
-TEST_CASE("./succeeding/atomic if", "")
+TEST_CASE( "atomic if", "[failing][0]")
 {
     size_t x = 0;
     
@@ -207,7 +200,7 @@ inline const char* testStringForMatching()
     return "this string contains 'abc' as a substring";
 }
 
-TEST_CASE("./succeeding/matchers", "") 
+TEST_CASE("String matchers", "[matchers]" )
 {
     REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );    
     CHECK_THAT( testStringForMatching(), Contains( "abc" ) );
@@ -216,40 +209,40 @@ TEST_CASE("./succeeding/matchers", "")
     CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) );
 }
 
-TEST_CASE("./failing/matchers/Contains", "") 
+TEST_CASE("Contains string matcher", "[.][failing][matchers]")
 {
     CHECK_THAT( testStringForMatching(), Contains( "not there" ) );
 }
 
-TEST_CASE("./failing/matchers/StartsWith", "") 
+TEST_CASE("StartsWith string matcher", "[.][failing][matchers]")
 {
     CHECK_THAT( testStringForMatching(), StartsWith( "string" ) );
 }
 
-TEST_CASE("./failing/matchers/EndsWith", "") 
+TEST_CASE("EndsWith string matcher", "[.][failing][matchers]")
 {
     CHECK_THAT( testStringForMatching(), EndsWith( "this" ) );
 }
 
-TEST_CASE("./failing/matchers/Equals", "")
+TEST_CASE("Equals string matcher", "[.][failing][matchers]")
 {
     CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
 }
-TEST_CASE("string", "Equals with NULL")
+TEST_CASE("Equals string matcher, with NULL", "[matchers]")
 {
     REQUIRE_THAT("", Equals(NULL));
 }
-TEST_CASE("./succeeding/matchers/AllOf", "")
+TEST_CASE("AllOf matcher", "[matchers]")
 {
     CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) );
 }
-TEST_CASE("./succeeding/matchers/AnyOf", "")
+TEST_CASE("AnyOf matcher", "[matchers]")
 {
     CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) );
     CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) );
 }
 
-TEST_CASE("./succeeding/matchers/Equals", "")
+TEST_CASE("Equals", "[matchers]")
 {
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
 }
@@ -268,7 +261,7 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
   REQUIRE( Factorial(10) == 3628800 );
 }
 
-TEST_CASE( "empty", "An empty test with no assertions" )
+TEST_CASE( "An empty test with no assertions", "[empty]" )
 {
 }
 
@@ -333,7 +326,7 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 }
 
 // https://github.com/philsquared/Catch/issues/166
-TEST_CASE("./failing/CatchSectionInfiniteLoop", "")
+TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]")
 {
     SECTION("Outer", "")
         SECTION("Inner", "")

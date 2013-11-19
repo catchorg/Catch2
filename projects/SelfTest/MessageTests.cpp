@@ -8,17 +8,17 @@
 
 #include "catch.hpp"
 
-TEST_CASE( "./succeeding/message", "INFO and WARN do not abort tests" )
+TEST_CASE( "INFO and WARN do not abort tests", "[messages]" )
 {
     INFO( "this is a " << "message" );    // This should output the message if a failure occurs
     WARN( "this is a " << "warning" );    // This should always output the message but then continue
 }
-TEST_CASE( "./succeeding/succeed", "SUCCEED counts as a test pass" )
+TEST_CASE( "SUCCEED counts as a test pass" )
 {
     SUCCEED( "this is a " << "success" );
 }
 
-TEST_CASE( "./failing/message/info/1", "INFO gets logged on failure" )
+TEST_CASE( "INFO gets logged on failure", "[failing][messages][.]" )
 {
     INFO( "this message should be logged" );
     INFO( "so should this" );
@@ -26,7 +26,7 @@ TEST_CASE( "./failing/message/info/1", "INFO gets logged on failure" )
     REQUIRE( a == 1 );
 }
 
-TEST_CASE( "./mixed/message/info/2", "INFO gets logged on failure" )
+TEST_CASE( "INFO gets logged on failure, even if captured before successful assertions", "[failing][messages][.]" )
 {
     INFO( "this message may be logged later" );
     int a = 2;
@@ -45,13 +45,13 @@ TEST_CASE( "./mixed/message/info/2", "INFO gets logged on failure" )
     CHECK( a == 2 );
 }
 
-TEST_CASE( "./failing/message/fail", "FAIL aborts the test" )
+TEST_CASE( "FAIL aborts the test", "[failing][messages][.]" )
 {
 	if( Catch::isTrue( true ) )
         FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
 
-TEST_CASE( "./failing/message/sections", "Output from all sections is reported" )
+TEST_CASE( "Output from all sections is reported", "[failing][messages][.]" )
 {
     SECTION( "one", "" )
     {
@@ -64,7 +64,7 @@ TEST_CASE( "./failing/message/sections", "Output from all sections is reported" 
     }
 }
 
-TEST_CASE( "./succeeding/message/sections/stdout", "Output from all sections is reported" )
+TEST_CASE( "Standard output from all sections is reported", "[messages]" )
 {
     SECTION( "one", "" )
     {
@@ -77,7 +77,7 @@ TEST_CASE( "./succeeding/message/sections/stdout", "Output from all sections is 
     }
 }
 
-TEST_CASE( "./mixed/message/scoped", "" )
+TEST_CASE( "SCOPED_INFO is reset for each loop", "[messages][failing][.]" )
 {
     for( int i=0; i<100; i++ )
     {
@@ -87,16 +87,25 @@ TEST_CASE( "./mixed/message/scoped", "" )
     }
 }
 
-TEST_CASE( "./succeeding/nofail", "The NO_FAIL macro reports a failure but does not fail the test" )
+TEST_CASE( "The NO_FAIL macro reports a failure but does not fail the test", "[messages]" )
 {
     CHECK_NOFAIL( 1 == 2 );
 }
 
-TEST_CASE( "just info", "[info][isolated info][.]" )
+TEST_CASE( "just info", "[info][isolated info][messages]" )
 {
     INFO( "this should never be seen" );
 }
-TEST_CASE( "just failure", "[fail][isolated info][.]" )
+TEST_CASE( "just failure", "[fail][isolated info][.][messages]" )
 {
     FAIL( "Previous info should not be seen" );
+}
+
+
+TEST_CASE( "sends information to INFO", "[.][failing]" )
+{
+    INFO( "hi" );
+    int i = 7;
+    CAPTURE( i );
+    REQUIRE( false );
 }

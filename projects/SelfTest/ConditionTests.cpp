@@ -43,8 +43,7 @@ struct TestDef {
 // This allows us to see all results, even if an earlier check fails
 
 // Equality tests
-TEST_CASE(  "./succeeding/conditions/equality", 
-            "Equality checks that should succeed" )
+TEST_CASE( "Equality checks that should succeed", "" )
 {
 
     TestDef td;
@@ -63,8 +62,7 @@ TEST_CASE(  "./succeeding/conditions/equality",
     REQUIRE( x == Approx( 1.3 ) );
 }
 
-TEST_CASE(  "./failing/conditions/equality", 
-            "Equality checks that should fail" )
+TEST_CASE( "Equality checks that should fail]", "[.][failing]" )
 {
     TestData data;
     
@@ -85,8 +83,7 @@ TEST_CASE(  "./failing/conditions/equality",
     CHECK( x == Approx( 1.301 ) );
 }
 
-TEST_CASE(  "./succeeding/conditions/inequality", 
-            "Inequality checks that should succeed" )
+TEST_CASE( "Inequality checks that should succeed", "" )
 {
     TestData data;
     
@@ -103,8 +100,7 @@ TEST_CASE(  "./succeeding/conditions/inequality",
     REQUIRE( data.str_hello.size() != 6 );
 }
 
-TEST_CASE(  "./failing/conditions/inequality", 
-            "Inequality checks that should fails" )
+TEST_CASE( "Inequality checks that should fails", "[.][failing]" )
 {
     TestData data;
     
@@ -116,8 +112,7 @@ TEST_CASE(  "./failing/conditions/inequality",
 }
 
 // Ordering comparison tests
-TEST_CASE(  "./succeeding/conditions/ordered", 
-            "Ordering comparison checks that should succeed" )
+TEST_CASE( "Ordering comparison checks that should succeed", "" )
 {
     TestData data;
     
@@ -144,8 +139,7 @@ TEST_CASE(  "./succeeding/conditions/ordered",
     REQUIRE( data.str_hello > "a" );
 }
 
-TEST_CASE(  "./failing/conditions/ordered", 
-            "Ordering comparison checks that should fail" )
+TEST_CASE( "Ordering comparison checks that should fail", "[.][failing]" )
 {
     TestData data;
     
@@ -175,8 +169,7 @@ TEST_CASE(  "./failing/conditions/ordered",
 }
 
 // Comparisons with int literals
-TEST_CASE(  "./succeeding/conditions/int literals", 
-            "Comparisons with int literals don't warn when mixing signed/ unsigned" )
+TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigned", "" )
 {
     int i = 1;
     unsigned int ui = 2;
@@ -214,8 +207,7 @@ TEST_CASE(  "./succeeding/conditions/int literals",
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #endif
 
-TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
-            "comparisons between int variables" )
+TEST_CASE( "comparisons between int variables", "" )
 {
 	long            long_var = 1L;
 	unsigned char	unsigned_char_var = 1;
@@ -229,8 +221,7 @@ TEST_CASE(  "./succeeding/conditions//long_to_unsigned_x",
 	REQUIRE( long_var == unsigned_long_var );
 }
 
-TEST_CASE(  "./succeeding/conditions/const ints to int literal",
-            "comparisons between const int variables" )
+TEST_CASE( "comparisons between const int variables", "" )
 {
 	const unsigned char     unsigned_char_var = 1;
 	const unsigned short    unsigned_short_var = 1;
@@ -243,8 +234,7 @@ TEST_CASE(  "./succeeding/conditions/const ints to int literal",
 	REQUIRE( unsigned_long_var == 1 );
 }
 
-TEST_CASE(  "./succeeding/conditions/negative ints",
-            "Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" )
+TEST_CASE( "Comparisons between unsigned ints and negative signed ints match c++ standard behaviour", "" )
 {
     CHECK( ( -1 > 2u ) );
     CHECK( -1 > 2u );
@@ -266,8 +256,7 @@ struct Ex
     T operator * ( const T& ) const { return T(); }
 };
 
-TEST_CASE(  "./succeeding/conditions/computed ints",
-            "Comparisons between ints where one side is computed" )
+TEST_CASE( "Comparisons between ints where one side is computed", "" )
 {
      CHECK( 54 == 6*9 );
 }
@@ -279,8 +268,7 @@ TEST_CASE(  "./succeeding/conditions/computed ints",
 inline const char* returnsConstNull(){ return NULL; }
 inline char* returnsNull(){ return NULL; }
 
-TEST_CASE(  "./succeeding/conditions/ptr", 
-            "Pointers can be compared to null" )
+TEST_CASE( "Pointers can be compared to null", "" )
 {
     TestData* p = NULL;
     TestData* pNULL = NULL;
@@ -312,8 +300,7 @@ TEST_CASE(  "./succeeding/conditions/ptr",
 // is detected and a warning issued.
 // An alternative form of the macros (CHECK_FALSE and REQUIRE_FALSE) can be used instead to capture
 // the operand value.
-TEST_CASE(  "./succeeding/conditions/not", 
-            "'Not' checks that should succeed" )
+TEST_CASE( "'Not' checks that should succeed", "" )
 {
     bool falseValue = false;
     
@@ -329,8 +316,7 @@ TEST_CASE(  "./succeeding/conditions/not",
     REQUIRE_FALSE( 1 == 2 );
 }
 
-TEST_CASE(  "./failing/conditions/not", 
-            "'Not' checks that should fail" )
+TEST_CASE( "'Not' checks that should fail", "[.][failing]" )
 {
     bool trueValue = true;
     

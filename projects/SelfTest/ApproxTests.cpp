@@ -11,8 +11,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./succeeding/Approx/simple", 
-    "Some simple comparisons between doubles"
+    "Some simple comparisons between doubles",
+    "[Approx]"
 )
 {
     double d = 1.23;
@@ -29,8 +29,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./succeeding/Approx/epsilon", 
-    "Approximate comparisons with different epsilons"
+    "Approximate comparisons with different epsilons",
+    "[Approx]"
  )
 {
     double d = 1.23;
@@ -42,8 +42,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./succeeding/Approx/float", 
-    "Approximate comparisons with floats"
+    "Approximate comparisons with floats",
+    "[Approx]"
 )
 {
     REQUIRE( 1.23f == Approx( 1.23f ) );
@@ -53,8 +53,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./succeeding/Approx/int", 
-    "Approximate comparisons with ints"
+    "Approximate comparisons with ints",
+    "[Approx]"
 )
 {
     REQUIRE( 1 == Approx( 1 ) );
@@ -64,8 +64,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./succeeding/Approx/mixed", 
-    "Approximate comparisons with mixed numeric types"
+    "Approximate comparisons with mixed numeric types",
+    "[Approx]"
 )
 {
     const double dZero = 0;
@@ -82,8 +82,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./succeeding/Approx/custom", 
-    "Use a custom approx"
+    "Use a custom approx",
+    "[Approx][custom]"
 )
 {
     double d = 1.23;
