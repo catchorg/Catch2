@@ -13,7 +13,7 @@ TEST_CASE( "INFO and WARN do not abort tests", "[messages]" )
     INFO( "this is a " << "message" );    // This should output the message if a failure occurs
     WARN( "this is a " << "warning" );    // This should always output the message but then continue
 }
-TEST_CASE( "SUCCEED counts as a test pass" )
+TEST_CASE( "SUCCEED counts as a test pass", "[messages]" )
 {
     SUCCEED( "this is a " << "success" );
 }
