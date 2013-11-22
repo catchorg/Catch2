@@ -25,8 +25,6 @@ using Microsoft::VisualStudio::CppUnitTestFramework::__LineInfo;
 #include "internal/catch_vs_test_registry.hpp"
 #include "reporters/catch_vs_reporter.hpp"
 
-#include "internal/catch_exception_translator_registry.hpp"
-
 namespace Catch {
 
     class ExceptionRegistryHub : public IRegistryHub, public IMutableRegistryHub {

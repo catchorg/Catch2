@@ -5,6 +5,7 @@
 *.sdf
 *.opensdf
 *.suo
+*.lnt
 Debug
 Release
 ipch

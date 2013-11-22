@@ -16,7 +16,6 @@
 #include "catch_common.h"
 #include "catch_interfaces_testcase.h"
 #include "internal/catch_compiler_capabilities.h"
-//#include "catch_config.hpp"
 #include <tchar.h>
 
 namespace Catch {
@@ -37,34 +36,6 @@ namespace Catch {
 
         TestFunction m_fun;
     };
-
-    /*inline std::string translateActiveException() {
-        try {
-#ifdef __OBJC__
-            // In Objective-C try objective-c exceptions first
-            @try {
-                throw;
-            }
-            @catch (NSException *exception) {
-                return toString( [exception description] );
-            }
-#else
-            throw;
-#endif
-        }
-        catch( std::exception& ex ) {
-            return ex.what();
-        }
-        catch( std::string& msg ) {
-            return msg;
-        }
-        catch( const char* msg ) {
-            return msg;
-        }
-        catch(...) {
-            return "Unknown exception";
-        }
-    }*/
 
 class MethodTestCase : public SharedImpl<ITestCase> {
 

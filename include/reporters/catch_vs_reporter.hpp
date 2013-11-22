@@ -9,11 +9,8 @@
 #define TWOBLUECUBES_CATCH_REPORTER_MSTEST_HPP_INCLUDED
 
 #include "../internal/catch_interfaces_reporter.h"
-//#include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_text.h"
-//#include "../internal/catch_console_colour.hpp"
 #include "../internal/catch_version.h"
-//#include <sstream>
 
 namespace Catch {
 
