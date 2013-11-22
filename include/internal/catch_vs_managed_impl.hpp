@@ -27,11 +27,12 @@ namespace Catch {
 }
 
 #include "internal/catch_timer.hpp"
-#include "internal/catch_vs_test_registry.hpp"
+#include "internal/catch_reporter_registrars.hpp"
 #include "reporters/catch_vs_reporter.hpp"
+#include "catch_registry_hub.hpp"
 
-#include "internal/catch_exception_translator_registry.hpp"
-
+//#define OLD (1)
+#ifdef OLD
 namespace Catch {
 
     class ExceptionRegistryHub : public IRegistryHub, public IMutableRegistryHub {
@@ -70,11 +71,11 @@ namespace Catch {
     template <typename T>
     struct GlobalRegistryHub
     {
-        static T& instance()
+        static T*& instance()
         {
             if( !theRegistryHub )
                 theRegistryHub = new T();
-            return *theRegistryHub;
+            return theRegistryHub;
         }
         static T* theRegistryHub;
     };
@@ -82,13 +83,64 @@ namespace Catch {
     T* GlobalRegistryHub<T>::theRegistryHub = NULL;
 
     INTERNAL_CATCH_INLINE IMutableRegistryHub& getMutableRegistryHub() {
-        return GlobalRegistryHub<ExceptionRegistryHub>::instance();
+        return *GlobalRegistryHub<ExceptionRegistryHub>::instance();
     }
     INTERNAL_CATCH_INLINE std::string translateActiveException() {
-        return GlobalRegistryHub<ExceptionRegistryHub>::instance().getExceptionTranslatorRegistry().translateActiveException();
+        return GlobalRegistryHub<ExceptionRegistryHub>::instance()->getExceptionTranslatorRegistry().translateActiveException();
     }
 
 }
+#endif // OLD
+
+namespace Catch {
+    inline NonCopyable::~NonCopyable() {}
+    inline IShared::~IShared() {}
+    inline StreamBufBase::~StreamBufBase() throw() {}
+    inline IContext::~IContext() {}
+    inline IResultCapture::~IResultCapture() {}
+    inline ITestCase::~ITestCase() {}
+    inline ITestCaseRegistry::~ITestCaseRegistry() {}
+    inline IRegistryHub::~IRegistryHub() {}
+    inline IMutableRegistryHub::~IMutableRegistryHub() {}
+    inline IExceptionTranslator::~IExceptionTranslator() {}
+    inline IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
+    inline IReporter::~IReporter() {}
+    inline IReporterFactory::~IReporterFactory() {}
+    inline IReporterRegistry::~IReporterRegistry() {}
+    inline IStreamingReporter::~IStreamingReporter() {}
+    inline AssertionStats::~AssertionStats() {}
+    inline SectionStats::~SectionStats() {}
+    inline TestCaseStats::~TestCaseStats() {}
+    inline TestGroupStats::~TestGroupStats() {}
+    inline TestRunStats::~TestRunStats() {}
+    //CumulativeReporterBase::SectionNode::~SectionNode() {}
+    //CumulativeReporterBase::~CumulativeReporterBase() {}
+
+    //StreamingReporterBase::~StreamingReporterBase() {}
+    //ConsoleReporter::~ConsoleReporter() {}
+    inline IRunner::~IRunner() {}
+    inline IMutableContext::~IMutableContext() {}
+    inline IConfig::~IConfig() {}
+    //XmlReporter::~XmlReporter() {}
+    //JunitReporter::~JunitReporter() {}
+    inline TestRegistry::~TestRegistry() {}
+    inline FreeFunctionTestCase::~FreeFunctionTestCase() {}
+    inline IGeneratorInfo::~IGeneratorInfo() {}
+    inline IGeneratorsForTest::~IGeneratorsForTest() {}
+    inline TagParser::~TagParser() {}
+    inline TagExtracter::~TagExtracter() {}
+    inline TagExpressionParser::~TagExpressionParser() {}
+
+    inline Matchers::Impl::StdString::Equals::~Equals() {}
+    inline Matchers::Impl::StdString::Contains::~Contains() {}
+    inline Matchers::Impl::StdString::StartsWith::~StartsWith() {}
+    inline Matchers::Impl::StdString::EndsWith::~EndsWith() {}
+
+    inline void Config::dummy() {}
+
+    //INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
+}
+
 #endif
 
 #endif // TWOBLUECUBES_CATCH_VS_MANAGED_HPP_INCLUDED

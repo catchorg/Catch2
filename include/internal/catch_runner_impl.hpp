@@ -279,7 +279,8 @@ namespace Catch {
             }
 #ifdef INTERNAL_CATCH_VS_MANAGED // detect CLR
             catch(AssertFailedException^) {
-                throw;  // CLR always rethrows - stop on first assert
+                if( aborting() )
+                    throw;  // CLR always rethrows - stop on first assert
             }
 #else
             catch( INTERNAL_CATCH_TEST_FAILURE_EXCEPTION ) {

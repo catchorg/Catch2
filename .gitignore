@@ -10,6 +10,7 @@ Debug
 Release
 ipch
 TestResults
+projects/VS2010/TestCatch/Visual Lint
 *.user
 *.xcuserstate
 *.o

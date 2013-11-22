@@ -16,64 +16,68 @@
 
 namespace Catch {
 
-    namespace {
+    class RegistryHub : public IRegistryHub, public IMutableRegistryHub {
 
-        class RegistryHub : public IRegistryHub, public IMutableRegistryHub {
+        RegistryHub( RegistryHub const& );
+        void operator=( RegistryHub const& );
 
-            RegistryHub( RegistryHub const& );
-            void operator=( RegistryHub const& );
+    public: // IRegistryHub
+        RegistryHub() {
+        }
+        virtual IReporterRegistry const& getReporterRegistry() const {
+            return m_reporterRegistry;
+        }
+        virtual ITestCaseRegistry const& getTestCaseRegistry() const {
+            return m_testCaseRegistry;
+        }
+        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() {
+            return m_exceptionTranslatorRegistry;
+        }
 
-        public: // IRegistryHub
-            RegistryHub() {
-            }
-            virtual IReporterRegistry const& getReporterRegistry() const {
-                return m_reporterRegistry;
-            }
-            virtual ITestCaseRegistry const& getTestCaseRegistry() const {
-                return m_testCaseRegistry;
-            }
-            virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() {
-                return m_exceptionTranslatorRegistry;
-            }
+    public: // IMutableRegistryHub
+        virtual void registerReporter( std::string const& name, IReporterFactory* factory ) {
+            m_reporterRegistry.registerReporter( name, factory );
+        }
+        virtual void registerTest( TestCase const& testInfo ) {
+            m_testCaseRegistry.registerTest( testInfo );
+        }
+        virtual void registerTranslator( const IExceptionTranslator* translator ) {
+            m_exceptionTranslatorRegistry.registerTranslator( translator );
+        }
 
-        public: // IMutableRegistryHub
-            virtual void registerReporter( std::string const& name, IReporterFactory* factory ) {
-                m_reporterRegistry.registerReporter( name, factory );
-            }
-            virtual void registerTest( TestCase const& testInfo ) {
-                m_testCaseRegistry.registerTest( testInfo );
-            }
-            virtual void registerTranslator( const IExceptionTranslator* translator ) {
-                m_exceptionTranslatorRegistry.registerTranslator( translator );
-            }
+    private:
+        TestRegistry m_testCaseRegistry;
+        ReporterRegistry m_reporterRegistry;
+        ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
+    };
 
-        private:
-            TestRegistry m_testCaseRegistry;
-            ReporterRegistry m_reporterRegistry;
-            ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
-        };
-
-        // Single, global, instance
-        inline RegistryHub*& getTheRegistryHub() {
-            static RegistryHub* theRegistryHub = NULL;
+    // Single, global, instance
+    template <typename T>
+    struct GlobalRegistryHub
+    {
+        static T*& instance()
+        {
             if( !theRegistryHub )
-                theRegistryHub = new RegistryHub();
+                theRegistryHub = new T();
             return theRegistryHub;
         }
-    }
+        static T* theRegistryHub;
+    };
+    template <typename T>
+    T* GlobalRegistryHub<T>::theRegistryHub = NULL;
 
-    IRegistryHub& getRegistryHub() {
-        return *getTheRegistryHub();
+    INTERNAL_CATCH_INLINE IRegistryHub& getRegistryHub() {
+        return *GlobalRegistryHub<RegistryHub>::instance();
     }
-    IMutableRegistryHub& getMutableRegistryHub() {
-        return *getTheRegistryHub();
+    INTERNAL_CATCH_INLINE IMutableRegistryHub& getMutableRegistryHub() {
+        return *GlobalRegistryHub<RegistryHub>::instance();
     }
-    void cleanUp() {
-        delete getTheRegistryHub();
-        getTheRegistryHub() = NULL;
+    INTERNAL_CATCH_INLINE void cleanUp() {
+        delete GlobalRegistryHub<RegistryHub>::instance();
+        GlobalRegistryHub<RegistryHub>::instance() = NULL;
         cleanUpContext();
     }
-    std::string translateActiveException() {
+    INTERNAL_CATCH_INLINE std::string translateActiveException() {
         return getRegistryHub().getExceptionTranslatorRegistry().translateActiveException();
     }
 

@@ -46,6 +46,12 @@ namespace Catch {
 #endif  // detect CLR
 
     struct MSTestReporter : SharedImpl<IStreamingReporter> {
+        MSTestReporter( ReporterConfig const& _config )
+        :   m_config( _config.fullConfig() ),
+            m_headerPrinted( false ),
+            m_atLeastOneTestCasePrinted( false )
+        {}
+        
         MSTestReporter( Ptr<IConfig> const& _fullConfig )
         :   m_config( _fullConfig ),
             m_headerPrinted( false ),

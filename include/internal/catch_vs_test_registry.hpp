@@ -16,26 +16,10 @@
 #include "catch_common.h"
 #include "catch_interfaces_testcase.h"
 #include "internal/catch_compiler_capabilities.h"
+#include "internal/clara.h"
 #include <tchar.h>
 
 namespace Catch {
-
-    typedef void(*TestFunction)();
-
-    class FreeFunctionTestCase : public SharedImpl<ITestCase> {
-    public:
-
-        FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}
-
-        virtual void invoke() const {
-            m_fun();
-        }
-
-    private:
-        virtual ~FreeFunctionTestCase();
-
-        TestFunction m_fun;
-    };
 
 class MethodTestCase : public SharedImpl<ITestCase> {
 
@@ -103,6 +87,35 @@ struct NameAndDesc {
 
     std::string name;
     std::string description;
+};
+
+struct AutoReg {
+
+    AutoReg(    TestFunction function,
+                SourceLineInfo const& lineInfo,
+                NameAndDesc const& nameAndDesc );
+
+    template<typename C>
+    AutoReg(    void (C::*method)(),
+                char const* className,
+                NameAndDesc const& nameAndDesc,
+                SourceLineInfo const& lineInfo ) {
+        registerTestCase(   new MethodTestCase( method ),
+                            className,
+                            nameAndDesc,
+                            lineInfo );
+    }
+
+    void registerTestCase(  ITestCase* testCase,
+                            char const* className,
+                            NameAndDesc const& nameAndDesc,
+                            SourceLineInfo const& lineInfo );
+
+    ~AutoReg();
+
+private:
+    AutoReg( AutoReg const& );
+    void operator= ( AutoReg const& );
 };
 
 } // end namespace Catch
@@ -213,27 +226,34 @@ struct NameAndDesc {
 #define CATCH_INTERNAL_RUN_SINGLE_TEST( Method ) \
         {   Catch::ConfigData cd; \
             cd.name = name_desc.name; \
+            cd.abortAfter = 1; \
             Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
             Catch::MSTestReporter* rep = new Catch::MSTestReporter(config.get()); \
             Catch::RunContext tr(config.get(), rep); \
-            Catch::TestCase tc = Catch::makeTestCase( new Catch::FreeFunctionTestCase( & Method ), "", name_desc.name, name_desc.description, CATCH_INTERNAL_LINEINFO ); \
-            tr.runTest(tc); \
+            std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(name_desc.name); \
+            if( testCase.empty() ) Assert::Fail("No tests match"); \
+            if( testCase.size() > 1 ) Assert::Fail("More than one test with the same name"); \
+            tr.runTest(*testCase.begin()); \
         }
 
 #define CATCH_INTERNAL_RUN_SINGLE_CLASS_TEST( ClassMethod ) \
         {   Catch::ConfigData cd; \
             cd.name = name_desc.name; \
+            cd.abortAfter = 1; \
             Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
             Catch::MSTestReporter* rep = new Catch::MSTestReporter(config.get()); \
             Catch::RunContext tr(config.get(), rep); \
-            Catch::TestCase tc = Catch::makeTestCase( new Catch::MethodTestCase( & ClassMethod ), # ClassMethod, name_desc.name, name_desc.description, CATCH_INTERNAL_LINEINFO ); \
-            tr.runTest(tc); \
+            std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(name_desc.name); \
+            if( testCase.empty() ) Assert::Fail("No tests match"); \
+            if( testCase.size() > 1 ) Assert::Fail("More than one test with the same name"); \
+            tr.runTest(*testCase.begin()); \
         }
 
 #define INTERNAL_CATCH_TESTCASE2( UniqueExt, Name, Desc ) \
     CHECK_FOR_TEST_CASE_CLASH \
     static void INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____, UniqueExt )(); \
     namespace CATCH_INTERNAL_NAMESPACE( UniqueExt ) { \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( & INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____, UniqueExt ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc(Name, Desc) ); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, UniqueExt ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
@@ -245,6 +265,7 @@ struct NameAndDesc {
 #define INTERNAL_CATCH_METHOD_AS_TEST_CASE2( QualifiedMethod, UniqueExt, Name, Desc ) \
     CHECK_FOR_TEST_CASE_CLASH \
     namespace CATCH_INTERNAL_NAMESPACE( UniqueExt ) { \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( & QualifiedMethod, "&" # QualifiedMethod, Catch::NameAndDesc(Name, Desc), CATCH_INTERNAL_LINEINFO ); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, UniqueExt ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
@@ -259,6 +280,7 @@ struct NameAndDesc {
         static void invoke() { INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____, UniqueExt ) tmp; tmp.test(); } \
     }; \
     namespace CATCH_INTERNAL_NAMESPACE( UniqueExt ) { \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( & INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____, UniqueExt )::invoke, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc(TestName, Desc) ); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, UniqueExt ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
@@ -319,55 +341,6 @@ struct NameAndDesc {
 #include "catch_notimplemented_exception.hpp"
 
 #include "catch_exception_translator_registry.hpp"
-
-namespace Catch {
-    inline NonCopyable::~NonCopyable() {}
-    inline IShared::~IShared() {}
-    inline StreamBufBase::~StreamBufBase() throw() {}
-    inline IContext::~IContext() {}
-    inline IResultCapture::~IResultCapture() {}
-    inline ITestCase::~ITestCase() {}
-    inline ITestCaseRegistry::~ITestCaseRegistry() {}
-    inline IRegistryHub::~IRegistryHub() {}
-    inline IMutableRegistryHub::~IMutableRegistryHub() {}
-    inline IExceptionTranslator::~IExceptionTranslator() {}
-    inline IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
-    inline IReporter::~IReporter() {}
-    inline IReporterFactory::~IReporterFactory() {}
-    inline IReporterRegistry::~IReporterRegistry() {}
-    inline IStreamingReporter::~IStreamingReporter() {}
-    inline AssertionStats::~AssertionStats() {}
-    inline SectionStats::~SectionStats() {}
-    inline TestCaseStats::~TestCaseStats() {}
-    inline TestGroupStats::~TestGroupStats() {}
-    inline TestRunStats::~TestRunStats() {}
-    //CumulativeReporterBase::SectionNode::~SectionNode() {}
-    //CumulativeReporterBase::~CumulativeReporterBase() {}
-
-    //StreamingReporterBase::~StreamingReporterBase() {}
-    //ConsoleReporter::~ConsoleReporter() {}
-    inline IRunner::~IRunner() {}
-    inline IMutableContext::~IMutableContext() {}
-    inline IConfig::~IConfig() {}
-    //XmlReporter::~XmlReporter() {}
-    //JunitReporter::~JunitReporter() {}
-    //TestRegistry::~TestRegistry() {}
-    inline FreeFunctionTestCase::~FreeFunctionTestCase() {}
-    inline IGeneratorInfo::~IGeneratorInfo() {}
-    inline IGeneratorsForTest::~IGeneratorsForTest() {}
-    inline TagParser::~TagParser() {}
-    inline TagExtracter::~TagExtracter() {}
-    inline TagExpressionParser::~TagExpressionParser() {}
-
-    inline Matchers::Impl::StdString::Equals::~Equals() {}
-    inline Matchers::Impl::StdString::Contains::~Contains() {}
-    inline Matchers::Impl::StdString::StartsWith::~StartsWith() {}
-    inline Matchers::Impl::StdString::EndsWith::~EndsWith() {}
-
-    inline void Config::dummy() {}
-
-    //INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
-}
 
 #ifdef __clang__
 #pragma clang diagnostic pop
