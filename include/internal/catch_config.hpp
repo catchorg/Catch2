@@ -30,6 +30,7 @@ namespace Catch {
         :   listTests( false ),
             listTags( false ),
             listReporters( false ),
+            listTestNamesOnly( false ),
             showSuccessfulTests( false ),
             shouldDebugBreak( false ),
             noThrow( false ),
@@ -43,6 +44,7 @@ namespace Catch {
         bool listTests;
         bool listTags;
         bool listReporters;
+        bool listTestNamesOnly;
 
         bool showSuccessfulTests;
         bool shouldDebugBreak;
@@ -112,6 +114,7 @@ namespace Catch {
         }
 
         bool listTests() const { return m_data.listTests; }
+        bool listTestNamesOnly() const { return m_data.listTestNamesOnly; }
         bool listTags() const { return m_data.listTags; }
         bool listReporters() const { return m_data.listReporters; }
 
