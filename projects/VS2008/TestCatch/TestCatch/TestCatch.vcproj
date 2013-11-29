@@ -297,10 +297,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\internal\catch_self_test.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\internal\catch_stream.hpp"
 					>
 				</File>
@@ -352,10 +348,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\SelfTest\catch_self_test.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\SelfTest\ClassTests.cpp"
 				>
 			</File>
@@ -396,10 +388,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

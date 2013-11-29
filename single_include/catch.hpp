@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 11 (master branch)
- *  Generated: 2013-10-23 15:34:32.120349
+ *  CATCH v1.0 build 14 (master branch)
+ *  Generated: 2013-11-26 20:54:38.067005
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -595,6 +595,7 @@ namespace Catch {
 #include <sstream>
 #include <iomanip>
 #include <limits>
+#include <vector>
 
 #ifdef __OBJC__
 // #included from: catch_objc_arc.hpp
@@ -2124,6 +2125,7 @@ namespace Catch {
         :   listTests( false ),
             listTags( false ),
             listReporters( false ),
+            listTestNamesOnly( false ),
             showSuccessfulTests( false ),
             shouldDebugBreak( false ),
             noThrow( false ),
@@ -2137,6 +2139,7 @@ namespace Catch {
         bool listTests;
         bool listTags;
         bool listReporters;
+        bool listTestNamesOnly;
 
         bool showSuccessfulTests;
         bool shouldDebugBreak;
@@ -2205,6 +2208,7 @@ namespace Catch {
         }
 
         bool listTests() const { return m_data.listTests; }
+        bool listTestNamesOnly() const { return m_data.listTestNamesOnly; }
         bool listTags() const { return m_data.listTags; }
         bool listReporters() const { return m_data.listReporters; }
 
@@ -4127,6 +4131,13 @@ namespace Clara {
             int position;
         };
 
+        // NOTE: std::auto_ptr is deprecated in c++11/c++0x
+#if defined(__cplusplus) && __cplusplus > 199711L
+        typedef std::unique_ptr<Arg> ArgAutoPtr;
+#else
+        typedef std::auto_ptr<Arg> ArgAutoPtr;
+#endif
+
         class ArgBinder {
         public:
             template<typename F>
@@ -4151,7 +4162,7 @@ namespace Clara {
                     else if( m_arg.isAnyPositional() ) {
                         if( m_cl->m_arg.get() )
                             throw std::logic_error( "Only one unpositional argument can be added" );
-                        m_cl->m_arg = std::auto_ptr<Arg>( new Arg( m_arg ) );
+                        m_cl->m_arg = ArgAutoPtr( new Arg( m_arg ) );
                     }
                     else
                         m_cl->m_options.push_back( m_arg );
@@ -4195,7 +4206,7 @@ namespace Clara {
             m_highestSpecifiedArgPosition( other.m_highestSpecifiedArgPosition )
         {
             if( other.m_arg.get() )
-                m_arg = std::auto_ptr<Arg>( new Arg( *other.m_arg ) );
+                m_arg = ArgAutoPtr( new Arg( *other.m_arg ) );
         }
 
         template<typename F>
@@ -4365,11 +4376,13 @@ namespace Clara {
         Detail::BoundArgFunction<ConfigT> m_boundProcessName;
         std::vector<Arg> m_options;
         std::map<int, Arg> m_positionalArgs;
-        std::auto_ptr<Arg> m_arg;
+        ArgAutoPtr m_arg;
         int m_highestSpecifiedArgPosition;
     };
 
 } // end namespace Clara
+
+#include <fstream>
 
 namespace Catch {
 
@@ -4397,6 +4410,18 @@ namespace Catch {
             ? ShowDurations::Always
             : ShowDurations::Never;
     }
+    inline void loadTestNamesFromFile( ConfigData& config, std::string const& _filename ) {
+        std::ifstream f( _filename.c_str() );
+        if( !f.is_open() )
+            throw std::domain_error( "Unable to load input file: " + _filename );
+
+        std::string line;
+        while( std::getline( f, line ) ) {
+            line = trim(line);
+            if( !line.empty() && !startsWith( line, "#" ) )
+                addTestOrTags( config, line );
+        }
+    }
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
@@ -4411,18 +4436,14 @@ namespace Catch {
             .longOpt( "help" );
 
         cli.bind( &ConfigData::listTests )
-            .describe( "list all (or matching) test cases" )
+            .describe( "list all/matching test cases" )
             .shortOpt( "l")
             .longOpt( "list-tests" );
 
         cli.bind( &ConfigData::listTags )
-            .describe( "list all (or matching) tags" )
+            .describe( "list all/matching tags" )
             .shortOpt( "t")
             .longOpt( "list-tags" );
-
-        cli.bind( &ConfigData::listReporters )
-            .describe( "list all reporters" )
-            .longOpt( "list-reporters" );
 
         cli.bind( &ConfigData::showSuccessfulTests )
             .describe( "include successful tests in output" )
@@ -4446,7 +4467,7 @@ namespace Catch {
             .hint( "filename" );
 
         cli.bind( &ConfigData::reporterName )
-            .describe( "reporter to use - defaults to console" )
+            .describe( "reporter to use (defaults to console)" )
             .shortOpt( "r")
             .longOpt( "reporter" )
 //            .hint( "name[:filename]" );
@@ -4490,6 +4511,21 @@ namespace Catch {
             .shortOpt( "d")
             .longOpt( "durations" )
             .hint( "yes/no" );
+
+        cli.bind( &loadTestNamesFromFile )
+            .describe( "load test names to run from a file" )
+            .shortOpt( "f")
+            .longOpt( "input-file" )
+            .hint( "filename" );
+
+        // Less common commands which don't have a short form
+        cli.bind( &ConfigData::listTestNamesOnly )
+            .describe( "list all/matching test cases names only" )
+            .longOpt( "list-test-names-only" );
+
+        cli.bind( &ConfigData::listReporters )
+            .describe( "list all reporters" )
+            .longOpt( "list-reporters" );
 
         return cli;
     }
@@ -4573,79 +4609,47 @@ namespace Catch {
             std::cout << "All available test cases:\n";
         else
             std::cout << "Matching test cases:\n";
-        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-        std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
-
-        // First pass - get max tags
-        std::size_t maxTagLen = 0;
-        std::size_t maxNameLen = 0;
-        for(; it != itEnd; ++it ) {
-            if( matchesFilters( config.filters(), *it ) ) {
-                maxTagLen = (std::max)( it->getTestCaseInfo().tagsAsString.size(), maxTagLen );
-                maxNameLen = (std::max)( it->getTestCaseInfo().name.size(), maxNameLen );
-            }
-        }
-
-        // Try to fit everything in. If not shrink tag column first, down to 30
-        // then shrink name column until it all fits (strings will be wrapped within column)
-        while( maxTagLen + maxNameLen > CATCH_CONFIG_CONSOLE_WIDTH-5 ) {
-            if( maxTagLen > 30 )
-                --maxTagLen;
-            else
-                --maxNameLen;
-        }
 
         std::size_t matchedTests = 0;
-        for( it = allTests.begin(); it != itEnd; ++it ) {
+        TextAttributes nameAttr, tagsAttr;
+        nameAttr.setInitialIndent( 2 ).setIndent( 4 );
+        tagsAttr.setIndent( 6 );
+
+        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        for( std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+                it != itEnd;
+                ++it )
             if( matchesFilters( config.filters(), *it ) ) {
                 matchedTests++;
-                Text nameWrapper(   it->getTestCaseInfo().name,
-                                    TextAttributes()
-                                        .setWidth( maxNameLen+2 )
-                                        .setInitialIndent(2)
-                                        .setIndent(4) );
+                TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
+                Colour::Code colour = testCaseInfo.isHidden
+                    ? Colour::SecondaryText
+                    : Colour::None;
+                Colour colourGuard( colour );
 
-                Text tagsWrapper(   it->getTestCaseInfo().tagsAsString,
-                                    TextAttributes()
-                                        .setWidth( maxTagLen )
-                                        .setInitialIndent(0)
-                                        .setIndent( 2 ) );
-
-                for( std::size_t i = 0; i < (std::max)( nameWrapper.size(), tagsWrapper.size() ); ++i ) {
-                    Colour::Code colour = Colour::None;
-                    if( it->getTestCaseInfo().isHidden )
-                        colour = Colour::SecondaryText;
-                    std::string nameCol;
-                    if( i < nameWrapper.size() ) {
-                        nameCol = nameWrapper[i];
-                    }
-                    else {
-                        nameCol = "    ...";
-                        colour = Colour::SecondaryText;
-                    }
-
-                    {
-                        Colour colourGuard( colour );
-                        std::cout << nameCol;
-                    }
-                    if( i < tagsWrapper.size() && !tagsWrapper[i].empty() ) {
-                        if( i == 0 ) {
-                            Colour colourGuard( Colour::SecondaryText );
-                            std::cout << "  " << std::string( maxNameLen - nameCol.size(), '.' ) << "  ";
-                        }
-                        else {
-                            std::cout << std::string( maxNameLen - nameCol.size(), ' ' ) << "    ";
-                        }
-                        std::cout << tagsWrapper[i];
-                    }
-                    std::cout << "\n";
-                }
+                std::cout << Text( testCaseInfo.name, nameAttr ) << std::endl;
+                if( !testCaseInfo.tags.empty() )
+                    std::cout << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
             }
-        }
+
         if( config.filters().empty() )
             std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
             std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+        return matchedTests;
+    }
+
+    inline std::size_t listTestsNamesOnly( Config const& config ) {
+        std::size_t matchedTests = 0;
+        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        for( std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+                it != itEnd;
+                ++it )
+            if( matchesFilters( config.filters(), *it ) ) {
+                matchedTests++;
+                TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
+                std::cout << testCaseInfo.name << std::endl;
+            }
         return matchedTests;
     }
 
@@ -4654,21 +4658,20 @@ namespace Catch {
             std::cout << "All available tags:\n";
         else
             std::cout << "Matching tags:\n";
-        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-        std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
 
         std::map<std::string, int> tagCounts;
 
-        std::size_t maxTagLen = 0;
-
-        for(; it != itEnd; ++it ) {
+        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        for( std::vector<TestCase>::const_iterator  it = allTests.begin(),
+                                                    itEnd = allTests.end();
+                it != itEnd;
+                ++it ) {
             if( matchesFilters( config.filters(), *it ) ) {
                 for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
                                                             tagItEnd = it->getTestCaseInfo().tags.end();
                         tagIt != tagItEnd;
                         ++tagIt ) {
                     std::string tagName = *tagIt;
-                    maxTagLen = (std::max)( maxTagLen, tagName.size() );
                     std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
                     if( countIt == tagCounts.end() )
                         tagCounts.insert( std::make_pair( tagName, 1 ) );
@@ -4677,26 +4680,18 @@ namespace Catch {
                 }
             }
         }
-        maxTagLen +=4;
-        if( maxTagLen > CATCH_CONFIG_CONSOLE_WIDTH-10 )
-            maxTagLen = CATCH_CONFIG_CONSOLE_WIDTH-10;
 
-        for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(), countItEnd = tagCounts.end();
+        for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(),
+                                                        countItEnd = tagCounts.end();
                 countIt != countItEnd;
                 ++countIt ) {
+            std::ostringstream oss;
+            oss << "  " << countIt->second << "  ";
             Text wrapper( "[" + countIt->first + "]", TextAttributes()
-                                                        .setIndent(2)
-                                                        .setWidth( maxTagLen ) );
-            std::cout << wrapper;
-            std::size_t dots = 2;
-            if( maxTagLen > wrapper.last().size() )
-                dots += maxTagLen - wrapper.last().size();
-            {
-                Colour colourGuard( Colour::SecondaryText );
-                std::cout << std::string( dots, '.' );
-            }
-            std::cout   << countIt->second
-                        << "\n";
+                                                        .setInitialIndent( 0 )
+                                                        .setIndent( oss.str().size() )
+                                                        .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
+            std::cout << oss.str() << wrapper << "\n";
         }
         std::cout << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
         return tagCounts.size();
@@ -4729,6 +4724,8 @@ namespace Catch {
         Option<std::size_t> listedCount;
         if( config.listTests() )
             listedCount = listedCount.valueOr(0) + listTests( config );
+        if( config.listTestNamesOnly() )
+            listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
         if( config.listTags() )
             listedCount = listedCount.valueOr(0) + listTags( config );
         if( config.listReporters() )
@@ -5477,8 +5474,8 @@ namespace Catch {
             else {
                 TestCase const& prev = *m_functions.find( testCase );
                 std::cerr   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
-                            << "\tFirst seen at " << SourceLineInfo( prev.getTestCaseInfo().lineInfo ) << "\n"
-                            << "\tRedefined at " << SourceLineInfo( testCase.getTestCaseInfo().lineInfo ) << std::endl;
+                            << "\tFirst seen at " << prev.getTestCaseInfo().lineInfo << "\n"
+                            << "\tRedefined at " << testCase.getTestCaseInfo().lineInfo << std::endl;
                 exit(1);
             }
         }
@@ -6263,7 +6260,7 @@ namespace Catch {
                             SourceLineInfo const& _lineInfo )
     {
         std::string desc = _descOrTags;
-        bool isHidden( startsWith( _name, "./" ) );
+        bool isHidden( startsWith( _name, "./" ) ); // Legacy support
         std::set<std::string> tags;
         TagExtracter( tags ).parse( desc );
         if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
@@ -6371,7 +6368,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 11, "master" );
+    Version libraryVersion( 1, 0, 14, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -7294,13 +7291,18 @@ namespace Catch {
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
 
+            bool printInfoMessages = true;
+
             // Drop out if result was successful and we're not printing those
-            if( !m_config->includeSuccessfulResults() && result.isOk() )
-                return false;
+            if( !m_config->includeSuccessfulResults() && result.isOk() ) {
+                if( result.getResultType() != ResultWas::Warning )
+                    return false;
+                printInfoMessages = false;
+            }
 
             lazyPrint();
 
-            AssertionPrinter printer( stream, _assertionStats );
+            AssertionPrinter printer( stream, _assertionStats, printInfoMessages );
             printer.print();
             stream << std::endl;
             return true;
@@ -7358,13 +7360,14 @@ namespace Catch {
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:
-            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats )
+            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages )
             :   stream( _stream ),
                 stats( _stats ),
                 result( _stats.assertionResult ),
                 colour( Colour::None ),
                 message( result.getMessage() ),
-                messages( _stats.infoMessages )
+                messages( _stats.infoMessages ),
+                printInfoMessages( _printInfoMessages )
             {
                 switch( result.getResultType() ) {
                     case ResultWas::Ok:
@@ -7467,7 +7470,9 @@ namespace Catch {
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
                         ++it ) {
-                    stream << Text( it->message, TextAttributes().setIndent(2) ) << "\n";
+                    // If this assertion is a warning ignore any INFO messages
+                    if( printInfoMessages || it->type != ResultWas::Info )
+                        stream << Text( it->message, TextAttributes().setIndent(2) ) << "\n";
                 }
             }
             void printSourceInfo() const {
@@ -7483,6 +7488,7 @@ namespace Catch {
             std::string messageLabel;
             std::string message;
             std::vector<MessageInfo> messages;
+            bool printInfoMessages;
         };
 
         void lazyPrint() {
@@ -7568,8 +7574,13 @@ namespace Catch {
         }
 
         void printTotals( const Totals& totals ) {
-            if( totals.assertions.total() == 0 ) {
+            if( totals.testCases.total() == 0 ) {
                 stream << "No tests ran";
+            }
+            else if( totals.assertions.total() == 0 ) {
+                Colour colour( Colour::Yellow );
+                printCounts( "test case", totals.testCases );
+                stream << " (no assertions)";
             }
             else if( totals.assertions.failed ) {
                 Colour colour( Colour::ResultError );

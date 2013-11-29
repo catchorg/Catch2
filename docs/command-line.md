@@ -21,7 +21,7 @@ Note that options are described according to the following pattern:
 
 Test cases, wildcarded test cases, tags and tag expressions are all passed directly as arguments. Tags are distinguished by being enclosed in square brackets.
 
-If no test specs are supplied then all test cases, except "hidden" tests (tagged ```[hide]``` or, in the legacy case, prefixed by `'./'`) are run
+If no test specs are supplied then all test cases, except "hidden" tests (tagged ```[hide]```, ```[.]``` or, in the legacy case, prefixed by `'./'`) are run.
 
 Specs must be enclosed in quotes if they contain spaces. If they do not contain spaces the quotes are optional.
 

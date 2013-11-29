@@ -12,6 +12,8 @@
 #include "catch_common.h"
 #include "clara.h"
 
+#include <fstream>
+
 namespace Catch {
 
     inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
@@ -38,7 +40,18 @@ namespace Catch {
             ? ShowDurations::Always
             : ShowDurations::Never;
     }
-    
+    inline void loadTestNamesFromFile( ConfigData& config, std::string const& _filename ) {
+        std::ifstream f( _filename.c_str() );
+        if( !f.is_open() )
+            throw std::domain_error( "Unable to load input file: " + _filename );
+
+        std::string line;
+        while( std::getline( f, line ) ) {
+            line = trim(line);
+            if( !line.empty() && !startsWith( line, "#" ) )
+                addTestOrTags( config, line );
+        }
+    }
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
@@ -53,18 +66,14 @@ namespace Catch {
             .longOpt( "help" );
 
         cli.bind( &ConfigData::listTests )
-            .describe( "list all (or matching) test cases" )
+            .describe( "list all/matching test cases" )
             .shortOpt( "l")
             .longOpt( "list-tests" );
 
         cli.bind( &ConfigData::listTags )
-            .describe( "list all (or matching) tags" )
+            .describe( "list all/matching tags" )
             .shortOpt( "t")
             .longOpt( "list-tags" );
-
-        cli.bind( &ConfigData::listReporters )
-            .describe( "list all reporters" )
-            .longOpt( "list-reporters" );
 
         cli.bind( &ConfigData::showSuccessfulTests )
             .describe( "include successful tests in output" )
@@ -88,7 +97,7 @@ namespace Catch {
             .hint( "filename" );
 
         cli.bind( &ConfigData::reporterName )
-            .describe( "reporter to use - defaults to console" )
+            .describe( "reporter to use (defaults to console)" )
             .shortOpt( "r")
             .longOpt( "reporter" )
 //            .hint( "name[:filename]" );
@@ -132,6 +141,22 @@ namespace Catch {
             .shortOpt( "d")
             .longOpt( "durations" )
             .hint( "yes/no" );
+
+        cli.bind( &loadTestNamesFromFile )
+            .describe( "load test names to run from a file" )
+            .shortOpt( "f")
+            .longOpt( "input-file" )
+            .hint( "filename" );
+
+        // Less common commands which don't have a short form
+        cli.bind( &ConfigData::listTestNamesOnly )
+            .describe( "list all/matching test cases names only" )
+            .longOpt( "list-test-names-only" );
+
+        cli.bind( &ConfigData::listReporters )
+            .describe( "list all reporters" )
+            .longOpt( "list-reporters" );
+
 
         return cli;
     }

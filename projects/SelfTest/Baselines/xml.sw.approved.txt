@@ -1,6 +1,6 @@
 <Catch name="CatchSelfTest">
   <Group name="~_">
-    <TestCase name="./succeeding/Approx/simple">
+    <TestCase name="Some simple comparisons between doubles">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
         <Original>
           d == Approx( 1.23 )
@@ -51,7 +51,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Approx/epsilon">
+    <TestCase name="Approximate comparisons with different epsilons">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
         <Original>
           d != Approx( 1.231 )
@@ -70,7 +70,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Approx/float">
+    <TestCase name="Approximate comparisons with floats">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
         <Original>
           1.23f == Approx( 1.23f )
@@ -89,7 +89,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Approx/int">
+    <TestCase name="Approximate comparisons with ints">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
         <Original>
           1 == Approx( 1 )
@@ -108,7 +108,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Approx/mixed">
+    <TestCase name="Approximate comparisons with mixed numeric types">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
         <Original>
           1.0f == Approx( 1 )
@@ -151,7 +151,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Approx/custom">
+    <TestCase name="Use a custom approx">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
         <Original>
           d == approx( 1.23 )
@@ -237,7 +237,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/TestClass/succeedingCase">
+    <TestCase name="A METHOD_AS_TEST_CASE based test run that succeeds">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ClassTests.cpp" >
         <Original>
           s == &quot;hello&quot;
@@ -248,7 +248,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/TestClass/failingCase">
+    <TestCase name="A METHOD_AS_TEST_CASE based test run that fails">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ClassTests.cpp" >
         <Original>
           s == &quot;world&quot;
@@ -259,7 +259,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/Fixture/succeedingCase">
+    <TestCase name="A TEST_CASE_METHOD based test run that succeeds">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ClassTests.cpp" >
         <Original>
           m_a == 1
@@ -270,7 +270,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/Fixture/failingCase">
+    <TestCase name="A TEST_CASE_METHOD based test run that fails">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ClassTests.cpp" >
         <Original>
           m_a == 2
@@ -281,7 +281,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/equality">
+    <TestCase name="Equality checks that should succeed">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven == 7
@@ -340,7 +340,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/conditions/equality">
+    <TestCase name="Equality checks that should fail]">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven == 6
@@ -447,7 +447,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/inequality">
+    <TestCase name="Inequality checks that should succeed">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven != 6
@@ -538,7 +538,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/conditions/inequality">
+    <TestCase name="Inequality checks that should fails">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven != 7
@@ -581,7 +581,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/ordered">
+    <TestCase name="Ordering comparison checks that should succeed">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven &lt; 8
@@ -720,7 +720,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/conditions/ordered">
+    <TestCase name="Ordering comparison checks that should fail">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven > 7
@@ -875,7 +875,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/int literals">
+    <TestCase name="Comparisons with int literals don't warn when mixing signed/ unsigned">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           i == 1
@@ -982,7 +982,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions//long_to_unsigned_x">
+    <TestCase name="comparisons between int variables">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           long_var == unsigned_char_var
@@ -1017,7 +1017,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/const ints to int literal">
+    <TestCase name="comparisons between const int variables">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           unsigned_char_var == 1
@@ -1052,7 +1052,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/negative ints">
+    <TestCase name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           ( -1 > 2u )
@@ -1103,7 +1103,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/computed ints">
+    <TestCase name="Comparisons between ints where one side is computed">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           54 == 6*9
@@ -1114,7 +1114,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/ptr">
+    <TestCase name="Pointers can be compared to null">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           p == __null
@@ -1181,7 +1181,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/conditions/not">
+    <TestCase name="'Not' checks that should succeed">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           false == false
@@ -1248,7 +1248,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/conditions/not">
+    <TestCase name="'Not' checks that should fail">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           false != false
@@ -1315,7 +1315,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/exceptions/explicit">
+    <TestCase name="When checked exceptions are thrown they can be expected or unexpected">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           thisThrows()
@@ -1342,7 +1342,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/explicit">
+    <TestCase name="Expected exceptions that don't throw or unexpected exceptions fail the test">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           thisThrows()
@@ -1375,13 +1375,13 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/implicit">
+    <TestCase name="When unchecked exceptions are thrown directly they are always failures">
       <Exception filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         unexpected exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/implicit/2">
+    <TestCase name="An unchecked exception reports the line of the last assertion">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           1 == 1
@@ -1403,7 +1403,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/implicit/3">
+    <TestCase name="When unchecked exceptions are thrown from sections they are always failures">
       <Section name="section name">
         <Exception filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
           unexpected exception
@@ -1412,7 +1412,7 @@
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/implicit/4">
+    <TestCase name="When unchecked exceptions are thrown from functions they are always failures">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0
@@ -1426,16 +1426,16 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/exceptions/implicit">
+    <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test">
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/custom">
+    <TestCase name="Unexpected custom exceptions can be translated">
       <Exception filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         custom exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/custom/nothrow">
+    <TestCase name="Custom exceptions can be translated when testing for nothrow">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           throwCustom()
@@ -1449,7 +1449,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/custom/throw">
+    <TestCase name="Custom exceptions can be translated when testing for throwing as something else">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           throwCustom()
@@ -1463,13 +1463,13 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/exceptions/custom/double">
+    <TestCase name="Unexpected exceptions can be translated">
       <Exception filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         3.14
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/exceptions/notimplemented">
+    <TestCase name="NotImplemented exception">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           thisFunctionNotImplemented( 7 )
@@ -1480,7 +1480,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/generators/1">
+    <TestCase name="Generators over two ranges">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/GeneratorTests.cpp" >
         <Original>
           multiply( i, 2 ) == i*2
@@ -2635,7 +2635,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/generators/2">
+    <TestCase name="Generator over a range of pairs">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/GeneratorTests.cpp" >
         <Original>
           i->first == i->second-1
@@ -2654,7 +2654,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/message">
+    <TestCase name="INFO and WARN do not abort tests">
       <Info>
         this is a message
       </Info>
@@ -2663,10 +2663,10 @@
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/succeed">
+    <TestCase name="SUCCEED counts as a test pass">
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/message/info/1">
+    <TestCase name="INFO gets logged on failure">
       <Info>
         this message should be logged
       </Info>
@@ -2683,7 +2683,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./mixed/message/info/2">
+    <TestCase name="INFO gets logged on failure, even if captured before successful assertions">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MessageTests.cpp" >
         <Original>
           a == 2
@@ -2724,13 +2724,13 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/message/fail">
+    <TestCase name="FAIL aborts the test">
       <Failure>
         This is a failure
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/message/sections">
+    <TestCase name="Output from all sections is reported">
       <Section name="one">
         <Failure>
           Message from section one
@@ -2745,7 +2745,7 @@
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/message/sections/stdout">
+    <TestCase name="Standard output from all sections is reported">
       <Section name="one">
         <OverallResults successes="0" failures="1"/>
       </Section>
@@ -2754,7 +2754,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./mixed/message/scoped">
+    <TestCase name="SCOPED_INFO is reset for each loop">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -2851,7 +2851,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/nofail">
+    <TestCase name="The NO_FAIL macro reports a failure but does not fail the test">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MessageTests.cpp" >
         <Original>
           1 == 2
@@ -2871,7 +2871,24 @@
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/Misc/Sections">
+    <TestCase name="sends information to INFO">
+      <Info>
+        hi
+      </Info>
+      <Info>
+        i := 7
+      </Info>
+      <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MessageTests.cpp" >
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="random SECTION tests">
       <Section name="s1" description="doesn't equal">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
           <Original>
@@ -2904,7 +2921,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Misc/Sections/nested">
+    <TestCase name="nested SECTION tests">
       <Section name="s1" description="doesn't equal">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
           <Original>
@@ -2956,7 +2973,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./mixed/Misc/Sections/nested2">
+    <TestCase name="more nested SECTION tests">
       <Section name="s1" description="doesn't equal">
         <OverallResults successes="0" failures="0"/>
       </Section>
@@ -3004,7 +3021,7 @@
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./Sections/nested/a/b">
+    <TestCase name="even more nested SECTION tests">
       <Section name="c">
         <OverallResults successes="0" failures="0"/>
       </Section>
@@ -3025,7 +3042,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./mixed/Misc/Sections/loops">
+    <TestCase name="looped SECTION tests">
       <Section name="s1" description="b is currently: 0">
         <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
           <Original>
@@ -3039,7 +3056,7 @@
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./mixed/Misc/loops">
+    <TestCase name="looped tests">
       <Info>
         Testing if fib[0] (1) is even
       </Info>
@@ -3124,10 +3141,10 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/Misc/stdout,stderr">
+    <TestCase name="Sends stuff to stdout and stderr">
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Misc/null strings">
+    <TestCase name="null strings">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           makeString( false ) != static_cast&lt;char*>(__null)
@@ -3146,24 +3163,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/info">
-      <Info>
-        hi
-      </Info>
-      <Info>
-        i := 7
-      </Info>
-      <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-        <Original>
-          false
-        </Original>
-        <Expanded>
-          false
-        </Expanded>
-      </Expression>
-      <OverallResult success="false"/>
-    </TestCase>
-    <TestCase name="./succeeding/checkedif">
+    <TestCase name="checkedIf">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           flag
@@ -3182,7 +3182,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/checkedif">
+    <TestCase name="checkedIf, failing">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           flag
@@ -3201,7 +3201,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/checkedelse">
+    <TestCase name="checkedElse">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           flag
@@ -3220,7 +3220,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/checkedelse">
+    <TestCase name="checkedElse, failing">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           flag
@@ -3239,7 +3239,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./misc/xmlentitycheck">
+    <TestCase name="xmlentitycheck">
       <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>">
         <OverallResults successes="0" failures="1"/>
       </Section>
@@ -3248,7 +3248,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./manual/onechar">
+    <TestCase name="send a single char to INFO">
       <Info>
         3
       </Info>
@@ -3262,7 +3262,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/atomic if">
+    <TestCase name="atomic if">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           x == 0
@@ -3273,7 +3273,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/matchers">
+    <TestCase name="String matchers">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() Contains( &quot;string&quot; )
@@ -3308,7 +3308,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/matchers/Contains">
+    <TestCase name="Contains string matcher">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() Contains( &quot;not there&quot; )
@@ -3319,7 +3319,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/matchers/StartsWith">
+    <TestCase name="StartsWith string matcher">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() StartsWith( &quot;string&quot; )
@@ -3330,7 +3330,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/matchers/EndsWith">
+    <TestCase name="EndsWith string matcher">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() EndsWith( &quot;this&quot; )
@@ -3341,7 +3341,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/matchers/Equals">
+    <TestCase name="Equals string matcher">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() Equals( &quot;something else&quot; )
@@ -3352,7 +3352,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="string">
+    <TestCase name="Equals string matcher, with NULL">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           &quot;&quot; Equals(__null)
@@ -3363,7 +3363,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/matchers/AllOf">
+    <TestCase name="AllOf matcher">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() AllOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;abc&quot; ) )
@@ -3374,7 +3374,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/matchers/AnyOf">
+    <TestCase name="AnyOf matcher">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() AnyOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;not there&quot; ) )
@@ -3393,7 +3393,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/matchers/Equals">
+    <TestCase name="Equals">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() Equals( &quot;this string contains 'abc' as a substring&quot; )
@@ -3447,7 +3447,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="empty">
+    <TestCase name="An empty test with no assertions">
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Nice descriptive name">
@@ -3667,7 +3667,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/CatchSectionInfiniteLoop">
+    <TestCase name="A couple of nested sections followed by a failure">
       <Failure>
         to infinity and beyond
       </Failure>
@@ -3687,90 +3687,6 @@
         to infinity and beyond
       </Failure>
       <OverallResult success="false"/>
-    </TestCase>
-    <TestCase name="selftest/main">
-      <Section name="selftest/expected result" description="Tests do what they claim">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="selftest/expected result" description="Tests do what they claim">
-        <Section name="selftest/expected result/failing tests" description="Tests in the 'failing' branch fail">
-          <OverallResults successes="28" failures="0"/>
-        </Section>
-        <OverallResults successes="28" failures="0"/>
-      </Section>
-      <Section name="selftest/expected result" description="Tests do what they claim">
-        <Section name="selftest/expected result/succeeding tests" description="Tests in the 'succeeding' branch succeed">
-          <OverallResults successes="46" failures="0"/>
-        </Section>
-        <OverallResults successes="46" failures="0"/>
-      </Section>
-      <Section name="selftest/test counts" description="Number of test cases that run is fixed">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="selftest/test counts" description="Number of test cases that run is fixed">
-        <Section name="selftest/test counts/succeeding tests" description="Number of 'succeeding' tests is fixed">
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              totals.assertions.passed == 298
-            </Original>
-            <Expanded>
-              298 == 298
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              totals.assertions.failed == 0
-            </Original>
-            <Expanded>
-              0 == 0
-            </Expanded>
-          </Expression>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Section name="selftest/test counts" description="Number of test cases that run is fixed">
-        <Section name="selftest/test counts/failing tests" description="Number of 'failing' tests is fixed">
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              totals.assertions.passed == 2
-            </Original>
-            <Expanded>
-              2 == 2
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              totals.assertions.failed == 77
-            </Original>
-            <Expanded>
-              77 == 77
-            </Expanded>
-          </Expression>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="meta/Misc/Sections">
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          totals.assertions.passed == 2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          totals.assertions.failed == 1
-        </Original>
-        <Expanded>
-          1 == 1
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Process can be configured on command line">
       <Section name="default - no arguments">
@@ -6374,7 +6290,7 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/Tricky/std::pair">
+    <TestCase name="Parsing a std::pair">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           (std::pair&lt;int, int>( 1, 2 )) == aNicePair
@@ -6385,19 +6301,19 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./inprogress/failing/Tricky/trailing expression">
+    <TestCase name="Where the is more to the expression after the RHS[failing]">
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./inprogress/failing/Tricky/compound lhs">
+    <TestCase name="Where the LHS is not a simple value[failing]">
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./failing/Tricky/non streamable type">
+    <TestCase name="A failing expression with a non streamable type is still captured[failing]">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           &amp;o1 == &amp;o2
@@ -6416,7 +6332,7 @@ there&quot;
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./failing/string literals">
+    <TestCase name="string literals of different sizes can be compared[failing]">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           std::string( &quot;first&quot; ) == &quot;second&quot;
@@ -6427,7 +6343,7 @@ there&quot;
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="./succeeding/side-effects">
+    <TestCase name="An expression with side-effects should only be evaluated once">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           i++ == 7
@@ -6446,7 +6362,7 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/koenig">
+    <TestCase name="Operators at different namespace levels not hijacked by Koenig lookup">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           0x<hex digits> == o
@@ -6457,7 +6373,7 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/non-const==">
+    <TestCase name="Demonstrate that a non-const == is not used">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           t == 1u
@@ -6468,7 +6384,7 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/enum/bits">
+    <TestCase name="Test enum bit values">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           0x<hex digits> == bit30and31
@@ -6479,7 +6395,7 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/boolean member">
+    <TestCase name="boolean member">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           obj.prop != __null
@@ -6490,7 +6406,7 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/unimplemented static bool">
+    <TestCase name="(unimplemented) static bools can be evaluated">
       <Section name="compare to true">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
           <Original>
@@ -6572,7 +6488,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="./succeeding/SafeBool">
+    <TestCase name="Objects that evaluated in boolean contexts can be checked">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
           True
@@ -7482,7 +7398,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="663" failures="109"/>
+    <OverallResults successes="583" failures="109"/>
   </Group>
-  <OverallResults successes="663" failures="109"/>
+  <OverallResults successes="583" failures="109"/>
 </Catch>

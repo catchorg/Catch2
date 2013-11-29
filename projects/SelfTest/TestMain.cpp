@@ -5,68 +5,21 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wpadded"
-#endif
-
-#include "catch_self_test.hpp"
-#include "internal/catch_text.h"
-#include "internal/catch_console_colour.hpp"
-
-TEST_CASE( "selftest/main", "Runs all Catch self tests and checks their results" ) {
-    using namespace Catch;
-
-    ///////////////////////////////////////////////////////////////////////////
-    SECTION(    "selftest/expected result",
-                "Tests do what they claim" ) {
-                
-        SECTION(    "selftest/expected result/failing tests", 
-                    "Tests in the 'failing' branch fail" ) {
-            MetaTestRunner::runMatching( "./failing/*",  MetaTestRunner::Expected::ToFail, 0, 2 );
-        }
-        
-        SECTION(    "selftest/expected result/succeeding tests", 
-                    "Tests in the 'succeeding' branch succeed" ) {
-            MetaTestRunner::runMatching( "./succeeding/*",  MetaTestRunner::Expected::ToSucceed, 1, 2 );
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    SECTION(    "selftest/test counts", 
-                "Number of test cases that run is fixed" ) {
-        EmbeddedRunner runner;
-        
-        SECTION(    "selftest/test counts/succeeding tests", 
-                    "Number of 'succeeding' tests is fixed" ) {
-            Totals totals = runner.runMatching( "./succeeding/*", 0, 2 );
-            CHECK( totals.assertions.passed == 298 );
-            CHECK( totals.assertions.failed == 0 );
-        }
-
-        SECTION(    "selftest/test counts/failing tests", 
-                    "Number of 'failing' tests is fixed" ) {
-            Totals totals = runner.runMatching( "./failing/*", 1, 2 );
-            CHECK( totals.assertions.passed == 2 );
-            CHECK( totals.assertions.failed == 77 );
-        }
-    }
-}
-
-TEST_CASE( "meta/Misc/Sections", "looped tests" ) {
-    Catch::EmbeddedRunner runner;
-    
-    Catch::Totals totals = runner.runMatching( "./mixed/Misc/Sections/nested2", 0, 1 );
-    CHECK( totals.assertions.passed == 2 );
-    CHECK( totals.assertions.failed == 1 );
-}
-
-#ifdef __clang__
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-#include "../../include/internal/catch_commandline.hpp"
-#include "../../include/internal/catch_test_spec.h"
-#include "../../include/reporters/catch_reporter_xml.hpp"
+#include "internal/catch_text.h"
+#include "internal/catch_console_colour.hpp"
+#include "internal/catch_commandline.hpp"
+#include "internal/catch_test_spec.h"
+
+#include "reporters/catch_reporter_xml.hpp"
 
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
