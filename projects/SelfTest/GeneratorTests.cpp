@@ -16,7 +16,7 @@ inline int multiply( int a, int b )
     return a*b;
 }
 
-CATCH_TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
+CATCH_TEST_CASE( "Generators over two ranges", "[generators]" )
 {
     using namespace Catch::Generators;
     
@@ -29,7 +29,7 @@ CATCH_TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
 
 struct IntPair { int first, second; };
 
-CATCH_TEST_CASE( "./succeeding/generators/2", "Generator over a range of pairs" )
+CATCH_TEST_CASE( "Generator over a range of pairs", "[generators]" )
 {
     using namespace Catch::Generators;
  

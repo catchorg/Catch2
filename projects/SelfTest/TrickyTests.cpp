@@ -27,8 +27,8 @@ namespace Catch
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./succeeding/Tricky/std::pair", 
-    "Parsing a std::pair"
+    "Parsing a std::pair",
+    "[Tricky][std::pair]"
 )
 {
     std::pair<int, int> aNicePair( 1, 2 );
@@ -39,8 +39,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./inprogress/failing/Tricky/trailing expression", 
-    "Where the is more to the expression after the RHS"
+    "Where the is more to the expression after the RHS[failing]",
+    "[Tricky][failing][.]"
 )
 {
 //    int a = 1, b = 2;
@@ -50,8 +50,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./inprogress/failing/Tricky/compound lhs", 
-    "Where the LHS is not a simple value"
+    "Where the LHS is not a simple value[failing]",
+    "[Tricky][failing][.]"
 )
 {
     /*
@@ -76,8 +76,8 @@ struct Opaque
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "./failing/Tricky/non streamable type", 
-    "A failing expression with a non streamable type is still captured" 
+    "A failing expression with a non streamable type is still captured[failing]",
+    "[Tricky][failing][.]"
 )
 {
     
@@ -92,8 +92,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (   
-    "./failing/string literals", 
-    "string literals of different sizes can be compared" 
+    "string literals of different sizes can be compared[failing]",
+    "[Tricky][failing][.]"
 )
 {
     REQUIRE( std::string( "first" ) == "second" );
@@ -103,8 +103,8 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (   
-    "./succeeding/side-effects", 
-    "An expression with side-effects should only be evaluated once" 
+    "An expression with side-effects should only be evaluated once",
+    "[Tricky]"
 )
 {
     int i = 7;
@@ -151,8 +151,8 @@ inline bool operator==(const B::Y& lhs, const A::X& rhs)
 /* This, currently, does not compile with LLVM
 TEST_CASE
 (
-    "./succeeding/koenig",
     "Operators at different namespace levels not hijacked by Koenig lookup"
+    "[Tricky]"
 )
 {
     A::X x;
@@ -171,8 +171,8 @@ namespace ObjectWithConversions
     ///////////////////////////////////////////////////////////////////////////////
     TEST_CASE
     (
-        "./succeeding/koenig",
-        "Operators at different namespace levels not hijacked by Koenig lookup"
+        "Operators at different namespace levels not hijacked by Koenig lookup",
+        "[Tricky]"
     )
     {        
         Object o;
@@ -199,7 +199,7 @@ namespace ObjectWithNonConstEqualityOperator
         unsigned int m_value;
     };
     
-    TEST_CASE("./succeeding/non-const==", "Demonstrate that a non-const == is not used")
+    TEST_CASE("Demonstrate that a non-const == is not used", "[Tricky]" )
     {
         Test t( 1 );
         REQUIRE( t == 1u );
@@ -212,7 +212,7 @@ namespace EnumBitFieldTests
         bit30 = 0x40000000, bit31 = 0x80000000,
         bit30and31 = 0xc0000000};
 
-    TEST_CASE("./succeeding/enum/bits", "Test enum bit values")
+    TEST_CASE( "Test enum bit values", "[Tricky]" )
     {
         REQUIRE( 0xc0000000 == bit30and31 );
     }
@@ -226,7 +226,7 @@ struct Obj
     int* prop;
 };
 
-TEST_CASE("./succeeding/boolean member", "")
+TEST_CASE("boolean member", "[Tricky]")
 {
     Obj obj;
     REQUIRE( obj.prop != NULL );
@@ -238,14 +238,14 @@ TEST_CASE("./succeeding/boolean member", "")
 // struct it is declared in - but when evaluating it in a deduced
 // context it appears to require the extra definition.
 // The issue was fixed by adding bool overloads to bypass the
-// templates that were deduce it.
+// templates that were there to deduce it.
 template <bool B>
 struct is_true
 {
     static const bool value = B;
 };
 
-TEST_CASE( "./succeeding/unimplemented static bool", "static bools can be evaluated" )
+TEST_CASE( "(unimplemented) static bools can be evaluated", "[Tricky]" )
 {
     SECTION("compare to true","")
     {
@@ -277,11 +277,11 @@ TEST_CASE( "./succeeding/unimplemented static bool", "static bools can be evalua
 
 // Uncomment these tests to produce an error at test registration time
 /*
-TEST_CASE( "./sameName", "Tests with the same name are not allowed" )
+TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
 {
     
 }
-TEST_CASE( "./sameName", "Tests with the same name are not allowed" )
+TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
 {
     
 }
@@ -298,7 +298,7 @@ struct Boolable
     bool m_value;
 };
 
-TEST_CASE( "./succeeding/SafeBool", "Objects that evaluated in boolean contexts can be checked")
+TEST_CASE( "Objects that evaluated in boolean contexts can be checked", "[Tricky][SafeBool]" )
 {
     Boolable True( true );
     Boolable False( false );
@@ -308,7 +308,7 @@ TEST_CASE( "./succeeding/SafeBool", "Objects that evaluated in boolean contexts 
     CHECK_FALSE( False );
 }
 
-TEST_CASE( "Assertions then sections", "" )
+TEST_CASE( "Assertions then sections", "[Tricky]" )
 {
     // This was causing a failure due to the way the console reporter was handling
     // the current section
@@ -335,7 +335,7 @@ struct Awkward
     operator int() const { return 7; }
 };
 
-TEST_CASE( "non streamable - with conv. op", "" )
+TEST_CASE( "non streamable - with conv. op", "[Tricky]" )
 {
     Awkward awkward;
     std::string s = Catch::toString( awkward );
@@ -346,7 +346,7 @@ inline void foo() {}
 
 typedef void (*fooptr_t)();
 
-TEST_CASE( "Comparing function pointers", "[function pointer]" )
+TEST_CASE( "Comparing function pointers", "[Tricky][function pointer]" )
 {
     // This was giving a warning in VS2010
     // #179
@@ -358,7 +358,7 @@ TEST_CASE( "Comparing function pointers", "[function pointer]" )
 
 class ClassName {};
 
-TEST_CASE( "pointer to class", "" )
+TEST_CASE( "pointer to class", "[Tricky]" )
 {
    ClassName *p = 0;
    REQUIRE( p == 0 );
@@ -368,7 +368,7 @@ TEST_CASE( "pointer to class", "" )
 
 #include <memory>
 
-TEST_CASE( "null_ptr", "" )
+TEST_CASE( "null_ptr", "[Tricky]" )
 {
     std::unique_ptr<int> ptr;
     REQUIRE(ptr.get() == nullptr);
@@ -376,7 +376,7 @@ TEST_CASE( "null_ptr", "" )
 
 #endif
 
-TEST_CASE( "X/level/0/a", "" ) { SUCCEED(""); }
-TEST_CASE( "X/level/0/b", "[fizz]" ) { SUCCEED(""); }
-TEST_CASE( "X/level/1/a", "" ) { SUCCEED(""); }
-TEST_CASE( "X/level/1/b", "" ) { SUCCEED("");}
+TEST_CASE( "X/level/0/a", "[Tricky]" )      { SUCCEED(""); }
+TEST_CASE( "X/level/0/b", "[Tricky][fizz]" ){ SUCCEED(""); }
+TEST_CASE( "X/level/1/a", "[Tricky]" )      { SUCCEED(""); }
+TEST_CASE( "X/level/1/b", "[Tricky]" )      { SUCCEED(""); }

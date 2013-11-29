@@ -22,7 +22,7 @@ namespace Catch {
                             SourceLineInfo const& _lineInfo )
     {
         std::string desc = _descOrTags;
-        bool isHidden( startsWith( _name, "./" ) );
+        bool isHidden( startsWith( _name, "./" ) ); // Legacy support
         std::set<std::string> tags;
         TagExtracter( tags ).parse( desc );
         if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )

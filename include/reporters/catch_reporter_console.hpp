@@ -41,13 +41,18 @@ namespace Catch {
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
 
+            bool printInfoMessages = true;
+
             // Drop out if result was successful and we're not printing those
-            if( !m_config->includeSuccessfulResults() && result.isOk() )
-                return false;
+            if( !m_config->includeSuccessfulResults() && result.isOk() ) {
+                if( result.getResultType() != ResultWas::Warning )
+                    return false;
+                printInfoMessages = false;
+            }
 
             lazyPrint();
 
-            AssertionPrinter printer( stream, _assertionStats );
+            AssertionPrinter printer( stream, _assertionStats, printInfoMessages );
             printer.print();
             stream << std::endl;
             return true;
@@ -105,13 +110,14 @@ namespace Catch {
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:
-            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats )
+            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages )
             :   stream( _stream ),
                 stats( _stats ),
                 result( _stats.assertionResult ),
                 colour( Colour::None ),
                 message( result.getMessage() ),
-                messages( _stats.infoMessages )
+                messages( _stats.infoMessages ),
+                printInfoMessages( _printInfoMessages )
             {
                 switch( result.getResultType() ) {
                     case ResultWas::Ok:
@@ -214,7 +220,9 @@ namespace Catch {
                 for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
                         ++it ) {
-                    stream << Text( it->message, TextAttributes().setIndent(2) ) << "\n";
+                    // If this assertion is a warning ignore any INFO messages
+                    if( printInfoMessages || it->type != ResultWas::Info )
+                        stream << Text( it->message, TextAttributes().setIndent(2) ) << "\n";
                 }
             }
             void printSourceInfo() const {
@@ -230,6 +238,7 @@ namespace Catch {
             std::string messageLabel;
             std::string message;
             std::vector<MessageInfo> messages;
+            bool printInfoMessages;
         };
 
         void lazyPrint() {
@@ -315,8 +324,13 @@ namespace Catch {
         }
 
         void printTotals( const Totals& totals ) {
-            if( totals.assertions.total() == 0 ) {
+            if( totals.testCases.total() == 0 ) {
                 stream << "No tests ran";
+            }
+            else if( totals.assertions.total() == 0 ) {
+                Colour colour( Colour::Yellow );
+                printCounts( "test case", totals.testCases );
+                stream << " (no assertions)";
             }
             else if( totals.assertions.failed ) {
                 Colour colour( Colour::ResultError );

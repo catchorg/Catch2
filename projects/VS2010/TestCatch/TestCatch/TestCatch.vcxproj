@@ -96,7 +96,6 @@
     <ClCompile Include="..\..\..\SelfTest\CmdLineTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\SectionTrackerTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\TestMain.cpp" />
-    <ClCompile Include="..\..\..\SelfTest\catch_self_test.cpp" />
     <ClCompile Include="..\..\..\SelfTest\ClassTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\ConditionTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\ExceptionTests.cpp" />
@@ -135,7 +134,6 @@
     <ClInclude Include="..\..\..\..\include\internal\catch_resultinfo.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_runner_impl.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_section.hpp" />
-    <ClInclude Include="..\..\..\..\include\internal\catch_self_test.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_stream.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_test_case_info.hpp" />
     <ClInclude Include="..\..\..\..\include\internal\catch_test_case_registry_impl.hpp" />
@@ -144,9 +142,6 @@
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_basic.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_junit.hpp" />
     <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_xml.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
