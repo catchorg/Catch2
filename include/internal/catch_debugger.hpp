@@ -5,14 +5,13 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
- * Provides a BreakIntoDebugger() macro for Windows and Mac (so far)
  */
 #ifndef TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 
-#include <iostream>
+#include "catch_debugger.h"
 
-#include "catch_platform.h"
+#include <iostream>
 
 #ifdef CATCH_PLATFORM_MAC
 
@@ -29,7 +28,7 @@
 
         // Returns true if the current process is being debugged (either
         // running under the debugger or has a debugger attached post facto).
-        inline bool isDebuggerActive(){
+        bool isDebuggerActive(){
 
             int                 junk;
             int                 mib[4];
@@ -59,52 +58,42 @@
 
             return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
         }
-    }
-
-    // The following code snippet taken from:
-    // http://cocoawithlove.com/2008/03/break-into-debugger.html
-    #ifdef DEBUG
-        #if defined(__ppc64__) || defined(__ppc__)
-            #define BreakIntoDebugger() \
-            if( Catch::isDebuggerActive() ) { \
-            __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
-            : : : "memory","r0","r3","r4" ); \
-            }
-        #else
-            #define BreakIntoDebugger() if( Catch::isDebuggerActive() ) {__asm__("int $3\n" : : );}
-        #endif
-    #else
-        inline void BreakIntoDebugger(){}
-    #endif
+    } // namespace Catch
 
 #elif defined(_MSC_VER)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
-    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { __debugbreak(); }
-    inline bool isDebuggerActive() {
-        return IsDebuggerPresent() != 0;
+    namespace Catch {
+        bool isDebuggerActive() {
+            return IsDebuggerPresent() != 0;
+        }
     }
 #elif defined(__MINGW32__)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
-    extern "C" __declspec(dllimport) void __stdcall DebugBreak();
-    #define BreakIntoDebugger() if (IsDebuggerPresent() ) { DebugBreak(); }
-    inline bool isDebuggerActive() {
-        return IsDebuggerPresent() != 0;
+    namespace Catch {
+        bool isDebuggerActive() {
+            return IsDebuggerPresent() != 0;
+        }
     }
 #else
-       inline void BreakIntoDebugger(){}
+    namespace Catch {
        inline bool isDebuggerActive() { return false; }
-#endif
+    }
+#endif // Platform
 
 #ifdef CATCH_PLATFORM_WINDOWS
-extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
-inline void writeToDebugConsole( std::string const& text ) {
-    ::OutputDebugStringA( text.c_str() );
-}
+    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
+    namespace Catch {
+        void writeToDebugConsole( std::string const& text ) {
+            ::OutputDebugStringA( text.c_str() );
+        }
+    }
 #else
-inline void writeToDebugConsole( std::string const& text ) {
-    // !TBD: Need a version for Mac/ XCode and other IDEs
-    std::cout << text;
-}
-#endif // CATCH_PLATFORM_WINDOWS
+    namespace Catch {
+        void writeToDebugConsole( std::string const& text ) {
+            // !TBD: Need a version for Mac/ XCode and other IDEs
+            std::cout << text;
+        }
+    }
+#endif // Platform
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED

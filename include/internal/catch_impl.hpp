@@ -26,11 +26,15 @@
 #include "catch_expressionresult_builder.hpp"
 #include "catch_test_case_info.hpp"
 #include "catch_tags.hpp"
+#include "catch_test_spec.hpp"
 #include "catch_version.hpp"
 #include "catch_text.hpp"
 #include "catch_message.hpp"
 #include "catch_legacy_reporter_adapter.hpp"
 #include "catch_timer.hpp"
+#include "catch_common.hpp"
+#include "catch_section.hpp"
+#include "catch_debugger.hpp"
 
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
@@ -71,9 +75,6 @@ namespace Catch {
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
     IGeneratorInfo::~IGeneratorInfo() {}
     IGeneratorsForTest::~IGeneratorsForTest() {}
-    TagParser::~TagParser() {}
-    TagExtracter::~TagExtracter() {}
-    TagExpressionParser::~TagExpressionParser() {}
 
     Matchers::Impl::StdString::Equals::~Equals() {}
     Matchers::Impl::StdString::Contains::~Contains() {}

@@ -11,7 +11,7 @@
 #include "catch_test_spec.h"
 #include "catch_context.h"
 #include "catch_interfaces_config.h"
-#include "catch_stream.hpp"
+#include "catch_stream.h"
 
 #include <memory>
 #include <vector>

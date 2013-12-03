@@ -56,9 +56,6 @@ namespace Catch {
 
     namespace Detail{
 
-        inline bool startsWith( std::string const& str, std::string const& sub ) {
-            return str.length() > sub.length() && str.substr( 0, sub.length() ) == sub;
-        }
 
         inline std::string getAnnotation(   Class cls,
                                             std::string const& annotationName,
@@ -88,7 +85,7 @@ namespace Catch {
                 for( u_int m = 0; m < count ; m++ ) {
                     SEL selector = method_getName(methods[m]);
                     std::string methodName = sel_getName(selector);
-                    if( Detail::startsWith( methodName, "Catch_TestCase_" ) ) {
+                    if( startsWith( methodName, "Catch_TestCase_" ) ) {
                         std::string testCaseName = methodName.substr( 15 );
                         std::string name = Detail::getAnnotation( cls, "Name", testCaseName );
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );

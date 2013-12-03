@@ -21,7 +21,7 @@
 #include "internal/catch_context.h"
 #include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
-#include "internal/catch_section.hpp"
+#include "internal/catch_section.h"
 #include "internal/catch_generators.hpp"
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
@@ -39,11 +39,11 @@
 
 #if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
 #include "internal/catch_impl.hpp"
-#endif
+#endif // CATCH_CONFIG_MAIN || CATCH_CONFIG_RUNNER
 
 #ifdef CATCH_CONFIG_MAIN
 #include "internal/catch_default_main.hpp"
-#endif
+#endif // CATCH_CONFIG_MAIN
 
 //////
 

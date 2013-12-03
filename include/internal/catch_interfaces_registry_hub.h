@@ -8,10 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
-#include "catch_interfaces_reporter.h"
-#include "catch_interfaces_config.h"
-
-#include <vector>
+#include <string>
 
 namespace Catch {
 
@@ -19,6 +16,8 @@ namespace Catch {
     struct ITestCaseRegistry;
     struct IExceptionTranslatorRegistry;
     struct IExceptionTranslator;
+    struct IReporterRegistry;
+    struct IReporterFactory;
 
     struct IRegistryHub {
         virtual ~IRegistryHub();

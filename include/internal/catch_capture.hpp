@@ -12,11 +12,12 @@
 #include "catch_expressionresult_builder.h"
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
-#include "catch_debugger.hpp"
+#include "catch_debugger.h"
 #include "catch_context.h"
 #include "catch_common.h"
 #include "catch_tostring.hpp"
 #include "catch_interfaces_registry_hub.h"
+#include "catch_interfaces_config.h"
 #include "internal/catch_compiler_capabilities.h"
 
 #include <ostream>
@@ -66,7 +67,7 @@ struct TestFailureException{};
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ACCEPT_EXPR( evaluatedExpr, resultDisposition, originalExpr ) \
     if( Catch::ResultAction::Value internal_catch_action = Catch::getResultCapture().acceptExpression( evaluatedExpr, INTERNAL_CATCH_ASSERTIONINFO_NAME )  ) { \
-        if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
+        if( internal_catch_action & Catch::ResultAction::Debug ) CATCH_BREAK_INTO_DEBUGGER(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
         if( !Catch::shouldContinueOnFailure( resultDisposition ) ) throw Catch::TestFailureException(); \
         Catch::isTrue( false && originalExpr ); \

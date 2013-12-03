@@ -9,8 +9,9 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
+#include "catch_stream.h"
 #include "catch_streambuf.h"
-#include "catch_debugger.hpp"
+#include "catch_debugger.h"
 
 #include <stdexcept>
 #include <cstdio>
@@ -62,29 +63,21 @@ namespace Catch {
         }
     };
 
-    class Stream {
-    public:
-        Stream()
-        : streamBuf( NULL ), isOwned( false )
-        {}
+    Stream::Stream()
+    : streamBuf( NULL ), isOwned( false )
+    {}
 
-        Stream( std::streambuf* _streamBuf, bool _isOwned )
-        : streamBuf( _streamBuf ), isOwned( _isOwned )
-        {}
+    Stream::Stream( std::streambuf* _streamBuf, bool _isOwned )
+    : streamBuf( _streamBuf ), isOwned( _isOwned )
+    {}
 
-        void release() {
-            if( isOwned ) {
-                delete streamBuf;
-                streamBuf = NULL;
-                isOwned = false;
-            }
+    void Stream::release() {
+        if( isOwned ) {
+            delete streamBuf;
+            streamBuf = NULL;
+            isOwned = false;
         }
-
-        std::streambuf* streamBuf;
-
-    private:
-        bool isOwned;
-    };
+    }
 }
 
 #endif // TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED

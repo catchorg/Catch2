@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import datetime
+import string
 
 from scriptCommon import catchPath
 
@@ -9,6 +10,9 @@ versionParser = re.compile( r'(\s*Version\slibraryVersion)\s*\(\s*(.*)\s*,\s*(.*
 includesParser = re.compile( r'\s*#include\s*"(.*)"' )
 guardParser = re.compile( r'\s*#.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')
+ifParser = re.compile( r'\s*#if')
+endIfParser = re.compile( r'\s*#endif')
+ifImplParser = re.compile( r'\s*#if.*(CATCH_CONFIG_MAIN|CATCH_CONFIG_RUNNER)')
 commentParser1 = re.compile( r'^\s*/\*')
 commentParser2 = re.compile( r'^\s*\*')
 blankParser = re.compile( r'^\s*$')
@@ -18,21 +22,48 @@ versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
 readmePath = os.path.join( catchPath, "README.md" )
 outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
 
-bumpVersion = len(sys.argv) < 2 or sys.argv[1] <> "nobump"
+bumpVersion = True
+includeImpl = True
+
+for arg in sys.argv[1:]:
+	arg = string.lower(arg)
+	if arg == "nobump":
+		bumpVersion = False
+		print "Not bumping version number"
+	elif arg == "noimpl":
+		includeImpl = False
+		bumpVersion = False
+		print "Not including impl code (and not bumping version)"
+	else:
+		print "\n** Unrecognised argument: " + arg + " **\n"
+		exit(1)
 
 out = open( outputPath, 'w' )
+ifdefs = 0
+implIfDefs = -1
+
+def write( line ):
+	if includeImpl or implIfDefs == -1:
+		out.write( line )
 
 def parseFile( path, filename ):
+	global ifdefs
+	global implIfDefs
+
 	f = open( path + filename, 'r' )
 	blanks = 0
 	for line in f:
+		if ifParser.match( line ):
+			ifdefs = ifdefs + 1
+		elif endIfParser.match( line ):
+			ifdefs = ifdefs - 1
 		m = includesParser.match( line )
 		if m:
 			header = m.group(1)
 			headerPath, sep, headerFile = header.rpartition( "/" )
 			if not headerFile in seenHeaders:
 				seenHeaders.add( headerFile )
-				out.write( "// #included from: {0}\n".format( header ) )
+				write( "// #included from: {0}\n".format( header ) )
 				if( headerPath == "internal" and path.endswith( "internal/" ) ):
 					headerPath = ""
 					sep = ""
@@ -40,13 +71,15 @@ def parseFile( path, filename ):
 					parseFile( path + headerPath + sep, headerFile )
 				else:
 					parseFile( rootPath + headerPath + sep, headerFile )
+		elif ifImplParser.match(line):
+			implIfDefs = ifdefs
 		elif (not guardParser.match( line ) or defineParser.match( line ) ) and not commentParser1.match( line )and not commentParser2.match( line ):
 			if blankParser.match( line ):
 				blanks = blanks + 1
 			else:
 				blanks = 0
 			if blanks < 2:
-				out.write( line.rstrip() + "\n" )
+				write( line.rstrip() + "\n" )
 
 class Version:
 	def __init__(self):

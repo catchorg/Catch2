@@ -11,6 +11,7 @@
 #include "catch_commandline.hpp"
 #include "catch_text.h"
 #include "catch_console_colour.hpp"
+#include "catch_interfaces_reporter.h"
 
 #include <limits>
 #include <algorithm>

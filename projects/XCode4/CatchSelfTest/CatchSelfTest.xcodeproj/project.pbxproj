@@ -56,6 +56,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		261488FA184C81130041FBEB /* catch_test_spec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_spec.hpp; sourceTree = "<group>"; };
+		261488FB184C83EA0041FBEB /* catch_tags.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_tags.h; sourceTree = "<group>"; };
+		261488FC184D1DC10041FBEB /* catch_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_stream.h; sourceTree = "<group>"; };
+		261488FD184D21290041FBEB /* catch_section_info.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_section_info.h; sourceTree = "<group>"; };
+		261488FE184DC32F0041FBEB /* catch_section.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_section.h; sourceTree = "<group>"; };
+		261488FF184DC4A20041FBEB /* catch_debugger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_debugger.h; sourceTree = "<group>"; };
+		262E7399184673A800CAC268 /* catch_reporter_bases.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_bases.hpp; sourceTree = "<group>"; };
+		262E739A1846759000CAC268 /* catch_common.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_common.hpp; sourceTree = "<group>"; };
 		263FD06017AF8DF200988A20 /* catch_timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_timer.hpp; sourceTree = "<group>"; };
 		263FD06117AF8DF200988A20 /* catch_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_timer.h; sourceTree = "<group>"; };
 		266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VariadicMacrosTests.cpp; path = ../../../SelfTest/VariadicMacrosTests.cpp; sourceTree = "<group>"; };
@@ -277,6 +285,7 @@
 		4A6D0C65149B3E3D00DB3EAA /* reporters */ = {
 			isa = PBXGroup;
 			children = (
+				262E7399184673A800CAC268 /* catch_reporter_bases.hpp */,
 				4A6D0C67149B3E3D00DB3EAA /* catch_reporter_junit.hpp */,
 				4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */,
 				4AB42F84166F3E1A0099F2C8 /* catch_reporter_console.hpp */,
@@ -314,6 +323,7 @@
 		4AC91CB4155B9EBF00DC5117 /* impl */ = {
 			isa = PBXGroup;
 			children = (
+				261488FA184C81130041FBEB /* catch_test_spec.hpp */,
 				263FD06017AF8DF200988A20 /* catch_timer.hpp */,
 				266E9AD117230ACF0061DAB2 /* catch_text.hpp */,
 				4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */,
@@ -341,6 +351,7 @@
 				4A6D0C5D149B3E3D00DB3EAA /* catch_assertionresult.h */,
 				4A9D84B315599AC900FBB209 /* catch_expressionresult_builder.h */,
 				4A6D0C5F149B3E3D00DB3EAA /* catch_section.hpp */,
+				261488FE184DC32F0041FBEB /* catch_section.h */,
 				4A3D7DD01503869D005F9203 /* catch_matchers.hpp */,
 				4A9D84B11558FC0400FBB209 /* catch_tostring.hpp */,
 				4A6D0C46149B3E3D00DB3EAA /* catch_approx.hpp */,
@@ -349,6 +360,7 @@
 				4AC91CD0155D8DA600DC5117 /* catch_expression_decomposer.hpp */,
 				4A4B0F9A15CEF84800AE2392 /* catch_notimplemented_exception.h */,
 				26847E5B16BBAB790043B9C1 /* catch_message.h */,
+				261488FD184D21290041FBEB /* catch_section_info.h */,
 			);
 			name = Assertions;
 			sourceTree = "<group>";
@@ -375,6 +387,7 @@
 				4A084F1D15DAD15F0027E631 /* catch_test_spec.h */,
 				4A8E4DCC160A344100194CBD /* catch_tags.hpp */,
 				26948287179EF7F900ED166E /* catch_test_case_tracker.hpp */,
+				261488FB184C83EA0041FBEB /* catch_tags.h */,
 			);
 			name = "Test execution";
 			sourceTree = "<group>";
@@ -411,6 +424,7 @@
 				266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */,
 				4A6D0C49149B3E3D00DB3EAA /* catch_common.h */,
 				4A6D0C4B149B3E3D00DB3EAA /* catch_debugger.hpp */,
+				261488FF184DC4A20041FBEB /* catch_debugger.h */,
 				4A6D0C60149B3E3D00DB3EAA /* catch_stream.hpp */,
 				4A6D0C64149B3E3D00DB3EAA /* catch_xmlwriter.hpp */,
 				4AB1C73714F97C1300F31DF7 /* catch_console_colour.hpp */,
@@ -422,6 +436,8 @@
 				26DACF2F17206D3400A21326 /* catch_text.h */,
 				263FD06117AF8DF200988A20 /* catch_timer.h */,
 				26AEAF1617BEA18E009E32C9 /* catch_platform.h */,
+				262E739A1846759000CAC268 /* catch_common.hpp */,
+				261488FC184D1DC10041FBEB /* catch_stream.h */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
