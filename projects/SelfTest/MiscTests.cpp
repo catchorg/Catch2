@@ -333,26 +333,3 @@ TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]")
 
     FAIL("to infinity and beyond");
 }
-
-
-//#include "internal/catch_timer.h"
-//
-//TEST_CASE( "Timer", "[work-in-progress]" )
-//{
-//    Catch::Timer t;
-//    t.start();
-//
-//    std::cout << "starting..." << std::endl;
-//
-//    double d = 0;
-//    for( int i = 0; i < 100000; ++i )
-//        for( int j = 0; j < 1000; ++j )
-//            d += (double)i*(double)j;
-//
-//    double duration = t.getElapsedSeconds();
-//
-//    std::cout << "finished in " << duration << std::endl;
-//
-//    SUCCEED("yay");
-//    
-//}
