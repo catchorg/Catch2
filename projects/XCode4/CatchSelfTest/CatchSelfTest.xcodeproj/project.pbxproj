@@ -323,6 +323,7 @@
 		4AC91CB4155B9EBF00DC5117 /* impl */ = {
 			isa = PBXGroup;
 			children = (
+				4A6D0C5F149B3E3D00DB3EAA /* catch_section.hpp */,
 				261488FA184C81130041FBEB /* catch_test_spec.hpp */,
 				263FD06017AF8DF200988A20 /* catch_timer.hpp */,
 				266E9AD117230ACF0061DAB2 /* catch_text.hpp */,
@@ -350,7 +351,6 @@
 				4A6D0C5C149B3E3D00DB3EAA /* catch_result_type.h */,
 				4A6D0C5D149B3E3D00DB3EAA /* catch_assertionresult.h */,
 				4A9D84B315599AC900FBB209 /* catch_expressionresult_builder.h */,
-				4A6D0C5F149B3E3D00DB3EAA /* catch_section.hpp */,
 				261488FE184DC32F0041FBEB /* catch_section.h */,
 				4A3D7DD01503869D005F9203 /* catch_matchers.hpp */,
 				4A9D84B11558FC0400FBB209 /* catch_tostring.hpp */,

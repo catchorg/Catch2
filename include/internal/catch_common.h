@@ -86,7 +86,7 @@ namespace Catch {
     struct SourceLineInfo {
 
         SourceLineInfo();
-        SourceLineInfo( std::string const& _file, std::size_t _line );
+        SourceLineInfo( char const* _file, std::size_t _line );
         SourceLineInfo( SourceLineInfo const& other );
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;

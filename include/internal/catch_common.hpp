@@ -50,7 +50,7 @@ namespace Catch {
     }
 
     SourceLineInfo::SourceLineInfo() : line( 0 ){}
-    SourceLineInfo::SourceLineInfo( std::string const& _file, std::size_t _line )
+    SourceLineInfo::SourceLineInfo( char const* _file, std::size_t _line )
     :   file( _file ),
         line( _line )
     {}
