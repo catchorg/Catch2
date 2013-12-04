@@ -28,6 +28,10 @@ namespace Catch {
         if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
             isHidden = true;
 
+        if( isHidden ) {
+            tags.insert( "hide" );
+            tags.insert( "." );
+        }
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
     }
