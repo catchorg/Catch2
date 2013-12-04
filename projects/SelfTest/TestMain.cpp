@@ -14,13 +14,6 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-#include "internal/catch_text.h"
-#include "internal/catch_console_colour.hpp"
-#include "internal/catch_commandline.hpp"
-#include "internal/catch_test_spec.h"
-
-#include "reporters/catch_reporter_xml.hpp"
-
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
     Clara::CommandLine<Catch::ConfigData> parser = Catch::makeCommandLineParser();

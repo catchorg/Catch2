@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 15 (master branch)
- *  Generated: 2013-12-03 18:52:51.480072
+ *  CATCH v1.0 build 16 (master branch)
+ *  Generated: 2013-12-04 20:23:35.145591
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -178,7 +178,7 @@ namespace Catch {
     struct SourceLineInfo {
 
         SourceLineInfo();
-        SourceLineInfo( std::string const& _file, std::size_t _line );
+        SourceLineInfo( char const* _file, std::size_t _line );
         SourceLineInfo( SourceLineInfo const& other );
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;
@@ -2591,6 +2591,7 @@ return @ desc; \
 
 #endif
 
+#if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
 // #included from: internal/catch_impl.hpp
 #define TWOBLUECUBES_CATCH_IMPL_HPP_INCLUDED
 
@@ -5786,6 +5787,10 @@ namespace Catch {
         if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
             isHidden = true;
 
+        if( isHidden ) {
+            tags.insert( "hide" );
+            tags.insert( "." );
+        }
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
     }
@@ -6134,7 +6139,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 15, "master" );
+    Version libraryVersion( 1, 0, 16, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -6473,7 +6478,7 @@ namespace Catch {
     }
 
     SourceLineInfo::SourceLineInfo() : line( 0 ){}
-    SourceLineInfo::SourceLineInfo( std::string const& _file, std::size_t _line )
+    SourceLineInfo::SourceLineInfo( char const* _file, std::size_t _line )
     :   file( _file ),
         line( _line )
     {}
@@ -7866,6 +7871,7 @@ namespace Catch {
 
 #endif // CATCH_CONFIG_MAIN || CATCH_CONFIG_RUNNER
 
+#ifdef CATCH_CONFIG_MAIN
 // #included from: internal/catch_default_main.hpp
 #define TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 

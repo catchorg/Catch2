@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4A2894D615D3956000E20735 /* ApproxTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A2894D515D3956000E20735 /* ApproxTests.cpp */; };
-		4AB735F815D396ED00F9F7C3 /* catch_self_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A2894D815D3957500E20735 /* catch_self_test.cpp */; };
 		4AB735FA15D396F400F9F7C3 /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A2894E015D3957500E20735 /* TestMain.cpp */; };
 		4AB735FB15D3970C00F9F7C3 /* ClassTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A2894DA15D3957500E20735 /* ClassTests.cpp */; };
 		4AB735FC15D3971100F9F7C3 /* ConditionTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A2894DB15D3957500E20735 /* ConditionTests.cpp */; };
@@ -33,8 +32,6 @@
 
 /* Begin PBXFileReference section */
 		4A2894D515D3956000E20735 /* ApproxTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ApproxTests.cpp; path = ../../../SelfTest/ApproxTests.cpp; sourceTree = "<group>"; };
-		4A2894D815D3957500E20735 /* catch_self_test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = catch_self_test.cpp; path = ../../../SelfTest/catch_self_test.cpp; sourceTree = "<group>"; };
-		4A2894D915D3957500E20735 /* catch_self_test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = catch_self_test.hpp; path = ../../../SelfTest/catch_self_test.hpp; sourceTree = "<group>"; };
 		4A2894DA15D3957500E20735 /* ClassTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ClassTests.cpp; path = ../../../SelfTest/ClassTests.cpp; sourceTree = "<group>"; };
 		4A2894DB15D3957500E20735 /* ConditionTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ConditionTests.cpp; path = ../../../SelfTest/ConditionTests.cpp; sourceTree = "<group>"; };
 		4A2894DC15D3957500E20735 /* ExceptionTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ExceptionTests.cpp; path = ../../../SelfTest/ExceptionTests.cpp; sourceTree = "<group>"; };
@@ -61,8 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				4A2894E015D3957500E20735 /* TestMain.cpp */,
-				4A2894D815D3957500E20735 /* catch_self_test.cpp */,
-				4A2894D915D3957500E20735 /* catch_self_test.hpp */,
 			);
 			name = "Self Test";
 			sourceTree = "<group>";
@@ -159,7 +154,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A2894D615D3956000E20735 /* ApproxTests.cpp in Sources */,
-				4AB735F815D396ED00F9F7C3 /* catch_self_test.cpp in Sources */,
 				4AB735FA15D396F400F9F7C3 /* TestMain.cpp in Sources */,
 				4AB735FB15D3970C00F9F7C3 /* ClassTests.cpp in Sources */,
 				4AB735FC15D3971100F9F7C3 /* ConditionTests.cpp in Sources */,
@@ -224,6 +218,7 @@
 		4A90B5E115D2E3E900EF71BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				HEADER_SEARCH_PATHS = "../../../single_include/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -232,6 +227,7 @@
 		4A90B5E215D2E3E900EF71BC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				HEADER_SEARCH_PATHS = "../../../single_include/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
