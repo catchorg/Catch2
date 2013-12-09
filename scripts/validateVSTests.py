@@ -23,7 +23,8 @@ if len(sys.argv) == 2:
 else:
 	if sys.platform == 'win32':
 		cmdPath = os.path.join( catchPath, 'projects\\VS2010\\TestCatch\\Release\\TestCatch.exe' )
-		dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Release\\ManagedTestCatch.dll' )
+		#dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Release\\ManagedTestCatch.dll' )
+		dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Debug\\ManagedTestCatch.dll' )
 	else:
 		cmdPath = os.path.join( catchPath, 'projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
 
@@ -62,6 +63,7 @@ def approve( baseName, args ):
 	else:
 		raise Exception("Results file does not exist: '" + rawResultsPath + "'")
 
+def callDiff():
 	#os.remove( rawResultsPath )
 	print
 	print baseName + ":"
@@ -593,7 +595,7 @@ def approveXml( baseName, args ):
 			rawWriteFile.write(line + "\n")
 		rawWriteFile.close()
 
-def parseTrxFile(trxFile):
+def parseTrxFile(baseName, trxFile):
 	print "TRX file:" ,trxFile
 	if os.path.exists( trxFile ):
 		xml = ""
@@ -657,19 +659,26 @@ def parseTrxFile(trxFile):
 											if tag != None and tag == "StdOut":
 												desc = sub.text
 												lines = desc.splitlines()
-												if (len(lines) > 2 and
-														lines[0].startswith("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~") and
-														lines[1].startswith("Using Catch v") ):
-													lines = lines[2:-1]
-													#print "*******",desc
-													#print lines
+												found = False
+												index = 0
+												for tmp in lines:
+													if (len(lines) >= (index + 2) and
+															lines[index].startswith("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~") and
+															lines[index + 1].startswith("Using Catch v") ):
+														found = True
+														break
+													index += 1
+												lines = lines[index + 2:-1]
+												#print "*******",desc
+												#print lines
+												if found:
 													for line in lines:
 														testcase = resultParser.parseResultLine(line)
 														if isinstance(testcase, TestCaseData):
 															testRun.testcases.append(testcase)
 					lines = testRun.generateSortedUnapprovedLines(0)
 		
-					rawSortedPath = os.path.join( rootPath, 'mstest.trx.sorted.unapproved.txt' )
+					rawSortedPath = os.path.join( rootPath, '{0}.sorted.unapproved.txt'.format( baseName ) )
 					rawWriteFile = open( rawSortedPath, 'wb' )
 					for line in lines:
 						#print "L:",line
@@ -677,7 +686,7 @@ def parseTrxFile(trxFile):
 					rawWriteFile.close()
 
 
-def approveMsTest( baseName ):
+def approveMsTest( baseName, filter ):
 	rawResultsPath = os.path.join( rootPath, '_{0}.tmp'.format( baseName ) )
 	if not(os.path.exists( dllPath )):
 		raise Exception("Managed DLL does not exist: '" + dllPath + "'")
@@ -685,18 +694,19 @@ def approveMsTest( baseName ):
 	args = []
 	args.append("MSTest.exe")
 	args.append("/testcontainer:" + dllPath)
-	#f = open( rawResultsPath, 'w' )
-	#subprocess.call( args, stdout=f, stderr=f )
-	#f.close()
+	args.append("/category:\"" + filter + "\"")
+	f = open( rawResultsPath, 'w' )
+	subprocess.call( args, stdout=f, stderr=f )
+	f.close()
 
-	#if os.path.exists( rawResultsPath ):
-	#	f = open( rawResultsPath, 'r' )
-	#	for line in f:
-	line = "Results file:  c:\Projects\Catch\TestResults\NoyesMa_SACHDEW7 2013-12-09 11_43_57.trx"
+	if os.path.exists( rawResultsPath ):
+		f = open( rawResultsPath, 'r' )
+		for line in f:
+	#line = "Results file:  c:\Projects\Catch\TestResults\NoyesMa_SACHDEW7 2013-12-09 11_43_57.trx"
 
-	if line.startswith("Results file:"):
-		trxFile = line[13:].strip()
-		parseTrxFile(trxFile)
+			if line.startswith("Results file:"):
+				trxFile = line[13:].strip()
+				parseTrxFile(baseName, trxFile)
 
 # Standard console reporter
 #approve( "console.std", ["~_"] )
@@ -709,7 +719,9 @@ def approveMsTest( baseName ):
 # xml reporter, include passes, warn about No Assertions
 #approveXml( "xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml"] )
 #mstest runner, xml output
-approveMsTest( "mstest.sw")
+#approveMsTest( "mstest.std", "all")
+#approveMsTest( "mstest.sw", "allSucceeding")
+approveMsTest( "mstest.swa4", "allSucceedingAborting")
 
 if overallResult <> 0:
 	print "run approve.py to approve new baselines"

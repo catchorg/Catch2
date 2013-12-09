@@ -12,6 +12,7 @@
 
 namespace AllTestsRunner {
 
+#ifdef OLD_RUNNER
     class NullStreamingReporter : public Catch::SharedImpl<Catch::IStreamingReporter> {
     public:
 
@@ -53,6 +54,23 @@ namespace AllTestsRunner {
     private:
         Catch::Ptr<Catch::IStreamingReporter> m_reporter;
     };
+
+    NullStreamingReporter::~NullStreamingReporter() {}
+
+    Catch::Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, std::size_t groupIndex, std::size_t groupsCount, const std::string& ) {
+        std::ostringstream oss;
+        Catch::Ptr<Catch::Config> config = new Catch::Config();
+        config->setStreamBuf( oss.rdbuf() );
+        
+        Catch::Totals totals;
+
+        // Scoped because RunContext doesn't report EndTesting until its destructor
+        {
+            Catch::RunContext runner( config.get(), m_reporter.get() );
+            totals = runner.runMatching( rawTestSpec, groupIndex, groupsCount );
+        }
+        return totals;
+    }
 
     class MetaTestRunner {
 
@@ -116,23 +134,6 @@ namespace AllTestsRunner {
         std::size_t m_groupsCount;
     };
     
-    NullStreamingReporter::~NullStreamingReporter() {}
-
-    Catch::Totals EmbeddedRunner::runMatching( const std::string& rawTestSpec, std::size_t groupIndex, std::size_t groupsCount, const std::string& ) {
-        std::ostringstream oss;
-        Catch::Ptr<Catch::Config> config = new Catch::Config();
-        config->setStreamBuf( oss.rdbuf() );
-        
-        Catch::Totals totals;
-
-        // Scoped because RunContext doesn't report EndTesting until its destructor
-        {
-            Catch::RunContext runner( config.get(), m_reporter.get() );
-            totals = runner.runMatching( rawTestSpec, groupIndex, groupsCount );
-        }
-        return totals;
-    }
-
     TEST_CASE( "Run all failing and succeeding tests", "[vsall]" ) {
 
         ///////////////////////////////////////////////////////////////////////////
@@ -181,8 +182,66 @@ namespace AllTestsRunner {
         }
     }
 
-    // mstest /TestContainer:Debug\ManagedTestCatch.dll /category:"all"
-#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
-    CATCH_MAP_CATEGORY_TO_TAG(all, "[vsall]");
+    TEST_CASE( "Run all failing and succeeding tests", "[sw4][vs]" ) {
+        CatchOverrides::ConfigGuard cg;
+        Catch::ConfigData cd(cg.value().get());
+        cd.name = "Test sw4";
+        cd.abortAfter = 1;
+        cd.showSuccessfulTests = true;
+        cd.warnings            = Catch::WarnAbout::NoAssertions;
+        cd.abortAfter          = -1;
+        Catch::Ptr<Catch::Config> config(new Catch::Config(cd));
+        Catch::MSTestReporter* rep = new Catch::MSTestReporter(config.get());
+        Catch::RunContext tr(config.get(), rep);
+        std::string names[] = {"one","two","three"};
+        std::vector<std::string> stringNames(names, names + (sizeof(names)/sizeof(std::string)));
+        std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases( "Some simple comparisons between doubles" );
+        //std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(name_desc.name);
+        if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match"));
+        if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name"));
+        Catch::Totals totals = tr.runTest(*testCase.begin());
+        if( totals.assertions.failed > 0 ) {
+            INTERNAL_CATCH_TEST_THROW_FAILURE
+        }
+        /*for(std::vector<Catch::TestCase>::iterator it = tests.begin(); it != tests.end(); ++it )
+        {
+            Catch::Totals totals;
+            std::size_t groupIndex(0);
+            std::size_t groupsCount(0);
+            {
+                EmbeddedRunner runner;
+                std::string name = it->getTestCaseInfo().name;
+                totals = runner.runMatching( name, groupIndex, groupsCount );
+            }
+        }*/
+    }
 #endif
+
+    // mstest /TestContainer:Debug\ManagedTestCatch.dll /category:"all"
+    #if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+        CATCH_MAP_CATEGORY_TO_TAG(all, "~[vs]");
+
+        CATCH_CONFIG_SHOW_SUCCESS(true)
+        CATCH_CONFIG_WARN_MISSING_ASSERTIONS(true)
+        CATCH_MAP_CATEGORY_TO_TAG(allSucceeding, "~[vs]");
+
+        CATCH_CONFIG_SHOW_SUCCESS(true)
+        CATCH_CONFIG_WARN_MISSING_ASSERTIONS(true)
+        CATCH_CONFIG_ABORT_AFTER(4)
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Some simple comparisons between doubles")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Approximate comparisons with different epsilons")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Approximate comparisons with floats")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Approximate comparisons with ints")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Approximate comparisons with mixed numeric types")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Use a custom approx")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Approximate PI")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("A METHOD_AS_TEST_CASE based test run that succeeds")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("A METHOD_AS_TEST_CASE based test run that fails")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("A TEST_CASE_METHOD based test run that succeeds")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("A TEST_CASE_METHOD based test run that fails")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Equality checks that should succeed")
+        CATCH_INTERNAL_CONFIG_ADD_TEST("Equality checks that should fail]")
+        INTERNAL_CATCH_MAP_CATEGORY_TO_LIST(allSucceedingAborting);
+    #endif
+
 }

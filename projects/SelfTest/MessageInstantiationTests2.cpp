@@ -22,7 +22,7 @@ namespace MI2
     // greedy instantiation (or whatever process it uses) eliminate all other
     // references to the globalCount
 
-    TEST_CASE("message counting2","")
+    TEST_CASE("message counting2","[vs]")
     {
         if( Counter::g_haveCountedMessages > 0 ) {
             REQUIRE( Catch::MessageInfoCounter<unsigned int>::globalCount > 0 );
@@ -41,7 +41,7 @@ extern int g_haveCountedMessagesLong;
 
 namespace MI2
 {
-    TEST_CASE("long message counting2","")
+    TEST_CASE("long message counting2","[vs]")
     {
         if( LongCounter::g_haveCountedMessagesLong > 0 ) {
             REQUIRE( Catch::MessageInfoCounter<long>::globalCount > 0 );

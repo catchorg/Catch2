@@ -45,8 +45,10 @@ namespace CatchOverrides {
     template <typename T>
     class Config
     {
-        typedef std::map<int, bool> LineData;
+        typedef std::map<int, int> LineData;
         typedef std::map<std::string, LineData> FileLineData;
+        typedef std::map<int, std::string> StringLineData;
+        typedef std::map<std::string, StringLineData> FileStringLineData;
     public:
         bool includeSuccessfulResults(const std::string& file, int c) const
         {
@@ -58,7 +60,7 @@ namespace CatchOverrides {
                 {
                     if( c <= lineIt->first )
                         break;
-                    result = lineIt->second;
+                    result = lineIt->second ? true : false;
                 }
             }
             return result;
@@ -69,12 +71,12 @@ namespace CatchOverrides {
             if( it == showSuccessfulTestsData.end() )
             {
                 LineData tmp;
-                tmp.insert(std::make_pair(c,v));
+                tmp.insert(std::make_pair(c,(v ? 1 : 0)));
                 showSuccessfulTestsData.insert(std::make_pair(file, tmp));
             }
             else
             {
-                it->second.insert(std::make_pair(c,v));
+                it->second.insert(std::make_pair(c,(v ? 1 : 0)));
             }
         }
         bool warnAboutMissingAssertions(const std::string& file, int c) const
@@ -87,7 +89,7 @@ namespace CatchOverrides {
                 {
                     if( c <= lineIt->first )
                         break;
-                    result = lineIt->second;
+                    result = lineIt->second ? true : false;
                 }
             }
             return result;
@@ -98,8 +100,70 @@ namespace CatchOverrides {
             if( it == missingAssertionData.end() )
             {
                 LineData tmp;
-                tmp.insert(std::make_pair(c,v));
+                tmp.insert(std::make_pair(c,(v ? 1 : 0)));
                 missingAssertionData.insert(std::make_pair(file, tmp));
+            }
+            else
+            {
+                it->second.insert(std::make_pair(c,(v ? 1 : 0)));
+            }
+        }
+        int abortAfter(const std::string& file, int c) const
+        {
+            int result(-1);
+            FileLineData::const_iterator it = abortAfterData.find(file);
+            if( it != abortAfterData.end() )
+            {
+                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
+                {
+                    if( c <= lineIt->first )
+                        break;
+                    result = lineIt->second;
+                }
+            }
+            return result;
+        }
+        void insertAbortAfter(const std::string& file, int c, int v)
+        {
+            FileLineData::iterator it = abortAfterData.find(file);
+            if( it == abortAfterData.end() )
+            {
+                LineData tmp;
+                tmp.insert(std::make_pair(c,v));
+                abortAfterData.insert(std::make_pair(file, tmp));
+            }
+            else
+            {
+                it->second.insert(std::make_pair(c,v));
+            }
+        }
+        std::vector<std::string> listOfTests(const std::string& file, int c) const
+        {
+            std::vector<std::string> result;
+            FileStringLineData::const_iterator it = testData.find(file);
+            if( it != testData.end() )
+            {
+                for( StringLineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
+                {
+                    if( lineIt->second.empty() && c > lineIt->first)
+                        result.clear();
+                    else {
+                        if( c <= lineIt->first )
+                            break;
+                        result.push_back(lineIt->second);
+                    }
+                }
+            }
+            return result;
+        }
+        void insertTest(const std::string& file, int c, const std::string& v)
+        {
+            FileStringLineData::iterator it = testData.find(file);
+            if( it == testData.end() )
+            {
+                StringLineData tmp;
+                tmp.insert(std::make_pair(c,v));
+                testData.insert(std::make_pair(file, tmp));
             }
             else
             {
@@ -117,6 +181,8 @@ namespace CatchOverrides {
     private:
         FileLineData showSuccessfulTestsData;
         FileLineData missingAssertionData;
+        FileLineData abortAfterData;
+        FileStringLineData testData;
         
         static Config<T>* s_instance;
     };
@@ -130,6 +196,8 @@ namespace CatchOverrides {
         {
             Config<T>::instance().insertSuccessfulResults(file, c, false);
             Config<T>::instance().insertMissingAssertions(file, c, false);
+            Config<T>::instance().insertAbortAfter(file, c, -1);
+            Config<T>::instance().insertTest(file, c, "");
         }
     };
 
@@ -150,6 +218,26 @@ namespace CatchOverrides {
         ConfigWarnMissingAssertions( const std::string& file, int c, U v )
         {
             Config<T>::instance().insertMissingAssertions(file, c, v ? true : false);
+        }
+    };
+
+    template <typename T>
+    struct ConfigAbortAfter
+    {
+        template <typename U>
+        ConfigAbortAfter( const std::string& file, int c, U v )
+        {
+            Config<T>::instance().insertAbortAfter(file, c, v);
+        }
+    };
+
+    template <typename T>
+    struct ConfigAddTest
+    {
+        template <typename U>
+        ConfigAddTest( const std::string& file, int c, U v )
+        {
+            Config<T>::instance().insertTest(file, c, v);
         }
     };
 }

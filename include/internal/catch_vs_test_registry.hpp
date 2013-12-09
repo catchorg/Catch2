@@ -192,6 +192,9 @@ private:
 #define INTERNAL_CATCH_MAP_CATEGORY_TO_TAG( Category, Tag ) \
     INTERNAL_CATCH_MAP_CATEGORY_TO_TAG2( #Category, Tag, __COUNTER__ )
 
+#define INTERNAL_CATCH_MAP_CATEGORY_TO_LIST( Category ) \
+    INTERNAL_CATCH_MAP_CATEGORY_TO_LIST2( #Category, __COUNTER__ )
+
 #define FAIL_STRING( str ) _T( str )
 
 #else // detect CLR
@@ -238,6 +241,9 @@ private:
 #define INTERNAL_CATCH_MAP_CATEGORY_TO_TAG( Category, Tag ) \
     INTERNAL_CATCH_MAP_CATEGORY_TO_TAG2( Category, Tag, __COUNTER__ )
 
+#define INTERNAL_CATCH_MAP_CATEGORY_TO_LIST( Category, List ) \
+    INTERNAL_CATCH_MAP_CATEGORY_TO_LIST2( Category, List, __COUNTER__ )
+
 #define FAIL_STRING( str ) WIDEN( str )
 
 #endif // detect CLR
@@ -250,11 +256,23 @@ private:
 #define CATCH_INTERNAL_CONFIG_WARN_MISSING_ASSERTIONS2( v, Count ) \
     namespace { CatchOverrides::ConfigWarnMissingAssertions<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, v); }
 
+#define CATCH_INTERNAL_CONFIG_ABORT_AFTER2( v, Count ) \
+    namespace { CatchOverrides::ConfigAbortAfter<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, v); }
+
+#define CATCH_INTERNAL_CONFIG_ADD_TEST2( v, Count ) \
+    namespace { CatchOverrides::ConfigAddTest<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, v); }
+
 #define CATCH_INTERNAL_CONFIG_SHOW_SUCCESS( v ) \
     CATCH_INTERNAL_CONFIG_SHOW_SUCCESS2( v, __COUNTER__)
 
 #define CATCH_INTERNAL_CONFIG_WARN_MISSING_ASSERTIONS( v ) \
     CATCH_INTERNAL_CONFIG_WARN_MISSING_ASSERTIONS2( v, __COUNTER__)
+
+#define CATCH_INTERNAL_CONFIG_ABORT_AFTER( v ) \
+    CATCH_INTERNAL_CONFIG_ABORT_AFTER2( v, __COUNTER__)
+
+#define CATCH_INTERNAL_CONFIG_ADD_TEST( v ) \
+    CATCH_INTERNAL_CONFIG_ADD_TEST2( v, __COUNTER__)
 
 #define CATCH_INTERNAL_RUN_SINGLE_TEST( Count ) \
         {   CatchOverrides::ConfigGuard cg; \
@@ -263,6 +281,7 @@ private:
             cd.abortAfter = 1; \
             cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
             cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
+            cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
             Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
             Catch::MSTestReporter* rep = new Catch::MSTestReporter(config.get()); \
             Catch::RunContext tr(config.get(), rep); \
@@ -351,6 +370,7 @@ private:
                 Catch::ConfigData cd; \
                 cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
                 cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
+                cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
                 cd.reporterName = "vs_reporter"; \
                 cd.name = "Batch run using tag : " Tag; \
                 cd.testsOrTags.push_back( Tag ); \
@@ -360,6 +380,35 @@ private:
                 Catch::Totals totals = runner.runTests(); \
                 if( totals.assertions.failed > 0 ) { \
                     INTERNAL_CATCH_TEST_REPORT_BATCH_FAILURE(totals.assertions.failed) \
+                } \
+            } \
+        }; \
+    }
+
+#define INTERNAL_CATCH_MAP_CATEGORY_TO_LIST2( Category, Count ) \
+    CHECK_FOR_TEST_CASE_CLASH \
+    namespace CATCH_INTERNAL_NAMESPACE( INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) { \
+        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count); \
+        INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) ) \
+        { \
+            INTERNAL_CATCH_CLASS_CONTEXT \
+	        BEGIN_INTERNAL_CATCH_BATCH_METHOD( Category, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) \
+            { \
+                Catch::ConfigData cd; \
+                cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
+                cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
+                cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
+                cd.reporterName = "vs_reporter"; \
+                cd.name = "Batch run using category : " Category; \
+                std::vector<std::string> stringNames = CatchOverrides::Config<Catch::IConfig const*>::instance().listOfTests(__FILE__, Count ); \
+                Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
+                Catch::MSTestReporter* rep = new Catch::MSTestReporter(config.get()); \
+                Catch::RunContext tr(config.get(), rep); \
+                for( std::vector<std::string>::iterator it = stringNames.begin(); it != stringNames.end(); ++it ) { \
+                    std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(*it); \
+                    if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match")); \
+                    if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name")); \
+                    tr.runTest(*testCase.begin()); \
                 } \
             } \
         }; \
