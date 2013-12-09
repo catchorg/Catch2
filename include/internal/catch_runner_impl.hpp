@@ -48,7 +48,6 @@ namespace Catch {
     };
 
     ///////////////////////////////////////////////////////////////////////////
-
     class RunContext : public IResultCapture, public IRunner {
 
         RunContext( RunContext const& );
@@ -105,18 +104,16 @@ namespace Catch {
         }
 
         Totals runTest( TestCase const& testCase ) {
-            Totals prevTotals = m_totals;
 
             std::string redirectedCout;
             std::string redirectedCerr;
 
             TestCaseInfo testInfo = testCase.getTestCaseInfo();
 
-            m_reporter->testCaseStarting( testInfo );
+            UnwindTestCaseOnCompletion finaliser(*this, m_totals, m_reporter, testInfo, redirectedCout, redirectedCerr);
 
             m_activeTestCase = &testCase;
             m_testCaseTracker = TestCaseTracker( testInfo.name );
-
             do {
                 do {
                     runCurrentTest( redirectedCout, redirectedCerr );
@@ -125,18 +122,10 @@ namespace Catch {
             }
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
-            Totals deltaTotals = m_totals.delta( prevTotals );
-            m_totals.testCases += deltaTotals.testCases;
-            m_reporter->testCaseEnded( TestCaseStats(   testInfo,
-                                                        deltaTotals,
-                                                        redirectedCout,
-                                                        redirectedCerr,
-                                                        aborting() ) );
-
             m_activeTestCase = NULL;
             m_testCaseTracker.reset();
 
-            return deltaTotals;
+            return finaliser.report();
         }
 
         Ptr<IConfig const> config() const {
@@ -194,12 +183,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions, double _durationInSeconds ) {
-            if( std::uncaught_exception() ) {
-                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions, _durationInSeconds ) );
-                return;
-            }
-
+        void unwindSection(SectionInfo const& info, Counts const& prevAssertions, double _durationInSeconds ) {
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
@@ -207,6 +191,15 @@ namespace Catch {
 
             m_reporter->sectionEnded( SectionStats( info, assertions, _durationInSeconds, missingAssertions ) );
             m_messages.clear();
+        }
+
+        virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions, double _durationInSeconds ) {
+            if( std::uncaught_exception() ) {
+                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions, _durationInSeconds ) );
+                return;
+            }
+
+            unwindSection(info, prevAssertions, _durationInSeconds);
         }
 
         virtual void pushScopedMessage( MessageInfo const& message ) {
@@ -257,16 +250,13 @@ namespace Catch {
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-            SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
-            m_reporter->sectionStarting( testCaseSection );
-            Counts prevAssertions = m_totals.assertions;
-            double duration = 0;
+
+            UnwindSectionOnCompletion finaliser(*this, m_totals, m_reporter, testCaseInfo, m_unfinishedSections, m_messages);
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
 
-                Timer timer;
-                timer.start();
+                finaliser.startTimer();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
@@ -275,37 +265,16 @@ namespace Catch {
                 else {
                     m_activeTestCase->invoke();
                 }
-                duration = timer.getElapsedSeconds();
+                finaliser.stopTimer();
             }
-#ifdef INTERNAL_CATCH_VS_MANAGED // detect CLR
-            catch(AssertFailedException^) {
-                throw;  // CLR always rethrows - stop on first assert
-            }
-#else
-            catch( INTERNAL_CATCH_TEST_FAILURE_EXCEPTION ) {
+            catch( const Catch::TestFailureException& ) {
                 // This just means the test was aborted due to failure
             }
-#endif
             catch(...) {
                 ExpressionResultBuilder exResult( ResultWas::ThrewException );
                 exResult << translateActiveException();
                 actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
             }
-            // If sections ended prematurely due to an exception we stored their
-            // infos here so we can tear them down outside the unwind process.
-            for( std::vector<UnfinishedSections>::const_iterator it = m_unfinishedSections.begin(),
-                        itEnd = m_unfinishedSections.end();
-                    it != itEnd;
-                    ++it )
-                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
-            m_unfinishedSections.clear();
-            m_messages.clear();
-
-            Counts assertions = m_totals.assertions - prevAssertions;
-            bool missingAssertions = testForMissingAssertions( assertions );
-
-            SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );
-            m_reporter->sectionEnded( testCaseSectionStats );
         }
 
     private:
@@ -317,6 +286,111 @@ namespace Catch {
             SectionInfo info;
             Counts prevAssertions;
             double durationInSeconds;
+        };
+
+        class UnwindSectionOnCompletion
+        {
+        public:
+            UnwindSectionOnCompletion(RunContext& context, Totals& totals, Ptr<IStreamingReporter>& reporter, TestCaseInfo const& testCaseInfo,
+                std::vector<UnfinishedSections>& unfinishedSections, std::vector<MessageInfo>& messages)
+                : m_context(context)
+                , m_totals(totals)
+                , m_reporter(reporter)
+                , m_testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo )
+                , m_unfinishedSections(unfinishedSections)
+                , m_messages(messages)
+                , m_duration(0.0)
+            {
+                m_prevAssertions = m_totals.assertions;
+                m_reporter->sectionStarting( m_testCaseSection );
+            }
+            ~UnwindSectionOnCompletion()
+            {
+                // If sections ended prematurely due to an exception we stored their
+                // infos here so we can tear them down.
+                for( std::vector<UnfinishedSections>::const_iterator it = m_unfinishedSections.begin(),
+                            itEnd = m_unfinishedSections.end();
+                        it != itEnd;
+                        ++it ) {
+                    m_context.unwindSection( it->info, it->prevAssertions, it->durationInSeconds );
+                }
+                m_unfinishedSections.clear();
+                m_messages.clear();
+
+                Counts assertions = m_totals.assertions - m_prevAssertions;
+                bool missingAssertions = m_context.testForMissingAssertions( assertions );
+
+                SectionStats testCaseSectionStats( m_testCaseSection, assertions, m_duration, missingAssertions );
+                m_reporter->sectionEnded( testCaseSectionStats );
+            }
+            void startTimer()
+            {
+                m_timer.start();
+            }
+            void stopTimer()
+            {
+                m_duration = m_timer.getElapsedSeconds();
+            }
+        private:
+            // non-copyable
+            UnwindSectionOnCompletion(const UnwindSectionOnCompletion&);
+            UnwindSectionOnCompletion& operator=(const UnwindSectionOnCompletion&);
+
+            RunContext& m_context;
+            Totals& m_totals;
+            Ptr<IStreamingReporter>& m_reporter;
+            SectionInfo m_testCaseSection;
+            std::vector<UnfinishedSections>& m_unfinishedSections;
+            std::vector<MessageInfo>& m_messages;
+            Timer m_timer;
+            Counts m_prevAssertions;
+            double m_duration;
+        };
+
+        class UnwindTestCaseOnCompletion
+        {
+        public:
+            UnwindTestCaseOnCompletion(RunContext& context, Totals& totals, Ptr<IStreamingReporter>& reporter, TestCaseInfo& testInfo,
+                std::string& redirectedCout, std::string& redirectedCerr)
+                : m_context(context), m_totals(totals), m_reporter(reporter), m_testInfo(testInfo)
+                , m_redirectedCout(redirectedCout), m_redirectedCerr(redirectedCerr)
+                , m_reported(false)
+            {
+                m_prevTotals = m_totals;
+                m_reporter->testCaseStarting( m_testInfo );
+            }
+            ~UnwindTestCaseOnCompletion()
+            {
+                if( !m_reported )
+                {
+                    report();
+                }
+            }
+            Totals report()
+            {
+                m_reported = true;
+                Totals deltaTotals = m_totals.delta( m_prevTotals );
+                m_totals.testCases += deltaTotals.testCases;
+                m_reporter->testCaseEnded( TestCaseStats(   m_testInfo,
+                                                            deltaTotals,
+                                                            m_redirectedCout,
+                                                            m_redirectedCerr,
+                                                            m_context.aborting() ) );
+                return deltaTotals;
+            }
+        private:
+            // non-copyable
+            UnwindTestCaseOnCompletion(const UnwindTestCaseOnCompletion&);
+            UnwindTestCaseOnCompletion& operator=(const UnwindTestCaseOnCompletion&);
+
+            RunContext& m_context;
+            Totals& m_totals;
+            Ptr<IStreamingReporter>& m_reporter;
+            TestCaseInfo& m_testInfo;
+            std::string& m_redirectedCout;
+            std::string& m_redirectedCerr;
+            bool m_reported;
+            Totals m_prevTotals;
         };
 
         TestRunInfo m_runInfo;

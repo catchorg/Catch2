@@ -15,9 +15,10 @@
 
 namespace Catch {
 
+    template <typename Runner, typename ResultCapture>
     class Context : public IMutableContext {
 
-        Context() : m_config( NULL ), m_runner( NULL ), m_resultCapture( NULL ) {}
+        Context() : m_config( NULL ), m_runner( &nullRunner ), m_resultCapture( &nullResultCapture ) {}
         Context( Context const& );
         void operator=( Context const& );
 
@@ -81,15 +82,28 @@ namespace Catch {
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
+        
+        static ResultCapture nullResultCapture;
+        static Runner nullRunner;
+    public:
+        static Context* currentContext;
     };
 
-    namespace {
+    template <typename Runner, typename ResultCapture>
+    ResultCapture Context<Runner, ResultCapture>::nullResultCapture;
+    template <typename Runner, typename ResultCapture>
+    Runner Context<Runner, ResultCapture>::nullRunner;
+    template <typename Runner, typename ResultCapture>
+    Context<Runner,ResultCapture>* Context<Runner, ResultCapture>::currentContext = NULL;
+
+    /*namespace {
         Context* currentContext = NULL;
-    }
+    }*/
+    typedef Context<NullRunner, NullResultCapture> DefaultContext;
     INTERNAL_CATCH_INLINE IMutableContext& getCurrentMutableContext() {
-        if( !currentContext )
-            currentContext = new Context();
-        return *currentContext;
+        if( !DefaultContext::currentContext )
+            DefaultContext::currentContext = new DefaultContext();
+        return *DefaultContext::currentContext;
     }
     INTERNAL_CATCH_INLINE IContext& getCurrentContext() {
         return getCurrentMutableContext();
@@ -104,8 +118,8 @@ namespace Catch {
     }
 
     INTERNAL_CATCH_INLINE void cleanUpContext() {
-        delete currentContext;
-        currentContext = NULL;
+        delete DefaultContext::currentContext;
+        DefaultContext::currentContext = NULL;
     }
 }
 

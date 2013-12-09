@@ -18,7 +18,7 @@ using namespace System::Collections::Generic;
 using namespace Microsoft::VisualStudio::TestTools::UnitTesting;
 
 namespace Catch {
-    inline String^ convert_string_to_managed(const std::string& s)
+    inline String^ convert_string_for_assert(const std::string& s)
     {
         String^ result = gcnew String(s.c_str());
         return result;
@@ -33,67 +33,50 @@ namespace Catch {
 #include "catch_section.hpp"
 #include "internal/catch_timer.hpp"
 #include "internal/catch_vs_test_registry.hpp"
+#include "internal/catch_reporter_registrars.hpp"
 #include "reporters/catch_vs_reporter.hpp"
-
-#include "internal/catch_exception_translator_registry.hpp"
+#include "catch_registry_hub.hpp"
+#include "internal/catch_console_colour_impl.hpp"
+#include "catch_runner.hpp"
 
 namespace Catch {
+    inline NonCopyable::~NonCopyable() {}
+    inline IShared::~IShared() {}
+    inline StreamBufBase::~StreamBufBase() throw() {}
+    inline IContext::~IContext() {}
+    inline IResultCapture::~IResultCapture() {}
+    inline ITestCase::~ITestCase() {}
+    inline ITestCaseRegistry::~ITestCaseRegistry() {}
+    inline IRegistryHub::~IRegistryHub() {}
+    inline IMutableRegistryHub::~IMutableRegistryHub() {}
+    inline IExceptionTranslator::~IExceptionTranslator() {}
+    inline IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
+    inline IReporter::~IReporter() {}
+    inline IReporterFactory::~IReporterFactory() {}
+    inline IReporterRegistry::~IReporterRegistry() {}
+    inline IStreamingReporter::~IStreamingReporter() {}
+    inline AssertionStats::~AssertionStats() {}
+    inline SectionStats::~SectionStats() {}
+    inline TestCaseStats::~TestCaseStats() {}
+    inline TestGroupStats::~TestGroupStats() {}
+    inline TestRunStats::~TestRunStats() {}
 
-    class ExceptionRegistryHub : public IRegistryHub, public IMutableRegistryHub {
+    inline IRunner::~IRunner() {}
+    inline IMutableContext::~IMutableContext() {}
+    inline IConfig::~IConfig() {}
+    inline TestRegistry::~TestRegistry() {}
+    inline FreeFunctionTestCase::~FreeFunctionTestCase() {}
+    inline IGeneratorInfo::~IGeneratorInfo() {}
+    inline IGeneratorsForTest::~IGeneratorsForTest() {}
 
-        ExceptionRegistryHub( ExceptionRegistryHub const& );
-        void operator=( ExceptionRegistryHub const& );
+    inline Matchers::Impl::StdString::Equals::~Equals() {}
+    inline Matchers::Impl::StdString::Contains::~Contains() {}
+    inline Matchers::Impl::StdString::StartsWith::~StartsWith() {}
+    inline Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
-    public: // IRegistryHub
-        ExceptionRegistryHub() {
-        }
-        virtual IReporterRegistry const& getReporterRegistry() const {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual ITestCaseRegistry const& getTestCaseRegistry() const {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() {
-            return m_exceptionTranslatorRegistry;
-        }
-
-    public: // IMutableRegistryHub
-        virtual void registerReporter( std::string const&, IReporterFactory* ) {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual void registerTest( TestCase const& ) {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual void registerTranslator( const IExceptionTranslator* translator ) {
-            m_exceptionTranslatorRegistry.registerTranslator( translator );
-        }
-
-    private:
-        ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
-    };
-
-    template <typename T>
-    struct GlobalRegistryHub
-    {
-        static T& instance()
-        {
-            if( !theRegistryHub )
-                theRegistryHub = new T();
-            return *theRegistryHub;
-        }
-        static T* theRegistryHub;
-    };
-    template <typename T>
-    T* GlobalRegistryHub<T>::theRegistryHub = NULL;
-
-    INTERNAL_CATCH_INLINE IMutableRegistryHub& getMutableRegistryHub() {
-        return GlobalRegistryHub<ExceptionRegistryHub>::instance();
-    }
-    INTERNAL_CATCH_INLINE std::string translateActiveException() {
-        return GlobalRegistryHub<ExceptionRegistryHub>::instance().getExceptionTranslatorRegistry().translateActiveException();
-    }
-
+    inline void Config::dummy() {}
 }
+
 #endif
 
 #endif // TWOBLUECUBES_CATCH_VS_MANAGED_HPP_INCLUDED

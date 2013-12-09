@@ -46,15 +46,27 @@ namespace Catch {
 #endif  // detect CLR
 
     struct MSTestReporter : SharedImpl<IStreamingReporter> {
+        MSTestReporter( ReporterConfig const& _config )
+        :   m_config( _config.fullConfig() ),
+            m_headerPrinted( false ),
+            m_atLeastOneTestCasePrinted( false ),
+            m_failed(0)
+        {}
+        
         MSTestReporter( Ptr<IConfig> const& _fullConfig )
         :   m_config( _fullConfig ),
             m_headerPrinted( false ),
-            m_atLeastOneTestCasePrinted( false )
+            m_atLeastOneTestCasePrinted( false ),
+            m_failed(0)
         {}
 
         virtual ~MSTestReporter() {
             if( m_atLeastOneTestCasePrinted ) {
                 write_output_message(stream.str());
+                /*if( m_failed )
+                {
+                    Assert::IsTrue(false, L"At least one test failed - examine output for failures.");
+                }*/
             }
         }
     
@@ -120,9 +132,6 @@ namespace Catch {
                 write_output_message(_testCaseStats.stdErr);
                 write_output_message(getDoubleDashes());
             }
-            if( _testCaseStats.totals.assertions.failed ) {
-                Assert::IsTrue(false, L"At least one test failed - examine output for CHECK failures.");
-            }
             m_headerPrinted = false;
             currentTestCaseInfo.reset();
             assert( m_sectionStack.empty() );
@@ -141,6 +150,7 @@ namespace Catch {
                 printTotalsDivider();
             printTotals( _testRunStats.totals );
             stream << "\r\n" << "\r\n";
+            m_failed = _testRunStats.totals.testCases.failed;
             currentTestCaseInfo.reset();
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
@@ -448,6 +458,7 @@ namespace Catch {
         std::vector<SectionInfo> m_sectionStack;
         bool m_headerPrinted;
         bool m_atLeastOneTestCasePrinted;
+        size_t m_failed;
     };
 
 } // end namespace Catch

@@ -15,21 +15,24 @@ namespace Counter {
 int g_haveCountedMessages = 0;
 }
 
-// This test works with the equivalent in MessageInstantiationTests2.cpp
-// The first test to reach this point will increment the MessageInfo counter.  Subsequent tests
-// just check the value.  The purpose of this test is to verify that the compiler's
-// greedy instantiation (or whatever process it uses) eliminate all other
-// references to the globalCount
-
-TEST_CASE("message counting1","")
+namespace MI1
 {
-    if( Counter::g_haveCountedMessages > 0 ) {
-        REQUIRE( Catch::MessageInfoCounter<unsigned int>::globalCount > 0 );
-    }
-    else
+    // This test works with the equivalent in MessageInstantiationTests2.cpp
+    // The first test to reach this point will increment the MessageInfo counter.  Subsequent tests
+    // just check the value.  The purpose of this test is to verify that the compiler's
+    // greedy instantiation (or whatever process it uses) eliminate all other
+    // references to the globalCount
+
+    TEST_CASE("message counting1","")
     {
-        ++Catch::MessageInfoCounter<unsigned int>::globalCount;
-        Counter::g_haveCountedMessages = 1;
+        if( Counter::g_haveCountedMessages > 0 ) {
+            REQUIRE( Catch::MessageInfoCounter<unsigned int>::globalCount > 0 );
+        }
+        else
+        {
+            ++Catch::MessageInfoCounter<unsigned int>::globalCount;
+            Counter::g_haveCountedMessages = 1;
+        }
     }
 }
 
@@ -37,14 +40,17 @@ namespace LongCounter {
 int g_haveCountedMessagesLong = 0;
 }
 
-TEST_CASE("long message counting1","")
+namespace MI1
 {
-    if( LongCounter::g_haveCountedMessagesLong > 0 ) {
-        REQUIRE( Catch::MessageInfoCounter<long>::globalCount > 0 );
-    }
-    else
+    TEST_CASE("long message counting1","")
     {
-        ++Catch::MessageInfoCounter<long>::globalCount;
-        LongCounter::g_haveCountedMessagesLong = 1;
+        if( LongCounter::g_haveCountedMessagesLong > 0 ) {
+            REQUIRE( Catch::MessageInfoCounter<long>::globalCount > 0 );
+        }
+        else
+        {
+            ++Catch::MessageInfoCounter<long>::globalCount;
+            LongCounter::g_haveCountedMessagesLong = 1;
+        }
     }
 }

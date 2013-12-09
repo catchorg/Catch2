@@ -22,6 +22,138 @@
 #define CATCH_CONFIG_CONSOLE_WIDTH 80
 #endif
 
+namespace CatchOverrides {
+
+    class ConfigGuard
+    {
+    public:
+        ConfigGuard()
+            : origConfig(Catch::getCurrentContext().getConfig())
+        {}
+        ~ConfigGuard()
+        {
+            Catch::getCurrentMutableContext().setConfig(origConfig);
+        }
+        const Catch::Ptr<Catch::IConfig const>& value() const {return origConfig;}
+    private:
+        ConfigGuard(const ConfigGuard&);
+        ConfigGuard& operator=(const ConfigGuard&);
+        
+        const Catch::Ptr<Catch::IConfig const> origConfig;
+    };
+
+    template <typename T>
+    class Config
+    {
+        typedef std::map<int, bool> LineData;
+        typedef std::map<std::string, LineData> FileLineData;
+    public:
+        bool includeSuccessfulResults(const std::string& file, int c) const
+        {
+            bool result(false);
+            FileLineData::const_iterator it = showSuccessfulTestsData.find(file);
+            if( it != showSuccessfulTestsData.end() )
+            {
+                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
+                {
+                    if( c <= lineIt->first )
+                        break;
+                    result = lineIt->second;
+                }
+            }
+            return result;
+        }
+        void insertSuccessfulResults(const std::string& file, int c, bool v)
+        {
+            FileLineData::iterator it = showSuccessfulTestsData.find(file);
+            if( it == showSuccessfulTestsData.end() )
+            {
+                LineData tmp;
+                tmp.insert(std::make_pair(c,v));
+                showSuccessfulTestsData.insert(std::make_pair(file, tmp));
+            }
+            else
+            {
+                it->second.insert(std::make_pair(c,v));
+            }
+        }
+        bool warnAboutMissingAssertions(const std::string& file, int c) const
+        {
+            bool result(false);
+            FileLineData::const_iterator it = missingAssertionData.find(file);
+            if( it != missingAssertionData.end() )
+            {
+                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
+                {
+                    if( c <= lineIt->first )
+                        break;
+                    result = lineIt->second;
+                }
+            }
+            return result;
+        }
+        void insertMissingAssertions(const std::string& file, int c, bool v)
+        {
+            FileLineData::iterator it = missingAssertionData.find(file);
+            if( it == missingAssertionData.end() )
+            {
+                LineData tmp;
+                tmp.insert(std::make_pair(c,v));
+                missingAssertionData.insert(std::make_pair(file, tmp));
+            }
+            else
+            {
+                it->second.insert(std::make_pair(c,v));
+            }
+        }
+        static Config<T>& instance()
+        {
+            if( !s_instance )
+            {
+                s_instance = new Config<T>();
+            }
+            return *s_instance;
+        }
+    private:
+        FileLineData showSuccessfulTestsData;
+        FileLineData missingAssertionData;
+        
+        static Config<T>* s_instance;
+    };
+    template <typename T>
+    Config<T>* Config<T>::s_instance = NULL;
+
+    template <typename T>
+    struct ConfigReset
+    {
+        ConfigReset( const std::string& file, int c )
+        {
+            Config<T>::instance().insertSuccessfulResults(file, c, false);
+            Config<T>::instance().insertMissingAssertions(file, c, false);
+        }
+    };
+
+    template <typename T>
+    struct ConfigShowSuccessfulTests
+    {
+        template <typename U>
+        ConfigShowSuccessfulTests( const std::string& file, int c, U v )
+        {
+            Config<T>::instance().insertSuccessfulResults(file, c, v ? true : false);
+        }
+    };
+
+    template <typename T>
+    struct ConfigWarnMissingAssertions
+    {
+        template <typename U>
+        ConfigWarnMissingAssertions( const std::string& file, int c, U v )
+        {
+            Config<T>::instance().insertMissingAssertions(file, c, v ? true : false);
+        }
+    };
+}
+
 namespace Catch {
 
     struct ConfigData {
@@ -39,6 +171,21 @@ namespace Catch {
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
             showDurations( ShowDurations::DefaultForReporter )
+        {}
+
+        explicit ConfigData(const IConfig* other)
+        :   listTests( false ),
+            listTags( false ),
+            listReporters( false ),
+            showSuccessfulTests( other ? other->includeSuccessfulResults() : false ),
+            shouldDebugBreak( false ),
+            noThrow( other ? !other->allowThrows() : false ),
+            showHelp( false ),
+            abortAfter( -1 ),
+            verbosity( Verbosity::Normal ),
+            warnings( other ? (other->warnAboutMissingAssertions() ? WarnAbout::NoAssertions : WarnAbout::Nothing) : WarnAbout::Nothing ),
+            showDurations( other ? other->showDurations() : ShowDurations::DefaultForReporter ),
+            name( other ? other->name() : std::string() )
         {}
 
         bool listTests;

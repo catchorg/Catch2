@@ -50,12 +50,6 @@
     <ClCompile Include="..\..\SelfTest\GeneratorTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SelfTest\MessageInstantiationTests1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SelfTest\MessageInstantiationTests2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\SelfTest\MessageTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,6 +60,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\SelfTest\TrickyTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SelfTest\RunAllTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SelfTest\TestMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SelfTest\VisualStudioTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SelfTest\MessageInstantiationTests1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SelfTest\MessageInstantiationTests2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

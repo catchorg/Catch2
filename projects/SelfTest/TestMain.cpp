@@ -346,35 +346,35 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
         std::string testString = "one two three four";
         
         SECTION( "No wrapping", "" ) {
-            CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
-            CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
         }
         SECTION( "Wrapped once", "" ) {
-            CHECK( Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" );
         }
         SECTION( "Wrapped twice", "" ) {
-            CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" );
         }
         SECTION( "Wrapped three times", "" ) {
-            CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" );
         }
         SECTION( "Short wrap", "" ) {
-            CHECK( Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" );
-            CHECK( Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" );
-            CHECK( Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" );
+            CHECK( Catch::Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" );
+            CHECK( Catch::Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" );
+            CHECK( Catch::Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" );
 
-            CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" );
         }
         SECTION( "As container", "" ) {
-            Text text( testString, TextAttributes().setWidth( 6 ) );
+            Catch::Text text( testString, TextAttributes().setWidth( 6 ) );
             REQUIRE( text.size() == 4 );
             CHECK( text[0] == "one" );
             CHECK( text[1] == "two" );
@@ -382,7 +382,7 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
             CHECK( text[3] == "four" );
         }
         SECTION( "Indent first line differently", "" ) {
-            Text text( testString, TextAttributes()
+            Catch::Text text( testString, TextAttributes()
                                         .setWidth( 10 )
                                         .setIndent( 4 )
                                         .setInitialIndent( 1 ) );
@@ -397,22 +397,22 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
         std::string testString = "one two\nthree four";
         
         SECTION( "No wrapping" , "" ) {
-            CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
-            CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
-            CHECK( Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString );
         }
         SECTION( "Trailing newline" , "" ) {
-            CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" );
-            CHECK( Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" );
-            CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" );
+            CHECK( Catch::Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" );
+            CHECK( Catch::Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" );
+            CHECK( Catch::Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" );
         }
         SECTION( "Wrapped once", "" ) {
-            CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" );
-            CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" );
         }
         SECTION( "Wrapped twice", "" ) {
-            CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" );
+            CHECK( Catch::Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" );
         }
     }
     
@@ -421,7 +421,7 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
         // guide:                 1234567890123456789
         std::string testString = "one two \tthree four five six";
         
-        CHECK( Text( testString, TextAttributes().setWidth( 15 ) ).toString()
+        CHECK( Catch::Text( testString, TextAttributes().setWidth( 15 ) ).toString()
             == "one two three\n        four\n        five\n        six" );
     }
     
@@ -522,12 +522,12 @@ TEST_CASE( "Strings can be rendered with colour", "[colour]" ) {
 
 TEST_CASE( "Text can be formatted using the Text class", "" ) {
     
-    CHECK( Text( "hi there" ).toString() == "hi there" );
+    CHECK( Catch::Text( "hi there" ).toString() == "hi there" );
     
     TextAttributes narrow;
     narrow.setWidth( 6 );
     
-    CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" );
+    CHECK( Catch::Text( "hi there", narrow ).toString() == "hi\nthere" );
 }
 
 TEST_CASE( "Long text is truncted", "[Text][Truncated]" ) {
@@ -537,7 +537,7 @@ TEST_CASE( "Long text is truncted", "[Text][Truncated]" ) {
     std::ostringstream oss;
     for(int i = 0; i < 600; ++i )
         oss << longLine << longLine << "\n";
-    Text t( oss.str() );
+    Catch::Text t( oss.str() );
     CHECK_THAT( t.toString(), EndsWith( "... message truncated due to excessive size" ) );
     
 }

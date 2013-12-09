@@ -24,7 +24,7 @@ namespace Catch
     }
 }
 
-namespace TrickTests
+namespace TrickyTests
 {
     ///////////////////////////////////////////////////////////////////////////////
     TEST_CASE
@@ -209,177 +209,180 @@ namespace ObjectWithNonConstEqualityOperator
     }
 }
 
-namespace EnumBitFieldTests
+namespace TrickyTests
 {
-    enum Bits {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
-        bit30 = 0x40000000, bit31 = 0x80000000,
-        bit30and31 = 0xc0000000};
-
-    TEST_CASE( "Test enum bit values", "[Tricky]" )
+    namespace EnumBitFieldTests
     {
-        REQUIRE( 0xc0000000 == bit30and31 );
-    }
-}
+        enum Bits {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
+            bit30 = 0x40000000, bit31 = 0x80000000,
+            bit30and31 = 0xc0000000};
 
-struct Obj
-{
-    Obj():prop(&p){}
+        TEST_CASE( "Test enum bit values", "[Tricky]" )
+        {
+            REQUIRE( 0xc0000000 == bit30and31 );
+        }
+    }
+
+    struct Obj
+    {
+        Obj():prop(&p){}
     
-    int p;
-    int* prop;
-};
+        int p;
+        int* prop;
+    };
 
-TEST_CASE("boolean member", "[Tricky]")
-{
-    Obj obj;
-    REQUIRE( obj.prop != NULL );
-}
-
-// Tests for a problem submitted by Ralph McArdell
-//
-// The static bool value should not need to be defined outside the
-// struct it is declared in - but when evaluating it in a deduced
-// context it appears to require the extra definition.
-// The issue was fixed by adding bool overloads to bypass the
-// templates that were there to deduce it.
-template <bool B>
-struct is_true
-{
-    static const bool value = B;
-};
-
-TEST_CASE( "(unimplemented) static bools can be evaluated", "[Tricky]" )
-{
-    SECTION("compare to true","")
+    TEST_CASE("boolean member", "[Tricky]")
     {
-        REQUIRE( is_true<true>::value == true );
-        REQUIRE( true == is_true<true>::value );
-    }
-    SECTION("compare to false","")
-    {
-        REQUIRE( is_true<false>::value == false );
-        REQUIRE( false == is_true<false>::value );
+        Obj obj;
+        REQUIRE( obj.prop != NULL );
     }
 
-    SECTION("negation", "")
+    // Tests for a problem submitted by Ralph McArdell
+    //
+    // The static bool value should not need to be defined outside the
+    // struct it is declared in - but when evaluating it in a deduced
+    // context it appears to require the extra definition.
+    // The issue was fixed by adding bool overloads to bypass the
+    // templates that were there to deduce it.
+    template <bool B>
+    struct is_true
     {
-        REQUIRE( !is_true<false>::value );
+        static const bool value = B;
+    };
+
+    TEST_CASE( "(unimplemented) static bools can be evaluated", "[Tricky]" )
+    {
+        SECTION("compare to true","")
+        {
+            REQUIRE( is_true<true>::value == true );
+            REQUIRE( true == is_true<true>::value );
+        }
+        SECTION("compare to false","")
+        {
+            REQUIRE( is_true<false>::value == false );
+            REQUIRE( false == is_true<false>::value );
+        }
+
+        SECTION("negation", "")
+        {
+            REQUIRE( !is_true<false>::value );
+        }
+
+        SECTION("double negation","")
+        {
+            REQUIRE( !!is_true<true>::value );
+        }
+
+        SECTION("direct","")
+        {
+            REQUIRE( is_true<true>::value );
+            REQUIRE_FALSE( is_true<false>::value );
+        }
     }
 
-    SECTION("double negation","")
+    // Uncomment these tests to produce an error at test registration time
+    /*
+    TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
     {
-        REQUIRE( !!is_true<true>::value );
-    }
-
-    SECTION("direct","")
-    {
-        REQUIRE( is_true<true>::value );
-        REQUIRE_FALSE( is_true<false>::value );
-    }
-}
-
-// Uncomment these tests to produce an error at test registration time
-/*
-TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
-{
     
-}
-TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
-{
+    }
+    TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
+    {
     
-}
-*/
+    }
+    */
 
-struct Boolable
-{
-    explicit Boolable( bool value ) : m_value( value ) {}
+    struct Boolable
+    {
+        explicit Boolable( bool value ) : m_value( value ) {}
 
-    operator Catch::SafeBool::type() const {
-        return Catch::SafeBool::makeSafe( m_value );
+        operator Catch::SafeBool::type() const {
+            return Catch::SafeBool::makeSafe( m_value );
+        }
+
+        bool m_value;
+    };
+
+    TEST_CASE( "Objects that evaluated in boolean contexts can be checked", "[Tricky][SafeBool]" )
+    {
+        Boolable True( true );
+        Boolable False( false );
+
+        CHECK( True );
+        CHECK( !False );
+        CHECK_FALSE( False );
     }
 
-    bool m_value;
-};
-
-TEST_CASE( "Objects that evaluated in boolean contexts can be checked", "[Tricky][SafeBool]" )
-{
-    Boolable True( true );
-    Boolable False( false );
-
-    CHECK( True );
-    CHECK( !False );
-    CHECK_FALSE( False );
-}
-
-TEST_CASE( "Assertions then sections", "[Tricky]" )
-{
-    // This was causing a failure due to the way the console reporter was handling
-    // the current section
-    
-    REQUIRE( Catch::isTrue( true ) );
-    
-    SECTION( "A section", "" )
+    TEST_CASE( "Assertions then sections", "[Tricky]" )
     {
+        // This was causing a failure due to the way the console reporter was handling
+        // the current section
+    
         REQUIRE( Catch::isTrue( true ) );
+    
+        SECTION( "A section", "" )
+        {
+            REQUIRE( Catch::isTrue( true ) );
         
-        SECTION( "Another section", "" )
-        {
-            REQUIRE( Catch::isTrue( true ) );
-        }
-        SECTION( "Another other section", "" )
-        {
-            REQUIRE( Catch::isTrue( true ) );
+            SECTION( "Another section", "" )
+            {
+                REQUIRE( Catch::isTrue( true ) );
+            }
+            SECTION( "Another other section", "" )
+            {
+                REQUIRE( Catch::isTrue( true ) );
+            }
         }
     }
+
+    struct Awkward
+    {
+        operator int() const { return 7; }
+    };
+
+    TEST_CASE( "non streamable - with conv. op", "[Tricky]" )
+    {
+        Awkward awkward;
+        std::string s = Catch::toString( awkward );
+        REQUIRE( s == "7" );
+    }
+
+    inline void foo() {}
+
+    typedef void (*fooptr_t)();
+
+    TEST_CASE( "Comparing function pointers", "[Tricky][function pointer]" )
+    {
+        // This was giving a warning in VS2010
+        // #179
+        fooptr_t a = foo;
+
+        REQUIRE( a );
+        REQUIRE( a == &foo );
+    }
+
+    class ClassName {};
+
+    TEST_CASE( "pointer to class", "[Tricky]" )
+    {
+       ClassName *p = 0;
+       REQUIRE( p == 0 );
+    }
+
+    #ifdef CATCH_CONFIG_CPP11_NULLPTR
+
+    #include <memory>
+
+    TEST_CASE( "null_ptr", "[Tricky]" )
+    {
+        std::unique_ptr<int> ptr;
+        REQUIRE(ptr.get() == nullptr);
+    }
+
+    #endif
+
+    TEST_CASE( "X/level/0/a", "[Tricky]" )      { SUCCEED(""); }
+    TEST_CASE( "X/level/0/b", "[Tricky][fizz]" ){ SUCCEED(""); }
+    TEST_CASE( "X/level/1/a", "[Tricky]" )      { SUCCEED(""); }
+    TEST_CASE( "X/level/1/b", "[Tricky]" )      { SUCCEED(""); }
 }
-
-struct Awkward
-{
-    operator int() const { return 7; }
-};
-
-TEST_CASE( "non streamable - with conv. op", "[Tricky]" )
-{
-    Awkward awkward;
-    std::string s = Catch::toString( awkward );
-    REQUIRE( s == "7" );
-}
-
-inline void foo() {}
-
-typedef void (*fooptr_t)();
-
-TEST_CASE( "Comparing function pointers", "[Tricky][function pointer]" )
-{
-    // This was giving a warning in VS2010
-    // #179
-    fooptr_t a = foo;
-
-    REQUIRE( a );
-    REQUIRE( a == &foo );
-}
-
-class ClassName {};
-
-TEST_CASE( "pointer to class", "[Tricky]" )
-{
-   ClassName *p = 0;
-   REQUIRE( p == 0 );
-}
-
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
-
-#include <memory>
-
-TEST_CASE( "null_ptr", "[Tricky]" )
-{
-    std::unique_ptr<int> ptr;
-    REQUIRE(ptr.get() == nullptr);
-}
-
-#endif
-
-TEST_CASE( "X/level/0/a", "[Tricky]" )      { SUCCEED(""); }
-TEST_CASE( "X/level/0/b", "[Tricky][fizz]" ){ SUCCEED(""); }
-TEST_CASE( "X/level/1/a", "[Tricky]" )      { SUCCEED(""); }
-TEST_CASE( "X/level/1/b", "[Tricky]" )      { SUCCEED(""); }
