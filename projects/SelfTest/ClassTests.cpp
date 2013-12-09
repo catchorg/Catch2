@@ -8,32 +8,28 @@
 
 #include "catch.hpp"
 
-namespace ClassTests
+class TestClass
 {
-    class TestClass
-    {
-        std::string s;
+    std::string s;
         
-    public:
-        TestClass()
-        : s( "hello" )
-        {}
+public:
+    TestClass()
+    : s( "hello" )
+    {}
         
-        void succeedingCase()
-        {            
-            REQUIRE( s == "hello" );
-        }
-        void failingCase()
-        {            
-            REQUIRE( s == "world" );
-        }
-    };
+    void succeedingCase()
+    {            
+        REQUIRE( s == "hello" );
+    }
+    void failingCase()
+    {            
+        REQUIRE( s == "world" );
+    }
+};
 
-    // Note: TestClass conflicts with template class with same name in VS2012 native tests
-    METHOD_AS_TEST_CASE( ClassTests::TestClass::succeedingCase, "./succeeding/TestClass/succeedingCase", "A method based test run that succeeds [class]" )
-    METHOD_AS_TEST_CASE( ClassTests::TestClass::failingCase, "./failing/TestClass/failingCase", "A method based test run that fails [class]" )
-
-}
+// Note: TestClass conflicts with template class with same name in VS2012 native tests
+METHOD_AS_TEST_CASE( TestClass::succeedingCase, "./succeeding/TestClass/succeedingCase", "A method based test run that succeeds [class]" )
+METHOD_AS_TEST_CASE( TestClass::failingCase, "./failing/TestClass/failingCase", "A method based test run that fails [class]" )
 
 struct Fixture
 {
