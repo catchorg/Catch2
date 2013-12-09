@@ -20,7 +20,15 @@ We can do the same for VS2012 - [see this page for instructions on how to do thi
 
 # Running tests from the command line
 
-Tests can also be run from the command line.  [For VS2010 see these details](VS2010commandline.md) and [for VS2012 see these](VS2012commandline.md)
+Tests can also be run from the command line.  [For VS2010 see these details](VS2010commandline.md) and [for VS2012 see these](VS2012commandline.md).
+
+# Running tests using Catch tags
+
+If you've used the Catch command line, you'll know that Catch can selectively include and exclude tests using tags.  For example, you might want to exclude long running tests from each check-in to your CI server, so you might tag those tests with `[slow]` and run Catch with `example.exe ~[slow]`.
+
+It doesn't look like it's possible to reproduce the flexibility of Catch but it is possible to do some basic filtering using Catch tags.
+
+[This page details how to do this.](VScommandlinetags.md)
  
 # Differences in behaviour 
 
@@ -34,7 +42,7 @@ There are some minor differences in behaviour between Catch and Visual Studio pr
 
 You can still use the same names that you would normally use for Catch TEST_CASE names, however we use an internal name for the actual function name that the test lives in.  This means that you won't see the Catch names in the Test View (VS2010) unless you 'Group By' Description, or in VS2012 you select the 'Traits' view Test Explorer - see the screen shots above.
  
-## Catch tests always stop on first failure.
+## When running from the GUI, Catch tests always stop on first failure.
 
 A Catch test that uses SECTIONS will continue to run further sections if one fails; in VS this doesn't make much sense because in a visual environment we want to capture the context of where the test failed.  If we allowed the test to continue then we lose this context, so instead we always stop on each failure.  You can still use the CHECK macros if you don't want the test to stop.
 
