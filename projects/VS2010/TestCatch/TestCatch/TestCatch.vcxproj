@@ -94,8 +94,6 @@
     <ClCompile Include="..\..\..\SelfTest\ApproxTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\BDDTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\CmdLineTests.cpp" />
-    <ClCompile Include="..\..\..\SelfTest\MessageInstantiationTests1.cpp" />
-    <ClCompile Include="..\..\..\SelfTest\MessageInstantiationTests2.cpp" />
     <ClCompile Include="..\..\..\SelfTest\SectionTrackerTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\TestMain.cpp" />
     <ClCompile Include="..\..\..\SelfTest\catch_self_test.cpp" />

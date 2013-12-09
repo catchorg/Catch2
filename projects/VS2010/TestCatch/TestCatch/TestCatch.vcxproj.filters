@@ -28,12 +28,6 @@
     <ClCompile Include="..\..\..\SelfTest\GeneratorTests.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\SelfTest\MessageInstantiationTests1.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SelfTest\MessageInstantiationTests2.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\SelfTest\MessageTests.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
