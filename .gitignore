@@ -11,6 +11,11 @@ Release
 ipch
 TestResults
 projects/VS2010/TestCatch/Visual Lint
+projects/VS2010/ManagedTestCatch/Visual Lint
+projects/VS2012/ManagedTestCatch/Visual Lint
+projects/VS2012/NativeTestCatch/Visual Lint
+DebugMbcs
+ReleaseMbcs
 *.user
 *.xcuserstate
 *.o
