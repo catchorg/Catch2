@@ -332,7 +332,6 @@ namespace Catch {
     inline IMutableRegistryHub::~IMutableRegistryHub() {}
     inline IExceptionTranslator::~IExceptionTranslator() {}
     inline IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
-    inline IReporter::~IReporter() {}
     inline IReporterFactory::~IReporterFactory() {}
     inline IReporterRegistry::~IReporterRegistry() {}
     inline IStreamingReporter::~IStreamingReporter() {}
@@ -355,9 +354,6 @@ namespace Catch {
     inline FreeFunctionTestCase::~FreeFunctionTestCase() {}
     inline IGeneratorInfo::~IGeneratorInfo() {}
     inline IGeneratorsForTest::~IGeneratorsForTest() {}
-    inline TagParser::~TagParser() {}
-    inline TagExtracter::~TagExtracter() {}
-    inline TagExpressionParser::~TagExpressionParser() {}
 
     inline Matchers::Impl::StdString::Equals::~Equals() {}
     inline Matchers::Impl::StdString::Contains::~Contains() {}

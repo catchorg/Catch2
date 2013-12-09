@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_INFO_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
-#include "catch_tags.hpp"
+#include "catch_tags.h"
 #include "catch_test_case_info.h"
 #include "catch_interfaces_testcase.h"
 #include "catch_common.h"
@@ -22,12 +22,16 @@ namespace Catch {
                             SourceLineInfo const& _lineInfo )
     {
         std::string desc = _descOrTags;
-        bool isHidden( startsWith( _name, "./" ) );
+        bool isHidden( startsWith( _name, "./" ) ); // Legacy support
         std::set<std::string> tags;
         TagExtracter( tags ).parse( desc );
         if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
             isHidden = true;
 
+        if( isHidden ) {
+            tags.insert( "hide" );
+            tags.insert( "." );
+        }
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
     }

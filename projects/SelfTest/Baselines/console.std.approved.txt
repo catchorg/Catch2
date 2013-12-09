@@ -4,7 +4,7 @@ CatchSelfTest is a <version> host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
-./failing/TestClass/failingCase
+A METHOD_AS_TEST_CASE based test run that fails
 -------------------------------------------------------------------------------
 ClassTests.cpp:<line number>
 ...............................................................................
@@ -15,7 +15,7 @@ with expansion:
   "hello" == "world"
 
 -------------------------------------------------------------------------------
-./failing/Fixture/failingCase
+A TEST_CASE_METHOD based test run that fails
 -------------------------------------------------------------------------------
 ClassTests.cpp:<line number>
 ...............................................................................
@@ -26,7 +26,7 @@ with expansion:
   1 == 2
 
 -------------------------------------------------------------------------------
-./failing/conditions/equality
+Equality checks that should fail]
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
 ...............................................................................
@@ -97,7 +97,7 @@ with expansion:
   1.3 == Approx( 1.301 )
 
 -------------------------------------------------------------------------------
-./failing/conditions/inequality
+Inequality checks that should fails
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
 ...............................................................................
@@ -128,7 +128,7 @@ with expansion:
   5 != 5
 
 -------------------------------------------------------------------------------
-./failing/conditions/ordered
+Ordering comparison checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
 ...............................................................................
@@ -229,7 +229,7 @@ with expansion:
   "hello" <= "a"
 
 -------------------------------------------------------------------------------
-./failing/conditions/not
+'Not' checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
 ...............................................................................
@@ -269,7 +269,7 @@ with expansion:
   !(1 == 1)
 
 -------------------------------------------------------------------------------
-./failing/exceptions/explicit
+Expected exceptions that don't throw or unexpected exceptions fail the test
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -289,7 +289,7 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
-./failing/exceptions/implicit
+When unchecked exceptions are thrown directly they are always failures
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -299,7 +299,7 @@ due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
-./failing/exceptions/implicit/2
+An unchecked exception reports the line of the last assertion
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -310,7 +310,7 @@ due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
-./failing/exceptions/implicit/3
+When unchecked exceptions are thrown from sections they are always failures
   section name
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -321,7 +321,7 @@ due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
-./failing/exceptions/implicit/4
+When unchecked exceptions are thrown from functions they are always failures
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -332,7 +332,7 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
-./failing/exceptions/custom
+Unexpected custom exceptions can be translated
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -342,7 +342,7 @@ due to unexpected exception with message:
   custom exception
 
 -------------------------------------------------------------------------------
-./failing/exceptions/custom/nothrow
+Custom exceptions can be translated when testing for nothrow
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -353,7 +353,7 @@ due to unexpected exception with message:
   custom exception - not std
 
 -------------------------------------------------------------------------------
-./failing/exceptions/custom/throw
+Custom exceptions can be translated when testing for throwing as something else
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -364,7 +364,7 @@ due to unexpected exception with message:
   custom exception - not std
 
 -------------------------------------------------------------------------------
-./failing/exceptions/custom/double
+Unexpected exceptions can be translated
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -374,7 +374,7 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
-./succeeding/message
+INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
 ...............................................................................
@@ -384,7 +384,7 @@ warning:
   this is a warning
 
 -------------------------------------------------------------------------------
-./failing/message/info/1
+INFO gets logged on failure
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
 ...............................................................................
@@ -398,7 +398,7 @@ with messages:
   so should this
 
 -------------------------------------------------------------------------------
-./mixed/message/info/2
+INFO gets logged on failure, even if captured before successful assertions
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
 ...............................................................................
@@ -419,7 +419,7 @@ with message:
   and this, but later
 
 -------------------------------------------------------------------------------
-./failing/message/fail
+FAIL aborts the test
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
 ...............................................................................
@@ -429,7 +429,7 @@ explicitly with message:
   This is a failure
 
 -------------------------------------------------------------------------------
-./failing/message/sections
+Output from all sections is reported
   one
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -440,7 +440,7 @@ explicitly with message:
   Message from section one
 
 -------------------------------------------------------------------------------
-./failing/message/sections
+Output from all sections is reported
   two
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -453,7 +453,7 @@ explicitly with message:
 Message from section one
 Message from section two
 -------------------------------------------------------------------------------
-./mixed/message/scoped
+SCOPED_INFO is reset for each loop
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
 ...............................................................................
@@ -477,7 +477,19 @@ explicitly with message:
   Previous info should not be seen
 
 -------------------------------------------------------------------------------
-./mixed/Misc/Sections/nested2
+sends information to INFO
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( false )
+with messages:
+  hi
+  i := 7
+
+-------------------------------------------------------------------------------
+more nested SECTION tests
   s1
   s2
 -------------------------------------------------------------------------------
@@ -490,7 +502,7 @@ with expansion:
   1 == 2
 
 -------------------------------------------------------------------------------
-./mixed/Misc/Sections/loops
+looped SECTION tests
   s1
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -502,7 +514,7 @@ with expansion:
   0 > 1
 
 -------------------------------------------------------------------------------
-./mixed/Misc/loops
+looped tests
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -552,19 +564,7 @@ with message:
 Some information
 An error
 -------------------------------------------------------------------------------
-./failing/info
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  REQUIRE( false )
-with messages:
-  hi
-  i := 7
-
--------------------------------------------------------------------------------
-./failing/checkedif
+checkedIf, failing
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -580,7 +580,7 @@ with expansion:
   false
 
 -------------------------------------------------------------------------------
-./failing/checkedelse
+checkedElse, failing
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -596,7 +596,7 @@ with expansion:
   false
 
 -------------------------------------------------------------------------------
-./manual/onechar
+send a single char to INFO
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -607,7 +607,7 @@ with message:
   3
 
 -------------------------------------------------------------------------------
-./failing/matchers/Contains
+Contains string matcher
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -618,7 +618,7 @@ with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
 
 -------------------------------------------------------------------------------
-./failing/matchers/StartsWith
+StartsWith string matcher
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -629,7 +629,7 @@ with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
 
 -------------------------------------------------------------------------------
-./failing/matchers/EndsWith
+EndsWith string matcher
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -640,7 +640,7 @@ with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
 
 -------------------------------------------------------------------------------
-./failing/matchers/Equals
+Equals string matcher
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -661,7 +661,7 @@ warning:
   This one ran
 
 -------------------------------------------------------------------------------
-./failing/CatchSectionInfiniteLoop
+A couple of nested sections followed by a failure
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -671,7 +671,7 @@ explicitly with message:
   to infinity and beyond
 
 -------------------------------------------------------------------------------
-./failing/CatchSectionInfiniteLoop
+A couple of nested sections followed by a failure
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -681,7 +681,7 @@ explicitly with message:
   to infinity and beyond
 
 -------------------------------------------------------------------------------
-./failing/CatchSectionInfiniteLoop
+A couple of nested sections followed by a failure
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -690,18 +690,10 @@ MiscTests.cpp:<line number>: FAILED:
 explicitly with message:
   to infinity and beyond
 
-Message from section one
-Message from section two
-Some information
-An error
-Message from section one
-Message from section two
-Some information
-An error
 hello
 hello
 -------------------------------------------------------------------------------
-./inprogress/failing/Tricky/trailing expression
+Where the is more to the expression after the RHS[failing]
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -712,7 +704,7 @@ warning:
   error
 
 -------------------------------------------------------------------------------
-./inprogress/failing/Tricky/compound lhs
+Where the LHS is not a simple value[failing]
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -723,7 +715,7 @@ warning:
   error
 
 -------------------------------------------------------------------------------
-./failing/Tricky/non streamable type
+A failing expression with a non streamable type is still captured[failing]
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -739,7 +731,7 @@ with expansion:
   {?} == {?}
 
 -------------------------------------------------------------------------------
-./failing/string literals
+string literals of different sizes can be compared[failing]
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -750,5 +742,5 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-122 test cases - 35 failed (753 assertions - 90 failed)
+120 test cases - 35 failed (673 assertions - 90 failed)
 

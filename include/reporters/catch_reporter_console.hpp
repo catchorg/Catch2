@@ -8,7 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
 
-#include "../internal/catch_interfaces_reporter.h"
+#include "catch_reporter_bases.hpp"
+
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 

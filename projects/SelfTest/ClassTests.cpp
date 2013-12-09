@@ -28,8 +28,8 @@ public:
 };
 
 // Note: TestClass conflicts with template class with same name in VS2012 native tests
-METHOD_AS_TEST_CASE( TestClass::succeedingCase, "./succeeding/TestClass/succeedingCase", "A method based test run that succeeds [class]" )
-METHOD_AS_TEST_CASE( TestClass::failingCase, "./failing/TestClass/failingCase", "A method based test run that fails [class]" )
+METHOD_AS_TEST_CASE( ::TestClass::succeedingCase, "A METHOD_AS_TEST_CASE based test run that succeeds", "[class]" )
+METHOD_AS_TEST_CASE( ::TestClass::failingCase, "A METHOD_AS_TEST_CASE based test run that fails", "[.][class][failing]" )
 
 struct Fixture
 {
@@ -38,7 +38,7 @@ struct Fixture
     int m_a;
 };
 
-TEST_CASE_METHOD( Fixture, "./succeeding/Fixture/succeedingCase", "A method based test run that succeeds [class]" )
+TEST_CASE_METHOD( Fixture, "A TEST_CASE_METHOD based test run that succeeds", "[class]" )
 {   
     REQUIRE( m_a == 1 );        
 }
@@ -46,7 +46,7 @@ TEST_CASE_METHOD( Fixture, "./succeeding/Fixture/succeedingCase", "A method base
 // We should be able to write our tests within a different namespace
 namespace Inner
 {
-    TEST_CASE_METHOD( Fixture, "./failing/Fixture/failingCase", "A method based test run that fails [class]" )
+    TEST_CASE_METHOD( Fixture, "A TEST_CASE_METHOD based test run that fails", "[.][class][failing]" )
     {   
         REQUIRE( m_a == 2 );        
     }

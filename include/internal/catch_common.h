@@ -67,36 +67,17 @@ namespace Catch {
         std::for_each( container.begin(), container.end(), function );
     }
 
-    inline bool startsWith( std::string const& s, std::string const& prefix ) {
-        return s.size() >= prefix.size() && s.substr( 0, prefix.size() ) == prefix;
-    }
-    inline bool endsWith( std::string const& s, std::string const& suffix ) {
-        return s.size() >= suffix.size() && s.substr( s.size()-suffix.size(), suffix.size() ) == suffix;
-    }
-    inline bool contains( std::string const& s, std::string const& infix ) {
-        return s.find( infix ) != std::string::npos;
-    }
-    inline void toLowerInPlace( std::string& s ) {
-        std::transform( s.begin(), s.end(), s.begin(), ::tolower );
-    }
-    inline std::string toLower( std::string const& s ) {
-        std::string lc = s;
-        toLowerInPlace( lc );
-        return lc;
-    }
+    bool startsWith( std::string const& s, std::string const& prefix );
+    bool endsWith( std::string const& s, std::string const& suffix );
+    bool contains( std::string const& s, std::string const& infix );
+    void toLowerInPlace( std::string& s );
+    std::string toLower( std::string const& s );
+    std::string trim( std::string const& str );
 
     struct pluralise {
-        pluralise( std::size_t count, std::string const& label )
-        :   m_count( count ),
-            m_label( label )
-        {}
+        pluralise( std::size_t count, std::string const& label );
 
-        friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser ) {
-            os << pluraliser.m_count << " " << pluraliser.m_label;
-            if( pluraliser.m_count != 1 )
-                os << "s";
-            return os;
-        }
+        friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
 
         std::size_t m_count;
         std::string m_label;
@@ -104,43 +85,22 @@ namespace Catch {
 
     struct SourceLineInfo {
 
-        SourceLineInfo() : line( 0 ){}
-        SourceLineInfo( std::string const& _file, std::size_t _line )
-        :   file( _file ),
-            line( _line )
-        {}
-        SourceLineInfo( SourceLineInfo const& other )
-        :   file( other.file ),
-            line( other.line )
-        {}
-        bool empty() const {
-            return file.empty();
-        }
-        bool operator == ( SourceLineInfo const& other ) const {
-            return line == other.line && file == other.file;
-        }
+        SourceLineInfo();
+        SourceLineInfo( char const* _file, std::size_t _line );
+        SourceLineInfo( SourceLineInfo const& other );
+        bool empty() const;
+        bool operator == ( SourceLineInfo const& other ) const;
+
         std::string file;
         std::size_t line;
     };
 
-    inline std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
-#ifndef __GNUG__
-        os << info.file << "(" << info.line << ")";
-#else
-        os << info.file << ":" << info.line;
-#endif
-        return os;
-    }
+    std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info );
 
     // This is just here to avoid compiler warnings with macro constants and boolean literals
     inline bool isTrue( bool value ){ return value; }
 
-    inline void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo ) {
-        std::ostringstream oss;
-        oss << locationInfo << ": Internal Catch error: '" << message << "'";
-        if( isTrue( true ))
-            throw std::logic_error( oss.str() );
-    }
+    void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
 }
 
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )

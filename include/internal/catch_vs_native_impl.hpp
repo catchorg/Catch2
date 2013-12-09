@@ -21,6 +21,11 @@ using Microsoft::VisualStudio::CppUnitTestFramework::__LineInfo;
 #include <cvt/wstring>
 #include <codecvt>
 
+#include "catch_common.hpp"
+#include "catch_debugger.hpp"
+#include "catch_tags.hpp"
+#include "catch_test_spec.hpp"
+#include "catch_section.hpp"
 #include "internal/catch_timer.hpp"
 #include "internal/catch_vs_test_registry.hpp"
 #include "reporters/catch_vs_reporter.hpp"

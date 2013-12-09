@@ -8,10 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_RUNNER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_RUNNER_H_INCLUDED
 
-#include "catch_totals.hpp"
-
-#include <string>
-
 namespace Catch {
     class TestCase;
 

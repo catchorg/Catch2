@@ -11,6 +11,7 @@
 #include "catch_commandline.hpp"
 #include "catch_text.h"
 #include "catch_console_colour.hpp"
+#include "catch_interfaces_reporter.h"
 
 #include <limits>
 #include <algorithm>
@@ -57,6 +58,20 @@ namespace Catch {
             std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
             std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+        return matchedTests;
+    }
+
+    inline std::size_t listTestsNamesOnly( Config const& config ) {
+        std::size_t matchedTests = 0;
+        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        for( std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+                it != itEnd;
+                ++it )
+            if( matchesFilters( config.filters(), *it ) ) {
+                matchedTests++;
+                TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
+                std::cout << testCaseInfo.name << std::endl;
+            }
         return matchedTests;
     }
 
@@ -131,6 +146,8 @@ namespace Catch {
         Option<std::size_t> listedCount;
         if( config.listTests() )
             listedCount = listedCount.valueOr(0) + listTests( config );
+        if( config.listTestNamesOnly() )
+            listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
         if( config.listTags() )
             listedCount = listedCount.valueOr(0) + listTags( config );
         if( config.listReporters() )

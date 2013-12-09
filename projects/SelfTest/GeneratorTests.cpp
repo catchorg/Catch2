@@ -11,32 +11,35 @@
 #define CATCH_CONFIG_PREFIX_ALL
 #include "catch.hpp"
 
-inline int multiply( int a, int b )
+namespace GeneratorTests
 {
-    return a*b;
-}
+    inline int multiply( int a, int b )
+    {
+        return a*b;
+    }
 
-CATCH_TEST_CASE( "./succeeding/generators/1", "Generators over two ranges" )
-{
-    using namespace Catch::Generators;
+    CATCH_TEST_CASE( "Generators over two ranges", "[generators]" )
+    {
+        using namespace Catch::Generators;
     
-    int i = CATCH_GENERATE( between( 1, 5 ).then( values( 15, 20, 21 ).then( 36 ) ) );
-    int j = CATCH_GENERATE( between( 100, 107 ) );
+        int i = CATCH_GENERATE( between( 1, 5 ).then( values( 15, 20, 21 ).then( 36 ) ) );
+        int j = CATCH_GENERATE( between( 100, 107 ) );
     
-    CATCH_REQUIRE( multiply( i, 2 ) == i*2 );
-    CATCH_REQUIRE( multiply( j, 2 ) == j*2 );
-}
+        CATCH_REQUIRE( multiply( i, 2 ) == i*2 );
+        CATCH_REQUIRE( multiply( j, 2 ) == j*2 );
+    }
 
-struct IntPair { int first, second; };
+    struct IntPair { int first, second; };
 
-CATCH_TEST_CASE( "./succeeding/generators/2", "Generator over a range of pairs" )
-{
-    using namespace Catch::Generators;
+    CATCH_TEST_CASE( "Generator over a range of pairs", "[generators]" )
+    {
+        using namespace Catch::Generators;
  
-    IntPair p[] = { { 0, 1 }, { 2, 3 } };
+        IntPair p[] = { { 0, 1 }, { 2, 3 } };
     
-    IntPair* i = CATCH_GENERATE( between( p, &p[1] ) );
+        IntPair* i = CATCH_GENERATE( between( p, &p[1] ) );
     
-    CATCH_REQUIRE( i->first == i->second-1 );
+        CATCH_REQUIRE( i->first == i->second-1 );
     
+    }
 }

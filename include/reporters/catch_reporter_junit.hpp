@@ -8,8 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
 
+#include "catch_reporter_bases.hpp"
+
 #include "../internal/catch_tostring.hpp"
-#include "../internal/catch_interfaces_reporter.h"
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_xmlwriter.hpp"
 
