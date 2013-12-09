@@ -6,7 +6,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#if !defined(_WINDLL)
 #define CATCH_CONFIG_MAIN
+#endif
 #include "catch_self_test.hpp"
 
 namespace Catch{

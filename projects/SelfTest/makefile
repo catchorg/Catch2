@@ -4,8 +4,6 @@ SOURCES =	ApproxTests.cpp \
       		ExceptionTests.cpp \
       		GeneratorTests.cpp \
       		MessageTests.cpp \
-			MessageInstantiationTests1.cpp \
-			MessageInstantiationTests2.cpp \
       		MiscTests.cpp \
       		TestMain.cpp \
       		TrickyTests.cpp \

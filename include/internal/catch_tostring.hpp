@@ -95,7 +95,11 @@ struct StringMaker<T*> {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
+#ifdef _MSC_VER
+        oss << "0x" << p;
+#else
         oss << p;
+#endif
         return oss.str();
     }
 };

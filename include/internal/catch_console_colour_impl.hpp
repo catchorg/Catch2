@@ -10,13 +10,6 @@
 
 #include "catch_console_colour.hpp"
 
-namespace Catch { namespace Detail {
-    struct IColourImpl {
-        virtual ~IColourImpl() {}
-        virtual void use( Colour::Code _colourCode ) = 0;
-    };
-}}
-
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
 #ifndef NOMINMAX
@@ -32,7 +25,7 @@ namespace Catch { namespace Detail {
 namespace Catch {
 namespace {
 
-    class Win32ColourImpl : public Detail::IColourImpl {
+    class Win32ColourImpl {
     public:
         Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
         {
@@ -41,7 +34,7 @@ namespace {
             originalAttributes = csbiInfo.wAttributes;
         }
 
-        virtual void use( Colour::Code _colourCode ) {
+        void use( Colour::Code _colourCode ) {
             switch( _colourCode ) {
                 case Colour::None:      return setTextAttribute( originalAttributes );
                 case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
@@ -73,7 +66,7 @@ namespace {
         return true;
     }
 
-    Win32ColourImpl platformColourImpl;
+    typedef Win32ColourImpl PlatformColourImpl;
 
 } // end anon namespace
 } // end namespace Catch
@@ -89,9 +82,9 @@ namespace {
     // Thanks to Adam Strzelecki for original contribution
     // (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
-    class PosixColourImpl : public Detail::IColourImpl {
+    class PosixColourImpl {
     public:
-        virtual void use( Colour::Code _colourCode ) {
+        void use( Colour::Code _colourCode ) {
             switch( _colourCode ) {
                 case Colour::None:
                 case Colour::White:     return setColour( "[0m" );
@@ -120,7 +113,7 @@ namespace {
         return isatty( fileno(stdout) );
     }
 
-    PosixColourImpl platformColourImpl;
+    typedef PosixColourImpl PlatformColourImpl;
 
 } // end anon namespace
 } // end namespace Catch
@@ -129,24 +122,24 @@ namespace {
 
 namespace Catch {
 
-    namespace {
-        struct NoColourImpl : Detail::IColourImpl {
-            void use( Colour::Code ) {}
-        };
-        NoColourImpl noColourImpl;
-        static const bool shouldUseColour = shouldUseColourForPlatform() &&
-                                            !isDebuggerActive();
-    }
+    template <typename Impl>
+    struct ColourChange
+    {
+        static Impl impl;
+        static const bool shouldUseColour;
+    };
+    template <typename Impl>
+    Impl ColourChange<Impl>::impl;
+    template <typename Impl>
+    const bool ColourChange<Impl>::shouldUseColour = shouldUseColourForPlatform() &&
+                                            !isDebuggerActive();;
 
-    Colour::Colour( Code _colourCode ){ use( _colourCode ); }
-    Colour::~Colour(){ use( None ); }
-    void Colour::use( Code _colourCode ) {
-        impl->use( _colourCode );
+    INTERNAL_CATCH_INLINE Colour::Colour( Code _colourCode ) {
+        if( ColourChange<PlatformColourImpl>::shouldUseColour ) ColourChange<PlatformColourImpl>::impl.use( _colourCode );
     }
-
-    Detail::IColourImpl* Colour::impl = shouldUseColour
-            ? static_cast<Detail::IColourImpl*>( &platformColourImpl )
-            : static_cast<Detail::IColourImpl*>( &noColourImpl );
+    INTERNAL_CATCH_INLINE Colour::~Colour() {
+        if( ColourChange<PlatformColourImpl>::shouldUseColour ) ColourChange<PlatformColourImpl>::impl.use( Colour::None );
+    }
 
 } // end namespace Catch
 

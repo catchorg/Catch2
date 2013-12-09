@@ -56,11 +56,7 @@ namespace Catch {
             .setResultType( matcher.match( arg ) );
     }
 
-#if defined(INTERNAL_CATCH_VS_MANAGED)
-    // TestFailureException not defined for CLR
-#else // detect CLR
-struct TestFailureException{};
-#endif
+    struct TestFailureException{};
 
 } // end namespace Catch
 
@@ -70,7 +66,6 @@ struct TestFailureException{};
 #if !defined(INTERNAL_CATCH_VS_MANAGED) && !defined(INTERNAL_CATCH_VS_NATIVE)
 
     // normal Catch
-    #define INTERNAL_CATCH_TEST_FAILURE_EXCEPTION const Catch::TestFailureException&
     #define INTERNAL_CATCH_TEST_THROW_FAILURE throw Catch::TestFailureException();
 
 #else   // VS integration
@@ -84,10 +79,9 @@ struct TestFailureException{};
         std::stringstream _sf; \
         _sf << r->getExpressionInMacro().c_str() << ", " << r->getMessage().c_str(); \
         std::string fail = _sf.str(); \
-        Assert::Fail(Catch::convert_string_to_managed(fail)); \
+        Assert::Fail(Catch::convert_string_for_assert(fail)); \
     }
 
-    #define INTERNAL_CATCH_TEST_FAILURE_EXCEPTION AssertFailedException^
 #else
 
 #if defined(INTERNAL_CATCH_VS_NATIVE)
@@ -106,8 +100,6 @@ struct TestFailureException{};
         Assert::Fail(ws2.c_str(), &li); \
     }
 
-    #define INTERNAL_CATCH_TEST_FAILURE_EXCEPTION const Catch::TestFailureException&
-
 #endif // INTERNAL_CATCH_VS_MANAGED
 
 #endif // detect CLR
@@ -119,7 +111,7 @@ struct TestFailureException{};
     if( Catch::ResultAction::Value internal_catch_action = Catch::getResultCapture().acceptExpression( evaluatedExpr, INTERNAL_CATCH_ASSERTIONINFO_NAME )  ) { \
         if( internal_catch_action & Catch::ResultAction::Debug ) BreakIntoDebugger(); \
         if( internal_catch_action & Catch::ResultAction::Abort ) { INTERNAL_CATCH_TEST_THROW_FAILURE } \
-        if( !Catch::shouldContinueOnFailure( resultDisposition ) ) { INTERNAL_CATCH_TEST_THROW_FAILURE } \
+        if( !Catch::shouldContinueOnFailure( resultDisposition ) ) { throw Catch::TestFailureException(); } \
         Catch::isTrue( false && originalExpr ); \
     }
 
@@ -133,7 +125,7 @@ struct TestFailureException{};
         INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).endExpression( resultDisposition ), resultDisposition, expr ); \
-        } catch( INTERNAL_CATCH_TEST_FAILURE_EXCEPTION ) { \
+        } catch( const Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
@@ -172,7 +164,7 @@ struct TestFailureException{};
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), resultDisposition, false ); \
         } \
     } \
-    catch( INTERNAL_CATCH_TEST_FAILURE_EXCEPTION ) { \
+    catch( const Catch::TestFailureException& ) { \
         throw; \
     } \
     catch( exceptionType ) { \
@@ -216,7 +208,7 @@ struct TestFailureException{};
         INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, resultDisposition ); \
         try { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), resultDisposition, false ); \
-        } catch( INTERNAL_CATCH_TEST_FAILURE_EXCEPTION ) { \
+        } catch( const Catch::TestFailureException& ) { \
             throw; \
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \

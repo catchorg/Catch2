@@ -18,7 +18,7 @@ using namespace System::Collections::Generic;
 using namespace Microsoft::VisualStudio::TestTools::UnitTesting;
 
 namespace Catch {
-    inline String^ convert_string_to_managed(const std::string& s)
+    inline String^ convert_string_for_assert(const std::string& s)
     {
         String^ result = gcnew String(s.c_str());
         return result;
@@ -26,71 +26,12 @@ namespace Catch {
 
 }
 
-#include "internal/catch_timer.hpp"
 #include "internal/catch_reporter_registrars.hpp"
 #include "reporters/catch_vs_reporter.hpp"
 #include "catch_registry_hub.hpp"
-
-//#define OLD (1)
-#ifdef OLD
-namespace Catch {
-
-    class ExceptionRegistryHub : public IRegistryHub, public IMutableRegistryHub {
-
-        ExceptionRegistryHub( ExceptionRegistryHub const& );
-        void operator=( ExceptionRegistryHub const& );
-
-    public: // IRegistryHub
-        ExceptionRegistryHub() {
-        }
-        virtual IReporterRegistry const& getReporterRegistry() const {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual ITestCaseRegistry const& getTestCaseRegistry() const {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() {
-            return m_exceptionTranslatorRegistry;
-        }
-
-    public: // IMutableRegistryHub
-        virtual void registerReporter( std::string const&, IReporterFactory* ) {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual void registerTest( TestCase const& ) {
-            throw std::runtime_error("can't do this for Visual Studio tests!");
-        }
-        virtual void registerTranslator( const IExceptionTranslator* translator ) {
-            m_exceptionTranslatorRegistry.registerTranslator( translator );
-        }
-
-    private:
-        ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
-    };
-
-    template <typename T>
-    struct GlobalRegistryHub
-    {
-        static T*& instance()
-        {
-            if( !theRegistryHub )
-                theRegistryHub = new T();
-            return theRegistryHub;
-        }
-        static T* theRegistryHub;
-    };
-    template <typename T>
-    T* GlobalRegistryHub<T>::theRegistryHub = NULL;
-
-    INTERNAL_CATCH_INLINE IMutableRegistryHub& getMutableRegistryHub() {
-        return *GlobalRegistryHub<ExceptionRegistryHub>::instance();
-    }
-    INTERNAL_CATCH_INLINE std::string translateActiveException() {
-        return GlobalRegistryHub<ExceptionRegistryHub>::instance()->getExceptionTranslatorRegistry().translateActiveException();
-    }
-
-}
-#endif // OLD
+#include "internal/catch_timer.hpp"
+#include "internal/catch_console_colour_impl.hpp"
+#include "catch_runner.hpp"
 
 namespace Catch {
     inline NonCopyable::~NonCopyable() {}
@@ -113,16 +54,10 @@ namespace Catch {
     inline TestCaseStats::~TestCaseStats() {}
     inline TestGroupStats::~TestGroupStats() {}
     inline TestRunStats::~TestRunStats() {}
-    //CumulativeReporterBase::SectionNode::~SectionNode() {}
-    //CumulativeReporterBase::~CumulativeReporterBase() {}
 
-    //StreamingReporterBase::~StreamingReporterBase() {}
-    //ConsoleReporter::~ConsoleReporter() {}
     inline IRunner::~IRunner() {}
     inline IMutableContext::~IMutableContext() {}
     inline IConfig::~IConfig() {}
-    //XmlReporter::~XmlReporter() {}
-    //JunitReporter::~JunitReporter() {}
     inline TestRegistry::~TestRegistry() {}
     inline FreeFunctionTestCase::~FreeFunctionTestCase() {}
     inline IGeneratorInfo::~IGeneratorInfo() {}
@@ -137,8 +72,6 @@ namespace Catch {
     inline Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     inline void Config::dummy() {}
-
-    //INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
 }
 
 #endif

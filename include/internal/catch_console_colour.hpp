@@ -12,10 +12,6 @@
 
 namespace Catch {
 
-    namespace Detail {
-        struct IColourImpl;
-    }
-
     struct Colour {
         enum Code {
             None = 0,
@@ -53,12 +49,6 @@ namespace Catch {
         // Use constructed object for RAII guard
         Colour( Code _colourCode );
         ~Colour();
-
-        // Use static method for one-shot changes
-        static void use( Code _colourCode );
-
-    private:
-        static Detail::IColourImpl* impl;
     };
 
 } // end namespace Catch

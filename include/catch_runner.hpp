@@ -108,6 +108,8 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
+#if !defined(INTERNAL_CATCH_VS_MANAGED) && !defined(INTERNAL_CATCH_VS_NATIVE)
+
     class Session {
         static bool alreadyInstantiated;
 
@@ -231,6 +233,8 @@ namespace Catch {
     };
 
     bool Session::alreadyInstantiated = false;
+
+#endif // !VS_MANAGED && !VS_NATIVE
 
 } // end namespace Catch
 
