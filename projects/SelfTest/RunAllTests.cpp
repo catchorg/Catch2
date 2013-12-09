@@ -181,6 +181,7 @@ namespace AllTestsRunner {
         }
     }
 
+    // mstest /TestContainer:Debug\ManagedTestCatch.dll /category:"all"
 #if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
     CATCH_MAP_CATEGORY_TO_TAG(all, "[vsall]");
 #endif
