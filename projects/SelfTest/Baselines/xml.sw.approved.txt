@@ -6671,18 +6671,18 @@ there&quot;
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: Do that thing with the thing">
-      <Section name="   Given: This stuff exists">
+      <Section name="Given: This stuff exists">
         <OverallResults successes="0" failures="0"/>
       </Section>
-      <Section name="   Given: This stuff exists">
-        <Section name="    When: I do this">
+      <Section name="Given: This stuff exists">
+        <Section name="When: I do this">
           <OverallResults successes="0" failures="0"/>
         </Section>
         <OverallResults successes="0" failures="0"/>
       </Section>
-      <Section name="   Given: This stuff exists">
-        <Section name="    When: I do this">
-          <Section name="    Then: it should do this">
+      <Section name="Given: This stuff exists">
+        <Section name="When: I do this">
+          <Section name="Then: it should do this">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
               <Original>
                 itDoesThis()
@@ -6697,9 +6697,9 @@ there&quot;
         </Section>
         <OverallResults successes="1" failures="0"/>
       </Section>
-      <Section name="   Given: This stuff exists">
-        <Section name="    When: I do this">
-          <Section name="    Then: it should do this">
+      <Section name="Given: This stuff exists">
+        <Section name="When: I do this">
+          <Section name="Then: it should do this">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
               <Original>
                 itDoesThis()
@@ -6708,7 +6708,7 @@ there&quot;
                 true
               </Expanded>
             </Expression>
-            <Section name="     And: do that">
+            <Section name="And: do that">
               <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
                 <Original>
                   itDoesThat()
@@ -6728,7 +6728,7 @@ there&quot;
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: Vector resizing affects size and capacity">
-      <Section name="   Given: an empty vector">
+      <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6739,7 +6739,7 @@ there&quot;
         </Expression>
         <OverallResults successes="1" failures="0"/>
       </Section>
-      <Section name="   Given: an empty vector">
+      <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6748,12 +6748,12 @@ there&quot;
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="    When: it is made larger">
+        <Section name="When: it is made larger">
           <OverallResults successes="0" failures="0"/>
         </Section>
         <OverallResults successes="1" failures="0"/>
       </Section>
-      <Section name="   Given: an empty vector">
+      <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6762,8 +6762,8 @@ there&quot;
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="    When: it is made larger">
-          <Section name="    Then: the size and capacity go up">
+        <Section name="When: it is made larger">
+          <Section name="Then: the size and capacity go up">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
               <Original>
                 v.size() == 10
@@ -6786,7 +6786,7 @@ there&quot;
         </Section>
         <OverallResults successes="3" failures="0"/>
       </Section>
-      <Section name="   Given: an empty vector">
+      <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6795,8 +6795,8 @@ there&quot;
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="    When: it is made larger">
-          <Section name="    Then: the size and capacity go up">
+        <Section name="When: it is made larger">
+          <Section name="Then: the size and capacity go up">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
               <Original>
                 v.size() == 10
@@ -6822,7 +6822,7 @@ there&quot;
         </Section>
         <OverallResults successes="3" failures="0"/>
       </Section>
-      <Section name="   Given: an empty vector">
+      <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6831,8 +6831,8 @@ there&quot;
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="    When: it is made larger">
-          <Section name="    Then: the size and capacity go up">
+        <Section name="When: it is made larger">
+          <Section name="Then: the size and capacity go up">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
               <Original>
                 v.size() == 10
@@ -6850,7 +6850,7 @@ there&quot;
               </Expanded>
             </Expression>
             <Section name="And when: it is made smaller again">
-              <Section name="    Then: the size goes down but the capacity stays the same">
+              <Section name="Then: the size goes down but the capacity stays the same">
                 <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
                   <Original>
                     v.size() == 5
@@ -6877,7 +6877,7 @@ there&quot;
         </Section>
         <OverallResults successes="5" failures="0"/>
       </Section>
-      <Section name="   Given: an empty vector">
+      <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6886,12 +6886,12 @@ there&quot;
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="    When: we reserve more space">
+        <Section name="When: we reserve more space">
           <OverallResults successes="0" failures="0"/>
         </Section>
         <OverallResults successes="1" failures="0"/>
       </Section>
-      <Section name="   Given: an empty vector">
+      <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6900,8 +6900,8 @@ there&quot;
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="    When: we reserve more space">
-          <Section name="    Then: The capacity is increased but the size remains the same">
+        <Section name="When: we reserve more space">
+          <Section name="Then: The capacity is increased but the size remains the same">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
               <Original>
                 v.capacity() >= 10
@@ -6927,18 +6927,18 @@ there&quot;
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: This is a really long scenario name to see how the list command deals with wrapping">
-      <Section name="   Given: A section name that is so long that it cannot fit in a single console width">
+      <Section name="Given: A section name that is so long that it cannot fit in a single console width">
         <OverallResults successes="0" failures="0"/>
       </Section>
-      <Section name="   Given: A section name that is so long that it cannot fit in a single console width">
-        <Section name="    When: The test headers are printed as part of the normal running of the scenario">
+      <Section name="Given: A section name that is so long that it cannot fit in a single console width">
+        <Section name="When: The test headers are printed as part of the normal running of the scenario">
           <OverallResults successes="0" failures="0"/>
         </Section>
         <OverallResults successes="0" failures="0"/>
       </Section>
-      <Section name="   Given: A section name that is so long that it cannot fit in a single console width">
-        <Section name="    When: The test headers are printed as part of the normal running of the scenario">
-          <Section name="    Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent">
+      <Section name="Given: A section name that is so long that it cannot fit in a single console width">
+        <Section name="When: The test headers are printed as part of the normal running of the scenario">
+          <Section name="Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent">
             <OverallResults successes="1" failures="0"/>
           </Section>
           <OverallResults successes="1" failures="0"/>
