@@ -22,8 +22,13 @@ if len(sys.argv) == 2:
 else:
 	if sys.platform == 'win32':
 		cmdPath = os.path.join( catchPath, 'projects\\VS2010\\TestCatch\\Release\\TestCatch.exe' )
+		# VS2010
 		#dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Release\\ManagedTestCatch.dll' )
 		dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Debug\\ManagedTestCatch.dll' )
+		# VS2012 managed
+		#dllPath = os.path.join( catchPath, 'projects\\VS2012\\ManagedTestCatch\\Debug\\ManagedTestCatch.dll' )
+		# VS2012 native
+		#dllPath = os.path.join( catchPath, 'projects\\VS2012\\NativeTestCatch\\Debug\\NativeTestCatch.dll' )
 	else:
 		cmdPath = os.path.join( catchPath, 'projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
 
@@ -705,9 +710,24 @@ def approveMsTest( baseName, filter ):
 		raise Exception("Managed DLL does not exist: '" + dllPath + "'")
 
 	args = []
+	# Options for VS2010
 	args.append("MSTest.exe")
 	args.append("/testcontainer:" + dllPath)
 	args.append("/category:\"" + filter + "\"")
+	
+	# Options for VS2012 managed
+	#args.append("vstest.console.exe")
+	#args.append("/Logger:Trx")
+	#args.append(dllPath)
+	#args.append("/TestCaseFilter:TestCategory=" + filter)
+
+	# Options for VS2012 native
+	#args.append("vstest.console.exe")
+	#args.append("/Logger:Trx")
+	#args.append(dllPath)
+	#args.append("/TestCaseFilter:Owner=" + filter)
+	
+	#print args
 	f = open( rawResultsPath, 'w' )
 	subprocess.call( args, stdout=f, stderr=f )
 	f.close()
@@ -715,9 +735,7 @@ def approveMsTest( baseName, filter ):
 	if os.path.exists( rawResultsPath ):
 		f = open( rawResultsPath, 'r' )
 		for line in f:
-	#line = "Results file:  c:\Projects\Catch\TestResults\NoyesMa_SACHDEW7 2013-12-09 11_43_57.trx"
-
-			if line.startswith("Results file:"):
+			if line.startswith("Results file:") or line.startswith("Results File:"):
 				trxFile = line[13:].strip()
 				parseTrxFile(baseName, trxFile)
 

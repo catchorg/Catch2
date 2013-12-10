@@ -12,7 +12,14 @@
 
 namespace AllTestsRunner {
 
+    // VS2010
     // mstest /TestContainer:Debug\ManagedTestCatch.dll /category:"all"
+    //
+    // VS2012 managed
+    // vstest.console.exe /Logger:Trx Debug\ManagedTestCatch.dll /TestCaseFilter:"TestCategory=all"
+    //
+    // VS2012 native
+    // vstest.console.exe /Logger:Trx Debug\NativeTestCatch.dll /TestCaseFilter:"Owner=all"
     #if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
         CATCH_MAP_CATEGORY_TO_TAG(all, "~[vs]");
 

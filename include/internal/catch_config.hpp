@@ -192,11 +192,11 @@ namespace CatchOverrides {
     template <typename T>
     struct ConfigReset
     {
-        ConfigReset( const std::string& file, int c )
+        ConfigReset( const std::string& file, int c, int defaultAbortAfter )
         {
             Config<T>::instance().insertSuccessfulResults(file, c, false);
             Config<T>::instance().insertMissingAssertions(file, c, false);
-            Config<T>::instance().insertAbortAfter(file, c, -1);
+            Config<T>::instance().insertAbortAfter(file, c, defaultAbortAfter);
             Config<T>::instance().insertTest(file, c, "");
         }
     };

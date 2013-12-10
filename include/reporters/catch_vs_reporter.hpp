@@ -119,7 +119,11 @@ namespace Catch {
         :   VSStreamingReporterBase( _config ),
             m_prevCout( std::cout.rdbuf() ),
             m_prevCerr( std::cerr.rdbuf() ),
+#if defined(INTERNAL_CATCH_VS_NATIVE) || _MSC_VER >= 1700
+            m_addLineFeeds(false),
+#else
             m_addLineFeeds(true),
+#endif
             m_headerPrinted( false ),
             m_atLeastOneTestCasePrinted( false )
         {
