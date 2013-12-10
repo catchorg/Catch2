@@ -8,13 +8,12 @@ import re
 import xml.etree.cElementTree as etree
 
 from scriptCommon import catchPath
-#from rawfile import writeRawFile
-#from rawfile import parseRawFileIntoTree
 from catch_test_run  import TestRunApprovedHandler
 from catch_test_run  import TestRunData
 from catch_test_run  import TestRunResultHandler
 from catch_test_case  import TestCaseResultParser
 from catch_test_case  import TestCaseData
+from catch_conditions import RandomOutput
 
 rootPath = os.path.join(os.path.join(os.path.join( catchPath, 'projects'), 'SelfTest'), 'Baselines' )
 
@@ -638,6 +637,8 @@ def parseTrxFile(baseName, trxFile):
 					#print ids
 					ids = dict(ids)
 					#print ids["87ec526a-e414-1a3f-ba0f-e210b204bb42"]
+					
+					lineNumber = 0
 					resultParser = TestCaseResultParser()
 					for tc in ts:
 						m = qname.match(tc.tag)
@@ -668,15 +669,27 @@ def parseTrxFile(baseName, trxFile):
 														found = True
 														break
 													index += 1
-												lines = lines[index + 2:-1]
+												lines = lines[index + 2:]
 												#print "*******",desc
 												#print lines
 												if found:
+													endOfRun = False
 													for line in lines:
-														testcase = resultParser.parseResultLine(line)
-														if isinstance(testcase, TestCaseData):
-															testRun.testcases.append(testcase)
-					lines = testRun.generateSortedUnapprovedLines(0)
+														if endOfRun:
+															testRun.results = line.strip()
+														else:
+															try:
+																testcase = resultParser.parseResultLine(line)
+															except RandomOutput as e:
+																#print "E:", self.lineNumber, ", ",e.output
+																testRun.output = e.output
+																testRun.outputLine = lineNumber - len(e.output)
+															if isinstance(testcase, TestCaseData):
+																testRun.testcases.append(testcase)
+															if line.startswith("==============================================================================="):
+																endOfRun = True
+															lineNumber += 1
+					lines = testRun.generateSortedUnapprovedLines(testRun.outputLine)
 		
 					rawSortedPath = os.path.join( rootPath, '{0}.sorted.unapproved.txt'.format( baseName ) )
 					rawWriteFile = open( rawSortedPath, 'wb' )
@@ -709,18 +722,18 @@ def approveMsTest( baseName, filter ):
 				parseTrxFile(baseName, trxFile)
 
 # Standard console reporter
-#approve( "console.std", ["~_"] )
+approve( "console.std", ["~_"] )
 # console reporter, include passes, warn about No Assertions
-#approve( "console.sw", ["~_", "-s", "-w", "NoAssertions"] )
+approve( "console.sw", ["~_", "-s", "-w", "NoAssertions"] )
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-#approve( "console.swa4", ["~_", "-s", "-w", "NoAssertions", "-x", "4"] )
+approve( "console.swa4", ["~_", "-s", "-w", "NoAssertions", "-x", "4"] )
 # junit reporter, include passes, warn about No Assertions
-#approveJunit( "junit.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "junit"] )
+approveJunit( "junit.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "junit"] )
 # xml reporter, include passes, warn about No Assertions
-#approveXml( "xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml"] )
-#mstest runner, xml output
-#approveMsTest( "mstest.std", "all")
-#approveMsTest( "mstest.sw", "allSucceeding")
+approveXml( "xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml"] )
+# mstest runner, xml output
+approveMsTest( "mstest.std", "all")
+approveMsTest( "mstest.sw", "allSucceeding")
 approveMsTest( "mstest.swa4", "allSucceedingAborting")
 
 if overallResult <> 0:

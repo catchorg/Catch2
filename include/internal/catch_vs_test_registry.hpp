@@ -283,12 +283,14 @@ private:
             cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
             cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
             Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
-            Catch::MSTestReporter* rep = new Catch::MSTestReporter(config.get()); \
-            Catch::RunContext tr(config.get(), rep); \
+            Catch::ReporterRegistrar<Catch::MSTestReporter> reporterReg("vs_reporter"); \
+            Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "vs_reporter", config.get())); \
             std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(name_desc.name); \
             if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match")); \
             if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name")); \
-            Catch::Totals totals = tr.runTest(*testCase.begin()); \
+            context.testGroupStarting( "", 0, 1 ); \
+            Catch::Totals totals = context.runTest(*testCase.begin()); \
+            context.testGroupEnded( "", totals, 0, 1 ); \
             if( totals.assertions.failed > 0 ) { \
                 INTERNAL_CATCH_TEST_THROW_FAILURE \
             } \
@@ -371,11 +373,11 @@ private:
                 cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
                 cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
                 cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
-                cd.reporterName = "vs_reporter"; \
+                cd.reporterName = "vs_reporterlf"; \
                 cd.name = "Batch run using tag : " Tag; \
                 cd.testsOrTags.push_back( Tag ); \
                 Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
-                Catch::ReporterRegistrar<Catch::MSTestReporter> reporterReg("vs_reporter"); \
+                Catch::ReporterRegistrar<Catch::MSTestReporterLineFeed> reporterReg("vs_reporterlf"); \
                 Catch::Runner runner(config); \
                 Catch::Totals totals = runner.runTests(); \
                 if( totals.assertions.failed > 0 ) { \
@@ -398,17 +400,23 @@ private:
                 cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
                 cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
                 cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
-                cd.reporterName = "vs_reporter"; \
+                cd.reporterName = "vs_reporterlf"; \
                 cd.name = "Batch run using category : " Category; \
                 std::vector<std::string> stringNames = CatchOverrides::Config<Catch::IConfig const*>::instance().listOfTests(__FILE__, Count ); \
                 Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
-                Catch::MSTestReporter* rep = new Catch::MSTestReporter(config.get()); \
-                Catch::RunContext tr(config.get(), rep); \
+                Catch::ReporterRegistrar<Catch::MSTestReporterLineFeed> reporterReg("vs_reporterlf"); \
+                Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "vs_reporterlf", config.get())); \
+                Catch::Totals totals; \
+                context.testGroupStarting( "", 0, 1 ); \
                 for( std::vector<std::string>::iterator it = stringNames.begin(); it != stringNames.end(); ++it ) { \
                     std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(*it); \
                     if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match")); \
                     if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name")); \
-                    tr.runTest(*testCase.begin()); \
+                    totals += context.runTest(*testCase.begin()); \
+                } \
+                context.testGroupEnded( "", totals, 0, 1 ); \
+                if( totals.assertions.failed > 0 ) { \
+                    INTERNAL_CATCH_TEST_REPORT_BATCH_FAILURE(totals.assertions.failed) \
                 } \
             } \
         }; \
