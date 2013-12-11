@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 16 (master branch)
- *  Generated: 2013-12-04 20:23:35.145591
+ *  CATCH v1.0 build 17 (master branch)
+ *  Generated: 2013-12-11 08:27:45.976816
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -147,16 +147,6 @@ namespace Catch {
         typename AssociativeContainerT::const_iterator itEnd = container.end();
         for(; it != itEnd; ++it )
             delete it->second;
-    }
-
-    template<typename ContainerT, typename Function>
-    inline void forEach( ContainerT& container, Function function ) {
-        std::for_each( container.begin(), container.end(), function );
-    }
-
-    template<typename ContainerT, typename Function>
-    inline void forEach( ContainerT const& container, Function function ) {
-        std::for_each( container.begin(), container.end(), function );
     }
 
     bool startsWith( std::string const& s, std::string const& prefix );
@@ -1396,7 +1386,7 @@ namespace Catch{
 #endif
 
 #ifndef CATCH_BREAK_INTO_DEBUGGER
-#define CATCH_BREAK_INTO_DEBUGGER()
+#define CATCH_BREAK_INTO_DEBUGGER() Catch::isTrue( true );
 #endif
 
 // #included from: catch_interfaces_registry_hub.h
@@ -6139,7 +6129,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 16, "master" );
+    Version libraryVersion( 1, 0, 17, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -6788,9 +6778,9 @@ namespace Catch {
             Ptr<TestRunNode> node = new TestRunNode( testRunStats );
             node->children.swap( m_testGroups );
             m_testRuns.push_back( node );
-            testRunEnded();
+            testRunEndedCumulative();
         }
-        virtual void testRunEnded() = 0;
+        virtual void testRunEndedCumulative() = 0;
 
         Ptr<IConfig> m_config;
         std::ostream& stream;
@@ -7120,7 +7110,7 @@ namespace Catch {
         virtual void StartSection( const std::string& sectionName, const std::string& description ) {
             if( m_sectionDepth++ > 0 ) {
                 m_xml.startElement( "Section" )
-                    .writeAttribute( "name", sectionName )
+                    .writeAttribute( "name", trim( sectionName ) )
                     .writeAttribute( "description", description );
             }
         }
@@ -7137,7 +7127,7 @@ namespace Catch {
         }
 
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.name );
+            m_xml.startElement( "TestCase" ).writeAttribute( "name", trim( testInfo.name ) );
             m_currentTestSuccess = true;
         }
 
@@ -7268,7 +7258,7 @@ namespace Catch {
             writeGroup( *m_testGroups.back(), suiteTime );
         }
 
-        virtual void testRunEnded() {
+        virtual void testRunEndedCumulative() {
             xml.endElement();
         }
 

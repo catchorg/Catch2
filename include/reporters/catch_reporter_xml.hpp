@@ -59,7 +59,7 @@ namespace Catch {
         virtual void StartSection( const std::string& sectionName, const std::string& description ) {
             if( m_sectionDepth++ > 0 ) {
                 m_xml.startElement( "Section" )
-                    .writeAttribute( "name", sectionName )
+                    .writeAttribute( "name", trim( sectionName ) )
                     .writeAttribute( "description", description );
             }
         }
@@ -76,7 +76,7 @@ namespace Catch {
         }
 
         virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.name );
+            m_xml.startElement( "TestCase" ).writeAttribute( "name", trim( testInfo.name ) );
             m_currentTestSuccess = true;
         }
 

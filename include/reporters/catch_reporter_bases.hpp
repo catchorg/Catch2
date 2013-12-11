@@ -168,9 +168,9 @@ namespace Catch {
             Ptr<TestRunNode> node = new TestRunNode( testRunStats );
             node->children.swap( m_testGroups );
             m_testRuns.push_back( node );
-            testRunEnded();
+            testRunEndedCumulative();
         }
-        virtual void testRunEnded() = 0;
+        virtual void testRunEndedCumulative() = 0;
 
         Ptr<IConfig> m_config;
         std::ostream& stream;

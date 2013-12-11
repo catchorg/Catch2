@@ -57,16 +57,6 @@ namespace Catch {
             delete it->second;
     }
 
-    template<typename ContainerT, typename Function>
-    inline void forEach( ContainerT& container, Function function ) {
-        std::for_each( container.begin(), container.end(), function );
-    }
-
-    template<typename ContainerT, typename Function>
-    inline void forEach( ContainerT const& container, Function function ) {
-        std::for_each( container.begin(), container.end(), function );
-    }
-
     bool startsWith( std::string const& s, std::string const& prefix );
     bool endsWith( std::string const& s, std::string const& suffix );
     bool contains( std::string const& s, std::string const& infix );

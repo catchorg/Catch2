@@ -70,7 +70,7 @@ namespace Catch {
             writeGroup( *m_testGroups.back(), suiteTime );
         }
 
-        virtual void testRunEnded() {
+        virtual void testRunEndedCumulative() {
             xml.endElement();
         }
 
