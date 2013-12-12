@@ -91,6 +91,20 @@ namespace Catch {
     inline bool isTrue( bool value ){ return value; }
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
+
+    // Use this in variadic streaming macros to allow
+    //    >> +StreamEndStop
+    // as well as
+    //    >> stuff +StreamEndStop
+    struct StreamEndStop {
+        std::string operator+() {
+            return std::string();
+        }
+    };
+    template<typename T>
+    T const& operator + ( T const& value, StreamEndStop ) {
+        return value;
+    }
 }
 
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
