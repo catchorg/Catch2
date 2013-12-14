@@ -2730,6 +2730,10 @@
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="FAIL does not require an argument">
+      <Failure/>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Output from all sections is reported">
       <Section name="one">
         <Failure>
@@ -6646,6 +6650,17 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="null_ptr">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
+        <Original>
+          ptr.get() == std::__1::__get_nullptr_t()
+        </Original>
+        <Expanded>
+          __null == nullptr
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="X/level/0/a">
       <OverallResult success="true"/>
     </TestCase>
@@ -7398,7 +7413,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="583" failures="109"/>
+    <OverallResults successes="584" failures="110"/>
   </Group>
-  <OverallResults successes="583" failures="109"/>
+  <OverallResults successes="584" failures="110"/>
 </Catch>

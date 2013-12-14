@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="10" failures="99" tests="692" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="~_" errors="10" failures="100" tests="694" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -262,6 +262,11 @@ This is a failure
 MessageTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="FAIL does not require an argument" time="{duration}">
+      <failure type="FAIL">
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="Output from all sections is reported" name="one" time="{duration}">
       <failure type="FAIL">
 Message from section one
@@ -509,6 +514,7 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="non streamable - with conv. op" time="{duration}"/>
     <testcase classname="global" name="Comparing function pointers" time="{duration}"/>
     <testcase classname="global" name="pointer to class" time="{duration}"/>
+    <testcase classname="global" name="null_ptr" time="{duration}"/>
     <testcase classname="global" name="X/level/0/a" time="{duration}"/>
     <testcase classname="global" name="X/level/0/b" time="{duration}"/>
     <testcase classname="global" name="X/level/1/a" time="{duration}"/>
