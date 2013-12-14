@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 19 (master branch)
- *  Generated: 2013-12-14 22:52:16.692380
+ *  Generated: 2013-12-14 23:03:34.298653
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -99,7 +99,7 @@
 
 #endif // __GNUC__ < 3
 
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6) || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6 && defined(__GXX_EXPERIMENTAL_CXX0X__) )
 
 #define CATCH_CONFIG_CPP11_NULLPTR
 #endif
