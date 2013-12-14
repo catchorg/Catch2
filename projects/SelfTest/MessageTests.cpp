@@ -51,6 +51,14 @@ TEST_CASE( "FAIL aborts the test", "[failing][messages][.]" )
         FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
 
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+TEST_CASE( "FAIL does not require an argument", "[failing][messages][.]" )
+{
+	if( Catch::isTrue( true ) )
+        FAIL();
+}
+#endif
+
 TEST_CASE( "Output from all sections is reported", "[failing][messages][.]" )
 {
     SECTION( "one", "" )
