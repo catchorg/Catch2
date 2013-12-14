@@ -10,6 +10,17 @@
 
 // Much of the following code is based on Boost (1.53)
 
+#ifdef __clang__
+#define CATCH_CONFIG_CPP11_NULLPTR
+
+#if __has_feature(cxx_nullptr)
+
+#define CATCH_CONFIG_CPP11_NULLPTR
+
+#endif
+
+#endif // __clang__
+
 ////////////////////////////////////////////////////////////////////////////////
 // Borland
 #ifdef __BORLANDC__
@@ -55,6 +66,11 @@
 // #define CATCH_CONFIG_SFINAE // Taking this out completely for now
 
 #endif // __GNUC__ < 3
+
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6) || defined(__GXX_EXPERIMENTAL_CXX0X__)
+
+#define CATCH_CONFIG_CPP11_NULLPTR
+#endif
 
 
 #endif // __GNUC__
