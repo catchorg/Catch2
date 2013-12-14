@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 18 (master branch)
- *  Generated: 2013-12-14 14:32:59.401645
+ *  CATCH v1.0 build 19 (master branch)
+ *  Generated: 2013-12-14 22:52:16.692380
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -44,7 +44,6 @@
 // Much of the following code is based on Boost (1.53)
 
 #ifdef __clang__
-#define CATCH_CONFIG_CPP11_NULLPTR
 
 #if __has_feature(cxx_nullptr)
 
@@ -6167,7 +6166,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 18, "master" );
+    Version libraryVersion( 1, 0, 19, "master" );
 }
 
 // #included from: catch_text.hpp

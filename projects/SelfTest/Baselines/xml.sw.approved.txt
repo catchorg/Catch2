@@ -6650,17 +6650,6 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="null_ptr">
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
-        <Original>
-          ptr.get() == std::__1::__get_nullptr_t()
-        </Original>
-        <Expanded>
-          __null == nullptr
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="X/level/0/a">
       <OverallResult success="true"/>
     </TestCase>
@@ -7413,7 +7402,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="584" failures="110"/>
+    <OverallResults successes="583" failures="110"/>
   </Group>
-  <OverallResults successes="584" failures="110"/>
+  <OverallResults successes="583" failures="110"/>
 </Catch>

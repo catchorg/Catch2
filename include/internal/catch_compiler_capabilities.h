@@ -11,7 +11,6 @@
 // Much of the following code is based on Boost (1.53)
 
 #ifdef __clang__
-#define CATCH_CONFIG_CPP11_NULLPTR
 
 #if __has_feature(cxx_nullptr)
 
