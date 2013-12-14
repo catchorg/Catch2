@@ -2734,6 +2734,9 @@
       <Failure/>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="SUCCESS does not require an argument">
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Output from all sections is reported">
       <Section name="one">
         <Failure>
@@ -7402,7 +7405,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="583" failures="110"/>
+    <OverallResults successes="584" failures="110"/>
   </Group>
-  <OverallResults successes="583" failures="110"/>
+  <OverallResults successes="584" failures="110"/>
 </Catch>

@@ -2581,6 +2581,15 @@ MessageTests.cpp:<line number>
 MessageTests.cpp:<line number>: FAILED:
 
 -------------------------------------------------------------------------------
+SUCCESS does not require an argument
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+PASSED:
+
+-------------------------------------------------------------------------------
 Output from all sections is reported
   one
 -------------------------------------------------------------------------------
@@ -7131,5 +7140,5 @@ with expansion:
   true
 
 ===============================================================================
-121 test cases - 51 failed (693 assertions - 110 failed)
+122 test cases - 51 failed (694 assertions - 110 failed)
 

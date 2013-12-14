@@ -47,15 +47,17 @@ TEST_CASE( "INFO gets logged on failure, even if captured before successful asse
 
 TEST_CASE( "FAIL aborts the test", "[failing][messages][.]" )
 {
-	if( Catch::isTrue( true ) )
-        FAIL( "This is a " << "failure" );    // This should output the message and abort
+    FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
 TEST_CASE( "FAIL does not require an argument", "[failing][messages][.]" )
 {
-	if( Catch::isTrue( true ) )
-        FAIL();
+    FAIL();
+}
+TEST_CASE( "SUCCESS does not require an argument", "[messages][.]" )
+{
+   SUCCEED();
 }
 #endif
 
