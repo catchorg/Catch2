@@ -214,13 +214,17 @@ class TestCaseData:
 							l = "      " + prefix + "</Exception>"
 							lines.append(l)
 						elif tmp[0] == "F":
-							l = "      " + prefix + "<Failure>"
-							lines.append(l)
-							for li in tmp[1]:
-								if len(li.strip()) > 0:
-									lines.append(li)
-							l = "      " + prefix + "</Failure>"
-							lines.append(l)
+							if len(tmp[1]) > 0:
+								l = "      " + prefix + "<Failure>"
+								lines.append(l)
+								for li in tmp[1]:
+									if len(li.strip()) > 0:
+										lines.append(li)
+								l = "      " + prefix + "</Failure>"
+								lines.append(l)
+							else:
+								l = "    " + prefix + "<Failure/>"
+								lines.append(l)
 						elif tmp[0] == "S":
 							lines += self.generateRecursiveSection(prefix + "  ", tmp)
 						else:
@@ -306,13 +310,17 @@ class TestCaseData:
 				l = "    " + prefix + "</Warning>"
 				lines.append(l)
 			elif section[0] == "F":
-				l = "    " + prefix + "<Failure>"
-				lines.append(l)
-				for li in section[1]:
-					if len(li.strip()) > 0:
-						lines.append(li)
-				l = "    " + prefix + "</Failure>"
-				lines.append(l)
+				if len(section[1]) > 0:
+					l = "    " + prefix + "<Failure>"
+					lines.append(l)
+					for li in section[1]:
+						if len(li.strip()) > 0:
+							lines.append(li)
+					l = "    " + prefix + "</Failure>"
+					lines.append(l)
+				else:
+					l = "    " + prefix + "<Failure/>"
+					lines.append(l)
 		return lines
 
 	def generateUnapprovedXml(self):

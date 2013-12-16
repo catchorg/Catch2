@@ -193,11 +193,19 @@ namespace Catch {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_MSG( log, messageType, resultDisposition, macroName ) \
-    do { \
-        INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( messageType ) << log, resultDisposition, true ) \
-    } while( Catch::isTrue( false ) )
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    #define INTERNAL_CATCH_MSG( messageType, resultDisposition, macroName, ... ) \
+        do { \
+            INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( messageType ) << __VA_ARGS__ +::Catch::StreamEndStop(), resultDisposition, true ) \
+        } while( Catch::isTrue( false ) )
+#else
+    #define INTERNAL_CATCH_MSG( messageType, resultDisposition, macroName, log ) \
+        do { \
+            INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
+            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( messageType ) << log, resultDisposition, true ) \
+        } while( Catch::isTrue( false ) )
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( log, macroName ) \

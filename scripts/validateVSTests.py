@@ -23,8 +23,8 @@ else:
 	if sys.platform == 'win32':
 		cmdPath = os.path.join( catchPath, 'projects\\VS2010\\TestCatch\\Release\\TestCatch.exe' )
 		# VS2010
-		#dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Release\\ManagedTestCatch.dll' )
-		dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Debug\\ManagedTestCatch.dll' )
+		dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Release\\ManagedTestCatch.dll' )
+		#dllPath = os.path.join( catchPath, 'projects\\VS2010\\ManagedTestCatch\\Debug\\ManagedTestCatch.dll' )
 		# VS2012 managed
 		#dllPath = os.path.join( catchPath, 'projects\\VS2012\\ManagedTestCatch\\Debug\\ManagedTestCatch.dll' )
 		# VS2012 native
@@ -461,8 +461,10 @@ def approveXml( baseName, args ):
 							ls = text.splitlines()
 							section = testcase.addWarning(ls)
 						elif exp.tag == "Failure":
-							text = exp.text
-							ls = text.splitlines()
+							ls = []
+							if exp.text != None:
+								text = exp.text
+								ls = text.splitlines()
 							section = testcase.addSimpleFailure(ls)
 						elif exp.tag == "OverallResult":
 							testcase.addOverallResult(exp.get("success"))
@@ -578,8 +580,10 @@ def approveXml( baseName, args ):
 							ls = text.splitlines()
 							section = testcase.addWarning(ls)
 						elif exp.tag == "Failure":
-							text = exp.text
-							ls = text.splitlines()
+							ls = []
+							if exp.text != None:
+								text = exp.text
+								ls = text.splitlines()
 							section = testcase.addSimpleFailure(ls)
 						elif exp.tag == "OverallResult":
 							testcase.addOverallResult(exp.get("success"))
