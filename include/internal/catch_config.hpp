@@ -42,70 +42,122 @@ namespace CatchOverrides {
         const Catch::Ptr<Catch::IConfig const> origConfig;
     };
 
+    enum OverrideType { OverrideUpdate, OverrideReset}; // Note: ordered; update must be before reset
+
     template <typename T>
     class Config
     {
-        typedef std::map<int, int> LineData;
+        typedef std::map<std::pair<int,OverrideType>, bool> BoolLineData;
+        typedef std::map<std::string, BoolLineData> FileBoolLineData;
+        typedef std::map<std::pair<int,OverrideType>, int> LineData;
         typedef std::map<std::string, LineData> FileLineData;
-        typedef std::map<int, std::string> StringLineData;
+        typedef std::multimap<std::pair<int,OverrideType>, std::string> StringLineData;
         typedef std::map<std::string, StringLineData> FileStringLineData;
     public:
         bool includeSuccessfulResults(const std::string& file, int c) const
         {
             bool result(false);
-            FileLineData::const_iterator it = showSuccessfulTestsData.find(file);
+            FileBoolLineData::const_iterator it = showSuccessfulTestsData.find(file);
             if( it != showSuccessfulTestsData.end() )
             {
-                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
-                {
-                    if( c <= lineIt->first )
-                        break;
-                    result = lineIt->second ? true : false;
+                BoolLineData::const_iterator start = it->second.begin();
+                BoolLineData::const_iterator end = it->second.end();
+                for( BoolLineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideReset ) {
+                        if( c == current.first ) {
+                            result = lineIt->second;
+                            end = lineIt;
+                            break;
+                        }
+                        else
+                            start = lineIt;
+                    }
+                }
+                for( BoolLineData::const_iterator lineIt = start; lineIt != end; ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideUpdate ) {
+                        if( c < current.first )
+                            break;
+                        result = lineIt->second;
+                    }
                 }
             }
             return result;
         }
-        void insertSuccessfulResults(const std::string& file, int c, bool v)
+        void insertSuccessfulResults(const std::string& file, OverrideType overRide, int c, bool v)
         {
-            FileLineData::iterator it = showSuccessfulTestsData.find(file);
+            FileBoolLineData::iterator it = showSuccessfulTestsData.find(file);
             if( it == showSuccessfulTestsData.end() )
             {
-                LineData tmp;
-                tmp.insert(std::make_pair(c,(v ? 1 : 0)));
+                BoolLineData tmp;
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                tmp.insert(std::make_pair(current,v));
                 showSuccessfulTestsData.insert(std::make_pair(file, tmp));
             }
             else
             {
-                it->second.insert(std::make_pair(c,(v ? 1 : 0)));
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                BoolLineData::iterator lineIt = it->second.find(current);
+                if( lineIt == it->second.end() ) {
+                    it->second.insert(std::make_pair(current,v));
+                }
+                else {
+                    lineIt->second = v;
+                }
             }
         }
         bool warnAboutMissingAssertions(const std::string& file, int c) const
         {
             bool result(false);
-            FileLineData::const_iterator it = missingAssertionData.find(file);
+            FileBoolLineData::const_iterator it = missingAssertionData.find(file);
             if( it != missingAssertionData.end() )
             {
-                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
-                {
-                    if( c <= lineIt->first )
-                        break;
-                    result = lineIt->second ? true : false;
+                BoolLineData::const_iterator start = it->second.begin();
+                BoolLineData::const_iterator end = it->second.end();
+                for( BoolLineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideReset ) {
+                        if( c == current.first ) {
+                            result = lineIt->second;
+                            end = lineIt;
+                            break;
+                        }
+                        else
+                            start = lineIt;
+                    }
+                }
+                for( BoolLineData::const_iterator lineIt = start; lineIt != end; ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideUpdate ) {
+                        if( c < current.first )
+                            break;
+                        result = lineIt->second;
+                    }
                 }
             }
             return result;
         }
-        void insertMissingAssertions(const std::string& file, int c, bool v)
+        void insertMissingAssertions(const std::string& file, OverrideType overRide, int c, bool v)
         {
-            FileLineData::iterator it = missingAssertionData.find(file);
+            FileBoolLineData::iterator it = missingAssertionData.find(file);
             if( it == missingAssertionData.end() )
             {
-                LineData tmp;
-                tmp.insert(std::make_pair(c,(v ? 1 : 0)));
+                BoolLineData tmp;
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                tmp.insert(std::make_pair(current,v));
                 missingAssertionData.insert(std::make_pair(file, tmp));
             }
             else
             {
-                it->second.insert(std::make_pair(c,(v ? 1 : 0)));
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                BoolLineData::iterator lineIt = it->second.find(current);
+                if( lineIt == it->second.end() ) {
+                    it->second.insert(std::make_pair(current,v));
+                }
+                else {
+                    lineIt->second = v;
+                }
             }
         }
         int abortAfter(const std::string& file, int c) const
@@ -114,41 +166,71 @@ namespace CatchOverrides {
             FileLineData::const_iterator it = abortAfterData.find(file);
             if( it != abortAfterData.end() )
             {
-                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
-                {
-                    if( c <= lineIt->first )
-                        break;
-                    result = lineIt->second;
+                LineData::const_iterator start = it->second.begin();
+                LineData::const_iterator end = it->second.end();
+                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideReset ) {
+                        if( c == current.first ) {
+                            result = lineIt->second;
+                            end = lineIt;
+                            break;
+                        }
+                        else
+                            start = lineIt;
+                    }
+                }
+                for( LineData::const_iterator lineIt = start; lineIt != end; ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideUpdate ) {
+                        if( c < current.first )
+                            break;
+                        result = lineIt->second;
+                    }
                 }
             }
             return result;
         }
-        void insertAbortAfter(const std::string& file, int c, int v)
-        {
+        void insertAbortAfter(const std::string& file, OverrideType overRide, int c, int v) {
             FileLineData::iterator it = abortAfterData.find(file);
-            if( it == abortAfterData.end() )
-            {
+            if( it == abortAfterData.end() ) {
                 LineData tmp;
-                tmp.insert(std::make_pair(c,v));
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                tmp.insert(std::make_pair(current,v));
                 abortAfterData.insert(std::make_pair(file, tmp));
             }
-            else
-            {
-                it->second.insert(std::make_pair(c,v));
+            else {
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                LineData::iterator lineIt = it->second.find(current);
+                if( lineIt == it->second.end() ) {
+                    it->second.insert(std::make_pair(current,v));
+                }
+                else {
+                    lineIt->second = v;
+                }
             }
         }
-        std::vector<std::string> listOfTests(const std::string& file, int c) const
-        {
+        std::vector<std::string> listOfTests(const std::string& file, int c) const {
             std::vector<std::string> result;
             FileStringLineData::const_iterator it = testData.find(file);
-            if( it != testData.end() )
-            {
-                for( StringLineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt )
-                {
-                    if( lineIt->second.empty() && c > lineIt->first)
-                        result.clear();
-                    else {
-                        if( c <= lineIt->first )
+            if( it != testData.end() ) {
+                StringLineData::const_iterator start = it->second.begin();
+                StringLineData::const_iterator end = it->second.end();
+                for( StringLineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideReset ) {
+                        if( c == current.first ) {
+                            end = lineIt;
+                            break;
+                        }
+                        else
+                            start = lineIt;
+                    }
+                }
+                for( StringLineData::const_iterator lineIt = start; lineIt != end; ++lineIt ) {
+                    const std::pair<int,OverrideType>& current = lineIt->first;
+                    if( current.second == OverrideUpdate ) {
+                        if( c < current.first )
                             break;
                         result.push_back(lineIt->second);
                     }
@@ -156,31 +238,28 @@ namespace CatchOverrides {
             }
             return result;
         }
-        void insertTest(const std::string& file, int c, const std::string& v)
-        {
+        void insertTest(const std::string& file, OverrideType overRide, int c, const std::string& v) {
             FileStringLineData::iterator it = testData.find(file);
-            if( it == testData.end() )
-            {
+            if( it == testData.end() ) {
                 StringLineData tmp;
-                tmp.insert(std::make_pair(c,v));
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                tmp.insert(std::make_pair(current,v));
                 testData.insert(std::make_pair(file, tmp));
             }
-            else
-            {
-                it->second.insert(std::make_pair(c,v));
+            else {
+                std::pair<int,OverrideType> current = std::make_pair(c, overRide);
+                it->second.insert(std::make_pair(current,v));
             }
         }
-        static Config<T>& instance()
-        {
-            if( !s_instance )
-            {
+        static Config<T>& instance() {
+            if( !s_instance ) {
                 s_instance = new Config<T>();
             }
             return *s_instance;
         }
     private:
-        FileLineData showSuccessfulTestsData;
-        FileLineData missingAssertionData;
+        FileBoolLineData showSuccessfulTestsData;
+        FileBoolLineData missingAssertionData;
         FileLineData abortAfterData;
         FileStringLineData testData;
         
@@ -190,54 +269,44 @@ namespace CatchOverrides {
     Config<T>* Config<T>::s_instance = NULL;
 
     template <typename T>
-    struct ConfigReset
-    {
-        ConfigReset( const std::string& file, int c, int defaultAbortAfter )
-        {
-            Config<T>::instance().insertSuccessfulResults(file, c, false);
-            Config<T>::instance().insertMissingAssertions(file, c, false);
-            Config<T>::instance().insertAbortAfter(file, c, defaultAbortAfter);
-            Config<T>::instance().insertTest(file, c, "");
+    struct ConfigReset {
+        ConfigReset( const std::string& file, int c, int defaultAbortAfter ) {
+            Config<T>::instance().insertSuccessfulResults(file, OverrideReset, c, false);
+            Config<T>::instance().insertMissingAssertions(file, OverrideReset, c, false);
+            Config<T>::instance().insertAbortAfter(file, OverrideReset, c, defaultAbortAfter);
+            Config<T>::instance().insertTest(file, OverrideReset, c, "");
         }
     };
 
     template <typename T>
-    struct ConfigShowSuccessfulTests
-    {
+    struct ConfigShowSuccessfulTests {
         template <typename U>
-        ConfigShowSuccessfulTests( const std::string& file, int c, U v )
-        {
-            Config<T>::instance().insertSuccessfulResults(file, c, v ? true : false);
+        ConfigShowSuccessfulTests( const std::string& file, int c, U v ) {
+            Config<T>::instance().insertSuccessfulResults(file, OverrideUpdate, c, v ? true : false);
         }
     };
 
     template <typename T>
-    struct ConfigWarnMissingAssertions
-    {
+    struct ConfigWarnMissingAssertions {
         template <typename U>
-        ConfigWarnMissingAssertions( const std::string& file, int c, U v )
-        {
-            Config<T>::instance().insertMissingAssertions(file, c, v ? true : false);
+        ConfigWarnMissingAssertions( const std::string& file, int c, U v ) {
+            Config<T>::instance().insertMissingAssertions(file, OverrideUpdate, c, v ? true : false);
         }
     };
 
     template <typename T>
-    struct ConfigAbortAfter
-    {
+    struct ConfigAbortAfter {
         template <typename U>
-        ConfigAbortAfter( const std::string& file, int c, U v )
-        {
-            Config<T>::instance().insertAbortAfter(file, c, v);
+        ConfigAbortAfter( const std::string& file, int c, U v ) {
+            Config<T>::instance().insertAbortAfter(file, OverrideUpdate, c, v);
         }
     };
 
     template <typename T>
-    struct ConfigAddTest
-    {
+    struct ConfigAddTest {
         template <typename U>
-        ConfigAddTest( const std::string& file, int c, U v )
-        {
-            Config<T>::instance().insertTest(file, c, v);
+        ConfigAddTest( const std::string& file, int c, U v ) {
+            Config<T>::instance().insertTest(file, OverrideUpdate, c, v);
         }
     };
 }

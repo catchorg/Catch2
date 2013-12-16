@@ -77,5 +77,8 @@
     <ClCompile Include="..\..\SelfTest\MessageInstantiationTests2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SelfTest\VisualStudioConfigTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

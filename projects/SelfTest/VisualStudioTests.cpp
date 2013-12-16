@@ -28,6 +28,8 @@ namespace VisualStudioTests
     {
         bool show = Catch::getCurrentContext().getConfig()->includeSuccessfulResults();
         REQUIRE(!show);
+        int abortAfter = Catch::getCurrentContext().getConfig()->abortAfter();
+        REQUIRE(abortAfter == 1);
     }
 
     CATCH_CONFIG_SHOW_SUCCESS(true)

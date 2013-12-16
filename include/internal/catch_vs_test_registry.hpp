@@ -278,7 +278,6 @@ private:
         {   CatchOverrides::ConfigGuard cg; \
             Catch::ConfigData cd(cg.value().get()); \
             cd.name = name_desc.name; \
-            cd.abortAfter = 1; \
             cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
             cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
             cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \

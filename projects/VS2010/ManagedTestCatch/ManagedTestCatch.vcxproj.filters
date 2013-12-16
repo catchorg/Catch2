@@ -72,6 +72,9 @@
     <ClCompile Include="..\..\SelfTest\VisualStudioTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SelfTest\VisualStudioConfigTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

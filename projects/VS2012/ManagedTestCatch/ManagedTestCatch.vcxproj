@@ -170,6 +170,7 @@
     <ClCompile Include="..\..\SelfTest\TestMain.cpp" />
     <ClCompile Include="..\..\SelfTest\TrickyTests.cpp" />
     <ClCompile Include="..\..\SelfTest\VariadicMacrosTests.cpp" />
+    <ClCompile Include="..\..\SelfTest\VisualStudioConfigTests.cpp" />
     <ClCompile Include="..\..\SelfTest\VisualStudioTests.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
