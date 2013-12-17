@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 25 (master branch)
- *  Generated: 2013-12-17 14:51:52.643587
+ *  CATCH v1.0 build 26 (master branch)
+ *  Generated: 2013-12-17 14:56:48.216156
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6166,7 +6166,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 25, "master" );
+    Version libraryVersion( 1, 0, 26, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -8057,6 +8057,7 @@ int main (int argc, char * const argv[]) {
 #endif
 
     return result;
+}
 
 #endif // __OBJC__
 
