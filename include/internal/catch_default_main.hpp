@@ -147,6 +147,24 @@ int main (int argc, char * const argv[]) {
     return ret;
 }
 
+#else // __OBJC__
+
+// Objective-C entry point
+int main (int argc, char * const argv[]) {
+#if !CATCH_ARC_ENABLED
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+#endif
+
+    Catch::registerTestMethods();
+    int result = Catch::Session().run( argc, (char* const*)argv );
+
+#if !CATCH_ARC_ENABLED
+    [pool drain];
+#endif
+
+    return result;
+
+
 #endif // __OBJC__
 
 #endif // TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED

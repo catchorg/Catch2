@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 24 (master branch)
- *  Generated: 2013-12-17 14:45:19.329049
+ *  CATCH v1.0 build 25 (master branch)
+ *  Generated: 2013-12-17 14:51:52.643587
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6166,7 +6166,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 24, "master" );
+    Version libraryVersion( 1, 0, 25, "master" );
 }
 
 // #included from: catch_text.hpp
@@ -8040,6 +8040,23 @@ int main (int argc, char * const argv[]) {
 #endif /*!DO_NOT_USE_SIGNALS*/
     return ret;
 }
+
+#else // __OBJC__
+
+// Objective-C entry point
+int main (int argc, char * const argv[]) {
+#if !CATCH_ARC_ENABLED
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+#endif
+
+    Catch::registerTestMethods();
+    int result = Catch::Session().run( argc, (char* const*)argv );
+
+#if !CATCH_ARC_ENABLED
+    [pool drain];
+#endif
+
+    return result;
 
 #endif // __OBJC__
 
