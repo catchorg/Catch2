@@ -10,7 +10,16 @@
 
 #ifndef __OBJC__
 
-#if !defined(DO_NOT_USE_SIGNALS)
+#ifdef TIMEOUT_FOR_ALL_TESTS_IN_SECONDS
+#ifdef __GNUC__
+#define USING_TIMEOUTS
+#else /*!__GNUC__ = for MSVC pthreads-win32 is needed (
+      unless this library will go to C++11 and use std::thread, in which case below could be updated accordingly)*/
+#pragma message ("\nWARNING: Specified TIMEOUT_FOR_ALL_TESTS_IN_SECONDS, but it's only supported with GCC compilers..\n")
+#endif /*__GNUC__*/
+#endif /*TIMEOUT_FOR_ALL_TESTS_IN_SECONDS*/
+
+#if defined(USING_TIMEOUTS) || !defined(DO_NOT_USE_SIGNALS)
 #include <sstream>
 #include <iostream>
 void add_test_info(std::stringstream& s) {
@@ -28,6 +37,38 @@ void add_test_info(std::stringstream& s) {
     Catch::cleanUp();
 }
 #endif
+
+#ifdef USING_TIMEOUTS
+#include <pthread.h>
+#ifdef CATCH_PLATFORM_WINDOWS
+#define SLEEP(x) Sleep(x)
+#else
+#include <unistd.h>
+#define SLEEP(x) sleep(x/1000)
+#endif
+
+void* timeout_thread_fcn(void* arg) {
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+    unsigned int elapsed_s = 0;
+    volatile bool& exit_timeout_thread = *static_cast<bool*>(arg);
+    while(!exit_timeout_thread) {
+        SLEEP(1000);
+        elapsed_s++;
+        if (elapsed_s == TIMEOUT_FOR_ALL_TESTS_IN_SECONDS)
+        {
+           std::stringstream info;
+           info << "\n\n=================\n\n";
+           info << "Test execution timed out";
+           info << " (timeout was: " <<  TIMEOUT_FOR_ALL_TESTS_IN_SECONDS << " seconds)\n";
+           add_test_info(info);
+           std::cerr << info.str();
+           exit(-1);
+        }
+    }
+    return NULL;
+}
+#endif /*!TIMEOUT_FOR_ALL_TESTS_IN_SECONDS*/
 
 #ifndef DO_NOT_USE_SIGNALS
 static bool testing_finished = false;
@@ -66,16 +107,15 @@ void handle_signal(int sig) {
     default:
         break;
     }
-
     add_test_info(s);
     std::cout << s.str();
-
     exit(-sig);
 }
 #endif /*!DO_NOT_USE_SIGNALS*/
 
 // Standard C/C++ main entry point
 int main (int argc, char * const argv[]) {
+    int ret = 0;
 #ifndef DO_NOT_USE_SIGNALS
     testing_finished = false;
     signal(SIGSEGV, handle_signal);
@@ -86,25 +126,25 @@ int main (int argc, char * const argv[]) {
     signal(SIGFPE, handle_signal);
 #endif /*!DO_NOT_USE_SIGNALS*/
 
-    return Catch::Session().run( argc, argv );
-}
+#ifdef USING_TIMEOUTS
+    pthread_t timeout_thread;
+    volatile bool exit_timeout_thread = false;
+    ret = pthread_create(&timeout_thread,
+                         NULL,
+                         timeout_thread_fcn,
+                         (void*)&exit_timeout_thread);
+    if (ret) {
+        std::cerr << "Catch failed to start timeout thread (pthread_create failed with %d" << ret << ")\n";
+        return ret;
+        }
+#endif /*!USING_TIMEOUTS*/
 
-#else // __OBJC__
+    ret = Catch::Session().run( argc, argv );
 
-// Objective-C entry point
-int main (int argc, char * const argv[]) {
-#if !CATCH_ARC_ENABLED
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-#endif
-
-    Catch::registerTestMethods();
-    int result = Catch::Session().run( argc, (char* const*)argv );
-
-#if !CATCH_ARC_ENABLED
-    [pool drain];
-#endif
-
-    return result;
+#ifndef DO_NOT_USE_SIGNALS
+    testing_finished = true;
+#endif /*!DO_NOT_USE_SIGNALS*/
+    return ret;
 }
 
 #endif // __OBJC__
