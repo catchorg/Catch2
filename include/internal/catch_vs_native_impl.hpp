@@ -11,7 +11,10 @@
 
 #ifdef INTERNAL_CATCH_VS_NATIVE
 
+#pragma warning( disable : 4505 )
+
 #include "CppUnitTest.h"
+
 using Microsoft::VisualStudio::CppUnitTestFramework::Logger;
 using Microsoft::VisualStudio::CppUnitTestFramework::Assert;
 using Microsoft::VisualStudio::CppUnitTestFramework::__LineInfo;
