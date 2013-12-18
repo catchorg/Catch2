@@ -92,9 +92,16 @@ namespace Catch {
             std::string stdOut;
             std::string stdErr;
         };
-        friend bool operator == ( Ptr<SectionNode> const& node, SectionInfo const& other ) {
-            return node->stats.sectionInfo.lineInfo == other.lineInfo;
-        }
+
+        struct BySectionInfo {
+            BySectionInfo( SectionInfo const& other ) : m_other( other ) {}
+            bool operator() ( Ptr<SectionNode> const& node ) const {
+                return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
+            }
+        private:
+            SectionInfo const& m_other;
+        };
+
 
         typedef Node<TestCaseStats, SectionNode> TestCaseNode;
         typedef Node<TestGroupStats, TestCaseNode> TestGroupNode;
@@ -122,7 +129,9 @@ namespace Catch {
             else {
                 SectionNode& parentNode = *m_sectionStack.back();
                 SectionNode::ChildSections::const_iterator it =
-                    std::find( parentNode.childSections.begin(), parentNode.childSections.end(), sectionInfo );
+                    std::find_if(   parentNode.childSections.begin(),
+                                    parentNode.childSections.end(),
+                                    BySectionInfo( sectionInfo ) );
                 if( it == parentNode.childSections.end() ) {
                     node = new SectionNode( incompleteStats );
                     parentNode.childSections.push_back( node );
