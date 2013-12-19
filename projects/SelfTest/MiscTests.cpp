@@ -113,9 +113,9 @@ TEST_CASE( "looped tests", "[.][failing]" )
 
 TEST_CASE( "Sends stuff to stdout and stderr", "" )
 {
-    std::cout << "Some information" << std::endl;
+    std::cout << "A string sent directly to stdout" << std::endl;
     
-    std::cerr << "An error" << std::endl;
+    std::cerr << "A string sent directly to stderr" << std::endl;
 }
 
 inline const char* makeString( bool makeNull )

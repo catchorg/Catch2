@@ -3014,8 +3014,8 @@ with expansion:
 with message:
   Testing if fib[7] (21) is even
 
-Some information
-An error
+A string sent directly to stdout
+A string sent directly to stderr
 -------------------------------------------------------------------------------
 Sends stuff to stdout and stderr
 -------------------------------------------------------------------------------

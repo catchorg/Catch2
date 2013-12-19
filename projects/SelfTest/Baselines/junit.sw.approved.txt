@@ -351,10 +351,10 @@ MiscTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="Sends stuff to stdout and stderr" time="{duration}">
       <system-out>
-Some information
+A string sent directly to stdout
       </system-out>
       <system-err>
-An error
+A string sent directly to stderr
       </system-err>
     </testcase>
     <testcase classname="global" name="null strings" time="{duration}"/>
@@ -550,12 +550,12 @@ TrickyTests.cpp:<line number>
     <system-out>
 Message from section one
 Message from section two
-Some information
+A string sent directly to stdout
 hello
 hello
     </system-out>
     <system-err>
-An error
+A string sent directly to stderr
     </system-err>
   </testsuite>
 </testsuites>
