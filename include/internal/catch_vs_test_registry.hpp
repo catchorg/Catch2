@@ -251,16 +251,16 @@ private:
 #define INTERNAL_CATCH_CONCAT_LINE_COUNTER( count ) INTERNAL_CATCH_UNIQUE_NAME_LINE( INTERNAL_CATCH_UNIQUE_NAME_LINE( __LINE__, _ ), count )
 
 #define CATCH_INTERNAL_CONFIG_SHOW_SUCCESS2( v, Count ) \
-    namespace { CatchOverrides::ConfigShowSuccessfulTests<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, v); }
+    namespace { CatchOverrides::ConfigShowSuccessfulTests<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, v); }
 
 #define CATCH_INTERNAL_CONFIG_WARN_MISSING_ASSERTIONS2( v, Count ) \
-    namespace { CatchOverrides::ConfigWarnMissingAssertions<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, v); }
+    namespace { CatchOverrides::ConfigWarnMissingAssertions<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, v); }
 
 #define CATCH_INTERNAL_CONFIG_ABORT_AFTER2( v, Count ) \
-    namespace { CatchOverrides::ConfigAbortAfter<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, v); }
+    namespace { CatchOverrides::ConfigAbortAfter<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, v); }
 
 #define CATCH_INTERNAL_CONFIG_ADD_TEST2( v, Count ) \
-    namespace { CatchOverrides::ConfigAddTest<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, v); }
+    namespace { CatchOverrides::ConfigAddTest<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H_____O_V_E_R_R_I_D_E____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, v); }
 
 #define CATCH_INTERNAL_CONFIG_SHOW_SUCCESS( v ) \
     CATCH_INTERNAL_CONFIG_SHOW_SUCCESS2( v, __COUNTER__)
@@ -278,9 +278,9 @@ private:
         {   CatchOverrides::ConfigGuard cg; \
             Catch::ConfigData cd(cg.value().get()); \
             cd.name = name_desc.name; \
-            cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
-            cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
-            cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
+            cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, __LINE__ ); \
+            cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, __LINE__ ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
+            cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, __LINE__ ); \
             Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
             Catch::ReporterRegistrar<Catch::MSTestReporter> reporterReg("vs_reporter"); \
             Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "vs_reporter", config.get())); \
@@ -300,7 +300,7 @@ private:
     static void INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(); \
     namespace CATCH_INTERNAL_NAMESPACE( INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) { \
         Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( & INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ), CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc(CATCH_INTERNAL_HANDLE_EMPTY_PARAM(Name), Desc) ); \
-        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, 1); \
+        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, 1); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
@@ -313,7 +313,7 @@ private:
     CHECK_FOR_TEST_CASE_CLASH \
     namespace CATCH_INTERNAL_NAMESPACE( INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) { \
         Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( & QualifiedMethod, "&" # QualifiedMethod, Catch::NameAndDesc(CATCH_INTERNAL_HANDLE_EMPTY_PARAM(Name), Desc), CATCH_INTERNAL_LINEINFO ); \
-        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, 1); \
+        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, 1); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
@@ -329,7 +329,7 @@ private:
     }; \
     namespace CATCH_INTERNAL_NAMESPACE( INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) { \
         Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( & INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )::invoke, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc(CATCH_INTERNAL_HANDLE_EMPTY_PARAM(TestName), Desc) ); \
-        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, 1); \
+        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, 1); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
@@ -362,16 +362,16 @@ private:
 #define INTERNAL_CATCH_MAP_CATEGORY_TO_TAG2( Category, Tag, Count ) \
     CHECK_FOR_TEST_CASE_CLASH \
     namespace CATCH_INTERNAL_NAMESPACE( INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) { \
-        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, -1); \
+        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, -1); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
 	        BEGIN_INTERNAL_CATCH_BATCH_METHOD( Category, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) \
             { \
                 Catch::ConfigData cd; \
-                cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
-                cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
-                cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
+                cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, __LINE__ ); \
+                cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, __LINE__ ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
+                cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, __LINE__ ); \
                 cd.reporterName = "vs_reporterlf"; \
                 cd.name = "Batch run using tag : " Tag; \
                 cd.testsOrTags.push_back( Tag ); \
@@ -389,19 +389,19 @@ private:
 #define INTERNAL_CATCH_MAP_CATEGORY_TO_LIST2( Category, CategoryName, Count ) \
     CHECK_FOR_TEST_CASE_CLASH \
     namespace CATCH_INTERNAL_NAMESPACE( INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) { \
-        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, Count, -1); \
+        CatchOverrides::ConfigReset<Catch::IConfig const*> INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_O_N_F_I_G___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) )(__FILE__, __LINE__, -1); \
         INTERNAL_CATCH_CLASS_DEFINITION( INTERNAL_CATCH_UNIQUE_NAME_LINE( C_A_T_C_H____T_E_S_T____C_L_A_S_S___, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) ) \
         { \
             INTERNAL_CATCH_CLASS_CONTEXT \
 	        BEGIN_INTERNAL_CATCH_BATCH_METHOD( Category, INTERNAL_CATCH_CONCAT_LINE_COUNTER( Count ) ) \
             { \
                 Catch::ConfigData cd; \
-                cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, Count ); \
-                cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, Count ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
-                cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, Count ); \
+                cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, __LINE__ ); \
+                cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, __LINE__ ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
+                cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, __LINE__ ); \
                 cd.reporterName = "vs_reporterlf"; \
                 cd.name = "Batch run using category : " CategoryName; \
-                std::vector<std::string> stringNames = CatchOverrides::Config<Catch::IConfig const*>::instance().listOfTests(__FILE__, Count ); \
+                std::vector<std::string> stringNames = CatchOverrides::Config<Catch::IConfig const*>::instance().listOfTests(__FILE__, __LINE__ ); \
                 Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
                 Catch::ReporterRegistrar<Catch::MSTestReporterLineFeed> reporterReg("vs_reporterlf"); \
                 Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "vs_reporterlf", config.get())); \

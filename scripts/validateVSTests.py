@@ -44,8 +44,8 @@ def approve( baseName, args ):
 	rawResultsPath = os.path.join( rootPath, '_{0}.tmp'.format( baseName ) )
 	if os.path.exists( baselinesPath ):
 		approvedFileHandler = TestRunApprovedHandler(baselinesPath)
-		baselinesPathNew = os.path.join( rootPath, '{0}.approved.new.txt'.format( baseName ) )
-		approvedFileHandler.writeRawFile(baselinesPathNew)
+		#baselinesPathNew = os.path.join( rootPath, '{0}.approved.new.txt'.format( baseName ) )
+		#approvedFileHandler.writeRawFile(baselinesPathNew)
 		approvedFileHandler.writeSortedRawFile(baselinesSortedPath)
 	else:
 		raise Exception("Base file does not exist: '" + baselinesPath + "'")
@@ -59,11 +59,12 @@ def approve( baseName, args ):
 
 	if os.path.exists( rawResultsPath ):
 		resultFileHandler = TestRunResultHandler(rawResultsPath)
-		rawPathNew = os.path.join( rootPath, '{0}.rewrite.txt'.format( baseName ) )
+		#rawPathNew = os.path.join( rootPath, '{0}.rewrite.txt'.format( baseName ) )
 		#print "F:",rawPathNew,",",approvedFileHandler.current.outputLine
-		resultFileHandler.writeRawFile(rawPathNew)
+		#resultFileHandler.writeRawFile(rawPathNew)
 		rawPathNewSorted = os.path.join( rootPath, '{0}.sorted.unapproved.txt'.format( baseName ) )
 		resultFileHandler.writeSortedUnapprovedFile(rawPathNewSorted, approvedFileHandler.current.outputLine)
+		os.remove( rawResultsPath )
 	else:
 		raise Exception("Results file does not exist: '" + rawResultsPath + "'")
 

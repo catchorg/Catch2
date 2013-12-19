@@ -134,7 +134,14 @@ class TestConditionData:
 			if not(reasonOnSameLine) and len(self.reason):
 				lines.append(self.reason)
 		if len(self.condition):
-			lines.append("  " + self.condition)
+			line = self.condition
+			m = self.hexParser.match(line)
+			if m:
+				while m:
+					line = m.group(1) + "0x<hex digits>" + m.group(3)
+					m = self.hexParser.match(line)
+			line = line.replace("__null","0")
+			lines.append("  " + line)
 		if len(self.expansionPrefix):
 			lines.append(self.expansionPrefix)
 			extraLine = True
@@ -145,6 +152,7 @@ class TestConditionData:
 					while m:
 						line = m.group(1) + "0x<hex digits>" + m.group(3)
 						m = self.hexParser.match(line)
+				line = line.replace("__null","0")
 				lines.append("  " + line)
 		if len(self.messagePrefix):
 			lines.append(self.messagePrefix)
@@ -223,7 +231,14 @@ class TestConditionData:
 			if not(reasonOnSameLine) and len(self.reason):
 				lines.append(self.reason)
 		if len(self.condition):
-			lines.append("  " + self.condition)
+			line = self.condition
+			m = self.hexParser.match(line)
+			if m:
+				while m:
+					line = m.group(1) + "0x<hex digits>" + m.group(3)
+					m = self.hexParser.match(line)
+			line = line.replace("Catch::Text","Text")
+			lines.append("  " + line)
 		if len(self.expansionPrefix):
 			lines.append(self.expansionPrefix)
 			extraLine = True
