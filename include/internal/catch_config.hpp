@@ -49,11 +49,11 @@ namespace CatchOverrides {
     public:
         T getValueForFileLine(const std::string& file, int line) const {
             T result(false);
-            FileLineData::const_iterator it = m_data.find(file);
+            typename FileLineData::const_iterator it = m_data.find(file);
             if( it != m_data.end() ) {
-                LineData::const_iterator start = it->second.begin();
-                LineData::const_iterator end = it->second.end();
-                for( LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt ) {
+                typename LineData::const_iterator start = it->second.begin();
+                typename LineData::const_iterator end = it->second.end();
+                for( typename LineData::const_iterator lineIt = it->second.begin(); lineIt != it->second.end(); ++lineIt ) {
                     const std::pair<int,OverrideType>& current = lineIt->first;
                     if( current.second == OverrideReset ) {
                         if( line == current.first ) {
@@ -65,7 +65,7 @@ namespace CatchOverrides {
                             start = lineIt;
                     }
                 }
-                for( LineData::const_iterator lineIt = start; lineIt != end; ++lineIt ) {
+                for( typename LineData::const_iterator lineIt = start; lineIt != end; ++lineIt ) {
                     const std::pair<int,OverrideType>& current = lineIt->first;
                     if( current.second == OverrideUpdate ) {
                         if( line < current.first )
@@ -78,7 +78,7 @@ namespace CatchOverrides {
         }
         void recordValueForFileLine(const std::string& file, OverrideType overRide, int line, const T& v)
         {
-            FileLineData::iterator it = m_data.find(file);
+            typename FileLineData::iterator it = m_data.find(file);
             if( it == m_data.end() ) {
                 LineData tmp;
                 std::pair<int,OverrideType> current = std::make_pair(line, overRide);
@@ -87,7 +87,7 @@ namespace CatchOverrides {
             }
             else {
                 std::pair<int,OverrideType> current = std::make_pair(line, overRide);
-                LineData::iterator lineIt = it->second.find(current);
+                typename LineData::iterator lineIt = it->second.find(current);
                 if( lineIt == it->second.end() ) {
                     it->second.insert(std::make_pair(current,v));
                 }
