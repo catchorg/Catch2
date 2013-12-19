@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 20 (master branch)
- *  Generated: 2013-12-18 08:38:15.171445
+ *  CATCH v1.0 build 21 (master branch)
+ *  Generated: 2013-12-19 18:42:03.734896
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2096,7 +2096,7 @@ namespace Detail {
 
         std::string toString() const {
             std::ostringstream oss;
-            oss << "Approx( " << m_value << " )";
+            oss << "Approx( " << Catch::toString( m_value ) << " )";
             return oss.str();
         }
 
@@ -6166,7 +6166,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 20, "master" );
+    Version libraryVersion( 1, 0, 21, "master" );
 }
 
 // #included from: catch_text.hpp
