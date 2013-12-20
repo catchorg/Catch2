@@ -116,7 +116,7 @@ TEST_CASE( "cmdline" ) {
             .shortOpt( "d" )
             .longOpt( "description" )
             .hint( "some text" );
-        
+
         const char* argv[] = { "test", "-n 42", "-d some text" };
         std::vector<Clara::Parser::Token> unusedTokens = parseInto( cli, argv, config1 );
 
