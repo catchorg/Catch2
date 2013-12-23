@@ -206,7 +206,8 @@ namespace Clara {
         };
 
         void parseIntoTokens( int argc, char const * const * argv, std::vector<Parser::Token>& tokens ) const {
-            for( int i = 1; i < argc; ++i )
+            const std::string doubleDash = "--";
+            for( int i = 1; i < argc && argv[i] != doubleDash; ++i )
                 parseIntoTokens( argv[i] , tokens);
         }
         void parseIntoTokens( std::string arg, std::vector<Parser::Token>& tokens ) const {

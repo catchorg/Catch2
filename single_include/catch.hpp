@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 22 (master branch)
- *  Generated: 2013-12-20 19:06:10.591489
+ *  CATCH v1.0 build 23 (master branch)
+ *  Generated: 2013-12-23 10:22:45.547645
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3224,7 +3224,8 @@ namespace Clara {
         };
 
         void parseIntoTokens( int argc, char const * const * argv, std::vector<Parser::Token>& tokens ) const {
-            for( int i = 1; i < argc; ++i )
+            const std::string doubleDash = "--";
+            for( int i = 1; i < argc && argv[i] != doubleDash; ++i )
                 parseIntoTokens( argv[i] , tokens);
         }
         void parseIntoTokens( std::string arg, std::vector<Parser::Token>& tokens ) const {
@@ -6178,7 +6179,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 22, "master" );
+    Version libraryVersion( 1, 0, 23, "master" );
 }
 
 // #included from: catch_text.hpp
