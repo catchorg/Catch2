@@ -49,22 +49,22 @@ with expansion:
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.11f ) )
 with expansion:
-  9.1 == Approx( 9.11 )
+  9.1 == Approx( 9.1099996567 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.0f ) )
 with expansion:
-  9.1 == Approx( 9 )
+  9.1 == Approx( 9.0 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 1 ) )
 with expansion:
-  9.1 == Approx( 1 )
+  9.1 == Approx( 1.0 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 0 ) )
 with expansion:
-  9.1 == Approx( 0 )
+  9.1 == Approx( 0.0 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.double_pi == Approx( 3.1415 ) )
@@ -110,12 +110,12 @@ with expansion:
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one != Approx( 9.1f ) )
 with expansion:
-  9.1 != Approx( 9.1 )
+  9.1 != Approx( 9.1000003815 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.double_pi != Approx( 3.1415926535 ) )
 with expansion:
-  3.1415926535 != Approx( 3.14159 )
+  3.1415926535 != Approx( 3.1415926535 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.str_hello != "hello" )
@@ -569,8 +569,8 @@ with expansion:
 with message:
   Testing if fib[7] (21) is even
 
-Some information
-An error
+A string sent directly to stdout
+A string sent directly to stderr
 -------------------------------------------------------------------------------
 checkedIf, failing
 -------------------------------------------------------------------------------

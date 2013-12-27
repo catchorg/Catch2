@@ -144,9 +144,8 @@ namespace Catch {
 
         int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
+                m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );
                 m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
-                if( unusedOptionBehaviour == OnUnusedOptions::Fail )
-                    enforceNoUsedTokens();
                 if( m_configData.showHelp )
                     showHelp( m_configData.processName );
                 m_config.reset();
@@ -154,7 +153,7 @@ namespace Catch {
             catch( std::exception& ex ) {
                 {
                     Colour colourGuard( Colour::Red );
-                    std::cerr   << "\nError in input:\n"
+                    std::cerr   << "\nError(s) in input:\n"
                                 << Text( ex.what(), TextAttributes().setIndent(2) )
                                 << "\n\n";
                 }
@@ -167,18 +166,6 @@ namespace Catch {
         void useConfigData( ConfigData const& _configData ) {
             m_configData = _configData;
             m_config.reset();
-        }
-
-        void enforceNoUsedTokens() const {
-            if( !m_unusedTokens.empty() ) {
-                std::vector<Clara::Parser::Token>::const_iterator
-                    it = m_unusedTokens.begin(),
-                    itEnd = m_unusedTokens.end();
-                std::string msg;
-                for(; it != itEnd; ++it )
-                    msg += "  unrecognised option: " + it->data + "\n";
-                throw std::runtime_error( msg.substr( 0, msg.size()-1 ) );
-            }
         }
 
         int run( int argc, char* const argv[] ) {

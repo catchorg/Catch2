@@ -30,16 +30,16 @@ ConditionTests.cpp:<line number>
       <failure message="7 == 0" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
-      <failure message="9.1 == Approx( 9.11 )" type="CHECK">
+      <failure message="9.1 == Approx( 9.1099996567 )" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
-      <failure message="9.1 == Approx( 9 )" type="CHECK">
+      <failure message="9.1 == Approx( 9.0 )" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
-      <failure message="9.1 == Approx( 1 )" type="CHECK">
+      <failure message="9.1 == Approx( 1.0 )" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
-      <failure message="9.1 == Approx( 0 )" type="CHECK">
+      <failure message="9.1 == Approx( 0.0 )" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
       <failure message="3.1415926535 == Approx( 3.1415 )" type="CHECK">
@@ -66,10 +66,10 @@ ConditionTests.cpp:<line number>
       <failure message="7 != 7" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
-      <failure message="9.1 != Approx( 9.1 )" type="CHECK">
+      <failure message="9.1 != Approx( 9.1000003815 )" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
-      <failure message="3.1415926535 != Approx( 3.14159 )" type="CHECK">
+      <failure message="3.1415926535 != Approx( 3.1415926535 )" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
       <failure message="&quot;hello&quot; != &quot;hello&quot;" type="CHECK">
@@ -351,10 +351,10 @@ MiscTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="Sends stuff to stdout and stderr" time="{duration}">
       <system-out>
-Some information
+A string sent directly to stdout
       </system-out>
       <system-err>
-An error
+A string sent directly to stderr
       </system-err>
     </testcase>
     <testcase classname="global" name="null strings" time="{duration}"/>
@@ -550,12 +550,12 @@ TrickyTests.cpp:<line number>
     <system-out>
 Message from section one
 Message from section two
-Some information
+A string sent directly to stdout
 hello
 hello
     </system-out>
     <system-err>
-An error
+A string sent directly to stderr
     </system-err>
   </testsuite>
 </testsuites>

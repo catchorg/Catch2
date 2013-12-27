@@ -76,7 +76,7 @@
           1.23f == Approx( 1.23f )
         </Original>
         <Expanded>
-          1.23 == Approx( 1.23 )
+          1.23 == Approx( 1.2300000191 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
@@ -84,7 +84,7 @@
           0.0f == Approx( 0.0f )
         </Original>
         <Expanded>
-          0 == Approx( 0 )
+          0 == Approx( 0.0 )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -95,7 +95,7 @@
           1 == Approx( 1 )
         </Original>
         <Expanded>
-          1 == Approx( 1 )
+          1 == Approx( 1.0 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
@@ -103,7 +103,7 @@
           0 == Approx( 0 )
         </Original>
         <Expanded>
-          0 == Approx( 0 )
+          0 == Approx( 0.0 )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -114,7 +114,7 @@
           1.0f == Approx( 1 )
         </Original>
         <Expanded>
-          1 == Approx( 1 )
+          1 == Approx( 1.0 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
@@ -122,7 +122,7 @@
           0 == Approx( dZero)
         </Original>
         <Expanded>
-          0 == Approx( 0 )
+          0 == Approx( 0.0 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
@@ -130,7 +130,7 @@
           0 == Approx( dSmall ).epsilon( 0.001 )
         </Original>
         <Expanded>
-          0 == Approx( 1e-05 )
+          0 == Approx( 0.00001 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
@@ -146,7 +146,7 @@
           dMedium == Approx( 1.234f )
         </Original>
         <Expanded>
-          1.234 == Approx( 1.234 )
+          1.234 == Approx( 1.2339999676 )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -295,7 +295,7 @@
           data.float_nine_point_one == Approx( 9.1f )
         </Original>
         <Expanded>
-          9.1 == Approx( 9.1 )
+          9.1 == Approx( 9.1000003815 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -303,7 +303,7 @@
           data.double_pi == Approx( 3.1415926535 )
         </Original>
         <Expanded>
-          3.1415926535 == Approx( 3.14159 )
+          3.1415926535 == Approx( 3.1415926535 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -370,7 +370,7 @@
           data.float_nine_point_one == Approx( 9.11f )
         </Original>
         <Expanded>
-          9.1 == Approx( 9.11 )
+          9.1 == Approx( 9.1099996567 )
         </Expanded>
       </Expression>
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -378,7 +378,7 @@
           data.float_nine_point_one == Approx( 9.0f )
         </Original>
         <Expanded>
-          9.1 == Approx( 9 )
+          9.1 == Approx( 9.0 )
         </Expanded>
       </Expression>
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -386,7 +386,7 @@
           data.float_nine_point_one == Approx( 1 )
         </Original>
         <Expanded>
-          9.1 == Approx( 1 )
+          9.1 == Approx( 1.0 )
         </Expanded>
       </Expression>
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -394,7 +394,7 @@
           data.float_nine_point_one == Approx( 0 )
         </Original>
         <Expanded>
-          9.1 == Approx( 0 )
+          9.1 == Approx( 0.0 )
         </Expanded>
       </Expression>
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -469,7 +469,7 @@
           data.float_nine_point_one != Approx( 9.11f )
         </Original>
         <Expanded>
-          9.1 != Approx( 9.11 )
+          9.1 != Approx( 9.1099996567 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -477,7 +477,7 @@
           data.float_nine_point_one != Approx( 9.0f )
         </Original>
         <Expanded>
-          9.1 != Approx( 9 )
+          9.1 != Approx( 9.0 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -485,7 +485,7 @@
           data.float_nine_point_one != Approx( 1 )
         </Original>
         <Expanded>
-          9.1 != Approx( 1 )
+          9.1 != Approx( 1.0 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -493,7 +493,7 @@
           data.float_nine_point_one != Approx( 0 )
         </Original>
         <Expanded>
-          9.1 != Approx( 0 )
+          9.1 != Approx( 0.0 )
         </Expanded>
       </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -552,7 +552,7 @@
           data.float_nine_point_one != Approx( 9.1f )
         </Original>
         <Expanded>
-          9.1 != Approx( 9.1 )
+          9.1 != Approx( 9.1000003815 )
         </Expanded>
       </Expression>
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
@@ -560,7 +560,7 @@
           data.double_pi != Approx( 3.1415926535 )
         </Original>
         <Expanded>
-          3.1415926535 != Approx( 3.14159 )
+          3.1415926535 != Approx( 3.1415926535 )
         </Expanded>
       </Expression>
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >

@@ -206,7 +206,8 @@ namespace Clara {
         };
 
         void parseIntoTokens( int argc, char const * const * argv, std::vector<Parser::Token>& tokens ) const {
-            for( int i = 1; i < argc; ++i )
+            const std::string doubleDash = "--";
+            for( int i = 1; i < argc && argv[i] != doubleDash; ++i )
                 parseIntoTokens( argv[i] , tokens);
         }
         void parseIntoTokens( std::string arg, std::vector<Parser::Token>& tokens ) const {
@@ -371,16 +372,23 @@ namespace Clara {
 
         CommandLine()
         :   m_boundProcessName( new Detail::NullBinder<ConfigT>() ),
-            m_highestSpecifiedArgPosition( 0 )
+            m_highestSpecifiedArgPosition( 0 ),
+            m_throwOnUnrecognisedTokens( false )
         {}
         CommandLine( CommandLine const& other )
         :   m_boundProcessName( other.m_boundProcessName ),
             m_options ( other.m_options ),
             m_positionalArgs( other.m_positionalArgs ),
-            m_highestSpecifiedArgPosition( other.m_highestSpecifiedArgPosition )
+            m_highestSpecifiedArgPosition( other.m_highestSpecifiedArgPosition ),
+            m_throwOnUnrecognisedTokens( other.m_throwOnUnrecognisedTokens )
         {
             if( other.m_arg.get() )
                 m_arg = ArgAutoPtr( new Arg( *other.m_arg ) );
+        }
+
+        CommandLine& setThrowOnUnrecognisedTokens( bool shouldThrow = true ) {
+            m_throwOnUnrecognisedTokens = shouldThrow;
+            return *this;
         }
 
         template<typename F>
@@ -488,6 +496,7 @@ namespace Clara {
 
         std::vector<Parser::Token> populateOptions( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
             std::vector<Parser::Token> unusedTokens;
+            std::vector<std::string> errors;
             for( std::size_t i = 0; i < tokens.size(); ++i ) {
                 Parser::Token const& token = tokens[i];
                 typename std::vector<Arg>::const_iterator it = m_options.begin(), itEnd = m_options.end();
@@ -499,8 +508,9 @@ namespace Clara {
                             ( token.type == Parser::Token::LongOpt && arg.hasLongName( token.data ) ) ) {
                             if( arg.takesArg() ) {
                                 if( i == tokens.size()-1 || tokens[i+1].type != Parser::Token::Positional )
-                                    throw std::domain_error( "Expected argument to option " + token.data );
-                                arg.boundField.set( config, tokens[++i].data );
+                                    errors.push_back( "Expected argument to option: " + token.data );
+                                else
+                                    arg.boundField.set( config, tokens[++i].data );
                             }
                             else {
                                 arg.boundField.setFlag( config );
@@ -509,11 +519,26 @@ namespace Clara {
                         }
                     }
                     catch( std::exception& ex ) {
-                        throw std::runtime_error( std::string( ex.what() ) + "\n- while parsing: (" + arg.commands() + ")" );
+                        errors.push_back( std::string( ex.what() ) + "\n- while parsing: (" + arg.commands() + ")" );
                     }
                 }
-                if( it == itEnd )
-                    unusedTokens.push_back( token );
+                if( it == itEnd ) {
+                    if( token.type == Parser::Token::Positional || !m_throwOnUnrecognisedTokens )
+                        unusedTokens.push_back( token );
+                    else if( m_throwOnUnrecognisedTokens )
+                        errors.push_back( "unrecognised option: " + token.data );
+                }
+            }
+            if( !errors.empty() ) {
+                std::ostringstream oss;
+                for( std::vector<std::string>::const_iterator it = errors.begin(), itEnd = errors.end();
+                        it != itEnd;
+                        ++it ) {
+                    if( it != errors.begin() )
+                        oss << "\n";
+                    oss << *it;
+                }
+                throw std::runtime_error( oss.str() );
             }
             return unusedTokens;
         }
@@ -552,6 +577,7 @@ namespace Clara {
         std::map<int, Arg> m_positionalArgs;
         ArgAutoPtr m_arg;
         int m_highestSpecifiedArgPosition;
+        bool m_throwOnUnrecognisedTokens;
     };
 
 } // end namespace Clara
