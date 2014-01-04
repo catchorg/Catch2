@@ -95,7 +95,7 @@ struct StringMaker<T*> {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
         std::ostringstream oss;
-        oss << p;
+        oss << "0x" << std::hex << reinterpret_cast<unsigned long>( p );
         return oss.str();
     }
 };
