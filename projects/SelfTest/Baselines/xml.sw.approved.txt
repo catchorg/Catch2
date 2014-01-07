@@ -6637,7 +6637,20 @@ there&quot;
           a == &amp;foo
         </Original>
         <Expanded>
-          1 == 1
+          0x<hex digits> == 0x<hex digits>
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Comparing member function pointers">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
+        <Original>
+          m == &amp;S::f
+        </Original>
+        <Expanded>
+          0x<hex digits>
+==
+0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7405,7 +7418,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="584" failures="110"/>
+    <OverallResults successes="585" failures="110"/>
   </Group>
-  <OverallResults successes="584" failures="110"/>
+  <OverallResults successes="585" failures="110"/>
 </Catch>

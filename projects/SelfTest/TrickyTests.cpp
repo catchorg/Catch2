@@ -356,6 +356,20 @@ TEST_CASE( "Comparing function pointers", "[Tricky][function pointer]" )
     REQUIRE( a == &foo );
 }
 
+struct S
+{
+    void f() {}
+};
+
+
+TEST_CASE( "Comparing member function pointers", "[Tricky][member function pointer]" )
+{
+    typedef void (S::*MF)();
+    MF m = &S::f;
+
+    CHECK( m == &S::f );
+}
+
 class ClassName {};
 
 TEST_CASE( "pointer to class", "[Tricky]" )
