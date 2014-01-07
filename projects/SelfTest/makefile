@@ -8,8 +8,7 @@ SOURCES =	ApproxTests.cpp \
       		TestMain.cpp \
       		TrickyTests.cpp \
       		BDDTests.cpp \
-      		VariadicMacrosTests.cpp \
-      		catch_self_test.cpp
+      		VariadicMacrosTests.cpp
 OBJECTS    = $(patsubst %.cpp, %.o, $(SOURCES))
 CXX = g++
 CXXFLAGS  = -I../../include
