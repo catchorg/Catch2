@@ -83,17 +83,16 @@ namespace Detail {
     // Does not consider endian-ness
     template<typename T>
     std::string rawMemoryToString( T value ) {
-        union
-        {
-            T value;
+        union {
+            T typedValue;
             unsigned char bytes[sizeof(T)];
-        } valueAsBuffer;
+        };
 
-        valueAsBuffer.value = value;
+        typedValue = value;
 
         std::ostringstream oss;
         oss << "0x";
-        for( unsigned char* cp = valueAsBuffer.bytes; cp < valueAsBuffer.bytes+sizeof(T); ++cp )
+        for( unsigned char* cp = bytes; cp < bytes+sizeof(T); ++cp )
             oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)*cp;
         return oss.str();
     }
