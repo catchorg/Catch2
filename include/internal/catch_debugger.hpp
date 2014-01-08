@@ -30,7 +30,6 @@
         // running under the debugger or has a debugger attached post facto).
         bool isDebuggerActive(){
 
-            int                 junk;
             int                 mib[4];
             struct kinfo_proc   info;
             size_t              size;
@@ -51,8 +50,10 @@
             // Call sysctl.
 
             size = sizeof(info);
-            junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
-            assert(junk == 0);
+            if( sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0) != 0 ) {
+                std::cerr << "\n** Call to sysctl failed - unable to determine if debugger is active **\n" << std::endl;
+                return false;
+            }
 
             // We're being debugged if the P_TRACED flag is set.
 
