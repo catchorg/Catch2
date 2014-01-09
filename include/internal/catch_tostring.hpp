@@ -79,6 +79,24 @@ namespace Detail {
         }
     };
 
+    // For display purposes only.
+    // Does not consider endian-ness
+    template<typename T>
+    std::string rawMemoryToString( T value ) {
+        union {
+            T typedValue;
+            unsigned char bytes[sizeof(T)];
+        };
+
+        typedValue = value;
+
+        std::ostringstream oss;
+        oss << "0x";
+        for( unsigned char* cp = bytes; cp < bytes+sizeof(T); ++cp )
+            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)*cp;
+        return oss.str();
+    }
+
 } // end namespace Detail
 
 template<typename T>
@@ -94,13 +112,18 @@ struct StringMaker<T*> {
     static std::string convert( U* p ) {
         if( !p )
             return INTERNAL_CATCH_STRINGIFY( NULL );
-        std::ostringstream oss;
-#ifdef _MSC_VER
-        oss << "0x" << p;
-#else
-        oss << p;
-#endif
-        return oss.str();
+        else
+            return Detail::rawMemoryToString( p );
+    }
+};
+
+template<typename R, typename C>
+struct StringMaker<R C::*> {
+    static std::string convert( R C::* p ) {
+        if( !p )
+            return INTERNAL_CATCH_STRINGIFY( NULL );
+        else
+            return Detail::rawMemoryToString( p );
     }
 };
 

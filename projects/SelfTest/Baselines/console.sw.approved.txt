@@ -6366,7 +6366,21 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( a == &foo )
 with expansion:
-  1 == 1
+  0x<hex digits> == 0x<hex digits>
+
+-------------------------------------------------------------------------------
+Comparing member function pointers
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK( m == &S::f )
+with expansion:
+  0x<hex digits>
+  ==
+  0x<hex digits>
 
 -------------------------------------------------------------------------------
 pointer to class
@@ -7144,5 +7158,5 @@ with expansion:
   true
 
 ===============================================================================
-122 test cases - 51 failed (694 assertions - 110 failed)
+123 test cases - 51 failed (695 assertions - 110 failed)
 
