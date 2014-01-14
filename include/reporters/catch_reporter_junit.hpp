@@ -89,6 +89,9 @@ namespace Catch {
             else
                 xml.writeAttribute( "time", suiteTime );
 
+            time_t rawtime;
+            struct tm *timeinfo;
+
 #ifdef CATCH_PLATFORM_WINDOWS
             // %z does not return the offset from UTC with MSVC's strftime implementation
             // Timestamps will look like: "2014-01-14T17:22:09"
