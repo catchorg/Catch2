@@ -80,6 +80,19 @@ namespace Detail {
     };
 
     // For display purposes only.
+    // Anything implicitly convertible to void* ends up here
+    inline std::string rawMemoryToString(void* p)
+    {
+        std::ostringstream oss;
+#ifdef _MSC_VER
+        oss << "0x" << p;
+#else
+        oss << p;
+#endif
+        return oss.str();
+    }
+
+    // For display purposes only.
     // Does not consider endian-ness
     template<typename T>
     std::string rawMemoryToString( T value ) {

@@ -498,7 +498,9 @@ def approveXml( baseName, args ):
 		f = open( rawResultsPath, 'r' )
 		for line in f:
 			xml += line
+		f.close()
 		#xml = xml.replace("<hex digits>", "&lt;hex digits&gt;")
+		os.remove( rawResultsPath )
 
 		otherResultsTestParser = re.compile( r'(.*\\)(.*\..pp)' )
 		hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
@@ -743,6 +745,8 @@ def approveMsTest( baseName, filter ):
 			if line.startswith("Results file:") or line.startswith("Results File:"):
 				trxFile = line[13:].strip()
 				parseTrxFile(baseName, trxFile)
+		f.close()
+		os.remove( rawResultsPath )
 
 # Standard console reporter
 approve( "console.std", ["~_"] )
