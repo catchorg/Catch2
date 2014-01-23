@@ -13,7 +13,7 @@
 
 #pragma warning( disable : 4505 )
 
-#include "CppUnitTest.h"
+#include <CppUnitTest.h>
 
 using Microsoft::VisualStudio::CppUnitTestFramework::Logger;
 using Microsoft::VisualStudio::CppUnitTestFramework::Assert;
