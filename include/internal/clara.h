@@ -5,20 +5,24 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef CLICHE_CLARA_EMBEDDED_NAMESPACE
-#ifdef TWOBLUECUBES_CLARA_H_INCLUDED
-#define TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
-#else
-#define TWOBLUECUBES_CLARA_H_INCLUDED
-#endif
-#endif
 
+// Only use header guard if we are not using an outer namespace
+#ifndef CLICHE_CLARA_OUTER_NAMESPACE
+# ifdef TWOBLUECUBES_CLARA_H_INCLUDED
+#  ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+#   define TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+#  endif
+# else
+#  define TWOBLUECUBES_CLARA_H_INCLUDED
+# endif
+#endif
 #ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
 
 #include "catch_text.h" // This will get moved out too
 
-#ifdef CLICHE_CLARA_EMBEDDED_NAMESPACE
-namespace CLICHE_CLARA_EMBEDDED_NAMESPACE {
+// Use optional outer namespace
+#ifdef CLICHE_CLARA_OUTER_NAMESPACE
+namespace CLICHE_CLARA_OUTER_NAMESPACE {
 #endif
 
 namespace Clara {
@@ -593,7 +597,7 @@ namespace Clara {
 
 } // end namespace Clara
 
-#ifdef CLICHE_CLARA_EMBEDDED_NAMESPACE
+#ifdef CLICHE_CLARA_OUTER_NAMESPACE
 } // end embedded namespace
 #endif
 
