@@ -598,8 +598,8 @@ namespace Clara {
 } // end namespace Clara
 
 #ifdef CLICHE_CLARA_OUTER_NAMESPACE
-} // end embedded namespace
+} // end outer namespace
 #endif
 
-#endif // TWOBLUECUBES_CLARA_H_ALREAD_INCLUDED
+#endif // TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
 
