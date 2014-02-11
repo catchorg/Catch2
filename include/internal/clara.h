@@ -18,7 +18,13 @@
 #endif
 #ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
 
-#include "catch_text.h" // This will get moved out too
+#define CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE Clara
+#include "tbc_text_format.h"
+#undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+
+#include <string>
+#include <vector>
+#include <map>
 
 // Use optional outer namespace
 #ifdef CLICHE_CLARA_OUTER_NAMESPACE
@@ -27,6 +33,15 @@ namespace CLICHE_CLARA_OUTER_NAMESPACE {
 
 namespace Clara {
     namespace Detail {
+
+#ifdef CLARA_CONSOLE_WIDTH
+    const unsigned int consoleWidth = CLARA_CONFIG_CONSOLE_WIDTH;
+#else
+    const unsigned int consoleWidth = 80;
+#endif
+
+        using namespace ::Clara::Tbc;
+
         template<typename T> struct RemoveConstRef{ typedef T type; };
         template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
         template<typename T> struct RemoveConstRef<T const&>{ typedef T type; };
@@ -416,18 +431,18 @@ namespace Clara {
             m_boundProcessName = Detail::makeBoundField( f );
         }
 
-        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = CATCH_CONFIG_CONSOLE_WIDTH ) const {
+        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = Detail::consoleWidth ) const {
             typename std::vector<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
             std::size_t maxWidth = 0;
             for( it = itBegin; it != itEnd; ++it )
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Catch::Text usage( it->commands(), Catch::TextAttributes()
+                Detail::Text usage( it->commands(), Detail::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
                 // !TBD handle longer usage strings
-                Catch::Text desc( it->description, Catch::TextAttributes()
+                Detail::Text desc( it->description, Detail::TextAttributes()
                                                         .setWidth( width - maxWidth -3 ) );
 
                 for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {

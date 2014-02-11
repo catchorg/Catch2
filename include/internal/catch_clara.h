@@ -9,6 +9,9 @@
 #ifndef TWOBLUECUBES_CATCH_CLARA_H_INCLUDED
 #define TWOBLUECUBES_CATCH_CLARA_H_INCLUDED
 
+#define CLARA_CONFIG_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
+
+
 // Declare Clara inside the Catch namespace
 #define CLICHE_CLARA_OUTER_NAMESPACE Catch
 #include "clara.h"

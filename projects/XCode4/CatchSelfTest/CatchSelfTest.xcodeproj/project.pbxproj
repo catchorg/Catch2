@@ -78,6 +78,7 @@
 		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
 		26847E5D16BBADB40043B9C1 /* catch_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_message.cpp; path = ../../../SelfTest/SurrogateCpps/catch_message.cpp; sourceTree = "<group>"; };
 		268F47B018A93F7800D8C14F /* catch_clara.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_clara.h; sourceTree = "<group>"; };
+		268F47B118A944DB00D8C14F /* tbc_text_format.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tbc_text_format.h; path = ../../../../include/internal/tbc_text_format.h; sourceTree = "<group>"; };
 		26948284179A9AB900ED166E /* SectionTrackerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SectionTrackerTests.cpp; path = ../../../SelfTest/SectionTrackerTests.cpp; sourceTree = "<group>"; };
 		26948287179EF7F900ED166E /* catch_test_case_tracker.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_tracker.hpp; sourceTree = "<group>"; };
 		2694A1FB16A0000E004816E3 /* catch_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = catch_text.cpp; sourceTree = "<group>"; };
@@ -202,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				26C5F3EC17514B970056FB3C /* clara.h */,
+				268F47B118A944DB00D8C14F /* tbc_text_format.h */,
 			);
 			name = External;
 			sourceTree = "<group>";
