@@ -23,6 +23,8 @@
 #undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
 
 #include <algorithm>
+#include <exception>
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
