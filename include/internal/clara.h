@@ -23,11 +23,11 @@
 #undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
 
 #include <algorithm>
-#include <exception>
+#include <map>
 #include <memory>
 #include <string>
+#include <stdexcept>
 #include <vector>
-#include <map>
 
 // Use optional outer namespace
 #ifdef CLICHE_CLARA_OUTER_NAMESPACE
