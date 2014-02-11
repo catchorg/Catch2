@@ -8,10 +8,10 @@ from scriptCommon import catchPath
 
 versionParser = re.compile( r'(\s*Version\slibraryVersion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*\).*' )
 includesParser = re.compile( r'\s*#include\s*"(.*)"' )
-guardParser = re.compile( r'\s*#.*_INCLUDED')
+guardParser = re.compile( r'\s*#.*TWOBLUECUBES_CATCH_.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')
-ifParser = re.compile( r'\s*#if')
-endIfParser = re.compile( r'\s*#endif')
+ifParser = re.compile( r'\s*#ifndef TWOBLUECUBES_CATCH_.*_INCLUDED')
+endIfParser = re.compile( r'\s*#endif // TWOBLUECUBES_CATCH_.*_INCLUDED')
 ifImplParser = re.compile( r'\s*#if.*(CATCH_CONFIG_MAIN|CATCH_CONFIG_RUNNER)')
 commentParser1 = re.compile( r'^\s*/\*')
 commentParser2 = re.compile( r'^\s*\*')
@@ -62,7 +62,8 @@ def parseFile( path, filename ):
             header = m.group(1)
             headerPath, sep, headerFile = header.rpartition( "/" )
             if not headerFile in seenHeaders:
-                seenHeaders.add( headerFile )
+                if headerFile != "tbc_text_format.h" and headerFile != "clara.h":
+                    seenHeaders.add( headerFile )
                 write( "// #included from: {0}\n".format( header ) )
                 if( headerPath == "internal" and path.endswith( "internal/" ) ):
                     headerPath = ""
