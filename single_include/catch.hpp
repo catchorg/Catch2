@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 25 (master branch)
- *  Generated: 2014-01-08 17:16:38.496390
+ *  CATCH v1.0 build 26 (master branch)
+ *  Generated: 2014-02-11 18:09:37.990814
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3002,22 +3002,62 @@ namespace Catch {
 
 } // end namespace Catch
 
+// #included from: catch_clara.h
+#define TWOBLUECUBES_CATCH_CLARA_H_INCLUDED
+
+#define CLARA_CONFIG_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
+
+// Declare Clara inside the Catch namespace
+#define CLICHE_CLARA_OUTER_NAMESPACE Catch
 // #included from: clara.h
-#define TWOBLUECUBES_CLARA_H_INCLUDED
 
-// #included from: catch_text.h
-#define TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
+// Only use header guard if we are not using an outer namespace
+#ifndef CLICHE_CLARA_OUTER_NAMESPACE
+# ifdef TWOBLUECUBES_CLARA_H_INCLUDED
+#  ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+#   define TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+#  endif
+# else
+#  define TWOBLUECUBES_CLARA_H_INCLUDED
+# endif
+#endif
+#ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
 
+#define CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE Clara
+// #included from: tbc_text_format.h
+// Only use header guard if we are not using an outer namespace
+#ifndef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+# ifdef TWOBLUECUBES_TEXT_FORMAT_H_INCLUDED
+#  ifndef TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+#   define TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+#  endif
+# else
+#  define TWOBLUECUBES_TEXT_FORMAT_H_INCLUDED
+# endif
+#endif
+#ifndef TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
 #include <string>
 #include <vector>
+#include <sstream>
 
-namespace Catch {
+// Use optional outer namespace
+#ifdef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+namespace CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE {
+#endif
+
+namespace Tbc {
+
+#ifdef TBC_TEXT_FORMAT_CONSOLE_WIDTH
+    const unsigned int consoleWidth = TBC_TEXT_FORMAT_CONSOLE_WIDTH;
+#else
+    const unsigned int consoleWidth = 80;
+#endif
 
     struct TextAttributes {
         TextAttributes()
         :   initialIndent( std::string::npos ),
             indent( 0 ),
-            width( CATCH_CONFIG_CONSOLE_WIDTH-1 ),
+            width( consoleWidth-1 ),
             tabChar( '\t' )
         {}
 
@@ -3034,8 +3074,66 @@ namespace Catch {
 
     class Text {
     public:
-        Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() );
-        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos );
+        Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() )
+        : attr( _attr )
+        {
+            std::string wrappableChars = " [({.,/|\\-";
+            std::size_t indent = _attr.initialIndent != std::string::npos
+                ? _attr.initialIndent
+                : _attr.indent;
+            std::string remainder = _str;
+
+            while( !remainder.empty() ) {
+                if( lines.size() >= 1000 ) {
+                    lines.push_back( "... message truncated due to excessive size" );
+                    return;
+                }
+                std::size_t tabPos = std::string::npos;
+                std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
+                std::size_t pos = remainder.find_first_of( '\n' );
+                if( pos <= width ) {
+                    width = pos;
+                }
+                pos = remainder.find_last_of( _attr.tabChar, width );
+                if( pos != std::string::npos ) {
+                    tabPos = pos;
+                    if( remainder[width] == '\n' )
+                        width--;
+                    remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
+                }
+
+                if( width == remainder.size() ) {
+                    spliceLine( indent, remainder, width );
+                }
+                else if( remainder[width] == '\n' ) {
+                    spliceLine( indent, remainder, width );
+                    if( width <= 1 || remainder.size() != 1 )
+                        remainder = remainder.substr( 1 );
+                    indent = _attr.indent;
+                }
+                else {
+                    pos = remainder.find_last_of( wrappableChars, width );
+                    if( pos != std::string::npos && pos > 0 ) {
+                        spliceLine( indent, remainder, pos );
+                        if( remainder[0] == ' ' )
+                            remainder = remainder.substr( 1 );
+                    }
+                    else {
+                        spliceLine( indent, remainder, width-1 );
+                        lines.back() += "-";
+                    }
+                    if( lines.size() == 1 )
+                        indent = _attr.indent;
+                    if( tabPos != std::string::npos )
+                        indent += tabPos;
+                }
+            }
+        }
+
+        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
+            lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
+            _remainder = _remainder.substr( _pos );
+        }
 
         typedef std::vector<std::string>::const_iterator const_iterator;
 
@@ -3044,9 +3142,21 @@ namespace Catch {
         std::string const& last() const { return lines.back(); }
         std::size_t size() const { return lines.size(); }
         std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
-        std::string toString() const;
+        std::string toString() const {
+            std::ostringstream oss;
+            oss << *this;
+            return oss.str();
+        }
 
-        friend std::ostream& operator << ( std::ostream& _stream, Text const& _text );
+        inline friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+            for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
+                it != itEnd; ++it ) {
+                if( it != _text.begin() )
+                    _stream << "\n";
+                _stream << *it;
+            }
+            return _stream;
+        }
 
     private:
         std::string str;
@@ -3054,10 +3164,38 @@ namespace Catch {
         std::vector<std::string> lines;
     };
 
-} // end namespace Catch
+} // end namespace Tbc
+
+#ifdef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+} // end outer namespace
+#endif
+
+#endif // TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+#undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <stdexcept>
+#include <memory>
+
+// Use optional outer namespace
+#ifdef CLICHE_CLARA_OUTER_NAMESPACE
+namespace CLICHE_CLARA_OUTER_NAMESPACE {
+#endif
 
 namespace Clara {
     namespace Detail {
+
+#ifdef CLARA_CONSOLE_WIDTH
+    const unsigned int consoleWidth = CLARA_CONFIG_CONSOLE_WIDTH;
+#else
+    const unsigned int consoleWidth = 80;
+#endif
+
+        using namespace ::Clara::Tbc;
+
         template<typename T> struct RemoveConstRef{ typedef T type; };
         template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
         template<typename T> struct RemoveConstRef<T const&>{ typedef T type; };
@@ -3446,18 +3584,18 @@ namespace Clara {
             m_boundProcessName = Detail::makeBoundField( f );
         }
 
-        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = CATCH_CONFIG_CONSOLE_WIDTH ) const {
+        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = Detail::consoleWidth ) const {
             typename std::vector<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
             std::size_t maxWidth = 0;
             for( it = itBegin; it != itEnd; ++it )
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Catch::Text usage( it->commands(), Catch::TextAttributes()
+                Detail::Text usage( it->commands(), Detail::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
                 // !TBD handle longer usage strings
-                Catch::Text desc( it->description, Catch::TextAttributes()
+                Detail::Text desc( it->description, Detail::TextAttributes()
                                                         .setWidth( width - maxWidth -3 ) );
 
                 for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
@@ -3627,6 +3765,14 @@ namespace Clara {
 
 } // end namespace Clara
 
+#ifdef CLICHE_CLARA_OUTER_NAMESPACE
+} // end outer namespace
+#endif
+
+#endif // TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+
+#undef CLICHE_CLARA_OUTER_NAMESPACE
+
 #include <fstream>
 
 namespace Catch {
@@ -3779,6 +3925,166 @@ namespace Catch {
 
 // #included from: internal/catch_list.hpp
 #define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
+
+// #included from: catch_text.h
+#define TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
+
+#define TBC_TEXT_FORMAT_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
+
+#define CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE Catch
+// #included from: tbc_text_format.h
+// Only use header guard if we are not using an outer namespace
+#ifndef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+# ifdef TWOBLUECUBES_TEXT_FORMAT_H_INCLUDED
+#  ifndef TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+#   define TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+#  endif
+# else
+#  define TWOBLUECUBES_TEXT_FORMAT_H_INCLUDED
+# endif
+#endif
+#ifndef TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+#include <string>
+#include <vector>
+#include <sstream>
+
+// Use optional outer namespace
+#ifdef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+namespace CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE {
+#endif
+
+namespace Tbc {
+
+#ifdef TBC_TEXT_FORMAT_CONSOLE_WIDTH
+    const unsigned int consoleWidth = TBC_TEXT_FORMAT_CONSOLE_WIDTH;
+#else
+    const unsigned int consoleWidth = 80;
+#endif
+
+    struct TextAttributes {
+        TextAttributes()
+        :   initialIndent( std::string::npos ),
+            indent( 0 ),
+            width( consoleWidth-1 ),
+            tabChar( '\t' )
+        {}
+
+        TextAttributes& setInitialIndent( std::size_t _value )  { initialIndent = _value; return *this; }
+        TextAttributes& setIndent( std::size_t _value )         { indent = _value; return *this; }
+        TextAttributes& setWidth( std::size_t _value )          { width = _value; return *this; }
+        TextAttributes& setTabChar( char _value )               { tabChar = _value; return *this; }
+
+        std::size_t initialIndent;  // indent of first line, or npos
+        std::size_t indent;         // indent of subsequent lines, or all if initialIndent is npos
+        std::size_t width;          // maximum width of text, including indent. Longer text will wrap
+        char tabChar;               // If this char is seen the indent is changed to current pos
+    };
+
+    class Text {
+    public:
+        Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() )
+        : attr( _attr )
+        {
+            std::string wrappableChars = " [({.,/|\\-";
+            std::size_t indent = _attr.initialIndent != std::string::npos
+                ? _attr.initialIndent
+                : _attr.indent;
+            std::string remainder = _str;
+
+            while( !remainder.empty() ) {
+                if( lines.size() >= 1000 ) {
+                    lines.push_back( "... message truncated due to excessive size" );
+                    return;
+                }
+                std::size_t tabPos = std::string::npos;
+                std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
+                std::size_t pos = remainder.find_first_of( '\n' );
+                if( pos <= width ) {
+                    width = pos;
+                }
+                pos = remainder.find_last_of( _attr.tabChar, width );
+                if( pos != std::string::npos ) {
+                    tabPos = pos;
+                    if( remainder[width] == '\n' )
+                        width--;
+                    remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
+                }
+
+                if( width == remainder.size() ) {
+                    spliceLine( indent, remainder, width );
+                }
+                else if( remainder[width] == '\n' ) {
+                    spliceLine( indent, remainder, width );
+                    if( width <= 1 || remainder.size() != 1 )
+                        remainder = remainder.substr( 1 );
+                    indent = _attr.indent;
+                }
+                else {
+                    pos = remainder.find_last_of( wrappableChars, width );
+                    if( pos != std::string::npos && pos > 0 ) {
+                        spliceLine( indent, remainder, pos );
+                        if( remainder[0] == ' ' )
+                            remainder = remainder.substr( 1 );
+                    }
+                    else {
+                        spliceLine( indent, remainder, width-1 );
+                        lines.back() += "-";
+                    }
+                    if( lines.size() == 1 )
+                        indent = _attr.indent;
+                    if( tabPos != std::string::npos )
+                        indent += tabPos;
+                }
+            }
+        }
+
+        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
+            lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
+            _remainder = _remainder.substr( _pos );
+        }
+
+        typedef std::vector<std::string>::const_iterator const_iterator;
+
+        const_iterator begin() const { return lines.begin(); }
+        const_iterator end() const { return lines.end(); }
+        std::string const& last() const { return lines.back(); }
+        std::size_t size() const { return lines.size(); }
+        std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
+        std::string toString() const {
+            std::ostringstream oss;
+            oss << *this;
+            return oss.str();
+        }
+
+        inline friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+            for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
+                it != itEnd; ++it ) {
+                if( it != _text.begin() )
+                    _stream << "\n";
+                _stream << *it;
+            }
+            return _stream;
+        }
+
+    private:
+        std::string str;
+        TextAttributes attr;
+        std::vector<std::string> lines;
+    };
+
+} // end namespace Tbc
+
+#ifdef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+} // end outer namespace
+#endif
+
+#endif // TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+#undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+
+namespace Catch {
+    using Tbc::Text;
+    using Tbc::TextAttributes;
+}
 
 // #included from: catch_console_colour.hpp
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
@@ -6206,95 +6512,8 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 25, "master" );
+    Version libraryVersion( 1, 0, 26, "master" );
 }
-
-// #included from: catch_text.hpp
-#define TWOBLUECUBES_CATCH_TEXT_HPP_INCLUDED
-
-#include <string>
-#include <vector>
-
-namespace Catch {
-
-    Text::Text( std::string const& _str, TextAttributes const& _attr )
-    : attr( _attr )
-    {
-        std::string wrappableChars = " [({.,/|\\-";
-        std::size_t indent = _attr.initialIndent != std::string::npos
-            ? _attr.initialIndent
-            : _attr.indent;
-        std::string remainder = _str;
-
-        while( !remainder.empty() ) {
-            if( lines.size() >= 1000 ) {
-                lines.push_back( "... message truncated due to excessive size" );
-                return;
-            }
-            std::size_t tabPos = std::string::npos;
-            std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
-            std::size_t pos = remainder.find_first_of( '\n' );
-            if( pos <= width ) {
-                width = pos;
-            }
-            pos = remainder.find_last_of( _attr.tabChar, width );
-            if( pos != std::string::npos ) {
-                tabPos = pos;
-                if( remainder[width] == '\n' )
-                    width--;
-                remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
-            }
-
-            if( width == remainder.size() ) {
-                spliceLine( indent, remainder, width );
-            }
-            else if( remainder[width] == '\n' ) {
-                spliceLine( indent, remainder, width );
-                if( width <= 1 || remainder.size() != 1 )
-                    remainder = remainder.substr( 1 );
-                indent = _attr.indent;
-            }
-            else {
-                pos = remainder.find_last_of( wrappableChars, width );
-                if( pos != std::string::npos && pos > 0 ) {
-                    spliceLine( indent, remainder, pos );
-                    if( remainder[0] == ' ' )
-                        remainder = remainder.substr( 1 );
-                }
-                else {
-                    spliceLine( indent, remainder, width-1 );
-                    lines.back() += "-";
-                }
-                if( lines.size() == 1 )
-                    indent = _attr.indent;
-                if( tabPos != std::string::npos )
-                    indent += tabPos;
-            }
-        }
-    }
-
-    void Text::spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
-        lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
-        _remainder = _remainder.substr( _pos );
-    }
-
-    std::string Text::toString() const {
-        std::ostringstream oss;
-        oss << *this;
-        return oss.str();
-    }
-
-    std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
-        for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
-            it != itEnd; ++it ) {
-            if( it != _text.begin() )
-                _stream << "\n";
-            _stream << *it;
-        }
-        return _stream;
-    }
-
-} // end namespace Catch
 
 // #included from: catch_message.hpp
 #define TWOBLUECUBES_CATCH_MESSAGE_HPP_INCLUDED
@@ -6787,6 +7006,8 @@ namespace Catch {
                 return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
             }
         private:
+            BySectionInfo& operator=( BySectionInfo const& other ); // = delete;
+
             SectionInfo const& m_other;
         };
 
