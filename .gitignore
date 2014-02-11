@@ -22,3 +22,5 @@ projects/XCode4/CatchSelfTest/DerivedData
 projects/XCode4/OCTest/DerivedData
 *.pyc
 projects/XCode4/iOSTest/DerivedData
+*.opensdf
+projects/VS2012/TestCatch/TestCatch.sdf

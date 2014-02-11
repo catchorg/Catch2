@@ -22,9 +22,12 @@
 #include "tbc_text_format.h"
 #undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
 
-#include <string>
-#include <vector>
+#include <algorithm>
 #include <map>
+#include <memory>
+#include <string>
+#include <stdexcept>
+#include <vector>
 
 // Use optional outer namespace
 #ifdef CLICHE_CLARA_OUTER_NAMESPACE
