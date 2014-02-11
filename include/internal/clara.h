@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 // Use optional outer namespace
 #ifdef CLICHE_CLARA_OUTER_NAMESPACE
