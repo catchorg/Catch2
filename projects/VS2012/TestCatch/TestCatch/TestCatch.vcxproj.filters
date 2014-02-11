@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="internal">
+      <UniqueIdentifier>{63d84cdf-88ed-4157-9925-d4110c5d644c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reporters">
+      <UniqueIdentifier>{a8624852-b7ef-462f-ab22-00b3680fc515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SelfTest">
+      <UniqueIdentifier>{3b41dae5-3938-4806-a3ab-8127891c8dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SelfTest\Baselines">
+      <UniqueIdentifier>{e9793132-eb63-42c1-80de-899f69e5b7c3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\include\internal\catch_approx.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_assertionresult.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_assertionresult.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_capture.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_clara.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_commandline.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_common.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_common.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_compiler_capabilities.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_config.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_console_colour.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_console_colour_impl.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_context.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_context_impl.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_debugger.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_debugger.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_default_main.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_evaluate.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_exception_translator_registry.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_expression_decomposer.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_expression_lhs.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_expressionresult_builder.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_expressionresult_builder.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_generators.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_generators_impl.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_impl.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_capture.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_config.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_exception.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_generators.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_registry_hub.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_reporter.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_runner.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_interfaces_testcase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_legacy_reporter_adapter.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_legacy_reporter_adapter.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_list.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_matchers.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_message.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_message.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_notimplemented_exception.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_notimplemented_exception.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_objc.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_objc_arc.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_option.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_platform.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_ptr.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_registry_hub.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_reporter_registrars.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_reporter_registry.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_result_type.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_runner_impl.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_section.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_section.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_section_info.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_section_info.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_sfinae.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_stream.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_stream.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_streambuf.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_tags.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_tags.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_test_case_info.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_test_case_info.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_test_case_registry_impl.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_test_case_tracker.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_test_registry.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_test_spec.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_test_spec.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_text.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_timer.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_timer.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_tostring.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_totals.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_version.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_version.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\catch_xmlwriter.hpp">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\clara.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\internal\tbc_text_format.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_bases.hpp">
+      <Filter>reporters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_console.hpp">
+      <Filter>reporters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_junit.hpp">
+      <Filter>reporters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\reporters\catch_reporter_xml.hpp">
+      <Filter>reporters</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\SelfTest\ApproxTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\BDDTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\ClassTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\CmdLineTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\ConditionTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\ExceptionTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\GeneratorTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\MessageTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\MiscTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\SectionTrackerTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\TestMain.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\TrickyTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SelfTest\VariadicMacrosTests.cpp">
+      <Filter>SelfTest</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\SelfTest\Baselines\console.std.approved.txt">
+      <Filter>SelfTest\Baselines</Filter>
+    </Text>
+    <Text Include="..\..\..\SelfTest\Baselines\console.sw.approved.txt">
+      <Filter>SelfTest\Baselines</Filter>
+    </Text>
+    <Text Include="..\..\..\SelfTest\Baselines\console.swa4.approved.txt">
+      <Filter>SelfTest\Baselines</Filter>
+    </Text>
+    <Text Include="..\..\..\SelfTest\Baselines\junit.sw.approved.txt">
+      <Filter>SelfTest\Baselines</Filter>
+    </Text>
+    <Text Include="..\..\..\SelfTest\Baselines\xml.sw.approved.txt">
+      <Filter>SelfTest\Baselines</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
