@@ -27,6 +27,7 @@
 #include <map>
 #include <algorithm>
 #include <stdexcept>
+#include <memory>
 
 // Use optional outer namespace
 #ifdef CLICHE_CLARA_OUTER_NAMESPACE
