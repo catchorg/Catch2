@@ -99,6 +99,7 @@ namespace Catch {
                 return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
             }
         private:
+            BySectionInfo& operator=( BySectionInfo const& other ); // = delete;
             SectionInfo const& m_other;
         };
 
