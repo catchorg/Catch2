@@ -40,6 +40,10 @@ namespace Catch {
             ? ShowDurations::Always
             : ShowDurations::Never;
     }
+    inline void setShowDurationsThreshold( ConfigData& config, double _showDurationsThreshold ) {
+        config.showDurations = ShowDurations::Threshold;
+        config.showDurationsThreshold = _showDurationsThreshold;
+    }
     inline void loadTestNamesFromFile( ConfigData& config, std::string const& _filename ) {
         std::ifstream f( _filename.c_str() );
         if( !f.is_open() )
@@ -141,6 +145,12 @@ namespace Catch {
             .shortOpt( "d")
             .longOpt( "durations" )
             .hint( "yes/no" );
+
+        cli.bind( &setShowDurationsThreshold )
+            .describe( "show test durations only if exceeding this threshold" )
+            .shortOpt( "q")
+            .longOpt( "durations-threshold" )
+            .hint( "seconds" );
 
         cli.bind( &loadTestNamesFromFile )
             .describe( "load test names to run from a file" )

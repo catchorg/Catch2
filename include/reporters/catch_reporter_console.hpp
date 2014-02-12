@@ -15,6 +15,19 @@
 
 namespace Catch {
 
+    static bool shouldPrintDuration(
+        Ptr<IConfig> const& config,
+        double durationInSeconds
+    ) {
+        switch( config->showDurations() ) {
+            case ShowDurations::Always:     return true;
+            case ShowDurations::Threshold:  return (durationInSeconds >= config->showDurationsThreshold());
+            case ShowDurations::DefaultForReporter:
+            case ShowDurations::Never:
+            default:                        return false;
+        }
+    }
+
     struct ConsoleReporter : StreamingReporterBase {
         ConsoleReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
@@ -73,14 +86,19 @@ namespace Catch {
                     stream << "\nNo assertions in test case";
                 stream << " '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
+
             if( m_headerPrinted ) {
-                if( m_config->showDurations() == ShowDurations::Always )
+                if( shouldPrintDuration(m_config, _sectionStats.durationInSeconds) ) {
+                    Colour colour( Colour::DurationText );
                     stream << "Completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
+                }
                 m_headerPrinted = false;
             }
             else {
-                if( m_config->showDurations() == ShowDurations::Always )
-                    stream << _sectionStats.sectionInfo.name << " completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
+                if( shouldPrintDuration(m_config, _sectionStats.durationInSeconds) ) {
+                    Colour colour( Colour::DurationText );
+                    stream << " '" << _sectionStats.sectionInfo.name << "' completed in " << _sectionStats.durationInSeconds << "s" << std::endl;
+                }
             }
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
@@ -102,7 +120,15 @@ namespace Catch {
             if( m_atLeastOneTestCasePrinted )
                 printTotalsDivider();
             printTotals( _testRunStats.totals );
-            stream << "\n" << std::endl;
+            stream << "\n";
+
+            if( shouldPrintDuration(m_config, _testRunStats.durationInSeconds) ) {
+                Colour colour( Colour::DurationText );
+                stream << "All test runs completed in " << _testRunStats.durationInSeconds << "s\n";
+            }
+
+            stream << std::endl;
+
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
 

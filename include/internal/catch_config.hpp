@@ -38,7 +38,8 @@ namespace Catch {
             abortAfter( -1 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
-            showDurations( ShowDurations::DefaultForReporter )
+            showDurations( ShowDurations::DefaultForReporter ),
+            showDurationsThreshold( 0.0 )
         {}
 
         bool listTests;
@@ -56,6 +57,7 @@ namespace Catch {
         Verbosity::Level verbosity;
         WarnAbout::What warnings;
         ShowDurations::OrNot showDurations;
+        double showDurationsThreshold;
 
         std::string reporterName;
         std::string outputFilename;
@@ -162,7 +164,7 @@ namespace Catch {
         virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
         virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
-
+        virtual double showDurationsThreshold() const { return m_data.showDurationsThreshold; }
 
     private:
         ConfigData m_data;

@@ -47,6 +47,8 @@ namespace Catch {
             ReconstructedExpression = Yellow,
 
             SecondaryText = LightGrey,
+            DurationText = Yellow,
+
             Headers = White
         };
 
