@@ -167,20 +167,18 @@ namespace Catch
     struct TestRunStats {
         TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
+                        double _durationInSeconds,
                         bool _aborting )
         :   runInfo( _runInfo ),
             totals( _totals ),
+            durationInSeconds( _durationInSeconds ),
             aborting( _aborting )
-        {}
-        TestRunStats( TestRunStats const& _other )
-        :   runInfo( _other.runInfo ),
-            totals( _other.totals ),
-            aborting( _other.aborting )
         {}
         virtual ~TestRunStats();
 
         TestRunInfo runInfo;
         Totals totals;
+        double durationInSeconds;
         bool aborting;
     };
 

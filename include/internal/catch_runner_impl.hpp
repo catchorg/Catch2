@@ -71,10 +71,11 @@ namespace Catch {
             m_context.setConfig( m_config );
             m_context.setResultCapture( this );
             m_reporter->testRunStarting( m_runInfo );
+            m_timer.start();
         }
 
         virtual ~RunContext() {
-            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
+            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, m_timer.getElapsedSeconds(), aborting() ) );
             m_context.setRunner( m_prevRunner );
             m_context.setConfig( NULL );
             m_context.setResultCapture( m_prevResultCapture );
@@ -329,6 +330,8 @@ namespace Catch {
         Ptr<IConfig const> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
         std::vector<UnfinishedSections> m_unfinishedSections;
+
+        Timer m_timer;
     };
 
 } // end namespace Catch

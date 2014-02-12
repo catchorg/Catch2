@@ -29,7 +29,8 @@ namespace Catch {
     struct ShowDurations { enum OrNot {
         DefaultForReporter,
         Always,
-        Never
+        Never,
+        Threshold
     }; };
 
     struct IConfig : IShared {
@@ -44,6 +45,7 @@ namespace Catch {
         virtual bool warnAboutMissingAssertions() const = 0;
         virtual int abortAfter() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;
+        virtual double showDurationsThreshold() const = 0;
     };
 }
 
