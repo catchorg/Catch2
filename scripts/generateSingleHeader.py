@@ -29,13 +29,13 @@ for arg in sys.argv[1:]:
     arg = string.lower(arg)
     if arg == "nobump":
         bumpVersion = False
-        print "Not bumping version number"
+        print( "Not bumping version number" )
     elif arg == "noimpl":
         includeImpl = False
         bumpVersion = False
-        print "Not including impl code (and not bumping version)"
+        print( "Not including impl code (and not bumping version)" )
     else:
-        print "\n** Unrecognised argument: " + arg + " **\n"
+        print( "\n** Unrecognised argument: " + arg + " **\n" )
         exit(1)
 
 out = open( outputPath, 'w' )
