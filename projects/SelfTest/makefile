@@ -1,5 +1,7 @@
 SOURCES =	ApproxTests.cpp \
+      		BDDTests.cpp \
 			ClassTests.cpp \
+			CmdLineTests.cpp \
 			ConditionTests.cpp \
       		ExceptionTests.cpp \
       		GeneratorTests.cpp \
@@ -7,7 +9,6 @@ SOURCES =	ApproxTests.cpp \
       		MiscTests.cpp \
       		TestMain.cpp \
       		TrickyTests.cpp \
-      		BDDTests.cpp \
       		VariadicMacrosTests.cpp
 OBJECTS    = $(patsubst %.cpp, %.o, $(SOURCES))
 CXX = g++

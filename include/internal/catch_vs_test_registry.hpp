@@ -463,8 +463,6 @@ private:
 #include "catch_assertionresult.hpp"
 #include "catch_expressionresult_builder.hpp"
 #include "catch_version.hpp"
-#include "catch_text.h"
-#include "catch_text.hpp"
 #include "catch_runner_impl.hpp"
 #include "catch_message.hpp"
 #include "catch_context_impl.hpp"

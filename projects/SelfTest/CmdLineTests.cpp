@@ -9,7 +9,7 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#include "internal/clara.h"
+#include "internal/clara.h" // This will does not declare Clara within the Catch namespace
 
 #include "catch.hpp"
 

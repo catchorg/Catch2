@@ -5,13 +5,48 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CLARA_H_INCLUDED
-#define TWOBLUECUBES_CLARA_H_INCLUDED
 
-#include "catch_text.h" // This will get moved out too
+// Only use header guard if we are not using an outer namespace
+#ifndef CLICHE_CLARA_OUTER_NAMESPACE
+# ifdef TWOBLUECUBES_CLARA_H_INCLUDED
+#  ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+#   define TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+#  endif
+# else
+#  define TWOBLUECUBES_CLARA_H_INCLUDED
+# endif
+#endif
+#ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+
+#ifndef CLICHE_CLARA_OUTER_NAMESPACE
+#define CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE Clara
+#include "tbc_text_format.h"
+#undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+#endif
+
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <stdexcept>
+#include <memory>
+
+// Use optional outer namespace
+#ifdef CLICHE_CLARA_OUTER_NAMESPACE
+namespace CLICHE_CLARA_OUTER_NAMESPACE {
+#endif
 
 namespace Clara {
     namespace Detail {
+
+#ifdef CLARA_CONSOLE_WIDTH
+    const unsigned int consoleWidth = CLARA_CONFIG_CONSOLE_WIDTH;
+#else
+    const unsigned int consoleWidth = 80;
+#endif
+
+        using namespace Tbc;
+
         template<typename T> struct RemoveConstRef{ typedef T type; };
         template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
         template<typename T> struct RemoveConstRef<T const&>{ typedef T type; };
@@ -401,18 +436,18 @@ namespace Clara {
             m_boundProcessName = Detail::makeBoundField( f );
         }
 
-        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = CATCH_CONFIG_CONSOLE_WIDTH ) const {
+        void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = Detail::consoleWidth ) const {
             typename std::vector<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
             std::size_t maxWidth = 0;
             for( it = itBegin; it != itEnd; ++it )
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Catch::Text usage( it->commands(), Catch::TextAttributes()
+                Detail::Text usage( it->commands(), Detail::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
                 // !TBD handle longer usage strings
-                Catch::Text desc( it->description, Catch::TextAttributes()
+                Detail::Text desc( it->description, Detail::TextAttributes()
                                                         .setWidth( width - maxWidth -3 ) );
 
                 for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
@@ -582,5 +617,9 @@ namespace Clara {
 
 } // end namespace Clara
 
+#ifdef CLICHE_CLARA_OUTER_NAMESPACE
+} // end outer namespace
+#endif
 
-#endif // TWOBLUECUBES_CLARA_H_INCLUDED
+#endif // TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
+

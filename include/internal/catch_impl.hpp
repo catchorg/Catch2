@@ -28,7 +28,6 @@
 #include "catch_tags.hpp"
 #include "catch_test_spec.hpp"
 #include "catch_version.hpp"
-#include "catch_text.hpp"
 #include "catch_message.hpp"
 #include "catch_legacy_reporter_adapter.hpp"
 #include "catch_timer.hpp"

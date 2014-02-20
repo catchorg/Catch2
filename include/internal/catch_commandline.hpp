@@ -10,7 +10,7 @@
 
 #include "catch_config.hpp"
 #include "catch_common.h"
-#include "clara.h"
+#include "catch_clara.h"
 
 #include <fstream>
 
