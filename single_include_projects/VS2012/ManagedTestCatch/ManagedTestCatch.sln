@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManagedTestCatch", "ManagedTestCatch.vcxproj", "{9757CB21-B840-49A6-B057-9F322E543DD6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		DebugMbcs|Win32 = DebugMbcs|Win32
+		Release|Win32 = Release|Win32
+		ReleaseMbcs|Win32 = ReleaseMbcs|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.Debug|Win32.Build.0 = Debug|Win32
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.DebugMbcs|Win32.ActiveCfg = DebugMbcs|Win32
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.DebugMbcs|Win32.Build.0 = DebugMbcs|Win32
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.Release|Win32.ActiveCfg = Release|Win32
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.Release|Win32.Build.0 = Release|Win32
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.ReleaseMbcs|Win32.ActiveCfg = ReleaseMbcs|Win32
+		{9757CB21-B840-49A6-B057-9F322E543DD6}.ReleaseMbcs|Win32.Build.0 = ReleaseMbcs|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
