@@ -19,7 +19,6 @@
 
 #if (_MANAGED == 1) || (_M_CEE == 1) // detect CLR
     #define INTERNAL_CATCH_VS_MANAGED
-    #define INTERNAL_CATCH_INLINE inline
 #else
 
 #if defined(_WINDLL)
@@ -27,7 +26,6 @@
     // It's possible that this is not enough for someone so allow it to be overridden...
     #if !defined( CATCH_CONFIG_MAIN ) && !defined( CATCH_CONFIG_RUNNER )
     #define INTERNAL_CATCH_VS_NATIVE
-    #define INTERNAL_CATCH_INLINE inline
     #endif
 #endif
 
@@ -35,6 +33,7 @@
 
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
+#include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.h"
 #include "internal/catch_generators.hpp"
@@ -48,33 +47,24 @@
 #include "internal/catch_test_case_info.h"
 #include "internal/catch_interfaces_runner.h"
 
-
 #ifdef __OBJC__
 #include "internal/catch_objc.hpp"
 #endif
 
 #if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
-    #ifdef INTERNAL_CATCH_VS_MANAGED
-        #include "internal/catch_vs_managed_impl.hpp"
-    #else // INTERNAL_CATCH_VS_MANAGED
-    #ifdef INTERNAL_CATCH_VS_NATIVE
-        #include "internal/catch_vs_native_impl.hpp"
-    #endif // INTERNAL_CATCH_VS_NATIVE
-    #endif // INTERNAL_CATCH_VS_MANAGED
+    #define INTERNAL_CATCH_INLINE inline
+    #define CATCH_CONFIG_RUNNER (1)
 #else
-
-#include "internal/catch_test_registry.hpp"
+    #define INTERNAL_CATCH_INLINE
+#endif
 
 #if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
-#define INTERNAL_CATCH_INLINE
 #include "internal/catch_impl.hpp"
 #endif // CATCH_CONFIG_MAIN || CATCH_CONFIG_RUNNER
 
 #ifdef CATCH_CONFIG_MAIN
 #include "internal/catch_default_main.hpp"
 #endif // CATCH_CONFIG_MAIN
-
-#endif // INTERNAL_CATCH_VS_MANAGED or INTERNAL_CATCH_VS_NATIVE defined
 
 //////
 

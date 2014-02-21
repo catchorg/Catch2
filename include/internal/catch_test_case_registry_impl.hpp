@@ -8,11 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 
-#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
-#include "internal/catch_vs_test_registry.hpp"
-#else
 #include "catch_test_registry.hpp"
-#endif
 #include "catch_test_case_info.h"
 #include "catch_test_spec.h"
 #include "catch_context.h"

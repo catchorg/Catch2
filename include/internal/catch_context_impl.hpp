@@ -96,9 +96,6 @@ namespace Catch {
     template <typename Runner, typename ResultCapture>
     Context<Runner,ResultCapture>* Context<Runner, ResultCapture>::currentContext = NULL;
 
-    /*namespace {
-        Context* currentContext = NULL;
-    }*/
     typedef Context<NullRunner, NullResultCapture> DefaultContext;
     INTERNAL_CATCH_INLINE IMutableContext& getCurrentMutableContext() {
         if( !DefaultContext::currentContext )

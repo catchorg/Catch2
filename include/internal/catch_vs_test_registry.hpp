@@ -8,16 +8,42 @@
 #ifndef TWOBLUECUBES_CATCH_MSTEST_REGISTRY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MSTEST_REGISTRY_HPP_INCLUDED
 
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wweak-vtables"
+#ifdef INTERNAL_CATCH_VS_MANAGED
+
+#include <windows.h>
+using namespace System;
+using namespace System::Text;
+using namespace System::Collections::Generic;
+using namespace Microsoft::VisualStudio::TestTools::UnitTesting;
+
+namespace Catch {
+    inline String^ convert_string_for_assert(const std::string& s)
+    {
+        String^ result = gcnew String(s.c_str());
+        return result;
+    }
+
+}
+
 #endif
 
-#include "catch_common.h"
-#include "catch_interfaces_testcase.h"
-#include "internal/catch_compiler_capabilities.h"
-#include "internal/clara.h"
+#ifdef INTERNAL_CATCH_VS_NATIVE
+
+#pragma warning( disable : 4505 )   // required for including CppUnitTest.h at /W4
+
+#include <CppUnitTest.h>
+
+using Microsoft::VisualStudio::CppUnitTestFramework::Logger;
+using Microsoft::VisualStudio::CppUnitTestFramework::Assert;
+using Microsoft::VisualStudio::CppUnitTestFramework::__LineInfo;
+
+#endif
+
 #include <tchar.h>
+#ifdef INTERNAL_CATCH_VS_NATIVE
+#include <cvt/wstring>
+#include <codecvt>
+#endif
 
 namespace Catch {
 
@@ -274,6 +300,87 @@ private:
 #define CATCH_INTERNAL_CONFIG_ADD_TEST( v ) \
     CATCH_INTERNAL_CONFIG_ADD_TEST2( v, __COUNTER__)
 
+struct CollectConsoleOutput
+{
+    CollectConsoleOutput()
+#if defined(INTERNAL_CATCH_VS_NATIVE) || _MSC_VER >= 1700
+            : m_addLineFeeds(false)
+#else
+            : m_addLineFeeds(true)
+#endif
+    {}
+    CollectConsoleOutput( bool v)
+            : m_addLineFeeds(v)
+    {}
+    ~CollectConsoleOutput()
+    {
+        std::string output = oss.str();
+        if( !output.empty() ) {
+            if( m_addLineFeeds ) {
+                std::string revised;
+                replaceSingleLinefeed(output, revised);
+                write_output_message(revised);
+            }
+            else {
+                write_output_message(output);
+            }
+        }
+    }
+#if defined(INTERNAL_CATCH_VS_MANAGED)
+
+    void write_output_message(const std::string& msg)
+    {
+        String^ tmp = gcnew String(msg.c_str());
+        Console::WriteLine(tmp);
+    }
+
+#else // detect CLR
+
+#if defined(INTERNAL_CATCH_VS_NATIVE)
+
+#ifdef _UNICODE
+    void write_output_message(const std::string& msg)
+    {
+        std::wstringstream _s;
+        _s << msg.c_str();
+        std::wstring ws = _s.str();
+        Logger::WriteMessage(ws.c_str());
+    }
+#else
+    void write_output_message(const std::string& msg)
+    {
+        Logger::WriteMessage(msg.c_str());
+    }
+#endif
+
+#endif // _WINDLL
+
+#endif  // detect CLR
+    void replaceSingleLinefeed(const std::string& s, std::string& result)
+    {
+        bool needr(false);
+        for(std::string::const_iterator it = s.begin(); it != s.end(); ++it ) {
+            if( *it == '\r' ) {
+                needr = false;
+            }
+            else if( *it == '\n' && needr ) {
+                needr = false;
+                result += '\r';
+                result += *it;
+            }
+            else {
+                needr = true;
+            }
+            result += *it;
+        }
+    }
+
+    std::streambuf* rdbuf() {return oss.rdbuf(); }
+
+    std::ostringstream oss;
+    bool m_addLineFeeds;
+};
+
 #define CATCH_INTERNAL_RUN_SINGLE_TEST( Count ) \
         {   CatchOverrides::ConfigGuard cg; \
             Catch::ConfigData cd(cg.value().get()); \
@@ -281,17 +388,19 @@ private:
             cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, __LINE__ ); \
             cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, __LINE__ ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
             cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, __LINE__ ); \
-            Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
-            Catch::ReporterRegistrar<Catch::MSTestReporter> reporterReg("vs_reporter"); \
-            Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "vs_reporter", config.get())); \
-            std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(name_desc.name); \
-            if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match")); \
-            if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name")); \
-            context.testGroupStarting( "", 0, 1 ); \
-            Catch::Totals totals = context.runTest(*testCase.begin()); \
-            context.testGroupEnded( "", totals, 0, 1 ); \
-            if( totals.assertions.failed > 0 ) { \
-                INTERNAL_CATCH_TEST_THROW_FAILURE \
+            CollectConsoleOutput ptr; { \
+                Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
+                config->setStreamBuf(ptr.rdbuf()); \
+                Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "console", config.get())); \
+                std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(name_desc.name); \
+                if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match")); \
+                if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name")); \
+                context.testGroupStarting( "", 0, 1 ); \
+                Catch::Totals totals = context.runTest(*testCase.begin()); \
+                context.testGroupEnded( "", totals, 0, 1 ); \
+                if( totals.assertions.failed > 0 ) { \
+                    INTERNAL_CATCH_TEST_THROW_FAILURE \
+                } \
             } \
         }
 
@@ -372,15 +481,16 @@ private:
                 cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, __LINE__ ); \
                 cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, __LINE__ ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
                 cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, __LINE__ ); \
-                cd.reporterName = "vs_reporterlf"; \
                 cd.name = "Batch run using tag : " Tag; \
                 cd.testsOrTags.push_back( Tag ); \
-                Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
-                Catch::ReporterRegistrar<Catch::MSTestReporterLineFeed> reporterReg("vs_reporterlf"); \
-                Catch::Runner runner(config); \
-                Catch::Totals totals = runner.runTests(); \
-                if( totals.assertions.failed > 0 ) { \
-                    INTERNAL_CATCH_TEST_REPORT_BATCH_FAILURE(totals.assertions.failed) \
+                CollectConsoleOutput ptr(false); { \
+                    Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
+                    config->setStreamBuf(ptr.rdbuf()); \
+                    Catch::Runner runner(config); \
+                    Catch::Totals totals = runner.runTests(); \
+                    if( totals.assertions.failed > 0 ) { \
+                        INTERNAL_CATCH_TEST_REPORT_BATCH_FAILURE(totals.assertions.failed) \
+                    } \
                 } \
             } \
         }; \
@@ -399,29 +509,30 @@ private:
                 cd.showSuccessfulTests = CatchOverrides::Config<Catch::IConfig const*>::instance().includeSuccessfulResults(__FILE__, __LINE__ ); \
                 cd.warnings            = (CatchOverrides::Config<Catch::IConfig const*>::instance().warnAboutMissingAssertions(__FILE__, __LINE__ ) ? Catch::WarnAbout::NoAssertions : Catch::WarnAbout::Nothing); \
                 cd.abortAfter          = CatchOverrides::Config<Catch::IConfig const*>::instance().abortAfter(__FILE__, __LINE__ ); \
-                cd.reporterName = "vs_reporterlf"; \
                 cd.name = "Batch run using category : " CategoryName; \
                 std::vector<std::string> stringNames = CatchOverrides::Config<Catch::IConfig const*>::instance().listOfTests(__FILE__, __LINE__ ); \
-                Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
-                Catch::ReporterRegistrar<Catch::MSTestReporterLineFeed> reporterReg("vs_reporterlf"); \
-                Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "vs_reporterlf", config.get())); \
-                Catch::Totals totals; \
-                context.testGroupStarting( "", 0, 1 ); \
-                for( std::vector<std::string>::iterator it = stringNames.begin(); it != stringNames.end(); ++it ) { \
-                    std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(*it); \
-                    if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match")); \
-                    if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name")); \
-                    totals += context.runTest(*testCase.begin()); \
-                } \
-                context.testGroupEnded( "", totals, 0, 1 ); \
-                if( totals.assertions.failed > 0 ) { \
-                    INTERNAL_CATCH_TEST_REPORT_BATCH_FAILURE(totals.assertions.failed) \
+                CollectConsoleOutput ptr(false); { \
+                    Catch::Ptr<Catch::Config> config(new Catch::Config(cd)); \
+                    config->setStreamBuf(ptr.rdbuf()); \
+                    Catch::RunContext context(config.get(), Catch::getRegistryHub().getReporterRegistry().create( "console", config.get())); \
+                    Catch::Totals totals; \
+                    context.testGroupStarting( "", 0, 1 ); \
+                    for( std::vector<std::string>::iterator it = stringNames.begin(); it != stringNames.end(); ++it ) { \
+                        std::vector<Catch::TestCase> testCase = Catch::getRegistryHub().getTestCaseRegistry().getMatchingTestCases(*it); \
+                        if( testCase.empty() ) Assert::Fail(FAIL_STRING("No tests match")); \
+                        if( testCase.size() > 1 ) Assert::Fail(FAIL_STRING("More than one test with the same name")); \
+                        totals += context.runTest(*testCase.begin()); \
+                    } \
+                    context.testGroupEnded( "", totals, 0, 1 ); \
+                    if( totals.assertions.failed > 0 ) { \
+                        INTERNAL_CATCH_TEST_REPORT_BATCH_FAILURE(totals.assertions.failed) \
+                    } \
                 } \
             } \
         }; \
     }
 
-//#undef CATCH_CONFIG_VARIADIC_MACROS
+// #undef CATCH_CONFIG_VARIADIC_MACROS
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
 
@@ -457,23 +568,6 @@ private:
     #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, TestName, Desc )\
         INTERNAL_CATCH_TEST_CASE_METHOD2(ClassName, __COUNTER__, TestName, Desc )
 
-#endif
-
-#include "catch_test_case_info.hpp"
-#include "catch_assertionresult.hpp"
-#include "catch_expressionresult_builder.hpp"
-#include "catch_version.hpp"
-#include "catch_runner_impl.hpp"
-#include "catch_message.hpp"
-#include "catch_context_impl.hpp"
-#include "catch_generators_impl.hpp"
-#include "catch_test_case_info.hpp"
-#include "catch_notimplemented_exception.hpp"
-
-#include "catch_exception_translator_registry.hpp"
-
-#ifdef __clang__
-#pragma clang diagnostic pop
 #endif
 
 #endif // TWOBLUECUBES_CATCH_MSTEST_REGISTRY_HPP_INCLUDED

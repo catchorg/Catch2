@@ -677,11 +677,11 @@ def parseTrxFile(baseName, trxFile):
 												for tmp in lines:
 													if (len(lines) >= (index + 2) and
 															lines[index].startswith("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~") and
-															lines[index + 1].startswith("Using Catch v") ):
+															lines[index + 1].startswith("Batch run using") ):
 														found = True
 														break
 													index += 1
-												lines = lines[index + 2:]
+												lines = lines[index + 3:]
 												#print "*******",desc
 												#print lines
 												if found:
