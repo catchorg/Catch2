@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 26 (master branch)
- *  Generated: 2014-02-11 18:09:37.990814
+ *  CATCH v1.0 build 27 (master branch)
+ *  Generated: 2014-03-01 10:36:25.999888
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3008,41 +3008,32 @@ namespace Catch {
 #define CLARA_CONFIG_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
 
 // Declare Clara inside the Catch namespace
-#define CLICHE_CLARA_OUTER_NAMESPACE Catch
+#define STITCH_CLARA_OUTER_NAMESPACE Catch
 // #included from: clara.h
 
 // Only use header guard if we are not using an outer namespace
-#ifndef CLICHE_CLARA_OUTER_NAMESPACE
-# ifdef TWOBLUECUBES_CLARA_H_INCLUDED
-#  ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
-#   define TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
-#  endif
-# else
-#  define TWOBLUECUBES_CLARA_H_INCLUDED
-# endif
+#if !defined(TWOBLUECUBES_CLARA_H_INCLUDED) || defined(STITCH_CLARA_OUTER_NAMESPACE)
+#ifndef STITCH_CLARA_OUTER_NAMESPACE
+#define TWOBLUECUBES_CLARA_H_INCLUDED
 #endif
-#ifndef TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
 
-#define CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE Clara
-// #included from: tbc_text_format.h
+#define STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE Clara
+
+// ----------- #included from tbc_text_format.h -----------
+
 // Only use header guard if we are not using an outer namespace
-#ifndef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
-# ifdef TWOBLUECUBES_TEXT_FORMAT_H_INCLUDED
-#  ifndef TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
-#   define TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
-#  endif
-# else
-#  define TWOBLUECUBES_TEXT_FORMAT_H_INCLUDED
-# endif
+#if !defined(TBC_TEXT_FORMAT_H_INCLUDED) || defined(STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE)
+#ifndef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+#define TBC_TEXT_FORMAT_H_INCLUDED
 #endif
-#ifndef TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
+
 #include <string>
 #include <vector>
 #include <sstream>
 
 // Use optional outer namespace
-#ifdef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
-namespace CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE {
+#ifdef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+namespace STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE {
 #endif
 
 namespace Tbc {
@@ -3166,23 +3157,25 @@ namespace Tbc {
 
 } // end namespace Tbc
 
-#ifdef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+#ifdef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
 } // end outer namespace
 #endif
 
-#endif // TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
-#undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+#endif // TBC_TEXT_FORMAT_H_INCLUDED
 
-#include <string>
-#include <vector>
+// ----------- end of #include from tbc_text_format.h -----------
+// ........... back in /Users/philnash/Dev/OSS/Clara/srcs/clara.h
+
+#undef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+
 #include <map>
 #include <algorithm>
 #include <stdexcept>
 #include <memory>
 
 // Use optional outer namespace
-#ifdef CLICHE_CLARA_OUTER_NAMESPACE
-namespace CLICHE_CLARA_OUTER_NAMESPACE {
+#ifdef STITCH_CLARA_OUTER_NAMESPACE
+namespace STITCH_CLARA_OUTER_NAMESPACE {
 #endif
 
 namespace Clara {
@@ -3458,7 +3451,7 @@ namespace Clara {
             }
             void validate() const {
                 if( boundField.takesArg() && !takesArg() )
-                    throw std::logic_error( dbgName() + " must specify an arg name" );
+                    throw std::logic_error( "command line argument '" + dbgName() + "' must specify a hint" );
             }
             std::string commands() const {
                 std::ostringstream oss;
@@ -3509,8 +3502,10 @@ namespace Clara {
             {
                 other.m_cl = NULL;
             }
-            ~ArgBinder() {
-                if( m_cl ) {
+            // !TBD: Need to include workarounds to be able to declare this
+            // destructor as able to throw exceptions
+            ~ArgBinder() /* noexcept(false) */ {
+                if( m_cl && !std::uncaught_exception() ) {
                     m_arg.validate();
                     if( m_arg.isFixedPositional() ) {
                         m_cl->m_positionalArgs.insert( std::make_pair( m_arg.position, m_arg ) );
@@ -3655,6 +3650,12 @@ namespace Clara {
             return oss.str();
         }
 
+        ConfigT parseInto( int argc, char const * const * argv ) const {
+            ConfigT config;
+            parseInto( argc, argv, config );
+            return config;
+        }
+
         std::vector<Parser::Token> parseInto( int argc, char const * const * argv, ConfigT& config ) const {
             std::string processName = argv[0];
             std::size_t lastSlash = processName.find_last_of( "/\\" );
@@ -3765,13 +3766,12 @@ namespace Clara {
 
 } // end namespace Clara
 
-#ifdef CLICHE_CLARA_OUTER_NAMESPACE
+#ifdef STITCH_CLARA_OUTER_NAMESPACE
 } // end outer namespace
 #endif
 
-#endif // TWOBLUECUBES_CLARA_H_ALREADY_INCLUDED
-
-#undef CLICHE_CLARA_OUTER_NAMESPACE
+#endif // TWOBLUECUBES_CLARA_H_INCLUDED
+#undef STITCH_CLARA_OUTER_NAMESPACE
 
 #include <fstream>
 
@@ -4167,9 +4167,11 @@ namespace Catch {
         }
 
         Option& operator= ( Option const& _other ) {
-            reset();
-            if( _other )
-                nullableValue = new( storage ) T( *_other );
+            if( &_other != this ) {
+                reset();
+                if( _other )
+                    nullableValue = new( storage ) T( *_other );
+            }
             return *this;
         }
         Option& operator = ( T const& _value ) {
@@ -6512,7 +6514,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 26, "master" );
+    Version libraryVersion( 1, 0, 27, "master" );
 }
 
 // #included from: catch_message.hpp

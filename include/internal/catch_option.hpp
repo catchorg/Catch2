@@ -29,9 +29,11 @@ namespace Catch {
         }
 
         Option& operator= ( Option const& _other ) {
-            reset();
-            if( _other )
-                nullableValue = new( storage ) T( *_other );
+            if( &_other != this ) {
+                reset();
+                if( _other )
+                    nullableValue = new( storage ) T( *_other );
+            }
             return *this;
         }
         Option& operator = ( T const& _value ) {
