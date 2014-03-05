@@ -13,8 +13,8 @@
 
 
 // Declare Clara inside the Catch namespace
-#define CLICHE_CLARA_OUTER_NAMESPACE Catch
+#define STITCH_CLARA_OUTER_NAMESPACE Catch
 #include "clara.h"
-#undef CLICHE_CLARA_OUTER_NAMESPACE
+#undef STITCH_CLARA_OUTER_NAMESPACE
 
 #endif // TWOBLUECUBES_CATCH_CLARA_H_INCLUDED
