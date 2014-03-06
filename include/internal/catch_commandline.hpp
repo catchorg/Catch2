@@ -55,108 +55,95 @@ namespace Catch {
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
-        Clara::CommandLine<ConfigData> cli;
+        using namespace Clara;
+        CommandLine<ConfigData> cli;
 
         cli.bindProcessName( &ConfigData::processName );
 
-        cli.bind( &ConfigData::showHelp )
+        cli["-?"]["-h"]["--help"]
             .describe( "display usage information" )
-            .shortOpt( "?")
-            .shortOpt( "h")
-            .longOpt( "help" );
+            .into( &ConfigData::showHelp );
 
-        cli.bind( &ConfigData::listTests )
+        cli["-l"]["--list-tests"]
             .describe( "list all/matching test cases" )
-            .shortOpt( "l")
-            .longOpt( "list-tests" );
+            .into( &ConfigData::listTests );
 
-        cli.bind( &ConfigData::listTags )
+        cli["-t"]["--list-tags"]
             .describe( "list all/matching tags" )
-            .shortOpt( "t")
-            .longOpt( "list-tags" );
+            .into( &ConfigData::listTags );
 
-        cli.bind( &ConfigData::showSuccessfulTests )
+        cli["-s"]["--success"]
             .describe( "include successful tests in output" )
-            .shortOpt( "s")
-            .longOpt( "success" );
+            .into( &ConfigData::showSuccessfulTests );
 
-        cli.bind( &ConfigData::shouldDebugBreak )
+        cli["-b"]["--break"]
             .describe( "break into debugger on failure" )
-            .shortOpt( "b")
-            .longOpt( "break" );
+            .into( &ConfigData::shouldDebugBreak );
 
-        cli.bind( &ConfigData::noThrow )
+        cli["-e"]["--nothrow"]
             .describe( "skip exception tests" )
-            .shortOpt( "e")
-            .longOpt( "nothrow" );
+            .into( &ConfigData::noThrow );
 
-        cli.bind( &ConfigData::outputFilename )
+        cli["-o"]["--out"]
+            .placeholder( "filename" )
             .describe( "output filename" )
-            .shortOpt( "o")
-            .longOpt( "out" )
-            .hint( "filename" );
+            .into( &ConfigData::outputFilename );
 
-        cli.bind( &ConfigData::reporterName )
+        cli["-r"]["--reporter"]
+//            .placeholder( "name[:filename]" )
+            .placeholder( "name" )
             .describe( "reporter to use (defaults to console)" )
-            .shortOpt( "r")
-            .longOpt( "reporter" )
-//            .hint( "name[:filename]" );
-            .hint( "name" );
+            .into( &ConfigData::reporterName );
 
-        cli.bind( &ConfigData::name )
+        cli["-n"]["--name"]
+            .placeholder( "name" )
             .describe( "suite name" )
-            .shortOpt( "n")
-            .longOpt( "name" )
-            .hint( "name" );
+            .into( &ConfigData::name );
 
-        cli.bind( &abortAfterFirst )
+        cli["-a"]["--abort"]
             .describe( "abort at first failure" )
-            .shortOpt( "a")
-            .longOpt( "abort" );
+            .into( &abortAfterFirst );
 
-        cli.bind( &abortAfterX )
+        cli["-x"]["--abortx"]
+            .placeholder( "number of failures" )
             .describe( "abort after x failures" )
-            .shortOpt( "x")
-            .longOpt( "abortx" )
-            .hint( "number of failures" );
+            .into( &abortAfterX );
 
-        cli.bind( &addWarning )
+        cli["-w"]["--warn"]
+            .placeholder( "warning name" )
             .describe( "enable warnings" )
-            .shortOpt( "w")
-            .longOpt( "warn" )
-            .hint( "warning name" );
+            .into( &addWarning );
 
-//        cli.bind( &setVerbosity )
+// - needs updating if reinstated
+//        cli.into( &setVerbosity )
 //            .describe( "level of verbosity (0=no output)" )
 //            .shortOpt( "v")
 //            .longOpt( "verbosity" )
-//            .hint( "level" );
+//            .placeholder( "level" );
 
-        cli.bind( &addTestOrTags )
+        cli[_]
+            .placeholder( "test name, pattern or tags" )
             .describe( "which test or tests to use" )
-            .hint( "test name, pattern or tags" );
+            .into( &addTestOrTags );
 
-        cli.bind( &setShowDurations )
+        cli["-d"]["--durations"]
+            .placeholder( "yes/no" )
             .describe( "show test durations" )
-            .shortOpt( "d")
-            .longOpt( "durations" )
-            .hint( "yes/no" );
+            .into( &setShowDurations );
 
-        cli.bind( &loadTestNamesFromFile )
+        cli["-f"]["--input-file"]
+            .placeholder( "filename" )
             .describe( "load test names to run from a file" )
-            .shortOpt( "f")
-            .longOpt( "input-file" )
-            .hint( "filename" );
+            .into( &loadTestNamesFromFile );
 
         // Less common commands which don't have a short form
-        cli.bind( &ConfigData::listTestNamesOnly )
+        cli["--list-test-names-only"]
             .describe( "list all/matching test cases names only" )
-            .longOpt( "list-test-names-only" );
+            .into( &ConfigData::listTestNamesOnly );
 
-        cli.bind( &ConfigData::listReporters )
+        cli["--list-reporters"]
             .describe( "list all reporters" )
-            .longOpt( "list-reporters" );
-
+            .into( &ConfigData::listReporters );
 
         return cli;
     }
