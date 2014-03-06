@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 28 (master branch)
- *  Generated: 2014-03-06 08:16:53.424629
+ *  CATCH v1.0 build 29 (master branch)
+ *  Generated: 2014-03-06 21:52:26.886365
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -19,6 +19,14 @@
 #pragma clang diagnostic ignored "-Wc99-extensions"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
+#ifdef CATCH_CONFIG_MAIN
+#  define CATCH_CONFIG_RUNNER
+#  ifndef CLARA_CONFIG_MAIN
+#    define CLARA_CONFIG_MAIN_NOT_DEFINED
+#    define CLARA_CONFIG_MAIN
+#  endif
 #endif
 
 // #included from: internal/catch_notimplemented_exception.h
@@ -2645,7 +2653,7 @@ return @ desc; \
 
 #endif
 
-#if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
+#ifdef CATCH_CONFIG_RUNNER
 // #included from: internal/catch_impl.hpp
 #define TWOBLUECUBES_CATCH_IMPL_HPP_INCLUDED
 
@@ -6580,7 +6588,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 28, "master" );
+    Version libraryVersion( 1, 0, 29, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -8234,7 +8242,7 @@ namespace Catch {
 #pragma clang diagnostic pop
 #endif
 
-#endif // CATCH_CONFIG_MAIN || CATCH_CONFIG_RUNNER
+#endif
 
 #ifdef CATCH_CONFIG_MAIN
 // #included from: internal/catch_default_main.hpp
@@ -8267,7 +8275,11 @@ int main (int argc, char * const argv[]) {
 
 #endif // __OBJC__
 
-#endif // CATCH_CONFIG_MAIN
+#endif
+
+#ifdef CLARA_CONFIG_MAIN_NOT_DEFINED
+#  undef CLARA_CONFIG_MAIN
+#endif
 
 //////
 
