@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="10" failures="100" tests="695" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="~_" errors="10" failures="100" tests="677" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -530,19 +530,6 @@ TrickyTests.cpp:<line number>
     <testcase classname="Scenario: Vector resizing affects size and capacity" name="Given: an empty vector/When: it is made larger/Then: the size and capacity go up/And when: it is made smaller again/Then: the size goes down but the capacity stays the same" time="{duration}"/>
     <testcase classname="Scenario: Vector resizing affects size and capacity" name="Given: an empty vector/When: we reserve more space/Then: The capacity is increased but the size remains the same" time="{duration}"/>
     <testcase classname="Scenario: This is a really long scenario name to see how the list command deals with wrapping" name="Given: A section name that is so long that it cannot fit in a single console width/When: The test headers are printed as part of the normal running of the scenario/Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" time="{duration}"/>
-    <testcase classname="cmdline" name="process name" time="{duration}"/>
-    <testcase classname="cmdline" name="arg separated by spaces" time="{duration}"/>
-    <testcase classname="cmdline" name="arg separated by colon" time="{duration}"/>
-    <testcase classname="cmdline" name="arg separated by =" time="{duration}"/>
-    <testcase classname="cmdline" name="long opt" time="{duration}"/>
-    <testcase classname="cmdline" name="a number" time="{duration}"/>
-    <testcase classname="cmdline" name="not a number" time="{duration}"/>
-    <testcase classname="cmdline" name="two parsers" time="{duration}"/>
-    <testcase classname="cmdline" name="methods/in range" time="{duration}"/>
-    <testcase classname="cmdline" name="methods/out of range" time="{duration}"/>
-    <testcase classname="cmdline" name="flags/set" time="{duration}"/>
-    <testcase classname="cmdline" name="flags/not set" time="{duration}"/>
-    <testcase classname="cmdline" name="positional" time="{duration}"/>
     <testcase classname="section tracking" name="root" time="{duration}"/>
     <testcase classname="section tracking" name="test case with no sections" time="{duration}"/>
     <testcase classname="section tracking" name="test case with one section" time="{duration}"/>

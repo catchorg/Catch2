@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 27 (master branch)
- *  Generated: 2014-03-06 08:06:07.489513
+ *  CATCH v1.0 build 28 (master branch)
+ *  Generated: 2014-03-06 08:16:53.424629
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6580,7 +6580,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 27, "master" );
+    Version libraryVersion( 1, 0, 28, "master" );
 }
 
 // #included from: catch_message.hpp
