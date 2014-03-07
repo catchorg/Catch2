@@ -355,6 +355,10 @@ namespace Clara {
             void (*function)( C& );
         };
 
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4702)
+#endif
         template<typename C, typename T>
         struct BoundBinaryFunction : IArgFunction<C>{
             BoundBinaryFunction( void (*_function)( C&, T ) ) : function( _function ) {}
@@ -372,6 +376,9 @@ namespace Clara {
             virtual IArgFunction<C>* clone() const { return new BoundBinaryFunction( *this ); }
             void (*function)( C&, T );
         };
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
         template<typename C, typename M>
         BoundArgFunction<C> makeBoundField( M C::* _member ) {
