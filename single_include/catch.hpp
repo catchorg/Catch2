@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 29 (master branch)
- *  Generated: 2014-03-06 21:52:26.886365
+ *  CATCH v1.0 build 30 (master branch)
+ *  Generated: 2014-03-07 06:56:50.010459
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3271,9 +3271,9 @@ namespace Clara {
         public:
             BoundArgFunction() : functionObj( NULL ) {}
             BoundArgFunction( IArgFunction<ConfigT>* _functionObj ) : functionObj( _functionObj ) {}
-            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj->clone() ) {}
+            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj ? other.functionObj->clone() : NULL ) {}
             BoundArgFunction& operator = ( BoundArgFunction const& other ) {
-                IArgFunction<ConfigT>* newFunctionObj = other.functionObj->clone();
+                IArgFunction<ConfigT>* newFunctionObj = other.functionObj ? other.functionObj->clone() : NULL;
                 delete functionObj;
                 functionObj = newFunctionObj;
                 return *this;
@@ -6588,7 +6588,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 29, "master" );
+    Version libraryVersion( 1, 0, 30, "master" );
 }
 
 // #included from: catch_message.hpp
