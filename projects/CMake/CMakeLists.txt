@@ -23,13 +23,15 @@ set(SOURCES
     ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
 )
 
-# configure the executable
+# configure the executables
 include_directories(${CATCH_DIR}/include)
 add_executable(SelfTest ${SOURCES})
+add_executable(SelfTestExternalMain ${SELF_TEST_DIR}/TestExternalMain.cpp)
 
 # configure unit tests via CTest
 enable_testing()
 add_test(NAME RunTests COMMAND SelfTest)
+add_test(NAME RunExternalMainTests COMMAND SelfTestExternalMain)
 
 add_test(NAME ListTests COMMAND SelfTest --list-tests)
 set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test cases")
