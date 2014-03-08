@@ -94,6 +94,6 @@ approve( "junit.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "junit"] )
 # xml reporter, include passes, warn about No Assertions
 approve( "xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml"] )
 
-if overallResult <> 0:
+if overallResult != 0:
 	print "run approve.py to approve new baselines"
 exit( overallResult)
