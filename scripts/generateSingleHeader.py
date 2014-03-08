@@ -1,3 +1,5 @@
+from  __future__ import  print_function
+
 import os
 import sys
 import re
@@ -33,9 +35,9 @@ for arg in sys.argv[1:]:
     elif arg == "noimpl":
         includeImpl = False
         bumpVersion = False
-        print "Not including impl code (and not bumping version)"
+        print( "Not including impl code (and not bumping version)" )
     else:
-        print "\n** Unrecognised argument: " + arg + " **\n"
+        print( "\n** Unrecognised argument: " + arg + " **\n" )
         exit(1)
 
 out = open( outputPath, 'w' )
@@ -144,9 +146,9 @@ def generateSingleInclude():
     out.write( " */\n" )
     out.write( "#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
     out.write( "#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
-    
+
     parseFile( rootPath, 'catch.hpp' )
-    
+
     out.write( "#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
 
 generateSingleInclude()
