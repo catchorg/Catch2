@@ -32,7 +32,7 @@ else:
 	else:
 		cmdPath = os.path.join( catchPath, 'projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
 
-print cmdPath
+print( cmdPath )
 
 overallResult = 0
 
@@ -60,7 +60,7 @@ def approve( baseName, args ):
 	if os.path.exists( rawResultsPath ):
 		resultFileHandler = TestRunResultHandler(rawResultsPath)
 		#rawPathNew = os.path.join( rootPath, '{0}.rewrite.txt'.format( baseName ) )
-		#print "F:",rawPathNew,",",approvedFileHandler.current.outputLine
+		#print( "F:" + rawPathNew," + ",approvedFileHandler.current.outputLine )
 		#resultFileHandler.writeRawFile(rawPathNew)
 		rawPathNewSorted = os.path.join( rootPath, '{0}.sorted.unapproved.txt'.format( baseName ) )
 		resultFileHandler.writeSortedUnapprovedFile(rawPathNewSorted, approvedFileHandler.current.outputLine)
@@ -70,25 +70,25 @@ def approve( baseName, args ):
 
 def callDiff():
 	#os.remove( rawResultsPath )
-	print
-	print baseName + ":"
+	print()
+	print( baseName + ":" )
 	if os.path.exists( baselinesSortedPath ) and os.path.exists( rawPathNewSorted ):
 		diffResult = subprocess.call([ "diff", "--ignore-all-space", baselinesSortedPath, rawPathNewSorted ] )
 		if diffResult == 0:
 			#os.remove( filteredResultsPath )
 			if not(sys.platform == 'win32'):
-				print "  \033[92mResults matched"
+				print( "  \033[92mResults matched" )
 			else:
-				print "  Results matched"
+				print( "  Results matched" )
 		else:
 			if not(sys.platform == 'win32'):
-				print "  \n****************************\n  \033[91mResults differed"
+				print( "  \n****************************\n  \033[91mResults differed" )
 			else:
-				print "  \n****************************\n  Results differed"
+				print( "  \n****************************\n  Results differed" )
 			if diffResult > overallResult:
 				overallResult = diffResult
 		if not(sys.platform == 'win32'):
-			print "\033[0m"
+			print( "\033[0m" )
 
 def approveJunit( baseName, args ):
 	global overallResult
@@ -123,7 +123,7 @@ def approveJunit( baseName, args ):
 				for tc in testsuites:
 					if tc.tag == "testcase":
 						cls = tc.get("classname")
-						#print "C:",cls,tc
+						#print( "C:" + cls + tc )
 						if len(cls):
 							testcase = testRun.addClassTestCase(cls, tc.get("name"))
 						else:
@@ -174,13 +174,13 @@ def approveJunit( baseName, args ):
 						lines = text.splitlines()
 						testRun.addSyserr(lines)
 					else:
-						print tc.tag
+						print( tc.tag )
 
 		lines = testRun.generateSortedUnapprovedJunit()
 		
 		rawWriteFile = open( baselinesSortedPath, 'wb' )
 		for line in lines:
-			#print "L:",line
+			#print( "L:" + line )
 			rawWriteFile.write(line + "\n")
 		rawWriteFile.close()
 
@@ -215,7 +215,7 @@ def approveJunit( baseName, args ):
 				for tc in testsuites:
 					if tc.tag == "testcase":
 						cls = tc.get("classname")
-						#print "C:",cls,tc
+						#print( "C:" + cls + tc )
 						if len(cls):
 							if cls.startswith("::"):
 								cls = cls[2:]
@@ -268,13 +268,13 @@ def approveJunit( baseName, args ):
 						lines = text.splitlines()
 						testRun.addSyserr(lines)
 					else:
-						print tc.tag
+						print( tc.tag )
 
 		lines = testRun.generateSortedUnapprovedJunit()
 		
 		rawWriteFile = open( rawSortedPath, 'wb' )
 		for line in lines:
-			#print "L:",line
+			#print( "L:" + line )
 			rawWriteFile.write(line + "\n")
 		rawWriteFile.close()
 
@@ -304,7 +304,7 @@ def addSubSection(testcase, section, exp):
 				ls = text.splitlines()
 				testcase.addSubFailure(section, ls)
 			elif tmp.tag == "Expression":
-				#print "Exp:",tmp
+				#print( "Exp:" + tmp )
 				e1 = True
 				result = tmp.get("success")
 				filename  = tmp.get("filename")
@@ -325,13 +325,13 @@ def addSubSection(testcase, section, exp):
 						ls = text.splitlines()
 						subExp.append(ls)
 					else:
-						print "SX:",cond.tag
+						print( "SX:" + cond.tag )
 				if len(subExp) >= 2:
 					testcase.addExpressionDetails(subSection, subExp)
 			else:
-				print "Z:",tmp.tag
+				print( "Z:" + tmp.tag )
 		#if e1:
-		#	print "Section:",section
+		#	print( "Section:" + section )
 
 def addResultsSubSection(otherResultsTestParser, testcase, section, exp):
 	r = exp.find("OverallResults")
@@ -362,7 +362,7 @@ def addResultsSubSection(otherResultsTestParser, testcase, section, exp):
 				ls = text.splitlines()
 				testcase.addSubFailure(section, ls)
 			elif tmp.tag == "Expression":
-				#print "Exp:",tmp
+				#print( "Exp:" + tmp )
 				e1 = True
 				result = tmp.get("success")
 				filename  = tmp.get("filename")
@@ -390,13 +390,13 @@ def addResultsSubSection(otherResultsTestParser, testcase, section, exp):
 						ls = text.splitlines()
 						subExp.append(ls)
 					else:
-						print "SX:",cond.tag
+						print( "SX:" + cond.tag )
 				if len(subExp) >= 2:
 					testcase.addExpressionDetails(subSection, subExp)
 			else:
-				print "Z:",tmp.tag
+				print( "Z:" + tmp.tag )
 		#if e1:
-		#	print "Section:",section
+		#	print( "Section:" + section )
 
 def approveXml( baseName, args ):
 	global overallResult
@@ -418,7 +418,7 @@ def approveXml( baseName, args ):
 		root = etree.fromstring(xml)
 		testRun.appname = root.get("name")
 		for ts in root:
-			#print ts.tag
+			#print( ts.tag )
 			for tc in ts:
 				if tc.tag == "TestCase":
 					testcase = testRun.addTestCase(tc.get("name"))
@@ -443,7 +443,7 @@ def approveXml( baseName, args ):
 									ls = text.splitlines()
 									subExp.append(ls)
 								else:
-									print "X:",cond.tag
+									print( "X:" + cond.tag )
 							if len(subExp) >= 2:
 								testcase.addExpressionDetails(section, subExp)
 						elif exp.tag == "Exception":
@@ -470,18 +470,18 @@ def approveXml( baseName, args ):
 						elif exp.tag == "OverallResult":
 							testcase.addOverallResult(exp.get("success"))
 						else:
-							print "E:",exp.tag
+							print( "E:" + exp.tag )
 				elif tc.tag == "OverallResults":
 					testRun.tests = tc.get("successes")
 					testRun.failures = tc.get("failures")
 				else:
-					print "U:",tc.tag
+					print( "U:" + tc.tag )
 
 		lines = testRun.generateSortedUnapprovedXml()
 		
 		rawWriteFile = open( baselinesSortedPath, 'wb' )
 		for line in lines:
-			#print "L:",line
+			#print( "L:" + line )
 			rawWriteFile.write(line + "\n")
 		rawWriteFile.close()
 
@@ -511,7 +511,7 @@ def approveXml( baseName, args ):
 		if testRun.appname == "TestCatch.exe":
 			testRun.appname = "CatchSelfTest"
 		for ts in root:
-			#print ts.tag
+			#print( ts.tag )
 			for tc in ts:
 				if tc.tag == "TestCase":
 					testcase = testRun.addTestCase(tc.get("name"))
@@ -533,7 +533,7 @@ def approveXml( baseName, args ):
 										m = hexParser.match(li)
 										if m:
 											while m:
-												#print li, m.group(1), m.group(3)
+												#print( li + m.group(1) + m.group(3) )
 												li = m.group(1) + "0x<hex digits>" + m.group(3)
 												m = hexParser.match(li)
 										ls.append(li)
@@ -546,7 +546,7 @@ def approveXml( baseName, args ):
 										m = hexParser.match(li)
 										if m:
 											while m:
-												#print li, m.group(1), m.group(3)
+												#print( li + m.group(1) + m.group(3) )
 												li = m.group(1) + "0x<hex digits>" + m.group(3)
 												m = hexParser.match(li)
 										ls.append(li)
@@ -561,7 +561,7 @@ def approveXml( baseName, args ):
 									ls = text.splitlines()
 									subExp.append(ls)
 								else:
-									print "X:",cond.tag
+									print( "X:" + cond.tag )
 							if len(subExp) >= 2:
 								testcase.addExpressionDetails(section, subExp)
 						elif exp.tag == "Exception":
@@ -591,23 +591,23 @@ def approveXml( baseName, args ):
 						elif exp.tag == "OverallResult":
 							testcase.addOverallResult(exp.get("success"))
 						else:
-							print "E:",exp.tag
+							print( "E:" + exp.tag )
 				elif tc.tag == "OverallResults":
 					testRun.tests = tc.get("successes")
 					testRun.failures = tc.get("failures")
 				else:
-					print "U:",tc.tag
+					print( "U:" + tc.tag )
 
 		lines = testRun.generateSortedUnapprovedXml()
 		
 		rawWriteFile = open( rawSortedPath, 'wb' )
 		for line in lines:
-			#print "L:",line
+			#print( "L:" + line )
 			rawWriteFile.write(line + "\n")
 		rawWriteFile.close()
 
 def parseTrxFile(baseName, trxFile):
-	print "TRX file:" ,trxFile
+	print( "TRX file:" + trxFile )
 	if os.path.exists( trxFile ):
 		xml = ""
 		f = open( trxFile, 'r' )
@@ -627,7 +627,7 @@ def parseTrxFile(baseName, trxFile):
 			m = qname.match(ts.tag)
 			if m:
 				tag = m.group(2)
-				print tag
+				print( tag )
 			if tag != None:
 				if tag == "TestDefinitions":
 					for tc in ts:
@@ -643,12 +643,12 @@ def parseTrxFile(baseName, trxFile):
 									tag = m.group(2)
 								if tag != None and tag == "Description":
 									desc = item.text
-									#print desc, id
+									#print( desc + id )
 									ids.append([id,desc])
 				elif tag == "Results":
-					#print ids
+					#print( ids )
 					ids = dict(ids)
-					#print ids["87ec526a-e414-1a3f-ba0f-e210b204bb42"]
+					#print( ids["87ec526a-e414-1a3f-ba0f-e210b204bb42"] )
 					
 					lineNumber = 0
 					resultParser = TestCaseResultParser()
@@ -682,8 +682,8 @@ def parseTrxFile(baseName, trxFile):
 														break
 													index += 1
 												lines = lines[index + 3:]
-												#print "*******",desc
-												#print lines
+												#print( "*******" + desc )
+												#print( lines )
 												if found:
 													endOfRun = False
 													for line in lines:
@@ -693,7 +693,7 @@ def parseTrxFile(baseName, trxFile):
 															try:
 																testcase = resultParser.parseResultLine(line)
 															except RandomOutput as e:
-																#print "E:", self.lineNumber, ", ",e.output
+																#print( "E:" + self.lineNumber + ", " + e.output )
 																testRun.output = e.output
 																testRun.outputLine = lineNumber - len(e.output)
 															if isinstance(testcase, TestCaseData):
@@ -706,7 +706,7 @@ def parseTrxFile(baseName, trxFile):
 					rawSortedPath = os.path.join( rootPath, '{0}.sorted.unapproved.txt'.format( baseName ) )
 					rawWriteFile = open( rawSortedPath, 'wb' )
 					for line in lines:
-						#print "L:",line
+						#print( "L:" + line )
 						rawWriteFile.write(line + "\n")
 					rawWriteFile.close()
 
@@ -734,7 +734,7 @@ def approveMsTest( baseName, filter ):
 	#args.append(dllPath)
 	#args.append("/TestCaseFilter:Owner=" + filter)
 	
-	#print args
+	#print( args )
 	f = open( rawResultsPath, 'w' )
 	subprocess.call( args, stdout=f, stderr=f )
 	f.close()
@@ -763,6 +763,6 @@ approveMsTest( "mstest.std", "all")
 approveMsTest( "mstest.sw", "allSucceeding")
 approveMsTest( "mstest.swa4", "allSucceedingAborting")
 
-if overallResult <> 0:
-	print "run approve.py to approve new baselines"
+if overallResult != 0:
+	print( "run approve.py to approve new baselines" )
 exit( overallResult)
