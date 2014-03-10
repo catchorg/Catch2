@@ -7,11 +7,18 @@
  */
 
 // Only use header guard if we are not using an outer namespace
-#if !defined(TWOBLUECUBES_CLARA_H_INCLUDED) || defined(STITCH_CLARA_OUTER_NAMESPACE)
-#ifndef STITCH_CLARA_OUTER_NAMESPACE
-#define TWOBLUECUBES_CLARA_H_INCLUDED
+#if !defined(TWOBLUECUBES_CLARA_H_INCLUDED) || defined(STITCH_CLARA_OPEN_NAMESPACE)
 
-#define STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE Clara
+#ifndef STITCH_CLARA_OPEN_NAMESPACE
+#define TWOBLUECUBES_CLARA_H_INCLUDED
+#define STITCH_CLARA_OPEN_NAMESPACE
+#define STITCH_CLARA_CLOSE_NAMESPACE
+#else
+#define STITCH_CLARA_CLOSE_NAMESPACE }
+#endif
+
+
+#define STITCH_TBC_TEXT_FORMAT_OPEN_NAMESPACE STITCH_CLARA_OPEN_NAMESPACE
 
 // ----------- #included from tbc_text_format.h -----------
 
@@ -167,9 +174,8 @@ namespace Tbc {
 // ----------- end of #include from tbc_text_format.h -----------
 // ........... back in /Users/philnash/Dev/OSS/Clara/srcs/clara.h
 
-#endif
+#undef STITCH_TBC_TEXT_FORMAT_OPEN_NAMESPACE
 
-#undef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
 
 #include <map>
 #include <algorithm>
@@ -177,11 +183,16 @@ namespace Tbc {
 #include <memory>
 
 // Use optional outer namespace
-#ifdef STITCH_CLARA_OUTER_NAMESPACE
-namespace STITCH_CLARA_OUTER_NAMESPACE {
+#ifdef STITCH_CLARA_OPEN_NAMESPACE
+STITCH_CLARA_OPEN_NAMESPACE
 #endif
 
 namespace Clara {
+
+    struct UnpositionalTag {};
+
+    static const UnpositionalTag _;
+
     namespace Detail {
 
 #ifdef CLARA_CONSOLE_WIDTH
@@ -191,6 +202,10 @@ namespace Clara {
 #endif
 
         using namespace Tbc;
+
+        inline bool startsWith( std::string const& str, std::string const& prefix ) {
+            return str.size() >= prefix.size() && str.substr( 0, prefix.size() ) == prefix;
+        }
 
         template<typename T> struct RemoveConstRef{ typedef T type; };
         template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
@@ -241,10 +256,11 @@ namespace Clara {
         template<typename ConfigT>
         class BoundArgFunction {
         public:
+            BoundArgFunction() : functionObj( NULL ) {}
             BoundArgFunction( IArgFunction<ConfigT>* _functionObj ) : functionObj( _functionObj ) {}
-            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj->clone() ) {}
+            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj ? other.functionObj->clone() : NULL ) {}
             BoundArgFunction& operator = ( BoundArgFunction const& other ) {
-                IArgFunction<ConfigT>* newFunctionObj = other.functionObj->clone();
+                IArgFunction<ConfigT>* newFunctionObj = other.functionObj ? other.functionObj->clone() : NULL;
                 delete functionObj;
                 functionObj = newFunctionObj;
                 return *this;
@@ -423,6 +439,7 @@ namespace Clara {
     class CommandLine {
 
         struct Arg {
+            Arg() : position( -1 ) {}
             Arg( Detail::BoundArgFunction<ConfigT> const& _boundField ) : boundField( _boundField ), position( -1 ) {}
 
             bool hasShortName( std::string const& shortName ) const {
@@ -438,7 +455,7 @@ namespace Clara {
                 return _longName == longName;
             }
             bool takesArg() const {
-                return !hint.empty();
+                return !placeholder.empty();
             }
             bool isFixedPositional() const {
                 return position != -1;
@@ -455,7 +472,7 @@ namespace Clara {
             }
             void validate() const {
                 if( boundField.takesArg() && !takesArg() )
-                    throw std::logic_error( "command line argument '" + dbgName() + "' must specify a hint" );
+                    throw std::logic_error( "command line argument '" + dbgName() + "' must specify a placeholder" );
             }
             std::string commands() const {
                 std::ostringstream oss;
@@ -473,8 +490,8 @@ namespace Clara {
                         oss << ", ";
                     oss << "--" << longName;
                 }
-                if( !hint.empty() )
-                    oss << " <" << hint << ">";
+                if( !placeholder.empty() )
+                    oss << " <" << placeholder << ">";
                 return oss.str();
             }
 
@@ -482,7 +499,7 @@ namespace Clara {
             std::vector<std::string> shortNames;
             std::string longName;
             std::string description;
-            std::string hint;
+            std::string placeholder;
             int position;
         };
 
@@ -493,14 +510,14 @@ namespace Clara {
         typedef std::auto_ptr<Arg> ArgAutoPtr;
 #endif
 
-        class ArgBinder {
+        class ArgBuilder {
         public:
-            template<typename F>
-            ArgBinder( CommandLine* cl, F f )
-            :   m_cl( cl ),
-                m_arg( Detail::makeBoundField( f ) )
+            ArgBuilder( CommandLine* cl )
+            :   m_cl( cl )
             {}
-            ArgBinder( ArgBinder& other )
+
+
+            ArgBuilder( ArgBuilder& other )
             :   m_cl( other.m_cl ),
                 m_arg( other.m_arg )
             {
@@ -508,7 +525,7 @@ namespace Clara {
             }
             // !TBD: Need to include workarounds to be able to declare this
             // destructor as able to throw exceptions
-            ~ArgBinder() /* noexcept(false) */ {
+            ~ArgBuilder() /* noexcept(false) */ {
                 if( m_cl && !std::uncaught_exception() ) {
                     m_arg.validate();
                     if( m_arg.isFixedPositional() ) {
@@ -525,29 +542,65 @@ namespace Clara {
                         m_cl->m_options.push_back( m_arg );
                 }
             }
-            ArgBinder& shortOpt( std::string const& name ) {
-                m_arg.shortNames.push_back( name );
+
+            template<typename F>
+            void into( F f )
+            {
+                m_arg.boundField = Detail::makeBoundField( f );
+            }
+
+            friend void addOptName( ArgBuilder& builder, std::string const& optName )
+            {
+                if( optName.empty() )
+                    return;
+                if( Detail::startsWith( optName, "--" ) ) {
+                    if( !builder.m_arg.longName.empty() )
+                        throw std::logic_error( "Only one long opt may be specified. '"
+                            + builder.m_arg.longName
+                            + "' already specified, now attempting to add '"
+                            + optName + "'" );
+                    builder.m_arg.longName = optName.substr( 2 );
+                }
+                else if( Detail::startsWith( optName, "-" ) )
+                    builder.m_arg.shortNames.push_back( optName.substr( 1 ) );
+                else
+                    throw std::logic_error( "option must begin with - or --. Option was: '" + optName + "'" );
+            }
+            friend void setPositionalArg( ArgBuilder& builder, int position )
+            {
+                builder.m_arg.position = position;
+            }
+
+
+            // Can only supply placeholder after [str] - if it takes an arg
+            ArgBuilder& placeholder( std::string const& placeholder ) {
+                m_arg.placeholder = placeholder;
                 return *this;
             }
-            ArgBinder& longOpt( std::string const& name ) {
-                m_arg.longName = name;
-                return *this;
-            }
-            ArgBinder& describe( std::string const& description ) {
+
+            ArgBuilder& describe( std::string const& description ) {
                 m_arg.description = description;
                 return *this;
             }
-            ArgBinder& hint( std::string const& hint ) {
-                m_arg.hint = hint;
+            ArgBuilder& detail( std::string const& ) {
+//                m_arg.description = description;
+// !TBD
                 return *this;
             }
-            ArgBinder& position( int position ) {
-                m_arg.position = position;
-                return *this;
-            }
+
         private:
             CommandLine* m_cl;
             Arg m_arg;
+        };
+        class OptBuilder : public ArgBuilder {
+        public:
+            OptBuilder( CommandLine* cl ) : ArgBuilder( cl ) {}
+            OptBuilder( OptBuilder& other ) : ArgBuilder( other ) {}
+
+            OptBuilder& operator[]( std::string const& optName ) {
+                addOptName( *this, optName );
+                return *this;
+            }
         };
 
     public:
@@ -573,11 +626,25 @@ namespace Clara {
             return *this;
         }
 
-        template<typename F>
-        ArgBinder bind( F f ) {
-            ArgBinder binder( this, f );
-            return binder;
+
+        OptBuilder operator[]( std::string const& optName ) {
+            OptBuilder builder( this );
+            addOptName( builder, optName );
+            return builder;
         }
+
+        ArgBuilder operator[]( int position ) {
+            ArgBuilder builder( this );
+            setPositionalArg( builder, position );
+            return builder;
+        }
+
+        // Invoke this with the _ instance
+        ArgBuilder operator[]( UnpositionalTag ) {
+            ArgBuilder builder( this );
+            return builder;
+        }
+
         template<typename F>
         void bindProcessName( F f ) {
             m_boundProcessName = Detail::makeBoundField( f );
@@ -620,9 +687,9 @@ namespace Clara {
                     os << " ";
                 typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( i );
                 if( it != m_positionalArgs.end() )
-                    os << "<" << it->second.hint << ">";
+                    os << "<" << it->second.placeholder << ">";
                 else if( m_arg.get() )
-                    os << "<" << m_arg->hint << ">";
+                    os << "<" << m_arg->placeholder << ">";
                 else
                     throw std::logic_error( "non consecutive positional arguments with no floating args" );
             }
@@ -630,7 +697,7 @@ namespace Clara {
             if( m_arg.get() ) {
                 if( m_highestSpecifiedArgPosition > 1 )
                     os << " ";
-                os << "[<" << m_arg->hint << "> ...]";
+                os << "[<" << m_arg->placeholder << "> ...]";
             }
         }
         std::string argSynopsis() const {
@@ -770,8 +837,10 @@ namespace Clara {
 
 } // end namespace Clara
 
-#ifdef STITCH_CLARA_OUTER_NAMESPACE
-} // end outer namespace
-#endif
+
+STITCH_CLARA_CLOSE_NAMESPACE
+#undef STITCH_CLARA_OPEN_NAMESPACE
+#undef STITCH_CLARA_CLOSE_NAMESPACE
+
 
 #endif // TWOBLUECUBES_CLARA_H_INCLUDED

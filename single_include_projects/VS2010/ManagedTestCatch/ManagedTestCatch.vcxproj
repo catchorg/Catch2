@@ -138,7 +138,6 @@
     <ClCompile Include="..\..\SelfTest\ApproxTests.cpp" />
     <ClCompile Include="..\..\SelfTest\BDDTests.cpp" />
     <ClCompile Include="..\..\SelfTest\ClassTests.cpp" />
-    <ClCompile Include="..\..\SelfTest\CmdLineTests.cpp" />
     <ClCompile Include="..\..\SelfTest\ConditionTests.cpp" />
     <ClCompile Include="..\..\SelfTest\ExceptionTests.cpp" />
     <ClCompile Include="..\..\SelfTest\GeneratorTests.cpp" />

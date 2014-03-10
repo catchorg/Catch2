@@ -29,7 +29,7 @@ namespace Catch {
 
 #ifdef INTERNAL_CATCH_VS_NATIVE
 
-#pragma warning( disable : 4505 )   // required for including CppUnitTest.h at /W4
+#pragma warning( disable:4505 )   // required for including CppUnitTest.h at /W4
 
 #include <CppUnitTest.h>
 

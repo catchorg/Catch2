@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 27 (master branch)
- *  Generated: 2014-03-05 09:23:26.023000
+ *  CATCH v1.0 build 30 (master branch)
+ *  Generated: 2014-03-10 11:19:55.332000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -21,6 +21,14 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#ifdef CATCH_CONFIG_MAIN
+#  define CATCH_CONFIG_RUNNER
+#  ifndef CLARA_CONFIG_MAIN
+#    define CLARA_CONFIG_MAIN_NOT_DEFINED
+#    define CLARA_CONFIG_MAIN
+#  endif
+#endif
+
 #if (_MANAGED == 1) || (_M_CEE == 1) // detect CLR
     #define INTERNAL_CATCH_VS_MANAGED
 #else
@@ -34,6 +42,13 @@
 #endif
 
 #endif // detect CLR
+
+#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+    #define INTERNAL_CATCH_INLINE inline
+    #define CATCH_CONFIG_RUNNER (1)
+#else
+    #define INTERNAL_CATCH_INLINE
+#endif
 
 // #included from: internal/catch_notimplemented_exception.h
 #define TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_H_INCLUDED
@@ -4138,14 +4153,7 @@ return @ desc; \
 
 #endif
 
-#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
-    #define INTERNAL_CATCH_INLINE inline
-    #define CATCH_CONFIG_RUNNER (1)
-#else
-    #define INTERNAL_CATCH_INLINE
-#endif
-
-#if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
+#ifdef CATCH_CONFIG_RUNNER
 // #included from: internal/catch_impl.hpp
 #define TWOBLUECUBES_CATCH_IMPL_HPP_INCLUDED
 
@@ -4326,18 +4334,29 @@ namespace Catch {
 // #included from: catch_clara.h
 #define TWOBLUECUBES_CATCH_CLARA_H_INCLUDED
 
+// Use Catch's value for console width (store Clara's off to the side, if present)
+#ifdef CLARA_CONFIG_CONSOLE_WIDTH
+#define CATCH_TEMP_CLARA_CONFIG_CONSOLE_WIDTH CLARA_CONFIG_CONSOLE_WIDTH
+#undef CLARA_CONFIG_CONSOLE_WIDTH
+#endif
 #define CLARA_CONFIG_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
 
 // Declare Clara inside the Catch namespace
-#define STITCH_CLARA_OUTER_NAMESPACE Catch
+#define STITCH_CLARA_OPEN_NAMESPACE namespace Catch {
 // #included from: clara.h
 
 // Only use header guard if we are not using an outer namespace
-#if !defined(TWOBLUECUBES_CLARA_H_INCLUDED) || defined(STITCH_CLARA_OUTER_NAMESPACE)
-#ifndef STITCH_CLARA_OUTER_NAMESPACE
-#define TWOBLUECUBES_CLARA_H_INCLUDED
+#if !defined(TWOBLUECUBES_CLARA_H_INCLUDED) || defined(STITCH_CLARA_OPEN_NAMESPACE)
 
-#define STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE Clara
+#ifndef STITCH_CLARA_OPEN_NAMESPACE
+#define TWOBLUECUBES_CLARA_H_INCLUDED
+#define STITCH_CLARA_OPEN_NAMESPACE
+#define STITCH_CLARA_CLOSE_NAMESPACE
+#else
+#define STITCH_CLARA_CLOSE_NAMESPACE }
+#endif
+
+#define STITCH_TBC_TEXT_FORMAT_OPEN_NAMESPACE STITCH_CLARA_OPEN_NAMESPACE
 
 // ----------- #included from tbc_text_format.h -----------
 
@@ -4486,9 +4505,7 @@ namespace Tbc {
 // ----------- end of #include from tbc_text_format.h -----------
 // ........... back in /Users/philnash/Dev/OSS/Clara/srcs/clara.h
 
-#endif
-
-#undef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+#undef STITCH_TBC_TEXT_FORMAT_OPEN_NAMESPACE
 
 #include <map>
 #include <algorithm>
@@ -4496,11 +4513,16 @@ namespace Tbc {
 #include <memory>
 
 // Use optional outer namespace
-#ifdef STITCH_CLARA_OUTER_NAMESPACE
-namespace STITCH_CLARA_OUTER_NAMESPACE {
+#ifdef STITCH_CLARA_OPEN_NAMESPACE
+STITCH_CLARA_OPEN_NAMESPACE
 #endif
 
 namespace Clara {
+
+    struct UnpositionalTag {};
+
+    static const UnpositionalTag _;
+
     namespace Detail {
 
 #ifdef CLARA_CONSOLE_WIDTH
@@ -4510,6 +4532,10 @@ namespace Clara {
 #endif
 
         using namespace Tbc;
+
+        inline bool startsWith( std::string const& str, std::string const& prefix ) {
+            return str.size() >= prefix.size() && str.substr( 0, prefix.size() ) == prefix;
+        }
 
         template<typename T> struct RemoveConstRef{ typedef T type; };
         template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
@@ -4560,10 +4586,11 @@ namespace Clara {
         template<typename ConfigT>
         class BoundArgFunction {
         public:
+            BoundArgFunction() : functionObj( NULL ) {}
             BoundArgFunction( IArgFunction<ConfigT>* _functionObj ) : functionObj( _functionObj ) {}
-            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj->clone() ) {}
+            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj ? other.functionObj->clone() : NULL ) {}
             BoundArgFunction& operator = ( BoundArgFunction const& other ) {
-                IArgFunction<ConfigT>* newFunctionObj = other.functionObj->clone();
+                IArgFunction<ConfigT>* newFunctionObj = other.functionObj ? other.functionObj->clone() : NULL;
                 delete functionObj;
                 functionObj = newFunctionObj;
                 return *this;
@@ -4741,6 +4768,7 @@ namespace Clara {
     class CommandLine {
 
         struct Arg {
+            Arg() : position( -1 ) {}
             Arg( Detail::BoundArgFunction<ConfigT> const& _boundField ) : boundField( _boundField ), position( -1 ) {}
 
             bool hasShortName( std::string const& shortName ) const {
@@ -4756,7 +4784,7 @@ namespace Clara {
                 return _longName == longName;
             }
             bool takesArg() const {
-                return !hint.empty();
+                return !placeholder.empty();
             }
             bool isFixedPositional() const {
                 return position != -1;
@@ -4773,7 +4801,7 @@ namespace Clara {
             }
             void validate() const {
                 if( boundField.takesArg() && !takesArg() )
-                    throw std::logic_error( "command line argument '" + dbgName() + "' must specify a hint" );
+                    throw std::logic_error( "command line argument '" + dbgName() + "' must specify a placeholder" );
             }
             std::string commands() const {
                 std::ostringstream oss;
@@ -4791,8 +4819,8 @@ namespace Clara {
                         oss << ", ";
                     oss << "--" << longName;
                 }
-                if( !hint.empty() )
-                    oss << " <" << hint << ">";
+                if( !placeholder.empty() )
+                    oss << " <" << placeholder << ">";
                 return oss.str();
             }
 
@@ -4800,7 +4828,7 @@ namespace Clara {
             std::vector<std::string> shortNames;
             std::string longName;
             std::string description;
-            std::string hint;
+            std::string placeholder;
             int position;
         };
 
@@ -4811,14 +4839,13 @@ namespace Clara {
         typedef std::auto_ptr<Arg> ArgAutoPtr;
 #endif
 
-        class ArgBinder {
+        class ArgBuilder {
         public:
-            template<typename F>
-            ArgBinder( CommandLine* cl, F f )
-            :   m_cl( cl ),
-                m_arg( Detail::makeBoundField( f ) )
+            ArgBuilder( CommandLine* cl )
+            :   m_cl( cl )
             {}
-            ArgBinder( ArgBinder& other )
+
+            ArgBuilder( ArgBuilder& other )
             :   m_cl( other.m_cl ),
                 m_arg( other.m_arg )
             {
@@ -4826,7 +4853,7 @@ namespace Clara {
             }
             // !TBD: Need to include workarounds to be able to declare this
             // destructor as able to throw exceptions
-            ~ArgBinder() /* noexcept(false) */ {
+            ~ArgBuilder() /* noexcept(false) */ {
                 if( m_cl && !std::uncaught_exception() ) {
                     m_arg.validate();
                     if( m_arg.isFixedPositional() ) {
@@ -4843,29 +4870,64 @@ namespace Clara {
                         m_cl->m_options.push_back( m_arg );
                 }
             }
-            ArgBinder& shortOpt( std::string const& name ) {
-                m_arg.shortNames.push_back( name );
+
+            template<typename F>
+            void into( F f )
+            {
+                m_arg.boundField = Detail::makeBoundField( f );
+            }
+
+            friend void addOptName( ArgBuilder& builder, std::string const& optName )
+            {
+                if( optName.empty() )
+                    return;
+                if( Detail::startsWith( optName, "--" ) ) {
+                    if( !builder.m_arg.longName.empty() )
+                        throw std::logic_error( "Only one long opt may be specified. '"
+                            + builder.m_arg.longName
+                            + "' already specified, now attempting to add '"
+                            + optName + "'" );
+                    builder.m_arg.longName = optName.substr( 2 );
+                }
+                else if( Detail::startsWith( optName, "-" ) )
+                    builder.m_arg.shortNames.push_back( optName.substr( 1 ) );
+                else
+                    throw std::logic_error( "option must begin with - or --. Option was: '" + optName + "'" );
+            }
+            friend void setPositionalArg( ArgBuilder& builder, int position )
+            {
+                builder.m_arg.position = position;
+            }
+
+            // Can only supply placeholder after [str] - if it takes an arg
+            ArgBuilder& placeholder( std::string const& placeholder ) {
+                m_arg.placeholder = placeholder;
                 return *this;
             }
-            ArgBinder& longOpt( std::string const& name ) {
-                m_arg.longName = name;
-                return *this;
-            }
-            ArgBinder& describe( std::string const& description ) {
+
+            ArgBuilder& describe( std::string const& description ) {
                 m_arg.description = description;
                 return *this;
             }
-            ArgBinder& hint( std::string const& hint ) {
-                m_arg.hint = hint;
+            ArgBuilder& detail( std::string const& ) {
+//                m_arg.description = description;
+// !TBD
                 return *this;
             }
-            ArgBinder& position( int position ) {
-                m_arg.position = position;
-                return *this;
-            }
+
         private:
             CommandLine* m_cl;
             Arg m_arg;
+        };
+        class OptBuilder : public ArgBuilder {
+        public:
+            OptBuilder( CommandLine* cl ) : ArgBuilder( cl ) {}
+            OptBuilder( OptBuilder& other ) : ArgBuilder( other ) {}
+
+            OptBuilder& operator[]( std::string const& optName ) {
+                addOptName( *this, optName );
+                return *this;
+            }
         };
 
     public:
@@ -4891,11 +4953,24 @@ namespace Clara {
             return *this;
         }
 
-        template<typename F>
-        ArgBinder bind( F f ) {
-            ArgBinder binder( this, f );
-            return binder;
+        OptBuilder operator[]( std::string const& optName ) {
+            OptBuilder builder( this );
+            addOptName( builder, optName );
+            return builder;
         }
+
+        ArgBuilder operator[]( int position ) {
+            ArgBuilder builder( this );
+            setPositionalArg( builder, position );
+            return builder;
+        }
+
+        // Invoke this with the _ instance
+        ArgBuilder operator[]( UnpositionalTag ) {
+            ArgBuilder builder( this );
+            return builder;
+        }
+
         template<typename F>
         void bindProcessName( F f ) {
             m_boundProcessName = Detail::makeBoundField( f );
@@ -4938,9 +5013,9 @@ namespace Clara {
                     os << " ";
                 typename std::map<int, Arg>::const_iterator it = m_positionalArgs.find( i );
                 if( it != m_positionalArgs.end() )
-                    os << "<" << it->second.hint << ">";
+                    os << "<" << it->second.placeholder << ">";
                 else if( m_arg.get() )
-                    os << "<" << m_arg->hint << ">";
+                    os << "<" << m_arg->placeholder << ">";
                 else
                     throw std::logic_error( "non consecutive positional arguments with no floating args" );
             }
@@ -4948,7 +5023,7 @@ namespace Clara {
             if( m_arg.get() ) {
                 if( m_highestSpecifiedArgPosition > 1 )
                     os << " ";
-                os << "[<" << m_arg->hint << "> ...]";
+                os << "[<" << m_arg->placeholder << "> ...]";
             }
         }
         std::string argSynopsis() const {
@@ -5088,12 +5163,18 @@ namespace Clara {
 
 } // end namespace Clara
 
-#ifdef STITCH_CLARA_OUTER_NAMESPACE
-} // end outer namespace
-#endif
+STITCH_CLARA_CLOSE_NAMESPACE
+#undef STITCH_CLARA_OPEN_NAMESPACE
+#undef STITCH_CLARA_CLOSE_NAMESPACE
 
 #endif // TWOBLUECUBES_CLARA_H_INCLUDED
-#undef STITCH_CLARA_OUTER_NAMESPACE
+#undef STITCH_CLARA_OPEN_NAMESPACE
+
+// Restore Clara's value for console width, if present
+#ifdef CATCH_TEMP_CLARA_CONFIG_CONSOLE_WIDTH
+#define CLARA_CONFIG_CONSOLE_WIDTH CATCH_TEMP_CLARA_CONFIG_CONSOLE_WIDTH
+#undef CATCH_TEMP_CLARA_CONFIG_CONSOLE_WIDTH
+#endif
 
 #include <fstream>
 
@@ -5138,107 +5219,95 @@ namespace Catch {
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
-        Clara::CommandLine<ConfigData> cli;
+        using namespace Clara;
+        CommandLine<ConfigData> cli;
 
         cli.bindProcessName( &ConfigData::processName );
 
-        cli.bind( &ConfigData::showHelp )
+        cli["-?"]["-h"]["--help"]
             .describe( "display usage information" )
-            .shortOpt( "?")
-            .shortOpt( "h")
-            .longOpt( "help" );
+            .into( &ConfigData::showHelp );
 
-        cli.bind( &ConfigData::listTests )
+        cli["-l"]["--list-tests"]
             .describe( "list all/matching test cases" )
-            .shortOpt( "l")
-            .longOpt( "list-tests" );
+            .into( &ConfigData::listTests );
 
-        cli.bind( &ConfigData::listTags )
+        cli["-t"]["--list-tags"]
             .describe( "list all/matching tags" )
-            .shortOpt( "t")
-            .longOpt( "list-tags" );
+            .into( &ConfigData::listTags );
 
-        cli.bind( &ConfigData::showSuccessfulTests )
+        cli["-s"]["--success"]
             .describe( "include successful tests in output" )
-            .shortOpt( "s")
-            .longOpt( "success" );
+            .into( &ConfigData::showSuccessfulTests );
 
-        cli.bind( &ConfigData::shouldDebugBreak )
+        cli["-b"]["--break"]
             .describe( "break into debugger on failure" )
-            .shortOpt( "b")
-            .longOpt( "break" );
+            .into( &ConfigData::shouldDebugBreak );
 
-        cli.bind( &ConfigData::noThrow )
+        cli["-e"]["--nothrow"]
             .describe( "skip exception tests" )
-            .shortOpt( "e")
-            .longOpt( "nothrow" );
+            .into( &ConfigData::noThrow );
 
-        cli.bind( &ConfigData::outputFilename )
+        cli["-o"]["--out"]
+            .placeholder( "filename" )
             .describe( "output filename" )
-            .shortOpt( "o")
-            .longOpt( "out" )
-            .hint( "filename" );
+            .into( &ConfigData::outputFilename );
 
-        cli.bind( &ConfigData::reporterName )
+        cli["-r"]["--reporter"]
+//            .placeholder( "name[:filename]" )
+            .placeholder( "name" )
             .describe( "reporter to use (defaults to console)" )
-            .shortOpt( "r")
-            .longOpt( "reporter" )
-//            .hint( "name[:filename]" );
-            .hint( "name" );
+            .into( &ConfigData::reporterName );
 
-        cli.bind( &ConfigData::name )
+        cli["-n"]["--name"]
+            .placeholder( "name" )
             .describe( "suite name" )
-            .shortOpt( "n")
-            .longOpt( "name" )
-            .hint( "name" );
+            .into( &ConfigData::name );
 
-        cli.bind( &abortAfterFirst )
+        cli["-a"]["--abort"]
             .describe( "abort at first failure" )
-            .shortOpt( "a")
-            .longOpt( "abort" );
+            .into( &abortAfterFirst );
 
-        cli.bind( &abortAfterX )
+        cli["-x"]["--abortx"]
+            .placeholder( "number of failures" )
             .describe( "abort after x failures" )
-            .shortOpt( "x")
-            .longOpt( "abortx" )
-            .hint( "number of failures" );
+            .into( &abortAfterX );
 
-        cli.bind( &addWarning )
+        cli["-w"]["--warn"]
+            .placeholder( "warning name" )
             .describe( "enable warnings" )
-            .shortOpt( "w")
-            .longOpt( "warn" )
-            .hint( "warning name" );
+            .into( &addWarning );
 
-//        cli.bind( &setVerbosity )
+// - needs updating if reinstated
+//        cli.into( &setVerbosity )
 //            .describe( "level of verbosity (0=no output)" )
 //            .shortOpt( "v")
 //            .longOpt( "verbosity" )
-//            .hint( "level" );
+//            .placeholder( "level" );
 
-        cli.bind( &addTestOrTags )
+        cli[_]
+            .placeholder( "test name, pattern or tags" )
             .describe( "which test or tests to use" )
-            .hint( "test name, pattern or tags" );
+            .into( &addTestOrTags );
 
-        cli.bind( &setShowDurations )
+        cli["-d"]["--durations"]
+            .placeholder( "yes/no" )
             .describe( "show test durations" )
-            .shortOpt( "d")
-            .longOpt( "durations" )
-            .hint( "yes/no" );
+            .into( &setShowDurations );
 
-        cli.bind( &loadTestNamesFromFile )
+        cli["-f"]["--input-file"]
+            .placeholder( "filename" )
             .describe( "load test names to run from a file" )
-            .shortOpt( "f")
-            .longOpt( "input-file" )
-            .hint( "filename" );
+            .into( &loadTestNamesFromFile );
 
         // Less common commands which don't have a short form
-        cli.bind( &ConfigData::listTestNamesOnly )
+        cli["--list-test-names-only"]
             .describe( "list all/matching test cases names only" )
-            .longOpt( "list-test-names-only" );
+            .into( &ConfigData::listTestNamesOnly );
 
-        cli.bind( &ConfigData::listReporters )
+        cli["--list-reporters"]
             .describe( "list all reporters" )
-            .longOpt( "list-reporters" );
+            .into( &ConfigData::listReporters );
 
         return cli;
     }
@@ -7490,7 +7559,7 @@ namespace Catch {
 
     // These numbers are maintained by a script
     template <typename T>
-    const T LibraryVersionInfo<T>::value( 1, 0, 27, "master" );
+    const T LibraryVersionInfo<T>::value( 1, 0, 30, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -9188,7 +9257,7 @@ namespace Catch {
 #pragma clang diagnostic pop
 #endif
 
-#endif // CATCH_CONFIG_MAIN || CATCH_CONFIG_RUNNER
+#endif
 
 #ifdef CATCH_CONFIG_MAIN
 // #included from: internal/catch_default_main.hpp
@@ -9221,7 +9290,11 @@ int main (int argc, char * const argv[]) {
 
 #endif // __OBJC__
 
-#endif // CATCH_CONFIG_MAIN
+#endif
+
+#ifdef CLARA_CONFIG_MAIN_NOT_DEFINED
+#  undef CLARA_CONFIG_MAIN
+#endif
 
 //////
 

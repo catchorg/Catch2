@@ -17,6 +17,14 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#ifdef CATCH_CONFIG_MAIN
+#  define CATCH_CONFIG_RUNNER
+#  ifndef CLARA_CONFIG_MAIN
+#    define CLARA_CONFIG_MAIN_NOT_DEFINED
+#    define CLARA_CONFIG_MAIN
+#  endif
+#endif
+
 #if (_MANAGED == 1) || (_M_CEE == 1) // detect CLR
     #define INTERNAL_CATCH_VS_MANAGED
 #else
@@ -30,6 +38,13 @@
 #endif
 
 #endif // detect CLR
+
+#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+    #define INTERNAL_CATCH_INLINE inline
+    #define CATCH_CONFIG_RUNNER (1)
+#else
+    #define INTERNAL_CATCH_INLINE
+#endif
 
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
@@ -51,20 +66,18 @@
 #include "internal/catch_objc.hpp"
 #endif
 
-#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
-    #define INTERNAL_CATCH_INLINE inline
-    #define CATCH_CONFIG_RUNNER (1)
-#else
-    #define INTERNAL_CATCH_INLINE
-#endif
-
-#if defined( CATCH_CONFIG_MAIN ) || defined( CATCH_CONFIG_RUNNER )
+#ifdef CATCH_CONFIG_RUNNER
 #include "internal/catch_impl.hpp"
-#endif // CATCH_CONFIG_MAIN || CATCH_CONFIG_RUNNER
+#endif
 
 #ifdef CATCH_CONFIG_MAIN
 #include "internal/catch_default_main.hpp"
-#endif // CATCH_CONFIG_MAIN
+#endif
+
+
+#ifdef CLARA_CONFIG_MAIN_NOT_DEFINED
+#  undef CLARA_CONFIG_MAIN
+#endif
 
 //////
 

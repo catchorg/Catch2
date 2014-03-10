@@ -13,9 +13,6 @@
     <ClCompile Include="..\..\..\SelfTest\MiscTests.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\SelfTest\CmdLineTests.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\SelfTest\ConditionTests.cpp">
       <Filter>Sources</Filter>
     </ClCompile>

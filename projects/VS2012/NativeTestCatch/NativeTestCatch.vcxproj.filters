@@ -41,9 +41,6 @@
     <ClCompile Include="..\..\SelfTest\ClassTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SelfTest\CmdLineTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\SelfTest\ConditionTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

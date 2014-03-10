@@ -8,6 +8,7 @@
 #include "targetver.h"
 
 // Headers for CppUnitTest
+#pragma warning( disable:4505 )   // required for including CppUnitTest.h at /W4
 #include "CppUnitTest.h"
 
 // TODO: reference additional headers your program requires here

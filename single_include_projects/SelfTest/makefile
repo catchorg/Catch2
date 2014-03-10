@@ -1,7 +1,6 @@
 SOURCES =	ApproxTests.cpp \
       		BDDTests.cpp \
 			ClassTests.cpp \
-			CmdLineTests.cpp \
 			ConditionTests.cpp \
       		ExceptionTests.cpp \
       		GeneratorTests.cpp \

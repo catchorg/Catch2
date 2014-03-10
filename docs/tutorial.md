@@ -142,6 +142,7 @@ So far so good - this is already an improvement on the setup/ teardown approach 
 
 The power of sections really shows, however, when we need to execute a sequence of, checked, operations. Continuing the vector example we might want to verify that after reserving a larger capacity, if we reserve smaller capacity (but still larger than the current size) then the capacity is not, in fact, changed. We can do that, naturally, like so:
 
+```c++
     SECTION( "reserving bigger changes capacity but not size" ) {
         v.reserve( 10 );
         
@@ -154,6 +155,7 @@ The power of sections really shows, however, when we need to execute a sequence 
             REQUIRE( v.capacity() >= 10 );
         }
     }
+```
 
 Sections can be nested to an arbitrary depth (limited only by your stack size). Each leaf section (i.e. a section that contains no nested sections) will be executed exactly once, on a separate path of execution from any other leaf section (so no leaf section can interfere with another). Obviously a failure in a parent section will prevent nested sections from running - but that's the idea.
 
