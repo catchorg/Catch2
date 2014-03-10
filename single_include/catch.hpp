@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 30 (master branch)
- *  Generated: 2014-03-07 06:56:50.010459
+ *  CATCH v1.0 build 31 (master branch)
+ *  Generated: 2014-03-10 18:01:22.986492
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -23,6 +23,9 @@
 
 #ifdef CATCH_CONFIG_MAIN
 #  define CATCH_CONFIG_RUNNER
+#endif
+
+#ifdef CATCH_CONFIG_RUNNER
 #  ifndef CLARA_CONFIG_MAIN
 #    define CLARA_CONFIG_MAIN_NOT_DEFINED
 #    define CLARA_CONFIG_MAIN
@@ -6588,7 +6591,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 30, "master" );
+    Version libraryVersion( 1, 0, 31, "master" );
 }
 
 // #included from: catch_message.hpp
