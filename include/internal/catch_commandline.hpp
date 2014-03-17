@@ -62,57 +62,52 @@ namespace Catch {
 
         cli["-?"]["-h"]["--help"]
             .describe( "display usage information" )
-            .into( &ConfigData::showHelp );
+            .bind( &ConfigData::showHelp );
 
         cli["-l"]["--list-tests"]
             .describe( "list all/matching test cases" )
-            .into( &ConfigData::listTests );
+            .bind( &ConfigData::listTests );
 
         cli["-t"]["--list-tags"]
             .describe( "list all/matching tags" )
-            .into( &ConfigData::listTags );
+            .bind( &ConfigData::listTags );
 
         cli["-s"]["--success"]
             .describe( "include successful tests in output" )
-            .into( &ConfigData::showSuccessfulTests );
+            .bind( &ConfigData::showSuccessfulTests );
 
         cli["-b"]["--break"]
             .describe( "break into debugger on failure" )
-            .into( &ConfigData::shouldDebugBreak );
+            .bind( &ConfigData::shouldDebugBreak );
 
         cli["-e"]["--nothrow"]
             .describe( "skip exception tests" )
-            .into( &ConfigData::noThrow );
+            .bind( &ConfigData::noThrow );
 
         cli["-o"]["--out"]
-            .placeholder( "filename" )
             .describe( "output filename" )
-            .into( &ConfigData::outputFilename );
+            .bind( &ConfigData::outputFilename, "filename" );
 
         cli["-r"]["--reporter"]
 //            .placeholder( "name[:filename]" )
-            .placeholder( "name" )
             .describe( "reporter to use (defaults to console)" )
-            .into( &ConfigData::reporterName );
+            .bind( &ConfigData::reporterName, "name" );
 
         cli["-n"]["--name"]
-            .placeholder( "name" )
             .describe( "suite name" )
-            .into( &ConfigData::name );
+            .bind( &ConfigData::name, "name" );
 
         cli["-a"]["--abort"]
             .describe( "abort at first failure" )
-            .into( &abortAfterFirst );
+            .bind( &abortAfterFirst );
 
         cli["-x"]["--abortx"]
-            .placeholder( "number of failures" )
             .describe( "abort after x failures" )
-            .into( &abortAfterX );
+            .bind( &abortAfterX, "no. failures" );
 
         cli["-w"]["--warn"]
-            .placeholder( "warning name" )
             .describe( "enable warnings" )
-            .into( &addWarning );
+            .bind( &addWarning, "warning name" );
 
 // - needs updating if reinstated
 //        cli.into( &setVerbosity )
@@ -122,28 +117,25 @@ namespace Catch {
 //            .placeholder( "level" );
 
         cli[_]
-            .placeholder( "test name, pattern or tags" )
             .describe( "which test or tests to use" )
-            .into( &addTestOrTags );
+            .bind( &addTestOrTags, "test name, pattern or tags" );
 
         cli["-d"]["--durations"]
-            .placeholder( "yes/no" )
             .describe( "show test durations" )
-            .into( &setShowDurations );
+            .bind( &setShowDurations, "yes/no" );
 
         cli["-f"]["--input-file"]
-            .placeholder( "filename" )
             .describe( "load test names to run from a file" )
-            .into( &loadTestNamesFromFile );
+            .bind( &loadTestNamesFromFile, "filename" );
 
         // Less common commands which don't have a short form
         cli["--list-test-names-only"]
             .describe( "list all/matching test cases names only" )
-            .into( &ConfigData::listTestNamesOnly );
+            .bind( &ConfigData::listTestNamesOnly );
 
         cli["--list-reporters"]
             .describe( "list all reporters" )
-            .into( &ConfigData::listReporters );
+            .bind( &ConfigData::listReporters );
 
         return cli;
     }
