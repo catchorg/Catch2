@@ -33,6 +33,13 @@ namespace Catch {
                 getCurrentContext().getResultCapture().sectionEnded( m_info, m_assertions, m_timer.getElapsedSeconds() );
         }
 
+#  ifdef CATCH_CPP11_OR_GREATER
+        Section( Section const& )              = default;
+        Section( Section && )                  = default;
+        Section& operator = ( Section const& ) = default;
+        Section& operator = ( Section && )     = default;
+#  endif
+
         // This indicates whether the section should be executed or not
         operator bool() {
             return m_sectionIncluded;

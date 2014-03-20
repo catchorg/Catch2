@@ -113,6 +113,11 @@ namespace Catch {
         :   file( other.file ),
             line( other.line )
         {}
+#  ifdef CATCH_CPP11_OR_GREATER
+        SourceLineInfo( SourceLineInfo && )                  = default;
+        SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
+        SourceLineInfo& operator = ( SourceLineInfo && )     = default;
+#  endif
         bool empty() const {
             return file.empty();
         }
