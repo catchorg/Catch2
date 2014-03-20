@@ -21,7 +21,7 @@ namespace Catch {
         m_what = oss.str();
     }
 
-    const char* NotImplementedException::what() const throw() {
+    const char* NotImplementedException::what() const CATCH_NOEXCEPT {
         return m_what.c_str();
     }
 
