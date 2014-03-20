@@ -106,7 +106,7 @@ struct TestFailureException{};
     do { \
         INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
         try { \
-            expr; \
+            static_cast<void>(expr); \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
         } \
         catch( ... ) { \
@@ -118,7 +118,7 @@ struct TestFailureException{};
 #define INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
     try { \
         if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
-            expr; \
+            static_cast<void>(expr); \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), resultDisposition, false ); \
         } \
     } \
