@@ -31,6 +31,7 @@ public:
 METHOD_AS_TEST_CASE( ::TestClass::succeedingCase, "A METHOD_AS_TEST_CASE based test run that succeeds", "[class]" )
 METHOD_AS_TEST_CASE( ::TestClass::failingCase, "A METHOD_AS_TEST_CASE based test run that fails", "[.][class][failing]" )
 
+
 struct Fixture
 {
     Fixture() : m_a( 1 ) {}

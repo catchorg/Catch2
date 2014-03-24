@@ -13,7 +13,7 @@
 #define TBC_TEXT_FORMAT_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
 
 #define CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE Catch
-#include "tbc_text_format.h"
+#include "../external/tbc_text_format.h"
 #undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
 
 namespace Catch {

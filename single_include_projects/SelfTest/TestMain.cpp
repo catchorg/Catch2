@@ -8,6 +8,8 @@
 
 #if !defined(_WINDLL)
 #define CATCH_CONFIG_MAIN
+#else
+#define CLARA_CONFIG_MAIN
 #endif
 #include "catch.hpp"
 
