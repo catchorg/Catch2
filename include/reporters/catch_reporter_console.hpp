@@ -15,6 +15,11 @@
 
 namespace Catch {
 
+#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+    static const bool DefaultRedirectStdout = true;
+#else
+    static const bool DefaultRedirectStdout = false;
+#endif
     struct ConsoleReporter : StreamingReporterBase {
         ConsoleReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
@@ -28,7 +33,7 @@ namespace Catch {
         }
         virtual ReporterPreferences getPreferences() const {
             ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = false;
+            prefs.shouldRedirectStdOut = DefaultRedirectStdout;
             return prefs;
         }
 
@@ -86,6 +91,11 @@ namespace Catch {
         }
 
         virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) {
+            if( getPreferences().shouldRedirectStdOut )
+            {
+                stream << _testCaseStats.stdOut;
+                stream << _testCaseStats.stdErr;
+            }
             StreamingReporterBase::testCaseEnded( _testCaseStats );
             m_headerPrinted = false;
         }
@@ -259,11 +269,11 @@ namespace Catch {
             stream  << "\n" << getTildes() << "\n";
             Colour colour( Colour::SecondaryText );
             stream  << currentTestRunInfo->name
-                    << " is a Catch v"  << libraryVersion.majorVersion << "."
-                    << libraryVersion.minorVersion << " b"
-                    << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
-                stream << " (" << libraryVersion.branchName << ")";
+                    << " is a Catch v"  << libraryVersion::value.majorVersion << "."
+                    << libraryVersion::value.minorVersion << " b"
+                    << libraryVersion::value.buildNumber;
+            if( libraryVersion::value.branchName != "master" )
+                stream << " (" << libraryVersion::value.branchName << ")";
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
 
@@ -382,6 +392,24 @@ namespace Catch {
         void printSummaryDivider() {
             stream << getDashes() << "\n";
         }
+#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+        static std::string getDashes() {
+            const std::string dashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '-' );
+            return dashes;
+        }
+        static std::string getDots() {
+            const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '.' );
+            return dots;
+        }
+        static std::string getDoubleDashes() {
+            const std::string doubleDashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
+            return doubleDashes;
+        }
+        static std::string getTildes() {
+            const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '~' );
+            return dots;
+        }
+#else
         static std::string const& getDashes() {
             static const std::string dashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '-' );
             return dashes;
@@ -398,6 +426,7 @@ namespace Catch {
             static const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '~' );
             return dots;
         }
+#endif
 
     private:
         bool m_headerPrinted;

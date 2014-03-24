@@ -14,47 +14,47 @@
 
 namespace Catch {
 
-    ExpressionResultBuilder::ExpressionResultBuilder( ResultWas::OfType resultType ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder::ExpressionResultBuilder( ResultWas::OfType resultType ) {
         m_data.resultType = resultType;
     }
-    ExpressionResultBuilder::ExpressionResultBuilder( ExpressionResultBuilder const& other )
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder::ExpressionResultBuilder( ExpressionResultBuilder const& other )
     :   m_data( other.m_data ),
         m_exprComponents( other.m_exprComponents )
     {
         m_stream << other.m_stream.str();
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::operator=(ExpressionResultBuilder const& other ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder& ExpressionResultBuilder::operator=(ExpressionResultBuilder const& other ) {
         m_data = other.m_data;
         m_exprComponents = other.m_exprComponents;
         m_stream.str("");
         m_stream << other.m_stream.str();
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setResultType( ResultWas::OfType result ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder& ExpressionResultBuilder::setResultType( ResultWas::OfType result ) {
         m_data.resultType = result;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setResultType( bool result ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder& ExpressionResultBuilder::setResultType( bool result ) {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
         m_exprComponents.shouldNegate = shouldNegate( resultDisposition );
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setLhs( std::string const& lhs ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder& ExpressionResultBuilder::setLhs( std::string const& lhs ) {
         m_exprComponents.lhs = lhs;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setRhs( std::string const& rhs ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder& ExpressionResultBuilder::setRhs( std::string const& rhs ) {
         m_exprComponents.rhs = rhs;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::setOp( std::string const& op ) {
+    INTERNAL_CATCH_INLINE ExpressionResultBuilder& ExpressionResultBuilder::setOp( std::string const& op ) {
         m_exprComponents.op = op;
         return *this;
     }
-    AssertionResult ExpressionResultBuilder::buildResult( AssertionInfo const& info ) const
+    INTERNAL_CATCH_INLINE AssertionResult ExpressionResultBuilder::buildResult( AssertionInfo const& info ) const
     {
         assert( m_data.resultType != ResultWas::Unknown );
 
@@ -76,7 +76,7 @@ namespace Catch {
         }
         return AssertionResult( info, data );
     }
-    std::string ExpressionResultBuilder::reconstructExpression( AssertionInfo const& info ) const {
+    INTERNAL_CATCH_INLINE std::string ExpressionResultBuilder::reconstructExpression( AssertionInfo const& info ) const {
         if( m_exprComponents.op == "" )
             return m_exprComponents.lhs.empty() ? info.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
         else if( m_exprComponents.op == "matches" )

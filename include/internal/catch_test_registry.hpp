@@ -12,6 +12,10 @@
 #include "catch_interfaces_testcase.h"
 #include "internal/catch_compiler_capabilities.h"
 
+#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+#include "catch_vs_test_registry.hpp"
+#else // defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+
 namespace Catch {
 
 template<typename C>
@@ -116,5 +120,7 @@ private:
         void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
 #endif
+
+#endif // defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
 
 #endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED

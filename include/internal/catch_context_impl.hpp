@@ -15,9 +15,10 @@
 
 namespace Catch {
 
+    template <typename Runner, typename ResultCapture>
     class Context : public IMutableContext {
 
-        Context() : m_config( NULL ), m_runner( NULL ), m_resultCapture( NULL ) {}
+        Context() : m_config( NULL ), m_runner( &nullRunner ), m_resultCapture( &nullResultCapture ) {}
         Context( Context const& );
         void operator=( Context const& );
 
@@ -81,21 +82,31 @@ namespace Catch {
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
+        
+        static ResultCapture nullResultCapture;
+        static Runner nullRunner;
+    public:
+        static Context* currentContext;
     };
 
-    namespace {
-        Context* currentContext = NULL;
+    template <typename Runner, typename ResultCapture>
+    ResultCapture Context<Runner, ResultCapture>::nullResultCapture;
+    template <typename Runner, typename ResultCapture>
+    Runner Context<Runner, ResultCapture>::nullRunner;
+    template <typename Runner, typename ResultCapture>
+    Context<Runner,ResultCapture>* Context<Runner, ResultCapture>::currentContext = NULL;
+
+    typedef Context<NullRunner, NullResultCapture> DefaultContext;
+    INTERNAL_CATCH_INLINE IMutableContext& getCurrentMutableContext() {
+        if( !DefaultContext::currentContext )
+            DefaultContext::currentContext = new DefaultContext();
+        return *DefaultContext::currentContext;
     }
-    IMutableContext& getCurrentMutableContext() {
-        if( !currentContext )
-            currentContext = new Context();
-        return *currentContext;
-    }
-    IContext& getCurrentContext() {
+    INTERNAL_CATCH_INLINE IContext& getCurrentContext() {
         return getCurrentMutableContext();
     }
 
-    Stream createStream( std::string const& streamName ) {
+    INTERNAL_CATCH_INLINE Stream createStream( std::string const& streamName ) {
         if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
         if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
         if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
@@ -103,9 +114,9 @@ namespace Catch {
         throw std::domain_error( "Unknown stream: " + streamName );
     }
 
-    void cleanUpContext() {
-        delete currentContext;
-        currentContext = NULL;
+    INTERNAL_CATCH_INLINE void cleanUpContext() {
+        delete DefaultContext::currentContext;
+        DefaultContext::currentContext = NULL;
     }
 }
 

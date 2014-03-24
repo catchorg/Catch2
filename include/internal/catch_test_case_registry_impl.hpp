@@ -124,15 +124,15 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    AutoReg::AutoReg(   TestFunction function,
+    INTERNAL_CATCH_INLINE AutoReg::AutoReg(   TestFunction function,
                         SourceLineInfo const& lineInfo,
                         NameAndDesc const& nameAndDesc ) {
         registerTestCase( new FreeFunctionTestCase( function ), "", nameAndDesc, lineInfo );
     }
 
-    AutoReg::~AutoReg() {}
+    INTERNAL_CATCH_INLINE AutoReg::~AutoReg() {}
 
-    void AutoReg::registerTestCase( ITestCase* testCase,
+    INTERNAL_CATCH_INLINE void AutoReg::registerTestCase( ITestCase* testCase,
                                     char const* classOrQualifiedMethodName,
                                     NameAndDesc const& nameAndDesc,
                                     SourceLineInfo const& lineInfo ) {

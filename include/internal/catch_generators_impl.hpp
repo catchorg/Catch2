@@ -76,7 +76,7 @@ namespace Catch {
         std::vector<IGeneratorInfo*> m_generatorsInOrder;
     };
 
-    IGeneratorsForTest* createGeneratorsForTest()
+    INTERNAL_CATCH_INLINE IGeneratorsForTest* createGeneratorsForTest()
     {
         return new GeneratorsForTest();
     }

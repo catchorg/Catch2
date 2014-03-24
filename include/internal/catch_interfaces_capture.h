@@ -41,6 +41,23 @@ namespace Catch {
         virtual std::string getCurrentTestName() const = 0;
         virtual const AssertionResult* getLastResult() const = 0;
     };
+
+    struct NullResultCapture : public IResultCapture {
+
+        virtual void assertionEnded( AssertionResult const& ) {}
+        virtual bool sectionStarted(    SectionInfo const& ,
+            Counts&  ) {return false;}
+        virtual void sectionEnded( SectionInfo const& , Counts const& , double ) {}
+        virtual void pushScopedMessage( MessageInfo const& ) {}
+        virtual void popScopedMessage( MessageInfo const& ) {}
+
+        virtual bool shouldDebugBreak() const {return false;}
+
+        virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& , AssertionInfo const&  ) {return ResultAction::Abort;}
+
+        virtual std::string getCurrentTestName() const {return std::string();}
+        virtual const AssertionResult* getLastResult() const {return NULL;}
+    };
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED

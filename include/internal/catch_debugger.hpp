@@ -28,7 +28,7 @@
 
         // Returns true if the current process is being debugged (either
         // running under the debugger or has a debugger attached post facto).
-        bool isDebuggerActive(){
+        INTERNAL_CATCH_INLINE bool isDebuggerActive(){
 
             int                 mib[4];
             struct kinfo_proc   info;
@@ -64,14 +64,14 @@
 #elif defined(_MSC_VER)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     namespace Catch {
-        bool isDebuggerActive() {
+        INTERNAL_CATCH_INLINE bool isDebuggerActive() {
             return IsDebuggerPresent() != 0;
         }
     }
 #elif defined(__MINGW32__)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     namespace Catch {
-        bool isDebuggerActive() {
+        INTERNAL_CATCH_INLINE bool isDebuggerActive() {
             return IsDebuggerPresent() != 0;
         }
     }
@@ -84,13 +84,13 @@
 #ifdef CATCH_PLATFORM_WINDOWS
     extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
     namespace Catch {
-        void writeToDebugConsole( std::string const& text ) {
+        INTERNAL_CATCH_INLINE void writeToDebugConsole( std::string const& text ) {
             ::OutputDebugStringA( text.c_str() );
         }
     }
 #else
     namespace Catch {
-        void writeToDebugConsole( std::string const& text ) {
+        INTERNAL_CATCH_INLINE void writeToDebugConsole( std::string const& text ) {
             // !TBD: Need a version for Mac/ XCode and other IDEs
             std::cout << text;
         }

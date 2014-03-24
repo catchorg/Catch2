@@ -15,7 +15,7 @@
 
 namespace Catch {
 
-    Section::Section(   SourceLineInfo const& lineInfo,
+    INTERNAL_CATCH_INLINE Section::Section(   SourceLineInfo const& lineInfo,
                         std::string const& name,
                         std::string const& description )
     :   m_info( name, description, lineInfo ),
@@ -24,13 +24,13 @@ namespace Catch {
         m_timer.start();
     }
 
-    Section::~Section() {
+    INTERNAL_CATCH_INLINE Section::~Section() {
         if( m_sectionIncluded )
             getCurrentContext().getResultCapture().sectionEnded( m_info, m_assertions, m_timer.getElapsedSeconds() );
     }
 
     // This indicates whether the section should be executed or not
-    Section::operator bool() {
+    INTERNAL_CATCH_INLINE Section::operator bool() {
         return m_sectionIncluded;
     }
 

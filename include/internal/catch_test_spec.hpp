@@ -14,7 +14,7 @@
 
 namespace Catch {
 
-    TestCaseFilter::TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour )
+    INTERNAL_CATCH_INLINE TestCaseFilter::TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour )
     :   m_stringToMatch( toLower( testSpec ) ),
         m_filterType( matchBehaviour ),
         m_wildcardPosition( NoWildcard )
@@ -43,11 +43,11 @@ namespace Catch {
         }
     }
 
-    IfFilterMatches::DoWhat TestCaseFilter::getFilterType() const {
+    INTERNAL_CATCH_INLINE IfFilterMatches::DoWhat TestCaseFilter::getFilterType() const {
         return m_filterType;
     }
 
-    bool TestCaseFilter::shouldInclude( TestCase const& testCase ) const {
+    INTERNAL_CATCH_INLINE bool TestCaseFilter::shouldInclude( TestCase const& testCase ) const {
         return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
     }
 
@@ -56,7 +56,7 @@ namespace Catch {
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
 
-    bool TestCaseFilter::isMatch( TestCase const& testCase ) const {
+    INTERNAL_CATCH_INLINE bool TestCaseFilter::isMatch( TestCase const& testCase ) const {
         std::string name = testCase.getTestCaseInfo().name;
         toLowerInPlace( name );
 
@@ -77,27 +77,27 @@ namespace Catch {
 #pragma clang diagnostic pop
 #endif
 
-    TestCaseFilters::TestCaseFilters( std::string const& name ) : m_name( name ) {}
+    INTERNAL_CATCH_INLINE TestCaseFilters::TestCaseFilters( std::string const& name ) : m_name( name ) {}
 
-    std::string TestCaseFilters::getName() const {
+    INTERNAL_CATCH_INLINE std::string TestCaseFilters::getName() const {
         return m_name;
     }
 
-    void TestCaseFilters::addFilter( TestCaseFilter const& filter ) {
+    INTERNAL_CATCH_INLINE void TestCaseFilters::addFilter( TestCaseFilter const& filter ) {
         if( filter.getFilterType() == IfFilterMatches::ExcludeTests )
             m_exclusionFilters.push_back( filter );
         else
             m_inclusionFilters.push_back( filter );
     }
 
-    void TestCaseFilters::addTags( std::string const& tagPattern ) {
+    INTERNAL_CATCH_INLINE void TestCaseFilters::addTags( std::string const& tagPattern ) {
         TagExpression exp;
         TagExpressionParser( exp ).parse( tagPattern );
 
         m_tagExpressions.push_back( exp );
     }
 
-    bool TestCaseFilters::shouldInclude( TestCase const& testCase ) const {
+    INTERNAL_CATCH_INLINE bool TestCaseFilters::shouldInclude( TestCase const& testCase ) const {
         if( !m_tagExpressions.empty() ) {
             std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
             std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();

@@ -6,7 +6,7 @@ import string
 
 from scriptCommon import catchPath
 
-versionParser = re.compile( r'(\s*Version\slibraryVersion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*\).*' )
+versionParser = re.compile( r'(\s*const\sT\sLibraryVersionInfo<T>::value)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*\).*' )
 includesParser = re.compile( r'\s*#include\s*"(.*)"' )
 guardParser = re.compile( r'\s*#.*TWOBLUECUBES_CATCH_.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')

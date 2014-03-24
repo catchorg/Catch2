@@ -13,7 +13,7 @@
 
 namespace Catch {
 
-    NotImplementedException::NotImplementedException( SourceLineInfo const& lineInfo )
+    INTERNAL_CATCH_INLINE NotImplementedException::NotImplementedException( SourceLineInfo const& lineInfo )
     :   m_lineInfo( lineInfo ) {
         std::ostringstream oss;
         oss << lineInfo << ": function ";
@@ -21,7 +21,7 @@ namespace Catch {
         m_what = oss.str();
     }
 
-    const char* NotImplementedException::what() const throw() {
+    INTERNAL_CATCH_INLINE const char* NotImplementedException::what() const throw() {
         return m_what.c_str();
     }
 

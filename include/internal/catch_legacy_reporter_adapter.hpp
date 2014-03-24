@@ -12,35 +12,35 @@
 
 namespace Catch
 {
-    LegacyReporterAdapter::LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter )
+    INTERNAL_CATCH_INLINE LegacyReporterAdapter::LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter )
     :   m_legacyReporter( legacyReporter )
     {}
-    LegacyReporterAdapter::~LegacyReporterAdapter() {}
+    INTERNAL_CATCH_INLINE LegacyReporterAdapter::~LegacyReporterAdapter() {}
 
-    ReporterPreferences LegacyReporterAdapter::getPreferences() const {
+    INTERNAL_CATCH_INLINE ReporterPreferences LegacyReporterAdapter::getPreferences() const {
         ReporterPreferences prefs;
         prefs.shouldRedirectStdOut = m_legacyReporter->shouldRedirectStdout();
         return prefs;
     }
 
-    void LegacyReporterAdapter::noMatchingTestCases( std::string const& ) {}
-    void LegacyReporterAdapter::testRunStarting( TestRunInfo const& ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::noMatchingTestCases( std::string const& ) {}
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::testRunStarting( TestRunInfo const& ) {
         m_legacyReporter->StartTesting();
     }
-    void LegacyReporterAdapter::testGroupStarting( GroupInfo const& groupInfo ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::testGroupStarting( GroupInfo const& groupInfo ) {
         m_legacyReporter->StartGroup( groupInfo.name );
     }
-    void LegacyReporterAdapter::testCaseStarting( TestCaseInfo const& testInfo ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::testCaseStarting( TestCaseInfo const& testInfo ) {
         m_legacyReporter->StartTestCase( testInfo );
     }
-    void LegacyReporterAdapter::sectionStarting( SectionInfo const& sectionInfo ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::sectionStarting( SectionInfo const& sectionInfo ) {
         m_legacyReporter->StartSection( sectionInfo.name, sectionInfo.description );
     }
-    void LegacyReporterAdapter::assertionStarting( AssertionInfo const& ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::assertionStarting( AssertionInfo const& ) {
         // Not on legacy interface
     }
 
-    bool LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
+    INTERNAL_CATCH_INLINE bool LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
         if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
             for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
                     it != itEnd;
@@ -57,24 +57,24 @@ namespace Catch
         m_legacyReporter->Result( assertionStats.assertionResult );
         return true;
     }
-    void LegacyReporterAdapter::sectionEnded( SectionStats const& sectionStats ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::sectionEnded( SectionStats const& sectionStats ) {
         if( sectionStats.missingAssertions )
             m_legacyReporter->NoAssertionsInSection( sectionStats.sectionInfo.name );
         m_legacyReporter->EndSection( sectionStats.sectionInfo.name, sectionStats.assertions );
     }
-    void LegacyReporterAdapter::testCaseEnded( TestCaseStats const& testCaseStats ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::testCaseEnded( TestCaseStats const& testCaseStats ) {
         m_legacyReporter->EndTestCase
             (   testCaseStats.testInfo,
                 testCaseStats.totals,
                 testCaseStats.stdOut,
                 testCaseStats.stdErr );
     }
-    void LegacyReporterAdapter::testGroupEnded( TestGroupStats const& testGroupStats ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::testGroupEnded( TestGroupStats const& testGroupStats ) {
         if( testGroupStats.aborting )
             m_legacyReporter->Aborted();
         m_legacyReporter->EndGroup( testGroupStats.groupInfo.name, testGroupStats.totals );
     }
-    void LegacyReporterAdapter::testRunEnded( TestRunStats const& testRunStats ) {
+    INTERNAL_CATCH_INLINE void LegacyReporterAdapter::testRunEnded( TestRunStats const& testRunStats ) {
         m_legacyReporter->EndTesting( testRunStats.totals );
     }
 }

@@ -1,0 +1,562 @@
+<testsuites>
+  <testsuite name="~_" errors="10" failures="100" tests="695" hostname="tbd" time="{duration}" timestamp="tbd">
+    <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
+    <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
+    <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
+    <testcase classname="global" name="Approximate comparisons with ints" time="{duration}"/>
+    <testcase classname="global" name="Approximate comparisons with mixed numeric types" time="{duration}"/>
+    <testcase classname="global" name="Use a custom approx" time="{duration}"/>
+    <testcase classname="global" name="Approximate PI" time="{duration}"/>
+    <testcase classname="TestClass" name="A METHOD_AS_TEST_CASE based test run that succeeds" time="{duration}"/>
+    <testcase classname="TestClass" name="A METHOD_AS_TEST_CASE based test run that fails" time="{duration}">
+      <failure message="&quot;hello&quot; == &quot;world&quot;" type="REQUIRE">
+ClassTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Fixture" name="A TEST_CASE_METHOD based test run that succeeds" time="{duration}"/>
+    <testcase classname="Fixture" name="A TEST_CASE_METHOD based test run that fails" time="{duration}">
+      <failure message="1 == 2" type="REQUIRE">
+ClassTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Equality checks that should succeed" time="{duration}"/>
+    <testcase classname="global" name="Equality checks that should fail]" time="{duration}">
+      <failure message="7 == 6" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 == 8" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 == 0" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 == Approx( 9.1099996567 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 == Approx( 9.0 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 == Approx( 1.0 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 == Approx( 0.0 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="3.1415926535 == Approx( 3.1415 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; == &quot;goodbye&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; == &quot;hell&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; == &quot;hello1&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="5 == 6" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="1.3 == Approx( 1.301 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Inequality checks that should succeed" time="{duration}"/>
+    <testcase classname="global" name="Inequality checks that should fails" time="{duration}">
+      <failure message="7 != 7" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 != Approx( 9.1000003815 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="3.1415926535 != Approx( 3.1415926535 )" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; != &quot;hello&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="5 != 5" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Ordering comparison checks that should succeed" time="{duration}"/>
+    <testcase classname="global" name="Ordering comparison checks that should fail" time="{duration}">
+      <failure message="7 > 7" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 &lt; 7" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 > 8" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 &lt; 6" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 &lt; 0" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 &lt; -1" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 >= 8" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="7 &lt;= 6" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 &lt; 9" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 > 10" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="9.1 > 9.2" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; > &quot;hello&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; &lt; &quot;hello&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; > &quot;hellp&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; > &quot;z&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; &lt; &quot;hellm&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; &lt; &quot;a&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; >= &quot;z&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;hello&quot; &lt;= &quot;a&quot;" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}"/>
+    <testcase classname="global" name="comparisons between int variables" time="{duration}"/>
+    <testcase classname="global" name="comparisons between const int variables" time="{duration}"/>
+    <testcase classname="global" name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" time="{duration}"/>
+    <testcase classname="global" name="Comparisons between ints where one side is computed" time="{duration}"/>
+    <testcase classname="global" name="Pointers can be compared to null" time="{duration}"/>
+    <testcase classname="global" name="'Not' checks that should succeed" time="{duration}"/>
+    <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
+      <failure message="false != false" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="true != true" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="false" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="!true" type="CHECK_FALSE">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="false" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="!true" type="CHECK_FALSE">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="false" type="CHECK">
+ConditionTests.cpp:<line number>
+      </failure>
+      <failure message="!(1 == 1)" type="CHECK_FALSE">
+ConditionTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="When checked exceptions are thrown they can be expected or unexpected" time="{duration}"/>
+    <testcase classname="global" name="Expected exceptions that don't throw or unexpected exceptions fail the test" time="{duration}">
+      <error message="thisThrows()" type="CHECK_THROWS_AS">
+expected exception
+ExceptionTests.cpp:<line number>
+      </error>
+      <failure message="thisDoesntThrow()" type="CHECK_THROWS_AS">
+ExceptionTests.cpp:<line number>
+      </failure>
+      <error message="thisThrows()" type="CHECK_NOTHROW">
+expected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="When unchecked exceptions are thrown directly they are always failures" time="{duration}">
+      <error type="TEST_CASE">
+unexpected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="An unchecked exception reports the line of the last assertion" time="{duration}">
+      <error message="{Unknown expression after the reported line}">
+unexpected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="When unchecked exceptions are thrown from sections they are always failures" name="section name" time="{duration}">
+      <error type="TEST_CASE">
+unexpected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="When unchecked exceptions are thrown from functions they are always failures" time="{duration}">
+      <error message="thisThrows() == 0" type="CHECK">
+expected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="Unexpected custom exceptions can be translated" time="{duration}">
+      <error type="TEST_CASE">
+custom exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="Custom exceptions can be translated when testing for nothrow" time="{duration}">
+      <error message="throwCustom()" type="REQUIRE_NOTHROW">
+custom exception - not std
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="Custom exceptions can be translated when testing for throwing as something else" time="{duration}">
+      <error message="throwCustom()" type="REQUIRE_THROWS_AS">
+custom exception - not std
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="Unexpected exceptions can be translated" time="{duration}">
+      <error type="TEST_CASE">
+3.14
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="NotImplemented exception" time="{duration}"/>
+    <testcase classname="global" name="Generators over two ranges" time="{duration}"/>
+    <testcase classname="global" name="Generator over a range of pairs" time="{duration}"/>
+    <testcase classname="global" name="INFO and WARN do not abort tests" time="{duration}"/>
+    <testcase classname="global" name="SUCCEED counts as a test pass" time="{duration}"/>
+    <testcase classname="global" name="INFO gets logged on failure" time="{duration}">
+      <failure message="2 == 1" type="REQUIRE">
+this message should be logged
+so should this
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="INFO gets logged on failure, even if captured before successful assertions" time="{duration}">
+      <failure message="2 == 1" type="CHECK">
+this message should be logged
+MessageTests.cpp:<line number>
+      </failure>
+      <failure message="2 == 0" type="CHECK">
+and this, but later
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="FAIL aborts the test" time="{duration}">
+      <failure type="FAIL">
+This is a failure
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="FAIL does not require an argument" time="{duration}">
+      <failure type="FAIL">
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="SUCCESS does not require an argument" time="{duration}"/>
+    <testcase classname="Output from all sections is reported" name="one" time="{duration}">
+      <failure type="FAIL">
+Message from section one
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Output from all sections is reported" name="two" time="{duration}">
+      <failure type="FAIL">
+Message from section two
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Standard output from all sections is reported" name="two" time="{duration}">
+      <system-out>
+Message from section one
+Message from section two
+      </system-out>
+    </testcase>
+    <testcase classname="global" name="SCOPED_INFO is reset for each loop" time="{duration}">
+      <failure message="10 &lt; 10" type="REQUIRE">
+current counter 10
+i := 10
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}"/>
+    <testcase classname="global" name="just failure" time="{duration}">
+      <failure type="FAIL">
+Previous info should not be seen
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="sends information to INFO" time="{duration}">
+      <failure message="false" type="REQUIRE">
+hi
+i := 7
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="random SECTION tests" name="s1" time="{duration}"/>
+    <testcase classname="random SECTION tests" name="s2" time="{duration}"/>
+    <testcase classname="nested SECTION tests" name="s1" time="{duration}"/>
+    <testcase classname="nested SECTION tests" name="s1/s2" time="{duration}"/>
+    <testcase classname="more nested SECTION tests" name="s1/s2" time="{duration}">
+      <failure message="1 == 2" type="REQUIRE">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="more nested SECTION tests" name="s1/s3" time="{duration}"/>
+    <testcase classname="more nested SECTION tests" name="s1/s4" time="{duration}"/>
+    <testcase classname="looped SECTION tests" name="s1" time="{duration}">
+      <failure message="0 > 1" type="CHECK">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="looped tests" time="{duration}">
+      <failure message="1 == 0" type="CHECK">
+Testing if fib[0] (1) is even
+MiscTests.cpp:<line number>
+      </failure>
+      <failure message="1 == 0" type="CHECK">
+Testing if fib[1] (1) is even
+MiscTests.cpp:<line number>
+      </failure>
+      <failure message="1 == 0" type="CHECK">
+Testing if fib[3] (3) is even
+MiscTests.cpp:<line number>
+      </failure>
+      <failure message="1 == 0" type="CHECK">
+Testing if fib[4] (5) is even
+MiscTests.cpp:<line number>
+      </failure>
+      <failure message="1 == 0" type="CHECK">
+Testing if fib[6] (13) is even
+MiscTests.cpp:<line number>
+      </failure>
+      <failure message="1 == 0" type="CHECK">
+Testing if fib[7] (21) is even
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Sends stuff to stdout and stderr" time="{duration}">
+      <system-out>
+A string sent directly to stdout
+      </system-out>
+      <system-err>
+A string sent directly to stderr
+      </system-err>
+    </testcase>
+    <testcase classname="global" name="null strings" time="{duration}"/>
+    <testcase classname="global" name="checkedIf" time="{duration}"/>
+    <testcase classname="global" name="checkedIf, failing" time="{duration}">
+      <failure message="false" type="CHECKED_IF">
+MiscTests.cpp:<line number>
+      </failure>
+      <failure message="false" type="REQUIRE">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="checkedElse" time="{duration}"/>
+    <testcase classname="global" name="checkedElse, failing" time="{duration}">
+      <failure message="false" type="CHECKED_ELSE">
+MiscTests.cpp:<line number>
+      </failure>
+      <failure message="false" type="REQUIRE">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="send a single char to INFO" time="{duration}">
+      <failure message="false" type="REQUIRE">
+3
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="atomic if" time="{duration}"/>
+    <testcase classname="global" name="String matchers" time="{duration}"/>
+    <testcase classname="global" name="Contains string matcher" time="{duration}">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="StartsWith string matcher" time="{duration}">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="EndsWith string matcher" time="{duration}">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Equals string matcher" time="{duration}">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Equals string matcher, with NULL" time="{duration}"/>
+    <testcase classname="global" name="AllOf matcher" time="{duration}"/>
+    <testcase classname="global" name="AnyOf matcher" time="{duration}"/>
+    <testcase classname="global" name="Equals" time="{duration}"/>
+    <testcase classname="global" name="Factorials are computed" time="{duration}"/>
+    <testcase classname="global" name="Nice descriptive name" time="{duration}"/>
+    <testcase classname="vectors can be sized and resized" name="root" time="{duration}"/>
+    <testcase classname="vectors can be sized and resized" name="resizing bigger changes size and capacity" time="{duration}"/>
+    <testcase classname="vectors can be sized and resized" name="resizing smaller changes size but not capacity" time="{duration}"/>
+    <testcase classname="vectors can be sized and resized" name="resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" time="{duration}"/>
+    <testcase classname="vectors can be sized and resized" name="reserving bigger changes capacity but not size" time="{duration}"/>
+    <testcase classname="vectors can be sized and resized" name="reserving smaller does not change size or capacity" time="{duration}"/>
+    <testcase classname="A couple of nested sections followed by a failure" name="root" time="{duration}">
+      <failure type="FAIL">
+to infinity and beyond
+MiscTests.cpp:<line number>
+      </failure>
+      <failure type="FAIL">
+to infinity and beyond
+MiscTests.cpp:<line number>
+      </failure>
+      <failure type="FAIL">
+to infinity and beyond
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="A couple of nested sections followed by a failure" name="Outer/Inner" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="default - no arguments" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="test lists/1 test" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using exclude:" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using ~" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="test lists/Specify two test cases using -t" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="reporter/-r/console" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="reporter/-r/xml" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="reporter/--reporter/junit" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="debugger/-b" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="debugger/--break" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="abort/-a aborts after first failure" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="abort/-x 2 aborts after two failures" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="abort/-x must be greater than zero" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="abort/-x must be numeric" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="nothrow/-e" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="nothrow/--nothrow" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="output filename/-o filename" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="output filename/--out" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="combinations/Single character flags can be combined" time="{duration}"/>
+    <testcase classname="global" name="selftest/test filter" time="{duration}"/>
+    <testcase classname="global" name="selftest/test filters" time="{duration}"/>
+    <testcase classname="global" name="selftest/filter/prefix wildcard" time="{duration}"/>
+    <testcase classname="global" name="selftest/filter/wildcard at both ends" time="{duration}"/>
+    <testcase classname="selftest/tags" name="single [one] tag" time="{duration}"/>
+    <testcase classname="selftest/tags" name="single [two] tag" time="{duration}"/>
+    <testcase classname="selftest/tags" name="two tags" time="{duration}"/>
+    <testcase classname="selftest/tags" name="complex" time="{duration}"/>
+    <testcase classname="selftest/tags" name="one tag with characters either side" time="{duration}"/>
+    <testcase classname="selftest/tags" name="start of a tag, but not closed" time="{duration}"/>
+    <testcase classname="selftest/tags" name="hidden" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="plain string/No wrapping" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="plain string/Wrapped once" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="plain string/Wrapped twice" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="plain string/Wrapped three times" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="plain string/Short wrap" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="plain string/As container" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="plain string/Indent first line differently" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With newlines/No wrapping" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With newlines/Trailing newline" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped once" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped twice" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With tabs" time="{duration}"/>
+    <testcase classname="global" name="Strings can be rendered with colour" time="{duration}">
+      <system-out>
+hello
+hello
+      </system-out>
+    </testcase>
+    <testcase classname="global" name="Text can be formatted using the Text class" time="{duration}"/>
+    <testcase classname="global" name="Long text is truncted" time="{duration}"/>
+    <testcase classname="global" name="Parsing a std::pair" time="{duration}"/>
+    <testcase classname="global" name="Where the is more to the expression after the RHS[failing]" time="{duration}"/>
+    <testcase classname="global" name="Where the LHS is not a simple value[failing]" time="{duration}"/>
+    <testcase classname="global" name="A failing expression with a non streamable type is still captured[failing]" time="{duration}">
+      <failure message="0x<hex digits> == 0x<hex digits>" type="CHECK">
+TrickyTests.cpp:<line number>
+      </failure>
+      <failure message="{?} == {?}" type="CHECK">
+TrickyTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="string literals of different sizes can be compared[failing]" time="{duration}">
+      <failure message="&quot;first&quot; == &quot;second&quot;" type="REQUIRE">
+TrickyTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="An expression with side-effects should only be evaluated once" time="{duration}"/>
+    <testcase classname="global" name="Operators at different namespace levels not hijacked by Koenig lookup" time="{duration}"/>
+    <testcase classname="global" name="Demonstrate that a non-const == is not used" time="{duration}"/>
+    <testcase classname="global" name="Test enum bit values" time="{duration}"/>
+    <testcase classname="global" name="boolean member" time="{duration}"/>
+    <testcase classname="(unimplemented) static bools can be evaluated" name="compare to true" time="{duration}"/>
+    <testcase classname="(unimplemented) static bools can be evaluated" name="compare to false" time="{duration}"/>
+    <testcase classname="(unimplemented) static bools can be evaluated" name="negation" time="{duration}"/>
+    <testcase classname="(unimplemented) static bools can be evaluated" name="double negation" time="{duration}"/>
+    <testcase classname="(unimplemented) static bools can be evaluated" name="direct" time="{duration}"/>
+    <testcase classname="global" name="Objects that evaluated in boolean contexts can be checked" time="{duration}"/>
+    <testcase classname="Assertions then sections" name="root" time="{duration}"/>
+    <testcase classname="Assertions then sections" name="A section" time="{duration}"/>
+    <testcase classname="Assertions then sections" name="A section/Another section" time="{duration}"/>
+    <testcase classname="Assertions then sections" name="A section/Another other section" time="{duration}"/>
+    <testcase classname="global" name="non streamable - with conv. op" time="{duration}"/>
+    <testcase classname="global" name="Comparing function pointers" time="{duration}"/>
+    <testcase classname="global" name="Comparing member function pointers" time="{duration}"/>
+    <testcase classname="global" name="pointer to class" time="{duration}"/>
+    <testcase classname="global" name="X/level/0/a" time="{duration}"/>
+    <testcase classname="global" name="X/level/0/b" time="{duration}"/>
+    <testcase classname="global" name="X/level/1/a" time="{duration}"/>
+    <testcase classname="global" name="X/level/1/b" time="{duration}"/>
+    <testcase classname="global" name="Anonymous test case 1" time="{duration}"/>
+    <testcase classname="global" name="Test case with one argument" time="{duration}"/>
+    <testcase classname="Variadic macros" name="Section with one argument" time="{duration}"/>
+    <testcase classname="Scenario: Do that thing with the thing" name="Given: This stuff exists/When: I do this/Then: it should do this" time="{duration}"/>
+    <testcase classname="Scenario: Do that thing with the thing" name="Given: This stuff exists/When: I do this/Then: it should do this/And: do that" time="{duration}"/>
+    <testcase classname="Scenario: Vector resizing affects size and capacity" name="Given: an empty vector" time="{duration}"/>
+    <testcase classname="Scenario: Vector resizing affects size and capacity" name="Given: an empty vector/When: it is made larger/Then: the size and capacity go up" time="{duration}"/>
+    <testcase classname="Scenario: Vector resizing affects size and capacity" name="Given: an empty vector/When: it is made larger/Then: the size and capacity go up/And when: it is made smaller again/Then: the size goes down but the capacity stays the same" time="{duration}"/>
+    <testcase classname="Scenario: Vector resizing affects size and capacity" name="Given: an empty vector/When: we reserve more space/Then: The capacity is increased but the size remains the same" time="{duration}"/>
+    <testcase classname="Scenario: This is a really long scenario name to see how the list command deals with wrapping" name="Given: A section name that is so long that it cannot fit in a single console width/When: The test headers are printed as part of the normal running of the scenario/Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" time="{duration}"/>
+    <testcase classname="cmdline" name="process name" time="{duration}"/>
+    <testcase classname="cmdline" name="arg separated by spaces" time="{duration}"/>
+    <testcase classname="cmdline" name="arg separated by colon" time="{duration}"/>
+    <testcase classname="cmdline" name="arg separated by =" time="{duration}"/>
+    <testcase classname="cmdline" name="long opt" time="{duration}"/>
+    <testcase classname="cmdline" name="a number" time="{duration}"/>
+    <testcase classname="cmdline" name="not a number" time="{duration}"/>
+    <testcase classname="cmdline" name="two parsers" time="{duration}"/>
+    <testcase classname="cmdline" name="methods/in range" time="{duration}"/>
+    <testcase classname="cmdline" name="methods/out of range" time="{duration}"/>
+    <testcase classname="cmdline" name="flags/set" time="{duration}"/>
+    <testcase classname="cmdline" name="flags/not set" time="{duration}"/>
+    <testcase classname="cmdline" name="positional" time="{duration}"/>
+    <testcase classname="section tracking" name="root" time="{duration}"/>
+    <testcase classname="section tracking" name="test case with no sections" time="{duration}"/>
+    <testcase classname="section tracking" name="test case with one section" time="{duration}"/>
+    <testcase classname="section tracking" name="test case with two consecutive sections" time="{duration}"/>
+    <testcase classname="section tracking" name="test case with one section within another" time="{duration}"/>
+    <system-out>
+Message from section one
+Message from section two
+A string sent directly to stdout
+hello
+hello
+    </system-out>
+    <system-err>
+A string sent directly to stderr
+    </system-err>
+  </testsuite>
+</testsuites>

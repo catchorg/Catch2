@@ -8,12 +8,12 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
+#include "internal/catch_text.h"
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"
 #include "internal/catch_runner_impl.hpp"
 #include "internal/catch_test_spec.h"
 #include "internal/catch_version.h"
-#include "internal/catch_text.h"
 
 #include <fstream>
 #include <stdlib.h>
@@ -108,6 +108,8 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
+#if !defined(INTERNAL_CATCH_VS_MANAGED) && !defined(INTERNAL_CATCH_VS_NATIVE)
+
     class Session {
         static bool alreadyInstantiated;
 
@@ -129,11 +131,11 @@ namespace Catch {
         }
 
         void showHelp( std::string const& processName ) {
-            std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
-                                        << libraryVersion.minorVersion << " build "
-                                        << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
-                std::cout << " (" << libraryVersion.branchName << " branch)";
+            std::cout << "\nCatch v"    << libraryVersion::value.majorVersion << "."
+                                        << libraryVersion::value.minorVersion << " build "
+                                        << libraryVersion::value.buildNumber;
+            if( libraryVersion::value.branchName != "master" )
+                std::cout << " (" << libraryVersion::value.branchName << " branch)";
             std::cout << "\n";
 
             m_cli.usage( std::cout, processName );
@@ -218,6 +220,8 @@ namespace Catch {
     };
 
     bool Session::alreadyInstantiated = false;
+
+#endif // !VS_MANAGED && !VS_NATIVE
 
 } // end namespace Catch
 

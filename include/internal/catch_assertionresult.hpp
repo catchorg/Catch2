@@ -13,7 +13,7 @@
 namespace Catch {
 
 
-    AssertionInfo::AssertionInfo(   std::string const& _macroName,
+    INTERNAL_CATCH_INLINE AssertionInfo::AssertionInfo(   std::string const& _macroName,
                                     SourceLineInfo const& _lineInfo,
                                     std::string const& _capturedExpression,
                                     ResultDisposition::Flags _resultDisposition )
@@ -23,66 +23,66 @@ namespace Catch {
         resultDisposition( _resultDisposition )
     {}
 
-    AssertionResult::AssertionResult() {}
+    INTERNAL_CATCH_INLINE AssertionResult::AssertionResult() {}
 
-    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
+    INTERNAL_CATCH_INLINE AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
     :   m_info( info ),
         m_resultData( data )
     {}
 
-    AssertionResult::~AssertionResult() {}
+    INTERNAL_CATCH_INLINE AssertionResult::~AssertionResult() {}
 
     // Result was a success
-    bool AssertionResult::succeeded() const {
+    INTERNAL_CATCH_INLINE bool AssertionResult::succeeded() const {
         return Catch::isOk( m_resultData.resultType );
     }
 
     // Result was a success, or failure is suppressed
-    bool AssertionResult::isOk() const {
+    INTERNAL_CATCH_INLINE bool AssertionResult::isOk() const {
         return Catch::isOk( m_resultData.resultType ) || shouldSuppressFailure( m_info.resultDisposition );
     }
 
-    ResultWas::OfType AssertionResult::getResultType() const {
+    INTERNAL_CATCH_INLINE ResultWas::OfType AssertionResult::getResultType() const {
         return m_resultData.resultType;
     }
 
-    bool AssertionResult::hasExpression() const {
+    INTERNAL_CATCH_INLINE bool AssertionResult::hasExpression() const {
         return !m_info.capturedExpression.empty();
     }
 
-    bool AssertionResult::hasMessage() const {
+    INTERNAL_CATCH_INLINE bool AssertionResult::hasMessage() const {
         return !m_resultData.message.empty();
     }
 
-    std::string AssertionResult::getExpression() const {
+    INTERNAL_CATCH_INLINE std::string AssertionResult::getExpression() const {
         if( shouldNegate( m_info.resultDisposition ) )
             return "!" + m_info.capturedExpression;
         else
             return m_info.capturedExpression;
     }
-    std::string AssertionResult::getExpressionInMacro() const {
+    INTERNAL_CATCH_INLINE std::string AssertionResult::getExpressionInMacro() const {
         if( m_info.macroName.empty() )
             return m_info.capturedExpression;
         else
             return m_info.macroName + "( " + m_info.capturedExpression + " )";
     }
 
-    bool AssertionResult::hasExpandedExpression() const {
+    INTERNAL_CATCH_INLINE bool AssertionResult::hasExpandedExpression() const {
         return hasExpression() && getExpandedExpression() != getExpression();
     }
 
-    std::string AssertionResult::getExpandedExpression() const {
+    INTERNAL_CATCH_INLINE std::string AssertionResult::getExpandedExpression() const {
         return m_resultData.reconstructedExpression;
     }
 
-    std::string AssertionResult::getMessage() const {
+    INTERNAL_CATCH_INLINE std::string AssertionResult::getMessage() const {
         return m_resultData.message;
     }
-    SourceLineInfo AssertionResult::getSourceInfo() const {
+    INTERNAL_CATCH_INLINE SourceLineInfo AssertionResult::getSourceInfo() const {
         return m_info.lineInfo;
     }
 
-    std::string AssertionResult::getTestMacroName() const {
+    INTERNAL_CATCH_INLINE std::string AssertionResult::getTestMacroName() const {
         return m_info.macroName;
     }
 

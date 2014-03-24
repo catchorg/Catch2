@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManagedTestCatch", "ManagedTestCatch.vcxproj", "{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EAFF2A33-B90A-4957-A39D-F49589A088C8}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		ManagedTestCatch.vsmdi = ManagedTestCatch.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = ManagedTestCatch.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		DebugMbcs|Win32 = DebugMbcs|Win32
+		Release|Win32 = Release|Win32
+		ReleaseMbcs|Win32 = ReleaseMbcs|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.Debug|Win32.Build.0 = Debug|Win32
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.DebugMbcs|Win32.ActiveCfg = DebugMbcs|Win32
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.DebugMbcs|Win32.Build.0 = DebugMbcs|Win32
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.Release|Win32.ActiveCfg = Release|Win32
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.Release|Win32.Build.0 = Release|Win32
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.ReleaseMbcs|Win32.ActiveCfg = ReleaseMbcs|Win32
+		{7CC06A6B-763E-42B3-AF6C-8F1E340372A1}.ReleaseMbcs|Win32.Build.0 = ReleaseMbcs|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

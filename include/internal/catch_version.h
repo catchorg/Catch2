@@ -31,7 +31,13 @@ namespace Catch {
         void operator=( Version const& );
     };
 
-    extern Version libraryVersion;
+    template <typename T>
+    struct LibraryVersionInfo
+    {
+        static const T value;
+    };
+
+    typedef LibraryVersionInfo<Version> libraryVersion;
 }
 
 #endif // TWOBLUECUBES_CATCH_VERSION_H_INCLUDED

@@ -63,15 +63,15 @@ namespace Catch {
         }
     };
 
-    Stream::Stream()
+    INTERNAL_CATCH_INLINE Stream::Stream()
     : streamBuf( NULL ), isOwned( false )
     {}
 
-    Stream::Stream( std::streambuf* _streamBuf, bool _isOwned )
+    INTERNAL_CATCH_INLINE Stream::Stream( std::streambuf* _streamBuf, bool _isOwned )
     : streamBuf( _streamBuf ), isOwned( _isOwned )
     {}
 
-    void Stream::release() {
+    INTERNAL_CATCH_INLINE void Stream::release() {
         if( isOwned ) {
             delete streamBuf;
             streamBuf = NULL;

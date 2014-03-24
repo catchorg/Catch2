@@ -28,6 +28,27 @@
 #  endif
 #endif
 
+#if (_MANAGED == 1) || (_M_CEE == 1) // detect CLR
+    #define INTERNAL_CATCH_VS_MANAGED
+#else
+
+#if defined(_WINDLL)
+    // _WINDLL seems to be the only thing we can check for the existence of a native DLL.
+    // It's possible that this is not enough for someone so allow it to be overridden...
+    #if !defined( CATCH_CONFIG_MAIN ) && !defined( CATCH_CONFIG_RUNNER )
+    #define INTERNAL_CATCH_VS_NATIVE
+    #endif
+#endif
+
+#endif // detect CLR
+
+#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+    #define INTERNAL_CATCH_INLINE inline
+    #define CATCH_CONFIG_RUNNER (1)
+#else
+    #define INTERNAL_CATCH_INLINE
+#endif
+
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
 #include "internal/catch_test_registry.hpp"
@@ -192,6 +213,18 @@
 #define AND_WHEN( desc ) SECTION( "And when: " desc, "" )
 #define THEN( desc )     SECTION( "    Then: " desc, "" )
 #define AND_THEN( desc ) SECTION( "     And: " desc, "" )
+
+#if defined(INTERNAL_CATCH_VS_MANAGED) || defined(INTERNAL_CATCH_VS_NATIVE)
+#define CATCH_MAP_CATEGORY_TO_TAG( Category, Tag ) INTERNAL_CATCH_MAP_CATEGORY_TO_TAG( Category, Tag )
+#define CATCH_CONFIG_SHOW_SUCCESS( v ) CATCH_INTERNAL_CONFIG_SHOW_SUCCESS( v )
+#define CATCH_CONFIG_WARN_MISSING_ASSERTIONS( v ) CATCH_INTERNAL_CONFIG_WARN_MISSING_ASSERTIONS( v )
+#define CATCH_CONFIG_ABORT_AFTER( v ) CATCH_INTERNAL_CONFIG_ABORT_AFTER( v )
+#else
+#define CATCH_MAP_CATEGORY_TO_TAG( Category, Tag )
+#define CATCH_CONFIG_SHOW_SUCCESS( v )
+#define CATCH_CONFIG_WARN_MISSING_ASSERTIONS( v )
+#define CATCH_CONFIG_ABORT_AFTER( v )
+#endif
 
 using Catch::Detail::Approx;
 

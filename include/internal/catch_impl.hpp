@@ -40,47 +40,47 @@
 #include "../reporters/catch_reporter_console.hpp"
 
 namespace Catch {
-    NonCopyable::~NonCopyable() {}
-    IShared::~IShared() {}
-    StreamBufBase::~StreamBufBase() throw() {}
-    IContext::~IContext() {}
-    IResultCapture::~IResultCapture() {}
-    ITestCase::~ITestCase() {}
-    ITestCaseRegistry::~ITestCaseRegistry() {}
-    IRegistryHub::~IRegistryHub() {}
-    IMutableRegistryHub::~IMutableRegistryHub() {}
-    IExceptionTranslator::~IExceptionTranslator() {}
-    IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
-    IReporter::~IReporter() {}
-    IReporterFactory::~IReporterFactory() {}
-    IReporterRegistry::~IReporterRegistry() {}
-    IStreamingReporter::~IStreamingReporter() {}
-    AssertionStats::~AssertionStats() {}
-    SectionStats::~SectionStats() {}
-    TestCaseStats::~TestCaseStats() {}
-    TestGroupStats::~TestGroupStats() {}
-    TestRunStats::~TestRunStats() {}
-    CumulativeReporterBase::SectionNode::~SectionNode() {}
-    CumulativeReporterBase::~CumulativeReporterBase() {}
+    INTERNAL_CATCH_INLINE NonCopyable::~NonCopyable() {}
+    INTERNAL_CATCH_INLINE IShared::~IShared() {}
+    INTERNAL_CATCH_INLINE StreamBufBase::~StreamBufBase() throw() {}
+    INTERNAL_CATCH_INLINE IContext::~IContext() {}
+    INTERNAL_CATCH_INLINE IResultCapture::~IResultCapture() {}
+    INTERNAL_CATCH_INLINE ITestCase::~ITestCase() {}
+    INTERNAL_CATCH_INLINE ITestCaseRegistry::~ITestCaseRegistry() {}
+    INTERNAL_CATCH_INLINE IRegistryHub::~IRegistryHub() {}
+    INTERNAL_CATCH_INLINE IMutableRegistryHub::~IMutableRegistryHub() {}
+    INTERNAL_CATCH_INLINE IExceptionTranslator::~IExceptionTranslator() {}
+    INTERNAL_CATCH_INLINE IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
+    INTERNAL_CATCH_INLINE IReporter::~IReporter() {}
+    INTERNAL_CATCH_INLINE IReporterFactory::~IReporterFactory() {}
+    INTERNAL_CATCH_INLINE IReporterRegistry::~IReporterRegistry() {}
+    INTERNAL_CATCH_INLINE IStreamingReporter::~IStreamingReporter() {}
+    INTERNAL_CATCH_INLINE AssertionStats::~AssertionStats() {}
+    INTERNAL_CATCH_INLINE SectionStats::~SectionStats() {}
+    INTERNAL_CATCH_INLINE TestCaseStats::~TestCaseStats() {}
+    INTERNAL_CATCH_INLINE TestGroupStats::~TestGroupStats() {}
+    INTERNAL_CATCH_INLINE TestRunStats::~TestRunStats() {}
+    INTERNAL_CATCH_INLINE CumulativeReporterBase::SectionNode::~SectionNode() {}
+    INTERNAL_CATCH_INLINE CumulativeReporterBase::~CumulativeReporterBase() {}
 
-    StreamingReporterBase::~StreamingReporterBase() {}
-    ConsoleReporter::~ConsoleReporter() {}
-    IRunner::~IRunner() {}
-    IMutableContext::~IMutableContext() {}
-    IConfig::~IConfig() {}
-    XmlReporter::~XmlReporter() {}
-    JunitReporter::~JunitReporter() {}
-    TestRegistry::~TestRegistry() {}
-    FreeFunctionTestCase::~FreeFunctionTestCase() {}
-    IGeneratorInfo::~IGeneratorInfo() {}
-    IGeneratorsForTest::~IGeneratorsForTest() {}
+    INTERNAL_CATCH_INLINE StreamingReporterBase::~StreamingReporterBase() {}
+    INTERNAL_CATCH_INLINE ConsoleReporter::~ConsoleReporter() {}
+    INTERNAL_CATCH_INLINE IRunner::~IRunner() {}
+    INTERNAL_CATCH_INLINE IMutableContext::~IMutableContext() {}
+    INTERNAL_CATCH_INLINE IConfig::~IConfig() {}
+    INTERNAL_CATCH_INLINE XmlReporter::~XmlReporter() {}
+    INTERNAL_CATCH_INLINE JunitReporter::~JunitReporter() {}
+    INTERNAL_CATCH_INLINE TestRegistry::~TestRegistry() {}
+    INTERNAL_CATCH_INLINE FreeFunctionTestCase::~FreeFunctionTestCase() {}
+    INTERNAL_CATCH_INLINE IGeneratorInfo::~IGeneratorInfo() {}
+    INTERNAL_CATCH_INLINE IGeneratorsForTest::~IGeneratorsForTest() {}
 
-    Matchers::Impl::StdString::Equals::~Equals() {}
-    Matchers::Impl::StdString::Contains::~Contains() {}
-    Matchers::Impl::StdString::StartsWith::~StartsWith() {}
-    Matchers::Impl::StdString::EndsWith::~EndsWith() {}
+    INTERNAL_CATCH_INLINE Matchers::Impl::StdString::Equals::~Equals() {}
+    INTERNAL_CATCH_INLINE Matchers::Impl::StdString::Contains::~Contains() {}
+    INTERNAL_CATCH_INLINE Matchers::Impl::StdString::StartsWith::~StartsWith() {}
+    INTERNAL_CATCH_INLINE Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
-    void Config::dummy() {}
+    INTERNAL_CATCH_INLINE void Config::dummy() {}
 
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
 }

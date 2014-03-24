@@ -1,4 +1,5 @@
 SOURCES =	ApproxTests.cpp \
+      		BDDTests.cpp \
 			ClassTests.cpp \
 			ConditionTests.cpp \
       		ExceptionTests.cpp \
@@ -7,9 +8,7 @@ SOURCES =	ApproxTests.cpp \
       		MiscTests.cpp \
       		TestMain.cpp \
       		TrickyTests.cpp \
-      		BDDTests.cpp \
-      		VariadicMacrosTests.cpp \
-      		catch_self_test.cpp
+      		VariadicMacrosTests.cpp
 OBJECTS    = $(patsubst %.cpp, %.o, $(SOURCES))
 CXX = g++
 CXXFLAGS  = -I../../include
@@ -18,4 +17,4 @@ CatchSelfTest: $(OBJECTS)
 	$(CXX) -o $@ $^
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f CatchSelfTest CatchSelfTest.exe $(OBJECTS)

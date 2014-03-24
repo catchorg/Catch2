@@ -14,6 +14,10 @@ namespace Catch {
     struct IRunner {
         virtual ~IRunner();
     };
+
+    struct NullRunner : public IRunner
+    {
+    };
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_RUNNER_H_INCLUDED

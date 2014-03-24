@@ -10,7 +10,10 @@
 
 #include "catch_config.hpp"
 #include "catch_common.h"
+
+#ifdef CLARA_CONFIG_MAIN
 #include "catch_clara.h"
+#endif
 
 #include <fstream>
 
@@ -53,6 +56,7 @@ namespace Catch {
         }
     }
 
+#ifdef CLARA_CONFIG_MAIN
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
         using namespace Clara;
@@ -139,6 +143,7 @@ namespace Catch {
 
         return cli;
     }
+#endif
 
 } // end namespace Catch
 
