@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 32 (master branch)
- *  Generated: 2014-03-17 18:37:08.497437
+ *  CATCH v1.0 build 33 (master branch)
+ *  Generated: 2014-03-24 18:11:50.426554
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3290,6 +3290,10 @@ namespace Clara {
                 functionObj->setFlag( config );
             }
             bool takesArg() const { return functionObj->takesArg(); }
+
+            bool isSet() const {
+                return functionObj != NULL;
+            }
         private:
             IArgFunction<ConfigT>* functionObj;
         };
@@ -3437,10 +3441,15 @@ namespace Clara {
 
         Detail::BoundArgFunction<ConfigT> boundField;
         std::string description;
+        std::string detail;
         std::string placeholder; // Only value if boundField takes an arg
 
         bool takesArg() const {
             return !placeholder.empty();
+        }
+        void validate() const {
+            if( !boundField.isSet() )
+                throw std::logic_error( "option not bound" );
         }
     };
     struct OptionArgProperties {
@@ -3453,7 +3462,6 @@ namespace Clara {
         bool hasLongName( std::string const& _longName ) const {
             return _longName == longName;
         }
-
     };
     struct PositionalArgProperties {
         PositionalArgProperties() : position( -1 ) {}
@@ -3473,9 +3481,6 @@ namespace Clara {
 
             using CommonArgProperties<ConfigT>::placeholder; // !TBD
 
-            bool isAnyPositional() const {
-                return position == -1 && shortNames.empty() && longName.empty();
-            }
             std::string dbgName() const {
                 if( !longName.empty() )
                     return "--" + longName;
@@ -3536,73 +3541,72 @@ namespace Clara {
 
         class ArgBuilder {
         public:
-            ArgBuilder( Arg& arg ) : m_arg( arg ) {}
+            ArgBuilder( Arg* arg ) : m_arg( arg ) {}
 
             // Bind a non-boolean data member (requires placeholder string)
             template<typename C, typename M>
             void bind( M C::* field, std::string const& placeholder ) {
-                m_arg.boundField = new Detail::BoundDataMember<C,M>( field );
-                m_arg.placeholder = placeholder;
+                m_arg->boundField = new Detail::BoundDataMember<C,M>( field );
+                m_arg->placeholder = placeholder;
             }
             // Bind a boolean data member (no placeholder required)
             template<typename C>
             void bind( bool C::* field ) {
-                m_arg.boundField = new Detail::BoundDataMember<C,bool>( field );
+                m_arg->boundField = new Detail::BoundDataMember<C,bool>( field );
             }
 
             // Bind a method taking a single, non-boolean argument (requires a placeholder string)
             template<typename C, typename M>
-            void bind( void (C::*_unaryMethod)( M ), std::string const& placeholder ) {
-                m_arg.boundField = new Detail::BoundUnaryMethod<C,M>( _unaryMethod );
-                m_arg.placeholder = placeholder;
+            void bind( void (C::* unaryMethod)( M ), std::string const& placeholder ) {
+                m_arg->boundField = new Detail::BoundUnaryMethod<C,M>( unaryMethod );
+                m_arg->placeholder = placeholder;
             }
 
             // Bind a method taking a single, boolean argument (no placeholder string required)
             template<typename C>
-            void bind( void (C::*_unaryMethod)( bool ) ) {
-                m_arg.boundField = new Detail::BoundUnaryMethod<C,bool>( _unaryMethod );
+            void bind( void (C::* unaryMethod)( bool ) ) {
+                m_arg->boundField = new Detail::BoundUnaryMethod<C,bool>( unaryMethod );
             }
 
             // Bind a method that takes no arguments (will be called if opt is present)
             template<typename C>
-            void bind( void (C::*_nullaryMethod)() ) {
-                m_arg.boundField = new Detail::BoundNullaryMethod<C>( _nullaryMethod );
+            void bind( void (C::* nullaryMethod)() ) {
+                m_arg->boundField = new Detail::BoundNullaryMethod<C>( nullaryMethod );
             }
 
             // Bind a free function taking a single argument - the object to operate on (no placeholder string required)
             template<typename C>
-            void bind( void (*_unaryFunction)( C& ) ) {
-                m_arg.boundField = new Detail::BoundUnaryFunction<C>( _unaryFunction );
+            void bind( void (* unaryFunction)( C& ) ) {
+                m_arg->boundField = new Detail::BoundUnaryFunction<C>( unaryFunction );
             }
 
             // Bind a free function taking a single argument - the object to operate on (requires a placeholder string)
             template<typename C, typename T>
-            void bind( void (*_binaryFunction)( C&, T ), std::string const& placeholder ) {
-                m_arg.boundField = new Detail::BoundBinaryFunction<C, T>( _binaryFunction );
-                m_arg.placeholder = placeholder;
+            void bind( void (* binaryFunction)( C&, T ), std::string const& placeholder ) {
+                m_arg->boundField = new Detail::BoundBinaryFunction<C, T>( binaryFunction );
+                m_arg->placeholder = placeholder;
             }
 
             ArgBuilder& describe( std::string const& description ) {
-                m_arg.description = description;
+                m_arg->description = description;
                 return *this;
             }
-            ArgBuilder& detail( std::string const& ) {
-//                m_arg.description = description;
-// !TBD
+            ArgBuilder& detail( std::string const& detail ) {
+                m_arg->detail = detail;
                 return *this;
             }
 
         protected:
-            Arg& m_arg;
+            Arg* m_arg;
         };
 
         class OptBuilder : public ArgBuilder {
         public:
-            OptBuilder( Arg& arg ) : ArgBuilder( arg ) {}
+            OptBuilder( Arg* arg ) : ArgBuilder( arg ) {}
             OptBuilder( OptBuilder& other ) : ArgBuilder( other ) {}
 
             OptBuilder& operator[]( std::string const& optName ) {
-                addOptName( ArgBuilder::m_arg, optName );
+                addOptName( *ArgBuilder::m_arg, optName );
                 return *this;
             }
         };
@@ -3633,7 +3637,7 @@ namespace Clara {
         OptBuilder operator[]( std::string const& optName ) {
             m_options.push_back( Arg() );
             addOptName( m_options.back(), optName );
-            OptBuilder builder( m_options.back() );
+            OptBuilder builder( &m_options.back() );
             return builder;
         }
 
@@ -3642,7 +3646,7 @@ namespace Clara {
             if( position > m_highestSpecifiedArgPosition )
                 m_highestSpecifiedArgPosition = position;
             setPositionalArg( m_positionalArgs[position], position );
-            ArgBuilder builder( m_positionalArgs[position] );
+            ArgBuilder builder( &m_positionalArgs[position] );
             return builder;
         }
 
@@ -3651,7 +3655,7 @@ namespace Clara {
             if( m_floatingArg.get() )
                 throw std::logic_error( "Only one unpositional argument can be added" );
             m_floatingArg = ArgAutoPtr( new Arg() );
-            ArgBuilder builder( *m_floatingArg );
+            ArgBuilder builder( m_floatingArg.get() );
             return builder;
         }
 
@@ -3674,9 +3678,8 @@ namespace Clara {
                 Detail::Text usage( it->commands(), Detail::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
-                // !TBD handle longer usage strings
                 Detail::Text desc( it->description, Detail::TextAttributes()
-                                                        .setWidth( width - maxWidth -3 ) );
+                                                        .setWidth( width - maxWidth - 3 ) );
 
                 for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
                     std::string usageCol = i < usage.size() ? usage[i] : "";
@@ -3721,6 +3724,7 @@ namespace Clara {
         }
 
         void usage( std::ostream& os, std::string const& procName ) const {
+            validate();
             os << "usage:\n  " << procName << " ";
             argSynopsis( os );
             if( !m_options.empty() ) {
@@ -3735,7 +3739,7 @@ namespace Clara {
             return oss.str();
         }
 
-        ConfigT parseInto( int argc, char const * const * argv ) const {
+        ConfigT parse( int argc, char const * const * argv ) const {
             ConfigT config;
             parseInto( argc, argv, config );
             return config;
@@ -3754,9 +3758,7 @@ namespace Clara {
         }
 
         std::vector<Parser::Token> populate( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
-            if( m_options.empty() && m_positionalArgs.empty() )
-                throw std::logic_error( "No options or arguments specified" );
-
+            validate();
             std::vector<Parser::Token> unusedTokens = populateOptions( tokens, config );
             unusedTokens = populateFixedArgs( unusedTokens, config );
             unusedTokens = populateFloatingArgs( unusedTokens, config );
@@ -3838,6 +3840,17 @@ namespace Clara {
                     unusedTokens.push_back( token );
             }
             return unusedTokens;
+        }
+
+        void validate() const
+        {
+            if( m_options.empty() && m_positionalArgs.empty() && !m_floatingArg.get() )
+                throw std::logic_error( "No options or arguments specified" );
+
+            for( typename std::vector<Arg>::const_iterator  it = m_options.begin(),
+                                                            itEnd = m_options.end();
+                    it != itEnd; ++it )
+                it->validate();
         }
 
     private:
@@ -6585,7 +6598,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 32, "master" );
+    Version libraryVersion( 1, 0, 33, "master" );
 }
 
 // #included from: catch_message.hpp
