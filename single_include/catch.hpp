@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 34 (master branch)
- *  Generated: 2014-03-25 14:43:34.962000
+ *  Generated: 2014-03-25 15:40:48.212000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1520,8 +1520,8 @@ namespace Catch {
         Never
     }; };
 
-    struct ITestCaseHook
-    {
+    struct ITestCaseHook {
+
         virtual ~ITestCaseHook() {}
 
         virtual void sectionStarting(TestCaseInfo const & testCaseInfo) = 0;
@@ -3010,8 +3010,7 @@ namespace Catch {
             return m_userHooks;
         }
 
-        void addUserHook(ITestCaseHook* hook)
-        {
+        void addUserHook(ITestCaseHook* hook) {
             m_userHooks.push_back(hook);
         }
 
@@ -5047,8 +5046,7 @@ namespace Catch {
             return action;
         }
 
-        void runTestCaseStartingHook(TestCaseInfo const& testCaseInfo)
-        {
+        void runTestCaseStartingHook(TestCaseInfo const& testCaseInfo) {
             std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
 
             for(std::vector<ITestCaseHook*>::const_iterator it = validations.begin(), end = validations.end(); it != end; ++it)
@@ -5057,8 +5055,7 @@ namespace Catch {
             }
         }
 
-        void runTestCaseEndingHook(TestCaseInfo const& testCaseInfo)
-        {
+        void runTestCaseEndingHook(TestCaseInfo const& testCaseInfo) {
             std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
 
             for(std::vector<ITestCaseHook*>::const_reverse_iterator it = validations.rbegin(), end = validations.rend(); it != end; ++it)

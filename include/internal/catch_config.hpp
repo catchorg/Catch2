@@ -157,8 +157,7 @@ namespace Catch {
             return m_userHooks;
         }
 
-        void addUserHook(ITestCaseHook* hook)
-        {
+        void addUserHook(ITestCaseHook* hook) {
             m_userHooks.push_back(hook);
         }
 

@@ -35,8 +35,8 @@ namespace Catch {
         Never
     }; };
 
-    struct ITestCaseHook
-    {
+    struct ITestCaseHook {
+
         virtual ~ITestCaseHook() {}
 
         virtual void sectionStarting(TestCaseInfo const & testCaseInfo) = 0;

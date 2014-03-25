@@ -256,8 +256,7 @@ namespace Catch {
             return action;
         }
 
-        void runTestCaseStartingHook(TestCaseInfo const& testCaseInfo)
-        {
+        void runTestCaseStartingHook(TestCaseInfo const& testCaseInfo) {
             std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
 
             for(std::vector<ITestCaseHook*>::const_iterator it = validations.begin(), end = validations.end(); it != end; ++it)
@@ -266,8 +265,7 @@ namespace Catch {
             }
         }
 
-        void runTestCaseEndingHook(TestCaseInfo const& testCaseInfo)
-        {
+        void runTestCaseEndingHook(TestCaseInfo const& testCaseInfo) {
             std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
 
             for(std::vector<ITestCaseHook*>::const_reverse_iterator it = validations.rbegin(), end = validations.rend(); it != end; ++it)
