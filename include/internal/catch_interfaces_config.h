@@ -10,10 +10,13 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "catch_ptr.hpp"
 
 namespace Catch {
+
+    struct TestCaseInfo;
 
     struct Verbosity { enum Level {
         NoOutput = 0,
@@ -32,6 +35,14 @@ namespace Catch {
         Never
     }; };
 
+    struct ITestCaseHook
+    {
+        virtual ~ITestCaseHook() {}
+
+        virtual void sectionStarting(TestCaseInfo const & testCaseInfo) = 0;
+        virtual void sectionEnding(TestCaseInfo const & testCaseInfo) = 0;
+    };
+
     struct IConfig : IShared {
 
         virtual ~IConfig();
@@ -44,6 +55,8 @@ namespace Catch {
         virtual bool warnAboutMissingAssertions() const = 0;
         virtual int abortAfter() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;
+
+        virtual std::vector< ITestCaseHook* > const & userTestCaseHooks() const = 0;
     };
 }
 

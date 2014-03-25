@@ -153,6 +153,15 @@ namespace Catch {
             return m_filterSets;
         }
 
+        std::vector<ITestCaseHook*> const& userTestCaseHooks() const {
+            return m_userHooks;
+        }
+
+        void addUserHook(ITestCaseHook* hook)
+        {
+            m_userHooks.push_back(hook);
+        }
+
         bool showHelp() const { return m_data.showHelp; }
 
         // IConfig interface
@@ -163,13 +172,13 @@ namespace Catch {
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
         virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
 
-
     private:
         ConfigData m_data;
 
         Stream m_stream;
         mutable std::ostream m_os;
         std::vector<TestCaseFilters> m_filterSets;
+        std::vector<ITestCaseHook*> m_userHooks;
     };
 
 

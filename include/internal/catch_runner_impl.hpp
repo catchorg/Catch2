@@ -256,6 +256,26 @@ namespace Catch {
             return action;
         }
 
+        void runTestCaseStartingHook(TestCaseInfo const& testCaseInfo)
+        {
+            std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
+
+            for(std::vector<ITestCaseHook*>::const_iterator it = validations.begin(), end = validations.end(); it != end; ++it)
+            {
+                (*it)->sectionStarting(testCaseInfo);
+            }
+        }
+
+        void runTestCaseEndingHook(TestCaseInfo const& testCaseInfo)
+        {
+            std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
+
+            for(std::vector<ITestCaseHook*>::const_reverse_iterator it = validations.rbegin(), end = validations.rend(); it != end; ++it)
+            {
+                (*it)->sectionEnding(testCaseInfo);
+            }
+        }
+
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
             SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
@@ -265,6 +285,8 @@ namespace Catch {
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
+
+                runTestCaseStartingHook(testCaseInfo);
 
                 Timer timer;
                 timer.start();
@@ -277,6 +299,8 @@ namespace Catch {
                     m_activeTestCase->invoke();
                 }
                 duration = timer.getElapsedSeconds();
+
+                runTestCaseEndingHook(testCaseInfo);
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
