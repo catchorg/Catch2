@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 33 (master branch)
- *  Generated: 2014-03-24 18:11:50.426554
+ *  CATCH v1.0 build 34 (master branch)
+ *  Generated: 2014-03-25 15:40:48.212000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1497,8 +1497,11 @@ namespace Catch {
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 namespace Catch {
+
+    struct TestCaseInfo;
 
     struct Verbosity { enum Level {
         NoOutput = 0,
@@ -1517,6 +1520,14 @@ namespace Catch {
         Never
     }; };
 
+    struct ITestCaseHook {
+
+        virtual ~ITestCaseHook() {}
+
+        virtual void sectionStarting(TestCaseInfo const & testCaseInfo) = 0;
+        virtual void sectionEnding(TestCaseInfo const & testCaseInfo) = 0;
+    };
+
     struct IConfig : IShared {
 
         virtual ~IConfig();
@@ -1529,6 +1540,8 @@ namespace Catch {
         virtual bool warnAboutMissingAssertions() const = 0;
         virtual int abortAfter() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;
+
+        virtual std::vector< ITestCaseHook* > const & userTestCaseHooks() const = 0;
     };
 }
 
@@ -2993,6 +3006,14 @@ namespace Catch {
             return m_filterSets;
         }
 
+        std::vector<ITestCaseHook*> const& userTestCaseHooks() const {
+            return m_userHooks;
+        }
+
+        void addUserHook(ITestCaseHook* hook) {
+            m_userHooks.push_back(hook);
+        }
+
         bool showHelp() const { return m_data.showHelp; }
 
         // IConfig interface
@@ -3009,6 +3030,7 @@ namespace Catch {
         Stream m_stream;
         mutable std::ostream m_os;
         std::vector<TestCaseFilters> m_filterSets;
+        std::vector<ITestCaseHook*> m_userHooks;
     };
 
 } // end namespace Catch
@@ -5024,6 +5046,24 @@ namespace Catch {
             return action;
         }
 
+        void runTestCaseStartingHook(TestCaseInfo const& testCaseInfo) {
+            std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
+
+            for(std::vector<ITestCaseHook*>::const_iterator it = validations.begin(), end = validations.end(); it != end; ++it)
+            {
+                (*it)->sectionStarting(testCaseInfo);
+            }
+        }
+
+        void runTestCaseEndingHook(TestCaseInfo const& testCaseInfo) {
+            std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
+
+            for(std::vector<ITestCaseHook*>::const_reverse_iterator it = validations.rbegin(), end = validations.rend(); it != end; ++it)
+            {
+                (*it)->sectionEnding(testCaseInfo);
+            }
+        }
+
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
             SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
@@ -5033,6 +5073,8 @@ namespace Catch {
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
+
+                runTestCaseStartingHook(testCaseInfo);
 
                 Timer timer;
                 timer.start();
@@ -5045,6 +5087,8 @@ namespace Catch {
                     m_activeTestCase->invoke();
                 }
                 duration = timer.getElapsedSeconds();
+
+                runTestCaseEndingHook(testCaseInfo);
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
@@ -6598,7 +6642,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 33, "master" );
+    Version libraryVersion( 1, 0, 34, "master" );
 }
 
 // #included from: catch_message.hpp
