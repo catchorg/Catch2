@@ -74,6 +74,12 @@ TEST_CASE( "When unchecked exceptions are thrown during a REQUIRE the test shoul
     FAIL( "This should never happen" );
 }
 
+TEST_CASE( "When unchecked exceptions are thrown during a CHECK the test should abort and fail", "[.][failing]" )
+{
+    CHECK( thisThrows() == 0 );
+    FAIL( "This should never happen" );
+}
+
 TEST_CASE( "When unchecked exceptions are thrown, but caught, they do not affect the test", "" )
 {
     try
