@@ -14,7 +14,7 @@ namespace Catch {
 
     // These numbers are maintained by a script
     template <typename T>
-    const T LibraryVersionInfo<T>::value( 1, 0, 33, "master" );
+    const T LibraryVersionInfo<T>::value( 1, 0, 34, "master" );
 }
 
 #endif // TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED

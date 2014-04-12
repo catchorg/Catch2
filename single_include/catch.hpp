@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 33 (master branch)
- *  Generated: 2014-08-19 18:02:56.598000
+ *  CATCH v1.0 build 34 (master branch)
+ *  Generated: 2014-08-20 18:08:34.218000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3210,7 +3210,7 @@ namespace Catch {
             throw; \
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
-                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, expr ); \
+                resultDisposition, expr ); \
         } \
     } while( Catch::isTrue( false ) )
 
@@ -7578,7 +7578,7 @@ namespace Catch {
 
     // These numbers are maintained by a script
     template <typename T>
-    const T LibraryVersionInfo<T>::value( 1, 0, 33, "master" );
+    const T LibraryVersionInfo<T>::value( 1, 0, 34, "master" );
 }
 
 // #included from: catch_message.hpp

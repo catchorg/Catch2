@@ -1426,6 +1426,20 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="When unchecked exceptions are thrown during a require the test should fail">
+      <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
+        <Original>
+          thisThrows() == 0
+        </Original>
+        <Expanded>
+          thisThrows() == 0
+        </Expanded>
+        <Exception filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
+          expected exception
+        </Exception>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test">
       <OverallResult success="true"/>
     </TestCase>
@@ -7214,7 +7228,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="567" failures="110"/>
+    <OverallResults successes="567" failures="111"/>
   </Group>
-  <OverallResults successes="567" failures="110"/>
+  <OverallResults successes="567" failures="111"/>
 </Catch>
