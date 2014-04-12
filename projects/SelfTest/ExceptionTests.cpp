@@ -48,19 +48,12 @@ TEST_CASE( "When unchecked exceptions are thrown directly they are always failur
 	    throw std::domain_error( "unexpected exception" );
 }
 
-TEST_CASE( "When unchecked exceptions are thrown during a require the test should fail", "[.][failing]" )
-{
-    REQUIRE( thisThrows() == 0 );
-    FAIL( "This should never happen" );
-}
-
 TEST_CASE( "An unchecked exception reports the line of the last assertion", "[.][failing]" )
 {
     CHECK( 1 == 1 );
 	if( Catch::isTrue( true ) )
 	    throw std::domain_error( "unexpected exception" );
 }
-
 TEST_CASE( "When unchecked exceptions are thrown from sections they are always failures", "[.][failing]" )
 {
     SECTION( "section name", "" )
@@ -73,6 +66,12 @@ TEST_CASE( "When unchecked exceptions are thrown from sections they are always f
 TEST_CASE( "When unchecked exceptions are thrown from functions they are always failures", "[.][failing]" )
 {
     CHECK( thisThrows() == 0 );
+}
+
+TEST_CASE( "When unchecked exceptions are thrown during a REQUIRE the test should abort fail", "[.][failing]" )
+{
+    REQUIRE( thisThrows() == 0 );
+    FAIL( "This should never happen" );
 }
 
 TEST_CASE( "When unchecked exceptions are thrown, but caught, they do not affect the test", "" )

@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 34 (master branch)
- *  Generated: 2014-08-20 18:08:34.218000
+ *  Generated: 2014-09-08 06:46:04.360000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
