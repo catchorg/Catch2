@@ -66,6 +66,12 @@ TEST_CASE( "When unchecked exceptions are thrown from functions they are always 
     CHECK( thisThrows() == 0 );
 }
 
+TEST_CASE( "When unchecked exceptions are thrown during a require the test should fail", "[.][failing]" )
+{
+    REQUIRE( thisThrows() == 0 );
+    FAIL( "This should never happen" );
+}
+
 TEST_CASE( "When unchecked exceptions are thrown, but caught, they do not affect the test", "" )
 {
     try
