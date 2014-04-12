@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="11" failures="100" tests="678" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="~_" errors="12" failures="100" tests="679" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -210,8 +210,14 @@ expected exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
-    <testcase classname="global" name="When unchecked exceptions are thrown during a require the test should fail" time="{duration}">
+    <testcase classname="global" name="When unchecked exceptions are thrown during a REQUIRE the test should abort fail" time="{duration}">
       <error message="thisThrows() == 0" type="REQUIRE">
+expected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="When unchecked exceptions are thrown during a CHECK the test should abort and fail" time="{duration}">
+      <error message="thisThrows() == 0" type="CHECK">
 expected exception
 ExceptionTests.cpp:<line number>
       </error>

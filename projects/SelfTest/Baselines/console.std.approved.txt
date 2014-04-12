@@ -332,13 +332,26 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
-When unchecked exceptions are thrown during a require the test should fail
+When unchecked exceptions are thrown during a REQUIRE the test should abort
+fail
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
 
 ExceptionTests.cpp:<line number>: FAILED:
   REQUIRE( thisThrows() == 0 )
+due to unexpected exception with message:
+  expected exception
+
+-------------------------------------------------------------------------------
+When unchecked exceptions are thrown during a CHECK the test should abort and
+fail
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  CHECK( thisThrows() == 0 )
 due to unexpected exception with message:
   expected exception
 
@@ -761,5 +774,5 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-123 test cases - 37 failed (659 assertions - 92 failed)
+124 test cases - 38 failed (660 assertions - 93 failed)
 

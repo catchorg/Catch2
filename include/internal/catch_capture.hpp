@@ -87,7 +87,7 @@ struct TestFailureException{};
             throw; \
         } catch( ... ) { \
             INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
-                resultDisposition, expr ); \
+                Catch::ResultDisposition::Normal, expr ); \
         } \
     } while( Catch::isTrue( false ) )
 
