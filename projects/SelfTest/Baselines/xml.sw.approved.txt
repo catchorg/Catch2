@@ -4073,7 +4073,7 @@
             </Original>
             <Expanded>
               &quot;Value after -x or --abortAfter must be greater than zero
-- while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;greater than zero&quot;
+- while parsing: (-x, --abortx &lt;no. failures>)&quot; contains: &quot;greater than zero&quot;
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0"/>
@@ -4088,7 +4088,7 @@
             </Original>
             <Expanded>
               &quot;Unable to convert oops to destination type
-- while parsing: (-x, --abortx &lt;number of failures>)&quot; contains: &quot;-x&quot;
+- while parsing: (-x, --abortx &lt;no. failures>)&quot; contains: &quot;-x&quot;
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0"/>

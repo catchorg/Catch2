@@ -3926,8 +3926,7 @@ PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
 with expansion:
   "Value after -x or --abortAfter must be greater than zero
-  - while parsing: (-x, --abortx <number of failures>)" contains: "greater than
-  zero"
+  - while parsing: (-x, --abortx <no. failures>)" contains: "greater than zero"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -3942,7 +3941,7 @@ PASSED:
   REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "-x" ) )
 with expansion:
   "Unable to convert oops to destination type
-  - while parsing: (-x, --abortx <number of failures>)" contains: "-x"
+  - while parsing: (-x, --abortx <no. failures>)" contains: "-x"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
