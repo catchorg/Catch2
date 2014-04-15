@@ -23,11 +23,14 @@ namespace Catch {
     };
 
     class TestCase;
+    struct IConfig;
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual std::vector<TestCase> getMatchingTestCases( std::string const& rawTestSpec ) const = 0;
+        virtual void getFilteredTests( TestCaseFilters const& filters, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+        virtual void getFilteredTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+
     };
 }
 

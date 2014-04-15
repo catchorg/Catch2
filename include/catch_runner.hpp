@@ -50,29 +50,29 @@ namespace Catch {
             }
             return totals;
         }
-
-        Totals runTestsForGroup( RunContext& context, const TestCaseFilters& filterGroup ) {
+        Totals runTestsForGroup( RunContext& context, TestCaseFilters const& filterGroup ) {
             Totals totals;
-            std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+
+            std::vector<TestCase> testCases;
+            getRegistryHub().getTestCaseRegistry().getFilteredTests( filterGroup, *m_config, testCases );
+
             int testsRunForGroup = 0;
-            for(; it != itEnd; ++it ) {
-                if( filterGroup.shouldInclude( *it ) ) {
-                    testsRunForGroup++;
-                    if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
+            for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+                    it != itEnd;
+                    ++it ) {
+                testsRunForGroup++;
+                if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
 
-                        if( context.aborting() )
-                            break;
+                    if( context.aborting() )
+                        break;
 
-                        totals += context.runTest( *it );
-                        m_testsAlreadyRun.insert( *it );
-                    }
+                    totals += context.runTest( *it );
+                    m_testsAlreadyRun.insert( *it );
                 }
             }
             if( testsRunForGroup == 0 && !filterGroup.getName().empty() )
                 m_reporter->noMatchingTestCases( filterGroup.getName() );
             return totals;
-
         }
 
     private:

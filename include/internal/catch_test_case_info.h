@@ -40,6 +40,7 @@ namespace Catch {
         std::string tagsAsString;
         SourceLineInfo lineInfo;
         bool isHidden;
+        bool throws;
     };
 
     class TestCase : protected TestCaseInfo {
@@ -55,6 +56,7 @@ namespace Catch {
         TestCaseInfo const& getTestCaseInfo() const;
 
         bool isHidden() const;
+        bool throws() const;
         bool hasTag( std::string const& tag ) const;
         bool matchesTags( std::string const& tagPattern ) const;
         std::set<std::string> const& getTags() const;

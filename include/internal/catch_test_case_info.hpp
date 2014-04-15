@@ -15,6 +15,16 @@
 
 namespace Catch {
 
+    inline bool isSpecialTag( std::string const& tag ) {
+        return  tag == "." ||
+                tag == "hide" ||
+                tag == "!hide" ||
+                tag == "!throws";
+    }
+    inline bool isReservedTag( std::string const& tag ) {
+        return !isSpecialTag( tag ) && tag.size() > 0 && !isalnum( tag[0] );
+    }
+
     TestCase makeTestCase(  ITestCase* _testCase,
                             std::string const& _className,
                             std::string const& _name,
@@ -25,6 +35,23 @@ namespace Catch {
         bool isHidden( startsWith( _name, "./" ) ); // Legacy support
         std::set<std::string> tags;
         TagExtracter( tags ).parse( desc );
+        for( std::set<std::string>::const_iterator it = tags.begin(), itEnd = tags.end();
+                it != itEnd;
+                ++it )
+            if( isReservedTag( *it ) ) {
+                {
+                    Colour colourGuard( Colour::Red );
+                    std::cerr
+                        << "Tag name [" << *it << "] not allowed.\n"
+                        << "Tag names starting with non alpha-numeric characters are reserved\n";
+                }
+                {
+                    Colour colourGuard( Colour::FileName );
+                    std::cerr << _lineInfo << std::endl;
+                }
+                exit(1);
+            }
+
         if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
             isHidden = true;
 
@@ -47,11 +74,15 @@ namespace Catch {
         description( _description ),
         tags( _tags ),
         lineInfo( _lineInfo ),
-        isHidden( _isHidden )
+        isHidden( _isHidden ),
+        throws( false )
     {
         std::ostringstream oss;
-        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it )
+        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it ) {
             oss << "[" << *it << "]";
+            if( *it == "!throws" )
+                throws = true;
+        }
         tagsAsString = oss.str();
     }
 
@@ -62,7 +93,8 @@ namespace Catch {
         tags( other.tags ),
         tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
-        isHidden( other.isHidden )
+        isHidden( other.isHidden ),
+        throws( other.throws )
     {}
 
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
@@ -84,6 +116,9 @@ namespace Catch {
 
     bool TestCase::isHidden() const {
         return TestCaseInfo::isHidden;
+    }
+    bool TestCase::throws() const {
+        return TestCaseInfo::throws;
     }
 
     bool TestCase::hasTag( std::string const& tag ) const {

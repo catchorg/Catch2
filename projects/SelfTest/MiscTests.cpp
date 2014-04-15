@@ -333,3 +333,9 @@ TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]")
 
     FAIL("to infinity and beyond");
 }
+
+TEST_CASE("not allowed", "[!throws]")
+{
+    // This test case should not be included if you run with -e on the command line
+    SUCCEED();
+}

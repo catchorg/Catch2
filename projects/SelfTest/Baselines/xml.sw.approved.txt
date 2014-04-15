@@ -3723,6 +3723,9 @@
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="not allowed">
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Process can be configured on command line">
       <Section name="default - no arguments">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
@@ -7242,7 +7245,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="567" failures="112"/>
+    <OverallResults successes="567" failures="113"/>
   </Group>
-  <OverallResults successes="567" failures="112"/>
+  <OverallResults successes="567" failures="113"/>
 </Catch>

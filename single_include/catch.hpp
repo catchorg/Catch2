@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 35 (master branch)
- *  Generated: 2014-04-12 19:20:39.856403
+ *  CATCH v1.0 build 36 (master branch)
+ *  Generated: 2014-04-15 18:42:33.686099
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -420,11 +420,14 @@ namespace Catch {
     };
 
     class TestCase;
+    struct IConfig;
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual std::vector<TestCase> getMatchingTestCases( std::string const& rawTestSpec ) const = 0;
+        virtual void getFilteredTests( TestCaseFilters const& filters, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+        virtual void getFilteredTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+
     };
 }
 
@@ -1497,6 +1500,7 @@ namespace Catch {
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
@@ -1517,6 +1521,8 @@ namespace Catch {
         Never
     }; };
 
+    class TestCaseFilters;
+
     struct IConfig : IShared {
 
         virtual ~IConfig();
@@ -1529,6 +1535,7 @@ namespace Catch {
         virtual bool warnAboutMissingAssertions() const = 0;
         virtual int abortAfter() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;
+        virtual std::vector<TestCaseFilters> const& filters() const = 0;
     };
 }
 
@@ -2411,6 +2418,7 @@ namespace Catch {
         std::string tagsAsString;
         SourceLineInfo lineInfo;
         bool isHidden;
+        bool throws;
     };
 
     class TestCase : protected TestCaseInfo {
@@ -2426,6 +2434,7 @@ namespace Catch {
         TestCaseInfo const& getTestCaseInfo() const;
 
         bool isHidden() const;
+        bool throws() const;
         bool hasTag( std::string const& tag ) const;
         bool matchesTags( std::string const& tagPattern ) const;
         std::set<std::string> const& getTags() const;
@@ -4221,7 +4230,7 @@ namespace Catch {
         static void use( Code _colourCode );
 
     private:
-        static Detail::IColourImpl* impl;
+        static Detail::IColourImpl* impl();
     };
 
 } // end namespace Catch
@@ -4505,14 +4514,6 @@ namespace Catch
 #include <algorithm>
 
 namespace Catch {
-    inline bool matchesFilters( std::vector<TestCaseFilters> const& filters, TestCase const& testCase ) {
-        std::vector<TestCaseFilters>::const_iterator it = filters.begin();
-        std::vector<TestCaseFilters>::const_iterator itEnd = filters.end();
-        for(; it != itEnd; ++it )
-            if( !it->shouldInclude( testCase ) )
-                return false;
-        return true;
-    }
 
     inline std::size_t listTests( Config const& config ) {
         if( config.filters().empty() )
@@ -4525,22 +4526,22 @@ namespace Catch {
         nameAttr.setInitialIndent( 2 ).setIndent( 4 );
         tagsAttr.setIndent( 6 );
 
-        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-        for( std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+        std::vector<TestCase> matchedTestCases;
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
-                ++it )
-            if( matchesFilters( config.filters(), *it ) ) {
-                matchedTests++;
-                TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-                Colour::Code colour = testCaseInfo.isHidden
-                    ? Colour::SecondaryText
-                    : Colour::None;
-                Colour colourGuard( colour );
+                ++it ) {
+            matchedTests++;
+            TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
+            Colour::Code colour = testCaseInfo.isHidden
+                ? Colour::SecondaryText
+                : Colour::None;
+            Colour colourGuard( colour );
 
-                std::cout << Text( testCaseInfo.name, nameAttr ) << std::endl;
-                if( !testCaseInfo.tags.empty() )
-                    std::cout << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
-            }
+            std::cout << Text( testCaseInfo.name, nameAttr ) << std::endl;
+            if( !testCaseInfo.tags.empty() )
+                std::cout << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
+        }
 
         if( config.filters().empty() )
             std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
@@ -4551,15 +4552,15 @@ namespace Catch {
 
     inline std::size_t listTestsNamesOnly( Config const& config ) {
         std::size_t matchedTests = 0;
-        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-        for( std::vector<TestCase>::const_iterator it = allTests.begin(), itEnd = allTests.end();
+        std::vector<TestCase> matchedTestCases;
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
-                ++it )
-            if( matchesFilters( config.filters(), *it ) ) {
-                matchedTests++;
-                TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-                std::cout << testCaseInfo.name << std::endl;
-            }
+                ++it ) {
+            matchedTests++;
+            TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
+            std::cout << testCaseInfo.name << std::endl;
+        }
         return matchedTests;
     }
 
@@ -4571,23 +4572,21 @@ namespace Catch {
 
         std::map<std::string, int> tagCounts;
 
-        std::vector<TestCase> const& allTests = getRegistryHub().getTestCaseRegistry().getAllTests();
-        for( std::vector<TestCase>::const_iterator  it = allTests.begin(),
-                                                    itEnd = allTests.end();
+        std::vector<TestCase> matchedTestCases;
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
-            if( matchesFilters( config.filters(), *it ) ) {
-                for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
-                                                            tagItEnd = it->getTestCaseInfo().tags.end();
-                        tagIt != tagItEnd;
-                        ++tagIt ) {
-                    std::string tagName = *tagIt;
-                    std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
-                    if( countIt == tagCounts.end() )
-                        tagCounts.insert( std::make_pair( tagName, 1 ) );
-                    else
-                        countIt->second++;
-                }
+            for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
+                                                        tagItEnd = it->getTestCaseInfo().tags.end();
+                    tagIt != tagItEnd;
+                    ++tagIt ) {
+                std::string tagName = *tagIt;
+                std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
+                if( countIt == tagCounts.end() )
+                    tagCounts.insert( std::make_pair( tagName, 1 ) );
+                else
+                    countIt->second++;
             }
         }
 
@@ -4854,23 +4853,6 @@ namespace Catch {
         }
         void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount ) {
             m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
-        }
-
-        Totals runMatching( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
-
-            std::vector<TestCase> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
-
-            Totals totals;
-
-            testGroupStarting( testSpec, groupIndex, groupsCount );
-
-            std::vector<TestCase>::const_iterator it = matchingTests.begin();
-            std::vector<TestCase>::const_iterator itEnd = matchingTests.end();
-            for(; it != itEnd; ++it )
-                totals += runTest( *it );
-
-            testGroupEnded( testSpec, totals, groupIndex, groupsCount );
-            return totals;
         }
 
         Totals runTest( TestCase const& testCase ) {
@@ -5165,29 +5147,29 @@ namespace Catch {
             }
             return totals;
         }
-
-        Totals runTestsForGroup( RunContext& context, const TestCaseFilters& filterGroup ) {
+        Totals runTestsForGroup( RunContext& context, TestCaseFilters const& filterGroup ) {
             Totals totals;
-            std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+
+            std::vector<TestCase> testCases;
+            getRegistryHub().getTestCaseRegistry().getFilteredTests( filterGroup, *m_config, testCases );
+
             int testsRunForGroup = 0;
-            for(; it != itEnd; ++it ) {
-                if( filterGroup.shouldInclude( *it ) ) {
-                    testsRunForGroup++;
-                    if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
+            for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+                    it != itEnd;
+                    ++it ) {
+                testsRunForGroup++;
+                if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
 
-                        if( context.aborting() )
-                            break;
+                    if( context.aborting() )
+                        break;
 
-                        totals += context.runTest( *it );
-                        m_testsAlreadyRun.insert( *it );
-                    }
+                    totals += context.runTest( *it );
+                    m_testsAlreadyRun.insert( *it );
                 }
             }
             if( testsRunForGroup == 0 && !filterGroup.getName().empty() )
                 m_reporter->noMatchingTestCases( filterGroup.getName() );
             return totals;
-
         }
 
     private:
@@ -5370,9 +5352,12 @@ namespace Catch {
             }
             else {
                 TestCase const& prev = *m_functions.find( testCase );
-                std::cerr   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
-                            << "\tFirst seen at " << prev.getTestCaseInfo().lineInfo << "\n"
-                            << "\tRedefined at " << testCase.getTestCaseInfo().lineInfo << std::endl;
+                {
+                    Colour colourGuard( Colour::Red );
+                    std::cerr   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
+                                << "\tFirst seen at " << prev.getTestCaseInfo().lineInfo << "\n"
+                                << "\tRedefined at " << testCase.getTestCaseInfo().lineInfo << std::endl;
+                }
                 exit(1);
             }
         }
@@ -5385,32 +5370,24 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        // !TBD deprecated
-        virtual std::vector<TestCase> getMatchingTestCases( std::string const& rawTestSpec ) const {
-            std::vector<TestCase> matchingTests;
-            getMatchingTestCases( rawTestSpec, matchingTests );
-            return matchingTests;
-        }
-
-        // !TBD deprecated
-        virtual void getMatchingTestCases( std::string const& rawTestSpec, std::vector<TestCase>& matchingTestsOut ) const {
-            TestCaseFilter filter( rawTestSpec );
-
-            std::vector<TestCase>::const_iterator it = m_functionsInOrder.begin();
-            std::vector<TestCase>::const_iterator itEnd = m_functionsInOrder.end();
-            for(; it != itEnd; ++it ) {
-                if( filter.shouldInclude( *it ) ) {
-                    matchingTestsOut.push_back( *it );
-                }
+        virtual void getFilteredTests( TestCaseFilters const& filters, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+            for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
+                                                        itEnd = m_functionsInOrder.end();
+                    it != itEnd;
+                    ++it ) {
+                if( filters.shouldInclude( *it ) && ( config.allowThrows() || !it->throws() ) )
+                    matchingTestCases.push_back( *it );
             }
         }
-        virtual void getMatchingTestCases( TestCaseFilters const& filters, std::vector<TestCase>& matchingTestsOut ) const {
-            std::vector<TestCase>::const_iterator it = m_functionsInOrder.begin();
-            std::vector<TestCase>::const_iterator itEnd = m_functionsInOrder.end();
-            // !TBD: replace with algorithm
-            for(; it != itEnd; ++it )
-                if( filters.shouldInclude( *it ) )
-                    matchingTestsOut.push_back( *it );
+        virtual void getFilteredTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+            if( config.filters().empty() )
+                return getFilteredTests( TestCaseFilters( "empty" ), config, matchingTestCases );
+
+            for( std::vector<TestCaseFilters>::const_iterator   it = config.filters().begin(),
+                                                                itEnd = config.filters().end();
+                    it != itEnd;
+                    ++it )
+                getFilteredTests( *it, config, matchingTestCases );
         }
 
     private:
@@ -5909,7 +5886,10 @@ namespace {
         return true;
     }
 
-    Win32ColourImpl platformColourImpl;
+    static Detail::IColourImpl* platformColourInstance() {
+        static Win32ColourImpl s_instance;
+        return &s_instance;
+    }
 
 } // end anon namespace
 } // end namespace Catch
@@ -5956,7 +5936,10 @@ namespace {
         return isatty(STDOUT_FILENO);
     }
 
-    PosixColourImpl platformColourImpl;
+    static Detail::IColourImpl* platformColourInstance() {
+        static PosixColourImpl s_instance;
+        return &s_instance;
+    }
 
 } // end anon namespace
 } // end namespace Catch
@@ -5968,21 +5951,28 @@ namespace Catch {
     namespace {
         struct NoColourImpl : Detail::IColourImpl {
             void use( Colour::Code ) {}
+
+            static IColourImpl* instance() {
+                static NoColourImpl s_instance;
+                return &s_instance;
+            }
         };
-        NoColourImpl noColourImpl;
-        static const bool shouldUseColour = shouldUseColourForPlatform() &&
-                                            !isDebuggerActive();
+        static bool shouldUseColour() {
+            return shouldUseColourForPlatform() && !isDebuggerActive();
+        }
     }
 
     Colour::Colour( Code _colourCode ){ use( _colourCode ); }
     Colour::~Colour(){ use( None ); }
     void Colour::use( Code _colourCode ) {
-        impl->use( _colourCode );
+        impl()->use( _colourCode );
     }
 
-    Detail::IColourImpl* Colour::impl = shouldUseColour
-            ? static_cast<Detail::IColourImpl*>( &platformColourImpl )
-            : static_cast<Detail::IColourImpl*>( &noColourImpl );
+    Detail::IColourImpl* Colour::impl() {
+        return shouldUseColour()
+            ? platformColourInstance()
+            : NoColourImpl::instance();
+    }
 
 } // end namespace Catch
 
@@ -6233,6 +6223,16 @@ namespace Catch {
 
 namespace Catch {
 
+    inline bool isSpecialTag( std::string const& tag ) {
+        return  tag == "." ||
+                tag == "hide" ||
+                tag == "!hide" ||
+                tag == "!throws";
+    }
+    inline bool isReservedTag( std::string const& tag ) {
+        return !isSpecialTag( tag ) && tag.size() > 0 && !isalnum( tag[0] );
+    }
+
     TestCase makeTestCase(  ITestCase* _testCase,
                             std::string const& _className,
                             std::string const& _name,
@@ -6243,6 +6243,23 @@ namespace Catch {
         bool isHidden( startsWith( _name, "./" ) ); // Legacy support
         std::set<std::string> tags;
         TagExtracter( tags ).parse( desc );
+        for( std::set<std::string>::const_iterator it = tags.begin(), itEnd = tags.end();
+                it != itEnd;
+                ++it )
+            if( isReservedTag( *it ) ) {
+                {
+                    Colour colourGuard( Colour::Red );
+                    std::cerr
+                        << "Tag name [" << *it << "] not allowed.\n"
+                        << "Tag names starting with non alpha-numeric characters are reserved\n";
+                }
+                {
+                    Colour colourGuard( Colour::FileName );
+                    std::cerr << _lineInfo << std::endl;
+                }
+                exit(1);
+            }
+
         if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
             isHidden = true;
 
@@ -6265,11 +6282,15 @@ namespace Catch {
         description( _description ),
         tags( _tags ),
         lineInfo( _lineInfo ),
-        isHidden( _isHidden )
+        isHidden( _isHidden ),
+        throws( false )
     {
         std::ostringstream oss;
-        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it )
+        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it ) {
             oss << "[" << *it << "]";
+            if( *it == "!throws" )
+                throws = true;
+        }
         tagsAsString = oss.str();
     }
 
@@ -6280,7 +6301,8 @@ namespace Catch {
         tags( other.tags ),
         tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
-        isHidden( other.isHidden )
+        isHidden( other.isHidden ),
+        throws( other.throws )
     {}
 
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
@@ -6302,6 +6324,9 @@ namespace Catch {
 
     bool TestCase::isHidden() const {
         return TestCaseInfo::isHidden;
+    }
+    bool TestCase::throws() const {
+        return TestCaseInfo::throws;
     }
 
     bool TestCase::hasTag( std::string const& tag ) const {
@@ -6598,7 +6623,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 35, "master" );
+    Version libraryVersion( 1, 0, 36, "master" );
 }
 
 // #included from: catch_message.hpp
