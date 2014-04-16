@@ -4,9 +4,7 @@
 
 Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.png)](https://travis-ci.org/philsquared/Catch)
 
-# New release with significant changes
-
-[Please see this page for details - including some breaking changes](docs/whats-changed.md)
+[Please see this page if you are updating from a version before 1.0](docs/whats-changed.md)
 
 ## What's the Catch?
 

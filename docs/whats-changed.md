@@ -1,6 +1,6 @@
-## What's new in Catch
+## What's new in Catch for 1.0
 
-This page has been added following quite a large (hopefully the last such) merge from the integration branch. Please read this summary through so you know what to expect (and whether any changes - breaking in some cases - will affect you).
+After a long "developer preview" state Catch turned 1.0 in mid-2013. Just prior to this a large number of changes, some of them breaking, where merged from the integration branch and now form part of the 1.0 code-base. If this might affect you please read this summary through so you know what to expect.
 
 * Calling Catch from your own ```main()``` has changed - please review [the updated docs](own-main.md)
 * The command line has changed. The biggest change is that test case names and tags should now only be supplied as primary arguments - in fact the ```-t``` option has been repurposed to mean "list tags". There are [updated docs for this too](command-line.md)
