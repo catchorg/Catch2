@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="12" failures="101" tests="680" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="~_" errors="12" failures="100" tests="680" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -443,6 +443,7 @@ MiscTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="A couple of nested sections followed by a failure" name="Outer/Inner" time="{duration}"/>
+    <testcase classname="global" name="not allowed" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="default - no arguments" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/1 test" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using exclude:" time="{duration}"/>

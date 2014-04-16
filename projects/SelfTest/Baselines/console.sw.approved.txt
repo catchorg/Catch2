@@ -3656,8 +3656,8 @@ not allowed
 MiscTests.cpp:<line number>
 ...............................................................................
 
-
-No assertions in test case 'not allowed'
+MiscTests.cpp:<line number>:
+PASSED:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -6991,5 +6991,5 @@ with expansion:
   true
 
 ===============================================================================
-125 test cases - 54 failed (680 assertions - 113 failed)
+125 test cases - 53 failed (680 assertions - 112 failed)
 

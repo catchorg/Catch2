@@ -17,7 +17,7 @@ versionParser = re.compile( r'(.*?)Catch v[0-9]*.[0-9]* b[0-9]*(.*)' )
 if len(sys.argv) == 2:
 	cmdPath = sys.argv[1]
 else:
-	cmdPath = os.path.join( catchPath, 'projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
+	cmdPath = os.path.join( catchPath, 'projects/XCode/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
 
 overallResult = 0
 
