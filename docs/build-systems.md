@@ -8,6 +8,7 @@ You can use the following CMake script to automatically fetch Catch from github 
 cmake_minimum_required(VERSION 2.8.8)
 project(catch_builder CXX)
 include(ExternalProject)
+find_package(Git REQUIRED)
 
 ExternalProject_Add(
     catch
