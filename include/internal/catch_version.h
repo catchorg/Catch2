@@ -15,17 +15,17 @@ namespace Catch {
         Version(    unsigned int _majorVersion,
                     unsigned int _minorVersion,
                     unsigned int _buildNumber,
-                    std::string const& _branchName )
+                    char const* const _branchName )
         :   majorVersion( _majorVersion ),
             minorVersion( _minorVersion ),
             buildNumber( _buildNumber ),
             branchName( _branchName )
         {}
 
-        const unsigned int majorVersion;
-        const unsigned int minorVersion;
-        const unsigned int buildNumber;
-        const std::string branchName;
+        unsigned int const majorVersion;
+        unsigned int const minorVersion;
+        unsigned int const buildNumber;
+        char const* const branchName;
 
     private:
         void operator=( Version const& );

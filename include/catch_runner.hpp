@@ -132,7 +132,7 @@ namespace Catch {
             std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
                                         << libraryVersion.minorVersion << " build "
                                         << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
+            if( libraryVersion.branchName != std::string( "master" ) )
                 std::cout << " (" << libraryVersion.branchName << " branch)";
             std::cout << "\n";
 

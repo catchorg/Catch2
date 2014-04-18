@@ -262,7 +262,7 @@ namespace Catch {
                     << " is a Catch v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
                     << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
+            if( libraryVersion.branchName != std::string( "master" ) )
                 stream << " (" << libraryVersion.branchName << ")";
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
