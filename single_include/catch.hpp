@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 37 (master branch)
- *  Generated: 2014-04-18 08:30:06.534609
+ *  CATCH v1.0 build 38 (master branch)
+ *  Generated: 2014-04-18 08:47:21.504017
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -139,6 +139,29 @@
 
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+// C++ language feature support
+
+// detect language version:
+#if (__cplusplus == 201103L)
+#  define CATCH_CPP11
+#  define CATCH_CPP11_OR_GREATER
+#elif (__cplusplus >= 201103L)
+#  define CATCH_CPP11_OR_GREATER
+#endif
+
+// noexcept support:
+#ifdef CATCH_CPP11_OR_GREATER
+#  if (__has_feature(cxx_noexcept))
+#    define CATCH_NOEXCEPT noexcept
+#    define CATCH_NOEXCEPT_IS(x) noexcept(x)
+#  endif
+#endif
+#ifndef CATCH_NO_EXCEPT
+#  define CATCH_NOEXCEPT throw()
+#  define CATCH_NOEXCEPT_IS(x)
+#endif
+
 namespace Catch {
 
     class NonCopyable {
@@ -196,6 +219,11 @@ namespace Catch {
         SourceLineInfo();
         SourceLineInfo( char const* _file, std::size_t _line );
         SourceLineInfo( SourceLineInfo const& other );
+#  ifdef CATCH_CPP11_OR_GREATER
+        SourceLineInfo( SourceLineInfo && )                  = default;
+        SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
+        SourceLineInfo& operator = ( SourceLineInfo && )     = default;
+#  endif
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;
 
@@ -237,9 +265,9 @@ namespace Catch {
     public:
         NotImplementedException( SourceLineInfo const& lineInfo );
 
-        virtual ~NotImplementedException() throw() {}
+        virtual ~NotImplementedException() CATCH_NOEXCEPT {}
 
-        virtual const char* what() const throw();
+        virtual const char* what() const CATCH_NOEXCEPT;
 
     private:
         std::string m_what;
@@ -982,6 +1010,12 @@ namespace Catch {
         AssertionResult();
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
+#  ifdef CATCH_CPP11_OR_GREATER
+         AssertionResult( AssertionResult const& )              = default;
+         AssertionResult( AssertionResult && )                  = default;
+         AssertionResult& operator = ( AssertionResult const& ) = default;
+         AssertionResult& operator = ( AssertionResult && )     = default;
+#  endif
 
         bool isOk() const;
         bool succeeded() const;
@@ -1220,14 +1254,21 @@ private:
 
 namespace Catch {
 
-// Wraps the LHS of an expression and captures the operator and RHS (if any) - wrapping them all
-// in an ExpressionResultBuilder object
+// Wraps the LHS of an expression and captures the operator and RHS (if any) -
+// wrapping them all in an ExpressionResultBuilder object
 template<typename T>
 class ExpressionLhs {
-    void operator = ( ExpressionLhs const& );
+    ExpressionLhs& operator = ( ExpressionLhs const& );
+#  ifdef CATCH_CPP11_OR_GREATER
+    ExpressionLhs& operator = ( ExpressionLhs && ) = delete;
+#  endif
 
 public:
     ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
+#  ifdef CATCH_CPP11_OR_GREATER
+    ExpressionLhs( ExpressionLhs const& ) = default;
+    ExpressionLhs( ExpressionLhs && )     = default;
+#  endif
 
     template<typename RhsT>
     ExpressionResultBuilder& operator == ( RhsT const& rhs ) {
@@ -1810,6 +1851,12 @@ namespace Catch {
                     std::string const& name,
                     std::string const& description = "" );
         ~Section();
+#  ifdef CATCH_CPP11_OR_GREATER
+        Section( Section const& )              = default;
+        Section( Section && )                  = default;
+        Section& operator = ( Section const& ) = default;
+        Section& operator = ( Section && )     = default;
+#  endif
 
         // This indicates whether the section should be executed or not
         operator bool();
@@ -3265,6 +3312,10 @@ namespace Clara {
         template<typename ConfigT>
         struct IArgFunction {
             virtual ~IArgFunction() {}
+#  ifdef CATCH_CPP11_OR_GREATER
+            IArgFunction()                      = default;
+            IArgFunction( IArgFunction const& ) = default;
+#  endif
             virtual void set( ConfigT& config, std::string const& value ) const = 0;
             virtual void setFlag( ConfigT& config ) const = 0;
             virtual bool takesArg() const = 0;
@@ -4379,6 +4430,13 @@ namespace Catch
         }
         virtual ~AssertionStats();
 
+#  ifdef CATCH_CPP11_OR_GREATER
+        AssertionStats( AssertionStats const& )              = default;
+        AssertionStats( AssertionStats && )                  = default;
+        AssertionStats& operator = ( AssertionStats const& ) = default;
+        AssertionStats& operator = ( AssertionStats && )     = default;
+#  endif
+
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
         Totals totals;
@@ -4395,6 +4453,12 @@ namespace Catch
             missingAssertions( _missingAssertions )
         {}
         virtual ~SectionStats();
+#  ifdef CATCH_CPP11_OR_GREATER
+        SectionStats( SectionStats const& )              = default;
+        SectionStats( SectionStats && )                  = default;
+        SectionStats& operator = ( SectionStats const& ) = default;
+        SectionStats& operator = ( SectionStats && )     = default;
+#  endif
 
         SectionInfo sectionInfo;
         Counts assertions;
@@ -4415,6 +4479,13 @@ namespace Catch
             aborting( _aborting )
         {}
         virtual ~TestCaseStats();
+
+#  ifdef CATCH_CPP11_OR_GREATER
+        TestCaseStats( TestCaseStats const& )              = default;
+        TestCaseStats( TestCaseStats && )                  = default;
+        TestCaseStats& operator = ( TestCaseStats const& ) = default;
+        TestCaseStats& operator = ( TestCaseStats && )     = default;
+#  endif
 
         TestCaseInfo testInfo;
         Totals totals;
@@ -4437,6 +4508,13 @@ namespace Catch
         {}
         virtual ~TestGroupStats();
 
+#  ifdef CATCH_CPP11_OR_GREATER
+        TestGroupStats( TestGroupStats const& )              = default;
+        TestGroupStats( TestGroupStats && )                  = default;
+        TestGroupStats& operator = ( TestGroupStats const& ) = default;
+        TestGroupStats& operator = ( TestGroupStats && )     = default;
+#  endif
+
         GroupInfo groupInfo;
         Totals totals;
         bool aborting;
@@ -4450,12 +4528,20 @@ namespace Catch
             totals( _totals ),
             aborting( _aborting )
         {}
+        virtual ~TestRunStats();
+
+#  ifndef CATCH_CPP11_OR_GREATER
         TestRunStats( TestRunStats const& _other )
         :   runInfo( _other.runInfo ),
             totals( _other.totals ),
             aborting( _other.aborting )
         {}
-        virtual ~TestRunStats();
+#  else
+        TestRunStats( TestRunStats const& )              = default;
+        TestRunStats( TestRunStats && )                  = default;
+        TestRunStats& operator = ( TestRunStats const& ) = default;
+        TestRunStats& operator = ( TestRunStats && )     = default;
+#  endif
 
         TestRunInfo runInfo;
         Totals totals;
@@ -5625,7 +5711,7 @@ namespace Catch {
         m_what = oss.str();
     }
 
-    const char* NotImplementedException::what() const throw() {
+    const char* NotImplementedException::what() const CATCH_NOEXCEPT {
         return m_what.c_str();
     }
 
@@ -5646,7 +5732,7 @@ namespace Catch {
 
     class StreamBufBase : public std::streambuf {
     public:
-        virtual ~StreamBufBase() throw();
+        virtual ~StreamBufBase() CATCH_NOEXCEPT;
     };
 }
 
@@ -5665,7 +5751,7 @@ namespace Catch {
             setp( data, data + sizeof(data) );
         }
 
-        ~StreamBufImpl() throw() {
+        ~StreamBufImpl() CATCH_NOEXCEPT {
             sync();
         }
 
@@ -6616,7 +6702,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 37, "master" );
+    Version libraryVersion( 1, 0, 38, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -7334,11 +7420,18 @@ namespace Catch {
                 endElement();
         }
 
+#  ifndef CATCH_CPP11_OR_GREATER
         XmlWriter& operator = ( XmlWriter const& other ) {
             XmlWriter temp( other );
             swap( temp );
             return *this;
         }
+#  else
+        XmlWriter( XmlWriter const& )              = default;
+        XmlWriter( XmlWriter && )                  = default;
+        XmlWriter& operator = ( XmlWriter const& ) = default;
+        XmlWriter& operator = ( XmlWriter && )     = default;
+#  endif
 
         void swap( XmlWriter& other ) {
             std::swap( m_tagIsOpen, other.m_tagIsOpen );
@@ -8223,7 +8316,7 @@ namespace Catch {
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
-    StreamBufBase::~StreamBufBase() throw() {}
+    StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestCase::~ITestCase() {}

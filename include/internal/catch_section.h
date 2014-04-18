@@ -22,6 +22,12 @@ namespace Catch {
                     std::string const& name,
                     std::string const& description = "" );
         ~Section();
+#  ifdef CATCH_CPP11_OR_GREATER
+        Section( Section const& )              = default;
+        Section( Section && )                  = default;
+        Section& operator = ( Section const& ) = default;
+        Section& operator = ( Section && )     = default;
+#  endif
 
         // This indicates whether the section should be executed or not
         operator bool();

@@ -96,5 +96,28 @@
 
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+// C++ language feature support
+
+// detect language version:
+#if (__cplusplus == 201103L)
+#  define CATCH_CPP11
+#  define CATCH_CPP11_OR_GREATER
+#elif (__cplusplus >= 201103L)
+#  define CATCH_CPP11_OR_GREATER
+#endif
+
+// noexcept support:
+#ifdef CATCH_CPP11_OR_GREATER
+#  if (__has_feature(cxx_noexcept))
+#    define CATCH_NOEXCEPT noexcept
+#    define CATCH_NOEXCEPT_IS(x) noexcept(x)
+#  endif
+#endif
+#ifndef CATCH_NO_EXCEPT
+#  define CATCH_NOEXCEPT throw()
+#  define CATCH_NOEXCEPT_IS(x)
+#endif
+
 #endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 

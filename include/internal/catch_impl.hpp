@@ -42,7 +42,7 @@
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
-    StreamBufBase::~StreamBufBase() throw() {}
+    StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestCase::~ITestCase() {}

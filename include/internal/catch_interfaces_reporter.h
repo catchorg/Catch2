@@ -101,6 +101,13 @@ namespace Catch
         }
         virtual ~AssertionStats();
 
+#  ifdef CATCH_CPP11_OR_GREATER
+        AssertionStats( AssertionStats const& )              = default;
+        AssertionStats( AssertionStats && )                  = default;
+        AssertionStats& operator = ( AssertionStats const& ) = default;
+        AssertionStats& operator = ( AssertionStats && )     = default;
+#  endif
+
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
         Totals totals;
@@ -117,6 +124,12 @@ namespace Catch
             missingAssertions( _missingAssertions )
         {}
         virtual ~SectionStats();
+#  ifdef CATCH_CPP11_OR_GREATER
+        SectionStats( SectionStats const& )              = default;
+        SectionStats( SectionStats && )                  = default;
+        SectionStats& operator = ( SectionStats const& ) = default;
+        SectionStats& operator = ( SectionStats && )     = default;
+#  endif
 
         SectionInfo sectionInfo;
         Counts assertions;
@@ -137,6 +150,13 @@ namespace Catch
             aborting( _aborting )
         {}
         virtual ~TestCaseStats();
+
+#  ifdef CATCH_CPP11_OR_GREATER
+        TestCaseStats( TestCaseStats const& )              = default;
+        TestCaseStats( TestCaseStats && )                  = default;
+        TestCaseStats& operator = ( TestCaseStats const& ) = default;
+        TestCaseStats& operator = ( TestCaseStats && )     = default;
+#  endif
 
         TestCaseInfo testInfo;
         Totals totals;
@@ -159,6 +179,13 @@ namespace Catch
         {}
         virtual ~TestGroupStats();
 
+#  ifdef CATCH_CPP11_OR_GREATER
+        TestGroupStats( TestGroupStats const& )              = default;
+        TestGroupStats( TestGroupStats && )                  = default;
+        TestGroupStats& operator = ( TestGroupStats const& ) = default;
+        TestGroupStats& operator = ( TestGroupStats && )     = default;
+#  endif
+
         GroupInfo groupInfo;
         Totals totals;
         bool aborting;
@@ -172,12 +199,20 @@ namespace Catch
             totals( _totals ),
             aborting( _aborting )
         {}
+        virtual ~TestRunStats();
+
+#  ifndef CATCH_CPP11_OR_GREATER
         TestRunStats( TestRunStats const& _other )
         :   runInfo( _other.runInfo ),
             totals( _other.totals ),
             aborting( _other.aborting )
         {}
-        virtual ~TestRunStats();
+#  else
+        TestRunStats( TestRunStats const& )              = default;
+        TestRunStats( TestRunStats && )                  = default;
+        TestRunStats& operator = ( TestRunStats const& ) = default;
+        TestRunStats& operator = ( TestRunStats && )     = default;
+#  endif
 
         TestRunInfo runInfo;
         Totals totals;

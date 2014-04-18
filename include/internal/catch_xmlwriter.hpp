@@ -66,11 +66,18 @@ namespace Catch {
                 endElement();
         }
 
+#  ifndef CATCH_CPP11_OR_GREATER
         XmlWriter& operator = ( XmlWriter const& other ) {
             XmlWriter temp( other );
             swap( temp );
             return *this;
         }
+#  else
+        XmlWriter( XmlWriter const& )              = default;
+        XmlWriter( XmlWriter && )                  = default;
+        XmlWriter& operator = ( XmlWriter const& ) = default;
+        XmlWriter& operator = ( XmlWriter && )     = default;
+#  endif
 
         void swap( XmlWriter& other ) {
             std::swap( m_tagIsOpen, other.m_tagIsOpen );

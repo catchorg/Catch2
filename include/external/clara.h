@@ -251,6 +251,10 @@ namespace Clara {
         template<typename ConfigT>
         struct IArgFunction {
             virtual ~IArgFunction() {}
+#  ifdef CATCH_CPP11_OR_GREATER
+            IArgFunction()                      = default;
+            IArgFunction( IArgFunction const& ) = default;
+#  endif
             virtual void set( ConfigT& config, std::string const& value ) const = 0;
             virtual void setFlag( ConfigT& config ) const = 0;
             virtual bool takesArg() const = 0;

@@ -78,6 +78,11 @@ namespace Catch {
         SourceLineInfo();
         SourceLineInfo( char const* _file, std::size_t _line );
         SourceLineInfo( SourceLineInfo const& other );
+#  ifdef CATCH_CPP11_OR_GREATER
+        SourceLineInfo( SourceLineInfo && )                  = default;
+        SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
+        SourceLineInfo& operator = ( SourceLineInfo && )     = default;
+#  endif
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;
 
