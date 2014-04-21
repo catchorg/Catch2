@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="12" failures="100" tests="680" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="~_" errors="12" failures="98" tests="646" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -323,13 +323,11 @@ MessageTests.cpp:<line number>
     <testcase classname="random SECTION tests" name="s2" time="{duration}"/>
     <testcase classname="nested SECTION tests" name="s1" time="{duration}"/>
     <testcase classname="nested SECTION tests" name="s1/s2" time="{duration}"/>
-    <testcase classname="more nested SECTION tests" name="s1/s2" time="{duration}">
+    <testcase classname="more nested SECTION tests" name="s2/s1" time="{duration}">
       <failure message="1 == 2" type="REQUIRE">
 MiscTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="more nested SECTION tests" name="s1/s3" time="{duration}"/>
-    <testcase classname="more nested SECTION tests" name="s1/s4" time="{duration}"/>
     <testcase classname="looped SECTION tests" name="s1" time="{duration}">
       <failure message="0 > 1" type="CHECK">
 MiscTests.cpp:<line number>
@@ -429,14 +427,6 @@ MiscTests.cpp:<line number>
     <testcase classname="vectors can be sized and resized" name="reserving bigger changes capacity but not size" time="{duration}"/>
     <testcase classname="vectors can be sized and resized" name="reserving smaller does not change size or capacity" time="{duration}"/>
     <testcase classname="A couple of nested sections followed by a failure" name="root" time="{duration}">
-      <failure type="FAIL">
-to infinity and beyond
-MiscTests.cpp:<line number>
-      </failure>
-      <failure type="FAIL">
-to infinity and beyond
-MiscTests.cpp:<line number>
-      </failure>
       <failure type="FAIL">
 to infinity and beyond
 MiscTests.cpp:<line number>

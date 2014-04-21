@@ -702,26 +702,6 @@ MiscTests.cpp:<line number>: FAILED:
 explicitly with message:
   to infinity and beyond
 
--------------------------------------------------------------------------------
-A couple of nested sections followed by a failure
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-explicitly with message:
-  to infinity and beyond
-
--------------------------------------------------------------------------------
-A couple of nested sections followed by a failure
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-explicitly with message:
-  to infinity and beyond
-
 hello
 hello
 -------------------------------------------------------------------------------
@@ -774,5 +754,5 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-125 test cases - 38 failed (661 assertions - 93 failed)
+125 test cases - 38 failed (627 assertions - 91 failed)
 

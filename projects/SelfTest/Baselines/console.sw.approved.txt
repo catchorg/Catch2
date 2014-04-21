@@ -2863,25 +2863,6 @@ with expansion:
 -------------------------------------------------------------------------------
 nested SECTION tests
   s1
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( a != b )
-with expansion:
-  1 != 2
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( b != a )
-with expansion:
-  2 != 1
-
--------------------------------------------------------------------------------
-nested SECTION tests
-  s1
   s2
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -2905,34 +2886,6 @@ MiscTests.cpp:<line number>: FAILED:
   REQUIRE( a == b )
 with expansion:
   1 == 2
-
--------------------------------------------------------------------------------
-more nested SECTION tests
-  s1
-  s3
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( a != b )
-with expansion:
-  1 != 2
-
--------------------------------------------------------------------------------
-more nested SECTION tests
-  s1
-  s4
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( a < b )
-with expansion:
-  1 < 2
 
 -------------------------------------------------------------------------------
 even more nested SECTION tests
@@ -3410,24 +3363,6 @@ with expansion:
 
 -------------------------------------------------------------------------------
 vectors can be sized and resized
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 5 )
-with expansion:
-  5 == 5
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.capacity() >= 5 )
-with expansion:
-  5 >= 5
-
--------------------------------------------------------------------------------
-vectors can be sized and resized
   resizing bigger changes size and capacity
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -3444,43 +3379,6 @@ PASSED:
   REQUIRE( v.capacity() >= 10 )
 with expansion:
   10 >= 10
-
--------------------------------------------------------------------------------
-vectors can be sized and resized
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 5 )
-with expansion:
-  5 == 5
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.capacity() >= 5 )
-with expansion:
-  5 >= 5
-
--------------------------------------------------------------------------------
-vectors can be sized and resized
-  resizing smaller changes size but not capacity
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 0 )
-with expansion:
-  0 == 0
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.capacity() >= 5 )
-with expansion:
-  5 >= 5
 
 -------------------------------------------------------------------------------
 vectors can be sized and resized
@@ -3606,26 +3504,6 @@ PASSED:
   REQUIRE( v.capacity() >= 5 )
 with expansion:
   5 >= 5
-
--------------------------------------------------------------------------------
-A couple of nested sections followed by a failure
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-explicitly with message:
-  to infinity and beyond
-
--------------------------------------------------------------------------------
-A couple of nested sections followed by a failure
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-explicitly with message:
-  to infinity and beyond
 
 -------------------------------------------------------------------------------
 A couple of nested sections followed by a failure
@@ -6269,43 +6147,6 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Assertions then sections
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::isTrue( true ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-Assertions then sections
-  A section
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::isTrue( true ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-Assertions then sections
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::isTrue( true ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-Assertions then sections
   A section
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -6516,21 +6357,6 @@ Scenario: Do that thing with the thing
      Given: This stuff exists
       When: I do this
       Then: it should do this
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( itDoesThis() )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-Scenario: Do that thing with the thing
-     Given: This stuff exists
-      When: I do this
-      Then: it should do this
        And: do that
 -------------------------------------------------------------------------------
 BDDTests.cpp:<line number>
@@ -6541,100 +6367,6 @@ PASSED:
   REQUIRE( itDoesThat() )
 with expansion:
   true
-
--------------------------------------------------------------------------------
-Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
-      When: it is made larger
-      Then: the size and capacity go up
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 10 )
-with expansion:
-  10 == 10
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.capacity() >= 10 )
-with expansion:
-  10 >= 10
-
--------------------------------------------------------------------------------
-Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
-      When: it is made larger
-      Then: the size and capacity go up
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 10 )
-with expansion:
-  10 == 10
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.capacity() >= 10 )
-with expansion:
-  10 >= 10
 
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
@@ -6709,19 +6441,6 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
      Given: an empty vector
--------------------------------------------------------------------------------
-BDDTests.cpp:<line number>
-...............................................................................
-
-BDDTests.cpp:<line number>:
-PASSED:
-  REQUIRE( v.size() == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
       When: we reserve more space
       Then: The capacity is increased but the size remains the same
 -------------------------------------------------------------------------------
@@ -6757,18 +6476,6 @@ BDDTests.cpp:<line number>:
 PASSED:
 with message:
   boo!
-
--------------------------------------------------------------------------------
-section tracking
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
 
 -------------------------------------------------------------------------------
 section tracking
@@ -6822,33 +6529,27 @@ SectionTrackerTests.cpp:<line number>
 
 SectionTrackerTests.cpp:<line number>:
 PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
   CHECK( testCaseTracker.enterSection( section1Name ) )
 with expansion:
   true
 
 SectionTrackerTests.cpp:<line number>:
 PASSED:
+  CHECK_FALSE( testCaseTracker.isCompleted() )
+with expansion:
+  !false
+
+SectionTrackerTests.cpp:<line number>:
+PASSED:
   CHECK( testCaseTracker.isCompleted() )
 with expansion:
   true
+
+SectionTrackerTests.cpp:<line number>:
+PASSED:
+  CHECK_FALSE( testCaseTracker.enterSection( section1Name ) )
+with expansion:
+  !false
 
 -------------------------------------------------------------------------------
 section tracking
@@ -6868,24 +6569,6 @@ section tracking
 -------------------------------------------------------------------------------
 SectionTrackerTests.cpp:<line number>
 ...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section2Name ) )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
 
 SectionTrackerTests.cpp:<line number>:
 PASSED:
@@ -6944,36 +6627,6 @@ SectionTrackerTests.cpp:<line number>
 
 SectionTrackerTests.cpp:<line number>:
 PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  true
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section2Name ) )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
   CHECK( testCaseTracker.enterSection( section1Name ) )
 with expansion:
   true
@@ -6986,10 +6639,16 @@ with expansion:
 
 SectionTrackerTests.cpp:<line number>:
 PASSED:
+  CHECK_FALSE( testCaseTracker.isCompleted() )
+with expansion:
+  !false
+
+SectionTrackerTests.cpp:<line number>:
+PASSED:
   CHECK( testCaseTracker.isCompleted() )
 with expansion:
   true
 
 ===============================================================================
-125 test cases - 53 failed (680 assertions - 112 failed)
+125 test cases - 53 failed (646 assertions - 110 failed)
 

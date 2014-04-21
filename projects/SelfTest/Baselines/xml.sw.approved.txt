@@ -2974,25 +2974,6 @@
             2 != 1
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Section name="s1" description="doesn't equal">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-          <Original>
-            a != b
-          </Original>
-          <Expanded>
-            1 != 2
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-          <Original>
-            b != a
-          </Original>
-          <Expanded>
-            2 != 1
-          </Expanded>
-        </Expression>
         <Section name="s2" description="not equal">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
             <Original>
@@ -3010,9 +2991,6 @@
     </TestCase>
     <TestCase name="more nested SECTION tests">
       <Section name="s1" description="doesn't equal">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="s1" description="doesn't equal">
         <Section name="s2" description="equal">
           <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
             <Original>
@@ -3026,40 +3004,9 @@
         </Section>
         <OverallResults successes="0" failures="1"/>
       </Section>
-      <Section name="s1" description="doesn't equal">
-        <Section name="s3" description="not equal">
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-            <Original>
-              a != b
-            </Original>
-            <Expanded>
-              1 != 2
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="s1" description="doesn't equal">
-        <Section name="s4" description="less than">
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-            <Original>
-              a &lt; b
-            </Original>
-            <Expanded>
-              1 &lt; 2
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="even more nested SECTION tests">
-      <Section name="c">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
       <Section name="c">
         <Section name="d (leaf)">
           <OverallResults successes="0" failures="1"/>
@@ -3514,22 +3461,6 @@
           5 >= 5
         </Expanded>
       </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-        <Original>
-          v.size() == 5
-        </Original>
-        <Expanded>
-          5 == 5
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-        <Original>
-          v.capacity() >= 5
-        </Original>
-        <Expanded>
-          5 >= 5
-        </Expanded>
-      </Expression>
       <Section name="resizing bigger changes size and capacity">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
           <Original>
@@ -3545,41 +3476,6 @@
           </Original>
           <Expanded>
             10 >= 10
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-        <Original>
-          v.size() == 5
-        </Original>
-        <Expanded>
-          5 == 5
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-        <Original>
-          v.capacity() >= 5
-        </Original>
-        <Expanded>
-          5 >= 5
-        </Expanded>
-      </Expression>
-      <Section name="resizing smaller changes size but not capacity">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-          <Original>
-            v.size() == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
-          <Original>
-            v.capacity() >= 5
-          </Original>
-          <Expanded>
-            5 >= 5
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0"/>
@@ -3703,15 +3599,6 @@
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="A couple of nested sections followed by a failure">
-      <Failure>
-        to infinity and beyond
-      </Failure>
-      <Section name="Outer">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Failure>
-        to infinity and beyond
-      </Failure>
       <Section name="Outer">
         <Section name="Inner">
           <OverallResults successes="1" failures="0"/>
@@ -3769,9 +3656,6 @@
           </Expanded>
         </Expression>
         <OverallResults successes="5" failures="0"/>
-      </Section>
-      <Section name="test lists">
-        <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="test lists">
         <Section name="1 test" description="Specify one test case using">
@@ -3934,9 +3818,6 @@
         <OverallResults successes="5" failures="0"/>
       </Section>
       <Section name="reporter">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="reporter">
         <Section name="-r/console">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
@@ -4003,9 +3884,6 @@
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="debugger">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="debugger">
         <Section name="-b">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
@@ -4048,9 +3926,6 @@
           <OverallResults successes="2" failures="0"/>
         </Section>
         <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Section name="abort">
-        <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="abort">
         <Section name="-a aborts after first failure">
@@ -4127,9 +4002,6 @@
         <OverallResults successes="1" failures="0"/>
       </Section>
       <Section name="nothrow">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="nothrow">
         <Section name="-e">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
@@ -4174,9 +4046,6 @@
         <OverallResults successes="2" failures="0"/>
       </Section>
       <Section name="output filename">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="output filename">
         <Section name="-o filename">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
@@ -4219,9 +4088,6 @@
           <OverallResults successes="2" failures="0"/>
         </Section>
         <OverallResults successes="2" failures="0"/>
-      </Section>
-      <Section name="combinations">
-        <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="combinations">
         <Section name="Single character flags can be combined">
@@ -4789,9 +4655,6 @@
     </TestCase>
     <TestCase name="Long strings can be wrapped">
       <Section name="plain string">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="plain string">
         <Section name="No wrapping">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
@@ -5116,9 +4979,6 @@ ur&quot;
           <OverallResults successes="1" failures="0"/>
         </Section>
         <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="With newlines">
-        <OverallResults successes="0" failures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="No wrapping">
@@ -6562,33 +6422,6 @@ there&quot;
           true
         </Expanded>
       </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
-        <Original>
-          Catch::isTrue( true )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Section name="A section">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
-          <Original>
-            Catch::isTrue( true )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
-        <Original>
-          Catch::isTrue( true )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
       <Section name="A section">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
           <Original>
@@ -6723,32 +6556,6 @@ there&quot;
     </TestCase>
     <TestCase name="Scenario: Do that thing with the thing">
       <Section name="Given: This stuff exists">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="Given: This stuff exists">
-        <Section name="When: I do this">
-          <OverallResults successes="0" failures="0"/>
-        </Section>
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="Given: This stuff exists">
-        <Section name="When: I do this">
-          <Section name="Then: it should do this">
-            <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-              <Original>
-                itDoesThis()
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <OverallResults successes="1" failures="0"/>
-          </Section>
-          <OverallResults successes="1" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="Given: This stuff exists">
         <Section name="When: I do this">
           <Section name="Then: it should do this">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
@@ -6779,100 +6586,6 @@ there&quot;
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: Vector resizing affects size and capacity">
-      <Section name="Given: an empty vector">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-          <Original>
-            v.size() == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="Given: an empty vector">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-          <Original>
-            v.size() == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <Section name="When: it is made larger">
-          <OverallResults successes="0" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="Given: an empty vector">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-          <Original>
-            v.size() == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <Section name="When: it is made larger">
-          <Section name="Then: the size and capacity go up">
-            <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-              <Original>
-                v.size() == 10
-              </Original>
-              <Expanded>
-                10 == 10
-              </Expanded>
-            </Expression>
-            <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-              <Original>
-                v.capacity() >= 10
-              </Original>
-              <Expanded>
-                10 >= 10
-              </Expanded>
-            </Expression>
-            <OverallResults successes="2" failures="0"/>
-          </Section>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0"/>
-      </Section>
-      <Section name="Given: an empty vector">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-          <Original>
-            v.size() == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <Section name="When: it is made larger">
-          <Section name="Then: the size and capacity go up">
-            <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-              <Original>
-                v.size() == 10
-              </Original>
-              <Expanded>
-                10 == 10
-              </Expanded>
-            </Expression>
-            <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-              <Original>
-                v.capacity() >= 10
-              </Original>
-              <Expanded>
-                10 >= 10
-              </Expanded>
-            </Expression>
-            <Section name="And when: it is made smaller again">
-              <OverallResults successes="0" failures="0"/>
-            </Section>
-            <OverallResults successes="2" failures="0"/>
-          </Section>
-          <OverallResults successes="2" failures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0"/>
-      </Section>
       <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
           <Original>
@@ -6938,20 +6651,6 @@ there&quot;
           </Expanded>
         </Expression>
         <Section name="When: we reserve more space">
-          <OverallResults successes="0" failures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0"/>
-      </Section>
-      <Section name="Given: an empty vector">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
-          <Original>
-            v.size() == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <Section name="When: we reserve more space">
           <Section name="Then: The capacity is increased but the size remains the same">
             <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
               <Original>
@@ -6979,15 +6678,6 @@ there&quot;
     </TestCase>
     <TestCase name="Scenario: This is a really long scenario name to see how the list command deals with wrapping">
       <Section name="Given: A section name that is so long that it cannot fit in a single console width">
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="Given: A section name that is so long that it cannot fit in a single console width">
-        <Section name="When: The test headers are printed as part of the normal running of the scenario">
-          <OverallResults successes="0" failures="0"/>
-        </Section>
-        <OverallResults successes="0" failures="0"/>
-      </Section>
-      <Section name="Given: A section name that is so long that it cannot fit in a single console width">
         <Section name="When: The test headers are printed as part of the normal running of the scenario">
           <Section name="Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent">
             <OverallResults successes="1" failures="0"/>
@@ -6999,14 +6689,6 @@ there&quot;
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="section tracking">
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-        <Original>
-          !testCaseTracker.isCompleted()
-        </Original>
-        <Expanded>
-          !false
-        </Expanded>
-      </Expression>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
         <Original>
           !testCaseTracker.isCompleted()
@@ -7045,34 +6727,18 @@ there&quot;
       <Section name="test case with one section">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
           <Original>
-            !testCaseTracker.enterSection( section1Name )
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            !testCaseTracker.isCompleted()
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            !testCaseTracker.isCompleted()
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
             testCaseTracker.enterSection( section1Name )
           </Original>
           <Expanded>
             true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
+          <Original>
+            !testCaseTracker.isCompleted()
+          </Original>
+          <Expanded>
+            !false
           </Expanded>
         </Expression>
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
@@ -7083,7 +6749,15 @@ there&quot;
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
+          <Original>
+            !testCaseTracker.enterSection( section1Name )
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
         <Original>
@@ -7096,30 +6770,6 @@ there&quot;
       <Section name="test case with two consecutive sections">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
           <Original>
-            !testCaseTracker.enterSection( section1Name )
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            !testCaseTracker.enterSection( section2Name )
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            !testCaseTracker.isCompleted()
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
             testCaseTracker.enterSection( section1Name )
           </Original>
           <Expanded>
@@ -7166,7 +6816,7 @@ there&quot;
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="9" failures="0"/>
+        <OverallResults successes="6" failures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
         <Original>
@@ -7179,46 +6829,6 @@ there&quot;
       <Section name="test case with one section within another">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
           <Original>
-            !testCaseTracker.enterSection( section1Name )
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            !testCaseTracker.isCompleted()
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            testCaseTracker.enterSection( section1Name )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            !testCaseTracker.enterSection( section2Name )
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
-            !testCaseTracker.isCompleted()
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
-          <Original>
             testCaseTracker.enterSection( section1Name )
           </Original>
           <Expanded>
@@ -7235,17 +6845,25 @@ there&quot;
         </Expression>
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
           <Original>
+            !testCaseTracker.isCompleted()
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
+          <Original>
             testCaseTracker.isCompleted()
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="8" failures="0"/>
+        <OverallResults successes="4" failures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="568" failures="112"/>
+    <OverallResults successes="536" failures="110"/>
   </Group>
-  <OverallResults successes="568" failures="112"/>
+  <OverallResults successes="536" failures="110"/>
 </Catch>
