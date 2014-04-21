@@ -1,3 +1,5 @@
+from  __future__ import  print_function
+
 import os
 import sys
 import shutil
@@ -18,12 +20,12 @@ def approveFile( approvedFile, unapprovedFile ):
 		if os.path.exists( approvedFile ):
 			os.remove( approvedFile )
 		os.rename( unapprovedFile, approvedFile )
-		print "approved " + justFilename		
+		print( "approved " + justFilename )
 	else:
-		print "approval file " + justFilename + " does not exist"
+		print( "approval file " + justFilename + " does not exist" )
 
 if len(files) > 0:
 	for unapprovedFile in files:
 		approveFile( unapprovedFile.replace( "unapproved.txt", "approved.txt" ), unapprovedFile )
 else:
-	print "no files to approve"
+	print( "no files to approve" )
