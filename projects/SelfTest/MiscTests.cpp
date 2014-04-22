@@ -339,3 +339,7 @@ TEST_CASE("not allowed", "[!throws]")
     // This test case should not be included if you run with -e on the command line
     SUCCEED();
 }
+
+//TEST_CASE( "Is big endian" ) {
+//    CHECK( Catch::Detail::Endianness::which() == Catch::Detail::Endianness::Little );
+//}

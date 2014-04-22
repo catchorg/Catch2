@@ -79,8 +79,21 @@ namespace Detail {
         }
     };
 
-    // For display purposes only.
-    // Does not consider endian-ness
+    struct Endianness {
+        enum Arch { Big, Little };
+
+        static Arch which() {
+            union {
+                int asInt;
+                char asChar[sizeof (int)];
+            };
+
+            asInt = 1;
+            return ( asChar[sizeof(int)-1] == 1 ) ? Big : Little;
+        }
+    };
+
+    // Writes the raw memory into a string, considering endianness
     template<typename T>
     std::string rawMemoryToString( T value ) {
         union {
@@ -92,8 +105,14 @@ namespace Detail {
 
         std::ostringstream oss;
         oss << "0x";
-        for( unsigned char* cp = bytes; cp < bytes+sizeof(T); ++cp )
-            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)*cp;
+
+        int i = 0, end = sizeof(T), inc = 1;
+        if( Endianness::which() == Endianness::Little ) {
+            i = end-1;
+            end = inc = -1;
+        }
+        for( ; i != end; i += inc )
+            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)bytes[i];
         return oss.str();
     }
 
