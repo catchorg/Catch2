@@ -84,6 +84,10 @@ namespace Catch {
             .describe( "skip exception tests" )
             .bind( &ConfigData::noThrow );
 
+        cli["-i"]["--invisibles"]
+            .describe( "show invisibles (tabs, newlines)" )
+            .bind( &ConfigData::showInvisibles );
+
         cli["-o"]["--out"]
             .describe( "output filename" )
             .bind( &ConfigData::outputFilename, "filename" );

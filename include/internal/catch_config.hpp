@@ -35,6 +35,7 @@ namespace Catch {
             shouldDebugBreak( false ),
             noThrow( false ),
             showHelp( false ),
+            showInvisibles( false ),
             abortAfter( -1 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
@@ -50,6 +51,7 @@ namespace Catch {
         bool shouldDebugBreak;
         bool noThrow;
         bool showHelp;
+        bool showInvisibles;
 
         int abortAfter;
 
@@ -154,6 +156,7 @@ namespace Catch {
         }
 
         bool showHelp() const { return m_data.showHelp; }
+        bool showInvisibles() const { return m_data.showInvisibles; }
 
         // IConfig interface
         virtual bool allowThrows() const        { return !m_data.noThrow; }

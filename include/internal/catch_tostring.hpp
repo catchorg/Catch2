@@ -10,6 +10,7 @@
 
 #include "catch_common.h"
 #include "catch_sfinae.hpp"
+#include "catch_interfaces_config.h"
 
 #include <sstream>
 #include <iomanip>
@@ -180,16 +181,31 @@ std::string toString( T const& value ) {
 // Built in overloads
 
 inline std::string toString( std::string const& value ) {
-    return "\"" + value + "\"";
+    std::string s = value;
+    if( getCurrentContext().getConfig()->showInvisibles() ) {
+        for(size_t i = 0; i < s.size(); ++i ) {
+            std::string subs;
+            switch( s[i] ) {
+            case '\n': subs = "\\n"; break;
+            case '\t': subs = "\\t"; break;
+            default: break;
+            }
+            if( !subs.empty() ) {
+                s = s.substr( 0, i ) + subs + s.substr( i+1 );
+                ++i;
+            }
+        }
+    }
+    return "\"" + s + "\"";
 }
 
 inline std::string toString( std::wstring const& value ) {
-    std::ostringstream oss;
-    oss << "\"";
+
+    std::string s;
+    s.reserve( value.size() );
     for(size_t i = 0; i < value.size(); ++i )
-        oss << static_cast<char>( value[i] <= 0xff ? value[i] : '?');
-    oss << "\"";
-    return oss.str();
+        s += value[i] <= 0xff ? static_cast<char>( value[i] ) : '?';
+    return toString( s );
 }
 
 inline std::string toString( const char* const value ) {
