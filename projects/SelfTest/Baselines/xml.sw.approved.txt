@@ -3613,6 +3613,24 @@
     <TestCase name="not allowed">
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Tabs and newlines show in output">
+      <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          s1 == s2
+        </Original>
+        <Expanded>
+          &quot;if ($b == 10) {
+		$a	= 20;
+}&quot;
+==
+&quot;if ($b == 10) {
+	$a = 20;
+}
+&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Process can be configured on command line">
       <Section name="default - no arguments">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
@@ -6863,7 +6881,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="536" failures="110"/>
+    <OverallResults successes="536" failures="111"/>
   </Group>
-  <OverallResults successes="536" failures="110"/>
+  <OverallResults successes="536" failures="111"/>
 </Catch>

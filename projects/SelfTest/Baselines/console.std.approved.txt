@@ -702,6 +702,24 @@ MiscTests.cpp:<line number>: FAILED:
 explicitly with message:
   to infinity and beyond
 
+-------------------------------------------------------------------------------
+Tabs and newlines show in output
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK( s1 == s2 )
+with expansion:
+  "if ($b == 10) {
+  		$a= 20;
+  }"
+  ==
+  "if ($b == 10) {
+  $a = 20;
+  }
+  "
+
 hello
 hello
 -------------------------------------------------------------------------------
@@ -754,5 +772,5 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-125 test cases - 38 failed (627 assertions - 91 failed)
+126 test cases - 39 failed (628 assertions - 92 failed)
 
