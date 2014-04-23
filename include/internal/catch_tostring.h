@@ -5,12 +5,11 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_TOSTRING_H_INCLUDED
+#define TWOBLUECUBES_CATCH_TOSTRING_H_INCLUDED
 
 #include "catch_common.h"
 #include "catch_sfinae.hpp"
-#include "catch_interfaces_config.h"
 
 #include <sstream>
 #include <iomanip>
@@ -161,7 +160,7 @@ struct StringMaker<std::vector<T, Allocator> > {
 
 namespace Detail {
     template<typename T>
-    inline std::string makeString( T const& value ) {
+    std::string makeString( T const& value ) {
         return StringMaker<T>::convert( value );
     }
 } // end namespace Detail
@@ -180,116 +179,27 @@ std::string toString( T const& value ) {
 
 // Built in overloads
 
-///////// !TBD: move this into impl file
-
-inline std::string toString( std::string const& value ) {
-    std::string s = value;
-    if( getCurrentContext().getConfig()->showInvisibles() ) {
-        for(size_t i = 0; i < s.size(); ++i ) {
-            std::string subs;
-            switch( s[i] ) {
-            case '\n': subs = "\\n"; break;
-            case '\t': subs = "\\t"; break;
-            default: break;
-            }
-            if( !subs.empty() ) {
-                s = s.substr( 0, i ) + subs + s.substr( i+1 );
-                ++i;
-            }
-        }
-    }
-    return "\"" + s + "\"";
-}
-
-inline std::string toString( std::wstring const& value ) {
-
-    std::string s;
-    s.reserve( value.size() );
-    for(size_t i = 0; i < value.size(); ++i )
-        s += value[i] <= 0xff ? static_cast<char>( value[i] ) : '?';
-    return toString( s );
-}
-
-inline std::string toString( const char* const value ) {
-    return value ? Catch::toString( std::string( value ) ) : std::string( "{null string}" );
-}
-
-inline std::string toString( char* const value ) {
-    return Catch::toString( static_cast<const char*>( value ) );
-}
-
-inline std::string toString( int value ) {
-    std::ostringstream oss;
-    oss << value;
-    return oss.str();
-}
-
-inline std::string toString( unsigned long value ) {
-    std::ostringstream oss;
-    if( value > 8192 )
-        oss << "0x" << std::hex << value;
-    else
-        oss << value;
-    return oss.str();
-}
-
-inline std::string toString( unsigned int value ) {
-    return toString( static_cast<unsigned long>( value ) );
-}
-
-inline std::string toString( const double value ) {
-    std::ostringstream oss;
-    oss << std::setprecision( 10 )
-        << std::fixed
-        << value;
-    std::string d = oss.str();
-    std::size_t i = d.find_last_not_of( '0' );
-    if( i != std::string::npos && i != d.size()-1 ) {
-        if( d[i] == '.' )
-            i++;
-        d = d.substr( 0, i+1 );
-    }
-    return d;
-}
-
-inline std::string toString( bool value ) {
-    return value ? "true" : "false";
-}
-
-inline std::string toString( char value ) {
-    return value < ' '
-        ? toString( static_cast<unsigned int>( value ) )
-        : Detail::makeString( value );
-}
-
-inline std::string toString( signed char value ) {
-    return toString( static_cast<char>( value ) );
-}
-
-inline std::string toString( unsigned char value ) {
-    return toString( static_cast<char>( value ) );
-}
+std::string toString( std::string const& value );
+std::string toString( std::wstring const& value );
+std::string toString( const char* const value );
+std::string toString( char* const value );
+std::string toString( int value );
+std::string toString( unsigned long value );
+std::string toString( unsigned int value );
+std::string toString( const double value );
+std::string toString( bool value );
+std::string toString( char value );
+std::string toString( signed char value );
+std::string toString( unsigned char value );
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
-inline std::string toString( std::nullptr_t ) {
-    return "nullptr";
-}
+std::string toString( std::nullptr_t );
 #endif
 
 #ifdef __OBJC__
-    inline std::string toString( NSString const * const& nsstring ) {
-        if( !nsstring )
-            return "nil";
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
-    }
-    inline std::string toString( NSString * CATCH_ARC_STRONG const& nsstring ) {
-        if( !nsstring )
-            return "nil";
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
-    }
-    inline std::string toString( NSObject* const& nsObject ) {
-        return toString( [nsObject description] );
-    }
+    std::string toString( NSString const * const& nsstring );
+    std::string toString( NSString * CATCH_ARC_STRONG const& nsstring );
+    std::string toString( NSObject* const& nsObject );
 #endif
 
     namespace Detail {
@@ -310,4 +220,4 @@ inline std::string toString( std::nullptr_t ) {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_TOSTRING_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_TOSTRING_H_INCLUDED

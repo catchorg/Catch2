@@ -34,6 +34,7 @@
 #include "catch_common.hpp"
 #include "catch_section.hpp"
 #include "catch_debugger.hpp"
+#include "catch_tostring.hpp"
 
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
