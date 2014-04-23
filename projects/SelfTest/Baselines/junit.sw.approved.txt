@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="12" failures="99" tests="647" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="~_" errors="12" failures="99" tests="648" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -531,6 +531,7 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="Comparing function pointers" time="{duration}"/>
     <testcase classname="global" name="Comparing member function pointers" time="{duration}"/>
     <testcase classname="global" name="pointer to class" time="{duration}"/>
+    <testcase classname="global" name="null_ptr" time="{duration}"/>
     <testcase classname="global" name="X/level/0/a" time="{duration}"/>
     <testcase classname="global" name="X/level/0/b" time="{duration}"/>
     <testcase classname="global" name="X/level/1/a" time="{duration}"/>

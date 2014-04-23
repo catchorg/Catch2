@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <limits>
 #include <vector>
+#include <cstddef>
 
 #ifdef __OBJC__
 #include "catch_objc_arc.hpp"

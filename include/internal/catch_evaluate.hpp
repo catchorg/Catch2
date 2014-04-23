@@ -13,6 +13,8 @@
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #endif
 
+#include <cstddef>
+
 namespace Catch {
 namespace Internal {
 
