@@ -114,7 +114,7 @@
 #    define CATCH_NOEXCEPT_IS(x) noexcept(x)
 #  endif
 #endif
-#ifndef CATCH_NO_EXCEPT
+#ifndef CATCH_NOEXCEPT
 #  define CATCH_NOEXCEPT throw()
 #  define CATCH_NOEXCEPT_IS(x)
 #endif
