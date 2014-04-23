@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 40 (master branch)
- *  Generated: 2014-04-23 07:07:39.268798
+ *  CATCH v1.0 build 41 (master branch)
+ *  Generated: 2014-04-23 18:19:30.301111
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -56,11 +56,13 @@
 
 #ifdef __clang__
 
-#if __has_feature(cxx_nullptr)
+#  if __has_feature(cxx_nullptr)
+#    define CATCH_CONFIG_CPP11_NULLPTR
+#  endif
 
-#define CATCH_CONFIG_CPP11_NULLPTR
-
-#endif
+#  if __has_feature(cxx_noexcept)
+#    define CATCH_CONFIG_CPP11_NOEXCEPT
+#  endif
 
 #endif // __clang__
 
@@ -151,13 +153,10 @@
 #endif
 
 // noexcept support:
-#ifdef CATCH_CPP11_OR_GREATER
-#  if (__has_feature(cxx_noexcept))
-#    define CATCH_NOEXCEPT noexcept
-#    define CATCH_NOEXCEPT_IS(x) noexcept(x)
-#  endif
-#endif
-#ifndef CATCH_NO_EXCEPT
+#if defined(CATCH_CONFIG_CPP11_NOEXCEPT) && !defined(CATCH_NOEXCEPT)
+#  define CATCH_NOEXCEPT noexcept
+#  define CATCH_NOEXCEPT_IS(x) noexcept(x)
+#else
 #  define CATCH_NOEXCEPT throw()
 #  define CATCH_NOEXCEPT_IS(x)
 #endif
@@ -617,6 +616,7 @@ namespace Catch {
 #include <iomanip>
 #include <limits>
 #include <vector>
+#include <cstddef>
 
 #ifdef __OBJC__
 // #included from: catch_objc_arc.hpp
@@ -991,6 +991,8 @@ namespace Catch {
 #pragma warning(push)
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #endif
+
+#include <cstddef>
 
 namespace Catch {
 namespace Internal {
@@ -6652,7 +6654,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 40, "master" );
+    Version libraryVersion( 1, 0, 41, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -7983,6 +7985,8 @@ namespace Catch {
 
 // #included from: ../reporters/catch_reporter_console.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
+
+#include <cstring>
 
 namespace Catch {
 
