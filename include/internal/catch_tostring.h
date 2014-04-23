@@ -180,6 +180,8 @@ std::string toString( T const& value ) {
 
 // Built in overloads
 
+///////// !TBD: move this into impl file
+
 inline std::string toString( std::string const& value ) {
     std::string s = value;
     if( getCurrentContext().getConfig()->showInvisibles() ) {

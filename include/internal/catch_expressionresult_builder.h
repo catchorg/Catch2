@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_ASSERTIONRESULT_BUILDER_H_INCLUDED
 
-#include "catch_tostring.hpp"
+#include "catch_tostring.h"
 #include "catch_assertionresult.h"
 #include "catch_result_type.h"
 #include "catch_evaluate.hpp"
