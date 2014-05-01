@@ -52,6 +52,7 @@ TEST_CASE( "An unchecked exception reports the line of the last assertion", "[.]
 	if( Catch::isTrue( true ) )
 	    throw std::domain_error( "unexpected exception" );
 }
+
 TEST_CASE( "When unchecked exceptions are thrown from sections they are always failures", "[.][failing]" )
 {
     SECTION( "section name", "" )
