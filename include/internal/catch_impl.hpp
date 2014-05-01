@@ -39,6 +39,7 @@
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
 #include "../reporters/catch_reporter_console.hpp"
+#include "../reporters/catch_reporter_compact.hpp"
 
 namespace Catch {
     NonCopyable::~NonCopyable() {}
@@ -66,6 +67,7 @@ namespace Catch {
 
     StreamingReporterBase::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
+    CompactReporter::~CompactReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
