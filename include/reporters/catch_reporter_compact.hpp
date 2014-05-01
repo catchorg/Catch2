@@ -246,7 +246,7 @@ namespace Catch {
         // -   red: Failed N tests cases, failed M assertions.
         // - green: Passed [both/all] N tests cases with M assertions.
 
-        std::string both_or_all( int count ) const {
+        std::string bothOrAll( std::size_t count ) const {
             return count == 1 ? "" : count == 2 ? "both " : "all " ;
         }
 
@@ -258,16 +258,16 @@ namespace Catch {
                 Colour colour( Colour::ResultError );
                 const std::string qualify_assertions_failed =
                     totals.assertions.failed == totals.assertions.total() ?
-                        both_or_all( totals.assertions.failed ) : "";
+                        bothOrAll( totals.assertions.failed ) : "";
                 stream <<
-                    "Failed " << both_or_all( totals.testCases.failed )
+                    "Failed " << bothOrAll( totals.testCases.failed )
                               << pluralise( totals.testCases.failed, "test case"  ) << ", "
                     "failed " << qualify_assertions_failed <<
                                  pluralise( totals.assertions.failed, "assertion" ) << ".";
             }
             else if( totals.assertions.total() == 0 ) {
                 stream <<
-                    "Passed " << both_or_all( totals.testCases.total() )
+                    "Passed " << bothOrAll( totals.testCases.total() )
                               << pluralise( totals.testCases.total(), "test case" )
                               << " (no assertions).";
             }
@@ -280,7 +280,7 @@ namespace Catch {
             else {
                 Colour colour( Colour::ResultSuccess );
                 stream <<
-                    "Passed " << both_or_all( totals.testCases.passed )
+                    "Passed " << bothOrAll( totals.testCases.passed )
                               << pluralise( totals.testCases.passed, "test case"  ) <<
                     " with "  << pluralise( totals.assertions.passed, "assertion" ) << ".";
             }
