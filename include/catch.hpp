@@ -17,8 +17,6 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #pragma clang diagnostic ignored "-Wc++98-compat"
 #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#pragma clang diagnostic ignored "-WGeneralized initializer lists are incompatible with C++98"
-#pragma clang diagnostic ignored "-WRvalue references are incompatible with C++98"
 #endif
 
 #ifdef CATCH_CONFIG_MAIN
