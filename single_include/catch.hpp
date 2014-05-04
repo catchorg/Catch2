@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 42 (master branch)
- *  Generated: 2014-05-01 19:04:10.193312
+ *  CATCH v1.0 build 43 (master branch)
+ *  Generated: 2014-05-04 09:22:51.466832
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -21,8 +21,6 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #pragma clang diagnostic ignored "-Wc++98-compat"
 #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#pragma clang diagnostic ignored "-WGeneralized initializer lists are incompatible with C++98"
-#pragma clang diagnostic ignored "-WRvalue references are incompatible with C++98"
 #endif
 
 #ifdef CATCH_CONFIG_MAIN
@@ -6658,7 +6656,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 42, "master" );
+    Version libraryVersion( 1, 0, 43, "master" );
 }
 
 // #included from: catch_message.hpp
