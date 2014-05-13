@@ -84,25 +84,25 @@ namespace Detail {
         enum Arch { Big, Little };
 
         static Arch which() {
-            union {
+            union _{
                 int asInt;
                 char asChar[sizeof (int)];
-            };
+            } u;
 
-            asInt = 1;
-            return ( asChar[sizeof(int)-1] == 1 ) ? Big : Little;
+            u.asInt = 1;
+            return ( u.asChar[sizeof(int)-1] == 1 ) ? Big : Little;
         }
     };
 
     // Writes the raw memory into a string, considering endianness
     template<typename T>
     std::string rawMemoryToString( T value ) {
-        union {
+        union _ {
             T typedValue;
             unsigned char bytes[sizeof(T)];
-        };
+        } u;
 
-        typedValue = value;
+        u.typedValue = value;
 
         std::ostringstream oss;
         oss << "0x";
@@ -113,7 +113,7 @@ namespace Detail {
             end = inc = -1;
         }
         for( ; i != end; i += inc )
-            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)bytes[i];
+            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)u.bytes[i];
         return oss.str();
     }
 
