@@ -3604,19 +3604,13 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.filters().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
+  REQUIRE( cfg.testSpec().matches( fakeTestCase( "notIncluded" ) ) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) )
+  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) )
 with expansion:
   true
 
@@ -3634,19 +3628,13 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.filters().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
+  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
+  REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) )
 with expansion:
   true
 
@@ -3664,55 +3652,13 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.filters().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false )
+  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  test lists
-  Specify two test cases using -t
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( cfg.filters().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test2" ) ) )
+  REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) )
 with expansion:
   true
 
@@ -3973,445 +3919,6 @@ PASSED:
   CHECK( config.noThrow == true )
 with expansion:
   true == true
-
--------------------------------------------------------------------------------
-selftest/test filter
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchAny.shouldInclude( fakeTestCase( "any" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchNone.shouldInclude( fakeTestCase( "any" ) ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchHidden.shouldInclude( fakeTestCase( "./any" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false )
-with expansion:
-  false == false
-
--------------------------------------------------------------------------------
-selftest/test filters
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchHidden.shouldInclude( fakeTestCase( "./something" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( filters.shouldInclude( fakeTestCase( "any" ) ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( filters.shouldInclude( fakeTestCase( "./something" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( filters.shouldInclude( fakeTestCase( "./anything" ) ) == false )
-with expansion:
-  false == false
-
--------------------------------------------------------------------------------
-selftest/filter/prefix wildcard
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false )
-with expansion:
-  false == false
-
--------------------------------------------------------------------------------
-selftest/filter/wildcard at both ends
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false )
-with expansion:
-  false == false
-
--------------------------------------------------------------------------------
-selftest/tags
-  single [one] tag
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.getTestCaseInfo().description == "" )
-with expansion:
-  "" == ""
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.hasTag( "one" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.getTags().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p1 ) == true )
-with expansion:
-  true == true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p2 ) == true )
-with expansion:
-  true == true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p3 ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p4 ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p5 ) == false )
-with expansion:
-  false == false
-
--------------------------------------------------------------------------------
-selftest/tags
-  single [two] tag
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.getTestCaseInfo().description == "" )
-with expansion:
-  "" == ""
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.hasTag( "two" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.getTags().size() == 1 )
-with expansion:
-  1 == 1
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p1 ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p2 ) == true )
-with expansion:
-  true == true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p3 ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p4 ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( p5 ) == false )
-with expansion:
-  false == false
-
--------------------------------------------------------------------------------
-selftest/tags
-  two tags
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.getTestCaseInfo().description == "" )
-with expansion:
-  "" == ""
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.hasTag( "one" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.hasTag( "two" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.hasTag( "Two" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.hasTag( "three" ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.getTags().size() == 2 )
-with expansion:
-  2 == 2
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.matchesTags( p1 ) == true )
-with expansion:
-  true == true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.matchesTags( p2 ) == true )
-with expansion:
-  true == true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.matchesTags( p3 ) == true )
-with expansion:
-  true == true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.matchesTags( p4 ) == true )
-with expansion:
-  true == true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( twoTags.matchesTags( p5 ) == true )
-with expansion:
-  true == true
-
--------------------------------------------------------------------------------
-selftest/tags
-  complex
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( fakeTestCase( "test", "[one][.]" ).matchesTags( p1 ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( fakeTestCase( "test", "[one][.]" ).matchesTags( p5 ) )
-with expansion:
-  !false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p4 ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p5 ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( fakeTestCase( "test", "[three]" ).matchesTags( "[three]~[one]" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]~[not_apple]" ) )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-selftest/tags
-  one tag with characters either side
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTagWithExtras.getTestCaseInfo().description == "1234" )
-with expansion:
-  "1234" == "1234"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTagWithExtras.hasTag( "one" ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTagWithExtras.hasTag( "two" ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTagWithExtras.getTags().size() == 1 )
-with expansion:
-  1 == 1
-
--------------------------------------------------------------------------------
-selftest/tags
-  start of a tag, but not closed
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTagOpen.getTestCaseInfo().description == "[one" )
-with expansion:
-  "[one" == "[one"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTagOpen.hasTag( "one" ) == false )
-with expansion:
-  false == false
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTagOpen.getTags().size() == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-selftest/tags
-  hidden
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.getTestCaseInfo().description == "" )
-with expansion:
-  "" == ""
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.hasTag( "." ) )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.isHidden() )
-with expansion:
-  true
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( oneTag.matchesTags( "~[.]" ) == false )
-with expansion:
-  false == false
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
@@ -6334,6 +5841,890 @@ TrickyTests.cpp:<line number>:
 PASSED:
 
 -------------------------------------------------------------------------------
+Parse test names and tags
+  Empty test spec should have no filters
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Test spec from empty string should have no filters
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches(tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Test spec from just a comma should have no filters
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Test spec from name should have one filter
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Test spec from quoted name should have one filter
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Test spec from name should have one filter
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Wildcard at the start
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( parseTestSpec( "*a" ).matches( tcA ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Wildcard at the end
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( parseTestSpec( "a*" ).matches( tcA ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Wildcard at both ends
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( parseTestSpec( "*a*" ).matches( tcA ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Just wildcard
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Single tag
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Single tag, two matches
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Two tags
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Wildcarded name and tag
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Single tag exclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  One tag exclusion and one tag inclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  One tag exclusion and one wldcarded name inclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  One tag exclusion, using exclude:, and one wldcarded name inclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  name exclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  wildcarded name exclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  wildcarded name exclusion with tag inclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  wildcarded name exclusion, using exclude:, with tag inclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  two wildcarded names
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  empty tag
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  empty quoted name
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  quoted string followed by tag exclusion
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
 Anonymous test case 1
 -------------------------------------------------------------------------------
 VariadicMacrosTests.cpp:<line number>
@@ -6680,5 +7071,5 @@ with expansion:
   true
 
 ===============================================================================
-127 test cases - 54 failed (648 assertions - 111 failed)
+123 test cases - 54 failed (696 assertions - 111 failed)
 

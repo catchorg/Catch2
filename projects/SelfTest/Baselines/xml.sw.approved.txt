@@ -1,5 +1,5 @@
 <Catch name="CatchSelfTest">
-  <Group name="~_">
+  <Group>
     <TestCase name="Some simple comparisons between doubles">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ApproxTests.cpp" >
         <Original>
@@ -3687,15 +3687,7 @@
           </Expression>
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.filters().size() == 1
-            </Original>
-            <Expanded>
-              1 == 1
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
+              cfg.testSpec().matches( fakeTestCase( &quot;notIncluded&quot; ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -3703,15 +3695,15 @@
           </Expression>
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
+              cfg.testSpec().matches( fakeTestCase( &quot;test1&quot; ) )
             </Original>
             <Expanded>
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="4" failures="0"/>
+          <OverallResults successes="3" failures="0"/>
         </Section>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="3" failures="0"/>
       </Section>
       <Section name="test lists">
         <Section name="Specify one test case exclusion using exclude:">
@@ -3725,15 +3717,7 @@
           </Expression>
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.filters().size() == 1
-            </Original>
-            <Expanded>
-              1 == 1
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
+              cfg.testSpec().matches( fakeTestCase( &quot;test1&quot; ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -3741,15 +3725,15 @@
           </Expression>
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
+              cfg.testSpec().matches( fakeTestCase( &quot;alwaysIncluded&quot; ) )
             </Original>
             <Expanded>
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="4" failures="0"/>
+          <OverallResults successes="3" failures="0"/>
         </Section>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="3" failures="0"/>
       </Section>
       <Section name="test lists">
         <Section name="Specify one test case exclusion using ~">
@@ -3763,15 +3747,7 @@
           </Expression>
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.filters().size() == 1
-            </Original>
-            <Expanded>
-              1 == 1
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) ) == false
+              cfg.testSpec().matches( fakeTestCase( &quot;test1&quot; ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -3779,61 +3755,15 @@
           </Expression>
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;alwaysIncluded&quot; ) )
+              cfg.testSpec().matches( fakeTestCase( &quot;alwaysIncluded&quot; ) )
             </Original>
             <Expanded>
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="4" failures="0"/>
+          <OverallResults successes="3" failures="0"/>
         </Section>
-        <OverallResults successes="4" failures="0"/>
-      </Section>
-      <Section name="test lists">
-        <Section name="Specify two test cases using -t">
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              parseIntoConfig( argv, config )
-            </Original>
-            <Expanded>
-              parseIntoConfig( argv, config )
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              cfg.filters().size() == 1
-            </Original>
-            <Expanded>
-              1 == 1
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;notIncluded&quot; ) ) == false
-            </Original>
-            <Expanded>
-              false == false
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test1&quot; ) )
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-            <Original>
-              cfg.filters()[0].shouldInclude( fakeTestCase( &quot;test2&quot; ) )
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <OverallResults successes="5" failures="0"/>
-        </Section>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="3" failures="0"/>
       </Section>
       <Section name="reporter">
         <Section name="-r/console">
@@ -4143,530 +4073,6 @@
           </Expression>
           <OverallResults successes="4" failures="0"/>
         </Section>
-        <OverallResults successes="4" failures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="selftest/test filter">
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchAny.shouldInclude( fakeTestCase( &quot;any&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchNone.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchNonHidden.shouldInclude( fakeTestCase( &quot;any&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchNonHidden.shouldInclude( fakeTestCase( &quot;./any&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="selftest/test filters">
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchHidden.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          filters.shouldInclude( fakeTestCase( &quot;any&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          filters.shouldInclude( fakeTestCase( &quot;./something&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          filters.shouldInclude( fakeTestCase( &quot;./anything&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="selftest/filter/prefix wildcard">
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="selftest/filter/wildcard at both ends">
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchBadgers.shouldInclude( fakeTestCase( &quot;big badger&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchBadgers.shouldInclude( fakeTestCase( &quot;little badgers&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchBadgers.shouldInclude( fakeTestCase( &quot;badgers are big&quot; ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-        <Original>
-          matchBadgers.shouldInclude( fakeTestCase( &quot;hedgehogs&quot; ) ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="selftest/tags">
-      <Section name="single [one] tag">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.getTestCaseInfo().description == &quot;&quot;
-          </Original>
-          <Expanded>
-            &quot;&quot; == &quot;&quot;
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.hasTag( &quot;one&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.getTags().size() == 1
-          </Original>
-          <Expanded>
-            1 == 1
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p1 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p2 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p3 ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p4 ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p5 ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <OverallResults successes="8" failures="0"/>
-      </Section>
-      <Section name="single [two] tag">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.getTestCaseInfo().description == &quot;&quot;
-          </Original>
-          <Expanded>
-            &quot;&quot; == &quot;&quot;
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.hasTag( &quot;two&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.getTags().size() == 1
-          </Original>
-          <Expanded>
-            1 == 1
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p1 ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p2 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p3 ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p4 ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( p5 ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <OverallResults successes="8" failures="0"/>
-      </Section>
-      <Section name="two tags">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.getTestCaseInfo().description == &quot;&quot;
-          </Original>
-          <Expanded>
-            &quot;&quot; == &quot;&quot;
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.hasTag( &quot;one&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.hasTag( &quot;two&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.hasTag( &quot;Two&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.hasTag( &quot;three&quot; ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.getTags().size() == 2
-          </Original>
-          <Expanded>
-            2 == 2
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.matchesTags( p1 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.matchesTags( p2 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.matchesTags( p3 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.matchesTags( p4 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            twoTags.matchesTags( p5 ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <OverallResults successes="11" failures="0"/>
-      </Section>
-      <Section name="complex">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            fakeTestCase( &quot;test&quot;, &quot;[one][.]&quot; ).matchesTags( p1 )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            !fakeTestCase( &quot;test&quot;, &quot;[one][.]&quot; ).matchesTags( p5 )
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            fakeTestCase( &quot;test&quot;, &quot;[three]&quot; ).matchesTags( p4 )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            fakeTestCase( &quot;test&quot;, &quot;[three]&quot; ).matchesTags( p5 )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            fakeTestCase( &quot;test&quot;, &quot;[three]&quot; ).matchesTags( &quot;[three]~[one]&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            fakeTestCase( &quot;test&quot;, &quot;[unit][not_apple]&quot; ).matchesTags( &quot;[unit]&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            !fakeTestCase( &quot;test&quot;, &quot;[unit][not_apple]&quot; ).matchesTags( &quot;[unit]~[not_apple]&quot; )
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <OverallResults successes="7" failures="0"/>
-      </Section>
-      <Section name="one tag with characters either side">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTagWithExtras.getTestCaseInfo().description == &quot;1234&quot;
-          </Original>
-          <Expanded>
-            &quot;1234&quot; == &quot;1234&quot;
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTagWithExtras.hasTag( &quot;one&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTagWithExtras.hasTag( &quot;two&quot; ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTagWithExtras.getTags().size() == 1
-          </Original>
-          <Expanded>
-            1 == 1
-          </Expanded>
-        </Expression>
-        <OverallResults successes="4" failures="0"/>
-      </Section>
-      <Section name="start of a tag, but not closed">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTagOpen.getTestCaseInfo().description == &quot;[one&quot;
-          </Original>
-          <Expanded>
-            &quot;[one&quot; == &quot;[one&quot;
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTagOpen.hasTag( &quot;one&quot; ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTagOpen.getTags().size() == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <OverallResults successes="3" failures="0"/>
-      </Section>
-      <Section name="hidden">
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.getTestCaseInfo().description == &quot;&quot;
-          </Original>
-          <Expanded>
-            &quot;&quot; == &quot;&quot;
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.hasTag( &quot;.&quot; )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.isHidden()
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
-          <Original>
-            oneTag.matchesTags( &quot;~[.]&quot; ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
         <OverallResults successes="4" failures="0"/>
       </Section>
       <OverallResult success="true"/>
@@ -6571,6 +5977,1023 @@ there&quot;
     <TestCase name="X/level/1/b">
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Parse test names and tags">
+      <Section name="Empty test spec should have no filters">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Test spec from empty string should have no filters">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches(tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Test spec from just a comma should have no filters">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Test spec from name should have one filter">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Test spec from quoted name should have one filter">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Test spec from name should have one filter">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="Wildcard at the start">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            parseTestSpec( &quot;*a&quot; ).matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0"/>
+      </Section>
+      <Section name="Wildcard at the end">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            parseTestSpec( &quot;a*&quot; ).matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0"/>
+      </Section>
+      <Section name="Wildcard at both ends">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            parseTestSpec( &quot;*a*&quot; ).matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0"/>
+      </Section>
+      <Section name="Just wildcard">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="Single tag">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="Single tag, two matches">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="Two tags">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="Wildcarded name and tag">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="Single tag exclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="One tag exclusion and one tag inclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="One tag exclusion and one wldcarded name inclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="One tag exclusion, using exclude:, and one wldcarded name inclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="name exclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="wildcarded name exclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="wildcarded name exclusion with tag inclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="wildcarded name exclusion, using exclude:, with tag inclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="two wildcarded names">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="empty tag">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="empty quoted name">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <Section name="quoted string followed by tag exclusion">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Anonymous test case 1">
       <OverallResult success="true"/>
     </TestCase>
@@ -6892,7 +7315,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="537" failures="111"/>
+    <OverallResults successes="585" failures="111"/>
   </Group>
-  <OverallResults successes="537" failures="111"/>
+  <OverallResults successes="585" failures="111"/>
 </Catch>
