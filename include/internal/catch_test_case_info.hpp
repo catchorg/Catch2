@@ -11,7 +11,6 @@
 #include "catch_test_spec.hpp"
 #include "catch_test_case_info.h"
 #include "catch_interfaces_testcase.h"
-#include "catch_tags.h"
 #include "catch_common.h"
 
 namespace Catch {
@@ -25,6 +24,21 @@ namespace Catch {
     inline bool isReservedTag( std::string const& tag ) {
         return !isSpecialTag( tag ) && tag.size() > 0 && !isalnum( tag[0] );
     }
+    inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
+        if( isReservedTag( tag ) ) {
+            {
+                Colour colourGuard( Colour::Red );
+                std::cerr
+                    << "Tag name [" << tag << "] not allowed.\n"
+                    << "Tag names starting with non alpha-numeric characters are reserved\n";
+            }
+            {
+                Colour colourGuard( Colour::FileName );
+                std::cerr << _lineInfo << std::endl;
+            }
+            exit(1);
+        }
+    }
 
     TestCase makeTestCase(  ITestCase* _testCase,
                             std::string const& _className,
@@ -32,33 +46,37 @@ namespace Catch {
                             std::string const& _descOrTags,
                             SourceLineInfo const& _lineInfo )
     {
-        std::string desc = _descOrTags;
         bool isHidden( startsWith( _name, "./" ) ); // Legacy support
+
+        // Parse out tags
         std::set<std::string> tags;
-        TagExtracter( tags ).parse( desc );
-        for( std::set<std::string>::const_iterator it = tags.begin(), itEnd = tags.end();
-                it != itEnd;
-                ++it )
-            if( isReservedTag( *it ) ) {
-                {
-                    Colour colourGuard( Colour::Red );
-                    std::cerr
-                        << "Tag name [" << *it << "] not allowed.\n"
-                        << "Tag names starting with non alpha-numeric characters are reserved\n";
-                }
-                {
-                    Colour colourGuard( Colour::FileName );
-                    std::cerr << _lineInfo << std::endl;
-                }
-                exit(1);
+        std::string desc, tag;
+        bool inTag = false;
+        for( std::size_t i = 0; i < _descOrTags.size(); ++i ) {
+            char c = _descOrTags[i];
+            if( !inTag ) {
+                if( c == '[' )
+                    inTag = true;
+                else
+                    desc += c;
             }
+            else {
+                if( c == ']' ) {
+                    enforceNotReservedTag( tag, _lineInfo );
 
-        if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
-            isHidden = true;
-
-        if( isHidden ) {
-            tags.insert( "hide" );
-            tags.insert( "." );
+                    inTag = false;
+                    if( tag == "hide" || tag == "." ) {
+                        tags.insert( "hide" );
+                        tags.insert( "." );
+                    }
+                    else {
+                        tags.insert( tag );
+                    }
+                    tag.clear();
+                }
+                else
+                    tag += c;
+            }
         }
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
@@ -120,18 +138,6 @@ namespace Catch {
     }
     bool TestCase::throws() const {
         return TestCaseInfo::throws;
-    }
-
-    bool TestCase::hasTag( std::string const& tag ) const {
-        return tags.find( toLower( tag ) ) != tags.end();
-    }
-    bool TestCase::matchesTags( std::string const& tagPattern ) const {
-        TagExpression exp;
-        TagExpressionParser( exp ).parse( tagPattern );
-        return exp.matches( tags );
-    }
-    std::set<std::string> const& TestCase::getTags() const {
-        return tags;
     }
 
     void TestCase::swap( TestCase& other ) {
