@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 43 (master branch)
- *  Generated: 2014-05-04 09:22:51.466832
+ *  CATCH v1.0 build 44 (master branch)
+ *  Generated: 2014-05-16 18:53:00.411119
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -440,7 +440,7 @@ namespace Catch {
 
 namespace Catch {
 
-    class TestCaseFilters;
+    class TestSpec;
 
     struct ITestCase : IShared {
         virtual void invoke () const = 0;
@@ -454,8 +454,7 @@ namespace Catch {
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual void getFilteredTests( TestCaseFilters const& filters, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
-        virtual void getFilteredTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
 
     };
 }
@@ -729,25 +728,25 @@ namespace Detail {
         enum Arch { Big, Little };
 
         static Arch which() {
-            union {
+            union _{
                 int asInt;
                 char asChar[sizeof (int)];
-            };
+            } u;
 
-            asInt = 1;
-            return ( asChar[sizeof(int)-1] == 1 ) ? Big : Little;
+            u.asInt = 1;
+            return ( u.asChar[sizeof(int)-1] == 1 ) ? Big : Little;
         }
     };
 
     // Writes the raw memory into a string, considering endianness
     template<typename T>
     std::string rawMemoryToString( T value ) {
-        union {
+        union _ {
             T typedValue;
             unsigned char bytes[sizeof(T)];
-        };
+        } u;
 
-        typedValue = value;
+        u.typedValue = value;
 
         std::ostringstream oss;
         oss << "0x";
@@ -758,7 +757,7 @@ namespace Detail {
             end = inc = -1;
         }
         for( ; i != end; i += inc )
-            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)bytes[i];
+            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)u.bytes[i];
         return oss.str();
     }
 
@@ -1513,7 +1512,7 @@ namespace Catch {
         Never
     }; };
 
-    class TestCaseFilters;
+    class TestSpec;
 
     struct IConfig : IShared {
 
@@ -1528,7 +1527,7 @@ namespace Catch {
         virtual int abortAfter() const = 0;
         virtual bool showInvisibles() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;
-        virtual std::vector<TestCaseFilters> const& filters() const = 0;
+        virtual TestSpec const& testSpec() const = 0;
     };
 }
 
@@ -2413,7 +2412,7 @@ namespace Catch {
         bool throws;
     };
 
-    class TestCase : protected TestCaseInfo {
+    class TestCase : public TestCaseInfo {
     public:
 
         TestCase( ITestCase* testCase, TestCaseInfo const& info );
@@ -2427,9 +2426,6 @@ namespace Catch {
 
         bool isHidden() const;
         bool throws() const;
-        bool hasTag( std::string const& tag ) const;
-        bool matchesTags( std::string const& tagPattern ) const;
-        std::set<std::string> const& getTags() const;
 
         void swap( TestCase& other );
         bool operator == ( TestCase const& other ) const;
@@ -2678,158 +2674,215 @@ return @ desc; \
 // #included from: catch_config.hpp
 #define TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
 
-// #included from: catch_test_spec.h
-#define TWOBLUECUBES_CATCH_TEST_SPEC_H_INCLUDED
-
-// #included from: catch_tags.h
-#define TWOBLUECUBES_CATCH_TAGS_H_INCLUDED
-
-#include <string>
-#include <set>
-#include <map>
-#include <vector>
+// #included from: catch_test_spec_parser.hpp
+#define TWOBLUECUBES_CATCH_TEST_SPEC_PARSER_HPP_INCLUDED
 
 #ifdef __clang__
+#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-namespace Catch {
-    class TagParser {
-    public:
-        virtual ~TagParser();
+// #included from: catch_test_spec.hpp
+#define TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED
 
-        void parse( std::string const& str );
-
-    protected:
-        virtual void acceptTag( std::string const& tag ) = 0;
-        virtual void acceptChar( char c ) = 0;
-        virtual void endParse() {}
-
-    private:
-    };
-
-    class TagExtracter : public TagParser {
-    public:
-
-        TagExtracter( std::set<std::string>& tags );
-        virtual ~TagExtracter();
-
-        void parse( std::string& description );
-
-    private:
-        virtual void acceptTag( std::string const& tag );
-        virtual void acceptChar( char c );
-
-        TagExtracter& operator=(TagExtracter const&);
-
-        std::set<std::string>& m_tags;
-        std::string m_remainder;
-    };
-
-    class Tag {
-    public:
-        Tag();
-        Tag( std::string const& name, bool isNegated );
-        std::string getName() const;
-        bool isNegated() const;
-        bool operator ! () const;
-
-    private:
-        std::string m_name;
-        bool m_isNegated;
-    };
-
-    class TagSet {
-        typedef std::map<std::string, Tag> TagMap;
-    public:
-        void add( Tag const& tag );
-        bool empty() const;
-        bool matches( std::set<std::string> const& tags ) const;
-
-    private:
-        TagMap m_tags;
-    };
-
-    class TagExpression {
-    public:
-        bool matches( std::set<std::string> const& tags ) const;
-
-    private:
-        friend class TagExpressionParser;
-
-        std::vector<TagSet> m_tagSets;
-    };
-
-    class TagExpressionParser : public TagParser {
-    public:
-        TagExpressionParser( TagExpression& exp );
-        ~TagExpressionParser();
-
-    private:
-        virtual void acceptTag( std::string const& tag );
-        virtual void acceptChar( char c );
-        virtual void endParse();
-
-        TagExpressionParser& operator=(TagExpressionParser const&);
-
-        bool m_isNegated;
-        TagSet m_currentTagSet;
-        TagExpression& m_exp;
-    };
-
-} // end namespace Catch
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 #include <string>
 #include <vector>
 
 namespace Catch {
 
-    class TestCase;
+    class TestSpec {
+        struct Pattern : SharedImpl<> {
+            virtual ~Pattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const = 0;
+        };
+        class NamePattern : public Pattern {
+            enum WildcardPosition {
+                NoWildcard = 0,
+                WildcardAtStart = 1,
+                WildcardAtEnd = 2,
+                WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
+            };
 
-    struct IfFilterMatches{ enum DoWhat {
-        AutoDetectBehaviour,
-        IncludeTests,
-        ExcludeTests
-    }; };
+        public:
+            NamePattern( std::string const& name ) : m_name( toLower( name ) ), m_wildcard( NoWildcard ) {
+                if( startsWith( m_name, "*" ) ) {
+                    m_name = name.substr( 1 );
+                    m_wildcard = WildcardAtStart;
+                }
+                if( endsWith( m_name, "*" ) ) {
+                    m_name = m_name.substr( 0, m_name.size()-1 );
+                    m_wildcard = (WildcardPosition)( m_wildcard | WildcardAtEnd );
+                }
+            }
+            virtual ~NamePattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const {
+                switch( m_wildcard ) {
+                    case NoWildcard:
+                        return m_name == toLower( testCase.name );
+                    case WildcardAtStart:
+                        return endsWith( toLower( testCase.name ), m_name );
+                    case WildcardAtEnd:
+                        return startsWith( toLower( testCase.name ), m_name );
+                    case WildcardAtBothEnds:
+                        return contains( toLower( testCase.name ), m_name );
+                }
+            }
+        private:
+            std::string m_name;
+            WildcardPosition m_wildcard;
+        };
+        class TagPattern : public Pattern {
+        public:
+            TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
+            virtual ~TagPattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const {
+                return testCase.tags.find( m_tag ) != testCase.tags.end();
+            }
+        private:
+            std::string m_tag;
+        };
+        class ExcludedPattern : public Pattern {
+        public:
+            ExcludedPattern( Ptr<Pattern> const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
+            virtual ~ExcludedPattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
+        private:
+            Ptr<Pattern> m_underlyingPattern;
+        };
 
-    class TestCaseFilter {
-        enum WildcardPosition {
-            NoWildcard = 0,
-            WildcardAtStart = 1,
-            WildcardAtEnd = 2,
-            WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
+        struct Filter {
+            std::vector<Ptr<Pattern> > m_patterns;
+
+            bool matches( TestCaseInfo const& testCase ) const {
+                // All patterns in a filter must match for the filter to be a match
+                for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it )
+                    if( !(*it)->matches( testCase ) )
+                        return false;
+                    return true;
+            }
         };
 
     public:
-        TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour );
-
-        IfFilterMatches::DoWhat getFilterType() const;
-        bool shouldInclude( TestCase const& testCase ) const;
-
-    private:
-        bool isMatch( TestCase const& testCase ) const;
-
-        std::string m_stringToMatch;
-        IfFilterMatches::DoWhat m_filterType;
-        WildcardPosition m_wildcardPosition;
-    };
-
-    class TestCaseFilters {
-    public:
-        TestCaseFilters( std::string const& name );
-        std::string getName() const;
-        void addFilter( TestCaseFilter const& filter );
-        void addTags( std::string const& tagPattern );
-        bool shouldInclude( TestCase const& testCase ) const;
+        bool hasFilters() const {
+            return !m_filters.empty();
+        }
+        bool matches( TestCaseInfo const& testCase ) const {
+            // A TestSpec matches if any filter matches
+            for( std::vector<Filter>::const_iterator it = m_filters.begin(), itEnd = m_filters.end(); it != itEnd; ++it )
+                if( it->matches( testCase ) )
+                    return true;
+            return false;
+        }
 
     private:
-        std::vector<TagExpression> m_tagExpressions;
-        std::vector<TestCaseFilter> m_inclusionFilters;
-        std::vector<TestCaseFilter> m_exclusionFilters;
-        std::string m_name;
-    };
+        std::vector<Filter> m_filters;
 
+        friend class TestSpecParser;
+    };
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+
+namespace Catch {
+
+    class TestSpecParser {
+        enum Mode{ None, Name, QuotedName, Tag };
+        Mode m_mode;
+        bool m_exclusion;
+        std::size_t m_start, m_pos;
+        std::string m_arg;
+        TestSpec::Filter m_currentFilter;
+        TestSpec m_testSpec;
+
+    public:
+        TestSpecParser parse( std::string const& arg ) {
+            m_mode = None;
+            m_exclusion = false;
+            m_start = std::string::npos;
+            m_arg = arg;
+            for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
+                visitChar( m_arg[m_pos] );
+            if( m_mode == Name )
+                addPattern<TestSpec::NamePattern>();
+            return *this;
+        }
+        TestSpec testSpec() {
+            addFilter();
+            return m_testSpec;
+        }
+    private:
+        void visitChar( char c ) {
+            if( m_mode == None ) {
+                switch( c ) {
+                case ' ': return;
+                case '~': m_exclusion = true; return;
+                case '[': return startNewMode( Tag, ++m_pos );
+                case '"': return startNewMode( QuotedName, ++m_pos );
+                default: startNewMode( Name, m_pos ); break;
+                }
+            }
+            if( m_mode == Name ) {
+                if( c == ',' ) {
+                    addPattern<TestSpec::NamePattern>();
+                    addFilter();
+                }
+                else if( c == '[' ) {
+                    if( subString() == "exclude:" )
+                        m_exclusion = true;
+                    else
+                        addPattern<TestSpec::NamePattern>();
+                    startNewMode( Tag, ++m_pos );
+                }
+            }
+            else if( m_mode == QuotedName && c == '"' )
+                addPattern<TestSpec::NamePattern>();
+            else if( m_mode == Tag && c == ']' )
+                addPattern<TestSpec::TagPattern>();
+        }
+        void startNewMode( Mode mode, std::size_t start ) {
+            m_mode = mode;
+            m_start = start;
+        }
+        std::string subString() const { return m_arg.substr( m_start, m_pos - m_start ); }
+        template<typename T>
+        void addPattern() {
+            std::string token = subString();
+            if( startsWith( token, "exclude:" ) ) {
+                m_exclusion = true;
+                token = token.substr( 8 );
+            }
+            if( !token.empty() ) {
+                Ptr<TestSpec::Pattern> pattern = new T( token );
+                if( m_exclusion )
+                    pattern = new TestSpec::ExcludedPattern( pattern );
+                m_currentFilter.m_patterns.push_back( pattern );
+            }
+            m_exclusion = false;
+            m_mode = None;
+        }
+        void addFilter() {
+            if( !m_currentFilter.m_patterns.empty() ) {
+                m_testSpec.m_filters.push_back( m_currentFilter );
+                m_currentFilter = TestSpec::Filter();
+            }
+        }
+    };
+    inline TestSpec parseTestSpec( std::string const& arg ) {
+        return TestSpecParser().parse( arg ).testSpec();
+    }
+
+} // namespace Catch
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 // #included from: catch_stream.h
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
@@ -2925,21 +2978,10 @@ namespace Catch {
             m_os( std::cout.rdbuf() )
         {
             if( !data.testsOrTags.empty() ) {
-                std::string groupName;
-                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
-                    if( i != 0 )
-                        groupName += " ";
-                    groupName += data.testsOrTags[i];
-                }
-                TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
-                    std::string filter = data.testsOrTags[i];
-                    if( startsWith( filter, "[" ) || startsWith( filter, "~[" ) )
-                        filters.addTags( filter );
-                    else
-                        filters.addFilter( TestCaseFilter( filter ) );
-                }
-                m_filterSets.push_back( filters );
+                TestSpecParser parser;
+                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i )
+                    parser.parse( data.testsOrTags[i] );
+                m_testSpec = parser.testSpec();
             }
         }
 
@@ -2961,13 +3003,9 @@ namespace Catch {
         bool listTags() const { return m_data.listTags; }
         bool listReporters() const { return m_data.listReporters; }
 
-        std::string getProcessName() const {
-            return m_data.processName;
-        }
+        std::string getProcessName() const { return m_data.processName; }
 
-        bool shouldDebugBreak() const {
-            return m_data.shouldDebugBreak;
-        }
+        bool shouldDebugBreak() const { return m_data.shouldDebugBreak; }
 
         void setStreamBuf( std::streambuf* buf ) {
             m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
@@ -2982,19 +3020,9 @@ namespace Catch {
 
         std::string getReporterName() const { return m_data.reporterName; }
 
-        void addTestSpec( std::string const& testSpec ) {
-            TestCaseFilters filters( testSpec );
-            filters.addFilter( TestCaseFilter( testSpec ) );
-            m_filterSets.push_back( filters );
-        }
+        int abortAfter() const { return m_data.abortAfter; }
 
-        int abortAfter() const {
-            return m_data.abortAfter;
-        }
-
-        std::vector<TestCaseFilters> const& filters() const {
-            return m_filterSets;
-        }
+        TestSpec const& testSpec() const { return m_testSpec; }
 
         bool showHelp() const { return m_data.showHelp; }
         bool showInvisibles() const { return m_data.showInvisibles; }
@@ -3012,7 +3040,7 @@ namespace Catch {
 
         Stream m_stream;
         mutable std::ostream m_os;
-        std::vector<TestCaseFilters> m_filterSets;
+        TestSpec m_testSpec;
     };
 
 } // end namespace Catch
@@ -4554,10 +4582,14 @@ namespace Catch
 namespace Catch {
 
     inline std::size_t listTests( Config const& config ) {
-        if( config.filters().empty() )
-            std::cout << "All available test cases:\n";
-        else
+
+        TestSpec testSpec = config.testSpec();
+        if( config.testSpec().hasFilters() )
             std::cout << "Matching test cases:\n";
+        else {
+            std::cout << "All available test cases:\n";
+            testSpec = TestSpecParser().parse( "*" ).testSpec();
+        }
 
         std::size_t matchedTests = 0;
         TextAttributes nameAttr, tagsAttr;
@@ -4565,7 +4597,7 @@ namespace Catch {
         tagsAttr.setIndent( 6 );
 
         std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -4581,7 +4613,7 @@ namespace Catch {
                 std::cout << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
         }
 
-        if( config.filters().empty() )
+        if( !config.testSpec().hasFilters() )
             std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
             std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
@@ -4589,9 +4621,12 @@ namespace Catch {
     }
 
     inline std::size_t listTestsNamesOnly( Config const& config ) {
+        TestSpec testSpec = config.testSpec();
+        if( !config.testSpec().hasFilters() )
+            testSpec = TestSpecParser().parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
         std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -4603,15 +4638,18 @@ namespace Catch {
     }
 
     inline std::size_t listTags( Config const& config ) {
-        if( config.filters().empty() )
+        TestSpec testSpec = config.testSpec();
+        if( config.testSpec().hasFilters() )
+            std::cout << "Tags for matching test cases:\n";
+        else {
             std::cout << "All available tags:\n";
-        else
-            std::cout << "Matching tags:\n";
+            testSpec = TestSpecParser().parse( "*" ).testSpec();
+        }
 
         std::map<std::string, int> tagCounts;
 
         std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -5163,28 +5201,18 @@ namespace Catch {
 
         Totals runTests() {
 
-            std::vector<TestCaseFilters> filterGroups = m_config->filters();
-            if( filterGroups.empty() ) {
-                TestCaseFilters filterGroup( "" );
-                filterGroups.push_back( filterGroup );
-            }
-
             RunContext context( m_config.get(), m_reporter );
 
             Totals totals;
 
-            for( std::size_t i=0; i < filterGroups.size() && !context.aborting(); ++i ) {
-                context.testGroupStarting( filterGroups[i].getName(), i, filterGroups.size() );
-                totals += runTestsForGroup( context, filterGroups[i] );
-                context.testGroupEnded( filterGroups[i].getName(), totals, i, filterGroups.size() );
-            }
-            return totals;
-        }
-        Totals runTestsForGroup( RunContext& context, TestCaseFilters const& filterGroup ) {
-            Totals totals;
+            context.testGroupStarting( "", 1, 1 ); // deprecated?
+
+            TestSpec testSpec = m_config->testSpec();
+            if( !testSpec.hasFilters() )
+                testSpec = TestSpecParser().parse( "~[.]" ).testSpec(); // All not hidden tests
 
             std::vector<TestCase> testCases;
-            getRegistryHub().getTestCaseRegistry().getFilteredTests( filterGroup, *m_config, testCases );
+            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, testCases );
 
             int testsRunForGroup = 0;
             for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
@@ -5200,8 +5228,7 @@ namespace Catch {
                     m_testsAlreadyRun.insert( *it );
                 }
             }
-            if( testsRunForGroup == 0 && !filterGroup.getName().empty() )
-                m_reporter->noMatchingTestCases( filterGroup.getName() );
+            context.testGroupEnded( "", totals, 1, 1 );
             return totals;
         }
 
@@ -5403,24 +5430,14 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        virtual void getFilteredTests( TestCaseFilters const& filters, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
-                if( filters.shouldInclude( *it ) && ( config.allowThrows() || !it->throws() ) )
+                if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
                     matchingTestCases.push_back( *it );
             }
-        }
-        virtual void getFilteredTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
-            if( config.filters().empty() )
-                return getFilteredTests( TestCaseFilters( "empty" ), config, matchingTestCases );
-
-            for( std::vector<TestCaseFilters>::const_iterator   it = config.filters().begin(),
-                                                                itEnd = config.filters().end();
-                    it != itEnd;
-                    ++it )
-                getFilteredTests( *it, config, matchingTestCases );
         }
 
     private:
@@ -6265,6 +6282,21 @@ namespace Catch {
     inline bool isReservedTag( std::string const& tag ) {
         return !isSpecialTag( tag ) && tag.size() > 0 && !isalnum( tag[0] );
     }
+    inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
+        if( isReservedTag( tag ) ) {
+            {
+                Colour colourGuard( Colour::Red );
+                std::cerr
+                    << "Tag name [" << tag << "] not allowed.\n"
+                    << "Tag names starting with non alpha-numeric characters are reserved\n";
+            }
+            {
+                Colour colourGuard( Colour::FileName );
+                std::cerr << _lineInfo << std::endl;
+            }
+            exit(1);
+        }
+    }
 
     TestCase makeTestCase(  ITestCase* _testCase,
                             std::string const& _className,
@@ -6272,33 +6304,37 @@ namespace Catch {
                             std::string const& _descOrTags,
                             SourceLineInfo const& _lineInfo )
     {
-        std::string desc = _descOrTags;
         bool isHidden( startsWith( _name, "./" ) ); // Legacy support
+
+        // Parse out tags
         std::set<std::string> tags;
-        TagExtracter( tags ).parse( desc );
-        for( std::set<std::string>::const_iterator it = tags.begin(), itEnd = tags.end();
-                it != itEnd;
-                ++it )
-            if( isReservedTag( *it ) ) {
-                {
-                    Colour colourGuard( Colour::Red );
-                    std::cerr
-                        << "Tag name [" << *it << "] not allowed.\n"
-                        << "Tag names starting with non alpha-numeric characters are reserved\n";
-                }
-                {
-                    Colour colourGuard( Colour::FileName );
-                    std::cerr << _lineInfo << std::endl;
-                }
-                exit(1);
+        std::string desc, tag;
+        bool inTag = false;
+        for( std::size_t i = 0; i < _descOrTags.size(); ++i ) {
+            char c = _descOrTags[i];
+            if( !inTag ) {
+                if( c == '[' )
+                    inTag = true;
+                else
+                    desc += c;
             }
+            else {
+                if( c == ']' ) {
+                    enforceNotReservedTag( tag, _lineInfo );
 
-        if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
-            isHidden = true;
-
-        if( isHidden ) {
-            tags.insert( "hide" );
-            tags.insert( "." );
+                    inTag = false;
+                    if( tag == "hide" || tag == "." ) {
+                        tags.insert( "hide" );
+                        tags.insert( "." );
+                    }
+                    else {
+                        tags.insert( tag );
+                    }
+                    tag.clear();
+                }
+                else
+                    tag += c;
+            }
         }
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
@@ -6362,18 +6398,6 @@ namespace Catch {
         return TestCaseInfo::throws;
     }
 
-    bool TestCase::hasTag( std::string const& tag ) const {
-        return tags.find( toLower( tag ) ) != tags.end();
-    }
-    bool TestCase::matchesTags( std::string const& tagPattern ) const {
-        TagExpression exp;
-        TagExpressionParser( exp ).parse( tagPattern );
-        return exp.matches( tags );
-    }
-    std::set<std::string> const& TestCase::getTags() const {
-        return tags;
-    }
-
     void TestCase::swap( TestCase& other ) {
         test.swap( other.test );
         className.swap( other.className );
@@ -6404,259 +6428,13 @@ namespace Catch {
 
 } // end namespace Catch
 
-// #included from: catch_tags.hpp
-#define TWOBLUECUBES_CATCH_TAGS_HPP_INCLUDED
-
-namespace Catch {
-    TagParser::~TagParser() {}
-
-    void TagParser::parse( std::string const& str ) {
-        std::size_t pos = 0;
-        while( pos < str.size() ) {
-            char c = str[pos];
-            if( c == '[' ) {
-                std::size_t end = str.find_first_of( ']', pos );
-                if( end != std::string::npos ) {
-                    acceptTag( str.substr( pos+1, end-pos-1 ) );
-                    pos = end+1;
-                }
-                else {
-                    acceptChar( c );
-                    pos++;
-                }
-            }
-            else {
-                acceptChar( c );
-                pos++;
-            }
-        }
-        endParse();
-    }
-
-    TagExtracter::TagExtracter( std::set<std::string>& tags )
-    :   m_tags( tags )
-    {}
-
-    TagExtracter::~TagExtracter() {}
-
-    void TagExtracter::parse( std::string& description ) {
-        TagParser::parse( description );
-        description = m_remainder;
-    }
-
-    void TagExtracter::acceptTag( std::string const& tag ) {
-        m_tags.insert( toLower( tag ) );
-    }
-    void TagExtracter::acceptChar( char c ) {
-        m_remainder += c;
-    }
-
-    Tag::Tag() : m_isNegated( false ) {}
-    Tag::Tag( std::string const& name, bool isNegated )
-    :   m_name( name ),
-        m_isNegated( isNegated )
-    {}
-
-    std::string Tag::getName() const {
-        return m_name;
-    }
-    bool Tag::isNegated() const {
-        return m_isNegated;
-    }
-
-    bool Tag::operator ! () const {
-        return m_name.empty();
-    }
-
-    void TagSet::add( Tag const& tag ) {
-        m_tags.insert( std::make_pair( toLower( tag.getName() ), tag ) );
-    }
-
-    bool TagSet::empty() const {
-        return m_tags.empty();
-    }
-
-    bool TagSet::matches( std::set<std::string> const& tags ) const {
-        for(    TagMap::const_iterator
-                    it = m_tags.begin(), itEnd = m_tags.end();
-                it != itEnd;
-                ++it ) {
-            bool found = tags.find( it->first ) != tags.end();
-            if( found == it->second.isNegated() )
-                return false;
-        }
-        return true;
-    }
-
-    bool TagExpression::matches( std::set<std::string> const& tags ) const {
-        for(    std::vector<TagSet>::const_iterator
-                    it = m_tagSets.begin(), itEnd = m_tagSets.end();
-                it != itEnd;
-                ++it )
-            if( it->matches( tags ) )
-                return true;
-        return false;
-    }
-
-    TagExpressionParser::TagExpressionParser( TagExpression& exp )
-    :   m_isNegated( false ),
-        m_exp( exp )
-    {}
-
-    TagExpressionParser::~TagExpressionParser() {}
-
-    void TagExpressionParser::acceptTag( std::string const& tag ) {
-        m_currentTagSet.add( Tag( tag, m_isNegated ) );
-        m_isNegated = false;
-    }
-
-    void TagExpressionParser::acceptChar( char c ) {
-        switch( c ) {
-            case '~':
-                m_isNegated = true;
-                break;
-            case ',':
-                m_exp.m_tagSets.push_back( m_currentTagSet );
-                m_currentTagSet = TagSet();
-                break;
-        }
-    }
-
-    void TagExpressionParser::endParse() {
-        if( !m_currentTagSet.empty() )
-            m_exp.m_tagSets.push_back( m_currentTagSet );
-    }
-
-} // end namespace Catch
-
-// #included from: catch_test_spec.hpp
-#define TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED
-
-namespace Catch {
-
-    TestCaseFilter::TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour )
-    :   m_stringToMatch( toLower( testSpec ) ),
-        m_filterType( matchBehaviour ),
-        m_wildcardPosition( NoWildcard )
-    {
-        if( m_filterType == IfFilterMatches::AutoDetectBehaviour ) {
-            if( startsWith( m_stringToMatch, "exclude:" ) ) {
-                m_stringToMatch = m_stringToMatch.substr( 8 );
-                m_filterType = IfFilterMatches::ExcludeTests;
-            }
-            else if( startsWith( m_stringToMatch, "~" ) ) {
-                m_stringToMatch = m_stringToMatch.substr( 1 );
-                m_filterType = IfFilterMatches::ExcludeTests;
-            }
-            else {
-                m_filterType = IfFilterMatches::IncludeTests;
-            }
-        }
-
-        if( startsWith( m_stringToMatch, "*" ) ) {
-            m_stringToMatch = m_stringToMatch.substr( 1 );
-            m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
-        }
-        if( endsWith( m_stringToMatch, "*" ) ) {
-            m_stringToMatch = m_stringToMatch.substr( 0, m_stringToMatch.size()-1 );
-            m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtEnd );
-        }
-    }
-
-    IfFilterMatches::DoWhat TestCaseFilter::getFilterType() const {
-        return m_filterType;
-    }
-
-    bool TestCaseFilter::shouldInclude( TestCase const& testCase ) const {
-        return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
-    }
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-#endif
-
-    bool TestCaseFilter::isMatch( TestCase const& testCase ) const {
-        std::string name = testCase.getTestCaseInfo().name;
-        toLowerInPlace( name );
-
-        switch( m_wildcardPosition ) {
-            case NoWildcard:
-                return m_stringToMatch == name;
-            case WildcardAtStart:
-                return endsWith( name, m_stringToMatch );
-            case WildcardAtEnd:
-                return startsWith( name, m_stringToMatch );
-            case WildcardAtBothEnds:
-                return contains( name, m_stringToMatch );
-        }
-        throw std::logic_error( "Unhandled wildcard type" );
-    }
-
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-
-    TestCaseFilters::TestCaseFilters( std::string const& name ) : m_name( name ) {}
-
-    std::string TestCaseFilters::getName() const {
-        return m_name;
-    }
-
-    void TestCaseFilters::addFilter( TestCaseFilter const& filter ) {
-        if( filter.getFilterType() == IfFilterMatches::ExcludeTests )
-            m_exclusionFilters.push_back( filter );
-        else
-            m_inclusionFilters.push_back( filter );
-    }
-
-    void TestCaseFilters::addTags( std::string const& tagPattern ) {
-        TagExpression exp;
-        TagExpressionParser( exp ).parse( tagPattern );
-
-        m_tagExpressions.push_back( exp );
-    }
-
-    bool TestCaseFilters::shouldInclude( TestCase const& testCase ) const {
-        if( !m_tagExpressions.empty() ) {
-            std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
-            std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();
-            for(; it != itEnd; ++it )
-                if( it->matches( testCase.getTags() ) )
-                    break;
-            if( it == itEnd )
-                return false;
-        }
-
-        if( !m_inclusionFilters.empty() ) {
-            std::vector<TestCaseFilter>::const_iterator it = m_inclusionFilters.begin();
-            std::vector<TestCaseFilter>::const_iterator itEnd = m_inclusionFilters.end();
-            for(; it != itEnd; ++it )
-                if( it->shouldInclude( testCase ) )
-                    break;
-            if( it == itEnd )
-                return false;
-        }
-        else if( m_exclusionFilters.empty() && m_tagExpressions.empty() ) {
-            return !testCase.isHidden();
-        }
-
-        std::vector<TestCaseFilter>::const_iterator it = m_exclusionFilters.begin();
-        std::vector<TestCaseFilter>::const_iterator itEnd = m_exclusionFilters.end();
-        for(; it != itEnd; ++it )
-            if( !it->shouldInclude( testCase ) )
-                return false;
-        return true;
-    }
-}
-
 // #included from: catch_version.hpp
 #define TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED
 
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 43, "master" );
+    Version libraryVersion( 1, 0, 44, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -8695,6 +8473,10 @@ namespace Catch {
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
     IGeneratorInfo::~IGeneratorInfo() {}
     IGeneratorsForTest::~IGeneratorsForTest() {}
+    TestSpec::Pattern::~Pattern() {}
+    TestSpec::NamePattern::~NamePattern() {}
+    TestSpec::TagPattern::~TagPattern() {}
+    TestSpec::ExcludedPattern::~ExcludedPattern() {}
 
     Matchers::Impl::StdString::Equals::~Equals() {}
     Matchers::Impl::StdString::Contains::~Contains() {}
