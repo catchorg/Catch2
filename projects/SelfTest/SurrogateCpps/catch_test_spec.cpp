@@ -1,2 +1,2 @@
 // This file is only here to verify (to the extent possible) the self sufficiency of the header
-#include "catch_test_spec.h"
+#include "catch_test_spec.hpp"

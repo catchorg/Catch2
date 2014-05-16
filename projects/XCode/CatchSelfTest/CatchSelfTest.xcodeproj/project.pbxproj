@@ -93,7 +93,6 @@
 		26DACF2F17206D3400A21326 /* catch_text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_text.h; sourceTree = "<group>"; };
 		26E1B7D119213BC900812682 /* CmdLineTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CmdLineTests.cpp; path = ../../../SelfTest/CmdLineTests.cpp; sourceTree = "<group>"; };
 		4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_info.hpp; sourceTree = "<group>"; };
-		4A084F1D15DAD15F0027E631 /* catch_test_spec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_test_spec.h; sourceTree = "<group>"; };
 		4A3D7DD01503869D005F9203 /* catch_matchers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_matchers.hpp; sourceTree = "<group>"; };
 		4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_console_colour.cpp; path = ../../../SelfTest/SurrogateCpps/catch_console_colour.cpp; sourceTree = "<group>"; };
 		4A45DA2616161F1F004F8D6B /* catch_ptr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_ptr.cpp; path = ../../../SelfTest/SurrogateCpps/catch_ptr.cpp; sourceTree = "<group>"; };
@@ -333,7 +332,6 @@
 			isa = PBXGroup;
 			children = (
 				4A6D0C5F149B3E3D00DB3EAA /* catch_section.hpp */,
-				261488FA184C81130041FBEB /* catch_test_spec.hpp */,
 				263FD06017AF8DF200988A20 /* catch_timer.hpp */,
 				4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */,
 				4A4B0F9715CE6CFB00AE2392 /* catch_registry_hub.hpp */,
@@ -388,6 +386,7 @@
 		4AC91CBF155C381600DC5117 /* Test execution */ = {
 			isa = PBXGroup;
 			children = (
+				261488FA184C81130041FBEB /* catch_test_spec.hpp */,
 				2656C2221925EC6F0040DB02 /* catch_tags.h */,
 				2656C2231925EC6F0040DB02 /* catch_tags.hpp */,
 				2656C21F1925E5100040DB02 /* catch_test_spec_parser.hpp */,
@@ -396,7 +395,6 @@
 				4A6D0C61149B3E3D00DB3EAA /* catch_test_case_info.h */,
 				4A7ADB4314F631E10094FE10 /* catch_totals.hpp */,
 				4AB77CB71553B72B00857BF0 /* catch_section_info.hpp */,
-				4A084F1D15DAD15F0027E631 /* catch_test_spec.h */,
 				26948287179EF7F900ED166E /* catch_test_case_tracker.hpp */,
 			);
 			name = "Test execution";

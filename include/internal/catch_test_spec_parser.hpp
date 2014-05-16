@@ -13,7 +13,7 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#include "catch_test_spec.h"
+#include "catch_test_spec.hpp"
 
 namespace Catch {
 

@@ -16,7 +16,7 @@
 #include "catch_test_case_info.h"
 #include "catch_capture.hpp"
 #include "catch_totals.hpp"
-#include "catch_test_spec.h"
+#include "catch_test_spec.hpp"
 #include "catch_test_case_tracker.hpp"
 #include "catch_timer.h"
 
