@@ -8,6 +8,11 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_SPEC_PARSER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_SPEC_PARSER_HPP_INCLUDED
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 #include "catch_test_spec.h"
 
 namespace Catch {
@@ -19,15 +24,23 @@ namespace Catch {
         std::size_t m_start, m_pos;
         std::string m_arg;
         TestSpec::Filter m_currentFilter;
+        TestSpec m_testSpec;
 
     public:
-        TestSpec testSpec;
-
-    public:
-        TestSpecParser( std::string const& arg ) : m_mode( None ), m_exclusion( false ), m_start( std::string::npos ), m_arg( arg ) {
+        TestSpecParser parse( std::string const& arg ) {
+            m_mode = None;
+            m_exclusion = false;
+            m_start = std::string::npos;
+            m_arg = arg;
             for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
                 visitChar( m_arg[m_pos] );
-            visitChar( ',' );
+            if( m_mode == Name )
+                addPattern<TestSpec::NamePattern>();
+            return *this;
+        }
+        TestSpec testSpec() {
+            addFilter();
+            return m_testSpec;
         }
     private:
         void visitChar( char c ) {
@@ -81,15 +94,19 @@ namespace Catch {
         }
         void addFilter() {
             if( !m_currentFilter.m_patterns.empty() ) {
-                testSpec.m_filters.push_back( m_currentFilter );
+                m_testSpec.m_filters.push_back( m_currentFilter );
                 m_currentFilter = TestSpec::Filter();
             }
         }
     };
     inline TestSpec parseTestSpec( std::string const& arg ) {
-        return TestSpecParser( arg ).testSpec;
+        return TestSpecParser().parse( arg ).testSpec();
     }
 
 } // namespace Catch
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_SPEC_PARSER_HPP_INCLUDED

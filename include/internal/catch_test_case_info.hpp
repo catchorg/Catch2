@@ -8,9 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_INFO_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
-#include "catch_tags.h"
+#include "catch_test_spec.h"
 #include "catch_test_case_info.h"
 #include "catch_interfaces_testcase.h"
+#include "catch_tags.h"
 #include "catch_common.h"
 
 namespace Catch {

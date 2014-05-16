@@ -216,5 +216,13 @@ TEST_CASE( "Parse test names and tags", "" ) {
         CHECK( spec.matches( tcC ) == false );
         CHECK( spec.matches( tcD ) == false );
     }
+    SECTION( "quoted string followed by tag exclusion" ) {
+        TestSpec spec = parseTestSpec( "\"*name*\"~[.]" );
+        CHECK( spec.hasFilters() == true );
+        CHECK( spec.matches( tcA ) == false );
+        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( tcC ) == false );
+        CHECK( spec.matches( tcD ) == true );
+    }
 
 }

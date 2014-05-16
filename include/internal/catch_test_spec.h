@@ -8,8 +8,12 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_SPEC_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_SPEC_H_INCLUDED
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 #include "catch_test_case_info.h"
-#include "catch_tags.h" // deprecated
 
 #include <string>
 #include <vector>
@@ -105,55 +109,10 @@ namespace Catch {
 
         friend class TestSpecParser;
     };
-
-
-    // -------- deprecated -------
-
-    class TestCase;
-
-    struct IfFilterMatches{ enum DoWhat {
-        AutoDetectBehaviour,
-        IncludeTests,
-        ExcludeTests
-    }; };
-
-    class TestCaseFilter {
-        enum WildcardPosition {
-            NoWildcard = 0,
-            WildcardAtStart = 1,
-            WildcardAtEnd = 2,
-            WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
-        };
-
-    public:
-        TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour = IfFilterMatches::AutoDetectBehaviour );
-
-        IfFilterMatches::DoWhat getFilterType() const;
-        bool shouldInclude( TestCase const& testCase ) const;
-
-    private:
-        bool isMatch( TestCase const& testCase ) const;
-
-        std::string m_stringToMatch;
-        IfFilterMatches::DoWhat m_filterType;
-        WildcardPosition m_wildcardPosition;
-    };
-
-    class TestCaseFilters {
-    public:
-        TestCaseFilters( std::string const& name );
-        std::string getName() const;
-        void addFilter( TestCaseFilter const& filter );
-        void addTags( std::string const& tagPattern );
-        bool shouldInclude( TestCase const& testCase ) const;
-
-    private:
-        std::vector<TagExpression> m_tagExpressions;
-        std::vector<TestCaseFilter> m_inclusionFilters;
-        std::vector<TestCaseFilter> m_exclusionFilters;
-        std::string m_name;
-    };
-
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_SPEC_H_INCLUDED

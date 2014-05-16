@@ -59,24 +59,14 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        virtual void getFilteredTests( TestCaseFilters const& filters, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
-                if( filters.shouldInclude( *it ) && ( config.allowThrows() || !it->throws() ) )
+                if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
                     matchingTestCases.push_back( *it );
             }
-        }
-        virtual void getFilteredTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
-            if( config.filters().empty() )
-                return getFilteredTests( TestCaseFilters( "empty" ), config, matchingTestCases );
-
-            for( std::vector<TestCaseFilters>::const_iterator   it = config.filters().begin(),
-                                                                itEnd = config.filters().end();
-                    it != itEnd;
-                    ++it )
-                getFilteredTests( *it, config, matchingTestCases );
         }
 
     private:

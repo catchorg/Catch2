@@ -12,6 +12,7 @@
 #include "catch_text.h"
 #include "catch_console_colour.hpp"
 #include "catch_interfaces_reporter.h"
+#include "catch_test_spec_parser.hpp"
 
 #include <limits>
 #include <algorithm>
@@ -19,10 +20,14 @@
 namespace Catch {
 
     inline std::size_t listTests( Config const& config ) {
-        if( config.filters().empty() )
-            std::cout << "All available test cases:\n";
-        else
+
+        TestSpec testSpec = config.testSpec();
+        if( config.testSpec().hasFilters() )
             std::cout << "Matching test cases:\n";
+        else {
+            std::cout << "All available test cases:\n";
+            testSpec = TestSpecParser().parse( "*" ).testSpec();
+        }
 
         std::size_t matchedTests = 0;
         TextAttributes nameAttr, tagsAttr;
@@ -30,7 +35,7 @@ namespace Catch {
         tagsAttr.setIndent( 6 );
 
         std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -46,7 +51,7 @@ namespace Catch {
                 std::cout << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
         }
 
-        if( config.filters().empty() )
+        if( !config.testSpec().hasFilters() )
             std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
             std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
@@ -54,9 +59,12 @@ namespace Catch {
     }
 
     inline std::size_t listTestsNamesOnly( Config const& config ) {
+        TestSpec testSpec = config.testSpec();
+        if( !config.testSpec().hasFilters() )
+            testSpec = TestSpecParser().parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
         std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -68,15 +76,18 @@ namespace Catch {
     }
 
     inline std::size_t listTags( Config const& config ) {
-        if( config.filters().empty() )
+        TestSpec testSpec = config.testSpec();
+        if( config.testSpec().hasFilters() )
+            std::cout << "Tags for matching test cases:\n";
+        else {
             std::cout << "All available tags:\n";
-        else
-            std::cout << "Matching tags:\n";
+            testSpec = TestSpecParser().parse( "*" ).testSpec();
+        }
 
         std::map<std::string, int> tagCounts;
 
         std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( config, matchedTestCases );
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
