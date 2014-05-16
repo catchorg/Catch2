@@ -77,6 +77,10 @@ namespace Catch {
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
     IGeneratorInfo::~IGeneratorInfo() {}
     IGeneratorsForTest::~IGeneratorsForTest() {}
+    TestSpec::Pattern::~Pattern() {}
+    TestSpec::NamePattern::~NamePattern() {}
+    TestSpec::TagPattern::~TagPattern() {}
+    TestSpec::ExcludedPattern::~ExcludedPattern() {}
 
     Matchers::Impl::StdString::Equals::~Equals() {}
     Matchers::Impl::StdString::Contains::~Contains() {}
