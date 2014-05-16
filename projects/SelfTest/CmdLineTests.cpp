@@ -124,9 +124,9 @@ namespace Catch {
                 switch( c ) {
                 case ' ': return;
                 case '~': m_exclusion = true; return;
-                case '[': m_mode = Tag; m_start = ++m_pos; return;
-                case '"': m_mode = QuotedName; m_start = m_pos+1; return;
-                default: m_mode = Name; m_start = m_pos; break;
+                case '[': return startNewMode( Tag, ++m_pos );
+                case '"': return startNewMode( QuotedName, ++m_pos );
+                default: startNewMode( Name, m_pos ); break;
                 }
             }
             if( m_mode == Name ) {
@@ -139,14 +139,17 @@ namespace Catch {
                         m_exclusion = true;
                     else
                         addPattern<TestSpec::NamePattern>();
-                    m_mode = Tag;
-                    m_start = m_pos+1;
+                    startNewMode( Tag, ++m_pos );
                 }
             }
             else if( m_mode == QuotedName && c == '"' )
                 addPattern<TestSpec::NamePattern>();
             else if( m_mode == Tag && c == ']' )
                 addPattern<TestSpec::TagPattern>();
+        }
+        void startNewMode( Mode mode, std::size_t start ) {
+            m_mode = mode;
+            m_start = start;
         }
         std::string subString() const { return m_arg.substr( m_start, m_pos - m_start ); }
         template<typename T>
