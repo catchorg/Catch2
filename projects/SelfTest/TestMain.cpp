@@ -251,7 +251,8 @@ TEST_CASE( "selftest/tags", "[tags]" ) {
     std::string p3 = "[one][two]";
     std::string p4 = "[one][two],[three]";
     std::string p5 = "[one][two]~[.],[three]";
-    
+    std::string p6 = "[one][two]exclude:[.],[three]";
+
     SECTION( "single [one] tag", "" ) {
         Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[one]", CATCH_INTERNAL_LINEINFO );
 
@@ -264,6 +265,7 @@ TEST_CASE( "selftest/tags", "[tags]" ) {
         CHECK( oneTag.matchesTags( p3 ) == false );
         CHECK( oneTag.matchesTags( p4 ) == false );
         CHECK( oneTag.matchesTags( p5 ) == false );
+        CHECK( oneTag.matchesTags( p6 ) == false );
     }
 
     SECTION( "single [two] tag", "" ) {
@@ -278,6 +280,7 @@ TEST_CASE( "selftest/tags", "[tags]" ) {
         CHECK( oneTag.matchesTags( p3 ) == false );
         CHECK( oneTag.matchesTags( p4 ) == false );
         CHECK( oneTag.matchesTags( p5 ) == false );
+        CHECK( oneTag.matchesTags( p6 ) == false );
     }
 
     SECTION( "two tags", "" ) {
@@ -295,6 +298,7 @@ TEST_CASE( "selftest/tags", "[tags]" ) {
         CHECK( twoTags.matchesTags( p3 ) == true );
         CHECK( twoTags.matchesTags( p4 ) == true );
         CHECK( twoTags.matchesTags( p5 ) == true );
+        CHECK( twoTags.matchesTags( p6 ) == true );
     }
     SECTION( "complex", "" ) {
         CHECK( fakeTestCase( "test", "[one][.]" ).matchesTags( p1 ) );
@@ -302,8 +306,10 @@ TEST_CASE( "selftest/tags", "[tags]" ) {
         CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p4 ) );
         CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p5 ) );
         CHECK( fakeTestCase( "test", "[three]" ).matchesTags( "[three]~[one]" ) );
+        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( "[three]exclude:[one]" ) );
         CHECK( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]" ) );
         CHECK_FALSE( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]~[not_apple]" ) );
+        CHECK_FALSE( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]exclude:[not_apple]" ) );
     }
 
     SECTION( "one tag with characters either side", "" ) {
@@ -499,7 +505,7 @@ private:
 };
 
 // !TBD: This will be folded into Text class
-TEST_CASE( "Strings can be rendered with colour", "[colour]" ) {
+TEST_CASE( "Strings can be rendered with colour", "[colour][.]" ) {
     
     {
         ColourString cs( "hello" );

@@ -43,7 +43,7 @@ namespace Catch {
         bool throws;
     };
 
-    class TestCase : protected TestCaseInfo {
+    class TestCase : public TestCaseInfo {
     public:
 
         TestCase( ITestCase* testCase, TestCaseInfo const& info );

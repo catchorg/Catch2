@@ -111,7 +111,7 @@ TEST_CASE( "looped tests", "[.][failing]" )
     }
 }
 
-TEST_CASE( "Sends stuff to stdout and stderr", "" )
+TEST_CASE( "Sends stuff to stdout and stderr", "[.]" )
 {
     std::cout << "A string sent directly to stdout" << std::endl;
     
