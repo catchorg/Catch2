@@ -56,6 +56,15 @@ namespace Catch {
                     case WildcardAtBothEnds:
                         return contains( toLower( testCase.name ), m_name );
                 }
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#endif
+                throw std::logic_error( "Unknown enum" );
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
             }
         private:
             std::string m_name;
