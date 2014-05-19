@@ -68,6 +68,7 @@ namespace Catch {
                     if( tag == "hide" || tag == "." ) {
                         tags.insert( "hide" );
                         tags.insert( "." );
+                        isHidden = true;
                     }
                     else {
                         tags.insert( tag );
