@@ -66,26 +66,26 @@ namespace Catch {
                 endElement();
         }
 
-#  ifndef CATCH_CPP11_OR_GREATER
-        XmlWriter& operator = ( XmlWriter const& other ) {
-            XmlWriter temp( other );
-            swap( temp );
-            return *this;
-        }
-#  else
-        XmlWriter( XmlWriter const& )              = default;
-        XmlWriter( XmlWriter && )                  = default;
-        XmlWriter& operator = ( XmlWriter const& ) = default;
-        XmlWriter& operator = ( XmlWriter && )     = default;
-#  endif
-
-        void swap( XmlWriter& other ) {
-            std::swap( m_tagIsOpen, other.m_tagIsOpen );
-            std::swap( m_needsNewline, other.m_needsNewline );
-            std::swap( m_tags, other.m_tags );
-            std::swap( m_indent, other.m_indent );
-            std::swap( m_os, other.m_os );
-        }
+//#  ifndef CATCH_CPP11_OR_GREATER
+//        XmlWriter& operator = ( XmlWriter const& other ) {
+//            XmlWriter temp( other );
+//            swap( temp );
+//            return *this;
+//        }
+//#  else
+//        XmlWriter( XmlWriter const& )              = default;
+//        XmlWriter( XmlWriter && )                  = default;
+//        XmlWriter& operator = ( XmlWriter const& ) = default;
+//        XmlWriter& operator = ( XmlWriter && )     = default;
+//#  endif
+//
+//        void swap( XmlWriter& other ) {
+//            std::swap( m_tagIsOpen, other.m_tagIsOpen );
+//            std::swap( m_needsNewline, other.m_needsNewline );
+//            std::swap( m_tags, other.m_tags );
+//            std::swap( m_indent, other.m_indent );
+//            std::swap( m_os, other.m_os );
+//        }
 
         XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
@@ -163,7 +163,13 @@ namespace Catch {
             return *this;
         }
 
+        void setStream( std::ostream& os ) {
+            m_os = &os;
+        }
+
     private:
+        XmlWriter( XmlWriter const& );
+        void operator=( XmlWriter const& );
 
         std::ostream& stream() {
             return *m_os;

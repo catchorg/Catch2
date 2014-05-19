@@ -12,6 +12,11 @@
 
 #include "catch.hpp"
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wc++98-compat"
+#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+
 namespace Catch
 {
     template<>

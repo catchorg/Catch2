@@ -33,6 +33,10 @@ namespace Catch {
         m_info.message = builder.m_stream.str();
         getResultCapture().pushScopedMessage( m_info );
     }
+    ScopedMessage::ScopedMessage( ScopedMessage const& other )
+    : m_info( other.m_info )
+    {}
+
     ScopedMessage::~ScopedMessage() {
         getResultCapture().popScopedMessage( m_info );
     }

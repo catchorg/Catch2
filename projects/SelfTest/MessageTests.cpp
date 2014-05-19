@@ -8,6 +8,10 @@
 
 #include "catch.hpp"
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+
 TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" )
 {
     INFO( "this is a " << "message" );    // This should output the message if a failure occurs

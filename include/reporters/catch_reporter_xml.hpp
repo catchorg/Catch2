@@ -31,7 +31,7 @@ namespace Catch {
         }
 
         virtual void StartTesting() {
-            m_xml = XmlWriter( m_config.stream() );
+            m_xml.setStream( m_config.stream() );
             m_xml.startElement( "Catch" );
             if( !m_config.fullConfig()->name().empty() )
                 m_xml.writeAttribute( "name", m_config.fullConfig()->name() );

@@ -9,15 +9,7 @@
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-#pragma clang diagnostic ignored "-Wvariadic-macros"
-#pragma clang diagnostic ignored "-Wc99-extensions"
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpadded"
-#pragma clang diagnostic ignored "-Wc++98-compat"
-#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#endif
+#include "internal/catch_suppress_warnings.h"
 
 #ifdef CATCH_CONFIG_MAIN
 #  define CATCH_CONFIG_RUNNER
@@ -197,8 +189,6 @@
 
 using Catch::Detail::Approx;
 
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
+#include "internal/catch_reenable_warnings.h"
 
 #endif // TWOBLUECUBES_CATCH_HPP_INCLUDED

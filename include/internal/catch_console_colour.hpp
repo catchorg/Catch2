@@ -58,6 +58,7 @@ namespace Catch {
         static void use( Code _colourCode );
 
     private:
+        Colour( Colour const& other );
         static Detail::IColourImpl* impl();
     };
 

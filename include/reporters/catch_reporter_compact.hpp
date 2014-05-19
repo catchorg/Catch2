@@ -142,7 +142,7 @@ namespace Catch {
         private:
             // Colour::LightGrey
 
-            static Colour dimColour() { return Colour::FileName; }
+            static Colour::Code dimColour() { return Colour::FileName; }
 
 #ifdef CATCH_PLATFORM_MAC
             static const char* failedString() { return "FAILED"; }
@@ -157,7 +157,7 @@ namespace Catch {
                 stream << result.getSourceInfo() << ":";
             }
 
-            void printResultType( Colour colour, std::string passOrFail ) const {
+            void printResultType( Colour::Code colour, std::string passOrFail ) const {
                 if( !passOrFail.empty() ) {
                     {
                         Colour colourGuard( colour );
@@ -205,7 +205,7 @@ namespace Catch {
                 }
             }
 
-            void printRemainingMessages( Colour colour = dimColour() ) {
+            void printRemainingMessages( Colour::Code colour = dimColour() ) {
                 if ( itMessage == messages.end() )
                     return;
 

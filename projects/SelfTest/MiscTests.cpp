@@ -10,6 +10,10 @@
 
 #include <iostream>
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" )
 {
     int a = 1;
