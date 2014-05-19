@@ -49,7 +49,7 @@ namespace Catch {
         while( std::getline( f, line ) ) {
             line = trim(line);
             if( !line.empty() && !startsWith( line, "#" ) )
-                addTestOrTags( config, line );
+                addTestOrTags( config, "\"" + line + "\"" );
         }
     }
 

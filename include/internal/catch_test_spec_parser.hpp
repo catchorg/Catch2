@@ -36,10 +36,10 @@ namespace Catch {
                 visitChar( m_arg[m_pos] );
             if( m_mode == Name )
                 addPattern<TestSpec::NamePattern>();
+            addFilter();
             return *this;
         }
         TestSpec testSpec() {
-            addFilter();
             return m_testSpec;
         }
     private:
