@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 44 (master branch)
- *  Generated: 2014-05-16 18:53:00.411119
+ *  CATCH v1.0 build 45 (master branch)
+ *  Generated: 2014-05-19 18:22:42.461908
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2711,7 +2711,7 @@ namespace Catch {
         public:
             NamePattern( std::string const& name ) : m_name( toLower( name ) ), m_wildcard( NoWildcard ) {
                 if( startsWith( m_name, "*" ) ) {
-                    m_name = name.substr( 1 );
+                    m_name = m_name.substr( 1 );
                     m_wildcard = WildcardAtStart;
                 }
                 if( endsWith( m_name, "*" ) ) {
@@ -2731,6 +2731,15 @@ namespace Catch {
                     case WildcardAtBothEnds:
                         return contains( toLower( testCase.name ), m_name );
                 }
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#endif
+                throw std::logic_error( "Unknown enum" );
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
             }
         private:
             std::string m_name;
@@ -2811,10 +2820,10 @@ namespace Catch {
                 visitChar( m_arg[m_pos] );
             if( m_mode == Name )
                 addPattern<TestSpec::NamePattern>();
+            addFilter();
             return *this;
         }
         TestSpec testSpec() {
-            addFilter();
             return m_testSpec;
         }
     private:
@@ -3950,7 +3959,7 @@ namespace Catch {
         while( std::getline( f, line ) ) {
             line = trim(line);
             if( !line.empty() && !startsWith( line, "#" ) )
-                addTestOrTags( config, line );
+                addTestOrTags( config, "\"" + line + "\"" );
         }
     }
 
@@ -6326,6 +6335,7 @@ namespace Catch {
                     if( tag == "hide" || tag == "." ) {
                         tags.insert( "hide" );
                         tags.insert( "." );
+                        isHidden = true;
                     }
                     else {
                         tags.insert( tag );
@@ -6434,7 +6444,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 44, "master" );
+    Version libraryVersion( 1, 0, 45, "master" );
 }
 
 // #included from: catch_message.hpp
