@@ -6127,6 +6127,118 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Parse test names and tags
+  Redundant wildcard at the start
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Redundant wildcard at the end
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Redundant wildcard at both ends
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Wildcard at both ends, redundant at start
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcD ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
   Just wildcard
 -------------------------------------------------------------------------------
 CmdLineTests.cpp:<line number>
@@ -7071,5 +7183,5 @@ with expansion:
   true
 
 ===============================================================================
-123 test cases - 54 failed (696 assertions - 111 failed)
+123 test cases - 54 failed (710 assertions - 111 failed)
 

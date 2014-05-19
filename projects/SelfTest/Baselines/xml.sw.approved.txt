@@ -6301,6 +6301,130 @@ there&quot;
         </Expression>
         <OverallResults successes="6" failures="0"/>
       </Section>
+      <Section name="Redundant wildcard at the start">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Redundant wildcard at the end">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Redundant wildcard at both ends">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0"/>
+      </Section>
+      <Section name="Wildcard at both ends, redundant at start">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0"/>
+      </Section>
       <Section name="Just wildcard">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
           <Original>
@@ -7315,7 +7439,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="585" failures="111"/>
+    <OverallResults successes="599" failures="111"/>
   </Group>
-  <OverallResults successes="585" failures="111"/>
+  <OverallResults successes="599" failures="111"/>
 </Catch>

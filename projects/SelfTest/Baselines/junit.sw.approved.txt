@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite errors="12" failures="99" tests="696" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite errors="12" failures="99" tests="710" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -533,6 +533,10 @@ TrickyTests.cpp:<line number>
     <testcase classname="Parse test names and tags" name="Wildcard at the start" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Wildcard at the end" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Wildcard at both ends" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Redundant wildcard at the start" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Redundant wildcard at the end" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Redundant wildcard at both ends" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Wildcard at both ends, redundant at start" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Just wildcard" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Single tag" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Single tag, two matches" time="{duration}"/>
