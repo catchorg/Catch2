@@ -92,6 +92,32 @@ TEST_CASE( "Parse test names and tags", "" ) {
         CHECK( spec.matches( tcD ) == true );
         CHECK( parseTestSpec( "*a*" ).matches( tcA ) == true );
     }
+    SECTION( "Redundant wildcard at the start" ) {
+        TestSpec spec = parseTestSpec( "*a" );
+        CHECK( spec.hasFilters() == true );
+        CHECK( spec.matches( tcA ) == true );
+        CHECK( spec.matches( tcB ) == false );
+    }
+    SECTION( "Redundant wildcard at the end" ) {
+        TestSpec spec = parseTestSpec( "a*" );
+        CHECK( spec.hasFilters() == true );
+        CHECK( spec.matches( tcA ) == true );
+        CHECK( spec.matches( tcB ) == false );
+    }
+    SECTION( "Redundant wildcard at both ends" ) {
+        TestSpec spec = parseTestSpec( "*a*" );
+        CHECK( spec.hasFilters() == true );
+        CHECK( spec.matches( tcA ) == true );
+        CHECK( spec.matches( tcB ) == false );
+    }
+    SECTION( "Wildcard at both ends, redundant at start" ) {
+        TestSpec spec = parseTestSpec( "*longer*" );
+        CHECK( spec.hasFilters() == true );
+        CHECK( spec.matches( tcA ) == false );
+        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( tcC ) == true );
+        CHECK( spec.matches( tcD ) == true );
+    }
     SECTION( "Just wildcard" ) {
         TestSpec spec = parseTestSpec( "*" );
         CHECK( spec.hasFilters() == true );

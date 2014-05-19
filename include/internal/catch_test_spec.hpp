@@ -36,7 +36,7 @@ namespace Catch {
         public:
             NamePattern( std::string const& name ) : m_name( toLower( name ) ), m_wildcard( NoWildcard ) {
                 if( startsWith( m_name, "*" ) ) {
-                    m_name = name.substr( 1 );
+                    m_name = m_name.substr( 1 );
                     m_wildcard = WildcardAtStart;
                 }
                 if( endsWith( m_name, "*" ) ) {
