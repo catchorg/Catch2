@@ -102,6 +102,7 @@ namespace Catch {
             oss << "[" << *it << "]";
             if( *it == "!throws" )
                 throws = true;
+            lcaseTags.insert( toLower( *it ) );
         }
         tagsAsString = oss.str();
     }
@@ -111,6 +112,7 @@ namespace Catch {
         className( other.className ),
         description( other.description ),
         tags( other.tags ),
+        lcaseTags( other.lcaseTags ),
         tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
         isHidden( other.isHidden ),
@@ -130,6 +132,19 @@ namespace Catch {
         return other;
     }
 
+    void TestCase::swap( TestCase& other ) {
+        test.swap( other.test );
+        name.swap( other.name );
+        className.swap( other.className );
+        description.swap( other.description );
+        tags.swap( other.tags );
+        lcaseTags.swap( other.lcaseTags );
+        tagsAsString.swap( other.tagsAsString );
+        std::swap( TestCaseInfo::isHidden, static_cast<TestCaseInfo&>( other ).isHidden );
+        std::swap( TestCaseInfo::throws, static_cast<TestCaseInfo&>( other ).throws );
+        std::swap( lineInfo, other.lineInfo );
+    }
+
     void TestCase::invoke() const {
         test->invoke();
     }
@@ -139,14 +154,6 @@ namespace Catch {
     }
     bool TestCase::throws() const {
         return TestCaseInfo::throws;
-    }
-
-    void TestCase::swap( TestCase& other ) {
-        test.swap( other.test );
-        className.swap( other.className );
-        name.swap( other.name );
-        description.swap( other.description );
-        std::swap( lineInfo, other.lineInfo );
     }
 
     bool TestCase::operator == ( TestCase const& other ) const {

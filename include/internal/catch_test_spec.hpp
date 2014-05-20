@@ -75,7 +75,7 @@ namespace Catch {
             TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
             virtual ~TagPattern();
             virtual bool matches( TestCaseInfo const& testCase ) const {
-                return testCase.tags.find( m_tag ) != testCase.tags.end();
+                return testCase.lcaseTags.find( m_tag ) != testCase.lcaseTags.end();
             }
         private:
             std::string m_tag;

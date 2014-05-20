@@ -84,7 +84,24 @@ namespace Catch {
             testSpec = TestSpecParser().parse( "*" ).testSpec();
         }
 
-        std::map<std::string, int> tagCounts;
+        struct TagInfo {
+            TagInfo() : count ( 0 ) {}
+            void add( std::string const& spelling ) {
+                ++count;
+                spellings.insert( spelling );
+            }
+            std::string all() const {
+                std::string out;
+                for( std::set<std::string>::const_iterator it = spellings.begin(), itEnd = spellings.end();
+                            it != itEnd;
+                            ++it )
+                    out += "[" + *it + "]";
+                return out;
+            }
+            std::set<std::string> spellings;
+            std::size_t count;
+        };
+        std::map<std::string, TagInfo> tagCounts;
 
         std::vector<TestCase> matchedTestCases;
         getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
@@ -96,24 +113,24 @@ namespace Catch {
                     tagIt != tagItEnd;
                     ++tagIt ) {
                 std::string tagName = *tagIt;
-                std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
+                std::string lcaseTagName = toLower( tagName );
+                std::map<std::string, TagInfo>::iterator countIt = tagCounts.find( lcaseTagName );
                 if( countIt == tagCounts.end() )
-                    tagCounts.insert( std::make_pair( tagName, 1 ) );
-                else
-                    countIt->second++;
+                    countIt = tagCounts.insert( std::make_pair( lcaseTagName, TagInfo() ) ).first;
+                countIt->second.add( tagName );
             }
         }
 
-        for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(),
-                                                        countItEnd = tagCounts.end();
+        for( std::map<std::string, TagInfo>::const_iterator countIt = tagCounts.begin(),
+                                                            countItEnd = tagCounts.end();
                 countIt != countItEnd;
                 ++countIt ) {
             std::ostringstream oss;
-            oss << "  " << countIt->second << "  ";
-            Text wrapper( "[" + countIt->first + "]", TextAttributes()
-                                                        .setInitialIndent( 0 )
-                                                        .setIndent( oss.str().size() )
-                                                        .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
+            oss << "  " << std::setw(2) << countIt->second.count << "  ";
+            Text wrapper( countIt->second.all(), TextAttributes()
+                                                    .setInitialIndent( 0 )
+                                                    .setIndent( oss.str().size() )
+                                                    .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
             std::cout << oss.str() << wrapper << "\n";
         }
         std::cout << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;

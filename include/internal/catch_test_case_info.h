@@ -37,6 +37,7 @@ namespace Catch {
         std::string className;
         std::string description;
         std::set<std::string> tags;
+        std::set<std::string> lcaseTags;
         std::string tagsAsString;
         SourceLineInfo lineInfo;
         bool isHidden;
