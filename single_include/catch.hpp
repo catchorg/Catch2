@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 45 (master branch)
- *  Generated: 2014-05-19 18:22:42.461908
+ *  CATCH v1.0 build 46 (master branch)
+ *  Generated: 2014-05-20 18:49:44.156173
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -12,6 +12,10 @@
 #define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
+
+// #included from: internal/catch_suppress_warnings.h
+
+#define TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
 
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wglobal-constructors"
@@ -265,6 +269,7 @@ namespace Catch {
     {
     public:
         NotImplementedException( SourceLineInfo const& lineInfo );
+        NotImplementedException( NotImplementedException const& ) {}
 
         virtual ~NotImplementedException() CATCH_NOEXCEPT {}
 
@@ -408,8 +413,8 @@ namespace Catch {
     {
         virtual ~IContext();
 
-        virtual IResultCapture& getResultCapture() = 0;
-        virtual IRunner& getRunner() = 0;
+        virtual IResultCapture* getResultCapture() = 0;
+        virtual IRunner* getRunner() = 0;
         virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;
         virtual bool advanceGeneratorsForCurrentTest() = 0;
         virtual Ptr<IConfig const> getConfig() const = 0;
@@ -1358,6 +1363,7 @@ namespace Catch {
     class ScopedMessage {
     public:
         ScopedMessage( MessageBuilder const& builder );
+        ScopedMessage( ScopedMessage const& other );
         ~ScopedMessage();
 
         MessageInfo m_info;
@@ -1536,7 +1542,10 @@ namespace Catch {
 namespace Catch {
 
     inline IResultCapture& getResultCapture() {
-        return getCurrentContext().getResultCapture();
+        if( IResultCapture* capture = getCurrentContext().getResultCapture() )
+            return *capture;
+        else
+            throw std::logic_error( "No result capture instance" );
     }
 
     template<typename MatcherT>
@@ -2406,6 +2415,7 @@ namespace Catch {
         std::string className;
         std::string description;
         std::set<std::string> tags;
+        std::set<std::string> lcaseTags;
         std::string tagsAsString;
         SourceLineInfo lineInfo;
         bool isHidden;
@@ -2750,7 +2760,7 @@ namespace Catch {
             TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
             virtual ~TagPattern();
             virtual bool matches( TestCaseInfo const& testCase ) const {
-                return testCase.tags.find( m_tag ) != testCase.tags.end();
+                return testCase.lcaseTags.find( m_tag ) != testCase.lcaseTags.end();
             }
         private:
             std::string m_tag;
@@ -2820,10 +2830,10 @@ namespace Catch {
                 visitChar( m_arg[m_pos] );
             if( m_mode == Name )
                 addPattern<TestSpec::NamePattern>();
-            addFilter();
             return *this;
         }
         TestSpec testSpec() {
+            addFilter();
             return m_testSpec;
         }
     private:
@@ -3959,7 +3969,7 @@ namespace Catch {
         while( std::getline( f, line ) ) {
             line = trim(line);
             if( !line.empty() && !startsWith( line, "#" ) )
-                addTestOrTags( config, "\"" + line + "\"" );
+                addTestOrTags( config, "\"" + line + "\"," );
         }
     }
 
@@ -4270,6 +4280,7 @@ namespace Catch {
         static void use( Code _colourCode );
 
     private:
+        Colour( Colour const& other );
         static Detail::IColourImpl* impl();
     };
 
@@ -4655,7 +4666,24 @@ namespace Catch {
             testSpec = TestSpecParser().parse( "*" ).testSpec();
         }
 
-        std::map<std::string, int> tagCounts;
+        struct TagInfo {
+            TagInfo() : count ( 0 ) {}
+            void add( std::string const& spelling ) {
+                ++count;
+                spellings.insert( spelling );
+            }
+            std::string all() const {
+                std::string out;
+                for( std::set<std::string>::const_iterator it = spellings.begin(), itEnd = spellings.end();
+                            it != itEnd;
+                            ++it )
+                    out += "[" + *it + "]";
+                return out;
+            }
+            std::set<std::string> spellings;
+            std::size_t count;
+        };
+        std::map<std::string, TagInfo> tagCounts;
 
         std::vector<TestCase> matchedTestCases;
         getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
@@ -4667,24 +4695,24 @@ namespace Catch {
                     tagIt != tagItEnd;
                     ++tagIt ) {
                 std::string tagName = *tagIt;
-                std::map<std::string, int>::iterator countIt = tagCounts.find( tagName );
+                std::string lcaseTagName = toLower( tagName );
+                std::map<std::string, TagInfo>::iterator countIt = tagCounts.find( lcaseTagName );
                 if( countIt == tagCounts.end() )
-                    tagCounts.insert( std::make_pair( tagName, 1 ) );
-                else
-                    countIt->second++;
+                    countIt = tagCounts.insert( std::make_pair( lcaseTagName, TagInfo() ) ).first;
+                countIt->second.add( tagName );
             }
         }
 
-        for( std::map<std::string, int>::const_iterator countIt = tagCounts.begin(),
-                                                        countItEnd = tagCounts.end();
+        for( std::map<std::string, TagInfo>::const_iterator countIt = tagCounts.begin(),
+                                                            countItEnd = tagCounts.end();
                 countIt != countItEnd;
                 ++countIt ) {
             std::ostringstream oss;
-            oss << "  " << countIt->second << "  ";
-            Text wrapper( "[" + countIt->first + "]", TextAttributes()
-                                                        .setInitialIndent( 0 )
-                                                        .setIndent( oss.str().size() )
-                                                        .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
+            oss << "  " << std::setw(2) << countIt->second.count << "  ";
+            Text wrapper( countIt->second.all(), TextAttributes()
+                                                    .setInitialIndent( 0 )
+                                                    .setIndent( oss.str().size() )
+                                                    .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
             std::cout << oss.str() << wrapper << "\n";
         }
         std::cout << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
@@ -4910,8 +4938,8 @@ namespace Catch {
             m_activeTestCase( NULL ),
             m_config( config ),
             m_reporter( reporter ),
-            m_prevRunner( &m_context.getRunner() ),
-            m_prevResultCapture( &m_context.getResultCapture() ),
+            m_prevRunner( m_context.getRunner() ),
+            m_prevResultCapture( m_context.getResultCapture() ),
             m_prevConfig( m_context.getConfig() )
         {
             m_context.setRunner( this );
@@ -5792,11 +5820,11 @@ namespace Catch {
         void operator=( Context const& );
 
     public: // IContext
-        virtual IResultCapture& getResultCapture() {
-            return *m_resultCapture;
+        virtual IResultCapture* getResultCapture() {
+            return m_resultCapture;
         }
-        virtual IRunner& getRunner() {
-            return *m_runner;
+        virtual IRunner* getRunner() {
+            return m_runner;
         }
         virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
             return getGeneratorsForCurrentTest()
@@ -5827,7 +5855,7 @@ namespace Catch {
 
     private:
         IGeneratorsForTest* findGeneratorsForCurrentTest() {
-            std::string testName = getResultCapture().getCurrentTestName();
+            std::string testName = getResultCapture()->getCurrentTestName();
 
             std::map<std::string, IGeneratorsForTest*>::const_iterator it =
             m_generatorsByTestName.find( testName );
@@ -5839,7 +5867,7 @@ namespace Catch {
         IGeneratorsForTest& getGeneratorsForCurrentTest() {
             IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
             if( !generators ) {
-                std::string testName = getResultCapture().getCurrentTestName();
+                std::string testName = getResultCapture()->getCurrentTestName();
                 generators = createGeneratorsForTest();
                 m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
             }
@@ -6332,20 +6360,21 @@ namespace Catch {
                     enforceNotReservedTag( tag, _lineInfo );
 
                     inTag = false;
-                    if( tag == "hide" || tag == "." ) {
-                        tags.insert( "hide" );
-                        tags.insert( "." );
+                    if( tag == "hide" || tag == "." )
                         isHidden = true;
-                    }
-                    else {
+                    else
                         tags.insert( tag );
-                    }
                     tag.clear();
                 }
                 else
                     tag += c;
             }
         }
+        if( isHidden ) {
+            tags.insert( "hide" );
+            tags.insert( "." );
+        }
+
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
     }
@@ -6369,6 +6398,7 @@ namespace Catch {
             oss << "[" << *it << "]";
             if( *it == "!throws" )
                 throws = true;
+            lcaseTags.insert( toLower( *it ) );
         }
         tagsAsString = oss.str();
     }
@@ -6378,6 +6408,7 @@ namespace Catch {
         className( other.className ),
         description( other.description ),
         tags( other.tags ),
+        lcaseTags( other.lcaseTags ),
         tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
         isHidden( other.isHidden ),
@@ -6397,6 +6428,19 @@ namespace Catch {
         return other;
     }
 
+    void TestCase::swap( TestCase& other ) {
+        test.swap( other.test );
+        name.swap( other.name );
+        className.swap( other.className );
+        description.swap( other.description );
+        tags.swap( other.tags );
+        lcaseTags.swap( other.lcaseTags );
+        tagsAsString.swap( other.tagsAsString );
+        std::swap( TestCaseInfo::isHidden, static_cast<TestCaseInfo&>( other ).isHidden );
+        std::swap( TestCaseInfo::throws, static_cast<TestCaseInfo&>( other ).throws );
+        std::swap( lineInfo, other.lineInfo );
+    }
+
     void TestCase::invoke() const {
         test->invoke();
     }
@@ -6406,14 +6450,6 @@ namespace Catch {
     }
     bool TestCase::throws() const {
         return TestCaseInfo::throws;
-    }
-
-    void TestCase::swap( TestCase& other ) {
-        test.swap( other.test );
-        className.swap( other.className );
-        name.swap( other.name );
-        description.swap( other.description );
-        std::swap( lineInfo, other.lineInfo );
     }
 
     bool TestCase::operator == ( TestCase const& other ) const {
@@ -6444,7 +6480,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 45, "master" );
+    Version libraryVersion( 1, 0, 46, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -6472,6 +6508,10 @@ namespace Catch {
         m_info.message = builder.m_stream.str();
         getResultCapture().pushScopedMessage( m_info );
     }
+    ScopedMessage::ScopedMessage( ScopedMessage const& other )
+    : m_info( other.m_info )
+    {}
+
     ScopedMessage::~ScopedMessage() {
         getResultCapture().popScopedMessage( m_info );
     }
@@ -6737,14 +6777,14 @@ namespace Catch {
                         std::string const& name,
                         std::string const& description )
     :   m_info( name, description, lineInfo ),
-        m_sectionIncluded( getCurrentContext().getResultCapture().sectionStarted( m_info, m_assertions ) )
+        m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
     {
         m_timer.start();
     }
 
     Section::~Section() {
         if( m_sectionIncluded )
-            getCurrentContext().getResultCapture().sectionEnded( m_info, m_assertions, m_timer.getElapsedSeconds() );
+            getResultCapture().sectionEnded( m_info, m_assertions, m_timer.getElapsedSeconds() );
     }
 
     // This indicates whether the section should be executed or not
@@ -7050,12 +7090,12 @@ namespace Catch {
 
         struct BySectionInfo {
             BySectionInfo( SectionInfo const& other ) : m_other( other ) {}
+			BySectionInfo( BySectionInfo const& other ) : m_other( other.m_other ) {}
             bool operator() ( Ptr<SectionNode> const& node ) const {
                 return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
             }
         private:
-            BySectionInfo& operator=( BySectionInfo const& other ); // = delete;
-
+			void operator=( BySectionInfo const& );
             SectionInfo const& m_other;
         };
 
@@ -7278,26 +7318,26 @@ namespace Catch {
                 endElement();
         }
 
-#  ifndef CATCH_CPP11_OR_GREATER
-        XmlWriter& operator = ( XmlWriter const& other ) {
-            XmlWriter temp( other );
-            swap( temp );
-            return *this;
-        }
-#  else
-        XmlWriter( XmlWriter const& )              = default;
-        XmlWriter( XmlWriter && )                  = default;
-        XmlWriter& operator = ( XmlWriter const& ) = default;
-        XmlWriter& operator = ( XmlWriter && )     = default;
-#  endif
-
-        void swap( XmlWriter& other ) {
-            std::swap( m_tagIsOpen, other.m_tagIsOpen );
-            std::swap( m_needsNewline, other.m_needsNewline );
-            std::swap( m_tags, other.m_tags );
-            std::swap( m_indent, other.m_indent );
-            std::swap( m_os, other.m_os );
-        }
+//#  ifndef CATCH_CPP11_OR_GREATER
+//        XmlWriter& operator = ( XmlWriter const& other ) {
+//            XmlWriter temp( other );
+//            swap( temp );
+//            return *this;
+//        }
+//#  else
+//        XmlWriter( XmlWriter const& )              = default;
+//        XmlWriter( XmlWriter && )                  = default;
+//        XmlWriter& operator = ( XmlWriter const& ) = default;
+//        XmlWriter& operator = ( XmlWriter && )     = default;
+//#  endif
+//
+//        void swap( XmlWriter& other ) {
+//            std::swap( m_tagIsOpen, other.m_tagIsOpen );
+//            std::swap( m_needsNewline, other.m_needsNewline );
+//            std::swap( m_tags, other.m_tags );
+//            std::swap( m_indent, other.m_indent );
+//            std::swap( m_os, other.m_os );
+//        }
 
         XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
@@ -7375,7 +7415,13 @@ namespace Catch {
             return *this;
         }
 
+        void setStream( std::ostream& os ) {
+            m_os = &os;
+        }
+
     private:
+        XmlWriter( XmlWriter const& );
+        void operator=( XmlWriter const& );
 
         std::ostream& stream() {
             return *m_os;
@@ -7444,7 +7490,7 @@ namespace Catch {
         }
 
         virtual void StartTesting() {
-            m_xml = XmlWriter( m_config.stream() );
+            m_xml.setStream( m_config.stream() );
             m_xml.startElement( "Catch" );
             if( !m_config.fullConfig()->name().empty() )
                 m_xml.writeAttribute( "name", m_config.fullConfig()->name() );
@@ -8298,7 +8344,7 @@ namespace Catch {
         private:
             // Colour::LightGrey
 
-            static Colour dimColour() { return Colour::FileName; }
+            static Colour::Code dimColour() { return Colour::FileName; }
 
 #ifdef CATCH_PLATFORM_MAC
             static const char* failedString() { return "FAILED"; }
@@ -8313,7 +8359,7 @@ namespace Catch {
                 stream << result.getSourceInfo() << ":";
             }
 
-            void printResultType( Colour colour, std::string passOrFail ) const {
+            void printResultType( Colour::Code colour, std::string passOrFail ) const {
                 if( !passOrFail.empty() ) {
                     {
                         Colour colourGuard( colour );
@@ -8361,7 +8407,7 @@ namespace Catch {
                 }
             }
 
-            void printRemainingMessages( Colour colour = dimColour() ) {
+            void printRemainingMessages( Colour::Code colour = dimColour() ) {
                 if ( itMessage == messages.end() )
                     return;
 
@@ -8674,6 +8720,10 @@ int main (int argc, char * const argv[]) {
 #define AND_THEN( desc ) SECTION( "     And: " desc, "" )
 
 using Catch::Detail::Approx;
+
+// #included from: internal/catch_reenable_warnings.h
+
+#define TWOBLUECUBES_CATCH_REENABLE_WARNINGS_H_INCLUDED
 
 #ifdef __clang__
 #pragma clang diagnostic pop
