@@ -148,6 +148,13 @@ TEST_CASE( "Parse test names and tags", "" ) {
         CHECK( spec.matches( tcB ) == false );
         CHECK( spec.matches( tcC ) == true );
     }
+    SECTION( "Two tags, spare separated" ) {
+        TestSpec spec = parseTestSpec( "[two] [x]" );
+        CHECK( spec.hasFilters() == true );
+        CHECK( spec.matches( tcA ) == false );
+        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( tcC ) == true );
+    }
     SECTION( "Wildcarded name and tag" ) {
         TestSpec spec = parseTestSpec( "*name*[x]" );
         CHECK( spec.hasFilters() == true );
