@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite errors="12" failures="99" tests="710" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite errors="12" failures="99" tests="714" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -541,6 +541,7 @@ TrickyTests.cpp:<line number>
     <testcase classname="Parse test names and tags" name="Single tag" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Single tag, two matches" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Two tags" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Two tags, spare separated" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Wildcarded name and tag" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Single tag exclusion" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="One tag exclusion and one tag inclusion" time="{duration}"/>

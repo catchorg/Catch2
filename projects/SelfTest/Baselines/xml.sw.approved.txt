@@ -6573,6 +6573,41 @@ there&quot;
         </Expression>
         <OverallResults successes="4" failures="0"/>
       </Section>
+      <Section name="Two tags, spare separated">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
       <Section name="Wildcarded name and tag">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
           <Original>
@@ -7439,7 +7474,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="599" failures="111"/>
+    <OverallResults successes="603" failures="111"/>
   </Group>
-  <OverallResults successes="599" failures="111"/>
+  <OverallResults successes="603" failures="111"/>
 </Catch>

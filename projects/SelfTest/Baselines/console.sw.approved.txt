@@ -6369,6 +6369,37 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Parse test names and tags
+  Two tags, spare separated
+-------------------------------------------------------------------------------
+CmdLineTests.cpp:<line number>
+...............................................................................
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.hasFilters() == true )
+with expansion:
+  true == true
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcA ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcB ) == false )
+with expansion:
+  false == false
+
+CmdLineTests.cpp:<line number>:
+PASSED:
+  CHECK( spec.matches( tcC ) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
   Wildcarded name and tag
 -------------------------------------------------------------------------------
 CmdLineTests.cpp:<line number>
@@ -7183,5 +7214,5 @@ with expansion:
   true
 
 ===============================================================================
-123 test cases - 54 failed (710 assertions - 111 failed)
+123 test cases - 54 failed (714 assertions - 111 failed)
 

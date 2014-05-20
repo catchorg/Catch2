@@ -772,5 +772,5 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-123 test cases - 39 failed (691 assertions - 92 failed)
+123 test cases - 39 failed (695 assertions - 92 failed)
 
