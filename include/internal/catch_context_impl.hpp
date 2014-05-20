@@ -23,10 +23,16 @@ namespace Catch {
 
     public: // IContext
         virtual IResultCapture& getResultCapture() {
-            return *m_resultCapture;
+            if( m_resultCapture )
+                return *m_resultCapture;
+            else
+                throw std::logic_error( "No result capture instance" );
         }
         virtual IRunner& getRunner() {
-            return *m_runner;
+            if( m_runner )
+                return *m_runner;
+            else
+                throw std::logic_error( "No runner instance" );
         }
         virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
             return getGeneratorsForCurrentTest()
