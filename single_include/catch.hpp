@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 46 (master branch)
- *  Generated: 2014-05-20 18:49:44.156173
+ *  CATCH v1.0 build 47 (master branch)
+ *  Generated: 2014-05-20 19:02:15.946806
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4657,6 +4657,24 @@ namespace Catch {
         return matchedTests;
     }
 
+    struct TagInfo {
+        TagInfo() : count ( 0 ) {}
+        void add( std::string const& spelling ) {
+            ++count;
+            spellings.insert( spelling );
+        }
+        std::string all() const {
+            std::string out;
+            for( std::set<std::string>::const_iterator it = spellings.begin(), itEnd = spellings.end();
+                        it != itEnd;
+                        ++it )
+                out += "[" + *it + "]";
+            return out;
+        }
+        std::set<std::string> spellings;
+        std::size_t count;
+    };
+
     inline std::size_t listTags( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
@@ -4666,23 +4684,6 @@ namespace Catch {
             testSpec = TestSpecParser().parse( "*" ).testSpec();
         }
 
-        struct TagInfo {
-            TagInfo() : count ( 0 ) {}
-            void add( std::string const& spelling ) {
-                ++count;
-                spellings.insert( spelling );
-            }
-            std::string all() const {
-                std::string out;
-                for( std::set<std::string>::const_iterator it = spellings.begin(), itEnd = spellings.end();
-                            it != itEnd;
-                            ++it )
-                    out += "[" + *it + "]";
-                return out;
-            }
-            std::set<std::string> spellings;
-            std::size_t count;
-        };
         std::map<std::string, TagInfo> tagCounts;
 
         std::vector<TestCase> matchedTestCases;
@@ -6480,7 +6481,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 46, "master" );
+    Version libraryVersion( 1, 0, 47, "master" );
 }
 
 // #included from: catch_message.hpp
