@@ -65,20 +65,21 @@ namespace Catch {
                     enforceNotReservedTag( tag, _lineInfo );
 
                     inTag = false;
-                    if( tag == "hide" || tag == "." ) {
-                        tags.insert( "hide" );
-                        tags.insert( "." );
+                    if( tag == "hide" || tag == "." )
                         isHidden = true;
-                    }
-                    else {
+                    else
                         tags.insert( tag );
-                    }
                     tag.clear();
                 }
                 else
                     tag += c;
             }
         }
+        if( isHidden ) {
+            tags.insert( "hide" );
+            tags.insert( "." );
+        }
+
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
     }
