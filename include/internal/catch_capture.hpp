@@ -25,7 +25,10 @@
 namespace Catch {
 
     inline IResultCapture& getResultCapture() {
-        return getCurrentContext().getResultCapture();
+        if( IResultCapture* capture = getCurrentContext().getResultCapture() )
+            return *capture;
+        else
+            throw std::logic_error( "No result capture instance" );
     }
 
     template<typename MatcherT>

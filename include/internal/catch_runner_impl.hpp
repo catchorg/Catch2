@@ -63,8 +63,8 @@ namespace Catch {
             m_activeTestCase( NULL ),
             m_config( config ),
             m_reporter( reporter ),
-            m_prevRunner( &m_context.getRunner() ),
-            m_prevResultCapture( &m_context.getResultCapture() ),
+            m_prevRunner( m_context.getRunner() ),
+            m_prevResultCapture( m_context.getResultCapture() ),
             m_prevConfig( m_context.getConfig() )
         {
             m_context.setRunner( this );
