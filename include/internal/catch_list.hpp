@@ -75,6 +75,24 @@ namespace Catch {
         return matchedTests;
     }
 
+    struct TagInfo {
+        TagInfo() : count ( 0 ) {}
+        void add( std::string const& spelling ) {
+            ++count;
+            spellings.insert( spelling );
+        }
+        std::string all() const {
+            std::string out;
+            for( std::set<std::string>::const_iterator it = spellings.begin(), itEnd = spellings.end();
+                        it != itEnd;
+                        ++it )
+                out += "[" + *it + "]";
+            return out;
+        }
+        std::set<std::string> spellings;
+        std::size_t count;
+    };
+
     inline std::size_t listTags( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
@@ -84,23 +102,6 @@ namespace Catch {
             testSpec = TestSpecParser().parse( "*" ).testSpec();
         }
 
-        struct TagInfo {
-            TagInfo() : count ( 0 ) {}
-            void add( std::string const& spelling ) {
-                ++count;
-                spellings.insert( spelling );
-            }
-            std::string all() const {
-                std::string out;
-                for( std::set<std::string>::const_iterator it = spellings.begin(), itEnd = spellings.end();
-                            it != itEnd;
-                            ++it )
-                    out += "[" + *it + "]";
-                return out;
-            }
-            std::set<std::string> spellings;
-            std::size_t count;
-        };
         std::map<std::string, TagInfo> tagCounts;
 
         std::vector<TestCase> matchedTestCases;
