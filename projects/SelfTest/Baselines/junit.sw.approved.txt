@@ -20,7 +20,7 @@ ClassTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Equality checks that should succeed" time="{duration}"/>
-    <testcase classname="global" name="Equality checks that should fail]" time="{duration}">
+    <testcase classname="global" name="Equality checks that should fail" time="{duration}">
       <failure message="7 == 6" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
@@ -62,7 +62,7 @@ ConditionTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Inequality checks that should succeed" time="{duration}"/>
-    <testcase classname="global" name="Inequality checks that should fails" time="{duration}">
+    <testcase classname="global" name="Inequality checks that should fail" time="{duration}">
       <failure message="7 != 7" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>

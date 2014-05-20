@@ -340,7 +340,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equality checks that should fail]">
+    <TestCase name="Equality checks that should fail">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven == 6
@@ -538,7 +538,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Inequality checks that should fails">
+    <TestCase name="Inequality checks that should fail">
       <Expression success="false" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ConditionTests.cpp" >
         <Original>
           data.int_seven != 7
