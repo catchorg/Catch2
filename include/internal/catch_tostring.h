@@ -80,41 +80,11 @@ namespace Detail {
         }
     };
 
-    struct Endianness {
-        enum Arch { Big, Little };
+    std::string rawMemoryToString( const void *object, std::size_t size );
 
-        static Arch which() {
-            union _{
-                int asInt;
-                char asChar[sizeof (int)];
-            } u;
-
-            u.asInt = 1;
-            return ( u.asChar[sizeof(int)-1] == 1 ) ? Big : Little;
-        }
-    };
-
-    // Writes the raw memory into a string, considering endianness
     template<typename T>
-    std::string rawMemoryToString( T value ) {
-        union _ {
-            T typedValue;
-            unsigned char bytes[sizeof(T)];
-        } u;
-
-        u.typedValue = value;
-
-        std::ostringstream oss;
-        oss << "0x";
-
-        int i = 0, end = sizeof(T), inc = 1;
-        if( Endianness::which() == Endianness::Little ) {
-            i = end-1;
-            end = inc = -1;
-        }
-        for( ; i != end; i += inc )
-            oss << std::hex << std::setw(2) << std::setfill('0') << (unsigned int)u.bytes[i];
-        return oss.str();
+    inline std::string rawMemoryToString( const T& object ) {
+      return rawMemoryToString( &object, sizeof(object) );
     }
 
 } // end namespace Detail

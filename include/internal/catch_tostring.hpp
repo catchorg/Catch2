@@ -13,6 +13,42 @@
 
 namespace Catch {
 
+namespace Detail {
+
+    namespace {
+        struct Endianness {
+            enum Arch { Big, Little };
+
+            static Arch which() {
+                union _{
+                    int asInt;
+                    char asChar[sizeof (int)];
+                } u;
+
+                u.asInt = 1;
+                return ( u.asChar[sizeof(int)-1] == 1 ) ? Big : Little;
+            }
+        };
+    }
+
+    std::string rawMemoryToString( const void *object, std::size_t size )
+    {
+        // Reverse order for little endian architectures
+        int i = 0, end = static_cast<int>( size ), inc = 1;
+        if( Endianness::which() == Endianness::Little ) {
+            i = end-1;
+            end = inc = -1;
+        }
+
+        unsigned char const *bytes = static_cast<unsigned char const *>(object);
+        std::ostringstream os;
+        os << "0x" << std::setfill('0') << std::hex;
+        for( ; i != end; i += inc )
+             os << std::setw(2) << static_cast<unsigned>(bytes[i]);
+       return os.str();
+    }
+}
+
 std::string toString( std::string const& value ) {
     std::string s = value;
     if( getCurrentContext().getConfig()->showInvisibles() ) {
