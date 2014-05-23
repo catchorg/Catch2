@@ -521,6 +521,20 @@ with messages:
   i := 7
 
 -------------------------------------------------------------------------------
+Pointers can be converted to strings
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+warning:
+  actual address of p: 0x<hex digits>
+
+MessageTests.cpp:<line number>:
+warning:
+  toString(p): 0x<hex digits>
+
+-------------------------------------------------------------------------------
 more nested SECTION tests
   s1
   s2
@@ -772,5 +786,5 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-123 test cases - 39 failed (695 assertions - 92 failed)
+124 test cases - 39 failed (695 assertions - 92 failed)
 

@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite errors="12" failures="99" tests="714" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite errors="12" failures="100" tests="715" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -319,6 +319,7 @@ i := 7
 MessageTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="Pointers can be converted to strings" time="{duration}"/>
     <testcase classname="random SECTION tests" name="s1" time="{duration}"/>
     <testcase classname="random SECTION tests" name="s2" time="{duration}"/>
     <testcase classname="nested SECTION tests" name="s1" time="{duration}"/>

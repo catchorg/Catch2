@@ -2810,6 +2810,23 @@ with messages:
   i := 7
 
 -------------------------------------------------------------------------------
+Pointers can be converted to strings
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+warning:
+  actual address of p: 0x<hex digits>
+
+MessageTests.cpp:<line number>:
+warning:
+  toString(p): 0x<hex digits>
+
+
+No assertions in test case 'Pointers can be converted to strings'
+
+-------------------------------------------------------------------------------
 random SECTION tests
   s1
 -------------------------------------------------------------------------------
@@ -7214,5 +7231,5 @@ with expansion:
   true
 
 ===============================================================================
-123 test cases - 54 failed (714 assertions - 111 failed)
+124 test cases - 55 failed (715 assertions - 112 failed)
 

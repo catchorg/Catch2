@@ -2923,6 +2923,15 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Pointers can be converted to strings">
+      <Warning>
+        actual address of p: 0x<hex digits>
+      </Warning>
+      <Warning>
+        toString(p): 0x<hex digits>
+      </Warning>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="random SECTION tests">
       <Section name="s1" description="doesn't equal">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
@@ -7474,7 +7483,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="603" failures="111"/>
+    <OverallResults successes="603" failures="112"/>
   </Group>
-  <OverallResults successes="603" failures="111"/>
+  <OverallResults successes="603" failures="112"/>
 </Catch>
