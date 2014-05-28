@@ -77,7 +77,7 @@ namespace Catch {
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo ) {
         std::ostringstream oss;
         oss << locationInfo << ": Internal Catch error: '" << message << "'";
-        if( isTrue( true ))
+        if( alwaysTrue() )
             throw std::logic_error( oss.str() );
     }
 }

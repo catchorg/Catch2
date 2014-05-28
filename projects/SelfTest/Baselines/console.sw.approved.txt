@@ -5683,7 +5683,7 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::isTrue( true ) )
+  REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
 
@@ -5696,7 +5696,7 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::isTrue( true ) )
+  REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
 
@@ -5710,7 +5710,7 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::isTrue( true ) )
+  REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
 
@@ -5722,7 +5722,7 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::isTrue( true ) )
+  REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
 
@@ -5735,7 +5735,7 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::isTrue( true ) )
+  REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
 
@@ -5749,7 +5749,7 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::isTrue( true ) )
+  REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
 

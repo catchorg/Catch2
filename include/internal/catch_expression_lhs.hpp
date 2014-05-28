@@ -8,11 +8,18 @@
 #ifndef TWOBLUECUBES_CATCH_EXPRESSION_LHS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_EXPRESSION_LHS_HPP_INCLUDED
 
+#include "catch_result_builder.h"
 #include "catch_expressionresult_builder.h"
 #include "catch_evaluate.hpp"
 #include "catch_tostring.h"
 
+#include <assert.h>
+
 namespace Catch {
+
+struct ResultBuilder;
+
+ExpressionResultBuilder& getResultBuilder( ResultBuilder* rb );
 
 // Wraps the LHS of an expression and captures the operator and RHS (if any) -
 // wrapping them all in an ExpressionResultBuilder object
@@ -24,7 +31,7 @@ class ExpressionLhs {
 #  endif
 
 public:
-    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
+    ExpressionLhs( ResultBuilder& rb, T lhs ) : m_rb( &rb ), m_lhs( lhs ) {}
 #  ifdef CATCH_CPP11_OR_GREATER
     ExpressionLhs( ExpressionLhs const& ) = default;
     ExpressionLhs( ExpressionLhs && )     = default;
@@ -68,12 +75,13 @@ public:
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
-    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition ) {
+    void endExpression() {
+        assert( m_rb );
         bool value = m_lhs ? true : false;
-        return m_result
+        getResultBuilder( m_rb )
             .setLhs( Catch::toString( value ) )
             .setResultType( value )
-            .endExpression( resultDisposition );
+            .endExpression();
     }
 
     // Only simple binary expressions are allowed on the LHS.
@@ -88,7 +96,8 @@ public:
 private:
     template<Internal::Operator Op, typename RhsT>
     ExpressionResultBuilder& captureExpression( RhsT const& rhs ) {
-        return m_result
+        assert( m_rb );
+        return getResultBuilder( m_rb )
             .setResultType( Internal::compare<Op>( m_lhs, rhs ) )
             .setLhs( Catch::toString( m_lhs ) )
             .setRhs( Catch::toString( rhs ) )
@@ -96,7 +105,7 @@ private:
     }
 
 private:
-    ExpressionResultBuilder m_result;
+    ResultBuilder* m_rb;
     T m_lhs;
 };
 

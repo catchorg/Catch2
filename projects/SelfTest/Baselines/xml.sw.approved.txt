@@ -5849,7 +5849,7 @@ there&quot;
     <TestCase name="Assertions then sections">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          Catch::isTrue( true )
+          Catch::alwaysTrue()
         </Original>
         <Expanded>
           true
@@ -5858,7 +5858,7 @@ there&quot;
       <Section name="A section">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
           <Original>
-            Catch::isTrue( true )
+            Catch::alwaysTrue()
           </Original>
           <Expanded>
             true
@@ -5867,7 +5867,7 @@ there&quot;
         <Section name="Another section">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
             <Original>
-              Catch::isTrue( true )
+              Catch::alwaysTrue()
             </Original>
             <Expanded>
               true
@@ -5879,7 +5879,7 @@ there&quot;
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          Catch::isTrue( true )
+          Catch::alwaysTrue()
         </Original>
         <Expanded>
           true
@@ -5888,7 +5888,7 @@ there&quot;
       <Section name="A section">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
           <Original>
-            Catch::isTrue( true )
+            Catch::alwaysTrue()
           </Original>
           <Expanded>
             true
@@ -5897,7 +5897,7 @@ there&quot;
         <Section name="Another other section">
           <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
             <Original>
-              Catch::isTrue( true )
+              Catch::alwaysTrue()
             </Original>
             <Expanded>
               true

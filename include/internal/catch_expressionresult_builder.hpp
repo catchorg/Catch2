@@ -9,21 +9,25 @@
 #define TWOBLUECUBES_CATCH_EXPRESSIONRESULT_BUILDER_HPP_INCLUDED
 
 #include "catch_expressionresult_builder.h"
+#include "catch_result_builder.h"
 
 #include <assert.h>
 
 namespace Catch {
 
-    ExpressionResultBuilder::ExpressionResultBuilder( ResultWas::OfType resultType ) {
+    ExpressionResultBuilder::ExpressionResultBuilder( ResultBuilder* rb, ResultWas::OfType resultType )
+    : m_rb( rb ) {
         m_data.resultType = resultType;
     }
     ExpressionResultBuilder::ExpressionResultBuilder( ExpressionResultBuilder const& other )
-    :   m_data( other.m_data ),
+    :   m_rb( other.m_rb ),
+        m_data( other.m_data ),
         m_exprComponents( other.m_exprComponents )
     {
         m_stream << other.m_stream.str();
     }
     ExpressionResultBuilder& ExpressionResultBuilder::operator=(ExpressionResultBuilder const& other ) {
+        m_rb = other.m_rb;
         m_data = other.m_data;
         m_exprComponents = other.m_exprComponents;
         m_stream.str("");
@@ -38,9 +42,9 @@ namespace Catch {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    ExpressionResultBuilder& ExpressionResultBuilder::endExpression( ResultDisposition::Flags resultDisposition ) {
-        m_exprComponents.shouldNegate = shouldNegate( resultDisposition );
-        return *this;
+    void ExpressionResultBuilder::endExpression() {
+        m_exprComponents.shouldNegate = shouldNegate( m_rb->m_assertionInfo.resultDisposition );
+        m_rb->captureExpression();
     }
     ExpressionResultBuilder& ExpressionResultBuilder::setLhs( std::string const& lhs ) {
         m_exprComponents.lhs = lhs;
@@ -54,6 +58,7 @@ namespace Catch {
         m_exprComponents.op = op;
         return *this;
     }
+
     AssertionResult ExpressionResultBuilder::buildResult( AssertionInfo const& info ) const
     {
         assert( m_data.resultType != ResultWas::Unknown );

@@ -36,13 +36,6 @@ namespace Catch {
         return flags == ResultWas::Info;
     }
 
-    // ResultAction::Value enum
-    struct ResultAction { enum Value {
-        None,
-        Failed = 1, // Failure - but no debug break if Debug bit not set
-        Debug = 2,  // If this bit is set, invoke the debugger
-        Abort = 4   // Test run should abort
-    }; };
 
     // ResultDisposition::Flags enum
     struct ResultDisposition { enum Flags {
@@ -60,7 +53,7 @@ namespace Catch {
     inline bool shouldContinueOnFailure( int flags )    { return ( flags & ResultDisposition::ContinueOnFailure ) != 0; }
     inline bool shouldNegate( int flags )               { return ( flags & ResultDisposition::NegateResult ) != 0; }
     inline bool shouldSuppressFailure( int flags )      { return ( flags & ResultDisposition::SuppressFail ) != 0; }
-
+    
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED

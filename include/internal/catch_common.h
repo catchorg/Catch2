@@ -94,6 +94,8 @@ namespace Catch {
 
     // This is just here to avoid compiler warnings with macro constants and boolean literals
     inline bool isTrue( bool value ){ return value; }
+    inline bool alwaysTrue() { return true; }
+    inline bool alwaysFalse() { return false; }
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
 

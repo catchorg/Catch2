@@ -46,7 +46,7 @@ namespace Catch
                     it != itEnd;
                     ++it ) {
                 if( it->type == ResultWas::Info ) {
-                    ExpressionResultBuilder expressionBuilder( it->type );
+                    ExpressionResultBuilder expressionBuilder( NULL, it->type );
                         expressionBuilder << it->message;
                     AssertionInfo info( it->macroName, it->lineInfo, "", ResultDisposition::Normal );
                     AssertionResult result = expressionBuilder.buildResult( info );

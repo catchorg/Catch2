@@ -43,7 +43,7 @@ namespace Catch{
 #endif
 
 #ifndef CATCH_BREAK_INTO_DEBUGGER
-#define CATCH_BREAK_INTO_DEBUGGER() Catch::isTrue( true );
+#define CATCH_BREAK_INTO_DEBUGGER() Catch::alwaysTrue();
 #endif
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_H_INCLUDED

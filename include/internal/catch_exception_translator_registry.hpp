@@ -41,6 +41,9 @@ namespace Catch {
                 throw;
 #endif
             }
+            catch( TestFailureException& ) {
+                throw;
+            }
             catch( std::exception& ex ) {
                 return ex.what();
             }

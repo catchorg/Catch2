@@ -7,6 +7,7 @@
  */
 
 #include "catch.hpp"
+#include <iostream>
 
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"

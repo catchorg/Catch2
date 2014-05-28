@@ -14,7 +14,7 @@
 
 #include "catch.hpp"
 
-TEST_CASE( "section tracking" ) {
+TEST_CASE( "section tracking", "" ) {
 
     using namespace Catch;
     TestCaseTracker testCaseTracker( "test case" );
@@ -24,7 +24,7 @@ TEST_CASE( "section tracking" ) {
 
     CHECK_FALSE( testCaseTracker.isCompleted() );
 
-    SECTION( "test case with no sections" ) {
+    SECTION( "test case with no sections", "" ) {
 
         {
             TestCaseTracker::Guard guard( testCaseTracker );
@@ -33,7 +33,7 @@ TEST_CASE( "section tracking" ) {
         CHECK( testCaseTracker.isCompleted() );
     }
 
-    SECTION( "test case with one section" ) {
+    SECTION( "test case with one section", "" ) {
 
         {
             TestCaseTracker::Guard guard( testCaseTracker );
@@ -58,7 +58,7 @@ TEST_CASE( "section tracking" ) {
         }
     }
 
-    SECTION( "test case with two consecutive sections" ) {
+    SECTION( "test case with two consecutive sections", "" ) {
 
         // Enter test case
         {
@@ -93,7 +93,7 @@ TEST_CASE( "section tracking" ) {
         CHECK( testCaseTracker.isCompleted() );        
     }
 
-    SECTION( "test case with one section within another" ) {
+    SECTION( "test case with one section within another", "" ) {
 
         // Enter test case again
         {
