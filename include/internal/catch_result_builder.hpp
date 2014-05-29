@@ -18,10 +18,6 @@
 
 namespace Catch {
 
-    inline bool isFalseTest( int flags ) {
-        return ( flags & ResultDisposition::NegateResult ) != 0;
-    }
-
     ResultBuilder::ResultBuilder(   char const* macroName,
                                     SourceLineInfo const& lineInfo,
                                     char const* capturedExpression,
@@ -94,10 +90,12 @@ namespace Catch {
         AssertionResultData data = m_data;
 
         // Flip bool results if testFalse is set
-        if( m_exprComponents.testFalse && data.resultType == ResultWas::Ok )
-            data.resultType = ResultWas::ExpressionFailed;
-        else if( m_exprComponents.testFalse && data.resultType == ResultWas::ExpressionFailed )
-            data.resultType = ResultWas::Ok;
+        if( m_exprComponents.testFalse ) {
+            if( data.resultType == ResultWas::Ok )
+                data.resultType = ResultWas::ExpressionFailed;
+            else if( data.resultType == ResultWas::ExpressionFailed )
+                data.resultType = ResultWas::Ok;
+        }
 
         data.message = m_stream.oss.str();
         data.reconstructedExpression = reconstructExpression();
