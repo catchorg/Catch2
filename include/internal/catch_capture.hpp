@@ -39,7 +39,7 @@
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::alwaysFalse() && (expr) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+    } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
@@ -104,7 +104,7 @@
     #define INTERNAL_CATCH_MSG( messageType, resultDisposition, macroName, ... ) \
         do { \
             Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
-            __catchResult.m_resultBuilder << __VA_ARGS__ + ::Catch::StreamEndStop(); \
+            __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop(); \
             __catchResult.captureResult( messageType ); \
             INTERNAL_CATCH_REACT( __catchResult ) \
         } while( Catch::alwaysFalse() )
@@ -112,7 +112,7 @@
     #define INTERNAL_CATCH_MSG( messageType, resultDisposition, macroName, log ) \
         do { \
             Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
-            __catchResult.m_resultBuilder << log + ::Catch::StreamEndStop(); \
+            __catchResult << log + ::Catch::StreamEndStop(); \
             __catchResult.captureResult( messageType ); \
             INTERNAL_CATCH_REACT( __catchResult ) \
         } while( Catch::alwaysFalse() )
@@ -128,7 +128,7 @@
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg " " #matcher, resultDisposition ); \
         try { \
             std::string matcherAsString = ::Catch::Matchers::matcher.toString(); \
-            __catchResult.m_resultBuilder \
+            __catchResult \
                 .setLhs( Catch::toString( arg ) ) \
                 .setRhs( matcherAsString == "{?}" ? #matcher : matcherAsString ) \
                 .setOp( "matches" ) \

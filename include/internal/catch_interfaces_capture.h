@@ -15,7 +15,6 @@
 namespace Catch {
 
     class TestCase;
-    class ExpressionResultBuilder;
     class AssertionResult;
     struct AssertionInfo;
     struct SectionInfo;
