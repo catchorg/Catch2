@@ -69,14 +69,16 @@
 #define INTERNAL_CATCH_THROWS( expr, resultDisposition, macroName ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-        try { \
-            if( __catchResult.allowThrows() ) \
+        if( __catchResult.allowThrows() ) \
+            try { \
                 expr; \
-            __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
-        } \
-        catch( ... ) { \
+                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+            } \
+            catch( ... ) { \
+                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+            } \
+        else \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
-        } \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 
@@ -84,17 +86,19 @@
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-        try { \
-            if( __catchResult.allowThrows() ) \
+        if( __catchResult.allowThrows() ) \
+            try { \
                 expr; \
-            __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
-        } \
-        catch( exceptionType ) { \
+                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+            } \
+            catch( exceptionType ) { \
+                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+            } \
+            catch( ... ) { \
+                __catchResult.useActiveException( resultDisposition ); \
+            } \
+        else \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
-        } \
-        catch( ... ) { \
-            __catchResult.useActiveException( resultDisposition ); \
-        } \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 
