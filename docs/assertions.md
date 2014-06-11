@@ -9,7 +9,7 @@ Most of these macros come in two forms:
 ## Natural Expressions
 
 The ```REQUIRE``` family of macros tests an expression and aborts the test case if it fails.
-The ```CHECK``` family are equivalent but execution continues in the same test case even if the assertion fails. This is useful if you have a series of essentially orthoginal assertions and it is useful to see all the results rather than stopping at the first failure.
+The ```CHECK``` family are equivalent but execution continues in the same test case even if the assertion fails. This is useful if you have a series of essentially orthogonal assertions and it is useful to see all the results rather than stopping at the first failure.
 
 * **REQUIRE(** _expression_ **)** and  
 * **CHECK(** _expression_ **)**
