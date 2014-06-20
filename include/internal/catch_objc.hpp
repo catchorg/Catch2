@@ -125,7 +125,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "equals string: \"" + Catch::toString( m_substr ) + "\"";
+                    return "equals string: " + Catch::toString( m_substr );
                 }
             };
 
@@ -138,7 +138,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "contains string: \"" + Catch::toString( m_substr ) + "\"";
+                    return "contains string: " + Catch::toString( m_substr );
                 }
             };
 
@@ -151,7 +151,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "starts with: \"" + Catch::toString( m_substr ) + "\"";
+                    return "starts with: " + Catch::toString( m_substr );
                 }
             };
             struct EndsWith : StringHolder<EndsWith> {
@@ -163,7 +163,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "ends with: \"" + Catch::toString( m_substr ) + "\"";
+                    return "ends with: " + Catch::toString( m_substr );
                 }
             };
 

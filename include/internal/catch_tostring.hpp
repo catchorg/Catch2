@@ -146,12 +146,12 @@ std::string toString( std::nullptr_t ) {
     std::string toString( NSString const * const& nsstring ) {
         if( !nsstring )
             return "nil";
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+        return "@" + toString([nsstring UTF8String]);
     }
     std::string toString( NSString * CATCH_ARC_STRONG const& nsstring ) {
         if( !nsstring )
             return "nil";
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+        return "@" + toString([nsstring UTF8String]);
     }
     std::string toString( NSObject* const& nsObject ) {
         return toString( [nsObject description] );
