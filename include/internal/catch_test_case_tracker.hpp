@@ -33,13 +33,18 @@ namespace SectionTracking {
 
         RunState runState() const { return m_runState; }
 
-        void addChild( std::string const& childName ) {
+        TrackedSection* findChild( std::string const& childName ) {
+            TrackedSections::iterator it = m_children.find( childName );
+            return it != m_children.end()
+                ? &it->second
+                : NULL;
+        }
+        TrackedSection* acquireChild( std::string const& childName ) {
+            if( TrackedSection* child = findChild( childName ) )
+                return child;
             m_children.insert( std::make_pair( childName, TrackedSection( childName, this ) ) );
+            return findChild( childName );
         }
-        TrackedSection* getChild( std::string const& childName ) {
-            return &m_children.find( childName )->second;
-        }
-
         void enter() {
             if( m_runState == NotStarted )
                 m_runState = Executing;
@@ -78,21 +83,13 @@ namespace SectionTracking {
         {}
 
         bool enterSection( std::string const& name ) {
-            if( m_completedASectionThisRun )
+            TrackedSection* child = m_currentSection->acquireChild( name );
+            if( m_completedASectionThisRun || child->runState() == TrackedSection::Completed )
                 return false;
-            if( m_currentSection->runState() == TrackedSection::Executing ) {
-                m_currentSection->addChild( name );
-                return false;
-            }
-            else {
-                TrackedSection* child = m_currentSection->getChild( name );
-                if( child->runState() != TrackedSection::Completed ) {
-                    m_currentSection = child;
-                    m_currentSection->enter();
-                    return true;
-                }
-                return false;
-            }
+
+            m_currentSection = child;
+            m_currentSection->enter();
+            return true;
         }
         void leaveSection() {
             m_currentSection->leave();
@@ -110,9 +107,7 @@ namespace SectionTracking {
 
         class Guard {
         public:
-            Guard( TestCaseTracker& tracker )
-            : m_tracker( tracker )
-            {
+            Guard( TestCaseTracker& tracker ) : m_tracker( tracker ) {
                 m_tracker.enterTestCase();
             }
             ~Guard() {

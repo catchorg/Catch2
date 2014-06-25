@@ -98,7 +98,7 @@ Most test frameworks have a class-based fixture mechanism. That is, test cases m
 
 While Catch fully supports this way of working there are a few problems with the approach. In particular the way your code must be split up, and the blunt granularity (you can only have one setup/ teardown pair across a set of methods - sometimes you want slightly different setup in each method - or you may want several levels of setup. We'll revisit that concept shortly and, hopefully, make it clearer). It was <a href="http://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">problems like these</a> that led James Newkirk, who led the team that built NUnit, to start again from scratch and <a href="http://jamesnewkirk.typepad.com/posts/2007/09/announcing-xuni.html">build xUnit</a>).
 
-Catch takes a different approach (to both NUnut and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explaned through an example:
+Catch takes a different approach (to both NUnit and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explained through an example:
 
 ```c++
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {

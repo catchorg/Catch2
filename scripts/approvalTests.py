@@ -1,3 +1,5 @@
+from  __future__ import  print_function
+
 import os
 import sys
 import subprocess
@@ -17,7 +19,7 @@ versionParser = re.compile( r'(.*?)Catch v[0-9]*.[0-9]* b[0-9]*(.*)' )
 if len(sys.argv) == 2:
 	cmdPath = sys.argv[1]
 else:
-	cmdPath = os.path.join( catchPath, 'projects/XCode4/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
+	cmdPath = os.path.join( catchPath, 'projects/XCode/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
 
 overallResult = 0
 
@@ -66,20 +68,20 @@ def approve( baseName, args ):
 	rawFile.close()
 
 	os.remove( rawResultsPath )
-	print
-	print baseName + ":"
+	print()
+	print( baseName + ":" )
 	if os.path.exists( baselinesPath ):
 		diffResult = subprocess.call([ "diff", baselinesPath, filteredResultsPath ] )
 		if diffResult == 0:
 			os.remove( filteredResultsPath )
-			print "  \033[92mResults matched"
+			print( "  \033[92mResults matched" )
 		else:
-			print "  \n****************************\n  \033[91mResults differed"
+			print( "  \n****************************\n  \033[91mResults differed" )
 			if diffResult > overallResult:
 				overallResult = diffResult
-		print "\033[0m"
+		print( "\033[0m" )
 	else:
-		print "  first approval"
+		print( "  first approval" )
 		if overallResult == 0:
 			overallResult = 1
 
@@ -94,6 +96,6 @@ approve( "junit.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "junit"] )
 # xml reporter, include passes, warn about No Assertions
 approve( "xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml"] )
 
-if overallResult <> 0:
-	print "run approve.py to approve new baselines"
+if overallResult != 0:
+	print( "run approve.py to approve new baselines" )
 exit( overallResult)

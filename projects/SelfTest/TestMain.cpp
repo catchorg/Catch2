@@ -54,18 +54,16 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             Catch::Config cfg( config );
-            REQUIRE( cfg.filters().size() == 1 );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) );
+            REQUIRE( cfg.testSpec().matches( fakeTestCase( "notIncluded" ) ) == false );
+            REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) );
         }
         SECTION( "Specify one test case exclusion using exclude:", "" ) {
             const char* argv[] = { "test", "exclude:test1" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             Catch::Config cfg( config );
-            REQUIRE( cfg.filters().size() == 1 );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
+            REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) );
         }
 
         SECTION( "Specify one test case exclusion using ~", "" ) {
@@ -73,21 +71,10 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             Catch::Config cfg( config );
-            REQUIRE( cfg.filters().size() == 1 );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) == false );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "alwaysIncluded" ) ) );
+            REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false );
+            REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) );
         }
-        
-        SECTION( "Specify two test cases using -t", "" ) {
-            const char* argv[] = { "test", "-t", "test1", "test2" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            Catch::Config cfg( config );
-            REQUIRE( cfg.filters().size() == 1 );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test1" ) ) );
-            REQUIRE( cfg.filters()[0].shouldInclude( fakeTestCase( "test2" ) ) );
-        }
     }
     
     SECTION( "reporter", "" ) {
@@ -191,150 +178,6 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
     }        
 }
 
-TEST_CASE( "selftest/test filter", "Individual filters" ) {
-
-    Catch::TestCaseFilter matchAny( "*" );
-    Catch::TestCaseFilter matchNone( "*", Catch::IfFilterMatches::ExcludeTests );
-    CHECK( matchAny.shouldInclude( fakeTestCase( "any" ) ));
-    CHECK( matchNone.shouldInclude( fakeTestCase( "any" ) ) == false );
-
-    Catch::TestCaseFilter matchHidden( "./*" );
-    Catch::TestCaseFilter matchNonHidden( "./*", Catch::IfFilterMatches::ExcludeTests );
-
-    CHECK( matchHidden.shouldInclude( fakeTestCase( "any" ) ) == false );
-    CHECK( matchNonHidden.shouldInclude( fakeTestCase( "any" ) ) );
-
-    CHECK( matchHidden.shouldInclude( fakeTestCase( "./any" ) ) );
-    CHECK( matchNonHidden.shouldInclude( fakeTestCase( "./any" ) ) == false );
-}
-
-TEST_CASE( "selftest/test filters", "Sets of filters" ) {
-
-    Catch::TestCaseFilter matchHidden( "./*" );
-    Catch::TestCaseFilter dontMatchA( "./a*", Catch::IfFilterMatches::ExcludeTests );
-    Catch::TestCaseFilters filters( "" );
-    filters.addFilter( matchHidden );
-    filters.addFilter( dontMatchA );
-
-    CHECK( matchHidden.shouldInclude( fakeTestCase( "./something" ) ) );
-
-    CHECK( filters.shouldInclude( fakeTestCase( "any" ) ) == false );
-    CHECK( filters.shouldInclude( fakeTestCase( "./something" ) ) );
-    CHECK( filters.shouldInclude( fakeTestCase( "./anything" ) ) == false );
-}
-
-TEST_CASE( "selftest/filter/prefix wildcard", "Individual filters with wildcards at the start" ) {
-    Catch::TestCaseFilter matchBadgers( "*badger" );
-
-    CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ));
-    CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) == false );
-}
-TEST_CASE( "selftest/filter/wildcard at both ends", "Individual filters with wildcards at both ends" ) {
-    Catch::TestCaseFilter matchBadgers( "*badger*" );
-
-    CHECK( matchBadgers.shouldInclude( fakeTestCase( "big badger" ) ));
-    CHECK( matchBadgers.shouldInclude( fakeTestCase( "little badgers" ) ) );
-    CHECK( matchBadgers.shouldInclude( fakeTestCase( "badgers are big" ) ) );
-    CHECK( matchBadgers.shouldInclude( fakeTestCase( "hedgehogs" ) ) == false );
-}
-
-
-template<size_t size>
-int getArgc( const char * (&)[size] ) {
-    return size;
-}
-
-TEST_CASE( "selftest/tags", "[tags]" ) {
-
-    std::string p1 = "[one]";
-    std::string p2 = "[one],[two]";
-    std::string p3 = "[one][two]";
-    std::string p4 = "[one][two],[three]";
-    std::string p5 = "[one][two]~[.],[three]";
-    
-    SECTION( "single [one] tag", "" ) {
-        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[one]", CATCH_INTERNAL_LINEINFO );
-
-        CHECK( oneTag.getTestCaseInfo().description == "" );
-        CHECK( oneTag.hasTag( "one" ) );
-        CHECK( oneTag.getTags().size() == 1 );
-
-        CHECK( oneTag.matchesTags( p1 ) == true );
-        CHECK( oneTag.matchesTags( p2 ) == true );
-        CHECK( oneTag.matchesTags( p3 ) == false );
-        CHECK( oneTag.matchesTags( p4 ) == false );
-        CHECK( oneTag.matchesTags( p5 ) == false );
-    }
-
-    SECTION( "single [two] tag", "" ) {
-        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[two]", CATCH_INTERNAL_LINEINFO );
-
-        CHECK( oneTag.getTestCaseInfo().description == "" );
-        CHECK( oneTag.hasTag( "two" ) );
-        CHECK( oneTag.getTags().size() == 1 );
-
-        CHECK( oneTag.matchesTags( p1 ) == false );
-        CHECK( oneTag.matchesTags( p2 ) == true );
-        CHECK( oneTag.matchesTags( p3 ) == false );
-        CHECK( oneTag.matchesTags( p4 ) == false );
-        CHECK( oneTag.matchesTags( p5 ) == false );
-    }
-
-    SECTION( "two tags", "" ) {
-        Catch::TestCase twoTags= makeTestCase( NULL, "", "test", "[one][two]", CATCH_INTERNAL_LINEINFO );
-
-        CHECK( twoTags.getTestCaseInfo().description == "" );
-        CHECK( twoTags.hasTag( "one" ) );
-        CHECK( twoTags.hasTag( "two" ) );
-        CHECK( twoTags.hasTag( "Two" ) );
-        CHECK( twoTags.hasTag( "three" ) == false );
-        CHECK( twoTags.getTags().size() == 2 );
-
-        CHECK( twoTags.matchesTags( p1 ) == true );
-        CHECK( twoTags.matchesTags( p2 ) == true );
-        CHECK( twoTags.matchesTags( p3 ) == true );
-        CHECK( twoTags.matchesTags( p4 ) == true );
-        CHECK( twoTags.matchesTags( p5 ) == true );
-    }
-    SECTION( "complex", "" ) {
-        CHECK( fakeTestCase( "test", "[one][.]" ).matchesTags( p1 ) );
-        CHECK_FALSE( fakeTestCase( "test", "[one][.]" ).matchesTags( p5 ) );
-        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p4 ) );
-        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( p5 ) );
-        CHECK( fakeTestCase( "test", "[three]" ).matchesTags( "[three]~[one]" ) );
-        CHECK( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]" ) );
-        CHECK_FALSE( fakeTestCase( "test", "[unit][not_apple]" ).matchesTags( "[unit]~[not_apple]" ) );
-    }
-
-    SECTION( "one tag with characters either side", "" ) {
-
-        Catch::TestCase oneTagWithExtras = makeTestCase( NULL, "", "test", "12[one]34", CATCH_INTERNAL_LINEINFO );
-        CHECK( oneTagWithExtras.getTestCaseInfo().description == "1234" );
-        CHECK( oneTagWithExtras.hasTag( "one" ) );
-        CHECK( oneTagWithExtras.hasTag( "two" ) == false );
-        CHECK( oneTagWithExtras.getTags().size() == 1 );
-    }
-    
-    SECTION( "start of a tag, but not closed", "" ) {
-
-        Catch::TestCase oneTagOpen = makeTestCase( NULL, "", "test", "[one", CATCH_INTERNAL_LINEINFO );
-
-        CHECK( oneTagOpen.getTestCaseInfo().description == "[one" );
-        CHECK( oneTagOpen.hasTag( "one" ) == false );
-        CHECK( oneTagOpen.getTags().size() == 0 );
-    }
-
-    SECTION( "hidden", "" ) {
-        Catch::TestCase oneTag = makeTestCase( NULL, "", "test", "[.]", CATCH_INTERNAL_LINEINFO );
-
-        CHECK( oneTag.getTestCaseInfo().description == "" );
-        CHECK( oneTag.hasTag( "." ) );
-        CHECK( oneTag.isHidden() );
-
-        CHECK( oneTag.matchesTags( "~[.]" ) == false );
-
-    }
-}
 
 TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
 
@@ -499,7 +342,7 @@ private:
 };
 
 // !TBD: This will be folded into Text class
-TEST_CASE( "Strings can be rendered with colour", "[colour]" ) {
+TEST_CASE( "Strings can be rendered with colour", "[colour][.]" ) {
     
     {
         ColourString cs( "hello" );

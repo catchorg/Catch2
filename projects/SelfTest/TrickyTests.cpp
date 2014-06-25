@@ -12,6 +12,11 @@
 
 #include "catch.hpp"
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wc++98-compat"
+#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+
 namespace Catch
 {
     template<>
@@ -313,19 +318,19 @@ TEST_CASE( "Assertions then sections", "[Tricky]" )
     // This was causing a failure due to the way the console reporter was handling
     // the current section
     
-    REQUIRE( Catch::isTrue( true ) );
+    REQUIRE( Catch::alwaysTrue() );
     
     SECTION( "A section", "" )
     {
-        REQUIRE( Catch::isTrue( true ) );
+        REQUIRE( Catch::alwaysTrue() );
         
         SECTION( "Another section", "" )
         {
-            REQUIRE( Catch::isTrue( true ) );
+            REQUIRE( Catch::alwaysTrue() );
         }
         SECTION( "Another other section", "" )
         {
-            REQUIRE( Catch::isTrue( true ) );
+            REQUIRE( Catch::alwaysTrue() );
         }
     }
 }

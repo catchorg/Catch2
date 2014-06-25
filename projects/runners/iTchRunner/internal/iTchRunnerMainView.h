@@ -37,18 +37,18 @@
     {
         // Initialization code
         self.backgroundColor = [UIColor blackColor];
-        
+
         appName = [[UITextField alloc] initWithFrame: CGRectMake( 0, 50, 320, 50 )];
         [self addSubview: appName];
         arcSafeRelease( appName );
         appName.textColor = [[UIColor alloc] initWithRed:0.35 green:0.35 blue:1 alpha:1];
         arcSafeRelease( appName.textColor );
-        appName.textAlignment = UITextAlignmentCenter; // or NSTextAlignmentCenter
-        
+        appName.textAlignment = NSTextAlignmentCenter;
+
         appName.text = [NSString stringWithFormat:@"CATCH tests"];
 //        [self performSelector: @selector(showAlert) withObject:nil afterDelay:0.1];
         [self performSelectorOnMainThread:@selector(showAlert) withObject:nil waitUntilDone:NO];
-        
+
     }
     return self;
 }

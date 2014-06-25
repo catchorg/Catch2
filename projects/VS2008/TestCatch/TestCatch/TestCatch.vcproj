@@ -352,10 +352,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\SelfTest\CmdLineTests.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\SelfTest\ConditionTests.cpp"
 				>
 			</File>

@@ -1,6 +1,6 @@
 /*
- *  Created by Phil on 2/12/2013.
- *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
+ *  Created by Phil on 14/8/2012.
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,126 +8,120 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED
 
-#include "catch_test_spec.hpp"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 #include "catch_test_case_info.h"
-#include "catch_common.h"
+
+#include <string>
+#include <vector>
 
 namespace Catch {
 
-    TestCaseFilter::TestCaseFilter( std::string const& testSpec, IfFilterMatches::DoWhat matchBehaviour )
-    :   m_stringToMatch( toLower( testSpec ) ),
-        m_filterType( matchBehaviour ),
-        m_wildcardPosition( NoWildcard )
-    {
-        if( m_filterType == IfFilterMatches::AutoDetectBehaviour ) {
-            if( startsWith( m_stringToMatch, "exclude:" ) ) {
-                m_stringToMatch = m_stringToMatch.substr( 8 );
-                m_filterType = IfFilterMatches::ExcludeTests;
-            }
-            else if( startsWith( m_stringToMatch, "~" ) ) {
-                m_stringToMatch = m_stringToMatch.substr( 1 );
-                m_filterType = IfFilterMatches::ExcludeTests;
-            }
-            else {
-                m_filterType = IfFilterMatches::IncludeTests;
-            }
-        }
+    class TestSpec {
+        struct Pattern : SharedImpl<> {
+            virtual ~Pattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const = 0;
+        };
+        class NamePattern : public Pattern {
+            enum WildcardPosition {
+                NoWildcard = 0,
+                WildcardAtStart = 1,
+                WildcardAtEnd = 2,
+                WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
+            };
 
-        if( startsWith( m_stringToMatch, "*" ) ) {
-            m_stringToMatch = m_stringToMatch.substr( 1 );
-            m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtStart );
-        }
-        if( endsWith( m_stringToMatch, "*" ) ) {
-            m_stringToMatch = m_stringToMatch.substr( 0, m_stringToMatch.size()-1 );
-            m_wildcardPosition = (WildcardPosition)( m_wildcardPosition | WildcardAtEnd );
-        }
-    }
-
-    IfFilterMatches::DoWhat TestCaseFilter::getFilterType() const {
-        return m_filterType;
-    }
-
-    bool TestCaseFilter::shouldInclude( TestCase const& testCase ) const {
-        return isMatch( testCase ) == (m_filterType == IfFilterMatches::IncludeTests);
-    }
+        public:
+            NamePattern( std::string const& name ) : m_name( toLower( name ) ), m_wildcard( NoWildcard ) {
+                if( startsWith( m_name, "*" ) ) {
+                    m_name = m_name.substr( 1 );
+                    m_wildcard = WildcardAtStart;
+                }
+                if( endsWith( m_name, "*" ) ) {
+                    m_name = m_name.substr( 0, m_name.size()-1 );
+                    m_wildcard = (WildcardPosition)( m_wildcard | WildcardAtEnd );
+                }
+            }
+            virtual ~NamePattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const {
+                switch( m_wildcard ) {
+                    case NoWildcard:
+                        return m_name == toLower( testCase.name );
+                    case WildcardAtStart:
+                        return endsWith( toLower( testCase.name ), m_name );
+                    case WildcardAtEnd:
+                        return startsWith( toLower( testCase.name ), m_name );
+                    case WildcardAtBothEnds:
+                        return contains( toLower( testCase.name ), m_name );
+                }
 
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
+                throw std::logic_error( "Unknown enum" );
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+            }
+        private:
+            std::string m_name;
+            WildcardPosition m_wildcard;
+        };
+        class TagPattern : public Pattern {
+        public:
+            TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
+            virtual ~TagPattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const {
+                return testCase.lcaseTags.find( m_tag ) != testCase.lcaseTags.end();
+            }
+        private:
+            std::string m_tag;
+        };
+        class ExcludedPattern : public Pattern {
+        public:
+            ExcludedPattern( Ptr<Pattern> const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
+            virtual ~ExcludedPattern();
+            virtual bool matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
+        private:
+            Ptr<Pattern> m_underlyingPattern;
+        };
 
-    bool TestCaseFilter::isMatch( TestCase const& testCase ) const {
-        std::string name = testCase.getTestCaseInfo().name;
-        toLowerInPlace( name );
+        struct Filter {
+            std::vector<Ptr<Pattern> > m_patterns;
 
-        switch( m_wildcardPosition ) {
-            case NoWildcard:
-                return m_stringToMatch == name;
-            case WildcardAtStart:
-                return endsWith( name, m_stringToMatch );
-            case WildcardAtEnd:
-                return startsWith( name, m_stringToMatch );
-            case WildcardAtBothEnds:
-                return contains( name, m_stringToMatch );
+            bool matches( TestCaseInfo const& testCase ) const {
+                // All patterns in a filter must match for the filter to be a match
+                for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it )
+                    if( !(*it)->matches( testCase ) )
+                        return false;
+                    return true;
+            }
+        };
+
+    public:
+        bool hasFilters() const {
+            return !m_filters.empty();
         }
-        throw std::logic_error( "Unhandled wildcard type" );
-    }
+        bool matches( TestCaseInfo const& testCase ) const {
+            // A TestSpec matches if any filter matches
+            for( std::vector<Filter>::const_iterator it = m_filters.begin(), itEnd = m_filters.end(); it != itEnd; ++it )
+                if( it->matches( testCase ) )
+                    return true;
+            return false;
+        }
+
+    private:
+        std::vector<Filter> m_filters;
+
+        friend class TestSpecParser;
+    };
+}
 
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
-
-    TestCaseFilters::TestCaseFilters( std::string const& name ) : m_name( name ) {}
-
-    std::string TestCaseFilters::getName() const {
-        return m_name;
-    }
-
-    void TestCaseFilters::addFilter( TestCaseFilter const& filter ) {
-        if( filter.getFilterType() == IfFilterMatches::ExcludeTests )
-            m_exclusionFilters.push_back( filter );
-        else
-            m_inclusionFilters.push_back( filter );
-    }
-
-    void TestCaseFilters::addTags( std::string const& tagPattern ) {
-        TagExpression exp;
-        TagExpressionParser( exp ).parse( tagPattern );
-
-        m_tagExpressions.push_back( exp );
-    }
-
-    bool TestCaseFilters::shouldInclude( TestCase const& testCase ) const {
-        if( !m_tagExpressions.empty() ) {
-            std::vector<TagExpression>::const_iterator it = m_tagExpressions.begin();
-            std::vector<TagExpression>::const_iterator itEnd = m_tagExpressions.end();
-            for(; it != itEnd; ++it )
-                if( it->matches( testCase.getTags() ) )
-                    break;
-            if( it == itEnd )
-                return false;
-        }
-
-        if( !m_inclusionFilters.empty() ) {
-            std::vector<TestCaseFilter>::const_iterator it = m_inclusionFilters.begin();
-            std::vector<TestCaseFilter>::const_iterator itEnd = m_inclusionFilters.end();
-            for(; it != itEnd; ++it )
-                if( it->shouldInclude( testCase ) )
-                    break;
-            if( it == itEnd )
-                return false;
-        }
-        else if( m_exclusionFilters.empty() && m_tagExpressions.empty() ) {
-            return !testCase.isHidden();
-        }
-
-        std::vector<TestCaseFilter>::const_iterator it = m_exclusionFilters.begin();
-        std::vector<TestCaseFilter>::const_iterator itEnd = m_exclusionFilters.end();
-        for(; it != itEnd; ++it )
-            if( !it->shouldInclude( testCase ) )
-                return false;
-        return true;
-    }
-}
 
 #endif // TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED

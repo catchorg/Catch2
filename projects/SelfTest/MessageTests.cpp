@@ -7,8 +7,13 @@
  */
 
 #include "catch.hpp"
+#include <iostream>
 
-TEST_CASE( "INFO and WARN do not abort tests", "[messages]" )
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+
+TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" )
 {
     INFO( "this is a " << "message" );    // This should output the message if a failure occurs
     WARN( "this is a " << "warning" );    // This should always output the message but then continue
@@ -74,7 +79,7 @@ TEST_CASE( "Output from all sections is reported", "[failing][messages][.]" )
     }
 }
 
-TEST_CASE( "Standard output from all sections is reported", "[messages]" )
+TEST_CASE( "Standard output from all sections is reported", "[messages][.]" )
 {
     SECTION( "one", "" )
     {
@@ -118,4 +123,11 @@ TEST_CASE( "sends information to INFO", "[.][failing]" )
     int i = 7;
     CAPTURE( i );
     REQUIRE( false );
+}
+
+TEST_CASE( "Pointers can be converted to strings", "[messages][.]" )
+{
+    int p;
+    WARN( "actual address of p: " << &p );
+    WARN( "toString(p): " << Catch::toString( &p ) );
 }

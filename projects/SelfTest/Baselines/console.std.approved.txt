@@ -26,7 +26,7 @@ with expansion:
   1 == 2
 
 -------------------------------------------------------------------------------
-Equality checks that should fail]
+Equality checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
 ...............................................................................
@@ -97,7 +97,7 @@ with expansion:
   1.3 == Approx( 1.301 )
 
 -------------------------------------------------------------------------------
-Inequality checks that should fails
+Inequality checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
 ...............................................................................
@@ -332,6 +332,30 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
+When unchecked exceptions are thrown during a REQUIRE the test should abort
+fail
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE( thisThrows() == 0 )
+due to unexpected exception with message:
+  expected exception
+
+-------------------------------------------------------------------------------
+When unchecked exceptions are thrown during a CHECK the test should abort and
+fail
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  CHECK( thisThrows() == 0 )
+due to unexpected exception with message:
+  expected exception
+
+-------------------------------------------------------------------------------
 Unexpected custom exceptions can be translated
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -495,6 +519,20 @@ MessageTests.cpp:<line number>: FAILED:
 with messages:
   hi
   i := 7
+
+-------------------------------------------------------------------------------
+Pointers can be converted to strings
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+warning:
+  actual address of p: 0x<hex digits>
+
+MessageTests.cpp:<line number>:
+warning:
+  toString(p): 0x<hex digits>
 
 -------------------------------------------------------------------------------
 more nested SECTION tests
@@ -679,24 +717,22 @@ explicitly with message:
   to infinity and beyond
 
 -------------------------------------------------------------------------------
-A couple of nested sections followed by a failure
+Tabs and newlines show in output
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-explicitly with message:
-  to infinity and beyond
-
--------------------------------------------------------------------------------
-A couple of nested sections followed by a failure
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-explicitly with message:
-  to infinity and beyond
+  CHECK( s1 == s2 )
+with expansion:
+  "if ($b == 10) {
+  		$a= 20;
+  }"
+  ==
+  "if ($b == 10) {
+  $a = 20;
+  }
+  "
 
 hello
 hello
@@ -750,5 +786,5 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-122 test cases - 36 failed (658 assertions - 91 failed)
+124 test cases - 39 failed (695 assertions - 92 failed)
 

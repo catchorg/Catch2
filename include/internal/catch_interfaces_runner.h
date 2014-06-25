@@ -13,6 +13,7 @@ namespace Catch {
 
     struct IRunner {
         virtual ~IRunner();
+        virtual bool aborting() const = 0;
     };
 }
 

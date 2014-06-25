@@ -15,10 +15,7 @@ projects/VS2010/TestCatch/_UpgradeReport_Files/
 projects/VS2010/TestCatch/TestCatch/TestCatch.vcxproj.filters
 projects/VisualStudio/TestCatch/UpgradeLog.XML
 UpgradeLog.XML
-projects/XCode4/iOSTest/Build/Intermediates/PrecompiledHeaders
-projects/XCode4/iOSTest/Build/Products/Debug-iphonesimulator/iOSTest.app.dSYM/Contents/Resources/DWARF
-projects/XCode4/iOSTest/Build
-projects/XCode4/CatchSelfTest/DerivedData
-projects/XCode4/OCTest/DerivedData
+Resources/DWARF
+projects/XCode/iOSTest/Build
 *.pyc
-projects/XCode4/iOSTest/DerivedData
+DerivedData

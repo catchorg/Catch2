@@ -14,7 +14,7 @@
 
 namespace Catch {
 
-    class TestCaseFilters;
+    class TestSpec;
 
     struct ITestCase : IShared {
         virtual void invoke () const = 0;
@@ -23,11 +23,13 @@ namespace Catch {
     };
 
     class TestCase;
+    struct IConfig;
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual std::vector<TestCase> getMatchingTestCases( std::string const& rawTestSpec ) const = 0;
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+
     };
 }
 

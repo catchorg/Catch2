@@ -11,7 +11,7 @@
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"
 #include "internal/catch_runner_impl.hpp"
-#include "internal/catch_test_spec.h"
+#include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"
 #include "internal/catch_text.h"
 
@@ -33,46 +33,35 @@ namespace Catch {
 
         Totals runTests() {
 
-            std::vector<TestCaseFilters> filterGroups = m_config->filters();
-            if( filterGroups.empty() ) {
-                TestCaseFilters filterGroup( "" );
-                filterGroups.push_back( filterGroup );
-            }
-
             RunContext context( m_config.get(), m_reporter );
 
             Totals totals;
 
-            for( std::size_t i=0; i < filterGroups.size() && !context.aborting(); ++i ) {
-                context.testGroupStarting( filterGroups[i].getName(), i, filterGroups.size() );
-                totals += runTestsForGroup( context, filterGroups[i] );
-                context.testGroupEnded( filterGroups[i].getName(), totals, i, filterGroups.size() );
-            }
-            return totals;
-        }
+            context.testGroupStarting( "", 1, 1 ); // deprecated?
 
-        Totals runTestsForGroup( RunContext& context, const TestCaseFilters& filterGroup ) {
-            Totals totals;
-            std::vector<TestCase>::const_iterator it = getRegistryHub().getTestCaseRegistry().getAllTests().begin();
-            std::vector<TestCase>::const_iterator itEnd = getRegistryHub().getTestCaseRegistry().getAllTests().end();
+            TestSpec testSpec = m_config->testSpec();
+            if( !testSpec.hasFilters() )
+                testSpec = TestSpecParser().parse( "~[.]" ).testSpec(); // All not hidden tests
+
+            std::vector<TestCase> testCases;
+            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, testCases );
+
             int testsRunForGroup = 0;
-            for(; it != itEnd; ++it ) {
-                if( filterGroup.shouldInclude( *it ) ) {
-                    testsRunForGroup++;
-                    if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
+            for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+                    it != itEnd;
+                    ++it ) {
+                testsRunForGroup++;
+                if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
 
-                        if( context.aborting() )
-                            break;
+                    if( context.aborting() )
+                        break;
 
-                        totals += context.runTest( *it );
-                        m_testsAlreadyRun.insert( *it );
-                    }
+                    totals += context.runTest( *it );
+                    m_testsAlreadyRun.insert( *it );
                 }
             }
-            if( testsRunForGroup == 0 && !filterGroup.getName().empty() )
-                m_reporter->noMatchingTestCases( filterGroup.getName() );
+            context.testGroupEnded( "", totals, 1, 1 );
             return totals;
-
         }
 
     private:
@@ -132,7 +121,7 @@ namespace Catch {
             std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
                                         << libraryVersion.minorVersion << " build "
                                         << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
+            if( libraryVersion.branchName != std::string( "master" ) )
                 std::cout << " (" << libraryVersion.branchName << " branch)";
             std::cout << "\n";
 

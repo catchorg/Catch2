@@ -23,9 +23,7 @@
 #include "catch_console_colour_impl.hpp"
 #include "catch_generators_impl.hpp"
 #include "catch_assertionresult.hpp"
-#include "catch_expressionresult_builder.hpp"
 #include "catch_test_case_info.hpp"
-#include "catch_tags.hpp"
 #include "catch_test_spec.hpp"
 #include "catch_version.hpp"
 #include "catch_message.hpp"
@@ -34,15 +32,18 @@
 #include "catch_common.hpp"
 #include "catch_section.hpp"
 #include "catch_debugger.hpp"
+#include "catch_tostring.hpp"
+#include "catch_result_builder.hpp"
 
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
 #include "../reporters/catch_reporter_console.hpp"
+#include "../reporters/catch_reporter_compact.hpp"
 
 namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
-    StreamBufBase::~StreamBufBase() throw() {}
+    StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestCase::~ITestCase() {}
@@ -65,6 +66,7 @@ namespace Catch {
 
     StreamingReporterBase::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
+    CompactReporter::~CompactReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
@@ -74,6 +76,10 @@ namespace Catch {
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
     IGeneratorInfo::~IGeneratorInfo() {}
     IGeneratorsForTest::~IGeneratorsForTest() {}
+    TestSpec::Pattern::~Pattern() {}
+    TestSpec::NamePattern::~NamePattern() {}
+    TestSpec::TagPattern::~TagPattern() {}
+    TestSpec::ExcludedPattern::~ExcludedPattern() {}
 
     Matchers::Impl::StdString::Equals::~Equals() {}
     Matchers::Impl::StdString::Contains::~Contains() {}

@@ -73,7 +73,10 @@ namespace {
         return true;
     }
 
-    Win32ColourImpl platformColourImpl;
+    static Detail::IColourImpl* platformColourInstance() {
+        static Win32ColourImpl s_instance;
+        return &s_instance;
+    }
 
 } // end anon namespace
 } // end namespace Catch
@@ -120,7 +123,10 @@ namespace {
         return isatty(STDOUT_FILENO);
     }
 
-    PosixColourImpl platformColourImpl;
+    static Detail::IColourImpl* platformColourInstance() {
+        static PosixColourImpl s_instance;
+        return &s_instance;
+    }
 
 } // end anon namespace
 } // end namespace Catch
@@ -132,21 +138,28 @@ namespace Catch {
     namespace {
         struct NoColourImpl : Detail::IColourImpl {
             void use( Colour::Code ) {}
+
+            static IColourImpl* instance() {
+                static NoColourImpl s_instance;
+                return &s_instance;
+            }
         };
-        NoColourImpl noColourImpl;
-        static const bool shouldUseColour = shouldUseColourForPlatform() &&
-                                            !isDebuggerActive();
+        static bool shouldUseColour() {
+            return shouldUseColourForPlatform() && !isDebuggerActive();
+        }
     }
 
     Colour::Colour( Code _colourCode ){ use( _colourCode ); }
     Colour::~Colour(){ use( None ); }
     void Colour::use( Code _colourCode ) {
-        impl->use( _colourCode );
+        impl()->use( _colourCode );
     }
 
-    Detail::IColourImpl* Colour::impl = shouldUseColour
-            ? static_cast<Detail::IColourImpl*>( &platformColourImpl )
-            : static_cast<Detail::IColourImpl*>( &noColourImpl );
+    Detail::IColourImpl* Colour::impl() {
+        return shouldUseColour()
+            ? platformColourInstance()
+            : NoColourImpl::instance();
+    }
 
 } // end namespace Catch
 

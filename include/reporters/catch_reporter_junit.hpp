@@ -10,7 +10,7 @@
 
 #include "catch_reporter_bases.hpp"
 
-#include "../internal/catch_tostring.hpp"
+#include "../internal/catch_tostring.h"
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_xmlwriter.hpp"
 

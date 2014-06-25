@@ -37,12 +37,14 @@ namespace Catch {
         std::string className;
         std::string description;
         std::set<std::string> tags;
+        std::set<std::string> lcaseTags;
         std::string tagsAsString;
         SourceLineInfo lineInfo;
         bool isHidden;
+        bool throws;
     };
 
-    class TestCase : protected TestCaseInfo {
+    class TestCase : public TestCaseInfo {
     public:
 
         TestCase( ITestCase* testCase, TestCaseInfo const& info );
@@ -55,9 +57,7 @@ namespace Catch {
         TestCaseInfo const& getTestCaseInfo() const;
 
         bool isHidden() const;
-        bool hasTag( std::string const& tag ) const;
-        bool matchesTags( std::string const& tagPattern ) const;
-        std::set<std::string> const& getTags() const;
+        bool throws() const;
 
         void swap( TestCase& other );
         bool operator == ( TestCase const& other ) const;

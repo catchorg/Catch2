@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="~_" errors="10" failures="100" tests="677" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite errors="12" failures="100" tests="715" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -20,7 +20,7 @@ ClassTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Equality checks that should succeed" time="{duration}"/>
-    <testcase classname="global" name="Equality checks that should fail]" time="{duration}">
+    <testcase classname="global" name="Equality checks that should fail" time="{duration}">
       <failure message="7 == 6" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
@@ -62,7 +62,7 @@ ConditionTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Inequality checks that should succeed" time="{duration}"/>
-    <testcase classname="global" name="Inequality checks that should fails" time="{duration}">
+    <testcase classname="global" name="Inequality checks that should fail" time="{duration}">
       <failure message="7 != 7" type="CHECK">
 ConditionTests.cpp:<line number>
       </failure>
@@ -210,6 +210,18 @@ expected exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="global" name="When unchecked exceptions are thrown during a REQUIRE the test should abort fail" time="{duration}">
+      <error message="thisThrows() == 0" type="REQUIRE">
+expected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="When unchecked exceptions are thrown during a CHECK the test should abort and fail" time="{duration}">
+      <error message="thisThrows() == 0" type="CHECK">
+expected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="global" name="Unexpected custom exceptions can be translated" time="{duration}">
       <error type="TEST_CASE">
 custom exception
@@ -307,17 +319,16 @@ i := 7
 MessageTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="Pointers can be converted to strings" time="{duration}"/>
     <testcase classname="random SECTION tests" name="s1" time="{duration}"/>
     <testcase classname="random SECTION tests" name="s2" time="{duration}"/>
     <testcase classname="nested SECTION tests" name="s1" time="{duration}"/>
     <testcase classname="nested SECTION tests" name="s1/s2" time="{duration}"/>
-    <testcase classname="more nested SECTION tests" name="s1/s2" time="{duration}">
+    <testcase classname="more nested SECTION tests" name="s2/s1" time="{duration}">
       <failure message="1 == 2" type="REQUIRE">
 MiscTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="more nested SECTION tests" name="s1/s3" time="{duration}"/>
-    <testcase classname="more nested SECTION tests" name="s1/s4" time="{duration}"/>
     <testcase classname="looped SECTION tests" name="s1" time="{duration}">
       <failure message="0 > 1" type="CHECK">
 MiscTests.cpp:<line number>
@@ -421,21 +432,25 @@ MiscTests.cpp:<line number>
 to infinity and beyond
 MiscTests.cpp:<line number>
       </failure>
-      <failure type="FAIL">
-to infinity and beyond
-MiscTests.cpp:<line number>
-      </failure>
-      <failure type="FAIL">
-to infinity and beyond
+    </testcase>
+    <testcase classname="A couple of nested sections followed by a failure" name="Outer/Inner" time="{duration}"/>
+    <testcase classname="global" name="not allowed" time="{duration}"/>
+    <testcase classname="global" name="Tabs and newlines show in output" time="{duration}">
+      <failure message="&quot;if ($b == 10) {
+		$a	= 20;
+}&quot;
+==
+&quot;if ($b == 10) {
+	$a = 20;
+}
+&quot;" type="CHECK">
 MiscTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="A couple of nested sections followed by a failure" name="Outer/Inner" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="default - no arguments" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/1 test" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using exclude:" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using ~" time="{duration}"/>
-    <testcase classname="Process can be configured on command line" name="test lists/Specify two test cases using -t" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="reporter/-r/console" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="reporter/-r/xml" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="reporter/--reporter/junit" time="{duration}"/>
@@ -450,17 +465,6 @@ MiscTests.cpp:<line number>
     <testcase classname="Process can be configured on command line" name="output filename/-o filename" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="output filename/--out" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="combinations/Single character flags can be combined" time="{duration}"/>
-    <testcase classname="global" name="selftest/test filter" time="{duration}"/>
-    <testcase classname="global" name="selftest/test filters" time="{duration}"/>
-    <testcase classname="global" name="selftest/filter/prefix wildcard" time="{duration}"/>
-    <testcase classname="global" name="selftest/filter/wildcard at both ends" time="{duration}"/>
-    <testcase classname="selftest/tags" name="single [one] tag" time="{duration}"/>
-    <testcase classname="selftest/tags" name="single [two] tag" time="{duration}"/>
-    <testcase classname="selftest/tags" name="two tags" time="{duration}"/>
-    <testcase classname="selftest/tags" name="complex" time="{duration}"/>
-    <testcase classname="selftest/tags" name="one tag with characters either side" time="{duration}"/>
-    <testcase classname="selftest/tags" name="start of a tag, but not closed" time="{duration}"/>
-    <testcase classname="selftest/tags" name="hidden" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/No wrapping" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/Wrapped once" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/Wrapped twice" time="{duration}"/>
@@ -516,10 +520,42 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="Comparing function pointers" time="{duration}"/>
     <testcase classname="global" name="Comparing member function pointers" time="{duration}"/>
     <testcase classname="global" name="pointer to class" time="{duration}"/>
+    <testcase classname="global" name="null_ptr" time="{duration}"/>
     <testcase classname="global" name="X/level/0/a" time="{duration}"/>
     <testcase classname="global" name="X/level/0/b" time="{duration}"/>
     <testcase classname="global" name="X/level/1/a" time="{duration}"/>
     <testcase classname="global" name="X/level/1/b" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Empty test spec should have no filters" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Test spec from empty string should have no filters" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Test spec from just a comma should have no filters" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Test spec from name should have one filter" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Test spec from quoted name should have one filter" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Test spec from name should have one filter" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Wildcard at the start" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Wildcard at the end" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Wildcard at both ends" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Redundant wildcard at the start" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Redundant wildcard at the end" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Redundant wildcard at both ends" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Wildcard at both ends, redundant at start" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Just wildcard" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Single tag" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Single tag, two matches" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Two tags" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Two tags, spare separated" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Wildcarded name and tag" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="Single tag exclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="One tag exclusion and one tag inclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="One tag exclusion and one wldcarded name inclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="One tag exclusion, using exclude:, and one wldcarded name inclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="name exclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="wildcarded name exclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="wildcarded name exclusion with tag inclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="wildcarded name exclusion, using exclude:, with tag inclusion" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="two wildcarded names" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="empty tag" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="empty quoted name" time="{duration}"/>
+    <testcase classname="Parse test names and tags" name="quoted string followed by tag exclusion" time="{duration}"/>
     <testcase classname="global" name="Anonymous test case 1" time="{duration}"/>
     <testcase classname="global" name="Test case with one argument" time="{duration}"/>
     <testcase classname="Variadic macros" name="Section with one argument" time="{duration}"/>

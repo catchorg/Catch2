@@ -16,9 +16,10 @@
 #include "catch_test_case_info.h"
 #include "catch_capture.hpp"
 #include "catch_totals.hpp"
-#include "catch_test_spec.h"
+#include "catch_test_spec.hpp"
 #include "catch_test_case_tracker.hpp"
 #include "catch_timer.h"
+#include "catch_result_builder.h"
 
 #include <set>
 #include <string>
@@ -63,8 +64,8 @@ namespace Catch {
             m_activeTestCase( NULL ),
             m_config( config ),
             m_reporter( reporter ),
-            m_prevRunner( &m_context.getRunner() ),
-            m_prevResultCapture( &m_context.getResultCapture() ),
+            m_prevRunner( m_context.getRunner() ),
+            m_prevResultCapture( m_context.getResultCapture() ),
             m_prevConfig( m_context.getConfig() )
         {
             m_context.setRunner( this );
@@ -86,23 +87,6 @@ namespace Catch {
         }
         void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount ) {
             m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
-        }
-
-        Totals runMatching( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
-
-            std::vector<TestCase> matchingTests = getRegistryHub().getTestCaseRegistry().getMatchingTestCases( testSpec );
-
-            Totals totals;
-
-            testGroupStarting( testSpec, groupIndex, groupsCount );
-
-            std::vector<TestCase>::const_iterator it = matchingTests.begin();
-            std::vector<TestCase>::const_iterator itEnd = matchingTests.end();
-            for(; it != itEnd; ++it )
-                totals += runTest( *it );
-
-            testGroupEnded( testSpec, totals, groupIndex, groupsCount );
-            return totals;
         }
 
         Totals runTest( TestCase const& testCase ) {
@@ -146,10 +130,6 @@ namespace Catch {
 
     private: // IResultCapture
 
-        virtual ResultAction::Value acceptExpression( ExpressionResultBuilder const& assertionResult, AssertionInfo const& assertionInfo ) {
-            m_lastAssertionInfo = assertionInfo;
-            return actOnCurrentResult( assertionResult.buildResult( assertionInfo ) );
-        }
 
         virtual void assertionEnded( AssertionResult const& result ) {
             if( result.getResultType() == ResultWas::Ok ) {
@@ -164,6 +144,7 @@ namespace Catch {
 
             // Reset working state
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
+            m_lastResult = result;
         }
 
         virtual bool sectionStarted (
@@ -218,10 +199,6 @@ namespace Catch {
             m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), message ), m_messages.end() );
         }
 
-        virtual bool shouldDebugBreak() const {
-            return m_config->shouldDebugBreak();
-        }
-
         virtual std::string getCurrentTestName() const {
             return m_activeTestCase
                 ? m_activeTestCase->getTestCaseInfo().name
@@ -239,22 +216,6 @@ namespace Catch {
         }
 
     private:
-
-        ResultAction::Value actOnCurrentResult( AssertionResult const& result ) {
-            m_lastResult = result;
-            assertionEnded( m_lastResult );
-
-            ResultAction::Value action = ResultAction::None;
-
-            if( !m_lastResult.isOk() ) {
-                action = ResultAction::Failed;
-                if( shouldDebugBreak() )
-                    action = (ResultAction::Value)( action | ResultAction::Debug );
-                if( aborting() )
-                    action = (ResultAction::Value)( action | ResultAction::Abort );
-            }
-            return action;
-        }
 
         void runTestCaseStartingHook(TestCaseInfo const& testCaseInfo) {
             std::vector<ITestCaseHook*> const & validations = m_config->userTestCaseHooks();
@@ -304,14 +265,16 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                ExpressionResultBuilder exResult( ResultWas::ThrewException );
-                exResult << translateActiveException();
-                actOnCurrentResult( exResult.buildResult( m_lastAssertionInfo )  );
+                ResultBuilder exResult( m_lastAssertionInfo.macroName.c_str(),
+                                        m_lastAssertionInfo.lineInfo,
+                                        m_lastAssertionInfo.capturedExpression.c_str(),
+                                        m_lastAssertionInfo.resultDisposition );
+                exResult.useActiveException();
             }
             // If sections ended prematurely due to an exception we stored their
             // infos here so we can tear them down outside the unwind process.
-            for( std::vector<UnfinishedSections>::const_iterator it = m_unfinishedSections.begin(),
-                        itEnd = m_unfinishedSections.end();
+            for( std::vector<UnfinishedSections>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
+                        itEnd = m_unfinishedSections.rend();
                     it != itEnd;
                     ++it )
                 sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
@@ -352,6 +315,13 @@ namespace Catch {
         AssertionInfo m_lastAssertionInfo;
         std::vector<UnfinishedSections> m_unfinishedSections;
     };
+
+    IResultCapture& getResultCapture() {
+        if( IResultCapture* capture = getCurrentContext().getResultCapture() )
+            return *capture;
+        else
+            throw std::logic_error( "No result capture instance" );
+    }
 
 } // end namespace Catch
 

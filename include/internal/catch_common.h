@@ -78,6 +78,11 @@ namespace Catch {
         SourceLineInfo();
         SourceLineInfo( char const* _file, std::size_t _line );
         SourceLineInfo( SourceLineInfo const& other );
+#  ifdef CATCH_CPP11_OR_GREATER
+        SourceLineInfo( SourceLineInfo && )                  = default;
+        SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
+        SourceLineInfo& operator = ( SourceLineInfo && )     = default;
+#  endif
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;
 
@@ -89,6 +94,8 @@ namespace Catch {
 
     // This is just here to avoid compiler warnings with macro constants and boolean literals
     inline bool isTrue( bool value ){ return value; }
+    inline bool alwaysTrue() { return true; }
+    inline bool alwaysFalse() { return false; }
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
 

@@ -126,6 +126,8 @@ Skips all assertions that test that an exception is thrown, e.g. ```REQUIRE_THRO
 
 These can be a nuisance in certain debugging environments that may break when exceptions are thrown (while this is usually optional for handled exceptions, it can be useful to have enabled if you are trying to track down something unexpected).
 
+Sometimes exceptions are expected outside of one of the assertions that tests for them (perhaps thrown and caught within the code-under-test). The whole test case can be skipped when using ```-e``` by marking it with the ```[!throws]``` tag.
+
 When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
 
 <a id="warnings"></a>

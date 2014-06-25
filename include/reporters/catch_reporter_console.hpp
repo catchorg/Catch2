@@ -13,6 +13,8 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 
+#include <cstring>
+
 namespace Catch {
 
     struct ConsoleReporter : StreamingReporterBase {
@@ -256,13 +258,13 @@ namespace Catch {
             m_atLeastOneTestCasePrinted = true;
         }
         void lazyPrintRunInfo() {
-            stream  << "\n" << getTildes() << "\n";
+            stream  << "\n" << getLineOfChars<'~'>() << "\n";
             Colour colour( Colour::SecondaryText );
             stream  << currentTestRunInfo->name
                     << " is a Catch v"  << libraryVersion.majorVersion << "."
                     << libraryVersion.minorVersion << " b"
                     << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != "master" )
+            if( libraryVersion.branchName != std::string( "master" ) )
                 stream << " (" << libraryVersion.branchName << ")";
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
@@ -292,19 +294,19 @@ namespace Catch {
             SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
 
             if( !lineInfo.empty() ){
-                stream << getDashes() << "\n";
+                stream << getLineOfChars<'-'>() << "\n";
                 Colour colourGuard( Colour::FileName );
                 stream << lineInfo << "\n";
             }
-            stream << getDots() << "\n" << std::endl;
+            stream << getLineOfChars<'.'>() << "\n" << std::endl;
         }
 
         void printClosedHeader( std::string const& _name ) {
             printOpenHeader( _name );
-            stream << getDots() << "\n";
+            stream << getLineOfChars<'.'>() << "\n";
         }
         void printOpenHeader( std::string const& _name ) {
-            stream  << getDashes() << "\n";
+            stream  << getLineOfChars<'-'>() << "\n";
             {
                 Colour colourGuard( Colour::Headers );
                 printHeaderString( _name );
@@ -377,26 +379,19 @@ namespace Catch {
         }
 
         void printTotalsDivider() {
-            stream << getDoubleDashes() << "\n";
+            stream << getLineOfChars<'='>() << "\n";
         }
         void printSummaryDivider() {
-            stream << getDashes() << "\n";
+            stream << getLineOfChars<'-'>() << "\n";
         }
-        static std::string const& getDashes() {
-            static const std::string dashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '-' );
-            return dashes;
-        }
-        static std::string const& getDots() {
-            static const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '.' );
-            return dots;
-        }
-        static std::string const& getDoubleDashes() {
-            static const std::string doubleDashes( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
-            return doubleDashes;
-        }
-        static std::string const& getTildes() {
-            static const std::string dots( CATCH_CONFIG_CONSOLE_WIDTH-1, '~' );
-            return dots;
+        template<char C>
+        static char const* getLineOfChars() {
+            static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
+            if( !*line ) {
+                memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
+                line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
+            }
+            return line;
         }
 
     private:

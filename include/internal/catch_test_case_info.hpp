@@ -8,12 +8,37 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_INFO_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
-#include "catch_tags.h"
+#include "catch_test_spec.hpp"
 #include "catch_test_case_info.h"
 #include "catch_interfaces_testcase.h"
 #include "catch_common.h"
 
 namespace Catch {
+
+    inline bool isSpecialTag( std::string const& tag ) {
+        return  tag == "." ||
+                tag == "hide" ||
+                tag == "!hide" ||
+                tag == "!throws";
+    }
+    inline bool isReservedTag( std::string const& tag ) {
+        return !isSpecialTag( tag ) && tag.size() > 0 && !isalnum( tag[0] );
+    }
+    inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
+        if( isReservedTag( tag ) ) {
+            {
+                Colour colourGuard( Colour::Red );
+                std::cerr
+                    << "Tag name [" << tag << "] not allowed.\n"
+                    << "Tag names starting with non alpha-numeric characters are reserved\n";
+            }
+            {
+                Colour colourGuard( Colour::FileName );
+                std::cerr << _lineInfo << std::endl;
+            }
+            exit(1);
+        }
+    }
 
     TestCase makeTestCase(  ITestCase* _testCase,
                             std::string const& _className,
@@ -21,17 +46,40 @@ namespace Catch {
                             std::string const& _descOrTags,
                             SourceLineInfo const& _lineInfo )
     {
-        std::string desc = _descOrTags;
         bool isHidden( startsWith( _name, "./" ) ); // Legacy support
-        std::set<std::string> tags;
-        TagExtracter( tags ).parse( desc );
-        if( tags.find( "hide" ) != tags.end() || tags.find( "." ) != tags.end() )
-            isHidden = true;
 
+        // Parse out tags
+        std::set<std::string> tags;
+        std::string desc, tag;
+        bool inTag = false;
+        for( std::size_t i = 0; i < _descOrTags.size(); ++i ) {
+            char c = _descOrTags[i];
+            if( !inTag ) {
+                if( c == '[' )
+                    inTag = true;
+                else
+                    desc += c;
+            }
+            else {
+                if( c == ']' ) {
+                    enforceNotReservedTag( tag, _lineInfo );
+
+                    inTag = false;
+                    if( tag == "hide" || tag == "." )
+                        isHidden = true;
+                    else
+                        tags.insert( tag );
+                    tag.clear();
+                }
+                else
+                    tag += c;
+            }
+        }
         if( isHidden ) {
             tags.insert( "hide" );
             tags.insert( "." );
         }
+
         TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
         return TestCase( _testCase, info );
     }
@@ -47,11 +95,16 @@ namespace Catch {
         description( _description ),
         tags( _tags ),
         lineInfo( _lineInfo ),
-        isHidden( _isHidden )
+        isHidden( _isHidden ),
+        throws( false )
     {
         std::ostringstream oss;
-        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it )
+        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it ) {
             oss << "[" << *it << "]";
+            if( *it == "!throws" )
+                throws = true;
+            lcaseTags.insert( toLower( *it ) );
+        }
         tagsAsString = oss.str();
     }
 
@@ -60,9 +113,11 @@ namespace Catch {
         className( other.className ),
         description( other.description ),
         tags( other.tags ),
+        lcaseTags( other.lcaseTags ),
         tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
-        isHidden( other.isHidden )
+        isHidden( other.isHidden ),
+        throws( other.throws )
     {}
 
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
@@ -78,6 +133,19 @@ namespace Catch {
         return other;
     }
 
+    void TestCase::swap( TestCase& other ) {
+        test.swap( other.test );
+        name.swap( other.name );
+        className.swap( other.className );
+        description.swap( other.description );
+        tags.swap( other.tags );
+        lcaseTags.swap( other.lcaseTags );
+        tagsAsString.swap( other.tagsAsString );
+        std::swap( TestCaseInfo::isHidden, static_cast<TestCaseInfo&>( other ).isHidden );
+        std::swap( TestCaseInfo::throws, static_cast<TestCaseInfo&>( other ).throws );
+        std::swap( lineInfo, other.lineInfo );
+    }
+
     void TestCase::invoke() const {
         test->invoke();
     }
@@ -85,25 +153,8 @@ namespace Catch {
     bool TestCase::isHidden() const {
         return TestCaseInfo::isHidden;
     }
-
-    bool TestCase::hasTag( std::string const& tag ) const {
-        return tags.find( toLower( tag ) ) != tags.end();
-    }
-    bool TestCase::matchesTags( std::string const& tagPattern ) const {
-        TagExpression exp;
-        TagExpressionParser( exp ).parse( tagPattern );
-        return exp.matches( tags );
-    }
-    std::set<std::string> const& TestCase::getTags() const {
-        return tags;
-    }
-
-    void TestCase::swap( TestCase& other ) {
-        test.swap( other.test );
-        className.swap( other.className );
-        name.swap( other.name );
-        description.swap( other.description );
-        std::swap( lineInfo, other.lineInfo );
+    bool TestCase::throws() const {
+        return TestCaseInfo::throws;
     }
 
     bool TestCase::operator == ( TestCase const& other ) const {

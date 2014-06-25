@@ -49,7 +49,7 @@ namespace Catch {
         while( std::getline( f, line ) ) {
             line = trim(line);
             if( !line.empty() && !startsWith( line, "#" ) )
-                addTestOrTags( config, line );
+                addTestOrTags( config, "\"" + line + "\"," );
         }
     }
 
@@ -83,6 +83,10 @@ namespace Catch {
         cli["-e"]["--nothrow"]
             .describe( "skip exception tests" )
             .bind( &ConfigData::noThrow );
+
+        cli["-i"]["--invisibles"]
+            .describe( "show invisibles (tabs, newlines)" )
+            .bind( &ConfigData::showInvisibles );
 
         cli["-o"]["--out"]
             .describe( "output filename" )

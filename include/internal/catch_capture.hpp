@@ -8,88 +8,38 @@
 #ifndef TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 
-#include "catch_expression_decomposer.hpp"
-#include "catch_expressionresult_builder.h"
+#include "catch_result_builder.h"
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.h"
-#include "catch_context.h"
 #include "catch_common.h"
-#include "catch_tostring.hpp"
-#include "catch_interfaces_registry_hub.h"
-#include "catch_interfaces_config.h"
+#include "catch_tostring.h"
+#include "catch_interfaces_runner.h"
 #include "internal/catch_compiler_capabilities.h"
 
-#include <ostream>
-
-namespace Catch {
-
-    inline IResultCapture& getResultCapture() {
-        return getCurrentContext().getResultCapture();
-    }
-
-    template<typename MatcherT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
-                                                                std::string const& matcherCallAsString ) {
-        std::string matcherAsString = matcher.toString();
-        if( matcherAsString == "{?}" )
-            matcherAsString = matcherCallAsString;
-        return ExpressionResultBuilder()
-            .setRhs( matcherAsString )
-            .setOp( "matches" );
-    }
-
-    template<typename MatcherT, typename ArgT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
-                                                                ArgT const& arg,
-                                                                std::string const& matcherCallAsString ) {
-        return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
-            .setLhs( Catch::toString( arg ) )
-            .setResultType( matcher.match( arg ) );
-    }
-
-    template<typename MatcherT, typename ArgT>
-    ExpressionResultBuilder expressionResultBuilderFromMatcher( MatcherT const& matcher,
-                                                                ArgT* arg,
-                                                                std::string const& matcherCallAsString ) {
-        return expressionResultBuilderFromMatcher( matcher, matcherCallAsString )
-            .setLhs( Catch::toString( arg ) )
-            .setResultType( matcher.match( arg ) );
-    }
-
-struct TestFailureException{};
-
-} // end namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ASSERTIONINFO_NAME INTERNAL_CATCH_UNIQUE_NAME( __assertionInfo )
+// In the event of a failure works out if the debugger needs to be invoked
+// and/or an exception thrown and takes appropriate action.
+// This needs to be done as a macro so the debugger will stop in the user
+// source code rather than in Catch library code
+#define INTERNAL_CATCH_REACT( resultBuilder ) \
+    if( resultBuilder.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
+    resultBuilder.react();
 
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_EXPR( evaluatedExpr, resultDisposition, originalExpr ) \
-    if( Catch::ResultAction::Value internal_catch_action = Catch::getResultCapture().acceptExpression( evaluatedExpr, INTERNAL_CATCH_ASSERTIONINFO_NAME )  ) { \
-        if( internal_catch_action & Catch::ResultAction::Debug ) CATCH_BREAK_INTO_DEBUGGER(); \
-        if( internal_catch_action & Catch::ResultAction::Abort ) throw Catch::TestFailureException(); \
-        if( !Catch::shouldContinueOnFailure( resultDisposition ) ) throw Catch::TestFailureException(); \
-        Catch::isTrue( false && originalExpr ); \
-    }
-
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_ACCEPT_INFO( expr, macroName, resultDisposition ) \
-    Catch::AssertionInfo INTERNAL_CATCH_ASSERTIONINFO_NAME( macroName, CATCH_INTERNAL_LINEINFO, expr, resultDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionDecomposer()->*expr ).endExpression( resultDisposition ), resultDisposition, expr ); \
-        } catch( Catch::TestFailureException& ) { \
-            throw; \
-        } catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), \
-                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, expr ); \
+            ( __catchResult->*expr ).endExpression(); \
         } \
-    } while( Catch::isTrue( false ) )
+        catch( ... ) { \
+            __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
+        } \
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
@@ -104,82 +54,90 @@ struct TestFailureException{};
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
             expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
+            __catchResult.captureResult( Catch::ResultWas::Ok ); \
         } \
         catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException(), resultDisposition, false ); \
+            __catchResult.useActiveException( resultDisposition ); \
         } \
-} while( Catch::isTrue( false ) )
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
-    try { \
-        if( Catch::getCurrentContext().getConfig()->allowThrows() ) { \
-            expr; \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::DidntThrowException ), resultDisposition, false ); \
-        } \
-    } \
-    catch( Catch::TestFailureException& ) { \
-        throw; \
-    } \
-    catch( exceptionType ) { \
-        INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( Catch::ResultWas::Ok ), resultDisposition, false ); \
-    }
-
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS( expr, exceptionType, resultDisposition, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
-        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
-    } while( Catch::isTrue( false ) )
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        try { \
+            if( __catchResult.allowThrows() ) \
+                expr; \
+            __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+        } \
+        catch( ... ) { \
+            __catchResult.captureResult( Catch::ResultWas::Ok ); \
+        } \
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #expr, macroName, resultDisposition ); \
-        INTERNAL_CATCH_THROWS_IMPL( expr, exceptionType, resultDisposition ) \
-        catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
-                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        try { \
+            if( __catchResult.allowThrows() ) \
+                expr; \
+            __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
         } \
-    } while( Catch::isTrue( false ) )
+        catch( exceptionType ) { \
+            __catchResult.captureResult( Catch::ResultWas::Ok ); \
+        } \
+        catch( ... ) { \
+            __catchResult.useActiveException( resultDisposition ); \
+        } \
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::alwaysFalse() )
 
 
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define INTERNAL_CATCH_MSG( messageType, resultDisposition, macroName, ... ) \
         do { \
-            INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( messageType ) << __VA_ARGS__ +::Catch::StreamEndStop(), resultDisposition, true ) \
-        } while( Catch::isTrue( false ) )
+            Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
+            __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop(); \
+            __catchResult.captureResult( messageType ); \
+            INTERNAL_CATCH_REACT( __catchResult ) \
+        } while( Catch::alwaysFalse() )
 #else
     #define INTERNAL_CATCH_MSG( messageType, resultDisposition, macroName, log ) \
         do { \
-            INTERNAL_CATCH_ACCEPT_INFO( "", macroName, resultDisposition ); \
-            INTERNAL_CATCH_ACCEPT_EXPR( Catch::ExpressionResultBuilder( messageType ) << log, resultDisposition, true ) \
-        } while( Catch::isTrue( false ) )
+            Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
+            __catchResult << log + ::Catch::StreamEndStop(); \
+            __catchResult.captureResult( messageType ); \
+            INTERNAL_CATCH_REACT( __catchResult ) \
+        } while( Catch::alwaysFalse() )
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( log, macroName ) \
     Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
-
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( arg, matcher, resultDisposition, macroName ) \
     do { \
-        INTERNAL_CATCH_ACCEPT_INFO( #arg " " #matcher, macroName, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg " " #matcher, resultDisposition ); \
         try { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::expressionResultBuilderFromMatcher( ::Catch::Matchers::matcher, arg, #matcher ) ), resultDisposition, false ); \
-        } catch( Catch::TestFailureException& ) { \
-            throw; \
+            std::string matcherAsString = ::Catch::Matchers::matcher.toString(); \
+            __catchResult \
+                .setLhs( Catch::toString( arg ) ) \
+                .setRhs( matcherAsString == "{?}" ? #matcher : matcherAsString ) \
+                .setOp( "matches" ) \
+                .setResultType( ::Catch::Matchers::matcher.match( arg ) ); \
+            __catchResult.captureExpression(); \
         } catch( ... ) { \
-            INTERNAL_CATCH_ACCEPT_EXPR( ( Catch::ExpressionResultBuilder( Catch::ResultWas::ThrewException ) << Catch::translateActiveException() ), \
-                resultDisposition | Catch::ResultDisposition::ContinueOnFailure, false ); \
+            __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
         } \
-    } while( Catch::isTrue( false ) )
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::alwaysFalse() )
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED

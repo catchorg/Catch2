@@ -12,11 +12,13 @@
 
 #ifdef __clang__
 
-#if __has_feature(cxx_nullptr)
+#  if __has_feature(cxx_nullptr)
+#    define CATCH_CONFIG_CPP11_NULLPTR
+#  endif
 
-#define CATCH_CONFIG_CPP11_NULLPTR
-
-#endif
+#  if __has_feature(cxx_noexcept)
+#    define CATCH_CONFIG_CPP11_NOEXCEPT
+#  endif
 
 #endif // __clang__
 
@@ -94,6 +96,26 @@
 #define CATCH_CONFIG_VARIADIC_MACROS
 #endif
 
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+// C++ language feature support
+
+// detect language version:
+#if (__cplusplus == 201103L)
+#  define CATCH_CPP11
+#  define CATCH_CPP11_OR_GREATER
+#elif (__cplusplus >= 201103L)
+#  define CATCH_CPP11_OR_GREATER
+#endif
+
+// noexcept support:
+#if defined(CATCH_CONFIG_CPP11_NOEXCEPT) && !defined(CATCH_NOEXCEPT)
+#  define CATCH_NOEXCEPT noexcept
+#  define CATCH_NOEXCEPT_IS(x) noexcept(x)
+#else
+#  define CATCH_NOEXCEPT throw()
+#  define CATCH_NOEXCEPT_IS(x)
 #endif
 
 #endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED

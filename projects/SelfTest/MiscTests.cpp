@@ -10,6 +10,10 @@
 
 #include <iostream>
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" )
 {
     int a = 1;
@@ -111,7 +115,7 @@ TEST_CASE( "looped tests", "[.][failing]" )
     }
 }
 
-TEST_CASE( "Sends stuff to stdout and stderr", "" )
+TEST_CASE( "Sends stuff to stdout and stderr", "[.]" )
 {
     std::cout << "A string sent directly to stdout" << std::endl;
     
@@ -333,3 +337,22 @@ TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]")
 
     FAIL("to infinity and beyond");
 }
+
+TEST_CASE("not allowed", "[!throws]")
+{
+    // This test case should not be included if you run with -e on the command line
+    SUCCEED();
+}
+
+//TEST_CASE( "Is big endian" ) {
+//    CHECK( Catch::Detail::Endianness::which() == Catch::Detail::Endianness::Little );
+//}
+
+TEST_CASE( "Tabs and newlines show in output", "[.][whitespace][failing]" ) {
+
+    // Based on issue #242
+    std::string s1 = "if ($b == 10) {\n\t\t$a\t= 20;\n}";
+    std::string s2 = "if ($b == 10) {\n\t$a = 20;\n}\n";
+    CHECK( s1 == s2 );
+}
+

@@ -22,11 +22,11 @@ namespace Catch {
         void operator=( Context const& );
 
     public: // IContext
-        virtual IResultCapture& getResultCapture() {
-            return *m_resultCapture;
+        virtual IResultCapture* getResultCapture() {
+            return m_resultCapture;
         }
-        virtual IRunner& getRunner() {
-            return *m_runner;
+        virtual IRunner* getRunner() {
+            return m_runner;
         }
         virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
             return getGeneratorsForCurrentTest()
@@ -57,7 +57,7 @@ namespace Catch {
 
     private:
         IGeneratorsForTest* findGeneratorsForCurrentTest() {
-            std::string testName = getResultCapture().getCurrentTestName();
+            std::string testName = getResultCapture()->getCurrentTestName();
 
             std::map<std::string, IGeneratorsForTest*>::const_iterator it =
             m_generatorsByTestName.find( testName );
@@ -69,7 +69,7 @@ namespace Catch {
         IGeneratorsForTest& getGeneratorsForCurrentTest() {
             IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
             if( !generators ) {
-                std::string testName = getResultCapture().getCurrentTestName();
+                std::string testName = getResultCapture()->getCurrentTestName();
                 generators = createGeneratorsForTest();
                 m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
             }

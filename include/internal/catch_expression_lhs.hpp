@@ -8,65 +8,72 @@
 #ifndef TWOBLUECUBES_CATCH_EXPRESSION_LHS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_EXPRESSION_LHS_HPP_INCLUDED
 
-#include "catch_expressionresult_builder.h"
+#include "catch_result_builder.h"
 #include "catch_evaluate.hpp"
-#include "catch_tostring.hpp"
+#include "catch_tostring.h"
 
 namespace Catch {
 
-// Wraps the LHS of an expression and captures the operator and RHS (if any) - wrapping them all
-// in an ExpressionResultBuilder object
+// Wraps the LHS of an expression and captures the operator and RHS (if any) -
+// wrapping them all in a ResultBuilder object
 template<typename T>
 class ExpressionLhs {
-    void operator = ( ExpressionLhs const& );
+    ExpressionLhs& operator = ( ExpressionLhs const& );
+#  ifdef CATCH_CPP11_OR_GREATER
+    ExpressionLhs& operator = ( ExpressionLhs && ) = delete;
+#  endif
 
 public:
-    ExpressionLhs( T lhs ) : m_lhs( lhs ) {}
+    ExpressionLhs( ResultBuilder& rb, T lhs ) : m_rb( rb ), m_lhs( lhs ) {}
+#  ifdef CATCH_CPP11_OR_GREATER
+    ExpressionLhs( ExpressionLhs const& ) = default;
+    ExpressionLhs( ExpressionLhs && )     = default;
+#  endif
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator == ( RhsT const& rhs ) {
+    ResultBuilder& operator == ( RhsT const& rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator != ( RhsT const& rhs ) {
+    ResultBuilder& operator != ( RhsT const& rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator < ( RhsT const& rhs ) {
+    ResultBuilder& operator < ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThan>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator > ( RhsT const& rhs ) {
+    ResultBuilder& operator > ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThan>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator <= ( RhsT const& rhs ) {
+    ResultBuilder& operator <= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
 
     template<typename RhsT>
-    ExpressionResultBuilder& operator >= ( RhsT const& rhs ) {
+    ResultBuilder& operator >= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
     }
 
-    ExpressionResultBuilder& operator == ( bool rhs ) {
+    ResultBuilder& operator == ( bool rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
-    ExpressionResultBuilder& operator != ( bool rhs ) {
+    ResultBuilder& operator != ( bool rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
-    ExpressionResultBuilder& endExpression( ResultDisposition::Flags resultDisposition ) {
+    void endExpression() {
         bool value = m_lhs ? true : false;
-        return m_result
+        m_rb
             .setLhs( Catch::toString( value ) )
             .setResultType( value )
-            .endExpression( resultDisposition );
+            .endExpression();
     }
 
     // Only simple binary expressions are allowed on the LHS.
@@ -80,8 +87,8 @@ public:
 
 private:
     template<Internal::Operator Op, typename RhsT>
-    ExpressionResultBuilder& captureExpression( RhsT const& rhs ) {
-        return m_result
+    ResultBuilder& captureExpression( RhsT const& rhs ) {
+        return m_rb
             .setResultType( Internal::compare<Op>( m_lhs, rhs ) )
             .setLhs( Catch::toString( m_lhs ) )
             .setRhs( Catch::toString( rhs ) )
@@ -89,7 +96,7 @@ private:
     }
 
 private:
-    ExpressionResultBuilder m_result;
+    ResultBuilder& m_rb;
     T m_lhs;
 };
 

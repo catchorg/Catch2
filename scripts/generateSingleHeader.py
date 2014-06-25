@@ -1,3 +1,5 @@
+from  __future__ import  print_function
+
 import os
 import sys
 import re
@@ -12,7 +14,7 @@ guardParser = re.compile( r'\s*#.*TWOBLUECUBES_CATCH_.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')
 ifParser = re.compile( r'\s*#ifndef TWOBLUECUBES_CATCH_.*_INCLUDED')
 endIfParser = re.compile( r'\s*#endif // TWOBLUECUBES_CATCH_.*_INCLUDED')
-ifImplParser = re.compile( r'\s*#if.*(CATCH_CONFIG_MAIN|CATCH_CONFIG_RUNNER)')
+ifImplParser = re.compile( r'\s*#ifdef CATCH_CONFIG_RUNNER' )
 commentParser1 = re.compile( r'^\s*/\*')
 commentParser2 = re.compile( r'^\s*\*')
 blankParser = re.compile( r'^\s*$')
@@ -33,9 +35,9 @@ for arg in sys.argv[1:]:
     elif arg == "noimpl":
         includeImpl = False
         bumpVersion = False
-        print "Not including impl code (and not bumping version)"
+        print( "Not including impl code (and not bumping version)" )
     else:
-        print "\n** Unrecognised argument: " + arg + " **\n"
+        print( "\n** Unrecognised argument: " + arg + " **\n" )
         exit(1)
 
 out = open( outputPath, 'w' )
@@ -57,6 +59,8 @@ def parseFile( path, filename ):
             ifdefs = ifdefs + 1
         elif endIfParser.match( line ):
             ifdefs = ifdefs - 1
+            if ifdefs == implIfDefs:
+                implIfDefs = -1
         m = includesParser.match( line )
         if m:
             header = m.group(1)
@@ -144,9 +148,9 @@ def generateSingleInclude():
     out.write( " */\n" )
     out.write( "#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
     out.write( "#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
-    
+
     parseFile( rootPath, 'catch.hpp' )
-    
+
     out.write( "#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
 
 generateSingleInclude()

@@ -62,7 +62,7 @@ TEST_CASE( "Equality checks that should succeed", "" )
     REQUIRE( x == Approx( 1.3 ) );
 }
 
-TEST_CASE( "Equality checks that should fail]", "[.][failing]" )
+TEST_CASE( "Equality checks that should fail", "[.][failing]" )
 {
     TestData data;
     
@@ -100,7 +100,7 @@ TEST_CASE( "Inequality checks that should succeed", "" )
     REQUIRE( data.str_hello.size() != 6 );
 }
 
-TEST_CASE( "Inequality checks that should fails", "[.][failing]" )
+TEST_CASE( "Inequality checks that should fail", "[.][failing]" )
 {
     TestData data;
     

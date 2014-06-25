@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
 
-#include "catch_test_spec.h"
+#include "catch_test_spec_parser.hpp"
 #include "catch_context.h"
 #include "catch_interfaces_config.h"
 #include "catch_stream.h"
@@ -35,6 +35,7 @@ namespace Catch {
             shouldDebugBreak( false ),
             noThrow( false ),
             showHelp( false ),
+            showInvisibles( false ),
             abortAfter( -1 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
@@ -50,6 +51,7 @@ namespace Catch {
         bool shouldDebugBreak;
         bool noThrow;
         bool showHelp;
+        bool showInvisibles;
 
         int abortAfter;
 
@@ -82,21 +84,10 @@ namespace Catch {
             m_os( std::cout.rdbuf() )
         {
             if( !data.testsOrTags.empty() ) {
-                std::string groupName;
-                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
-                    if( i != 0 )
-                        groupName += " ";
-                    groupName += data.testsOrTags[i];
-                }
-                TestCaseFilters filters( groupName );
-                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i ) {
-                    std::string filter = data.testsOrTags[i];
-                    if( startsWith( filter, "[" ) || startsWith( filter, "~[" ) )
-                        filters.addTags( filter );
-                    else
-                        filters.addFilter( TestCaseFilter( filter ) );
-                }
-                m_filterSets.push_back( filters );
+                TestSpecParser parser;
+                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i )
+                    parser.parse( data.testsOrTags[i] );
+                m_testSpec = parser.testSpec();
             }
         }
 
@@ -118,13 +109,9 @@ namespace Catch {
         bool listTags() const { return m_data.listTags; }
         bool listReporters() const { return m_data.listReporters; }
 
-        std::string getProcessName() const {
-            return m_data.processName;
-        }
+        std::string getProcessName() const { return m_data.processName; }
 
-        bool shouldDebugBreak() const {
-            return m_data.shouldDebugBreak;
-        }
+        bool shouldDebugBreak() const { return m_data.shouldDebugBreak; }
 
         void setStreamBuf( std::streambuf* buf ) {
             m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
@@ -139,19 +126,10 @@ namespace Catch {
 
         std::string getReporterName() const { return m_data.reporterName; }
 
-        void addTestSpec( std::string const& testSpec ) {
-            TestCaseFilters filters( testSpec );
-            filters.addFilter( TestCaseFilter( testSpec ) );
-            m_filterSets.push_back( filters );
-        }
 
-        int abortAfter() const {
-            return m_data.abortAfter;
-        }
+        int abortAfter() const { return m_data.abortAfter; }
 
-        std::vector<TestCaseFilters> const& filters() const {
-            return m_filterSets;
-        }
+        TestSpec const& testSpec() const { return m_testSpec; }
 
         std::vector<ITestCaseHook*> const& userTestCaseHooks() const {
             return m_userHooks;
@@ -162,6 +140,7 @@ namespace Catch {
         }
 
         bool showHelp() const { return m_data.showHelp; }
+        bool showInvisibles() const { return m_data.showInvisibles; }
 
         // IConfig interface
         virtual bool allowThrows() const        { return !m_data.noThrow; }
@@ -178,6 +157,7 @@ namespace Catch {
         mutable std::ostream m_os;
         std::vector<TestCaseFilters> m_filterSets;
         std::vector<ITestCaseHook*> m_userHooks;
+        TestSpec m_testSpec;
     };
 
 

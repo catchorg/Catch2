@@ -46,10 +46,10 @@ namespace Catch
                     it != itEnd;
                     ++it ) {
                 if( it->type == ResultWas::Info ) {
-                    ExpressionResultBuilder expressionBuilder( it->type );
-                        expressionBuilder << it->message;
-                    AssertionInfo info( it->macroName, it->lineInfo, "", ResultDisposition::Normal );
-                    AssertionResult result = expressionBuilder.buildResult( info );
+                    ResultBuilder rb( it->macroName.c_str(), it->lineInfo, "", ResultDisposition::Normal );
+                    rb << it->message;
+                    rb.setResultType( ResultWas::Info );
+                    AssertionResult result = rb.build();
                     m_legacyReporter->Result( result );
                 }
             }
