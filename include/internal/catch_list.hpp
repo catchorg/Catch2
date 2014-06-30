@@ -26,7 +26,7 @@ namespace Catch {
             std::cout << "Matching test cases:\n";
         else {
             std::cout << "All available test cases:\n";
-            testSpec = TestSpecParser().parse( "*" ).testSpec();
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
         std::size_t matchedTests = 0;
@@ -61,7 +61,7 @@ namespace Catch {
     inline std::size_t listTestsNamesOnly( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( !config.testSpec().hasFilters() )
-            testSpec = TestSpecParser().parse( "*" ).testSpec();
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
         std::vector<TestCase> matchedTestCases;
         getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
@@ -99,7 +99,7 @@ namespace Catch {
             std::cout << "Tags for matching test cases:\n";
         else {
             std::cout << "All available tags:\n";
-            testSpec = TestSpecParser().parse( "*" ).testSpec();
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
         std::map<std::string, TagInfo> tagCounts;

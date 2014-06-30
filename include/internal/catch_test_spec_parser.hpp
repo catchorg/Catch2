@@ -14,6 +14,7 @@
 #endif
 
 #include "catch_test_spec.hpp"
+#include "catch_interfaces_tag_alias_registry.h"
 
 namespace Catch {
 
@@ -25,13 +26,16 @@ namespace Catch {
         std::string m_arg;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
+        ITagAliasRegistry const& m_tagAliases;
 
     public:
-        TestSpecParser parse( std::string const& arg ) {
+        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( tagAliases ) {}
+
+        TestSpecParser& parse( std::string const& arg ) {
             m_mode = None;
             m_exclusion = false;
             m_start = std::string::npos;
-            m_arg = arg;
+            m_arg = m_tagAliases.expandAliases( arg );
             for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
                 visitChar( m_arg[m_pos] );
             if( m_mode == Name )
@@ -100,7 +104,7 @@ namespace Catch {
         }
     };
     inline TestSpec parseTestSpec( std::string const& arg ) {
-        return TestSpecParser().parse( arg ).testSpec();
+        return TestSpecParser( ITagAliasRegistry::get() ).parse( arg ).testSpec();
     }
 
 } // namespace Catch

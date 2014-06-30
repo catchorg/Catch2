@@ -9,10 +9,16 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
+// Some example tag aliases
+CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
+CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
+
+
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wpadded"
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
+
 
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {

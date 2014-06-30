@@ -41,7 +41,7 @@ namespace Catch {
 
             TestSpec testSpec = m_config->testSpec();
             if( !testSpec.hasFilters() )
-                testSpec = TestSpecParser().parse( "~[.]" ).testSpec(); // All not hidden tests
+                testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
             std::vector<TestCase> testCases;
             getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, testCases );

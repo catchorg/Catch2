@@ -84,7 +84,7 @@ namespace Catch {
             m_os( std::cout.rdbuf() )
         {
             if( !data.testsOrTags.empty() ) {
-                TestSpecParser parser;
+                TestSpecParser parser( ITagAliasRegistry::get() );
                 for( std::size_t i = 0; i < data.testsOrTags.size(); ++i )
                     parser.parse( data.testsOrTags[i] );
                 m_testSpec = parser.testSpec();

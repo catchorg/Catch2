@@ -34,6 +34,7 @@
 #include "catch_debugger.hpp"
 #include "catch_tostring.hpp"
 #include "catch_result_builder.hpp"
+#include "catch_tag_alias_registry.hpp"
 
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
