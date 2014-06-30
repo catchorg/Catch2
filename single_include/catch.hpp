@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 48 (master branch)
- *  Generated: 2014-06-02 07:47:30.155371
+ *  CATCH v1.0 build 49 (master branch)
+ *  Generated: 2014-06-30 07:34:42.275468
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1502,14 +1502,16 @@ namespace Catch {
 #define INTERNAL_CATCH_THROWS( expr, resultDisposition, macroName ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-        try { \
-            if( __catchResult.allowThrows() ) \
+        if( __catchResult.allowThrows() ) \
+            try { \
                 expr; \
-            __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
-        } \
-        catch( ... ) { \
+                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+            } \
+            catch( ... ) { \
+                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+            } \
+        else \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
-        } \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 
@@ -1517,17 +1519,19 @@ namespace Catch {
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-        try { \
-            if( __catchResult.allowThrows() ) \
+        if( __catchResult.allowThrows() ) \
+            try { \
                 expr; \
-            __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
-        } \
-        catch( exceptionType ) { \
+                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+            } \
+            catch( exceptionType ) { \
+                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+            } \
+            catch( ... ) { \
+                __catchResult.useActiveException( resultDisposition ); \
+            } \
+        else \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
-        } \
-        catch( ... ) { \
-            __catchResult.useActiveException( resultDisposition ); \
-        } \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 
@@ -2299,6 +2303,107 @@ using namespace Matchers;
 
 } // namespace Catch
 
+// #included from: internal/catch_interfaces_tag_alias_registry.h
+#define TWOBLUECUBES_CATCH_INTERFACES_TAG_ALIAS_REGISTRY_H_INCLUDED
+
+// #included from: catch_tag_alias.h
+#define TWOBLUECUBES_CATCH_TAG_ALIAS_H_INCLUDED
+
+#include <string>
+
+namespace Catch {
+
+    struct TagAlias {
+        TagAlias( std::string _tag, SourceLineInfo _lineInfo ) : tag( _tag ), lineInfo( _lineInfo ) {}
+
+        std::string tag;
+        SourceLineInfo lineInfo;
+    };
+
+    struct RegistrarForTagAliases {
+        RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo );
+    };
+
+} // end namespace Catch
+
+#define CATCH_REGISTER_TAG_ALIAS( alias, spec ) namespace{ Catch::RegistrarForTagAliases INTERNAL_CATCH_UNIQUE_NAME( AutoRegisterTagAlias )( alias, spec, CATCH_INTERNAL_LINEINFO ); }
+// #included from: catch_option.hpp
+#define TWOBLUECUBES_CATCH_OPTION_HPP_INCLUDED
+
+namespace Catch {
+
+    // An optional type
+    template<typename T>
+    class Option {
+    public:
+        Option() : nullableValue( NULL ) {}
+        Option( T const& _value )
+        : nullableValue( new( storage ) T( _value ) )
+        {}
+        Option( Option const& _other )
+        : nullableValue( _other ? new( storage ) T( *_other ) : NULL )
+        {}
+
+        ~Option() {
+            reset();
+        }
+
+        Option& operator= ( Option const& _other ) {
+            if( &_other != this ) {
+                reset();
+                if( _other )
+                    nullableValue = new( storage ) T( *_other );
+            }
+            return *this;
+        }
+        Option& operator = ( T const& _value ) {
+            reset();
+            nullableValue = new( storage ) T( _value );
+            return *this;
+        }
+
+        void reset() {
+            if( nullableValue )
+                nullableValue->~T();
+            nullableValue = NULL;
+        }
+
+        T& operator*() { return *nullableValue; }
+        T const& operator*() const { return *nullableValue; }
+        T* operator->() { return nullableValue; }
+        const T* operator->() const { return nullableValue; }
+
+        T valueOr( T const& defaultValue ) const {
+            return nullableValue ? *nullableValue : defaultValue;
+        }
+
+        bool some() const { return nullableValue != NULL; }
+        bool none() const { return nullableValue == NULL; }
+
+        bool operator !() const { return nullableValue == NULL; }
+        operator SafeBool::type() const {
+            return SafeBool::makeSafe( some() );
+        }
+
+    private:
+        T* nullableValue;
+        char storage[sizeof(T)];
+    };
+
+} // end namespace Catch
+
+namespace Catch {
+
+    struct ITagAliasRegistry {
+        virtual ~ITagAliasRegistry();
+        virtual Option<TagAlias> find( std::string const& alias ) const = 0;
+        virtual std::string expandAliases( std::string const& unexpandedTestSpec ) const = 0;
+
+        static ITagAliasRegistry const& get();
+    };
+
+} // end namespace Catch
+
 // These files are included here so the single_include script doesn't put them
 // in the conditionally compiled sections
 // #included from: internal/catch_test_case_info.h
@@ -2490,7 +2595,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "equals string: \"" + Catch::toString( m_substr ) + "\"";
+                    return "equals string: " + Catch::toString( m_substr );
                 }
             };
 
@@ -2503,7 +2608,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "contains string: \"" + Catch::toString( m_substr ) + "\"";
+                    return "contains string: " + Catch::toString( m_substr );
                 }
             };
 
@@ -2516,7 +2621,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "starts with: \"" + Catch::toString( m_substr ) + "\"";
+                    return "starts with: " + Catch::toString( m_substr );
                 }
             };
             struct EndsWith : StringHolder<EndsWith> {
@@ -2528,7 +2633,7 @@ namespace Catch {
                 }
 
                 virtual std::string toString() const {
-                    return "ends with: \"" + Catch::toString( m_substr ) + "\"";
+                    return "ends with: " + Catch::toString( m_substr );
                 }
             };
 
@@ -2723,13 +2828,16 @@ namespace Catch {
         std::string m_arg;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
+        ITagAliasRegistry const& m_tagAliases;
 
     public:
-        TestSpecParser parse( std::string const& arg ) {
+        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( tagAliases ) {}
+
+        TestSpecParser& parse( std::string const& arg ) {
             m_mode = None;
             m_exclusion = false;
             m_start = std::string::npos;
-            m_arg = arg;
+            m_arg = m_tagAliases.expandAliases( arg );
             for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
                 visitChar( m_arg[m_pos] );
             if( m_mode == Name )
@@ -2798,7 +2906,7 @@ namespace Catch {
         }
     };
     inline TestSpec parseTestSpec( std::string const& arg ) {
-        return TestSpecParser().parse( arg ).testSpec();
+        return TestSpecParser( ITagAliasRegistry::get() ).parse( arg ).testSpec();
     }
 
 } // namespace Catch
@@ -2946,7 +3054,7 @@ namespace Catch {
             m_os( std::cout.rdbuf() )
         {
             if( !data.testsOrTags.empty() ) {
-                TestSpecParser parser;
+                TestSpecParser parser( ITagAliasRegistry::get() );
                 for( std::size_t i = 0; i < data.testsOrTags.size(); ++i )
                     parser.parse( data.testsOrTags[i] );
                 m_testSpec = parser.testSpec();
@@ -4238,71 +4346,6 @@ namespace Catch {
 // #included from: catch_interfaces_reporter.h
 #define TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED
 
-// #included from: catch_option.hpp
-#define TWOBLUECUBES_CATCH_OPTION_HPP_INCLUDED
-
-namespace Catch {
-
-    // An optional type
-    template<typename T>
-    class Option {
-    public:
-        Option() : nullableValue( NULL ) {}
-        Option( T const& _value )
-        : nullableValue( new( storage ) T( _value ) )
-        {}
-        Option( Option const& _other )
-        : nullableValue( _other ? new( storage ) T( *_other ) : NULL )
-        {}
-
-        ~Option() {
-            reset();
-        }
-
-        Option& operator= ( Option const& _other ) {
-            if( &_other != this ) {
-                reset();
-                if( _other )
-                    nullableValue = new( storage ) T( *_other );
-            }
-            return *this;
-        }
-        Option& operator = ( T const& _value ) {
-            reset();
-            nullableValue = new( storage ) T( _value );
-            return *this;
-        }
-
-        void reset() {
-            if( nullableValue )
-                nullableValue->~T();
-            nullableValue = NULL;
-        }
-
-        T& operator*() { return *nullableValue; }
-        T const& operator*() const { return *nullableValue; }
-        T* operator->() { return nullableValue; }
-        const T* operator->() const { return nullableValue; }
-
-        T valueOr( T const& defaultValue ) const {
-            return nullableValue ? *nullableValue : defaultValue;
-        }
-
-        bool some() const { return nullableValue != NULL; }
-        bool none() const { return nullableValue == NULL; }
-
-        bool operator !() const { return nullableValue == NULL; }
-        operator SafeBool::type() const {
-            return SafeBool::makeSafe( some() );
-        }
-
-    private:
-        T* nullableValue;
-        char storage[sizeof(T)];
-    };
-
-} // end namespace Catch
-
 #include <string>
 #include <ostream>
 #include <map>
@@ -4557,7 +4600,7 @@ namespace Catch {
             std::cout << "Matching test cases:\n";
         else {
             std::cout << "All available test cases:\n";
-            testSpec = TestSpecParser().parse( "*" ).testSpec();
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
         std::size_t matchedTests = 0;
@@ -4592,7 +4635,7 @@ namespace Catch {
     inline std::size_t listTestsNamesOnly( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( !config.testSpec().hasFilters() )
-            testSpec = TestSpecParser().parse( "*" ).testSpec();
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
         std::vector<TestCase> matchedTestCases;
         getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
@@ -4630,7 +4673,7 @@ namespace Catch {
             std::cout << "Tags for matching test cases:\n";
         else {
             std::cout << "All available tags:\n";
-            testSpec = TestSpecParser().parse( "*" ).testSpec();
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
         std::map<std::string, TagInfo> tagCounts;
@@ -5181,7 +5224,7 @@ namespace Catch {
 
             TestSpec testSpec = m_config->testSpec();
             if( !testSpec.hasFilters() )
-                testSpec = TestSpecParser().parse( "~[.]" ).testSpec(); // All not hidden tests
+                testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
             std::vector<TestCase> testCases;
             getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, testCases );
@@ -6330,7 +6373,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 48, "master" );
+    Version libraryVersion( 1, 0, 49, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -6871,12 +6914,12 @@ std::string toString( std::nullptr_t ) {
     std::string toString( NSString const * const& nsstring ) {
         if( !nsstring )
             return "nil";
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+        return "@" + toString([nsstring UTF8String]);
     }
     std::string toString( NSString * CATCH_ARC_STRONG const& nsstring ) {
         if( !nsstring )
             return "nil";
-        return std::string( "@\"" ) + [nsstring UTF8String] + "\"";
+        return "@" + toString([nsstring UTF8String]);
     }
     std::string toString( NSObject* const& nsObject ) {
         return toString( [nsObject description] );
@@ -6994,6 +7037,98 @@ namespace Catch {
         }
         else
             return "{can't expand - use " + m_assertionInfo.macroName + "_FALSE( " + m_assertionInfo.capturedExpression.substr(1) + " ) instead of " + m_assertionInfo.macroName + "( " + m_assertionInfo.capturedExpression + " ) for better diagnostics}";
+    }
+
+} // end namespace Catch
+
+// #included from: catch_tag_alias_registry.hpp
+#define TWOBLUECUBES_CATCH_TAG_ALIAS_REGISTRY_HPP_INCLUDED
+
+// #included from: catch_tag_alias_registry.h
+#define TWOBLUECUBES_CATCH_TAG_ALIAS_REGISTRY_H_INCLUDED
+
+#include <map>
+
+namespace Catch {
+
+    class TagAliasRegistry : public ITagAliasRegistry {
+    public:
+        virtual ~TagAliasRegistry();
+        virtual Option<TagAlias> find( std::string const& alias ) const;
+        virtual std::string expandAliases( std::string const& unexpandedTestSpec ) const;
+        void add( char const* alias, char const* tag, SourceLineInfo const& lineInfo );
+        static TagAliasRegistry& get();
+
+    private:
+        std::map<std::string, TagAlias> m_registry;
+    };
+
+} // end namespace Catch
+
+#include <map>
+#include <iostream>
+
+namespace Catch {
+
+    TagAliasRegistry::~TagAliasRegistry() {}
+
+    Option<TagAlias> TagAliasRegistry::find( std::string const& alias ) const {
+        std::map<std::string, TagAlias>::const_iterator it = m_registry.find( alias );
+        if( it != m_registry.end() )
+            return it->second;
+        else
+            return Option<TagAlias>();
+    }
+
+    std::string TagAliasRegistry::expandAliases( std::string const& unexpandedTestSpec ) const {
+        std::string expandedTestSpec = unexpandedTestSpec;
+        for( std::map<std::string, TagAlias>::const_iterator it = m_registry.begin(), itEnd = m_registry.end();
+                it != itEnd;
+                ++it ) {
+            std::size_t pos = expandedTestSpec.find( it->first );
+            if( pos != std::string::npos ) {
+                expandedTestSpec =  expandedTestSpec.substr( 0, pos ) +
+                                    it->second.tag +
+                                    expandedTestSpec.substr( pos + it->first.size() );
+            }
+        }
+        return expandedTestSpec;
+    }
+
+    void TagAliasRegistry::add( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
+
+        if( !startsWith( alias, "[@" ) || !endsWith( alias, "]" ) ) {
+            std::ostringstream oss;
+            oss << "error: tag alias, \"" << alias << "\" is not of the form [@alias name].\n" << lineInfo;
+            throw std::domain_error( oss.str().c_str() );
+        }
+        if( !m_registry.insert( std::make_pair( alias, TagAlias( tag, lineInfo ) ) ).second ) {
+            std::ostringstream oss;
+            oss << "error: tag alias, \"" << alias << "\" already registered.\n"
+                << "\tFirst seen at " << find(alias)->lineInfo << "\n"
+                << "\tRedefined at " << lineInfo;
+            throw std::domain_error( oss.str().c_str() );
+        }
+    }
+
+    TagAliasRegistry& TagAliasRegistry::get() {
+        static TagAliasRegistry instance;
+        return instance;
+
+    }
+
+    ITagAliasRegistry::~ITagAliasRegistry() {}
+    ITagAliasRegistry const& ITagAliasRegistry::get() { return TagAliasRegistry::get(); }
+
+    RegistrarForTagAliases::RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
+        try {
+            TagAliasRegistry::get().add( alias, tag, lineInfo );
+        }
+        catch( std::exception& ex ) {
+            Colour colourGuard( Colour::Red );
+            std::cerr << ex.what() << std::endl;
+            exit(1);
+        }
     }
 
 } // end namespace Catch
