@@ -341,7 +341,7 @@ TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]")
 TEST_CASE("not allowed", "[!throws]")
 {
     // This test case should not be included if you run with -e on the command line
-    SUCCEED();
+    SUCCEED( "" );
 }
 
 //TEST_CASE( "Is big endian" ) {
