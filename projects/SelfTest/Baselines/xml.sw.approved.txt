@@ -7162,6 +7162,87 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Tag alias can be registered against tag patterns">
+      <Section name="The same tag alias can only be registered once">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            what Contains( &quot;[@zzz]&quot; )
+          </Original>
+          <Expanded>
+            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+	First seen at file:2
+	Redefined at file:10&quot; contains: &quot;[@zzz]&quot;
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            what Contains( &quot;file&quot; )
+          </Original>
+          <Expanded>
+            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+	First seen at file:2
+	Redefined at file:10&quot; contains: &quot;file&quot;
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            what Contains( &quot;2&quot; )
+          </Original>
+          <Expanded>
+            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+	First seen at file:2
+	Redefined at file:10&quot; contains: &quot;2&quot;
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            what Contains( &quot;10&quot; )
+          </Original>
+          <Expanded>
+            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+	First seen at file:2
+	Redefined at file:10&quot; contains: &quot;10&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <Section name="Tag aliases must be of the form [@name]">
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            registry.add( &quot;[no ampersat]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Original>
+          <Expanded>
+            registry.add( &quot;[no ampersat]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            registry.add( &quot;[the @ is not at the start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Original>
+          <Expanded>
+            registry.add( &quot;[the @ is not at the start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            registry.add( &quot;@no square bracket at start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Original>
+          <Expanded>
+            registry.add( &quot;@no square bracket at start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
+          <Original>
+            registry.add( &quot;[@no square bracket at end&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Original>
+          <Expanded>
+            registry.add( &quot;[@no square bracket at end&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Anonymous test case 1">
       <OverallResult success="true"/>
     </TestCase>
@@ -7483,7 +7564,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="603" failures="112"/>
+    <OverallResults successes="611" failures="112"/>
   </Group>
-  <OverallResults successes="603" failures="112"/>
+  <OverallResults successes="611" failures="112"/>
 </Catch>
