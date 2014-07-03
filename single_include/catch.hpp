@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 49 (master branch)
- *  Generated: 2014-06-30 07:34:42.275468
+ *  CATCH v1.0 build 50 (master branch)
+ *  Generated: 2014-07-03 08:10:59.438355
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1608,26 +1608,29 @@ namespace Catch {
 namespace Catch {
 
     struct Counts {
-        Counts() : passed( 0 ), failed( 0 ) {}
+        Counts() : passed( 0 ), failed( 0 ), failedButOk( 0 ) {}
 
         Counts operator - ( Counts const& other ) const {
             Counts diff;
             diff.passed = passed - other.passed;
             diff.failed = failed - other.failed;
+            diff.failedButOk = failedButOk - other.failedButOk;
             return diff;
         }
         Counts& operator += ( Counts const& other ) {
             passed += other.passed;
             failed += other.failed;
+            failedButOk += other.failedButOk;
             return *this;
         }
 
         std::size_t total() const {
-            return passed + failed;
+            return passed + failed + failedButOk;
         }
 
         std::size_t passed;
         std::size_t failed;
+        std::size_t failedButOk;
     };
 
     struct Totals {
@@ -1643,6 +1646,8 @@ namespace Catch {
             Totals diff = *this - prevTotals;
             if( diff.assertions.failed > 0 )
                 ++diff.testCases.failed;
+            else if( diff.assertions.failedButOk > 0 )
+                ++diff.testCases.failedButOk;
             else
                 ++diff.testCases.passed;
             return diff;
@@ -2422,14 +2427,26 @@ namespace Catch {
     struct ITestCase;
 
     struct TestCaseInfo {
+        enum SpecialProperties{
+            None = 0,
+            IsHidden = 1 << 1,
+            ShouldFail = 1 << 2,
+            MayFail = 1 << 3,
+            Throws = 1 << 4
+        };
+
         TestCaseInfo(   std::string const& _name,
                         std::string const& _className,
                         std::string const& _description,
                         std::set<std::string> const& _tags,
-                        bool _isHidden,
                         SourceLineInfo const& _lineInfo );
 
         TestCaseInfo( TestCaseInfo const& other );
+
+        bool isHidden() const;
+        bool throws() const;
+        bool okToFail() const;
+        bool expectedToFail() const;
 
         std::string name;
         std::string className;
@@ -2438,8 +2455,7 @@ namespace Catch {
         std::set<std::string> lcaseTags;
         std::string tagsAsString;
         SourceLineInfo lineInfo;
-        bool isHidden;
-        bool throws;
+        SpecialProperties properties;
     };
 
     class TestCase : public TestCaseInfo {
@@ -2453,9 +2469,6 @@ namespace Catch {
         void invoke() const;
 
         TestCaseInfo const& getTestCaseInfo() const;
-
-        bool isHidden() const;
-        bool throws() const;
 
         void swap( TestCase& other );
         bool operator == ( TestCase const& other ) const;
@@ -2828,16 +2841,16 @@ namespace Catch {
         std::string m_arg;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
-        ITagAliasRegistry const& m_tagAliases;
+        ITagAliasRegistry const* m_tagAliases;
 
     public:
-        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( tagAliases ) {}
+        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( &tagAliases ) {}
 
         TestSpecParser& parse( std::string const& arg ) {
             m_mode = None;
             m_exclusion = false;
             m_start = std::string::npos;
-            m_arg = m_tagAliases.expandAliases( arg );
+            m_arg = m_tagAliases->expandAliases( arg );
             for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
                 visitChar( m_arg[m_pos] );
             if( m_mode == Name )
@@ -4316,8 +4329,10 @@ namespace Catch {
 
             // By intention
             FileName = LightGrey,
+            Warning = Yellow,
             ResultError = BrightRed,
             ResultSuccess = BrightGreen,
+            ResultExpectedFailure = Warning,
 
             Error = BrightRed,
             Success = Green,
@@ -4340,6 +4355,8 @@ namespace Catch {
         Colour( Colour const& other );
         static Detail::IColourImpl* impl();
     };
+
+    inline std::ostream& operator << ( std::ostream& os, Colour const& ) { return os; }
 
 } // end namespace Catch
 
@@ -4615,7 +4632,7 @@ namespace Catch {
                 ++it ) {
             matchedTests++;
             TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-            Colour::Code colour = testCaseInfo.isHidden
+            Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
             Colour colourGuard( colour );
@@ -5127,6 +5144,12 @@ namespace Catch {
 
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
+
+            if( testCaseInfo.okToFail() ) {
+                std::swap( assertions.failedButOk, assertions.failed );
+                m_totals.assertions.failed -= assertions.failedButOk;
+                m_totals.assertions.failedButOk += assertions.failedButOk;
+            }
 
             SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
@@ -6203,14 +6226,22 @@ namespace Catch {
 
 namespace Catch {
 
-    inline bool isSpecialTag( std::string const& tag ) {
-        return  tag == "." ||
-                tag == "hide" ||
-                tag == "!hide" ||
-                tag == "!throws";
+    inline TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
+        if( tag == "." ||
+            tag == "hide" ||
+            tag == "!hide" )
+            return TestCaseInfo::IsHidden;
+        else if( tag == "!throws" )
+            return TestCaseInfo::Throws;
+        else if( tag == "!shouldfail" )
+            return TestCaseInfo::ShouldFail;
+        else if( tag == "!mayfail" )
+            return TestCaseInfo::MayFail;
+        else
+            return TestCaseInfo::None;
     }
     inline bool isReservedTag( std::string const& tag ) {
-        return !isSpecialTag( tag ) && tag.size() > 0 && !isalnum( tag[0] );
+        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
         if( isReservedTag( tag ) ) {
@@ -6268,7 +6299,7 @@ namespace Catch {
             tags.insert( "." );
         }
 
-        TestCaseInfo info( _name, _className, desc, tags, isHidden, _lineInfo );
+        TestCaseInfo info( _name, _className, desc, tags, _lineInfo );
         return TestCase( _testCase, info );
     }
 
@@ -6276,22 +6307,20 @@ namespace Catch {
                                 std::string const& _className,
                                 std::string const& _description,
                                 std::set<std::string> const& _tags,
-                                bool _isHidden,
                                 SourceLineInfo const& _lineInfo )
     :   name( _name ),
         className( _className ),
         description( _description ),
         tags( _tags ),
         lineInfo( _lineInfo ),
-        isHidden( _isHidden ),
-        throws( false )
+        properties( None )
     {
         std::ostringstream oss;
         for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it ) {
             oss << "[" << *it << "]";
-            if( *it == "!throws" )
-                throws = true;
-            lcaseTags.insert( toLower( *it ) );
+            std::string lcaseTag = toLower( *it );
+            properties = (SpecialProperties)( properties | parseSpecialTag( lcaseTag ) );
+            lcaseTags.insert( lcaseTag );
         }
         tagsAsString = oss.str();
     }
@@ -6304,9 +6333,21 @@ namespace Catch {
         lcaseTags( other.lcaseTags ),
         tagsAsString( other.tagsAsString ),
         lineInfo( other.lineInfo ),
-        isHidden( other.isHidden ),
-        throws( other.throws )
+        properties( other.properties )
     {}
+
+    bool TestCaseInfo::isHidden() const {
+        return ( properties & IsHidden ) != 0;
+    }
+    bool TestCaseInfo::throws() const {
+        return ( properties & Throws ) != 0;
+    }
+    bool TestCaseInfo::okToFail() const {
+        return ( properties & (ShouldFail | MayFail ) ) != 0;
+    }
+    bool TestCaseInfo::expectedToFail() const {
+        return ( properties & (ShouldFail ) ) != 0;
+    }
 
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
 
@@ -6329,20 +6370,12 @@ namespace Catch {
         tags.swap( other.tags );
         lcaseTags.swap( other.lcaseTags );
         tagsAsString.swap( other.tagsAsString );
-        std::swap( TestCaseInfo::isHidden, static_cast<TestCaseInfo&>( other ).isHidden );
-        std::swap( TestCaseInfo::throws, static_cast<TestCaseInfo&>( other ).throws );
+        std::swap( TestCaseInfo::properties, static_cast<TestCaseInfo&>( other ).properties );
         std::swap( lineInfo, other.lineInfo );
     }
 
     void TestCase::invoke() const {
         test->invoke();
-    }
-
-    bool TestCase::isHidden() const {
-        return TestCaseInfo::isHidden;
-    }
-    bool TestCase::throws() const {
-        return TestCaseInfo::throws;
     }
 
     bool TestCase::operator == ( TestCase const& other ) const {
@@ -6373,7 +6406,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 49, "master" );
+    Version libraryVersion( 1, 0, 50, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -7633,7 +7666,8 @@ namespace Catch {
         virtual void EndTesting( const Totals& totals ) {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", totals.assertions.passed )
-                .writeAttribute( "failures", totals.assertions.failed );
+                .writeAttribute( "failures", totals.assertions.failed )
+                .writeAttribute( "expectedFailures", totals.assertions.failedButOk );
             m_xml.endElement();
         }
 
@@ -7645,7 +7679,8 @@ namespace Catch {
         virtual void EndGroup( const std::string&, const Totals& totals ) {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", totals.assertions.passed )
-                .writeAttribute( "failures", totals.assertions.failed );
+                .writeAttribute( "failures", totals.assertions.failed )
+                .writeAttribute( "expectedFailures", totals.assertions.failedButOk );
             m_xml.endElement();
         }
 
@@ -7663,7 +7698,8 @@ namespace Catch {
             if( --m_sectionDepth > 0 ) {
                 m_xml.scopedElement( "OverallResults" )
                     .writeAttribute( "successes", assertions.passed )
-                    .writeAttribute( "failures", assertions.failed );
+                    .writeAttribute( "failures", assertions.failed )
+                    .writeAttribute( "expectedFailures", assertions.failedButOk );
                 m_xml.endElement();
             }
         }
@@ -8044,10 +8080,12 @@ namespace Catch {
             StreamingReporterBase::testGroupEnded( _testGroupStats );
         }
         virtual void testRunEnded( TestRunStats const& _testRunStats ) {
-            if( m_atLeastOneTestCasePrinted )
-                printTotalsDivider();
+            printTotalsDivider( _testRunStats.totals );
             printTotals( _testRunStats.totals );
-            stream << "\n" << std::endl;
+            if( m_atLeastOneTestCasePrinted ||
+                ( _testRunStats.totals.assertions.total() == 0 && _testRunStats.totals.testCases.total() > 0 ) )
+                printTotalsDivider( _testRunStats.totals );
+            stream << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
 
@@ -8269,60 +8307,78 @@ namespace Catch {
                                         .setInitialIndent( indent ) ) << "\n";
         }
 
-        void printTotals( const Totals& totals ) {
+        void printTotals( Totals const& totals ) {
+            int cols = 1+(int)log10( (float)std::max( totals.testCases.total(), totals.assertions.total() ) );
             if( totals.testCases.total() == 0 ) {
-                stream << "No tests ran";
+                stream << Colour( Colour::Warning ) << "No tests ran\n";
             }
             else if( totals.assertions.total() == 0 ) {
-                Colour colour( Colour::Yellow );
-                printCounts( "test case", totals.testCases );
-                stream << " (no assertions)";
+                printCounts( "test case", totals.testCases, cols );
+                stream << "assertions: ";
+                stream << Colour( Colour::Warning ) << "- none -\n";
             }
-            else if( totals.assertions.failed ) {
-                Colour colour( Colour::ResultError );
-                printCounts( "test case", totals.testCases );
-                if( totals.testCases.failed > 0 ) {
-                    stream << " (";
-                    printCounts( "assertion", totals.assertions );
-                    stream << ")";
-                }
+            else if( totals.assertions.failed + totals.assertions.failedButOk ) {
+                printCounts( "test case", totals.testCases, cols );
+                printCounts( "assertion", totals.assertions, cols );
             }
             else {
-                Colour colour( Colour::ResultSuccess );
-                stream << "All tests passed ("
+                stream << Colour( Colour::ResultSuccess ) << "All tests passed";
+                stream << " ("
                         << pluralise( totals.assertions.passed, "assertion" ) << " in "
-                        << pluralise( totals.testCases.passed, "test case" ) << ")";
+                        << pluralise( totals.testCases.passed, "test case" ) << ")"
+                        << "\n";
             }
         }
-        void printCounts( std::string const& label, Counts const& counts ) {
-            if( counts.total() == 1 ) {
-                stream << "1 " << label << " - ";
-                if( counts.failed )
-                    stream << "failed";
-                else
-                    stream << "passed";
+        void printCounts( std::string const& label, Counts const& counts, int cols ) {
+            stream << label << "s: ";
+
+            stream  << Colour( counts.passed > 0 ? Colour::ResultSuccess : Colour::LightGrey )
+                    << std::setw( cols ) << counts.passed << " passed";
+
+            stream << Colour( Colour::LightGrey ) << " | ";
+
+            stream  << Colour( counts.failed > 0 ? Colour::ResultError : Colour::LightGrey )
+                    << std::setw( cols ) << counts.failed << " failed";
+            if( counts.failedButOk > 0 ) {
+                stream  << Colour( Colour::LightGrey ) << " | ";
+                stream  << Colour( counts.failedButOk > 0 ? Colour::ResultExpectedFailure : Colour::LightGrey )
+                        << std::setw( cols ) << counts.failedButOk << " failed as expected";
             }
-            else {
-                stream << counts.total() << " " << label << "s ";
-                if( counts.passed ) {
-                    if( counts.failed )
-                        stream << "- " << counts.failed << " failed";
-                    else if( counts.passed == 2 )
-                        stream << "- both passed";
-                    else
-                        stream << "- all passed";
-                }
-                else {
-                    if( counts.failed == 2 )
-                        stream << "- both failed";
-                    else
-                        stream << "- all failed";
-                }
-            }
+            stream << Colour( Colour::LightGrey ) << " | ";
+            stream << "total: " << counts.total() << "\n";
         }
 
-        void printTotalsDivider() {
-            stream << getLineOfChars<'='>() << "\n";
+        static std::size_t makeRatio( std::size_t number, std::size_t total ) {
+            std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number/ total : 0;
+            return ( ratio == 0 && number > 0 ) ? 1 : ratio;
+        }
+        static std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
+            if( i > j && i > k )
+                return i;
+            else if( j > k )
+                return j;
+            else
+                return k;
+        }
+
+        void printTotalsDivider( Totals const& totals ) {
+            if( totals.testCases.total() > 0 ) {
+                std::size_t failedRatio = makeRatio( totals.testCases.failed, totals.testCases.total() );
+                std::size_t failedButOkRatio = makeRatio( totals.testCases.failedButOk, totals.testCases.total() );
+                std::size_t passedRatio = makeRatio( totals.testCases.passed, totals.testCases.total() );
+                while( failedRatio + failedButOkRatio + passedRatio < CATCH_CONFIG_CONSOLE_WIDTH-1 )
+                    findMax( failedRatio, failedButOkRatio, passedRatio )++;
+                while( failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH-1 )
+                    findMax( failedRatio, failedButOkRatio, passedRatio )--;
+
+                stream << Colour( Colour::ResultSuccess ) << std::string( passedRatio, '=' );
+                stream << Colour( Colour::Error ) << std::string( failedRatio, '=' );
+                stream << Colour( Colour::ResultExpectedFailure ) << std::string( failedButOkRatio, '=' );
+            }
+            else {
+                stream << Colour( Colour::Warning ) << std::string( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
+            }
+            stream << "\n";
         }
         void printSummaryDivider() {
             stream << getLineOfChars<'-'>() << "\n";

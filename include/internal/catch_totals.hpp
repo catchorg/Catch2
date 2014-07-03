@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 
 #include <cstddef>
-#include <assert.h> // !TBD
 
 namespace Catch {
 
