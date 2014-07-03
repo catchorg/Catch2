@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 50 (master branch)
- *  Generated: 2014-07-03 08:10:59.438355
+ *  Generated: 2014-07-03 19:07:54.492176
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -7999,8 +7999,7 @@ namespace Catch {
     struct ConsoleReporter : StreamingReporterBase {
         ConsoleReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
-            m_headerPrinted( false ),
-            m_atLeastOneTestCasePrinted( false )
+            m_headerPrinted( false )
         {}
 
         virtual ~ConsoleReporter();
@@ -8082,9 +8081,6 @@ namespace Catch {
         virtual void testRunEnded( TestRunStats const& _testRunStats ) {
             printTotalsDivider( _testRunStats.totals );
             printTotals( _testRunStats.totals );
-            if( m_atLeastOneTestCasePrinted ||
-                ( _testRunStats.totals.assertions.total() == 0 && _testRunStats.totals.testCases.total() > 0 ) )
-                printTotalsDivider( _testRunStats.totals );
             stream << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
@@ -8236,7 +8232,6 @@ namespace Catch {
                 printTestCaseAndSectionHeader();
                 m_headerPrinted = true;
             }
-            m_atLeastOneTestCasePrinted = true;
         }
         void lazyPrintRunInfo() {
             stream  << "\n" << getLineOfChars<'~'>() << "\n";
@@ -8313,13 +8308,16 @@ namespace Catch {
                 stream << Colour( Colour::Warning ) << "No tests ran\n";
             }
             else if( totals.assertions.total() == 0 ) {
-                printCounts( "test case", totals.testCases, cols );
+                stream << "test cases: ";
+                printCounts( totals.testCases, cols );
                 stream << "assertions: ";
                 stream << Colour( Colour::Warning ) << "- none -\n";
             }
             else if( totals.assertions.failed + totals.assertions.failedButOk ) {
-                printCounts( "test case", totals.testCases, cols );
-                printCounts( "assertion", totals.assertions, cols );
+                stream << "test cases: ";
+                printCounts( totals.testCases, cols );
+                stream << "assertions: ";
+                printCounts( totals.assertions, cols );
             }
             else {
                 stream << Colour( Colour::ResultSuccess ) << "All tests passed";
@@ -8329,10 +8327,8 @@ namespace Catch {
                         << "\n";
             }
         }
-        void printCounts( std::string const& label, Counts const& counts, int cols ) {
-            stream << label << "s: ";
-
-            stream  << Colour( counts.passed > 0 ? Colour::ResultSuccess : Colour::LightGrey )
+        void printCounts( Counts const& counts, int cols ) {
+            stream  << Colour( counts.passed > 0 ? Colour::Success : Colour::LightGrey )
                     << std::setw( cols ) << counts.passed << " passed";
 
             stream << Colour( Colour::LightGrey ) << " | ";
@@ -8344,8 +8340,8 @@ namespace Catch {
                 stream  << Colour( counts.failedButOk > 0 ? Colour::ResultExpectedFailure : Colour::LightGrey )
                         << std::setw( cols ) << counts.failedButOk << " failed as expected";
             }
-            stream << Colour( Colour::LightGrey ) << " | ";
-            stream << "total: " << counts.total() << "\n";
+            stream  << Colour( Colour::LightGrey ) << " | "
+                    << "total: " << counts.total() << "\n";
         }
 
         static std::size_t makeRatio( std::size_t number, std::size_t total ) {
@@ -8395,7 +8391,6 @@ namespace Catch {
 
     private:
         bool m_headerPrinted;
-        bool m_atLeastOneTestCasePrinted;
     };
 
     INTERNAL_CATCH_REGISTER_REPORTER( "console", ConsoleReporter )
