@@ -37,8 +37,10 @@ namespace Catch {
 
             // By intention
             FileName = LightGrey,
+            Warning = Yellow,
             ResultError = BrightRed,
             ResultSuccess = BrightGreen,
+            ResultExpectedFailure = Warning,
 
             Error = BrightRed,
             Success = Green,
@@ -61,6 +63,8 @@ namespace Catch {
         Colour( Colour const& other );
         static Detail::IColourImpl* impl();
     };
+
+    inline std::ostream& operator << ( std::ostream& os, Colour const& ) { return os; }
 
 } // end namespace Catch
 

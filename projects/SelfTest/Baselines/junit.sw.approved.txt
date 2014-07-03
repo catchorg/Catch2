@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite errors="12" failures="100" tests="723" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite errors="12" failures="87" tests="723" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>

@@ -262,6 +262,12 @@ namespace Catch {
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
+            if( testCaseInfo.okToFail() ) {
+                std::swap( assertions.failedButOk, assertions.failed );
+                m_totals.assertions.failed -= assertions.failedButOk;
+                m_totals.assertions.failedButOk += assertions.failedButOk;
+            }
+
             SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
         }

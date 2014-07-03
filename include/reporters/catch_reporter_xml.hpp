@@ -40,7 +40,8 @@ namespace Catch {
         virtual void EndTesting( const Totals& totals ) {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", totals.assertions.passed )
-                .writeAttribute( "failures", totals.assertions.failed );
+                .writeAttribute( "failures", totals.assertions.failed )
+                .writeAttribute( "expectedFailures", totals.assertions.failedButOk );
             m_xml.endElement();
         }
 
@@ -52,7 +53,8 @@ namespace Catch {
         virtual void EndGroup( const std::string&, const Totals& totals ) {
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", totals.assertions.passed )
-                .writeAttribute( "failures", totals.assertions.failed );
+                .writeAttribute( "failures", totals.assertions.failed )
+                .writeAttribute( "expectedFailures", totals.assertions.failedButOk );
             m_xml.endElement();
         }
 
@@ -70,7 +72,8 @@ namespace Catch {
             if( --m_sectionDepth > 0 ) {
                 m_xml.scopedElement( "OverallResults" )
                     .writeAttribute( "successes", assertions.passed )
-                    .writeAttribute( "failures", assertions.failed );
+                    .writeAttribute( "failures", assertions.failed )
+                    .writeAttribute( "expectedFailures", assertions.failedButOk );
                 m_xml.endElement();
             }
         }

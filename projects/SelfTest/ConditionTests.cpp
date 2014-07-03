@@ -62,7 +62,7 @@ TEST_CASE( "Equality checks that should succeed", "" )
     REQUIRE( x == Approx( 1.3 ) );
 }
 
-TEST_CASE( "Equality checks that should fail", "[.][failing]" )
+TEST_CASE( "Equality checks that should fail", "[.][failing][!mayfail]" )
 {
     TestData data;
     

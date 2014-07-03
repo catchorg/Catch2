@@ -1408,7 +1408,7 @@
         <Exception filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/ExceptionTests.cpp" >
           unexpected exception
         </Exception>
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
@@ -2770,22 +2770,22 @@
         <Failure>
           Message from section one
         </Failure>
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <Section name="two">
         <Failure>
           Message from section two
         </Failure>
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Standard output from all sections is reported">
       <Section name="one">
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <Section name="two">
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -2950,7 +2950,7 @@
             2 != 1
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="s2" description="not equal">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
@@ -2961,7 +2961,7 @@
             1 != 2
           </Expanded>
         </Expression>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -2992,9 +2992,9 @@
               1 != 2
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -3009,27 +3009,27 @@
               1 == 2
             </Expanded>
           </Expression>
-          <OverallResults successes="0" failures="1"/>
+          <OverallResults successes="0" failures="1" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="even more nested SECTION tests">
       <Section name="c">
         <Section name="d (leaf)">
-          <OverallResults successes="0" failures="1"/>
+          <OverallResults successes="0" failures="1" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <Section name="c">
         <Section name="e (leaf)">
-          <OverallResults successes="0" failures="1"/>
+          <OverallResults successes="0" failures="1" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <Section name="f (leaf)">
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -3043,7 +3043,7 @@
             0 > 1
           </Expanded>
         </Expression>
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
@@ -3232,10 +3232,10 @@
     </TestCase>
     <TestCase name="xmlentitycheck">
       <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>">
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;">
-        <OverallResults successes="0" failures="1"/>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -3487,7 +3487,7 @@
             10 >= 10
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
@@ -3531,9 +3531,9 @@
               0 == 0
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
@@ -3568,7 +3568,7 @@
             10 >= 10
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/MiscTests.cpp" >
         <Original>
@@ -3603,16 +3603,16 @@
             5 >= 5
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="A couple of nested sections followed by a failure">
       <Section name="Outer">
         <Section name="Inner">
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Failure>
         to infinity and beyond
@@ -3682,7 +3682,7 @@
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists">
         <Section name="1 test" description="Specify one test case using">
@@ -3710,9 +3710,9 @@
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists">
         <Section name="Specify one test case exclusion using exclude:">
@@ -3740,9 +3740,9 @@
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists">
         <Section name="Specify one test case exclusion using ~">
@@ -3770,9 +3770,9 @@
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="reporter">
         <Section name="-r/console">
@@ -3792,9 +3792,9 @@
               &quot;console&quot; == &quot;console&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="reporter">
         <Section name="-r/xml">
@@ -3814,9 +3814,9 @@
               &quot;xml&quot; == &quot;xml&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="reporter">
         <Section name="--reporter/junit">
@@ -3836,9 +3836,9 @@
               &quot;junit&quot; == &quot;junit&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="debugger">
         <Section name="-b">
@@ -3858,9 +3858,9 @@
               true == true
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="debugger">
         <Section name="--break">
@@ -3880,9 +3880,9 @@
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="abort">
         <Section name="-a aborts after first failure">
@@ -3902,9 +3902,9 @@
               1 == 1
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="abort">
         <Section name="-x 2 aborts after two failures">
@@ -3924,9 +3924,9 @@
               2 == 2
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="abort">
         <Section name="-x must be greater than zero">
@@ -3939,9 +3939,9 @@
 - while parsing: (-x, --abortx &lt;no. failures>)&quot; contains: &quot;greater than zero&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="abort">
         <Section name="-x must be numeric">
@@ -3954,9 +3954,9 @@
 - while parsing: (-x, --abortx &lt;no. failures>)&quot; contains: &quot;-x&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="nothrow">
         <Section name="-e">
@@ -3976,9 +3976,9 @@
               true == true
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="nothrow">
         <Section name="--nothrow">
@@ -3998,9 +3998,9 @@
               true == true
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="output filename">
         <Section name="-o filename">
@@ -4020,9 +4020,9 @@
               &quot;filename.ext&quot; == &quot;filename.ext&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="output filename">
         <Section name="--out">
@@ -4042,9 +4042,9 @@
               &quot;filename.ext&quot; == &quot;filename.ext&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="combinations">
         <Section name="Single character flags can be combined">
@@ -4080,9 +4080,9 @@
               true == true
             </Expanded>
           </Expression>
-          <OverallResults successes="4" failures="0"/>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -4109,9 +4109,9 @@
 &quot;one two three four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="plain string">
         <Section name="Wrapped once">
@@ -4175,9 +4175,9 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="5" failures="0"/>
+          <OverallResults successes="5" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="plain string">
         <Section name="Wrapped twice">
@@ -4223,9 +4223,9 @@ three
 four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="plain string">
         <Section name="Wrapped three times">
@@ -4261,9 +4261,9 @@ three
 four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="plain string">
         <Section name="Short wrap">
@@ -4343,9 +4343,9 @@ fo-
 ur&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="5" failures="0"/>
+          <OverallResults successes="5" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="plain string">
         <Section name="As container">
@@ -4389,9 +4389,9 @@ ur&quot;
               &quot;four&quot; == &quot;four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="5" failures="0"/>
+          <OverallResults successes="5" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="plain string">
         <Section name="Indent first line differently">
@@ -4409,9 +4409,9 @@ ur&quot;
     four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="No wrapping">
@@ -4451,9 +4451,9 @@ three four&quot;
 three four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="Trailing newline">
@@ -4489,9 +4489,9 @@ three four&quot;
 &quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped once">
@@ -4537,9 +4537,9 @@ three
 four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0"/>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped twice">
@@ -4559,9 +4559,9 @@ three
 four&quot;
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="With tabs">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TestMain.cpp" >
@@ -4580,7 +4580,7 @@ four&quot;
         six&quot;
           </Expanded>
         </Expression>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -5755,7 +5755,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="compare to false">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
@@ -5774,7 +5774,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="negation">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
@@ -5785,7 +5785,7 @@ there&quot;
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="double negation">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
@@ -5796,7 +5796,7 @@ there&quot;
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="direct">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
@@ -5815,7 +5815,7 @@ there&quot;
             !false
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -5873,9 +5873,9 @@ there&quot;
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TrickyTests.cpp" >
         <Original>
@@ -5903,9 +5903,9 @@ there&quot;
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -6012,7 +6012,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Test spec from empty string should have no filters">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6039,7 +6039,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Test spec from just a comma should have no filters">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6066,7 +6066,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Test spec from name should have one filter">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6093,7 +6093,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Test spec from quoted name should have one filter">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6120,7 +6120,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Test spec from name should have one filter">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6155,7 +6155,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Wildcard at the start">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6206,7 +6206,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0"/>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Wildcard at the end">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6257,7 +6257,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0"/>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Wildcard at both ends">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6308,7 +6308,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0"/>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Redundant wildcard at the start">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6335,7 +6335,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Redundant wildcard at the end">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6362,7 +6362,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Redundant wildcard at both ends">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6389,7 +6389,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Wildcard at both ends, redundant at start">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6432,7 +6432,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Just wildcard">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6475,7 +6475,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Single tag">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6510,7 +6510,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Single tag, two matches">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6545,7 +6545,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Two tags">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6580,7 +6580,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Two tags, spare separated">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6615,7 +6615,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Wildcarded name and tag">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6658,7 +6658,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Single tag exclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6693,7 +6693,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="One tag exclusion and one tag inclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6728,7 +6728,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="One tag exclusion and one wldcarded name inclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6771,7 +6771,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="One tag exclusion, using exclude:, and one wldcarded name inclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6814,7 +6814,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="name exclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6857,7 +6857,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="wildcarded name exclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6900,7 +6900,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="wildcarded name exclusion with tag inclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6943,7 +6943,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="wildcarded name exclusion, using exclude:, with tag inclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -6986,7 +6986,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="two wildcarded names">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -7029,7 +7029,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="empty tag">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -7072,7 +7072,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="empty quoted name">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -7115,7 +7115,7 @@ there&quot;
             false == false
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="quoted string followed by tag exclusion">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/CmdLineTests.cpp" >
@@ -7158,7 +7158,7 @@ there&quot;
             true == true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -7204,7 +7204,7 @@ there&quot;
 	Redefined at file:10&quot; contains: &quot;10&quot;
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Tag aliases must be of the form [@name]">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/TagAliasTests.cpp" >
@@ -7239,7 +7239,7 @@ there&quot;
             registry.add( &quot;[@no square bracket at end&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -7251,7 +7251,7 @@ there&quot;
     </TestCase>
     <TestCase name="Variadic macros">
       <Section name="Section with one argument">
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -7276,13 +7276,13 @@ there&quot;
                   true
                 </Expanded>
               </Expression>
-              <OverallResults successes="1" failures="0"/>
+              <OverallResults successes="1" failures="0" expectedFailures="0"/>
             </Section>
-            <OverallResults successes="2" failures="0"/>
+            <OverallResults successes="2" failures="0" expectedFailures="0"/>
           </Section>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -7332,15 +7332,15 @@ there&quot;
                     10 >= 10
                   </Expanded>
                 </Expression>
-                <OverallResults successes="2" failures="0"/>
+                <OverallResults successes="2" failures="0" expectedFailures="0"/>
               </Section>
-              <OverallResults successes="2" failures="0"/>
+              <OverallResults successes="2" failures="0" expectedFailures="0"/>
             </Section>
-            <OverallResults successes="4" failures="0"/>
+            <OverallResults successes="4" failures="0" expectedFailures="0"/>
           </Section>
-          <OverallResults successes="4" failures="0"/>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="5" failures="0"/>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Given: an empty vector">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/BDDTests.cpp" >
@@ -7369,11 +7369,11 @@ there&quot;
                 0 == 0
               </Expanded>
             </Expression>
-            <OverallResults successes="2" failures="0"/>
+            <OverallResults successes="2" failures="0" expectedFailures="0"/>
           </Section>
-          <OverallResults successes="2" failures="0"/>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -7381,11 +7381,11 @@ there&quot;
       <Section name="Given: A section name that is so long that it cannot fit in a single console width">
         <Section name="When: The test headers are printed as part of the normal running of the scenario">
           <Section name="Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent">
-            <OverallResults successes="1" failures="0"/>
+            <OverallResults successes="1" failures="0" expectedFailures="0"/>
           </Section>
-          <OverallResults successes="1" failures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -7415,7 +7415,7 @@ there&quot;
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
         <Original>
@@ -7458,7 +7458,7 @@ there&quot;
             !false
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
         <Original>
@@ -7517,7 +7517,7 @@ there&quot;
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0"/>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch/projects/SelfTest/SectionTrackerTests.cpp" >
         <Original>
@@ -7560,11 +7560,11 @@ there&quot;
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="611" failures="112"/>
+    <OverallResults successes="611" failures="99" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="611" failures="112"/>
+  <OverallResults successes="611" failures="99" expectedFailures="13"/>
 </Catch>

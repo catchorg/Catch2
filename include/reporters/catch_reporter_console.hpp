@@ -101,10 +101,12 @@ namespace Catch {
             StreamingReporterBase::testGroupEnded( _testGroupStats );
         }
         virtual void testRunEnded( TestRunStats const& _testRunStats ) {
-            if( m_atLeastOneTestCasePrinted )
-                printTotalsDivider();
+            printTotalsDivider( _testRunStats.totals );
             printTotals( _testRunStats.totals );
-            stream << "\n" << std::endl;
+            if( m_atLeastOneTestCasePrinted ||
+                ( _testRunStats.totals.assertions.total() == 0 && _testRunStats.totals.testCases.total() > 0 ) )
+                printTotalsDivider( _testRunStats.totals );
+            stream << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
 
@@ -326,60 +328,78 @@ namespace Catch {
                                         .setInitialIndent( indent ) ) << "\n";
         }
 
-        void printTotals( const Totals& totals ) {
+        void printTotals( Totals const& totals ) {
+            int cols = 1+(int)log10( (float)std::max( totals.testCases.total(), totals.assertions.total() ) );
             if( totals.testCases.total() == 0 ) {
-                stream << "No tests ran";
+                stream << Colour( Colour::Warning ) << "No tests ran\n";
             }
             else if( totals.assertions.total() == 0 ) {
-                Colour colour( Colour::Yellow );
-                printCounts( "test case", totals.testCases );
-                stream << " (no assertions)";
+                printCounts( "test case", totals.testCases, cols );
+                stream << "assertions: ";
+                stream << Colour( Colour::Warning ) << "- none -\n";
             }
-            else if( totals.assertions.failed ) {
-                Colour colour( Colour::ResultError );
-                printCounts( "test case", totals.testCases );
-                if( totals.testCases.failed > 0 ) {
-                    stream << " (";
-                    printCounts( "assertion", totals.assertions );
-                    stream << ")";
-                }
+            else if( totals.assertions.failed + totals.assertions.failedButOk ) {
+                printCounts( "test case", totals.testCases, cols );
+                printCounts( "assertion", totals.assertions, cols );
             }
             else {
-                Colour colour( Colour::ResultSuccess );
-                stream << "All tests passed ("
+                stream << Colour( Colour::ResultSuccess ) << "All tests passed";
+                stream << " ("
                         << pluralise( totals.assertions.passed, "assertion" ) << " in "
-                        << pluralise( totals.testCases.passed, "test case" ) << ")";
+                        << pluralise( totals.testCases.passed, "test case" ) << ")"
+                        << "\n";
             }
         }
-        void printCounts( std::string const& label, Counts const& counts ) {
-            if( counts.total() == 1 ) {
-                stream << "1 " << label << " - ";
-                if( counts.failed )
-                    stream << "failed";
-                else
-                    stream << "passed";
+        void printCounts( std::string const& label, Counts const& counts, int cols ) {
+            stream << label << "s: ";
+
+            stream  << Colour( counts.passed > 0 ? Colour::ResultSuccess : Colour::LightGrey )
+                    << std::setw( cols ) << counts.passed << " passed";
+
+            stream << Colour( Colour::LightGrey ) << " | ";
+
+            stream  << Colour( counts.failed > 0 ? Colour::ResultError : Colour::LightGrey )
+                    << std::setw( cols ) << counts.failed << " failed";
+            if( counts.failedButOk > 0 ) {
+                stream  << Colour( Colour::LightGrey ) << " | ";
+                stream  << Colour( counts.failedButOk > 0 ? Colour::ResultExpectedFailure : Colour::LightGrey )
+                        << std::setw( cols ) << counts.failedButOk << " failed as expected";
             }
-            else {
-                stream << counts.total() << " " << label << "s ";
-                if( counts.passed ) {
-                    if( counts.failed )
-                        stream << "- " << counts.failed << " failed";
-                    else if( counts.passed == 2 )
-                        stream << "- both passed";
-                    else
-                        stream << "- all passed";
-                }
-                else {
-                    if( counts.failed == 2 )
-                        stream << "- both failed";
-                    else
-                        stream << "- all failed";
-                }
-            }
+            stream << Colour( Colour::LightGrey ) << " | ";
+            stream << "total: " << counts.total() << "\n";
         }
 
-        void printTotalsDivider() {
-            stream << getLineOfChars<'='>() << "\n";
+        static std::size_t makeRatio( std::size_t number, std::size_t total ) {
+            std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number/ total : 0;
+            return ( ratio == 0 && number > 0 ) ? 1 : ratio;
+        }
+        static std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
+            if( i > j && i > k )
+                return i;
+            else if( j > k )
+                return j;
+            else
+                return k;
+        }
+
+        void printTotalsDivider( Totals const& totals ) {
+            if( totals.testCases.total() > 0 ) {
+                std::size_t failedRatio = makeRatio( totals.testCases.failed, totals.testCases.total() );
+                std::size_t failedButOkRatio = makeRatio( totals.testCases.failedButOk, totals.testCases.total() );
+                std::size_t passedRatio = makeRatio( totals.testCases.passed, totals.testCases.total() );
+                while( failedRatio + failedButOkRatio + passedRatio < CATCH_CONFIG_CONSOLE_WIDTH-1 )
+                    findMax( failedRatio, failedButOkRatio, passedRatio )++;
+                while( failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH-1 )
+                    findMax( failedRatio, failedButOkRatio, passedRatio )--;
+
+                stream << Colour( Colour::ResultSuccess ) << std::string( passedRatio, '=' );
+                stream << Colour( Colour::Error ) << std::string( failedRatio, '=' );
+                stream << Colour( Colour::ResultExpectedFailure ) << std::string( failedButOkRatio, '=' );
+            }
+            else {
+                stream << Colour( Colour::Warning ) << std::string( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
+            }
+            stream << "\n";
         }
         void printSummaryDivider() {
             stream << getLineOfChars<'-'>() << "\n";

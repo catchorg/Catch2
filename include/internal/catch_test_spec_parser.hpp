@@ -26,16 +26,16 @@ namespace Catch {
         std::string m_arg;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
-        ITagAliasRegistry const& m_tagAliases;
+        ITagAliasRegistry const* m_tagAliases;
 
     public:
-        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( tagAliases ) {}
+        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( &tagAliases ) {}
 
         TestSpecParser& parse( std::string const& arg ) {
             m_mode = None;
             m_exclusion = false;
             m_start = std::string::npos;
-            m_arg = m_tagAliases.expandAliases( arg );
+            m_arg = m_tagAliases->expandAliases( arg );
             for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
                 visitChar( m_arg[m_pos] );
             if( m_mode == Name )

@@ -7297,5 +7297,7 @@ with expansion:
   true
 
 ===============================================================================
-125 test cases - 55 failed (723 assertions - 112 failed)
+test cases:  70 passed |  54 failed |   1 failed as expected | total: 125
+assertions: 611 passed |  99 failed |  13 failed as expected | total: 723
+===============================================================================
 

@@ -9,30 +9,34 @@
 #define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 
 #include <cstddef>
+#include <assert.h> // !TBD
 
 namespace Catch {
 
     struct Counts {
-        Counts() : passed( 0 ), failed( 0 ) {}
+        Counts() : passed( 0 ), failed( 0 ), failedButOk( 0 ) {}
 
         Counts operator - ( Counts const& other ) const {
             Counts diff;
             diff.passed = passed - other.passed;
             diff.failed = failed - other.failed;
+            diff.failedButOk = failedButOk - other.failedButOk;
             return diff;
         }
         Counts& operator += ( Counts const& other ) {
             passed += other.passed;
             failed += other.failed;
+            failedButOk += other.failedButOk;
             return *this;
         }
 
         std::size_t total() const {
-            return passed + failed;
+            return passed + failed + failedButOk;
         }
 
         std::size_t passed;
         std::size_t failed;
+        std::size_t failedButOk;
     };
 
     struct Totals {
@@ -48,6 +52,8 @@ namespace Catch {
             Totals diff = *this - prevTotals;
             if( diff.assertions.failed > 0 )
                 ++diff.testCases.failed;
+            else if( diff.assertions.failedButOk > 0 )
+                ++diff.testCases.failedButOk;
             else
                 ++diff.testCases.passed;
             return diff;
