@@ -158,6 +158,7 @@ std::string toString( int value );
 std::string toString( unsigned long value );
 std::string toString( unsigned int value );
 std::string toString( const double value );
+std::string toString( const float value );
 std::string toString( bool value );
 std::string toString( char value );
 std::string toString( signed char value );

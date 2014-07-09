@@ -73,13 +73,13 @@ ApproxTests.cpp:<line number>:
 PASSED:
   REQUIRE( 1.23f == Approx( 1.23f ) )
 with expansion:
-  1.23 == Approx( 1.2300000191 )
+  1.23f == Approx( 1.2300000191 )
 
 ApproxTests.cpp:<line number>:
 PASSED:
   REQUIRE( 0.0f == Approx( 0.0f ) )
 with expansion:
-  0 == Approx( 0.0 )
+  0.0f == Approx( 0.0 )
 
 -------------------------------------------------------------------------------
 Approximate comparisons with ints
@@ -109,7 +109,7 @@ ApproxTests.cpp:<line number>:
 PASSED:
   REQUIRE( 1.0f == Approx( 1 ) )
 with expansion:
-  1 == Approx( 1.0 )
+  1.0f == Approx( 1.0 )
 
 ApproxTests.cpp:<line number>:
 PASSED:
@@ -127,7 +127,7 @@ ApproxTests.cpp:<line number>:
 PASSED:
   REQUIRE( 1.234f == Approx( dMedium ) )
 with expansion:
-  1.234 == Approx( 1.234 )
+  1.234f == Approx( 1.234 )
 
 ApproxTests.cpp:<line number>:
 PASSED:
@@ -269,7 +269,7 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one == Approx( 9.1f ) )
 with expansion:
-  9.1 == Approx( 9.1000003815 )
+  9.1f == Approx( 9.1000003815 )
 
 ConditionTests.cpp:<line number>:
 PASSED:
@@ -325,22 +325,22 @@ with expansion:
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.11f ) )
 with expansion:
-  9.1 == Approx( 9.1099996567 )
+  9.1f == Approx( 9.1099996567 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.0f ) )
 with expansion:
-  9.1 == Approx( 9.0 )
+  9.1f == Approx( 9.0 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 1 ) )
 with expansion:
-  9.1 == Approx( 1.0 )
+  9.1f == Approx( 1.0 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 0 ) )
 with expansion:
-  9.1 == Approx( 0.0 )
+  9.1f == Approx( 0.0 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.double_pi == Approx( 3.1415 ) )
@@ -394,25 +394,25 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 9.11f ) )
 with expansion:
-  9.1 != Approx( 9.1099996567 )
+  9.1f != Approx( 9.1099996567 )
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 9.0f ) )
 with expansion:
-  9.1 != Approx( 9.0 )
+  9.1f != Approx( 9.0 )
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 1 ) )
 with expansion:
-  9.1 != Approx( 1.0 )
+  9.1f != Approx( 1.0 )
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one != Approx( 0 ) )
 with expansion:
-  9.1 != Approx( 0.0 )
+  9.1f != Approx( 0.0 )
 
 ConditionTests.cpp:<line number>:
 PASSED:
@@ -458,7 +458,7 @@ with expansion:
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one != Approx( 9.1f ) )
 with expansion:
-  9.1 != Approx( 9.1000003815 )
+  9.1f != Approx( 9.1000003815 )
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.double_pi != Approx( 3.1415926535 ) )
@@ -533,19 +533,19 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one > 9 )
 with expansion:
-  9.1 > 9
+  9.1f > 9
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one < 10 )
 with expansion:
-  9.1 < 10
+  9.1f < 10
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( data.float_nine_point_one < 9.2 )
 with expansion:
-  9.1 < 9.2
+  9.1f < 9.2
 
 ConditionTests.cpp:<line number>:
 PASSED:
@@ -632,17 +632,17 @@ with expansion:
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one < 9 )
 with expansion:
-  9.1 < 9
+  9.1f < 9
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one > 10 )
 with expansion:
-  9.1 > 10
+  9.1f > 10
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one > 9.2 )
 with expansion:
-  9.1 > 9.2
+  9.1f > 9.2
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.str_hello > "hello" )

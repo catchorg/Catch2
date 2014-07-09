@@ -103,9 +103,10 @@ std::string toString( unsigned int value ) {
     return toString( static_cast<unsigned long>( value ) );
 }
 
-std::string toString( const double value ) {
+template<typename T>
+std::string fpToString( T value, int precision ) {
     std::ostringstream oss;
-    oss << std::setprecision( 10 )
+    oss << std::setprecision( precision )
         << std::fixed
         << value;
     std::string d = oss.str();
@@ -116,6 +117,13 @@ std::string toString( const double value ) {
         d = d.substr( 0, i+1 );
     }
     return d;
+}
+
+std::string toString( const double value ) {
+    return fpToString( value, 10 );
+}
+std::string toString( const float value ) {
+    return fpToString( value, 5 ) + "f";
 }
 
 std::string toString( bool value ) {
