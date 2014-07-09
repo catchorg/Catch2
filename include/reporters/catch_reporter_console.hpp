@@ -323,46 +323,80 @@ namespace Catch {
                                         .setInitialIndent( indent ) ) << "\n";
         }
 
+        struct SummaryColumn {
+
+            SummaryColumn( std::string const& _label, Colour::Code _colour )
+            :   label( _label ),
+                colour( _colour )
+            {}
+            SummaryColumn addRow( std::size_t count ) {
+                std::ostringstream oss;
+                oss << count;
+                std::string row = oss.str();
+                for( std::vector<std::string>::iterator it = rows.begin(); it != rows.end(); ++it ) {
+                    while( it->size() < row.size() )
+                        *it = " " + *it;
+                    while( it->size() > row.size() )
+                        row = " " + row;
+                }
+                rows.push_back( row );
+                return *this;
+            }
+
+            std::string label;
+            Colour::Code colour;
+            std::vector<std::string> rows;
+
+        };
+
         void printTotals( Totals const& totals ) {
-            int cols = 1+static_cast<int>( log10( static_cast<float>( (std::max)( totals.testCases.total(), totals.assertions.total() ) ) ) );
             if( totals.testCases.total() == 0 ) {
                 stream << Colour( Colour::Warning ) << "No tests ran\n";
             }
-            else if( totals.assertions.total() == 0 ) {
-                stream << "test cases: ";
-                printCounts( totals.testCases, cols );
-                stream << "assertions: ";
-                stream << Colour( Colour::Warning ) << "- none -\n";
-            }
-            else if( totals.assertions.failed + totals.assertions.failedButOk ) {
-                stream << "test cases: ";
-                printCounts( totals.testCases, cols );
-                stream << "assertions: ";
-                printCounts( totals.assertions, cols );
-            }
-            else {
+            else if( totals.assertions.total() > 0 && totals.assertions.allPassed() ) {
                 stream << Colour( Colour::ResultSuccess ) << "All tests passed";
                 stream << " ("
                         << pluralise( totals.assertions.passed, "assertion" ) << " in "
                         << pluralise( totals.testCases.passed, "test case" ) << ")"
                         << "\n";
             }
-        }
-        void printCounts( Counts const& counts, int cols ) {
-            stream  << Colour( counts.passed > 0 ? Colour::Success : Colour::LightGrey )
-                    << std::setw( cols ) << counts.passed << " passed";
+            else {
 
-            stream << Colour( Colour::LightGrey ) << " | ";
+                std::vector<SummaryColumn> columns;
+                columns.push_back( SummaryColumn( "", Colour::None )
+                                        .addRow( totals.testCases.total() )
+                                        .addRow( totals.assertions.total() ) );
+                columns.push_back( SummaryColumn( "passed", Colour::Success )
+                                        .addRow( totals.testCases.passed )
+                                        .addRow( totals.assertions.passed ) );
+                columns.push_back( SummaryColumn( "failed", Colour::ResultError )
+                                        .addRow( totals.testCases.failed )
+                                        .addRow( totals.assertions.failed ) );
+                columns.push_back( SummaryColumn( "failed as expected", Colour::ResultExpectedFailure )
+                                        .addRow( totals.testCases.failedButOk )
+                                        .addRow( totals.assertions.failedButOk ) );
 
-            stream  << Colour( counts.failed > 0 ? Colour::ResultError : Colour::LightGrey )
-                    << std::setw( cols ) << counts.failed << " failed";
-            if( counts.failedButOk > 0 ) {
-                stream  << Colour( Colour::LightGrey ) << " | ";
-                stream  << Colour( counts.failedButOk > 0 ? Colour::ResultExpectedFailure : Colour::LightGrey )
-                        << std::setw( cols ) << counts.failedButOk << " failed as expected";
+                printSummaryRow( "test cases", columns, 0 );
+                printSummaryRow( "assertions", columns, 1 );
             }
-            stream  << Colour( Colour::LightGrey ) << " | "
-                    << "total: " << counts.total() << "\n";
+        }
+        void printSummaryRow( std::string const& label, std::vector<SummaryColumn> const& cols, std::size_t row ) {
+            for( std::vector<SummaryColumn>::const_iterator it = cols.begin(); it != cols.end(); ++it ) {
+                std::string value = it->rows[row];
+                if( it->label.empty() ) {
+                    stream << label << ": ";
+                    if( value != "0" )
+                        stream << value;
+                    else
+                        stream << Colour( Colour::Warning ) << "- none -";
+                }
+                else if( value != "0" ) {
+                    stream  << Colour( Colour::LightGrey ) << " | ";
+                    stream  << Colour( it->colour )
+                            << value << " " << it->label;
+                }
+            }
+            stream << "\n";
         }
 
         static std::size_t makeRatio( std::size_t number, std::size_t total ) {
