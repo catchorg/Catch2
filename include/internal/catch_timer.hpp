@@ -38,7 +38,7 @@ namespace Catch {
         uint64_t getCurrentTicks() {
             timeval t;
             gettimeofday(&t,NULL);
-            return (uint64_t)t.tv_sec * 1000000ull + (uint64_t)t.tv_usec;
+            return static_cast<uint64_t>( t.tv_sec ) * 1000000ull + static_cast<uint64_t>( t.tv_usec );
         }
 #endif
     }
@@ -47,10 +47,10 @@ namespace Catch {
         m_ticks = getCurrentTicks();
     }
     unsigned int Timer::getElapsedNanoseconds() const {
-        return (unsigned int)(getCurrentTicks() - m_ticks);
+        return static_cast<unsigned int>(getCurrentTicks() - m_ticks);
     }
     unsigned int Timer::getElapsedMilliseconds() const {
-        return (unsigned int)((getCurrentTicks() - m_ticks)/1000);
+        return static_cast<unsigned int>((getCurrentTicks() - m_ticks)/1000);
     }
     double Timer::getElapsedSeconds() const {
         return (getCurrentTicks() - m_ticks)/1000000.0;

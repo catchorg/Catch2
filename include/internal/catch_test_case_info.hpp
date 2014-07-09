@@ -108,7 +108,7 @@ namespace Catch {
         for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it ) {
             oss << "[" << *it << "]";
             std::string lcaseTag = toLower( *it );
-            properties = (SpecialProperties)( properties | parseSpecialTag( lcaseTag ) );
+            properties = static_cast<SpecialProperties>( properties | parseSpecialTag( lcaseTag ) );
             lcaseTags.insert( lcaseTag );
         }
         tagsAsString = oss.str();

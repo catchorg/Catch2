@@ -26,14 +26,14 @@ namespace Catch {
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
         if( _warning == "NoAssertions" )
-            config.warnings = (WarnAbout::What)( config.warnings | WarnAbout::NoAssertions );
+            config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
         else
             throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
 
     }
     inline void setVerbosity( ConfigData& config, int level ) {
         // !TBD: accept strings?
-        config.verbosity = (Verbosity::Level)level;
+        config.verbosity = static_cast<Verbosity::Level>( level );
     }
     inline void setShowDurations( ConfigData& config, bool _showDurations ) {
         config.showDurations = _showDurations

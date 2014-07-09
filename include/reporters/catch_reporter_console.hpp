@@ -324,7 +324,7 @@ namespace Catch {
         }
 
         void printTotals( Totals const& totals ) {
-            int cols = 1+(int)log10( (float)std::max( totals.testCases.total(), totals.assertions.total() ) );
+            int cols = 1+static_cast<int>( log10( static_cast<float>( (std::max)( totals.testCases.total(), totals.assertions.total() ) ) ) );
             if( totals.testCases.total() == 0 ) {
                 stream << Colour( Colour::Warning ) << "No tests ran\n";
             }

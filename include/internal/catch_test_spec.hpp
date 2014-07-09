@@ -41,7 +41,7 @@ namespace Catch {
                 }
                 if( endsWith( m_name, "*" ) ) {
                     m_name = m_name.substr( 0, m_name.size()-1 );
-                    m_wildcard = (WildcardPosition)( m_wildcard | WildcardAtEnd );
+                    m_wildcard = static_cast<WildcardPosition>( m_wildcard | WildcardAtEnd );
                 }
             }
             virtual ~NamePattern();
