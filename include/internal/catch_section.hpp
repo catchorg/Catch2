@@ -15,10 +15,17 @@
 
 namespace Catch {
 
-    Section::Section(   SourceLineInfo const& lineInfo,
-                        std::string const& name,
-                        std::string const& description )
-    :   m_info( name, description, lineInfo ),
+    SectionInfo::SectionInfo
+        (   SourceLineInfo const& _lineInfo,
+            std::string const& _name,
+            std::string const& _description )
+    :   name( _name ),
+        description( _description ),
+        lineInfo( _lineInfo )
+    {}
+
+    Section::Section( SectionInfo const& info )
+    :   m_info( info ),
         m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
     {
         m_timer.start();
@@ -30,7 +37,7 @@ namespace Catch {
     }
 
     // This indicates whether the section should be executed or not
-    Section::operator bool() {
+    Section::operator bool() const {
         return m_sectionIncluded;
     }
 

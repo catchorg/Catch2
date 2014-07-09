@@ -13,13 +13,10 @@
 namespace Catch {
 
     struct SectionInfo {
-        SectionInfo(    std::string const& _name,
-                        std::string const& _description,
-                        SourceLineInfo const& _lineInfo )
-        :   name( _name ),
-            description( _description ),
-            lineInfo( _lineInfo )
-        {}
+        SectionInfo
+            (   SourceLineInfo const& _lineInfo,
+                std::string const& _name,
+                std::string const& _description = std::string() );
 
         std::string name;
         std::string description;
