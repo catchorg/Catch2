@@ -54,14 +54,15 @@ namespace Catch {
 
         // Use constructed object for RAII guard
         Colour( Code _colourCode );
+        Colour( Colour const& other );
         ~Colour();
 
         // Use static method for one-shot changes
         static void use( Code _colourCode );
 
     private:
-        Colour( Colour const& other );
         static Detail::IColourImpl* impl();
+        bool m_moved;
     };
 
     inline std::ostream& operator << ( std::ostream& os, Colour const& ) { return os; }
