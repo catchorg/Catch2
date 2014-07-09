@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 50 (master branch)
- *  Generated: 2014-07-03 19:07:54.492176
+ *  CATCH v1.0 build 51 (master branch)
+ *  Generated: 2014-07-09 07:40:07.923348
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -21,6 +21,7 @@
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 #pragma clang diagnostic ignored "-Wvariadic-macros"
 #pragma clang diagnostic ignored "-Wc99-extensions"
+#pragma clang diagnostic ignored "-Wunused-variable"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #pragma clang diagnostic ignored "-Wc++98-compat"
@@ -1585,13 +1586,10 @@ namespace Catch {
 namespace Catch {
 
     struct SectionInfo {
-        SectionInfo(    std::string const& _name,
-                        std::string const& _description,
-                        SourceLineInfo const& _lineInfo )
-        :   name( _name ),
-            description( _description ),
-            lineInfo( _lineInfo )
-        {}
+        SectionInfo
+            (   SourceLineInfo const& _lineInfo,
+                std::string const& _name,
+                std::string const& _description = std::string() );
 
         std::string name;
         std::string description;
@@ -1695,22 +1693,22 @@ namespace Catch {
 
     class Section {
     public:
-        Section(    SourceLineInfo const& lineInfo,
-                    std::string const& name,
-                    std::string const& description = "" );
+        Section( SectionInfo const& info );
         ~Section();
-#  ifdef CATCH_CPP11_OR_GREATER
-        Section( Section const& )              = default;
-        Section( Section && )                  = default;
-        Section& operator = ( Section const& ) = default;
-        Section& operator = ( Section && )     = default;
-#  endif
 
         // This indicates whether the section should be executed or not
-        operator bool();
+        operator bool() const;
 
     private:
-
+#ifdef CATCH_CPP11_OR_GREATER
+        Section( Section const& )              = delete;
+        Section( Section && )                  = delete;
+        Section& operator = ( Section const& ) = delete;
+        Section& operator = ( Section && )     = delete;
+#else
+        Section( Section const& info );
+        Section& operator = ( Section const& );
+#endif
         SectionInfo m_info;
 
         std::string m_name;
@@ -1723,10 +1721,10 @@ namespace Catch {
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
     #define INTERNAL_CATCH_SECTION( ... ) \
-        if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) )
+        if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) )
 #else
     #define INTERNAL_CATCH_SECTION( name, desc ) \
-        if( Catch::Section INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( CATCH_INTERNAL_LINEINFO, name, desc ) )
+        if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, name, desc ) )
 #endif
 
 // #included from: internal/catch_generators.hpp
@@ -2748,7 +2746,7 @@ namespace Catch {
                 }
                 if( endsWith( m_name, "*" ) ) {
                     m_name = m_name.substr( 0, m_name.size()-1 );
-                    m_wildcard = (WildcardPosition)( m_wildcard | WildcardAtEnd );
+                    m_wildcard = static_cast<WildcardPosition>( m_wildcard | WildcardAtEnd );
                 }
             }
             virtual ~NamePattern();
@@ -4016,14 +4014,14 @@ namespace Catch {
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
         if( _warning == "NoAssertions" )
-            config.warnings = (WarnAbout::What)( config.warnings | WarnAbout::NoAssertions );
+            config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
         else
             throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
 
     }
     inline void setVerbosity( ConfigData& config, int level ) {
         // !TBD: accept strings?
-        config.verbosity = (Verbosity::Level)level;
+        config.verbosity = static_cast<Verbosity::Level>( level );
     }
     inline void setShowDurations( ConfigData& config, bool _showDurations ) {
         config.showDurations = _showDurations
@@ -4346,14 +4344,15 @@ namespace Catch {
 
         // Use constructed object for RAII guard
         Colour( Code _colourCode );
+        Colour( Colour const& other );
         ~Colour();
 
         // Use static method for one-shot changes
         static void use( Code _colourCode );
 
     private:
-        Colour( Colour const& other );
         static Detail::IColourImpl* impl();
+        bool m_moved;
     };
 
     inline std::ostream& operator << ( std::ostream& os, Colour const& ) { return os; }
@@ -5102,7 +5101,7 @@ namespace Catch {
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
             TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-            SectionInfo testCaseSection( testCaseInfo.name, testCaseInfo.description, testCaseInfo.lineInfo );
+            SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );
             m_reporter->sectionStarting( testCaseSection );
             Counts prevAssertions = m_totals.assertions;
             double duration = 0;
@@ -6053,8 +6052,9 @@ namespace Catch {
         }
     }
 
-    Colour::Colour( Code _colourCode ){ use( _colourCode ); }
-    Colour::~Colour(){ use( None ); }
+    Colour::Colour( Code _colourCode ) : m_moved( false ) { use( _colourCode ); }
+    Colour::Colour( Colour const& _other ) : m_moved( false ) { const_cast<Colour&>( _other ).m_moved = true; }
+    Colour::~Colour(){ if( !m_moved ) use( None ); }
     void Colour::use( Code _colourCode ) {
         impl()->use( _colourCode );
     }
@@ -6319,7 +6319,7 @@ namespace Catch {
         for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it ) {
             oss << "[" << *it << "]";
             std::string lcaseTag = toLower( *it );
-            properties = (SpecialProperties)( properties | parseSpecialTag( lcaseTag ) );
+            properties = static_cast<SpecialProperties>( properties | parseSpecialTag( lcaseTag ) );
             lcaseTags.insert( lcaseTag );
         }
         tagsAsString = oss.str();
@@ -6406,7 +6406,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 50, "master" );
+    Version libraryVersion( 1, 0, 51, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -6596,7 +6596,7 @@ namespace Catch {
         uint64_t getCurrentTicks() {
             timeval t;
             gettimeofday(&t,NULL);
-            return (uint64_t)t.tv_sec * 1000000ull + (uint64_t)t.tv_usec;
+            return static_cast<uint64_t>( t.tv_sec ) * 1000000ull + static_cast<uint64_t>( t.tv_usec );
         }
 #endif
     }
@@ -6605,10 +6605,10 @@ namespace Catch {
         m_ticks = getCurrentTicks();
     }
     unsigned int Timer::getElapsedNanoseconds() const {
-        return (unsigned int)(getCurrentTicks() - m_ticks);
+        return static_cast<unsigned int>(getCurrentTicks() - m_ticks);
     }
     unsigned int Timer::getElapsedMilliseconds() const {
-        return (unsigned int)((getCurrentTicks() - m_ticks)/1000);
+        return static_cast<unsigned int>((getCurrentTicks() - m_ticks)/1000);
     }
     double Timer::getElapsedSeconds() const {
         return (getCurrentTicks() - m_ticks)/1000000.0;
@@ -6699,10 +6699,17 @@ namespace Catch {
 
 namespace Catch {
 
-    Section::Section(   SourceLineInfo const& lineInfo,
-                        std::string const& name,
-                        std::string const& description )
-    :   m_info( name, description, lineInfo ),
+    SectionInfo::SectionInfo
+        (   SourceLineInfo const& _lineInfo,
+            std::string const& _name,
+            std::string const& _description )
+    :   name( _name ),
+        description( _description ),
+        lineInfo( _lineInfo )
+    {}
+
+    Section::Section( SectionInfo const& info )
+    :   m_info( info ),
         m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
     {
         m_timer.start();
@@ -6714,7 +6721,7 @@ namespace Catch {
     }
 
     // This indicates whether the section should be executed or not
-    Section::operator bool() {
+    Section::operator bool() const {
         return m_sectionIncluded;
     }
 
@@ -8303,7 +8310,7 @@ namespace Catch {
         }
 
         void printTotals( Totals const& totals ) {
-            int cols = 1+(int)log10( (float)std::max( totals.testCases.total(), totals.assertions.total() ) );
+            int cols = 1+static_cast<int>( log10( static_cast<float>( (std::max)( totals.testCases.total(), totals.assertions.total() ) ) ) );
             if( totals.testCases.total() == 0 ) {
                 stream << Colour( Colour::Warning ) << "No tests ran\n";
             }
