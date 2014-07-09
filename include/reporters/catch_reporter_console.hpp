@@ -388,9 +388,12 @@ namespace Catch {
                 while( failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH-1 )
                     findMax( failedRatio, failedButOkRatio, passedRatio )--;
 
-                stream << Colour( Colour::ResultSuccess ) << std::string( passedRatio, '=' );
                 stream << Colour( Colour::Error ) << std::string( failedRatio, '=' );
                 stream << Colour( Colour::ResultExpectedFailure ) << std::string( failedButOkRatio, '=' );
+                if( totals.testCases.allPassed() )
+                    stream << Colour( Colour::ResultSuccess ) << std::string( passedRatio, '=' );
+                else
+                    stream << Colour( Colour::Success ) << std::string( passedRatio, '=' );
             }
             else {
                 stream << Colour( Colour::Warning ) << std::string( CATCH_CONFIG_CONSOLE_WIDTH-1, '=' );
