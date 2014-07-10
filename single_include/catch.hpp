@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.0 build 52 (master branch)
- *  Generated: 2014-07-09 19:21:54.977279
+ *  Generated: 2014-07-10 09:17:43.994453
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -8333,6 +8333,7 @@ namespace Catch {
                 std::string row = oss.str();
                 for( std::vector<std::string>::iterator it = rows.begin(); it != rows.end(); ++it ) {
                     while( it->size() < row.size() )
+                        *it = " " + *it;
                     while( it->size() > row.size() )
                         row = " " + row;
                 }
