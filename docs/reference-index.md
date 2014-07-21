@@ -8,6 +8,7 @@ Before looking at this material be sure to read the [tutorial](tutorial.md)
 * [Logging Macros](logging.md)
 * [Supplying your own main()](own-main.md)
 * [Test fixtures](test-fixtures.md)
+* [Why are my tests slow to compile?](slow-compiles.md)
 
 ---
 
