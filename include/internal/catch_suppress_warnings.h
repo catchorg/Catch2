@@ -17,6 +17,11 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #pragma clang diagnostic ignored "-Wc++98-compat"
 #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#elif defined __GNUC__
+#pragma GCC diagnostic ignored "-Wvariadic-macros"
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
 #endif
 
 #endif // TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
