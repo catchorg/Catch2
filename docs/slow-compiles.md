@@ -1,15 +1,21 @@
 # Why do my tests take so long to compile?
 
 Several people have reported that test code written with Catch takes much longer to compile than they would expect. Why is that?
-The answer comes in three parts:
 
-1. Catch is implemented entirely in headers. There is a little overhead due to this - but not as much as you'd think. Read on for more detail on this one.
-2. Most of the "implementation" of Catch is conditionally compiled into a single translation unit. If all your tests are in this file you are rebuilding the whole of Catch every time. Read on for how to avoid this.
-3. Even after taking the above into consideration some people still report slower compiles than they'd like. At this point the reasons are unknown - although the main suspect is some supporting template code necessary to workaround the way the compiler treats integer literals differently when inferring them as template arguments vs. in bare expressions.
+Catch is implemented entirely in headers. There is a little overhead due to this - but not as much as you might think - and you can minimise it simply by organising your test code as follows:
 
-Although Catch is implemented entirely in headers (and even stitched together into a single header) it is internally organised in a similar way to the more traditional split between header and "implementation" files. The implementation portion is conditionally compiled into only one translation unit - which is the one that ```#define```s ```CATCH_CONFIG_RUNNER``` or ```CATCH_CONFIG_MAIN```. Putting all your tests into the same file that also compiles the implementation is a convenient way to get started - and makes for good demos - but beyond that it is better to dedicate an implementation file for just #including Catch for the implementation. If you're using ```CATCH_CONFIG_MAIN``` it may just be as simple as that and the #include in the entire file. If you're providing your own ```main()``` you'll probably want to put that in there too. But no test cases.
+## Short answer
+Exactly one source file must ```#define``` either ```CATCH_CONFIG_MAIN``` or ```CATCH_CONFIG_RUNNER``` before ```#include```-ing Catch. In this file *do not write any test cases*! In most cases that means this file will just contain two lines (the ```#define``` and the ```#include```).
 
-Write your test code in other translation units (cpp files) and when you incrementally build you won't be rebuilding the whole of Catch every time.
+## Long answer
+
+Usually C++ code is split between a header file, containing declarations and prototypes, and an implementation file (.cpp) containig the definition, or implementation, code. Each implementation file, along with all the headers that it includes (and which those headers include, etc), is expanded into a single entity called a translation unit - which is then passed to the compiler and compiled down to an object file.
+
+But functions and methods can also be written inline in header files. The downside to this is that these definitions will then be compiled in *every* translation unit that includes the header.
+
+Because Catch is implemented *entirely* in headers you might think that the whole of Catch must be compiled into every translation unit that uses it! Actually it's not quite as bad as that. Catch mitigates this situation by effectively maintaining the traditional separation between the implementation code and declarations. Internally the implementation code is protected by ```#ifdef```s and is conditionally compiled into only one translation unit. This translation unit is that one that ```#define```s ```CATCH_CONFIG_MAIN``` or ```CATCH_CONFIG_RUNNER```. Let's call this the main source file.
+
+As a result the main source file *does* compile the whole of Catch every time! So it makes sense to dedicate this file to *only* ```#define```-ing the identifier and ```#include```-ing Catch (and implementing the runner code, if you're doing that). Keep all your test cases in other files. This way you won't pay the recompilation cost for the whole of Catch 
 
 ---
 
