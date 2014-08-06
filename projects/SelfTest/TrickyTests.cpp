@@ -55,18 +55,18 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "Where the LHS is not a simple value[failing]",
-    "[Tricky][failing][.]"
+    "Where the LHS is not a simple value",
+    "[Tricky]"
 )
 {
-    /*
     int a = 1;
     int b = 2;
     
-    // This only captures part of the expression, but issues a warning about the rest
-    REQUIRE( a+1 == b-1 );
-    */
-    WARN( "Uncomment the code in this test to check that it gives a sensible compiler error" );
+    REQUIRE( a+1 == b );
+    REQUIRE( a < b );
+
+    REQUIRE( a%2 == 1 );
+    REQUIRE( b%2 == 0 );
 }
 
 struct Opaque
