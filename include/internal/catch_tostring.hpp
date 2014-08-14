@@ -84,6 +84,16 @@ std::string toString( char* const value ) {
     return Catch::toString( static_cast<const char*>( value ) );
 }
 
+std::string toString( const wchar_t* const value )
+{
+	return value ? Catch::toString( std::wstring(value) ) : std::string( "{null string}" );
+}
+
+std::string toString( wchar_t* const value )
+{
+	return Catch::toString( static_cast<const wchar_t*>( value ) );
+}
+
 std::string toString( int value ) {
     std::ostringstream oss;
     oss << value;

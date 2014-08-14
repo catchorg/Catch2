@@ -356,3 +356,27 @@ TEST_CASE( "Tabs and newlines show in output", "[.][whitespace][failing]" ) {
     CHECK( s1 == s2 );
 }
 
+
+TEST_CASE( "toString on const wchar_t const pointer returns the string contents", "[toString]" ) {
+	const wchar_t * const s = L"wide load";
+	auto result = Catch::toString( s );
+	CHECK( result == "\"wide load\"" );
+}
+
+TEST_CASE( "toString on const wchar_t pointer returns the string contents", "[toString]" ) {
+	const wchar_t * s = L"wide load";
+	auto result = Catch::toString( s );
+	CHECK( result == "\"wide load\"" );
+}
+
+TEST_CASE( "toString on wchar_t const pointer returns the string contents", "[toString]" ) {
+	wchar_t * const s = L"wide load";
+	auto result = Catch::toString( s );
+	CHECK( result == "\"wide load\"" );
+}
+
+TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
+	wchar_t * s = L"wide load";
+	auto result = Catch::toString( s );
+	CHECK( result == "\"wide load\"" );
+}
