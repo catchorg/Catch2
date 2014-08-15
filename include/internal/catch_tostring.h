@@ -154,6 +154,8 @@ std::string toString( std::string const& value );
 std::string toString( std::wstring const& value );
 std::string toString( const char* const value );
 std::string toString( char* const value );
+std::string toString( const wchar_t* const value );
+std::string toString( wchar_t* const value );
 std::string toString( int value );
 std::string toString( unsigned long value );
 std::string toString( unsigned int value );
