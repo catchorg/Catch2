@@ -220,7 +220,7 @@ Scenario: vectors can be sized and resized
 ```
 
 ## Next steps
-For more specific information see the [Reference pages](reference-index.md)
+For more specific information see the [Reference pages](Readme.md)
 
 
 ---
