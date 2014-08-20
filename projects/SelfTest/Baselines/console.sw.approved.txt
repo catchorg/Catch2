@@ -3573,6 +3573,54 @@ with expansion:
   "
 
 -------------------------------------------------------------------------------
+toString on const wchar_t const pointer returns the string contents
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK( result == "\"wide load\"" )
+with expansion:
+  ""wide load"" == ""wide load""
+
+-------------------------------------------------------------------------------
+toString on const wchar_t pointer returns the string contents
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK( result == "\"wide load\"" )
+with expansion:
+  ""wide load"" == ""wide load""
+
+-------------------------------------------------------------------------------
+toString on wchar_t const pointer returns the string contents
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK( result == "\"wide load\"" )
+with expansion:
+  ""wide load"" == ""wide load""
+
+-------------------------------------------------------------------------------
+toString on wchar_t returns the string contents
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK( result == "\"wide load\"" )
+with expansion:
+  ""wide load"" == ""wide load""
+
+-------------------------------------------------------------------------------
 Process can be configured on command line
   default - no arguments
 -------------------------------------------------------------------------------
@@ -7125,6 +7173,36 @@ with message:
   boo!
 
 -------------------------------------------------------------------------------
+Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or
+          methods
+     Given: No operations precede me
+-------------------------------------------------------------------------------
+BDDTests.cpp:<line number>
+...............................................................................
+
+BDDTests.cpp:<line number>:
+PASSED:
+  REQUIRE( before == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or
+          methods
+     Given: No operations precede me
+      When: We get the count
+      Then: Subsequently values are higher
+-------------------------------------------------------------------------------
+BDDTests.cpp:<line number>
+...............................................................................
+
+BDDTests.cpp:<line number>:
+PASSED:
+  REQUIRE( after > before )
+with expansion:
+  1 > 0
+
+-------------------------------------------------------------------------------
 section tracking
 -------------------------------------------------------------------------------
 SectionTrackerTests.cpp:<line number>
@@ -7297,6 +7375,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 125 |  70 passed | 54 failed |  1 failed as expected
-assertions: 723 | 611 passed | 99 failed | 13 failed as expected
+test cases: 130 |  75 passed | 54 failed |  1 failed as expected
+assertions: 729 | 617 passed | 99 failed | 13 failed as expected
 

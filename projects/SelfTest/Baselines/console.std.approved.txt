@@ -786,6 +786,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 125 |  86 passed | 38 failed |  1 failed as expected
-assertions: 703 | 611 passed | 79 failed | 13 failed as expected
+test cases: 130 |  91 passed | 38 failed |  1 failed as expected
+assertions: 709 | 617 passed | 79 failed | 13 failed as expected
 
