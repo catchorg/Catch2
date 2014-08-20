@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 52 (master branch)
- *  Generated: 2014-07-10 09:17:43.994453
+ *  CATCH v1.0 build 53 (master branch)
+ *  Generated: 2014-08-20 08:08:19.533804
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1167,6 +1167,8 @@ std::string toString( std::string const& value );
 std::string toString( std::wstring const& value );
 std::string toString( const char* const value );
 std::string toString( char* const value );
+std::string toString( const wchar_t* const value );
+std::string toString( wchar_t* const value );
 std::string toString( int value );
 std::string toString( unsigned long value );
 std::string toString( unsigned int value );
@@ -6415,7 +6417,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 52, "master" );
+    Version libraryVersion( 1, 0, 53, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -6899,6 +6901,16 @@ std::string toString( const char* const value ) {
 
 std::string toString( char* const value ) {
     return Catch::toString( static_cast<const char*>( value ) );
+}
+
+std::string toString( const wchar_t* const value )
+{
+	return value ? Catch::toString( std::wstring(value) ) : std::string( "{null string}" );
+}
+
+std::string toString( wchar_t* const value )
+{
+	return Catch::toString( static_cast<const wchar_t*>( value ) );
 }
 
 std::string toString( int value ) {
@@ -8889,8 +8901,10 @@ int main (int argc, char * const argv[]) {
 // "BDD-style" convenience wrappers
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
 #define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
+#define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
 #else
 #define CATCH_SCENARIO( name, tags ) CATCH_TEST_CASE( "Scenario: " name, tags )
+#define CATCH_SCENARIO_METHOD( className, name, tags ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " name, tags )
 #endif
 #define CATCH_GIVEN( desc )    CATCH_SECTION( "Given: " desc, "" )
 #define CATCH_WHEN( desc )     CATCH_SECTION( " When: " desc, "" )
@@ -8956,8 +8970,10 @@ int main (int argc, char * const argv[]) {
 // "BDD-style" convenience wrappers
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
 #define SCENARIO( ... ) TEST_CASE( "Scenario: " __VA_ARGS__ )
+#define SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
 #else
 #define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
+#define SCENARIO_METHOD( className, name, tags ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " name, tags )
 #endif
 #define GIVEN( desc )    SECTION( "   Given: " desc, "" )
 #define WHEN( desc )     SECTION( "    When: " desc, "" )
@@ -8973,6 +8989,8 @@ using Catch::Detail::Approx;
 
 #ifdef __clang__
 #pragma clang diagnostic pop
+#elif defined __GNUC__
+#pragma GCC diagnostic pop
 #endif
 
 #endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
