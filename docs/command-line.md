@@ -60,6 +60,7 @@ A reporter is an object that formats and structures the output of running tests,
 The bundled reporters are:
 
 <pre>-r console
+-r compact
 -r xml
 -r junit
 </pre>

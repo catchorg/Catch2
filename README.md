@@ -15,7 +15,7 @@ This documentation comprises these three parts:
 
 * [Why do we need yet another C++ Test Framework?](docs/why-catch.md)
 * [Tutorial](docs/tutorial.md) - getting started
-* [Reference section](docs/reference-index.md) - all the details
+* [Reference section](docs/Readme.md) - all the details
 
 The documentation will continue until morale improves
 
