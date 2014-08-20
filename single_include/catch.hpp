@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 53 (master branch)
- *  Generated: 2014-08-20 08:08:19.533804
+ *  CATCH v1.1 build 1 (develop branch)
+ *  Generated: 2014-08-20 19:07:01.206746
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6417,7 +6417,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 53, "master" );
+    Version libraryVersion( 1, 1, 1, "develop" );
 }
 
 // #included from: catch_message.hpp
