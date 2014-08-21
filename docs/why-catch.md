@@ -10,7 +10,7 @@ So what does Catch bring to the party that differentiates it from these? Apart f
 * No external dependencies. As long as you can compile C++98 and have a C++ standard library available.
 * Write test cases as, self-registering, functions or methods.
 * Divide test cases into sections, each of which is run in isolation (eliminates the need for fixtures!)
-* Use BDD-style GIVEN-WHEN-THEN in place of test cases and sections.
+* Use BDD-style Given-When-Then sections as well as traditional unit test cases.
 * Only one core assertion macro for comparisons. Standard C/C++ operators are used for the comparison - yet the full expression is decomposed and lhs and rhs values are logged.
 
 ## Other core features
