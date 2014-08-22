@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 1 (develop branch)
- *  Generated: 2014-08-20 19:07:01.206746
+ *  CATCH v1.1 build 2 (develop branch)
+ *  Generated: 2014-08-22 19:34:41.932570
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -603,7 +603,9 @@ namespace Catch {
         Exception = 0x100 | FailureBit,
 
         ThrewException = Exception | 1,
-        DidntThrowException = Exception | 2
+        DidntThrowException = Exception | 2,
+
+        FatalErrorCondition = 0x200 | FailureBit
 
     }; };
 
@@ -1395,6 +1397,8 @@ namespace Catch {
 
         virtual std::string getCurrentTestName() const = 0;
         virtual const AssertionResult* getLastResult() const = 0;
+
+        virtual void handleFatalErrorCondition( std::string const& message ) = 0;
     };
 
     IResultCapture& getResultCapture();
@@ -4915,6 +4919,71 @@ using SectionTracking::TestCaseTracker;
 
 } // namespace Catch
 
+// #included from: catch_fatal_condition.hpp
+#define TWOBLUECUBES_CATCH_FATAL_CONDITION_H_INCLUDED
+
+namespace Catch {
+
+    // Report the error condition then exit the process
+    inline void fatal( std::string const& message, int exitCode ) {
+        IContext& context = Catch::getCurrentContext();
+        IResultCapture* resultCapture = context.getResultCapture();
+        resultCapture->handleFatalErrorCondition( message );
+
+		if( Catch::alwaysTrue() ) // avoids "no return" warnings
+            exit( exitCode );
+    }
+
+} // namespace Catch
+
+#if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
+
+namespace Catch {
+
+    struct FatalConditionHandler {};
+
+} // namespace Catch
+
+#else // Not Windows - assumed to be POSIX compatible //////////////////////////
+
+#include <signal.h>
+
+namespace Catch {
+
+    struct SignalDefs { int id; const char* name; };
+    extern SignalDefs signalDefs[];
+    SignalDefs signalDefs[] = {
+            { SIGINT,  "SIGINT - Terminal interrupt signal" },
+            { SIGILL,  "SIGILL - Illegal instruction signal" },
+            { SIGFPE,  "SIGFPE - Floating point error signal" },
+            { SIGSEGV, "SIGSEGV - Segmentation violation signal" },
+            { SIGTERM, "SIGTERM - Termination request signal" },
+            { SIGABRT, "SIGABRT - Abort (abnormal termination) signal" }
+        };
+
+    struct FatalConditionHandler {
+
+        static void handleSignal( int sig ) {
+            for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
+                if( sig == signalDefs[i].id )
+                    fatal( signalDefs[i].name, -sig );
+            fatal( "<unknown signal>", -sig );
+        }
+
+        FatalConditionHandler() {
+            for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
+                signal( signalDefs[i].id, handleSignal );
+        }
+        ~FatalConditionHandler() {
+            for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
+                signal( signalDefs[i].id, SIG_DFL );
+        }
+    };
+
+} // namespace Catch
+
+#endif // not Windows
+
 #include <set>
 #include <string>
 
@@ -5102,6 +5171,37 @@ namespace Catch {
             return &m_lastResult;
         }
 
+        virtual void handleFatalErrorCondition( std::string const& message ) {
+            ResultBuilder resultBuilder = makeUnexpectedResultBuilder();
+            resultBuilder.setResultType( ResultWas::FatalErrorCondition );
+            resultBuilder << message;
+            resultBuilder.captureExpression();
+
+            handleUnfinishedSections();
+
+            // Recreate section for test case (as we will lose the one that was in scope)
+            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
+            SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );
+
+            Counts assertions;
+            assertions.failed = 1;
+            SectionStats testCaseSectionStats( testCaseSection, assertions, 0, false );
+            m_reporter->sectionEnded( testCaseSectionStats );
+
+            TestCaseInfo testInfo = m_activeTestCase->getTestCaseInfo();
+
+            Totals deltaTotals;
+            deltaTotals.testCases.failed = 1;
+            m_reporter->testCaseEnded( TestCaseStats(   testInfo,
+                                                        deltaTotals,
+                                                        "",
+                                                        "",
+                                                        false ) );
+            m_totals.testCases.failed++;
+            testGroupEnded( "", m_totals, 1, 1 );
+            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, false ) );
+        }
+
     public:
         // !TBD We need to do this another way!
         bool aborting() const {
@@ -5125,10 +5225,10 @@ namespace Catch {
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                    m_activeTestCase->invoke();
+                    invokeActiveTestCase();
                 }
                 else {
-                    m_activeTestCase->invoke();
+                    invokeActiveTestCase();
                 }
                 duration = timer.getElapsedSeconds();
             }
@@ -5136,20 +5236,9 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                ResultBuilder exResult( m_lastAssertionInfo.macroName.c_str(),
-                                        m_lastAssertionInfo.lineInfo,
-                                        m_lastAssertionInfo.capturedExpression.c_str(),
-                                        m_lastAssertionInfo.resultDisposition );
-                exResult.useActiveException();
+                makeUnexpectedResultBuilder().useActiveException();
             }
-            // If sections ended prematurely due to an exception we stored their
-            // infos here so we can tear them down outside the unwind process.
-            for( std::vector<UnfinishedSections>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
-                        itEnd = m_unfinishedSections.rend();
-                    it != itEnd;
-                    ++it )
-                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
-            m_unfinishedSections.clear();
+            handleUnfinishedSections();
             m_messages.clear();
 
             Counts assertions = m_totals.assertions - prevAssertions;
@@ -5165,7 +5254,31 @@ namespace Catch {
             m_reporter->sectionEnded( testCaseSectionStats );
         }
 
+        void invokeActiveTestCase() {
+            FatalConditionHandler fatalConditionHandler; // Handle signals
+            m_activeTestCase->invoke();
+        }
+
     private:
+
+        ResultBuilder makeUnexpectedResultBuilder() const {
+            return ResultBuilder(   m_lastAssertionInfo.macroName.c_str(),
+                                    m_lastAssertionInfo.lineInfo,
+                                    m_lastAssertionInfo.capturedExpression.c_str(),
+                                    m_lastAssertionInfo.resultDisposition );
+        }
+
+        void handleUnfinishedSections() {
+            // If sections ended prematurely due to an exception we stored their
+            // infos here so we can tear them down outside the unwind process.
+            for( std::vector<UnfinishedSections>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
+                        itEnd = m_unfinishedSections.rend();
+                    it != itEnd;
+                    ++it )
+                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
+            m_unfinishedSections.clear();
+        }
+
         struct UnfinishedSections {
             UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions, double _durationInSeconds )
             : info( _info ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )
@@ -6417,7 +6530,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 1, "develop" );
+    Version libraryVersion( 1, 1, 2, "develop" );
 }
 
 // #included from: catch_message.hpp
@@ -7770,6 +7883,13 @@ namespace Catch {
                         .writeText( assertionResult.getMessage() );
                     m_currentTestSuccess = false;
                     break;
+                case ResultWas::FatalErrorCondition:
+                    m_xml.scopedElement( "Fatal Error Condition" )
+                        .writeAttribute( "filename", assertionResult.getSourceInfo().file )
+                        .writeAttribute( "line", assertionResult.getSourceInfo().line )
+                        .writeText( assertionResult.getMessage() );
+                    m_currentTestSuccess = false;
+                    break;
                 case ResultWas::Info:
                     m_xml.scopedElement( "Info" )
                         .writeText( assertionResult.getMessage() );
@@ -7970,6 +8090,7 @@ namespace Catch {
                 std::string elementName;
                 switch( result.getResultType() ) {
                     case ResultWas::ThrewException:
+                    case ResultWas::FatalErrorCondition:
                         elementName = "error";
                         break;
                     case ResultWas::ExplicitFailure:
@@ -8163,6 +8284,11 @@ namespace Catch {
                         colour = Colour::Error;
                         passOrFail = "FAILED";
                         messageLabel = "due to unexpected exception with message";
+                        break;
+                    case ResultWas::FatalErrorCondition:
+                        colour = Colour::Error;
+                        passOrFail = "FAILED";
+                        messageLabel = "due to a fatal error condition";
                         break;
                     case ResultWas::DidntThrowException:
                         colour = Colour::Error;
@@ -8565,6 +8691,13 @@ namespace Catch {
                     case ResultWas::ThrewException:
                         printResultType( Colour::Error, failedString() );
                         printIssue( "unexpected exception with message:" );
+                        printMessage();
+                        printExpressionWas();
+                        printRemainingMessages();
+                        break;
+                    case ResultWas::FatalErrorCondition:
+                        printResultType( Colour::Error, failedString() );
+                        printIssue( "fatal error condition with message:" );
                         printMessage();
                         printExpressionWas();
                         printRemainingMessages();
