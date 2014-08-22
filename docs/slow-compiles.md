@@ -9,7 +9,7 @@ Exactly one source file must ```#define``` either ```CATCH_CONFIG_MAIN``` or ```
 
 ## Long answer
 
-Usually C++ code is split between a header file, containing declarations and prototypes, and an implementation file (.cpp) containig the definition, or implementation, code. Each implementation file, along with all the headers that it includes (and which those headers include, etc), is expanded into a single entity called a translation unit - which is then passed to the compiler and compiled down to an object file.
+Usually C++ code is split between a header file, containing declarations and prototypes, and an implementation file (.cpp) containing the definition, or implementation, code. Each implementation file, along with all the headers that it includes (and which those headers include, etc), is expanded into a single entity called a translation unit - which is then passed to the compiler and compiled down to an object file.
 
 But functions and methods can also be written inline in header files. The downside to this is that these definitions will then be compiled in *every* translation unit that includes the header.
 
