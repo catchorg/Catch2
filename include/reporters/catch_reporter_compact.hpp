@@ -109,6 +109,13 @@ namespace Catch {
                         printExpressionWas();
                         printRemainingMessages();
                         break;
+                    case ResultWas::FatalErrorCondition:
+                        printResultType( Colour::Error, failedString() );
+                        printIssue( "fatal error condition with message:" );
+                        printMessage();
+                        printExpressionWas();
+                        printRemainingMessages();
+                        break;
                     case ResultWas::DidntThrowException:
                         printResultType( Colour::Error, failedString() );
                         printIssue( "expected exception, got none" );

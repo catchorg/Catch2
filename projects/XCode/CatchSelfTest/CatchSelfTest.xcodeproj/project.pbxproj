@@ -66,6 +66,7 @@
 		2627F7061935B55F009BCE2D /* catch_result_builder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_result_builder.hpp; sourceTree = "<group>"; };
 		262E7399184673A800CAC268 /* catch_reporter_bases.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_bases.hpp; sourceTree = "<group>"; };
 		262E739A1846759000CAC268 /* catch_common.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_common.hpp; sourceTree = "<group>"; };
+		263F7A4519A66608009474C2 /* catch_fatal_condition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_fatal_condition.hpp; sourceTree = "<group>"; };
 		263FD06017AF8DF200988A20 /* catch_timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_timer.hpp; sourceTree = "<group>"; };
 		263FD06117AF8DF200988A20 /* catch_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_timer.h; sourceTree = "<group>"; };
 		2656C21F1925E5100040DB02 /* catch_test_spec_parser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_test_spec_parser.hpp; sourceTree = "<group>"; };
@@ -453,6 +454,7 @@
 				268F47B018A93F7800D8C14F /* catch_clara.h */,
 				2656C226192A77EF0040DB02 /* catch_suppress_warnings.h */,
 				2656C227192A78410040DB02 /* catch_reenable_warnings.h */,
+				263F7A4519A66608009474C2 /* catch_fatal_condition.hpp */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";

@@ -20,6 +20,7 @@
 #include "catch_test_case_tracker.hpp"
 #include "catch_timer.h"
 #include "catch_result_builder.h"
+#include "catch_fatal_condition.hpp"
 
 #include <set>
 #include <string>
@@ -215,6 +216,13 @@ namespace Catch {
             return m_totals.assertions.failed == static_cast<std::size_t>( m_config->abortAfter() );
         }
 
+        virtual ResultBuilder makeUnexpectedResultBuilder() const {
+            return ResultBuilder(   m_lastAssertionInfo.macroName.c_str(),
+                                    m_lastAssertionInfo.lineInfo,
+                                    m_lastAssertionInfo.capturedExpression.c_str(),
+                                    m_lastAssertionInfo.resultDisposition );
+        }
+
     private:
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
@@ -232,10 +240,10 @@ namespace Catch {
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( std::cout, redirectedCout );
                     StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                    m_activeTestCase->invoke();
+                    invokeActiveTestCase();
                 }
                 else {
-                    m_activeTestCase->invoke();
+                    invokeActiveTestCase();
                 }
                 duration = timer.getElapsedSeconds();
             }
@@ -243,11 +251,7 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                ResultBuilder exResult( m_lastAssertionInfo.macroName.c_str(),
-                                        m_lastAssertionInfo.lineInfo,
-                                        m_lastAssertionInfo.capturedExpression.c_str(),
-                                        m_lastAssertionInfo.resultDisposition );
-                exResult.useActiveException();
+                makeUnexpectedResultBuilder().useActiveException();
             }
             // If sections ended prematurely due to an exception we stored their
             // infos here so we can tear them down outside the unwind process.
@@ -270,6 +274,11 @@ namespace Catch {
 
             SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
+        }
+
+        void invokeActiveTestCase() {
+            FatalConditionHandler fatalConditionHandler; // Handle signals
+            m_activeTestCase->invoke();
         }
 
     private:

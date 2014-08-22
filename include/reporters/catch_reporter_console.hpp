@@ -149,6 +149,11 @@ namespace Catch {
                         passOrFail = "FAILED";
                         messageLabel = "due to unexpected exception with message";
                         break;
+                    case ResultWas::FatalErrorCondition:
+                        colour = Colour::Error;
+                        passOrFail = "FAILED";
+                        messageLabel = "due to a fatal error condition";
+                        break;
                     case ResultWas::DidntThrowException:
                         colour = Colour::Error;
                         passOrFail = "FAILED";

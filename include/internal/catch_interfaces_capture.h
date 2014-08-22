@@ -21,6 +21,7 @@ namespace Catch {
     struct MessageInfo;
     class ScopedMessageBuilder;
     struct Counts;
+    class ResultBuilder;
 
     struct IResultCapture {
 
@@ -35,6 +36,8 @@ namespace Catch {
 
         virtual std::string getCurrentTestName() const = 0;
         virtual const AssertionResult* getLastResult() const = 0;
+
+        virtual ResultBuilder makeUnexpectedResultBuilder() const = 0;
     };
 
     IResultCapture& getResultCapture();

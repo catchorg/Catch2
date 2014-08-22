@@ -108,6 +108,13 @@ namespace Catch {
                         .writeText( assertionResult.getMessage() );
                     m_currentTestSuccess = false;
                     break;
+                case ResultWas::FatalErrorCondition:
+                    m_xml.scopedElement( "Fatal Error Condition" )
+                        .writeAttribute( "filename", assertionResult.getSourceInfo().file )
+                        .writeAttribute( "line", assertionResult.getSourceInfo().line )
+                        .writeText( assertionResult.getMessage() );
+                    m_currentTestSuccess = false;
+                    break;
                 case ResultWas::Info:
                     m_xml.scopedElement( "Info" )
                         .writeText( assertionResult.getMessage() );
