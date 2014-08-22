@@ -16,11 +16,8 @@ namespace Catch {
     inline void fatal( std::string const& message, int exitCode ) {
         IContext& context = Catch::getCurrentContext();
         IResultCapture* resultCapture = context.getResultCapture();
-        ResultBuilder resultBuilder = resultCapture->makeUnexpectedResultBuilder();
-        resultBuilder.setResultType( ResultWas::FatalErrorCondition );
-        resultBuilder << message;
-        resultBuilder.captureExpression();
-        
+        resultCapture->handleFatalErrorCondition( message );
+
 		if( Catch::alwaysTrue() ) // avoids "no return" warnings
             exit( exitCode );
     }
