@@ -8,12 +8,13 @@ SOURCES = ApproxTests.cpp \
           TestMain.cpp \
           TrickyTests.cpp \
           BDDTests.cpp \
-          VariadicMacrosTests.cpp
+          VariadicMacrosTests.cpp \
+          EnumToString.cpp
 
 
 OBJECTS    = $(patsubst %.cpp, %.o, $(SOURCES))
 CXX = g++
-CXXFLAGS  = -I../../include
+CXXFLAGS  = -I../../include -std=c++11
 
 CatchSelfTest: $(OBJECTS)
 	$(CXX) -o $@ $^
