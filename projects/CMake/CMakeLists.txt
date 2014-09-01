@@ -21,6 +21,10 @@ set(SOURCES
     ${SELF_TEST_DIR}/TestMain.cpp
     ${SELF_TEST_DIR}/TrickyTests.cpp
     ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
+    ${SELF_TEST_DIR}/EnumToString.cpp
+    ${SELF_TEST_DIR}/ToStringPair.cpp
+    ${SELF_TEST_DIR}/ToStringVector.cpp
+    ${SELF_TEST_DIR}/ToStringWhich.cpp
 )
 
 # configure the executable
