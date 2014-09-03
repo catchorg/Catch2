@@ -9,7 +9,10 @@ SOURCES = ApproxTests.cpp \
           TrickyTests.cpp \
           BDDTests.cpp \
           VariadicMacrosTests.cpp \
-          EnumToString.cpp
+          EnumToString.cpp \
+          ToStringPair.cpp \
+          ToStringVector.cpp \
+          ToStringWhich.cpp
 
 
 OBJECTS    = $(patsubst %.cpp, %.o, $(SOURCES))
