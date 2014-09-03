@@ -22,6 +22,11 @@
 #endif
 
 namespace Catch {
+
+// Why we're here.
+template<typename T>
+std::string toString( T const& value );
+
 namespace Detail {
 
 // SFINAE is currently disabled by default for all compilers.
@@ -64,10 +69,38 @@ namespace Detail {
 
 #endif
 
+#if defined(CATCH_CPP11_OR_GREATER)
+    template<typename T,
+             bool IsEmum = std::is_enum<T>::value
+             >
+    struct EnumStringMaker
+    {
+        static std::string convert( T const& ) { return "{?}"; }
+    };
+
+    template<typename T>
+    struct EnumStringMaker<T,true>
+    {
+        static std::string convert( T const& v )
+        {
+            return ::Catch::toString(
+                static_cast<typename std::underlying_type<T>::type>(v)
+                );
+        }
+    };
+#endif
     template<bool C>
     struct StringMakerBase {
+#if defined(CATCH_CPP11_OR_GREATER)
+        template<typename T>
+        static std::string convert( T const& v )
+        {
+            return EnumStringMaker<T>::convert( v );
+        }
+#else
         template<typename T>
         static std::string convert( T const& ) { return "{?}"; }
+#endif
     };
 
     template<>
@@ -88,9 +121,6 @@ namespace Detail {
     }
 
 } // end namespace Detail
-
-template<typename T>
-std::string toString( T const& value );
 
 template<typename T>
 struct StringMaker :
