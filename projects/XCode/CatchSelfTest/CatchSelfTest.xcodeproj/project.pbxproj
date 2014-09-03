@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		263F7A4719B6FCBF009474C2 /* EnumToString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4619B6FCBF009474C2 /* EnumToString.cpp */; };
 		2656C2211925E7330040DB02 /* catch_test_spec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2656C2201925E7330040DB02 /* catch_test_spec.cpp */; };
 		266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */; };
 		266ECD74170F3C620030D735 /* BDDTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266ECD73170F3C620030D735 /* BDDTests.cpp */; };
@@ -67,6 +68,7 @@
 		262E7399184673A800CAC268 /* catch_reporter_bases.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_bases.hpp; sourceTree = "<group>"; };
 		262E739A1846759000CAC268 /* catch_common.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_common.hpp; sourceTree = "<group>"; };
 		263F7A4519A66608009474C2 /* catch_fatal_condition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_fatal_condition.hpp; sourceTree = "<group>"; };
+		263F7A4619B6FCBF009474C2 /* EnumToString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EnumToString.cpp; path = ../../../SelfTest/EnumToString.cpp; sourceTree = "<group>"; };
 		263FD06017AF8DF200988A20 /* catch_timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_timer.hpp; sourceTree = "<group>"; };
 		263FD06117AF8DF200988A20 /* catch_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_timer.h; sourceTree = "<group>"; };
 		2656C21F1925E5100040DB02 /* catch_test_spec_parser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_test_spec_parser.hpp; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 		4A6D0C40149B3DAB00DB3EAA /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				263F7A4619B6FCBF009474C2 /* EnumToString.cpp */,
 				266ECD73170F3C620030D735 /* BDDTests.cpp */,
 				4A6D0C36149B3D9E00DB3EAA /* TrickyTests.cpp */,
 				4A6D0C2D149B3D9E00DB3EAA /* ApproxTests.cpp */,
@@ -518,6 +521,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				263F7A4719B6FCBF009474C2 /* EnumToString.cpp in Sources */,
 				4A6D0C37149B3D9E00DB3EAA /* ApproxTests.cpp in Sources */,
 				4A6D0C38149B3D9E00DB3EAA /* ClassTests.cpp in Sources */,
 				4A6D0C39149B3D9E00DB3EAA /* ConditionTests.cpp in Sources */,
