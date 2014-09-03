@@ -46,14 +46,14 @@ namespace Catch {
     void Timer::start() {
         m_ticks = getCurrentTicks();
     }
-    unsigned int Timer::getElapsedNanoseconds() const {
+    unsigned int Timer::getElapsedMicroseconds() const {
         return static_cast<unsigned int>(getCurrentTicks() - m_ticks);
     }
     unsigned int Timer::getElapsedMilliseconds() const {
-        return static_cast<unsigned int>((getCurrentTicks() - m_ticks)/1000);
+        return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
     }
     double Timer::getElapsedSeconds() const {
-        return (getCurrentTicks() - m_ticks)/1000000.0;
+        return getElapsedMicroseconds()/1000000.0;
     }
 
 } // namespace Catch
