@@ -21,6 +21,11 @@
 #include "catch_objc_arc.hpp"
 #endif
 
+#ifdef CATCH_CPP11_OR_GREATER
+#include <tuple>
+#include <type_traits>
+#endif
+
 namespace Catch {
 
 // Why we're here.
