@@ -1,5 +1,81 @@
 <Catch name="CatchSelfTest">
   <Group>
+    <TestCase name="toString(enum)">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e0) == &quot;0&quot;
+        </Original>
+        <Expanded>
+          &quot;0&quot; == &quot;0&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e1) == &quot;1&quot;
+        </Original>
+        <Expanded>
+          &quot;1&quot; == &quot;1&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString(enum w/operator&lt;&lt;)">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e0) == &quot;E2{0}&quot;
+        </Original>
+        <Expanded>
+          &quot;E2{0}&quot; == &quot;E2{0}&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e1) == &quot;E2{1}&quot;
+        </Original>
+        <Expanded>
+          &quot;E2{1}&quot; == &quot;E2{1}&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString(enum class)">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e0) == &quot;0&quot;
+        </Original>
+        <Expanded>
+          &quot;0&quot; == &quot;0&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e1) == &quot;1&quot;
+        </Original>
+        <Expanded>
+          &quot;1&quot; == &quot;1&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString(enum class w/operator&lt;&lt;)">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e0) == &quot;E2/V0&quot;
+        </Original>
+        <Expanded>
+          &quot;E2/V0&quot; == &quot;E2/V0&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e1) == &quot;E2/V1&quot;
+        </Original>
+        <Expanded>
+          &quot;E2/V1&quot; == &quot;E2/V1&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Some simple comparisons between doubles">
       <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ApproxTests.cpp" >
         <Original>
@@ -6030,6 +6106,234 @@ there&quot;
     <TestCase name="X/level/1/b">
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="toString( has_toString )">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringWhich.cpp" >
+        <Original>
+          Catch::toString( item ) == &quot;toString( has_toString )&quot;
+        </Original>
+        <Expanded>
+          &quot;toString( has_toString )&quot;
+==
+&quot;toString( has_toString )&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( has_maker )">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringWhich.cpp" >
+        <Original>
+          Catch::toString( item ) == &quot;StringMaker&lt;has_maker>&quot;
+        </Original>
+        <Expanded>
+          &quot;StringMaker&lt;has_maker>&quot;
+==
+&quot;StringMaker&lt;has_maker>&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( has_maker_and_toString )">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringWhich.cpp" >
+        <Original>
+          Catch::toString( item ) == &quot;toString( has_maker_and_toString )&quot;
+        </Original>
+        <Expanded>
+          &quot;toString( has_maker_and_toString )&quot;
+==
+&quot;toString( has_maker_and_toString )&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( vectors&lt;has_toString )">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringWhich.cpp" >
+        <Original>
+          Catch::toString( v ) == &quot;{ {?} }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ {?} }&quot; == &quot;{ {?} }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( vectors&lt;has_maker )">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringWhich.cpp" >
+        <Original>
+          Catch::toString( v ) == &quot;{ StringMaker&lt;has_maker> }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ StringMaker&lt;has_maker> }&quot;
+==
+&quot;{ StringMaker&lt;has_maker> }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( vectors&lt;has_maker_and_toString )">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringWhich.cpp" >
+        <Original>
+          Catch::toString( v ) == &quot;{ StringMaker&lt;has_maker_and_toString> }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ StringMaker&lt;has_maker_and_toString> }&quot;
+==
+&quot;{ StringMaker&lt;has_maker_and_toString> }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="std::pair&lt;int,std::string> -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringPair.cpp" >
+        <Original>
+          Catch::toString( value ) == &quot;{ 34, \&quot;xyzzy\&quot; }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ 34, &quot;xyzzy&quot; }&quot; == &quot;{ 34, &quot;xyzzy&quot; }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="std::pair&lt;int,const std::string> -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringPair.cpp" >
+        <Original>
+          Catch::toString(value) == &quot;{ 34, \&quot;xyzzy\&quot; }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ 34, &quot;xyzzy&quot; }&quot; == &quot;{ 34, &quot;xyzzy&quot; }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="std::vector&lt;std::pair&lt;std::string,int> > -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringPair.cpp" >
+        <Original>
+          Catch::toString( pr ) == &quot;{ { \&quot;green\&quot;, 55 } }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ { &quot;green&quot;, 55 } }&quot;
+==
+&quot;{ { &quot;green&quot;, 55 } }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringPair.cpp" >
+        <Original>
+          Catch::toString( pair ) == &quot;{ { 42, \&quot;Arthur\&quot; }, { \&quot;Ford\&quot;, 24 } }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ { 42, &quot;Arthur&quot; }, { &quot;Ford&quot;, 24 } }&quot;
+==
+&quot;{ { 42, &quot;Arthur&quot; }, { &quot;Ford&quot;, 24 } }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="vector&lt;int> -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{  }&quot;
+        </Original>
+        <Expanded>
+          &quot;{  }&quot; == &quot;{  }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{ 42 }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ 42 }&quot; == &quot;{ 42 }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{ 42, 512 }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ 42, 512 }&quot; == &quot;{ 42, 512 }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="vector&lt;string> -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{  }&quot;
+        </Original>
+        <Expanded>
+          &quot;{  }&quot; == &quot;{  }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{ \&quot;hello\&quot; }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ &quot;hello&quot; }&quot; == &quot;{ &quot;hello&quot; }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{ \&quot;hello\&quot;, \&quot;world\&quot; }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+==
+&quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="vector&lt;int,allocator> -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{  }&quot;
+        </Original>
+        <Expanded>
+          &quot;{  }&quot; == &quot;{  }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{ 42 }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ 42 }&quot; == &quot;{ 42 }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(vv) == &quot;{ 42, 512 }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ 42, 512 }&quot; == &quot;{ 42, 512 }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="vec&lt;vec&lt;string,alloc>> -> toString">
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(v) == &quot;{  }&quot;
+        </Original>
+        <Expanded>
+          &quot;{  }&quot; == &quot;{  }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/ToStringVector.cpp" >
+        <Original>
+          Catch::toString(v) == &quot;{ { \&quot;hello\&quot; }, { \&quot;world\&quot; } }&quot;
+        </Original>
+        <Expanded>
+          &quot;{ { &quot;hello&quot; }, { &quot;world&quot; } }&quot;
+==
+&quot;{ { &quot;hello&quot; }, { &quot;world&quot; } }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Parse test names and tags">
       <Section name="Empty test spec should have no filters">
         <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/CmdLineTests.cpp" >
@@ -7636,7 +7940,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="617" failures="99" expectedFailures="13"/>
+    <OverallResults successes="646" failures="99" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="617" failures="99" expectedFailures="13"/>
+  <OverallResults successes="646" failures="99" expectedFailures="13"/>
 </Catch>

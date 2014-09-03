@@ -1,5 +1,9 @@
 <testsuites>
-  <testsuite errors="12" failures="87" tests="729" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite errors="12" failures="87" tests="758" hostname="tbd" time="{duration}" timestamp="tbd">
+    <testcase classname="global" name="toString(enum)" time="{duration}"/>
+    <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
+    <testcase classname="global" name="toString(enum class)" time="{duration}"/>
+    <testcase classname="global" name="toString(enum class w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -529,6 +533,20 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="X/level/0/b" time="{duration}"/>
     <testcase classname="global" name="X/level/1/a" time="{duration}"/>
     <testcase classname="global" name="X/level/1/b" time="{duration}"/>
+    <testcase classname="global" name="toString( has_toString )" time="{duration}"/>
+    <testcase classname="global" name="toString( has_maker )" time="{duration}"/>
+    <testcase classname="global" name="toString( has_maker_and_toString )" time="{duration}"/>
+    <testcase classname="global" name="toString( vectors&lt;has_toString )" time="{duration}"/>
+    <testcase classname="global" name="toString( vectors&lt;has_maker )" time="{duration}"/>
+    <testcase classname="global" name="toString( vectors&lt;has_maker_and_toString )" time="{duration}"/>
+    <testcase classname="global" name="std::pair&lt;int,std::string> -> toString" time="{duration}"/>
+    <testcase classname="global" name="std::pair&lt;int,const std::string> -> toString" time="{duration}"/>
+    <testcase classname="global" name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" time="{duration}"/>
+    <testcase classname="global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}"/>
+    <testcase classname="global" name="vector&lt;int> -> toString" time="{duration}"/>
+    <testcase classname="global" name="vector&lt;string> -> toString" time="{duration}"/>
+    <testcase classname="global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>
+    <testcase classname="global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Empty test spec should have no filters" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Test spec from empty string should have no filters" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Test spec from just a comma should have no filters" time="{duration}"/>

@@ -4,6 +4,78 @@ CatchSelfTest is a <version> (develop) host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
+toString(enum)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "0" )
+with expansion:
+  "0" == "0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "1" )
+with expansion:
+  "1" == "1"
+
+-------------------------------------------------------------------------------
+toString(enum w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "E2{0}" )
+with expansion:
+  "E2{0}" == "E2{0}"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "E2{1}" )
+with expansion:
+  "E2{1}" == "E2{1}"
+
+-------------------------------------------------------------------------------
+toString(enum class)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "0" )
+with expansion:
+  "0" == "0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "1" )
+with expansion:
+  "1" == "1"
+
+-------------------------------------------------------------------------------
+toString(enum class w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "E2/V0" )
+with expansion:
+  "E2/V0" == "E2/V0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "E2/V1" )
+with expansion:
+  "E2/V1" == "E2/V1"
+
+-------------------------------------------------------------------------------
 Some simple comparisons between doubles
 -------------------------------------------------------------------------------
 ApproxTests.cpp:<line number>
@@ -5906,6 +5978,234 @@ TrickyTests.cpp:<line number>:
 PASSED:
 
 -------------------------------------------------------------------------------
+toString( has_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( item ) == "toString( has_toString )" )
+with expansion:
+  "toString( has_toString )"
+  ==
+  "toString( has_toString )"
+
+-------------------------------------------------------------------------------
+toString( has_maker )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( item ) == "StringMaker<has_maker>" )
+with expansion:
+  "StringMaker<has_maker>"
+  ==
+  "StringMaker<has_maker>"
+
+-------------------------------------------------------------------------------
+toString( has_maker_and_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( item ) == "toString( has_maker_and_toString )" )
+with expansion:
+  "toString( has_maker_and_toString )"
+  ==
+  "toString( has_maker_and_toString )"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( v ) == "{ {?} }" )
+with expansion:
+  "{ {?} }" == "{ {?} }"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_maker )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker> }" )
+with expansion:
+  "{ StringMaker<has_maker> }"
+  ==
+  "{ StringMaker<has_maker> }"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_maker_and_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker_and_toString> }" )
+with expansion:
+  "{ StringMaker<has_maker_and_toString> }"
+  ==
+  "{ StringMaker<has_maker_and_toString> }"
+
+-------------------------------------------------------------------------------
+std::pair<int,std::string> -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( value ) == "{ 34, \"xyzzy\" }" )
+with expansion:
+  "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+
+-------------------------------------------------------------------------------
+std::pair<int,const std::string> -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(value) == "{ 34, \"xyzzy\" }" )
+with expansion:
+  "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+
+-------------------------------------------------------------------------------
+std::vector<std::pair<std::string,int> > -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( pr ) == "{ { \"green\", 55 } }" )
+with expansion:
+  "{ { "green", 55 } }"
+  ==
+  "{ { "green", 55 } }"
+
+-------------------------------------------------------------------------------
+pair<pair<int,const char *,pair<std::string,int> > -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" )
+with expansion:
+  "{ { 42, "Arthur" }, { "Ford", 24 } }"
+  ==
+  "{ { 42, "Arthur" }, { "Ford", 24 } }"
+
+-------------------------------------------------------------------------------
+vector<int> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42, 512 }" )
+with expansion:
+  "{ 42, 512 }" == "{ 42, 512 }"
+
+-------------------------------------------------------------------------------
+vector<string> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ \"hello\" }" )
+with expansion:
+  "{ "hello" }" == "{ "hello" }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ \"hello\", \"world\" }" )
+with expansion:
+  "{ "hello", "world" }"
+  ==
+  "{ "hello", "world" }"
+
+-------------------------------------------------------------------------------
+vector<int,allocator> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42, 512 }" )
+with expansion:
+  "{ 42, 512 }" == "{ 42, 512 }"
+
+-------------------------------------------------------------------------------
+vec<vec<string,alloc>> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(v) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }" )
+with expansion:
+  "{ { "hello" }, { "world" } }"
+  ==
+  "{ { "hello" }, { "world" } }"
+
+-------------------------------------------------------------------------------
 Parse test names and tags
   Empty test spec should have no filters
 -------------------------------------------------------------------------------
@@ -7375,6 +7675,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 130 |  75 passed | 54 failed |  1 failed as expected
-assertions: 729 | 617 passed | 99 failed | 13 failed as expected
+test cases: 148 |  93 passed | 54 failed |  1 failed as expected
+assertions: 758 | 646 passed | 99 failed | 13 failed as expected
 
