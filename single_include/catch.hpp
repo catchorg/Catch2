@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 2 (develop branch)
- *  Generated: 2014-08-22 19:34:41.932570
+ *  CATCH v1.1 build 3 (develop branch)
+ *  Generated: 2014-09-03 19:22:56.858064
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -137,6 +137,10 @@
 
 #if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
 //#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#if (_MSC_VER >= 1400)
+#define CATCH_CONFIG_CPP11_NULLPTR
 #endif
 
 #endif // _MSC_VER
@@ -1037,6 +1041,11 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 #endif
 
 namespace Catch {
+
+// Why we're here.
+template<typename T>
+std::string toString( T const& value );
+
 namespace Detail {
 
 // SFINAE is currently disabled by default for all compilers.
@@ -1079,10 +1088,38 @@ namespace Detail {
 
 #endif
 
+#if defined(CATCH_CPP11_OR_GREATER)
+    template<typename T,
+             bool IsEmum = std::is_enum<T>::value
+             >
+    struct EnumStringMaker
+    {
+        static std::string convert( T const& ) { return "{?}"; }
+    };
+
+    template<typename T>
+    struct EnumStringMaker<T,true>
+    {
+        static std::string convert( T const& v )
+        {
+            return ::Catch::toString(
+                static_cast<typename std::underlying_type<T>::type>(v)
+                );
+        }
+    };
+#endif
     template<bool C>
     struct StringMakerBase {
+#if defined(CATCH_CPP11_OR_GREATER)
+        template<typename T>
+        static std::string convert( T const& v )
+        {
+            return EnumStringMaker<T>::convert( v );
+        }
+#else
         template<typename T>
         static std::string convert( T const& ) { return "{?}"; }
+#endif
     };
 
     template<>
@@ -1103,9 +1140,6 @@ namespace Detail {
     }
 
 } // end namespace Detail
-
-template<typename T>
-std::string toString( T const& value );
 
 template<typename T>
 struct StringMaker :
@@ -1692,7 +1726,7 @@ namespace Catch {
     public:
         Timer() : m_ticks( 0 ) {}
         void start();
-        unsigned int getElapsedNanoseconds() const;
+        unsigned int getElapsedMicroseconds() const;
         unsigned int getElapsedMilliseconds() const;
         double getElapsedSeconds() const;
 
@@ -6530,7 +6564,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 2, "develop" );
+    Version libraryVersion( 1, 1, 3, "develop" );
 }
 
 // #included from: catch_message.hpp
@@ -6728,14 +6762,14 @@ namespace Catch {
     void Timer::start() {
         m_ticks = getCurrentTicks();
     }
-    unsigned int Timer::getElapsedNanoseconds() const {
+    unsigned int Timer::getElapsedMicroseconds() const {
         return static_cast<unsigned int>(getCurrentTicks() - m_ticks);
     }
     unsigned int Timer::getElapsedMilliseconds() const {
-        return static_cast<unsigned int>((getCurrentTicks() - m_ticks)/1000);
+        return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
     }
     double Timer::getElapsedSeconds() const {
-        return (getCurrentTicks() - m_ticks)/1000000.0;
+        return getElapsedMicroseconds()/1000000.0;
     }
 
 } // namespace Catch
