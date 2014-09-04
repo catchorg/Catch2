@@ -1,23 +1,5 @@
 #include "catch.hpp"
 
-// === Pair ===
-namespace Catch {
-    // Note: If we put this in the right place in catch_tostring, then
-    // we can make it an overload of Catch::toString
-    template<typename T1, typename T2>
-    struct StringMaker<std::pair<T1,T2> > {
-        static std::string convert( const std::pair<T1,T2>& pair ) {
-            std::ostringstream oss;
-            oss << "{ "
-                << toString( pair.first )
-                << ", "
-                << toString( pair.second )
-                << " }";
-            return oss.str();
-        }
-    };
-}
-
 TEST_CASE( "std::pair<int,std::string> -> toString", "[toString][pair]" )
 {
     std::pair<int,std::string> value( 34, "xyzzy" );
@@ -49,3 +31,22 @@ TEST_CASE( "pair<pair<int,const char *,pair<std::string,int> > -> toString", "[t
     std::pair<left_t,right_t> pair( left, right );
     REQUIRE( Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" );
 }
+
+// More contrivance: A pair of vectors...
+TEST_CASE( "toString( pair<vector,vector> )", "[toString][pair][vector]" )
+{
+    typedef std::pair<std::vector<int>,std::vector<float> > type;
+
+    int aint[] = { 4, 2, 6 };
+    std::vector<int> vint( aint, aint+3 );
+    CHECK( "{ 4, 2, 6 }" == Catch::toString(vint) );
+
+    float afloat[] = { 0.4f, 0.2f, 0.7f };
+    std::vector<float> vfloat( afloat, afloat+3 );
+    CHECK( "{ 0.4f, 0.2f, 0.7f }" == Catch::toString(vfloat) );
+
+    type value( vint, vfloat );
+    CHECK( "{ { 4, 2, 6 }, { 0.4f, 0.2f, 0.7f } }" == Catch::toString(value) );
+}
+
+
