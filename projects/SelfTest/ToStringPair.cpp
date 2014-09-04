@@ -37,16 +37,16 @@ TEST_CASE( "toString( pair<vector,vector> )", "[toString][pair][vector]" )
 {
     typedef std::pair<std::vector<int>,std::vector<float> > type;
 
-    int aint[] = { 4, 2 };
-    std::vector<int> vint( std::begin(aint), std::end(aint) );
-    CHECK( "{ 4, 2 }" == Catch::toString(vint) );
+    int aint[] = { 4, 2, 6 };
+    std::vector<int> vint( aint, aint+3 );
+    CHECK( "{ 4, 2, 6 }" == Catch::toString(vint) );
 
-    float afloat[] = { 0.4f, 0.2f };
-    std::vector<float> vfloat( std::begin(afloat), std::end(afloat) );
-    CHECK( "{ 0.4f, 0.2f }" == Catch::toString(vfloat) );
+    float afloat[] = { 0.4f, 0.2f, 0.7f };
+    std::vector<float> vfloat( afloat, afloat+3 );
+    CHECK( "{ 0.4f, 0.2f, 0.7f }" == Catch::toString(vfloat) );
 
     type value( vint, vfloat );
-    CHECK( "{ { 4, 2 }, { 0.4f, 0.2f } }" == Catch::toString(value) );
+    CHECK( "{ { 4, 2, 6 }, { 0.4f, 0.2f, 0.7f } }" == Catch::toString(value) );
 }
 
 
