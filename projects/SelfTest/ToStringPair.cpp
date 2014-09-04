@@ -31,3 +31,22 @@ TEST_CASE( "pair<pair<int,const char *,pair<std::string,int> > -> toString", "[t
     std::pair<left_t,right_t> pair( left, right );
     REQUIRE( Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" );
 }
+
+// More contrivance: A pair of vectors...
+TEST_CASE( "toString( pair<vector,vector> )", "[toString][pair][vector]" )
+{
+    typedef std::pair<std::vector<int>,std::vector<float> > type;
+
+    int aint[] = { 4, 2 };
+    std::vector<int> vint( std::begin(aint), std::end(aint) );
+    CHECK( "{ 4, 2 }" == Catch::toString(vint) );
+
+    float afloat[] = { 0.4f, 0.2f };
+    std::vector<float> vfloat( std::begin(afloat), std::end(afloat) );
+    CHECK( "{ 0.4f, 0.2f }" == Catch::toString(vfloat) );
+
+    type value( vint, vfloat );
+    CHECK( "{ { 4, 2 }, { 0.4f, 0.2f } }" == Catch::toString(value) );
+}
+
+
