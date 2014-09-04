@@ -75,6 +75,14 @@ PASSED:
 with expansion:
   "E2/V1" == "E2/V1"
 
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e3) == "Unknown enum value 10" )
+with expansion:
+  "Unknown enum value 10"
+  ==
+  "Unknown enum value 10"
+
 -------------------------------------------------------------------------------
 Some simple comparisons between doubles
 -------------------------------------------------------------------------------
@@ -7676,5 +7684,5 @@ with expansion:
 
 ===============================================================================
 test cases: 148 |  93 passed | 54 failed |  1 failed as expected
-assertions: 758 | 646 passed | 99 failed | 13 failed as expected
+assertions: 759 | 647 passed | 99 failed | 13 failed as expected
 

@@ -24,6 +24,11 @@ TEST_CASE( "vector<string> -> toString", "[toString][vector]" )
 }
 
 #if defined(CATCH_CPP11_OR_GREATER)
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc++98-compat"
+#endif
+
 /*
   Note: These tests *can* be made to work with C++ < 11, but the
   allocator is a lot more work...
@@ -34,12 +39,10 @@ namespace {
     struct minimal_allocator {
         typedef T value_type;
         typedef std::size_t size_type;
-        T *allocate( size_type n )
-        {
+        T *allocate( size_type n ) {
             return static_cast<T *>( ::operator new( n * sizeof(T) ) );
         }
-        void deallocate( T *p, size_type /*n*/ )
-        {
+        void deallocate( T *p, size_type /*n*/ ) {
             ::operator delete( static_cast<void *>(p) );
         }
         template<typename U>
@@ -49,8 +52,7 @@ namespace {
     };
 }
 
-TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator]" )
-{
+TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator]" ) {
     std::vector<int,minimal_allocator<int> > vv;
     REQUIRE( Catch::toString(vv) == "{  }" );
     vv.push_back( 42 );
@@ -59,8 +61,7 @@ TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator]" )
     REQUIRE( Catch::toString(vv) == "{ 42, 512 }" );
 }
 
-TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator]" )
-{
+TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator]" ) {
     typedef std::vector<std::string,minimal_allocator<std::string> > inner;
     typedef std::vector<inner> vector;
     vector v;
@@ -69,4 +70,8 @@ TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator]" 
     v.push_back( inner { "world" } );
     REQUIRE( Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }" );
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
 #endif
+#endif // CATCH_CPP11_OR_GREATER

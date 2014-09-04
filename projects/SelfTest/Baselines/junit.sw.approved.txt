@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite errors="12" failures="87" tests="758" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite errors="12" failures="87" tests="759" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>

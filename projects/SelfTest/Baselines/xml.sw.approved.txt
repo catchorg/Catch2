@@ -74,6 +74,16 @@
           &quot;E2/V1&quot; == &quot;E2/V1&quot;
         </Expanded>
       </Expression>
+      <Expression success="true" filename="/Users/philnash/Dev/OSS/Catch-Dev/projects/SelfTest/EnumToString.cpp" >
+        <Original>
+          Catch::toString(e3) == &quot;Unknown enum value 10&quot;
+        </Original>
+        <Expanded>
+          &quot;Unknown enum value 10&quot;
+==
+&quot;Unknown enum value 10&quot;
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Some simple comparisons between doubles">
@@ -7940,7 +7950,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="646" failures="99" expectedFailures="13"/>
+    <OverallResults successes="647" failures="99" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="646" failures="99" expectedFailures="13"/>
+  <OverallResults successes="647" failures="99" expectedFailures="13"/>
 </Catch>
