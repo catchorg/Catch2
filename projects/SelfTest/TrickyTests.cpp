@@ -17,18 +17,6 @@
 #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 
-namespace Catch
-{
-    template<>
-    std::string toString<std::pair<int, int> >( const std::pair<int, int>& value )
-    {
-        std::ostringstream oss;
-        oss << "std::pair( " << value.first << ", " << value.second << " )";
-        return oss.str();
-        
-    }
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (

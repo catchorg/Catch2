@@ -1,23 +1,5 @@
 #include "catch.hpp"
 
-// === Pair ===
-namespace Catch {
-    // Note: If we put this in the right place in catch_tostring, then
-    // we can make it an overload of Catch::toString
-    template<typename T1, typename T2>
-    struct StringMaker<std::pair<T1,T2> > {
-        static std::string convert( const std::pair<T1,T2>& pair ) {
-            std::ostringstream oss;
-            oss << "{ "
-                << toString( pair.first )
-                << ", "
-                << toString( pair.second )
-                << " }";
-            return oss.str();
-        }
-    };
-}
-
 TEST_CASE( "std::pair<int,std::string> -> toString", "[toString][pair]" )
 {
     std::pair<int,std::string> value( 34, "xyzzy" );
