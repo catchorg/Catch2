@@ -33,7 +33,7 @@ TEST_CASE( "tuple<string,string>", "[toString][tuple]" )
 TEST_CASE( "tuple<tuple<int>,tuple<>,float>", "[toString][tuple]" )
 {
     typedef std::tuple<std::tuple<int>,std::tuple<>,float> type;
-    type value { {42}, {}, 1.2f };
+    type value { std::tuple<int>{42}, {}, 1.2f };
     CHECK( "{ { 42 }, { }, 1.2f }" == Catch::toString(value) );
 }
 
