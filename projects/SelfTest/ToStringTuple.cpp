@@ -44,5 +44,34 @@ TEST_CASE( "tuple<nullptr,int,const char *>", "[toString][tuple]" )
     CHECK( "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value) );
 }
 
+TEST_CASE( "toString( tuple<pair,pair,pair> )", "[toString][tuple][pair]" )
+{
+    typedef std::tuple<std::pair<int,int>,
+                       std::pair<int,int>,
+                       std::pair<int,int>>
+        type;
+    std::pair<int,int> p1{ 12, 34 };
+    CHECK( "{ 12, 34 }" == Catch::toString(p1) );
+    std::pair<int,int> p2{ 23, 45 };
+    CHECK( "{ 23, 45 }" == Catch::toString(p2) );
+    std::pair<int,int> p3{ 24, 68 };
+    CHECK( "{ 24, 68 }" == Catch::toString(p3) );
+    type value{ p1, p2, p3 };
+    CHECK( "{ { 12, 34 }, { 23, 45 }, { 24, 68 } }" == Catch::toString(value) );
+}
+
+TEST_CASE( "toString( pair<tuple,tuple> )", "[toString][tuple][pair]" )
+{
+    typedef std::pair<std::tuple<int,int,int>,
+                      std::tuple<int,int,int>
+                      > type;
+    std::tuple<int,int,int> tuple1{ 12, 34, 56 };
+    CHECK( "{ 12, 34, 56 }" == Catch::toString(tuple1) );
+    std::tuple<int,int,int> tuple2{ 23, 45, 67 };
+    CHECK( "{ 23, 45, 67 }" == Catch::toString(tuple2) );
+    type value{ tuple1, tuple2 };
+    CHECK( "{ { 12, 34, 56 }, { 23, 45, 67 } }" == Catch::toString(value) );
+}
+
 #endif /* #ifdef CATCH_CPP11_OR_GREATER */
 
