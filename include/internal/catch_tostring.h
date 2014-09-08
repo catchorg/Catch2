@@ -29,6 +29,8 @@ std::string toString( T const& value );
 
 namespace Detail {
 
+    extern std::string unprintableString;
+
 // SFINAE is currently disabled by default for all compilers.
 // If the non SFINAE version of IsStreamInsertable is ambiguous for you
 // and your compiler supports SFINAE, try #defining CATCH_CONFIG_SFINAE
@@ -71,11 +73,11 @@ namespace Detail {
 
 #if defined(CATCH_CPP11_OR_GREATER)
     template<typename T,
-             bool IsEmum = std::is_enum<T>::value
+             bool IsEnum = std::is_enum<T>::value
              >
     struct EnumStringMaker
     {
-        static std::string convert( T const& ) { return "{?}"; }
+        static std::string convert( T const& ) { return unprintableString; }
     };
 
     template<typename T>
@@ -99,7 +101,7 @@ namespace Detail {
         }
 #else
         template<typename T>
-        static std::string convert( T const& ) { return "{?}"; }
+        static std::string convert( T const& ) { return unprintableString; }
 #endif
     };
 
@@ -152,12 +154,17 @@ namespace Detail {
     std::string rangeToString( InputIterator first, InputIterator last );
 }
 
+//template<typename T, typename Allocator>
+//struct StringMaker<std::vector<T, Allocator> > {
+//    static std::string convert( std::vector<T,Allocator> const& v ) {
+//        return Detail::rangeToString( v.begin(), v.end() );
+//    }
+//};
+
 template<typename T, typename Allocator>
-struct StringMaker<std::vector<T, Allocator> > {
-    static std::string convert( std::vector<T,Allocator> const& v ) {
-        return Detail::rangeToString( v.begin(), v.end() );
-    }
-};
+std::string toString( std::vector<T,Allocator> const& v ) {
+    return Detail::rangeToString( v.begin(), v.end() );
+}
 
 namespace Detail {
     template<typename T>

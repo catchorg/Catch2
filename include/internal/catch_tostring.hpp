@@ -15,6 +15,8 @@ namespace Catch {
 
 namespace Detail {
 
+    std::string unprintableString = "{?}";
+
     namespace {
         struct Endianness {
             enum Arch { Big, Little };
