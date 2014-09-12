@@ -47,9 +47,9 @@ int main( int argc, char* const argv[] )
   if( returnCode != 0 ) // Indicates a command line error
   	return returnCode;
 
-  // writing to session.configData() or session.Config() here 
-  // overrides command line args
-  // only do this if you know you need to
+  // Writing to session.configData() or session.Config() here 
+  // overrides command line args.
+  // Only do this if you know you need to.
 
   return session.run();
 }

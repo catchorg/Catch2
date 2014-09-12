@@ -96,7 +96,7 @@ Although this was a simple test it's been enough to demonstrate a few things abo
 
 Most test frameworks have a class-based fixture mechanism. That is, test cases map to methods on a class and common setup and teardown can be performed in ```setup()``` and ```teardown()``` methods (or constructor/ destructor in languages, like C++, that support deterministic destruction).
 
-While Catch fully supports this way of working there are a few problems with the approach. In particular the way your code must be split up, and the blunt granularity (you can only have one setup/ teardown pair across a set of methods - sometimes you want slightly different setup in each method - or you may want several levels of setup. We'll revisit that concept shortly and, hopefully, make it clearer). It was <a href="http://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">problems like these</a> that led James Newkirk, who led the team that built NUnit, to start again from scratch and <a href="http://jamesnewkirk.typepad.com/posts/2007/09/announcing-xuni.html">build xUnit</a>).
+While Catch fully supports this way of working there are a few problems with the approach. In particular, the way your code must be split up and the blunt granularity of cause problems. You can only have one setup/ teardown pair across a set of methods, but sometimes you want slightly different setup in each method, or you may even want several levels of setup (a concept which we will clarify later on in this tutorial). It was <a href="http://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">problems like these</a> that led James Newkirk, who led the team that built NUnit, to start again from scratch and <a href="http://jamesnewkirk.typepad.com/posts/2007/09/announcing-xuni.html">build xUnit</a>).
 
 Catch takes a different approach (to both NUnit and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explained through an example:
 
@@ -138,9 +138,9 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 For each ```SECTION``` the ```TEST_CASE``` is executed from the start - so as we enter each section we know that size is 5 and capacity is at least 5. We enforced those requirements with the ```REQUIRE```s at the top level so we can be confident in them.
 This works because the ```SECTION``` macro contains an if statement that calls back into Catch to see if the section should be executed. One leaf section is executed on each run through a ```TEST_CASE```. The other sections are skipped. Next time through the next section is executed, and so on until no new sections are encountered.
 
-So far so good - this is already an improvement on the setup/ teardown approach because now we see our setup code inline and we can use the stack.
+So far so good - this is already an improvement on the setup/teardown approach because now we see our setup code inline and use the stack.
 
-The power of sections really shows, however, when we need to execute a sequence of, checked, operations. Continuing the vector example we might want to verify that after reserving a larger capacity, if we reserve smaller capacity (but still larger than the current size) then the capacity is not, in fact, changed. We can do that, naturally, like so:
+The power of sections really shows, however, when we need to execute a sequence of, checked, operations. Continuing the vector example, we might want to verify that attempting to reserve a capacity smaller than the current capacity of the vector changes nothing. We can do that, naturally, like so:
 
 ```c++
     SECTION( "reserving bigger changes capacity but not size" ) {
@@ -161,7 +161,7 @@ Sections can be nested to an arbitrary depth (limited only by your stack size). 
 
 ## BDD-Style
 
-If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively (for more details see [Test cases and sections](test-cases-and-sections.md)).
+If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively. For more details see [Test cases and sections](test-cases-and-sections.md).
 
 The vector example can be adjusted to use these macros like so:
 
@@ -210,7 +210,7 @@ SCENARIO( "vectors can be sized and resized", "[vector]" ) {
 }
 ```
 
-A nice consequence of this is that when these tests are run the test names are reported like this:
+Conveniently, these tests will be reported as follows when ran:
 
 ```
 Scenario: vectors can be sized and resized
