@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 3 (develop branch)
- *  Generated: 2014-09-03 19:22:56.858064
+ *  CATCH v1.1 build 4 (develop branch)
+ *  Generated: 2014-09-15 18:39:57.728720
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1048,6 +1048,8 @@ std::string toString( T const& value );
 
 namespace Detail {
 
+    extern std::string unprintableString;
+
 // SFINAE is currently disabled by default for all compilers.
 // If the non SFINAE version of IsStreamInsertable is ambiguous for you
 // and your compiler supports SFINAE, try #defining CATCH_CONFIG_SFINAE
@@ -1090,11 +1092,11 @@ namespace Detail {
 
 #if defined(CATCH_CPP11_OR_GREATER)
     template<typename T,
-             bool IsEmum = std::is_enum<T>::value
+             bool IsEnum = std::is_enum<T>::value
              >
     struct EnumStringMaker
     {
-        static std::string convert( T const& ) { return "{?}"; }
+        static std::string convert( T const& ) { return unprintableString; }
     };
 
     template<typename T>
@@ -1118,7 +1120,7 @@ namespace Detail {
         }
 #else
         template<typename T>
-        static std::string convert( T const& ) { return "{?}"; }
+        static std::string convert( T const& ) { return unprintableString; }
 #endif
     };
 
@@ -1171,12 +1173,17 @@ namespace Detail {
     std::string rangeToString( InputIterator first, InputIterator last );
 }
 
+//template<typename T, typename Allocator>
+//struct StringMaker<std::vector<T, Allocator> > {
+//    static std::string convert( std::vector<T,Allocator> const& v ) {
+//        return Detail::rangeToString( v.begin(), v.end() );
+//    }
+//};
+
 template<typename T, typename Allocator>
-struct StringMaker<std::vector<T, Allocator> > {
-    static std::string convert( std::vector<T,Allocator> const& v ) {
-        return Detail::rangeToString( v.begin(), v.end() );
-    }
-};
+std::string toString( std::vector<T,Allocator> const& v ) {
+    return Detail::rangeToString( v.begin(), v.end() );
+}
 
 namespace Detail {
     template<typename T>
@@ -1613,7 +1620,7 @@ namespace Catch {
             std::string matcherAsString = ::Catch::Matchers::matcher.toString(); \
             __catchResult \
                 .setLhs( Catch::toString( arg ) ) \
-                .setRhs( matcherAsString == "{?}" ? #matcher : matcherAsString ) \
+                .setRhs( matcherAsString == Catch::Detail::unprintableString ? #matcher : matcherAsString ) \
                 .setOp( "matches" ) \
                 .setResultType( ::Catch::Matchers::matcher.match( arg ) ); \
             __catchResult.captureExpression(); \
@@ -3000,6 +3007,11 @@ namespace Catch {
         Always,
         Never
     }; };
+    struct RunTests { enum InWhatOrder {
+        InDeclarationOrder,
+        InLexicographicalOrder,
+        InRandomOrder
+    }; };
 
     class TestSpec;
 
@@ -3017,6 +3029,8 @@ namespace Catch {
         virtual bool showInvisibles() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;
         virtual TestSpec const& testSpec() const = 0;
+        virtual RunTests::InWhatOrder runOrder() const = 0;
+        virtual unsigned int rngSeed() const = 0;
     };
 }
 
@@ -3048,6 +3062,7 @@ namespace Catch {
 #include <vector>
 #include <string>
 #include <iostream>
+#include <ctime>
 
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
 #define CATCH_CONFIG_CONSOLE_WIDTH 80
@@ -3068,9 +3083,11 @@ namespace Catch {
             showHelp( false ),
             showInvisibles( false ),
             abortAfter( -1 ),
+            rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
-            showDurations( ShowDurations::DefaultForReporter )
+            showDurations( ShowDurations::DefaultForReporter ),
+            runOrder( RunTests::InDeclarationOrder )
         {}
 
         bool listTests;
@@ -3085,10 +3102,12 @@ namespace Catch {
         bool showInvisibles;
 
         int abortAfter;
+        unsigned int rngSeed;
 
         Verbosity::Level verbosity;
         WarnAbout::What warnings;
         ShowDurations::OrNot showDurations;
+        RunTests::InWhatOrder runOrder;
 
         std::string reporterName;
         std::string outputFilename;
@@ -3170,6 +3189,8 @@ namespace Catch {
         virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
         virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
+        virtual RunTests::InWhatOrder runOrder() const  { return m_data.runOrder; }
+        virtual unsigned int rngSeed() const    { return m_data.rngSeed; }
 
     private:
         ConfigData m_data;
@@ -3968,7 +3989,7 @@ namespace Clara {
                 if( it == itEnd ) {
                     if( token.type == Parser::Token::Positional || !m_throwOnUnrecognisedTokens )
                         unusedTokens.push_back( token );
-                    else if( m_throwOnUnrecognisedTokens )
+                    else if( errors.empty() && m_throwOnUnrecognisedTokens )
                         errors.push_back( "unrecognised option: " + token.data );
                 }
             }
@@ -4066,7 +4087,28 @@ namespace Catch {
             config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
         else
             throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
-
+    }
+    inline void setOrder( ConfigData& config, std::string const& order ) {
+        if( startsWith( "declared", order ) )
+            config.runOrder = RunTests::InDeclarationOrder;
+        else if( startsWith( "lexical", order ) )
+            config.runOrder = RunTests::InLexicographicalOrder;
+        else if( startsWith( "random", order ) )
+            config.runOrder = RunTests::InRandomOrder;
+        else
+            throw std::runtime_error( "Unrecognised ordering: '" + order + "'" );
+    }
+    inline void setRngSeed( ConfigData& config, std::string const& seed ) {
+        if( seed == "time" ) {
+            config.rngSeed = static_cast<unsigned int>( std::time(0) );
+        }
+        else {
+            std::stringstream ss;
+            ss << seed;
+            ss >> config.rngSeed;
+            if( ss.fail() )
+                throw std::runtime_error( "Argment to --rng-seed should be the word 'time' or a number" );
+        }
     }
     inline void setVerbosity( ConfigData& config, int level ) {
         // !TBD: accept strings?
@@ -4177,6 +4219,14 @@ namespace Catch {
         cli["--list-reporters"]
             .describe( "list all reporters" )
             .bind( &ConfigData::listReporters );
+
+        cli["--order"]
+            .describe( "test case order (defaults to decl)" )
+            .bind( &setOrder, "decl|lex|rand" );
+
+        cli["--rng-seed"]
+            .describe( "set a specific seed for random numbers" )
+            .bind( &setRngSeed, "'time'|number" );
 
         return cli;
     }
@@ -5400,7 +5450,7 @@ namespace Catch {
 
             Totals totals;
 
-            context.testGroupStarting( "", 1, 1 ); // deprecated?
+            context.testGroupStarting( "all tests", 1, 1 ); // deprecated?
 
             TestSpec testSpec = m_config->testSpec();
             if( !testSpec.hasFilters() )
@@ -5423,7 +5473,7 @@ namespace Catch {
                     m_testsAlreadyRun.insert( *it );
                 }
             }
-            context.testGroupEnded( "", totals, 1, 1 );
+            context.testGroupEnded( "all tests", totals, 1, 1 );
             return totals;
         }
 
@@ -5533,6 +5583,9 @@ namespace Catch {
             try
             {
                 config(); // Force config to be constructed
+
+                std::srand( m_configData.rngSeed );
+
                 Runner runner( m_config );
 
                 // Handle list request
@@ -5625,13 +5678,32 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
+        struct LexSort {
+            bool operator() (TestCase i,TestCase j) { return (i<j);}
+        };
+
         virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+            struct RandomNumberGenerator {
+                int operator()( int n ) { return std::rand() % n; }
+            };
+
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
                 if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
                     matchingTestCases.push_back( *it );
+            }
+            switch( config.runOrder() ) {
+                case RunTests::InLexicographicalOrder:
+                    std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
+                    break;
+                case RunTests::InRandomOrder:
+                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), RandomNumberGenerator() );
+                    break;
+                case RunTests::InDeclarationOrder:
+                    // already in declaration order
+                    break;
             }
         }
 
@@ -6564,7 +6636,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 3, "develop" );
+    Version libraryVersion( 1, 1, 4, "develop" );
 }
 
 // #included from: catch_message.hpp
@@ -6980,6 +7052,8 @@ namespace Catch {
 namespace Catch {
 
 namespace Detail {
+
+    std::string unprintableString = "{?}";
 
     namespace {
         struct Endianness {
@@ -8440,6 +8514,9 @@ namespace Catch {
                 stream << " (" << libraryVersion.branchName << ")";
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
+
+            if( m_config->rngSeed() != 0 )
+                stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
 
             currentTestRunInfo.used = true;
         }
