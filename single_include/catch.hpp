@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.1 build 4 (develop branch)
- *  Generated: 2014-09-15 23:31:31.318013
+ *  Generated: 2014-09-15 23:36:12.995567
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5679,13 +5679,12 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        struct LexSort {
-            bool operator() (TestCase i,TestCase j) { return (i<j);}
-        };
-
         virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+            struct LexSort {
+                bool operator() (TestCase i,TestCase j) const { return (i<j);}
+            };
             struct RandomNumberGenerator {
-                int operator()( int n ) { return std::rand() % n; }
+                int operator()( int n ) const { return std::rand() % n; }
             };
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),

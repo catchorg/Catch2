@@ -60,13 +60,14 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        struct LexSort {
-            bool operator() (TestCase i,TestCase j) { return (i<j);}
-        };
+
 
         virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+            struct LexSort {
+                bool operator() (TestCase i,TestCase j) const { return (i<j);}
+            };
             struct RandomNumberGenerator {
-                int operator()( int n ) { return std::rand() % n; }
+                int operator()( int n ) const { return std::rand() % n; }
             };
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
