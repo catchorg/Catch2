@@ -59,13 +59,32 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
+        struct LexSort {
+            bool operator() (TestCase i,TestCase j) { return (i<j);}
+        };
+
         virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+            struct RandomNumberGenerator {
+                int operator()( int n ) { return std::rand() % n; }
+            };
+
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
                 if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
                     matchingTestCases.push_back( *it );
+            }
+            switch( config.runOrder() ) {
+                case RunTests::InLexicographicalOrder:
+                    std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
+                    break;
+                case RunTests::InRandomOrder:
+                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), RandomNumberGenerator() );
+                    break;
+                case RunTests::InDeclarationOrder:
+                    // already in declaration order
+                    break;
             }
         }
 
