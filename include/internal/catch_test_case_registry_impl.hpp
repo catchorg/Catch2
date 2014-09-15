@@ -17,6 +17,7 @@
 #include <set>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 namespace Catch {
 
