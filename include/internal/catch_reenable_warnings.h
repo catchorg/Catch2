@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_REENABLE_WARNINGS_H_INCLUDED
 #define TWOBLUECUBES_CATCH_REENABLE_WARNINGS_H_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #elif defined __GNUC__
 #pragma GCC diagnostic pop

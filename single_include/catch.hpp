@@ -17,7 +17,7 @@
 
 #define TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 #pragma clang diagnostic ignored "-Wvariadic-macros"
 #pragma clang diagnostic ignored "-Wc99-extensions"
@@ -66,7 +66,7 @@
 
 // Much of the following code is based on Boost (1.53)
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 
 #  if __has_feature(cxx_nullptr)
 #    define CATCH_CONFIG_CPP11_NULLPTR
@@ -327,7 +327,7 @@ namespace Catch {
 // #included from: catch_ptr.hpp
 #define TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -404,7 +404,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 
@@ -1023,13 +1023,13 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 #else
 inline void arcSafeRelease( NSObject* ){}
 inline id performOptionalSelector( id obj, SEL sel ) {
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 #endif
     if( [obj respondsToSelector: sel] )
         return [obj performSelector: sel];
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
     return nil;
@@ -2471,7 +2471,7 @@ namespace Catch {
 #include <string>
 #include <set>
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -2540,7 +2540,7 @@ namespace Catch {
                             SourceLineInfo const& lineInfo );
 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 
@@ -2746,7 +2746,7 @@ return @ desc; \
 // Collect all the implementation files together here
 // These are the equivalent of what would usually be cpp files
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
@@ -2763,7 +2763,7 @@ return @ desc; \
 // #included from: catch_test_spec_parser.hpp
 #define TWOBLUECUBES_CATCH_TEST_SPEC_PARSER_HPP_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -2771,7 +2771,7 @@ return @ desc; \
 // #included from: catch_test_spec.hpp
 #define TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -2818,12 +2818,12 @@ namespace Catch {
                         return contains( toLower( testCase.name ), m_name );
                 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
                 throw std::logic_error( "Unknown enum" );
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
             }
@@ -2881,7 +2881,7 @@ namespace Catch {
     };
 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 
@@ -2978,7 +2978,7 @@ namespace Catch {
 
 } // namespace Catch
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 
@@ -3039,7 +3039,7 @@ namespace Catch {
 
 #include <streambuf>
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
@@ -6797,7 +6797,7 @@ namespace Catch
 
 // #included from: catch_timer.hpp
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wc++11-long-long"
 #endif
@@ -6846,7 +6846,7 @@ namespace Catch {
 
 } // namespace Catch
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 // #included from: catch_common.hpp
@@ -9046,7 +9046,7 @@ namespace Catch {
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 
@@ -9231,7 +9231,7 @@ using Catch::Detail::Approx;
 
 #define TWOBLUECUBES_CATCH_REENABLE_WARNINGS_H_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #elif defined __GNUC__
 #pragma GCC diagnostic pop

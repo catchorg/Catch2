@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
 #define TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 #pragma clang diagnostic ignored "-Wvariadic-macros"
 #pragma clang diagnostic ignored "-Wc99-extensions"

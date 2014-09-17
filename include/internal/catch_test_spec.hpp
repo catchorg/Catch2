@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_SPEC_HPP_INCLUDED
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -57,12 +57,12 @@ namespace Catch {
                         return contains( toLower( testCase.name ), m_name );
                 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
                 throw std::logic_error( "Unknown enum" );
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
             }
@@ -120,7 +120,7 @@ namespace Catch {
     };
 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 

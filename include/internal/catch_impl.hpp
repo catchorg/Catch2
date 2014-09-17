@@ -11,7 +11,7 @@
 // Collect all the implementation files together here
 // These are the equivalent of what would usually be cpp files
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
@@ -92,7 +92,7 @@ namespace Catch {
     INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 

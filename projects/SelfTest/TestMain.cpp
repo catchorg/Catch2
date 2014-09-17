@@ -14,7 +14,7 @@ CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
 CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic ignored "-Wpadded"
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif

@@ -14,7 +14,7 @@
 #include <string>
 #include <set>
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -83,7 +83,7 @@ namespace Catch {
                             SourceLineInfo const& lineInfo );
 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 

@@ -10,7 +10,7 @@
 
 // Much of the following code is based on Boost (1.53)
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 
 #  if __has_feature(cxx_nullptr)
 #    define CATCH_CONFIG_CPP11_NULLPTR

@@ -9,7 +9,7 @@
 #include "catch_timer.h"
 #include "catch_platform.h"
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wc++11-long-long"
 #endif
@@ -58,6 +58,6 @@ namespace Catch {
 
 } // namespace Catch
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif

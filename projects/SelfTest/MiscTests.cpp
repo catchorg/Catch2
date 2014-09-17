@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 

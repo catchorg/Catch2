@@ -30,7 +30,7 @@ TEST_CASE( "toString(enum w/operator<<)", "[toString][enum]" ) {
 }
 
 #if defined(CATCH_CPP11_OR_GREATER)
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
@@ -69,7 +69,7 @@ TEST_CASE( "toString(enum class w/operator<<)", "[toString][enum][enumClass]" ) 
     CHECK( Catch::toString(e3) == "Unknown enum value 10" );
 }
 
-#ifdef __clang__
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma clang diagnostic pop
 #endif
 #endif // CATCH_CPP11_OR_GREATER
