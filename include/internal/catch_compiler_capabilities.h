@@ -84,10 +84,6 @@
 //#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
-#if (_MSC_VER >= 1400)
-#define CATCH_CONFIG_CPP11_NULLPTR
-#endif
-
 #endif // _MSC_VER
 
 // Use variadic macros if the compiler supports them
