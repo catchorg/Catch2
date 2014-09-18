@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 4 (develop branch)
- *  Generated: 2014-09-15 23:36:12.995567
+ *  CATCH v1.1 build 5 (develop branch)
+ *  Generated: 2014-09-18 18:24:52.876757
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -135,12 +135,12 @@
 // Visual C++
 #ifdef _MSC_VER
 
-#if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
-//#define CATCH_CONFIG_SFINAE // Not confirmed
+#if (_MSC_VER >= 1600)
+#define CATCH_CONFIG_CPP11_NULLPTR
 #endif
 
-#if (_MSC_VER >= 1400)
-#define CATCH_CONFIG_CPP11_NULLPTR
+#if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
+//#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
 #endif // _MSC_VER
@@ -5641,6 +5641,13 @@ namespace Catch {
 namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
+        struct LexSort {
+            bool operator() (TestCase i,TestCase j) const { return (i<j);}
+        };
+        struct RandomNumberGenerator {
+            int operator()( int n ) const { return std::rand() % n; }
+        };
+
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
@@ -5680,12 +5687,6 @@ namespace Catch {
         }
 
         virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
-            struct LexSort {
-                bool operator() (TestCase i,TestCase j) const { return (i<j);}
-            };
-            struct RandomNumberGenerator {
-                int operator()( int n ) const { return std::rand() % n; }
-            };
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
@@ -5699,7 +5700,10 @@ namespace Catch {
                     std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
                     break;
                 case RunTests::InRandomOrder:
-                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), RandomNumberGenerator() );
+                    {
+                        RandomNumberGenerator rng;
+                        std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
+                    }
                     break;
                 case RunTests::InDeclarationOrder:
                     // already in declaration order
@@ -6636,7 +6640,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 4, "develop" );
+    Version libraryVersion( 1, 1, 5, "develop" );
 }
 
 // #included from: catch_message.hpp
