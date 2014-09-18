@@ -22,6 +22,13 @@
 namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
+        struct LexSort {
+            bool operator() (TestCase i,TestCase j) const { return (i<j);}
+        };
+        struct RandomNumberGenerator {
+            int operator()( int n ) const { return std::rand() % n; }
+        };
+
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
@@ -60,15 +67,7 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-
-
         virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
-            struct LexSort {
-                bool operator() (TestCase i,TestCase j) const { return (i<j);}
-            };
-            struct RandomNumberGenerator {
-                int operator()( int n ) const { return std::rand() % n; }
-            };
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
@@ -82,7 +81,10 @@ namespace Catch {
                     std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
                     break;
                 case RunTests::InRandomOrder:
-                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), RandomNumberGenerator() );
+                    {
+                        RandomNumberGenerator rng;
+                        std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
+                    }
                     break;
                 case RunTests::InDeclarationOrder:
                     // already in declaration order
