@@ -80,6 +80,10 @@
 // Visual C++
 #ifdef _MSC_VER
 
+#if (_MSC_VER >= 1600)
+#define CATCH_CONFIG_CPP11_NULLPTR
+#endif
+
 #if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
 //#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
