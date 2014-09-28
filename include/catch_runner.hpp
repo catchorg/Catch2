@@ -100,6 +100,10 @@ namespace Catch {
     class Session {
         static bool alreadyInstantiated;
 
+    private:
+      // Prevent copy constructor
+      Session(const Session& other);
+
     public:
 
         struct OnUnusedOptions { enum DoWhat { Ignore, Fail }; };
