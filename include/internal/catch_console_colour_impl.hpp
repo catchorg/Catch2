@@ -115,7 +115,7 @@ namespace {
         }
     private:
         void setColour( const char* _escapeCode ) {
-            std::cout << '\033' << _escapeCode;
+            Catch::cout() << '\033' << _escapeCode;
         }
     };
 

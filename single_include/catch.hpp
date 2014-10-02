@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.1 build 6 (develop branch)
- *  Generated: 2014-10-02 18:50:47.450525
+ *  Generated: 2014-10-02 19:07:23.164698
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3056,6 +3056,9 @@ namespace Catch {
     private:
         bool isOwned;
     };
+
+    std::ostream& cout();
+    std::ostream& cerr();
 }
 
 #include <memory>
@@ -3125,12 +3128,12 @@ namespace Catch {
     public:
 
         Config()
-        :   m_os( std::cout.rdbuf() )
+        :   m_os( Catch::cout().rdbuf() )
         {}
 
         Config( ConfigData const& data )
         :   m_data( data ),
-            m_os( std::cout.rdbuf() )
+            m_os( Catch::cout().rdbuf() )
         {
             if( !data.testsOrTags.empty() ) {
                 TestSpecParser parser( ITagAliasRegistry::get() );
@@ -3141,7 +3144,7 @@ namespace Catch {
         }
 
         virtual ~Config() {
-            m_os.rdbuf( std::cout.rdbuf() );
+            m_os.rdbuf( Catch::cout().rdbuf() );
             m_stream.release();
         }
 
@@ -3163,7 +3166,7 @@ namespace Catch {
         bool shouldDebugBreak() const { return m_data.shouldDebugBreak; }
 
         void setStreamBuf( std::streambuf* buf ) {
-            m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
+            m_os.rdbuf( buf ? buf : Catch::cout().rdbuf() );
         }
 
         void useStream( std::string const& streamName ) {
@@ -4712,9 +4715,9 @@ namespace Catch {
 
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
-            std::cout << "Matching test cases:\n";
+            Catch::cout() << "Matching test cases:\n";
         else {
-            std::cout << "All available test cases:\n";
+            Catch::cout() << "All available test cases:\n";
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
@@ -4735,15 +4738,15 @@ namespace Catch {
                 : Colour::None;
             Colour colourGuard( colour );
 
-            std::cout << Text( testCaseInfo.name, nameAttr ) << std::endl;
+            Catch::cout() << Text( testCaseInfo.name, nameAttr ) << std::endl;
             if( !testCaseInfo.tags.empty() )
-                std::cout << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
+                Catch::cout() << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
         }
 
         if( !config.testSpec().hasFilters() )
-            std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
+            Catch::cout() << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
-            std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+            Catch::cout() << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
         return matchedTests;
     }
 
@@ -4759,7 +4762,7 @@ namespace Catch {
                 ++it ) {
             matchedTests++;
             TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-            std::cout << testCaseInfo.name << std::endl;
+            Catch::cout() << testCaseInfo.name << std::endl;
         }
         return matchedTests;
     }
@@ -4785,9 +4788,9 @@ namespace Catch {
     inline std::size_t listTags( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
-            std::cout << "Tags for matching test cases:\n";
+            Catch::cout() << "Tags for matching test cases:\n";
         else {
-            std::cout << "All available tags:\n";
+            Catch::cout() << "All available tags:\n";
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
@@ -4821,14 +4824,14 @@ namespace Catch {
                                                     .setInitialIndent( 0 )
                                                     .setIndent( oss.str().size() )
                                                     .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
-            std::cout << oss.str() << wrapper << "\n";
+            Catch::cout() << oss.str() << wrapper << "\n";
         }
-        std::cout << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
+        Catch::cout() << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
         return tagCounts.size();
     }
 
     inline std::size_t listReporters( Config const& /*config*/ ) {
-        std::cout << "Available reports:\n";
+        Catch::cout() << "Available reports:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator itBegin = factories.begin(), itEnd = factories.end(), it;
         std::size_t maxNameLen = 0;
@@ -4840,13 +4843,13 @@ namespace Catch {
                                                         .setInitialIndent( 0 )
                                                         .setIndent( 7+maxNameLen )
                                                         .setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 ) );
-            std::cout << "  "
+            Catch::cout() << "  "
                     << it->first
                     << ":"
                     << std::string( maxNameLen - it->first.size() + 2, ' ' )
                     << wrapper << "\n";
         }
-        std::cout << std::endl;
+        Catch::cout() << std::endl;
         return factories.size();
     }
 
@@ -5315,8 +5318,8 @@ namespace Catch {
                 Timer timer;
                 timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
-                    StreamRedirect coutRedir( std::cout, redirectedCout );
-                    StreamRedirect cerrRedir( std::cerr, redirectedCerr );
+                    StreamRedirect coutRedir( Catch::cout(), redirectedCout );
+                    StreamRedirect cerrRedir( Catch::cerr(), redirectedCerr );
                     invokeActiveTestCase();
                 }
                 else {
@@ -5530,7 +5533,7 @@ namespace Catch {
         : m_cli( makeCommandLineParser() ) {
             if( alreadyInstantiated ) {
                 std::string msg = "Only one instance of Catch::Session can ever be used";
-                std::cerr << msg << std::endl;
+                Catch::cerr() << msg << std::endl;
                 throw std::logic_error( msg );
             }
             alreadyInstantiated = true;
@@ -5540,15 +5543,15 @@ namespace Catch {
         }
 
         void showHelp( std::string const& processName ) {
-            std::cout << "\nCatch v"    << libraryVersion.majorVersion << "."
+            Catch::cout() << "\nCatch v"    << libraryVersion.majorVersion << "."
                                         << libraryVersion.minorVersion << " build "
                                         << libraryVersion.buildNumber;
             if( libraryVersion.branchName != std::string( "master" ) )
-                std::cout << " (" << libraryVersion.branchName << " branch)";
-            std::cout << "\n";
+                Catch::cout() << " (" << libraryVersion.branchName << " branch)";
+            Catch::cout() << "\n";
 
-            m_cli.usage( std::cout, processName );
-            std::cout << "For more detail usage please see the project docs\n" << std::endl;
+            m_cli.usage( Catch::cout(), processName );
+            Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
 
         int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
@@ -5562,11 +5565,11 @@ namespace Catch {
             catch( std::exception& ex ) {
                 {
                     Colour colourGuard( Colour::Red );
-                    std::cerr   << "\nError(s) in input:\n"
+                    Catch::cerr()   << "\nError(s) in input:\n"
                                 << Text( ex.what(), TextAttributes().setIndent(2) )
                                 << "\n\n";
                 }
-                m_cli.usage( std::cout, m_configData.processName );
+                m_cli.usage( Catch::cout(), m_configData.processName );
                 return (std::numeric_limits<int>::max)();
             }
             return 0;
@@ -5604,7 +5607,7 @@ namespace Catch {
                 return static_cast<int>( runner.runTests().assertions.failed );
             }
             catch( std::exception& ex ) {
-                std::cerr << ex.what() << std::endl;
+                Catch::cerr() << ex.what() << std::endl;
                 return (std::numeric_limits<int>::max)();
             }
         }
@@ -5679,7 +5682,7 @@ namespace Catch {
                 TestCase const& prev = *m_functions.find( testCase );
                 {
                     Colour colourGuard( Colour::Red );
-                    std::cerr   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
+                    Catch::cerr()   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
                                 << "\tFirst seen at " << prev.getTestCaseInfo().lineInfo << "\n"
                                 << "\tRedefined at " << testCase.getTestCaseInfo().lineInfo << std::endl;
                 }
@@ -5992,6 +5995,7 @@ namespace Catch {
 
 #include <stdexcept>
 #include <cstdio>
+#include <iostream>
 
 namespace Catch {
 
@@ -6055,6 +6059,15 @@ namespace Catch {
             isOwned = false;
         }
     }
+
+#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement this functions
+    std::ostream& cout() {
+        return std::cout;
+    }
+    std::ostream& cerr() {
+        return std::cerr;
+    }
+#endif
 }
 
 namespace Catch {
@@ -6140,8 +6153,8 @@ namespace Catch {
     }
 
     Stream createStream( std::string const& streamName ) {
-        if( streamName == "stdout" ) return Stream( std::cout.rdbuf(), false );
-        if( streamName == "stderr" ) return Stream( std::cerr.rdbuf(), false );
+        if( streamName == "stdout" ) return Stream( Catch::cout().rdbuf(), false );
+        if( streamName == "stderr" ) return Stream( Catch::cerr().rdbuf(), false );
         if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
 
         throw std::domain_error( "Unknown stream: " + streamName );
@@ -6261,7 +6274,7 @@ namespace {
         }
     private:
         void setColour( const char* _escapeCode ) {
-            std::cout << '\033' << _escapeCode;
+            Catch::cout() << '\033' << _escapeCode;
         }
     };
 
@@ -6490,13 +6503,13 @@ namespace Catch {
         if( isReservedTag( tag ) ) {
             {
                 Colour colourGuard( Colour::Red );
-                std::cerr
+                Catch::cerr()
                     << "Tag name [" << tag << "] not allowed.\n"
                     << "Tag names starting with non alpha-numeric characters are reserved\n";
             }
             {
                 Colour colourGuard( Colour::FileName );
-                std::cerr << _lineInfo << std::endl;
+                Catch::cerr() << _lineInfo << std::endl;
             }
             exit(1);
         }
@@ -7013,7 +7026,7 @@ namespace Catch {
 
             size = sizeof(info);
             if( sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0) != 0 ) {
-                std::cerr << "\n** Call to sysctl failed - unable to determine if debugger is active **\n" << std::endl;
+                Catch::cerr() << "\n** Call to sysctl failed - unable to determine if debugger is active **\n" << std::endl;
                 return false;
             }
 
@@ -7054,7 +7067,7 @@ namespace Catch {
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
             // !TBD: Need a version for Mac/ XCode and other IDEs
-            std::cout << text;
+            Catch::cout() << text;
         }
     }
 #endif // Platform
@@ -7429,7 +7442,7 @@ namespace Catch {
         }
         catch( std::exception& ex ) {
             Colour colourGuard( Colour::Red );
-            std::cerr << ex.what() << std::endl;
+            Catch::cerr() << ex.what() << std::endl;
             exit(1);
         }
     }
@@ -7698,9 +7711,9 @@ namespace Catch {
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
 #include <sstream>
-#include <iostream>
 #include <string>
 #include <vector>
+#include <catch_stream.h>
 
 namespace Catch {
 
@@ -7741,7 +7754,7 @@ namespace Catch {
         XmlWriter()
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
-            m_os( &std::cout )
+            m_os( &Catch::cout() )
         {}
 
         XmlWriter( std::ostream& os )

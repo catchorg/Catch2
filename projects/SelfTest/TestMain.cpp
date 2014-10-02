@@ -355,14 +355,14 @@ TEST_CASE( "Strings can be rendered with colour", "[colour][.]" ) {
         cs  .addColour( Colour::Red, 0 )
             .addColour( Colour::Green, -1 );
 
-        std::cout << cs << std::endl;
+        Catch::cout() << cs << std::endl;
     }
 
     {
         ColourString cs( "hello" );
         cs  .addColour( Colour::Blue, 1, -2 );
         
-        std::cout << cs << std::endl;
+        Catch::cout() << cs << std::endl;
     }
     
 }

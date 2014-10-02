@@ -15,6 +15,7 @@
 
 #include <stdexcept>
 #include <cstdio>
+#include <iostream>
 
 namespace Catch {
 
@@ -78,6 +79,15 @@ namespace Catch {
             isOwned = false;
         }
     }
+
+#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement this functions
+    std::ostream& cout() {
+        return std::cout;
+    }
+    std::ostream& cerr() {
+        return std::cerr;
+    }
+#endif
 }
 
 #endif // TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED

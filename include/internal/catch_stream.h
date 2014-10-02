@@ -28,6 +28,9 @@ namespace Catch {
     private:
         bool isOwned;
     };
+
+    std::ostream& cout();
+    std::ostream& cerr();
 }
 
 #endif // TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
