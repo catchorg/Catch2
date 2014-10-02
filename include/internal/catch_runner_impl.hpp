@@ -296,6 +296,7 @@ namespace Catch {
         void invokeActiveTestCase() {
             FatalConditionHandler fatalConditionHandler; // Handle signals
             m_activeTestCase->invoke();
+            fatalConditionHandler.reset();
         }
 
     private:

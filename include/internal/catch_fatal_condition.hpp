@@ -58,14 +58,22 @@ namespace Catch {
             fatal( "<unknown signal>", -sig );
         }
 
-        FatalConditionHandler() {
+        FatalConditionHandler() : m_isSet( true ) {
             for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
                 signal( signalDefs[i].id, handleSignal );
         }
         ~FatalConditionHandler() {
-            for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
-                signal( signalDefs[i].id, SIG_DFL );
+            reset();
         }
+        void reset() {
+            if( m_isSet ) {
+                for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
+                    signal( signalDefs[i].id, SIG_DFL );
+                m_isSet = false;
+            }
+        }
+
+        bool m_isSet;
     };
 
 } // namespace Catch
