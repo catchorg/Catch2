@@ -1,6 +1,6 @@
 ![catch logo](catch-logo-small.png)
 
-*v1.1 build 5 (develop branch)*
+*v1.1 build 6 (develop branch)*
 
 Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.png)](https://travis-ci.org/philsquared/Catch)
 

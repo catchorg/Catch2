@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 5 (develop branch)
- *  Generated: 2014-09-18 18:24:52.876757
+ *  CATCH v1.1 build 6 (develop branch)
+ *  Generated: 2014-10-02 18:50:47.450525
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3819,7 +3819,7 @@ namespace Clara {
             m_throwOnUnrecognisedTokens( other.m_throwOnUnrecognisedTokens )
         {
             if( other.m_floatingArg.get() )
-                m_floatingArg = ArgAutoPtr( new Arg( *other.m_floatingArg ) );
+                m_floatingArg.reset( new Arg( *other.m_floatingArg ) );
         }
 
         CommandLine& setThrowOnUnrecognisedTokens( bool shouldThrow = true ) {
@@ -3847,7 +3847,7 @@ namespace Clara {
         ArgBuilder operator[]( UnpositionalTag ) {
             if( m_floatingArg.get() )
                 throw std::logic_error( "Only one unpositional argument can be added" );
-            m_floatingArg = ArgAutoPtr( new Arg() );
+            m_floatingArg.reset( new Arg() );
             ArgBuilder builder( m_floatingArg.get() );
             return builder;
         }
@@ -5054,14 +5054,22 @@ namespace Catch {
             fatal( "<unknown signal>", -sig );
         }
 
-        FatalConditionHandler() {
+        FatalConditionHandler() : m_isSet( true ) {
             for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
                 signal( signalDefs[i].id, handleSignal );
         }
         ~FatalConditionHandler() {
-            for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
-                signal( signalDefs[i].id, SIG_DFL );
+            reset();
         }
+        void reset() {
+            if( m_isSet ) {
+                for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
+                    signal( signalDefs[i].id, SIG_DFL );
+                m_isSet = false;
+            }
+        }
+
+        bool m_isSet;
     };
 
 } // namespace Catch
@@ -5341,6 +5349,7 @@ namespace Catch {
         void invokeActiveTestCase() {
             FatalConditionHandler fatalConditionHandler; // Handle signals
             m_activeTestCase->invoke();
+            fatalConditionHandler.reset();
         }
 
     private:
@@ -6640,7 +6649,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 5, "develop" );
+    Version libraryVersion( 1, 1, 6, "develop" );
 }
 
 // #included from: catch_message.hpp
