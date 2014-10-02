@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.1 build 6 (develop branch)
- *  Generated: 2014-10-02 19:07:23.164698
+ *  Generated: 2014-10-02 19:13:03.375275
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -7713,7 +7713,6 @@ namespace Catch {
 #include <sstream>
 #include <string>
 #include <vector>
-#include <catch_stream.h>
 
 namespace Catch {
 
