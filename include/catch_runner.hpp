@@ -97,7 +97,7 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    class Session {
+    class Session : NonCopyable {
         static bool alreadyInstantiated;
 
     public:

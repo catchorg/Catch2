@@ -24,8 +24,16 @@
 namespace Catch {
 
     class NonCopyable {
-        NonCopyable( NonCopyable const& );
-        void operator = ( NonCopyable const& );
+#ifdef CATCH_CPP11_OR_GREATER
+        NonCopyable( NonCopyable const& )              = delete;
+        NonCopyable( NonCopyable && )                  = delete;
+        NonCopyable& operator = ( NonCopyable const& ) = delete;
+        NonCopyable& operator = ( NonCopyable && )     = delete;
+#else
+        NonCopyable( NonCopyable const& info );
+        NonCopyable& operator = ( NonCopyable const& );
+#endif
+
     protected:
         NonCopyable() {}
         virtual ~NonCopyable();
