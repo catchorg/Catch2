@@ -49,13 +49,13 @@ TEST_CASE( "toString(enum class)", "[toString][enum][enumClass]" ) {
 enum class EnumClass2 : short { EnumClass2Value0, EnumClass2Value1 };
 
 inline std::ostream& operator<<( std::ostream& os, EnumClass2 e2 ) {
-    switch( (int)e2 ) {
-        case (int)EnumClass2::EnumClass2Value0:
+    switch( static_cast<int>( e2 ) ) {
+        case static_cast<int>( EnumClass2::EnumClass2Value0 ):
             return os << "E2/V0";
-        case (int)EnumClass2::EnumClass2Value1:
+        case static_cast<int>( EnumClass2::EnumClass2Value1 ):
             return os << "E2/V1";
         default:
-            return os << "Unknown enum value " << (int)e2;
+            return os << "Unknown enum value " << static_cast<int>( e2 );
     }
 }
 
