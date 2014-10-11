@@ -13,6 +13,7 @@
 #include "../internal/catch_capture.hpp"
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_xmlwriter.hpp"
+#include "../internal/catch_timer.h"
 
 namespace Catch {
     class XmlReporter : public StreamingReporterBase {
@@ -56,6 +57,9 @@ namespace Catch {
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
             StreamingReporterBase::testCaseStarting(testInfo);
             m_xml.startElement( "TestCase" ).writeAttribute( "name", trim( testInfo.name ) );
+
+            if ( m_config->showDurations() == ShowDurations::Always )
+                m_testCaseTimer.start();
         }
 
         virtual void sectionStarting( SectionInfo const& sectionInfo ) {
@@ -143,18 +147,26 @@ namespace Catch {
         virtual void sectionEnded( SectionStats const& sectionStats ) {
             StreamingReporterBase::sectionEnded( sectionStats );
             if( --m_sectionDepth > 0 ) {
-                m_xml.scopedElement( "OverallResults" )
-                    .writeAttribute( "successes", sectionStats.assertions.passed )
-                    .writeAttribute( "failures", sectionStats.assertions.failed )
-                    .writeAttribute( "expectedFailures", sectionStats.assertions.failedButOk );
+                XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResults" );
+                e.writeAttribute( "successes", sectionStats.assertions.passed );
+                e.writeAttribute( "failures", sectionStats.assertions.failed );
+                e.writeAttribute( "expectedFailures", sectionStats.assertions.failedButOk );
+
+                if ( m_config->showDurations() == ShowDurations::Always )
+                    e.writeAttribute( "durationInSeconds", sectionStats.durationInSeconds );
+
                 m_xml.endElement();
             }
         }
 
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
             StreamingReporterBase::testCaseEnded( testCaseStats );
-            m_xml.scopedElement( "OverallResult" )
-                .writeAttribute( "success", testCaseStats.totals.assertions.allPassed() );
+            XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResult" );
+            e.writeAttribute( "success", testCaseStats.totals.assertions.allPassed() );
+
+            if ( m_config->showDurations() == ShowDurations::Always )
+                e.writeAttribute( "durationInSeconds", m_testCaseTimer.getElapsedSeconds() );
+
             m_xml.endElement();
         }
 
@@ -178,6 +190,7 @@ namespace Catch {
         }
 
     private:
+        Timer m_testCaseTimer;
         XmlWriter m_xml;
         int m_sectionDepth;
     };
