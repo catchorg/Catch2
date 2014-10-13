@@ -1471,11 +1471,20 @@ namespace Catch {
     resultBuilder.react();
 
 ///////////////////////////////////////////////////////////////////////////////
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+#define INTERNAL_CATCH_EVALUATE_EXPRESSION(...) \
+    ( __catchResult->* __VA_ARGS__ ).endExpression();
+#else
+#define INTERNAL_CATCH_EVALUATE_EXPRESSION(expr) \
+    ( __catchResult->* expr ).endExpression();
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
-            ( __catchResult->*expr ).endExpression(); \
+            INTERNAL_CATCH_EVALUATE_EXPRESSION expr \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
@@ -8931,20 +8940,20 @@ int main (int argc, char * const argv[]) {
 #define CHECK_THROWS( ... )  INTERNAL_CATCH_THROWS( (__VA_ARGS__), Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS" )
 #define CHECK_NOTHROW( ... ) INTERNAL_CATCH_NO_THROW( (__VA_ARGS__), Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOTHROW" )
 #else
-#define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "REQUIRE" )
-#define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "REQUIRE_FALSE" )
+#define REQUIRE( expr ) INTERNAL_CATCH_TEST( (expr), Catch::ResultDisposition::Normal, "REQUIRE" )
+#define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( (expr), Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "REQUIRE_FALSE" )
 
-#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, "REQUIRE_THROWS" )
-#define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::Normal, "REQUIRE_NOTHROW" )
+#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( (expr), Catch::ResultDisposition::Normal, "REQUIRE_THROWS" )
+#define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( (expr), Catch::ResultDisposition::Normal, "REQUIRE_NOTHROW" )
 
-#define CHECK( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK" )
-#define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::FalseTest, "CHECK_FALSE" )
-#define CHECKED_IF( expr ) INTERNAL_CATCH_IF( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_IF" )
-#define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_ELSE" )
-#define CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CHECK_NOFAIL" )
+#define CHECK( expr ) INTERNAL_CATCH_TEST( (expr), Catch::ResultDisposition::ContinueOnFailure, "CHECK" )
+#define CHECK_FALSE( expr ) INTERNAL_CATCH_TEST( (expr), Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::FalseTest, "CHECK_FALSE" )
+#define CHECKED_IF( expr ) INTERNAL_CATCH_IF( (expr), Catch::ResultDisposition::ContinueOnFailure, "CHECKED_IF" )
+#define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( (expr), Catch::ResultDisposition::ContinueOnFailure, "CHECKED_ELSE" )
+#define CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( (expr), Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CHECK_NOFAIL" )
 
-#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS" )
-#define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOTHROW" )
+#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( (expr), Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS" )
+#define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( (expr), Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOTHROW" )
 #endif
 #define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "REQUIRE_THROWS_AS" )
 #define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS_AS" )
