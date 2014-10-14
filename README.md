@@ -1,6 +1,6 @@
 ![catch logo](catch-logo-small.png)
 
-*v1.0 build 53 (master branch)*
+*v1.0 build 57 (master branch)*
 
 Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.png)](https://travis-ci.org/philsquared/Catch)
 
