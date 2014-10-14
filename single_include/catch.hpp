@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 57 (master branch)
- *  Generated: 2014-10-14 01:02:00.864531
+ *  CATCH v1.0 build 59 (master branch)
+ *  Generated: 2014-10-14 01:15:32.394076
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6426,7 +6426,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 57, "master" );
+    Version libraryVersion( 1, 0, 59, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -8860,20 +8860,20 @@ int main (int argc, char * const argv[]) {
 #ifdef CATCH_CONFIG_PREFIX_ALL
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
-#define CATCH_REQUIRE( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS ), Catch::ResultDisposition::Normal, "CATCH_REQUIRE" )
-#define CATCH_REQUIRE_FALSE( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS ), Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "CATCH_REQUIRE_FALSE" )
+#define CATCH_REQUIRE( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS__ ), Catch::ResultDisposition::Normal, "CATCH_REQUIRE" )
+#define CATCH_REQUIRE_FALSE( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS__ ), Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "CATCH_REQUIRE_FALSE" )
 
-#define CATCH_REQUIRE_THROWS( ... ) INTERNAL_CATCH_THROWS( ( __VA_ARGS ), Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS" )
-#define CATCH_REQUIRE_NOTHROW( ... ) INTERNAL_CATCH_NO_THROW( ( __VA_ARGS ), Catch::ResultDisposition::Normal, "CATCH_REQUIRE_NOTHROW" )
+#define CATCH_REQUIRE_THROWS( ... ) INTERNAL_CATCH_THROWS( ( __VA_ARGS__ ), Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS" )
+#define CATCH_REQUIRE_NOTHROW( ... ) INTERNAL_CATCH_NO_THROW( ( __VA_ARGS__ ), Catch::ResultDisposition::Normal, "CATCH_REQUIRE_NOTHROW" )
 
-#define CATCH_CHECK( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK" )
-#define CATCH_CHECK_FALSE( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS ), Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::FalseTest, "CATCH_CHECK_FALSE" )
-#define CATCH_CHECKED_IF( ... ) INTERNAL_CATCH_IF( ( __VA_ARGS ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_IF" )
-#define CATCH_CHECKED_ELSE( ... ) INTERNAL_CATCH_ELSE( ( __VA_ARGS ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_ELSE" )
-#define CATCH_CHECK_NOFAIL( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS ), Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CATCH_CHECK_NOFAIL" )
+#define CATCH_CHECK( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS__ ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK" )
+#define CATCH_CHECK_FALSE( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS__ ), Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::FalseTest, "CATCH_CHECK_FALSE" )
+#define CATCH_CHECKED_IF( ... ) INTERNAL_CATCH_IF( ( __VA_ARGS__ ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_IF" )
+#define CATCH_CHECKED_ELSE( ... ) INTERNAL_CATCH_ELSE( ( __VA_ARGS__ ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECKED_ELSE" )
+#define CATCH_CHECK_NOFAIL( ... ) INTERNAL_CATCH_TEST( ( __VA_ARGS__ ), Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CATCH_CHECK_NOFAIL" )
 
-#define CATCH_CHECK_THROWS( ... )  INTERNAL_CATCH_THROWS( ( __VA_ARGS ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS" )
-#define CATCH_CHECK_NOTHROW( ... ) INTERNAL_CATCH_NO_THROW( ( __VA_ARGS ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_NOTHROW" )
+#define CATCH_CHECK_THROWS( ... )  INTERNAL_CATCH_THROWS( ( __VA_ARGS__ ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS" )
+#define CATCH_CHECK_NOTHROW( ... ) INTERNAL_CATCH_NO_THROW( ( __VA_ARGS__ ), Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_NOTHROW" )
 #else
 #define CATCH_REQUIRE( expr ) INTERNAL_CATCH_TEST( ( expr ), Catch::ResultDisposition::Normal, "CATCH_REQUIRE" )
 #define CATCH_REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( ( expr ), Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "CATCH_REQUIRE_FALSE" )
