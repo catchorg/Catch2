@@ -9,6 +9,7 @@ Before looking at this material be sure to read the [tutorial](tutorial.md)
 * [Command line](command-line.md)
 * [Build systems](build-systems.md)
 * [Supplying your own main()](own-main.md)
+* [Configuration](configuration.md)
 * [Why are my tests slow to compile?](slow-compiles.md)
 
 Other
@@ -16,8 +17,3 @@ Other
 * [Why Catch?](why-catch.md)
 * [What's changed](whats-changed.md)
 * [Contributing](contributing.md)
-
----
-
-[Home](../README.md)
-
