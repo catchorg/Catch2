@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 6 (develop branch)
- *  Generated: 2014-10-02 19:13:03.375275
+ *  CATCH v1.1 build 7 (develop branch)
+ *  Generated: 2014-10-21 07:24:45.439607
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -180,8 +180,16 @@
 namespace Catch {
 
     class NonCopyable {
-        NonCopyable( NonCopyable const& );
-        void operator = ( NonCopyable const& );
+#ifdef CATCH_CPP11_OR_GREATER
+        NonCopyable( NonCopyable const& )              = delete;
+        NonCopyable( NonCopyable && )                  = delete;
+        NonCopyable& operator = ( NonCopyable const& ) = delete;
+        NonCopyable& operator = ( NonCopyable && )     = delete;
+#else
+        NonCopyable( NonCopyable const& info );
+        NonCopyable& operator = ( NonCopyable const& );
+#endif
+
     protected:
         NonCopyable() {}
         virtual ~NonCopyable();
@@ -1747,7 +1755,7 @@ namespace Catch {
 
 namespace Catch {
 
-    class Section {
+    class Section : NonCopyable {
     public:
         Section( SectionInfo const& info );
         ~Section();
@@ -1756,15 +1764,6 @@ namespace Catch {
         operator bool() const;
 
     private:
-#ifdef CATCH_CPP11_OR_GREATER
-        Section( Section const& )              = delete;
-        Section( Section && )                  = delete;
-        Section& operator = ( Section const& ) = delete;
-        Section& operator = ( Section && )     = delete;
-#else
-        Section( Section const& info );
-        Section& operator = ( Section const& );
-#endif
         SectionInfo m_info;
 
         std::string m_name;
@@ -4404,10 +4403,6 @@ namespace Catch {
 
 namespace Catch {
 
-    namespace Detail {
-        struct IColourImpl;
-    }
-
     struct Colour {
         enum Code {
             None = 0,
@@ -4453,7 +4448,6 @@ namespace Catch {
         static void use( Code _colourCode );
 
     private:
-        static Detail::IColourImpl* impl();
         bool m_moved;
     };
 
@@ -5027,7 +5021,9 @@ namespace Catch {
 
 namespace Catch {
 
-    struct FatalConditionHandler {};
+    struct FatalConditionHandler {
+		void reset() {}
+	};
 
 } // namespace Catch
 
@@ -5522,7 +5518,7 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
-    class Session {
+    class Session : NonCopyable {
         static bool alreadyInstantiated;
 
     public:
@@ -6169,14 +6165,35 @@ namespace Catch {
 // #included from: catch_console_colour_impl.hpp
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
 
-namespace Catch { namespace Detail {
-    struct IColourImpl {
-        virtual ~IColourImpl() {}
-        virtual void use( Colour::Code _colourCode ) = 0;
-    };
-}}
+namespace Catch {
+    namespace {
 
-#if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
+        struct IColourImpl {
+            virtual ~IColourImpl() {}
+            virtual void use( Colour::Code _colourCode ) = 0;
+        };
+
+        struct NoColourImpl : IColourImpl {
+            void use( Colour::Code ) {}
+
+            static IColourImpl* instance() {
+                static NoColourImpl s_instance;
+                return &s_instance;
+            }
+        };
+
+    } // anon namespace
+} // namespace Catch
+
+#if !defined( CATCH_CONFIG_COLOUR_NONE ) && !defined( CATCH_CONFIG_COLOUR_WINDOWS ) && !defined( CATCH_CONFIG_COLOUR_ANSI )
+#   ifdef CATCH_PLATFORM_WINDOWS
+#       define CATCH_CONFIG_COLOUR_WINDOWS
+#   else
+#       define CATCH_CONFIG_COLOUR_ANSI
+#   endif
+#endif
+
+#if defined ( CATCH_CONFIG_COLOUR_WINDOWS ) /////////////////////////////////////////
 
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -6191,7 +6208,7 @@ namespace Catch { namespace Detail {
 namespace Catch {
 namespace {
 
-    class Win32ColourImpl : public Detail::IColourImpl {
+    class Win32ColourImpl : public IColourImpl {
     public:
         Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
         {
@@ -6228,11 +6245,7 @@ namespace {
         WORD originalAttributes;
     };
 
-    inline bool shouldUseColourForPlatform() {
-        return true;
-    }
-
-    static Detail::IColourImpl* platformColourInstance() {
+    IColourImpl* platformColourInstance() {
         static Win32ColourImpl s_instance;
         return &s_instance;
     }
@@ -6240,7 +6253,7 @@ namespace {
 } // end anon namespace
 } // end namespace Catch
 
-#else // Not Windows - assumed to be POSIX compatible //////////////////////////
+#elif defined( CATCH_CONFIG_COLOUR_ANSI ) //////////////////////////////////////
 
 #include <unistd.h>
 
@@ -6251,7 +6264,7 @@ namespace {
     // Thanks to Adam Strzelecki for original contribution
     // (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
-    class PosixColourImpl : public Detail::IColourImpl {
+    class PosixColourImpl : public IColourImpl {
     public:
         virtual void use( Colour::Code _colourCode ) {
             switch( _colourCode ) {
@@ -6272,53 +6285,47 @@ namespace {
                 case Colour::Bright: throw std::logic_error( "not a colour" );
             }
         }
+        static IColourImpl* instance() {
+            static PosixColourImpl s_instance;
+            return &s_instance;
+        }
+
     private:
         void setColour( const char* _escapeCode ) {
             Catch::cout() << '\033' << _escapeCode;
         }
     };
 
-    inline bool shouldUseColourForPlatform() {
-        return isatty(STDOUT_FILENO);
-    }
-
-    static Detail::IColourImpl* platformColourInstance() {
-        static PosixColourImpl s_instance;
-        return &s_instance;
+    IColourImpl* platformColourInstance() {
+        return isatty(STDOUT_FILENO)
+            ? PosixColourImpl::instance()
+            : NoColourImpl::instance();
     }
 
 } // end anon namespace
 } // end namespace Catch
 
-#endif // not Windows
+#else  // not Windows or ANSI ///////////////////////////////////////////////
 
 namespace Catch {
 
-    namespace {
-        struct NoColourImpl : Detail::IColourImpl {
-            void use( Colour::Code ) {}
+    static IColourImpl* platformColourInstance() { return NoColourImpl::instance(); }
 
-            static IColourImpl* instance() {
-                static NoColourImpl s_instance;
-                return &s_instance;
-            }
-        };
-        static bool shouldUseColour() {
-            return shouldUseColourForPlatform() && !isDebuggerActive();
-        }
-    }
+} // end namespace Catch
+
+#endif // Windows/ ANSI/ None
+
+namespace Catch {
 
     Colour::Colour( Code _colourCode ) : m_moved( false ) { use( _colourCode ); }
     Colour::Colour( Colour const& _other ) : m_moved( false ) { const_cast<Colour&>( _other ).m_moved = true; }
     Colour::~Colour(){ if( !m_moved ) use( None ); }
-    void Colour::use( Code _colourCode ) {
-        impl()->use( _colourCode );
-    }
 
-    Detail::IColourImpl* Colour::impl() {
-        return shouldUseColour()
-            ? platformColourInstance()
-            : NoColourImpl::instance();
+    void Colour::use( Code _colourCode ) {
+        static IColourImpl* impl = isDebuggerActive()
+            ? NoColourImpl::instance()
+            : platformColourInstance();
+        impl->use( _colourCode );
     }
 
 } // end namespace Catch
@@ -6662,7 +6669,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 6, "develop" );
+    Version libraryVersion( 1, 1, 7, "develop" );
 }
 
 // #included from: catch_message.hpp
