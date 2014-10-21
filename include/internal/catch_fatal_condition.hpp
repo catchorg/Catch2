@@ -28,7 +28,9 @@ namespace Catch {
 
 namespace Catch {
 
-    struct FatalConditionHandler {};
+    struct FatalConditionHandler {
+		void reset() {}
+	};
 
 } // namespace Catch
 

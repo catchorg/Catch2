@@ -12,10 +12,6 @@
 
 namespace Catch {
 
-    namespace Detail {
-        struct IColourImpl;
-    }
-
     struct Colour {
         enum Code {
             None = 0,
@@ -61,7 +57,6 @@ namespace Catch {
         static void use( Code _colourCode );
 
     private:
-        static Detail::IColourImpl* impl();
         bool m_moved;
     };
 
