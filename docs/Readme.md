@@ -10,6 +10,7 @@ Before looking at this material be sure to read the [tutorial](tutorial.md)
 * [Build systems](build-systems.md)
 * [Supplying your own main()](own-main.md)
 * [Why are my tests slow to compile?](slow-compiles.md)
+* [Printng arbitrary types](printabletypes.md)
 
 Other
 
