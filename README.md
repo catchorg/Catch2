@@ -12,7 +12,7 @@ Catch stands for C++ Automated Test Cases in Headers and is a multi-paradigm aut
 
 The latest, single header, version can be downloaded directly from this link:
 
-<a href="Catch/raw/develop/single_include/catch.hpp">Right click and select to download the file linked here</a>
+<a href="https://raw.github.com/philsquared/Catch/raw/develop/single_include/catch.hpp">Right click and select to download the file linked here</a>
 
 ## How to use it
 This documentation comprises these three parts:
