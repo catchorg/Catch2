@@ -10,6 +10,10 @@ Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/C
 
 Catch stands for C++ Automated Test Cases in Headers and is a multi-paradigm automated test framework for C++ and Objective-C (and, maybe, C). It is implemented entirely in a set of header files, but is packaged up as a single header for extra convenience.
 
+The latest, single header, version can be downloaded directly from this link:
+
+<a href="Catch/raw/develop/single_include/catch.hpp">Right click and select to download the file linked here</a>
+
 ## How to use it
 This documentation comprises these three parts:
 
