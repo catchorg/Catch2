@@ -81,8 +81,7 @@ namespace Detail {
     };
 }
 
-template<>
-inline std::string toString<Detail::Approx>( Detail::Approx const& value ) {
+inline std::string toString( Detail::Approx const& value ) {
     return value.toString();
 }
 

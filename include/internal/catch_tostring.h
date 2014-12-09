@@ -219,10 +219,9 @@ std::string toString( std::nullptr_t );
         std::ostringstream oss;
         oss << "{ ";
         if( first != last ) {
-            oss << toString( *first );
-            for( ++first ; first != last ; ++first ) {
-                oss << ", " << toString( *first );
-            }
+            oss << Catch::toString( *first );
+            for( ++first ; first != last ; ++first )
+                oss << ", " << Catch::toString( *first );
         }
         oss << " }";
         return oss.str();
