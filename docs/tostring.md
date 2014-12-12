@@ -37,7 +37,6 @@ namespace Catch {
 		return convertMyTypeToString( value );
 	}
 }
-}
 ```
 
 Again ```T``` is your type and ```convertMyTypeToString``` is where you'll write whatever code is necessary to make your type printable. Note that the function must be in the Catch namespace, which itself must be in the global namespace.
