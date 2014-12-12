@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 7 (develop branch)
- *  Generated: 2014-10-21 07:24:45.439607
+ *  CATCH v1.1 build 8 (develop branch)
+ *  Generated: 2014-12-12 08:10:57.025852
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1246,10 +1246,9 @@ std::string toString( std::nullptr_t );
         std::ostringstream oss;
         oss << "{ ";
         if( first != last ) {
-            oss << toString( *first );
-            for( ++first ; first != last ; ++first ) {
-                oss << ", " << toString( *first );
-            }
+            oss << Catch::toString( *first );
+            for( ++first ; first != last ; ++first )
+                oss << ", " << Catch::toString( *first );
         }
         oss << " }";
         return oss.str();
@@ -5844,7 +5843,7 @@ namespace Catch {
                     throw;
                 }
                 @catch (NSException *exception) {
-                    return toString( [exception description] );
+                    return Catch::toString( [exception description] );
                 }
 #else
                 throw;
@@ -6669,7 +6668,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 7, "develop" );
+    Version libraryVersion( 1, 1, 8, "develop" );
 }
 
 // #included from: catch_message.hpp
@@ -7146,7 +7145,7 @@ std::string toString( std::wstring const& value ) {
     s.reserve( value.size() );
     for(size_t i = 0; i < value.size(); ++i )
         s += value[i] <= 0xff ? static_cast<char>( value[i] ) : '?';
-    return toString( s );
+    return Catch::toString( s );
 }
 
 std::string toString( const char* const value ) {
@@ -7169,7 +7168,10 @@ std::string toString( wchar_t* const value )
 
 std::string toString( int value ) {
     std::ostringstream oss;
-    oss << value;
+    if( value > 8192 )
+        oss << "0x" << std::hex << value;
+    else
+        oss << value;
     return oss.str();
 }
 
@@ -7183,7 +7185,7 @@ std::string toString( unsigned long value ) {
 }
 
 std::string toString( unsigned int value ) {
-    return toString( static_cast<unsigned long>( value ) );
+    return Catch::toString( static_cast<unsigned long>( value ) );
 }
 
 template<typename T>
@@ -8197,7 +8199,7 @@ namespace Catch {
                     xml.writeAttribute( "classname", className );
                     xml.writeAttribute( "name", name );
                 }
-                xml.writeAttribute( "time", toString( sectionNode.stats.durationInSeconds ) );
+                xml.writeAttribute( "time", Catch::toString( sectionNode.stats.durationInSeconds ) );
 
                 writeAssertions( sectionNode );
 
