@@ -98,7 +98,10 @@ std::string toString( wchar_t* const value )
 
 std::string toString( int value ) {
     std::ostringstream oss;
-    oss << value;
+    if( value > 8192 )
+        oss << "0x" << std::hex << value;
+    else
+        oss << value;
     return oss.str();
 }
 

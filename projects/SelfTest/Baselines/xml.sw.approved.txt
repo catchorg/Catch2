@@ -3519,7 +3519,7 @@
           Factorial(10) == 3628800
         </Original>
         <Expanded>
-          0x<hex digits> == 3628800
+          0x<hex digits> == 0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

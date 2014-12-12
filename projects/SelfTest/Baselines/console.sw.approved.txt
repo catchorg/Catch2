@@ -3398,7 +3398,7 @@ MiscTests.cpp:<line number>:
 PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
-  0x<hex digits> == 3628800
+  0x<hex digits> == 0x<hex digits>
 
 -------------------------------------------------------------------------------
 An empty test with no assertions
