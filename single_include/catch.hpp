@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 8 (develop branch)
- *  Generated: 2014-12-12 08:10:57.025852
+ *  CATCH v1.1 build 9 (develop branch)
+ *  Generated: 2014-12-15 07:26:07.689692
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6489,7 +6489,7 @@ namespace Catch {
 namespace Catch {
 
     inline TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
-        if( tag == "." ||
+        if( startsWith( tag, "." ) ||
             tag == "hide" ||
             tag == "!hide" )
             return TestCaseInfo::IsHidden;
@@ -6503,7 +6503,7 @@ namespace Catch {
             return TestCaseInfo::None;
     }
     inline bool isReservedTag( std::string const& tag ) {
-        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
+        return TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
         if( isReservedTag( tag ) ) {
@@ -6543,14 +6543,15 @@ namespace Catch {
             }
             else {
                 if( c == ']' ) {
-                    enforceNotReservedTag( tag, _lineInfo );
-
-                    inTag = false;
-                    if( tag == "hide" || tag == "." )
+                    TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
+                    if( prop == TestCaseInfo::IsHidden )
                         isHidden = true;
-                    else
-                        tags.insert( tag );
+                    else if( prop == TestCaseInfo::None )
+                        enforceNotReservedTag( tag, _lineInfo );
+
+                    tags.insert( tag );
                     tag.clear();
+                    inTag = false;
                 }
                 else
                     tag += c;
@@ -6668,7 +6669,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 8, "develop" );
+    Version libraryVersion( 1, 1, 9, "develop" );
 }
 
 // #included from: catch_message.hpp
