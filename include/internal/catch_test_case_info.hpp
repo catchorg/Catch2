@@ -30,7 +30,7 @@ namespace Catch {
             return TestCaseInfo::None;
     }
     inline bool isReservedTag( std::string const& tag ) {
-        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
+        return TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
         if( isReservedTag( tag ) ) {
@@ -70,14 +70,15 @@ namespace Catch {
             }
             else {
                 if( c == ']' ) {
-                    enforceNotReservedTag( tag, _lineInfo );
-
-                    inTag = false;
-                    if( tag == "hide" || tag == "." )
+                    TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
+                    if( prop == TestCaseInfo::IsHidden )
                         isHidden = true;
-                    else
-                        tags.insert( tag );
+                    else if( prop == TestCaseInfo::None )
+                        enforceNotReservedTag( tag, _lineInfo );
+
+                    tags.insert( tag );
                     tag.clear();
+                    inTag = false;
                 }
                 else
                     tag += c;

@@ -348,7 +348,7 @@ private:
 };
 
 // !TBD: This will be folded into Text class
-TEST_CASE( "Strings can be rendered with colour", "[colour][.]" ) {
+TEST_CASE( "Strings can be rendered with colour", "[.colour]" ) {
     
     {
         ColourString cs( "hello" );
