@@ -159,11 +159,19 @@ The ony available warning, presently, is ```NoAssertions```. This warning fails 
 
 When set to ```yes``` Catch will report the duration of each test case, in milliseconds. Note that it does this regardless of whether a test case passes or fails. Note, also, the certain reporters (e.g. Junit) always report test case durations regardless of this option being set or not.
 
+<a id="input-file"></a>
+## Load test names to run from a file
+<pre>-f, --input-file &lt;filename></pre>
+
+Provide the name of a file that contains a list of test case names - one per line. Blank lines are skipped and anything after the comment character, ```#```, is ignored.
+
+A useful way to generate an initial instance of this file is to use the <a href="#list-test-names-only">list-test-names-only</a> option. This can then be manually curated to specify a specific subset of tests - or in a specific order.
+
 <a id="list-test-names-only"></a>
 ## Just test names
 <pre>--list-test-names-only</pre>
 
-This option lists all available tests in a non-indented form, one on each line. This makes it ideal for saving to a file and feeding back into the <a href="#input-file">```-f``` or ```--input-file``` option</a>.
+This option lists all available tests in a non-indented form, one on each line. This makes it ideal for saving to a file and feeding back into the <a href="#input-file">```-f``` or ```--input-file```</a> option.
 
 
 <a id="order"></a>
