@@ -2,15 +2,18 @@ Catch works quite nicely without any command line options at all - but for those
 Click one of the followings links to take you straight to that option - or scroll on to browse the available options.
 
 <a href="#specifying-which-tests-to-run">               `    <test-spec> ...`</a><br />
-<a href="#choosing-a-reporter-to-use">                  `    -r, --reporter`</a><br />
-<a href="#breaking-into-the-debugger">                  `    -b, --break`</a><br />
-<a href="#showing-results-for-successful-tests">        `    -s, --success`</a><br />
-<a href="#aborting-after-a-certain-number-of-failures"> `    -a, --abort`</a><br />
-<a href="#listing-available-tests-tags-or-reporters">   `    -l, --list`</a><br />
+<a href="#usage">                                       `    -h, -?, --help`</a><br />
+<a href="#listing-available-tests-tags-or-reporters">   `    -l, --list-tests`</a><br />
 <a href="#listing-available-tests-tags-or-reporters">   `    -t, --list-tags`</a><br />
-<a href="#sending-output-to-a-file">                    `    -o, --out`</a><br />
-<a href="#naming-a-test-run">                           `    -n, --name`</a><br />
+<a href="#showing-results-for-successful-tests">        `    -s, --success`</a><br />
+<a href="#breaking-into-the-debugger">                  `    -b, --break`</a><br />
 <a href="#eliding-assertions-expected-to-throw">        `    -e, --nothrow`</a><br />
+<a href="#invisibles">                                  `    -i, --invisibles`</a><br />
+<a href="#sending-output-to-a-file">                    `    -o, --out`</a><br />
+<a href="#choosing-a-reporter-to-use">                  `    -r, --reporter`</a><br />
+<a href="#naming-a-test-run">                           `    -n, --name`</a><br />
+<a href="#aborting-after-a-certain-number-of-failures"> `    -a, --abort`</a><br />
+<a href="#aborting-after-a-certain-number-of-failures"> `    -x, --abortx`</a><br />
 <a href="#warnings">                                    `    -w, --warn`</a><br />
 <a href="#reporting-timings">                           `    -d, --durations`</a><br />
 <a href="#input-file">                                  `    -f, --input-file`</a><br />
@@ -24,7 +27,6 @@ Click one of the followings links to take you straight to that option - or scrol
 
 </br>
 
-<a href="#usage">                                       `    -h, -?, --help`</a><br />
 
 
 <a id="specifying-which-tests-to-run"></a>
@@ -144,6 +146,13 @@ These can be a nuisance in certain debugging environments that may break when ex
 Sometimes exceptions are expected outside of one of the assertions that tests for them (perhaps thrown and caught within the code-under-test). The whole test case can be skipped when using ```-e``` by marking it with the ```[!throws]``` tag.
 
 When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
+
+<a id="invisibles"></a>
+## Make whitespace visible
+<pre>-i, --invisibles</pre>
+
+If a string comparison fails due to differences in whitespace - especially leading or trailing whitespace - it can be hard to see what's going on.
+This option transforms tabs and newline characters into ```\t``` and ```\n``` respectively when printing.
 
 <a id="warnings"></a>
 ## Warnings
