@@ -181,13 +181,13 @@ This option lists all available tests in a non-indented form, one on each line. 
 Test cases are ordered one of three ways:
 
 
-* ```decl```
+### decl
 Declaration order. The order the tests were originally declared in. Note that ordering between files is not guaranteed and is implementation dependent.
 
-* ```lex```
+### lex
 Lexicographically sorted. Tests are sorted, alpha-numerically, by name.
 
-* ```rand```
+### rand
 Randomly sorted. Test names are sorted using ```std::random_shuffle()```. By default the random number generator is seeded with 0 - and so the order is repeatable. To control the random seed see <a href="#rng-seed">rng-seed</a>.
 
 <a id="rng-seed"></a>
