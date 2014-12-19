@@ -107,7 +107,7 @@ namespace Catch {
                     message += "\n" + it->message;
                 
                 
-                if( !result.hasExpression() ) {
+                if( result.hasExpression() ) {
                     details =
                         "  " + result.getExpressionInMacro() + "\n"
                         "with expansion:\n" +
