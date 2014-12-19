@@ -62,11 +62,61 @@ namespace Catch {
         }
         
         virtual bool assertionEnded( AssertionStats const& assertionStats ) {
-            if( !assertionStats.assertionResult.isOk() ) {
+            AssertionResult const& result = assertionStats.assertionResult;
+            if( !result.isOk() ) {
+                
+                std::string message;
+                switch( result.getResultType() ) {
+                    case ResultWas::ExpressionFailed:
+                        message = "expression failed";
+                        break;
+                    case ResultWas::ThrewException:
+                        message = "unexpected exception with message";
+                        break;
+                    case ResultWas::FatalErrorCondition:
+                        message = "fatal error condition";
+                        break;
+                    case ResultWas::DidntThrowException:
+                        message = "no exception was thrown where one was expected";
+                        break;
+                    case ResultWas::ExplicitFailure:
+                        message = "explicit failure";
+                        break;
+
+                    // We shouldn't get here because of the isOk() test
+                    case ResultWas::Ok:
+                    case ResultWas::Info:
+                    case ResultWas::Warning:
+
+                    // These cases are here to prevent compiler warnings
+                    case ResultWas::Unknown:
+                    case ResultWas::FailureBit:
+                    case ResultWas::Exception:
+                        CATCH_NOT_IMPLEMENTED;
+                }
+                if( assertionStats.infoMessages.size() == 1 )
+                    message += " with message:";
+                if( assertionStats.infoMessages.size() > 1 )
+                    message += " with messages:";
+                for( std::vector<MessageInfo>::const_iterator
+                        it = assertionStats.infoMessages.begin(),
+                        itEnd = assertionStats.infoMessages.end();
+                    it != itEnd;
+                    ++it )
+                    message += "\n" + it->message;
+                
+                
+                std::string details =
+                    "  " + result.getExpressionInMacro() + "\n" +
+                    "with expansion:\n" +
+                    "  " + result.getExpandedExpression() + "\n";
+                
+                // !TBD: file/ line
+                
                 stream << "##teamcity[testFailed"
                     << " name='" << escape( currentTestCaseInfo->name )<< "'"
-                    << " message='message here'" // !TBD
-                    << " details='details?'" // !TBD
+                    << " message='" << escape( message ) << "'"
+                    << " details='" << escape( details ) << "'"
                     << "]\n";
             }
             return true;
