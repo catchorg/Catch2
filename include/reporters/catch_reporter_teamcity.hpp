@@ -23,10 +23,10 @@ namespace Catch {
         
         static std::string escape( std::string const& str ) {
             std::string escaped = str;
+            replaceInPlace( escaped, "|", "||" );
             replaceInPlace( escaped, "\'", "|\'" );
             replaceInPlace( escaped, "\n", "|n" );
             replaceInPlace( escaped, "\r", "|r" );
-            replaceInPlace( escaped, "|", "||" );
             replaceInPlace( escaped, "[", "|[" );
             replaceInPlace( escaped, "]", "|]" );
             return escaped;
@@ -66,12 +66,13 @@ namespace Catch {
             if( !result.isOk() ) {
                 
                 std::string message;
+                std::string details;
                 switch( result.getResultType() ) {
                     case ResultWas::ExpressionFailed:
                         message = "expression failed";
                         break;
                     case ResultWas::ThrewException:
-                        message = "unexpected exception with message";
+                        message = "unexpected exception";
                         break;
                     case ResultWas::FatalErrorCondition:
                         message = "fatal error condition";
@@ -106,10 +107,12 @@ namespace Catch {
                     message += "\n" + it->message;
                 
                 
-                std::string details =
-                    "  " + result.getExpressionInMacro() + "\n" +
-                    "with expansion:\n" +
-                    "  " + result.getExpandedExpression() + "\n";
+                if( !result.hasExpression() ) {
+                    details =
+                        "  " + result.getExpressionInMacro() + "\n"
+                        "with expansion:\n" +
+                        "  " + result.getExpandedExpression() + "\n";
+                }
                 
                 // !TBD: file/ line
                 
