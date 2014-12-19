@@ -21,22 +21,14 @@ namespace Catch {
         :   StreamingReporterBase( _config )
         {}
         
-        static bool replace( std::string& str, std::string const& replaceThis, std::string const& withThis ) {
-            std::size_t i = str.find( replaceThis );
-            if( i != std::string::npos ) {
-                str = str.substr( 0, i ) + withThis + str.substr( i+replaceThis.size() );
-                return true;
-            }
-            return false;
-        }
         static std::string escape( std::string const& str ) {
             std::string escaped = str;
-            while(  replace( escaped, "\'", "|\'" ) ||
-                    replace( escaped, "\n", "|n" ) ||
-                    replace( escaped, "\r", "|r" ) ||
-                    replace( escaped, "|", "||" ) ||
-                    replace( escaped, "[", "|[" ) ||
-                    replace( escaped, "]", "|]" ) );
+            replaceInPlace( escaped, "\'", "|\'" );
+            replaceInPlace( escaped, "\n", "|n" );
+            replaceInPlace( escaped, "\r", "|r" );
+            replaceInPlace( escaped, "|", "||" );
+            replaceInPlace( escaped, "[", "|[" );
+            replaceInPlace( escaped, "]", "|]" );
             return escaped;
         }
         virtual ~TeamCityReporter();

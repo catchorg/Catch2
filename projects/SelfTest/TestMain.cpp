@@ -348,6 +348,34 @@ private:
     std::vector<ColourIndex> colours;
 };
 
+TEST_CASE( "replaceInPlace", "" ) {
+    std::string letters = "abcdefcg";
+    SECTION( "replace single char" ) {
+        CHECK( replaceInPlace( letters, "b", "z" ) );
+        CHECK( letters == "azcdefcg" );
+    }
+    SECTION( "replace two chars" ) {
+        CHECK( replaceInPlace( letters, "c", "z" ) );
+        CHECK( letters == "abzdefzg" );
+    }
+    SECTION( "replace first char" ) {
+        CHECK( replaceInPlace( letters, "a", "z" ) );
+        CHECK( letters == "zbcdefcg" );
+    }
+    SECTION( "replace last char" ) {
+        CHECK( replaceInPlace( letters, "g", "z" ) );
+        CHECK( letters == "abcdefcz" );
+    }
+    SECTION( "replace all chars" ) {
+        CHECK( replaceInPlace( letters, letters, "replaced" ) );
+        CHECK( letters == "replaced" );
+    }
+    SECTION( "replace no chars" ) {
+        CHECK_FALSE( replaceInPlace( letters, "x", "z" ) );
+        CHECK( letters == letters );
+    }
+}
+
 // !TBD: This will be folded into Text class
 TEST_CASE( "Strings can be rendered with colour", "[.colour]" ) {
     
