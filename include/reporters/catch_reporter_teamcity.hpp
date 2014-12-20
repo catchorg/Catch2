@@ -18,7 +18,8 @@ namespace Catch {
     
     struct TeamCityReporter : StreamingReporterBase {
         TeamCityReporter( ReporterConfig const& _config )
-        :   StreamingReporterBase( _config )
+        :   StreamingReporterBase( _config ),
+            m_headerPrintedForThisSection( false )
         {}
         
         static std::string escape( std::string const& str ) {
@@ -65,23 +66,26 @@ namespace Catch {
             AssertionResult const& result = assertionStats.assertionResult;
             if( !result.isOk() ) {
                 
-                std::string message;
-                std::string details;
+                std::ostringstream msg;
+                if( !m_headerPrintedForThisSection )
+                    printTestCaseAndSectionHeader( msg );
+                m_headerPrintedForThisSection = true;
+                
                 switch( result.getResultType() ) {
                     case ResultWas::ExpressionFailed:
-                        message = "expression failed";
+                        msg << "expression failed";
                         break;
                     case ResultWas::ThrewException:
-                        message = "unexpected exception";
+                        msg << "unexpected exception";
                         break;
                     case ResultWas::FatalErrorCondition:
-                        message = "fatal error condition";
+                        msg << "fatal error condition";
                         break;
                     case ResultWas::DidntThrowException:
-                        message = "no exception was thrown where one was expected";
+                        msg << "no exception was thrown where one was expected";
                         break;
                     case ResultWas::ExplicitFailure:
-                        message = "explicit failure";
+                        msg << "explicit failure";
                         break;
 
                     // We shouldn't get here because of the isOk() test
@@ -96,38 +100,38 @@ namespace Catch {
                         CATCH_NOT_IMPLEMENTED;
                 }
                 if( assertionStats.infoMessages.size() == 1 )
-                    message += " with message:";
+                    msg << " with message:";
                 if( assertionStats.infoMessages.size() > 1 )
-                    message += " with messages:";
+                    msg << " with messages:";
                 for( std::vector<MessageInfo>::const_iterator
                         it = assertionStats.infoMessages.begin(),
                         itEnd = assertionStats.infoMessages.end();
                     it != itEnd;
                     ++it )
-                    message += "\n" + it->message;
+                    msg << "\n  \"" << it->message << "\"";
                 
                 
                 if( result.hasExpression() ) {
-                    details =
-                        "  " + result.getExpressionInMacro() + "\n"
-                        "with expansion:\n" +
-                        "  " + result.getExpandedExpression() + "\n";
+                    msg <<
+                        "\n  " << result.getExpressionInMacro() << "\n"
+                        "with expansion:\n" <<
+                        "  " << result.getExpandedExpression() << "\n";
                 }
-                
-                // !TBD: file/ line
+                msg << "\n" << result.getSourceInfo() << "\n";
+                msg << "---------------------------------------";
                 
                 stream << "##teamcity[testFailed"
                     << " name='" << escape( currentTestCaseInfo->name )<< "'"
-                    << " message='" << escape( message ) << "'"
-                    << " details='" << escape( details ) << "'"
+                    << " message='" << escape( msg.str() ) << "'"
                     << "]\n";
             }
             return true;
         }
         
-//        virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
-//            // !TBD
-//        }
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+            m_headerPrintedForThisSection = false;
+            StreamingReporterBase::sectionStarting( sectionInfo );
+        }
 //        virtual void sectionEnded( SectionStats const& _sectionStats ) {
 //            // !TBD
 //        }
@@ -155,6 +159,46 @@ namespace Catch {
 //        }
         
     private:
+        void printTestCaseAndSectionHeader( std::ostream& os ) {
+            assert( !m_sectionStack.empty() );
+            printOpenHeader( os, currentTestCaseInfo->name );
+            
+            if( m_sectionStack.size() > 1 ) {
+                std::vector<SectionInfo>::const_iterator
+                it = m_sectionStack.begin()+1, // Skip first section (test case)
+                itEnd = m_sectionStack.end();
+                for( ; it != itEnd; ++it )
+                    printHeaderString( os, it->name, 2 );
+            }
+            
+            SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
+            
+            if( !lineInfo.empty() ){
+                os << getLineOfChars<'-'>() << "\n";
+                os << lineInfo << "\n";
+            }
+            os << getLineOfChars<'.'>() << "\n\n";
+        }
+
+        void printOpenHeader( std::ostream& os, std::string const& _name ) {
+            os  << getLineOfChars<'-'>() << "\n";
+            printHeaderString( os, _name );
+        }
+
+        // if string has a : in first line will set indent to follow it on
+        // subsequent lines
+        void printHeaderString( std::ostream& os, std::string const& _string, std::size_t indent = 0 ) {
+            std::size_t i = _string.find( ": " );
+            if( i != std::string::npos )
+                i+=2;
+            else
+                i = 0;
+            os << Text( _string, TextAttributes()
+                           .setIndent( indent+i)
+                           .setInitialIndent( indent ) ) << "\n";
+        }
+    private:
+        bool m_headerPrintedForThisSection;
         
     };
     

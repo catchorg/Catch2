@@ -81,7 +81,7 @@ struct Opaque
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "A failing expression with a non streamable type is still captured[failing]",
+    "A failing expression with a non streamable type is still captured",
     "[Tricky][failing][.]"
 )
 {
@@ -97,7 +97,7 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (   
-    "string literals of different sizes can be compared[failing]",
+    "string literals of different sizes can be compared",
     "[Tricky][failing][.]"
 )
 {

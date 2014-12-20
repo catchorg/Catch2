@@ -198,6 +198,16 @@ namespace Catch {
 
     };
 
+    template<char C>
+    char const* getLineOfChars() {
+        static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
+        if( !*line ) {
+            memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
+            line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
+        }
+        return line;
+    }
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
