@@ -68,8 +68,10 @@ namespace Catch {
                 
                 std::ostringstream msg;
                 if( !m_headerPrintedForThisSection )
-                    printTestCaseAndSectionHeader( msg );
+                    printSectionHeader( msg );
                 m_headerPrintedForThisSection = true;
+                
+                msg << result.getSourceInfo() << "\n";
                 
                 switch( result.getResultType() ) {
                     case ResultWas::ExpressionFailed:
@@ -117,8 +119,6 @@ namespace Catch {
                         "with expansion:\n" <<
                         "  " << result.getExpandedExpression() << "\n";
                 }
-                msg << "\n" << result.getSourceInfo() << "\n";
-                msg << "---------------------------------------";
                 
                 stream << "##teamcity[testFailed"
                     << " name='" << escape( currentTestCaseInfo->name )<< "'"
@@ -159,30 +159,25 @@ namespace Catch {
 //        }
         
     private:
-        void printTestCaseAndSectionHeader( std::ostream& os ) {
+        void printSectionHeader( std::ostream& os ) {
             assert( !m_sectionStack.empty() );
-            printOpenHeader( os, currentTestCaseInfo->name );
-            
+
             if( m_sectionStack.size() > 1 ) {
+                os << getLineOfChars<'-'>() << "\n";
+
                 std::vector<SectionInfo>::const_iterator
                 it = m_sectionStack.begin()+1, // Skip first section (test case)
                 itEnd = m_sectionStack.end();
                 for( ; it != itEnd; ++it )
-                    printHeaderString( os, it->name, 2 );
+                    printHeaderString( os, it->name );
+                os << getLineOfChars<'-'>() << "\n";
             }
             
             SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
             
-            if( !lineInfo.empty() ){
-                os << getLineOfChars<'-'>() << "\n";
+            if( !lineInfo.empty() )
                 os << lineInfo << "\n";
-            }
             os << getLineOfChars<'.'>() << "\n\n";
-        }
-
-        void printOpenHeader( std::ostream& os, std::string const& _name ) {
-            os  << getLineOfChars<'-'>() << "\n";
-            printHeaderString( os, _name );
         }
 
         // if string has a : in first line will set indent to follow it on
