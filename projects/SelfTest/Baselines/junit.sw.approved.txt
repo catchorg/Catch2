@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="all tests" errors="12" failures="87" tests="759" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="all tests" errors="12" failures="87" tests="771" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -485,6 +485,12 @@ MiscTests.cpp:<line number>
     <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped once" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped twice" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With tabs" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace single char" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace two chars" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace first char" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace last char" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace all chars" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace no chars" time="{duration}"/>
     <testcase classname="global" name="Strings can be rendered with colour" time="{duration}">
       <system-out>
 hello
@@ -496,7 +502,7 @@ hello
     <testcase classname="global" name="Parsing a std::pair" time="{duration}"/>
     <testcase classname="global" name="Where the is more to the expression after the RHS[failing]" time="{duration}"/>
     <testcase classname="global" name="Where the LHS is not a simple value[failing]" time="{duration}"/>
-    <testcase classname="global" name="A failing expression with a non streamable type is still captured[failing]" time="{duration}">
+    <testcase classname="global" name="A failing expression with a non streamable type is still captured" time="{duration}">
       <failure message="0x<hex digits> == 0x<hex digits>" type="CHECK">
 TrickyTests.cpp:<line number>
       </failure>
@@ -504,7 +510,7 @@ TrickyTests.cpp:<line number>
 TrickyTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="global" name="string literals of different sizes can be compared[failing]" time="{duration}">
+    <testcase classname="global" name="string literals of different sizes can be compared" time="{duration}">
       <failure message="&quot;first&quot; == &quot;second&quot;" type="REQUIRE">
 TrickyTests.cpp:<line number>
       </failure>

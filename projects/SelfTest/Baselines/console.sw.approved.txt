@@ -4518,6 +4518,120 @@ with expansion:
           five
           six"
 
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace single char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "b", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "azcdefcg" )
+with expansion:
+  "azcdefcg" == "azcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace two chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "c", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "abzdefzg" )
+with expansion:
+  "abzdefzg" == "abzdefzg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace first char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "a", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "zbcdefcg" )
+with expansion:
+  "zbcdefcg" == "zbcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace last char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "g", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "abcdefcz" )
+with expansion:
+  "abcdefcz" == "abcdefcz"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace all chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, letters, "replaced" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "replaced" )
+with expansion:
+  "replaced" == "replaced"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace no chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_FALSE( replaceInPlace( letters, "x", "z" ) )
+with expansion:
+  !false
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == letters )
+with expansion:
+  "abcdefcg" == "abcdefcg"
+
 hello
 hello
 -------------------------------------------------------------------------------
@@ -5604,7 +5718,7 @@ warning:
 No assertions in test case 'Where the LHS is not a simple value[failing]'
 
 -------------------------------------------------------------------------------
-A failing expression with a non streamable type is still captured[failing]
+A failing expression with a non streamable type is still captured
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5620,7 +5734,7 @@ with expansion:
   {?} == {?}
 
 -------------------------------------------------------------------------------
-string literals of different sizes can be compared[failing]
+string literals of different sizes can be compared
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -7683,6 +7797,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 148 |  93 passed | 54 failed |  1 failed as expected
-assertions: 759 | 647 passed | 99 failed | 13 failed as expected
+test cases: 149 |  94 passed | 54 failed |  1 failed as expected
+assertions: 771 | 659 passed | 99 failed | 13 failed as expected
 

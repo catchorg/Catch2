@@ -4714,6 +4714,123 @@ four&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="replaceInPlace">
+      <Section name="replace single char">
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            replaceInPlace( letters, &quot;b&quot;, &quot;z&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            letters == &quot;azcdefcg&quot;
+          </Original>
+          <Expanded>
+            &quot;azcdefcg&quot; == &quot;azcdefcg&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="replace two chars">
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            replaceInPlace( letters, &quot;c&quot;, &quot;z&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            letters == &quot;abzdefzg&quot;
+          </Original>
+          <Expanded>
+            &quot;abzdefzg&quot; == &quot;abzdefzg&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="replace first char">
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            replaceInPlace( letters, &quot;a&quot;, &quot;z&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            letters == &quot;zbcdefcg&quot;
+          </Original>
+          <Expanded>
+            &quot;zbcdefcg&quot; == &quot;zbcdefcg&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="replace last char">
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            replaceInPlace( letters, &quot;g&quot;, &quot;z&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            letters == &quot;abcdefcz&quot;
+          </Original>
+          <Expanded>
+            &quot;abcdefcz&quot; == &quot;abcdefcz&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="replace all chars">
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            replaceInPlace( letters, letters, &quot;replaced&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            letters == &quot;replaced&quot;
+          </Original>
+          <Expanded>
+            &quot;replaced&quot; == &quot;replaced&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="replace no chars">
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            !replaceInPlace( letters, &quot;x&quot;, &quot;z&quot; )
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            letters == letters
+          </Original>
+          <Expanded>
+            &quot;abcdefcg&quot; == &quot;abcdefcg&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Strings can be rendered with colour">
       <OverallResult success="true"/>
     </TestCase>
@@ -5774,7 +5891,7 @@ there&quot;
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A failing expression with a non streamable type is still captured[failing]">
+    <TestCase name="A failing expression with a non streamable type is still captured">
       <Expression success="false" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
           &amp;o1 == &amp;o2
@@ -5793,7 +5910,7 @@ there&quot;
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="string literals of different sizes can be compared[failing]">
+    <TestCase name="string literals of different sizes can be compared">
       <Expression success="false" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
           std::string( &quot;first&quot; ) == &quot;second&quot;
@@ -7950,7 +8067,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="647" failures="99" expectedFailures="13"/>
+    <OverallResults successes="659" failures="99" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="647" failures="99" expectedFailures="13"/>
+  <OverallResults successes="659" failures="99" expectedFailures="13"/>
 </Catch>
