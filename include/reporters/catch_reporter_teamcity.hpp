@@ -14,6 +14,11 @@
 
 #include <cstring>
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 namespace Catch {
     
     struct TeamCityReporter : StreamingReporterBase {
@@ -132,15 +137,13 @@ namespace Catch {
             m_headerPrintedForThisSection = false;
             StreamingReporterBase::sectionStarting( sectionInfo );
         }
-//        virtual void sectionEnded( SectionStats const& _sectionStats ) {
-//            // !TBD
-//        }
-        
+
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
             StreamingReporterBase::testCaseStarting( testInfo );
             stream << "##teamcity[testStarted name='"
                 << escape( testInfo.name ) << "']\n";
         }
+        
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             if( !testCaseStats.stdOut.empty() )
@@ -154,10 +157,7 @@ namespace Catch {
             stream << "##teamcity[testFinished name='"
                 << escape( testCaseStats.testInfo.name ) << "']\n";
         }
-//        virtual void testRunEnded( TestRunStats const& _testRunStats ) {
-//            // !TBD
-//        }
-        
+
     private:
         void printSectionHeader( std::ostream& os ) {
             assert( !m_sectionStack.empty() );
@@ -204,5 +204,9 @@ namespace Catch {
     INTERNAL_CATCH_REGISTER_REPORTER( "teamcity", TeamCityReporter )
     
 } // end namespace Catch
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
