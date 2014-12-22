@@ -10,6 +10,8 @@
 
 #include "../internal/catch_interfaces_reporter.h"
 
+#include <cstring>
+
 namespace Catch {
 
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
