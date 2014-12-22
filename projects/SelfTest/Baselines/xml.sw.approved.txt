@@ -5879,13 +5879,13 @@ there&quot;
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Where the is more to the expression after the RHS[failing]">
+    <TestCase name="Where there is more to the expression after the RHS">
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Where the LHS is not a simple value[failing]">
+    <TestCase name="Where the LHS is not a simple value">
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>

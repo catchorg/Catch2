@@ -737,7 +737,7 @@ with expansion:
 hello
 hello
 -------------------------------------------------------------------------------
-Where the is more to the expression after the RHS[failing]
+Where there is more to the expression after the RHS
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -748,7 +748,7 @@ warning:
   error
 
 -------------------------------------------------------------------------------
-Where the LHS is not a simple value[failing]
+Where the LHS is not a simple value
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................

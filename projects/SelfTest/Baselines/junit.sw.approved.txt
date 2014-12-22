@@ -500,8 +500,8 @@ hello
     <testcase classname="global" name="Text can be formatted using the Text class" time="{duration}"/>
     <testcase classname="global" name="Long text is truncted" time="{duration}"/>
     <testcase classname="global" name="Parsing a std::pair" time="{duration}"/>
-    <testcase classname="global" name="Where the is more to the expression after the RHS[failing]" time="{duration}"/>
-    <testcase classname="global" name="Where the LHS is not a simple value[failing]" time="{duration}"/>
+    <testcase classname="global" name="Where there is more to the expression after the RHS" time="{duration}"/>
+    <testcase classname="global" name="Where the LHS is not a simple value" time="{duration}"/>
     <testcase classname="global" name="A failing expression with a non streamable type is still captured" time="{duration}">
       <failure message="0x<hex digits> == 0x<hex digits>" type="CHECK">
 TrickyTests.cpp:<line number>

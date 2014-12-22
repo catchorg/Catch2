@@ -5690,7 +5690,7 @@ with expansion:
   std::pair( 1, 2 ) == std::pair( 1, 2 )
 
 -------------------------------------------------------------------------------
-Where the is more to the expression after the RHS[failing]
+Where there is more to the expression after the RHS
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5701,10 +5701,10 @@ warning:
   error
 
 
-No assertions in test case 'Where the is more to the expression after the RHS[failing]'
+No assertions in test case 'Where there is more to the expression after the RHS'
 
 -------------------------------------------------------------------------------
-Where the LHS is not a simple value[failing]
+Where the LHS is not a simple value
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5715,7 +5715,7 @@ warning:
   error
 
 
-No assertions in test case 'Where the LHS is not a simple value[failing]'
+No assertions in test case 'Where the LHS is not a simple value'
 
 -------------------------------------------------------------------------------
 A failing expression with a non streamable type is still captured
