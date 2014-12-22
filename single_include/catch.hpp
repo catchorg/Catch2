@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 10 (develop branch)
- *  Generated: 2014-12-22 07:42:39.411909
+ *  CATCH v1.1 build 11 (develop branch)
+ *  Generated: 2014-12-22 20:17:55.347268
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -480,7 +480,7 @@ namespace Catch {
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const = 0;
 
     };
 }
@@ -4683,6 +4683,8 @@ namespace Catch
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
+
+        virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
     };
 
     struct IReporterFactory {
@@ -5482,6 +5484,14 @@ namespace Catch {
                     m_testsAlreadyRun.insert( *it );
                 }
             }
+            std::vector<TestCase> skippedTestCases;
+            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, skippedTestCases, true );
+
+            for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
+                    it != itEnd;
+                    ++it )
+                m_reporter->skipTest( *it );
+
             context.testGroupEnded( "all tests", totals, 1, 1 );
             return totals;
         }
@@ -5695,33 +5705,38 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const {
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
-                if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
+                bool includeTest = testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() );
+                if( includeTest != negated )
                     matchingTestCases.push_back( *it );
             }
+            sortTests( config, matchingTestCases );
+        }
+
+    private:
+
+        static void sortTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) {
+
             switch( config.runOrder() ) {
                 case RunTests::InLexicographicalOrder:
                     std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
                     break;
                 case RunTests::InRandomOrder:
-                    {
-                        RandomNumberGenerator rng;
-                        std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
-                    }
+                {
+                    RandomNumberGenerator rng;
+                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
+                }
                     break;
                 case RunTests::InDeclarationOrder:
                     // already in declaration order
                     break;
             }
         }
-
-    private:
-
         std::set<TestCase> m_functions;
         std::vector<TestCase> m_functionsInOrder;
         std::vector<TestCase> m_nonHiddenFunctions;
@@ -6671,7 +6686,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 10, "develop" );
+    Version libraryVersion( 1, 1, 11, "develop" );
 }
 
 // #included from: catch_message.hpp
@@ -6755,6 +6770,7 @@ namespace Catch
         virtual void testCaseEnded( TestCaseStats const& testCaseStats );
         virtual void testGroupEnded( TestGroupStats const& testGroupStats );
         virtual void testRunEnded( TestRunStats const& testRunStats );
+        virtual void skipTest( TestCaseInfo const& );
 
     private:
         Ptr<IReporter> m_legacyReporter;
@@ -6827,6 +6843,8 @@ namespace Catch
     }
     void LegacyReporterAdapter::testRunEnded( TestRunStats const& testRunStats ) {
         m_legacyReporter->EndTesting( testRunStats.totals );
+    }
+    void LegacyReporterAdapter::skipTest( TestCaseInfo const& ) {
     }
 }
 
@@ -7526,6 +7544,11 @@ namespace Catch {
             currentTestRunInfo.reset();
         }
 
+        virtual void skipTest( TestCaseInfo const& ) {
+            // Don't do anything with this by default.
+            // It can optionally be overridden in the derived class.
+        }
+
         Ptr<IConfig> m_config;
         std::ostream& stream;
 
@@ -7654,6 +7677,8 @@ namespace Catch {
             testRunEndedCumulative();
         }
         virtual void testRunEndedCumulative() = 0;
+
+        virtual void skipTest( TestCaseInfo const& ) {}
 
         Ptr<IConfig> m_config;
         std::ostream& stream;
