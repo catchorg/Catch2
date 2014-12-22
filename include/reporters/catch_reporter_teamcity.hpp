@@ -8,9 +8,11 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 
-#include "catch_reporter_bases.hpp"
-
-#include "../internal/catch_reporter_registrars.hpp"
+// Don't #include any Catch headers here - we can assume they are already
+// included before this header.
+// This is not good practice in general but is necessary in this case so this
+// file can be distributed as a single header that works with the main
+// Catch single header.
 
 #include <cstring>
 
