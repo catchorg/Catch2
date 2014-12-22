@@ -244,6 +244,8 @@ namespace Catch
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
+        
+        virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
     };
 
 

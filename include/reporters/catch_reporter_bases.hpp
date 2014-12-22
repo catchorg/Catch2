@@ -55,6 +55,11 @@ namespace Catch {
             currentTestRunInfo.reset();
         }
 
+        virtual void skipTest( TestCaseInfo const& ) {
+            // Don't do anything with this by default.
+            // It can optionally be overridden in the derived class.
+        }
+
         Ptr<IConfig> m_config;
         std::ostream& stream;
 
@@ -184,6 +189,8 @@ namespace Catch {
             testRunEndedCumulative();
         }
         virtual void testRunEndedCumulative() = 0;
+
+        virtual void skipTest( TestCaseInfo const& ) {}
 
         Ptr<IConfig> m_config;
         std::ostream& stream;

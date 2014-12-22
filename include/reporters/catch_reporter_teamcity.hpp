@@ -49,8 +49,16 @@ namespace Catch {
             prefs.shouldRedirectStdOut = true;
             return prefs;
         }
-        
-        // !TBD: ignored tests
+
+        virtual void skipTest( TestCaseInfo const& testInfo ) {
+            stream  << "##teamcity[testIgnored name='"
+                    << escape( testInfo.name ) << "'";
+            if( testInfo.isHidden() )
+                stream << " message='hidden test'";
+            else
+                stream << " message='test skipped because it didn't match the test spec'";
+            stream << "]\n";
+        }
         
         virtual void noMatchingTestCases( std::string const& /* spec */ ) {}
         

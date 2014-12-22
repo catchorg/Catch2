@@ -67,33 +67,38 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const {
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
-                if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
+                bool includeTest = testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() );
+                if( includeTest != negated )
                     matchingTestCases.push_back( *it );
             }
+            sortTests( config, matchingTestCases );
+        }
+
+    private:
+
+        static void sortTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) {
+            
             switch( config.runOrder() ) {
                 case RunTests::InLexicographicalOrder:
                     std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
                     break;
                 case RunTests::InRandomOrder:
-                    {
-                        RandomNumberGenerator rng;
-                        std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
-                    }
+                {
+                    RandomNumberGenerator rng;
+                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
+                }
                     break;
                 case RunTests::InDeclarationOrder:
                     // already in declaration order
                     break;
             }
         }
-
-    private:
-
         std::set<TestCase> m_functions;
         std::vector<TestCase> m_functionsInOrder;
         std::vector<TestCase> m_nonHiddenFunctions;
