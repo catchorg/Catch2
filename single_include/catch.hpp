@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.1 build 10 (develop branch)
- *  Generated: 2014-12-21 00:20:17.212897
+ *  Generated: 2014-12-22 07:42:39.411909
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -7481,6 +7481,8 @@ namespace Catch {
 // #included from: catch_reporter_bases.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
+#include <cstring>
+
 namespace Catch {
 
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
@@ -8317,8 +8319,6 @@ namespace Catch {
 
 // #included from: ../reporters/catch_reporter_console.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
-
-#include <cstring>
 
 namespace Catch {
 
