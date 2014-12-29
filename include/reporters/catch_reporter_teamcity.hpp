@@ -32,7 +32,7 @@ namespace Catch {
         static std::string escape( std::string const& str ) {
             std::string escaped = str;
             replaceInPlace( escaped, "|", "||" );
-            replaceInPlace( escaped, "\'", "|\'" );
+            replaceInPlace( escaped, "'", "|'" );
             replaceInPlace( escaped, "\n", "|n" );
             replaceInPlace( escaped, "\r", "|r" );
             replaceInPlace( escaped, "[", "|[" );
@@ -56,7 +56,7 @@ namespace Catch {
             if( testInfo.isHidden() )
                 stream << " message='hidden test'";
             else
-                stream << " message='test skipped because it didn't match the test spec'";
+                stream << " message='test skipped because it didn|'t match the test spec'";
             stream << "]\n";
         }
         
