@@ -35,6 +35,9 @@ namespace Catch {
         bool allPassed() const {
             return failed == 0 && failedButOk == 0;
         }
+        bool allOk() const {
+            return failed == 0;
+        }
 
         std::size_t passed;
         std::size_t failed;

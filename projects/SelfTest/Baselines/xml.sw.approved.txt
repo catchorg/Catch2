@@ -531,7 +531,7 @@
           1.3 == Approx( 1.301 )
         </Expanded>
       </Expression>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Inequality checks that should succeed">
       <Expression success="true" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -1541,7 +1541,7 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test">
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Unexpected custom exceptions can be translated">
       <Exception filename="projects/SelfTest/ExceptionTests.cpp" >
@@ -2775,7 +2775,7 @@
       <Warning>
         this is a warning
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="SUCCEED counts as a test pass">
       <OverallResult success="true"/>
@@ -2873,7 +2873,7 @@
       <Section name="two">
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="SCOPED_INFO is reset for each loop">
       <Expression success="true" filename="projects/SelfTest/MessageTests.cpp" >
@@ -2984,7 +2984,7 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="just info">
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="just failure">
       <Failure>
@@ -3016,7 +3016,7 @@
       <Warning>
         toString(p): 0x<hex digits>
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="random SECTION tests">
       <Section name="s1" description="doesn't equal">
@@ -3117,7 +3117,7 @@
       <Section name="f (leaf)">
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="looped SECTION tests">
       <Section name="s1" description="b is currently: 0">
@@ -3219,7 +3219,7 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Sends stuff to stdout and stderr">
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="null strings">
       <Expression success="true" filename="projects/SelfTest/MiscTests.cpp" >
@@ -3323,7 +3323,7 @@
       <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;">
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="send a single char to INFO">
       <Info>
@@ -3525,19 +3525,19 @@
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="An empty test with no assertions">
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Nice descriptive name">
       <Warning>
         This one ran
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="first tag">
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="second tag">
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="vectors can be sized and resized">
       <Expression success="true" filename="projects/SelfTest/MiscTests.cpp" >
@@ -4829,10 +4829,29 @@ four&quot;
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="escape '">
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            replaceInPlace( s, &quot;'&quot;, &quot;|'&quot; )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
+          <Original>
+            s == &quot;didn|'t&quot;
+          </Original>
+          <Expanded>
+            &quot;didn|'t&quot; == &quot;didn|'t&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Strings can be rendered with colour">
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Text can be formatted using the Text class">
       <Expression success="true" filename="projects/SelfTest/TestMain.cpp" >
@@ -5883,13 +5902,13 @@ there&quot;
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Where the LHS is not a simple value">
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="A failing expression with a non streamable type is still captured">
       <Expression success="false" filename="projects/SelfTest/TrickyTests.cpp" >
@@ -8067,7 +8086,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="659" failures="99" expectedFailures="13"/>
+    <OverallResults successes="661" failures="99" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="659" failures="99" expectedFailures="13"/>
+  <OverallResults successes="661" failures="99" expectedFailures="13"/>
 </Catch>

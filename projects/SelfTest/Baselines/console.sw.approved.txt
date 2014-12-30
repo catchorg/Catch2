@@ -4632,6 +4632,25 @@ PASSED:
 with expansion:
   "abcdefcg" == "abcdefcg"
 
+-------------------------------------------------------------------------------
+replaceInPlace
+  escape '
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( s, "'", "|'" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( s == "didn|'t" )
+with expansion:
+  "didn|'t" == "didn|'t"
+
 hello
 hello
 -------------------------------------------------------------------------------
@@ -7798,5 +7817,5 @@ with expansion:
 
 ===============================================================================
 test cases: 149 |  94 passed | 54 failed |  1 failed as expected
-assertions: 771 | 659 passed | 99 failed | 13 failed as expected
+assertions: 773 | 661 passed | 99 failed | 13 failed as expected
 

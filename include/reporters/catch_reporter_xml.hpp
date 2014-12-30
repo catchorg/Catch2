@@ -99,7 +99,7 @@ namespace Catch {
             if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
                     .writeAttribute( "success", assertionResult.succeeded() )
-					.writeAttribute( "type", assertionResult.getTestMacroName() )
+//					.writeAttribute( "type", assertionResult.getTestMacroName() )
                     .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                     .writeAttribute( "line", assertionResult.getSourceInfo().line );
 
@@ -111,8 +111,6 @@ namespace Catch {
 
             // And... Print a result applicable to each result type.
             switch( assertionResult.getResultType() ) {
-                default:
-                    break;
                 case ResultWas::ThrewException:
                     m_xml.scopedElement( "Exception" )
                         .writeAttribute( "filename", assertionResult.getSourceInfo().file )
@@ -130,12 +128,13 @@ namespace Catch {
                         .writeText( assertionResult.getMessage() );
                     break;
                 case ResultWas::Warning:
-                    m_xml.scopedElement( "Warning" )
-                        .writeText( assertionResult.getMessage() );
+                    // Warning will already have been written
                     break;
                 case ResultWas::ExplicitFailure:
                     m_xml.scopedElement( "Failure" )
                         .writeText( assertionResult.getMessage() );
+                    break;
+                default:
                     break;
             }
             
@@ -163,7 +162,7 @@ namespace Catch {
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResult" );
-            e.writeAttribute( "success", testCaseStats.totals.assertions.allPassed() );
+            e.writeAttribute( "success", testCaseStats.totals.assertions.allOk() );
 
             if ( m_config->showDurations() == ShowDurations::Always )
                 e.writeAttribute( "durationInSeconds", m_testCaseTimer.getElapsedSeconds() );

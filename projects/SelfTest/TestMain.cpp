@@ -374,6 +374,11 @@ TEST_CASE( "replaceInPlace", "" ) {
         CHECK_FALSE( replaceInPlace( letters, "x", "z" ) );
         CHECK( letters == letters );
     }
+    SECTION( "escape '" ) {
+        std::string s = "didn't";
+        CHECK( replaceInPlace( s, "'", "|'" ) );
+        CHECK( s == "didn|'t" );
+    }
 }
 
 // !TBD: This will be folded into Text class

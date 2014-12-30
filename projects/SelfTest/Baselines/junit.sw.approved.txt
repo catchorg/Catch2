@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="all tests" errors="12" failures="87" tests="771" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="all tests" errors="12" failures="87" tests="773" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -491,6 +491,7 @@ MiscTests.cpp:<line number>
     <testcase classname="replaceInPlace" name="replace last char" time="{duration}"/>
     <testcase classname="replaceInPlace" name="replace all chars" time="{duration}"/>
     <testcase classname="replaceInPlace" name="replace no chars" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="escape '" time="{duration}"/>
     <testcase classname="global" name="Strings can be rendered with colour" time="{duration}">
       <system-out>
 hello
