@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="all tests" errors="12" failures="87" tests="773" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="all tests" errors="12" failures="87" tests="781" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -585,6 +585,12 @@ TrickyTests.cpp:<line number>
     <testcase classname="Parse test names and tags" name="empty tag" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="empty quoted name" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="quoted string followed by tag exclusion" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;int>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;float,int>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;string,string>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;nullptr,int,const char *>" time="{duration}"/>
     <testcase classname="Tag alias can be registered against tag patterns" name="The same tag alias can only be registered once" time="{duration}"/>
     <testcase classname="Tag alias can be registered against tag patterns" name="Tag aliases must be of the form [@name]" time="{duration}"/>
     <testcase classname="global" name="Anonymous test case 1" time="{duration}"/>

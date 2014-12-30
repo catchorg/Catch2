@@ -7656,6 +7656,94 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="tuple&lt;>">
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;{ }&quot; == Catch::toString(type{})
+        </Original>
+        <Expanded>
+          &quot;{ }&quot; == &quot;{ }&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;{ }&quot; == Catch::toString(value)
+        </Original>
+        <Expanded>
+          &quot;{ }&quot; == &quot;{ }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;int>">
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;{ 0 }&quot; == Catch::toString(type{0})
+        </Original>
+        <Expanded>
+          &quot;{ 0 }&quot; == &quot;{ 0 }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;float,int>">
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;1.2f&quot; == Catch::toString(float(1.2))
+        </Original>
+        <Expanded>
+          &quot;1.2f&quot; == &quot;1.2f&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;{ 1.2f, 0 }&quot; == Catch::toString(type{1.2,0})
+        </Original>
+        <Expanded>
+          &quot;{ 1.2f, 0 }&quot; == &quot;{ 1.2f, 0 }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;string,string>">
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;{ \&quot;hello\&quot;, \&quot;world\&quot; }&quot; == Catch::toString(type{&quot;hello&quot;,&quot;world&quot;})
+        </Original>
+        <Expanded>
+          &quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+==
+&quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>">
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;{ { 42 }, { }, 1.2f }&quot; == Catch::toString(value)
+        </Original>
+        <Expanded>
+          &quot;{ { 42 }, { }, 1.2f }&quot;
+==
+&quot;{ { 42 }, { }, 1.2f }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;nullptr,int,const char *>">
+      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
+        <Original>
+          &quot;{ nullptr, 42, \&quot;Catch me\&quot; }&quot; == Catch::toString(value)
+        </Original>
+        <Expanded>
+          &quot;{ nullptr, 42, &quot;Catch me&quot; }&quot;
+==
+&quot;{ nullptr, 42, &quot;Catch me&quot; }&quot;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Tag alias can be registered against tag patterns">
       <Section name="The same tag alias can only be registered once">
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
@@ -8086,7 +8174,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="661" failures="99" expectedFailures="13"/>
+    <OverallResults successes="669" failures="99" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="661" failures="99" expectedFailures="13"/>
+  <OverallResults successes="669" failures="99" expectedFailures="13"/>
 </Catch>

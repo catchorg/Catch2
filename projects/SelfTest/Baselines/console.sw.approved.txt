@@ -7374,6 +7374,96 @@ with expansion:
   true == true
 
 -------------------------------------------------------------------------------
+tuple<>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == Catch::toString(type{}) )
+with expansion:
+  "{ }" == "{ }"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == Catch::toString(value) )
+with expansion:
+  "{ }" == "{ }"
+
+-------------------------------------------------------------------------------
+tuple<int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 0 }" == Catch::toString(type{0}) )
+with expansion:
+  "{ 0 }" == "{ 0 }"
+
+-------------------------------------------------------------------------------
+tuple<float,int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "1.2f" == Catch::toString(float(1.2)) )
+with expansion:
+  "1.2f" == "1.2f"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 1.2f, 0 }" == Catch::toString(type{1.2,0}) )
+with expansion:
+  "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+
+-------------------------------------------------------------------------------
+tuple<string,string>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ \"hello\", \"world\" }" == Catch::toString(type{"hello","world"}) )
+with expansion:
+  "{ "hello", "world" }"
+  ==
+  "{ "hello", "world" }"
+
+-------------------------------------------------------------------------------
+tuple<tuple<int>,tuple<>,float>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ { 42 }, { }, 1.2f }" == Catch::toString(value) )
+with expansion:
+  "{ { 42 }, { }, 1.2f }"
+  ==
+  "{ { 42 }, { }, 1.2f }"
+
+-------------------------------------------------------------------------------
+tuple<nullptr,int,const char *>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value) )
+with expansion:
+  "{ nullptr, 42, "Catch me" }"
+  ==
+  "{ nullptr, 42, "Catch me" }"
+
+-------------------------------------------------------------------------------
 Tag alias can be registered against tag patterns
   The same tag alias can only be registered once
 -------------------------------------------------------------------------------
@@ -7816,6 +7906,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 149 |  94 passed | 54 failed |  1 failed as expected
-assertions: 773 | 661 passed | 99 failed | 13 failed as expected
+test cases: 155 | 100 passed | 54 failed |  1 failed as expected
+assertions: 781 | 669 passed | 99 failed | 13 failed as expected
 
