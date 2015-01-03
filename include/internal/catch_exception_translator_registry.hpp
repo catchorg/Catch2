@@ -35,7 +35,7 @@ namespace Catch {
                     throw;
                 }
                 @catch (NSException *exception) {
-                    return toString( [exception description] );
+                    return Catch::toString( [exception description] );
                 }
 #else
                 throw;

@@ -50,6 +50,7 @@ namespace Catch
         virtual void testCaseEnded( TestCaseStats const& testCaseStats );
         virtual void testGroupEnded( TestGroupStats const& testGroupStats );
         virtual void testRunEnded( TestRunStats const& testRunStats );
+        virtual void skipTest( TestCaseInfo const& );
 
     private:
         Ptr<IReporter> m_legacyReporter;

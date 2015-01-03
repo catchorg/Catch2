@@ -16,6 +16,7 @@
 		266ECD74170F3C620030D735 /* BDDTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266ECD73170F3C620030D735 /* BDDTests.cpp */; };
 		26711C8F195D465C0033EDA2 /* TagAliasTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26711C8D195D465C0033EDA2 /* TagAliasTests.cpp */; };
 		26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26847E5D16BBADB40043B9C1 /* catch_message.cpp */; };
+		2691574C1A532A280054F1ED /* ToStringTuple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2691574B1A532A280054F1ED /* ToStringTuple.cpp */; };
 		26948286179A9AB900ED166E /* SectionTrackerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26948284179A9AB900ED166E /* SectionTrackerTests.cpp */; };
 		2694A1FD16A0000E004816E3 /* catch_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_text.cpp */; };
 		26E1B7D319213BC900812682 /* CmdLineTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26E1B7D119213BC900812682 /* CmdLineTests.cpp */; };
@@ -96,6 +97,8 @@
 		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
 		26847E5D16BBADB40043B9C1 /* catch_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_message.cpp; path = ../../../SelfTest/SurrogateCpps/catch_message.cpp; sourceTree = "<group>"; };
 		268F47B018A93F7800D8C14F /* catch_clara.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_clara.h; sourceTree = "<group>"; };
+		2691574A1A4480C50054F1ED /* catch_reporter_teamcity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_teamcity.hpp; sourceTree = "<group>"; };
+		2691574B1A532A280054F1ED /* ToStringTuple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToStringTuple.cpp; path = ../../../SelfTest/ToStringTuple.cpp; sourceTree = "<group>"; };
 		26926E8318D7777D004E10F2 /* clara.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clara.h; path = ../../../../include/external/clara.h; sourceTree = "<group>"; };
 		26926E8418D77809004E10F2 /* tbc_text_format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tbc_text_format.h; path = ../../../../include/external/tbc_text_format.h; sourceTree = "<group>"; };
 		26948284179A9AB900ED166E /* SectionTrackerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SectionTrackerTests.cpp; path = ../../../SelfTest/SectionTrackerTests.cpp; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 		4A6D0C40149B3DAB00DB3EAA /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				2691574B1A532A280054F1ED /* ToStringTuple.cpp */,
 				263F7A4819B6FE1E009474C2 /* ToStringPair.cpp */,
 				263F7A4919B6FE1E009474C2 /* ToStringVector.cpp */,
 				263F7A4A19B6FE1E009474C2 /* ToStringWhich.cpp */,
@@ -313,6 +317,7 @@
 				4A6D0C67149B3E3D00DB3EAA /* catch_reporter_junit.hpp */,
 				4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */,
 				4AB42F84166F3E1A0099F2C8 /* catch_reporter_console.hpp */,
+				2691574A1A4480C50054F1ED /* catch_reporter_teamcity.hpp */,
 			);
 			name = reporters;
 			path = ../../../../include/reporters;
@@ -556,6 +561,7 @@
 				4A45DA2D16161FA2004F8D6B /* catch_interfaces_capture.cpp in Sources */,
 				4A45DA3116161FFC004F8D6B /* catch_interfaces_reporter.cpp in Sources */,
 				4A45DA3316162047004F8D6B /* catch_interfaces_exception.cpp in Sources */,
+				2691574C1A532A280054F1ED /* ToStringTuple.cpp in Sources */,
 				26711C8F195D465C0033EDA2 /* TagAliasTests.cpp in Sources */,
 				4A45DA3516162071004F8D6B /* catch_interfaces_runner.cpp in Sources */,
 				4AB3D99D1616216500C9A0F8 /* catch_interfaces_testcase.cpp in Sources */,

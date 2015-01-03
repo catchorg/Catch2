@@ -13,8 +13,6 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 
-#include <cstring>
-
 namespace Catch {
 
     struct ConsoleReporter : StreamingReporterBase {
@@ -444,15 +442,6 @@ namespace Catch {
         }
         void printSummaryDivider() {
             stream << getLineOfChars<'-'>() << "\n";
-        }
-        template<char C>
-        static char const* getLineOfChars() {
-            static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
-            if( !*line ) {
-                memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
-                line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
-            }
-            return line;
         }
 
     private:

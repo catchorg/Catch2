@@ -60,6 +60,14 @@ namespace Catch {
                     m_testsAlreadyRun.insert( *it );
                 }
             }
+            std::vector<TestCase> skippedTestCases;
+            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, skippedTestCases, true );
+            
+            for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
+                    it != itEnd;
+                    ++it )
+                m_reporter->skipTest( *it );
+
             context.testGroupEnded( "all tests", totals, 1, 1 );
             return totals;
         }

@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 8 (develop branch)
- *  Generated: 2014-11-10 19:10:50.712380
+ *  CATCH v1.1 build 13 (develop branch)
+ *  Generated: 2014-12-30 18:47:08.984634
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -33,11 +33,11 @@
 #pragma GCC diagnostic ignored "-Wpadded"
 #endif
 
-#ifdef CATCH_CONFIG_MAIN
-#  define CATCH_CONFIG_RUNNER
+#if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
+#  define CATCH_IMPL
 #endif
 
-#ifdef CATCH_CONFIG_RUNNER
+#ifdef CATCH_IMPL
 #  ifndef CLARA_CONFIG_MAIN
 #    define CLARA_CONFIG_MAIN_NOT_DEFINED
 #    define CLARA_CONFIG_MAIN
@@ -235,6 +235,7 @@ namespace Catch {
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
     std::string trim( std::string const& str );
+    bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
 
     struct pluralise {
         pluralise( std::size_t count, std::string const& label );
@@ -487,7 +488,7 @@ namespace Catch {
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const = 0;
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const = 0;
 
     };
 }
@@ -1060,11 +1061,44 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 
 #endif
 
+#ifdef CATCH_CPP11_OR_GREATER
+#include <tuple>
+#include <type_traits>
+#endif
+
 namespace Catch {
 
 // Why we're here.
 template<typename T>
 std::string toString( T const& value );
+
+// Built in overloads
+
+std::string toString( std::string const& value );
+std::string toString( std::wstring const& value );
+std::string toString( const char* const value );
+std::string toString( char* const value );
+std::string toString( const wchar_t* const value );
+std::string toString( wchar_t* const value );
+std::string toString( int value );
+std::string toString( unsigned long value );
+std::string toString( unsigned int value );
+std::string toString( const double value );
+std::string toString( const float value );
+std::string toString( bool value );
+std::string toString( char value );
+std::string toString( signed char value );
+std::string toString( unsigned char value );
+
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+std::string toString( std::nullptr_t );
+#endif
+
+#ifdef __OBJC__
+    std::string toString( NSString const * const& nsstring );
+    std::string toString( NSString * CATCH_ARC_STRONG const& nsstring );
+    std::string toString( NSObject* const& nsObject );
+#endif
 
 namespace Detail {
 
@@ -1205,6 +1239,48 @@ std::string toString( std::vector<T,Allocator> const& v ) {
     return Detail::rangeToString( v.begin(), v.end() );
 }
 
+#ifdef CATCH_CPP11_OR_GREATER
+    toString for tuples
+  */
+namespace TupleDetail {
+  template<
+      typename Tuple,
+      std::size_t N = 0,
+      bool = (N < std::tuple_size<Tuple>::value)
+      >
+  struct ElementPrinter {
+      static void print( const Tuple& tuple, std::ostream& os )
+      {
+          os << ( N ? ", " : " " )
+             << Catch::toString(std::get<N>(tuple));
+          ElementPrinter<Tuple,N+1>::print(tuple,os);
+      }
+  };
+
+  template<
+      typename Tuple,
+      std::size_t N
+      >
+  struct ElementPrinter<Tuple,N,false> {
+      static void print( const Tuple&, std::ostream& ) {}
+  };
+
+}
+
+template<typename ...Types>
+struct StringMaker<std::tuple<Types...>> {
+
+    static std::string convert( const std::tuple<Types...>& tuple )
+    {
+        std::ostringstream os;
+        os << '{';
+        TupleDetail::ElementPrinter<std::tuple<Types...>>::print( tuple, os );
+        os << " }";
+        return os.str();
+    }
+};
+#endif
+
 namespace Detail {
     template<typename T>
     std::string makeString( T const& value ) {
@@ -1224,44 +1300,15 @@ std::string toString( T const& value ) {
     return StringMaker<T>::convert( value );
 }
 
-// Built in overloads
-
-std::string toString( std::string const& value );
-std::string toString( std::wstring const& value );
-std::string toString( const char* const value );
-std::string toString( char* const value );
-std::string toString( const wchar_t* const value );
-std::string toString( wchar_t* const value );
-std::string toString( int value );
-std::string toString( unsigned long value );
-std::string toString( unsigned int value );
-std::string toString( const double value );
-std::string toString( const float value );
-std::string toString( bool value );
-std::string toString( char value );
-std::string toString( signed char value );
-std::string toString( unsigned char value );
-
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
-std::string toString( std::nullptr_t );
-#endif
-
-#ifdef __OBJC__
-    std::string toString( NSString const * const& nsstring );
-    std::string toString( NSString * CATCH_ARC_STRONG const& nsstring );
-    std::string toString( NSObject* const& nsObject );
-#endif
-
     namespace Detail {
     template<typename InputIterator>
     std::string rangeToString( InputIterator first, InputIterator last ) {
         std::ostringstream oss;
         oss << "{ ";
         if( first != last ) {
-            oss << toString( *first );
-            for( ++first ; first != last ; ++first ) {
-                oss << ", " << toString( *first );
-            }
+            oss << Catch::toString( *first );
+            for( ++first ; first != last ; ++first )
+                oss << ", " << Catch::toString( *first );
         }
         oss << " }";
         return oss.str();
@@ -1700,6 +1747,9 @@ namespace Catch {
         }
         bool allPassed() const {
             return failed == 0 && failedButOk == 0;
+        }
+        bool allOk() const {
+            return failed == 0;
         }
 
         std::size_t passed;
@@ -2750,7 +2800,7 @@ return @ desc; \
 
 #endif
 
-#ifdef CATCH_CONFIG_RUNNER
+#ifdef CATCH_IMPL
 // #included from: internal/catch_impl.hpp
 #define TWOBLUECUBES_CATCH_IMPL_HPP_INCLUDED
 
@@ -4689,11 +4739,14 @@ namespace Catch
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
+        // The return value indicates if the messages buffer should be cleared:
         virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
+
+        virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
     };
 
     struct IReporterFactory {
@@ -4837,7 +4890,7 @@ namespace Catch {
     }
 
     inline std::size_t listReporters( Config const& /*config*/ ) {
-        Catch::cout() << "Available reports:\n";
+        Catch::cout() << "Available reporters:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator itBegin = factories.begin(), itEnd = factories.end(), it;
         std::size_t maxNameLen = 0;
@@ -5493,6 +5546,14 @@ namespace Catch {
                     m_testsAlreadyRun.insert( *it );
                 }
             }
+            std::vector<TestCase> skippedTestCases;
+            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, skippedTestCases, true );
+
+            for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
+                    it != itEnd;
+                    ++it )
+                m_reporter->skipTest( *it );
+
             context.testGroupEnded( "all tests", totals, 1, 1 );
             return totals;
         }
@@ -5706,33 +5767,38 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const {
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
-                if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
+                bool includeTest = testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() );
+                if( includeTest != negated )
                     matchingTestCases.push_back( *it );
             }
+            sortTests( config, matchingTestCases );
+        }
+
+    private:
+
+        static void sortTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) {
+
             switch( config.runOrder() ) {
                 case RunTests::InLexicographicalOrder:
                     std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
                     break;
                 case RunTests::InRandomOrder:
-                    {
-                        RandomNumberGenerator rng;
-                        std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
-                    }
+                {
+                    RandomNumberGenerator rng;
+                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
+                }
                     break;
                 case RunTests::InDeclarationOrder:
                     // already in declaration order
                     break;
             }
         }
-
-    private:
-
         std::set<TestCase> m_functions;
         std::vector<TestCase> m_functionsInOrder;
         std::vector<TestCase> m_nonHiddenFunctions;
@@ -5856,7 +5922,7 @@ namespace Catch {
                     throw;
                 }
                 @catch (NSException *exception) {
-                    return toString( [exception description] );
+                    return Catch::toString( [exception description] );
                 }
 #else
                 throw;
@@ -6502,7 +6568,7 @@ namespace Catch {
 namespace Catch {
 
     inline TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
-        if( tag == "." ||
+        if( startsWith( tag, "." ) ||
             tag == "hide" ||
             tag == "!hide" )
             return TestCaseInfo::IsHidden;
@@ -6516,7 +6582,7 @@ namespace Catch {
             return TestCaseInfo::None;
     }
     inline bool isReservedTag( std::string const& tag ) {
-        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
+        return TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
         if( isReservedTag( tag ) ) {
@@ -6556,14 +6622,15 @@ namespace Catch {
             }
             else {
                 if( c == ']' ) {
-                    enforceNotReservedTag( tag, _lineInfo );
-
-                    inTag = false;
-                    if( tag == "hide" || tag == "." )
+                    TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
+                    if( prop == TestCaseInfo::IsHidden )
                         isHidden = true;
-                    else
-                        tags.insert( tag );
+                    else if( prop == TestCaseInfo::None )
+                        enforceNotReservedTag( tag, _lineInfo );
+
+                    tags.insert( tag );
                     tag.clear();
+                    inTag = false;
                 }
                 else
                     tag += c;
@@ -6681,7 +6748,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 8, "develop" );
+    Version libraryVersion( 1, 1, 13, "develop" );
 }
 
 // #included from: catch_message.hpp
@@ -6765,6 +6832,7 @@ namespace Catch
         virtual void testCaseEnded( TestCaseStats const& testCaseStats );
         virtual void testGroupEnded( TestGroupStats const& testGroupStats );
         virtual void testRunEnded( TestRunStats const& testRunStats );
+        virtual void skipTest( TestCaseInfo const& );
 
     private:
         Ptr<IReporter> m_legacyReporter;
@@ -6837,6 +6905,8 @@ namespace Catch
     }
     void LegacyReporterAdapter::testRunEnded( TestRunStats const& testRunStats ) {
         m_legacyReporter->EndTesting( testRunStats.totals );
+    }
+    void LegacyReporterAdapter::skipTest( TestCaseInfo const& ) {
     }
 }
 
@@ -6922,6 +6992,20 @@ namespace Catch {
         std::string::size_type end = str.find_last_not_of( whitespaceChars );
 
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
+    }
+
+    bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis ) {
+        bool replaced = false;
+        std::size_t i = str.find( replaceThis );
+        while( i != std::string::npos ) {
+            replaced = true;
+            str = str.substr( 0, i ) + withThis + str.substr( i+replaceThis.size() );
+            if( i < str.size()-withThis.size() )
+                i = str.find( replaceThis, i+withThis.size() );
+            else
+                i = std::string::npos;
+        }
+        return replaced;
     }
 
     pluralise::pluralise( std::size_t count, std::string const& label )
@@ -7158,7 +7242,7 @@ std::string toString( std::wstring const& value ) {
     s.reserve( value.size() );
     for(size_t i = 0; i < value.size(); ++i )
         s += value[i] <= 0xff ? static_cast<char>( value[i] ) : '?';
-    return toString( s );
+    return Catch::toString( s );
 }
 
 std::string toString( const char* const value ) {
@@ -7181,7 +7265,10 @@ std::string toString( wchar_t* const value )
 
 std::string toString( int value ) {
     std::ostringstream oss;
-    oss << value;
+    if( value > 8192 )
+        oss << "0x" << std::hex << value;
+    else
+        oss << value;
     return oss.str();
 }
 
@@ -7195,7 +7282,7 @@ std::string toString( unsigned long value ) {
 }
 
 std::string toString( unsigned int value ) {
-    return toString( static_cast<unsigned long>( value ) );
+    return Catch::toString( static_cast<unsigned long>( value ) );
 }
 
 template<typename T>
@@ -7474,6 +7561,8 @@ namespace Catch {
 // #included from: catch_reporter_bases.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
+#include <cstring>
+
 namespace Catch {
 
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
@@ -7515,6 +7604,11 @@ namespace Catch {
             currentTestCaseInfo.reset();
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
+        }
+
+        virtual void skipTest( TestCaseInfo const& ) {
+            // Don't do anything with this by default.
+            // It can optionally be overridden in the derived class.
         }
 
         Ptr<IConfig> m_config;
@@ -7646,6 +7740,8 @@ namespace Catch {
         }
         virtual void testRunEndedCumulative() = 0;
 
+        virtual void skipTest( TestCaseInfo const& ) {}
+
         Ptr<IConfig> m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
@@ -7660,6 +7756,16 @@ namespace Catch {
         std::vector<Ptr<SectionNode> > m_sectionStack;
 
     };
+
+    template<char C>
+    char const* getLineOfChars() {
+        static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
+        if( !*line ) {
+            memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
+            line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
+        }
+        return line;
+    }
 
 } // end namespace Catch
 
@@ -7942,81 +8048,90 @@ namespace Catch {
 
 }
 namespace Catch {
-    class XmlReporter : public SharedImpl<IReporter> {
+    class XmlReporter : public StreamingReporterBase {
     public:
-        XmlReporter( ReporterConfig const& config ) : m_config( config ), m_sectionDepth( 0 ) {}
+        XmlReporter( ReporterConfig const& _config )
+        :   StreamingReporterBase( _config ),
+            m_sectionDepth( 0 )
+        {}
+
+        virtual ~XmlReporter();
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
         }
-        virtual ~XmlReporter();
 
-    private: // IReporter
-
-        virtual bool shouldRedirectStdout() const {
-            return true;
+    public: // StreamingReporterBase
+        virtual ReporterPreferences getPreferences() const {
+            ReporterPreferences prefs;
+            prefs.shouldRedirectStdOut = true;
+            return prefs;
         }
 
-        virtual void StartTesting() {
-            m_xml.setStream( m_config.stream() );
+        virtual void noMatchingTestCases( std::string const& s ) {
+            StreamingReporterBase::noMatchingTestCases( s );
+        }
+
+        virtual void testRunStarting( TestRunInfo const& testInfo ) {
+            StreamingReporterBase::testRunStarting( testInfo );
+            m_xml.setStream( stream );
             m_xml.startElement( "Catch" );
-            if( !m_config.fullConfig()->name().empty() )
-                m_xml.writeAttribute( "name", m_config.fullConfig()->name() );
+            if( !m_config->name().empty() )
+                m_xml.writeAttribute( "name", m_config->name() );
         }
 
-        virtual void EndTesting( const Totals& totals ) {
-            m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", totals.assertions.passed )
-                .writeAttribute( "failures", totals.assertions.failed )
-                .writeAttribute( "expectedFailures", totals.assertions.failedButOk );
-            m_xml.endElement();
-        }
-
-        virtual void StartGroup( const std::string& groupName ) {
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
+            StreamingReporterBase::testGroupStarting( groupInfo );
             m_xml.startElement( "Group" )
-                .writeAttribute( "name", groupName );
+                .writeAttribute( "name", groupInfo.name );
         }
 
-        virtual void EndGroup( const std::string&, const Totals& totals ) {
-            m_xml.scopedElement( "OverallResults" )
-                .writeAttribute( "successes", totals.assertions.passed )
-                .writeAttribute( "failures", totals.assertions.failed )
-                .writeAttribute( "expectedFailures", totals.assertions.failedButOk );
-            m_xml.endElement();
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
+            StreamingReporterBase::testCaseStarting(testInfo);
+            m_xml.startElement( "TestCase" ).writeAttribute( "name", trim( testInfo.name ) );
+
+            if ( m_config->showDurations() == ShowDurations::Always )
+                m_testCaseTimer.start();
         }
 
-        virtual void StartSection( const std::string& sectionName, const std::string& description ) {
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+            StreamingReporterBase::sectionStarting( sectionInfo );
             if( m_sectionDepth++ > 0 ) {
                 m_xml.startElement( "Section" )
-                    .writeAttribute( "name", trim( sectionName ) )
-                    .writeAttribute( "description", description );
-            }
-        }
-        virtual void NoAssertionsInSection( const std::string& ) {}
-        virtual void NoAssertionsInTestCase( const std::string& ) {}
-
-        virtual void EndSection( const std::string& /*sectionName*/, const Counts& assertions ) {
-            if( --m_sectionDepth > 0 ) {
-                m_xml.scopedElement( "OverallResults" )
-                    .writeAttribute( "successes", assertions.passed )
-                    .writeAttribute( "failures", assertions.failed )
-                    .writeAttribute( "expectedFailures", assertions.failedButOk );
-                m_xml.endElement();
+                    .writeAttribute( "name", trim( sectionInfo.name ) )
+                    .writeAttribute( "description", sectionInfo.description );
             }
         }
 
-        virtual void StartTestCase( const Catch::TestCaseInfo& testInfo ) {
-            m_xml.startElement( "TestCase" ).writeAttribute( "name", trim( testInfo.name ) );
-            m_currentTestSuccess = true;
-        }
+        virtual void assertionStarting( AssertionInfo const& ) { }
 
-        virtual void Result( const Catch::AssertionResult& assertionResult ) {
-            if( !m_config.fullConfig()->includeSuccessfulResults() && assertionResult.getResultType() == ResultWas::Ok )
-                return;
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) {
+            const AssertionResult& assertionResult = assertionStats.assertionResult;
 
+            // Print any info messages in <Info> tags.
+            if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
+                for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
+                        it != itEnd;
+                        ++it ) {
+                    if( it->type == ResultWas::Info ) {
+                        m_xml.scopedElement( "Info" )
+                            .writeText( it->message );
+                    } else if ( it->type == ResultWas::Warning ) {
+                        m_xml.scopedElement( "Warning" )
+                            .writeText( it->message );
+                    }
+                }
+            }
+
+            // Drop out if result was successful but we're not printing them.
+            if( !m_config->includeSuccessfulResults() && isOk(assertionResult.getResultType()) )
+                return true;
+
+            // Print the expression if there is one.
             if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
                     .writeAttribute( "success", assertionResult.succeeded() )
+					.writeAttribute( "type", assertionResult.getTestMacroName() )
                     .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                     .writeAttribute( "line", assertionResult.getSourceInfo().line );
 
@@ -8024,64 +8139,95 @@ namespace Catch {
                     .writeText( assertionResult.getExpression() );
                 m_xml.scopedElement( "Expanded" )
                     .writeText( assertionResult.getExpandedExpression() );
-                m_currentTestSuccess &= assertionResult.succeeded();
             }
 
+            // And... Print a result applicable to each result type.
             switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
                     m_xml.scopedElement( "Exception" )
                         .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                         .writeAttribute( "line", assertionResult.getSourceInfo().line )
                         .writeText( assertionResult.getMessage() );
-                    m_currentTestSuccess = false;
                     break;
                 case ResultWas::FatalErrorCondition:
                     m_xml.scopedElement( "Fatal Error Condition" )
                         .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                         .writeAttribute( "line", assertionResult.getSourceInfo().line )
                         .writeText( assertionResult.getMessage() );
-                    m_currentTestSuccess = false;
                     break;
                 case ResultWas::Info:
                     m_xml.scopedElement( "Info" )
                         .writeText( assertionResult.getMessage() );
                     break;
                 case ResultWas::Warning:
-                    m_xml.scopedElement( "Warning" )
-                        .writeText( assertionResult.getMessage() );
+                    // Warning will already have been written
                     break;
                 case ResultWas::ExplicitFailure:
                     m_xml.scopedElement( "Failure" )
                         .writeText( assertionResult.getMessage() );
-                    m_currentTestSuccess = false;
                     break;
-                case ResultWas::Unknown:
-                case ResultWas::Ok:
-                case ResultWas::FailureBit:
-                case ResultWas::ExpressionFailed:
-                case ResultWas::Exception:
-                case ResultWas::DidntThrowException:
+                default:
                     break;
             }
+
             if( assertionResult.hasExpression() )
                 m_xml.endElement();
+
+            return true;
         }
 
-        virtual void Aborted() {
-            // !TBD
+        virtual void sectionEnded( SectionStats const& sectionStats ) {
+            StreamingReporterBase::sectionEnded( sectionStats );
+            if( --m_sectionDepth > 0 ) {
+                XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResults" );
+                e.writeAttribute( "successes", sectionStats.assertions.passed );
+                e.writeAttribute( "failures", sectionStats.assertions.failed );
+                e.writeAttribute( "expectedFailures", sectionStats.assertions.failedButOk );
+
+                if ( m_config->showDurations() == ShowDurations::Always )
+                    e.writeAttribute( "durationInSeconds", sectionStats.durationInSeconds );
+
+                m_xml.endElement();
+            }
         }
 
-        virtual void EndTestCase( const Catch::TestCaseInfo&, const Totals&, const std::string&, const std::string& ) {
-            m_xml.scopedElement( "OverallResult" ).writeAttribute( "success", m_currentTestSuccess );
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+            StreamingReporterBase::testCaseEnded( testCaseStats );
+            XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResult" );
+            e.writeAttribute( "success", testCaseStats.totals.assertions.allOk() );
+
+            if ( m_config->showDurations() == ShowDurations::Always )
+                e.writeAttribute( "durationInSeconds", m_testCaseTimer.getElapsedSeconds() );
+
+            m_xml.endElement();
+        }
+
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+            StreamingReporterBase::testGroupEnded( testGroupStats );
+            // TODO: Check testGroupStats.aborting and act accordingly.
+            m_xml.scopedElement( "OverallResults" )
+                .writeAttribute( "successes", testGroupStats.totals.assertions.passed )
+                .writeAttribute( "failures", testGroupStats.totals.assertions.failed )
+                .writeAttribute( "expectedFailures", testGroupStats.totals.assertions.failedButOk );
+            m_xml.endElement();
+        }
+
+        virtual void testRunEnded( TestRunStats const& testRunStats ) {
+            StreamingReporterBase::testRunEnded( testRunStats );
+            m_xml.scopedElement( "OverallResults" )
+                .writeAttribute( "successes", testRunStats.totals.assertions.passed )
+                .writeAttribute( "failures", testRunStats.totals.assertions.failed )
+                .writeAttribute( "expectedFailures", testRunStats.totals.assertions.failedButOk );
             m_xml.endElement();
         }
 
     private:
-        ReporterConfig m_config;
-        bool m_currentTestSuccess;
+        Timer m_testCaseTimer;
         XmlWriter m_xml;
         int m_sectionDepth;
     };
+
+     INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 
 } // end namespace Catch
 
@@ -8209,7 +8355,7 @@ namespace Catch {
                     xml.writeAttribute( "classname", className );
                     xml.writeAttribute( "name", name );
                 }
-                xml.writeAttribute( "time", toString( sectionNode.stats.durationInSeconds ) );
+                xml.writeAttribute( "time", Catch::toString( sectionNode.stats.durationInSeconds ) );
 
                 writeAssertions( sectionNode );
 
@@ -8300,8 +8446,6 @@ namespace Catch {
 
 // #included from: ../reporters/catch_reporter_console.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
-
-#include <cstring>
 
 namespace Catch {
 
@@ -8733,15 +8877,6 @@ namespace Catch {
         void printSummaryDivider() {
             stream << getLineOfChars<'-'>() << "\n";
         }
-        template<char C>
-        static char const* getLineOfChars() {
-            static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
-            if( !*line ) {
-                memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
-                line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
-            }
-            return line;
-        }
 
     private:
         bool m_headerPrinted;
@@ -9086,8 +9221,6 @@ namespace Catch {
     Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     void Config::dummy() {}
-
-    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
 }
 
 #ifdef __clang__

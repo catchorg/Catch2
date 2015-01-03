@@ -3398,7 +3398,7 @@ MiscTests.cpp:<line number>:
 PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
-  0x<hex digits> == 3628800
+  0x<hex digits> == 0x<hex digits>
 
 -------------------------------------------------------------------------------
 An empty test with no assertions
@@ -4518,6 +4518,139 @@ with expansion:
           five
           six"
 
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace single char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "b", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "azcdefcg" )
+with expansion:
+  "azcdefcg" == "azcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace two chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "c", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "abzdefzg" )
+with expansion:
+  "abzdefzg" == "abzdefzg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace first char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "a", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "zbcdefcg" )
+with expansion:
+  "zbcdefcg" == "zbcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace last char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "g", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "abcdefcz" )
+with expansion:
+  "abcdefcz" == "abcdefcz"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace all chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, letters, "replaced" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "replaced" )
+with expansion:
+  "replaced" == "replaced"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace no chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_FALSE( replaceInPlace( letters, "x", "z" ) )
+with expansion:
+  !false
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == letters )
+with expansion:
+  "abcdefcg" == "abcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  escape '
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( s, "'", "|'" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( s == "didn|'t" )
+with expansion:
+  "didn|'t" == "didn|'t"
+
 hello
 hello
 -------------------------------------------------------------------------------
@@ -5576,7 +5709,7 @@ with expansion:
   std::pair( 1, 2 ) == std::pair( 1, 2 )
 
 -------------------------------------------------------------------------------
-Where the is more to the expression after the RHS[failing]
+Where there is more to the expression after the RHS
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5587,10 +5720,10 @@ warning:
   error
 
 
-No assertions in test case 'Where the is more to the expression after the RHS[failing]'
+No assertions in test case 'Where there is more to the expression after the RHS'
 
 -------------------------------------------------------------------------------
-Where the LHS is not a simple value[failing]
+Where the LHS is not a simple value
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5601,10 +5734,10 @@ warning:
   error
 
 
-No assertions in test case 'Where the LHS is not a simple value[failing]'
+No assertions in test case 'Where the LHS is not a simple value'
 
 -------------------------------------------------------------------------------
-A failing expression with a non streamable type is still captured[failing]
+A failing expression with a non streamable type is still captured
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5620,7 +5753,7 @@ with expansion:
   {?} == {?}
 
 -------------------------------------------------------------------------------
-string literals of different sizes can be compared[failing]
+string literals of different sizes can be compared
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -7241,6 +7374,96 @@ with expansion:
   true == true
 
 -------------------------------------------------------------------------------
+tuple<>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == Catch::toString(type{}) )
+with expansion:
+  "{ }" == "{ }"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == Catch::toString(value) )
+with expansion:
+  "{ }" == "{ }"
+
+-------------------------------------------------------------------------------
+tuple<int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 0 }" == Catch::toString(type{0}) )
+with expansion:
+  "{ 0 }" == "{ 0 }"
+
+-------------------------------------------------------------------------------
+tuple<float,int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "1.2f" == Catch::toString(float(1.2)) )
+with expansion:
+  "1.2f" == "1.2f"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 1.2f, 0 }" == Catch::toString(type{1.2,0}) )
+with expansion:
+  "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+
+-------------------------------------------------------------------------------
+tuple<string,string>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ \"hello\", \"world\" }" == Catch::toString(type{"hello","world"}) )
+with expansion:
+  "{ "hello", "world" }"
+  ==
+  "{ "hello", "world" }"
+
+-------------------------------------------------------------------------------
+tuple<tuple<int>,tuple<>,float>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ { 42 }, { }, 1.2f }" == Catch::toString(value) )
+with expansion:
+  "{ { 42 }, { }, 1.2f }"
+  ==
+  "{ { 42 }, { }, 1.2f }"
+
+-------------------------------------------------------------------------------
+tuple<nullptr,int,const char *>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value) )
+with expansion:
+  "{ nullptr, 42, "Catch me" }"
+  ==
+  "{ nullptr, 42, "Catch me" }"
+
+-------------------------------------------------------------------------------
 Tag alias can be registered against tag patterns
   The same tag alias can only be registered once
 -------------------------------------------------------------------------------
@@ -7683,6 +7906,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 148 |  93 passed | 54 failed |  1 failed as expected
-assertions: 759 | 647 passed | 99 failed | 13 failed as expected
+test cases: 155 | 100 passed | 54 failed |  1 failed as expected
+assertions: 781 | 669 passed | 99 failed | 13 failed as expected
 
