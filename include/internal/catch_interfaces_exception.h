@@ -58,9 +58,11 @@ namespace Catch {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_TRANSLATE_EXCEPTION2( UniqueName, signature ) \
+    static std::string UniqueName( signature ); \
+    namespace{ Catch::ExceptionTranslatorRegistrar INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionRegistrar )( &UniqueName ); }\
+    static std::string UniqueName( signature )
 #define INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature ) \
-    static std::string INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator )( signature ); \
-    namespace{ Catch::ExceptionTranslatorRegistrar INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionRegistrar )( &INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator ) ); }\
-    static std::string INTERNAL_CATCH_UNIQUE_NAME(  catch_internal_ExceptionTranslator )( signature )
+    INTERNAL_CATCH_TRANSLATE_EXCEPTION2( INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator ), signature )
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
