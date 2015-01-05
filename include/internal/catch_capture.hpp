@@ -29,11 +29,20 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+#define INTERNAL_CATCH_EVALUATE_EXPRESSION(...) \
+    ( __catchResult->* __VA_ARGS__ ).endExpression();
+#else
+#define INTERNAL_CATCH_EVALUATE_EXPRESSION(expr) \
+    ( __catchResult->* expr ).endExpression();
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
-            ( __catchResult->*expr ).endExpression(); \
+            INTERNAL_CATCH_EVALUATE_EXPRESSION expr \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
