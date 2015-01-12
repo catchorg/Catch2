@@ -84,6 +84,10 @@
 //#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
+#if (_MSC_VER >= 1900 ) // (VC++ 2015)
+#define CATCH_CONFIG_CPP11_NULLPTR
+#endif
+
 #endif // _MSC_VER
 
 // Use variadic macros if the compiler supports them
@@ -102,7 +106,8 @@
 // C++ language feature support
 
 // detect language version:
-#if (__cplusplus == 201103L)
+#if (__cplusplus == 201103L) || \
+    (defined(_MSC_VER) && _MSC_VER >= 1900)
 #  define CATCH_CPP11
 #  define CATCH_CPP11_OR_GREATER
 #elif (__cplusplus >= 201103L)
