@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 53 (master branch)
- *  Generated: 2014-08-20 08:08:19.533804
+ *  CATCH v1.0 build 55 (master branch)
+ *  Generated: 2015-01-12 13:26:44.228000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -139,6 +139,10 @@
 //#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
+#if (_MSC_VER >= 1900 ) // (VC++ 2015)
+#define CATCH_CONFIG_CPP11_NULLPTR
+#endif
+
 #endif // _MSC_VER
 
 // Use variadic macros if the compiler supports them
@@ -157,7 +161,8 @@
 // C++ language feature support
 
 // detect language version:
-#if (__cplusplus == 201103L)
+#if (__cplusplus == 201103L) || \
+    (defined(_MSC_VER) && _MSC_VER >= 1900)
 #  define CATCH_CPP11
 #  define CATCH_CPP11_OR_GREATER
 #elif (__cplusplus >= 201103L)
@@ -5253,7 +5258,7 @@ namespace Catch {
 
             Totals totals;
 
-            context.testGroupStarting( "", 1, 1 ); // deprecated?
+            context.testGroupStarting( "all tests", 1, 1 ); // deprecated?
 
             TestSpec testSpec = m_config->testSpec();
             if( !testSpec.hasFilters() )
@@ -5276,7 +5281,7 @@ namespace Catch {
                     m_testsAlreadyRun.insert( *it );
                 }
             }
-            context.testGroupEnded( "", totals, 1, 1 );
+            context.testGroupEnded( "all tests", totals, 1, 1 );
             return totals;
         }
 
@@ -6417,7 +6422,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 53, "master" );
+    Version libraryVersion( 1, 0, 55, "master" );
 }
 
 // #included from: catch_message.hpp
