@@ -585,8 +585,8 @@ namespace Clara {
                 m_arg->description = description;
                 return *this;
             }
-            ArgBuilder& detail( std::string const& detail ) {
-                m_arg->detail = detail;
+            ArgBuilder& detail( std::string const& d ) {
+                m_arg->detail = d;
                 return *this;
             }
 
@@ -670,14 +670,14 @@ namespace Clara {
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Detail::Text usage( it->commands(), Detail::TextAttributes()
+                Detail::Text usageText( it->commands(), Detail::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
                 Detail::Text desc( it->description, Detail::TextAttributes()
                                                         .setWidth( width - maxWidth - 3 ) );
 
-                for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
-                    std::string usageCol = i < usage.size() ? usage[i] : "";
+                for( std::size_t i = 0; i < (std::max)( usageText.size(), desc.size() ); ++i ) {
+                    std::string usageCol = i < usageText.size() ? usageText[i] : "";
                     os << usageCol;
 
                     if( i < desc.size() && !desc[i].empty() )

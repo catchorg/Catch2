@@ -58,11 +58,11 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config->name() ),
+        explicit RunContext( Ptr<IConfig const> const& cfg, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( cfg->name() ),
             m_context( getCurrentMutableContext() ),
             m_activeTestCase( NULL ),
-            m_config( config ),
+            m_config( cfg ),
             m_reporter( reporter ),
             m_prevRunner( m_context.getRunner() ),
             m_prevResultCapture( m_context.getResultCapture() ),
