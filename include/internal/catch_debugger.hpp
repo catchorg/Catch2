@@ -75,6 +75,12 @@
             return IsDebuggerPresent() != 0;
         }
     }
+#elif defined(CATCH_PLATFORM_LINUX)
+    namespace Catch {
+        bool isDebuggerActive() {
+            return true;
+        }
+    }
 #else
     namespace Catch {
        inline bool isDebuggerActive() { return false; }
