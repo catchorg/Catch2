@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.0 build 53 (master branch)
- *  Generated: 2014-08-20 08:08:19.533804
+ *  CATCH v1.0 build 58 (master branch)
+ *  Generated: 2015-01-17 13:29:59.050735
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3110,10 +3110,10 @@ namespace Catch {
         }
 
         void useStream( std::string const& streamName ) {
-            Stream stream = createStream( streamName );
-            setStreamBuf( stream.streamBuf );
+            Stream newStream = createStream( streamName );
+            setStreamBuf( newStream.streamBuf );
             m_stream.release();
-            m_stream = stream;
+            m_stream = newStream;
         }
 
         std::string getReporterName() const { return m_data.reporterName; }
@@ -3725,8 +3725,8 @@ namespace Clara {
                 m_arg->description = description;
                 return *this;
             }
-            ArgBuilder& detail( std::string const& detail ) {
-                m_arg->detail = detail;
+            ArgBuilder& detail( std::string const& d ) {
+                m_arg->detail = d;
                 return *this;
             }
 
@@ -3809,14 +3809,14 @@ namespace Clara {
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Detail::Text usage( it->commands(), Detail::TextAttributes()
+                Detail::Text usageText( it->commands(), Detail::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
                 Detail::Text desc( it->description, Detail::TextAttributes()
                                                         .setWidth( width - maxWidth - 3 ) );
 
-                for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
-                    std::string usageCol = i < usage.size() ? usage[i] : "";
+                for( std::size_t i = 0; i < (std::max)( usageText.size(), desc.size() ); ++i ) {
+                    std::string usageCol = i < usageText.size() ? usageText[i] : "";
                     os << usageCol;
 
                     if( i < desc.size() && !desc[i].empty() )
@@ -4952,11 +4952,11 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config->name() ),
+        explicit RunContext( Ptr<IConfig const> const& cfg, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( cfg->name() ),
             m_context( getCurrentMutableContext() ),
             m_activeTestCase( NULL ),
-            m_config( config ),
+            m_config( cfg ),
             m_reporter( reporter ),
             m_prevRunner( m_context.getRunner() ),
             m_prevResultCapture( m_context.getResultCapture() ),
@@ -5253,7 +5253,7 @@ namespace Catch {
 
             Totals totals;
 
-            context.testGroupStarting( "", 1, 1 ); // deprecated?
+            context.testGroupStarting( "all tests", 1, 1 ); // deprecated?
 
             TestSpec testSpec = m_config->testSpec();
             if( !testSpec.hasFilters() )
@@ -5276,7 +5276,7 @@ namespace Catch {
                     m_testsAlreadyRun.insert( *it );
                 }
             }
-            context.testGroupEnded( "", totals, 1, 1 );
+            context.testGroupEnded( "all tests", totals, 1, 1 );
             return totals;
         }
 
@@ -6417,7 +6417,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 0, 53, "master" );
+    Version libraryVersion( 1, 0, 58, "master" );
 }
 
 // #included from: catch_message.hpp
