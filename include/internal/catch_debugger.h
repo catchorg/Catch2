@@ -44,7 +44,7 @@ namespace Catch{
 
 #if defined(__i386__) || defined(__x86_64__)
 #define CATCH_BREAK_INTO_DEBUGGER() \
-    if ( Catch::isDebuggerActive() ) { asm volatile ("int $3"); }
+    if ( Catch::isDebuggerActive() ) { __asm__ __volatile__ ("int $3"); }
 #else // __i386__ || __x86_64__
 #include <signal.h>
 #define CATCH_BREAK_INTO_DEBUGGER() \
