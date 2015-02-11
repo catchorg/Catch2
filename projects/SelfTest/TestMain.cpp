@@ -182,7 +182,23 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK( config.shouldDebugBreak );
             CHECK( config.noThrow == true );
         }
-    }        
+    }
+
+    SECTION( "force-colour", "") {
+        SECTION( "--force-colour", "" ) {
+            const char* argv[] = { "test", "--force-colour" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.forceColour );
+        }
+
+        SECTION( "without --force-colour", "" ) {
+            const char* argv[] = { "test" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( !config.forceColour );
+        }
+    }
 }
 
 
