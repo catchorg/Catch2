@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.1 build 14 (develop branch)
- *  Generated: 2015-03-04 08:22:47.319013
+ *  Generated: 2015-03-04 18:32:24.627737
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1234,8 +1234,8 @@ std::string toString( std::vector<T,Allocator> const& v ) {
 }
 
 #ifdef CATCH_CPP11_OR_GREATER
-    toString for tuples
-  */
+
+// toString for tuples
 namespace TupleDetail {
   template<
       typename Tuple,
