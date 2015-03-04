@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 13 (develop branch)
- *  Generated: 2014-12-30 18:47:08.984634
+ *  CATCH v1.1 build 14 (develop branch)
+ *  Generated: 2015-03-04 08:22:47.319013
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -18,19 +18,24 @@
 #define TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
 
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-#pragma clang diagnostic ignored "-Wvariadic-macros"
-#pragma clang diagnostic ignored "-Wc99-extensions"
-#pragma clang diagnostic ignored "-Wunused-variable"
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpadded"
-#pragma clang diagnostic ignored "-Wc++98-compat"
-#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#   ifdef __ICC // icpc defines the __clang__ macro
+#       pragma warning(push)
+#       pragma warning(disable: 161 1682)
+#   else // __ICC
+#       pragma clang diagnostic ignored "-Wglobal-constructors"
+#       pragma clang diagnostic ignored "-Wvariadic-macros"
+#       pragma clang diagnostic ignored "-Wc99-extensions"
+#       pragma clang diagnostic ignored "-Wunused-variable"
+#       pragma clang diagnostic push
+#       pragma clang diagnostic ignored "-Wpadded"
+#       pragma clang diagnostic ignored "-Wc++98-compat"
+#       pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#    endif
 #elif defined __GNUC__
-#pragma GCC diagnostic ignored "-Wvariadic-macros"
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpadded"
+#    pragma GCC diagnostic ignored "-Wvariadic-macros"
+#    pragma GCC diagnostic ignored "-Wunused-variable"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wpadded"
 #endif
 
 #if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
@@ -250,6 +255,7 @@ namespace Catch {
 #  endif
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;
+        bool operator < ( SourceLineInfo const& other ) const;
 
         std::string file;
         std::size_t line;
@@ -2800,7 +2806,7 @@ return @ desc; \
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-// #included from: catch_runner.hpp
+// #included from: ../catch_runner.hpp
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
 // #included from: internal/catch_commandline.hpp
@@ -3080,6 +3086,7 @@ namespace Catch {
         virtual TestSpec const& testSpec() const = 0;
         virtual RunTests::InWhatOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
+        virtual bool forceColour() const = 0;
     };
 }
 
@@ -3134,6 +3141,7 @@ namespace Catch {
             noThrow( false ),
             showHelp( false ),
             showInvisibles( false ),
+            forceColour( false ),
             abortAfter( -1 ),
             rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
@@ -3152,6 +3160,7 @@ namespace Catch {
         bool noThrow;
         bool showHelp;
         bool showInvisibles;
+        bool forceColour;
 
         int abortAfter;
         unsigned int rngSeed;
@@ -3243,6 +3252,7 @@ namespace Catch {
         virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
         virtual RunTests::InWhatOrder runOrder() const  { return m_data.runOrder; }
         virtual unsigned int rngSeed() const    { return m_data.rngSeed; }
+        virtual bool forceColour() const { return m_data.forceColour; }
 
     private:
         ConfigData m_data;
@@ -4279,6 +4289,10 @@ namespace Catch {
         cli["--rng-seed"]
             .describe( "set a specific seed for random numbers" )
             .bind( &setRngSeed, "'time'|number" );
+
+        cli["--force-colour"]
+            .describe( "force colourised output" )
+            .bind( &ConfigData::forceColour );
 
         return cli;
     }
@@ -6179,7 +6193,7 @@ namespace Catch {
             std::string testName = getResultCapture()->getCurrentTestName();
 
             std::map<std::string, IGeneratorsForTest*>::const_iterator it =
-            m_generatorsByTestName.find( testName );
+                m_generatorsByTestName.find( testName );
             return it != m_generatorsByTestName.end()
                 ? it->second
                 : NULL;
@@ -6363,7 +6377,8 @@ namespace {
     };
 
     IColourImpl* platformColourInstance() {
-        return isatty(STDOUT_FILENO)
+        Ptr<IConfig const> config = getCurrentContext().getConfig();
+        return (config && config->forceColour()) || isatty(STDOUT_FILENO)
             ? PosixColourImpl::instance()
             : NoColourImpl::instance();
     }
@@ -6736,7 +6751,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 13, "develop" );
+    Version libraryVersion( 1, 1, 14, "develop" );
 }
 
 // #included from: catch_message.hpp
@@ -7022,6 +7037,9 @@ namespace Catch {
     }
     bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const {
         return line == other.line && file == other.file;
+    }
+    bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const {
+        return line < other.line || ( line == other.line  && file < other.file );
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
@@ -7583,7 +7601,6 @@ namespace Catch {
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
             currentTestCaseInfo.reset();
-            assert( m_sectionStack.empty() );
         }
         virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) {
             currentGroupInfo.reset();
@@ -9397,9 +9414,13 @@ using Catch::Detail::Approx;
 #define TWOBLUECUBES_CATCH_REENABLE_WARNINGS_H_INCLUDED
 
 #ifdef __clang__
-#pragma clang diagnostic pop
+#    ifdef __ICC // icpc defines the __clang__ macro
+#        pragma warning(pop)
+#    else
+#        pragma clang diagnostic pop
+#    endif
 #elif defined __GNUC__
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
 
 #endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
