@@ -37,6 +37,7 @@ namespace Catch {
             noThrow( false ),
             showHelp( false ),
             showInvisibles( false ),
+            forceColour( false ),
             abortAfter( -1 ),
             rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
@@ -55,6 +56,7 @@ namespace Catch {
         bool noThrow;
         bool showHelp;
         bool showInvisibles;
+        bool forceColour;
 
         int abortAfter;
         unsigned int rngSeed;
@@ -131,7 +133,6 @@ namespace Catch {
 
         std::string getReporterName() const { return m_data.reporterName; }
 
-
         int abortAfter() const { return m_data.abortAfter; }
 
         TestSpec const& testSpec() const { return m_testSpec; }
@@ -148,6 +149,7 @@ namespace Catch {
         virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
         virtual RunTests::InWhatOrder runOrder() const  { return m_data.runOrder; }
         virtual unsigned int rngSeed() const    { return m_data.rngSeed; }
+        virtual bool forceColour() const { return m_data.forceColour; }
 
     private:
         ConfigData m_data;

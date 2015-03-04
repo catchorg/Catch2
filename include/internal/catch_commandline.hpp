@@ -170,6 +170,10 @@ namespace Catch {
             .describe( "set a specific seed for random numbers" )
             .bind( &setRngSeed, "'time'|number" );
 
+        cli["--force-colour"]
+            .describe( "force colourised output" )
+            .bind( &ConfigData::forceColour );
+
         return cli;
     }
 

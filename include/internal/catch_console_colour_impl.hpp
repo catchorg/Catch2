@@ -143,7 +143,8 @@ namespace {
     };
 
     IColourImpl* platformColourInstance() {
-        return isatty(STDOUT_FILENO)
+        Ptr<IConfig const> config = getCurrentContext().getConfig();
+        return (config && config->forceColour()) || isatty(STDOUT_FILENO)
             ? PosixColourImpl::instance()
             : NoColourImpl::instance();
     }
