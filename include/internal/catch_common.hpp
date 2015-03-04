@@ -78,6 +78,9 @@ namespace Catch {
     bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const {
         return line == other.line && file == other.file;
     }
+    bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const {
+        return line < other.line || ( line == other.line  && file < other.file );
+    }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
 #ifndef __GNUG__

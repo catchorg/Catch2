@@ -15,7 +15,7 @@
 #include "catch_common.h"
 #include "catch_tostring.h"
 #include "catch_interfaces_runner.h"
-#include "internal/catch_compiler_capabilities.h"
+#include "catch_compiler_capabilities.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////

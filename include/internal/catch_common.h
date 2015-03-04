@@ -94,6 +94,7 @@ namespace Catch {
 #  endif
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;
+        bool operator < ( SourceLineInfo const& other ) const;
 
         std::string file;
         std::size_t line;

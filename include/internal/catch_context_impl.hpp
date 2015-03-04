@@ -60,7 +60,7 @@ namespace Catch {
             std::string testName = getResultCapture()->getCurrentTestName();
 
             std::map<std::string, IGeneratorsForTest*>::const_iterator it =
-            m_generatorsByTestName.find( testName );
+                m_generatorsByTestName.find( testName );
             return it != m_generatorsByTestName.end()
                 ? it->second
                 : NULL;
