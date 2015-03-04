@@ -56,6 +56,7 @@ namespace Catch {
         virtual TestSpec const& testSpec() const = 0;
         virtual RunTests::InWhatOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
+        virtual bool forceColour() const = 0;
     };
 }
 
