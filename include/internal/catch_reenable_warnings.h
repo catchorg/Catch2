@@ -9,9 +9,13 @@
 #define TWOBLUECUBES_CATCH_REENABLE_WARNINGS_H_INCLUDED
 
 #ifdef __clang__
-#pragma clang diagnostic pop
+#    ifdef __ICC // icpc defines the __clang__ macro
+#        pragma warning(pop)
+#    else
+#        pragma clang diagnostic pop
+#    endif
 #elif defined __GNUC__
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
 
 #endif // TWOBLUECUBES_CATCH_REENABLE_WARNINGS_H_INCLUDED
