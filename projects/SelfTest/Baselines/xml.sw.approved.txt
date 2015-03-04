@@ -4214,6 +4214,50 @@
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="force-colour">
+        <Section name="--force-colour">
+          <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.forceColour
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="force-colour">
+        <Section name="without --force-colour">
+          <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              !config.forceColour
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Long strings can be wrapped">
@@ -8174,7 +8218,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="669" failures="99" expectedFailures="13"/>
+    <OverallResults successes="673" failures="99" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="669" failures="99" expectedFailures="13"/>
+  <OverallResults successes="673" failures="99" expectedFailures="13"/>
 </Catch>

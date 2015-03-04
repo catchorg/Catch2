@@ -4066,6 +4066,42 @@ with expansion:
   true == true
 
 -------------------------------------------------------------------------------
+Process can be configured on command line
+  force-colour
+  --force-colour
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( config.forceColour )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  force-colour
+  without --force-colour
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( !config.forceColour )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Long strings can be wrapped
   plain string
   No wrapping
@@ -7907,5 +7943,5 @@ with expansion:
 
 ===============================================================================
 test cases: 155 | 100 passed | 54 failed |  1 failed as expected
-assertions: 781 | 669 passed | 99 failed | 13 failed as expected
+assertions: 785 | 673 passed | 99 failed | 13 failed as expected
 
