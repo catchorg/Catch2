@@ -210,7 +210,7 @@ SCENARIO( "vectors can be sized and resized", "[vector]" ) {
 }
 ```
 
-Conveniently, these tests will be reported as follows when ran:
+Conveniently, these tests will be reported as follows when run:
 
 ```
 Scenario: vectors can be sized and resized
