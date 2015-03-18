@@ -104,6 +104,15 @@
 #endif
 #define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
+#define CATCH_TEMPLATE_TEST_CASE_1(name, description, T, T1) INTERNAL_CATCH_TEMPLATE_TEST_CASE_1(name, description, T, T1)
+#define CATCH_TEMPLATE_TEST_CASE_2(name, description, T, T1, T2) INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(name, description, T, T1, T2)
+#define CATCH_TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3) INTERNAL_CATCH_TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3)
+#define CATCH_TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4) INTERNAL_CATCH_TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4)
+#define CATCH_TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5) INTERNAL_CATCH_TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5)
+#define CATCH_TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6) INTERNAL_CATCH_TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6)
+#define CATCH_TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7) INTERNAL_CATCH_TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7)
+#define CATCH_TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8) INTERNAL_CATCH_TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8)
+
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
 
@@ -168,6 +177,15 @@
     #define SUCCEED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", msg )
 #endif
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
+
+#define TEMPLATE_TEST_CASE_1(name, description, T, T1) INTERNAL_CATCH_TEMPLATE_TEST_CASE_1(name, description, T, T1)
+#define TEMPLATE_TEST_CASE_2(name, description, T, T1, T2) INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(name, description, T, T1, T2)
+#define TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3) INTERNAL_CATCH_TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3)
+#define TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4) INTERNAL_CATCH_TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4)
+#define TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5) INTERNAL_CATCH_TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5)
+#define TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6) INTERNAL_CATCH_TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6)
+#define TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7) INTERNAL_CATCH_TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7)
+#define TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8) INTERNAL_CATCH_TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8)
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
