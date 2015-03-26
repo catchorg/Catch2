@@ -724,8 +724,8 @@ namespace Catch {
                         ResultDisposition::Flags resultDisposition );
 
         template<typename T>
-        ExpressionLhs<T const&> operator->* ( T const& operand );
-        ExpressionLhs<bool> operator->* ( bool value );
+        ExpressionLhs<T const&> operator+ ( T const& operand );
+        ExpressionLhs<bool> operator+ ( bool value );
 
         template<typename T>
         ResultBuilder& operator << ( T const& value ) {
@@ -1301,11 +1301,11 @@ private:
 namespace Catch {
 
     template<typename T>
-    inline ExpressionLhs<T const&> ResultBuilder::operator->* ( T const& operand ) {
+    inline ExpressionLhs<T const&> ResultBuilder::operator+ ( T const& operand ) {
         return ExpressionLhs<T const&>( *this, operand );
     }
 
-    inline ExpressionLhs<bool> ResultBuilder::operator->* ( bool value ) {
+    inline ExpressionLhs<bool> ResultBuilder::operator+ ( bool value ) {
         return ExpressionLhs<bool>( *this, value );
     }
 
@@ -1475,7 +1475,7 @@ namespace Catch {
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
-            ( __catchResult->*expr ).endExpression(); \
+            ( __catchResult+expr ).endExpression(); \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
