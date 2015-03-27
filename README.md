@@ -1,10 +1,12 @@
 ![catch logo](catch-logo-small.png)
 
-*v1.0 build 53 (master branch)*
+*v1.1 build 14 (develop branch)*
 
 Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.png)](https://travis-ci.org/philsquared/Catch)
 
 [Please see this page if you are updating from a version before 1.0](docs/whats-changed.md)
+
+<a href="https://raw.githubusercontent.com/philsquared/Catch/develop/single_include/catch.hpp">[The latest, single header, version can be downloaded directly using this link]</a>
 
 ## What's the Catch?
 

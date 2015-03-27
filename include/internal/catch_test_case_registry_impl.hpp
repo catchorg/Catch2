@@ -17,10 +17,18 @@
 #include <set>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
+        struct LexSort {
+            bool operator() (TestCase i,TestCase j) const { return (i<j);}
+        };
+        struct RandomNumberGenerator {
+            int operator()( int n ) const { return std::rand() % n; }
+        };
+
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
@@ -43,7 +51,7 @@ namespace Catch {
                 TestCase const& prev = *m_functions.find( testCase );
                 {
                     Colour colourGuard( Colour::Red );
-                    std::cerr   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
+                    Catch::cerr()   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
                                 << "\tFirst seen at " << prev.getTestCaseInfo().lineInfo << "\n"
                                 << "\tRedefined at " << testCase.getTestCaseInfo().lineInfo << std::endl;
                 }
@@ -59,18 +67,38 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases ) const {
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const {
+
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
                     it != itEnd;
                     ++it ) {
-                if( testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() ) )
+                bool includeTest = testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() );
+                if( includeTest != negated )
                     matchingTestCases.push_back( *it );
             }
+            sortTests( config, matchingTestCases );
         }
 
     private:
 
+        static void sortTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) {
+            
+            switch( config.runOrder() ) {
+                case RunTests::InLexicographicalOrder:
+                    std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
+                    break;
+                case RunTests::InRandomOrder:
+                {
+                    RandomNumberGenerator rng;
+                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
+                }
+                    break;
+                case RunTests::InDeclarationOrder:
+                    // already in declaration order
+                    break;
+            }
+        }
         std::set<TestCase> m_functions;
         std::vector<TestCase> m_functionsInOrder;
         std::vector<TestCase> m_nonHiddenFunctions;

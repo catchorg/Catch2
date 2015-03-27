@@ -8,8 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
+#include "../internal/catch_stream.h"
+
 #include <sstream>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -52,7 +53,7 @@ namespace Catch {
         XmlWriter()
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
-            m_os( &std::cout )
+            m_os( &Catch::cout() )
         {}
 
         XmlWriter( std::ostream& os )

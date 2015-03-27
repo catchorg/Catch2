@@ -16,7 +16,7 @@
 namespace Catch {
 
     inline TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
-        if( tag == "." ||
+        if( startsWith( tag, "." ) ||
             tag == "hide" ||
             tag == "!hide" )
             return TestCaseInfo::IsHidden;
@@ -36,13 +36,13 @@ namespace Catch {
         if( isReservedTag( tag ) ) {
             {
                 Colour colourGuard( Colour::Red );
-                std::cerr
+                Catch::cerr()
                     << "Tag name [" << tag << "] not allowed.\n"
                     << "Tag names starting with non alpha-numeric characters are reserved\n";
             }
             {
                 Colour colourGuard( Colour::FileName );
-                std::cerr << _lineInfo << std::endl;
+                Catch::cerr() << _lineInfo << std::endl;
             }
             exit(1);
         }
@@ -70,14 +70,15 @@ namespace Catch {
             }
             else {
                 if( c == ']' ) {
-                    enforceNotReservedTag( tag, _lineInfo );
-
-                    inTag = false;
-                    if( tag == "hide" || tag == "." )
+                    TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
+                    if( prop == TestCaseInfo::IsHidden )
                         isHidden = true;
-                    else
-                        tags.insert( tag );
+                    else if( prop == TestCaseInfo::None )
+                        enforceNotReservedTag( tag, _lineInfo );
+
+                    tags.insert( tag );
                     tag.clear();
+                    inTag = false;
                 }
                 else
                     tag += c;

@@ -22,7 +22,7 @@ namespace Catch {
     public:
         Timer() : m_ticks( 0 ) {}
         void start();
-        unsigned int getElapsedNanoseconds() const;
+        unsigned int getElapsedMicroseconds() const;
         unsigned int getElapsedMilliseconds() const;
         double getElapsedSeconds() const;
 

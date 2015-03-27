@@ -44,7 +44,7 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "Where the is more to the expression after the RHS[failing]",
+    "Where there is more to the expression after the RHS",
     "[Tricky][failing][.]"
 )
 {
@@ -55,7 +55,7 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "Where the LHS is not a simple value[failing]",
+    "Where the LHS is not a simple value",
     "[Tricky][failing][.]"
 )
 {
@@ -81,7 +81,7 @@ struct Opaque
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
-    "A failing expression with a non streamable type is still captured[failing]",
+    "A failing expression with a non streamable type is still captured",
     "[Tricky][failing][.]"
 )
 {
@@ -97,7 +97,7 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (   
-    "string literals of different sizes can be compared[failing]",
+    "string literals of different sizes can be compared",
     "[Tricky][failing][.]"
 )
 {

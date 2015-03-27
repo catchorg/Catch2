@@ -6,6 +6,11 @@ project(Catch)
 get_filename_component(CATCH_DIR "${CMAKE_CURRENT_SOURCE_DIR}" PATH)
 get_filename_component(CATCH_DIR "${CATCH_DIR}" PATH)
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
+if(USE_CPP11)
+  ## We can't turn this on by default, since it breaks on travis
+  message(STATUS "Enabling C++11")
+  set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+endif()
 
 # define the sources of the self test
 set(SOURCES
@@ -21,6 +26,11 @@ set(SOURCES
     ${SELF_TEST_DIR}/TestMain.cpp
     ${SELF_TEST_DIR}/TrickyTests.cpp
     ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
+    ${SELF_TEST_DIR}/EnumToString.cpp
+    ${SELF_TEST_DIR}/ToStringPair.cpp
+    ${SELF_TEST_DIR}/ToStringVector.cpp
+    ${SELF_TEST_DIR}/ToStringWhich.cpp
+    ${SELF_TEST_DIR}/ToStringTuple.cpp
 )
 
 # configure the executable

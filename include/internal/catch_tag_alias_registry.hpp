@@ -73,7 +73,7 @@ namespace Catch {
         }
         catch( std::exception& ex ) {
             Colour colourGuard( Colour::Red );
-            std::cerr << ex.what() << std::endl;
+            Catch::cerr() << ex.what() << std::endl;
             exit(1);
         }
     }

@@ -20,6 +20,7 @@
 #include "catch_test_case_tracker.hpp"
 #include "catch_timer.h"
 #include "catch_result_builder.h"
+#include "catch_fatal_condition.hpp"
 
 #include <set>
 #include <string>
@@ -209,6 +210,37 @@ namespace Catch {
             return &m_lastResult;
         }
 
+        virtual void handleFatalErrorCondition( std::string const& message ) {
+            ResultBuilder resultBuilder = makeUnexpectedResultBuilder();
+            resultBuilder.setResultType( ResultWas::FatalErrorCondition );
+            resultBuilder << message;
+            resultBuilder.captureExpression();
+
+            handleUnfinishedSections();
+
+            // Recreate section for test case (as we will lose the one that was in scope)
+            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
+            SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );
+
+            Counts assertions;
+            assertions.failed = 1;
+            SectionStats testCaseSectionStats( testCaseSection, assertions, 0, false );
+            m_reporter->sectionEnded( testCaseSectionStats );
+
+            TestCaseInfo testInfo = m_activeTestCase->getTestCaseInfo();
+
+            Totals deltaTotals;
+            deltaTotals.testCases.failed = 1;
+            m_reporter->testCaseEnded( TestCaseStats(   testInfo,
+                                                        deltaTotals,
+                                                        "",
+                                                        "",
+                                                        false ) );
+            m_totals.testCases.failed++;
+            testGroupEnded( "", m_totals, 1, 1 );
+            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, false ) );
+        }
+
     public:
         // !TBD We need to do this another way!
         bool aborting() const {
@@ -230,12 +262,12 @@ namespace Catch {
                 Timer timer;
                 timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
-                    StreamRedirect coutRedir( std::cout, redirectedCout );
-                    StreamRedirect cerrRedir( std::cerr, redirectedCerr );
-                    m_activeTestCase->invoke();
+                    StreamRedirect coutRedir( Catch::cout(), redirectedCout );
+                    StreamRedirect cerrRedir( Catch::cerr(), redirectedCerr );
+                    invokeActiveTestCase();
                 }
                 else {
-                    m_activeTestCase->invoke();
+                    invokeActiveTestCase();
                 }
                 duration = timer.getElapsedSeconds();
             }
@@ -243,20 +275,9 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                ResultBuilder exResult( m_lastAssertionInfo.macroName.c_str(),
-                                        m_lastAssertionInfo.lineInfo,
-                                        m_lastAssertionInfo.capturedExpression.c_str(),
-                                        m_lastAssertionInfo.resultDisposition );
-                exResult.useActiveException();
+                makeUnexpectedResultBuilder().useActiveException();
             }
-            // If sections ended prematurely due to an exception we stored their
-            // infos here so we can tear them down outside the unwind process.
-            for( std::vector<UnfinishedSections>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
-                        itEnd = m_unfinishedSections.rend();
-                    it != itEnd;
-                    ++it )
-                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
-            m_unfinishedSections.clear();
+            handleUnfinishedSections();
             m_messages.clear();
 
             Counts assertions = m_totals.assertions - prevAssertions;
@@ -272,7 +293,32 @@ namespace Catch {
             m_reporter->sectionEnded( testCaseSectionStats );
         }
 
+        void invokeActiveTestCase() {
+            FatalConditionHandler fatalConditionHandler; // Handle signals
+            m_activeTestCase->invoke();
+            fatalConditionHandler.reset();
+        }
+
     private:
+
+        ResultBuilder makeUnexpectedResultBuilder() const {
+            return ResultBuilder(   m_lastAssertionInfo.macroName.c_str(),
+                                    m_lastAssertionInfo.lineInfo,
+                                    m_lastAssertionInfo.capturedExpression.c_str(),
+                                    m_lastAssertionInfo.resultDisposition );
+        }
+
+        void handleUnfinishedSections() {
+            // If sections ended prematurely due to an exception we stored their
+            // infos here so we can tear them down outside the unwind process.
+            for( std::vector<UnfinishedSections>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
+                        itEnd = m_unfinishedSections.rend();
+                    it != itEnd;
+                    ++it )
+                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
+            m_unfinishedSections.clear();
+        }
+
         struct UnfinishedSections {
             UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions, double _durationInSeconds )
             : info( _info ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )

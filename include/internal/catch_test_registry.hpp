@@ -10,7 +10,7 @@
 
 #include "catch_common.h"
 #include "catch_interfaces_testcase.h"
-#include "internal/catch_compiler_capabilities.h"
+#include "catch_compiler_capabilities.h"
 
 namespace Catch {
 

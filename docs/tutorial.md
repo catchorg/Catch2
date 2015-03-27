@@ -86,10 +86,10 @@ Of course there are still more issues to do deal with. For example we'll hit pro
 
 Although this was a simple test it's been enough to demonstrate a few things about how Catch is used. Let's take moment to consider those before we move on.
 
-1. All we did was ```#define``` one identifier and ```#include``` one header and we got everything - even an implementation of ```main()``` that will [respond to command line arguments](command-line.md). You can only use that ```#define``` in one implementation file, for (hopefully) obvious reasons. Once you have more than one file with unit tests in you'll just ```#include "catch.hpp"``` and go. Usually it's a good idea to have a dedicated implementation file that just has ```#define CATCH_CONFIG_MAIN``` and ```#include "catch.hpp"```. You can also provide your own implementation of main and drive Catch yourself (see [Supplying-your-own-main()](own-main.md).
-2. We introduce test cases with the TEST_CASE macro. This macro takes one or two arguments - a free form test name and, optionally, one or more tags (for more see <a href="#test-cases-and-sections">Test cases and Sections</a>, below. The test name must be unique. You can run sets of tests by specifying a wildcarded test name or a tag expression. See the [command line docs](command-line.md) for more information on running tests.
+1. All we did was ```#define``` one identifier and ```#include``` one header and we got everything - even an implementation of ```main()``` that will [respond to command line arguments](command-line.md). You can only use that ```#define``` in one implementation file, for (hopefully) obvious reasons. Once you have more than one file with unit tests in you'll just ```#include "catch.hpp"``` and go. Usually it's a good idea to have a dedicated implementation file that just has ```#define CATCH_CONFIG_MAIN``` and ```#include "catch.hpp"```. You can also provide your own implementation of main and drive Catch yourself (see [Supplying-your-own-main()](own-main.md)).
+2. We introduce test cases with the ```TEST_CASE``` macro. This macro takes one or two arguments - a free form test name and, optionally, one or more tags (for more see <a href="#test-cases-and-sections">Test cases and Sections</a>, below. The test name must be unique. You can run sets of tests by specifying a wildcarded test name or a tag expression. See the [command line docs](command-line.md) for more information on running tests.
 3. The name and tags arguments are just strings. We haven't had to declare a function or method - or explicitly register the test case anywhere. Behind the scenes a function with a generated name is defined for you, and automatically registered using static registry classes. By abstracting the function name away we can name our tests without the constraints of identifier names.
-4. We write our individual test assertions using the REQUIRE macro. Rather than a separate macro for each type of condition we express the condition naturally using C/C++ syntax. Behind the scenes a simple set of expression templates captures the left-hand-side and right-hand-side of the expression so we can display the values in our test report. As we'll see later there _are_ other assertion macros - but because of this technique the number of them is drastically reduced.
+4. We write our individual test assertions using the ```REQUIRE``` macro. Rather than a separate macro for each type of condition we express the condition naturally using C/C++ syntax. Behind the scenes a simple set of expression templates captures the left-hand-side and right-hand-side of the expression so we can display the values in our test report. As we'll see later there _are_ other assertion macros - but because of this technique the number of them is drastically reduced.
 
 <a id="test-cases-and-sections"></a>
 ## Test cases and sections
@@ -157,7 +157,7 @@ The power of sections really shows, however, when we need to execute a sequence 
     }
 ```
 
-Sections can be nested to an arbitrary depth (limited only by your stack size). Each leaf section (i.e. a section that contains no nested sections) will be executed exactly once, on a separate path of execution from any other leaf section (so no leaf section can interfere with another). Obviously a failure in a parent section will prevent nested sections from running - but that's the idea.
+Sections can be nested to an arbitrary depth (limited only by your stack size). Each leaf section (i.e. a section that contains no nested sections) will be executed exactly once, on a separate path of execution from any other leaf section (so no leaf section can interfere with another). A failure in a parent section will prevent nested sections from running - but then that's the idea.
 
 ## BDD-Style
 
@@ -220,9 +220,11 @@ Scenario: vectors can be sized and resized
 ```
 
 ## Next steps
-For more specific information see the [Reference pages](Readme.md)
 
+This has been a brief introduction to get you up and running with Catch, and to point out some of the key differences between Catch and other frameworks you may already be familiar with. This will get you going quite far already and you are now in a position to dive in and write some tests.
+
+Of course there is more to learn - most of which you should be able to page-fault in as you go. Please see the every-growing [Reference section](Readme.md) for what's available.
 
 ---
 
-[Home](../README.md)
+[Home](Readme.md)

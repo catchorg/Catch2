@@ -16,7 +16,7 @@
 
 namespace Catch {
 
-    class Section {
+    class Section : NonCopyable {
     public:
         Section( SectionInfo const& info );
         ~Section();
@@ -25,15 +25,6 @@ namespace Catch {
         operator bool() const;
 
     private:
-#ifdef CATCH_CPP11_OR_GREATER
-        Section( Section const& )              = delete;
-        Section( Section && )                  = delete;
-        Section& operator = ( Section const& ) = delete;
-        Section& operator = ( Section && )     = delete;
-#else
-        Section( Section const& info );
-        Section& operator = ( Section const& );
-#endif
         SectionInfo m_info;
 
         std::string m_name;

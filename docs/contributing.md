@@ -16,8 +16,8 @@ In addition to the include files and IDE projects there are a number of tests in
 
 The other directories are ```scripts``` which contains a set of python scripts to help in testing Catch as well as generating the single include, and docs, which contains the documentation as a set of markdown files.
 
- *This document is a work in progress and will be updated soon with new information.*
+ *this document is in-progress...*
 
 ---
 
-[Home](../README.md)
+[Home](Readme.md)

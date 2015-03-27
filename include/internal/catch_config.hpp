@@ -17,6 +17,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <ctime>
 
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
 #define CATCH_CONFIG_CONSOLE_WIDTH 80
@@ -36,10 +37,13 @@ namespace Catch {
             noThrow( false ),
             showHelp( false ),
             showInvisibles( false ),
+            forceColour( false ),
             abortAfter( -1 ),
+            rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
-            showDurations( ShowDurations::DefaultForReporter )
+            showDurations( ShowDurations::DefaultForReporter ),
+            runOrder( RunTests::InDeclarationOrder )
         {}
 
         bool listTests;
@@ -52,12 +56,15 @@ namespace Catch {
         bool noThrow;
         bool showHelp;
         bool showInvisibles;
+        bool forceColour;
 
         int abortAfter;
+        unsigned int rngSeed;
 
         Verbosity::Level verbosity;
         WarnAbout::What warnings;
         ShowDurations::OrNot showDurations;
+        RunTests::InWhatOrder runOrder;
 
         std::string reporterName;
         std::string outputFilename;
@@ -76,12 +83,12 @@ namespace Catch {
     public:
 
         Config()
-        :   m_os( std::cout.rdbuf() )
+        :   m_os( Catch::cout().rdbuf() )
         {}
 
         Config( ConfigData const& data )
         :   m_data( data ),
-            m_os( std::cout.rdbuf() )
+            m_os( Catch::cout().rdbuf() )
         {
             if( !data.testsOrTags.empty() ) {
                 TestSpecParser parser( ITagAliasRegistry::get() );
@@ -92,7 +99,7 @@ namespace Catch {
         }
 
         virtual ~Config() {
-            m_os.rdbuf( std::cout.rdbuf() );
+            m_os.rdbuf( Catch::cout().rdbuf() );
             m_stream.release();
         }
 
@@ -114,7 +121,7 @@ namespace Catch {
         bool shouldDebugBreak() const { return m_data.shouldDebugBreak; }
 
         void setStreamBuf( std::streambuf* buf ) {
-            m_os.rdbuf( buf ? buf : std::cout.rdbuf() );
+            m_os.rdbuf( buf ? buf : Catch::cout().rdbuf() );
         }
 
         void useStream( std::string const& streamName ) {
@@ -125,7 +132,6 @@ namespace Catch {
         }
 
         std::string getReporterName() const { return m_data.reporterName; }
-
 
         int abortAfter() const { return m_data.abortAfter; }
 
@@ -141,7 +147,9 @@ namespace Catch {
         virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
         virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
-
+        virtual RunTests::InWhatOrder runOrder() const  { return m_data.runOrder; }
+        virtual unsigned int rngSeed() const    { return m_data.rngSeed; }
+        virtual bool forceColour() const { return m_data.forceColour; }
 
     private:
         ConfigData m_data;

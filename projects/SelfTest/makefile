@@ -1,14 +1,30 @@
+SOURCES = ApproxTests.cpp \
+          ClassTests.cpp \
+          ConditionTests.cpp \
+          ExceptionTests.cpp \
+          GeneratorTests.cpp \
+          MessageTests.cpp \
+          MiscTests.cpp \
+          TestMain.cpp \
+          TrickyTests.cpp \
+          BDDTests.cpp \
+          VariadicMacrosTests.cpp \
+          EnumToString.cpp \
+          ToStringPair.cpp \
+          ToStringVector.cpp \
+          ToStringWhich.cpp
 
-EXEC=CatchSelfTest
-SOURCES = $(wildcard *.cpp)
-OBJECTS = $(SOURCES:.cpp=.o)
 
+OBJECTS    = $(patsubst %.cpp, %.o, $(SOURCES))
 CXX = g++
-CXXFLAGS  = -I../../include -I../../include/internal
+CXXFLAGS  = -I../../include -std=c++11
 
-$(EXEC): $(OBJECTS)
+CatchSelfTest: $(OBJECTS)
 	$(CXX) -o $@ $^
 
+test: CatchSelfTest
+	./CatchSelfTest
+
 clean:
-	$(RM) $(OBJECTS)
-	$(RM) $(EXEC)
+	rm -f $(OBJECTS) CatchSelfTest
+

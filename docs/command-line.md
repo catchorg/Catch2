@@ -1,18 +1,33 @@
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
-Note that options are described according to the following pattern:
+Click one of the followings links to take you straight to that option - or scroll on to browse the available options.
 
 <a href="#specifying-which-tests-to-run">               `    <test-spec> ...`</a><br />
-<a href="#choosing-a-reporter-to-use">                  `    -r, --reporter`</a><br />
-<a href="#breaking-into-the-debugger">                  `    -b, --break`</a><br />
+<a href="#usage">                                       `    -h, -?, --help`</a><br />
+<a href="#listing-available-tests-tags-or-reporters">   `    -l, --list-tests`</a><br />
+<a href="#listing-available-tests-tags-or-reporters">   `    -t, --list-tags`</a><br />
 <a href="#showing-results-for-successful-tests">        `    -s, --success`</a><br />
-<a href="#aborting-after-a-certain-number-of-failures"> `    -a, --abort`</a><br />
-<a href="#listing-available-tests-tags-or-reporters">   `    -l, --list`</a><br />
-<a href="#sending-output-to-a-file">                    `    -o, --out`</a><br />
-<a href="#naming-a-test-run">                           `    -n, --name`</a><br />
+<a href="#breaking-into-the-debugger">                  `    -b, --break`</a><br />
 <a href="#eliding-assertions-expected-to-throw">        `    -e, --nothrow`</a><br />
+<a href="#invisibles">                                  `    -i, --invisibles`</a><br />
+<a href="#sending-output-to-a-file">                    `    -o, --out`</a><br />
+<a href="#choosing-a-reporter-to-use">                  `    -r, --reporter`</a><br />
+<a href="#naming-a-test-run">                           `    -n, --name`</a><br />
+<a href="#aborting-after-a-certain-number-of-failures"> `    -a, --abort`</a><br />
+<a href="#aborting-after-a-certain-number-of-failures"> `    -x, --abortx`</a><br />
 <a href="#warnings">                                    `    -w, --warn`</a><br />
 <a href="#reporting-timings">                           `    -d, --durations`</a><br />
-<a href="#usage">                                       `    -h, -?, --help`</a><br />
+<a href="#input-file">                                  `    -f, --input-file`</a><br />
+
+</br>
+
+<a href="#list-test-names-only">                        `    --list-test-names-only`</a><br />
+<a href="#listing-available-tests-tags-or-reporters">   `    --list-reporters`</a><br />
+<a href="#order">                                       `    --order`</a><br />
+<a href="#rng-seed">                                    `    --rng-seed`</a><br />
+
+</br>
+
+
 
 <a id="specifying-which-tests-to-run"></a>
 ## Specifying which tests to run
@@ -21,7 +36,8 @@ Note that options are described according to the following pattern:
 
 Test cases, wildcarded test cases, tags and tag expressions are all passed directly as arguments. Tags are distinguished by being enclosed in square brackets.
 
-If no test specs are supplied then all test cases, except "hidden" tests (tagged ```[hide]```, ```[.]``` or, in the legacy case, prefixed by `'./'`) are run.
+If no test specs are supplied then all test cases, except "hidden" tests, are run.
+A test is hidden by giving it any tag starting with (or just) a period (```.```) - or, in the deprecated case, tagged ```[hide]``` or given name starting with `'./'`. To specify hidden tests from the command line ```[.]``` or ```[hide]``` can be used *regardless of how they were declared*.
 
 Specs must be enclosed in quotes if they contain spaces. If they do not contain spaces the quotes are optional.
 
@@ -79,7 +95,7 @@ In addition to the command line option, ensure you have built your code with the
 <pre>-s, --success</pre>
 
 Usually you only want to see reporting for failed tests. Sometimes it's useful to see *all* the output (especially when you don't trust that that test you just added worked first time!).
-To see successul, as well as failing, test results just pass this option. Note that each reporter may treat this option differently. The Junit reporter, for example, logs all results regardless.
+To see successful, as well as failing, test results just pass this option. Note that each reporter may treat this option differently. The Junit reporter, for example, logs all results regardless.
 
 <a id="aborting-after-a-certain-number-of-failures"></a>
 ## Aborting after a certain number of failures
@@ -131,6 +147,13 @@ Sometimes exceptions are expected outside of one of the assertions that tests fo
 
 When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
 
+<a id="invisibles"></a>
+## Make whitespace visible
+<pre>-i, --invisibles</pre>
+
+If a string comparison fails due to differences in whitespace - especially leading or trailing whitespace - it can be hard to see what's going on.
+This option transforms tabs and newline characters into ```\t``` and ```\n``` respectively when printing.
+
 <a id="warnings"></a>
 ## Warnings
 <pre>-w, --warn &lt;warning name></pre>
@@ -145,6 +168,47 @@ The ony available warning, presently, is ```NoAssertions```. This warning fails 
 
 When set to ```yes``` Catch will report the duration of each test case, in milliseconds. Note that it does this regardless of whether a test case passes or fails. Note, also, the certain reporters (e.g. Junit) always report test case durations regardless of this option being set or not.
 
+<a id="input-file"></a>
+## Load test names to run from a file
+<pre>-f, --input-file &lt;filename></pre>
+
+Provide the name of a file that contains a list of test case names - one per line. Blank lines are skipped and anything after the comment character, ```#```, is ignored.
+
+A useful way to generate an initial instance of this file is to use the <a href="#list-test-names-only">list-test-names-only</a> option. This can then be manually curated to specify a specific subset of tests - or in a specific order.
+
+<a id="list-test-names-only"></a>
+## Just test names
+<pre>--list-test-names-only</pre>
+
+This option lists all available tests in a non-indented form, one on each line. This makes it ideal for saving to a file and feeding back into the <a href="#input-file">```-f``` or ```--input-file```</a> option.
+
+
+<a id="order"></a>
+## Specify the order test cases are run
+<pre>--order &lt;decl|lex|rand&gt;</pre>
+
+Test cases are ordered one of three ways:
+
+
+### decl
+Declaration order. The order the tests were originally declared in. Note that ordering between files is not guaranteed and is implementation dependent.
+
+### lex
+Lexicographically sorted. Tests are sorted, alpha-numerically, by name.
+
+### rand
+Randomly sorted. Test names are sorted using ```std::random_shuffle()```. By default the random number generator is seeded with 0 - and so the order is repeatable. To control the random seed see <a href="#rng-seed">rng-seed</a>.
+
+<a id="rng-seed"></a>
+## Specify a seed for the Random Number Generator
+<pre>--rng-seed &lt;'time'|number&gt;</pre>
+
+Sets a seed for the random number generator using ```std::srand()```. 
+If a number is provided this is used directly as the seed so the random pattern is repeatable.
+Alternatively if the keyword ```time``` is provided then the result of calling ```std::time(0)``` is used and so the pattern becomes unpredictable.
+
+In either case the actual value for the seed is printed as part of Catch's output so if an issue is discovered that is sensitive to test ordering the ordering can be reproduced - even if it was originally seeded from ```std::time(0)```.
+
 <a id="usage"></a>
 ## Usage
 <pre>-h, -?, --help</pre>
@@ -153,4 +217,4 @@ Prints the command line arguments to stdout
 
 ---
 
-[Home](../README.md)
+[Home](Readme.md)

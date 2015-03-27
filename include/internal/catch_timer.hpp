@@ -27,11 +27,11 @@ namespace Catch {
         uint64_t getCurrentTicks() {
             static uint64_t hz=0, hzo=0;
             if (!hz) {
-                QueryPerformanceFrequency((LARGE_INTEGER*)&hz);
-                QueryPerformanceCounter((LARGE_INTEGER*)&hzo);
+                QueryPerformanceFrequency( reinterpret_cast<LARGE_INTEGER*>( &hz ) );
+                QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &hzo ) );
             }
             uint64_t t;
-            QueryPerformanceCounter((LARGE_INTEGER*)&t);
+            QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &t ) );
             return ((t-hzo)*1000000)/hz;
         }
 #else
@@ -46,14 +46,14 @@ namespace Catch {
     void Timer::start() {
         m_ticks = getCurrentTicks();
     }
-    unsigned int Timer::getElapsedNanoseconds() const {
+    unsigned int Timer::getElapsedMicroseconds() const {
         return static_cast<unsigned int>(getCurrentTicks() - m_ticks);
     }
     unsigned int Timer::getElapsedMilliseconds() const {
-        return static_cast<unsigned int>((getCurrentTicks() - m_ticks)/1000);
+        return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
     }
     double Timer::getElapsedSeconds() const {
-        return (getCurrentTicks() - m_ticks)/1000000.0;
+        return getElapsedMicroseconds()/1000000.0;
     }
 
 } // namespace Catch

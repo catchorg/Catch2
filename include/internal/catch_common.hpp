@@ -36,7 +36,21 @@ namespace Catch {
 
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }
-
+    
+    bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis ) {
+        bool replaced = false;
+        std::size_t i = str.find( replaceThis );
+        while( i != std::string::npos ) {
+            replaced = true;
+            str = str.substr( 0, i ) + withThis + str.substr( i+replaceThis.size() );
+            if( i < str.size()-withThis.size() )
+                i = str.find( replaceThis, i+withThis.size() );
+            else
+                i = std::string::npos;
+        }
+        return replaced;
+    }
+    
     pluralise::pluralise( std::size_t count, std::string const& label )
     :   m_count( count ),
         m_label( label )
@@ -63,6 +77,9 @@ namespace Catch {
     }
     bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const {
         return line == other.line && file == other.file;
+    }
+    bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const {
+        return line < other.line || ( line == other.line  && file < other.file );
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {

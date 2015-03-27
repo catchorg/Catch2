@@ -15,7 +15,7 @@
 #include "catch_common.h"
 #include "catch_tostring.h"
 #include "catch_interfaces_runner.h"
-#include "internal/catch_compiler_capabilities.h"
+#include "catch_compiler_capabilities.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@
             std::string matcherAsString = ::Catch::Matchers::matcher.toString(); \
             __catchResult \
                 .setLhs( Catch::toString( arg ) ) \
-                .setRhs( matcherAsString == "{?}" ? #matcher : matcherAsString ) \
+                .setRhs( matcherAsString == Catch::Detail::unprintableString ? #matcher : matcherAsString ) \
                 .setOp( "matches" ) \
                 .setResultType( ::Catch::Matchers::matcher.match( arg ) ); \
             __catchResult.captureExpression(); \

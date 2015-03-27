@@ -10,6 +10,8 @@
 
 #include "../internal/catch_interfaces_reporter.h"
 
+#include <cstring>
+
 namespace Catch {
 
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
@@ -42,7 +44,6 @@ namespace Catch {
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
             currentTestCaseInfo.reset();
-            assert( m_sectionStack.empty() );
         }
         virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) {
             currentGroupInfo.reset();
@@ -51,6 +52,11 @@ namespace Catch {
             currentTestCaseInfo.reset();
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
+        }
+
+        virtual void skipTest( TestCaseInfo const& ) {
+            // Don't do anything with this by default.
+            // It can optionally be overridden in the derived class.
         }
 
         Ptr<IConfig> m_config;
@@ -183,6 +189,8 @@ namespace Catch {
         }
         virtual void testRunEndedCumulative() = 0;
 
+        virtual void skipTest( TestCaseInfo const& ) {}
+
         Ptr<IConfig> m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
@@ -197,6 +205,16 @@ namespace Catch {
         std::vector<Ptr<SectionNode> > m_sectionStack;
 
     };
+
+    template<char C>
+    char const* getLineOfChars() {
+        static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
+        if( !*line ) {
+            memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
+            line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
+        }
+        return line;
+    }
 
 } // end namespace Catch
 

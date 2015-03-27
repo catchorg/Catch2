@@ -1,0 +1,46 @@
+# String conversions
+
+Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).
+Most built-in or std types are supported out of the box but there are two ways that you can tell Catch how to convert your own types (or other, third-party types) into strings.
+
+## operator << overload for std::ostream
+
+This is the standard way of providing string conversions in C++ - and the chances are you may already provide this for your own purposes. If you're not familiar with this idiom it involves writing a free function of the form:
+
+```
+std::ostream& operator << ( std::ostream& os, T const& value ) {
+	os << convertMyTypeToString( value );
+	return os;
+}
+```
+
+(where ```T``` is your type and ```convertMyTypeToString``` is where you'll write whatever code is necessary to make your type printable - it doesn't have to be in another function).
+
+You should put this function in the same namespace as your type.
+
+Alternatively you may prefer to write it as a member function:
+
+```
+std::ostream& T::operator << ( std::ostream& os ) const {
+	os << convertMyTypeToString( *this );
+	return os;
+}
+```
+
+## Catch::toString overload
+
+If you don't want to provide an ```operator <<``` overload, or you want to convert your type differently for testing purposes, you can provide an overload for ```Catch::toString()``` for your type.
+
+```
+namespace Catch {
+	std::string toString( T const& value ) {
+		return convertMyTypeToString( value );
+	}
+}
+```
+
+Again ```T``` is your type and ```convertMyTypeToString``` is where you'll write whatever code is necessary to make your type printable. Note that the function must be in the Catch namespace, which itself must be in the global namespace.
+
+---
+
+[Home](Readme.md)

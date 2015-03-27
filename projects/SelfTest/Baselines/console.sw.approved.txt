@@ -1,7 +1,87 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a <version> host application.
+CatchSelfTest is a <version> (develop) host application.
 Run with -? for options
+
+-------------------------------------------------------------------------------
+toString(enum)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "0" )
+with expansion:
+  "0" == "0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "1" )
+with expansion:
+  "1" == "1"
+
+-------------------------------------------------------------------------------
+toString(enum w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "E2{0}" )
+with expansion:
+  "E2{0}" == "E2{0}"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "E2{1}" )
+with expansion:
+  "E2{1}" == "E2{1}"
+
+-------------------------------------------------------------------------------
+toString(enum class)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "0" )
+with expansion:
+  "0" == "0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "1" )
+with expansion:
+  "1" == "1"
+
+-------------------------------------------------------------------------------
+toString(enum class w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "E2/V0" )
+with expansion:
+  "E2/V0" == "E2/V0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "E2/V1" )
+with expansion:
+  "E2/V1" == "E2/V1"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e3) == "Unknown enum value 10" )
+with expansion:
+  "Unknown enum value 10"
+  ==
+  "Unknown enum value 10"
 
 -------------------------------------------------------------------------------
 Some simple comparisons between doubles
@@ -3318,7 +3398,7 @@ MiscTests.cpp:<line number>:
 PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
-  0x<hex digits> == 3628800
+  0x<hex digits> == 0x<hex digits>
 
 -------------------------------------------------------------------------------
 An empty test with no assertions
@@ -3986,6 +4066,42 @@ with expansion:
   true == true
 
 -------------------------------------------------------------------------------
+Process can be configured on command line
+  force-colour
+  --force-colour
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( config.forceColour )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  force-colour
+  without --force-colour
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( !config.forceColour )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Long strings can be wrapped
   plain string
   No wrapping
@@ -4437,6 +4553,139 @@ with expansion:
           four
           five
           six"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace single char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "b", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "azcdefcg" )
+with expansion:
+  "azcdefcg" == "azcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace two chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "c", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "abzdefzg" )
+with expansion:
+  "abzdefzg" == "abzdefzg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace first char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "a", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "zbcdefcg" )
+with expansion:
+  "zbcdefcg" == "zbcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace last char
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, "g", "z" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "abcdefcz" )
+with expansion:
+  "abcdefcz" == "abcdefcz"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace all chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( letters, letters, "replaced" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == "replaced" )
+with expansion:
+  "replaced" == "replaced"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  replace no chars
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_FALSE( replaceInPlace( letters, "x", "z" ) )
+with expansion:
+  !false
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( letters == letters )
+with expansion:
+  "abcdefcg" == "abcdefcg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  escape '
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( replaceInPlace( s, "'", "|'" ) )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( s == "didn|'t" )
+with expansion:
+  "didn|'t" == "didn|'t"
 
 hello
 hello
@@ -5496,7 +5745,7 @@ with expansion:
   std::pair( 1, 2 ) == std::pair( 1, 2 )
 
 -------------------------------------------------------------------------------
-Where the is more to the expression after the RHS[failing]
+Where there is more to the expression after the RHS
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5507,10 +5756,10 @@ warning:
   error
 
 
-No assertions in test case 'Where the is more to the expression after the RHS[failing]'
+No assertions in test case 'Where there is more to the expression after the RHS'
 
 -------------------------------------------------------------------------------
-Where the LHS is not a simple value[failing]
+Where the LHS is not a simple value
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5521,10 +5770,10 @@ warning:
   error
 
 
-No assertions in test case 'Where the LHS is not a simple value[failing]'
+No assertions in test case 'Where the LHS is not a simple value'
 
 -------------------------------------------------------------------------------
-A failing expression with a non streamable type is still captured[failing]
+A failing expression with a non streamable type is still captured
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5540,7 +5789,7 @@ with expansion:
   {?} == {?}
 
 -------------------------------------------------------------------------------
-string literals of different sizes can be compared[failing]
+string literals of different sizes can be compared
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
 ...............................................................................
@@ -5904,6 +6153,234 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
+
+-------------------------------------------------------------------------------
+toString( has_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( item ) == "toString( has_toString )" )
+with expansion:
+  "toString( has_toString )"
+  ==
+  "toString( has_toString )"
+
+-------------------------------------------------------------------------------
+toString( has_maker )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( item ) == "StringMaker<has_maker>" )
+with expansion:
+  "StringMaker<has_maker>"
+  ==
+  "StringMaker<has_maker>"
+
+-------------------------------------------------------------------------------
+toString( has_maker_and_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( item ) == "toString( has_maker_and_toString )" )
+with expansion:
+  "toString( has_maker_and_toString )"
+  ==
+  "toString( has_maker_and_toString )"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( v ) == "{ {?} }" )
+with expansion:
+  "{ {?} }" == "{ {?} }"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_maker )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker> }" )
+with expansion:
+  "{ StringMaker<has_maker> }"
+  ==
+  "{ StringMaker<has_maker> }"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_maker_and_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker_and_toString> }" )
+with expansion:
+  "{ StringMaker<has_maker_and_toString> }"
+  ==
+  "{ StringMaker<has_maker_and_toString> }"
+
+-------------------------------------------------------------------------------
+std::pair<int,std::string> -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( value ) == "{ 34, \"xyzzy\" }" )
+with expansion:
+  "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+
+-------------------------------------------------------------------------------
+std::pair<int,const std::string> -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(value) == "{ 34, \"xyzzy\" }" )
+with expansion:
+  "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+
+-------------------------------------------------------------------------------
+std::vector<std::pair<std::string,int> > -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( pr ) == "{ { \"green\", 55 } }" )
+with expansion:
+  "{ { "green", 55 } }"
+  ==
+  "{ { "green", 55 } }"
+
+-------------------------------------------------------------------------------
+pair<pair<int,const char *,pair<std::string,int> > -> toString
+-------------------------------------------------------------------------------
+ToStringPair.cpp:<line number>
+...............................................................................
+
+ToStringPair.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" )
+with expansion:
+  "{ { 42, "Arthur" }, { "Ford", 24 } }"
+  ==
+  "{ { 42, "Arthur" }, { "Ford", 24 } }"
+
+-------------------------------------------------------------------------------
+vector<int> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42, 512 }" )
+with expansion:
+  "{ 42, 512 }" == "{ 42, 512 }"
+
+-------------------------------------------------------------------------------
+vector<string> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ \"hello\" }" )
+with expansion:
+  "{ "hello" }" == "{ "hello" }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ \"hello\", \"world\" }" )
+with expansion:
+  "{ "hello", "world" }"
+  ==
+  "{ "hello", "world" }"
+
+-------------------------------------------------------------------------------
+vector<int,allocator> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(vv) == "{ 42, 512 }" )
+with expansion:
+  "{ 42, 512 }" == "{ 42, 512 }"
+
+-------------------------------------------------------------------------------
+vec<vec<string,alloc>> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(v) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }" )
+with expansion:
+  "{ { "hello" }, { "world" } }"
+  ==
+  "{ { "hello" }, { "world" } }"
 
 -------------------------------------------------------------------------------
 Parse test names and tags
@@ -6933,6 +7410,96 @@ with expansion:
   true == true
 
 -------------------------------------------------------------------------------
+tuple<>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == Catch::toString(type{}) )
+with expansion:
+  "{ }" == "{ }"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == Catch::toString(value) )
+with expansion:
+  "{ }" == "{ }"
+
+-------------------------------------------------------------------------------
+tuple<int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 0 }" == Catch::toString(type{0}) )
+with expansion:
+  "{ 0 }" == "{ 0 }"
+
+-------------------------------------------------------------------------------
+tuple<float,int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "1.2f" == Catch::toString(float(1.2)) )
+with expansion:
+  "1.2f" == "1.2f"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 1.2f, 0 }" == Catch::toString(type{1.2,0}) )
+with expansion:
+  "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+
+-------------------------------------------------------------------------------
+tuple<string,string>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ \"hello\", \"world\" }" == Catch::toString(type{"hello","world"}) )
+with expansion:
+  "{ "hello", "world" }"
+  ==
+  "{ "hello", "world" }"
+
+-------------------------------------------------------------------------------
+tuple<tuple<int>,tuple<>,float>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ { 42 }, { }, 1.2f }" == Catch::toString(value) )
+with expansion:
+  "{ { 42 }, { }, 1.2f }"
+  ==
+  "{ { 42 }, { }, 1.2f }"
+
+-------------------------------------------------------------------------------
+tuple<nullptr,int,const char *>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value) )
+with expansion:
+  "{ nullptr, 42, "Catch me" }"
+  ==
+  "{ nullptr, 42, "Catch me" }"
+
+-------------------------------------------------------------------------------
 Tag alias can be registered against tag patterns
   The same tag alias can only be registered once
 -------------------------------------------------------------------------------
@@ -7375,6 +7942,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 130 |  75 passed | 54 failed |  1 failed as expected
-assertions: 729 | 617 passed | 99 failed | 13 failed as expected
+test cases: 155 | 100 passed | 54 failed |  1 failed as expected
+assertions: 785 | 673 passed | 99 failed | 13 failed as expected
 

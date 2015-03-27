@@ -47,9 +47,9 @@ int main( int argc, char* const argv[] )
   if( returnCode != 0 ) // Indicates a command line error
   	return returnCode;
 
-  // Writing to session.configData() or session.Config() here 
-  // overrides command line args.
-  // Only do this if you know you need to.
+  // writing to session.configData() or session.Config() here 
+  // overrides command line args
+  // only do this if you know you need to
 
   return session.run();
 }
@@ -65,4 +65,4 @@ Catch embeds a powerful command line parser which you can also use to parse your
 
 ---
 
-[Home](../README.md)
+[Home](Readme.md)

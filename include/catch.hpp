@@ -11,11 +11,11 @@
 
 #include "internal/catch_suppress_warnings.h"
 
-#ifdef CATCH_CONFIG_MAIN
-#  define CATCH_CONFIG_RUNNER
+#if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
+#  define CATCH_IMPL
 #endif
 
-#ifdef CATCH_CONFIG_RUNNER
+#ifdef CATCH_IMPL
 #  ifndef CLARA_CONFIG_MAIN
 #    define CLARA_CONFIG_MAIN_NOT_DEFINED
 #    define CLARA_CONFIG_MAIN
@@ -43,7 +43,7 @@
 #include "internal/catch_objc.hpp"
 #endif
 
-#ifdef CATCH_CONFIG_RUNNER
+#ifdef CATCH_IMPL
 #include "internal/catch_impl.hpp"
 #endif
 

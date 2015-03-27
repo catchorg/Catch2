@@ -77,6 +77,8 @@ namespace Catch
     void LegacyReporterAdapter::testRunEnded( TestRunStats const& testRunStats ) {
         m_legacyReporter->EndTesting( testRunStats.totals );
     }
+    void LegacyReporterAdapter::skipTest( TestCaseInfo const& ) {
+    }
 }
 
 #endif // TWOBLUECUBES_CATCH_LEGACY_REPORTER_ADAPTER_H_INCLUDED

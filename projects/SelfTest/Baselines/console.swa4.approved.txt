@@ -1,7 +1,87 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CatchSelfTest is a <version> host application.
+CatchSelfTest is a <version> (develop) host application.
 Run with -? for options
+
+-------------------------------------------------------------------------------
+toString(enum)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "0" )
+with expansion:
+  "0" == "0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "1" )
+with expansion:
+  "1" == "1"
+
+-------------------------------------------------------------------------------
+toString(enum w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "E2{0}" )
+with expansion:
+  "E2{0}" == "E2{0}"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "E2{1}" )
+with expansion:
+  "E2{1}" == "E2{1}"
+
+-------------------------------------------------------------------------------
+toString(enum class)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "0" )
+with expansion:
+  "0" == "0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "1" )
+with expansion:
+  "1" == "1"
+
+-------------------------------------------------------------------------------
+toString(enum class w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e0) == "E2/V0" )
+with expansion:
+  "E2/V0" == "E2/V0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e1) == "E2/V1" )
+with expansion:
+  "E2/V1" == "E2/V1"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( Catch::toString(e3) == "Unknown enum value 10" )
+with expansion:
+  "Unknown enum value 10"
+  ==
+  "Unknown enum value 10"
 
 -------------------------------------------------------------------------------
 Some simple comparisons between doubles
@@ -406,6 +486,6 @@ with expansion:
   9.1f != Approx( 9.1000003815 )
 
 ===============================================================================
-test cases: 15 | 11 passed | 3 failed | 1 failed as expected
-assertions: 53 | 47 passed | 4 failed | 2 failed as expected
+test cases: 19 | 15 passed | 3 failed | 1 failed as expected
+assertions: 62 | 56 passed | 4 failed | 2 failed as expected
 

@@ -9,8 +9,9 @@ from scriptCommon import catchPath
 
 rootPath = os.path.join( catchPath, 'projects/SelfTest/Baselines' )
 
-filenameParser = re.compile( r'.*/(.*\..pp:)(.*)' )
+filenameParser = re.compile( r'(.*)/(.*\..pp:)(.*)' )
 filelineParser = re.compile( r'(.*\..pp:)([0-9]*)(.*)' )
+pathParser = re.compile( r'(.*?)/(.*\..pp)(.*)' )
 lineNumberParser = re.compile( r'(.*)line="[0-9]*"(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 durationsParser = re.compile( r'(.*)time="[0-9]*\.[0-9]*"(.*)' )
@@ -26,14 +27,20 @@ overallResult = 0
 def filterLine( line ):
 	m = filenameParser.match( line )
 	if m:
-		line = m.group(1) + m.group(2)
-		m = filelineParser.match( line )
-		if m:
-			line = m.group(1) + "<line number>" + m.group(3)
+		line = m.group(2) + m.group(3)
+		m2 = filelineParser.match( line )
+		if m2:
+			line = m2.group(1) + "<line number>" + m2.group(3)
 	else:
-		m = lineNumberParser.match( line )
-		if m:
-			line = m.group(1) + m.group(2)
+		m2 = lineNumberParser.match( line )
+		if m2:
+			line = m2.group(1) + m2.group(2)
+	m = pathParser.match( line )
+	if m:
+		path = "/" + m.group(2)
+		if path.startswith( catchPath ):
+			path = path[1+len(catchPath):]
+		line = m.group(1) + path + m.group(3)
 	m = versionParser.match( line )
 	if m:
 		line = m.group(1) + "<version>" + m.group(2)
@@ -52,6 +59,8 @@ def filterLine( line ):
 def approve( baseName, args ):
 	global overallResult
 	args[0:0] = [cmdPath]
+	if not os.path.exists( cmdPath ):
+			raise Exception( "Executable doesn't exist at " + cmdPath )
 	baselinesPath = os.path.join( rootPath, '{0}.approved.txt'.format( baseName ) )
 	rawResultsPath = os.path.join( rootPath, '_{0}.tmp'.format( baseName ) )
 	filteredResultsPath = os.path.join( rootPath, '{0}.unapproved.txt'.format( baseName ) )

@@ -13,8 +13,6 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 
-#include <cstring>
-
 namespace Catch {
 
     struct ConsoleReporter : StreamingReporterBase {
@@ -149,6 +147,11 @@ namespace Catch {
                         passOrFail = "FAILED";
                         messageLabel = "due to unexpected exception with message";
                         break;
+                    case ResultWas::FatalErrorCondition:
+                        colour = Colour::Error;
+                        passOrFail = "FAILED";
+                        messageLabel = "due to a fatal error condition";
+                        break;
                     case ResultWas::DidntThrowException:
                         colour = Colour::Error;
                         passOrFail = "FAILED";
@@ -265,6 +268,9 @@ namespace Catch {
                 stream << " (" << libraryVersion.branchName << ")";
             stream  << " host application.\n"
                     << "Run with -? for options\n\n";
+
+            if( m_config->rngSeed() != 0 )
+                stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
 
             currentTestRunInfo.used = true;
         }
@@ -436,15 +442,6 @@ namespace Catch {
         }
         void printSummaryDivider() {
             stream << getLineOfChars<'-'>() << "\n";
-        }
-        template<char C>
-        static char const* getLineOfChars() {
-            static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
-            if( !*line ) {
-                memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
-                line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
-            }
-            return line;
         }
 
     private:

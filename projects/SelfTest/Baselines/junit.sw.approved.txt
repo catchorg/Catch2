@@ -1,5 +1,9 @@
 <testsuites>
-  <testsuite name="all tests" errors="12" failures="87" tests="729" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="all tests" errors="12" failures="87" tests="785" hostname="tbd" time="{duration}" timestamp="tbd">
+    <testcase classname="global" name="toString(enum)" time="{duration}"/>
+    <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
+    <testcase classname="global" name="toString(enum class)" time="{duration}"/>
+    <testcase classname="global" name="toString(enum class w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="Some simple comparisons between doubles" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="global" name="Approximate comparisons with floats" time="{duration}"/>
@@ -469,6 +473,8 @@ MiscTests.cpp:<line number>
     <testcase classname="Process can be configured on command line" name="output filename/-o filename" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="output filename/--out" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="combinations/Single character flags can be combined" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="force-colour/--force-colour" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="force-colour/without --force-colour" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/No wrapping" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/Wrapped once" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/Wrapped twice" time="{duration}"/>
@@ -481,6 +487,13 @@ MiscTests.cpp:<line number>
     <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped once" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped twice" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With tabs" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace single char" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace two chars" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace first char" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace last char" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace all chars" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="replace no chars" time="{duration}"/>
+    <testcase classname="replaceInPlace" name="escape '" time="{duration}"/>
     <testcase classname="global" name="Strings can be rendered with colour" time="{duration}">
       <system-out>
 hello
@@ -490,9 +503,9 @@ hello
     <testcase classname="global" name="Text can be formatted using the Text class" time="{duration}"/>
     <testcase classname="global" name="Long text is truncted" time="{duration}"/>
     <testcase classname="global" name="Parsing a std::pair" time="{duration}"/>
-    <testcase classname="global" name="Where the is more to the expression after the RHS[failing]" time="{duration}"/>
-    <testcase classname="global" name="Where the LHS is not a simple value[failing]" time="{duration}"/>
-    <testcase classname="global" name="A failing expression with a non streamable type is still captured[failing]" time="{duration}">
+    <testcase classname="global" name="Where there is more to the expression after the RHS" time="{duration}"/>
+    <testcase classname="global" name="Where the LHS is not a simple value" time="{duration}"/>
+    <testcase classname="global" name="A failing expression with a non streamable type is still captured" time="{duration}">
       <failure message="0x<hex digits> == 0x<hex digits>" type="CHECK">
 TrickyTests.cpp:<line number>
       </failure>
@@ -500,7 +513,7 @@ TrickyTests.cpp:<line number>
 TrickyTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="global" name="string literals of different sizes can be compared[failing]" time="{duration}">
+    <testcase classname="global" name="string literals of different sizes can be compared" time="{duration}">
       <failure message="&quot;first&quot; == &quot;second&quot;" type="REQUIRE">
 TrickyTests.cpp:<line number>
       </failure>
@@ -529,6 +542,20 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="X/level/0/b" time="{duration}"/>
     <testcase classname="global" name="X/level/1/a" time="{duration}"/>
     <testcase classname="global" name="X/level/1/b" time="{duration}"/>
+    <testcase classname="global" name="toString( has_toString )" time="{duration}"/>
+    <testcase classname="global" name="toString( has_maker )" time="{duration}"/>
+    <testcase classname="global" name="toString( has_maker_and_toString )" time="{duration}"/>
+    <testcase classname="global" name="toString( vectors&lt;has_toString )" time="{duration}"/>
+    <testcase classname="global" name="toString( vectors&lt;has_maker )" time="{duration}"/>
+    <testcase classname="global" name="toString( vectors&lt;has_maker_and_toString )" time="{duration}"/>
+    <testcase classname="global" name="std::pair&lt;int,std::string> -> toString" time="{duration}"/>
+    <testcase classname="global" name="std::pair&lt;int,const std::string> -> toString" time="{duration}"/>
+    <testcase classname="global" name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" time="{duration}"/>
+    <testcase classname="global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}"/>
+    <testcase classname="global" name="vector&lt;int> -> toString" time="{duration}"/>
+    <testcase classname="global" name="vector&lt;string> -> toString" time="{duration}"/>
+    <testcase classname="global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>
+    <testcase classname="global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Empty test spec should have no filters" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Test spec from empty string should have no filters" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="Test spec from just a comma should have no filters" time="{duration}"/>
@@ -560,6 +587,12 @@ TrickyTests.cpp:<line number>
     <testcase classname="Parse test names and tags" name="empty tag" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="empty quoted name" time="{duration}"/>
     <testcase classname="Parse test names and tags" name="quoted string followed by tag exclusion" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;int>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;float,int>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;string,string>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;nullptr,int,const char *>" time="{duration}"/>
     <testcase classname="Tag alias can be registered against tag patterns" name="The same tag alias can only be registered once" time="{duration}"/>
     <testcase classname="Tag alias can be registered against tag patterns" name="Tag aliases must be of the form [@name]" time="{duration}"/>
     <testcase classname="global" name="Anonymous test case 1" time="{duration}"/>

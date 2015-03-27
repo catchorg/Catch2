@@ -23,9 +23,9 @@ namespace Catch {
 
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
-            std::cout << "Matching test cases:\n";
+            Catch::cout() << "Matching test cases:\n";
         else {
-            std::cout << "All available test cases:\n";
+            Catch::cout() << "All available test cases:\n";
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
@@ -46,15 +46,15 @@ namespace Catch {
                 : Colour::None;
             Colour colourGuard( colour );
 
-            std::cout << Text( testCaseInfo.name, nameAttr ) << std::endl;
+            Catch::cout() << Text( testCaseInfo.name, nameAttr ) << std::endl;
             if( !testCaseInfo.tags.empty() )
-                std::cout << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
+                Catch::cout() << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
         }
 
         if( !config.testSpec().hasFilters() )
-            std::cout << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
+            Catch::cout() << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
         else
-            std::cout << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+            Catch::cout() << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
         return matchedTests;
     }
 
@@ -70,7 +70,7 @@ namespace Catch {
                 ++it ) {
             matchedTests++;
             TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-            std::cout << testCaseInfo.name << std::endl;
+            Catch::cout() << testCaseInfo.name << std::endl;
         }
         return matchedTests;
     }
@@ -96,9 +96,9 @@ namespace Catch {
     inline std::size_t listTags( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
-            std::cout << "Tags for matching test cases:\n";
+            Catch::cout() << "Tags for matching test cases:\n";
         else {
-            std::cout << "All available tags:\n";
+            Catch::cout() << "All available tags:\n";
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
@@ -132,14 +132,14 @@ namespace Catch {
                                                     .setInitialIndent( 0 )
                                                     .setIndent( oss.str().size() )
                                                     .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
-            std::cout << oss.str() << wrapper << "\n";
+            Catch::cout() << oss.str() << wrapper << "\n";
         }
-        std::cout << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
+        Catch::cout() << pluralise( tagCounts.size(), "tag" ) << "\n" << std::endl;
         return tagCounts.size();
     }
 
     inline std::size_t listReporters( Config const& /*config*/ ) {
-        std::cout << "Available reports:\n";
+        Catch::cout() << "Available reporters:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator itBegin = factories.begin(), itEnd = factories.end(), it;
         std::size_t maxNameLen = 0;
@@ -151,13 +151,13 @@ namespace Catch {
                                                         .setInitialIndent( 0 )
                                                         .setIndent( 7+maxNameLen )
                                                         .setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 ) );
-            std::cout << "  "
+            Catch::cout() << "  "
                     << it->first
                     << ":"
                     << std::string( maxNameLen - it->first.size() + 2, ' ' )
                     << wrapper << "\n";
         }
-        std::cout << std::endl;
+        Catch::cout() << std::endl;
         return factories.size();
     }
 

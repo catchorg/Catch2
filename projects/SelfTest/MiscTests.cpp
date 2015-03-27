@@ -380,3 +380,9 @@ TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
 	std::string result = Catch::toString( s );
 	CHECK( result == "\"wide load\"" );
 }
+
+//TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
+//    int i = 0;
+//    int x = 10/i; // This should cause the signal to fire
+//    CHECK( x == 0 );
+//}

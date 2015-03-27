@@ -16,7 +16,7 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-#include "catch_runner.hpp"
+#include "../catch_runner.hpp"
 #include "catch_registry_hub.hpp"
 #include "catch_notimplemented_exception.hpp"
 #include "catch_context_impl.hpp"
@@ -88,8 +88,6 @@ namespace Catch {
     Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     void Config::dummy() {}
-
-    INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( "xml", XmlReporter )
 }
 
 #ifdef __clang__

@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		263F7A4719B6FCBF009474C2 /* EnumToString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4619B6FCBF009474C2 /* EnumToString.cpp */; };
+		263F7A4B19B6FE1E009474C2 /* ToStringPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4819B6FE1E009474C2 /* ToStringPair.cpp */; };
+		263F7A4C19B6FE1E009474C2 /* ToStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4919B6FE1E009474C2 /* ToStringVector.cpp */; };
+		263F7A4D19B6FE1E009474C2 /* ToStringWhich.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4A19B6FE1E009474C2 /* ToStringWhich.cpp */; };
 		2656C2211925E7330040DB02 /* catch_test_spec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2656C2201925E7330040DB02 /* catch_test_spec.cpp */; };
 		266B06B816F3A60A004ED264 /* VariadicMacrosTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */; };
 		266ECD74170F3C620030D735 /* BDDTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266ECD73170F3C620030D735 /* BDDTests.cpp */; };
 		26711C8F195D465C0033EDA2 /* TagAliasTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26711C8D195D465C0033EDA2 /* TagAliasTests.cpp */; };
 		26847E5F16BBADB40043B9C1 /* catch_message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26847E5D16BBADB40043B9C1 /* catch_message.cpp */; };
+		2691574C1A532A280054F1ED /* ToStringTuple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2691574B1A532A280054F1ED /* ToStringTuple.cpp */; };
 		26948286179A9AB900ED166E /* SectionTrackerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26948284179A9AB900ED166E /* SectionTrackerTests.cpp */; };
 		2694A1FD16A0000E004816E3 /* catch_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_text.cpp */; };
 		26E1B7D319213BC900812682 /* CmdLineTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26E1B7D119213BC900812682 /* CmdLineTests.cpp */; };
@@ -66,6 +71,11 @@
 		2627F7061935B55F009BCE2D /* catch_result_builder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_result_builder.hpp; sourceTree = "<group>"; };
 		262E7399184673A800CAC268 /* catch_reporter_bases.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_bases.hpp; sourceTree = "<group>"; };
 		262E739A1846759000CAC268 /* catch_common.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_common.hpp; sourceTree = "<group>"; };
+		263F7A4519A66608009474C2 /* catch_fatal_condition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_fatal_condition.hpp; sourceTree = "<group>"; };
+		263F7A4619B6FCBF009474C2 /* EnumToString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EnumToString.cpp; path = ../../../SelfTest/EnumToString.cpp; sourceTree = "<group>"; };
+		263F7A4819B6FE1E009474C2 /* ToStringPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToStringPair.cpp; path = ../../../SelfTest/ToStringPair.cpp; sourceTree = "<group>"; };
+		263F7A4919B6FE1E009474C2 /* ToStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToStringVector.cpp; path = ../../../SelfTest/ToStringVector.cpp; sourceTree = "<group>"; };
+		263F7A4A19B6FE1E009474C2 /* ToStringWhich.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToStringWhich.cpp; path = ../../../SelfTest/ToStringWhich.cpp; sourceTree = "<group>"; };
 		263FD06017AF8DF200988A20 /* catch_timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_timer.hpp; sourceTree = "<group>"; };
 		263FD06117AF8DF200988A20 /* catch_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_timer.h; sourceTree = "<group>"; };
 		2656C21F1925E5100040DB02 /* catch_test_spec_parser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_test_spec_parser.hpp; sourceTree = "<group>"; };
@@ -87,6 +97,8 @@
 		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
 		26847E5D16BBADB40043B9C1 /* catch_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_message.cpp; path = ../../../SelfTest/SurrogateCpps/catch_message.cpp; sourceTree = "<group>"; };
 		268F47B018A93F7800D8C14F /* catch_clara.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_clara.h; sourceTree = "<group>"; };
+		2691574A1A4480C50054F1ED /* catch_reporter_teamcity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_teamcity.hpp; sourceTree = "<group>"; };
+		2691574B1A532A280054F1ED /* ToStringTuple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToStringTuple.cpp; path = ../../../SelfTest/ToStringTuple.cpp; sourceTree = "<group>"; };
 		26926E8318D7777D004E10F2 /* clara.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clara.h; path = ../../../../include/external/clara.h; sourceTree = "<group>"; };
 		26926E8418D77809004E10F2 /* tbc_text_format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tbc_text_format.h; path = ../../../../include/external/tbc_text_format.h; sourceTree = "<group>"; };
 		26948284179A9AB900ED166E /* SectionTrackerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SectionTrackerTests.cpp; path = ../../../SelfTest/SectionTrackerTests.cpp; sourceTree = "<group>"; };
@@ -246,6 +258,11 @@
 		4A6D0C40149B3DAB00DB3EAA /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				2691574B1A532A280054F1ED /* ToStringTuple.cpp */,
+				263F7A4819B6FE1E009474C2 /* ToStringPair.cpp */,
+				263F7A4919B6FE1E009474C2 /* ToStringVector.cpp */,
+				263F7A4A19B6FE1E009474C2 /* ToStringWhich.cpp */,
+				263F7A4619B6FCBF009474C2 /* EnumToString.cpp */,
 				266ECD73170F3C620030D735 /* BDDTests.cpp */,
 				4A6D0C36149B3D9E00DB3EAA /* TrickyTests.cpp */,
 				4A6D0C2D149B3D9E00DB3EAA /* ApproxTests.cpp */,
@@ -300,6 +317,7 @@
 				4A6D0C67149B3E3D00DB3EAA /* catch_reporter_junit.hpp */,
 				4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */,
 				4AB42F84166F3E1A0099F2C8 /* catch_reporter_console.hpp */,
+				2691574A1A4480C50054F1ED /* catch_reporter_teamcity.hpp */,
 			);
 			name = reporters;
 			path = ../../../../include/reporters;
@@ -453,6 +471,7 @@
 				268F47B018A93F7800D8C14F /* catch_clara.h */,
 				2656C226192A77EF0040DB02 /* catch_suppress_warnings.h */,
 				2656C227192A78410040DB02 /* catch_reenable_warnings.h */,
+				263F7A4519A66608009474C2 /* catch_fatal_condition.hpp */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
@@ -492,7 +511,7 @@
 		4A6D0C17149B3D3B00DB3EAA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 			};
 			buildConfigurationList = 4A6D0C1A149B3D3B00DB3EAA /* Build configuration list for PBXProject "CatchSelfTest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -516,6 +535,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				263F7A4719B6FCBF009474C2 /* EnumToString.cpp in Sources */,
 				4A6D0C37149B3D9E00DB3EAA /* ApproxTests.cpp in Sources */,
 				4A6D0C38149B3D9E00DB3EAA /* ClassTests.cpp in Sources */,
 				4A6D0C39149B3D9E00DB3EAA /* ConditionTests.cpp in Sources */,
@@ -525,7 +545,10 @@
 				4A6D0C3D149B3D9E00DB3EAA /* MiscTests.cpp in Sources */,
 				4A6D0C3E149B3D9E00DB3EAA /* TestMain.cpp in Sources */,
 				4A6D0C3F149B3D9E00DB3EAA /* TrickyTests.cpp in Sources */,
+				263F7A4D19B6FE1E009474C2 /* ToStringWhich.cpp in Sources */,
+				263F7A4B19B6FE1E009474C2 /* ToStringPair.cpp in Sources */,
 				4AEE032016142F910071E950 /* catch_common.cpp in Sources */,
+				263F7A4C19B6FE1E009474C2 /* ToStringVector.cpp in Sources */,
 				4AEE032316142FC70071E950 /* catch_debugger.cpp in Sources */,
 				4AEE032516142FF10071E950 /* catch_stream.cpp in Sources */,
 				4AEE0328161434FD0071E950 /* catch_xmlwriter.cpp in Sources */,
@@ -538,6 +561,7 @@
 				4A45DA2D16161FA2004F8D6B /* catch_interfaces_capture.cpp in Sources */,
 				4A45DA3116161FFC004F8D6B /* catch_interfaces_reporter.cpp in Sources */,
 				4A45DA3316162047004F8D6B /* catch_interfaces_exception.cpp in Sources */,
+				2691574C1A532A280054F1ED /* ToStringTuple.cpp in Sources */,
 				26711C8F195D465C0033EDA2 /* TagAliasTests.cpp in Sources */,
 				4A45DA3516162071004F8D6B /* catch_interfaces_runner.cpp in Sources */,
 				4AB3D99D1616216500C9A0F8 /* catch_interfaces_testcase.cpp in Sources */,
@@ -564,9 +588,11 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CLANG_WARN__EXIT_TIME_DESTRUCTORS = NO;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -613,10 +639,12 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CLANG_WARN__EXIT_TIME_DESTRUCTORS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
