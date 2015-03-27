@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 14 (develop branch)
- *  Generated: 2015-03-04 18:32:24.627737
+ *  CATCH v1.1 build 1 (master branch)
+ *  Generated: 2015-03-27 18:00:16.346230
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6585,7 +6585,7 @@ namespace Catch {
             return TestCaseInfo::None;
     }
     inline bool isReservedTag( std::string const& tag ) {
-        return TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
+        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
         if( isReservedTag( tag ) ) {
@@ -6751,7 +6751,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 14, "develop" );
+    Version libraryVersion( 1, 1, 1, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -6933,11 +6933,11 @@ namespace Catch {
         uint64_t getCurrentTicks() {
             static uint64_t hz=0, hzo=0;
             if (!hz) {
-                QueryPerformanceFrequency((LARGE_INTEGER*)&hz);
-                QueryPerformanceCounter((LARGE_INTEGER*)&hzo);
+                QueryPerformanceFrequency( reinterpret_cast<LARGE_INTEGER*>( &hz ) );
+                QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &hzo ) );
             }
             uint64_t t;
-            QueryPerformanceCounter((LARGE_INTEGER*)&t);
+            QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &t ) );
             return ((t-hzo)*1000000)/hz;
         }
 #else
