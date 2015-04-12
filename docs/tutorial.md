@@ -219,6 +219,14 @@ Scenario: vectors can be sized and resized
       Then: the capacity changes but not the size
 ```
 
+## Spliting Test Cases Across Multiple Files
+
+There is a very small chance you will want to write all your test cases in a single file, so here is how you can split the tests across multple files.
+
+As noted above, you only need one `cpp` file where you include the `catch.hpp` with `CATCH_CONFIG_MAIN`. You can leave that file with just those two lines.
+
+Then, simply create more `cpp` files, include the `catch.hpp` header, and start writing those tests! No more includes or configuration is required.
+
 ## Next steps
 
 This has been a brief introduction to get you up and running with Catch, and to point out some of the key differences between Catch and other frameworks you may already be familiar with. This will get you going quite far already and you are now in a position to dive in and write some tests.
