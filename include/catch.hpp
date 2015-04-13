@@ -24,6 +24,7 @@
 
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
+#include "internal/catch_float.hpp"
 #include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.h"
@@ -128,6 +129,9 @@
 
 #define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "REQUIRE" )
 #define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "REQUIRE_FALSE" )
+
+#define REQUIRE_FLOAT(x, y) FloatingPoint<float>(x).AlmostEquals(FloatingPoint<float>(y))
+#define REQUIRE_DOUBLE(x, y) FloatingPoint<double>(x).AlmostEquals(FloatingPoint<double>(y))
 
 #define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, "REQUIRE_THROWS" )
 #define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "REQUIRE_THROWS_AS" )
