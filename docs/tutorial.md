@@ -223,7 +223,7 @@ Scenario: vectors can be sized and resized
 
 This has been a brief introduction to get you up and running with Catch, and to point out some of the key differences between Catch and other frameworks you may already be familiar with. This will get you going quite far already and you are now in a position to dive in and write some tests.
 
-Of course there is more to learn - most of which you should be able to page-fault in as you go. Please see the every-growing [Reference section](Readme.md) for what's available.
+Of course there is more to learn - most of which you should be able to page-fault in as you go. Please see the ever-growing [Reference section](Readme.md) for what's available.
 
 ---
 
