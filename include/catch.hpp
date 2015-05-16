@@ -93,6 +93,9 @@
     #define CATCH_METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
     #define CATCH_SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
     #define CATCH_FAIL( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL", __VA_ARGS__ )
+    #define CATCH_FAIL_AT( file, line, ... ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL", Catch::SourceLineInfo( file, line ),  __VA_ARGS__ )
+    #define CATCH_MARK_FAILED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "CATCH_MARK_FAILED", __VA_ARGS__ )
+    #define CATCH_MARK_FAILED_AT( file, line,  ... ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "CATCH_MARK_FAILED", Catch::SourceLineInfo( file, line ), __VA_ARGS__ )
     #define CATCH_SUCCEED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED", __VA_ARGS__ )
 #else
     #define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
@@ -100,6 +103,9 @@
     #define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
     #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
     #define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL", msg )
+    #define CATCH_FAIL_AT( file, line, msg ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL", Catch::SourceLineInfo( file, line ), msg )
+    #define CATCH_MARK_FAILED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "CATCH_MARK_FAILED", msg )
+    #define CATCH_MARK_FAILED_AT( file, line, msg ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "CATCH_MARK_FAILED", Catch::SourceLineInfo( file, line ), msg )
     #define CATCH_SUCCEED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED", msg )
 #endif
 #define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
@@ -158,6 +164,9 @@
     #define METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
     #define SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
     #define FAIL( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL", __VA_ARGS__ )
+    #define FAIL_AT( file, line, ... ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL", Catch::SourceLineInfo( file, line ), __VA_ARGS__ )
+    #define MARK_FAILED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "MARK_FAILED", __VA_ARGS__ )
+    #define MARK_FAILED_AT( file, line, ... ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "MARK_FAILED", Catch::SourceLineInfo( file, line ), __VA_ARGS__ )
     #define SUCCEED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", __VA_ARGS__ )
 #else
     #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
@@ -165,6 +174,9 @@
     #define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
     #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
     #define FAIL( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL", msg )
+    #define MARK_FAILED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "MARK_FAILED", msg )
+#define FAIL_AT( file, line, msg ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL", Catch::SourceLineInfo( file, line ), msg )
+    #define MARK_FAILED_AT( file, line, msg ) INTERNAL_CATCH_MSG_AT( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, "MARK_FAILED", Catch::SourceLineINfo( file, line ), msg )
     #define SUCCEED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", msg )
 #endif
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )

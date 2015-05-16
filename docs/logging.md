@@ -26,6 +26,18 @@ The message is always reported but does not fail the test.
 
 The message is reported and the test case fails.
 
+**FAIL_AT(** _file_, _line_, _message expression_ **)**
+
+Used when binding other test frameworks to report errors through Catch. Same as **FAIL(** _message expression_ **)** above, but _file_ and _line_ is a reference to the location in the source code the failure will be reported at.
+
+**MARK_FAILED(** _message expression_ **)**
+
+The message is reported and the test case fails, but execution continues.
+
+**MARK_FAILED_AT(** _file_, _line_, _message expression_ **)**
+
+Used when binding othet test frameworks to report errots through Catch. Same as **MARK_FAILED(** _message expression_ **)** above, but _file_ and _line_ is a reference to the location in the source code the failure will be reported at.
+
 ## Quickly capture a variable value
 
 **CAPTURE(** _expression_ **)**

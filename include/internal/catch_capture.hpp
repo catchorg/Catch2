@@ -123,7 +123,26 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_INFO( log, macroName ) \
+#ifdef CATCH_CONFIG_VARIADIC_MACROS
+    #define INTERNAL_CATCH_MSG_AT( messageType, resultDisposition, macroName, location, ... ) \
+        do { \
+            Catch::ResultBuilder __catchResult( macroName, location, "", resultDisposition ); \
+            __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop(); \
+            __catchResult.captureResult( messageType ); \
+            INTERNAL_CATCH_REACT( __catchResult ) \
+        } while( Catch::alwaysFalse() )
+#else
+    #define INTERNAL_CATCH_MSG_AT( messageType, resultDisposition, macroName, location, locationlog ) \
+        do { \
+            Catch::ResultBuilder __catchResult( macroName, location, "", resultDisposition ); \
+            __catchResult << log + ::Catch::StreamEndStop(); \
+            __catchResult.captureResult( messageType ); \
+            INTERNAL_CATCH_REACT( __catchResult ) \
+        } while( Catch::alwaysFalse() )
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_INFO( log, macroName )                           \
     Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
 ///////////////////////////////////////////////////////////////////////////////

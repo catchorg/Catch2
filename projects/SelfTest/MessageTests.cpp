@@ -55,11 +55,41 @@ TEST_CASE( "FAIL aborts the test", "[failing][messages][.]" )
     FAIL( "This is a " << "failure" );    // This should output the message and abort
 }
 
+TEST_CASE( "reportFailure Normal aborts the test", "[reportFailure][failing][messages][.]" )
+{
+    FAIL_AT("MessageTests.cpp", 1U, "This is a " << "failure"); // This should output the message and abort
+}
+
+TEST_CASE( "MARK_FAILED fails the test", "[failing][messages][.]" )
+{
+    MARK_FAILED( "This is a " << "failure" );
+}
+
+TEST_CASE( "MARK_FAILED_AT fails the test", "[failing][messages][.]" )
+{
+    MARK_FAILED_AT("MessageTests.cpp", 0U, "This is a " << "failure");
+}
+
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
 TEST_CASE( "FAIL does not require an argument", "[failing][messages][.]" )
 {
     FAIL();
 }
+
+TEST_CASE( "FAIL_AT does not require an argument", "[failing][messages][.]" )
+{
+    FAIL_AT("MessageTests.cpp", 10U);
+}
+TEST_CASE( "MARK_FAILED does not require an argument", "[failing][messages][.]" )
+{
+    MARK_FAILED();
+}
+
+TEST_CASE( "MARK_FAILED_AT does not require an argument", "[failing][messages][.]" )
+{
+    MARK_FAILED_AT("MessageTests.cpp", 0U);
+}
+
 TEST_CASE( "SUCCESS does not require an argument", "[messages][.]" )
 {
    SUCCEED();
