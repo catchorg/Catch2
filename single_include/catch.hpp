@@ -1,6 +1,6 @@
 /*
  *  CATCH v1.1 build 2 (master branch)
- *  Generated: 2015-05-19 22:28:31.909693
+ *  Generated: 2015-05-19 22:36:34.575371
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -154,19 +154,17 @@
 // Visual C++
 #ifdef _MSC_VER
 
-#if (_MSC_VER >= 1600)
-#define CATCH_CONFIG_CPP11_NULLPTR
-#endif
-
 #if (_MSC_VER >= 1310 ) // (VC++ 7.0+)
 //#define CATCH_CONFIG_SFINAE // Not confirmed
+#endif
+
+#if (_MSC_VER >= 1600)
+#define CATCH_CONFIG_CPP11_NULLPTR
 #endif
 
 #if (_MSC_VER >= 1900 ) // (VC++ 13 (VS2015))
 #define CATCH_CONFIG_CPP11_NOEXCEPT
 #define CATCH_CONFIG_CPP11_GENERATED_METHODS
-#define CATCH_CONFIG_CPP11_NULLPTR
-//#define CATCH_CONFIG_SFINAE // Don't use, for now
 #endif
 
 #endif // _MSC_VER
