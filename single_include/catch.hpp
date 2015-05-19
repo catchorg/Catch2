@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 1 (master branch)
- *  Generated: 2015-03-27 18:00:16.346230
+ *  CATCH v1.1 build 2 (master branch)
+ *  Generated: 2015-05-19 22:28:31.909693
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -69,7 +69,21 @@
 // #included from: catch_compiler_capabilities.h
 #define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 
-// Much of the following code is based on Boost (1.53)
+// Detect a number of compiler features - mostly C++11/14 conformance - by compiler
+// The following features are defined:
+//
+// CATCH_CONFIG_CPP11_NULLPTR : is nullptr supported?
+// CATCH_CONFIG_CPP11_NOEXCEPT : is noexcept supported?
+// CATCH_CONFIG_CPP11_GENERATED_METHODS : The delete and default keywords for compiler generated methods
+// CATCH_CONFIG_CPP11_IS_ENUM : std::is_enum is supported?
+// CATCH_CONFIG_CPP11_TUPLE : std::tuple is supported
+
+// CATCH_CONFIG_CPP11_OR_GREATER : Is C++11 supported?
+
+// CATCH_CONFIG_SFINAE : is basic (C++03) SFINAE supported?
+// CATCH_CONFIG_VARIADIC_MACROS : are variadic macros supported?
+
+// A lot of this code is based on Boost (1.53)
 
 #ifdef __clang__
 
@@ -148,6 +162,13 @@
 //#define CATCH_CONFIG_SFINAE // Not confirmed
 #endif
 
+#if (_MSC_VER >= 1900 ) // (VC++ 13 (VS2015))
+#define CATCH_CONFIG_CPP11_NOEXCEPT
+#define CATCH_CONFIG_CPP11_GENERATED_METHODS
+#define CATCH_CONFIG_CPP11_NULLPTR
+//#define CATCH_CONFIG_SFINAE // Don't use, for now
+#endif
+
 #endif // _MSC_VER
 
 // Use variadic macros if the compiler supports them
@@ -165,13 +186,40 @@
 ////////////////////////////////////////////////////////////////////////////////
 // C++ language feature support
 
-// detect language version:
-#if (__cplusplus == 201103L)
-#  define CATCH_CPP11
+// catch all support for C++11
+#if (__cplusplus >= 201103L)
+
 #  define CATCH_CPP11_OR_GREATER
-#elif (__cplusplus >= 201103L)
-#  define CATCH_CPP11_OR_GREATER
-#endif
+
+#  ifndef CATCH_CONFIG_CPP11_NULLPTR
+#    define CATCH_CONFIG_CPP11_NULLPTR
+#  endif
+
+#  ifndef CATCH_CONFIG_CPP11_NOEXCEPT
+#    define CATCH_CONFIG_CPP11_NOEXCEPT
+#  endif
+
+#  ifndef CATCH_CONFIG_CPP11_GENERATED_METHODS
+#    define CATCH_CONFIG_CPP11_GENERATED_METHODS
+#  endif
+
+#  ifndef CATCH_CONFIG_CPP11_IS_ENUM
+#    define CATCH_CONFIG_CPP11_IS_ENUM
+#  endif
+
+#  ifndef CATCH_CONFIG_CPP11_TUPLE
+#    define CATCH_CONFIG_CPP11_TUPLE
+#  endif
+
+#  ifndef CATCH_CONFIG_SFINAE
+//#    define CATCH_CONFIG_SFINAE // Don't use, for now
+#  endif
+
+#  ifndef CATCH_CONFIG_VARIADIC_MACROS
+#    define CATCH_CONFIG_VARIADIC_MACROS
+#  endif
+
+#endif // __cplusplus >= 201103L
 
 // noexcept support:
 #if defined(CATCH_CONFIG_CPP11_NOEXCEPT) && !defined(CATCH_NOEXCEPT)
@@ -185,7 +233,7 @@
 namespace Catch {
 
     class NonCopyable {
-#ifdef CATCH_CPP11_OR_GREATER
+#ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         NonCopyable( NonCopyable const& )              = delete;
         NonCopyable( NonCopyable && )                  = delete;
         NonCopyable& operator = ( NonCopyable const& ) = delete;
@@ -248,7 +296,7 @@ namespace Catch {
         SourceLineInfo();
         SourceLineInfo( char const* _file, std::size_t _line );
         SourceLineInfo( SourceLineInfo const& other );
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         SourceLineInfo( SourceLineInfo && )                  = default;
         SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
         SourceLineInfo& operator = ( SourceLineInfo && )     = default;
@@ -637,11 +685,11 @@ namespace Catch {
 
     // ResultDisposition::Flags enum
     struct ResultDisposition { enum Flags {
-        Normal = 0x00,
+        Normal = 0x01,
 
-        ContinueOnFailure = 0x01,   // Failures fail test, but execution continues
-        FalseTest = 0x02,           // Prefix expression with !
-        SuppressFail = 0x04         // Failures are reported but do not fail the test
+        ContinueOnFailure = 0x02,   // Failures fail test, but execution continues
+        FalseTest = 0x04,           // Prefix expression with !
+        SuppressFail = 0x08         // Failures are reported but do not fail the test
     }; };
 
     inline ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {
@@ -689,7 +737,7 @@ namespace Catch {
         AssertionResult();
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
          AssertionResult( AssertionResult const& )              = default;
          AssertionResult( AssertionResult && )                  = default;
          AssertionResult& operator = ( AssertionResult const& ) = default;
@@ -1055,8 +1103,11 @@ inline id performOptionalSelector( id obj, SEL sel ) {
 
 #endif
 
-#ifdef CATCH_CPP11_OR_GREATER
+#ifdef CATCH_CONFIG_CPP11_TUPLE
 #include <tuple>
+#endif
+
+#ifdef CATCH_CONFIG_CPP11_IS_ENUM
 #include <type_traits>
 #endif
 
@@ -1138,7 +1189,7 @@ namespace Detail {
 
 #endif
 
-#if defined(CATCH_CPP11_OR_GREATER)
+#if defined(CATCH_CONFIG_CPP11_IS_ENUM)
     template<typename T,
              bool IsEnum = std::is_enum<T>::value
              >
@@ -1160,7 +1211,7 @@ namespace Detail {
 #endif
     template<bool C>
     struct StringMakerBase {
-#if defined(CATCH_CPP11_OR_GREATER)
+#if defined(CATCH_CONFIG_CPP11_IS_ENUM)
         template<typename T>
         static std::string convert( T const& v )
         {
@@ -1233,7 +1284,7 @@ std::string toString( std::vector<T,Allocator> const& v ) {
     return Detail::rangeToString( v.begin(), v.end() );
 }
 
-#ifdef CATCH_CPP11_OR_GREATER
+#ifdef CATCH_CONFIG_CPP11_TUPLE
 
 // toString for tuples
 namespace TupleDetail {
@@ -1273,7 +1324,7 @@ struct StringMaker<std::tuple<Types...>> {
         return os.str();
     }
 };
-#endif
+#endif // CATCH_CONFIG_CPP11_TUPLE
 
 namespace Detail {
     template<typename T>
@@ -1318,13 +1369,13 @@ namespace Catch {
 template<typename T>
 class ExpressionLhs {
     ExpressionLhs& operator = ( ExpressionLhs const& );
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
     ExpressionLhs& operator = ( ExpressionLhs && ) = delete;
 #  endif
 
 public:
     ExpressionLhs( ResultBuilder& rb, T lhs ) : m_rb( rb ), m_lhs( lhs ) {}
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
     ExpressionLhs( ExpressionLhs const& ) = default;
     ExpressionLhs( ExpressionLhs && )     = default;
 #  endif
@@ -3514,7 +3565,7 @@ namespace Clara {
         template<typename ConfigT>
         struct IArgFunction {
             virtual ~IArgFunction() {}
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
             IArgFunction()                      = default;
             IArgFunction( IArgFunction const& ) = default;
 #  endif
@@ -4605,7 +4656,7 @@ namespace Catch
         }
         virtual ~AssertionStats();
 
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         AssertionStats( AssertionStats const& )              = default;
         AssertionStats( AssertionStats && )                  = default;
         AssertionStats& operator = ( AssertionStats const& ) = default;
@@ -4628,7 +4679,7 @@ namespace Catch
             missingAssertions( _missingAssertions )
         {}
         virtual ~SectionStats();
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         SectionStats( SectionStats const& )              = default;
         SectionStats( SectionStats && )                  = default;
         SectionStats& operator = ( SectionStats const& ) = default;
@@ -4655,7 +4706,7 @@ namespace Catch
         {}
         virtual ~TestCaseStats();
 
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         TestCaseStats( TestCaseStats const& )              = default;
         TestCaseStats( TestCaseStats && )                  = default;
         TestCaseStats& operator = ( TestCaseStats const& ) = default;
@@ -4683,7 +4734,7 @@ namespace Catch
         {}
         virtual ~TestGroupStats();
 
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         TestGroupStats( TestGroupStats const& )              = default;
         TestGroupStats( TestGroupStats && )                  = default;
         TestGroupStats& operator = ( TestGroupStats const& ) = default;
@@ -4705,7 +4756,7 @@ namespace Catch
         {}
         virtual ~TestRunStats();
 
-#  ifndef CATCH_CPP11_OR_GREATER
+#  ifndef CATCH_CONFIG_CPP11_GENERATED_METHODS
         TestRunStats( TestRunStats const& _other )
         :   runInfo( _other.runInfo ),
             totals( _other.totals ),
@@ -6751,7 +6802,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 1, "master" );
+    Version libraryVersion( 1, 1, 2, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -7414,7 +7465,7 @@ namespace Catch {
         if( !result.isOk() ) {
             if( getCurrentContext().getConfig()->shouldDebugBreak() )
                 m_shouldDebugBreak = true;
-            if( getCurrentContext().getRunner()->aborting() || m_assertionInfo.resultDisposition == ResultDisposition::Normal )
+            if( getCurrentContext().getRunner()->aborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
                 m_shouldThrow = true;
         }
     }
@@ -7896,27 +7947,6 @@ namespace Catch {
             while( !m_tags.empty() )
                 endElement();
         }
-
-//#  ifndef CATCH_CPP11_OR_GREATER
-//        XmlWriter& operator = ( XmlWriter const& other ) {
-//            XmlWriter temp( other );
-//            swap( temp );
-//            return *this;
-//        }
-//#  else
-//        XmlWriter( XmlWriter const& )              = default;
-//        XmlWriter( XmlWriter && )                  = default;
-//        XmlWriter& operator = ( XmlWriter const& ) = default;
-//        XmlWriter& operator = ( XmlWriter && )     = default;
-//#  endif
-//
-//        void swap( XmlWriter& other ) {
-//            std::swap( m_tagIsOpen, other.m_tagIsOpen );
-//            std::swap( m_needsNewline, other.m_needsNewline );
-//            std::swap( m_tags, other.m_tags );
-//            std::swap( m_indent, other.m_indent );
-//            std::swap( m_os, other.m_os );
-//        }
 
         XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
