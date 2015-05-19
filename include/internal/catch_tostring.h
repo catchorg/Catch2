@@ -21,8 +21,11 @@
 #include "catch_objc_arc.hpp"
 #endif
 
-#ifdef CATCH_CPP11_OR_GREATER
+#ifdef CATCH_CONFIG_CPP11_TUPLE
 #include <tuple>
+#endif
+
+#ifdef CATCH_CONFIG_CPP11_IS_ENUM
 #include <type_traits>
 #endif
 
@@ -105,7 +108,7 @@ namespace Detail {
 
 #endif
 
-#if defined(CATCH_CPP11_OR_GREATER)
+#if defined(CATCH_CONFIG_CPP11_IS_ENUM)
     template<typename T,
              bool IsEnum = std::is_enum<T>::value
              >
@@ -127,7 +130,7 @@ namespace Detail {
 #endif
     template<bool C>
     struct StringMakerBase {
-#if defined(CATCH_CPP11_OR_GREATER)
+#if defined(CATCH_CONFIG_CPP11_IS_ENUM)
         template<typename T>
         static std::string convert( T const& v )
         {
@@ -201,7 +204,7 @@ std::string toString( std::vector<T,Allocator> const& v ) {
 }
 
 
-#ifdef CATCH_CPP11_OR_GREATER
+#ifdef CATCH_CONFIG_CPP11_TUPLE
 
 // toString for tuples
 namespace TupleDetail {
@@ -241,7 +244,7 @@ struct StringMaker<std::tuple<Types...>> {
         return os.str();
     }
 };
-#endif
+#endif // CATCH_CONFIG_CPP11_TUPLE
 
 namespace Detail {
     template<typename T>

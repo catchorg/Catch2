@@ -19,13 +19,13 @@ namespace Catch {
 template<typename T>
 class ExpressionLhs {
     ExpressionLhs& operator = ( ExpressionLhs const& );
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
     ExpressionLhs& operator = ( ExpressionLhs && ) = delete;
 #  endif
 
 public:
     ExpressionLhs( ResultBuilder& rb, T lhs ) : m_rb( rb ), m_lhs( lhs ) {}
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
     ExpressionLhs( ExpressionLhs const& ) = default;
     ExpressionLhs( ExpressionLhs && )     = default;
 #  endif

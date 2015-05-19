@@ -222,7 +222,7 @@ Scenario: vectors can be sized and resized
 <a id="scaling-up"></a>
 ## Scaling up
 
-To keep the tutorial simple we put all our code in a single file. This is fine to get started - and makes jumping into Catch even quicker and easier. As you write more real world tests, though, this is not really the best approach.
+To keep the tutorial simple we put all our code in a single file. This is fine to get started - and makes jumping into Catch even quicker and easier. As you write more real-world tests, though, this is not really the best approach.
 
 The requirement is that the following block of code ([or equivalent](own-main.md)):
 

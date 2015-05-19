@@ -41,7 +41,7 @@ namespace Catch {
         AssertionResult();
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
-#  ifdef CATCH_CPP11_OR_GREATER
+#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
          AssertionResult( AssertionResult const& )              = default;
          AssertionResult( AssertionResult && )                  = default;
          AssertionResult& operator = ( AssertionResult const& ) = default;
