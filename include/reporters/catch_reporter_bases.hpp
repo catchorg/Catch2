@@ -18,7 +18,8 @@ namespace Catch {
 
         StreamingReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
-            stream( _config.stream() )
+            stream( _config.stream() ),
+			m_sectionCount( 0 )
         {}
 
         virtual ~StreamingReporterBase();
@@ -37,10 +38,14 @@ namespace Catch {
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
             m_sectionStack.push_back( _sectionInfo );
+			m_sectionCount++;
         }
 
         virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
-            m_sectionStack.pop_back();
+            m_sectionCount--;
+			if(0 == m_sectionCount) {
+				m_sectionStack.clear();
+			}
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
             currentTestCaseInfo.reset();
@@ -67,6 +72,7 @@ namespace Catch {
         LazyStat<TestCaseInfo> currentTestCaseInfo;
 
         std::vector<SectionInfo> m_sectionStack;
+		std::size_t m_sectionCount;
     };
 
     struct CumulativeReporterBase : SharedImpl<IStreamingReporter> {

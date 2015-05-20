@@ -19,3 +19,4 @@ Resources/DWARF
 projects/XCode/iOSTest/Build
 *.pyc
 DerivedData
+*.xccheckout
