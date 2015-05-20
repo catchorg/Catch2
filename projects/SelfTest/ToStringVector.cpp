@@ -9,8 +9,8 @@ TEST_CASE( "vector<int> -> toString", "[toString][vector]" )
     REQUIRE( Catch::toString(vv) == "{  }" );
     vv.push_back( 42 );
     REQUIRE( Catch::toString(vv) == "{ 42 }" );
-    vv.push_back( 512 );
-    REQUIRE( Catch::toString(vv) == "{ 42, 512 }" );
+    vv.push_back( 250 );
+    REQUIRE( Catch::toString(vv) == "{ 42, 250 }" );
 }
 
 TEST_CASE( "vector<string> -> toString", "[toString][vector]" )
@@ -57,8 +57,8 @@ TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator]" )
     REQUIRE( Catch::toString(vv) == "{  }" );
     vv.push_back( 42 );
     REQUIRE( Catch::toString(vv) == "{ 42 }" );
-    vv.push_back( 512 );
-    REQUIRE( Catch::toString(vv) == "{ 42, 512 }" );
+    vv.push_back( 250 );
+    REQUIRE( Catch::toString(vv) == "{ 42, 250 }" );
 }
 
 TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator]" ) {

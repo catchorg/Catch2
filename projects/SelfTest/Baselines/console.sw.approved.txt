@@ -846,7 +846,9 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul )
 with expansion:
-  0x<hex digits> > 4
+  18446744073709551615 (0x<hex digits>)
+  >
+  4
 
 -------------------------------------------------------------------------------
 comparisons between int variables
@@ -3398,7 +3400,7 @@ MiscTests.cpp:<line number>:
 PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
-  0x<hex digits> == 0x<hex digits>
+  3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 An empty test with no assertions
@@ -5827,7 +5829,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( 0x<hex digits> == o )
 with expansion:
-  0x<hex digits> == {?}
+  3221225472 (0x<hex digits>) == {?}
 
 -------------------------------------------------------------------------------
 Demonstrate that a non-const == is not used
@@ -5851,7 +5853,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( 0x<hex digits> == bit30and31 )
 with expansion:
-  0x<hex digits> == 3221225472
+  3221225472 (0x<hex digits>) == 3221225472
 
 -------------------------------------------------------------------------------
 boolean member
@@ -6308,9 +6310,9 @@ with expansion:
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42, 512 }" )
+  REQUIRE( Catch::toString(vv) == "{ 42, 250 }" )
 with expansion:
-  "{ 42, 512 }" == "{ 42, 512 }"
+  "{ 42, 250 }" == "{ 42, 250 }"
 
 -------------------------------------------------------------------------------
 vector<string> -> toString
@@ -6358,9 +6360,9 @@ with expansion:
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42, 512 }" )
+  REQUIRE( Catch::toString(vv) == "{ 42, 250 }" )
 with expansion:
-  "{ 42, 512 }" == "{ 42, 512 }"
+  "{ 42, 250 }" == "{ 42, 250 }"
 
 -------------------------------------------------------------------------------
 vec<vec<string,alloc>> -> toString

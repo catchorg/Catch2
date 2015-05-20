@@ -1063,7 +1063,9 @@
           (std::numeric_limits&lt;unsigned long>::max)() > ul
         </Original>
         <Expanded>
-          0x<hex digits> > 4
+          18446744073709551615 (0x<hex digits>)
+>
+4
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3519,7 +3521,7 @@
           Factorial(10) == 3628800
         </Original>
         <Expanded>
-          0x<hex digits> == 0x<hex digits>
+          3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6009,7 +6011,7 @@ there&quot;
           0x<hex digits> == o
         </Original>
         <Expanded>
-          0x<hex digits> == {?}
+          3221225472 (0x<hex digits>) == {?}
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6031,7 +6033,7 @@ there&quot;
           0x<hex digits> == bit30and31
         </Original>
         <Expanded>
-          0x<hex digits> == 3221225472
+          3221225472 (0x<hex digits>) == 3221225472
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6439,10 +6441,10 @@ there&quot;
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ 42, 512 }&quot;
+          Catch::toString(vv) == &quot;{ 42, 250 }&quot;
         </Original>
         <Expanded>
-          &quot;{ 42, 512 }&quot; == &quot;{ 42, 512 }&quot;
+          &quot;{ 42, 250 }&quot; == &quot;{ 42, 250 }&quot;
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6495,10 +6497,10 @@ there&quot;
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ 42, 512 }&quot;
+          Catch::toString(vv) == &quot;{ 42, 250 }&quot;
         </Original>
         <Expanded>
-          &quot;{ 42, 512 }&quot; == &quot;{ 42, 512 }&quot;
+          &quot;{ 42, 250 }&quot; == &quot;{ 42, 250 }&quot;
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

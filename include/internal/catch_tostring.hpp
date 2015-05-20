@@ -98,19 +98,17 @@ std::string toString( wchar_t* const value )
 
 std::string toString( int value ) {
     std::ostringstream oss;
-    if( value > 8192 )
-        oss << "0x" << std::hex << value;
-    else
-        oss << value;
+    oss << value;
+    if( value >= 255 )
+        oss << " (0x" << std::hex << value << ")";
     return oss.str();
 }
 
 std::string toString( unsigned long value ) {
     std::ostringstream oss;
-    if( value > 8192 )
-        oss << "0x" << std::hex << value;
-    else
-        oss << value;
+    oss << value;
+    if( value >= 255 )
+        oss << " (0x" << std::hex << value << ")";
     return oss.str();
 }
 
