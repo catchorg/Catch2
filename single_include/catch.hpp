@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 2 (master branch)
- *  Generated: 2015-05-19 22:36:34.575371
+ *  CATCH v1.1 build 3 (master branch)
+ *  Generated: 2015-05-21 06:16:00.388118
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -12,6 +12,12 @@
 #define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
+
+#ifdef __clang__
+#    pragma clang system_header
+#elif defined __GNUC__
+#    pragma GCC system_header
+#endif
 
 // #included from: internal/catch_suppress_warnings.h
 
@@ -30,6 +36,7 @@
 #       pragma clang diagnostic ignored "-Wpadded"
 #       pragma clang diagnostic ignored "-Wc++98-compat"
 #       pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#       pragma clang diagnostic ignored "-Wswitch-enum"
 #    endif
 #elif defined __GNUC__
 #    pragma GCC diagnostic ignored "-Wvariadic-macros"
@@ -6800,7 +6807,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 2, "master" );
+    Version libraryVersion( 1, 1, 3, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -7320,19 +7327,17 @@ std::string toString( wchar_t* const value )
 
 std::string toString( int value ) {
     std::ostringstream oss;
-    if( value > 8192 )
-        oss << "0x" << std::hex << value;
-    else
-        oss << value;
+    oss << value;
+    if( value >= 255 )
+        oss << " (0x" << std::hex << value << ")";
     return oss.str();
 }
 
 std::string toString( unsigned long value ) {
     std::ostringstream oss;
-    if( value > 8192 )
-        oss << "0x" << std::hex << value;
-    else
-        oss << value;
+    oss << value;
+    if( value >= 255 )
+        oss << " (0x" << std::hex << value << ")";
     return oss.str();
 }
 
