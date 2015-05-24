@@ -125,10 +125,10 @@ namespace Catch {
         }
 
         void useStream( std::string const& streamName ) {
-            Stream stream = createStream( streamName );
-            setStreamBuf( stream.streamBuf );
+            Stream newStream = createStream( streamName );
+            setStreamBuf( newStream.streamBuf );
             m_stream.release();
-            m_stream = stream;
+            m_stream = newStream;
         }
 
         std::string getReporterName() const { return m_data.reporterName; }
