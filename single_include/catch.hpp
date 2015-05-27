@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 3 (master branch)
- *  Generated: 2015-05-21 06:16:00.388118
+ *  CATCH v1.1 build 4 (master branch)
+ *  Generated: 2015-05-27 20:46:59.941284
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5681,7 +5681,7 @@ namespace Catch {
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
 
-        int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
+        int applyCommandLine( int argc, char const * argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
                 m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );
                 m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
@@ -5707,7 +5707,7 @@ namespace Catch {
             m_config.reset();
         }
 
-        int run( int argc, char* const argv[] ) {
+        int run( int argc, char const * argv[] ) {
 
             int returnCode = applyCommandLine( argc, argv );
             if( returnCode == 0 )
@@ -6807,7 +6807,7 @@ namespace Catch {
 namespace Catch {
 
     // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 3, "master" );
+    Version libraryVersion( 1, 1, 4, "master" );
 }
 
 // #included from: catch_message.hpp
@@ -9274,20 +9274,20 @@ namespace Catch {
 #ifndef __OBJC__
 
 // Standard C/C++ main entry point
-int main (int argc, char * const argv[]) {
+int main (int argc, char const * argv[]) {
     return Catch::Session().run( argc, argv );
 }
 
 #else // __OBJC__
 
 // Objective-C entry point
-int main (int argc, char * const argv[]) {
+int main (int argc, char const * argv[]) {
 #if !CATCH_ARC_ENABLED
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 #endif
 
     Catch::registerTestMethods();
-    int result = Catch::Session().run( argc, (char* const*)argv );
+    int result = Catch::Session().run( argc, argv );
 
 #if !CATCH_ARC_ENABLED
     [pool drain];
