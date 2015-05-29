@@ -131,7 +131,7 @@ namespace Catch {
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
 
-        int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
+        int applyCommandLine( int argc, char const* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
                 m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );
                 m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
@@ -158,7 +158,7 @@ namespace Catch {
             m_config.reset();
         }
 
-        int run( int argc, char* const argv[] ) {
+        int run( int argc, char const* const argv[] ) {
 
             int returnCode = applyCommandLine( argc, argv );
             if( returnCode == 0 )
