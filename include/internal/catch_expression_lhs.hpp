@@ -71,7 +71,7 @@ public:
     void endExpression() {
         bool value = m_lhs ? true : false;
         m_rb
-            .setLhs( Catch::toString( value ) )
+            .setLhs( Catch::toString( m_lhs ) )
             .setResultType( value )
             .endExpression();
     }
