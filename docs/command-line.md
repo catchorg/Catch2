@@ -115,7 +115,7 @@ Sometimes this results in a flood of failure messages and you'd rather just see 
 --list-reporters
 </pre>
 
-```-l``` or ```--list-tests`` will list all registered tests, along with any tags.
+```-l``` or ```--list-tests``` will list all registered tests, along with any tags.
 If one or more test-specs have been supplied too then only the matching tests will be listed.
 
 ```-t``` or ```--list-tags``` lists all available tags, along with the number of test cases they match. Again, supplying test specs limits the tags that match.
