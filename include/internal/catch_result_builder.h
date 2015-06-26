@@ -41,8 +41,8 @@ namespace Catch {
                         ResultDisposition::Flags resultDisposition );
 
         template<typename T>
-        ExpressionLhs<T const&> operator->* ( T const& operand );
-        ExpressionLhs<bool> operator->* ( bool value );
+        ExpressionLhs<T const&> operator <= ( T const& operand );
+        ExpressionLhs<bool> operator <= ( bool value );
 
         template<typename T>
         ResultBuilder& operator << ( T const& value ) {
@@ -93,11 +93,11 @@ namespace Catch {
 namespace Catch {
 
     template<typename T>
-    inline ExpressionLhs<T const&> ResultBuilder::operator->* ( T const& operand ) {
+    inline ExpressionLhs<T const&> ResultBuilder::operator <= ( T const& operand ) {
         return ExpressionLhs<T const&>( *this, operand );
     }
 
-    inline ExpressionLhs<bool> ResultBuilder::operator->* ( bool value ) {
+    inline ExpressionLhs<bool> ResultBuilder::operator <= ( bool value ) {
         return ExpressionLhs<bool>( *this, value );
     }
 

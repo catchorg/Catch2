@@ -688,6 +688,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"-Weverything",
+					"-Wparentheses",
 					"-Wno-disabled-macro-expansion",
 				);
 			};
@@ -705,6 +706,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"-Weverything",
+					"-Wparentheses",
 					"-Wno-disabled-macro-expansion",
 				);
 			};

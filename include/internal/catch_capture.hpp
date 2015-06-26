@@ -33,7 +33,7 @@
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
-            ( __catchResult->*expr ).endExpression(); \
+            ( __catchResult <= expr ).endExpression(); \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
