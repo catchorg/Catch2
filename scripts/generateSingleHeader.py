@@ -7,8 +7,9 @@ import datetime
 import string
 
 from scriptCommon import catchPath
+from releaseCommon import Version
 
-versionParser = re.compile( r'(\s*Version\slibraryVersion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*\).*' )
+
 includesParser = re.compile( r'\s*#include\s*"(.*)"' )
 guardParser = re.compile( r'\s*#.*TWOBLUECUBES_CATCH_.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')
@@ -20,22 +21,15 @@ commentParser2 = re.compile( r'^ \*')
 blankParser = re.compile( r'^\s*$')
 seenHeaders = set([])
 rootPath = os.path.join( catchPath, 'include/' )
-versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
-readmePath = os.path.join( catchPath, "README.md" )
 outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
 
-bumpVersion = True
 includeImpl = True
 
 for arg in sys.argv[1:]:
     arg = string.lower(arg)
-    if arg == "nobump":
-        bumpVersion = False
-        print( "Not bumping version number" )
-    elif arg == "noimpl":
+    if arg == "noimpl":
         includeImpl = False
-        bumpVersion = False
-        print( "Not including impl code (and not bumping version)" )
+        print( "Not including impl code" )
     else:
         print( "\n** Unrecognised argument: " + arg + " **\n" )
         exit(1)
@@ -87,70 +81,23 @@ def parseFile( path, filename ):
                 if blanks < 2:
                     write( line.rstrip() + "\n" )
 
-class Version:
-    def __init__(self):
-        f = open( versionPath, 'r' )
-        for line in f:
-            m = versionParser.match( line )
-            if m:
-                self.variableDecl = m.group(1)
-                self.majorVersion = int(m.group(2))
-                self.minorVersion = int(m.group(3))
-                self.buildNumber = int(m.group(4))
-                self.branchName = m.group(5)
-        f.close()
 
-    def incrementBuildNumber(self):
-        self.buildNumber = self.buildNumber+1
+v = Version()
+out.write( "/*\n" )
+out.write( " *  Catch v{0}\n".format( v.getVersionString() ) )
+out.write( " *  Generated: {0}\n".format( datetime.datetime.now() ) )
+out.write( " *  ----------------------------------------------------------\n" )
+out.write( " *  This file has been merged from multiple headers. Please don't edit it directly\n" )
+out.write( " *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.\n" )
+out.write( " *\n" )
+out.write( " *  Distributed under the Boost Software License, Version 1.0. (See accompanying\n" )
+out.write( " *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)\n" )
+out.write( " */\n" )
+out.write( "#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
+out.write( "#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
 
-    def updateVersionFile(self):
-        f = open( versionPath, 'r' )
-        lines = []
-        for line in f:
-            m = versionParser.match( line )
-            if m:
-                lines.append( '{0}( {1}, {2}, {3}, "{4}" );'.format( self.variableDecl, self.majorVersion, self.minorVersion, self.buildNumber, self.branchName ) )
-            else:
-                lines.append( line.rstrip() )
-        f.close()
-        f = open( versionPath, 'w' )
-        for line in lines:
-            f.write( line + "\n" )
+parseFile( rootPath, 'catch.hpp' )
 
-    def updateReadmeFile(self):
-        f = open( readmePath, 'r' )
-        lines = []
-        for line in f:
-            lines.append( line.rstrip() )
-        f.close()
-        f = open( readmePath, 'w' )
-        for line in lines:
-            if line.startswith( "*v" ):
-                f.write( '*v{0}.{1} build {2} ({3} branch)*\n'.format( self.majorVersion, self.minorVersion, self.buildNumber, self.branchName ) )
-            else:
-                f.write( line + "\n" )
+out.write( "#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
 
-def generateSingleInclude():
-    v = Version()
-    if bumpVersion:
-        v.incrementBuildNumber()
-        v.updateVersionFile()
-        v.updateReadmeFile()
-    out.write( "/*\n" )
-    out.write( " *  CATCH v{0}.{1} build {2} ({3} branch)\n".format( v.majorVersion, v.minorVersion, v.buildNumber, v.branchName ) )
-    out.write( " *  Generated: {0}\n".format( datetime.datetime.now() ) )
-    out.write( " *  ----------------------------------------------------------\n" )
-    out.write( " *  This file has been merged from multiple headers. Please don't edit it directly\n" )
-    out.write( " *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.\n" )
-    out.write( " *\n" )
-    out.write( " *  Distributed under the Boost Software License, Version 1.0. (See accompanying\n" )
-    out.write( " *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)\n" )
-    out.write( " */\n" )
-    out.write( "#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
-    out.write( "#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
-
-    parseFile( rootPath, 'catch.hpp' )
-
-    out.write( "#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
-
-generateSingleInclude()
+print ("Generated single include for Catch v{0}\n".format( v.getVersionString() ) )

@@ -126,12 +126,7 @@ namespace Catch {
         }
 
         void showHelp( std::string const& processName ) {
-            Catch::cout() << "\nCatch v"    << libraryVersion.majorVersion << "."
-                                        << libraryVersion.minorVersion << " build "
-                                        << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != std::string( "master" ) )
-                Catch::cout() << " (" << libraryVersion.branchName << " branch)";
-            Catch::cout() << "\n";
+            Catch::cout() << "\nCatch v" << libraryVersion << "\n";
 
             m_cli.usage( Catch::cout(), processName );
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
@@ -148,9 +143,10 @@ namespace Catch {
             catch( std::exception& ex ) {
                 {
                     Colour colourGuard( Colour::Red );
-                    Catch::cerr()   << "\nError(s) in input:\n"
-                                << Text( ex.what(), TextAttributes().setIndent(2) )
-                                << "\n\n";
+                    Catch::cerr()
+                        << "\nError(s) in input:\n"
+                        << Text( ex.what(), TextAttributes().setIndent(2) )
+                        << "\n\n";
                 }
                 m_cli.usage( Catch::cout(), m_configData.processName );
                 return (std::numeric_limits<int>::max)();

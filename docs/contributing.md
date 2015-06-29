@@ -6,7 +6,7 @@ If you are contributing to the code base there are a few simple guidelines to ke
 
 ## Branches
 
-Ongoing development is on the "develop" branch, or on feature branches that are branched off of develop. Please target any pull requests at develop, or, for larger chunks of work, a branch off of develop.
+Ongoing development is on the "develop" branch (if there is one, currently), or on feature branches that are branched off of develop. Please target any pull requests at develop, or, for larger chunks of work, a branch off of develop.
 
 ## Directory structure
 

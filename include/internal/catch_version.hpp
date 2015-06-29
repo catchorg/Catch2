@@ -12,8 +12,33 @@
 
 namespace Catch {
 
-    // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 3, "master" );
+    Version::Version
+        (   unsigned int _majorVersion,
+            unsigned int _minorVersion,
+            unsigned int _patchNumber,
+            std::string const& _branchName,
+            unsigned int _buildNumber )
+    :   majorVersion( _majorVersion ),
+        minorVersion( _minorVersion ),
+        patchNumber( _patchNumber ),
+        branchName( _branchName ),
+        buildNumber( _buildNumber )
+    {}
+
+    std::ostream& operator << ( std::ostream& os, Version const& version ) {
+        os  << version.majorVersion << "."
+            << version.minorVersion << "."
+            << version.patchNumber;
+
+        if( !version.branchName.empty() ) {
+            os  << "-" << version.branchName
+                << "." << version.buildNumber;
+        }
+        return os;
+    }
+
+    Version libraryVersion( 1, 2, 0, "", 0 );
+
 }
 
 #endif // TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED

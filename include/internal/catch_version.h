@@ -14,19 +14,20 @@ namespace Catch {
     struct Version {
         Version(    unsigned int _majorVersion,
                     unsigned int _minorVersion,
-                    unsigned int _buildNumber,
-                    char const* const _branchName )
-        :   majorVersion( _majorVersion ),
-            minorVersion( _minorVersion ),
-            buildNumber( _buildNumber ),
-            branchName( _branchName )
-        {}
+                    unsigned int _patchNumber,
+                    std::string const& _branchName,
+                    unsigned int _buildNumber );
 
         unsigned int const majorVersion;
         unsigned int const minorVersion;
-        unsigned int const buildNumber;
-        char const* const branchName;
+        unsigned int const patchNumber;
 
+        // buildNumber is only used if branchName is not null
+        std::string const branchName;
+        unsigned int const buildNumber;
+
+        friend std::ostream& operator << ( std::ostream& os, Version const& version );
+        
     private:
         void operator=( Version const& );
     };

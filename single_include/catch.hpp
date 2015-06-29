@@ -1,6 +1,6 @@
 /*
- *  CATCH v1.1 build 3 (master branch)
- *  Generated: 2015-05-21 06:16:00.388118
+ *  Catch v1.2.0
+ *  Generated: 2015-06-29 08:12:52.943445
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -798,8 +798,8 @@ namespace Catch {
                         ResultDisposition::Flags resultDisposition );
 
         template<typename T>
-        ExpressionLhs<T const&> operator->* ( T const& operand );
-        ExpressionLhs<bool> operator->* ( bool value );
+        ExpressionLhs<T const&> operator <= ( T const& operand );
+        ExpressionLhs<bool> operator <= ( bool value );
 
         template<typename T>
         ResultBuilder& operator << ( T const& value ) {
@@ -1461,11 +1461,11 @@ private:
 namespace Catch {
 
     template<typename T>
-    inline ExpressionLhs<T const&> ResultBuilder::operator->* ( T const& operand ) {
+    inline ExpressionLhs<T const&> ResultBuilder::operator <= ( T const& operand ) {
         return ExpressionLhs<T const&>( *this, operand );
     }
 
-    inline ExpressionLhs<bool> ResultBuilder::operator->* ( bool value ) {
+    inline ExpressionLhs<bool> ResultBuilder::operator <= ( bool value ) {
         return ExpressionLhs<bool>( *this, value );
     }
 
@@ -1637,7 +1637,7 @@ namespace Catch {
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
-            ( __catchResult->*expr ).endExpression(); \
+            ( __catchResult <= expr ).endExpression(); \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
@@ -5539,18 +5539,19 @@ namespace Catch {
     struct Version {
         Version(    unsigned int _majorVersion,
                     unsigned int _minorVersion,
-                    unsigned int _buildNumber,
-                    char const* const _branchName )
-        :   majorVersion( _majorVersion ),
-            minorVersion( _minorVersion ),
-            buildNumber( _buildNumber ),
-            branchName( _branchName )
-        {}
+                    unsigned int _patchNumber,
+                    std::string const& _branchName,
+                    unsigned int _buildNumber );
 
         unsigned int const majorVersion;
         unsigned int const minorVersion;
+        unsigned int const patchNumber;
+
+        // buildNumber is only used if branchName is not null
+        std::string const branchName;
         unsigned int const buildNumber;
-        char const* const branchName;
+
+        friend std::ostream& operator << ( std::ostream& os, Version const& version );
 
     private:
         void operator=( Version const& );
@@ -5670,12 +5671,7 @@ namespace Catch {
         }
 
         void showHelp( std::string const& processName ) {
-            Catch::cout() << "\nCatch v"    << libraryVersion.majorVersion << "."
-                                        << libraryVersion.minorVersion << " build "
-                                        << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != std::string( "master" ) )
-                Catch::cout() << " (" << libraryVersion.branchName << " branch)";
-            Catch::cout() << "\n";
+            Catch::cout() << "\nCatch v" << libraryVersion << "\n";
 
             m_cli.usage( Catch::cout(), processName );
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
@@ -5692,9 +5688,10 @@ namespace Catch {
             catch( std::exception& ex ) {
                 {
                     Colour colourGuard( Colour::Red );
-                    Catch::cerr()   << "\nError(s) in input:\n"
-                                << Text( ex.what(), TextAttributes().setIndent(2) )
-                                << "\n\n";
+                    Catch::cerr()
+                        << "\nError(s) in input:\n"
+                        << Text( ex.what(), TextAttributes().setIndent(2) )
+                        << "\n\n";
                 }
                 m_cli.usage( Catch::cout(), m_configData.processName );
                 return (std::numeric_limits<int>::max)();
@@ -6806,8 +6803,33 @@ namespace Catch {
 
 namespace Catch {
 
-    // These numbers are maintained by a script
-    Version libraryVersion( 1, 1, 3, "master" );
+    Version::Version
+        (   unsigned int _majorVersion,
+            unsigned int _minorVersion,
+            unsigned int _patchNumber,
+            std::string const& _branchName,
+            unsigned int _buildNumber )
+    :   majorVersion( _majorVersion ),
+        minorVersion( _minorVersion ),
+        patchNumber( _patchNumber ),
+        branchName( _branchName ),
+        buildNumber( _buildNumber )
+    {}
+
+    std::ostream& operator << ( std::ostream& os, Version const& version ) {
+        os  << version.majorVersion << "."
+            << version.minorVersion << "."
+            << version.patchNumber;
+
+        if( !version.branchName.empty() ) {
+            os  << "-" << version.branchName
+                << "." << version.buildNumber;
+        }
+        return os;
+    }
+
+    Version libraryVersion( 1, 2, 0, "", 0 );
+
 }
 
 // #included from: catch_message.hpp
@@ -8733,12 +8755,7 @@ namespace Catch {
             stream  << "\n" << getLineOfChars<'~'>() << "\n";
             Colour colour( Colour::SecondaryText );
             stream  << currentTestRunInfo->name
-                    << " is a Catch v"  << libraryVersion.majorVersion << "."
-                    << libraryVersion.minorVersion << " b"
-                    << libraryVersion.buildNumber;
-            if( libraryVersion.branchName != std::string( "master" ) )
-                stream << " (" << libraryVersion.branchName << ")";
-            stream  << " host application.\n"
+                    << " is a Catch v"  << libraryVersion << " host application.\n"
                     << "Run with -? for options\n\n";
 
             if( m_config->rngSeed() != 0 )
