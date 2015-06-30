@@ -15,7 +15,7 @@ pathParser = re.compile( r'(.*?)/(.*\..pp)(.*)' )
 lineNumberParser = re.compile( r'(.*)line="[0-9]*"(.*)' )
 hexParser = re.compile( r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)' )
 durationsParser = re.compile( r'(.*)time="[0-9]*\.[0-9]*"(.*)' )
-versionParser = re.compile( r'(.*?)Catch v[0-9]*.[0-9]* b[0-9]*(.*)' )
+versionParser = re.compile( r'(.*?)Catch v[0-9]*\.[0-9]*\.[0-9].?( .*)' )
 
 if len(sys.argv) == 2:
 	cmdPath = sys.argv[1]
