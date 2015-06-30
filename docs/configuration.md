@@ -52,14 +52,18 @@ This can be useful on certain platforms that do not provide ```std::cout``` and 
 
 # C++ conformance toggles
 
-	CATCH_CONFIG_CPP11_NULLPTR
-	CATCH_CONFIG_CPP11_NOEXCEPT
-	CATCH_CONFIG_SFINAE				// Basic, C++03, support for SFINAE
-	CATCH_CONFIG_VARIADIC_MACROS 	// Usually pre-C++11 compiler extensions are sufficient
-	CATCH_CONFIG_NO_VARIADIC_MACROS	// Suppress if Catch is too eager to enable it
+	CATCH_CONFIG_CPP11_NULLPTR 				// nullptr is supported?
+	CATCH_CONFIG_CPP11_NOEXCEPT				// noexcept is supported?
+	CATCH_CONFIG_CPP11_GENERATED_METHODS	// delete and default keywords for methods
+	CATCH_CONFIG_CPP11_IS_ENUM				// std::is_enum is supported?
+	CATCH_CONFIG_CPP11_TUPLE				// std::tuple is supported
+	CATCH_CONFIG_VARIADIC_MACROS 			// Usually pre-C++11 compiler extensions are sufficient
 
 Catch has some basic compiler detection that will attempt to select the appropriate mix of these macros. However being incomplete - and often without access to the respective compilers - this detection tends to be conservative.
 So overriding control is given to the user. If a compiler supports a feature (and Catch does not already detect it) then one or more of these may be defined to enable it (or suppress it, in some cases). If you do do this please raise an issue, specifying your compiler version (ideally with an idea of how to detect it) and stating that it has such support.
+You may also suppress any of these features by using the `_NO_` form, e.g. `CATCH_CONFIG_CPP11_NO_NULLPTR`.
+
+All C++11 support can be disabled with `CATCH_CONFIG_NO_CPP11`
 
 ---
 
