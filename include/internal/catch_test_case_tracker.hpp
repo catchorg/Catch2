@@ -16,9 +16,9 @@ namespace Catch {
 namespace SectionTracking {
 
     class TrackedSection {
-
+        
         typedef std::map<std::string, TrackedSection> TrackedSections;
-
+        
     public:
         enum RunState {
             NotStarted,
@@ -26,53 +26,58 @@ namespace SectionTracking {
             ExecutingChildren,
             Completed
         };
-
+        
         TrackedSection( std::string const& name, TrackedSection* parent )
         :   m_name( name ), m_runState( NotStarted ), m_parent( parent )
         {}
-
+        
         RunState runState() const { return m_runState; }
+        
+        TrackedSection* findChild( std::string const& childName );
+        TrackedSection* acquireChild( std::string const& childName );
 
-        TrackedSection* findChild( std::string const& childName ) {
-            TrackedSections::iterator it = m_children.find( childName );
-            return it != m_children.end()
-                ? &it->second
-                : NULL;
-        }
-        TrackedSection* acquireChild( std::string const& childName ) {
-            if( TrackedSection* child = findChild( childName ) )
-                return child;
-            m_children.insert( std::make_pair( childName, TrackedSection( childName, this ) ) );
-            return findChild( childName );
-        }
         void enter() {
             if( m_runState == NotStarted )
                 m_runState = Executing;
         }
-        void leave() {
-            for( TrackedSections::const_iterator it = m_children.begin(), itEnd = m_children.end();
-                    it != itEnd;
-                    ++it )
-                if( it->second.runState() != Completed ) {
-                    m_runState = ExecutingChildren;
-                    return;
-                }
-            m_runState = Completed;
-        }
+        void leave();
+
         TrackedSection* getParent() {
             return m_parent;
         }
         bool hasChildren() const {
             return !m_children.empty();
         }
-
+        
     private:
         std::string m_name;
         RunState m_runState;
         TrackedSections m_children;
-        TrackedSection* m_parent;
-        
+        TrackedSection* m_parent;        
     };
+    
+    inline TrackedSection* TrackedSection::findChild( std::string const& childName ) {
+        TrackedSections::iterator it = m_children.find( childName );
+        return it != m_children.end()
+            ? &it->second
+            : NULL;
+    }
+    inline TrackedSection* TrackedSection::acquireChild( std::string const& childName ) {
+        if( TrackedSection* child = findChild( childName ) )
+            return child;
+        m_children.insert( std::make_pair( childName, TrackedSection( childName, this ) ) );
+        return findChild( childName );
+    }
+    inline void TrackedSection::leave() {
+        for( TrackedSections::const_iterator it = m_children.begin(), itEnd = m_children.end();
+                it != itEnd;
+                ++it )
+            if( it->second.runState() != Completed ) {
+                m_runState = ExecutingChildren;
+                return;
+            }
+        m_runState = Completed;
+    }
 
     class TestCaseTracker {
     public:
