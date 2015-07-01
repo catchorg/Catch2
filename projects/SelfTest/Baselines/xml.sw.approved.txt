@@ -1205,10 +1205,10 @@
     <TestCase name="Pointers can be compared to null">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          p == __null
+          p == nullptr
         </Original>
         <Expanded>
-          __null == 0
+          NULL == nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -1216,55 +1216,55 @@
           p == pNULL
         </Original>
         <Expanded>
-          __null == __null
+          NULL == NULL
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          p != __null
+          p != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          cp != __null
+          cp != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          cpc != __null
+          cpc != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          returnsNull() == __null
+          returnsNull() == nullptr
         </Original>
         <Expanded>
-          {null string} == 0
+          {null string} == nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          returnsConstNull() == __null
+          returnsConstNull() == nullptr
         </Original>
         <Expanded>
-          {null string} == 0
+          {null string} == nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          __null != p
+          nullptr != p
         </Original>
         <Expanded>
-          0 != 0x<hex digits>
+          nullptr != 0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3226,7 +3226,7 @@
     <TestCase name="null strings">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          makeString( false ) != static_cast&lt;char*>(__null)
+          makeString( false ) != static_cast&lt;char*>(nullptr)
         </Original>
         <Expanded>
           &quot;valid string&quot; != {null string}
@@ -3234,7 +3234,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          makeString( true ) == static_cast&lt;char*>(__null)
+          makeString( true ) == static_cast&lt;char*>(nullptr)
         </Original>
         <Expanded>
           {null string} == {null string}
@@ -3434,7 +3434,7 @@
     <TestCase name="Equals string matcher, with NULL">
       <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          &quot;&quot; Equals(__null)
+          &quot;&quot; Equals(nullptr)
         </Original>
         <Expanded>
           &quot;&quot; equals: &quot;&quot;
@@ -6041,10 +6041,10 @@ there&quot;
     <TestCase name="boolean member">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          obj.prop != __null
+          obj.prop != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6270,7 +6270,7 @@ there&quot;
           p == 0
         </Original>
         <Expanded>
-          __null == 0
+          NULL == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6281,7 +6281,7 @@ there&quot;
           ptr.get() == nullptr
         </Original>
         <Expanded>
-          __null == nullptr
+          NULL == nullptr
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

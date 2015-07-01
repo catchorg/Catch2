@@ -973,51 +973,51 @@ ConditionTests.cpp:<line number>
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( p == __null )
+  REQUIRE( p == nullptr )
 with expansion:
-  __null == 0
+  NULL == nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == pNULL )
 with expansion:
-  __null == __null
+  NULL == NULL
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( p != __null )
+  REQUIRE( p != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( cp != __null )
+  REQUIRE( cp != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( cpc != __null )
+  REQUIRE( cpc != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( returnsNull() == __null )
+  REQUIRE( returnsNull() == nullptr )
 with expansion:
-  {null string} == 0
+  {null string} == nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( returnsConstNull() == __null )
+  REQUIRE( returnsConstNull() == nullptr )
 with expansion:
-  {null string} == 0
+  {null string} == nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( __null != p )
+  REQUIRE( nullptr != p )
 with expansion:
-  0 != 0x<hex digits>
+  nullptr != 0x<hex digits>
 
 -------------------------------------------------------------------------------
 'Not' checks that should succeed
@@ -3113,13 +3113,13 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( makeString( false ) != static_cast<char*>(__null) )
+  REQUIRE( makeString( false ) != static_cast<char*>(nullptr) )
 with expansion:
   "valid string" != {null string}
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( makeString( true ) == static_cast<char*>(__null) )
+  REQUIRE( makeString( true ) == static_cast<char*>(nullptr) )
 with expansion:
   {null string} == {null string}
 
@@ -3316,7 +3316,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( "" Equals(__null) )
+  REQUIRE_THAT( "" Equals(nullptr) )
 with expansion:
   "" equals: ""
 
@@ -5863,9 +5863,9 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( obj.prop != __null )
+  REQUIRE( obj.prop != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 -------------------------------------------------------------------------------
 (unimplemented) static bools can be evaluated
@@ -6106,7 +6106,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == 0 )
 with expansion:
-  __null == 0
+  NULL == 0
 
 -------------------------------------------------------------------------------
 null_ptr
@@ -6118,7 +6118,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( ptr.get() == nullptr )
 with expansion:
-  __null == nullptr
+  NULL == nullptr
 
 -------------------------------------------------------------------------------
 X/level/0/a

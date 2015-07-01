@@ -36,7 +36,7 @@ namespace Catch {
 
         RunningSection( std::string const& name )
         :   m_state( Root ),
-            m_parent( NULL ),
+            m_parent( CATCH_NULL ),
             m_name( name )
         {}
 

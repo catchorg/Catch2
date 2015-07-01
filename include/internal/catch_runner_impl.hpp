@@ -62,7 +62,7 @@ namespace Catch {
         explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_activeTestCase( NULL ),
+            m_activeTestCase( CATCH_NULL ),
             m_config( config ),
             m_reporter( reporter ),
             m_prevRunner( m_context.getRunner() ),
@@ -78,7 +78,7 @@ namespace Catch {
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
-            m_context.setConfig( NULL );
+            m_context.setConfig( CATCH_NULL );
             m_context.setResultCapture( m_prevResultCapture );
             m_context.setConfig( m_prevConfig );
         }
@@ -119,7 +119,7 @@ namespace Catch {
                                                         redirectedCerr,
                                                         aborting() ) );
 
-            m_activeTestCase = NULL;
+            m_activeTestCase = CATCH_NULL;
             m_testCaseTracker.reset();
 
             return deltaTotals;

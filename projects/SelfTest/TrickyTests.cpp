@@ -234,7 +234,7 @@ struct Obj
 TEST_CASE("boolean member", "[Tricky]")
 {
     Obj obj;
-    REQUIRE( obj.prop != NULL );
+    REQUIRE( obj.prop != CATCH_NULL );
 }
 
 // Tests for a problem submitted by Ralph McArdell

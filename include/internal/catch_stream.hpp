@@ -65,7 +65,7 @@ namespace Catch {
     };
 
     Stream::Stream()
-    : streamBuf( NULL ), isOwned( false )
+    : streamBuf( CATCH_NULL ), isOwned( false )
     {}
 
     Stream::Stream( std::streambuf* _streamBuf, bool _isOwned )
@@ -75,7 +75,7 @@ namespace Catch {
     void Stream::release() {
         if( isOwned ) {
             delete streamBuf;
-            streamBuf = NULL;
+            streamBuf = CATCH_NULL;
             isOwned = false;
         }
     }

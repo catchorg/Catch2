@@ -124,13 +124,13 @@ TEST_CASE( "Sends stuff to stdout and stderr", "[.]" )
 
 inline const char* makeString( bool makeNull )
 {
-    return makeNull ? NULL : "valid string";
+    return makeNull ? CATCH_NULL : "valid string";
 }
 
 TEST_CASE( "null strings", "" )
 {
-    REQUIRE( makeString( false ) != static_cast<char*>(NULL));
-    REQUIRE( makeString( true ) == static_cast<char*>(NULL));
+    REQUIRE( makeString( false ) != static_cast<char*>(CATCH_NULL));
+    REQUIRE( makeString( true ) == static_cast<char*>(CATCH_NULL));
 }
 
 
@@ -233,7 +233,7 @@ TEST_CASE("Equals string matcher", "[.][failing][matchers]")
 }
 TEST_CASE("Equals string matcher, with NULL", "[matchers]")
 {
-    REQUIRE_THAT("", Equals(NULL));
+    REQUIRE_THAT("", Equals(CATCH_NULL));
 }
 TEST_CASE("AllOf matcher", "[matchers]")
 {

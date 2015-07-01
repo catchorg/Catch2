@@ -148,7 +148,7 @@ struct StringMaker<T*> {
     template<typename U>
     static std::string convert( U* p ) {
         if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+            return "NULL";
         else
             return Detail::rawMemoryToString( p );
     }
@@ -158,7 +158,7 @@ template<typename R, typename C>
 struct StringMaker<R C::*> {
     static std::string convert( R C::* p ) {
         if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+            return "NULL";
         else
             return Detail::rawMemoryToString( p );
     }

@@ -8,7 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
-#include "../internal/catch_stream.h"
+#include "catch_stream.h"
+#include "catch_compiler_capabilities.h"
 
 #include <sstream>
 #include <string>
@@ -27,7 +28,7 @@ namespace Catch {
 
             ScopedElement( ScopedElement const& other )
             :   m_writer( other.m_writer ){
-                other.m_writer = NULL;
+                other.m_writer = CATCH_NULL;
             }
 
             ~ScopedElement() {

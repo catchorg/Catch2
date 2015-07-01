@@ -10,7 +10,7 @@
 #include "catch_test_spec_parser.hpp"
 
 
-inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( CATCH_NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Parse test names and tags", "" ) {
 

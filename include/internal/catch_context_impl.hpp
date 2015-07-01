@@ -17,7 +17,7 @@ namespace Catch {
 
     class Context : public IMutableContext {
 
-        Context() : m_config( NULL ), m_runner( NULL ), m_resultCapture( NULL ) {}
+        Context() : m_config( CATCH_NULL ), m_runner( CATCH_NULL ), m_resultCapture( CATCH_NULL ) {}
         Context( Context const& );
         void operator=( Context const& );
 
@@ -63,7 +63,7 @@ namespace Catch {
                 m_generatorsByTestName.find( testName );
             return it != m_generatorsByTestName.end()
                 ? it->second
-                : NULL;
+                : CATCH_NULL;
         }
 
         IGeneratorsForTest& getGeneratorsForCurrentTest() {
@@ -84,7 +84,7 @@ namespace Catch {
     };
 
     namespace {
-        Context* currentContext = NULL;
+        Context* currentContext = CATCH_NULL;
     }
     IMutableContext& getCurrentMutableContext() {
         if( !currentContext )
@@ -105,7 +105,7 @@ namespace Catch {
 
     void cleanUpContext() {
         delete currentContext;
-        currentContext = NULL;
+        currentContext = CATCH_NULL;
     }
 }
 
