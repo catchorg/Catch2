@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1
- *  Generated: 2015-06-30 18:23:27.961086
+ *  Catch v1.2.1-develop.1
+ *  Generated: 2015-07-02 08:21:11.983471
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -224,6 +224,13 @@
 #  define CATCH_NOEXCEPT_IS(x)
 #endif
 
+// nullptr support
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+#   define CATCH_NULL nullptr
+#else
+#   define CATCH_NULL NULL
+#endif
+
 namespace Catch {
 
     class NonCopyable {
@@ -397,7 +404,7 @@ namespace Catch {
     template<typename T>
     class Ptr {
     public:
-        Ptr() : m_p( NULL ){}
+        Ptr() : m_p( CATCH_NULL ){}
         Ptr( T* p ) : m_p( p ){
             if( m_p )
                 m_p->addRef();
@@ -413,7 +420,7 @@ namespace Catch {
         void reset() {
             if( m_p )
                 m_p->release();
-            m_p = NULL;
+            m_p = CATCH_NULL;
         }
         Ptr& operator = ( T* p ){
             Ptr temp( p );
@@ -430,8 +437,8 @@ namespace Catch {
         const T* get() const{ return m_p; }
         T& operator*() const { return *m_p; }
         T* operator->() const { return m_p; }
-        bool operator !() const { return m_p == NULL; }
-        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != NULL ); }
+        bool operator !() const { return m_p == CATCH_NULL; }
+        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != CATCH_NULL ); }
 
     private:
         T* m_p;
@@ -994,10 +1001,10 @@ namespace Internal {
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
     // pointer to nullptr_t (when comparing against nullptr)
     template<Operator Op, typename T> bool compare( std::nullptr_t, T* rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( NULL, rhs );
+        return Evaluator<T*, T*, Op>::evaluate( CATCH_NULL, rhs );
     }
     template<Operator Op, typename T> bool compare( T* lhs, std::nullptr_t ) {
-        return Evaluator<T*, T*, Op>::evaluate( lhs, NULL );
+        return Evaluator<T*, T*, Op>::evaluate( lhs, CATCH_NULL );
     }
 #endif // CATCH_CONFIG_CPP11_NULLPTR
 
@@ -1190,7 +1197,7 @@ struct StringMaker<T*> {
     template<typename U>
     static std::string convert( U* p ) {
         if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+            return "NULL";
         else
             return Detail::rawMemoryToString( p );
     }
@@ -1200,7 +1207,7 @@ template<typename R, typename C>
 struct StringMaker<R C::*> {
     static std::string convert( R C::* p ) {
         if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+            return "NULL";
         else
             return Detail::rawMemoryToString( p );
     }
@@ -2440,12 +2447,12 @@ namespace Catch {
     template<typename T>
     class Option {
     public:
-        Option() : nullableValue( NULL ) {}
+        Option() : nullableValue( CATCH_NULL ) {}
         Option( T const& _value )
         : nullableValue( new( storage ) T( _value ) )
         {}
         Option( Option const& _other )
-        : nullableValue( _other ? new( storage ) T( *_other ) : NULL )
+        : nullableValue( _other ? new( storage ) T( *_other ) : CATCH_NULL )
         {}
 
         ~Option() {
@@ -2469,7 +2476,7 @@ namespace Catch {
         void reset() {
             if( nullableValue )
                 nullableValue->~T();
-            nullableValue = NULL;
+            nullableValue = CATCH_NULL;
         }
 
         T& operator*() { return *nullableValue; }
@@ -2481,10 +2488,10 @@ namespace Catch {
             return nullableValue ? *nullableValue : defaultValue;
         }
 
-        bool some() const { return nullableValue != NULL; }
-        bool none() const { return nullableValue == NULL; }
+        bool some() const { return nullableValue != CATCH_NULL; }
+        bool none() const { return nullableValue == CATCH_NULL; }
 
-        bool operator !() const { return nullableValue == NULL; }
+        bool operator !() const { return nullableValue == CATCH_NULL; }
         operator SafeBool::type() const {
             return SafeBool::makeSafe( some() );
         }
@@ -2541,6 +2548,8 @@ namespace Catch {
                         SourceLineInfo const& _lineInfo );
 
         TestCaseInfo( TestCaseInfo const& other );
+
+        friend void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags );
 
         bool isHidden() const;
         bool throws() const;
@@ -2654,7 +2663,7 @@ namespace Catch {
 
     inline size_t registerTestMethods() {
         size_t noTestMethods = 0;
-        int noClasses = objc_getClassList( NULL, 0 );
+        int noClasses = objc_getClassList( CATCH_NULL, 0 );
 
         Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
         objc_getClassList( classes, noClasses );
@@ -3132,6 +3141,7 @@ namespace Catch {
             showHelp( false ),
             showInvisibles( false ),
             forceColour( false ),
+            filenamesAsTags( false ),
             abortAfter( -1 ),
             rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
@@ -3151,6 +3161,7 @@ namespace Catch {
         bool showHelp;
         bool showInvisibles;
         bool forceColour;
+        bool filenamesAsTags;
 
         int abortAfter;
         unsigned int rngSeed;
@@ -3517,11 +3528,11 @@ namespace Clara {
         template<typename ConfigT>
         class BoundArgFunction {
         public:
-            BoundArgFunction() : functionObj( NULL ) {}
+            BoundArgFunction() : functionObj( CATCH_NULL ) {}
             BoundArgFunction( IArgFunction<ConfigT>* _functionObj ) : functionObj( _functionObj ) {}
-            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj ? other.functionObj->clone() : NULL ) {}
+            BoundArgFunction( BoundArgFunction const& other ) : functionObj( other.functionObj ? other.functionObj->clone() : CATCH_NULL ) {}
             BoundArgFunction& operator = ( BoundArgFunction const& other ) {
-                IArgFunction<ConfigT>* newFunctionObj = other.functionObj ? other.functionObj->clone() : NULL;
+                IArgFunction<ConfigT>* newFunctionObj = other.functionObj ? other.functionObj->clone() : CATCH_NULL;
                 delete functionObj;
                 functionObj = newFunctionObj;
                 return *this;
@@ -3537,7 +3548,7 @@ namespace Clara {
             bool takesArg() const { return functionObj->takesArg(); }
 
             bool isSet() const {
-                return functionObj != NULL;
+                return functionObj != CATCH_NULL;
             }
         private:
             IArgFunction<ConfigT>* functionObj;
@@ -3836,8 +3847,8 @@ namespace Clara {
                 m_arg->description = description;
                 return *this;
             }
-            ArgBuilder& detail( std::string const& detail ) {
-                m_arg->detail = detail;
+            ArgBuilder& detail( std::string const& _detail ) {
+                m_arg->detail = _detail;
                 return *this;
             }
 
@@ -3920,14 +3931,14 @@ namespace Clara {
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
 
             for( it = itBegin; it != itEnd; ++it ) {
-                Detail::Text usage( it->commands(), Detail::TextAttributes()
+                Detail::Text usageText( it->commands(), Detail::TextAttributes()
                                                         .setWidth( maxWidth+indent )
                                                         .setIndent( indent ) );
                 Detail::Text desc( it->description, Detail::TextAttributes()
                                                         .setWidth( width - maxWidth - 3 ) );
 
-                for( std::size_t i = 0; i < (std::max)( usage.size(), desc.size() ); ++i ) {
-                    std::string usageCol = i < usage.size() ? usage[i] : "";
+                for( std::size_t i = 0; i < (std::max)( usageText.size(), desc.size() ); ++i ) {
+                    std::string usageCol = i < usageText.size() ? usageText[i] : "";
                     os << usageCol;
 
                     if( i < desc.size() && !desc[i].empty() )
@@ -4283,6 +4294,10 @@ namespace Catch {
         cli["--force-colour"]
             .describe( "force colourised output" )
             .bind( &ConfigData::forceColour );
+
+        cli["--filenames-as-tags"]
+            .describe( "adds a tag for the filename" )
+            .bind( &ConfigData::filenamesAsTags );
 
         return cli;
     }
@@ -4977,7 +4992,7 @@ namespace SectionTracking {
         TrackedSections::iterator it = m_children.find( childName );
         return it != m_children.end()
             ? &it->second
-            : NULL;
+            : CATCH_NULL;
     }
     inline TrackedSection* TrackedSection::acquireChild( std::string const& childName ) {
         if( TrackedSection* child = findChild( childName ) )
@@ -4999,7 +5014,7 @@ namespace SectionTracking {
     class TestCaseTracker {
     public:
         TestCaseTracker( std::string const& testCaseName )
-        :   m_testCase( testCaseName, NULL ),
+        :   m_testCase( testCaseName, CATCH_NULL ),
             m_currentSection( &m_testCase ),
             m_completedASectionThisRun( false )
         {}
@@ -5016,7 +5031,7 @@ namespace SectionTracking {
         void leaveSection() {
             m_currentSection->leave();
             m_currentSection = m_currentSection->getParent();
-            assert( m_currentSection != NULL );
+            assert( m_currentSection != CATCH_NULL );
             m_completedASectionThisRun = true;
         }
 
@@ -5174,11 +5189,11 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config->name() ),
+        explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_activeTestCase( NULL ),
-            m_config( config ),
+            m_activeTestCase( CATCH_NULL ),
+            m_config( _config ),
             m_reporter( reporter ),
             m_prevRunner( m_context.getRunner() ),
             m_prevResultCapture( m_context.getResultCapture() ),
@@ -5193,7 +5208,7 @@ namespace Catch {
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
-            m_context.setConfig( NULL );
+            m_context.setConfig( CATCH_NULL );
             m_context.setResultCapture( m_prevResultCapture );
             m_context.setConfig( m_prevConfig );
         }
@@ -5234,7 +5249,7 @@ namespace Catch {
                                                         redirectedCerr,
                                                         aborting() ) );
 
-            m_activeTestCase = NULL;
+            m_activeTestCase = CATCH_NULL;
             m_testCaseTracker.reset();
 
             return deltaTotals;
@@ -5589,6 +5604,26 @@ namespace Catch {
         std::set<TestCase> m_testsAlreadyRun;
     };
 
+    void applyFilenamesAsTags() {
+        std::vector<TestCase> const& tests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        for(std::size_t i = 0; i < tests.size(); ++i ) {
+            TestCase& test = const_cast<TestCase&>( tests[i] );
+            std::set<std::string> tags = test.tags;
+
+            std::string filename = test.lineInfo.file;
+            std::string::size_type lastSlash = filename.find_last_of( "\//" );
+            if( lastSlash != std::string::npos )
+                filename = filename.substr( lastSlash+1 );
+
+            std::string::size_type lastDot = filename.find_last_of( "." );
+            if( lastDot != std::string::npos )
+                filename = filename.substr( 0, lastDot );
+
+            tags.insert( "@" + filename );
+            setTags( test, tags );
+        }
+    }
+
     class Session : NonCopyable {
         static bool alreadyInstantiated;
 
@@ -5658,6 +5693,9 @@ namespace Catch {
             try
             {
                 config(); // Force config to be constructed
+
+                if( m_configData.filenamesAsTags )
+                    applyFilenamesAsTags();
 
                 std::srand( m_configData.rngSeed );
 
@@ -5872,7 +5910,7 @@ namespace Catch {
         virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
-                return NULL;
+                return CATCH_NULL;
             return it->second->create( ReporterConfig( config ) );
         }
 
@@ -5997,7 +6035,7 @@ namespace Catch {
 
         // Single, global, instance
         inline RegistryHub*& getTheRegistryHub() {
-            static RegistryHub* theRegistryHub = NULL;
+            static RegistryHub* theRegistryHub = CATCH_NULL;
             if( !theRegistryHub )
                 theRegistryHub = new RegistryHub();
             return theRegistryHub;
@@ -6012,7 +6050,7 @@ namespace Catch {
     }
     void cleanUp() {
         delete getTheRegistryHub();
-        getTheRegistryHub() = NULL;
+        getTheRegistryHub() = CATCH_NULL;
         cleanUpContext();
     }
     std::string translateActiveException() {
@@ -6113,7 +6151,7 @@ namespace Catch {
     };
 
     Stream::Stream()
-    : streamBuf( NULL ), isOwned( false )
+    : streamBuf( CATCH_NULL ), isOwned( false )
     {}
 
     Stream::Stream( std::streambuf* _streamBuf, bool _isOwned )
@@ -6123,7 +6161,7 @@ namespace Catch {
     void Stream::release() {
         if( isOwned ) {
             delete streamBuf;
-            streamBuf = NULL;
+            streamBuf = CATCH_NULL;
             isOwned = false;
         }
     }
@@ -6142,7 +6180,7 @@ namespace Catch {
 
     class Context : public IMutableContext {
 
-        Context() : m_config( NULL ), m_runner( NULL ), m_resultCapture( NULL ) {}
+        Context() : m_config( CATCH_NULL ), m_runner( CATCH_NULL ), m_resultCapture( CATCH_NULL ) {}
         Context( Context const& );
         void operator=( Context const& );
 
@@ -6188,7 +6226,7 @@ namespace Catch {
                 m_generatorsByTestName.find( testName );
             return it != m_generatorsByTestName.end()
                 ? it->second
-                : NULL;
+                : CATCH_NULL;
         }
 
         IGeneratorsForTest& getGeneratorsForCurrentTest() {
@@ -6209,7 +6247,7 @@ namespace Catch {
     };
 
     namespace {
-        Context* currentContext = NULL;
+        Context* currentContext = CATCH_NULL;
     }
     IMutableContext& getCurrentMutableContext() {
         if( !currentContext )
@@ -6230,7 +6268,7 @@ namespace Catch {
 
     void cleanUpContext() {
         delete currentContext;
-        currentContext = NULL;
+        currentContext = CATCH_NULL;
     }
 }
 
@@ -6640,6 +6678,21 @@ namespace Catch {
         return TestCase( _testCase, info );
     }
 
+    void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags )
+    {
+        testCaseInfo.tags = tags;
+        testCaseInfo.lcaseTags.clear();
+
+        std::ostringstream oss;
+        for( std::set<std::string>::const_iterator it = tags.begin(), itEnd = tags.end(); it != itEnd; ++it ) {
+            oss << "[" << *it << "]";
+            std::string lcaseTag = toLower( *it );
+            testCaseInfo.properties = static_cast<TestCaseInfo::SpecialProperties>( testCaseInfo.properties | parseSpecialTag( lcaseTag ) );
+            testCaseInfo.lcaseTags.insert( lcaseTag );
+        }
+        testCaseInfo.tagsAsString = oss.str();
+    }
+
     TestCaseInfo::TestCaseInfo( std::string const& _name,
                                 std::string const& _className,
                                 std::string const& _description,
@@ -6648,18 +6701,10 @@ namespace Catch {
     :   name( _name ),
         className( _className ),
         description( _description ),
-        tags( _tags ),
         lineInfo( _lineInfo ),
         properties( None )
     {
-        std::ostringstream oss;
-        for( std::set<std::string>::const_iterator it = _tags.begin(), itEnd = _tags.end(); it != itEnd; ++it ) {
-            oss << "[" << *it << "]";
-            std::string lcaseTag = toLower( *it );
-            properties = static_cast<SpecialProperties>( properties | parseSpecialTag( lcaseTag ) );
-            lcaseTags.insert( lcaseTag );
-        }
-        tagsAsString = oss.str();
+        setTags( *this, _tags );
     }
 
     TestCaseInfo::TestCaseInfo( TestCaseInfo const& other )
@@ -6767,7 +6812,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "", 0 );
+    Version libraryVersion( 1, 2, 1, "develop", 1 );
 
 }
 
@@ -6960,7 +7005,7 @@ namespace Catch {
 #else
         uint64_t getCurrentTicks() {
             timeval t;
-            gettimeofday(&t,NULL);
+            gettimeofday(&t,CATCH_NULL);
             return static_cast<uint64_t>( t.tv_sec ) * 1000000ull + static_cast<uint64_t>( t.tv_usec );
         }
 #endif
@@ -7151,7 +7196,7 @@ namespace Catch {
             // Call sysctl.
 
             size = sizeof(info);
-            if( sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0) != 0 ) {
+            if( sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, CATCH_NULL, 0) != 0 ) {
                 Catch::cerr() << "\n** Call to sysctl failed - unable to determine if debugger is active **\n" << std::endl;
                 return false;
             }
@@ -7872,7 +7917,7 @@ namespace Catch {
 
             ScopedElement( ScopedElement const& other )
             :   m_writer( other.m_writer ){
-                other.m_writer = NULL;
+                other.m_writer = CATCH_NULL;
             }
 
             ~ScopedElement() {
