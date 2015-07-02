@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.1
- *  Generated: 2015-07-02 08:21:11.983471
+ *  Catch v1.2.1-develop.2
+ *  Generated: 2015-07-02 23:02:49.715552
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -233,6 +233,8 @@
 
 namespace Catch {
 
+    struct IConfig;
+
     class NonCopyable {
 #ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         NonCopyable( NonCopyable const& )              = delete;
@@ -318,6 +320,9 @@ namespace Catch {
     inline bool alwaysFalse() { return false; }
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
+
+    void seedRng( IConfig const& config );
+    unsigned int rngSeed();
 
     // Use this in variadic streaming macros to allow
     //    >> +StreamEndStop
@@ -5388,6 +5393,8 @@ namespace Catch {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
 
+                seedRng( *m_config );
+
                 Timer timer;
                 timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
@@ -5697,7 +5704,7 @@ namespace Catch {
                 if( m_configData.filenamesAsTags )
                     applyFilenamesAsTags();
 
-                std::srand( m_configData.rngSeed );
+                seedRng( *m_config );
 
                 Runner runner( m_config );
 
@@ -5822,6 +5829,8 @@ namespace Catch {
                     break;
                 case RunTests::InRandomOrder:
                 {
+                    seedRng( config );
+
                     RandomNumberGenerator rng;
                     std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
                 }
@@ -6812,7 +6821,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 1 );
+    Version libraryVersion( 1, 2, 1, "develop", 2 );
 
 }
 
@@ -7102,6 +7111,14 @@ namespace Catch {
     }
     bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const {
         return line < other.line || ( line == other.line  && file < other.file );
+    }
+
+    void seedRng( IConfig const& config ) {
+        if( config.rngSeed() != 0 )
+            std::srand( config.rngSeed() );
+    }
+    unsigned int rngSeed() {
+        return getCurrentContext().getConfig()->rngSeed();
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
