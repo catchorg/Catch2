@@ -226,7 +226,7 @@ private:
                 case ResultWas::FatalErrorCondition:
                     cause = "an unexpected error occured";
                     expected = false;
-                    
+                    break;
                     
                 case ResultWas::Info:
                     cause = "info";
