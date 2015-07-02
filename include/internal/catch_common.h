@@ -22,6 +22,8 @@
 #include "catch_compiler_capabilities.h"
 
 namespace Catch {
+    
+    struct IConfig;
 
     class NonCopyable {
 #ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
@@ -109,6 +111,9 @@ namespace Catch {
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
 
+    void seedRng( IConfig const& config );
+    unsigned int rngSeed();
+    
     // Use this in variadic streaming macros to allow
     //    >> +StreamEndStop
     // as well as

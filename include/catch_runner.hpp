@@ -198,7 +198,7 @@ namespace Catch {
                 if( m_configData.filenamesAsTags )
                     applyFilenamesAsTags();
                 
-                std::srand( m_configData.rngSeed );
+                seedRng( *m_config );
 
                 Runner runner( m_config );
 

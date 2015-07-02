@@ -259,6 +259,8 @@ namespace Catch {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
 
+                seedRng( *m_config );
+                
                 Timer timer;
                 timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
