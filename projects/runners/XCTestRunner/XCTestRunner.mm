@@ -33,14 +33,45 @@
 #include <objc/message.h>
 
 namespace Catch {
+    
+class XCTestReporter : public StreamingReporterBase {
+public:
+    XCTestReporter (ReporterConfig const &config) : StreamingReporterBase(config) {}
+    virtual ~XCTestReporter () {}
+    
+    const std::vector<AssertionStats> &getCollectedAssertions () { return _collectedAssertions; }
+    
+private:
+    static std::string getDescription() {
+        return "Reports test results via Xcode's XCTest interface";
+    }
 
-static void *TestInfoKey = NULL;
-static void *TestSelectorKey = NULL;
-static void *TestSessionKey = NULL;
+    virtual void assertionStarting (AssertionInfo const &) {}
+    
+    virtual bool assertionEnded (AssertionStats const &assertionStats) {
+        _collectedAssertions.push_back(assertionStats);
+        return true;
+    }
+    
+    virtual ReporterPreferences getPreferences() const {
+        ReporterPreferences prefs;
+        prefs.shouldRedirectStdOut = false;
+        return prefs;
+    }
+    
+private:
+    std::vector<AssertionStats> _collectedAssertions;
+};
 
 class XCTestRegistryHub : public RegistryHub {
+private:
+    /* Keys used to manage our generated XCTestCase subclass' configuration via
+     * objc_setAssociatedObject/objc_getAssociatedObject */
+    static const void *TestInfoKey;
+    static const void *TestSelectorKey;
+    
 public:
-    XCTestRegistryHub (Session &session) : _session(session) {}
+    XCTestRegistryHub () {}
     
     /* Generates an XCTest instance that allows Xcode to find and invoke all test cases. */
     virtual void registerTest( TestCase const& testInfo ) {
@@ -106,20 +137,16 @@ public:
         /* Attach the test info to the class */
         TestCase *tc = new TestCase(testInfo); // Leaks if the class is deregistered (which is unlikely)
         objc_setAssociatedObject(cls, &TestInfoKey, (__bridge id) tc, OBJC_ASSOCIATION_ASSIGN);
-        
-        objc_setAssociatedObject(cls, &TestSessionKey, (__bridge id) &_session, OBJC_ASSOCIATION_ASSIGN);
     }
     
 private:
-    /** Our singleton test session */
-    Session &_session;
-    
+    /* +[XCTestSuite defaultTestSuite] */
     static XCTestSuite *_methodImpl_defaultTestSuite (Class self, SEL _cmd) {
         TestCase const& testInfo = *(__bridge TestCase const *) objc_getAssociatedObject(self, &TestInfoKey);
         SEL testSel = (SEL) (__bridge void *) objc_getAssociatedObject(self, &TestSelectorKey);
         
         XCTestCase *tc = [(XCTestCase *)[self alloc] initWithSelector: testSel];
-#if !__has_feature(objc_arc)
+#if !CATCH_ARC_ENABLED
         [tc autorelease];
 #endif
 
@@ -128,28 +155,138 @@ private:
         return suite;
     }
     
+    /* -[XCTestSuite name] */
     static NSString *_methodImpl_name (Class self, SEL _cmd) {
         TestCase const& testInfo = *(__bridge TestCase const *) objc_getAssociatedObject([self class], &TestInfoKey);
         return [NSString stringWithUTF8String: testInfo.name.c_str()];
     }
     
+    /* -[XCTestSuite <per-testcase-generated-selector>] */
     static void _methodImpl_runTest (XCTestCase *self, SEL _cmd) {
         TestCase const& testInfo = *(__bridge TestCase const *) objc_getAssociatedObject([self class], &TestInfoKey);
-        Session *session = (__bridge Session *) objc_getAssociatedObject([self class], &TestSessionKey);
         
-        /* Reset the session's configuration */
-        session->useConfigData(ConfigData());
+        /* Target only our configured test case */
+        ConfigData data;
+        data.testsOrTags.push_back(testInfo.name);
+        Ptr<IConfig> config = new Config(data);
         
-        /* Pass our testcase spec to the session */
-        auto testSpec = testInfo.name;
-        const char *argv0 = [[[[NSProcessInfo processInfo] arguments] objectAtIndex: 0] UTF8String];
-        const char * const args[] = { argv0, "--break" /* break on errors */, testSpec.c_str() };
-        session->applyCommandLine(sizeof(args) / sizeof(args[0]), (char * const *) args);
+        /* Set up our run context */
+        XCTestReporter* reporter = new XCTestReporter(ReporterConfig(config));
+        RunContext runner(config.get(), reporter);
         
-        /* Run */
-        if (session->run() != 0) {
-            /* TODO: Do we need our own reporter to provide more useful errors? */
-            XCTFail(@"%@ failed", self.name);
+        /* Run the test */
+        Totals totals;
+        runner.testGroupStarting(testInfo.name, 1, 1);
+        totals += runner.runTest(testInfo);
+        runner.testGroupEnded(testInfo.name, totals, 1, 1);
+        
+        /* Report failures to XCTest */
+        for (auto &&as : reporter->getCollectedAssertions()) {
+            auto result = as.assertionResult;
+            bool expected = true;
+            std::string description = "";
+            std::string cause = "";
+            
+            /* Skip successful tests; we don't need to report anything */
+            if (result.getResultType() == ResultWas::Ok)
+                continue;
+            
+            /* Skip expected failures; those are a pass */
+            if (result.getResultType() == ResultWas::ExpressionFailed && result.isOk())
+                continue;
+            
+            switch (result.getResultType()) {
+                case ResultWas::Ok:
+                    /* Handled above; should never be hit here. */
+                    __builtin_trap();
+                    
+                case ResultWas::ExpressionFailed:
+                    if (as.infoMessages.size() == 1) {
+                        cause = "expression failed with message";
+                    } else if (as.infoMessages.size() > 1) {
+                        cause = "expression failed with messages";
+                    } else {
+                        cause = "expression did not evaluate to true";
+                    }
+                    break;
+                    
+                case ResultWas::ExplicitFailure:
+                    cause = "failed";
+                    break;
+                    
+                case ResultWas::DidntThrowException:
+                    cause = "the expected expression was not thrown";
+                    break;
+                    
+                case ResultWas::ThrewException:
+                    cause = "an unexpected exception was thrown";
+                    expected = false;
+                    break;
+
+                case ResultWas::FatalErrorCondition:
+                    cause = "an unexpected error occured";
+                    expected = false;
+                    
+                    
+                case ResultWas::Info:
+                    cause = "info";
+                    break;
+                    
+                case ResultWas::Warning:
+                    cause = "warning";
+                    break;
+                    
+                /* Quiesce the compiler; we shouldn't actually hit these */
+                case ResultWas::Unknown:
+                case ResultWas::FailureBit:
+                case ResultWas::Exception:
+                    cause = "internal error";
+                    expected = false;
+                    break;
+            }
+            
+            /* Formulate the error description */
+            if (result.hasExpression()) {
+                description.append(result.getExpression());
+                
+                if (result.hasExpandedExpression()) {
+                    description.append(" (expands to: " + result.getExpandedExpression() + ")");
+                }
+            }
+            description.append(": " + cause);
+
+            /* Report the base error if there are no additional messages. */
+            if (as.infoMessages.size() == 0) {
+                auto msg = description;
+                if (result.hasMessage()) {
+                    msg.append(": " + result.getMessage());
+                }
+                
+                /* Append a terminating period, if necessary */
+                if (msg[msg.size() - 1] != '.')
+                    msg.append(".");
+                
+                
+                NSString *desc = [NSString stringWithUTF8String: msg.c_str()];
+                NSString *file = [NSString stringWithUTF8String: result.getSourceInfo().file.c_str()];
+                
+                [self recordFailureWithDescription: desc inFile: file atLine: result.getSourceInfo().line expected: expected];
+            }
+            
+            /* Report a failure for each one of the info message strings. */
+            for (auto &&info : as.infoMessages) {
+                auto msg = description;
+                msg.append(": " + info.message);
+                
+                /* Append a terminating period, if necessary */
+                if (msg[msg.size() - 1] != '.')
+                    msg.append(".");
+                
+                NSString *desc = [NSString stringWithUTF8String: msg.c_str()];
+                NSString *file = [NSString stringWithUTF8String: info.lineInfo.file.c_str()];
+                
+                [self recordFailureWithDescription: desc inFile: file atLine: info.lineInfo.line expected: expected];
+            }
         }
     }
     
@@ -218,6 +355,9 @@ private:
     }
 };
     
+const void *XCTestRegistryHub::TestInfoKey = NULL;
+const void *XCTestRegistryHub::TestSelectorKey = NULL;
+
 }
 
 @interface XCTestCaseCatchRegistry : NSObject @end
@@ -226,11 +366,10 @@ private:
 /* Runs before all C++ initializers; we can insert our custom registry hub here. */
 + (void) load {
     using namespace Catch;
-    static Session session;
     
     RegistryHub **hub = &getTheRegistryHub();
     RegistryHub *previous = *hub;
-    *hub = new XCTestRegistryHub(session);
+    *hub = new XCTestRegistryHub();
     delete previous;
 }
 

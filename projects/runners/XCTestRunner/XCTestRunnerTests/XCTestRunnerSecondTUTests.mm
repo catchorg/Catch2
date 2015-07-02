@@ -27,10 +27,10 @@
 
 #include "catch.hpp"
 
-TEST_CASE("Objective-C Matchers") {
-    WHEN("comparing two equal strings") {
-        THEN("matching should succeed") {
-            REQUIRE_THAT(@"string1", Equals(@"intentionally fail"));
+TEST_CASE("A Second Test Case") {
+    WHEN("running in a second translation unit") {
+        THEN("the tests should be executed") {
+            REQUIRE(1 == 47);
         }
     }
 }

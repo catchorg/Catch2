@@ -10,6 +10,7 @@
 		0576DBA71B448C30000BCA73 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0576DBA61B448C30000BCA73 /* main.cpp */; };
 		0576DBB61B448C57000BCA73 /* XCTestRunnerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0576DBB51B448C57000BCA73 /* XCTestRunnerTests.mm */; };
 		0576DBBB1B448C87000BCA73 /* XCTestRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0576DBBA1B448C87000BCA73 /* XCTestRunner.mm */; };
+		05D0AE281B45C22700296632 /* XCTestRunnerSecondTUTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 05D0AE271B45C22700296632 /* XCTestRunnerSecondTUTests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,7 @@
 		0576DBB41B448C57000BCA73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0576DBB51B448C57000BCA73 /* XCTestRunnerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XCTestRunnerTests.mm; sourceTree = "<group>"; };
 		0576DBBA1B448C87000BCA73 /* XCTestRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = XCTestRunner.mm; sourceTree = "<group>"; };
+		05D0AE271B45C22700296632 /* XCTestRunnerSecondTUTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = XCTestRunnerSecondTUTests.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				0576DBB51B448C57000BCA73 /* XCTestRunnerTests.mm */,
+				05D0AE271B45C22700296632 /* XCTestRunnerSecondTUTests.mm */,
 				0576DBB31B448C57000BCA73 /* Supporting Files */,
 			);
 			path = XCTestRunnerTests;
@@ -192,6 +195,7 @@
 			files = (
 				0576DBBB1B448C87000BCA73 /* XCTestRunner.mm in Sources */,
 				0576DBB61B448C57000BCA73 /* XCTestRunnerTests.mm in Sources */,
+				05D0AE281B45C22700296632 /* XCTestRunnerSecondTUTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +349,7 @@
 				0576DBAC1B448C30000BCA73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0576DBB71B448C57000BCA73 /* Build configuration list for PBXNativeTarget "XCTestRunnerTests" */ = {
 			isa = XCConfigurationList;
@@ -353,6 +358,7 @@
 				0576DBB91B448C57000BCA73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
