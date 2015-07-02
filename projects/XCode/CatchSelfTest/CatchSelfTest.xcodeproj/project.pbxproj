@@ -91,7 +91,6 @@
 		26711C91195D47820033EDA2 /* catch_tag_alias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_tag_alias.h; sourceTree = "<group>"; };
 		26711C92195D48F60033EDA2 /* catch_tag_alias_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_tag_alias_registry.hpp; sourceTree = "<group>"; };
 		26711C94195D4B120033EDA2 /* catch_tag_alias_registry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_tag_alias_registry.h; sourceTree = "<group>"; };
-		26759472171C72A400A84BD1 /* catch_sfinae.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_sfinae.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		26759473171C74C200A84BD1 /* catch_compiler_capabilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = catch_compiler_capabilities.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		26847E5B16BBAB790043B9C1 /* catch_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_message.h; sourceTree = "<group>"; };
 		26847E5C16BBACB60043B9C1 /* catch_message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_message.hpp; sourceTree = "<group>"; };
@@ -453,6 +452,7 @@
 				266ECD8C1713614B0030D735 /* catch_legacy_reporter_adapter.hpp */,
 				266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */,
 				4A6D0C49149B3E3D00DB3EAA /* catch_common.h */,
+				262E739A1846759000CAC268 /* catch_common.hpp */,
 				4A6D0C4B149B3E3D00DB3EAA /* catch_debugger.hpp */,
 				261488FF184DC4A20041FBEB /* catch_debugger.h */,
 				4A6D0C60149B3E3D00DB3EAA /* catch_stream.hpp */,
@@ -461,12 +461,10 @@
 				4AB77CB51551AEA200857BF0 /* catch_ptr.hpp */,
 				4AEE0326161431070071E950 /* catch_streambuf.h */,
 				4ACE21C8166CA19700FB5509 /* catch_option.hpp */,
-				26759472171C72A400A84BD1 /* catch_sfinae.hpp */,
 				26759473171C74C200A84BD1 /* catch_compiler_capabilities.h */,
 				26DACF2F17206D3400A21326 /* catch_text.h */,
 				263FD06117AF8DF200988A20 /* catch_timer.h */,
 				26AEAF1617BEA18E009E32C9 /* catch_platform.h */,
-				262E739A1846759000CAC268 /* catch_common.hpp */,
 				261488FC184D1DC10041FBEB /* catch_stream.h */,
 				268F47B018A93F7800D8C14F /* catch_clara.h */,
 				2656C226192A77EF0040DB02 /* catch_suppress_warnings.h */,

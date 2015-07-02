@@ -174,6 +174,10 @@ namespace Catch {
             .describe( "force colourised output" )
             .bind( &ConfigData::forceColour );
 
+        cli["--filenames-as-tags"]
+            .describe( "adds a tag for the filename" )
+            .bind( &ConfigData::filenamesAsTags );
+        
         return cli;
     }
 

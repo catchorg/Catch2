@@ -104,6 +104,26 @@ namespace Catch {
         Ptr<IStreamingReporter> m_reporter;
         std::set<TestCase> m_testsAlreadyRun;
     };
+    
+    void applyFilenamesAsTags() {
+        std::vector<TestCase> const& tests = getRegistryHub().getTestCaseRegistry().getAllTests();
+        for(std::size_t i = 0; i < tests.size(); ++i ) {
+            TestCase& test = const_cast<TestCase&>( tests[i] );
+            std::set<std::string> tags = test.tags;
+            
+            std::string filename = test.lineInfo.file;
+            std::string::size_type lastSlash = filename.find_last_of( "\//" );
+            if( lastSlash != std::string::npos )
+                filename = filename.substr( lastSlash+1 );
+
+            std::string::size_type lastDot = filename.find_last_of( "." );
+            if( lastDot != std::string::npos )
+                filename = filename.substr( 0, lastDot );
+            
+            tags.insert( "@" + filename );
+            setTags( test, tags );
+        }
+    }
 
     class Session : NonCopyable {
         static bool alreadyInstantiated;
@@ -175,6 +195,9 @@ namespace Catch {
             {
                 config(); // Force config to be constructed
 
+                if( m_configData.filenamesAsTags )
+                    applyFilenamesAsTags();
+                
                 std::srand( m_configData.rngSeed );
 
                 Runner runner( m_config );

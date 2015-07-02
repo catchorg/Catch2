@@ -38,6 +38,7 @@ namespace Catch {
             showHelp( false ),
             showInvisibles( false ),
             forceColour( false ),
+            filenamesAsTags( false ),
             abortAfter( -1 ),
             rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
@@ -57,6 +58,7 @@ namespace Catch {
         bool showHelp;
         bool showInvisibles;
         bool forceColour;
+        bool filenamesAsTags;
 
         int abortAfter;
         unsigned int rngSeed;
