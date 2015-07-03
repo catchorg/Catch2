@@ -78,7 +78,7 @@ namespace Catch {
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
-            m_context.setConfig( CATCH_NULL );
+            m_context.setConfig( Ptr<IConfig const>() );
             m_context.setResultCapture( m_prevResultCapture );
             m_context.setConfig( m_prevConfig );
         }

@@ -9,6 +9,9 @@
 #include "catch.hpp"
 #include "catch_test_spec_parser.hpp"
 
+#ifdef __clang__
+#   pragma clang diagnostic ignored "-Wc++98-compat"
+#endif
 
 inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( CATCH_NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
