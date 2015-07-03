@@ -112,7 +112,7 @@ namespace Catch {
             std::set<std::string> tags = test.tags;
             
             std::string filename = test.lineInfo.file;
-            std::string::size_type lastSlash = filename.find_last_of( "\//" );
+            std::string::size_type lastSlash = filename.find_last_of( "\\/" );
             if( lastSlash != std::string::npos )
                 filename = filename.substr( lastSlash+1 );
 
