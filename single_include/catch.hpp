@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.2
- *  Generated: 2015-07-02 23:02:49.715552
+ *  Catch v1.2.1-develop.3
+ *  Generated: 2015-07-03 18:29:49.753953
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5213,7 +5213,7 @@ namespace Catch {
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
-            m_context.setConfig( CATCH_NULL );
+            m_context.setConfig( Ptr<IConfig const>() );
             m_context.setResultCapture( m_prevResultCapture );
             m_context.setConfig( m_prevConfig );
         }
@@ -5618,7 +5618,7 @@ namespace Catch {
             std::set<std::string> tags = test.tags;
 
             std::string filename = test.lineInfo.file;
-            std::string::size_type lastSlash = filename.find_last_of( "\//" );
+            std::string::size_type lastSlash = filename.find_last_of( "\\/" );
             if( lastSlash != std::string::npos )
                 filename = filename.substr( lastSlash+1 );
 
@@ -6821,7 +6821,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 2 );
+    Version libraryVersion( 1, 2, 1, "develop", 3 );
 
 }
 
