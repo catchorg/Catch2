@@ -82,7 +82,7 @@
 #endif // Platform
 
 #ifdef CATCH_PLATFORM_WINDOWS
-    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
+    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( _In_opt_ const char* );
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
             ::OutputDebugStringA( text.c_str() );
