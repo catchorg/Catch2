@@ -120,7 +120,7 @@ namespace Catch {
             if( lastDot != std::string::npos )
                 filename = filename.substr( 0, lastDot );
             
-            tags.insert( "@" + filename );
+            tags.insert( "#" + filename );
             setTags( test, tags );
         }
     }

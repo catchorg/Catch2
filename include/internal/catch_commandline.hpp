@@ -153,6 +153,10 @@ namespace Catch {
             .describe( "load test names to run from a file" )
             .bind( &loadTestNamesFromFile, "filename" );
 
+        cli["-#"]["--filenames-as-tags"]
+            .describe( "adds a tag for the filename" )
+            .bind( &ConfigData::filenamesAsTags );
+
         // Less common commands which don't have a short form
         cli["--list-test-names-only"]
             .describe( "list all/matching test cases names only" )
@@ -173,10 +177,6 @@ namespace Catch {
         cli["--force-colour"]
             .describe( "force colourised output" )
             .bind( &ConfigData::forceColour );
-
-        cli["--filenames-as-tags"]
-            .describe( "adds a tag for the filename" )
-            .bind( &ConfigData::filenamesAsTags );
         
         return cli;
     }
