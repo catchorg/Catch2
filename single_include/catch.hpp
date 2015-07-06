@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.3
- *  Generated: 2015-07-03 18:29:49.753953
+ *  Catch v1.2.1-develop.4
+ *  Generated: 2015-07-06 06:21:18.816844
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6333,12 +6333,13 @@ namespace {
         {
             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
             GetConsoleScreenBufferInfo( stdoutHandle, &csbiInfo );
-            originalAttributes = csbiInfo.wAttributes;
+            originalForegroundAttributes = csbiInfo.wAttributes & ~( BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY );
+            originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
         virtual void use( Colour::Code _colourCode ) {
             switch( _colourCode ) {
-                case Colour::None:      return setTextAttribute( originalAttributes );
+                case Colour::None:      return setTextAttribute( originalForegroundAttributes );
                 case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
                 case Colour::Red:       return setTextAttribute( FOREGROUND_RED );
                 case Colour::Green:     return setTextAttribute( FOREGROUND_GREEN );
@@ -6358,10 +6359,11 @@ namespace {
 
     private:
         void setTextAttribute( WORD _textAttribute ) {
-            SetConsoleTextAttribute( stdoutHandle, _textAttribute );
+            SetConsoleTextAttribute( stdoutHandle, _textAttribute | originalBackgroundAttributes );
         }
         HANDLE stdoutHandle;
-        WORD originalAttributes;
+        WORD originalForegroundAttributes;
+        WORD originalBackgroundAttributes;
     };
 
     IColourImpl* platformColourInstance() {
@@ -6821,7 +6823,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 3 );
+    Version libraryVersion( 1, 2, 1, "develop", 4 );
 
 }
 
