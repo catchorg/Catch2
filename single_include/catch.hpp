@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.4
- *  Generated: 2015-07-06 06:21:18.816844
+ *  Catch v1.2.1-develop.5
+ *  Generated: 2015-07-07 08:24:50.226161
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4279,6 +4279,10 @@ namespace Catch {
             .describe( "load test names to run from a file" )
             .bind( &loadTestNamesFromFile, "filename" );
 
+        cli["-#"]["--filenames-as-tags"]
+            .describe( "adds a tag for the filename" )
+            .bind( &ConfigData::filenamesAsTags );
+
         // Less common commands which don't have a short form
         cli["--list-test-names-only"]
             .describe( "list all/matching test cases names only" )
@@ -4299,10 +4303,6 @@ namespace Catch {
         cli["--force-colour"]
             .describe( "force colourised output" )
             .bind( &ConfigData::forceColour );
-
-        cli["--filenames-as-tags"]
-            .describe( "adds a tag for the filename" )
-            .bind( &ConfigData::filenamesAsTags );
 
         return cli;
     }
@@ -5626,7 +5626,7 @@ namespace Catch {
             if( lastDot != std::string::npos )
                 filename = filename.substr( 0, lastDot );
 
-            tags.insert( "@" + filename );
+            tags.insert( "#" + filename );
             setTags( test, tags );
         }
     }
@@ -6823,7 +6823,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 4 );
+    Version libraryVersion( 1, 2, 1, "develop", 5 );
 
 }
 
