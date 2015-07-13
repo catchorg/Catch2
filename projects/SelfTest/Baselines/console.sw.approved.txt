@@ -1278,6 +1278,21 @@ PASSED:
   REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) )
 
 -------------------------------------------------------------------------------
+Exception messages can be tested for
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
+with expansion:
+  expected exception
+
+-------------------------------------------------------------------------------
 Generators over two ranges
 -------------------------------------------------------------------------------
 GeneratorTests.cpp:<line number>
@@ -7944,6 +7959,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 155 | 100 passed | 54 failed |  1 failed as expected
-assertions: 785 | 673 passed | 99 failed | 13 failed as expected
+test cases: 156 | 100 passed |  55 failed |  1 failed as expected
+assertions: 787 | 674 passed | 100 failed | 13 failed as expected
 

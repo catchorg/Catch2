@@ -66,16 +66,16 @@
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS( expr, resultDisposition, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, resultDisposition, expectedMessage, macroName ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition, expectedMessage ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 expr; \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
             catch( ... ) { \
-                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+                __catchResult.captureExpectedException( expectedMessage ); \
             } \
         else \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \

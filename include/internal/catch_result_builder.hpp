@@ -18,11 +18,17 @@
 
 namespace Catch {
 
+    std::string capturedExpressionWithSecondArgument( std::string const& capturedExpression, std::string const& secondArg ) {
+        return secondArg.empty()
+            ? capturedExpression
+            : capturedExpression + ", \"" + secondArg + "\"";
+    }
     ResultBuilder::ResultBuilder(   char const* macroName,
                                     SourceLineInfo const& lineInfo,
                                     char const* capturedExpression,
-                                    ResultDisposition::Flags resultDisposition )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpression, resultDisposition ),
+                                    ResultDisposition::Flags resultDisposition,
+                                    char const* secondArg )
+    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
         m_shouldDebugBreak( false ),
         m_shouldThrow( false )
     {}
@@ -64,10 +70,31 @@ namespace Catch {
         captureExpression();
     }
 
+    void ResultBuilder::captureExpectedException( std::string const& expectedMessage ) {
+        assert( m_exprComponents.testFalse == false );
+        AssertionResultData data = m_data;
+        data.resultType = ResultWas::Ok;
+        data.reconstructedExpression = m_assertionInfo.capturedExpression;
+        if( expectedMessage != "" ) {
+            
+            std::string actualMessage = Catch::translateActiveException();
+            if( expectedMessage != actualMessage ) {
+                data.resultType = ResultWas::ExpressionFailed;
+                data.reconstructedExpression = actualMessage;
+            }
+        }
+        AssertionResult result( m_assertionInfo, data );
+        handleResult( result );
+    }
+
     void ResultBuilder::captureExpression() {
         AssertionResult result = build();
+        handleResult( result );
+    }
+    void ResultBuilder::handleResult( AssertionResult const& result )
+    {
         getResultCapture().assertionEnded( result );
-
+        
         if( !result.isOk() ) {
             if( getCurrentContext().getConfig()->shouldDebugBreak() )
                 m_shouldDebugBreak = true;

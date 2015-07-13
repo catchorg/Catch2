@@ -38,7 +38,8 @@ namespace Catch {
         ResultBuilder(  char const* macroName,
                         SourceLineInfo const& lineInfo,
                         char const* capturedExpression,
-                        ResultDisposition::Flags resultDisposition );
+                        ResultDisposition::Flags resultDisposition,
+                        char const* secondArg = "" );
 
         template<typename T>
         ExpressionLhs<T const&> operator <= ( T const& operand );
@@ -67,6 +68,8 @@ namespace Catch {
         void useActiveException( ResultDisposition::Flags resultDisposition = ResultDisposition::Normal );
         void captureResult( ResultWas::OfType resultType );
         void captureExpression();
+        void captureExpectedException( std::string const& expectedMessage );
+        void handleResult( AssertionResult const& result );
         void react();
         bool shouldDebugBreak() const;
         bool allowThrows() const;

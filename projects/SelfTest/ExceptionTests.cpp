@@ -152,3 +152,8 @@ TEST_CASE( "NotImplemented exception", "" )
 {
     REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
 }
+
+TEST_CASE( "Exception messages can be tested for", "[.][failing]" ) {
+    REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+    REQUIRE_THROWS_WITH( thisThrows(), "should fail" );
+}

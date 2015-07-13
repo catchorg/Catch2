@@ -1596,6 +1596,25 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Exception messages can be tested for">
+      <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+        <Original>
+          thisThrows(), &quot;expected exception&quot;
+        </Original>
+        <Expanded>
+          thisThrows(), &quot;expected exception&quot;
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+        <Original>
+          thisThrows(), &quot;should fail&quot;
+        </Original>
+        <Expanded>
+          expected exception
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Generators over two ranges">
       <Expression success="true" type="CATCH_REQUIRE" filename="projects/SelfTest/GeneratorTests.cpp" >
         <Original>
@@ -8220,7 +8239,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="673" failures="99" expectedFailures="13"/>
+    <OverallResults successes="674" failures="100" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="673" failures="99" expectedFailures="13"/>
+  <OverallResults successes="674" failures="100" expectedFailures="13"/>
 </Catch>
