@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.5
- *  Generated: 2015-07-07 08:24:50.226161
+ *  Catch v1.2.1-develop.6
+ *  Generated: 2015-07-13 06:35:13.441019
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -796,7 +796,8 @@ namespace Catch {
         ResultBuilder(  char const* macroName,
                         SourceLineInfo const& lineInfo,
                         char const* capturedExpression,
-                        ResultDisposition::Flags resultDisposition );
+                        ResultDisposition::Flags resultDisposition,
+                        char const* secondArg = "" );
 
         template<typename T>
         ExpressionLhs<T const&> operator <= ( T const& operand );
@@ -825,6 +826,8 @@ namespace Catch {
         void useActiveException( ResultDisposition::Flags resultDisposition = ResultDisposition::Normal );
         void captureResult( ResultWas::OfType resultType );
         void captureExpression();
+        void captureExpectedException( std::string const& expectedMessage );
+        void handleResult( AssertionResult const& result );
         void react();
         bool shouldDebugBreak() const;
         bool allowThrows() const;
@@ -1616,16 +1619,16 @@ namespace Catch {
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS( expr, resultDisposition, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, resultDisposition, expectedMessage, macroName ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition, expectedMessage ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 expr; \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
             catch( ... ) { \
-                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+                __catchResult.captureExpectedException( expectedMessage ); \
             } \
         else \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
@@ -5844,6 +5847,7 @@ namespace Catch {
         std::vector<TestCase> m_functionsInOrder;
         std::vector<TestCase> m_nonHiddenFunctions;
         size_t m_unnamedCount;
+        std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -6823,7 +6827,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 5 );
+    Version libraryVersion( 1, 2, 1, "develop", 6 );
 
 }
 
@@ -7440,11 +7444,17 @@ std::string toString( std::nullptr_t ) {
 
 namespace Catch {
 
+    std::string capturedExpressionWithSecondArgument( std::string const& capturedExpression, std::string const& secondArg ) {
+        return secondArg.empty()
+            ? capturedExpression
+            : capturedExpression + ", \"" + secondArg + "\"";
+    }
     ResultBuilder::ResultBuilder(   char const* macroName,
                                     SourceLineInfo const& lineInfo,
                                     char const* capturedExpression,
-                                    ResultDisposition::Flags resultDisposition )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpression, resultDisposition ),
+                                    ResultDisposition::Flags resultDisposition,
+                                    char const* secondArg )
+    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
         m_shouldDebugBreak( false ),
         m_shouldThrow( false )
     {}
@@ -7486,8 +7496,29 @@ namespace Catch {
         captureExpression();
     }
 
+    void ResultBuilder::captureExpectedException( std::string const& expectedMessage ) {
+        assert( m_exprComponents.testFalse == false );
+        AssertionResultData data = m_data;
+        data.resultType = ResultWas::Ok;
+        data.reconstructedExpression = m_assertionInfo.capturedExpression;
+        if( expectedMessage != "" ) {
+
+            std::string actualMessage = Catch::translateActiveException();
+            if( expectedMessage != actualMessage ) {
+                data.resultType = ResultWas::ExpressionFailed;
+                data.reconstructedExpression = actualMessage;
+            }
+        }
+        AssertionResult result( m_assertionInfo, data );
+        handleResult( result );
+    }
+
     void ResultBuilder::captureExpression() {
         AssertionResult result = build();
+        handleResult( result );
+    }
+    void ResultBuilder::handleResult( AssertionResult const& result )
+    {
         getResultCapture().assertionEnded( result );
 
         if( !result.isOk() ) {
@@ -9332,8 +9363,9 @@ int main (int argc, char * const argv[]) {
 #define CATCH_REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "CATCH_REQUIRE" )
 #define CATCH_REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "CATCH_REQUIRE_FALSE" )
 
-#define CATCH_REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS" )
+#define CATCH_REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, "", "CATCH_REQUIRE_THROWS" )
 #define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THROWS_AS" )
+#define CATCH_REQUIRE_THROWS_WITH( expr, expectedMessage ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, expectedMessage, "CATCH_REQUIRE_THROWS_WITH" )
 #define CATCH_REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_NOTHROW" )
 
 #define CATCH_CHECK( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK" )
@@ -9344,6 +9376,7 @@ int main (int argc, char * const argv[]) {
 
 #define CATCH_CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS" )
 #define CATCH_CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THROWS_AS" )
+#define CATCH_CHECK_THROWS_WITH( expr, expectedMessage ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::ContinueOnFailure, expectedMessage, "CATCH_CHECK_THROWS_WITH" )
 #define CATCH_CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_NOTHROW" )
 
 #define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THAT" )
@@ -9397,8 +9430,9 @@ int main (int argc, char * const argv[]) {
 #define REQUIRE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal, "REQUIRE" )
 #define REQUIRE_FALSE( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, "REQUIRE_FALSE" )
 
-#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, "REQUIRE_THROWS" )
+#define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, "", "REQUIRE_THROWS" )
 #define REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::Normal, "REQUIRE_THROWS_AS" )
+#define REQUIRE_THROWS_WITH( expr, expectedMessage ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::Normal, expectedMessage, "REQUIRE_THROWS_WITH" )
 #define REQUIRE_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::Normal, "REQUIRE_NOTHROW" )
 
 #define CHECK( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK" )
@@ -9407,8 +9441,9 @@ int main (int argc, char * const argv[]) {
 #define CHECKED_ELSE( expr ) INTERNAL_CATCH_ELSE( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECKED_ELSE" )
 #define CHECK_NOFAIL( expr ) INTERNAL_CATCH_TEST( expr, Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, "CHECK_NOFAIL" )
 
-#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS" )
+#define CHECK_THROWS( expr )  INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::ContinueOnFailure, "", "CHECK_THROWS" )
 #define CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( expr, exceptionType, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THROWS_AS" )
+#define CHECK_THROWS_WITH( expr, expectedMessage ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::ContinueOnFailure, expectedMessage, "CHECK_THROWS_WITH" )
 #define CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CHECK_NOTHROW" )
 
 #define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CHECK_THAT" )
