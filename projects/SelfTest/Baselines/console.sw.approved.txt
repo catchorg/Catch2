@@ -1279,9 +1279,58 @@ PASSED:
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
+  exact match
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+
+-------------------------------------------------------------------------------
+Exception messages can be tested for
+  different case
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "expecteD Exception" )
+
+-------------------------------------------------------------------------------
+Exception messages can be tested for
+  wildcarded
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "expected*" )
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "*exception" )
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "*except*" )
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "*exCept*" )
+
+-------------------------------------------------------------------------------
+Mismatching exception messages failing the test
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
 
 ExceptionTests.cpp:<line number>:
 PASSED:
@@ -7959,6 +8008,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 156 | 100 passed |  55 failed |  1 failed as expected
-assertions: 787 | 674 passed | 100 failed | 13 failed as expected
+test cases: 157 | 101 passed |  55 failed |  1 failed as expected
+assertions: 794 | 681 passed | 100 failed | 13 failed as expected
 

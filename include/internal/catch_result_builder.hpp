@@ -14,7 +14,7 @@
 #include "catch_interfaces_runner.h"
 #include "catch_interfaces_capture.h"
 #include "catch_interfaces_registry_hub.h"
-
+#include "catch_wildcard_pattern.hpp"
 
 namespace Catch {
 
@@ -78,7 +78,8 @@ namespace Catch {
         if( expectedMessage != "" ) {
             
             std::string actualMessage = Catch::translateActiveException();
-            if( expectedMessage != actualMessage ) {
+            WildcardPattern pattern( expectedMessage, WildcardPattern::CaseInsensitive );
+            if( !pattern.matches( actualMessage ) ) {
                 data.resultType = ResultWas::ExpressionFailed;
                 data.reconstructedExpression = actualMessage;
             }

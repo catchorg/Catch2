@@ -153,7 +153,21 @@ TEST_CASE( "NotImplemented exception", "" )
     REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
 }
 
-TEST_CASE( "Exception messages can be tested for", "[.][failing]" ) {
+TEST_CASE( "Exception messages can be tested for", "" ) {
+    SECTION( "exact match" )
+        REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+    SECTION( "different case" )
+        REQUIRE_THROWS_WITH( thisThrows(), "expecteD Exception" );
+    SECTION( "wildcarded" ) {
+        REQUIRE_THROWS_WITH( thisThrows(), "expected*" );
+        REQUIRE_THROWS_WITH( thisThrows(), "*exception" );
+        REQUIRE_THROWS_WITH( thisThrows(), "*except*" );
+        REQUIRE_THROWS_WITH( thisThrows(), "*exCept*" );
+    }
+}
+
+TEST_CASE( "Mismatching exception messages failing the test", "[.][failing]" ) {
+    REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
     REQUIRE_THROWS_WITH( thisThrows(), "should fail" );
 }

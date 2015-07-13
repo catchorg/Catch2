@@ -398,7 +398,7 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
-Exception messages can be tested for
+Mismatching exception messages failing the test
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -797,6 +797,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 156 | 116 passed | 39 failed |  1 failed as expected
-assertions: 767 | 674 passed | 80 failed | 13 failed as expected
+test cases: 157 | 117 passed | 39 failed |  1 failed as expected
+assertions: 774 | 681 passed | 80 failed | 13 failed as expected
 

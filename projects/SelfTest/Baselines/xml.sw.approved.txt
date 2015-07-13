@@ -1597,6 +1597,74 @@
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Exception messages can be tested for">
+      <Section name="exact match">
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), &quot;expected exception&quot;
+          </Original>
+          <Expanded>
+            thisThrows(), &quot;expected exception&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="different case">
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), &quot;expecteD Exception&quot;
+          </Original>
+          <Expanded>
+            thisThrows(), &quot;expecteD Exception&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="wildcarded">
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), &quot;expected*&quot;
+          </Original>
+          <Expanded>
+            thisThrows(), &quot;expected*&quot;
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), &quot;*exception&quot;
+          </Original>
+          <Expanded>
+            thisThrows(), &quot;*exception&quot;
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), &quot;*except*&quot;
+          </Original>
+          <Expanded>
+            thisThrows(), &quot;*except*&quot;
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), &quot;*exCept*&quot;
+          </Original>
+          <Expanded>
+            thisThrows(), &quot;*exCept*&quot;
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Mismatching exception messages failing the test">
+      <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+        <Original>
+          thisThrows(), &quot;expected exception&quot;
+        </Original>
+        <Expanded>
+          thisThrows(), &quot;expected exception&quot;
+        </Expanded>
+      </Expression>
       <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
         <Original>
           thisThrows(), &quot;expected exception&quot;
@@ -8239,7 +8307,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="674" failures="100" expectedFailures="13"/>
+    <OverallResults successes="681" failures="100" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="674" failures="100" expectedFailures="13"/>
+  <OverallResults successes="681" failures="100" expectedFailures="13"/>
 </Catch>

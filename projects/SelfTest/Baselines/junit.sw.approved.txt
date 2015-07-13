@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="all tests" errors="12" failures="88" tests="787" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="all tests" errors="12" failures="88" tests="794" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -251,7 +251,10 @@ ExceptionTests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="global" name="NotImplemented exception" time="{duration}"/>
-    <testcase classname="global" name="Exception messages can be tested for" time="{duration}">
+    <testcase classname="Exception messages can be tested for" name="exact match" time="{duration}"/>
+    <testcase classname="Exception messages can be tested for" name="different case" time="{duration}"/>
+    <testcase classname="Exception messages can be tested for" name="wildcarded" time="{duration}"/>
+    <testcase classname="global" name="Mismatching exception messages failing the test" time="{duration}">
       <failure message="expected exception" type="REQUIRE_THROWS_WITH">
 ExceptionTests.cpp:<line number>
       </failure>
