@@ -11,6 +11,7 @@
 #include "catch_result_type.h"
 #include "catch_assertionresult.h"
 #include "catch_common.h"
+#include "catch_matchers.hpp"
 
 namespace Catch {
 
@@ -69,6 +70,7 @@ namespace Catch {
         void captureResult( ResultWas::OfType resultType );
         void captureExpression();
         void captureExpectedException( std::string const& expectedMessage );
+        void captureExpectedException( Matchers::Impl::Matcher<std::string> const& matcher );
         void handleResult( AssertionResult const& result );
         void react();
         bool shouldDebugBreak() const;

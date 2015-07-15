@@ -108,68 +108,96 @@ namespace Matchers {
         inline std::string makeString( std::string const& str ) { return str; }
         inline std::string makeString( const char* str ) { return str ? std::string( str ) : std::string(); }
 
+        struct CasedString
+        {
+            CasedString( std::string const& str, CaseSensitive::Choice caseSensitivity )
+            :   m_caseSensitivity( caseSensitivity ),
+                m_str( adjustString( str ) )
+            {}
+            std::string adjustString( std::string const& str ) const {
+                return m_caseSensitivity == CaseSensitive::No
+                    ? toLower( str )
+                    : str;
+                
+            }
+            std::string toStringSuffix() const
+            {
+                return m_caseSensitivity == CaseSensitive::No
+                    ? " (case insensitive)"
+                    : "";
+            }
+            CaseSensitive::Choice m_caseSensitivity;
+            std::string m_str;
+        };
+    
         struct Equals : MatcherImpl<Equals, std::string> {
-            Equals( std::string const& str ) : m_str( str ){}
-            Equals( Equals const& other ) : m_str( other.m_str ){}
+            Equals( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes )
+            :   m_data( str, caseSensitivity )
+            {}
+            Equals( Equals const& other ) : m_data( other.m_data ){}
 
             virtual ~Equals();
 
             virtual bool match( std::string const& expr ) const {
-                return m_str == expr;
+                return m_data.m_str == m_data.adjustString( expr );;
             }
             virtual std::string toString() const {
-                return "equals: \"" + m_str + "\"";
+                return "equals: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
             }
 
-            std::string m_str;
+            CasedString m_data;
         };
 
         struct Contains : MatcherImpl<Contains, std::string> {
-            Contains( std::string const& substr ) : m_substr( substr ){}
-            Contains( Contains const& other ) : m_substr( other.m_substr ){}
+            Contains( std::string const& substr, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes )
+            : m_data( substr, caseSensitivity ){}
+            Contains( Contains const& other ) : m_data( other.m_data ){}
 
             virtual ~Contains();
 
             virtual bool match( std::string const& expr ) const {
-                return expr.find( m_substr ) != std::string::npos;
+                return m_data.adjustString( expr ).find( m_data.m_str ) != std::string::npos;
             }
             virtual std::string toString() const {
-                return "contains: \"" + m_substr + "\"";
+                return "contains: \"" + m_data.m_str  + "\"" + m_data.toStringSuffix();
             }
 
-            std::string m_substr;
+            CasedString m_data;
         };
 
         struct StartsWith : MatcherImpl<StartsWith, std::string> {
-            StartsWith( std::string const& substr ) : m_substr( substr ){}
-            StartsWith( StartsWith const& other ) : m_substr( other.m_substr ){}
+            StartsWith( std::string const& substr, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes )
+            : m_data( substr, caseSensitivity ){}
+            
+            StartsWith( StartsWith const& other ) : m_data( other.m_data ){}
 
             virtual ~StartsWith();
 
             virtual bool match( std::string const& expr ) const {
-                return expr.find( m_substr ) == 0;
+                return m_data.adjustString( expr ).find( m_data.m_str ) == 0;
             }
             virtual std::string toString() const {
-                return "starts with: \"" + m_substr + "\"";
+                return "starts with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
             }
 
-            std::string m_substr;
+            CasedString m_data;
         };
 
         struct EndsWith : MatcherImpl<EndsWith, std::string> {
-            EndsWith( std::string const& substr ) : m_substr( substr ){}
-            EndsWith( EndsWith const& other ) : m_substr( other.m_substr ){}
+            EndsWith( std::string const& substr, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes )
+            : m_data( substr, caseSensitivity ){}
+            EndsWith( EndsWith const& other ) : m_data( other.m_data ){}
 
             virtual ~EndsWith();
 
             virtual bool match( std::string const& expr ) const {
-                return expr.find( m_substr ) == expr.size() - m_substr.size();
+                return m_data.adjustString( expr ).find( m_data.m_str ) == expr.size() - m_data.m_str.size();
             }
             virtual std::string toString() const {
-                return "ends with: \"" + m_substr + "\"";
+                return "ends with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
             }
 
-            std::string m_substr;
+            CasedString m_data;
         };
     } // namespace StdString
     } // namespace Impl
@@ -199,17 +227,17 @@ namespace Matchers {
         return Impl::Generic::AnyOf<ExpressionT>().add( m1 ).add( m2 ).add( m3 );
     }
 
-    inline Impl::StdString::Equals      Equals( std::string const& str ) {
-        return Impl::StdString::Equals( str );
+    inline Impl::StdString::Equals      Equals( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes ) {
+        return Impl::StdString::Equals( str, caseSensitivity );
     }
-    inline Impl::StdString::Equals      Equals( const char* str ) {
-        return Impl::StdString::Equals( Impl::StdString::makeString( str ) );
+    inline Impl::StdString::Equals      Equals( const char* str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes ) {
+        return Impl::StdString::Equals( Impl::StdString::makeString( str ), caseSensitivity );
     }
-    inline Impl::StdString::Contains    Contains( std::string const& substr ) {
-        return Impl::StdString::Contains( substr );
+    inline Impl::StdString::Contains    Contains( std::string const& substr, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes ) {
+        return Impl::StdString::Contains( substr, caseSensitivity );
     }
-    inline Impl::StdString::Contains    Contains( const char* substr ) {
-        return Impl::StdString::Contains( Impl::StdString::makeString( substr ) );
+    inline Impl::StdString::Contains    Contains( const char* substr, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes ) {
+        return Impl::StdString::Contains( Impl::StdString::makeString( substr ), caseSensitivity );
     }
     inline Impl::StdString::StartsWith  StartsWith( std::string const& substr ) {
         return Impl::StdString::StartsWith( substr );

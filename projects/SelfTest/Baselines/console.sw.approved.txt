@@ -1297,7 +1297,7 @@ ExceptionTests.cpp:<line number>
 
 ExceptionTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), "expecteD Exception" )
+  REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) )
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -1308,29 +1308,25 @@ ExceptionTests.cpp:<line number>
 
 ExceptionTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), "expected*" )
+  REQUIRE_THROWS_WITH( thisThrows(), StartsWith( "expected" ) )
 
 ExceptionTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), "*exception" )
+  REQUIRE_THROWS_WITH( thisThrows(), EndsWith( "exception" ) )
 
 ExceptionTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), "*except*" )
+  REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) )
 
 ExceptionTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), "*exCept*" )
+  REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) )
 
 -------------------------------------------------------------------------------
 Mismatching exception messages failing the test
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
-
-ExceptionTests.cpp:<line number>:
-PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
 
 ExceptionTests.cpp:<line number>:
 PASSED:
@@ -8009,5 +8005,5 @@ with expansion:
 
 ===============================================================================
 test cases: 157 | 101 passed |  55 failed |  1 failed as expected
-assertions: 794 | 681 passed | 100 failed | 13 failed as expected
+assertions: 793 | 680 passed | 100 failed | 13 failed as expected
 

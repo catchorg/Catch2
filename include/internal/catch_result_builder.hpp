@@ -19,9 +19,9 @@
 namespace Catch {
 
     std::string capturedExpressionWithSecondArgument( std::string const& capturedExpression, std::string const& secondArg ) {
-        return secondArg.empty()
+        return secondArg.empty() || secondArg == "\"\""
             ? capturedExpression
-            : capturedExpression + ", \"" + secondArg + "\"";
+            : capturedExpression + ", " + secondArg;
     }
     ResultBuilder::ResultBuilder(   char const* macroName,
                                     SourceLineInfo const& lineInfo,
@@ -69,20 +69,24 @@ namespace Catch {
         setResultType( resultType );
         captureExpression();
     }
-
     void ResultBuilder::captureExpectedException( std::string const& expectedMessage ) {
+        if( expectedMessage.empty() )
+            captureExpectedException( Matchers::Impl::Generic::AllOf<std::string>() );
+        else
+            captureExpectedException( Matchers::Equals( expectedMessage ) );
+    }
+
+    void ResultBuilder::captureExpectedException( Matchers::Impl::Matcher<std::string> const& matcher ) {
+        
         assert( m_exprComponents.testFalse == false );
         AssertionResultData data = m_data;
         data.resultType = ResultWas::Ok;
         data.reconstructedExpression = m_assertionInfo.capturedExpression;
-        if( expectedMessage != "" ) {
-            
-            std::string actualMessage = Catch::translateActiveException();
-            WildcardPattern pattern( expectedMessage, WildcardPattern::CaseInsensitive );
-            if( !pattern.matches( actualMessage ) ) {
-                data.resultType = ResultWas::ExpressionFailed;
-                data.reconstructedExpression = actualMessage;
-            }
+        
+        std::string actualMessage = Catch::translateActiveException();
+        if( !matcher.match( actualMessage ) ) {
+            data.resultType = ResultWas::ExpressionFailed;
+            data.reconstructedExpression = actualMessage;
         }
         AssertionResult result( m_assertionInfo, data );
         handleResult( result );

@@ -25,6 +25,11 @@ namespace Catch {
     
     struct IConfig;
 
+    struct CaseSensitive { enum Choice {
+        Yes,
+        No
+    }; };
+    
     class NonCopyable {
 #ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         NonCopyable( NonCopyable const& )              = delete;

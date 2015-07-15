@@ -29,7 +29,7 @@ namespace Catch {
         class NamePattern : public Pattern {
         public:
             NamePattern( std::string const& name )
-            : m_wildcardPattern( toLower( name ), WildcardPattern::CaseInsensitive )
+            : m_wildcardPattern( toLower( name ), CaseSensitive::No )
             {}
             virtual ~NamePattern();
             virtual bool matches( TestCaseInfo const& testCase ) const {

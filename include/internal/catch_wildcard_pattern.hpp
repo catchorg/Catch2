@@ -22,11 +22,7 @@ namespace Catch
         
     public:
         
-        enum CaseSensitivity {
-            CaseSensitive,
-            CaseInsensitive
-        };
-        WildcardPattern( std::string const& pattern, CaseSensitivity caseSensitivity )
+        WildcardPattern( std::string const& pattern, CaseSensitive::Choice caseSensitivity )
         :   m_caseSensitivity( caseSensitivity ),
             m_wildcard( NoWildcard ),
             m_pattern( adjustCase( pattern ) )
@@ -64,9 +60,9 @@ namespace Catch
         }
     private:
         std::string adjustCase( std::string const& str ) const {
-            return m_caseSensitivity == CaseInsensitive ? toLower( str ) : str;
+            return m_caseSensitivity == CaseSensitive::No ? toLower( str ) : str;
         }
-        CaseSensitivity m_caseSensitivity;
+        CaseSensitive::Choice m_caseSensitivity;
         WildcardPosition m_wildcard;
         std::string m_pattern;
     };
