@@ -169,9 +169,26 @@ namespace Catch {
             }
         }
 
-        void writeEncodedText( std::string const& text ) {
-            static const char* charsToEncode = "<&\"";
-            std::string mtext = text;
+    std::string asSafeString( std::string const& text ) {
+        std::string mtext = text;
+        std::string safe;
+        for (int ix=0;ix<mtext.length();ix++)
+        {
+            char c = mtext[ix];
+            if ( (c < '\x09') || c=='\x7F'|| (c>'\x0D' && c<'\x20') ) {
+                std::ostringstream stringStream;
+                stringStream << "?(" << (int)c << ")";
+                safe += stringStream.str();
+            }
+            else
+                safe += c;
+        }
+        return safe;
+    }
+
+    void writeEncodedText( std::string const& text ) {
+        static const char* charsToEncode = "<&\"";
+        std::string mtext = asSafeString(text);
             std::string::size_type pos = mtext.find_first_of( charsToEncode );
             while( pos != std::string::npos ) {
                 stream() << mtext.substr( 0, pos );
