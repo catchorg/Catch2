@@ -8,6 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 
+#include <vector>
+#include "catch_tostring.h"
+
 namespace Catch {
 namespace Matchers {
     namespace Impl {
@@ -214,6 +217,30 @@ namespace Matchers {
             CasedString m_data;
         };
     } // namespace StdString
+
+    namespace StdVector {
+        template<typename T, typename Alloc>
+        struct Equals : MatcherImpl<Equals<T, Alloc>, std::vector<T, Alloc> >
+        {
+            Equals( std::vector<T, Alloc> const& vec ) : m_vector( vec ){}
+            Equals( Equals const& other ) : m_vector( other.m_vector ){}
+
+            virtual ~Equals() {}
+
+            virtual bool match( std::vector<T, Alloc> const& expr ) const CATCH_OVERRIDE
+            {
+                return m_vector == expr;
+            }
+
+            virtual std::string toString() const CATCH_OVERRIDE
+            {
+                return "equals: std::vector of length " + Catch::toString(m_vector.size());
+            }
+
+            std::vector<T, Alloc> m_vector;
+        };
+    } // namespace StdVector
+
     } // namespace Impl
 
     // The following functions create the actual matcher objects.
@@ -269,6 +296,11 @@ namespace Matchers {
     }
     inline Impl::StdString::EndsWith    EndsWith( const char* substr ) {
         return Impl::StdString::EndsWith( Impl::StdString::makeString( substr ) );
+    }
+
+    template<typename T, typename Alloc>
+    inline Impl::StdVector::Equals<T, Alloc>    Equals( std::vector<T, Alloc> const& vec ) {
+        return Impl::StdVector::Equals<T, Alloc>( vec );
     }
 
 } // namespace Matchers
