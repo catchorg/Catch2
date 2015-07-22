@@ -125,11 +125,11 @@
 #define CATCH_SCENARIO( name, tags ) CATCH_TEST_CASE( "Scenario: " name, tags )
 #define CATCH_SCENARIO_METHOD( className, name, tags ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " name, tags )
 #endif
-#define CATCH_GIVEN( desc )    CATCH_SECTION( "Given: " desc, "" )
-#define CATCH_WHEN( desc )     CATCH_SECTION( " When: " desc, "" )
-#define CATCH_AND_WHEN( desc ) CATCH_SECTION( "  And: " desc, "" )
-#define CATCH_THEN( desc )     CATCH_SECTION( " Then: " desc, "" )
-#define CATCH_AND_THEN( desc ) CATCH_SECTION( "  And: " desc, "" )
+#define CATCH_GIVEN( desc )    CATCH_SECTION( std::string( "Given: ") + desc, "" )
+#define CATCH_WHEN( desc )     CATCH_SECTION( std::string( " When: ") + desc, "" )
+#define CATCH_AND_WHEN( desc ) CATCH_SECTION( std::string( "  And: ") + desc, "" )
+#define CATCH_THEN( desc )     CATCH_SECTION( std::string( " Then: ") + desc, "" )
+#define CATCH_AND_THEN( desc ) CATCH_SECTION( std::string( "  And: ") + desc, "" )
 
 // If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
 #else
@@ -196,11 +196,11 @@
 #define SCENARIO( name, tags ) TEST_CASE( "Scenario: " name, tags )
 #define SCENARIO_METHOD( className, name, tags ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " name, tags )
 #endif
-#define GIVEN( desc )    SECTION( "   Given: " desc, "" )
-#define WHEN( desc )     SECTION( "    When: " desc, "" )
-#define AND_WHEN( desc ) SECTION( "And when: " desc, "" )
-#define THEN( desc )     SECTION( "    Then: " desc, "" )
-#define AND_THEN( desc ) SECTION( "     And: " desc, "" )
+#define GIVEN( desc )    SECTION( std::string("   Given: ") + desc, "" )
+#define WHEN( desc )     SECTION( std::string("    When: ") + desc, "" )
+#define AND_WHEN( desc ) SECTION( std::string("And when: ") + desc, "" )
+#define THEN( desc )     SECTION( std::string("    Then: ") + desc, "" )
+#define AND_THEN( desc ) SECTION( std::string("     And: ") + desc, "" )
 
 using Catch::Detail::Approx;
 
