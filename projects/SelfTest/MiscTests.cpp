@@ -418,6 +418,14 @@ TEST_CASE( "XmlEncode" ) {
     }
 }
 
+#ifdef CATCH_CONFIG_CPP11_LONG_LONG
+TEST_CASE( "long long" ) {
+    long long l = std::numeric_limits<long long>::max();
+    
+    REQUIRE( l == std::numeric_limits<long long>::max() );
+}
+#endif
+
 //TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
 //    int i = 0;
 //    int x = 10/i; // This should cause the signal to fire
