@@ -3763,6 +3763,128 @@ with expansion:
   ""wide load"" == ""wide load""
 
 -------------------------------------------------------------------------------
+XmlEncode
+  normal string
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "normal string" ) == "normal string" )
+with expansion:
+  "normal string" == "normal string"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  empty string
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "" ) == "" )
+with expansion:
+  "" == ""
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with ampersand
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith & jones" ) == "smith &amp; jones" )
+with expansion:
+  "smith &amp; jones" == "smith &amp; jones"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with less-than
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith < jones" ) == "smith &lt; jones" )
+with expansion:
+  "smith &lt; jones" == "smith &lt; jones"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with greater-than
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith > jones" ) == "smith > jones" )
+with expansion:
+  "smith > jones" == "smith > jones"
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith ]]> jones" ) == "smith ]]&gt; jones" )
+with expansion:
+  "smith ]]&gt; jones"
+  ==
+  "smith ]]&gt; jones"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with quotes
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( stringWithQuotes ) == stringWithQuotes )
+with expansion:
+  "don't "quote" me on that"
+  ==
+  "don't "quote" me on that"
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" )
+with expansion:
+  "don't &quot;quote&quot; me on that"
+  ==
+  "don't &quot;quote&quot; me on that"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with control char (1)
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "[\x01]" ) == "[&#x1]" )
+with expansion:
+  "[&#x1]" == "[&#x1]"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with control char (x7F)
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "[\x7F]" ) == "[&#x7F]" )
+with expansion:
+  "[&#x7F]" == "[&#x7F]"
+
+-------------------------------------------------------------------------------
 Process can be configured on command line
   default - no arguments
 -------------------------------------------------------------------------------
@@ -8004,6 +8126,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 157 | 101 passed |  55 failed |  1 failed as expected
-assertions: 793 | 680 passed | 100 failed | 13 failed as expected
+test cases: 158 | 102 passed |  55 failed |  1 failed as expected
+assertions: 803 | 690 passed | 100 failed | 13 failed as expected
 

@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="all tests" errors="12" failures="88" tests="793" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="all tests" errors="12" failures="88" tests="803" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -463,6 +463,14 @@ MiscTests.cpp:<line number>
     <testcase classname="global" name="toString on const wchar_t pointer returns the string contents" time="{duration}"/>
     <testcase classname="global" name="toString on wchar_t const pointer returns the string contents" time="{duration}"/>
     <testcase classname="global" name="toString on wchar_t returns the string contents" time="{duration}"/>
+    <testcase classname="XmlEncode" name="normal string" time="{duration}"/>
+    <testcase classname="XmlEncode" name="empty string" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with ampersand" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with less-than" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with greater-than" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with quotes" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with control char (1)" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with control char (x7F)" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="default - no arguments" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/1 test" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using exclude:" time="{duration}"/>

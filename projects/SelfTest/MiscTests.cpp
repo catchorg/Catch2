@@ -7,6 +7,7 @@
  */
 
 #include "catch.hpp"
+#include "catch_xmlwriter.hpp"
 
 #include <iostream>
 
@@ -379,6 +380,42 @@ TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
 	wchar_t * s = const_cast<wchar_t*>( L"wide load" );
 	std::string result = Catch::toString( s );
 	CHECK( result == "\"wide load\"" );
+}
+
+inline std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
+    std::ostringstream oss;
+    oss << Catch::XmlEncode( str, forWhat );
+    return oss.str();
+}
+
+TEST_CASE( "XmlEncode" ) {
+    SECTION( "normal string" ) {
+        REQUIRE( encode( "normal string" ) == "normal string" );
+    }
+    SECTION( "empty string" ) {
+        REQUIRE( encode( "" ) == "" );
+    }
+    SECTION( "string with ampersand" ) {
+        REQUIRE( encode( "smith & jones" ) == "smith &amp; jones" );
+    }
+    SECTION( "string with less-than" ) {
+        REQUIRE( encode( "smith < jones" ) == "smith &lt; jones" );
+    }
+    SECTION( "string with greater-than" ) {
+        REQUIRE( encode( "smith > jones" ) == "smith > jones" );
+        REQUIRE( encode( "smith ]]> jones" ) == "smith ]]&gt; jones" );
+    }
+    SECTION( "string with quotes" ) {
+        std::string stringWithQuotes = "don't \"quote\" me on that";
+        REQUIRE( encode( stringWithQuotes ) == stringWithQuotes );
+        REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" );
+    }
+    SECTION( "string with control char (1)" ) {
+        REQUIRE( encode( "[\x01]" ) == "[&#x1]" );
+    }
+    SECTION( "string with control char (x7F)" ) {
+        REQUIRE( encode( "[\x7F]" ) == "[&#x7F]" );
+    }
 }
 
 //TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
