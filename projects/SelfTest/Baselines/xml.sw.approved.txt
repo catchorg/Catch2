@@ -1063,9 +1063,7 @@
           (std::numeric_limits&lt;unsigned long>::max)() > ul
         </Original>
         <Expanded>
-          18446744073709551615 (0x<hex digits>)
->
-4
+          4294967295 (0x<hex digits>) > 4
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3964,6 +3962,19 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="long long">
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          l == std::numeric_limits&lt;long long>::max()
+        </Original>
+        <Expanded>
+          9223372036854775807 (0x<hex digits>)
+==
+9223372036854775807 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Process can be configured on command line">
       <Section name="default - no arguments">
         <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
@@ -6449,9 +6460,7 @@ there"
           m == &amp;S::f
         </Original>
         <Expanded>
-          0x<hex digits>
-==
-0x<hex digits>
+          0x<hex digits> == 0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8412,7 +8421,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="690" failures="100" expectedFailures="13"/>
+    <OverallResults successes="691" failures="100" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="690" failures="100" expectedFailures="13"/>
+  <OverallResults successes="691" failures="100" expectedFailures="13"/>
 </Catch>
