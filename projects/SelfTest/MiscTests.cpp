@@ -7,7 +7,7 @@
  */
 
 #include "catch.hpp"
-#include "catch_xmlwriter.hpp"
+#include "internal/catch_xmlwriter.hpp"
 
 #include <iostream>
 
