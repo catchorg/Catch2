@@ -7,6 +7,7 @@
  */
 
 #include "catch.hpp"
+#include "internal/catch_xmlwriter.hpp"
 
 #include <iostream>
 
@@ -124,13 +125,13 @@ TEST_CASE( "Sends stuff to stdout and stderr", "[.]" )
 
 inline const char* makeString( bool makeNull )
 {
-    return makeNull ? NULL : "valid string";
+    return makeNull ? CATCH_NULL : "valid string";
 }
 
 TEST_CASE( "null strings", "" )
 {
-    REQUIRE( makeString( false ) != static_cast<char*>(NULL));
-    REQUIRE( makeString( true ) == static_cast<char*>(NULL));
+    REQUIRE( makeString( false ) != static_cast<char*>(CATCH_NULL));
+    REQUIRE( makeString( true ) == static_cast<char*>(CATCH_NULL));
 }
 
 
@@ -233,7 +234,7 @@ TEST_CASE("Equals string matcher", "[.][failing][matchers]")
 }
 TEST_CASE("Equals string matcher, with NULL", "[matchers]")
 {
-    REQUIRE_THAT("", Equals(NULL));
+    REQUIRE_THAT("", Equals(CATCH_NULL));
 }
 TEST_CASE("AllOf matcher", "[matchers]")
 {
@@ -380,6 +381,50 @@ TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
 	std::string result = Catch::toString( s );
 	CHECK( result == "\"wide load\"" );
 }
+
+inline std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
+    std::ostringstream oss;
+    oss << Catch::XmlEncode( str, forWhat );
+    return oss.str();
+}
+
+TEST_CASE( "XmlEncode" ) {
+    SECTION( "normal string" ) {
+        REQUIRE( encode( "normal string" ) == "normal string" );
+    }
+    SECTION( "empty string" ) {
+        REQUIRE( encode( "" ) == "" );
+    }
+    SECTION( "string with ampersand" ) {
+        REQUIRE( encode( "smith & jones" ) == "smith &amp; jones" );
+    }
+    SECTION( "string with less-than" ) {
+        REQUIRE( encode( "smith < jones" ) == "smith &lt; jones" );
+    }
+    SECTION( "string with greater-than" ) {
+        REQUIRE( encode( "smith > jones" ) == "smith > jones" );
+        REQUIRE( encode( "smith ]]> jones" ) == "smith ]]&gt; jones" );
+    }
+    SECTION( "string with quotes" ) {
+        std::string stringWithQuotes = "don't \"quote\" me on that";
+        REQUIRE( encode( stringWithQuotes ) == stringWithQuotes );
+        REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" );
+    }
+    SECTION( "string with control char (1)" ) {
+        REQUIRE( encode( "[\x01]" ) == "[&#x1]" );
+    }
+    SECTION( "string with control char (x7F)" ) {
+        REQUIRE( encode( "[\x7F]" ) == "[&#x7F]" );
+    }
+}
+
+#ifdef CATCH_CONFIG_CPP11_LONG_LONG
+TEST_CASE( "long long" ) {
+    long long l = std::numeric_limits<long long>::max();
+    
+    REQUIRE( l == std::numeric_limits<long long>::max() );
+}
+#endif
 
 //TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
 //    int i = 0;

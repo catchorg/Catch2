@@ -90,6 +90,8 @@ namespace Catch {
                     break;
                 case RunTests::InRandomOrder:
                 {
+                    seedRng( config );
+                    
                     RandomNumberGenerator rng;
                     std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
                 }

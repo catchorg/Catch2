@@ -846,9 +846,7 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul )
 with expansion:
-  18446744073709551615 (0x<hex digits>)
-  >
-  4
+  4294967295 (0x<hex digits>) > 4
 
 -------------------------------------------------------------------------------
 comparisons between int variables
@@ -973,51 +971,51 @@ ConditionTests.cpp:<line number>
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( p == __null )
+  REQUIRE( p == nullptr )
 with expansion:
-  __null == 0
+  NULL == nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == pNULL )
 with expansion:
-  __null == __null
+  NULL == NULL
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( p != __null )
+  REQUIRE( p != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( cp != __null )
+  REQUIRE( cp != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( cpc != __null )
+  REQUIRE( cpc != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( returnsNull() == __null )
+  REQUIRE( returnsNull() == nullptr )
 with expansion:
-  {null string} == 0
+  {null string} == nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( returnsConstNull() == __null )
+  REQUIRE( returnsConstNull() == nullptr )
 with expansion:
-  {null string} == 0
+  {null string} == nullptr
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( __null != p )
+  REQUIRE( nullptr != p )
 with expansion:
-  0 != 0x<hex digits>
+  nullptr != 0x<hex digits>
 
 -------------------------------------------------------------------------------
 'Not' checks that should succeed
@@ -1276,6 +1274,66 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) )
+
+-------------------------------------------------------------------------------
+Exception messages can be tested for
+  exact match
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+
+-------------------------------------------------------------------------------
+Exception messages can be tested for
+  different case
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) )
+
+-------------------------------------------------------------------------------
+Exception messages can be tested for
+  wildcarded
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), StartsWith( "expected" ) )
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), EndsWith( "exception" ) )
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) )
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) )
+
+-------------------------------------------------------------------------------
+Mismatching exception messages failing the test
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
+with expansion:
+  expected exception
 
 -------------------------------------------------------------------------------
 Generators over two ranges
@@ -3113,13 +3171,13 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( makeString( false ) != static_cast<char*>(__null) )
+  REQUIRE( makeString( false ) != static_cast<char*>(nullptr) )
 with expansion:
   "valid string" != {null string}
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( makeString( true ) == static_cast<char*>(__null) )
+  REQUIRE( makeString( true ) == static_cast<char*>(nullptr) )
 with expansion:
   {null string} == {null string}
 
@@ -3316,7 +3374,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( "" Equals(__null) )
+  REQUIRE_THAT( "" Equals(nullptr) )
 with expansion:
   "" equals: ""
 
@@ -3701,6 +3759,142 @@ PASSED:
   CHECK( result == "\"wide load\"" )
 with expansion:
   ""wide load"" == ""wide load""
+
+-------------------------------------------------------------------------------
+XmlEncode
+  normal string
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "normal string" ) == "normal string" )
+with expansion:
+  "normal string" == "normal string"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  empty string
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "" ) == "" )
+with expansion:
+  "" == ""
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with ampersand
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith & jones" ) == "smith &amp; jones" )
+with expansion:
+  "smith &amp; jones" == "smith &amp; jones"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with less-than
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith < jones" ) == "smith &lt; jones" )
+with expansion:
+  "smith &lt; jones" == "smith &lt; jones"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with greater-than
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith > jones" ) == "smith > jones" )
+with expansion:
+  "smith > jones" == "smith > jones"
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "smith ]]> jones" ) == "smith ]]&gt; jones" )
+with expansion:
+  "smith ]]&gt; jones"
+  ==
+  "smith ]]&gt; jones"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with quotes
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( stringWithQuotes ) == stringWithQuotes )
+with expansion:
+  "don't "quote" me on that"
+  ==
+  "don't "quote" me on that"
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" )
+with expansion:
+  "don't &quot;quote&quot; me on that"
+  ==
+  "don't &quot;quote&quot; me on that"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with control char (1)
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "[\x01]" ) == "[&#x1]" )
+with expansion:
+  "[&#x1]" == "[&#x1]"
+
+-------------------------------------------------------------------------------
+XmlEncode
+  string with control char (x7F)
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "[\x7F]" ) == "[&#x7F]" )
+with expansion:
+  "[&#x7F]" == "[&#x7F]"
+
+-------------------------------------------------------------------------------
+long long
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( l == std::numeric_limits<long long>::max() )
+with expansion:
+  9223372036854775807 (0x<hex digits>)
+  ==
+  9223372036854775807 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -5863,9 +6057,9 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( obj.prop != __null )
+  REQUIRE( obj.prop != nullptr )
 with expansion:
-  0x<hex digits> != 0
+  0x<hex digits> != nullptr
 
 -------------------------------------------------------------------------------
 (unimplemented) static bools can be evaluated
@@ -6092,9 +6286,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK( m == &S::f )
 with expansion:
-  0x<hex digits>
-  ==
-  0x<hex digits>
+  0x<hex digits> == 0x<hex digits>
 
 -------------------------------------------------------------------------------
 pointer to class
@@ -6106,7 +6298,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == 0 )
 with expansion:
-  __null == 0
+  NULL == 0
 
 -------------------------------------------------------------------------------
 null_ptr
@@ -6118,7 +6310,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( ptr.get() == nullptr )
 with expansion:
-  __null == nullptr
+  NULL == nullptr
 
 -------------------------------------------------------------------------------
 X/level/0/a
@@ -7944,6 +8136,6 @@ with expansion:
   true
 
 ===============================================================================
-test cases: 155 | 100 passed | 54 failed |  1 failed as expected
-assertions: 785 | 673 passed | 99 failed | 13 failed as expected
+test cases: 159 | 103 passed |  55 failed |  1 failed as expected
+assertions: 804 | 691 passed | 100 failed | 13 failed as expected
 

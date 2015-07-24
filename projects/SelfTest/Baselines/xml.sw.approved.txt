@@ -3,18 +3,18 @@
     <TestCase name="toString(enum)">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e0) == &quot;0&quot;
+          Catch::toString(e0) == "0"
         </Original>
         <Expanded>
-          &quot;0&quot; == &quot;0&quot;
+          "0" == "0"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e1) == &quot;1&quot;
+          Catch::toString(e1) == "1"
         </Original>
         <Expanded>
-          &quot;1&quot; == &quot;1&quot;
+          "1" == "1"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -22,18 +22,18 @@
     <TestCase name="toString(enum w/operator&lt;&lt;)">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e0) == &quot;E2{0}&quot;
+          Catch::toString(e0) == "E2{0}"
         </Original>
         <Expanded>
-          &quot;E2{0}&quot; == &quot;E2{0}&quot;
+          "E2{0}" == "E2{0}"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e1) == &quot;E2{1}&quot;
+          Catch::toString(e1) == "E2{1}"
         </Original>
         <Expanded>
-          &quot;E2{1}&quot; == &quot;E2{1}&quot;
+          "E2{1}" == "E2{1}"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -41,18 +41,18 @@
     <TestCase name="toString(enum class)">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e0) == &quot;0&quot;
+          Catch::toString(e0) == "0"
         </Original>
         <Expanded>
-          &quot;0&quot; == &quot;0&quot;
+          "0" == "0"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e1) == &quot;1&quot;
+          Catch::toString(e1) == "1"
         </Original>
         <Expanded>
-          &quot;1&quot; == &quot;1&quot;
+          "1" == "1"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -60,28 +60,28 @@
     <TestCase name="toString(enum class w/operator&lt;&lt;)">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e0) == &quot;E2/V0&quot;
+          Catch::toString(e0) == "E2/V0"
         </Original>
         <Expanded>
-          &quot;E2/V0&quot; == &quot;E2/V0&quot;
+          "E2/V0" == "E2/V0"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e1) == &quot;E2/V1&quot;
+          Catch::toString(e1) == "E2/V1"
         </Original>
         <Expanded>
-          &quot;E2/V1&quot; == &quot;E2/V1&quot;
+          "E2/V1" == "E2/V1"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
-          Catch::toString(e3) == &quot;Unknown enum value 10&quot;
+          Catch::toString(e3) == "Unknown enum value 10"
         </Original>
         <Expanded>
-          &quot;Unknown enum value 10&quot;
+          "Unknown enum value 10"
 ==
-&quot;Unknown enum value 10&quot;
+"Unknown enum value 10"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -326,10 +326,10 @@
     <TestCase name="A METHOD_AS_TEST_CASE based test run that succeeds">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ClassTests.cpp" >
         <Original>
-          s == &quot;hello&quot;
+          s == "hello"
         </Original>
         <Expanded>
-          &quot;hello&quot; == &quot;hello&quot;
+          "hello" == "hello"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -337,10 +337,10 @@
     <TestCase name="A METHOD_AS_TEST_CASE based test run that fails">
       <Expression success="false" type="REQUIRE" filename="projects/SelfTest/ClassTests.cpp" >
         <Original>
-          s == &quot;world&quot;
+          s == "world"
         </Original>
         <Expanded>
-          &quot;hello&quot; == &quot;world&quot;
+          "hello" == "world"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -394,18 +394,18 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello == &quot;hello&quot;
+          data.str_hello == "hello"
         </Original>
         <Expanded>
-          &quot;hello&quot; == &quot;hello&quot;
+          "hello" == "hello"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          &quot;hello&quot; == data.str_hello
+          "hello" == data.str_hello
         </Original>
         <Expanded>
-          &quot;hello&quot; == &quot;hello&quot;
+          "hello" == "hello"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -493,26 +493,26 @@
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello == &quot;goodbye&quot;
+          data.str_hello == "goodbye"
         </Original>
         <Expanded>
-          &quot;hello&quot; == &quot;goodbye&quot;
+          "hello" == "goodbye"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello == &quot;hell&quot;
+          data.str_hello == "hell"
         </Original>
         <Expanded>
-          &quot;hello&quot; == &quot;hell&quot;
+          "hello" == "hell"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello == &quot;hello1&quot;
+          data.str_hello == "hello1"
         </Original>
         <Expanded>
-          &quot;hello&quot; == &quot;hello1&quot;
+          "hello" == "hello1"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -592,26 +592,26 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello != &quot;goodbye&quot;
+          data.str_hello != "goodbye"
         </Original>
         <Expanded>
-          &quot;hello&quot; != &quot;goodbye&quot;
+          "hello" != "goodbye"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello != &quot;hell&quot;
+          data.str_hello != "hell"
         </Original>
         <Expanded>
-          &quot;hello&quot; != &quot;hell&quot;
+          "hello" != "hell"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello != &quot;hello1&quot;
+          data.str_hello != "hello1"
         </Original>
         <Expanded>
-          &quot;hello&quot; != &quot;hello1&quot;
+          "hello" != "hello1"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -651,10 +651,10 @@
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello != &quot;hello&quot;
+          data.str_hello != "hello"
         </Original>
         <Expanded>
-          &quot;hello&quot; != &quot;hello&quot;
+          "hello" != "hello"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -758,50 +758,50 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello &lt;= &quot;hello&quot;
+          data.str_hello &lt;= "hello"
         </Original>
         <Expanded>
-          &quot;hello&quot; &lt;= &quot;hello&quot;
+          "hello" &lt;= "hello"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello >= &quot;hello&quot;
+          data.str_hello >= "hello"
         </Original>
         <Expanded>
-          &quot;hello&quot; >= &quot;hello&quot;
+          "hello" >= "hello"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello &lt; &quot;hellp&quot;
+          data.str_hello &lt; "hellp"
         </Original>
         <Expanded>
-          &quot;hello&quot; &lt; &quot;hellp&quot;
+          "hello" &lt; "hellp"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello &lt; &quot;zebra&quot;
+          data.str_hello &lt; "zebra"
         </Original>
         <Expanded>
-          &quot;hello&quot; &lt; &quot;zebra&quot;
+          "hello" &lt; "zebra"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello > &quot;hellm&quot;
+          data.str_hello > "hellm"
         </Original>
         <Expanded>
-          &quot;hello&quot; > &quot;hellm&quot;
+          "hello" > "hellm"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello > &quot;a&quot;
+          data.str_hello > "a"
         </Original>
         <Expanded>
-          &quot;hello&quot; > &quot;a&quot;
+          "hello" > "a"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -897,66 +897,66 @@
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello > &quot;hello&quot;
+          data.str_hello > "hello"
         </Original>
         <Expanded>
-          &quot;hello&quot; > &quot;hello&quot;
+          "hello" > "hello"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello &lt; &quot;hello&quot;
+          data.str_hello &lt; "hello"
         </Original>
         <Expanded>
-          &quot;hello&quot; &lt; &quot;hello&quot;
+          "hello" &lt; "hello"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello > &quot;hellp&quot;
+          data.str_hello > "hellp"
         </Original>
         <Expanded>
-          &quot;hello&quot; > &quot;hellp&quot;
+          "hello" > "hellp"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello > &quot;z&quot;
+          data.str_hello > "z"
         </Original>
         <Expanded>
-          &quot;hello&quot; > &quot;z&quot;
+          "hello" > "z"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello &lt; &quot;hellm&quot;
+          data.str_hello &lt; "hellm"
         </Original>
         <Expanded>
-          &quot;hello&quot; &lt; &quot;hellm&quot;
+          "hello" &lt; "hellm"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello &lt; &quot;a&quot;
+          data.str_hello &lt; "a"
         </Original>
         <Expanded>
-          &quot;hello&quot; &lt; &quot;a&quot;
+          "hello" &lt; "a"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello >= &quot;z&quot;
+          data.str_hello >= "z"
         </Original>
         <Expanded>
-          &quot;hello&quot; >= &quot;z&quot;
+          "hello" >= "z"
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          data.str_hello &lt;= &quot;a&quot;
+          data.str_hello &lt;= "a"
         </Original>
         <Expanded>
-          &quot;hello&quot; &lt;= &quot;a&quot;
+          "hello" &lt;= "a"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -1063,9 +1063,7 @@
           (std::numeric_limits&lt;unsigned long>::max)() > ul
         </Original>
         <Expanded>
-          18446744073709551615 (0x<hex digits>)
->
-4
+          4294967295 (0x<hex digits>) > 4
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -1205,10 +1203,10 @@
     <TestCase name="Pointers can be compared to null">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          p == __null
+          p == nullptr
         </Original>
         <Expanded>
-          __null == 0
+          NULL == nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -1216,55 +1214,55 @@
           p == pNULL
         </Original>
         <Expanded>
-          __null == __null
+          NULL == NULL
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          p != __null
+          p != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          cp != __null
+          cp != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          cpc != __null
+          cpc != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          returnsNull() == __null
+          returnsNull() == nullptr
         </Original>
         <Expanded>
-          {null string} == 0
+          {null string} == nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          returnsConstNull() == __null
+          returnsConstNull() == nullptr
         </Original>
         <Expanded>
-          {null string} == 0
+          {null string} == nullptr
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          __null != p
+          nullptr != p
         </Original>
         <Expanded>
-          0 != 0x<hex digits>
+          nullptr != 0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -1595,6 +1593,85 @@
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Exception messages can be tested for">
+      <Section name="exact match">
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), "expected exception"
+          </Original>
+          <Expanded>
+            thisThrows(), "expected exception"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="different case">
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No )
+          </Original>
+          <Expanded>
+            thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No )
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="wildcarded">
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), StartsWith( "expected" )
+          </Original>
+          <Expanded>
+            thisThrows(), StartsWith( "expected" )
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), EndsWith( "exception" )
+          </Original>
+          <Expanded>
+            thisThrows(), EndsWith( "exception" )
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), Contains( "except" )
+          </Original>
+          <Expanded>
+            thisThrows(), Contains( "except" )
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+          <Original>
+            thisThrows(), Contains( "exCept", Catch::CaseSensitive::No )
+          </Original>
+          <Expanded>
+            thisThrows(), Contains( "exCept", Catch::CaseSensitive::No )
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Mismatching exception messages failing the test">
+      <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+        <Original>
+          thisThrows(), "expected exception"
+        </Original>
+        <Expanded>
+          thisThrows(), "expected exception"
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/ExceptionTests.cpp" >
+        <Original>
+          thisThrows(), "should fail"
+        </Original>
+        <Expanded>
+          expected exception
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Generators over two ranges">
       <Expression success="true" type="CATCH_REQUIRE" filename="projects/SelfTest/GeneratorTests.cpp" >
@@ -3226,15 +3303,15 @@
     <TestCase name="null strings">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          makeString( false ) != static_cast&lt;char*>(__null)
+          makeString( false ) != static_cast&lt;char*>(nullptr)
         </Original>
         <Expanded>
-          &quot;valid string&quot; != {null string}
+          "valid string" != {null string}
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          makeString( true ) == static_cast&lt;char*>(__null)
+          makeString( true ) == static_cast&lt;char*>(nullptr)
         </Original>
         <Expanded>
           {null string} == {null string}
@@ -3355,34 +3432,34 @@
     <TestCase name="String matchers">
       <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( &quot;string&quot; )
+          testStringForMatching() Contains( "string" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; contains: &quot;string&quot;
+          "this string contains 'abc' as a substring" contains: "string"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( &quot;abc&quot; )
+          testStringForMatching() Contains( "abc" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; contains: &quot;abc&quot;
+          "this string contains 'abc' as a substring" contains: "abc"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() StartsWith( &quot;this&quot; )
+          testStringForMatching() StartsWith( "this" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; starts with: &quot;this&quot;
+          "this string contains 'abc' as a substring" starts with: "this"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() EndsWith( &quot;substring&quot; )
+          testStringForMatching() EndsWith( "substring" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; ends with: &quot;substring&quot;
+          "this string contains 'abc' as a substring" ends with: "substring"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3390,10 +3467,10 @@
     <TestCase name="Contains string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( &quot;not there&quot; )
+          testStringForMatching() Contains( "not there" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;
+          "this string contains 'abc' as a substring" contains: "not there"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -3401,10 +3478,10 @@
     <TestCase name="StartsWith string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() StartsWith( &quot;string&quot; )
+          testStringForMatching() StartsWith( "string" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;
+          "this string contains 'abc' as a substring" starts with: "string"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -3412,10 +3489,10 @@
     <TestCase name="EndsWith string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() EndsWith( &quot;this&quot; )
+          testStringForMatching() EndsWith( "this" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;
+          "this string contains 'abc' as a substring" ends with: "this"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -3423,10 +3500,10 @@
     <TestCase name="Equals string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Equals( &quot;something else&quot; )
+          testStringForMatching() Equals( "something else" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;
+          "this string contains 'abc' as a substring" equals: "something else"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -3434,10 +3511,10 @@
     <TestCase name="Equals string matcher, with NULL">
       <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          &quot;&quot; Equals(__null)
+          "" Equals(nullptr)
         </Original>
         <Expanded>
-          &quot;&quot; equals: &quot;&quot;
+          "" equals: ""
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3445,10 +3522,10 @@
     <TestCase name="AllOf matcher">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() AllOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;abc&quot; ) )
+          testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;string&quot; and contains: &quot;abc&quot; )
+          "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3456,18 +3533,18 @@
     <TestCase name="AnyOf matcher">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() AnyOf( Catch::Contains( &quot;string&quot; ), Catch::Contains( &quot;not there&quot; ) )
+          testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;string&quot; or contains: &quot;not there&quot; )
+          "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() AnyOf( Catch::Contains( &quot;not there&quot; ), Catch::Contains( &quot;string&quot; ) )
+          testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; ( contains: &quot;not there&quot; or contains: &quot;string&quot; )
+          "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3475,10 +3552,10 @@
     <TestCase name="Equals">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Equals( &quot;this string contains 'abc' as a substring&quot; )
+          testStringForMatching() Equals( "this string contains 'abc' as a substring" )
         </Original>
         <Expanded>
-          &quot;this string contains 'abc' as a substring&quot; equals: &quot;this string contains 'abc' as a substring&quot;
+          "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3716,14 +3793,14 @@
           s1 == s2
         </Original>
         <Expanded>
-          &quot;if ($b == 10) {
+          "if ($b == 10) {
 		$a	= 20;
-}&quot;
+}"
 ==
-&quot;if ($b == 10) {
+"if ($b == 10) {
 	$a = 20;
 }
-&quot;
+"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -3731,10 +3808,10 @@
     <TestCase name="toString on const wchar_t const pointer returns the string contents">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          result == &quot;\&quot;wide load\&quot;&quot;
+          result == "\"wide load\""
         </Original>
         <Expanded>
-          &quot;&quot;wide load&quot;&quot; == &quot;&quot;wide load&quot;&quot;
+          ""wide load"" == ""wide load""
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3742,10 +3819,10 @@
     <TestCase name="toString on const wchar_t pointer returns the string contents">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          result == &quot;\&quot;wide load\&quot;&quot;
+          result == "\"wide load\""
         </Original>
         <Expanded>
-          &quot;&quot;wide load&quot;&quot; == &quot;&quot;wide load&quot;&quot;
+          ""wide load"" == ""wide load""
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3753,10 +3830,10 @@
     <TestCase name="toString on wchar_t const pointer returns the string contents">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          result == &quot;\&quot;wide load\&quot;&quot;
+          result == "\"wide load\""
         </Original>
         <Expanded>
-          &quot;&quot;wide load&quot;&quot; == &quot;&quot;wide load&quot;&quot;
+          ""wide load"" == ""wide load""
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3764,10 +3841,136 @@
     <TestCase name="toString on wchar_t returns the string contents">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          result == &quot;\&quot;wide load\&quot;&quot;
+          result == "\"wide load\""
         </Original>
         <Expanded>
-          &quot;&quot;wide load&quot;&quot; == &quot;&quot;wide load&quot;&quot;
+          ""wide load"" == ""wide load""
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="XmlEncode">
+      <Section name="normal string">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "normal string" ) == "normal string"
+          </Original>
+          <Expanded>
+            "normal string" == "normal string"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="empty string">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "" ) == ""
+          </Original>
+          <Expanded>
+            "" == ""
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with ampersand">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "smith &amp; jones" ) == "smith &amp;amp; jones"
+          </Original>
+          <Expanded>
+            "smith &amp;amp; jones" == "smith &amp;amp; jones"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with less-than">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "smith &lt; jones" ) == "smith &amp;lt; jones"
+          </Original>
+          <Expanded>
+            "smith &amp;lt; jones" == "smith &amp;lt; jones"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with greater-than">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "smith > jones" ) == "smith > jones"
+          </Original>
+          <Expanded>
+            "smith > jones" == "smith > jones"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "smith ]]&gt; jones" ) == "smith ]]&amp;gt; jones"
+          </Original>
+          <Expanded>
+            "smith ]]&amp;gt; jones"
+==
+"smith ]]&amp;gt; jones"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with quotes">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( stringWithQuotes ) == stringWithQuotes
+          </Original>
+          <Expanded>
+            "don't "quote" me on that"
+==
+"don't "quote" me on that"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &amp;quot;quote&amp;quot; me on that"
+          </Original>
+          <Expanded>
+            "don't &amp;quot;quote&amp;quot; me on that"
+==
+"don't &amp;quot;quote&amp;quot; me on that"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with control char (1)">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "[\x01]" ) == "[&amp;#x1]"
+          </Original>
+          <Expanded>
+            "[&amp;#x1]" == "[&amp;#x1]"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with control char (x7F)">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+          <Original>
+            encode( "[\x7F]" ) == "[&amp;#x7F]"
+          </Original>
+          <Expanded>
+            "[&amp;#x7F]" == "[&amp;#x7F]"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="long long">
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          l == std::numeric_limits&lt;long long>::max()
+        </Original>
+        <Expanded>
+          9223372036854775807 (0x<hex digits>)
+==
+9223372036854775807 (0x<hex digits>)
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3828,7 +4031,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( &quot;notIncluded&quot; ) ) == false
+              cfg.testSpec().matches( fakeTestCase( "notIncluded" ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -3836,7 +4039,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( &quot;test1&quot; ) )
+              cfg.testSpec().matches( fakeTestCase( "test1" ) )
             </Original>
             <Expanded>
               true
@@ -3858,7 +4061,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( &quot;test1&quot; ) ) == false
+              cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -3866,7 +4069,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( &quot;alwaysIncluded&quot; ) )
+              cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) )
             </Original>
             <Expanded>
               true
@@ -3888,7 +4091,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( &quot;test1&quot; ) ) == false
+              cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false
             </Original>
             <Expanded>
               false == false
@@ -3896,7 +4099,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( &quot;alwaysIncluded&quot; ) )
+              cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) )
             </Original>
             <Expanded>
               true
@@ -3918,10 +4121,10 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.reporterName == &quot;console&quot;
+              config.reporterName == "console"
             </Original>
             <Expanded>
-              &quot;console&quot; == &quot;console&quot;
+              "console" == "console"
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -3940,10 +4143,10 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.reporterName == &quot;xml&quot;
+              config.reporterName == "xml"
             </Original>
             <Expanded>
-              &quot;xml&quot; == &quot;xml&quot;
+              "xml" == "xml"
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -3962,10 +4165,10 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.reporterName == &quot;junit&quot;
+              config.reporterName == "junit"
             </Original>
             <Expanded>
-              &quot;junit&quot; == &quot;junit&quot;
+              "junit" == "junit"
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4064,11 +4267,11 @@
         <Section name="-x must be greater than zero">
           <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;greater than zero&quot; )
+              parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" )
             </Original>
             <Expanded>
-              &quot;Value after -x or --abortAfter must be greater than zero
-- while parsing: (-x, --abortx &lt;no. failures>)&quot; contains: &quot;greater than zero&quot;
+              "Value after -x or --abortAfter must be greater than zero
+- while parsing: (-x, --abortx &lt;no. failures>)" contains: "greater than zero"
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -4079,11 +4282,11 @@
         <Section name="-x must be numeric">
           <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( &quot;-x&quot; )
+              parseIntoConfigAndReturnError( argv, config ) Contains( "-x" )
             </Original>
             <Expanded>
-              &quot;Unable to convert oops to destination type
-- while parsing: (-x, --abortx &lt;no. failures>)&quot; contains: &quot;-x&quot;
+              "Unable to convert oops to destination type
+- while parsing: (-x, --abortx &lt;no. failures>)" contains: "-x"
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -4146,10 +4349,10 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.outputFilename == &quot;filename.ext&quot;
+              config.outputFilename == "filename.ext"
             </Original>
             <Expanded>
-              &quot;filename.ext&quot; == &quot;filename.ext&quot;
+              "filename.ext" == "filename.ext"
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4168,10 +4371,10 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.outputFilename == &quot;filename.ext&quot;
+              config.outputFilename == "filename.ext"
             </Original>
             <Expanded>
-              &quot;filename.ext&quot; == &quot;filename.ext&quot;
+              "filename.ext" == "filename.ext"
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4270,9 +4473,9 @@
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
             </Original>
             <Expanded>
-              &quot;one two three four&quot;
+              "one two three four"
 ==
-&quot;one two three four&quot;
+"one two three four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
@@ -4280,9 +4483,9 @@
               Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
             </Original>
             <Expanded>
-              &quot;one two three four&quot;
+              "one two three four"
 ==
-&quot;one two three four&quot;
+"one two three four"
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4293,62 +4496,62 @@
         <Section name="Wrapped once">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 17 ) ).toString() == &quot;one two three\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour"
             </Original>
             <Expanded>
-              &quot;one two three
-four&quot;
+              "one two three
+four"
 ==
-&quot;one two three
-four&quot;
+"one two three
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 16 ) ).toString() == &quot;one two three\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour"
             </Original>
             <Expanded>
-              &quot;one two three
-four&quot;
+              "one two three
+four"
 ==
-&quot;one two three
-four&quot;
+"one two three
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 14 ) ).toString() == &quot;one two three\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour"
             </Original>
             <Expanded>
-              &quot;one two three
-four&quot;
+              "one two three
+four"
 ==
-&quot;one two three
-four&quot;
+"one two three
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 13 ) ).toString() == &quot;one two three\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour"
             </Original>
             <Expanded>
-              &quot;one two three
-four&quot;
+              "one two three
+four"
 ==
-&quot;one two three
-four&quot;
+"one two three
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 12 ) ).toString() == &quot;one two\nthree four&quot;
+              Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four"
             </Original>
             <Expanded>
-              &quot;one two
-three four&quot;
+              "one two
+three four"
 ==
-&quot;one two
-three four&quot;
+"one two
+three four"
             </Expanded>
           </Expression>
           <OverallResults successes="5" failures="0" expectedFailures="0"/>
@@ -4359,44 +4562,44 @@ three four&quot;
         <Section name="Wrapped twice">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 9 ) ).toString() == &quot;one two\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one two
+              "one two
 three
-four&quot;
+four"
 ==
-&quot;one two
+"one two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 8 ) ).toString() == &quot;one two\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one two
+              "one two
 three
-four&quot;
+four"
 ==
-&quot;one two
+"one two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 7 ) ).toString() == &quot;one two\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one two
+              "one two
 three
-four&quot;
+four"
 ==
-&quot;one two
+"one two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <OverallResults successes="3" failures="0" expectedFailures="0"/>
@@ -4407,34 +4610,34 @@ four&quot;
         <Section name="Wrapped three times">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one
+              "one
 two
 three
-four&quot;
+four"
 ==
-&quot;one
+"one
 two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 5 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one
+              "one
 two
 three
-four&quot;
+four"
 ==
-&quot;one
+"one
 two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4445,78 +4648,78 @@ four&quot;
         <Section name="Short wrap">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( &quot;abcdef&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndef&quot;
+              Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef"
             </Original>
             <Expanded>
-              &quot;abc-
-def&quot;
+              "abc-
+def"
 ==
-&quot;abc-
-def&quot;
+"abc-
+def"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( &quot;abcdefg&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndefg&quot;
+              Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg"
             </Original>
             <Expanded>
-              &quot;abc-
-defg&quot;
+              "abc-
+defg"
 ==
-&quot;abc-
-defg&quot;
+"abc-
+defg"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( &quot;abcdefgh&quot;, TextAttributes().setWidth( 4 ) ).toString() == &quot;abc-\ndef-\ngh&quot;
+              Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh"
             </Original>
             <Expanded>
-              &quot;abc-
+              "abc-
 def-
-gh&quot;
+gh"
 ==
-&quot;abc-
+"abc-
 def-
-gh&quot;
+gh"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 4 ) ).toString() == &quot;one\ntwo\nthr-\nee\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour"
             </Original>
             <Expanded>
-              &quot;one
+              "one
 two
 thr-
 ee
-four&quot;
+four"
 ==
-&quot;one
+"one
 two
 thr-
 ee
-four&quot;
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 3 ) ).toString() == &quot;one\ntwo\nth-\nree\nfo-\nur&quot;
+              Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur"
             </Original>
             <Expanded>
-              &quot;one
+              "one
 two
 th-
 ree
 fo-
-ur&quot;
+ur"
 ==
-&quot;one
+"one
 two
 th-
 ree
 fo-
-ur&quot;
+ur"
             </Expanded>
           </Expression>
           <OverallResults successes="5" failures="0" expectedFailures="0"/>
@@ -4535,34 +4738,34 @@ ur&quot;
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              text[0] == &quot;one&quot;
+              text[0] == "one"
             </Original>
             <Expanded>
-              &quot;one&quot; == &quot;one&quot;
+              "one" == "one"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              text[1] == &quot;two&quot;
+              text[1] == "two"
             </Original>
             <Expanded>
-              &quot;two&quot; == &quot;two&quot;
+              "two" == "two"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              text[2] == &quot;three&quot;
+              text[2] == "three"
             </Original>
             <Expanded>
-              &quot;three&quot; == &quot;three&quot;
+              "three" == "three"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              text[3] == &quot;four&quot;
+              text[3] == "four"
             </Original>
             <Expanded>
-              &quot;four&quot; == &quot;four&quot;
+              "four" == "four"
             </Expanded>
           </Expression>
           <OverallResults successes="5" failures="0" expectedFailures="0"/>
@@ -4573,16 +4776,16 @@ ur&quot;
         <Section name="Indent first line differently">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              text.toString() == &quot; one two\n    three\n    four&quot;
+              text.toString() == " one two\n    three\n    four"
             </Original>
             <Expanded>
-              &quot; one two
+              " one two
     three
-    four&quot;
+    four"
 ==
-&quot; one two
+" one two
     three
-    four&quot;
+    four"
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -4596,11 +4799,11 @@ ur&quot;
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
             </Original>
             <Expanded>
-              &quot;one two
-three four&quot;
+              "one two
+three four"
 ==
-&quot;one two
-three four&quot;
+"one two
+three four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
@@ -4608,11 +4811,11 @@ three four&quot;
               Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
             </Original>
             <Expanded>
-              &quot;one two
-three four&quot;
+              "one two
+three four"
 ==
-&quot;one two
-three four&quot;
+"one two
+three four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
@@ -4620,11 +4823,11 @@ three four&quot;
               Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString
             </Original>
             <Expanded>
-              &quot;one two
-three four&quot;
+              "one two
+three four"
 ==
-&quot;one two
-three four&quot;
+"one two
+three four"
             </Expanded>
           </Expression>
           <OverallResults successes="3" failures="0" expectedFailures="0"/>
@@ -4635,34 +4838,34 @@ three four&quot;
         <Section name="Trailing newline">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( &quot;abcdef\n&quot;, TextAttributes().setWidth( 10 ) ).toString() == &quot;abcdef\n&quot;
+              Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n"
             </Original>
             <Expanded>
-              &quot;abcdef
-&quot;
+              "abcdef
+"
 ==
-&quot;abcdef
-&quot;
+"abcdef
+"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( &quot;abcdef&quot;, TextAttributes().setWidth( 6 ) ).toString() == &quot;abcdef&quot;
+              Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef"
             </Original>
             <Expanded>
-              &quot;abcdef&quot; == &quot;abcdef&quot;
+              "abcdef" == "abcdef"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( &quot;abcdef\n&quot;, TextAttributes().setWidth( 6 ) ).toString() == &quot;abcdef\n&quot;
+              Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n"
             </Original>
             <Expanded>
-              &quot;abcdef
-&quot;
+              "abcdef
+"
 ==
-&quot;abcdef
-&quot;
+"abcdef
+"
             </Expanded>
           </Expression>
           <OverallResults successes="3" failures="0" expectedFailures="0"/>
@@ -4673,44 +4876,44 @@ three four&quot;
         <Section name="Wrapped once">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 9 ) ).toString() == &quot;one two\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one two
+              "one two
 three
-four&quot;
+four"
 ==
-&quot;one two
+"one two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 8 ) ).toString() == &quot;one two\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one two
+              "one two
 three
-four&quot;
+four"
 ==
-&quot;one two
+"one two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 7 ) ).toString() == &quot;one two\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one two
+              "one two
 three
-four&quot;
+four"
 ==
-&quot;one two
+"one two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <OverallResults successes="3" failures="0" expectedFailures="0"/>
@@ -4721,18 +4924,18 @@ four&quot;
         <Section name="Wrapped twice">
           <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == &quot;one\ntwo\nthree\nfour&quot;
+              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour"
             </Original>
             <Expanded>
-              &quot;one
+              "one
 two
 three
-four&quot;
+four"
 ==
-&quot;one
+"one
 two
 three
-four&quot;
+four"
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -4742,18 +4945,18 @@ four&quot;
       <Section name="With tabs">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            Text( testString, TextAttributes().setWidth( 15 ) ).toString() == &quot;one two three\n        four\n        five\n        six&quot;
+            Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six"
           </Original>
           <Expanded>
-            &quot;one two three
+            "one two three
         four
         five
-        six&quot;
+        six"
 ==
-&quot;one two three
+"one two three
         four
         five
-        six&quot;
+        six"
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -4764,7 +4967,7 @@ four&quot;
       <Section name="replace single char">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, &quot;b&quot;, &quot;z&quot; )
+            replaceInPlace( letters, "b", "z" )
           </Original>
           <Expanded>
             true
@@ -4772,10 +4975,10 @@ four&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            letters == &quot;azcdefcg&quot;
+            letters == "azcdefcg"
           </Original>
           <Expanded>
-            &quot;azcdefcg&quot; == &quot;azcdefcg&quot;
+            "azcdefcg" == "azcdefcg"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4783,7 +4986,7 @@ four&quot;
       <Section name="replace two chars">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, &quot;c&quot;, &quot;z&quot; )
+            replaceInPlace( letters, "c", "z" )
           </Original>
           <Expanded>
             true
@@ -4791,10 +4994,10 @@ four&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            letters == &quot;abzdefzg&quot;
+            letters == "abzdefzg"
           </Original>
           <Expanded>
-            &quot;abzdefzg&quot; == &quot;abzdefzg&quot;
+            "abzdefzg" == "abzdefzg"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4802,7 +5005,7 @@ four&quot;
       <Section name="replace first char">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, &quot;a&quot;, &quot;z&quot; )
+            replaceInPlace( letters, "a", "z" )
           </Original>
           <Expanded>
             true
@@ -4810,10 +5013,10 @@ four&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            letters == &quot;zbcdefcg&quot;
+            letters == "zbcdefcg"
           </Original>
           <Expanded>
-            &quot;zbcdefcg&quot; == &quot;zbcdefcg&quot;
+            "zbcdefcg" == "zbcdefcg"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4821,7 +5024,7 @@ four&quot;
       <Section name="replace last char">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, &quot;g&quot;, &quot;z&quot; )
+            replaceInPlace( letters, "g", "z" )
           </Original>
           <Expanded>
             true
@@ -4829,10 +5032,10 @@ four&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            letters == &quot;abcdefcz&quot;
+            letters == "abcdefcz"
           </Original>
           <Expanded>
-            &quot;abcdefcz&quot; == &quot;abcdefcz&quot;
+            "abcdefcz" == "abcdefcz"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4840,7 +5043,7 @@ four&quot;
       <Section name="replace all chars">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, letters, &quot;replaced&quot; )
+            replaceInPlace( letters, letters, "replaced" )
           </Original>
           <Expanded>
             true
@@ -4848,10 +5051,10 @@ four&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            letters == &quot;replaced&quot;
+            letters == "replaced"
           </Original>
           <Expanded>
-            &quot;replaced&quot; == &quot;replaced&quot;
+            "replaced" == "replaced"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4859,7 +5062,7 @@ four&quot;
       <Section name="replace no chars">
         <Expression success="true" type="CHECK_FALSE" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            !replaceInPlace( letters, &quot;x&quot;, &quot;z&quot; )
+            !replaceInPlace( letters, "x", "z" )
           </Original>
           <Expanded>
             !false
@@ -4870,7 +5073,7 @@ four&quot;
             letters == letters
           </Original>
           <Expanded>
-            &quot;abcdefcg&quot; == &quot;abcdefcg&quot;
+            "abcdefcg" == "abcdefcg"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4878,7 +5081,7 @@ four&quot;
       <Section name="escape '">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            replaceInPlace( s, &quot;'&quot;, &quot;|'&quot; )
+            replaceInPlace( s, "'", "|'" )
           </Original>
           <Expanded>
             true
@@ -4886,10 +5089,10 @@ four&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            s == &quot;didn|'t&quot;
+            s == "didn|'t"
           </Original>
           <Expanded>
-            &quot;didn|'t&quot; == &quot;didn|'t&quot;
+            "didn|'t" == "didn|'t"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -4902,22 +5105,22 @@ four&quot;
     <TestCase name="Text can be formatted using the Text class">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
         <Original>
-          Text( &quot;hi there&quot; ).toString() == &quot;hi there&quot;
+          Text( "hi there" ).toString() == "hi there"
         </Original>
         <Expanded>
-          &quot;hi there&quot; == &quot;hi there&quot;
+          "hi there" == "hi there"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
         <Original>
-          Text( &quot;hi there&quot;, narrow ).toString() == &quot;hi\nthere&quot;
+          Text( "hi there", narrow ).toString() == "hi\nthere"
         </Original>
         <Expanded>
-          &quot;hi
-there&quot;
+          "hi
+there"
 ==
-&quot;hi
-there&quot;
+"hi
+there"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -4925,10 +5128,10 @@ there&quot;
     <TestCase name="Long text is truncted">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TestMain.cpp" >
         <Original>
-          t.toString() EndsWith( &quot;... message truncated due to excessive size&quot; )
+          t.toString() EndsWith( "... message truncated due to excessive size" )
         </Original>
         <Expanded>
-          &quot;******************************************************************************-
+          "******************************************************************************-
 ******************************************************************************-
 ************************
 ******************************************************************************-
@@ -5928,7 +6131,7 @@ there&quot;
 ******************************************************************************-
 ************************
 ******************************************************************************-
-... message truncated due to excessive size&quot; ends with: &quot;... message truncated due to excessive size&quot;
+... message truncated due to excessive size" ends with: "... message truncated due to excessive size"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -5978,10 +6181,10 @@ there&quot;
     <TestCase name="string literals of different sizes can be compared">
       <Expression success="false" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          std::string( &quot;first&quot; ) == &quot;second&quot;
+          std::string( "first" ) == "second"
         </Original>
         <Expanded>
-          &quot;first&quot; == &quot;second&quot;
+          "first" == "second"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -6041,10 +6244,10 @@ there&quot;
     <TestCase name="boolean member">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          obj.prop != __null
+          obj.prop != nullptr
         </Original>
         <Expanded>
-          0x<hex digits> != 0
+          0x<hex digits> != nullptr
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6224,10 +6427,10 @@ there&quot;
     <TestCase name="non streamable - with conv. op">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          s == &quot;7&quot;
+          s == "7"
         </Original>
         <Expanded>
-          &quot;7&quot; == &quot;7&quot;
+          "7" == "7"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6257,9 +6460,7 @@ there&quot;
           m == &amp;S::f
         </Original>
         <Expanded>
-          0x<hex digits>
-==
-0x<hex digits>
+          0x<hex digits> == 0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6270,7 +6471,7 @@ there&quot;
           p == 0
         </Original>
         <Expanded>
-          __null == 0
+          NULL == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6281,7 +6482,7 @@ there&quot;
           ptr.get() == nullptr
         </Original>
         <Expanded>
-          __null == nullptr
+          NULL == nullptr
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6301,12 +6502,12 @@ there&quot;
     <TestCase name="toString( has_toString )">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringWhich.cpp" >
         <Original>
-          Catch::toString( item ) == &quot;toString( has_toString )&quot;
+          Catch::toString( item ) == "toString( has_toString )"
         </Original>
         <Expanded>
-          &quot;toString( has_toString )&quot;
+          "toString( has_toString )"
 ==
-&quot;toString( has_toString )&quot;
+"toString( has_toString )"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6314,12 +6515,12 @@ there&quot;
     <TestCase name="toString( has_maker )">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringWhich.cpp" >
         <Original>
-          Catch::toString( item ) == &quot;StringMaker&lt;has_maker>&quot;
+          Catch::toString( item ) == "StringMaker&lt;has_maker>"
         </Original>
         <Expanded>
-          &quot;StringMaker&lt;has_maker>&quot;
+          "StringMaker&lt;has_maker>"
 ==
-&quot;StringMaker&lt;has_maker>&quot;
+"StringMaker&lt;has_maker>"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6327,12 +6528,12 @@ there&quot;
     <TestCase name="toString( has_maker_and_toString )">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringWhich.cpp" >
         <Original>
-          Catch::toString( item ) == &quot;toString( has_maker_and_toString )&quot;
+          Catch::toString( item ) == "toString( has_maker_and_toString )"
         </Original>
         <Expanded>
-          &quot;toString( has_maker_and_toString )&quot;
+          "toString( has_maker_and_toString )"
 ==
-&quot;toString( has_maker_and_toString )&quot;
+"toString( has_maker_and_toString )"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6340,10 +6541,10 @@ there&quot;
     <TestCase name="toString( vectors&lt;has_toString )">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringWhich.cpp" >
         <Original>
-          Catch::toString( v ) == &quot;{ {?} }&quot;
+          Catch::toString( v ) == "{ {?} }"
         </Original>
         <Expanded>
-          &quot;{ {?} }&quot; == &quot;{ {?} }&quot;
+          "{ {?} }" == "{ {?} }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6351,12 +6552,12 @@ there&quot;
     <TestCase name="toString( vectors&lt;has_maker )">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringWhich.cpp" >
         <Original>
-          Catch::toString( v ) == &quot;{ StringMaker&lt;has_maker> }&quot;
+          Catch::toString( v ) == "{ StringMaker&lt;has_maker> }"
         </Original>
         <Expanded>
-          &quot;{ StringMaker&lt;has_maker> }&quot;
+          "{ StringMaker&lt;has_maker> }"
 ==
-&quot;{ StringMaker&lt;has_maker> }&quot;
+"{ StringMaker&lt;has_maker> }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6364,12 +6565,12 @@ there&quot;
     <TestCase name="toString( vectors&lt;has_maker_and_toString )">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringWhich.cpp" >
         <Original>
-          Catch::toString( v ) == &quot;{ StringMaker&lt;has_maker_and_toString> }&quot;
+          Catch::toString( v ) == "{ StringMaker&lt;has_maker_and_toString> }"
         </Original>
         <Expanded>
-          &quot;{ StringMaker&lt;has_maker_and_toString> }&quot;
+          "{ StringMaker&lt;has_maker_and_toString> }"
 ==
-&quot;{ StringMaker&lt;has_maker_and_toString> }&quot;
+"{ StringMaker&lt;has_maker_and_toString> }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6377,10 +6578,10 @@ there&quot;
     <TestCase name="std::pair&lt;int,std::string> -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringPair.cpp" >
         <Original>
-          Catch::toString( value ) == &quot;{ 34, \&quot;xyzzy\&quot; }&quot;
+          Catch::toString( value ) == "{ 34, \"xyzzy\" }"
         </Original>
         <Expanded>
-          &quot;{ 34, &quot;xyzzy&quot; }&quot; == &quot;{ 34, &quot;xyzzy&quot; }&quot;
+          "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6388,10 +6589,10 @@ there&quot;
     <TestCase name="std::pair&lt;int,const std::string> -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringPair.cpp" >
         <Original>
-          Catch::toString(value) == &quot;{ 34, \&quot;xyzzy\&quot; }&quot;
+          Catch::toString(value) == "{ 34, \"xyzzy\" }"
         </Original>
         <Expanded>
-          &quot;{ 34, &quot;xyzzy&quot; }&quot; == &quot;{ 34, &quot;xyzzy&quot; }&quot;
+          "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6399,12 +6600,12 @@ there&quot;
     <TestCase name="std::vector&lt;std::pair&lt;std::string,int> > -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringPair.cpp" >
         <Original>
-          Catch::toString( pr ) == &quot;{ { \&quot;green\&quot;, 55 } }&quot;
+          Catch::toString( pr ) == "{ { \"green\", 55 } }"
         </Original>
         <Expanded>
-          &quot;{ { &quot;green&quot;, 55 } }&quot;
+          "{ { "green", 55 } }"
 ==
-&quot;{ { &quot;green&quot;, 55 } }&quot;
+"{ { "green", 55 } }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6412,12 +6613,12 @@ there&quot;
     <TestCase name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringPair.cpp" >
         <Original>
-          Catch::toString( pair ) == &quot;{ { 42, \&quot;Arthur\&quot; }, { \&quot;Ford\&quot;, 24 } }&quot;
+          Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }"
         </Original>
         <Expanded>
-          &quot;{ { 42, &quot;Arthur&quot; }, { &quot;Ford&quot;, 24 } }&quot;
+          "{ { 42, "Arthur" }, { "Ford", 24 } }"
 ==
-&quot;{ { 42, &quot;Arthur&quot; }, { &quot;Ford&quot;, 24 } }&quot;
+"{ { 42, "Arthur" }, { "Ford", 24 } }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6425,26 +6626,26 @@ there&quot;
     <TestCase name="vector&lt;int> -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{  }&quot;
+          Catch::toString(vv) == "{  }"
         </Original>
         <Expanded>
-          &quot;{  }&quot; == &quot;{  }&quot;
+          "{  }" == "{  }"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ 42 }&quot;
+          Catch::toString(vv) == "{ 42 }"
         </Original>
         <Expanded>
-          &quot;{ 42 }&quot; == &quot;{ 42 }&quot;
+          "{ 42 }" == "{ 42 }"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ 42, 250 }&quot;
+          Catch::toString(vv) == "{ 42, 250 }"
         </Original>
         <Expanded>
-          &quot;{ 42, 250 }&quot; == &quot;{ 42, 250 }&quot;
+          "{ 42, 250 }" == "{ 42, 250 }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6452,28 +6653,28 @@ there&quot;
     <TestCase name="vector&lt;string> -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{  }&quot;
+          Catch::toString(vv) == "{  }"
         </Original>
         <Expanded>
-          &quot;{  }&quot; == &quot;{  }&quot;
+          "{  }" == "{  }"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ \&quot;hello\&quot; }&quot;
+          Catch::toString(vv) == "{ \"hello\" }"
         </Original>
         <Expanded>
-          &quot;{ &quot;hello&quot; }&quot; == &quot;{ &quot;hello&quot; }&quot;
+          "{ "hello" }" == "{ "hello" }"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ \&quot;hello\&quot;, \&quot;world\&quot; }&quot;
+          Catch::toString(vv) == "{ \"hello\", \"world\" }"
         </Original>
         <Expanded>
-          &quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+          "{ "hello", "world" }"
 ==
-&quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+"{ "hello", "world" }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6481,26 +6682,26 @@ there&quot;
     <TestCase name="vector&lt;int,allocator> -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{  }&quot;
+          Catch::toString(vv) == "{  }"
         </Original>
         <Expanded>
-          &quot;{  }&quot; == &quot;{  }&quot;
+          "{  }" == "{  }"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ 42 }&quot;
+          Catch::toString(vv) == "{ 42 }"
         </Original>
         <Expanded>
-          &quot;{ 42 }&quot; == &quot;{ 42 }&quot;
+          "{ 42 }" == "{ 42 }"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == &quot;{ 42, 250 }&quot;
+          Catch::toString(vv) == "{ 42, 250 }"
         </Original>
         <Expanded>
-          &quot;{ 42, 250 }&quot; == &quot;{ 42, 250 }&quot;
+          "{ 42, 250 }" == "{ 42, 250 }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6508,20 +6709,20 @@ there&quot;
     <TestCase name="vec&lt;vec&lt;string,alloc>> -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(v) == &quot;{  }&quot;
+          Catch::toString(v) == "{  }"
         </Original>
         <Expanded>
-          &quot;{  }&quot; == &quot;{  }&quot;
+          "{  }" == "{  }"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ToStringVector.cpp" >
         <Original>
-          Catch::toString(v) == &quot;{ { \&quot;hello\&quot; }, { \&quot;world\&quot; } }&quot;
+          Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }"
         </Original>
         <Expanded>
-          &quot;{ { &quot;hello&quot; }, { &quot;world&quot; } }&quot;
+          "{ { "hello" }, { "world" } }"
 ==
-&quot;{ { &quot;hello&quot; }, { &quot;world&quot; } }&quot;
+"{ { "hello" }, { "world" } }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6740,7 +6941,7 @@ there&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/CmdLineTests.cpp" >
           <Original>
-            parseTestSpec( &quot;*a&quot; ).matches( tcA ) == true
+            parseTestSpec( "*a" ).matches( tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -6791,7 +6992,7 @@ there&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/CmdLineTests.cpp" >
           <Original>
-            parseTestSpec( &quot;a*&quot; ).matches( tcA ) == true
+            parseTestSpec( "a*" ).matches( tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -6842,7 +7043,7 @@ there&quot;
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/CmdLineTests.cpp" >
           <Original>
-            parseTestSpec( &quot;*a*&quot; ).matches( tcA ) == true
+            parseTestSpec( "*a*" ).matches( tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -7705,18 +7906,18 @@ there&quot;
     <TestCase name="tuple&lt;>">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;{ }&quot; == Catch::toString(type{})
+          "{ }" == Catch::toString(type{})
         </Original>
         <Expanded>
-          &quot;{ }&quot; == &quot;{ }&quot;
+          "{ }" == "{ }"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;{ }&quot; == Catch::toString(value)
+          "{ }" == Catch::toString(value)
         </Original>
         <Expanded>
-          &quot;{ }&quot; == &quot;{ }&quot;
+          "{ }" == "{ }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7724,10 +7925,10 @@ there&quot;
     <TestCase name="tuple&lt;int>">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;{ 0 }&quot; == Catch::toString(type{0})
+          "{ 0 }" == Catch::toString(type{0})
         </Original>
         <Expanded>
-          &quot;{ 0 }&quot; == &quot;{ 0 }&quot;
+          "{ 0 }" == "{ 0 }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7735,18 +7936,18 @@ there&quot;
     <TestCase name="tuple&lt;float,int>">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;1.2f&quot; == Catch::toString(float(1.2))
+          "1.2f" == Catch::toString(float(1.2))
         </Original>
         <Expanded>
-          &quot;1.2f&quot; == &quot;1.2f&quot;
+          "1.2f" == "1.2f"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;{ 1.2f, 0 }&quot; == Catch::toString(type{1.2,0})
+          "{ 1.2f, 0 }" == Catch::toString(type{1.2,0})
         </Original>
         <Expanded>
-          &quot;{ 1.2f, 0 }&quot; == &quot;{ 1.2f, 0 }&quot;
+          "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7754,12 +7955,12 @@ there&quot;
     <TestCase name="tuple&lt;string,string>">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;{ \&quot;hello\&quot;, \&quot;world\&quot; }&quot; == Catch::toString(type{&quot;hello&quot;,&quot;world&quot;})
+          "{ \"hello\", \"world\" }" == Catch::toString(type{"hello","world"})
         </Original>
         <Expanded>
-          &quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+          "{ "hello", "world" }"
 ==
-&quot;{ &quot;hello&quot;, &quot;world&quot; }&quot;
+"{ "hello", "world" }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7767,12 +7968,12 @@ there&quot;
     <TestCase name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;{ { 42 }, { }, 1.2f }&quot; == Catch::toString(value)
+          "{ { 42 }, { }, 1.2f }" == Catch::toString(value)
         </Original>
         <Expanded>
-          &quot;{ { 42 }, { }, 1.2f }&quot;
+          "{ { 42 }, { }, 1.2f }"
 ==
-&quot;{ { 42 }, { }, 1.2f }&quot;
+"{ { 42 }, { }, 1.2f }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7780,12 +7981,12 @@ there&quot;
     <TestCase name="tuple&lt;nullptr,int,const char *>">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          &quot;{ nullptr, 42, \&quot;Catch me\&quot; }&quot; == Catch::toString(value)
+          "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value)
         </Original>
         <Expanded>
-          &quot;{ nullptr, 42, &quot;Catch me&quot; }&quot;
+          "{ nullptr, 42, "Catch me" }"
 ==
-&quot;{ nullptr, 42, &quot;Catch me&quot; }&quot;
+"{ nullptr, 42, "Catch me" }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7794,42 +7995,42 @@ there&quot;
       <Section name="The same tag alias can only be registered once">
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( &quot;[@zzz]&quot; )
+            what Contains( "[@zzz]" )
           </Original>
           <Expanded>
-            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+            "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10&quot; contains: &quot;[@zzz]&quot;
+	Redefined at file:10" contains: "[@zzz]"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( &quot;file&quot; )
+            what Contains( "file" )
           </Original>
           <Expanded>
-            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+            "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10&quot; contains: &quot;file&quot;
+	Redefined at file:10" contains: "file"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( &quot;2&quot; )
+            what Contains( "2" )
           </Original>
           <Expanded>
-            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+            "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10&quot; contains: &quot;2&quot;
+	Redefined at file:10" contains: "2"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( &quot;10&quot; )
+            what Contains( "10" )
           </Original>
           <Expanded>
-            &quot;error: tag alias, &quot;[@zzz]&quot; already registered.
+            "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10&quot; contains: &quot;10&quot;
+	Redefined at file:10" contains: "10"
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -7837,34 +8038,34 @@ there&quot;
       <Section name="Tag aliases must be of the form [@name]">
         <Expression success="true" type="CHECK_THROWS" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            registry.add( &quot;[no ampersat]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
           <Expanded>
-            registry.add( &quot;[no ampersat]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THROWS" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            registry.add( &quot;[the @ is not at the start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
           <Expanded>
-            registry.add( &quot;[the @ is not at the start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THROWS" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            registry.add( &quot;@no square bracket at start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
           <Expanded>
-            registry.add( &quot;@no square bracket at start]&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THROWS" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            registry.add( &quot;[@no square bracket at end&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
           <Expanded>
-            registry.add( &quot;[@no square bracket at end&quot;, &quot;&quot;, Catch::SourceLineInfo( &quot;file&quot;, 3 ) )
+            registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -8220,7 +8421,7 @@ there&quot;
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="673" failures="99" expectedFailures="13"/>
+    <OverallResults successes="691" failures="100" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="673" failures="99" expectedFailures="13"/>
+  <OverallResults successes="691" failures="100" expectedFailures="13"/>
 </Catch>

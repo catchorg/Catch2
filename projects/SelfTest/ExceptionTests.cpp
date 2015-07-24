@@ -152,3 +152,23 @@ TEST_CASE( "NotImplemented exception", "" )
 {
     REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
 }
+
+TEST_CASE( "Exception messages can be tested for", "" ) {
+    using namespace Catch::Matchers;
+    SECTION( "exact match" )
+        REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+    SECTION( "different case" )
+    REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) );
+    SECTION( "wildcarded" ) {
+        REQUIRE_THROWS_WITH( thisThrows(), StartsWith( "expected" ) );
+        REQUIRE_THROWS_WITH( thisThrows(), EndsWith( "exception" ) );
+        REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) );
+        REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) );
+    }
+}
+
+TEST_CASE( "Mismatching exception messages failing the test", "[.][failing]" ) {
+    REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+    REQUIRE_THROWS_WITH( thisThrows(), "should fail" );
+    REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+}

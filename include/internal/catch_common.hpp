@@ -82,6 +82,14 @@ namespace Catch {
         return line < other.line || ( line == other.line  && file < other.file );
     }
 
+    void seedRng( IConfig const& config ) {
+        if( config.rngSeed() != 0 )
+            std::srand( config.rngSeed() );
+    }
+    unsigned int rngSeed() {
+        return getCurrentContext().getConfig()->rngSeed();
+    }
+
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
 #ifndef __GNUG__
         os << info.file << "(" << info.line << ")";

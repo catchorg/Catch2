@@ -40,6 +40,8 @@ namespace Catch {
 
         TestCaseInfo( TestCaseInfo const& other );
 
+        friend void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags );
+        
         bool isHidden() const;
         bool throws() const;
         bool okToFail() const;

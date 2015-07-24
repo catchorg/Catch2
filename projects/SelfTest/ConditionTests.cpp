@@ -6,7 +6,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
 #include "catch.hpp"
@@ -265,32 +266,32 @@ TEST_CASE( "Comparisons between ints where one side is computed", "" )
 #pragma GCC diagnostic pop
 #endif
 
-inline const char* returnsConstNull(){ return NULL; }
-inline char* returnsNull(){ return NULL; }
+inline const char* returnsConstNull(){ return CATCH_NULL; }
+inline char* returnsNull(){ return CATCH_NULL; }
 
 TEST_CASE( "Pointers can be compared to null", "" )
 {
-    TestData* p = NULL;
-    TestData* pNULL = NULL;
+    TestData* p = CATCH_NULL;
+    TestData* pNULL = CATCH_NULL;
     
-    REQUIRE( p == NULL );
+    REQUIRE( p == CATCH_NULL );
     REQUIRE( p == pNULL );
     
     TestData data;
     p = &data;
     
-    REQUIRE( p != NULL );
+    REQUIRE( p != CATCH_NULL );
 
     const TestData* cp = p;
-    REQUIRE( cp != NULL );
+    REQUIRE( cp != CATCH_NULL );
 
     const TestData* const cpc = p;
-    REQUIRE( cpc != NULL );
+    REQUIRE( cpc != CATCH_NULL );
 
-    REQUIRE( returnsNull() == NULL );
-    REQUIRE( returnsConstNull() == NULL );
+    REQUIRE( returnsNull() == CATCH_NULL );
+    REQUIRE( returnsConstNull() == CATCH_NULL );
     
-    REQUIRE( NULL != p );
+    REQUIRE( CATCH_NULL != p );
 }
 
 // Not (!) tests

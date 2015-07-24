@@ -28,9 +28,35 @@ The tag expression, ```"[widget]"``` selects A, B & D. ```"[gadget]"``` selects 
 
 For more detail on command line selection see [the command line docs](command-line.md#specifying-which-tests-to-run)
 
-A special tag name, ```[hide]``` causes test cases to be skipped from the default list (ie when no test cases have been explicitly selected through tag expressions or name wildcards). ```[.]``` is an alias for ```[hide]```.
-
 Tag names are not case sensitive.
+
+### Special Tags
+
+All tag names beginning with non-alphanumeric characters are reserved by Catch. Catch defines a number of "special" tags, which have meaning to the test runner itself. These special tags all begin with a symbol character. Following is a list of currently defined special tags and their meanings.
+
+* `[!hide]` or `[.]` (or, for legacy reasons, `[hide]`)	- causes test cases to be skipped from the default list (ie when no test cases have been explicitly selected through tag expressions or name wildcards). The hide tag is often combined with another, user, tag (for example `[.][integration]` - so all integration tests are excluded from the default run but can be run by passing `[integration]` on the command line). As a short-cut you can combine these by simply prefixing your user tag with a `.` - e.g. `[.integration]`. Because the hide tag has evolved to have several forms, all forms are added as tags if you use one of them.
+
+* `[!throws]`	- lets Catch know that this test is likely to throw an exception even if successful. This causes the test to be exluded when running with `-e` or `--nothrow`.
+
+* `[!shouldfail]` - reverse the failing logic of the test: if the test is successful if it fails, and vice-versa.
+
+* `[!mayfail]` - doesn't fail the test if any given assertion fails (but still reports it). This can be useful to flag a work-in-progress, or a known issue that you don't want to immediately fix but still want to track in the your tests.
+
+* `[#<filename>]` - running with `-#` or `--filenames-as-tags` causes Catch to add the filename, prefixed with `#` (and with any extension stripped) as a tag. e.g. tests in testfile.cpp would all be tagged `[#testfile]`.
+
+* `[@<alias>]` - tag aliases all begin with `@` (see below).
+
+## Tag aliases
+
+Between tag expressions and wildcarded test names (as well as combinations of the two) quite complex patterns can be constructed to direct which test cases are run. If a complex pattern is used often it is convenient to be able to create an alias for the expression. this can be done, in code, using the following form:
+
+	CATCH_REGISTER_TAG_ALIAS( <alias string>, <tag expression> )
+
+Aliases must begining with the `@` character. An example of a tag alias is:
+
+	CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
+
+Now when `[@nhf]` is used on the command line this matches all tests that are tagged `[failing]`, but which are not also hidden.
 
 ## BDD-style test cases
 

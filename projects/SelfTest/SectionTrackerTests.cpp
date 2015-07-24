@@ -7,7 +7,8 @@
  */
 
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
 #include "internal/catch_test_case_tracker.hpp"

@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
+#include "catch_compiler_capabilities.h"
+
 #include <map>
 #include <string>
 #include <assert.h>
@@ -60,7 +62,7 @@ namespace SectionTracking {
         TrackedSections::iterator it = m_children.find( childName );
         return it != m_children.end()
             ? &it->second
-            : NULL;
+            : CATCH_NULL;
     }
     inline TrackedSection* TrackedSection::acquireChild( std::string const& childName ) {
         if( TrackedSection* child = findChild( childName ) )
@@ -82,7 +84,7 @@ namespace SectionTracking {
     class TestCaseTracker {
     public:
         TestCaseTracker( std::string const& testCaseName )
-        :   m_testCase( testCaseName, NULL ),
+        :   m_testCase( testCaseName, CATCH_NULL ),
             m_currentSection( &m_testCase ),
             m_completedASectionThisRun( false )
         {}
@@ -99,7 +101,7 @@ namespace SectionTracking {
         void leaveSection() {
             m_currentSection->leave();
             m_currentSection = m_currentSection->getParent();
-            assert( m_currentSection != NULL );
+            assert( m_currentSection != CATCH_NULL );
             m_completedASectionThisRun = true;
         }
 

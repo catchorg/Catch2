@@ -25,7 +25,7 @@ namespace Catch {
         virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
-                return NULL;
+                return CATCH_NULL;
             return it->second->create( ReporterConfig( config ) );
         }
 

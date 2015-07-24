@@ -398,6 +398,17 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
+Mismatching exception messages failing the test
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
+with expansion:
+  expected exception
+
+-------------------------------------------------------------------------------
 INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -786,6 +797,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 155 | 116 passed | 38 failed |  1 failed as expected
-assertions: 765 | 673 passed | 79 failed | 13 failed as expected
+test cases: 159 | 119 passed | 39 failed |  1 failed as expected
+assertions: 784 | 691 passed | 80 failed | 13 failed as expected
 

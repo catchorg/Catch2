@@ -16,6 +16,7 @@
 // CATCH_CONFIG_CPP11_GENERATED_METHODS : The delete and default keywords for compiler generated methods
 // CATCH_CONFIG_CPP11_IS_ENUM : std::is_enum is supported?
 // CATCH_CONFIG_CPP11_TUPLE : std::tuple is supported
+// CATCH_CONFIG_CPP11_LONG_LONG : is long long supported?
 
 // CATCH_CONFIG_CPP11_OR_GREATER : Is C++11 supported?
 
@@ -66,7 +67,7 @@
 // GCC
 #ifdef __GNUC__
 
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6 && defined(__GXX_EXPERIMENTAL_CXX0X__) )
+#if (__GNUC__ > 4 && __cplusplus >= 201103L) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6 && defined(__GXX_EXPERIMENTAL_CXX0X__) )
 #   define CATCH_INTERNAL_CONFIG_CPP11_NULLPTR
 #endif
 
@@ -130,6 +131,10 @@
 #    define CATCH_INTERNAL_CONFIG_VARIADIC_MACROS
 #  endif
 
+#  if !defined(CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG)
+#    define CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG
+#  endif
+
 #endif // __cplusplus >= 201103L
 
 // Now set the actual defines based on the above + anything the user has configured
@@ -149,7 +154,10 @@
 #   define CATCH_CONFIG_CPP11_TUPLE
 #endif
 #if defined(CATCH_INTERNAL_CONFIG_VARIADIC_MACROS) && !defined(CATCH_CONFIG_NO_VARIADIC_MACROS) && !defined(CATCH_CONFIG_VARIADIC_MACROS)
-#define CATCH_CONFIG_VARIADIC_MACROS
+#   define CATCH_CONFIG_VARIADIC_MACROS
+#endif
+#if defined(CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG) && !defined(CATCH_CONFIG_NO_LONG_LONG) && !defined(CATCH_CONFIG_CPP11_LONG_LONG)
+#   define CATCH_CONFIG_CPP11_LONG_LONG
 #endif
 
 
@@ -162,6 +170,12 @@
 #  define CATCH_NOEXCEPT_IS(x)
 #endif
 
+// nullptr support
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+#   define CATCH_NULL nullptr
+#else
+#   define CATCH_NULL NULL
+#endif
 
 #endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 

@@ -55,7 +55,7 @@ namespace Catch {
 
         // Single, global, instance
         inline RegistryHub*& getTheRegistryHub() {
-            static RegistryHub* theRegistryHub = NULL;
+            static RegistryHub* theRegistryHub = CATCH_NULL;
             if( !theRegistryHub )
                 theRegistryHub = new RegistryHub();
             return theRegistryHub;
@@ -70,7 +70,7 @@ namespace Catch {
     }
     void cleanUp() {
         delete getTheRegistryHub();
-        getTheRegistryHub() = NULL;
+        getTheRegistryHub() = CATCH_NULL;
         cleanUpContext();
     }
     std::string translateActiveException() {

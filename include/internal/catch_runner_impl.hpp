@@ -59,11 +59,11 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config->name() ),
+        explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_activeTestCase( NULL ),
-            m_config( config ),
+            m_activeTestCase( CATCH_NULL ),
+            m_config( _config ),
             m_reporter( reporter ),
             m_prevRunner( m_context.getRunner() ),
             m_prevResultCapture( m_context.getResultCapture() ),
@@ -78,7 +78,7 @@ namespace Catch {
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
             m_context.setRunner( m_prevRunner );
-            m_context.setConfig( NULL );
+            m_context.setConfig( Ptr<IConfig const>() );
             m_context.setResultCapture( m_prevResultCapture );
             m_context.setConfig( m_prevConfig );
         }
@@ -119,7 +119,7 @@ namespace Catch {
                                                         redirectedCerr,
                                                         aborting() ) );
 
-            m_activeTestCase = NULL;
+            m_activeTestCase = CATCH_NULL;
             m_testCaseTracker.reset();
 
             return deltaTotals;
@@ -259,6 +259,8 @@ namespace Catch {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
 
+                seedRng( *m_config );
+                
                 Timer timer;
                 timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
