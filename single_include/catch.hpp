@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.9
- *  Generated: 2015-07-23 23:06:03.575257
+ *  Catch v1.2.1-develop.10
+ *  Generated: 2015-07-24 08:13:33.830879
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6942,7 +6942,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 9 );
+    Version libraryVersion( 1, 2, 1, "develop", 10 );
 
 }
 
