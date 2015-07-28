@@ -37,7 +37,7 @@ namespace Catch {
 
             Totals totals;
 
-            context.testGroupStarting( "all tests", 1, 1 ); // deprecated?
+            context.testGroupStarting( context.config()->name(), 1, 1 );
 
             TestSpec testSpec = m_config->testSpec();
             if( !testSpec.hasFilters() )
@@ -68,7 +68,7 @@ namespace Catch {
                     ++it )
                 m_reporter->skipTest( *it );
 
-            context.testGroupEnded( "all tests", totals, 1, 1 );
+            context.testGroupEnded( context.config()->name(), totals, 1, 1 );
             return totals;
         }
 

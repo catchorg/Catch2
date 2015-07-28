@@ -1,5 +1,5 @@
 <Catch name="CatchSelfTest">
-  <Group name="all tests">
+  <Group name="CatchSelfTest">
     <TestCase name="toString(enum)">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
