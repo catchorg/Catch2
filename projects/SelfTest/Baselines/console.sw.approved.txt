@@ -846,7 +846,9 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul )
 with expansion:
-  4294967295 (0x<hex digits>) > 4
+  18446744073709551615 (0x<hex digits>)
+  >
+  4
 
 -------------------------------------------------------------------------------
 comparisons between int variables
@@ -6286,7 +6288,9 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK( m == &S::f )
 with expansion:
-  0x<hex digits> == 0x<hex digits>
+  0x<hex digits>
+  ==
+  0x<hex digits>
 
 -------------------------------------------------------------------------------
 pointer to class

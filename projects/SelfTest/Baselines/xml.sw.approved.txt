@@ -1063,7 +1063,9 @@
           (std::numeric_limits&lt;unsigned long>::max)() > ul
         </Original>
         <Expanded>
-          4294967295 (0x<hex digits>) > 4
+          18446744073709551615 (0x<hex digits>)
+>
+4
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6460,7 +6462,9 @@ there"
           m == &amp;S::f
         </Original>
         <Expanded>
-          0x<hex digits> == 0x<hex digits>
+          0x<hex digits>
+==
+0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
