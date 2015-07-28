@@ -21,89 +21,76 @@
 
 namespace Catch {
 
-    class Runner {
-
-    public:
-        Runner( Ptr<Config> const& config )
-        :   m_config( config )
-        {
-            openStream();
-            makeReporter();
+    Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
+        std::string reporterName = config->getReporterName().empty()
+            ? "console"
+            : config->getReporterName();
+        
+        Ptr<IStreamingReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, config.get() );
+        if( !reporter ) {
+            std::ostringstream oss;
+            oss << "No reporter registered with name: '" << reporterName << "'";
+            throw std::domain_error( oss.str() );
         }
-
-        Totals runTests() {
-
-            RunContext context( m_config.get(), m_reporter );
-
-            Totals totals;
-
-            context.testGroupStarting( context.config()->name(), 1, 1 );
-
-            TestSpec testSpec = m_config->testSpec();
-            if( !testSpec.hasFilters() )
-                testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
-
-            std::vector<TestCase> testCases;
-            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, testCases );
-
-            int testsRunForGroup = 0;
-            for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
-                    it != itEnd;
-                    ++it ) {
-                testsRunForGroup++;
-                if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
-
-                    if( context.aborting() )
-                        break;
-
-                    totals += context.runTest( *it );
-                    m_testsAlreadyRun.insert( *it );
-                }
-            }
-            std::vector<TestCase> skippedTestCases;
-            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, skippedTestCases, true );
-            
-            for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
-                    it != itEnd;
-                    ++it )
-                m_reporter->skipTest( *it );
-
-            context.testGroupEnded( context.config()->name(), totals, 1, 1 );
-            return totals;
-        }
-
-    private:
-        void openStream() {
-            // Open output file, if specified
-            if( !m_config->getFilename().empty() ) {
-                m_ofs.open( m_config->getFilename().c_str() );
-                if( m_ofs.fail() ) {
-                    std::ostringstream oss;
-                    oss << "Unable to open file: '" << m_config->getFilename() << "'";
-                    throw std::domain_error( oss.str() );
-                }
-                m_config->setStreamBuf( m_ofs.rdbuf() );
-            }
-        }
-        void makeReporter() {
-            std::string reporterName = m_config->getReporterName().empty()
-                ? "console"
-                : m_config->getReporterName();
-
-            m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, m_config.get() );
-            if( !m_reporter ) {
+        return reporter;
+    }
+    
+    void openStreamInto( Ptr<Config> const& config, std::ofstream& ofs ) {
+        // Open output file, if specified
+        if( !config->getFilename().empty() ) {
+            ofs.open( config->getFilename().c_str() );
+            if( ofs.fail() ) {
                 std::ostringstream oss;
-                oss << "No reporter registered with name: '" << reporterName << "'";
+                oss << "Unable to open file: '" << config->getFilename() << "'";
                 throw std::domain_error( oss.str() );
             }
+            config->setStreamBuf( ofs.rdbuf() );
         }
+    }
+    
+    Totals runTests( Ptr<Config> const& config ) {
 
-    private:
-        Ptr<Config> m_config;
-        std::ofstream m_ofs;
-        Ptr<IStreamingReporter> m_reporter;
-        std::set<TestCase> m_testsAlreadyRun;
-    };
+        std::ofstream ofs;
+        openStreamInto( config, ofs );
+        Ptr<IStreamingReporter> reporter = makeReporter( config );
+
+        RunContext context( config.get(), reporter );
+
+        Totals totals;
+
+        context.testGroupStarting( config->name(), 1, 1 );
+
+        TestSpec testSpec = config->testSpec();
+        if( !testSpec.hasFilters() )
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
+
+        std::vector<TestCase> testCases;
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *config, testCases );
+
+        std::set<TestCase> testsAlreadyRun;
+        for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+                it != itEnd;
+                ++it ) {
+            if( testsAlreadyRun.find( *it ) == testsAlreadyRun.end() ) {
+
+                if( context.aborting() )
+                    break;
+
+                totals += context.runTest( *it );
+                testsAlreadyRun.insert( *it );
+            }
+        }
+        std::vector<TestCase> skippedTestCases;
+        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *config, skippedTestCases, true );
+        
+        for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
+                it != itEnd;
+                ++it )
+            reporter->skipTest( *it );
+
+        context.testGroupEnded( config->name(), totals, 1, 1 );
+        return totals;
+    }
     
     void applyFilenamesAsTags() {
         std::vector<TestCase> const& tests = getRegistryHub().getTestCaseRegistry().getAllTests();
@@ -200,13 +187,11 @@ namespace Catch {
                 
                 seedRng( *m_config );
 
-                Runner runner( m_config );
-
                 // Handle list request
                 if( Option<std::size_t> listed = list( config() ) )
                     return static_cast<int>( *listed );
 
-                return static_cast<int>( runner.runTests().assertions.failed );
+                return static_cast<int>( runTests( m_config ).assertions.failed );
             }
             catch( std::exception& ex ) {
                 Catch::cerr() << ex.what() << std::endl;

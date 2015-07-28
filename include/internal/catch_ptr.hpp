@@ -52,8 +52,7 @@ namespace Catch {
             return *this;
         }
         void swap( Ptr& other ) { std::swap( m_p, other.m_p ); }
-        T* get() { return m_p; }
-        const T* get() const{ return m_p; }
+        T* get() const{ return m_p; }
         T& operator*() const { return *m_p; }
         T* operator->() const { return m_p; }
         bool operator !() const { return m_p == CATCH_NULL; }
