@@ -64,36 +64,22 @@ namespace Catch {
         if( !testSpec.hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
-        std::vector<TestCase> testCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *config, testCases );
-
-        std::set<TestCase> testsAlreadyRun;
-        for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *config );
+        for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
                 it != itEnd;
                 ++it ) {
-            if( testsAlreadyRun.find( *it ) == testsAlreadyRun.end() ) {
-
-                if( context.aborting() )
-                    break;
-
+            if( !context.aborting() && matchTest( *it, testSpec, *config ) )
                 totals += context.runTest( *it );
-                testsAlreadyRun.insert( *it );
-            }
+            else
+                reporter->skipTest( *it );
         }
-        std::vector<TestCase> skippedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *config, skippedTestCases, true );
-        
-        for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
-                it != itEnd;
-                ++it )
-            reporter->skipTest( *it );
 
         context.testGroupEnded( config->name(), totals, 1, 1 );
         return totals;
     }
     
-    void applyFilenamesAsTags() {
-        std::vector<TestCase> const& tests = getRegistryHub().getTestCaseRegistry().getAllTests();
+    void applyFilenamesAsTags( IConfig const& config ) {
+        std::vector<TestCase> const& tests = getAllTestCasesSorted( config );
         for(std::size_t i = 0; i < tests.size(); ++i ) {
             TestCase& test = const_cast<TestCase&>( tests[i] );
             std::set<std::string> tags = test.tags;
@@ -181,12 +167,12 @@ namespace Catch {
             try
             {
                 config(); // Force config to be constructed
-
-                if( m_configData.filenamesAsTags )
-                    applyFilenamesAsTags();
                 
                 seedRng( *m_config );
 
+                if( m_configData.filenamesAsTags )
+                    applyFilenamesAsTags( *m_config );
+                
                 // Handle list request
                 if( Option<std::size_t> listed = list( config() ) )
                     return static_cast<int>( *listed );
