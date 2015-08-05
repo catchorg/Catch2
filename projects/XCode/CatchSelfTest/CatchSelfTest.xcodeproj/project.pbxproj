@@ -110,6 +110,7 @@
 		26DACF2F17206D3400A21326 /* catch_text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_text.h; sourceTree = "<group>"; };
 		26DFD3B11B53F84700FD6F16 /* catch_wildcard_pattern.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_wildcard_pattern.hpp; sourceTree = "<group>"; };
 		26E1B7D119213BC900812682 /* CmdLineTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CmdLineTests.cpp; path = ../../../SelfTest/CmdLineTests.cpp; sourceTree = "<group>"; };
+		26EDFBD91B72011F00B1873C /* catch_reporter_multi.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_multi.hpp; sourceTree = "<group>"; };
 		4A084F1C15DACEEA0027E631 /* catch_test_case_info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_case_info.hpp; sourceTree = "<group>"; };
 		4A3D7DD01503869D005F9203 /* catch_matchers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_matchers.hpp; sourceTree = "<group>"; };
 		4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_console_colour.cpp; path = ../../../SelfTest/SurrogateCpps/catch_console_colour.cpp; sourceTree = "<group>"; };
@@ -136,7 +137,7 @@
 		4A6D0C34149B3D9E00DB3EAA /* MiscTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MiscTests.cpp; path = ../../../SelfTest/MiscTests.cpp; sourceTree = "<group>"; };
 		4A6D0C35149B3D9E00DB3EAA /* TestMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestMain.cpp; path = ../../../SelfTest/TestMain.cpp; sourceTree = "<group>"; };
 		4A6D0C36149B3D9E00DB3EAA /* TrickyTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrickyTests.cpp; path = ../../../SelfTest/TrickyTests.cpp; sourceTree = "<group>"; };
-		4A6D0C42149B3E1500DB3EAA /* catch_runner.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; name = catch_runner.hpp; path = ../../../../include/catch_runner.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		4A6D0C42149B3E1500DB3EAA /* catch_session.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; name = catch_session.hpp; path = ../../../../include/catch_session.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C43149B3E1500DB3EAA /* catch_with_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch_with_main.hpp; path = ../../../../include/catch_with_main.hpp; sourceTree = "<group>"; };
 		4A6D0C44149B3E1500DB3EAA /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = ../../../../include/catch.hpp; sourceTree = "<group>"; };
 		4A6D0C46149B3E3D00DB3EAA /* catch_approx.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_approx.hpp; sourceTree = "<group>"; };
@@ -163,7 +164,7 @@
 		4A6D0C5B149B3E3D00DB3EAA /* catch_reporter_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_registry.hpp; sourceTree = "<group>"; };
 		4A6D0C5C149B3E3D00DB3EAA /* catch_result_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_result_type.h; sourceTree = "<group>"; };
 		4A6D0C5D149B3E3D00DB3EAA /* catch_assertionresult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = catch_assertionresult.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		4A6D0C5E149B3E3D00DB3EAA /* catch_runner_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_runner_impl.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		4A6D0C5E149B3E3D00DB3EAA /* catch_run_context.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_run_context.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C5F149B3E3D00DB3EAA /* catch_section.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_section.hpp; sourceTree = "<group>"; };
 		4A6D0C60149B3E3D00DB3EAA /* catch_stream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_stream.hpp; sourceTree = "<group>"; };
 		4A6D0C61149B3E3D00DB3EAA /* catch_test_case_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_test_case_info.h; sourceTree = "<group>"; };
@@ -285,7 +286,7 @@
 				4AA7B8B4165428BA003155F6 /* catch_version.hpp */,
 				4A8E4DCF160A34E200194CBD /* SurrogateCpps */,
 				4A6D0C44149B3E1500DB3EAA /* catch.hpp */,
-				4A6D0C42149B3E1500DB3EAA /* catch_runner.hpp */,
+				4A6D0C42149B3E1500DB3EAA /* catch_session.hpp */,
 				4A6D0C43149B3E1500DB3EAA /* catch_with_main.hpp */,
 				4A6D0C45149B3E3D00DB3EAA /* internal */,
 				4A6D0C65149B3E3D00DB3EAA /* reporters */,
@@ -318,6 +319,7 @@
 				4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */,
 				4AB42F84166F3E1A0099F2C8 /* catch_reporter_console.hpp */,
 				2691574A1A4480C50054F1ED /* catch_reporter_teamcity.hpp */,
+				26EDFBD91B72011F00B1873C /* catch_reporter_multi.hpp */,
 			);
 			name = reporters;
 			path = ../../../../include/reporters;
@@ -358,7 +360,7 @@
 				4A4B0F9715CE6CFB00AE2392 /* catch_registry_hub.hpp */,
 				4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */,
 				4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */,
-				4A6D0C5E149B3E3D00DB3EAA /* catch_runner_impl.hpp */,
+				4A6D0C5E149B3E3D00DB3EAA /* catch_run_context.hpp */,
 				4A6D0C62149B3E3D00DB3EAA /* catch_test_case_registry_impl.hpp */,
 				4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */,
 				4A4B0F9B15CEF8C400AE2392 /* catch_notimplemented_exception.hpp */,

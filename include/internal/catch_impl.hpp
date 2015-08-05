@@ -16,7 +16,7 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-#include "../catch_runner.hpp"
+#include "../catch_session.hpp"
 #include "catch_registry_hub.hpp"
 #include "catch_notimplemented_exception.hpp"
 #include "catch_context_impl.hpp"
@@ -36,6 +36,7 @@
 #include "catch_result_builder.hpp"
 #include "catch_tag_alias_registry.hpp"
 
+#include "../reporters/catch_reporter_multi.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"
 #include "../reporters/catch_reporter_console.hpp"

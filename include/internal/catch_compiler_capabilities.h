@@ -17,6 +17,7 @@
 // CATCH_CONFIG_CPP11_IS_ENUM : std::is_enum is supported?
 // CATCH_CONFIG_CPP11_TUPLE : std::tuple is supported
 // CATCH_CONFIG_CPP11_LONG_LONG : is long long supported?
+// CATCH_CONFIG_CPP11_OVERRIDE : is override supported?
 
 // CATCH_CONFIG_CPP11_OR_GREATER : Is C++11 supported?
 
@@ -138,6 +139,11 @@
 #    define CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG
 #  endif
 
+#  if !defined(CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE)
+#    define CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE
+#  endif
+
+
 #endif // __cplusplus >= 201103L
 
 // Now set the actual defines based on the above + anything the user has configured
@@ -162,6 +168,9 @@
 #if defined(CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG) && !defined(CATCH_CONFIG_NO_LONG_LONG) && !defined(CATCH_CONFIG_CPP11_LONG_LONG)
 #   define CATCH_CONFIG_CPP11_LONG_LONG
 #endif
+#if defined(CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE) && !defined(CATCH_CONFIG_NO_OVERRIDE) && !defined(CATCH_CONFIG_CPP11_OVERRIDE)
+#   define CATCH_CONFIG_CPP11_OVERRIDE
+#endif
 
 
 // noexcept support:
@@ -178,6 +187,13 @@
 #   define CATCH_NULL nullptr
 #else
 #   define CATCH_NULL NULL
+#endif
+
+// override support
+#ifdef CATCH_CONFIG_CPP11_OVERRIDE
+#   define CATCH_OVERRIDE override
+#else
+#   define CATCH_OVERRIDE
 #endif
 
 #endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED

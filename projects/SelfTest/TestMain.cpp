@@ -53,7 +53,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         CHECK( config.shouldDebugBreak == false );
         CHECK( config.abortAfter == -1 );
         CHECK( config.noThrow == false );
-        CHECK( config.reporterName.empty() );
+        CHECK( config.reporterNames.empty() );
     }
     
     SECTION( "test lists", "" ) {
@@ -90,19 +90,27 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             const char* argv[] = { "test", "-r", "console" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.reporterName == "console" );
+            REQUIRE( config.reporterNames[0] == "console" );
         }
         SECTION( "-r/xml", "" ) {
             const char* argv[] = { "test", "-r", "xml" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.reporterName == "xml" );
+            REQUIRE( config.reporterNames[0] == "xml" );
+        }
+        SECTION( "-r xml and junit", "" ) {
+            const char* argv[] = { "test", "-r", "xml", "-r", "junit" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.reporterNames.size() == 2 );
+            REQUIRE( config.reporterNames[0] == "xml" );
+            REQUIRE( config.reporterNames[1] == "junit" );
         }
         SECTION( "--reporter/junit", "" ) {
             const char* argv[] = { "test", "--reporter", "junit" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
             
-            REQUIRE( config.reporterName == "junit" );
+            REQUIRE( config.reporterNames[0] == "junit" );
         }
     }
     

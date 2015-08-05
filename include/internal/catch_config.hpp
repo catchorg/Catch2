@@ -68,11 +68,11 @@ namespace Catch {
         ShowDurations::OrNot showDurations;
         RunTests::InWhatOrder runOrder;
 
-        std::string reporterName;
         std::string outputFilename;
         std::string name;
         std::string processName;
 
+        std::vector<std::string> reporterNames;
         std::vector<std::string> testsOrTags;
     };
 
@@ -133,7 +133,7 @@ namespace Catch {
             m_stream = stream;
         }
 
-        std::string getReporterName() const { return m_data.reporterName; }
+        std::vector<std::string> getReporterNames() const { return m_data.reporterNames; }
 
         int abortAfter() const { return m_data.abortAfter; }
 

@@ -263,6 +263,8 @@ namespace Catch
         virtual FactoryMap const& getFactories() const = 0;
     };
 
+    Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter );
+    
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED

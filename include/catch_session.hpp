@@ -10,7 +10,7 @@
 
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"
-#include "internal/catch_runner_impl.hpp"
+#include "internal/catch_run_context.hpp"
 #include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"
 #include "internal/catch_text.h"
@@ -21,17 +21,26 @@
 
 namespace Catch {
 
-    Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
-        std::string reporterName = config->getReporterName().empty()
-            ? "console"
-            : config->getReporterName();
-        
+    Ptr<IStreamingReporter> createReporter( std::string const& reporterName, Ptr<Config> const& config ) {
         Ptr<IStreamingReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, config.get() );
         if( !reporter ) {
             std::ostringstream oss;
             oss << "No reporter registered with name: '" << reporterName << "'";
             throw std::domain_error( oss.str() );
         }
+        return reporter;
+    }
+    
+    Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
+        std::vector<std::string> reporters = config->getReporterNames();
+        if( reporters.empty() )
+            reporters.push_back( "console" );
+
+        Ptr<IStreamingReporter> reporter;
+        for( std::vector<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
+                it != itEnd;
+                ++it )
+            reporter = addReporter( reporter, createReporter( *it, config ) );        
         return reporter;
     }
     

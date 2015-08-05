@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_CONTEXT_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CONTEXT_IMPL_HPP_INCLUDED
 
-#include "catch_runner_impl.hpp"
+#include "catch_run_context.hpp"
 
 #include "catch_context.h"
 #include "catch_stream.hpp"
