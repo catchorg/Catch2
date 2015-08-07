@@ -7,13 +7,15 @@
  */
 
 #include "catch.hpp"
+
+#ifdef __clang__
+#   pragma clang diagnostic ignored "-Wc++98-compat"
+#   pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+
 #include "internal/catch_xmlwriter.hpp"
 
 #include <iostream>
-
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#endif
 
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" )
 {

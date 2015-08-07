@@ -798,5 +798,5 @@ with expansion:
 
 ===============================================================================
 test cases: 159 | 119 passed | 39 failed |  1 failed as expected
-assertions: 784 | 691 passed | 80 failed | 13 failed as expected
+assertions: 788 | 695 passed | 80 failed | 13 failed as expected
 

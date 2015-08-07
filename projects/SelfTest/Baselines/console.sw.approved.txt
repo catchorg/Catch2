@@ -3929,7 +3929,7 @@ with expansion:
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( config.reporterName.empty() )
+  CHECK( config.reporterNames.empty() )
 with expansion:
   true
 
@@ -4019,7 +4019,7 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.reporterName == "console" )
+  REQUIRE( config.reporterNames[0] == "console" )
 with expansion:
   "console" == "console"
 
@@ -4037,9 +4037,39 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.reporterName == "xml" )
+  REQUIRE( config.reporterNames[0] == "xml" )
 with expansion:
   "xml" == "xml"
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  reporter
+  -r xml and junit
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( config.reporterNames.size() == 2 )
+with expansion:
+  2 == 2
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( config.reporterNames[0] == "xml" )
+with expansion:
+  "xml" == "xml"
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( config.reporterNames[1] == "junit" )
+with expansion:
+  "junit" == "junit"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -4055,7 +4085,7 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.reporterName == "junit" )
+  REQUIRE( config.reporterNames[0] == "junit" )
 with expansion:
   "junit" == "junit"
 
@@ -8141,5 +8171,5 @@ with expansion:
 
 ===============================================================================
 test cases: 159 | 103 passed |  55 failed |  1 failed as expected
-assertions: 804 | 691 passed | 100 failed | 13 failed as expected
+assertions: 808 | 695 passed | 100 failed | 13 failed as expected
 

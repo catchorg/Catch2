@@ -43,6 +43,14 @@ namespace Catch {
             reporter = addReporter( reporter, createReporter( *it, config ) );        
         return reporter;
     }
+    Ptr<IStreamingReporter> addListeners( Ptr<IConfig> const& config, Ptr<IStreamingReporter> reporters ) {
+        IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
+        for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();
+                it != itEnd;
+                ++it )
+            reporters = addReporter(reporters, (*it)->create( ReporterConfig( config ) ) );
+        return reporters;
+    }
     
     void openStreamInto( Ptr<Config> const& config, std::ofstream& ofs ) {
         // Open output file, if specified
@@ -62,7 +70,8 @@ namespace Catch {
         std::ofstream ofs;
         openStreamInto( config, ofs );
         Ptr<IStreamingReporter> reporter = makeReporter( config );
-
+        reporter = addListeners( config.get(), reporter );
+        
         RunContext context( config.get(), reporter );
 
         Totals totals;
@@ -208,7 +217,6 @@ namespace Catch {
                 m_config = new Config( m_configData );
             return *m_config;
         }
-
     private:
         Clara::CommandLine<ConfigData> m_cli;
         std::vector<Clara::Parser::Token> m_unusedTokens;

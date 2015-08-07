@@ -5,9 +5,6 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#ifndef TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
-#define TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
-
 #ifdef __clang__
 #   ifdef __ICC // icpc defines the __clang__ macro
 #       pragma warning(push)
@@ -29,5 +26,3 @@
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wpadded"
 #endif
-
-#endif // TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED

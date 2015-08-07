@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="12" failures="88" tests="804" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="12" failures="88" tests="808" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -478,6 +478,7 @@ MiscTests.cpp:<line number>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using ~" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="reporter/-r/console" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="reporter/-r/xml" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="reporter/-r xml and junit" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="reporter/--reporter/junit" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="debugger/-b" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="debugger/--break" time="{duration}"/>

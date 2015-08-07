@@ -4013,7 +4013,7 @@
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
           <Original>
-            config.reporterName.empty()
+            config.reporterNames.empty()
           </Original>
           <Expanded>
             true
@@ -4123,7 +4123,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.reporterName == "console"
+              config.reporterNames[0] == "console"
             </Original>
             <Expanded>
               "console" == "console"
@@ -4145,7 +4145,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.reporterName == "xml"
+              config.reporterNames[0] == "xml"
             </Original>
             <Expanded>
               "xml" == "xml"
@@ -4154,6 +4154,44 @@
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="reporter">
+        <Section name="-r xml and junit">
+          <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.reporterNames.size() == 2
+            </Original>
+            <Expanded>
+              2 == 2
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.reporterNames[0] == "xml"
+            </Original>
+            <Expanded>
+              "xml" == "xml"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.reporterNames[1] == "junit"
+            </Original>
+            <Expanded>
+              "junit" == "junit"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="reporter">
         <Section name="--reporter/junit">
@@ -4167,7 +4205,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.reporterName == "junit"
+              config.reporterNames[0] == "junit"
             </Original>
             <Expanded>
               "junit" == "junit"
@@ -8425,7 +8463,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="691" failures="100" expectedFailures="13"/>
+    <OverallResults successes="695" failures="100" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="691" failures="100" expectedFailures="13"/>
+  <OverallResults successes="695" failures="100" expectedFailures="13"/>
 </Catch>
