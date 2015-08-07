@@ -53,15 +53,6 @@ namespace Catch {
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config ) {
         return testSpec.matches( testCase ) && ( config.allowThrows() || !testCase.throws() );
     }
-    struct TestMatcher {
-        TestMatcher( TestSpec const& testSpec, bool allowThrows ) : m_testSpec( testSpec ), m_allowThrows( allowThrows ) {}
-
-        bool operator()( TestCase const& testCase ) const {
-            return m_testSpec.matches( testCase ) && ( m_allowThrows || !testCase.throws() );
-        }
-        TestSpec m_testSpec;
-        bool m_allowThrows;
-    };
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
         std::set<TestCase> seenFunctions;
@@ -82,7 +73,12 @@ namespace Catch {
     
     std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
         std::vector<TestCase> filtered;
-        std::copy_if( testCases.begin(), testCases.end(), std::back_inserter( filtered ), TestMatcher( testSpec, config.allowThrows() ) );
+        filtered.reserve( testCases.size() );
+        for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+                it != itEnd;
+                ++it )
+            if( matchTest( *it, testSpec, config ) )
+                filtered.push_back( *it );
         return filtered;
     }
     std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {
