@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.11
- *  Generated: 2015-08-03 07:40:22.369337
+ *  Catch v1.2.1-develop.12
+ *  Generated: 2015-08-07 17:29:52.878958
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -20,8 +20,6 @@
 #endif
 
 // #included from: internal/catch_suppress_warnings.h
-
-#define TWOBLUECUBES_CATCH_SUPPRESS_WARNINGS_H_INCLUDED
 
 #ifdef __clang__
 #   ifdef __ICC // icpc defines the __clang__ macro
@@ -44,7 +42,6 @@
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wpadded"
 #endif
-
 #if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
 #  define CATCH_IMPL
 #endif
@@ -85,6 +82,7 @@
 // CATCH_CONFIG_CPP11_IS_ENUM : std::is_enum is supported?
 // CATCH_CONFIG_CPP11_TUPLE : std::tuple is supported
 // CATCH_CONFIG_CPP11_LONG_LONG : is long long supported?
+// CATCH_CONFIG_CPP11_OVERRIDE : is override supported?
 
 // CATCH_CONFIG_CPP11_OR_GREATER : Is C++11 supported?
 
@@ -201,6 +199,10 @@
 #    define CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG
 #  endif
 
+#  if !defined(CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE)
+#    define CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE
+#  endif
+
 #endif // __cplusplus >= 201103L
 
 // Now set the actual defines based on the above + anything the user has configured
@@ -225,6 +227,9 @@
 #if defined(CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG) && !defined(CATCH_CONFIG_NO_LONG_LONG) && !defined(CATCH_CONFIG_CPP11_LONG_LONG)
 #   define CATCH_CONFIG_CPP11_LONG_LONG
 #endif
+#if defined(CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE) && !defined(CATCH_CONFIG_NO_OVERRIDE) && !defined(CATCH_CONFIG_CPP11_OVERRIDE)
+#   define CATCH_CONFIG_CPP11_OVERRIDE
+#endif
 
 // noexcept support:
 #if defined(CATCH_CONFIG_CPP11_NOEXCEPT) && !defined(CATCH_NOEXCEPT)
@@ -240,6 +245,13 @@
 #   define CATCH_NULL nullptr
 #else
 #   define CATCH_NULL NULL
+#endif
+
+// override support
+#ifdef CATCH_CONFIG_CPP11_OVERRIDE
+#   define CATCH_OVERRIDE override
+#else
+#   define CATCH_OVERRIDE
 #endif
 
 namespace Catch {
@@ -555,9 +567,13 @@ namespace Catch {
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
         virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const = 0;
-
+        virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const = 0;
     };
+
+    bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
+    std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config );
+    std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config );
+
 }
 
 namespace Catch {
@@ -2363,7 +2379,8 @@ namespace Catch {
 
     struct IMutableRegistryHub {
         virtual ~IMutableRegistryHub();
-        virtual void registerReporter( std::string const& name, IReporterFactory* factory ) = 0;
+        virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) = 0;
+        virtual void registerListener( Ptr<IReporterFactory> const& factory ) = 0;
         virtual void registerTest( TestCase const& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
     };
@@ -2900,7 +2917,7 @@ return @ desc; \
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-// #included from: ../catch_runner.hpp
+// #included from: ../catch_session.hpp
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
 // #included from: internal/catch_commandline.hpp
@@ -3296,11 +3313,11 @@ namespace Catch {
         ShowDurations::OrNot showDurations;
         RunTests::InWhatOrder runOrder;
 
-        std::string reporterName;
         std::string outputFilename;
         std::string name;
         std::string processName;
 
+        std::vector<std::string> reporterNames;
         std::vector<std::string> testsOrTags;
     };
 
@@ -3360,7 +3377,7 @@ namespace Catch {
             m_stream = stream;
         }
 
-        std::string getReporterName() const { return m_data.reporterName; }
+        std::vector<std::string> getReporterNames() const { return m_data.reporterNames; }
 
         int abortAfter() const { return m_data.abortAfter; }
 
@@ -4269,6 +4286,7 @@ namespace Catch {
         config.abortAfter = x;
     }
     inline void addTestOrTags( ConfigData& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }
+    inline void addReporterName( ConfigData& config, std::string const& _reporterName ) { config.reporterNames.push_back( _reporterName ); }
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
         if( _warning == "NoAssertions" )
@@ -4362,7 +4380,7 @@ namespace Catch {
         cli["-r"]["--reporter"]
 //            .placeholder( "name[:filename]" )
             .describe( "reporter to use (defaults to console)" )
-            .bind( &ConfigData::reporterName, "name" );
+            .bind( &addReporterName, "name" );
 
         cli["-n"]["--name"]
             .describe( "suite name" )
@@ -4873,6 +4891,7 @@ namespace Catch
 
         // The return value indicates if the messages buffer should be cleared:
         virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
+
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
@@ -4881,19 +4900,23 @@ namespace Catch
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
     };
 
-    struct IReporterFactory {
+    struct IReporterFactory : IShared {
         virtual ~IReporterFactory();
         virtual IStreamingReporter* create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
 
     struct IReporterRegistry {
-        typedef std::map<std::string, IReporterFactory*> FactoryMap;
+        typedef std::map<std::string, Ptr<IReporterFactory> > FactoryMap;
+        typedef std::vector<Ptr<IReporterFactory> > Listeners;
 
         virtual ~IReporterRegistry();
         virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
+        virtual Listeners const& getListeners() const = 0;
     };
+
+    Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter );
 
 }
 
@@ -4917,8 +4940,7 @@ namespace Catch {
         nameAttr.setInitialIndent( 2 ).setIndent( 4 );
         tagsAttr.setIndent( 6 );
 
-        std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
+        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -4946,8 +4968,7 @@ namespace Catch {
         if( !config.testSpec().hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
-        std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
+        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -4987,8 +5008,7 @@ namespace Catch {
 
         std::map<std::string, TagInfo> tagCounts;
 
-        std::vector<TestCase> matchedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, config, matchedTestCases );
+        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
@@ -5059,7 +5079,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-// #included from: internal/catch_runner_impl.hpp
+// #included from: internal/catch_run_context.hpp
 #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 
 // #included from: catch_test_case_tracker.hpp
@@ -5647,11 +5667,7 @@ namespace Catch {
 
 namespace Catch {
 
-    Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
-        std::string reporterName = config->getReporterName().empty()
-            ? "console"
-            : config->getReporterName();
-
+    Ptr<IStreamingReporter> createReporter( std::string const& reporterName, Ptr<Config> const& config ) {
         Ptr<IStreamingReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, config.get() );
         if( !reporter ) {
             std::ostringstream oss;
@@ -5659,6 +5675,27 @@ namespace Catch {
             throw std::domain_error( oss.str() );
         }
         return reporter;
+    }
+
+    Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
+        std::vector<std::string> reporters = config->getReporterNames();
+        if( reporters.empty() )
+            reporters.push_back( "console" );
+
+        Ptr<IStreamingReporter> reporter;
+        for( std::vector<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
+                it != itEnd;
+                ++it )
+            reporter = addReporter( reporter, createReporter( *it, config ) );
+        return reporter;
+    }
+    Ptr<IStreamingReporter> addListeners( Ptr<IConfig> const& config, Ptr<IStreamingReporter> reporters ) {
+        IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
+        for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();
+                it != itEnd;
+                ++it )
+            reporters = addReporter(reporters, (*it)->create( ReporterConfig( config ) ) );
+        return reporters;
     }
 
     void openStreamInto( Ptr<Config> const& config, std::ofstream& ofs ) {
@@ -5679,6 +5716,7 @@ namespace Catch {
         std::ofstream ofs;
         openStreamInto( config, ofs );
         Ptr<IStreamingReporter> reporter = makeReporter( config );
+        reporter = addListeners( config.get(), reporter );
 
         RunContext context( config.get(), reporter );
 
@@ -5690,36 +5728,22 @@ namespace Catch {
         if( !testSpec.hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
-        std::vector<TestCase> testCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *config, testCases );
-
-        std::set<TestCase> testsAlreadyRun;
-        for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *config );
+        for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
                 it != itEnd;
                 ++it ) {
-            if( testsAlreadyRun.find( *it ) == testsAlreadyRun.end() ) {
-
-                if( context.aborting() )
-                    break;
-
+            if( !context.aborting() && matchTest( *it, testSpec, *config ) )
                 totals += context.runTest( *it );
-                testsAlreadyRun.insert( *it );
-            }
+            else
+                reporter->skipTest( *it );
         }
-        std::vector<TestCase> skippedTestCases;
-        getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *config, skippedTestCases, true );
-
-        for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
-                it != itEnd;
-                ++it )
-            reporter->skipTest( *it );
 
         context.testGroupEnded( config->name(), totals, 1, 1 );
         return totals;
     }
 
-    void applyFilenamesAsTags() {
-        std::vector<TestCase> const& tests = getRegistryHub().getTestCaseRegistry().getAllTests();
+    void applyFilenamesAsTags( IConfig const& config ) {
+        std::vector<TestCase> const& tests = getAllTestCasesSorted( config );
         for(std::size_t i = 0; i < tests.size(); ++i ) {
             TestCase& test = const_cast<TestCase&>( tests[i] );
             std::set<std::string> tags = test.tags;
@@ -5808,10 +5832,10 @@ namespace Catch {
             {
                 config(); // Force config to be constructed
 
-                if( m_configData.filenamesAsTags )
-                    applyFilenamesAsTags();
-
                 seedRng( *m_config );
+
+                if( m_configData.filenamesAsTags )
+                    applyFilenamesAsTags( *m_config );
 
                 // Handle list request
                 if( Option<std::size_t> listed = list( config() ) )
@@ -5839,7 +5863,6 @@ namespace Catch {
                 m_config = new Config( m_configData );
             return *m_config;
         }
-
     private:
         Clara::CommandLine<ConfigData> m_cli;
         std::vector<Clara::Parser::Token> m_unusedTokens;
@@ -5865,14 +5888,75 @@ namespace Catch {
 
 namespace Catch {
 
-    class TestRegistry : public ITestCaseRegistry {
-        struct LexSort {
-            bool operator() (TestCase i,TestCase j) const { return (i<j);}
-        };
-        struct RandomNumberGenerator {
-            int operator()( int n ) const { return std::rand() % n; }
-        };
+    struct LexSort {
+        bool operator() (TestCase i,TestCase j) const { return (i<j);}
+    };
+    struct RandomNumberGenerator {
+        int operator()( int n ) const { return std::rand() % n; }
+    };
 
+    inline std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
+
+        std::vector<TestCase> sorted = unsortedTestCases;
+
+        switch( config.runOrder() ) {
+            case RunTests::InLexicographicalOrder:
+                std::sort( sorted.begin(), sorted.end(), LexSort() );
+                break;
+            case RunTests::InRandomOrder:
+                {
+                    seedRng( config );
+
+                    RandomNumberGenerator rng;
+                    std::random_shuffle( sorted.begin(), sorted.end(), rng );
+                }
+                break;
+            case RunTests::InDeclarationOrder:
+                // already in declaration order
+                break;
+        }
+        return sorted;
+    }
+    bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config ) {
+        return testSpec.matches( testCase ) && ( config.allowThrows() || !testCase.throws() );
+    }
+    struct TestMatcher {
+        TestMatcher( TestSpec const& testSpec, bool allowThrows ) : m_testSpec( testSpec ), m_allowThrows( allowThrows ) {}
+
+        bool operator()( TestCase const& testCase ) const {
+            return m_testSpec.matches( testCase ) && ( m_allowThrows || !testCase.throws() );
+        }
+        TestSpec m_testSpec;
+        bool m_allowThrows;
+    };
+
+    void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
+        std::set<TestCase> seenFunctions;
+        for( std::vector<TestCase>::const_iterator it = functions.begin(), itEnd = functions.end();
+            it != itEnd;
+            ++it ) {
+            std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( *it );
+            if( !prev.second ){
+                Catch::cerr()
+                << Colour( Colour::Red )
+                << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
+                << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
+                << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
+                exit(1);
+            }
+        }
+    }
+
+    std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
+        std::vector<TestCase> filtered;
+        std::copy_if( testCases.begin(), testCases.end(), std::back_inserter( filtered ), TestMatcher( testSpec, config.allowThrows() ) );
+        return filtered;
+    }
+    std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {
+        return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );
+    }
+
+    class TestRegistry : public ITestCaseRegistry {
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
@@ -5884,70 +5968,27 @@ namespace Catch {
                 oss << "Anonymous test case " << ++m_unnamedCount;
                 return registerTest( testCase.withName( oss.str() ) );
             }
-
-            if( m_functions.find( testCase ) == m_functions.end() ) {
-                m_functions.insert( testCase );
-                m_functionsInOrder.push_back( testCase );
-                if( !testCase.isHidden() )
-                    m_nonHiddenFunctions.push_back( testCase );
-            }
-            else {
-                TestCase const& prev = *m_functions.find( testCase );
-                {
-                    Colour colourGuard( Colour::Red );
-                    Catch::cerr()   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
-                                << "\tFirst seen at " << prev.getTestCaseInfo().lineInfo << "\n"
-                                << "\tRedefined at " << testCase.getTestCaseInfo().lineInfo << std::endl;
-                }
-                exit(1);
-            }
+            m_functions.push_back( testCase );
         }
 
         virtual std::vector<TestCase> const& getAllTests() const {
-            return m_functionsInOrder;
+            return m_functions;
         }
+        virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const {
+            if( m_sortedFunctions.empty() )
+                enforceNoDuplicateTestCases( m_functions );
 
-        virtual std::vector<TestCase> const& getAllNonHiddenTests() const {
-            return m_nonHiddenFunctions;
-        }
-
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const {
-
-            for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
-                                                        itEnd = m_functionsInOrder.end();
-                    it != itEnd;
-                    ++it ) {
-                bool includeTest = testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() );
-                if( includeTest != negated )
-                    matchingTestCases.push_back( *it );
+            if(  m_currentSortOrder != config.runOrder() || m_sortedFunctions.empty() ) {
+                m_sortedFunctions = sortTests( config, m_functions );
+                m_currentSortOrder = config.runOrder();
             }
-            sortTests( config, matchingTestCases );
+            return m_sortedFunctions;
         }
 
     private:
-
-        static void sortTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) {
-
-            switch( config.runOrder() ) {
-                case RunTests::InLexicographicalOrder:
-                    std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
-                    break;
-                case RunTests::InRandomOrder:
-                {
-                    seedRng( config );
-
-                    RandomNumberGenerator rng;
-                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
-                }
-                    break;
-                case RunTests::InDeclarationOrder:
-                    // already in declaration order
-                    break;
-            }
-        }
-        std::set<TestCase> m_functions;
-        std::vector<TestCase> m_functionsInOrder;
-        std::vector<TestCase> m_nonHiddenFunctions;
+        std::vector<TestCase> m_functions;
+        mutable RunTests::InWhatOrder m_currentSortOrder;
+        mutable std::vector<TestCase> m_sortedFunctions;
         size_t m_unnamedCount;
         std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
@@ -6018,27 +6059,32 @@ namespace Catch {
 
     public:
 
-        virtual ~ReporterRegistry() {
-            deleteAllValues( m_factories );
-        }
+        virtual ~ReporterRegistry() override {}
 
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const {
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const override {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return CATCH_NULL;
             return it->second->create( ReporterConfig( config ) );
         }
 
-        void registerReporter( std::string const& name, IReporterFactory* factory ) {
+        void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) {
             m_factories.insert( std::make_pair( name, factory ) );
         }
+        void registerListener( Ptr<IReporterFactory> const& factory ) {
+            m_listeners.push_back( factory );
+        }
 
-        FactoryMap const& getFactories() const {
+        virtual FactoryMap const& getFactories() const override {
             return m_factories;
+        }
+        virtual Listeners const& getListeners() const override {
+            return m_listeners;
         }
 
     private:
         FactoryMap m_factories;
+        Listeners m_listeners;
     };
 }
 
@@ -6121,24 +6167,27 @@ namespace Catch {
         public: // IRegistryHub
             RegistryHub() {
             }
-            virtual IReporterRegistry const& getReporterRegistry() const {
+            virtual IReporterRegistry const& getReporterRegistry() const override {
                 return m_reporterRegistry;
             }
-            virtual ITestCaseRegistry const& getTestCaseRegistry() const {
+            virtual ITestCaseRegistry const& getTestCaseRegistry() const override {
                 return m_testCaseRegistry;
             }
-            virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() {
+            virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() override {
                 return m_exceptionTranslatorRegistry;
             }
 
         public: // IMutableRegistryHub
-            virtual void registerReporter( std::string const& name, IReporterFactory* factory ) {
+            virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) override {
                 m_reporterRegistry.registerReporter( name, factory );
             }
-            virtual void registerTest( TestCase const& testInfo ) {
+            virtual void registerListener( Ptr<IReporterFactory> const& factory ) override {
+                m_reporterRegistry.registerListener( factory );
+            }
+            virtual void registerTest( TestCase const& testInfo ) override {
                 m_testCaseRegistry.registerTest( testInfo );
             }
-            virtual void registerTranslator( const IExceptionTranslator* translator ) {
+            virtual void registerTranslator( const IExceptionTranslator* translator ) override {
                 m_exceptionTranslatorRegistry.registerTranslator( translator );
             }
 
@@ -6929,7 +6978,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 11 );
+    Version libraryVersion( 1, 2, 1, "develop", 12 );
 
 }
 
@@ -7797,6 +7846,137 @@ namespace Catch {
 
 } // end namespace Catch
 
+// #included from: ../reporters/catch_reporter_multi.hpp
+#define TWOBLUECUBES_CATCH_REPORTER_MULTI_HPP_INCLUDED
+
+namespace Catch {
+
+class MultipleReporters : public SharedImpl<IStreamingReporter> {
+    typedef std::vector<Ptr<IStreamingReporter> > Reporters;
+    Reporters m_reporters;
+
+public:
+    void add( Ptr<IStreamingReporter> const& reporter ) {
+        m_reporters.push_back( reporter );
+    }
+
+public: // IStreamingReporter
+
+    virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+        return m_reporters[0]->getPreferences();
+    }
+
+    virtual void noMatchingTestCases( std::string const& spec ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->noMatchingTestCases( spec );
+    }
+
+    virtual void testRunStarting( TestRunInfo const& testRunInfo ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->testRunStarting( testRunInfo );
+    }
+
+    virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->testGroupStarting( groupInfo );
+    }
+
+    virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->testCaseStarting( testInfo );
+    }
+
+    virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->sectionStarting( sectionInfo );
+    }
+
+    virtual void assertionStarting( AssertionInfo const& assertionInfo ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->assertionStarting( assertionInfo );
+    }
+
+    // The return value indicates if the messages buffer should be cleared:
+    virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
+        bool clearBuffer = false;
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            clearBuffer |= (*it)->assertionEnded( assertionStats );
+        return clearBuffer;
+    }
+
+    virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->sectionEnded( sectionStats );
+    }
+
+    virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->testCaseEnded( testCaseStats );
+    }
+
+    virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->testGroupEnded( testGroupStats );
+    }
+
+    virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->testRunEnded( testRunStats );
+    }
+
+    virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
+                it != itEnd;
+                ++it )
+            (*it)->skipTest( testInfo );
+    }
+};
+
+Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {
+    Ptr<IStreamingReporter> resultingReporter;
+
+    if( existingReporter ) {
+        MultipleReporters* multi = dynamic_cast<MultipleReporters*>( existingReporter.get() );
+        if( !multi ) {
+            multi = new MultipleReporters;
+            resultingReporter = Ptr<IStreamingReporter>( multi );
+            if( existingReporter )
+                multi->add( existingReporter );
+        }
+        else
+            resultingReporter = existingReporter;
+        multi->add( additionalReporter );
+    }
+    else
+        resultingReporter = additionalReporter;
+
+    return resultingReporter;
+}
+
+} // end namespace Catch
+
 // #included from: ../reporters/catch_reporter_xml.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_XML_HPP_INCLUDED
 
@@ -7812,42 +7992,48 @@ namespace Catch {
         StreamingReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
             stream( _config.stream() )
-        {}
+        {
+            m_reporterPrefs.shouldRedirectStdOut = false;
+        }
 
-        virtual ~StreamingReporterBase();
+        virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+            return m_reporterPrefs;
+        }
 
-        virtual void noMatchingTestCases( std::string const& ) {}
+        virtual ~StreamingReporterBase() CATCH_OVERRIDE;
 
-        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) {
+        virtual void noMatchingTestCases( std::string const& ) CATCH_OVERRIDE {}
+
+        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) CATCH_OVERRIDE {
             currentTestRunInfo = _testRunInfo;
         }
-        virtual void testGroupStarting( GroupInfo const& _groupInfo ) {
+        virtual void testGroupStarting( GroupInfo const& _groupInfo ) CATCH_OVERRIDE {
             currentGroupInfo = _groupInfo;
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) {
+        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) CATCH_OVERRIDE {
             currentTestCaseInfo = _testInfo;
         }
-        virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
+        virtual void sectionStarting( SectionInfo const& _sectionInfo ) CATCH_OVERRIDE {
             m_sectionStack.push_back( _sectionInfo );
         }
 
-        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) {
+        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) CATCH_OVERRIDE {
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) {
+        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) CATCH_OVERRIDE {
             currentTestCaseInfo.reset();
         }
-        virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) {
+        virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) CATCH_OVERRIDE {
             currentGroupInfo.reset();
         }
-        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) {
+        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) CATCH_OVERRIDE {
             currentTestCaseInfo.reset();
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
         }
 
-        virtual void skipTest( TestCaseInfo const& ) {
+        virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {
             // Don't do anything with this by default.
             // It can optionally be overridden in the derived class.
         }
@@ -7860,6 +8046,7 @@ namespace Catch {
         LazyStat<TestCaseInfo> currentTestCaseInfo;
 
         std::vector<SectionInfo> m_sectionStack;
+        ReporterPreferences m_reporterPrefs;
     };
 
     struct CumulativeReporterBase : SharedImpl<IStreamingReporter> {
@@ -7910,15 +8097,21 @@ namespace Catch {
         CumulativeReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
             stream( _config.stream() )
-        {}
+        {
+            m_reporterPrefs.shouldRedirectStdOut = false;
+        }
         ~CumulativeReporterBase();
 
-        virtual void testRunStarting( TestRunInfo const& ) {}
-        virtual void testGroupStarting( GroupInfo const& ) {}
+        virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+            return m_reporterPrefs;
+        }
 
-        virtual void testCaseStarting( TestCaseInfo const& ) {}
+        virtual void testRunStarting( TestRunInfo const& ) CATCH_OVERRIDE {}
+        virtual void testGroupStarting( GroupInfo const& ) CATCH_OVERRIDE {}
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+        virtual void testCaseStarting( TestCaseInfo const& ) CATCH_OVERRIDE {}
+
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
             SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
             Ptr<SectionNode> node;
             if( m_sectionStack.empty() ) {
@@ -7943,7 +8136,7 @@ namespace Catch {
             m_deepestSection = node;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) {}
+        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
 
         virtual bool assertionEnded( AssertionStats const& assertionStats ) {
             assert( !m_sectionStack.empty() );
@@ -7951,13 +8144,13 @@ namespace Catch {
             sectionNode.assertions.push_back( assertionStats );
             return true;
         }
-        virtual void sectionEnded( SectionStats const& sectionStats ) {
+        virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
             assert( !m_sectionStack.empty() );
             SectionNode& node = *m_sectionStack.back();
             node.stats = sectionStats;
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
             Ptr<TestCaseNode> node = new TestCaseNode( testCaseStats );
             assert( m_sectionStack.size() == 0 );
             node->children.push_back( m_rootSection );
@@ -7968,12 +8161,12 @@ namespace Catch {
             m_deepestSection->stdOut = testCaseStats.stdOut;
             m_deepestSection->stdErr = testCaseStats.stdErr;
         }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
             Ptr<TestGroupNode> node = new TestGroupNode( testGroupStats );
             node->children.swap( m_testCases );
             m_testGroups.push_back( node );
         }
-        virtual void testRunEnded( TestRunStats const& testRunStats ) {
+        virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
             Ptr<TestRunNode> node = new TestRunNode( testRunStats );
             node->children.swap( m_testGroups );
             m_testRuns.push_back( node );
@@ -7981,7 +8174,7 @@ namespace Catch {
         }
         virtual void testRunEndedCumulative() = 0;
 
-        virtual void skipTest( TestCaseInfo const& ) {}
+        virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {}
 
         Ptr<IConfig> m_config;
         std::ostream& stream;
@@ -7995,6 +8188,7 @@ namespace Catch {
         Ptr<SectionNode> m_rootSection;
         Ptr<SectionNode> m_deepestSection;
         std::vector<Ptr<SectionNode> > m_sectionStack;
+        ReporterPreferences m_reporterPrefs;
 
     };
 
@@ -8007,6 +8201,17 @@ namespace Catch {
         }
         return line;
     }
+
+    struct TestEventListenerBase : StreamingReporterBase {
+        TestEventListenerBase( ReporterConfig const& _config )
+        :   StreamingReporterBase( _config )
+        {}
+
+        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
+        virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
+            return false;
+        }
+    };
 
 } // end namespace Catch
 
@@ -8038,7 +8243,7 @@ namespace Catch {
     template<typename T>
     class ReporterRegistrar {
 
-        class ReporterFactory : public IReporterFactory {
+        class ReporterFactory : public SharedImpl<IReporterFactory> {
 
             // *** Please Note ***:
             // - If you end up here looking at a compiler error because it's trying to register
@@ -8066,12 +8271,36 @@ namespace Catch {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     };
+
+    template<typename T>
+    class ListenerRegistrar {
+
+        class ListenerFactory : public SharedImpl<IReporterFactory> {
+
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
+                return new T( config );
+            }
+            virtual std::string getDescription() const {
+                return "";
+            }
+        };
+
+    public:
+
+        ListenerRegistrar() {
+            getMutableRegistryHub().registerListener( new ListenerFactory() );
+        }
+    };
 }
 
 #define INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) \
     namespace{ Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
+
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
     namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
+
+#define INTERNAL_CATCH_REGISTER_LISTENER( listenerType ) \
+    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; }
 
 // #included from: ../internal/catch_xmlwriter.hpp
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
@@ -8317,26 +8546,23 @@ namespace Catch {
         XmlReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
             m_sectionDepth( 0 )
-        {}
+        {
+            m_reporterPrefs.shouldRedirectStdOut = true;
+        }
 
-        virtual ~XmlReporter();
+        virtual ~XmlReporter() CATCH_OVERRIDE;
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
         }
 
     public: // StreamingReporterBase
-        virtual ReporterPreferences getPreferences() const {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = true;
-            return prefs;
-        }
 
-        virtual void noMatchingTestCases( std::string const& s ) {
+        virtual void noMatchingTestCases( std::string const& s ) CATCH_OVERRIDE {
             StreamingReporterBase::noMatchingTestCases( s );
         }
 
-        virtual void testRunStarting( TestRunInfo const& testInfo ) {
+        virtual void testRunStarting( TestRunInfo const& testInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testRunStarting( testInfo );
             m_xml.setStream( stream );
             m_xml.startElement( "Catch" );
@@ -8344,13 +8570,13 @@ namespace Catch {
                 m_xml.writeAttribute( "name", m_config->name() );
         }
 
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testGroupStarting( groupInfo );
             m_xml.startElement( "Group" )
                 .writeAttribute( "name", groupInfo.name );
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testCaseStarting(testInfo);
             m_xml.startElement( "TestCase" ).writeAttribute( "name", trim( testInfo.name ) );
 
@@ -8358,7 +8584,7 @@ namespace Catch {
                 m_testCaseTimer.start();
         }
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::sectionStarting( sectionInfo );
             if( m_sectionDepth++ > 0 ) {
                 m_xml.startElement( "Section" )
@@ -8367,9 +8593,9 @@ namespace Catch {
             }
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) { }
+        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE { }
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) {
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
             const AssertionResult& assertionResult = assertionStats.assertionResult;
 
             // Print any info messages in <Info> tags.
@@ -8440,7 +8666,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded( SectionStats const& sectionStats ) {
+        virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
             StreamingReporterBase::sectionEnded( sectionStats );
             if( --m_sectionDepth > 0 ) {
                 XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResults" );
@@ -8455,7 +8681,7 @@ namespace Catch {
             }
         }
 
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResult" );
             e.writeAttribute( "success", testCaseStats.totals.assertions.allOk() );
@@ -8466,7 +8692,7 @@ namespace Catch {
             m_xml.endElement();
         }
 
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
             StreamingReporterBase::testGroupEnded( testGroupStats );
             // TODO: Check testGroupStats.aborting and act accordingly.
             m_xml.scopedElement( "OverallResults" )
@@ -8476,7 +8702,7 @@ namespace Catch {
             m_xml.endElement();
         }
 
-        virtual void testRunEnded( TestRunStats const& testRunStats ) {
+        virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
             StreamingReporterBase::testRunEnded( testRunStats );
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", testRunStats.totals.assertions.passed )
@@ -8507,28 +8733,24 @@ namespace Catch {
         JunitReporter( ReporterConfig const& _config )
         :   CumulativeReporterBase( _config ),
             xml( _config.stream() )
-        {}
+        {
+            m_reporterPrefs.shouldRedirectStdOut = true;
+        }
 
-        ~JunitReporter();
+        virtual ~JunitReporter() CATCH_OVERRIDE;
 
         static std::string getDescription() {
             return "Reports test results in an XML format that looks like Ant's junitreport target";
         }
 
-        virtual void noMatchingTestCases( std::string const& /*spec*/ ) {}
+        virtual void noMatchingTestCases( std::string const& /*spec*/ ) CATCH_OVERRIDE {}
 
-        virtual ReporterPreferences getPreferences() const {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = true;
-            return prefs;
-        }
-
-        virtual void testRunStarting( TestRunInfo const& runInfo ) {
+        virtual void testRunStarting( TestRunInfo const& runInfo ) CATCH_OVERRIDE {
             CumulativeReporterBase::testRunStarting( runInfo );
             xml.startElement( "testsuites" );
         }
 
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
             suiteTimer.start();
             stdOutForSuite.str("");
             stdErrForSuite.str("");
@@ -8536,25 +8758,25 @@ namespace Catch {
             CumulativeReporterBase::testGroupStarting( groupInfo );
         }
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) {
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
             if( assertionStats.assertionResult.getResultType() == ResultWas::ThrewException )
                 unexpectedExceptions++;
             return CumulativeReporterBase::assertionEnded( assertionStats );
         }
 
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
             stdOutForSuite << testCaseStats.stdOut;
             stdErrForSuite << testCaseStats.stdErr;
             CumulativeReporterBase::testCaseEnded( testCaseStats );
         }
 
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
             double suiteTime = suiteTimer.getElapsedSeconds();
             CumulativeReporterBase::testGroupEnded( testGroupStats );
             writeGroup( *m_testGroups.back(), suiteTime );
         }
 
-        virtual void testRunEndedCumulative() {
+        virtual void testRunEndedCumulative() CATCH_OVERRIDE {
             xml.endElement();
         }
 
@@ -8719,24 +8941,19 @@ namespace Catch {
             m_headerPrinted( false )
         {}
 
-        virtual ~ConsoleReporter();
+        virtual ~ConsoleReporter() CATCH_OVERRIDE;
         static std::string getDescription() {
             return "Reports test results as plain lines of text";
         }
-        virtual ReporterPreferences getPreferences() const {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = false;
-            return prefs;
-        }
 
-        virtual void noMatchingTestCases( std::string const& spec ) {
+        virtual void noMatchingTestCases( std::string const& spec ) CATCH_OVERRIDE {
             stream << "No test cases matched '" << spec << "'" << std::endl;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) {
+        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {
         }
 
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
+        virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
             AssertionResult const& result = _assertionStats.assertionResult;
 
             bool printInfoMessages = true;
@@ -8756,11 +8973,11 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionStarting( SectionInfo const& _sectionInfo ) {
+        virtual void sectionStarting( SectionInfo const& _sectionInfo ) CATCH_OVERRIDE {
             m_headerPrinted = false;
             StreamingReporterBase::sectionStarting( _sectionInfo );
         }
-        virtual void sectionEnded( SectionStats const& _sectionStats ) {
+        virtual void sectionEnded( SectionStats const& _sectionStats ) CATCH_OVERRIDE {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 Colour colour( Colour::ResultError );
@@ -8782,11 +8999,11 @@ namespace Catch {
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
-        virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) {
+        virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) CATCH_OVERRIDE {
             StreamingReporterBase::testCaseEnded( _testCaseStats );
             m_headerPrinted = false;
         }
-        virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) {
+        virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) CATCH_OVERRIDE {
             if( currentGroupInfo.used ) {
                 printSummaryDivider();
                 stream << "Summary for group '" << _testGroupStats.groupInfo.name << "':\n";
@@ -8795,7 +9012,7 @@ namespace Catch {
             }
             StreamingReporterBase::testGroupEnded( _testGroupStats );
         }
-        virtual void testRunEnded( TestRunStats const& _testRunStats ) {
+        virtual void testRunEnded( TestRunStats const& _testRunStats ) CATCH_OVERRIDE {
             printTotalsDivider( _testRunStats.totals );
             printTotals( _testRunStats.totals );
             stream << std::endl;
