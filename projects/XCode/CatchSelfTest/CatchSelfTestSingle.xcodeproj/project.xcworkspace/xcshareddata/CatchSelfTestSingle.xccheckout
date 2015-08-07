@@ -10,31 +10,31 @@
 	<string>CatchSelfTestSingle</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>01DD8CA9-7DC3-46BC-B998-EFF40EA3485F</key>
-		<string>ssh://github.com/philsquared/Catch.git</string>
+		<key>90C00904F36E6ADB57A7313E998815D255B0DEAF</key>
+		<string>https://github.com/philsquared/Catch.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>projects/XCode4/CatchSelfTest/CatchSelfTestSingle.xcodeproj/project.xcworkspace</string>
+	<string>projects/XCode/CatchSelfTest/CatchSelfTestSingle.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>01DD8CA9-7DC3-46BC-B998-EFF40EA3485F</key>
+		<key>90C00904F36E6ADB57A7313E998815D255B0DEAF</key>
 		<string>../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/philsquared/Catch.git</string>
+	<string>https://github.com/philsquared/Catch.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>01DD8CA9-7DC3-46BC-B998-EFF40EA3485F</string>
+	<string>90C00904F36E6ADB57A7313E998815D255B0DEAF</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>01DD8CA9-7DC3-46BC-B998-EFF40EA3485F</string>
+			<string>90C00904F36E6ADB57A7313E998815D255B0DEAF</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Catch</string>
+			<string>Catch-Develop</string>
 		</dict>
 	</array>
 </dict>
