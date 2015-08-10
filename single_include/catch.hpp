@@ -1,6 +1,6 @@
 /*
  *  Catch v1.2.1-develop.12
- *  Generated: 2015-08-07 17:51:37.651202
+ *  Generated: 2015-08-10 07:32:30.267995
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6055,9 +6055,9 @@ namespace Catch {
 
     public:
 
-        virtual ~ReporterRegistry() override {}
+        virtual ~ReporterRegistry() CATCH_OVERRIDE {}
 
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const override {
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const CATCH_OVERRIDE {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return CATCH_NULL;
@@ -6071,10 +6071,10 @@ namespace Catch {
             m_listeners.push_back( factory );
         }
 
-        virtual FactoryMap const& getFactories() const override {
+        virtual FactoryMap const& getFactories() const CATCH_OVERRIDE {
             return m_factories;
         }
-        virtual Listeners const& getListeners() const override {
+        virtual Listeners const& getListeners() const CATCH_OVERRIDE {
             return m_listeners;
         }
 
@@ -6163,27 +6163,27 @@ namespace Catch {
         public: // IRegistryHub
             RegistryHub() {
             }
-            virtual IReporterRegistry const& getReporterRegistry() const override {
+            virtual IReporterRegistry const& getReporterRegistry() const CATCH_OVERRIDE {
                 return m_reporterRegistry;
             }
-            virtual ITestCaseRegistry const& getTestCaseRegistry() const override {
+            virtual ITestCaseRegistry const& getTestCaseRegistry() const CATCH_OVERRIDE {
                 return m_testCaseRegistry;
             }
-            virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() override {
+            virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() CATCH_OVERRIDE {
                 return m_exceptionTranslatorRegistry;
             }
 
         public: // IMutableRegistryHub
-            virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) override {
+            virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) CATCH_OVERRIDE {
                 m_reporterRegistry.registerReporter( name, factory );
             }
-            virtual void registerListener( Ptr<IReporterFactory> const& factory ) override {
+            virtual void registerListener( Ptr<IReporterFactory> const& factory ) CATCH_OVERRIDE {
                 m_reporterRegistry.registerListener( factory );
             }
-            virtual void registerTest( TestCase const& testInfo ) override {
+            virtual void registerTest( TestCase const& testInfo ) CATCH_OVERRIDE {
                 m_testCaseRegistry.registerTest( testInfo );
             }
-            virtual void registerTranslator( const IExceptionTranslator* translator ) override {
+            virtual void registerTranslator( const IExceptionTranslator* translator ) CATCH_OVERRIDE {
                 m_exceptionTranslatorRegistry.registerTranslator( translator );
             }
 
