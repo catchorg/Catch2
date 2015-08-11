@@ -503,12 +503,7 @@ namespace Clara {
             }
         };
 
-        // NOTE: std::auto_ptr is deprecated in c++11/c++0x
-#if defined(__cplusplus) && __cplusplus > 199711L
-        typedef std::unique_ptr<Arg> ArgAutoPtr;
-#else
-        typedef std::auto_ptr<Arg> ArgAutoPtr;
-#endif
+        typedef CATCH_AUTO_PTR( Arg ) ArgAutoPtr;
 
         friend void addOptName( Arg& arg, std::string const& optName )
         {
