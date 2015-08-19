@@ -22,6 +22,7 @@ namespace Catch {
     public:
         JunitReporter( ReporterConfig const& _config )
         :   CumulativeReporterBase( _config ),
+            unexpectedExceptions( 0 ),
             xml( _config.stream() )
         {}
 
