@@ -23,7 +23,7 @@ namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
         struct LexSort {
-            bool operator() (TestCase i,TestCase j) const { return (i<j);}
+            bool operator() ( TestCase const& i, TestCase const& j) const { return ( i < j ); }
         };
         struct RandomNumberGenerator {
             int operator()( int n ) const { return std::rand() % n; }
