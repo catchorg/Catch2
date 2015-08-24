@@ -32,6 +32,23 @@ namespace Matchers {
     };
 
     namespace Generic {
+        template<typename ExpressionT>
+        struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT>
+        {
+            Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
+            Not( Not const& other ) : m_matcher( other.m_matcher ) {}
+
+            virtual bool match( ExpressionT const& expr ) const CATCH_OVERRIDE
+            {
+                return !m_matcher->match( expr );
+            }
+
+            virtual std::string toString() const CATCH_OVERRIDE {
+                return "not " + m_matcher->toString();
+            }
+
+            Ptr< Matcher<ExpressionT> > m_matcher;
+        };
 
         template<typename ExpressionT>
         class AllOf : public MatcherImpl<AllOf<ExpressionT>, ExpressionT> {
@@ -204,6 +221,11 @@ namespace Matchers {
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
+    template<typename ExpressionT>
+    inline Impl::Generic::Not<ExpressionT> Not( Impl::Matcher<ExpressionT> const& m ) {
+        return Impl::Generic::Not<ExpressionT>( m );
+    }
+
     template<typename ExpressionT>
     inline Impl::Generic::AllOf<ExpressionT> AllOf( Impl::Matcher<ExpressionT> const& m1,
                                                     Impl::Matcher<ExpressionT> const& m2 ) {
