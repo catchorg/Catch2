@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.12
- *  Generated: 2015-08-10 07:32:30.267995
+ *  Catch v1.2.1-develop.13
+ *  Generated: 2015-08-24 06:27:37.882342
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -83,10 +83,16 @@
 // CATCH_CONFIG_CPP11_TUPLE : std::tuple is supported
 // CATCH_CONFIG_CPP11_LONG_LONG : is long long supported?
 // CATCH_CONFIG_CPP11_OVERRIDE : is override supported?
+// CATCH_CONFIG_CPP11_UNIQUE_PTR : is unique_ptr supported (otherwise use auto_ptr)
 
 // CATCH_CONFIG_CPP11_OR_GREATER : Is C++11 supported?
 
 // CATCH_CONFIG_VARIADIC_MACROS : are variadic macros supported?
+
+// ****************
+// Note to maintainers: if new toggles are added please document them
+// in configuration.md, too
+// ****************
 
 // In general each macro has a _NO_<feature name> form
 // (e.g. CATCH_CONFIG_CPP11_NO_NULLPTR) which disables the feature.
@@ -144,6 +150,7 @@
 
 #if (_MSC_VER >= 1600)
 #   define CATCH_INTERNAL_CONFIG_CPP11_NULLPTR
+#   define CATCH_INTERNAL_CONFIG_CPP11_UNIQUE_PTR
 #endif
 
 #if (_MSC_VER >= 1900 ) // (VC++ 13 (VS2015))
@@ -152,6 +159,8 @@
 #endif
 
 #endif // _MSC_VER
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Use variadic macros if the compiler supports them
 #if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
@@ -167,7 +176,7 @@
 // C++ language feature support
 
 // catch all support for C++11
-#if (__cplusplus >= 201103L)
+#if defined(__cplusplus) && __cplusplus >= 201103L
 
 #  define CATCH_CPP11_OR_GREATER
 
@@ -202,6 +211,9 @@
 #  if !defined(CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE)
 #    define CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE
 #  endif
+#  if !defined(CATCH_INTERNAL_CONFIG_CPP11_UNIQUE_PTR)
+#    define CATCH_INTERNAL_CONFIG_CPP11_UNIQUE_PTR
+#  endif
 
 #endif // __cplusplus >= 201103L
 
@@ -224,11 +236,14 @@
 #if defined(CATCH_INTERNAL_CONFIG_VARIADIC_MACROS) && !defined(CATCH_CONFIG_NO_VARIADIC_MACROS) && !defined(CATCH_CONFIG_VARIADIC_MACROS)
 #   define CATCH_CONFIG_VARIADIC_MACROS
 #endif
-#if defined(CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG) && !defined(CATCH_CONFIG_NO_LONG_LONG) && !defined(CATCH_CONFIG_CPP11_LONG_LONG)
+#if defined(CATCH_INTERNAL_CONFIG_CPP11_LONG_LONG) && !defined(CATCH_CONFIG_NO_LONG_LONG) && !defined(CATCH_CONFIG_CPP11_LONG_LONG) && !defined(CATCH_CONFIG_NO_CPP11)
 #   define CATCH_CONFIG_CPP11_LONG_LONG
 #endif
-#if defined(CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE) && !defined(CATCH_CONFIG_NO_OVERRIDE) && !defined(CATCH_CONFIG_CPP11_OVERRIDE)
+#if defined(CATCH_INTERNAL_CONFIG_CPP11_OVERRIDE) && !defined(CATCH_CONFIG_NO_OVERRIDE) && !defined(CATCH_CONFIG_CPP11_OVERRIDE) && !defined(CATCH_CONFIG_NO_CPP11)
 #   define CATCH_CONFIG_CPP11_OVERRIDE
+#endif
+#if defined(CATCH_INTERNAL_CONFIG_CPP11_UNIQUE_PTR) && !defined(CATCH_CONFIG_NO_UNIQUE_PTR) && !defined(CATCH_CONFIG_CPP11_UNIQUE_PTR) && !defined(CATCH_CONFIG_NO_CPP11)
+#   define CATCH_CONFIG_CPP11_UNIQUE_PTR
 #endif
 
 // noexcept support:
@@ -252,6 +267,13 @@
 #   define CATCH_OVERRIDE override
 #else
 #   define CATCH_OVERRIDE
+#endif
+
+// unique_ptr support
+#ifdef CATCH_CONFIG_CPP11_UNIQUE_PTR
+#   define CATCH_AUTO_PTR( T ) std::unique_ptr<T>
+#else
+#   define CATCH_AUTO_PTR( T ) std::auto_ptr<T>
 #endif
 
 namespace Catch {
@@ -828,6 +850,21 @@ namespace Matchers {
     };
 
     namespace Generic {
+        template<typename ExpressionT>
+        struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
+            Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
+            Not( Not const& other ) : m_matcher( other.m_matcher ) {}
+
+            virtual bool match( ExpressionT const& expr ) const CATCH_OVERRIDE {
+                return !m_matcher->match( expr );
+            }
+
+            virtual std::string toString() const CATCH_OVERRIDE {
+                return "not " + m_matcher->toString();
+            }
+
+            Ptr< Matcher<ExpressionT> > m_matcher;
+        };
 
         template<typename ExpressionT>
         class AllOf : public MatcherImpl<AllOf<ExpressionT>, ExpressionT> {
@@ -896,7 +933,6 @@ namespace Matchers {
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
-
     }
 
     namespace StdString {
@@ -1000,6 +1036,11 @@ namespace Matchers {
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
+    template<typename ExpressionT>
+    inline Impl::Generic::Not<ExpressionT> Not( Impl::Matcher<ExpressionT> const& m ) {
+        return Impl::Generic::Not<ExpressionT>( m );
+    }
+
     template<typename ExpressionT>
     inline Impl::Generic::AllOf<ExpressionT> AllOf( Impl::Matcher<ExpressionT> const& m1,
                                                     Impl::Matcher<ExpressionT> const& m2 ) {
@@ -3908,12 +3949,7 @@ namespace Clara {
             }
         };
 
-        // NOTE: std::auto_ptr is deprecated in c++11/c++0x
-#if defined(__cplusplus) && __cplusplus > 199711L
-        typedef std::unique_ptr<Arg> ArgAutoPtr;
-#else
-        typedef std::auto_ptr<Arg> ArgAutoPtr;
-#endif
+        typedef CATCH_AUTO_PTR( Arg ) ArgAutoPtr;
 
         friend void addOptName( Arg& arg, std::string const& optName )
         {
@@ -6974,7 +7010,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 12 );
+    Version libraryVersion( 1, 2, 1, "develop", 13 );
 
 }
 

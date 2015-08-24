@@ -33,13 +33,11 @@ namespace Matchers {
 
     namespace Generic {
         template<typename ExpressionT>
-        struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT>
-        {
+        struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
             Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
             Not( Not const& other ) : m_matcher( other.m_matcher ) {}
 
-            virtual bool match( ExpressionT const& expr ) const CATCH_OVERRIDE
-            {
+            virtual bool match( ExpressionT const& expr ) const CATCH_OVERRIDE {
                 return !m_matcher->match( expr );
             }
 
@@ -117,7 +115,6 @@ namespace Matchers {
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
-
     }
 
     namespace StdString {
