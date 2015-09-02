@@ -15,7 +15,7 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        AssertionInfo() {}
+        AssertionInfo() : resultDisposition( ResultDisposition::Normal ) {}
         AssertionInfo(  std::string const& _macroName,
                         SourceLineInfo const& _lineInfo,
                         std::string const& _capturedExpression,
