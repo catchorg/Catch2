@@ -45,7 +45,17 @@ namespace Catch {
                 throw;
             }
             catch( std::exception& ex ) {
-                return ex.what();
+                try {
+                    try {
+                        throw;
+                    }
+                    catch(...) {
+                        return tryTranslators( m_translators.begin() );
+                    }
+                }
+                catch( std::exception& ex ) {
+                    return ex.what();
+                }
             }
             catch( std::string& msg ) {
                 return msg;
@@ -54,13 +64,18 @@ namespace Catch {
                 return msg;
             }
             catch(...) {
-                return tryTranslators( m_translators.begin() );
+                try {
+                    return tryTranslators( m_translators.begin() );
+                }
+                catch(...) {
+                    return "Unknown exception";
+                }
             }
         }
 
         std::string tryTranslators( std::vector<const IExceptionTranslator*>::const_iterator it ) const {
             if( it == m_translators.end() )
-                return "Unknown exception";
+                throw;
 
             try {
                 return (*it)->translate();
