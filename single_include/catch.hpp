@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.13
- *  Generated: 2015-08-24 06:27:37.882342
+ *  Catch v1.2.1-develop.14
+ *  Generated: 2015-09-27 03:27:04.922060
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1856,6 +1856,7 @@ namespace Catch {
     class AssertionResult;
     struct AssertionInfo;
     struct SectionInfo;
+    struct SectionEndInfo;
     struct MessageInfo;
     class ScopedMessageBuilder;
     struct Counts;
@@ -1867,7 +1868,8 @@ namespace Catch {
         virtual void assertionEnded( AssertionResult const& result ) = 0;
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
-        virtual void sectionEnded( SectionInfo const& name, Counts const& assertions, double _durationInSeconds ) = 0;
+        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
+        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
         virtual void pushScopedMessage( MessageInfo const& message ) = 0;
         virtual void popScopedMessage( MessageInfo const& message ) = 0;
 
@@ -2071,21 +2073,6 @@ namespace Catch {
 // #included from: catch_section_info.h
 #define TWOBLUECUBES_CATCH_SECTION_INFO_H_INCLUDED
 
-namespace Catch {
-
-    struct SectionInfo {
-        SectionInfo
-            (   SourceLineInfo const& _lineInfo,
-                std::string const& _name,
-                std::string const& _description = std::string() );
-
-        std::string name;
-        std::string description;
-        SourceLineInfo lineInfo;
-    };
-
-} // end namespace Catch
-
 // #included from: catch_totals.hpp
 #define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
 
@@ -2155,6 +2142,31 @@ namespace Catch {
         Counts testCases;
     };
 }
+
+namespace Catch {
+
+    struct SectionInfo {
+        SectionInfo
+            (   SourceLineInfo const& _lineInfo,
+                std::string const& _name,
+                std::string const& _description = std::string() );
+
+        std::string name;
+        std::string description;
+        SourceLineInfo lineInfo;
+    };
+
+    struct SectionEndInfo {
+        SectionEndInfo( SectionInfo const& _sectionInfo, Counts const& _prevAssertions, double _durationInSeconds )
+        : sectionInfo( _sectionInfo ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )
+        {}
+
+        SectionInfo sectionInfo;
+        Counts prevAssertions;
+        double durationInSeconds;
+    };
+
+} // end namespace Catch
 
 // #included from: catch_timer.h
 #define TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
@@ -5487,19 +5499,18 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions, double _durationInSeconds ) {
-            if( std::uncaught_exception() ) {
-                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions, _durationInSeconds ) );
-                return;
-            }
-
-            Counts assertions = m_totals.assertions - prevAssertions;
+        virtual void sectionEnded( SectionEndInfo const& endInfo ) {
+            Counts assertions = m_totals.assertions - endInfo.prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
             m_testCaseTracker->leaveSection();
 
-            m_reporter->sectionEnded( SectionStats( info, assertions, _durationInSeconds, missingAssertions ) );
+            m_reporter->sectionEnded( SectionStats( endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions ) );
             m_messages.clear();
+        }
+
+        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) {
+            m_unfinishedSections.push_back( endInfo );
         }
 
         virtual void pushScopedMessage( MessageInfo const& message ) {
@@ -5623,23 +5634,13 @@ namespace Catch {
         void handleUnfinishedSections() {
             // If sections ended prematurely due to an exception we stored their
             // infos here so we can tear them down outside the unwind process.
-            for( std::vector<UnfinishedSections>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
+            for( std::vector<SectionEndInfo>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
                         itEnd = m_unfinishedSections.rend();
                     it != itEnd;
                     ++it )
-                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
+                sectionEnded( *it );
             m_unfinishedSections.clear();
         }
-
-        struct UnfinishedSections {
-            UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions, double _durationInSeconds )
-            : info( _info ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )
-            {}
-
-            SectionInfo info;
-            Counts prevAssertions;
-            double durationInSeconds;
-        };
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
@@ -5655,7 +5656,7 @@ namespace Catch {
         IResultCapture* m_prevResultCapture;
         Ptr<IConfig const> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
-        std::vector<UnfinishedSections> m_unfinishedSections;
+        std::vector<SectionEndInfo> m_unfinishedSections;
     };
 
     IResultCapture& getResultCapture() {
@@ -7010,7 +7011,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 13 );
+    Version libraryVersion( 1, 2, 1, "develop", 14 );
 
 }
 
@@ -7349,8 +7350,13 @@ namespace Catch {
     }
 
     Section::~Section() {
-        if( m_sectionIncluded )
-            getResultCapture().sectionEnded( m_info, m_assertions, m_timer.getElapsedSeconds() );
+        if( m_sectionIncluded ) {
+            SectionEndInfo endInfo( m_info, m_assertions, m_timer.getElapsedSeconds() );
+            if( std::uncaught_exception() )
+                getResultCapture().sectionEndedEarly( endInfo );
+            else
+                getResultCapture().sectionEnded( endInfo );
+        }
     }
 
     // This indicates whether the section should be executed or not
