@@ -43,7 +43,7 @@ namespace Catch {
             reporter = addReporter( reporter, createReporter( *it, config ) );        
         return reporter;
     }
-    Ptr<IStreamingReporter> addListeners( Ptr<IConfig> const& config, Ptr<IStreamingReporter> reporters ) {
+    Ptr<IStreamingReporter> addListeners( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> reporters ) {
         IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
         for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();
                 it != itEnd;
@@ -67,12 +67,14 @@ namespace Catch {
     
     Totals runTests( Ptr<Config> const& config ) {
 
+        Ptr<IConfig const> iconfig = config.get();
+        
         std::ofstream ofs;
         openStreamInto( config, ofs );
         Ptr<IStreamingReporter> reporter = makeReporter( config );
-        reporter = addListeners( config.get(), reporter );
+        reporter = addListeners( iconfig, reporter );
         
-        RunContext context( config.get(), reporter );
+        RunContext context( iconfig, reporter );
 
         Totals totals;
 
@@ -82,17 +84,17 @@ namespace Catch {
         if( !testSpec.hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
-        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *config );
+        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
         for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
                 it != itEnd;
                 ++it ) {
-            if( !context.aborting() && matchTest( *it, testSpec, *config ) )
+            if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
                 totals += context.runTest( *it );
             else
                 reporter->skipTest( *it );
         }
 
-        context.testGroupEnded( config->name(), totals, 1, 1 );
+        context.testGroupEnded( iconfig->name(), totals, 1, 1 );
         return totals;
     }
     

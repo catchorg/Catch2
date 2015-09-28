@@ -65,7 +65,7 @@ namespace Catch {
             // It can optionally be overridden in the derived class.
         }
 
-        Ptr<IConfig> m_config;
+        Ptr<IConfig const> m_config;
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;
@@ -204,7 +204,7 @@ namespace Catch {
 
         virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {}
 
-        Ptr<IConfig> m_config;
+        Ptr<IConfig const> m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
         std::vector<std::vector<Ptr<SectionNode> > > m_sections;

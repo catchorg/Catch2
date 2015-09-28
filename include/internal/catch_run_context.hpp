@@ -64,10 +64,7 @@ namespace Catch {
             m_context( getCurrentMutableContext() ),
             m_activeTestCase( CATCH_NULL ),
             m_config( _config ),
-            m_reporter( reporter ),
-            m_prevRunner( m_context.getRunner() ),
-            m_prevResultCapture( m_context.getResultCapture() ),
-            m_prevConfig( m_context.getConfig() )
+            m_reporter( reporter )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -77,10 +74,6 @@ namespace Catch {
 
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
-            m_context.setRunner( m_prevRunner );
-            m_context.setConfig( Ptr<IConfig const>() );
-            m_context.setResultCapture( m_prevResultCapture );
-            m_context.setConfig( m_prevConfig );
         }
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
@@ -330,9 +323,6 @@ namespace Catch {
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;
-        IRunner* m_prevRunner;
-        IResultCapture* m_prevResultCapture;
-        Ptr<IConfig const> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;
     };
