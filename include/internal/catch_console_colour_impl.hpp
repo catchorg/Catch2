@@ -60,35 +60,37 @@ namespace {
         {
             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
             GetConsoleScreenBufferInfo( stdoutHandle, &csbiInfo );
-            originalAttributes = csbiInfo.wAttributes;
+            originalColour = csbiInfo.wAttributes & 0x0F;
+            originalBackground = csbiInfo.wAttributes & 0xF0;
         }
 
         virtual void use( Colour::Code _colourCode ) {
             switch( _colourCode ) {
-                case Colour::None:      return setTextAttribute( originalAttributes );
-                case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
-                case Colour::Red:       return setTextAttribute( FOREGROUND_RED );
-                case Colour::Green:     return setTextAttribute( FOREGROUND_GREEN );
-                case Colour::Blue:      return setTextAttribute( FOREGROUND_BLUE );
-                case Colour::Cyan:      return setTextAttribute( FOREGROUND_BLUE | FOREGROUND_GREEN );
-                case Colour::Yellow:    return setTextAttribute( FOREGROUND_RED | FOREGROUND_GREEN );
-                case Colour::Grey:      return setTextAttribute( 0 );
+                case Colour::None:      return setColour( originalColour );
+                case Colour::White:     return setColour( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::Red:       return setColour( FOREGROUND_RED );
+                case Colour::Green:     return setColour( FOREGROUND_GREEN );
+                case Colour::Blue:      return setColour( FOREGROUND_BLUE );
+                case Colour::Cyan:      return setColour( FOREGROUND_BLUE | FOREGROUND_GREEN );
+                case Colour::Yellow:    return setColour( FOREGROUND_RED | FOREGROUND_GREEN );
+                case Colour::Grey:      return setColour( 0 );
 
-                case Colour::LightGrey:     return setTextAttribute( FOREGROUND_INTENSITY );
-                case Colour::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
-                case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
-                case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::LightGrey:     return setColour( FOREGROUND_INTENSITY );
+                case Colour::BrightRed:     return setColour( FOREGROUND_INTENSITY | FOREGROUND_RED );
+                case Colour::BrightGreen:   return setColour( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
+                case Colour::BrightWhite:   return setColour( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
 
                 case Colour::Bright: throw std::logic_error( "not a colour" );
             }
         }
 
     private:
-        void setTextAttribute( WORD _textAttribute ) {
-            SetConsoleTextAttribute( stdoutHandle, _textAttribute );
+        void setColour( WORD _colour ) {
+            SetConsoleTextAttribute( stdoutHandle, _colour | originalBackground );
         }
         HANDLE stdoutHandle;
-        WORD originalAttributes;
+        WORD originalColour;
+        WORD originalBackground;
     };
 
     IColourImpl* platformColourInstance() {
