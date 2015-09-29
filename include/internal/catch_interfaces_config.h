@@ -38,6 +38,12 @@ namespace Catch {
         InRandomOrder
     }; };
 
+    struct ForceColour { enum OrNot {
+        DefaultForOutput,
+        Always,
+        Never
+    }; };
+
     class TestSpec;
 
     struct IConfig : IShared {
@@ -56,7 +62,7 @@ namespace Catch {
         virtual TestSpec const& testSpec() const = 0;
         virtual RunTests::InWhatOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
-        virtual bool forceColour() const = 0;
+        virtual ForceColour::OrNot forceColour() const = 0;
     };
 }
 

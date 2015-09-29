@@ -74,6 +74,12 @@ namespace Catch {
                 addTestOrTags( config, "\"" + line + "\"," );
         }
     }
+    inline void setForceColourAlways( ConfigData& config ) {
+        config.forceColour = ForceColour::Always;
+    }
+    inline void setForceColourNever( ConfigData& config ) {
+        config.forceColour = ForceColour::Never;
+    }
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
@@ -177,8 +183,12 @@ namespace Catch {
 
         cli["--force-colour"]
             .describe( "force colourised output" )
-            .bind( &ConfigData::forceColour );
+            .bind( &setForceColourAlways );
         
+        cli["--force-no-colour"]
+            .describe( "force non-colourised output" )
+            .bind( &setForceColourNever );
+
         return cli;
     }
 
