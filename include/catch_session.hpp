@@ -52,25 +52,11 @@ namespace Catch {
         return reporters;
     }
     
-    void openStreamInto( Ptr<Config> const& config, std::ofstream& ofs ) {
-        // Open output file, if specified
-        if( !config->getFilename().empty() ) {
-            ofs.open( config->getFilename().c_str() );
-            if( ofs.fail() ) {
-                std::ostringstream oss;
-                oss << "Unable to open file: '" << config->getFilename() << "'";
-                throw std::domain_error( oss.str() );
-            }
-            config->setStreamBuf( ofs.rdbuf() );
-        }
-    }
     
     Totals runTests( Ptr<Config> const& config ) {
 
         Ptr<IConfig const> iconfig = config.get();
         
-        std::ofstream ofs;
-        openStreamInto( config, ofs );
         Ptr<IStreamingReporter> reporter = makeReporter( config );
         reporter = addListeners( iconfig, reporter );
         
