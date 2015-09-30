@@ -80,7 +80,7 @@ namespace Catch {
             std::string lhs, rhs, op;
         } m_exprComponents;
         CopyableStream m_stream;
-        
+
         bool m_shouldDebugBreak;
         bool m_shouldThrow;
     };

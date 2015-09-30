@@ -16,9 +16,9 @@ namespace Catch {
 namespace SectionTracking {
 
     class TrackedSection {
-        
+
         typedef std::map<std::string, TrackedSection> TrackedSections;
-        
+
     public:
         enum RunState {
             NotStarted,
@@ -26,13 +26,13 @@ namespace SectionTracking {
             ExecutingChildren,
             Completed
         };
-        
+
         TrackedSection( std::string const& name, TrackedSection* parent )
         :   m_name( name ), m_runState( NotStarted ), m_parent( parent )
         {}
-        
+
         RunState runState() const { return m_runState; }
-        
+
         TrackedSection* findChild( std::string const& childName );
         TrackedSection* acquireChild( std::string const& childName );
 
@@ -48,14 +48,14 @@ namespace SectionTracking {
         bool hasChildren() const {
             return !m_children.empty();
         }
-        
+
     private:
         std::string m_name;
         RunState m_runState;
         TrackedSections m_children;
-        TrackedSection* m_parent;        
+        TrackedSection* m_parent;
     };
-    
+
     inline TrackedSection* TrackedSection::findChild( std::string const& childName ) {
         TrackedSections::iterator it = m_children.find( childName );
         return it != m_children.end()

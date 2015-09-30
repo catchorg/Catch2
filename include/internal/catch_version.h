@@ -27,7 +27,7 @@ namespace Catch {
         unsigned int const buildNumber;
 
         friend std::ostream& operator << ( std::ostream& os, Version const& version );
-        
+
     private:
         void operator=( Version const& );
     };
