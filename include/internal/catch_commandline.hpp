@@ -185,7 +185,7 @@ namespace Catch {
             .describe( "force colourised output" )
             .bind( &setForceColourAlways );
         
-        cli["--force-no-colour"]
+        cli["--no-colour"]
             .describe( "force non-colourised output" )
             .bind( &setForceColourNever );
 

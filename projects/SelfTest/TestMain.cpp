@@ -201,14 +201,14 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE( config.forceColour == Catch::ForceColour::Always );
         }
 
-        SECTION( "--force-no-colour", "" ) {
-            const char* argv[] = { "test", "--force-no-colour" };
+        SECTION( "--no-colour", "" ) {
+            const char* argv[] = { "test", "--no-colour" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
             REQUIRE( config.forceColour == Catch::ForceColour::Never );
         }
         
-        SECTION( "without --force-colour or --force-no-colour", "" ) {
+        SECTION( "without --force-colour or --no-colour", "" ) {
             const char* argv[] = { "test" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
