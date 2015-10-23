@@ -20,24 +20,24 @@
 
 namespace Catch
 {
-    struct ITrackedPart : SharedImpl<> {
-        virtual ~ITrackedPart() {}
+    struct IPartTracker : SharedImpl<> {
+        virtual ~IPartTracker() {}
         
         // queries
         virtual std::string name() const = 0;
         virtual bool hasStarted() const = 0; // true even if ended
         virtual bool hasEnded() const = 0;
-        virtual bool didCompleteSuccessfully() const = 0;
+        virtual bool isSuccessfullyCompleted() const = 0;
         virtual bool isOpen() const = 0;
         
-        virtual ITrackedPart& parent() = 0;
+        virtual IPartTracker& parent() = 0;
         
         // actions
         virtual void close() = 0;
         virtual void fail() = 0;
 
-        virtual void addChild( Ptr<ITrackedPart> const& child ) = 0;
-        virtual ITrackedPart* findChild( std::string const& name ) = 0;
+        virtual void addChild( Ptr<IPartTracker> const& child ) = 0;
+        virtual IPartTracker* findChild( std::string const& name ) = 0;
         virtual void openChild() = 0;
         virtual void childFailed() = 0;
     
@@ -52,8 +52,8 @@ namespace Catch
             CompletedCycle
         };
         
-        Ptr<ITrackedPart> m_rootPart;
-        ITrackedPart* m_currentPart;
+        Ptr<IPartTracker> m_rootPart;
+        IPartTracker* m_currentPart;
         RunState m_runState;
         
     public:
@@ -69,7 +69,7 @@ namespace Catch
         {}
 
 
-        ITrackedPart& startRun();
+        IPartTracker& startRun();
         
         void endRun() {
             m_rootPart.reset();
@@ -89,21 +89,20 @@ namespace Catch
             return m_runState == CompletedCycle;
         }
         
-        ITrackedPart& currentPart() {
+        IPartTracker& currentPart() {
             return *m_currentPart;
         }
-        void setCurrentPart( ITrackedPart* part ) {
+        void setCurrentPart( IPartTracker* part ) {
             m_currentPart = part;
         }
         
-        ITrackedPart* findPart( std::string const& name ) {
+        IPartTracker* findPart( std::string const& name ) {
             return m_currentPart->findChild( name );
         }
         
     };
-
     
-    class SectionTracker : public ITrackedPart {
+    class PartTrackerBase : public IPartTracker {
         enum RunState {
             NotStarted,
             Executing,
@@ -116,18 +115,18 @@ namespace Catch
             std::string m_name;
         public:
             TrackerHasName( std::string const& name ) : m_name( name ) {}
-            bool operator ()( Ptr<ITrackedPart> const& tracker ) {
+            bool operator ()( Ptr<IPartTracker> const& tracker ) {
                 return tracker->name() == m_name;
             }
         };
-        typedef std::vector<Ptr<ITrackedPart> > Children;
+        typedef std::vector<Ptr<IPartTracker> > Children;
         std::string m_name;
         TrackerContext& m_ctx;
-        ITrackedPart* m_parent;
+        IPartTracker* m_parent;
         Children m_children;
         RunState m_runState;
     public:
-        SectionTracker( std::string const& name, TrackerContext& ctx, ITrackedPart* parent )
+        PartTrackerBase( std::string const& name, TrackerContext& ctx, IPartTracker* parent )
         :   m_name( name ),
             m_ctx( ctx ),
             m_parent( parent ),
@@ -140,7 +139,7 @@ namespace Catch
         virtual bool hasEnded() const CATCH_OVERRIDE {
             return m_runState == CompletedSuccessfully || m_runState == Failed;
         }
-        virtual bool didCompleteSuccessfully() const CATCH_OVERRIDE {
+        virtual bool isSuccessfullyCompleted() const CATCH_OVERRIDE {
             return m_runState == CompletedSuccessfully;
         }
         virtual bool hasStarted() const CATCH_OVERRIDE {
@@ -151,18 +150,18 @@ namespace Catch
         }
         
         
-        virtual void addChild( Ptr<ITrackedPart> const& child ) CATCH_OVERRIDE {
+        virtual void addChild( Ptr<IPartTracker> const& child ) CATCH_OVERRIDE {
             m_children.push_back( child );
             size_t childCount = m_children.size();
         }
         
-        virtual ITrackedPart* findChild( std::string const& name ) CATCH_OVERRIDE {
+        virtual IPartTracker* findChild( std::string const& name ) CATCH_OVERRIDE {
             Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( name ) );
             return( it != m_children.end() )
             ? it->get()
             : CATCH_NULL;
         }
-        virtual ITrackedPart& parent() CATCH_OVERRIDE {
+        virtual IPartTracker& parent() CATCH_OVERRIDE {
             assert( m_parent ); // Should always be non-null except for root
             return *m_parent;
         }
@@ -225,43 +224,45 @@ namespace Catch
         }
     };
     
-    ITrackedPart& TrackerContext::startRun() {
-        m_rootPart = new SectionTracker( "{root}", *this, CATCH_NULL );
-        m_currentPart = CATCH_NULL;
-        m_runState = Executing;
-        return *m_rootPart;
-    }
 
-    class LocalContext {
-    
-    public:
-        TrackerContext& operator()() const {
-            return TrackerContext::instance();
-        }
-    };
 
-    class SectionPart : public SectionTracker {
+    class SectionTracker : public PartTrackerBase {
     public:
-        SectionPart( std::string const& name, TrackerContext& ctx, ITrackedPart* parent )
-        :   SectionTracker( name, ctx, parent )
+        SectionTracker( std::string const& name, TrackerContext& ctx, IPartTracker* parent )
+        :   PartTrackerBase( name, ctx, parent )
         {}
         
-        static SectionPart& acquire( TrackerContext& ctx, std::string const& name ) {
-            SectionPart* section = CATCH_NULL;
+        static SectionTracker& acquire( TrackerContext& ctx, std::string const& name ) {
+            SectionTracker* section = CATCH_NULL;
             
-            ITrackedPart& currentPart = ctx.currentPart();
-            if( ITrackedPart* part = currentPart.findChild( name ) ) {
-                section = dynamic_cast<SectionPart*>( part );
+            IPartTracker& currentPart = ctx.currentPart();
+            if( IPartTracker* part = currentPart.findChild( name ) ) {
+                section = dynamic_cast<SectionTracker*>( part );
                 assert( section );
             }
             else {
-                section = new SectionPart( name, ctx, &currentPart );
+                section = new SectionTracker( name, ctx, &currentPart );
                 currentPart.addChild( section );
             }
             if( !ctx.completedCycle() && !section->hasEnded() ) {
                 section->open();
             }
             return *section;
+        }
+    };
+    
+    IPartTracker& TrackerContext::startRun() {
+        m_rootPart = new SectionTracker( "{root}", *this, CATCH_NULL );
+        m_currentPart = CATCH_NULL;
+        m_runState = Executing;
+        return *m_rootPart;
+    }
+    
+    class LocalContext {
+        
+    public:
+        TrackerContext& operator()() const {
+            return TrackerContext::instance();
         }
     };
     
@@ -288,62 +289,63 @@ TEST_CASE( "PartTracker" ) {
     ctx.startRun();
     ctx.startCycle();
     
-    SectionPart& testCase = SectionPart::acquire( ctx, "Testcase" );
-    REQUIRE( testCase.didCompleteSuccessfully() == false );
+    IPartTracker& testCase = SectionTracker::acquire( ctx, "Testcase" );
+    REQUIRE( testCase.isSuccessfullyCompleted() == false );
 
-    SectionPart& s1 = SectionPart::acquire( ctx, "S1" );
-    REQUIRE( s1.didCompleteSuccessfully() == false );
+    IPartTracker& s1 = SectionTracker::acquire( ctx, "S1" );
+    REQUIRE( s1.isOpen() == true );
+    REQUIRE( s1.isSuccessfullyCompleted() == false );
 
     SECTION( "successfully close one section" ) {
         s1.close();
-        REQUIRE( s1.didCompleteSuccessfully() == true );
+        REQUIRE( s1.isSuccessfullyCompleted() == true );
         REQUIRE( testCase.hasEnded() == false );
 
         testCase.close();
-        REQUIRE( testCase.didCompleteSuccessfully() == true );
+        REQUIRE( testCase.isSuccessfullyCompleted() == true );
         
         REQUIRE( ctx.completedCycle() == true );
     }
     
     SECTION( "fail one section" ) {
         s1.fail();
-        REQUIRE( s1.didCompleteSuccessfully() == false );
+        REQUIRE( s1.isSuccessfullyCompleted() == false );
         REQUIRE( s1.hasEnded() == true );
-        REQUIRE( testCase.didCompleteSuccessfully() == false );
+        REQUIRE( testCase.isSuccessfullyCompleted() == false );
         REQUIRE( testCase.hasEnded() == false );
         
         testCase.close();
         REQUIRE( ctx.completedCycle() == true );
-        REQUIRE( testCase.didCompleteSuccessfully() == false );
+        REQUIRE( testCase.isSuccessfullyCompleted() == false );
 
         SECTION( "re-enter after failed section" ) {
             ctx.startCycle();
-            SectionPart& testCase2 = SectionPart::acquire( ctx, "Testcase" );
-            REQUIRE( testCase2.didCompleteSuccessfully() == false );
+            IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
             
-            SectionPart& s1b = SectionPart::acquire( ctx, "S1" );
-            REQUIRE( s1b.didCompleteSuccessfully() == false );
+            IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            REQUIRE( s1b.isSuccessfullyCompleted() == false );
 
             testCase2.close();
             REQUIRE( ctx.completedCycle() == true );
-            REQUIRE( testCase.didCompleteSuccessfully() == true );
+            REQUIRE( testCase.isSuccessfullyCompleted() == true );
             REQUIRE( testCase.hasEnded() == true );
         }
         SECTION( "re-enter after failed section and find next section" ) {
             ctx.startCycle();
-            SectionPart& testCase2 = SectionPart::acquire( ctx, "Testcase" );
-            REQUIRE( testCase2.didCompleteSuccessfully() == false );
+            IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
             
-            SectionPart& s1b = SectionPart::acquire( ctx, "S1" );
-            REQUIRE( s1b.didCompleteSuccessfully() == false );
+            IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            REQUIRE( s1b.isSuccessfullyCompleted() == false );
 
-            SectionPart& s2 = SectionPart::acquire( ctx, "S2" );
+            IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2.isOpen() );
             s2.close();
             REQUIRE( ctx.completedCycle() == true );
             
             testCase2.close();
-            REQUIRE( testCase.didCompleteSuccessfully() == true );
+            REQUIRE( testCase.isSuccessfullyCompleted() == true );
             REQUIRE( testCase.hasEnded() == true );
         }
     }
@@ -352,24 +354,25 @@ TEST_CASE( "PartTracker" ) {
         s1.close();
         REQUIRE( ctx.completedCycle() == true );
         
-        SectionPart& s2 = SectionPart::acquire( ctx, "S2" );
-        REQUIRE( s2.didCompleteSuccessfully() == false );
+        IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
         REQUIRE( s2.isOpen() == false );
+        REQUIRE( s2.isSuccessfullyCompleted() == false );
         
         testCase.close();
-        REQUIRE( testCase.didCompleteSuccessfully() == false );
+        REQUIRE( testCase.isSuccessfullyCompleted() == false );
 
-        SECTION( "Re-enter - skip S1 and enter S2" ) {
+        SECTION( "Re-enter - skips S1 and enters S2" ) {
             ctx.startCycle();
-            SectionPart& testCase2 = SectionPart::acquire( ctx, "Testcase" );
-            REQUIRE( testCase2.didCompleteSuccessfully() == false );
+            IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
+            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
             
-            SectionPart& s1b = SectionPart::acquire( ctx, "S1" );
-            REQUIRE( s1b.didCompleteSuccessfully() == true );
+            IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            REQUIRE( s1b.isOpen() == false );
 
-            SectionPart& s2b = SectionPart::acquire( ctx, "S2" );
-            REQUIRE( s2b.didCompleteSuccessfully() == false );
+            IPartTracker& s2b = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2b.isOpen() );
+            REQUIRE( s2b.isSuccessfullyCompleted() == false );
 
             REQUIRE( ctx.completedCycle() == false );
             
@@ -377,40 +380,40 @@ TEST_CASE( "PartTracker" ) {
                 s2b.close();
                 REQUIRE( ctx.completedCycle() == true );
 
-                REQUIRE( s2b.didCompleteSuccessfully() == true );
+                REQUIRE( s2b.isSuccessfullyCompleted() == true );
                 REQUIRE( testCase2.hasEnded() == false );
                 
                 testCase2.close();
-                REQUIRE( testCase2.didCompleteSuccessfully() == true );
+                REQUIRE( testCase2.isSuccessfullyCompleted() == true );
             }
             SECTION ("fail S2") {
                 s2b.fail();
                 REQUIRE( ctx.completedCycle() == true );
 
-                REQUIRE( s2b.didCompleteSuccessfully() == false );
+                REQUIRE( s2b.isSuccessfullyCompleted() == false );
                 REQUIRE( s2b.hasEnded() == true );
                 REQUIRE( testCase2.hasEnded() == false );
                 
                 testCase2.close();
-                REQUIRE( testCase2.didCompleteSuccessfully() == false );
+                REQUIRE( testCase2.isSuccessfullyCompleted() == false );
             }
         }
     }
     
     SECTION( "open a nested section" ) {
-        SectionPart& s2 = SectionPart::acquire( ctx, "S2" );
+        IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
         REQUIRE( s2.isOpen() == true );
 
         s2.close();
-        REQUIRE( s2.didCompleteSuccessfully() == true );
-        REQUIRE( s1.didCompleteSuccessfully() == false );
+        REQUIRE( s2.isSuccessfullyCompleted() == true );
+        REQUIRE( s1.isSuccessfullyCompleted() == false );
         
         s1.close();
-        REQUIRE( s1.didCompleteSuccessfully() == true );
-        REQUIRE( testCase.didCompleteSuccessfully() == false );
+        REQUIRE( s1.isSuccessfullyCompleted() == true );
+        REQUIRE( testCase.isSuccessfullyCompleted() == false );
         
         testCase.close();
-        REQUIRE( testCase.didCompleteSuccessfully() == true );
+        REQUIRE( testCase.isSuccessfullyCompleted() == true );
         
     }
     
