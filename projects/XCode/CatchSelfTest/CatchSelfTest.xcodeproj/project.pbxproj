@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26059AF21BD4B94C003D575C /* PartTrackerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26059AF11BD4B94C003D575C /* PartTrackerTests.cpp */; settings = {ASSET_TAGS = (); }; };
 		263F7A4719B6FCBF009474C2 /* EnumToString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4619B6FCBF009474C2 /* EnumToString.cpp */; };
 		263F7A4B19B6FE1E009474C2 /* ToStringPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4819B6FE1E009474C2 /* ToStringPair.cpp */; };
 		263F7A4C19B6FE1E009474C2 /* ToStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263F7A4919B6FE1E009474C2 /* ToStringVector.cpp */; };
@@ -62,6 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		26059AF11BD4B94C003D575C /* PartTrackerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PartTrackerTests.cpp; path = ../../../SelfTest/PartTrackerTests.cpp; sourceTree = "<group>"; };
 		261488FA184C81130041FBEB /* catch_test_spec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_test_spec.hpp; sourceTree = "<group>"; };
 		261488FC184D1DC10041FBEB /* catch_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_stream.h; sourceTree = "<group>"; };
 		261488FD184D21290041FBEB /* catch_section_info.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_section_info.h; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 		266E9AD317290E710061DAB2 /* Introspective Tests */ = {
 			isa = PBXGroup;
 			children = (
+				26059AF11BD4B94C003D575C /* PartTrackerTests.cpp */,
 				26948284179A9AB900ED166E /* SectionTrackerTests.cpp */,
 				26E1B7D119213BC900812682 /* CmdLineTests.cpp */,
 				26711C8D195D465C0033EDA2 /* TagAliasTests.cpp */,
@@ -548,6 +551,7 @@
 				4A6D0C3E149B3D9E00DB3EAA /* TestMain.cpp in Sources */,
 				4A6D0C3F149B3D9E00DB3EAA /* TrickyTests.cpp in Sources */,
 				263F7A4D19B6FE1E009474C2 /* ToStringWhich.cpp in Sources */,
+				26059AF21BD4B94C003D575C /* PartTrackerTests.cpp in Sources */,
 				263F7A4B19B6FE1E009474C2 /* ToStringPair.cpp in Sources */,
 				4AEE032016142F910071E950 /* catch_common.cpp in Sources */,
 				263F7A4C19B6FE1E009474C2 /* ToStringVector.cpp in Sources */,
