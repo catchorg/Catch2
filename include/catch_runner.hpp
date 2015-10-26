@@ -191,7 +191,7 @@ namespace Catch {
             }
         }
 
-        Clara::CommandLine<ConfigData> const& cli() const {
+        Clara::CommandLine<ConfigData> & cli() {
             return m_cli;
         }
         std::vector<Clara::Parser::Token> const& unusedTokens() const {
