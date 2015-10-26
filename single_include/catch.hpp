@@ -5926,7 +5926,7 @@ namespace Catch {
 namespace Catch {
 
     struct LexSort {
-        bool operator() (TestCase i,TestCase j) const { return (i<j);}
+        bool operator() (const TestCase& i, const TestCase& j) const { return (i<j);}
     };
     struct RandomNumberGenerator {
         int operator()( int n ) const { return std::rand() % n; }
