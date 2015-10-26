@@ -80,7 +80,7 @@ namespace Catch {
         }
     }
 
-#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement this functions
+#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions
     std::ostream& cout() {
         return std::cout;
     }
