@@ -23,6 +23,9 @@
 #elif defined __GNUC__
 #    pragma GCC diagnostic ignored "-Wvariadic-macros"
 #    pragma GCC diagnostic ignored "-Wunused-variable"
+#    if __GNUC__ == 4 && __GNUC_MINOR__ < 8
+#       pragma GCC diagnostic ignored "-Wparentheses"
+#    endif
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wpadded"
 #endif

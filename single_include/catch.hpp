@@ -1,6 +1,6 @@
 /*
  *  Catch v1.2.1-develop.14
- *  Generated: 2015-09-27 03:27:04.922060
+ *  Generated: 2015-10-28 20:19:33.812850
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -39,6 +39,9 @@
 #elif defined __GNUC__
 #    pragma GCC diagnostic ignored "-Wvariadic-macros"
 #    pragma GCC diagnostic ignored "-Wunused-variable"
+#    if __GNUC__ == 4 && __GNUC_MINOR__ < 8
+#       pragma GCC diagnostic ignored "-Wparentheses"
+#    endif
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wpadded"
 #endif
