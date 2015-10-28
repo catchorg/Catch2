@@ -1,6 +1,6 @@
 /*
  *  Catch v1.2.1-develop.14
- *  Generated: 2015-09-27 03:27:04.922060
+ *  Generated: 2015-10-29 00:52:04.464709
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -8246,7 +8246,7 @@ namespace Catch {
         {}
 
         virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& ) CATCH_OVERRIDE {
             return false;
         }
     };
