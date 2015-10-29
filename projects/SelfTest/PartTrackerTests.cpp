@@ -104,7 +104,7 @@ namespace Catch
     
     class PartTrackerBase : public IPartTracker {
     protected:
-        enum RunState {
+        enum CycleState {
             NotStarted,
             Executing,
             ExecutingChildren,
@@ -125,18 +125,18 @@ namespace Catch
         TrackerContext& m_ctx;
         IPartTracker* m_parent;
         Children m_children;
-        RunState m_runState;
+        CycleState m_runState;
     public:
         PartTrackerBase( std::string const& name, TrackerContext& ctx, IPartTracker* parent )
         :   m_name( name ),
             m_ctx( ctx ),
             m_parent( parent ),
-            m_runState( NotStarted ) {}
+            m_runState( NotStarted )
+        {}
         
         virtual std::string name() const CATCH_OVERRIDE {
             return m_name;
         }
-        
         virtual bool isComplete() const CATCH_OVERRIDE {
             return m_runState == CompletedSuccessfully || m_runState == Failed;
         }
@@ -226,7 +226,6 @@ namespace Catch
         }
     };
     
-
 
     class SectionTracker : public PartTrackerBase {
     public:
@@ -438,7 +437,6 @@ TEST_CASE( "PartTracker" ) {
                 REQUIRE( s2b.isSuccessfullyCompleted() == false );
                 
                 testCase2.close();
-//                REQUIRE( testCase2.isComplete() );
                 REQUIRE( testCase2.isSuccessfullyCompleted() == false );
 
                 // Need a final cycle
