@@ -20,8 +20,8 @@
 
 namespace Catch
 {
-    struct IPartTracker : SharedImpl<> {
-        virtual ~IPartTracker() {}
+    struct ITracker : SharedImpl<> {
+        virtual ~ITracker() {}
         
         // static queries
         virtual std::string name() const = 0;
@@ -31,15 +31,15 @@ namespace Catch
         virtual bool isSuccessfullyCompleted() const = 0;
         virtual bool isOpen() const = 0; // Started but not complete
         
-        virtual IPartTracker& parent() = 0;
+        virtual ITracker& parent() = 0;
         
         // actions
         virtual void close() = 0; // Successfully complete
         virtual void fail() = 0;
         virtual void markAsNeedingAnotherRun() = 0;
 
-        virtual void addChild( Ptr<IPartTracker> const& child ) = 0;
-        virtual IPartTracker* findChild( std::string const& name ) = 0;
+        virtual void addChild( Ptr<ITracker> const& child ) = 0;
+        virtual ITracker* findChild( std::string const& name ) = 0;
         virtual void openChild() = 0;
     };
     
@@ -52,8 +52,8 @@ namespace Catch
             CompletedCycle
         };
         
-        Ptr<IPartTracker> m_rootPart;
-        IPartTracker* m_currentPart;
+        Ptr<ITracker> m_rootTracker;
+        ITracker* m_currentTracker;
         RunState m_runState;
         
     public:
@@ -64,21 +64,21 @@ namespace Catch
         }
 
         TrackerContext()
-        :   m_currentPart( CATCH_NULL ),
+        :   m_currentTracker( CATCH_NULL ),
             m_runState( NotStarted )
         {}
 
 
-        IPartTracker& startRun();
+        ITracker& startRun();
         
         void endRun() {
-            m_rootPart.reset();
-            m_currentPart = CATCH_NULL;
+            m_rootTracker.reset();
+            m_currentTracker = CATCH_NULL;
             m_runState = NotStarted;
         }
 
         void startCycle() {
-            m_currentPart = m_rootPart.get();
+            m_currentTracker = m_rootTracker.get();
             m_runState = Executing;
         }
         void completeCycle() {
@@ -89,20 +89,15 @@ namespace Catch
             return m_runState == CompletedCycle;
         }
         
-        IPartTracker& currentPart() {
-            return *m_currentPart;
+        ITracker& currentTracker() {
+            return *m_currentTracker;
         }
-        void setCurrentPart( IPartTracker* part ) {
-            m_currentPart = part;
+        void setCurrentTracker( ITracker* tracker ) {
+            m_currentTracker = tracker;
         }
-        
-        IPartTracker* findPart( std::string const& name ) {
-            return m_currentPart->findChild( name );
-        }
-        
     };
     
-    class PartTrackerBase : public IPartTracker {
+    class TrackerBase : public ITracker {
     protected:
         enum CycleState {
             NotStarted,
@@ -116,18 +111,18 @@ namespace Catch
             std::string m_name;
         public:
             TrackerHasName( std::string const& name ) : m_name( name ) {}
-            bool operator ()( Ptr<IPartTracker> const& tracker ) {
+            bool operator ()( Ptr<ITracker> const& tracker ) {
                 return tracker->name() == m_name;
             }
         };
-        typedef std::vector<Ptr<IPartTracker> > Children;
+        typedef std::vector<Ptr<ITracker> > Children;
         std::string m_name;
         TrackerContext& m_ctx;
-        IPartTracker* m_parent;
+        ITracker* m_parent;
         Children m_children;
         CycleState m_runState;
     public:
-        PartTrackerBase( std::string const& name, TrackerContext& ctx, IPartTracker* parent )
+        TrackerBase( std::string const& name, TrackerContext& ctx, ITracker* parent )
         :   m_name( name ),
             m_ctx( ctx ),
             m_parent( parent ),
@@ -148,18 +143,18 @@ namespace Catch
         }
         
         
-        virtual void addChild( Ptr<IPartTracker> const& child ) CATCH_OVERRIDE {
+        virtual void addChild( Ptr<ITracker> const& child ) CATCH_OVERRIDE {
             m_children.push_back( child );
             size_t childCount = m_children.size();
         }
         
-        virtual IPartTracker* findChild( std::string const& name ) CATCH_OVERRIDE {
+        virtual ITracker* findChild( std::string const& name ) CATCH_OVERRIDE {
             Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( name ) );
             return( it != m_children.end() )
                 ? it->get()
                 : CATCH_NULL;
         }
-        virtual IPartTracker& parent() CATCH_OVERRIDE {
+        virtual ITracker& parent() CATCH_OVERRIDE {
             assert( m_parent ); // Should always be non-null except for root
             return *m_parent;
         }
@@ -181,8 +176,8 @@ namespace Catch
         virtual void close() CATCH_OVERRIDE {
             
             // Close any still open children (e.g. generators)
-            while( &m_ctx.currentPart() != this )
-                m_ctx.currentPart().close();
+            while( &m_ctx.currentTracker() != this )
+                m_ctx.currentTracker().close();
 
             switch( m_runState ) {
                 case CompletedSuccessfully:
@@ -219,31 +214,31 @@ namespace Catch
     private:
         void moveToParent() {
             assert( m_parent );
-            m_ctx.setCurrentPart( m_parent );
+            m_ctx.setCurrentTracker( m_parent );
         }
         void moveToThis() {
-            m_ctx.setCurrentPart( this );
+            m_ctx.setCurrentTracker( this );
         }
     };
     
 
-    class SectionTracker : public PartTrackerBase {
+    class SectionTracker : public TrackerBase {
     public:
-        SectionTracker( std::string const& name, TrackerContext& ctx, IPartTracker* parent )
-        :   PartTrackerBase( name, ctx, parent )
+        SectionTracker( std::string const& name, TrackerContext& ctx, ITracker* parent )
+        :   TrackerBase( name, ctx, parent )
         {}
         
         static SectionTracker& acquire( TrackerContext& ctx, std::string const& name ) {
             SectionTracker* section = CATCH_NULL;
             
-            IPartTracker& currentPart = ctx.currentPart();
-            if( IPartTracker* part = currentPart.findChild( name ) ) {
-                section = dynamic_cast<SectionTracker*>( part );
+            ITracker& currentTracker = ctx.currentTracker();
+            if( ITracker* childTracker = currentTracker.findChild( name ) ) {
+                section = dynamic_cast<SectionTracker*>( childTracker );
                 assert( section );
             }
             else {
-                section = new SectionTracker( name, ctx, &currentPart );
-                currentPart.addChild( section );
+                section = new SectionTracker( name, ctx, &currentTracker );
+                currentTracker.addChild( section );
             }
             if( !ctx.completedCycle() && !section->isComplete() ) {
                 
@@ -253,12 +248,12 @@ namespace Catch
         }
     };
     
-    class IndexTracker : public PartTrackerBase {
+    class IndexTracker : public TrackerBase {
         int m_size;
         int m_index;
     public:
-        IndexTracker( std::string const& name, TrackerContext& ctx, IPartTracker* parent, int size )
-        :   PartTrackerBase( name, ctx, parent ),
+        IndexTracker( std::string const& name, TrackerContext& ctx, ITracker* parent, int size )
+        :   TrackerBase( name, ctx, parent ),
             m_size( size ),
             m_index( -1 )
         {}
@@ -266,14 +261,14 @@ namespace Catch
         static IndexTracker& acquire( TrackerContext& ctx, std::string const& name, int size ) {
             IndexTracker* tracker = CATCH_NULL;
             
-            IPartTracker& currentPart = ctx.currentPart();
-            if( IPartTracker* part = currentPart.findChild( name ) ) {
-                tracker = dynamic_cast<IndexTracker*>( part );
+            ITracker& currentTracker = ctx.currentTracker();
+            if( ITracker* childTracker = currentTracker.findChild( name ) ) {
+                tracker = dynamic_cast<IndexTracker*>( childTracker );
                 assert( tracker );
             }
             else {
-                tracker = new IndexTracker( name, ctx, &currentPart, size );
-                currentPart.addChild( tracker );
+                tracker = new IndexTracker( name, ctx, &currentTracker, size );
+                currentTracker.addChild( tracker );
             }
             
             if( !ctx.completedCycle() && !tracker->isComplete() ) {
@@ -293,18 +288,18 @@ namespace Catch
         }
         
         virtual void close() CATCH_OVERRIDE {
-            PartTrackerBase::close();
+            TrackerBase::close();
             if( m_runState == CompletedSuccessfully )
                 if( m_index < m_size-1 )
                     m_runState = Executing;
         }
     };
     
-    IPartTracker& TrackerContext::startRun() {
-        m_rootPart = new SectionTracker( "{root}", *this, CATCH_NULL );
-        m_currentPart = CATCH_NULL;
+    ITracker& TrackerContext::startRun() {
+        m_rootTracker = new SectionTracker( "{root}", *this, CATCH_NULL );
+        m_currentTracker = CATCH_NULL;
         m_runState = Executing;
-        return *m_rootPart;
+        return *m_rootTracker;
     }
     
     class LocalContext {
@@ -332,16 +327,16 @@ inline void testCase( Catch::LocalContext const& C_A_T_C_H_Context ) {
 //    REQUIRE( C_A_T_C_H_Context().i() == 42 );
 }
 
-TEST_CASE( "PartTracker" ) {
+TEST_CASE( "Tracker" ) {
     
     TrackerContext ctx;
     ctx.startRun();
     ctx.startCycle();
     
-    IPartTracker& testCase = SectionTracker::acquire( ctx, "Testcase" );
+    ITracker& testCase = SectionTracker::acquire( ctx, "Testcase" );
     REQUIRE( testCase.isOpen() );
 
-    IPartTracker& s1 = SectionTracker::acquire( ctx, "S1" );
+    ITracker& s1 = SectionTracker::acquire( ctx, "S1" );
     REQUIRE( s1.isOpen() );
 
     SECTION( "successfully close one section" ) {
@@ -366,10 +361,10 @@ TEST_CASE( "PartTracker" ) {
 
         SECTION( "re-enter after failed section" ) {
             ctx.startCycle();
-            IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
             REQUIRE( testCase2.isOpen() );
             
-            IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
             REQUIRE( s1b.isOpen() == false );
             
             testCase2.close();
@@ -379,13 +374,13 @@ TEST_CASE( "PartTracker" ) {
         }
         SECTION( "re-enter after failed section and find next section" ) {
             ctx.startCycle();
-            IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
             REQUIRE( testCase2.isOpen() );
             
-            IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
             REQUIRE( s1b.isOpen() == false );
 
-            IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2.isOpen() );
 
             s2.close();
@@ -400,7 +395,7 @@ TEST_CASE( "PartTracker" ) {
     SECTION( "successfully close one section, then find another" ) {
         s1.close();
         
-        IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
+        ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
         REQUIRE( s2.isOpen() == false );
         
         testCase.close();
@@ -408,13 +403,13 @@ TEST_CASE( "PartTracker" ) {
 
         SECTION( "Re-enter - skips S1 and enters S2" ) {
             ctx.startCycle();
-            IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
             REQUIRE( testCase2.isOpen() );
             
-            IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
             REQUIRE( s1b.isOpen() == false );
 
-            IPartTracker& s2b = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2b = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2b.isOpen() );
 
             REQUIRE( ctx.completedCycle() == false );
@@ -441,13 +436,13 @@ TEST_CASE( "PartTracker" ) {
 
                 // Need a final cycle
                 ctx.startCycle();
-                IPartTracker& testCase3 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase3 = SectionTracker::acquire( ctx, "Testcase" );
                 REQUIRE( testCase3.isOpen() );
                 
-                IPartTracker& s1c = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1c = SectionTracker::acquire( ctx, "S1" );
                 REQUIRE( s1c.isOpen() == false );
                 
-                IPartTracker& s2c = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2c = SectionTracker::acquire( ctx, "S2" );
                 REQUIRE( s2c.isOpen() == false );
             
                 testCase3.close();
@@ -457,7 +452,7 @@ TEST_CASE( "PartTracker" ) {
     }
     
     SECTION( "open a nested section" ) {
-        IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
+        ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
         REQUIRE( s2.isOpen() );
 
         s2.close();
@@ -489,10 +484,10 @@ TEST_CASE( "PartTracker" ) {
 
             SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
-                IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
                 REQUIRE( testCase2.isOpen() );
                 
-                IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
                 REQUIRE( s1b.isOpen() );
                 
                 
@@ -510,7 +505,7 @@ TEST_CASE( "PartTracker" ) {
             }
         }
         SECTION( "Start a new inner section" ) {
-            IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2.isOpen() );
 
             s2.close();
@@ -524,10 +519,10 @@ TEST_CASE( "PartTracker" ) {
             
             SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
-                IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
                 REQUIRE( testCase2.isOpen() );
                 
-                IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
                 REQUIRE( s1b.isOpen() );
                 
                 // generator - next value
@@ -536,7 +531,7 @@ TEST_CASE( "PartTracker" ) {
                 REQUIRE( g1b.index() == 1 );
                 
                 // inner section again
-                IPartTracker& s2b = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2b = SectionTracker::acquire( ctx, "S2" );
                 REQUIRE( s2b.isOpen() );
                 
                 s2b.close();
@@ -552,7 +547,7 @@ TEST_CASE( "PartTracker" ) {
         }
         
         SECTION( "Fail an inner section" ) {
-            IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2.isOpen() );
             
             s2.fail();
@@ -567,10 +562,10 @@ TEST_CASE( "PartTracker" ) {
             
             SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
-                IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
                 REQUIRE( testCase2.isOpen() );
                 
-                IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
                 REQUIRE( s1b.isOpen() );
                 
                 // generator - still same value
@@ -579,7 +574,7 @@ TEST_CASE( "PartTracker" ) {
                 REQUIRE( g1b.index() == 0 );
                 
                 // inner section again - this time won't open
-                IPartTracker& s2b = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2b = SectionTracker::acquire( ctx, "S2" );
                 REQUIRE( s2b.isOpen() == false );
                 
                 s1b.close();
@@ -591,10 +586,10 @@ TEST_CASE( "PartTracker" ) {
                 
                 // Another cycle - now should complete
                 ctx.startCycle();
-                IPartTracker& testCase3 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase3 = SectionTracker::acquire( ctx, "Testcase" );
                 REQUIRE( testCase3.isOpen() );
                 
-                IPartTracker& s1c = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1c = SectionTracker::acquire( ctx, "S1" );
                 REQUIRE( s1c.isOpen() );
                 
                 // generator - now next value
@@ -603,7 +598,7 @@ TEST_CASE( "PartTracker" ) {
                 REQUIRE( g1c.index() == 1 );
                 
                 // inner section - now should open again
-                IPartTracker& s2c = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2c = SectionTracker::acquire( ctx, "S2" );
                 REQUIRE( s2c.isOpen() );
                 
                 s2c.close();
