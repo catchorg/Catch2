@@ -343,134 +343,142 @@ TEST_CASE( "PartTracker" ) {
     ctx.startCycle();
     
     IPartTracker& testCase = SectionTracker::acquire( ctx, "Testcase" );
-    REQUIRE( testCase.isSuccessfullyCompleted() == false );
+    REQUIRE( testCase.isOpen() );
 
     IPartTracker& s1 = SectionTracker::acquire( ctx, "S1" );
-    REQUIRE( s1.isOpen() == true );
-    REQUIRE( s1.isSuccessfullyCompleted() == false );
+    REQUIRE( s1.isOpen() );
 
     SECTION( "successfully close one section" ) {
         s1.close();
-        REQUIRE( s1.isSuccessfullyCompleted() == true );
+        REQUIRE( s1.isSuccessfullyCompleted() );
         REQUIRE( testCase.hasEnded() == false );
 
         testCase.close();
-        REQUIRE( ctx.completedCycle() == true );
-        REQUIRE( testCase.isSuccessfullyCompleted() == true );
+        REQUIRE( ctx.completedCycle() );
+        REQUIRE( testCase.isSuccessfullyCompleted() );
     }
     
     SECTION( "fail one section" ) {
         s1.fail();
+        REQUIRE( s1.hasEnded() );
         REQUIRE( s1.isSuccessfullyCompleted() == false );
-        REQUIRE( s1.hasEnded() == true );
-        REQUIRE( testCase.isSuccessfullyCompleted() == false );
         REQUIRE( testCase.hasEnded() == false );
         
         testCase.close();
-        REQUIRE( ctx.completedCycle() == true );
+        REQUIRE( ctx.completedCycle() );
         REQUIRE( testCase.isSuccessfullyCompleted() == false );
 
         SECTION( "re-enter after failed section" ) {
             ctx.startCycle();
             IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
-            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
+            REQUIRE( testCase2.isOpen() );
             
             IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
             REQUIRE( s1b.isOpen() == false );
             
             testCase2.close();
-            REQUIRE( ctx.completedCycle() == true );
-            REQUIRE( testCase.isSuccessfullyCompleted() == true );
-            REQUIRE( testCase.hasEnded() == true );
+            REQUIRE( ctx.completedCycle() );
+            REQUIRE( testCase.hasEnded() );
+            REQUIRE( testCase.isSuccessfullyCompleted() );
         }
         SECTION( "re-enter after failed section and find next section" ) {
             ctx.startCycle();
             IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
-            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
+            REQUIRE( testCase2.isOpen() );
             
             IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
-            REQUIRE( s1b.isSuccessfullyCompleted() == false );
+            REQUIRE( s1b.isOpen() == false );
 
             IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2.isOpen() );
+
             s2.close();
-            REQUIRE( ctx.completedCycle() == true );
+            REQUIRE( ctx.completedCycle() );
             
             testCase2.close();
-            REQUIRE( testCase.isSuccessfullyCompleted() == true );
-            REQUIRE( testCase.hasEnded() == true );
+            REQUIRE( testCase.hasEnded() );
+            REQUIRE( testCase.isSuccessfullyCompleted() );
         }
     }
     
     SECTION( "successfully close one section, then find another" ) {
         s1.close();
-        REQUIRE( ctx.completedCycle() == true );
         
         IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
         REQUIRE( s2.isOpen() == false );
-        REQUIRE( s2.isSuccessfullyCompleted() == false );
         
         testCase.close();
-        REQUIRE( testCase.isSuccessfullyCompleted() == false );
+        REQUIRE( testCase.hasEnded() == false );
 
         SECTION( "Re-enter - skips S1 and enters S2" ) {
             ctx.startCycle();
             IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
-            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
-            REQUIRE( testCase2.isSuccessfullyCompleted() == false );
+            REQUIRE( testCase2.isOpen() );
             
             IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
             REQUIRE( s1b.isOpen() == false );
 
             IPartTracker& s2b = SectionTracker::acquire( ctx, "S2" );
             REQUIRE( s2b.isOpen() );
-            REQUIRE( s2b.isSuccessfullyCompleted() == false );
 
             REQUIRE( ctx.completedCycle() == false );
             
             SECTION ("Successfully close S2") {
                 s2b.close();
-                REQUIRE( ctx.completedCycle() == true );
+                REQUIRE( ctx.completedCycle() );
 
-                REQUIRE( s2b.isSuccessfullyCompleted() == true );
+                REQUIRE( s2b.isSuccessfullyCompleted() );
                 REQUIRE( testCase2.hasEnded() == false );
                 
                 testCase2.close();
-                REQUIRE( testCase2.isSuccessfullyCompleted() == true );
+                REQUIRE( testCase2.isSuccessfullyCompleted() );
             }
             SECTION ("fail S2") {
                 s2b.fail();
-                REQUIRE( ctx.completedCycle() == true );
+                REQUIRE( ctx.completedCycle() );
 
+                REQUIRE( s2b.hasEnded() );
                 REQUIRE( s2b.isSuccessfullyCompleted() == false );
-                REQUIRE( s2b.hasEnded() == true );
-                REQUIRE( testCase2.hasEnded() == false );
                 
                 testCase2.close();
                 REQUIRE( testCase2.isSuccessfullyCompleted() == false );
+
+                // Need a final cycle
+                ctx.startCycle();
+                IPartTracker& testCase3 = SectionTracker::acquire( ctx, "Testcase" );
+                REQUIRE( testCase3.isOpen() );
+                
+                IPartTracker& s1c = SectionTracker::acquire( ctx, "S1" );
+                REQUIRE( s1c.isOpen() == false );
+                
+                IPartTracker& s2c = SectionTracker::acquire( ctx, "S2" );
+                REQUIRE( s2c.isOpen() == false );
+            
+                testCase3.close();
+                REQUIRE( testCase3.isSuccessfullyCompleted() );
             }
         }
     }
     
     SECTION( "open a nested section" ) {
         IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
-        REQUIRE( s2.isOpen() == true );
+        REQUIRE( s2.isOpen() );
 
         s2.close();
-        REQUIRE( s2.isSuccessfullyCompleted() == true );
+        REQUIRE( s2.isSuccessfullyCompleted() );
         REQUIRE( s1.isSuccessfullyCompleted() == false );
         
         s1.close();
-        REQUIRE( s1.isSuccessfullyCompleted() == true );
+        REQUIRE( s1.isSuccessfullyCompleted() );
         REQUIRE( testCase.isSuccessfullyCompleted() == false );
         
         testCase.close();
-        REQUIRE( testCase.isSuccessfullyCompleted() == true );
+        REQUIRE( testCase.isSuccessfullyCompleted() );
     }
     
     SECTION( "start a generator" ) {
         IndexTracker& g1 = IndexTracker::acquire( ctx, "G1", 2 );
-        REQUIRE( g1.isOpen() == true );
+        REQUIRE( g1.isOpen() );
         REQUIRE( g1.index() == 0 );
 
         REQUIRE( g1.isSuccessfullyCompleted() == false );
@@ -486,31 +494,31 @@ TEST_CASE( "PartTracker" ) {
             SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
                 IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
-                REQUIRE( testCase2.isOpen() == true );
+                REQUIRE( testCase2.isOpen() );
                 
                 IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
-                REQUIRE( s1b.isOpen() == true );
+                REQUIRE( s1b.isOpen() );
                 
                 
                 IndexTracker& g1b = IndexTracker::acquire( ctx, "G1", 2 );
-                REQUIRE( g1b.isOpen() == true );
+                REQUIRE( g1b.isOpen() );
                 REQUIRE( g1b.index() == 1 );
                 
                 REQUIRE( s1.isSuccessfullyCompleted() == false );
                 
                 s1b.close();
-                REQUIRE( s1b.isSuccessfullyCompleted() == true );
-                REQUIRE( g1b.isSuccessfullyCompleted() == true );
+                REQUIRE( s1b.isSuccessfullyCompleted() );
+                REQUIRE( g1b.isSuccessfullyCompleted() );
                 testCase2.close();
-                REQUIRE( testCase2.isSuccessfullyCompleted() == true );
+                REQUIRE( testCase2.isSuccessfullyCompleted() );
             }
         }
         SECTION( "Start a new inner section" ) {
             IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
-            REQUIRE( s2.isOpen() == true );
+            REQUIRE( s2.isOpen() );
 
             s2.close();
-            REQUIRE( s2.isSuccessfullyCompleted() == true );
+            REQUIRE( s2.isSuccessfullyCompleted() );
 
             s1.close();
             REQUIRE( s1.isSuccessfullyCompleted() == false );
@@ -521,29 +529,29 @@ TEST_CASE( "PartTracker" ) {
             SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
                 IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
-                REQUIRE( testCase2.isSuccessfullyCompleted() == false );
+                REQUIRE( testCase2.isOpen() );
                 
                 IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
-                REQUIRE( s1b.isSuccessfullyCompleted() == false );
+                REQUIRE( s1b.isOpen() );
                 
                 // generator - next value
                 IndexTracker& g1b = IndexTracker::acquire( ctx, "G1", 2 );
-                REQUIRE( g1b.isOpen() == true );
+                REQUIRE( g1b.isOpen() );
                 REQUIRE( g1b.index() == 1 );
                 
                 // inner section again
                 IPartTracker& s2b = SectionTracker::acquire( ctx, "S2" );
-                REQUIRE( s2b.isOpen() == true );
+                REQUIRE( s2b.isOpen() );
                 
                 s2b.close();
-                REQUIRE( s2b.isSuccessfullyCompleted() == true );
+                REQUIRE( s2b.isSuccessfullyCompleted() );
                 
                 s1b.close();
-                REQUIRE( s1b.isSuccessfullyCompleted() == true );
-                REQUIRE( g1b.isSuccessfullyCompleted() == true );
+                REQUIRE( s1b.isSuccessfullyCompleted() );
+                REQUIRE( g1b.isSuccessfullyCompleted() );
                 
                 testCase2.close();
-                REQUIRE( testCase2.isSuccessfullyCompleted() == true );
+                REQUIRE( testCase2.isSuccessfullyCompleted() );
             }
         }
         // !TBD"
