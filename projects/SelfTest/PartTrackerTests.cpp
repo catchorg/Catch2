@@ -23,8 +23,10 @@ namespace Catch
     struct IPartTracker : SharedImpl<> {
         virtual ~IPartTracker() {}
         
-        // queries
+        // static queries
         virtual std::string name() const = 0;
+        
+        // dynamic queries
         virtual bool hasStarted() const = 0; // true even if ended
         virtual bool hasEnded() const = 0;
         virtual bool isSuccessfullyCompleted() const = 0;
@@ -35,12 +37,11 @@ namespace Catch
         // actions
         virtual void close() = 0;
         virtual void fail() = 0;
+        virtual void markAsNeedingAnotherRun() =0;
 
         virtual void addChild( Ptr<IPartTracker> const& child ) = 0;
         virtual IPartTracker* findChild( std::string const& name ) = 0;
         virtual void openChild() = 0;
-        virtual void childFailed() = 0;
-    
     };
     
 
@@ -103,13 +104,14 @@ namespace Catch
     };
     
     class PartTrackerBase : public IPartTracker {
+    protected:
         enum RunState {
             NotStarted,
             Executing,
             ExecutingChildren,
+            NeedsAnotherRun,
             CompletedSuccessfully,
-            Failed,
-            ChildFailed
+            Failed
         };
         class TrackerHasName {
             std::string m_name;
@@ -146,7 +148,7 @@ namespace Catch
             return m_runState != NotStarted;
         }
         virtual bool isOpen() const CATCH_OVERRIDE {
-            return m_runState == Executing || m_runState == ExecutingChildren;
+            return hasStarted() && !hasEnded();
         }
         
         
@@ -158,8 +160,8 @@ namespace Catch
         virtual IPartTracker* findChild( std::string const& name ) CATCH_OVERRIDE {
             Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( name ) );
             return( it != m_children.end() )
-            ? it->get()
-            : CATCH_NULL;
+                ? it->get()
+                : CATCH_NULL;
         }
         virtual IPartTracker& parent() CATCH_OVERRIDE {
             assert( m_parent ); // Should always be non-null except for root
@@ -173,12 +175,6 @@ namespace Catch
                     m_parent->openChild();
             }
         }
-        virtual void childFailed() CATCH_OVERRIDE {
-            assert( m_runState == ExecutingChildren );
-            m_runState = ChildFailed;
-            if( m_parent )
-                m_parent->childFailed();
-        }
         void open() {
             m_runState = Executing;
             moveToThis();
@@ -187,16 +183,25 @@ namespace Catch
         }
         
         virtual void close() CATCH_OVERRIDE {
+            
+            // Close any still open children (e.g. generators)
+            while( &m_ctx.currentPart() != this )
+                m_ctx.currentPart().close();
+
             switch( m_runState ) {
+                case CompletedSuccessfully:
+                case Failed:
+                    return;
+
                 case Executing:
                     m_runState = CompletedSuccessfully;
                     break;
                 case ExecutingChildren:
-                    if( !hasUnstartedChildren() )
+                    if( m_children.empty() || m_children.back()->hasEnded() )
                         m_runState = CompletedSuccessfully;
                     break;
-                case ChildFailed:
-                    m_runState = ExecutingChildren;
+                case NeedsAnotherRun:
+                    m_runState = Executing;
                     break;
                 default:
                     throw std::logic_error( "Unexpected state" );
@@ -207,20 +212,20 @@ namespace Catch
         virtual void fail() CATCH_OVERRIDE {
             m_runState = Failed;
             if( m_parent )
-                m_parent->childFailed();
+                m_parent->markAsNeedingAnotherRun();
             moveToParent();
             m_ctx.completeCycle();
         }
+        virtual void markAsNeedingAnotherRun() CATCH_OVERRIDE {
+            m_runState = NeedsAnotherRun;
+        }
     private:
         void moveToParent() {
+            assert( m_parent );
             m_ctx.setCurrentPart( m_parent );
         }
         void moveToThis() {
             m_ctx.setCurrentPart( this );
-        }
-
-        bool hasUnstartedChildren() const {
-            return !m_children.empty() && !m_children.back()->hasStarted();
         }
     };
     
@@ -245,9 +250,57 @@ namespace Catch
                 currentPart.addChild( section );
             }
             if( !ctx.completedCycle() && !section->hasEnded() ) {
+                
                 section->open();
             }
             return *section;
+        }
+    };
+    
+    class IndexTracker : public PartTrackerBase {
+        int m_size;
+        int m_index;
+    public:
+        IndexTracker( std::string const& name, TrackerContext& ctx, IPartTracker* parent, int size )
+        :   PartTrackerBase( name, ctx, parent ),
+            m_size( size ),
+            m_index( -1 )
+        {}
+        
+        static IndexTracker& acquire( TrackerContext& ctx, std::string const& name, int size ) {
+            IndexTracker* tracker = CATCH_NULL;
+            
+            IPartTracker& currentPart = ctx.currentPart();
+            if( IPartTracker* part = currentPart.findChild( name ) ) {
+                tracker = dynamic_cast<IndexTracker*>( part );
+                assert( tracker );
+            }
+            else {
+                tracker = new IndexTracker( name, ctx, &currentPart, size );
+                currentPart.addChild( tracker );
+            }
+            
+            if( !ctx.completedCycle() && !tracker->hasEnded() ) {
+                if( tracker->m_runState != ExecutingChildren )
+                    tracker->moveNext();
+                tracker->open();
+            }
+            
+            return *tracker;
+        }
+        
+        int index() const { return m_index; }
+        
+        void moveNext() {
+            m_index++;
+            m_children.clear();
+        }
+        
+        virtual void close() CATCH_OVERRIDE {
+            PartTrackerBase::close();
+            if( m_runState == CompletedSuccessfully )
+                if( m_index < m_size-1 )
+                    m_runState = Executing;
         }
     };
     
@@ -302,9 +355,8 @@ TEST_CASE( "PartTracker" ) {
         REQUIRE( testCase.hasEnded() == false );
 
         testCase.close();
-        REQUIRE( testCase.isSuccessfullyCompleted() == true );
-        
         REQUIRE( ctx.completedCycle() == true );
+        REQUIRE( testCase.isSuccessfullyCompleted() == true );
     }
     
     SECTION( "fail one section" ) {
@@ -324,8 +376,8 @@ TEST_CASE( "PartTracker" ) {
             REQUIRE( testCase2.isSuccessfullyCompleted() == false );
             
             IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
-            REQUIRE( s1b.isSuccessfullyCompleted() == false );
-
+            REQUIRE( s1b.isOpen() == false );
+            
             testCase2.close();
             REQUIRE( ctx.completedCycle() == true );
             REQUIRE( testCase.isSuccessfullyCompleted() == true );
@@ -414,7 +466,88 @@ TEST_CASE( "PartTracker" ) {
         
         testCase.close();
         REQUIRE( testCase.isSuccessfullyCompleted() == true );
-        
     }
     
+    SECTION( "start a generator" ) {
+        IndexTracker& g1 = IndexTracker::acquire( ctx, "G1", 2 );
+        REQUIRE( g1.isOpen() == true );
+        REQUIRE( g1.index() == 0 );
+
+        REQUIRE( g1.isSuccessfullyCompleted() == false );
+        REQUIRE( s1.isSuccessfullyCompleted() == false );
+
+        SECTION( "close outer section" )
+        {
+            s1.close();
+            REQUIRE( s1.isSuccessfullyCompleted() == false );
+            testCase.close();
+            REQUIRE( testCase.isSuccessfullyCompleted() == false );
+
+            SECTION( "Re-enter for second generation" ) {
+                ctx.startCycle();
+                IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                REQUIRE( testCase2.isOpen() == true );
+                
+                IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                REQUIRE( s1b.isOpen() == true );
+                
+                
+                IndexTracker& g1b = IndexTracker::acquire( ctx, "G1", 2 );
+                REQUIRE( g1b.isOpen() == true );
+                REQUIRE( g1b.index() == 1 );
+                
+                REQUIRE( s1.isSuccessfullyCompleted() == false );
+                
+                s1b.close();
+                REQUIRE( s1b.isSuccessfullyCompleted() == true );
+                REQUIRE( g1b.isSuccessfullyCompleted() == true );
+                testCase2.close();
+                REQUIRE( testCase2.isSuccessfullyCompleted() == true );
+            }
+        }
+        SECTION( "Start a new inner section" ) {
+            IPartTracker& s2 = SectionTracker::acquire( ctx, "S2" );
+            REQUIRE( s2.isOpen() == true );
+
+            s2.close();
+            REQUIRE( s2.isSuccessfullyCompleted() == true );
+
+            s1.close();
+            REQUIRE( s1.isSuccessfullyCompleted() == false );
+
+            testCase.close();
+            REQUIRE( testCase.isSuccessfullyCompleted() == false );
+            
+            SECTION( "Re-enter for second generation" ) {
+                ctx.startCycle();
+                IPartTracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                REQUIRE( testCase2.isSuccessfullyCompleted() == false );
+                
+                IPartTracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                REQUIRE( s1b.isSuccessfullyCompleted() == false );
+                
+                // generator - next value
+                IndexTracker& g1b = IndexTracker::acquire( ctx, "G1", 2 );
+                REQUIRE( g1b.isOpen() == true );
+                REQUIRE( g1b.index() == 1 );
+                
+                // inner section again
+                IPartTracker& s2b = SectionTracker::acquire( ctx, "S2" );
+                REQUIRE( s2b.isOpen() == true );
+                
+                s2b.close();
+                REQUIRE( s2b.isSuccessfullyCompleted() == true );
+                
+                s1b.close();
+                REQUIRE( s1b.isSuccessfullyCompleted() == true );
+                REQUIRE( g1b.isSuccessfullyCompleted() == true );
+                
+                testCase2.close();
+                REQUIRE( testCase2.isSuccessfullyCompleted() == true );
+            }
+        }
+        // !TBD"
+        //   nested generator
+        //   two sections within a generator
+    }
 }
