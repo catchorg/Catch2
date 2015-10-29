@@ -27,17 +27,16 @@ namespace Catch
         virtual std::string name() const = 0;
         
         // dynamic queries
-        virtual bool hasStarted() const = 0; // true even if ended
-        virtual bool hasEnded() const = 0;
+        virtual bool isComplete() const = 0; // Successfully completed or failed
         virtual bool isSuccessfullyCompleted() const = 0;
-        virtual bool isOpen() const = 0;
+        virtual bool isOpen() const = 0; // Started but not complete
         
         virtual IPartTracker& parent() = 0;
         
         // actions
-        virtual void close() = 0;
+        virtual void close() = 0; // Successfully complete
         virtual void fail() = 0;
-        virtual void markAsNeedingAnotherRun() =0;
+        virtual void markAsNeedingAnotherRun() = 0;
 
         virtual void addChild( Ptr<IPartTracker> const& child ) = 0;
         virtual IPartTracker* findChild( std::string const& name ) = 0;
@@ -138,17 +137,14 @@ namespace Catch
             return m_name;
         }
         
-        virtual bool hasEnded() const CATCH_OVERRIDE {
+        virtual bool isComplete() const CATCH_OVERRIDE {
             return m_runState == CompletedSuccessfully || m_runState == Failed;
         }
         virtual bool isSuccessfullyCompleted() const CATCH_OVERRIDE {
             return m_runState == CompletedSuccessfully;
         }
-        virtual bool hasStarted() const CATCH_OVERRIDE {
-            return m_runState != NotStarted;
-        }
         virtual bool isOpen() const CATCH_OVERRIDE {
-            return hasStarted() && !hasEnded();
+            return m_runState != NotStarted && !isComplete();
         }
         
         
@@ -191,18 +187,18 @@ namespace Catch
             switch( m_runState ) {
                 case CompletedSuccessfully:
                 case Failed:
+                    assert(false); // Shouldn't really get here
+                case NeedsAnotherRun:
                     return;
 
                 case Executing:
                     m_runState = CompletedSuccessfully;
                     break;
                 case ExecutingChildren:
-                    if( m_children.empty() || m_children.back()->hasEnded() )
+                    if( m_children.empty() || m_children.back()->isComplete() )
                         m_runState = CompletedSuccessfully;
                     break;
-                case NeedsAnotherRun:
-                    m_runState = Executing;
-                    break;
+
                 default:
                     throw std::logic_error( "Unexpected state" );
             }
@@ -249,7 +245,7 @@ namespace Catch
                 section = new SectionTracker( name, ctx, &currentPart );
                 currentPart.addChild( section );
             }
-            if( !ctx.completedCycle() && !section->hasEnded() ) {
+            if( !ctx.completedCycle() && !section->isComplete() ) {
                 
                 section->open();
             }
@@ -280,7 +276,7 @@ namespace Catch
                 currentPart.addChild( tracker );
             }
             
-            if( !ctx.completedCycle() && !tracker->hasEnded() ) {
+            if( !ctx.completedCycle() && !tracker->isComplete() ) {
                 if( tracker->m_runState != ExecutingChildren )
                     tracker->moveNext();
                 tracker->open();
@@ -351,7 +347,7 @@ TEST_CASE( "PartTracker" ) {
     SECTION( "successfully close one section" ) {
         s1.close();
         REQUIRE( s1.isSuccessfullyCompleted() );
-        REQUIRE( testCase.hasEnded() == false );
+        REQUIRE( testCase.isComplete() == false );
 
         testCase.close();
         REQUIRE( ctx.completedCycle() );
@@ -360,9 +356,9 @@ TEST_CASE( "PartTracker" ) {
     
     SECTION( "fail one section" ) {
         s1.fail();
-        REQUIRE( s1.hasEnded() );
+        REQUIRE( s1.isComplete() );
         REQUIRE( s1.isSuccessfullyCompleted() == false );
-        REQUIRE( testCase.hasEnded() == false );
+        REQUIRE( testCase.isComplete() == false );
         
         testCase.close();
         REQUIRE( ctx.completedCycle() );
@@ -378,7 +374,7 @@ TEST_CASE( "PartTracker" ) {
             
             testCase2.close();
             REQUIRE( ctx.completedCycle() );
-            REQUIRE( testCase.hasEnded() );
+            REQUIRE( testCase.isComplete() );
             REQUIRE( testCase.isSuccessfullyCompleted() );
         }
         SECTION( "re-enter after failed section and find next section" ) {
@@ -396,7 +392,7 @@ TEST_CASE( "PartTracker" ) {
             REQUIRE( ctx.completedCycle() );
             
             testCase2.close();
-            REQUIRE( testCase.hasEnded() );
+            REQUIRE( testCase.isComplete() );
             REQUIRE( testCase.isSuccessfullyCompleted() );
         }
     }
@@ -408,7 +404,7 @@ TEST_CASE( "PartTracker" ) {
         REQUIRE( s2.isOpen() == false );
         
         testCase.close();
-        REQUIRE( testCase.hasEnded() == false );
+        REQUIRE( testCase.isComplete() == false );
 
         SECTION( "Re-enter - skips S1 and enters S2" ) {
             ctx.startCycle();
@@ -428,7 +424,7 @@ TEST_CASE( "PartTracker" ) {
                 REQUIRE( ctx.completedCycle() );
 
                 REQUIRE( s2b.isSuccessfullyCompleted() );
-                REQUIRE( testCase2.hasEnded() == false );
+                REQUIRE( testCase2.isComplete() == false );
                 
                 testCase2.close();
                 REQUIRE( testCase2.isSuccessfullyCompleted() );
@@ -437,10 +433,11 @@ TEST_CASE( "PartTracker" ) {
                 s2b.fail();
                 REQUIRE( ctx.completedCycle() );
 
-                REQUIRE( s2b.hasEnded() );
+                REQUIRE( s2b.isComplete() );
                 REQUIRE( s2b.isSuccessfullyCompleted() == false );
                 
                 testCase2.close();
+//                REQUIRE( testCase2.isComplete() );
                 REQUIRE( testCase2.isSuccessfullyCompleted() == false );
 
                 // Need a final cycle
