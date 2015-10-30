@@ -158,7 +158,7 @@ namespace Catch {
             .describe( "list all/matching test cases names only" )
             .bind( &ConfigData::listTestNamesOnly );
 
-        cli["--list-reporters"] 
+        cli["--list-reporters"]
             .describe( "list all reporters" )
             .bind( &ConfigData::listReporters );
 

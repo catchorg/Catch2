@@ -128,4 +128,3 @@ namespace Catch {
 #define CATCH_INTERNAL_ERROR( msg ) ::Catch::throwLogicError( msg, CATCH_INTERNAL_LINEINFO );
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
-

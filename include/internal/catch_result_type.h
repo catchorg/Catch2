@@ -55,7 +55,7 @@ namespace Catch {
     inline bool shouldContinueOnFailure( int flags )    { return ( flags & ResultDisposition::ContinueOnFailure ) != 0; }
     inline bool isFalseTest( int flags )                { return ( flags & ResultDisposition::FalseTest ) != 0; }
     inline bool shouldSuppressFailure( int flags )      { return ( flags & ResultDisposition::SuppressFail ) != 0; }
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
