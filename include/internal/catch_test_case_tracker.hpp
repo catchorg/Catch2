@@ -29,6 +29,7 @@ namespace TestCaseTracking {
         virtual bool isComplete() const = 0; // Successfully completed or failed
         virtual bool isSuccessfullyCompleted() const = 0;
         virtual bool isOpen() const = 0; // Started but not complete
+        virtual bool hasChildren() const = 0;
         
         virtual ITracker& parent() = 0;
         
@@ -138,6 +139,9 @@ namespace TestCaseTracking {
         }
         virtual bool isOpen() const CATCH_OVERRIDE {
             return m_runState != NotStarted && !isComplete();
+        }
+        virtual bool hasChildren() const CATCH_OVERRIDE {
+            return !m_children.empty();
         }
         
         

@@ -70,6 +70,7 @@ namespace Catch {
             m_context.setConfig( m_config );
             m_context.setResultCapture( this );
             m_reporter->testRunStarting( m_runInfo );
+            m_trackerContext.startRun();
         }
 
         virtual ~RunContext() {
@@ -94,14 +95,17 @@ namespace Catch {
             m_reporter->testCaseStarting( testInfo );
 
             m_activeTestCase = &testCase;
-            m_testCaseTracker = TestCaseTracker( testInfo.name );
+            
 
             do {
                 do {
+                    m_trackerContext.startCycle();
+                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
-                while( !m_testCaseTracker->isCompleted() && !aborting() );
+                while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
             }
+            // !TBD: deprecated
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
@@ -113,7 +117,7 @@ namespace Catch {
                                                         aborting() ) );
 
             m_activeTestCase = CATCH_NULL;
-            m_testCaseTracker.reset();
+            m_testCaseTracker = CATCH_NULL;
 
             return deltaTotals;
         }
@@ -149,9 +153,11 @@ namespace Catch {
             std::ostringstream oss;
             oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
 
-            if( !m_testCaseTracker->enterSection( oss.str() ) )
+            ITracker& sectionTracker = SectionTracker::acquire( m_trackerContext, oss.str() );
+            if( !sectionTracker.isOpen() )
                 return false;
-
+            m_activeSections.push_back( &sectionTracker );
+            
             m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
             m_reporter->sectionStarting( sectionInfo );
@@ -161,9 +167,11 @@ namespace Catch {
             return true;
         }
         bool testForMissingAssertions( Counts& assertions ) {
-            if( assertions.total() != 0 ||
-                    !m_config->warnAboutMissingAssertions() ||
-                    m_testCaseTracker->currentSectionHasChildren() )
+            if( assertions.total() != 0 )
+                return false;
+            if( m_config->warnAboutMissingAssertions() )
+                return false;
+            if( m_trackerContext.currentTracker().hasChildren() )
                 return false;
             m_totals.assertions.failed++;
             assertions.failed++;
@@ -174,13 +182,22 @@ namespace Catch {
             Counts assertions = m_totals.assertions - endInfo.prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
             
-            m_testCaseTracker->leaveSection();
+            if( !m_activeSections.empty() ) {
+                m_activeSections.back()->close();
+                m_activeSections.pop_back();
+            }
             
             m_reporter->sectionEnded( SectionStats( endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions ) );
             m_messages.clear();
         }
 
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) {
+            if( m_unfinishedSections.empty() )
+                m_activeSections.back()->fail();
+            else
+                m_activeSections.back()->close();
+            m_activeSections.pop_back();
+            
             m_unfinishedSections.push_back( endInfo );
         }
         
@@ -249,7 +266,7 @@ namespace Catch {
             double duration = 0;
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
-                TestCaseTracker::Guard guard( *m_testCaseTracker );
+//                TestCaseTracker::Guard guard( *m_testCaseTracker );
 
                 seedRng( *m_config );
                 
@@ -267,10 +284,13 @@ namespace Catch {
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
+//                m_testCaseTracker->fail();
             }
             catch(...) {
                 makeUnexpectedResultBuilder().useActiveException();
+//                m_testCaseTracker->fail();
             }
+            m_testCaseTracker->close();
             handleUnfinishedSections();
             m_messages.clear();
 
@@ -316,7 +336,8 @@ namespace Catch {
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
         TestCase const* m_activeTestCase;
-        Option<TestCaseTracker> m_testCaseTracker;
+        ITracker* m_testCaseTracker;
+        ITracker* m_currentSectionTracker;
         AssertionResult m_lastResult;
 
         Ptr<IConfig const> m_config;
@@ -325,6 +346,8 @@ namespace Catch {
         std::vector<MessageInfo> m_messages;
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;
+        std::vector<ITracker*> m_activeSections;
+        TrackerContext m_trackerContext;
     };
 
     IResultCapture& getResultCapture() {
