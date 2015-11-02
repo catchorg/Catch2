@@ -24,7 +24,7 @@ namespace Catch {
         {}
 
         virtual ~XmlReporter();
-        
+
         static std::string getDescription() {
             return "Reports test results as an XML document";
         }
@@ -75,7 +75,7 @@ namespace Catch {
 
         virtual bool assertionEnded( AssertionStats const& assertionStats ) {
             const AssertionResult& assertionResult = assertionStats.assertionResult;
-                
+
             // Print any info messages in <Info> tags.
             if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
                 for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
@@ -137,10 +137,10 @@ namespace Catch {
                 default:
                     break;
             }
-            
+
             if( assertionResult.hasExpression() )
                 m_xml.endElement();
-                
+
             return true;
         }
 
@@ -179,7 +179,7 @@ namespace Catch {
                 .writeAttribute( "expectedFailures", testGroupStats.totals.assertions.failedButOk );
             m_xml.endElement();
         }
-        
+
         virtual void testRunEnded( TestRunStats const& testRunStats ) {
             StreamingReporterBase::testRunEnded( testRunStats );
             m_xml.scopedElement( "OverallResults" )

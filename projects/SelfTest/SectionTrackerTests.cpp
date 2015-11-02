@@ -90,7 +90,7 @@ TEST_CASE( "section tracking", "" ) {
 
             // Leave test case - now complete
         }
-        CHECK( testCaseTracker.isCompleted() );        
+        CHECK( testCaseTracker.isCompleted() );
     }
 
     SECTION( "test case with one section within another", "" ) {
@@ -112,6 +112,6 @@ TEST_CASE( "section tracking", "" ) {
 
             // Leave test case - now complete
         }
-        CHECK( testCaseTracker.isCompleted() );        
+        CHECK( testCaseTracker.isCompleted() );
     }
 }

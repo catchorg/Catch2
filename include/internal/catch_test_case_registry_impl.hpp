@@ -83,7 +83,7 @@ namespace Catch {
     private:
 
         static void sortTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) {
-            
+
             switch( config.runOrder() ) {
                 case RunTests::InLexicographicalOrder:
                     std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );

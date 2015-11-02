@@ -21,7 +21,7 @@ struct TestData {
         float_nine_point_one( 9.1f ),
         double_pi( 3.1415926535 )
     {}
-    
+
     int int_seven;
     std::string str_hello;
     float float_nine_point_one;
@@ -36,7 +36,7 @@ struct TestDef {
     TestDef& operator[]( const std::string& ) {
         return *this;
     }
-    
+
 };
 
 // The "failing" tests all use the CHECK macro, which continues if the specific test fails.
@@ -48,14 +48,14 @@ TEST_CASE( "Equality checks that should succeed", "" )
 
     TestDef td;
     td + "hello" + "hello";
-    
+
     TestData data;
-    
+
     REQUIRE( data.int_seven == 7 );
     REQUIRE( data.float_nine_point_one == Approx( 9.1f ) );
     REQUIRE( data.double_pi == Approx( 3.1415926535 ) );
     REQUIRE( data.str_hello == "hello" );
-    REQUIRE( "hello" == data.str_hello );    
+    REQUIRE( "hello" == data.str_hello );
     REQUIRE( data.str_hello.size() == 5 );
 
     double x = 1.1 + 0.1 + 0.1;
@@ -65,7 +65,7 @@ TEST_CASE( "Equality checks that should succeed", "" )
 TEST_CASE( "Equality checks that should fail", "[.][failing][!mayfail]" )
 {
     TestData data;
-    
+
     CHECK( data.int_seven == 6 );
     CHECK( data.int_seven == 8 );
     CHECK( data.int_seven == 0 );
@@ -86,7 +86,7 @@ TEST_CASE( "Equality checks that should fail", "[.][failing][!mayfail]" )
 TEST_CASE( "Inequality checks that should succeed", "" )
 {
     TestData data;
-    
+
     REQUIRE( data.int_seven != 6 );
     REQUIRE( data.int_seven != 8 );
     REQUIRE( data.float_nine_point_one != Approx( 9.11f ) );
@@ -103,7 +103,7 @@ TEST_CASE( "Inequality checks that should succeed", "" )
 TEST_CASE( "Inequality checks that should fail", "[.][failing]" )
 {
     TestData data;
-    
+
     CHECK( data.int_seven != 7 );
     CHECK( data.float_nine_point_one != Approx( 9.1f ) );
     CHECK( data.double_pi != Approx( 3.1415926535 ) );
@@ -115,7 +115,7 @@ TEST_CASE( "Inequality checks that should fail", "[.][failing]" )
 TEST_CASE( "Ordering comparison checks that should succeed", "" )
 {
     TestData data;
-    
+
     REQUIRE( data.int_seven < 8 );
     REQUIRE( data.int_seven > 6 );
     REQUIRE( data.int_seven > 0 );
@@ -125,14 +125,14 @@ TEST_CASE( "Ordering comparison checks that should succeed", "" )
     REQUIRE( data.int_seven >= 6 );
     REQUIRE( data.int_seven <= 7 );
     REQUIRE( data.int_seven <= 8 );
-    
+
     REQUIRE( data.float_nine_point_one > 9 );
     REQUIRE( data.float_nine_point_one < 10 );
     REQUIRE( data.float_nine_point_one < 9.2 );
-    
+
     REQUIRE( data.str_hello <= "hello" );
     REQUIRE( data.str_hello >= "hello" );
-    
+
     REQUIRE( data.str_hello < "hellp" );
     REQUIRE( data.str_hello < "zebra" );
     REQUIRE( data.str_hello > "hellm" );
@@ -142,7 +142,7 @@ TEST_CASE( "Ordering comparison checks that should succeed", "" )
 TEST_CASE( "Ordering comparison checks that should fail", "[.][failing]" )
 {
     TestData data;
-    
+
     CHECK( data.int_seven > 7 );
     CHECK( data.int_seven < 7 );
     CHECK( data.int_seven > 8 );
@@ -152,11 +152,11 @@ TEST_CASE( "Ordering comparison checks that should fail", "[.][failing]" )
 
     CHECK( data.int_seven >= 8 );
     CHECK( data.int_seven <= 6 );
-    
+
     CHECK( data.float_nine_point_one < 9 );
     CHECK( data.float_nine_point_one > 10 );
     CHECK( data.float_nine_point_one > 9.2 );
-    
+
     CHECK( data.str_hello > "hello" );
     CHECK( data.str_hello < "hello" );
     CHECK( data.str_hello > "hellp" );
@@ -177,7 +177,7 @@ TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigne
     unsigned long ul = 4;
     char c = 5;
     unsigned char uc = 6;
-    
+
     REQUIRE( i == 1 );
     REQUIRE( ui == 2 );
     REQUIRE( l == 3 );
@@ -214,7 +214,7 @@ TEST_CASE( "comparisons between int variables", "" )
 	unsigned short	unsigned_short_var = 1;
 	unsigned int	unsigned_int_var = 1;
 	unsigned long	unsigned_long_var = 1L;
-    
+
 	REQUIRE( long_var == unsigned_char_var );
 	REQUIRE( long_var == unsigned_short_var );
 	REQUIRE( long_var == unsigned_int_var );
@@ -251,7 +251,7 @@ template<typename T>
 struct Ex
 {
     Ex( T ){}
-    
+
     bool operator == ( const T& ) const { return true; }
     T operator * ( const T& ) const { return T(); }
 };
@@ -272,13 +272,13 @@ TEST_CASE( "Pointers can be compared to null", "" )
 {
     TestData* p = NULL;
     TestData* pNULL = NULL;
-    
+
     REQUIRE( p == NULL );
     REQUIRE( p == pNULL );
-    
+
     TestData data;
     p = &data;
-    
+
     REQUIRE( p != NULL );
 
     const TestData* cp = p;
@@ -289,7 +289,7 @@ TEST_CASE( "Pointers can be compared to null", "" )
 
     REQUIRE( returnsNull() == NULL );
     REQUIRE( returnsConstNull() == NULL );
-    
+
     REQUIRE( NULL != p );
 }
 
@@ -303,7 +303,7 @@ TEST_CASE( "Pointers can be compared to null", "" )
 TEST_CASE( "'Not' checks that should succeed", "" )
 {
     bool falseValue = false;
-    
+
     REQUIRE( false == false );
     REQUIRE( true == true );
     REQUIRE( !false );
@@ -319,15 +319,15 @@ TEST_CASE( "'Not' checks that should succeed", "" )
 TEST_CASE( "'Not' checks that should fail", "[.][failing]" )
 {
     bool trueValue = true;
-    
+
     CHECK( false != false );
     CHECK( true != true );
     CHECK( !true );
     CHECK_FALSE( true );
-    
+
     CHECK( !trueValue );
     CHECK_FALSE( trueValue );
-    
+
     CHECK( !(1 == 1) );
     CHECK_FALSE( 1 == 1 );
 }

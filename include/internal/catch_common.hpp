@@ -36,7 +36,7 @@ namespace Catch {
 
         return start != std::string::npos ? str.substr( start, 1+end-start ) : "";
     }
-    
+
     bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis ) {
         bool replaced = false;
         std::size_t i = str.find( replaceThis );
@@ -50,7 +50,7 @@ namespace Catch {
         }
         return replaced;
     }
-    
+
     pluralise::pluralise( std::size_t count, std::string const& label )
     :   m_count( count ),
         m_label( label )

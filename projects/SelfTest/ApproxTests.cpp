@@ -16,7 +16,7 @@ TEST_CASE
 )
 {
     double d = 1.23;
-    
+
     REQUIRE( d == Approx( 1.23 ) );
     REQUIRE( d != Approx( 1.22 ) );
     REQUIRE( d != Approx( 1.24 ) );
@@ -34,7 +34,7 @@ TEST_CASE
  )
 {
     double d = 1.23;
-    
+
     REQUIRE( d != Approx( 1.231 ) );
     REQUIRE( d == Approx( 1.231 ).epsilon( 0.1 ) );
 }
@@ -71,7 +71,7 @@ TEST_CASE
     const double dZero = 0;
     const double dSmall = 0.00001;
     const double dMedium = 1.234;
-    
+
     REQUIRE( 1.0f == Approx( 1 ) );
     REQUIRE( 0 == Approx( dZero) );
     REQUIRE( 0 == Approx( dSmall ).epsilon( 0.001 ) );
@@ -87,14 +87,14 @@ TEST_CASE
 )
 {
     double d = 1.23;
-    
+
     Approx approx = Approx::custom().epsilon( 0.005 );
-    
+
     REQUIRE( d == approx( 1.23 ) );
     REQUIRE( d == approx( 1.22 ) );
     REQUIRE( d == approx( 1.24 ) );
     REQUIRE( d != approx( 1.25 ) );
-    
+
     REQUIRE( approx( d ) == 1.23 );
     REQUIRE( approx( d ) == 1.22 );
     REQUIRE( approx( d ) == 1.24 );

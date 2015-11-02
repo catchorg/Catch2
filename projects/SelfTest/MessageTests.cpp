@@ -38,7 +38,7 @@ TEST_CASE( "INFO gets logged on failure, even if captured before successful asse
     CHECK( a == 2 );
 
     INFO( "this message should be logged" );
-    
+
     CHECK( a == 1 );
 
     INFO( "and this, but later" );
@@ -85,7 +85,7 @@ TEST_CASE( "Standard output from all sections is reported", "[messages][.]" )
     {
         std::cout << "Message from section one" << std::endl;
     }
-    
+
     SECTION( "two", "" )
     {
         std::cout << "Message from section two" << std::endl;

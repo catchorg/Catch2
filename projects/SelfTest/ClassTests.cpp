@@ -13,18 +13,18 @@ namespace
     class TestClass
     {
         std::string s;
-        
+
     public:
         TestClass()
         : s( "hello" )
         {}
-        
+
         void succeedingCase()
-        {            
+        {
             REQUIRE( s == "hello" );
         }
         void failingCase()
-        {            
+        {
             REQUIRE( s == "world" );
         }
     };
@@ -38,20 +38,20 @@ METHOD_AS_TEST_CASE( TestClass::failingCase, "A METHOD_AS_TEST_CASE based test r
 struct Fixture
 {
     Fixture() : m_a( 1 ) {}
-    
+
     int m_a;
 };
 
 TEST_CASE_METHOD( Fixture, "A TEST_CASE_METHOD based test run that succeeds", "[class]" )
-{   
-    REQUIRE( m_a == 1 );        
+{
+    REQUIRE( m_a == 1 );
 }
 
 // We should be able to write our tests within a different namespace
 namespace Inner
 {
     TEST_CASE_METHOD( Fixture, "A TEST_CASE_METHOD based test run that fails", "[.][class][failing]" )
-    {   
-        REQUIRE( m_a == 2 );        
+    {
+        REQUIRE( m_a == 2 );
     }
 }

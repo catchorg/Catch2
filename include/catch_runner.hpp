@@ -62,7 +62,7 @@ namespace Catch {
             }
             std::vector<TestCase> skippedTestCases;
             getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, skippedTestCases, true );
-            
+
             for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
                     it != itEnd;
                     ++it )
