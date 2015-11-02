@@ -155,7 +155,6 @@ namespace Catch {
         TestSpec m_testSpec;
     };
 
-
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED

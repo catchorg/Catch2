@@ -6,11 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#ifdef __clang__
-#   pragma clang diagnostic ignored "-Wpadded"
-#   pragma clang diagnostic ignored "-Wc++98-compat"
-#endif
-
+#include "internal/catch_suppress_warnings.h"
 #include "internal/catch_test_case_tracker.hpp"
 
 #include "catch.hpp"

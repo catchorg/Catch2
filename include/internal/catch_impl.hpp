@@ -35,6 +35,7 @@
 #include "catch_tostring.hpp"
 #include "catch_result_builder.hpp"
 #include "catch_tag_alias_registry.hpp"
+#include "catch_test_case_tracker.hpp"
 
 #include "../reporters/catch_reporter_multi.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
@@ -43,6 +44,8 @@
 #include "../reporters/catch_reporter_compact.hpp"
 
 namespace Catch {
+    // These are all here to avoid warnings about not having any out of line
+    // virtual methods
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
     IStream::~IStream() CATCH_NOEXCEPT {}
@@ -91,6 +94,13 @@ namespace Catch {
     Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     void Config::dummy() {}
+    
+    namespace TestCaseTracking {
+        ITracker::~ITracker() {}
+        TrackerBase::~TrackerBase() {}
+        SectionTracker::~SectionTracker() {}
+        IndexTracker::~IndexTracker() {}
+    }
 }
 
 #ifdef __clang__
