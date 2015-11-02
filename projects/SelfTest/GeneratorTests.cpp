@@ -19,10 +19,10 @@ inline int multiply( int a, int b )
 CATCH_TEST_CASE( "Generators over two ranges", "[generators]" )
 {
     using namespace Catch::Generators;
-    
+
     int i = CATCH_GENERATE( between( 1, 5 ).then( values( 15, 20, 21 ).then( 36 ) ) );
     int j = CATCH_GENERATE( between( 100, 107 ) );
-    
+
     CATCH_REQUIRE( multiply( i, 2 ) == i*2 );
     CATCH_REQUIRE( multiply( j, 2 ) == j*2 );
 }
@@ -32,11 +32,11 @@ struct IntPair { int first, second; };
 CATCH_TEST_CASE( "Generator over a range of pairs", "[generators]" )
 {
     using namespace Catch::Generators;
- 
+
     IntPair p[] = { { 0, 1 }, { 2, 3 } };
-    
+
     IntPair* i = CATCH_GENERATE( between( p, &p[1] ) );
-    
+
     CATCH_REQUIRE( i->first == i->second-1 );
-    
+
 }
