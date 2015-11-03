@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="12" failures="68" tests="920" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="12" failures="68" tests="900" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -644,11 +644,6 @@ TrickyTests.cpp:<line number>
     <testcase classname="Scenario: This is a really long scenario name to see how the list command deals with wrapping" name="Given: A section name that is so long that it cannot fit in a single console width/When: The test headers are printed as part of the normal running of the scenario/Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" time="{duration}"/>
     <testcase classname="Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me" time="{duration}"/>
     <testcase classname="Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me/When: We get the count/Then: Subsequently values are higher" time="{duration}"/>
-    <testcase classname="section tracking" name="root" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with no sections" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with one section" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with two consecutive sections" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with one section within another" time="{duration}"/>
     <system-out>
 Message from section one
 Message from section two

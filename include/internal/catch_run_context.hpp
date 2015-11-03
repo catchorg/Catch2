@@ -105,7 +105,7 @@ namespace Catch {
                 }
                 while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
             }
-            // !TBD: deprecated
+            // !TBD: deprecated - this will be replaced by indexed trackers
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
@@ -266,7 +266,6 @@ namespace Catch {
             double duration = 0;
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
-//                TestCaseTracker::Guard guard( *m_testCaseTracker );
 
                 seedRng( *m_config );
                 
@@ -284,11 +283,9 @@ namespace Catch {
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure
-//                m_testCaseTracker->fail();
             }
             catch(...) {
                 makeUnexpectedResultBuilder().useActiveException();
-//                m_testCaseTracker->fail();
             }
             m_testCaseTracker->close();
             handleUnfinishedSections();
