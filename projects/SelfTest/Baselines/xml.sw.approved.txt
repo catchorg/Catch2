@@ -3213,18 +3213,18 @@
     <TestCase name="even more nested SECTION tests">
       <Section name="c">
         <Section name="d (leaf)">
-          <OverallResults successes="0" failures="0" expectedFailures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="c">
         <Section name="e (leaf)">
-          <OverallResults successes="0" failures="0" expectedFailures="0"/>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="f (leaf)">
-        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -3427,10 +3427,10 @@
     </TestCase>
     <TestCase name="xmlentitycheck">
       <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>">
-        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;">
-        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -9422,7 +9422,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="807" failures="80" expectedFailures="13"/>
+    <OverallResults successes="812" failures="80" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="807" failures="80" expectedFailures="13"/>
+  <OverallResults successes="812" failures="80" expectedFailures="13"/>
 </Catch>

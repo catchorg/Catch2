@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="12" failures="68" tests="900" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="12" failures="68" tests="905" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -343,6 +343,9 @@ MiscTests.cpp:<line number>
     </testcase>
     <testcase classname="more nested SECTION tests" name="s1/s3" time="{duration}"/>
     <testcase classname="more nested SECTION tests" name="s1/s4" time="{duration}"/>
+    <testcase classname="even more nested SECTION tests" name="c/d (leaf)" time="{duration}"/>
+    <testcase classname="even more nested SECTION tests" name="c/e (leaf)" time="{duration}"/>
+    <testcase classname="even more nested SECTION tests" name="f (leaf)" time="{duration}"/>
     <testcase classname="looped SECTION tests" name="s1" time="{duration}">
       <failure message="0 > 1" type="CHECK">
 MiscTests.cpp:<line number>
@@ -401,6 +404,8 @@ MiscTests.cpp:<line number>
 MiscTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="xmlentitycheck" name="embedded xml" time="{duration}"/>
+    <testcase classname="xmlentitycheck" name="encoded chars" time="{duration}"/>
     <testcase classname="global" name="send a single char to INFO" time="{duration}">
       <failure message="false" type="REQUIRE">
 3

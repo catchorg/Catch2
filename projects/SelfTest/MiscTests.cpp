@@ -80,15 +80,18 @@ TEST_CASE( "even more nested SECTION tests", "[sections]" )
     {
         SECTION( "d (leaf)", "" )
         {
+            SUCCEED(""); // avoid failing due to no tests
         }
         
         SECTION( "e (leaf)", "" )
         {
+            SUCCEED(""); // avoid failing due to no tests
         }
     }
 
     SECTION( "f (leaf)", "" )
     {
+        SUCCEED(""); // avoid failing due to no tests
     }
 }
 
@@ -177,11 +180,11 @@ TEST_CASE( "xmlentitycheck", "" )
 {
     SECTION( "embedded xml", "<test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" )
     {
-        // No test
+        SUCCEED(""); // We need this here to stop it failing due to no tests
     }
     SECTION( "encoded chars", "these should all be encoded: &&&\"\"\"<<<&\"<<&\"" )
     {
-        // No test
+        SUCCEED(""); // We need this here to stop it failing due to no tests
     }
 }
 
