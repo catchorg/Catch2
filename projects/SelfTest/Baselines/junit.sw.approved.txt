@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="12" failures="68" tests="905" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="12" failures="70" tests="907" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>

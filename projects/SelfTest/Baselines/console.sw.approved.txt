@@ -2770,7 +2770,27 @@ explicitly with message:
   Message from section two
 
 Message from section one
+-------------------------------------------------------------------------------
+Standard output from all sections is reported
+  one
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'one'
+
 Message from section two
+-------------------------------------------------------------------------------
+Standard output from all sections is reported
+  two
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'two'
+
 -------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
 -------------------------------------------------------------------------------
@@ -8923,6 +8943,6 @@ with expansion:
   1 > 0
 
 ===============================================================================
-test cases: 159 | 119 passed | 39 failed |  1 failed as expected
-assertions: 905 | 812 passed | 80 failed | 13 failed as expected
+test cases: 159 | 118 passed | 40 failed |  1 failed as expected
+assertions: 907 | 812 passed | 82 failed | 13 failed as expected
 

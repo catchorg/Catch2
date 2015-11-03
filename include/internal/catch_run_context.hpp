@@ -169,7 +169,7 @@ namespace Catch {
         bool testForMissingAssertions( Counts& assertions ) {
             if( assertions.total() != 0 )
                 return false;
-            if( m_config->warnAboutMissingAssertions() )
+            if( !m_config->warnAboutMissingAssertions() )
                 return false;
             if( m_trackerContext.currentTracker().hasChildren() )
                 return false;
