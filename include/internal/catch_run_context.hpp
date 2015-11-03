@@ -70,7 +70,6 @@ namespace Catch {
             m_context.setConfig( m_config );
             m_context.setResultCapture( this );
             m_reporter->testRunStarting( m_runInfo );
-            m_trackerContext.startRun();
         }
 
         virtual ~RunContext() {
@@ -98,6 +97,7 @@ namespace Catch {
             
 
             do {
+                m_trackerContext.startRun();
                 do {
                     m_trackerContext.startCycle();
                     m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
