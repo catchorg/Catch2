@@ -1543,7 +1543,7 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test">
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Unexpected custom exceptions can be translated">
       <Exception filename="projects/SelfTest/ExceptionTests.cpp" >
@@ -2856,7 +2856,7 @@
       <Warning>
         this is a warning
       </Warning>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="SUCCEED counts as a test pass">
       <OverallResult success="true"/>
@@ -2949,12 +2949,12 @@
     </TestCase>
     <TestCase name="Standard output from all sections is reported">
       <Section name="one">
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="two">
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="SCOPED_INFO is reset for each loop">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MessageTests.cpp" >
@@ -3062,10 +3062,10 @@
           1 == 2
         </Expanded>
       </Expression>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="just info">
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="just failure">
       <Failure>
@@ -3097,7 +3097,7 @@
       <Warning>
         toString(p): 0x<hex digits>
       </Warning>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="random SECTION tests">
       <Section name="s1" description="doesn't equal">
@@ -3180,25 +3180,53 @@
         </Section>
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
+      <Section name="s1" description="doesn't equal">
+        <Section name="s3" description="not equal">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+            <Original>
+              a != b
+            </Original>
+            <Expanded>
+              1 != 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="s1" description="doesn't equal">
+        <Section name="s4" description="less than">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
+            <Original>
+              a &lt; b
+            </Original>
+            <Expanded>
+              1 &lt; 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="even more nested SECTION tests">
       <Section name="c">
         <Section name="d (leaf)">
-          <OverallResults successes="0" failures="1" expectedFailures="0"/>
+          <OverallResults successes="0" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="c">
         <Section name="e (leaf)">
-          <OverallResults successes="0" failures="1" expectedFailures="0"/>
+          <OverallResults successes="0" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="f (leaf)">
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="looped SECTION tests">
       <Section name="s1" description="b is currently: 0">
@@ -3300,7 +3328,7 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Sends stuff to stdout and stderr">
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="null strings">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
@@ -3399,12 +3427,12 @@
     </TestCase>
     <TestCase name="xmlentitycheck">
       <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>">
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;">
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="send a single char to INFO">
       <Info>
@@ -3606,19 +3634,19 @@
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="An empty test with no assertions">
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Nice descriptive name">
       <Warning>
         This one ran
       </Warning>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="first tag">
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="second tag">
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="vectors can be sized and resized">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
@@ -5140,7 +5168,7 @@ four"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Strings can be rendered with colour">
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Text can be formatted using the Text class">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/TestMain.cpp" >
@@ -6191,13 +6219,13 @@ there"
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Where the LHS is not a simple value">
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="A failing expression with a non streamable type is still captured">
       <Expression success="false" type="CHECK" filename="projects/SelfTest/TrickyTests.cpp" >
@@ -6615,6 +6643,1112 @@ there"
 "{ StringMaker&lt;has_maker_and_toString> }"
         </Expanded>
       </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Tracker">
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="successfully close one section">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isSuccessfullyCompleted()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            ctx.completedCycle()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isSuccessfullyCompleted()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="fail one section">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isComplete()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isSuccessfullyCompleted() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            ctx.completedCycle()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isSuccessfullyCompleted() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Section name="re-enter after failed section">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase2.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s1b.isOpen() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              ctx.completedCycle()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase.isComplete()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase.isSuccessfullyCompleted()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="10" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="fail one section">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isComplete()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isSuccessfullyCompleted() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            ctx.completedCycle()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isSuccessfullyCompleted() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Section name="re-enter after failed section and find next section">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase2.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s1b.isOpen() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              ctx.completedCycle()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase.isComplete()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase.isSuccessfullyCompleted()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="6" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="11" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="successfully close one section, then find another">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s2.isOpen() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Section name="Re-enter - skips S1 and enters S2">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase2.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s1b.isOpen() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2b.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              ctx.completedCycle() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Section name="Successfully close S2">
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                ctx.completedCycle()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2b.isSuccessfullyCompleted()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isComplete() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isSuccessfullyCompleted()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <OverallResults successes="4" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="10" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="successfully close one section, then find another">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s2.isOpen() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Section name="Re-enter - skips S1 and enters S2">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase2.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s1b.isOpen() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2b.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              ctx.completedCycle() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Section name="fail S2">
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                ctx.completedCycle()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2b.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2b.isSuccessfullyCompleted() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isSuccessfullyCompleted() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase3.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1c.isOpen() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2c.isOpen() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase3.isSuccessfullyCompleted()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="12" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="14" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="open a nested section">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s2.isOpen()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s2.isComplete()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isComplete()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            testCase.isComplete()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="start a generator">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.isOpen()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.index() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Section name="close outer section">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s1.isComplete() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase.isSuccessfullyCompleted() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Section name="Re-enter for second generation">
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1b.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.index() == 1
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1.isComplete() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1b.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="10" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="14" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="start a generator">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.isOpen()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.index() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Section name="Start a new inner section">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2.isComplete()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s1.isComplete() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase.isComplete() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Section name="Re-enter for second generation">
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1b.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.index() == 1
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2b.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2b.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1b.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <OverallResults successes="9" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="13" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="17" failures="0" expectedFailures="0"/>
+      </Section>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          testCase.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+        <Original>
+          s1.isOpen()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Section name="start a generator">
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.isOpen()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.index() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            g1.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+          <Original>
+            s1.isComplete() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Section name="Fail an inner section">
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2.isOpen()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2.isComplete()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s2.isSuccessfullyCompleted() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              s1.isComplete() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+            <Original>
+              testCase.isComplete() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Section name="Re-enter for second generation">
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1b.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.index() == 0
+              </Original>
+              <Expanded>
+                0 == 0
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2b.isOpen() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1b.isComplete() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1b.isComplete() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase2.isComplete() == false
+              </Original>
+              <Expanded>
+                false == false
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase3.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1c.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1c.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1c.index() == 1
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2c.isOpen()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s2c.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                g1c.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                s1c.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/SelfTest/PartTrackerTests.cpp" >
+              <Original>
+                testCase3.isComplete()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <OverallResults successes="17" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="22" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="26" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="std::pair&lt;int,std::string> -> toString">
@@ -8463,7 +9597,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="695" failures="100" expectedFailures="13"/>
+    <OverallResults successes="827" failures="80" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="695" failures="100" expectedFailures="13"/>
+  <OverallResults successes="827" failures="80" expectedFailures="13"/>
 </Catch>

@@ -494,7 +494,27 @@ explicitly with message:
   Message from section two
 
 Message from section one
+-------------------------------------------------------------------------------
+Standard output from all sections is reported
+  one
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'one'
+
 Message from section two
+-------------------------------------------------------------------------------
+Standard output from all sections is reported
+  two
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'two'
+
 -------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
 -------------------------------------------------------------------------------
@@ -557,6 +577,38 @@ MiscTests.cpp:<line number>: FAILED:
   REQUIRE( a == b )
 with expansion:
   1 == 2
+
+-------------------------------------------------------------------------------
+even more nested SECTION tests
+  c
+  d (leaf)
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'd (leaf)'
+
+-------------------------------------------------------------------------------
+even more nested SECTION tests
+  c
+  e (leaf)
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'e (leaf)'
+
+-------------------------------------------------------------------------------
+even more nested SECTION tests
+  f (leaf)
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'f (leaf)'
 
 -------------------------------------------------------------------------------
 looped SECTION tests
@@ -651,6 +703,26 @@ MiscTests.cpp:<line number>: FAILED:
   REQUIRE( testCheckedElse( false ) )
 with expansion:
   false
+
+-------------------------------------------------------------------------------
+xmlentitycheck
+  embedded xml
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'embedded xml'
+
+-------------------------------------------------------------------------------
+xmlentitycheck
+  encoded chars
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'encoded chars'
 
 -------------------------------------------------------------------------------
 send a single char to INFO
@@ -797,6 +869,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 159 | 119 passed | 39 failed |  1 failed as expected
-assertions: 788 | 695 passed | 80 failed | 13 failed as expected
+test cases: 160 | 117 passed | 42 failed |  1 failed as expected
+assertions: 927 | 827 passed | 87 failed | 13 failed as expected
 
