@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.15
- *  Generated: 2015-11-03 08:00:19.120246
+ *  Catch v1.2.1-develop.16
+ *  Generated: 2015-11-03 17:06:36.466681
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5679,7 +5679,7 @@ namespace Catch {
         bool testForMissingAssertions( Counts& assertions ) {
             if( assertions.total() != 0 )
                 return false;
-            if( m_config->warnAboutMissingAssertions() )
+            if( !m_config->warnAboutMissingAssertions() )
                 return false;
             if( m_trackerContext.currentTracker().hasChildren() )
                 return false;
@@ -7191,7 +7191,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 15 );
+    Version libraryVersion( 1, 2, 1, "develop", 16 );
 
 }
 
