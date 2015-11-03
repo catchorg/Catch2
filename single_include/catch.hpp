@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.14
- *  Generated: 2015-09-27 03:27:04.922060
+ *  Catch v1.2.1-develop.15
+ *  Generated: 2015-11-03 08:00:19.120246
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -35,6 +35,7 @@
 #       pragma clang diagnostic ignored "-Wc++98-compat"
 #       pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #       pragma clang diagnostic ignored "-Wswitch-enum"
+#       pragma clang diagnostic ignored "-Wcovered-switch-default"
 #    endif
 #elif defined __GNUC__
 #    pragma GCC diagnostic ignored "-Wvariadic-macros"
@@ -3287,28 +3288,59 @@ namespace Catch {
 // #included from: catch_stream.h
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 
-#include <streambuf>
+// #included from: catch_streambuf.h
+#define TWOBLUECUBES_CATCH_STREAMBUF_H_INCLUDED
 
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wpadded"
-#endif
+#include <streambuf>
 
 namespace Catch {
 
-    class Stream {
+    class StreamBufBase : public std::streambuf {
     public:
-        Stream();
-        Stream( std::streambuf* _streamBuf, bool _isOwned );
-        void release();
-
-        std::streambuf* streamBuf;
-
-    private:
-        bool isOwned;
+        virtual ~StreamBufBase() CATCH_NOEXCEPT;
     };
+}
+
+#include <streambuf>
+#include <ostream>
+#include <fstream>
+
+namespace Catch {
 
     std::ostream& cout();
     std::ostream& cerr();
+
+    struct IStream {
+        virtual ~IStream() CATCH_NOEXCEPT;
+        virtual std::ostream& stream() const = 0;
+    };
+
+    class FileStream : public IStream {
+        mutable std::ofstream m_ofs;
+    public:
+        FileStream( std::string const& filename );
+    public: // IStream
+        virtual std::ostream& stream() const CATCH_OVERRIDE;
+    };
+
+    class CoutStream : public IStream {
+        mutable std::ostream m_os;
+    public:
+        CoutStream();
+
+    public: // IStream
+        virtual std::ostream& stream() const CATCH_OVERRIDE;
+    };
+
+    class DebugOutStream : public IStream {
+        std::auto_ptr<StreamBufBase> m_streamBuf;
+        mutable std::ostream m_os;
+    public:
+        DebugOutStream();
+
+    public: // IStream
+        virtual std::ostream& stream() const CATCH_OVERRIDE;
+    };
 }
 
 #include <memory>
@@ -3382,12 +3414,11 @@ namespace Catch {
     public:
 
         Config()
-        :   m_os( Catch::cout().rdbuf() )
         {}
 
         Config( ConfigData const& data )
         :   m_data( data ),
-            m_os( Catch::cout().rdbuf() )
+            m_stream( openStream() )
         {
             if( !data.testsOrTags.empty() ) {
                 TestSpecParser parser( ITagAliasRegistry::get() );
@@ -3398,12 +3429,6 @@ namespace Catch {
         }
 
         virtual ~Config() {
-            m_os.rdbuf( Catch::cout().rdbuf() );
-            m_stream.release();
-        }
-
-        void setFilename( std::string const& filename ) {
-            m_data.outputFilename = filename;
         }
 
         std::string const& getFilename() const {
@@ -3419,17 +3444,6 @@ namespace Catch {
 
         bool shouldDebugBreak() const { return m_data.shouldDebugBreak; }
 
-        void setStreamBuf( std::streambuf* buf ) {
-            m_os.rdbuf( buf ? buf : Catch::cout().rdbuf() );
-        }
-
-        void useStream( std::string const& streamName ) {
-            Stream stream = createStream( streamName );
-            setStreamBuf( stream.streamBuf );
-            m_stream.release();
-            m_stream = stream;
-        }
-
         std::vector<std::string> getReporterNames() const { return m_data.reporterNames; }
 
         int abortAfter() const { return m_data.abortAfter; }
@@ -3441,7 +3455,7 @@ namespace Catch {
 
         // IConfig interface
         virtual bool allowThrows() const        { return !m_data.noThrow; }
-        virtual std::ostream& stream() const    { return m_os; }
+        virtual std::ostream& stream() const    { return m_stream->stream(); }
         virtual std::string name() const        { return m_data.name.empty() ? m_data.processName : m_data.name; }
         virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
@@ -3451,10 +3465,22 @@ namespace Catch {
         virtual bool forceColour() const { return m_data.forceColour; }
 
     private:
+
+        IStream const* openStream() {
+            if( m_data.outputFilename.empty() )
+                return new CoutStream();
+            else if( m_data.outputFilename[0] == '%' ) {
+                if( m_data.outputFilename == "%debug" )
+                    return new DebugOutStream();
+                else
+                    throw std::domain_error( "Unrecognised stream: " + m_data.outputFilename );
+            }
+            else
+                return new FileStream( m_data.outputFilename );
+        }
         ConfigData m_data;
 
-        Stream m_stream;
-        mutable std::ostream m_os;
+        std::auto_ptr<IStream const> m_stream;
         TestSpec m_testSpec;
     };
 
@@ -4726,18 +4752,18 @@ namespace Catch {
 namespace Catch
 {
     struct ReporterConfig {
-        explicit ReporterConfig( Ptr<IConfig> const& _fullConfig )
+        explicit ReporterConfig( Ptr<IConfig const> const& _fullConfig )
         :   m_stream( &_fullConfig->stream() ), m_fullConfig( _fullConfig ) {}
 
-        ReporterConfig( Ptr<IConfig> const& _fullConfig, std::ostream& _stream )
+        ReporterConfig( Ptr<IConfig const> const& _fullConfig, std::ostream& _stream )
         :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
         std::ostream& stream() const    { return *m_stream; }
-        Ptr<IConfig> fullConfig() const { return m_fullConfig; }
+        Ptr<IConfig const> fullConfig() const { return m_fullConfig; }
 
     private:
         std::ostream* m_stream;
-        Ptr<IConfig> m_fullConfig;
+        Ptr<IConfig const> m_fullConfig;
     };
 
     struct ReporterPreferences {
@@ -4959,7 +4985,7 @@ namespace Catch
         typedef std::vector<Ptr<IReporterFactory> > Listeners;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig const> const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;
     };
@@ -5136,137 +5162,300 @@ namespace Catch {
 #include <map>
 #include <string>
 #include <assert.h>
+#include <vector>
 
 namespace Catch {
-namespace SectionTracking {
+namespace TestCaseTracking {
 
-    class TrackedSection {
+    struct ITracker : SharedImpl<> {
+        virtual ~ITracker();
 
-        typedef std::map<std::string, TrackedSection> TrackedSections;
+        // static queries
+        virtual std::string name() const = 0;
 
-    public:
+        // dynamic queries
+        virtual bool isComplete() const = 0; // Successfully completed or failed
+        virtual bool isSuccessfullyCompleted() const = 0;
+        virtual bool isOpen() const = 0; // Started but not complete
+        virtual bool hasChildren() const = 0;
+
+        virtual ITracker& parent() = 0;
+
+        // actions
+        virtual void close() = 0; // Successfully complete
+        virtual void fail() = 0;
+        virtual void markAsNeedingAnotherRun() = 0;
+
+        virtual void addChild( Ptr<ITracker> const& child ) = 0;
+        virtual ITracker* findChild( std::string const& name ) = 0;
+        virtual void openChild() = 0;
+    };
+
+    class TrackerContext {
+
         enum RunState {
             NotStarted,
             Executing,
-            ExecutingChildren,
-            Completed
+            CompletedCycle
         };
 
-        TrackedSection( std::string const& name, TrackedSection* parent )
-        :   m_name( name ), m_runState( NotStarted ), m_parent( parent )
+        Ptr<ITracker> m_rootTracker;
+        ITracker* m_currentTracker;
+        RunState m_runState;
+
+    public:
+
+        static TrackerContext& instance() {
+            static TrackerContext s_instance;
+            return s_instance;
+        }
+
+        TrackerContext()
+        :   m_currentTracker( CATCH_NULL ),
+            m_runState( NotStarted )
         {}
 
-        RunState runState() const { return m_runState; }
+        ITracker& startRun();
 
-        TrackedSection* findChild( std::string const& childName );
-        TrackedSection* acquireChild( std::string const& childName );
-
-        void enter() {
-            if( m_runState == NotStarted )
-                m_runState = Executing;
+        void endRun() {
+            m_rootTracker.reset();
+            m_currentTracker = CATCH_NULL;
+            m_runState = NotStarted;
         }
-        void leave();
 
-        TrackedSection* getParent() {
-            return m_parent;
+        void startCycle() {
+            m_currentTracker = m_rootTracker.get();
+            m_runState = Executing;
         }
-        bool hasChildren() const {
+        void completeCycle() {
+            m_runState = CompletedCycle;
+        }
+
+        bool completedCycle() const {
+            return m_runState == CompletedCycle;
+        }
+        ITracker& currentTracker() {
+            return *m_currentTracker;
+        }
+        void setCurrentTracker( ITracker* tracker ) {
+            m_currentTracker = tracker;
+        }
+    };
+
+    class TrackerBase : public ITracker {
+    protected:
+        enum CycleState {
+            NotStarted,
+            Executing,
+            ExecutingChildren,
+            NeedsAnotherRun,
+            CompletedSuccessfully,
+            Failed
+        };
+        class TrackerHasName {
+            std::string m_name;
+        public:
+            TrackerHasName( std::string const& name ) : m_name( name ) {}
+            bool operator ()( Ptr<ITracker> const& tracker ) {
+                return tracker->name() == m_name;
+            }
+        };
+        typedef std::vector<Ptr<ITracker> > Children;
+        std::string m_name;
+        TrackerContext& m_ctx;
+        ITracker* m_parent;
+        Children m_children;
+        CycleState m_runState;
+    public:
+        TrackerBase( std::string const& name, TrackerContext& ctx, ITracker* parent )
+        :   m_name( name ),
+            m_ctx( ctx ),
+            m_parent( parent ),
+            m_runState( NotStarted )
+        {}
+        virtual ~TrackerBase();
+
+        virtual std::string name() const CATCH_OVERRIDE {
+            return m_name;
+        }
+        virtual bool isComplete() const CATCH_OVERRIDE {
+            return m_runState == CompletedSuccessfully || m_runState == Failed;
+        }
+        virtual bool isSuccessfullyCompleted() const CATCH_OVERRIDE {
+            return m_runState == CompletedSuccessfully;
+        }
+        virtual bool isOpen() const CATCH_OVERRIDE {
+            return m_runState != NotStarted && !isComplete();
+        }
+        virtual bool hasChildren() const CATCH_OVERRIDE {
             return !m_children.empty();
         }
 
-    private:
-        std::string m_name;
-        RunState m_runState;
-        TrackedSections m_children;
-        TrackedSection* m_parent;
-    };
+        virtual void addChild( Ptr<ITracker> const& child ) CATCH_OVERRIDE {
+            m_children.push_back( child );
+        }
 
-    inline TrackedSection* TrackedSection::findChild( std::string const& childName ) {
-        TrackedSections::iterator it = m_children.find( childName );
-        return it != m_children.end()
-            ? &it->second
-            : CATCH_NULL;
-    }
-    inline TrackedSection* TrackedSection::acquireChild( std::string const& childName ) {
-        if( TrackedSection* child = findChild( childName ) )
-            return child;
-        m_children.insert( std::make_pair( childName, TrackedSection( childName, this ) ) );
-        return findChild( childName );
-    }
-    inline void TrackedSection::leave() {
-        for( TrackedSections::const_iterator it = m_children.begin(), itEnd = m_children.end();
-                it != itEnd;
-                ++it )
-            if( it->second.runState() != Completed ) {
+        virtual ITracker* findChild( std::string const& name ) CATCH_OVERRIDE {
+            Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( name ) );
+            return( it != m_children.end() )
+                ? it->get()
+                : CATCH_NULL;
+        }
+        virtual ITracker& parent() CATCH_OVERRIDE {
+            assert( m_parent ); // Should always be non-null except for root
+            return *m_parent;
+        }
+
+        virtual void openChild() CATCH_OVERRIDE {
+            if( m_runState != ExecutingChildren ) {
                 m_runState = ExecutingChildren;
-                return;
+                if( m_parent )
+                    m_parent->openChild();
             }
-        m_runState = Completed;
-    }
-
-    class TestCaseTracker {
-    public:
-        TestCaseTracker( std::string const& testCaseName )
-        :   m_testCase( testCaseName, CATCH_NULL ),
-            m_currentSection( &m_testCase ),
-            m_completedASectionThisRun( false )
-        {}
-
-        bool enterSection( std::string const& name ) {
-            TrackedSection* child = m_currentSection->acquireChild( name );
-            if( m_completedASectionThisRun || child->runState() == TrackedSection::Completed )
-                return false;
-
-            m_currentSection = child;
-            m_currentSection->enter();
-            return true;
         }
-        void leaveSection() {
-            m_currentSection->leave();
-            m_currentSection = m_currentSection->getParent();
-            assert( m_currentSection != CATCH_NULL );
-            m_completedASectionThisRun = true;
+        void open() {
+            m_runState = Executing;
+            moveToThis();
+            if( m_parent )
+                m_parent->openChild();
         }
 
-        bool currentSectionHasChildren() const {
-            return m_currentSection->hasChildren();
-        }
-        bool isCompleted() const {
-            return m_testCase.runState() == TrackedSection::Completed;
-        }
+        virtual void close() CATCH_OVERRIDE {
 
-        class Guard {
-        public:
-            Guard( TestCaseTracker& tracker ) : m_tracker( tracker ) {
-                m_tracker.enterTestCase();
+            // Close any still open children (e.g. generators)
+            while( &m_ctx.currentTracker() != this )
+                m_ctx.currentTracker().close();
+
+            switch( m_runState ) {
+                case NotStarted:
+                case CompletedSuccessfully:
+                case Failed:
+                    throw std::logic_error( "Illogical state" );
+
+                case NeedsAnotherRun:
+                    break;;
+
+                case Executing:
+                    m_runState = CompletedSuccessfully;
+                    break;
+                case ExecutingChildren:
+                    if( m_children.empty() || m_children.back()->isComplete() )
+                        m_runState = CompletedSuccessfully;
+                    break;
+
+                default:
+                    throw std::logic_error( "Unexpected state" );
             }
-            ~Guard() {
-                m_tracker.leaveTestCase();
-            }
-        private:
-            Guard( Guard const& );
-            void operator = ( Guard const& );
-            TestCaseTracker& m_tracker;
-        };
-
+            moveToParent();
+            m_ctx.completeCycle();
+        }
+        virtual void fail() CATCH_OVERRIDE {
+            m_runState = Failed;
+            if( m_parent )
+                m_parent->markAsNeedingAnotherRun();
+            moveToParent();
+            m_ctx.completeCycle();
+        }
+        virtual void markAsNeedingAnotherRun() CATCH_OVERRIDE {
+            m_runState = NeedsAnotherRun;
+        }
     private:
-        void enterTestCase() {
-            m_currentSection = &m_testCase;
-            m_completedASectionThisRun = false;
-            m_testCase.enter();
+        void moveToParent() {
+            assert( m_parent );
+            m_ctx.setCurrentTracker( m_parent );
         }
-        void leaveTestCase() {
-            m_testCase.leave();
+        void moveToThis() {
+            m_ctx.setCurrentTracker( this );
         }
-
-        TrackedSection m_testCase;
-        TrackedSection* m_currentSection;
-        bool m_completedASectionThisRun;
     };
 
-} // namespace SectionTracking
+    class SectionTracker : public TrackerBase {
+    public:
+        SectionTracker( std::string const& name, TrackerContext& ctx, ITracker* parent )
+        :   TrackerBase( name, ctx, parent )
+        {}
+        virtual ~SectionTracker();
 
-using SectionTracking::TestCaseTracker;
+        static SectionTracker& acquire( TrackerContext& ctx, std::string const& name ) {
+            SectionTracker* section = CATCH_NULL;
+
+            ITracker& currentTracker = ctx.currentTracker();
+            if( ITracker* childTracker = currentTracker.findChild( name ) ) {
+                section = dynamic_cast<SectionTracker*>( childTracker );
+                assert( section );
+            }
+            else {
+                section = new SectionTracker( name, ctx, &currentTracker );
+                currentTracker.addChild( section );
+            }
+            if( !ctx.completedCycle() && !section->isComplete() ) {
+
+                section->open();
+            }
+            return *section;
+        }
+    };
+
+    class IndexTracker : public TrackerBase {
+        int m_size;
+        int m_index;
+    public:
+        IndexTracker( std::string const& name, TrackerContext& ctx, ITracker* parent, int size )
+        :   TrackerBase( name, ctx, parent ),
+            m_size( size ),
+            m_index( -1 )
+        {}
+        virtual ~IndexTracker();
+
+        static IndexTracker& acquire( TrackerContext& ctx, std::string const& name, int size ) {
+            IndexTracker* tracker = CATCH_NULL;
+
+            ITracker& currentTracker = ctx.currentTracker();
+            if( ITracker* childTracker = currentTracker.findChild( name ) ) {
+                tracker = dynamic_cast<IndexTracker*>( childTracker );
+                assert( tracker );
+            }
+            else {
+                tracker = new IndexTracker( name, ctx, &currentTracker, size );
+                currentTracker.addChild( tracker );
+            }
+
+            if( !ctx.completedCycle() && !tracker->isComplete() ) {
+                if( tracker->m_runState != ExecutingChildren && tracker->m_runState != NeedsAnotherRun )
+                    tracker->moveNext();
+                tracker->open();
+            }
+
+            return *tracker;
+        }
+
+        int index() const { return m_index; }
+
+        void moveNext() {
+            m_index++;
+            m_children.clear();
+        }
+
+        virtual void close() CATCH_OVERRIDE {
+            TrackerBase::close();
+            if( m_runState == CompletedSuccessfully && m_index < m_size-1 )
+                m_runState = Executing;
+        }
+    };
+
+    inline ITracker& TrackerContext::startRun() {
+        m_rootTracker = new SectionTracker( "{root}", *this, CATCH_NULL );
+        m_currentTracker = CATCH_NULL;
+        m_runState = Executing;
+        return *m_rootTracker;
+    }
+
+} // namespace TestCaseTracking
+
+using TestCaseTracking::ITracker;
+using TestCaseTracking::TrackerContext;
+using TestCaseTracking::SectionTracker;
+using TestCaseTracking::IndexTracker;
 
 } // namespace Catch
 
@@ -5387,10 +5576,7 @@ namespace Catch {
             m_context( getCurrentMutableContext() ),
             m_activeTestCase( CATCH_NULL ),
             m_config( _config ),
-            m_reporter( reporter ),
-            m_prevRunner( m_context.getRunner() ),
-            m_prevResultCapture( m_context.getResultCapture() ),
-            m_prevConfig( m_context.getConfig() )
+            m_reporter( reporter )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -5400,10 +5586,6 @@ namespace Catch {
 
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
-            m_context.setRunner( m_prevRunner );
-            m_context.setConfig( Ptr<IConfig const>() );
-            m_context.setResultCapture( m_prevResultCapture );
-            m_context.setConfig( m_prevConfig );
         }
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
@@ -5424,14 +5606,17 @@ namespace Catch {
             m_reporter->testCaseStarting( testInfo );
 
             m_activeTestCase = &testCase;
-            m_testCaseTracker = TestCaseTracker( testInfo.name );
 
             do {
+                m_trackerContext.startRun();
                 do {
+                    m_trackerContext.startCycle();
+                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
-                while( !m_testCaseTracker->isCompleted() && !aborting() );
+                while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
             }
+            // !TBD: deprecated - this will be replaced by indexed trackers
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
@@ -5443,7 +5628,7 @@ namespace Catch {
                                                         aborting() ) );
 
             m_activeTestCase = CATCH_NULL;
-            m_testCaseTracker.reset();
+            m_testCaseTracker = CATCH_NULL;
 
             return deltaTotals;
         }
@@ -5478,8 +5663,10 @@ namespace Catch {
             std::ostringstream oss;
             oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
 
-            if( !m_testCaseTracker->enterSection( oss.str() ) )
+            ITracker& sectionTracker = SectionTracker::acquire( m_trackerContext, oss.str() );
+            if( !sectionTracker.isOpen() )
                 return false;
+            m_activeSections.push_back( &sectionTracker );
 
             m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
@@ -5490,9 +5677,11 @@ namespace Catch {
             return true;
         }
         bool testForMissingAssertions( Counts& assertions ) {
-            if( assertions.total() != 0 ||
-                    !m_config->warnAboutMissingAssertions() ||
-                    m_testCaseTracker->currentSectionHasChildren() )
+            if( assertions.total() != 0 )
+                return false;
+            if( m_config->warnAboutMissingAssertions() )
+                return false;
+            if( m_trackerContext.currentTracker().hasChildren() )
                 return false;
             m_totals.assertions.failed++;
             assertions.failed++;
@@ -5503,13 +5692,22 @@ namespace Catch {
             Counts assertions = m_totals.assertions - endInfo.prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
-            m_testCaseTracker->leaveSection();
+            if( !m_activeSections.empty() ) {
+                m_activeSections.back()->close();
+                m_activeSections.pop_back();
+            }
 
             m_reporter->sectionEnded( SectionStats( endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions ) );
             m_messages.clear();
         }
 
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) {
+            if( m_unfinishedSections.empty() )
+                m_activeSections.back()->fail();
+            else
+                m_activeSections.back()->close();
+            m_activeSections.pop_back();
+
             m_unfinishedSections.push_back( endInfo );
         }
 
@@ -5578,7 +5776,6 @@ namespace Catch {
             double duration = 0;
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
-                TestCaseTracker::Guard guard( *m_testCaseTracker );
 
                 seedRng( *m_config );
 
@@ -5600,6 +5797,7 @@ namespace Catch {
             catch(...) {
                 makeUnexpectedResultBuilder().useActiveException();
             }
+            m_testCaseTracker->close();
             handleUnfinishedSections();
             m_messages.clear();
 
@@ -5645,18 +5843,18 @@ namespace Catch {
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
         TestCase const* m_activeTestCase;
-        Option<TestCaseTracker> m_testCaseTracker;
+        ITracker* m_testCaseTracker;
+        ITracker* m_currentSectionTracker;
         AssertionResult m_lastResult;
 
         Ptr<IConfig const> m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;
-        IRunner* m_prevRunner;
-        IResultCapture* m_prevResultCapture;
-        Ptr<IConfig const> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;
+        std::vector<ITracker*> m_activeSections;
+        TrackerContext m_trackerContext;
     };
 
     IResultCapture& getResultCapture() {
@@ -5726,7 +5924,7 @@ namespace Catch {
             reporter = addReporter( reporter, createReporter( *it, config ) );
         return reporter;
     }
-    Ptr<IStreamingReporter> addListeners( Ptr<IConfig> const& config, Ptr<IStreamingReporter> reporters ) {
+    Ptr<IStreamingReporter> addListeners( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> reporters ) {
         IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
         for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();
                 it != itEnd;
@@ -5735,27 +5933,14 @@ namespace Catch {
         return reporters;
     }
 
-    void openStreamInto( Ptr<Config> const& config, std::ofstream& ofs ) {
-        // Open output file, if specified
-        if( !config->getFilename().empty() ) {
-            ofs.open( config->getFilename().c_str() );
-            if( ofs.fail() ) {
-                std::ostringstream oss;
-                oss << "Unable to open file: '" << config->getFilename() << "'";
-                throw std::domain_error( oss.str() );
-            }
-            config->setStreamBuf( ofs.rdbuf() );
-        }
-    }
-
     Totals runTests( Ptr<Config> const& config ) {
 
-        std::ofstream ofs;
-        openStreamInto( config, ofs );
-        Ptr<IStreamingReporter> reporter = makeReporter( config );
-        reporter = addListeners( config.get(), reporter );
+        Ptr<IConfig const> iconfig = config.get();
 
-        RunContext context( config.get(), reporter );
+        Ptr<IStreamingReporter> reporter = makeReporter( config );
+        reporter = addListeners( iconfig, reporter );
+
+        RunContext context( iconfig, reporter );
 
         Totals totals;
 
@@ -5765,17 +5950,17 @@ namespace Catch {
         if( !testSpec.hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
-        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *config );
+        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
         for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
                 it != itEnd;
                 ++it ) {
-            if( !context.aborting() && matchTest( *it, testSpec, *config ) )
+            if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
                 totals += context.runTest( *it );
             else
                 reporter->skipTest( *it );
         }
 
-        context.testGroupEnded( config->name(), totals, 1, 1 );
+        context.testGroupEnded( iconfig->name(), totals, 1, 1 );
         return totals;
     }
 
@@ -6094,7 +6279,7 @@ namespace Catch {
 
         virtual ~ReporterRegistry() CATCH_OVERRIDE {}
 
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const CATCH_OVERRIDE {
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig const> const& config ) const CATCH_OVERRIDE {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return CATCH_NULL;
@@ -6283,19 +6468,6 @@ namespace Catch {
 // #included from: catch_stream.hpp
 #define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
-// #included from: catch_streambuf.h
-#define TWOBLUECUBES_CATCH_STREAMBUF_H_INCLUDED
-
-#include <streambuf>
-
-namespace Catch {
-
-    class StreamBufBase : public std::streambuf {
-    public:
-        virtual ~StreamBufBase() CATCH_NOEXCEPT;
-    };
-}
-
 #include <stdexcept>
 #include <cstdio>
 #include <iostream>
@@ -6340,6 +6512,19 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
+    FileStream::FileStream( std::string const& filename ) {
+        m_ofs.open( filename.c_str() );
+        if( m_ofs.fail() ) {
+            std::ostringstream oss;
+            oss << "Unable to open file: '" << filename << "'";
+            throw std::domain_error( oss.str() );
+        }
+    }
+
+    std::ostream& FileStream::stream() const {
+        return m_ofs;
+    }
+
     struct OutputDebugWriter {
 
         void operator()( std::string const&str ) {
@@ -6347,20 +6532,23 @@ namespace Catch {
         }
     };
 
-    Stream::Stream()
-    : streamBuf( CATCH_NULL ), isOwned( false )
+    DebugOutStream::DebugOutStream()
+    :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
+        m_os( m_streamBuf.get() )
     {}
 
-    Stream::Stream( std::streambuf* _streamBuf, bool _isOwned )
-    : streamBuf( _streamBuf ), isOwned( _isOwned )
+    std::ostream& DebugOutStream::stream() const {
+        return m_os;
+    }
+
+    // Store the streambuf from cout up-front because
+    // cout may get redirected when running tests
+    CoutStream::CoutStream()
+    :   m_os( Catch::cout().rdbuf() )
     {}
 
-    void Stream::release() {
-        if( isOwned ) {
-            delete streamBuf;
-            streamBuf = CATCH_NULL;
-            isOwned = false;
-        }
+    std::ostream& CoutStream::stream() const {
+        return m_os;
     }
 
 #ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement this functions
@@ -6453,14 +6641,6 @@ namespace Catch {
     }
     IContext& getCurrentContext() {
         return getCurrentMutableContext();
-    }
-
-    Stream createStream( std::string const& streamName ) {
-        if( streamName == "stdout" ) return Stream( Catch::cout().rdbuf(), false );
-        if( streamName == "stderr" ) return Stream( Catch::cerr().rdbuf(), false );
-        if( streamName == "debug" ) return Stream( new StreamBufImpl<OutputDebugWriter>, true );
-
-        throw std::domain_error( "Unknown stream: " + streamName );
     }
 
     void cleanUpContext() {
@@ -7011,7 +7191,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 14 );
+    Version libraryVersion( 1, 2, 1, "develop", 15 );
 
 }
 
@@ -8076,7 +8256,7 @@ namespace Catch {
             // It can optionally be overridden in the derived class.
         }
 
-        Ptr<IConfig> m_config;
+        Ptr<IConfig const> m_config;
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;
@@ -8214,7 +8394,7 @@ namespace Catch {
 
         virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {}
 
-        Ptr<IConfig> m_config;
+        Ptr<IConfig const> m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
         std::vector<std::vector<Ptr<SectionNode> > > m_sections;
@@ -9689,8 +9869,11 @@ namespace Catch {
 } // end namespace Catch
 
 namespace Catch {
+    // These are all here to avoid warnings about not having any out of line
+    // virtual methods
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
+    IStream::~IStream() CATCH_NOEXCEPT {}
     StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
@@ -9736,6 +9919,13 @@ namespace Catch {
     Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     void Config::dummy() {}
+
+    namespace TestCaseTracking {
+        ITracker::~ITracker() {}
+        TrackerBase::~TrackerBase() {}
+        SectionTracker::~SectionTracker() {}
+        IndexTracker::~IndexTracker() {}
+    }
 }
 
 #ifdef __clang__
