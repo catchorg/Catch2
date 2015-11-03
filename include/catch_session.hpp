@@ -43,7 +43,7 @@ namespace Catch {
             reporter = addReporter( reporter, createReporter( *it, config ) );        
         return reporter;
     }
-    Ptr<IStreamingReporter> addListeners( Ptr<IConfig> const& config, Ptr<IStreamingReporter> reporters ) {
+    Ptr<IStreamingReporter> addListeners( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> reporters ) {
         IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
         for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();
                 it != itEnd;
@@ -52,27 +52,15 @@ namespace Catch {
         return reporters;
     }
     
-    void openStreamInto( Ptr<Config> const& config, std::ofstream& ofs ) {
-        // Open output file, if specified
-        if( !config->getFilename().empty() ) {
-            ofs.open( config->getFilename().c_str() );
-            if( ofs.fail() ) {
-                std::ostringstream oss;
-                oss << "Unable to open file: '" << config->getFilename() << "'";
-                throw std::domain_error( oss.str() );
-            }
-            config->setStreamBuf( ofs.rdbuf() );
-        }
-    }
     
     Totals runTests( Ptr<Config> const& config ) {
 
-        std::ofstream ofs;
-        openStreamInto( config, ofs );
-        Ptr<IStreamingReporter> reporter = makeReporter( config );
-        reporter = addListeners( config.get(), reporter );
+        Ptr<IConfig const> iconfig = config.get();
         
-        RunContext context( config.get(), reporter );
+        Ptr<IStreamingReporter> reporter = makeReporter( config );
+        reporter = addListeners( iconfig, reporter );
+        
+        RunContext context( iconfig, reporter );
 
         Totals totals;
 
@@ -82,17 +70,17 @@ namespace Catch {
         if( !testSpec.hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
-        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *config );
+        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
         for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
                 it != itEnd;
                 ++it ) {
-            if( !context.aborting() && matchTest( *it, testSpec, *config ) )
+            if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
                 totals += context.runTest( *it );
             else
                 reporter->skipTest( *it );
         }
 
-        context.testGroupEnded( config->name(), totals, 1, 1 );
+        context.testGroupEnded( iconfig->name(), totals, 1, 1 );
         return totals;
     }
     

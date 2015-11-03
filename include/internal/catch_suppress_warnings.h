@@ -19,6 +19,7 @@
 #       pragma clang diagnostic ignored "-Wc++98-compat"
 #       pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #       pragma clang diagnostic ignored "-Wswitch-enum"
+#       pragma clang diagnostic ignored "-Wcovered-switch-default"
 #    endif
 #elif defined __GNUC__
 #    pragma GCC diagnostic ignored "-Wvariadic-macros"

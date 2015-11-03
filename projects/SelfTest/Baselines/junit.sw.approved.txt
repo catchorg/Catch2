@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="12" failures="88" tests="808" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="12" failures="68" tests="905" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -341,6 +341,11 @@ MessageTests.cpp:<line number>
 MiscTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="more nested SECTION tests" name="s1/s3" time="{duration}"/>
+    <testcase classname="more nested SECTION tests" name="s1/s4" time="{duration}"/>
+    <testcase classname="even more nested SECTION tests" name="c/d (leaf)" time="{duration}"/>
+    <testcase classname="even more nested SECTION tests" name="c/e (leaf)" time="{duration}"/>
+    <testcase classname="even more nested SECTION tests" name="f (leaf)" time="{duration}"/>
     <testcase classname="looped SECTION tests" name="s1" time="{duration}">
       <failure message="0 > 1" type="CHECK">
 MiscTests.cpp:<line number>
@@ -399,6 +404,8 @@ MiscTests.cpp:<line number>
 MiscTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="xmlentitycheck" name="embedded xml" time="{duration}"/>
+    <testcase classname="xmlentitycheck" name="encoded chars" time="{duration}"/>
     <testcase classname="global" name="send a single char to INFO" time="{duration}">
       <failure message="false" type="REQUIRE">
 3
@@ -566,6 +573,23 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="toString( vectors&lt;has_toString )" time="{duration}"/>
     <testcase classname="global" name="toString( vectors&lt;has_maker )" time="{duration}"/>
     <testcase classname="global" name="toString( vectors&lt;has_maker_and_toString )" time="{duration}"/>
+    <testcase classname="Tracker" name="root" time="{duration}"/>
+    <testcase classname="Tracker" name="successfully close one section" time="{duration}"/>
+    <testcase classname="Tracker" name="fail one section" time="{duration}"/>
+    <testcase classname="Tracker" name="fail one section/re-enter after failed section" time="{duration}"/>
+    <testcase classname="Tracker" name="fail one section/re-enter after failed section and find next section" time="{duration}"/>
+    <testcase classname="Tracker" name="successfully close one section, then find another" time="{duration}"/>
+    <testcase classname="Tracker" name="successfully close one section, then find another/Re-enter - skips S1 and enters S2" time="{duration}"/>
+    <testcase classname="Tracker" name="successfully close one section, then find another/Re-enter - skips S1 and enters S2/Successfully close S2" time="{duration}"/>
+    <testcase classname="Tracker" name="successfully close one section, then find another/Re-enter - skips S1 and enters S2/fail S2" time="{duration}"/>
+    <testcase classname="Tracker" name="open a nested section" time="{duration}"/>
+    <testcase classname="Tracker" name="start a generator" time="{duration}"/>
+    <testcase classname="Tracker" name="start a generator/close outer section" time="{duration}"/>
+    <testcase classname="Tracker" name="start a generator/close outer section/Re-enter for second generation" time="{duration}"/>
+    <testcase classname="Tracker" name="start a generator/Start a new inner section" time="{duration}"/>
+    <testcase classname="Tracker" name="start a generator/Start a new inner section/Re-enter for second generation" time="{duration}"/>
+    <testcase classname="Tracker" name="start a generator/Fail an inner section" time="{duration}"/>
+    <testcase classname="Tracker" name="start a generator/Fail an inner section/Re-enter for second generation" time="{duration}"/>
     <testcase classname="global" name="std::pair&lt;int,std::string> -> toString" time="{duration}"/>
     <testcase classname="global" name="std::pair&lt;int,const std::string> -> toString" time="{duration}"/>
     <testcase classname="global" name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" time="{duration}"/>
@@ -625,11 +649,6 @@ TrickyTests.cpp:<line number>
     <testcase classname="Scenario: This is a really long scenario name to see how the list command deals with wrapping" name="Given: A section name that is so long that it cannot fit in a single console width/When: The test headers are printed as part of the normal running of the scenario/Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" time="{duration}"/>
     <testcase classname="Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me" time="{duration}"/>
     <testcase classname="Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me/When: We get the count/Then: Subsequently values are higher" time="{duration}"/>
-    <testcase classname="section tracking" name="root" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with no sections" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with one section" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with two consecutive sections" time="{duration}"/>
-    <testcase classname="section tracking" name="test case with one section within another" time="{duration}"/>
     <system-out>
 Message from section one
 Message from section two

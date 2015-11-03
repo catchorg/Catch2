@@ -1217,15 +1217,6 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
-When unchecked exceptions are thrown, but caught, they do not affect the test
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in test case 'When unchecked exceptions are thrown, but caught, they do not affect the test'
-
--------------------------------------------------------------------------------
 Unexpected custom exceptions can be translated
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -2668,9 +2659,6 @@ warning:
   this is a message
   this is a warning
 
-
-No assertions in test case 'INFO and WARN do not abort tests'
-
 -------------------------------------------------------------------------------
 SUCCEED counts as a test pass
 -------------------------------------------------------------------------------
@@ -2782,27 +2770,7 @@ explicitly with message:
   Message from section two
 
 Message from section one
--------------------------------------------------------------------------------
-Standard output from all sections is reported
-  one
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in section 'one'
-
 Message from section two
--------------------------------------------------------------------------------
-Standard output from all sections is reported
-  two
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in section 'two'
-
 -------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
 -------------------------------------------------------------------------------
@@ -2917,18 +2885,6 @@ MessageTests.cpp:<line number>:
 FAILED - but was ok:
   CHECK_NOFAIL( 1 == 2 )
 
-
-No assertions in test case 'The NO_FAIL macro reports a failure but does not fail the test'
-
--------------------------------------------------------------------------------
-just info
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in test case 'just info'
-
 -------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
@@ -2964,9 +2920,6 @@ warning:
 MessageTests.cpp:<line number>:
 warning:
   toString(p): 0x<hex digits>
-
-
-No assertions in test case 'Pointers can be converted to strings'
 
 -------------------------------------------------------------------------------
 random SECTION tests
@@ -3047,6 +3000,34 @@ with expansion:
   1 == 2
 
 -------------------------------------------------------------------------------
+more nested SECTION tests
+  s1
+  s3
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( a != b )
+with expansion:
+  1 != 2
+
+-------------------------------------------------------------------------------
+more nested SECTION tests
+  s1
+  s4
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( a < b )
+with expansion:
+  1 < 2
+
+-------------------------------------------------------------------------------
 even more nested SECTION tests
   c
   d (leaf)
@@ -3054,8 +3035,8 @@ even more nested SECTION tests
 MiscTests.cpp:<line number>
 ...............................................................................
 
-
-No assertions in section 'd (leaf)'
+MiscTests.cpp:<line number>:
+PASSED:
 
 -------------------------------------------------------------------------------
 even more nested SECTION tests
@@ -3065,8 +3046,8 @@ even more nested SECTION tests
 MiscTests.cpp:<line number>
 ...............................................................................
 
-
-No assertions in section 'e (leaf)'
+MiscTests.cpp:<line number>:
+PASSED:
 
 -------------------------------------------------------------------------------
 even more nested SECTION tests
@@ -3075,8 +3056,8 @@ even more nested SECTION tests
 MiscTests.cpp:<line number>
 ...............................................................................
 
-
-No assertions in section 'f (leaf)'
+MiscTests.cpp:<line number>:
+PASSED:
 
 -------------------------------------------------------------------------------
 looped SECTION tests
@@ -3156,15 +3137,6 @@ with message:
 
 A string sent directly to stdout
 A string sent directly to stderr
--------------------------------------------------------------------------------
-Sends stuff to stdout and stderr
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in test case 'Sends stuff to stdout and stderr'
-
 -------------------------------------------------------------------------------
 null strings
 -------------------------------------------------------------------------------
@@ -3258,8 +3230,8 @@ xmlentitycheck
 MiscTests.cpp:<line number>
 ...............................................................................
 
-
-No assertions in section 'embedded xml'
+MiscTests.cpp:<line number>:
+PASSED:
 
 -------------------------------------------------------------------------------
 xmlentitycheck
@@ -3268,8 +3240,8 @@ xmlentitycheck
 MiscTests.cpp:<line number>
 ...............................................................................
 
-
-No assertions in section 'encoded chars'
+MiscTests.cpp:<line number>:
+PASSED:
 
 -------------------------------------------------------------------------------
 send a single char to INFO
@@ -3463,15 +3435,6 @@ with expansion:
   3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
-An empty test with no assertions
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in test case 'An empty test with no assertions'
-
--------------------------------------------------------------------------------
 Nice descriptive name
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -3480,27 +3443,6 @@ MiscTests.cpp:<line number>
 MiscTests.cpp:<line number>:
 warning:
   This one ran
-
-
-No assertions in test case 'Nice descriptive name'
-
--------------------------------------------------------------------------------
-first tag
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in test case 'first tag'
-
--------------------------------------------------------------------------------
-second tag
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in test case 'second tag'
 
 -------------------------------------------------------------------------------
 vectors can be sized and resized
@@ -4918,15 +4860,6 @@ with expansion:
 hello
 hello
 -------------------------------------------------------------------------------
-Strings can be rendered with colour
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-
-No assertions in test case 'Strings can be rendered with colour'
-
--------------------------------------------------------------------------------
 Text can be formatted using the Text class
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
@@ -5983,9 +5916,6 @@ warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
 
-
-No assertions in test case 'Where there is more to the expression after the RHS'
-
 -------------------------------------------------------------------------------
 Where the LHS is not a simple value
 -------------------------------------------------------------------------------
@@ -5996,9 +5926,6 @@ TrickyTests.cpp:<line number>:
 warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
-
-
-No assertions in test case 'Where the LHS is not a simple value'
 
 -------------------------------------------------------------------------------
 A failing expression with a non streamable type is still captured
@@ -6463,6 +6390,1004 @@ with expansion:
   "{ StringMaker<has_maker_and_toString> }"
   ==
   "{ StringMaker<has_maker_and_toString> }"
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  successfully close one section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isSuccessfullyCompleted() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isSuccessfullyCompleted() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  fail one section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  fail one section
+  re-enter after failed section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isSuccessfullyCompleted() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  fail one section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  fail one section
+  re-enter after failed section and find next section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isSuccessfullyCompleted() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  successfully close one section, then find another
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  successfully close one section, then find another
+  Re-enter - skips S1 and enters S2
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  successfully close one section, then find another
+  Re-enter - skips S1 and enters S2
+  Successfully close S2
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isSuccessfullyCompleted() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isSuccessfullyCompleted() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  successfully close one section, then find another
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  successfully close one section, then find another
+  Re-enter - skips S1 and enters S2
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  successfully close one section, then find another
+  Re-enter - skips S1 and enters S2
+  fail S2
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ctx.completedCycle() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase3.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1c.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2c.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase3.isSuccessfullyCompleted() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  open a nested section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.index() == 0 )
+with expansion:
+  0 == 0
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+  close outer section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+  close outer section
+  Re-enter for second generation
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.index() == 1 )
+with expansion:
+  1 == 1
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isComplete() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.index() == 0 )
+with expansion:
+  0 == 0
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+  Start a new inner section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+  Start a new inner section
+  Re-enter for second generation
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.index() == 1 )
+with expansion:
+  1 == 1
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isComplete() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isOpen() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.index() == 0 )
+with expansion:
+  0 == 0
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+  Fail an inner section
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.isSuccessfullyCompleted() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase.isComplete() == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Tracker
+  start a generator
+  Fail an inner section
+  Re-enter for second generation
+-------------------------------------------------------------------------------
+PartTrackerTests.cpp:<line number>
+...............................................................................
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.index() == 0 )
+with expansion:
+  0 == 0
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2b.isOpen() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1b.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1b.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase2.isComplete() == false )
+with expansion:
+  false == false
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase3.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1c.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1c.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1c.index() == 1 )
+with expansion:
+  1 == 1
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2c.isOpen() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2c.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( g1c.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( s1c.isComplete() )
+with expansion:
+  true
+
+PartTrackerTests.cpp:<line number>:
+PASSED:
+  REQUIRE( testCase3.isComplete() )
+with expansion:
+  true
 
 -------------------------------------------------------------------------------
 std::pair<int,std::string> -> toString
@@ -7997,179 +8922,7 @@ PASSED:
 with expansion:
   1 > 0
 
--------------------------------------------------------------------------------
-section tracking
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-section tracking
-  test case with no sections
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.isCompleted() )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-section tracking
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-section tracking
-  test case with one section
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  true
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.isCompleted() )
-with expansion:
-  true
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-section tracking
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-section tracking
-  test case with two consecutive sections
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  true
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section2Name ) )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.enterSection( section2Name ) )
-with expansion:
-  true
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.isCompleted() )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-section tracking
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
--------------------------------------------------------------------------------
-section tracking
-  test case with one section within another
--------------------------------------------------------------------------------
-SectionTrackerTests.cpp:<line number>
-...............................................................................
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.enterSection( section1Name ) )
-with expansion:
-  true
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.enterSection( section2Name ) )
-with expansion:
-  true
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK_FALSE( testCaseTracker.isCompleted() )
-with expansion:
-  !false
-
-SectionTrackerTests.cpp:<line number>:
-PASSED:
-  CHECK( testCaseTracker.isCompleted() )
-with expansion:
-  true
-
 ===============================================================================
-test cases: 159 | 103 passed |  55 failed |  1 failed as expected
-assertions: 808 | 695 passed | 100 failed | 13 failed as expected
+test cases: 159 | 119 passed | 39 failed |  1 failed as expected
+assertions: 905 | 812 passed | 80 failed | 13 failed as expected
 
