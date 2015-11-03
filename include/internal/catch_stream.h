@@ -31,6 +31,7 @@ namespace Catch {
         mutable std::ofstream m_ofs;
     public:
         FileStream( std::string const& filename );
+        virtual ~FileStream() CATCH_NOEXCEPT;
     public: // IStream
         virtual std::ostream& stream() const CATCH_OVERRIDE;
     };
@@ -40,6 +41,7 @@ namespace Catch {
         mutable std::ostream m_os;
     public:
         CoutStream();
+        virtual ~CoutStream() CATCH_NOEXCEPT;
 
     public: // IStream
         virtual std::ostream& stream() const CATCH_OVERRIDE;
@@ -51,6 +53,7 @@ namespace Catch {
         mutable std::ostream m_os;
     public:
         DebugOutStream();
+        virtual ~DebugOutStream() CATCH_NOEXCEPT;
 
     public: // IStream
         virtual std::ostream& stream() const CATCH_OVERRIDE;

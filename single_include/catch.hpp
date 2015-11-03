@@ -1,6 +1,6 @@
 /*
  *  Catch v1.2.1-develop.16
- *  Generated: 2015-11-03 17:06:36.466681
+ *  Generated: 2015-11-03 17:37:18.144715
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3319,6 +3319,7 @@ namespace Catch {
         mutable std::ofstream m_ofs;
     public:
         FileStream( std::string const& filename );
+        virtual ~FileStream() CATCH_NOEXCEPT;
     public: // IStream
         virtual std::ostream& stream() const CATCH_OVERRIDE;
     };
@@ -3327,6 +3328,7 @@ namespace Catch {
         mutable std::ostream m_os;
     public:
         CoutStream();
+        virtual ~CoutStream() CATCH_NOEXCEPT;
 
     public: // IStream
         virtual std::ostream& stream() const CATCH_OVERRIDE;
@@ -3337,6 +3339,7 @@ namespace Catch {
         mutable std::ostream m_os;
     public:
         DebugOutStream();
+        virtual ~DebugOutStream() CATCH_NOEXCEPT;
 
     public: // IStream
         virtual std::ostream& stream() const CATCH_OVERRIDE;
@@ -9874,6 +9877,9 @@ namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
     IStream::~IStream() CATCH_NOEXCEPT {}
+    FileStream::~FileStream() CATCH_NOEXCEPT {}
+    CoutStream::~CoutStream() CATCH_NOEXCEPT {}
+    DebugOutStream::~DebugOutStream() CATCH_NOEXCEPT {}
     StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}

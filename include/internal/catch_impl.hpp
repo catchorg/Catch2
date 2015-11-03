@@ -49,6 +49,9 @@ namespace Catch {
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
     IStream::~IStream() CATCH_NOEXCEPT {}
+    FileStream::~FileStream() CATCH_NOEXCEPT {}
+    CoutStream::~CoutStream() CATCH_NOEXCEPT {}
+    DebugOutStream::~DebugOutStream() CATCH_NOEXCEPT {}
     StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
