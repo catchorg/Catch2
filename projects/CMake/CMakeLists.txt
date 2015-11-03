@@ -22,7 +22,7 @@ set(SOURCES
     ${SELF_TEST_DIR}/GeneratorTests.cpp
     ${SELF_TEST_DIR}/MessageTests.cpp
     ${SELF_TEST_DIR}/MiscTests.cpp
-    ${SELF_TEST_DIR}/SectionTrackerTests.cpp
+    ${SELF_TEST_DIR}/PartTrackerTests.cpp
     ${SELF_TEST_DIR}/TestMain.cpp
     ${SELF_TEST_DIR}/TrickyTests.cpp
     ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
