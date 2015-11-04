@@ -22,14 +22,14 @@
 #include "catch_compiler_capabilities.h"
 
 namespace Catch {
-    
+
     struct IConfig;
 
     struct CaseSensitive { enum Choice {
         Yes,
         No
     }; };
-    
+
     class NonCopyable {
 #ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         NonCopyable( NonCopyable const& )              = delete;
@@ -118,7 +118,7 @@ namespace Catch {
 
     void seedRng( IConfig const& config );
     unsigned int rngSeed();
-    
+
     // Use this in variadic streaming macros to allow
     //    >> +StreamEndStop
     // as well as

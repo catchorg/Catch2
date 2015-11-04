@@ -174,7 +174,7 @@ namespace Internal {
     template<Operator Op> bool compare( long long lhs, unsigned char rhs ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
     }
-    
+
     // unsigned long long to X
     template<Operator Op> bool compare( unsigned long long lhs, int rhs ) {
         return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
@@ -188,7 +188,7 @@ namespace Internal {
     template<Operator Op> bool compare( unsigned long long lhs, char rhs ) {
         return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
     }
-    
+
     // pointer to long long (when comparing against NULL)
     template<Operator Op, typename T> bool compare( long long lhs, T* rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
@@ -197,7 +197,7 @@ namespace Internal {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 #endif // CATCH_CONFIG_CPP11_LONG_LONG
-    
+
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
     // pointer to nullptr_t (when comparing against nullptr)
     template<Operator Op, typename T> bool compare( std::nullptr_t, T* rhs ) {

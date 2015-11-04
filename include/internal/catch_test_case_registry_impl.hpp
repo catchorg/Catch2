@@ -27,11 +27,11 @@ namespace Catch {
     struct RandomNumberGenerator {
         int operator()( int n ) const { return std::rand() % n; }
     };
-    
+
     inline std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
-        
+
         std::vector<TestCase> sorted = unsortedTestCases;
-        
+
         switch( config.runOrder() ) {
             case RunTests::InLexicographicalOrder:
                 std::sort( sorted.begin(), sorted.end(), LexSort() );
@@ -39,7 +39,7 @@ namespace Catch {
             case RunTests::InRandomOrder:
                 {
                     seedRng( config );
-                    
+
                     RandomNumberGenerator rng;
                     std::random_shuffle( sorted.begin(), sorted.end(), rng );
                 }
@@ -70,7 +70,7 @@ namespace Catch {
             }
         }
     }
-    
+
     std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
         std::vector<TestCase> filtered;
         filtered.reserve( testCases.size() );

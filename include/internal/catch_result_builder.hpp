@@ -77,12 +77,12 @@ namespace Catch {
     }
 
     void ResultBuilder::captureExpectedException( Matchers::Impl::Matcher<std::string> const& matcher ) {
-        
+
         assert( m_exprComponents.testFalse == false );
         AssertionResultData data = m_data;
         data.resultType = ResultWas::Ok;
         data.reconstructedExpression = m_assertionInfo.capturedExpression;
-        
+
         std::string actualMessage = Catch::translateActiveException();
         if( !matcher.match( actualMessage ) ) {
             data.resultType = ResultWas::ExpressionFailed;
@@ -99,7 +99,7 @@ namespace Catch {
     void ResultBuilder::handleResult( AssertionResult const& result )
     {
         getResultCapture().assertionEnded( result );
-        
+
         if( !result.isOk() ) {
             if( getCurrentContext().getConfig()->shouldDebugBreak() )
                 m_shouldDebugBreak = true;

@@ -31,7 +31,7 @@ namespace Catch {
             MayFail = 1 << 3,
             Throws = 1 << 4
         };
-        
+
         TestCaseInfo(   std::string const& _name,
                         std::string const& _className,
                         std::string const& _description,
@@ -41,7 +41,7 @@ namespace Catch {
         TestCaseInfo( TestCaseInfo const& other );
 
         friend void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags );
-        
+
         bool isHidden() const;
         bool throws() const;
         bool okToFail() const;

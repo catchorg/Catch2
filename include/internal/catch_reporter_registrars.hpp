@@ -64,12 +64,12 @@ namespace Catch {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     };
-    
+
     template<typename T>
     class ListenerRegistrar {
-        
+
         class ListenerFactory : public SharedImpl<IReporterFactory> {
-            
+
             virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new T( config );
             }
@@ -77,9 +77,9 @@ namespace Catch {
                 return "";
             }
         };
-        
+
     public:
-        
+
         ListenerRegistrar() {
             getMutableRegistryHub().registerListener( new ListenerFactory() );
         }

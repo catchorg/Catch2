@@ -19,9 +19,9 @@ namespace Catch
             WildcardAtEnd = 2,
             WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
         };
-        
+
     public:
-        
+
         WildcardPattern( std::string const& pattern, CaseSensitive::Choice caseSensitivity )
         :   m_caseSensitivity( caseSensitivity ),
             m_wildcard( NoWildcard ),
@@ -48,7 +48,7 @@ namespace Catch
                 case WildcardAtBothEnds:
                     return contains( adjustCase( str ), m_pattern );
             }
-            
+
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"

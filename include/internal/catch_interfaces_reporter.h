@@ -240,12 +240,12 @@ namespace Catch
 
         // The return value indicates if the messages buffer should be cleared:
         virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
-        
+
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
-        
+
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
     };
 
@@ -267,7 +267,7 @@ namespace Catch
     };
 
     Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter );
-    
+
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED

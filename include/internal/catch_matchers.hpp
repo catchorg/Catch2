@@ -132,7 +132,7 @@ namespace Matchers {
                 return m_caseSensitivity == CaseSensitive::No
                     ? toLower( str )
                     : str;
-                
+
             }
             std::string toStringSuffix() const
             {
@@ -143,7 +143,7 @@ namespace Matchers {
             CaseSensitive::Choice m_caseSensitivity;
             std::string m_str;
         };
-    
+
         struct Equals : MatcherImpl<Equals, std::string> {
             Equals( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes )
             :   m_data( str, caseSensitivity )
@@ -182,7 +182,7 @@ namespace Matchers {
         struct StartsWith : MatcherImpl<StartsWith, std::string> {
             StartsWith( std::string const& substr, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes )
             : m_data( substr, caseSensitivity ){}
-            
+
             StartsWith( StartsWith const& other ) : m_data( other.m_data ){}
 
             virtual ~StartsWith();

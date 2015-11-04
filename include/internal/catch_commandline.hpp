@@ -163,7 +163,7 @@ namespace Catch {
             .describe( "list all/matching test cases names only" )
             .bind( &ConfigData::listTestNamesOnly );
 
-        cli["--list-reporters"] 
+        cli["--list-reporters"]
             .describe( "list all reporters" )
             .bind( &ConfigData::listReporters );
 
@@ -178,7 +178,7 @@ namespace Catch {
         cli["--force-colour"]
             .describe( "force colourised output" )
             .bind( &ConfigData::forceColour );
-        
+
         return cli;
     }
 

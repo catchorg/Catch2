@@ -65,27 +65,27 @@ namespace Catch {
             throw std::domain_error( oss.str() );
         }
     }
-    
+
     std::ostream& FileStream::stream() const {
         return m_ofs;
     }
-    
+
     struct OutputDebugWriter {
-        
+
         void operator()( std::string const&str ) {
             writeToDebugConsole( str );
         }
     };
-    
+
     DebugOutStream::DebugOutStream()
     :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
         m_os( m_streamBuf.get() )
     {}
-    
+
     std::ostream& DebugOutStream::stream() const {
         return m_os;
     }
-    
+
     // Store the streambuf from cout up-front because
     // cout may get redirected when running tests
     CoutStream::CoutStream()
@@ -95,8 +95,8 @@ namespace Catch {
     std::ostream& CoutStream::stream() const {
         return m_os;
     }
-    
-    
+
+
 #ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement this functions
     std::ostream& cout() {
         return std::cout;

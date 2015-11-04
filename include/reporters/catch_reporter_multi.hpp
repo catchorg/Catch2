@@ -15,18 +15,18 @@ namespace Catch {
 class MultipleReporters : public SharedImpl<IStreamingReporter> {
     typedef std::vector<Ptr<IStreamingReporter> > Reporters;
     Reporters m_reporters;
-    
+
 public:
     void add( Ptr<IStreamingReporter> const& reporter ) {
         m_reporters.push_back( reporter );
     }
-    
+
 public: // IStreamingReporter
-    
+
     virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
         return m_reporters[0]->getPreferences();
     }
-    
+
     virtual void noMatchingTestCases( std::string const& spec ) CATCH_OVERRIDE {
         for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
                 it != itEnd;
@@ -34,7 +34,7 @@ public: // IStreamingReporter
             (*it)->noMatchingTestCases( spec );
     }
 
-    
+
     virtual void testRunStarting( TestRunInfo const& testRunInfo ) CATCH_OVERRIDE {
         for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
                 it != itEnd;
@@ -49,7 +49,7 @@ public: // IStreamingReporter
             (*it)->testGroupStarting( groupInfo );
     }
 
-    
+
     virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
         for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
                 it != itEnd;
@@ -64,7 +64,7 @@ public: // IStreamingReporter
             (*it)->sectionStarting( sectionInfo );
     }
 
-    
+
     virtual void assertionStarting( AssertionInfo const& assertionInfo ) CATCH_OVERRIDE {
         for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
                 it != itEnd;
@@ -72,7 +72,7 @@ public: // IStreamingReporter
             (*it)->assertionStarting( assertionInfo );
     }
 
-    
+
     // The return value indicates if the messages buffer should be cleared:
     virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
         bool clearBuffer = false;
@@ -111,7 +111,7 @@ public: // IStreamingReporter
             (*it)->testRunEnded( testRunStats );
     }
 
-    
+
     virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
         for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
                 it != itEnd;
@@ -122,7 +122,7 @@ public: // IStreamingReporter
 
 Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {
     Ptr<IStreamingReporter> resultingReporter;
-    
+
     if( existingReporter ) {
         MultipleReporters* multi = dynamic_cast<MultipleReporters*>( existingReporter.get() );
         if( !multi ) {
@@ -137,11 +137,11 @@ Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingRepo
     }
     else
         resultingReporter = additionalReporter;
-    
+
     return resultingReporter;
 }
-    
-    
+
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_MULTI_HPP_INCLUDED

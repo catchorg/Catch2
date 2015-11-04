@@ -16,7 +16,7 @@ namespace Catch {
 namespace Detail {
 
     const std::string unprintableString = "{?}";
-    
+
     namespace {
         const int hexThreshold = 255;
 
@@ -175,7 +175,7 @@ std::string toString( unsigned long long value ) {
     return oss.str();
 }
 #endif
-    
+
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
 std::string toString( std::nullptr_t ) {
     return "nullptr";

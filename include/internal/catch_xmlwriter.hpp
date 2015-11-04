@@ -22,23 +22,23 @@ namespace Catch {
     class XmlEncode {
     public:
         enum ForWhat { ForTextNodes, ForAttributes };
-        
+
         XmlEncode( std::string const& str, ForWhat forWhat = ForTextNodes )
         :   m_str( str ),
             m_forWhat( forWhat )
         {}
-        
+
         void encodeTo( std::ostream& os ) const {
 
             // Apostrophe escaping not necessary if we always use " to write attributes
             // (see: http://www.w3.org/TR/xml/#syntax)
-            
+
             for( std::size_t i = 0; i < m_str.size(); ++ i ) {
                 char c = m_str[i];
                 switch( c ) {
                     case '<':   os << "&lt;"; break;
                     case '&':   os << "&amp;"; break;
-                    
+
                     case '>':
                         // See: http://www.w3.org/TR/xml/#syntax
                         if( i > 2 && m_str[i-1] == ']' && m_str[i-2] == ']' )
@@ -46,14 +46,14 @@ namespace Catch {
                         else
                             os << c;
                         break;
-                        
+
                     case '\"':
                         if( m_forWhat == ForAttributes )
                             os << "&quot;";
                         else
                             os << c;
                         break;
-                        
+
                     default:
                         // Escape control chars - based on contribution by @espenalb in PR #465
                         if ( ( c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
@@ -68,12 +68,12 @@ namespace Catch {
             xmlEncode.encodeTo( os );
             return os;
         }
-        
+
     private:
         std::string m_str;
         ForWhat m_forWhat;
     };
-    
+
     class XmlWriter {
     public:
 

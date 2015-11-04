@@ -230,18 +230,18 @@ namespace Catch {
         return line;
     }
 
-    
+
     struct TestEventListenerBase : StreamingReporterBase {
         TestEventListenerBase( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
         {}
-        
+
         virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
             return false;
         }
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED

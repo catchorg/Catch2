@@ -21,61 +21,61 @@ namespace TestCaseTracking {
 
     struct ITracker : SharedImpl<> {
         virtual ~ITracker();
-        
+
         // static queries
         virtual std::string name() const = 0;
-        
+
         // dynamic queries
         virtual bool isComplete() const = 0; // Successfully completed or failed
         virtual bool isSuccessfullyCompleted() const = 0;
         virtual bool isOpen() const = 0; // Started but not complete
         virtual bool hasChildren() const = 0;
-        
+
         virtual ITracker& parent() = 0;
-        
+
         // actions
         virtual void close() = 0; // Successfully complete
         virtual void fail() = 0;
         virtual void markAsNeedingAnotherRun() = 0;
-        
+
         virtual void addChild( Ptr<ITracker> const& child ) = 0;
         virtual ITracker* findChild( std::string const& name ) = 0;
         virtual void openChild() = 0;
     };
-    
+
     class TrackerContext {
-        
+
         enum RunState {
             NotStarted,
             Executing,
             CompletedCycle
         };
-        
+
         Ptr<ITracker> m_rootTracker;
         ITracker* m_currentTracker;
         RunState m_runState;
-        
+
     public:
-        
+
         static TrackerContext& instance() {
             static TrackerContext s_instance;
             return s_instance;
         }
-        
+
         TrackerContext()
         :   m_currentTracker( CATCH_NULL ),
             m_runState( NotStarted )
         {}
-        
-        
+
+
         ITracker& startRun();
-        
+
         void endRun() {
             m_rootTracker.reset();
             m_currentTracker = CATCH_NULL;
             m_runState = NotStarted;
         }
-        
+
         void startCycle() {
             m_currentTracker = m_rootTracker.get();
             m_runState = Executing;
@@ -83,7 +83,7 @@ namespace TestCaseTracking {
         void completeCycle() {
             m_runState = CompletedCycle;
         }
-        
+
         bool completedCycle() const {
             return m_runState == CompletedCycle;
         }
@@ -94,7 +94,7 @@ namespace TestCaseTracking {
             m_currentTracker = tracker;
         }
     };
-    
+
     class TrackerBase : public ITracker {
     protected:
         enum CycleState {
@@ -127,7 +127,7 @@ namespace TestCaseTracking {
             m_runState( NotStarted )
         {}
         virtual ~TrackerBase();
-        
+
         virtual std::string name() const CATCH_OVERRIDE {
             return m_name;
         }
@@ -143,12 +143,12 @@ namespace TestCaseTracking {
         virtual bool hasChildren() const CATCH_OVERRIDE {
             return !m_children.empty();
         }
-        
-        
+
+
         virtual void addChild( Ptr<ITracker> const& child ) CATCH_OVERRIDE {
             m_children.push_back( child );
         }
-        
+
         virtual ITracker* findChild( std::string const& name ) CATCH_OVERRIDE {
             Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( name ) );
             return( it != m_children.end() )
@@ -159,7 +159,7 @@ namespace TestCaseTracking {
             assert( m_parent ); // Should always be non-null except for root
             return *m_parent;
         }
-        
+
         virtual void openChild() CATCH_OVERRIDE {
             if( m_runState != ExecutingChildren ) {
                 m_runState = ExecutingChildren;
@@ -173,22 +173,22 @@ namespace TestCaseTracking {
             if( m_parent )
                 m_parent->openChild();
         }
-        
+
         virtual void close() CATCH_OVERRIDE {
-            
+
             // Close any still open children (e.g. generators)
             while( &m_ctx.currentTracker() != this )
                 m_ctx.currentTracker().close();
-            
+
             switch( m_runState ) {
                 case NotStarted:
                 case CompletedSuccessfully:
                 case Failed:
                     throw std::logic_error( "Illogical state" );
-                    
+
                 case NeedsAnotherRun:
                     break;;
-                    
+
                 case Executing:
                     m_runState = CompletedSuccessfully;
                     break;
@@ -196,7 +196,7 @@ namespace TestCaseTracking {
                     if( m_children.empty() || m_children.back()->isComplete() )
                         m_runState = CompletedSuccessfully;
                     break;
-                    
+
                 default:
                     throw std::logic_error( "Unexpected state" );
             }
@@ -222,17 +222,17 @@ namespace TestCaseTracking {
             m_ctx.setCurrentTracker( this );
         }
     };
-    
+
     class SectionTracker : public TrackerBase {
     public:
         SectionTracker( std::string const& name, TrackerContext& ctx, ITracker* parent )
         :   TrackerBase( name, ctx, parent )
         {}
         virtual ~SectionTracker();
-        
+
         static SectionTracker& acquire( TrackerContext& ctx, std::string const& name ) {
             SectionTracker* section = CATCH_NULL;
-            
+
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( name ) ) {
                 section = dynamic_cast<SectionTracker*>( childTracker );
@@ -243,13 +243,13 @@ namespace TestCaseTracking {
                 currentTracker.addChild( section );
             }
             if( !ctx.completedCycle() && !section->isComplete() ) {
-                
+
                 section->open();
             }
             return *section;
         }
     };
-    
+
     class IndexTracker : public TrackerBase {
         int m_size;
         int m_index;
@@ -260,10 +260,10 @@ namespace TestCaseTracking {
             m_index( -1 )
         {}
         virtual ~IndexTracker();
-        
+
         static IndexTracker& acquire( TrackerContext& ctx, std::string const& name, int size ) {
             IndexTracker* tracker = CATCH_NULL;
-            
+
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( name ) ) {
                 tracker = dynamic_cast<IndexTracker*>( childTracker );
@@ -273,39 +273,39 @@ namespace TestCaseTracking {
                 tracker = new IndexTracker( name, ctx, &currentTracker, size );
                 currentTracker.addChild( tracker );
             }
-            
+
             if( !ctx.completedCycle() && !tracker->isComplete() ) {
                 if( tracker->m_runState != ExecutingChildren && tracker->m_runState != NeedsAnotherRun )
                     tracker->moveNext();
                 tracker->open();
             }
-            
+
             return *tracker;
         }
-        
+
         int index() const { return m_index; }
-        
+
         void moveNext() {
             m_index++;
             m_children.clear();
         }
-        
+
         virtual void close() CATCH_OVERRIDE {
             TrackerBase::close();
             if( m_runState == CompletedSuccessfully && m_index < m_size-1 )
                 m_runState = Executing;
         }
     };
-    
+
     inline ITracker& TrackerContext::startRun() {
         m_rootTracker = new SectionTracker( "{root}", *this, CATCH_NULL );
         m_currentTracker = CATCH_NULL;
         m_runState = Executing;
         return *m_rootTracker;
     }
-    
+
 } // namespace TestCaseTracking
-    
+
 using TestCaseTracking::ITracker;
 using TestCaseTracking::TrackerContext;
 using TestCaseTracking::SectionTracker;

@@ -21,7 +21,7 @@ TEST_CASE( "random SECTION tests", "[.][sections][failing]" )
 {
     int a = 1;
     int b = 2;
-    
+
     SECTION( "s1", "doesn't equal" )
     {
         REQUIRE( a != b );
@@ -38,7 +38,7 @@ TEST_CASE( "nested SECTION tests", "[.][sections][failing]" )
 {
     int a = 1;
     int b = 2;
-    
+
     SECTION( "s1", "doesn't equal" )
     {
         REQUIRE( a != b );
@@ -55,7 +55,7 @@ TEST_CASE( "more nested SECTION tests", "[sections][failing][.]" )
 {
     int a = 1;
     int b = 2;
-    
+
     SECTION( "s1", "doesn't equal" )
     {
         SECTION( "s2", "equal" )
@@ -82,7 +82,7 @@ TEST_CASE( "even more nested SECTION tests", "[sections]" )
         {
             SUCCEED(""); // avoid failing due to no tests
         }
-        
+
         SECTION( "e (leaf)", "" )
         {
             SUCCEED(""); // avoid failing due to no tests
@@ -98,14 +98,14 @@ TEST_CASE( "even more nested SECTION tests", "[sections]" )
 TEST_CASE( "looped SECTION tests", "[.][failing][sections]" )
 {
     int a = 1;
-    
+
     for( int b = 0; b < 10; ++b )
     {
         std::ostringstream oss;
         oss << "b is currently: " << b;
         SECTION( "s1", oss.str() )
         {
-            CHECK( b > a );            
+            CHECK( b > a );
         }
     }
 }
@@ -113,18 +113,18 @@ TEST_CASE( "looped SECTION tests", "[.][failing][sections]" )
 TEST_CASE( "looped tests", "[.][failing]" )
 {
     static const int fib[]  = { 1, 1, 2, 3, 5, 8, 13, 21 };
-    
+
     for( size_t i=0; i < sizeof(fib)/sizeof(int); ++i )
     {
         INFO( "Testing if fib[" << i << "] (" << fib[i] << ") is even" );
-        CHECK( ( fib[i] % 2 ) == 0 );                
+        CHECK( ( fib[i] % 2 ) == 0 );
     }
 }
 
 TEST_CASE( "Sends stuff to stdout and stderr", "[.]" )
 {
     std::cout << "A string sent directly to stdout" << std::endl;
-    
+
     std::cerr << "A string sent directly to stderr" << std::endl;
 }
 
@@ -162,7 +162,7 @@ inline bool testCheckedElse( bool flag )
 {
     CHECKED_ELSE( flag )
         return false;
-    
+
     return true;
 }
 
@@ -191,13 +191,13 @@ TEST_CASE( "xmlentitycheck", "" )
 TEST_CASE( "send a single char to INFO", "[failing][.]" )
 {
     INFO(3);
-    REQUIRE(false);    
+    REQUIRE(false);
 }
 
 TEST_CASE( "atomic if", "[failing][0]")
 {
     size_t x = 0;
-    
+
     if( x )
         REQUIRE(x > 0);
     else
@@ -211,7 +211,7 @@ inline const char* testStringForMatching()
 
 TEST_CASE("String matchers", "[matchers]" )
 {
-    REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );    
+    REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );
     CHECK_THAT( testStringForMatching(), Contains( "abc" ) );
 
     CHECK_THAT( testStringForMatching(), StartsWith( "this" ) );
@@ -297,38 +297,38 @@ TEST_CASE( "second tag", "[tag2]" )
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 
     std::vector<int> v( 5 );
-    
+
     REQUIRE( v.size() == 5 );
     REQUIRE( v.capacity() >= 5 );
-    
+
     SECTION( "resizing bigger changes size and capacity", "" ) {
         v.resize( 10 );
-        
+
         REQUIRE( v.size() == 10 );
         REQUIRE( v.capacity() >= 10 );
     }
     SECTION( "resizing smaller changes size but not capacity", "" ) {
         v.resize( 0 );
-        
+
         REQUIRE( v.size() == 0 );
         REQUIRE( v.capacity() >= 5 );
-        
+
         SECTION( "We can use the 'swap trick' to reset the capacity", "" ) {
             std::vector<int> empty;
             empty.swap( v );
-            
+
             REQUIRE( v.capacity() == 0 );
         }
     }
     SECTION( "reserving bigger changes capacity but not size", "" ) {
         v.reserve( 10 );
-        
+
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 10 );
     }
     SECTION( "reserving smaller does not change size or capacity", "" ) {
         v.reserve( 0 );
-        
+
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 5 );
     }
@@ -426,7 +426,7 @@ TEST_CASE( "XmlEncode" ) {
 #ifdef CATCH_CONFIG_CPP11_LONG_LONG
 TEST_CASE( "long long" ) {
     long long l = std::numeric_limits<long long>::max();
-    
+
     REQUIRE( l == std::numeric_limits<long long>::max() );
 }
 #endif

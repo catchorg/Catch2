@@ -97,7 +97,7 @@ namespace Catch {
     Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     void Config::dummy() {}
-    
+
     namespace TestCaseTracking {
         ITracker::~ITracker() {}
         TrackerBase::~TrackerBase() {}

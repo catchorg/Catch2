@@ -21,7 +21,7 @@ namespace Catch {
     std::ostream& cout();
     std::ostream& cerr();
 
-    
+
     struct IStream {
         virtual ~IStream() CATCH_NOEXCEPT;
         virtual std::ostream& stream() const = 0;
@@ -35,7 +35,7 @@ namespace Catch {
     public: // IStream
         virtual std::ostream& stream() const CATCH_OVERRIDE;
     };
-    
+
 
     class CoutStream : public IStream {
         mutable std::ostream m_os;
@@ -47,7 +47,7 @@ namespace Catch {
         virtual std::ostream& stream() const CATCH_OVERRIDE;
     };
 
-    
+
     class DebugOutStream : public IStream {
         std::auto_ptr<StreamBufBase> m_streamBuf;
         mutable std::ostream m_os;

@@ -88,7 +88,7 @@ namespace Catch {
             tags.insert( "hide" );
             tags.insert( "." );
         }
-        
+
         TestCaseInfo info( _name, _className, desc, tags, _lineInfo );
         return TestCase( _testCase, info );
     }
@@ -97,7 +97,7 @@ namespace Catch {
     {
         testCaseInfo.tags = tags;
         testCaseInfo.lcaseTags.clear();
-        
+
         std::ostringstream oss;
         for( std::set<std::string>::const_iterator it = tags.begin(), itEnd = tags.end(); it != itEnd; ++it ) {
             oss << "[" << *it << "]";
@@ -107,7 +107,7 @@ namespace Catch {
         }
         testCaseInfo.tagsAsString = oss.str();
     }
-    
+
     TestCaseInfo::TestCaseInfo( std::string const& _name,
                                 std::string const& _className,
                                 std::string const& _description,

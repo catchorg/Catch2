@@ -104,7 +104,7 @@ namespace Catch {
             SectionNode const& rootSection = *testCaseNode.children.front();
 
             std::string className = stats.testInfo.className;
-            
+
             if( className.empty() ) {
                 if( rootSection.childSections.empty() )
                     className = "global";
@@ -118,7 +118,7 @@ namespace Catch {
             std::string name = trim( sectionNode.stats.sectionInfo.name );
             if( !rootName.empty() )
                 name = rootName + "/" + name;
-            
+
             if( !sectionNode.assertions.empty() ||
                 !sectionNode.stdOut.empty() ||
                 !sectionNode.stdErr.empty() ) {
@@ -187,7 +187,7 @@ namespace Catch {
                         elementName = "internalError";
                         break;
                 }
-            
+
                 XmlWriter::ScopedElement e = xml.scopedElement( elementName );
 
                 xml.writeAttribute( "message", result.getExpandedExpression() );
@@ -216,7 +216,7 @@ namespace Catch {
         unsigned int unexpectedExceptions;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )    
+    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
 } // end namespace Catch
 

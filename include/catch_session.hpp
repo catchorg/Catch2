@@ -30,7 +30,7 @@ namespace Catch {
         }
         return reporter;
     }
-    
+
     Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
         std::vector<std::string> reporters = config->getReporterNames();
         if( reporters.empty() )
@@ -40,7 +40,7 @@ namespace Catch {
         for( std::vector<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
                 it != itEnd;
                 ++it )
-            reporter = addReporter( reporter, createReporter( *it, config ) );        
+            reporter = addReporter( reporter, createReporter( *it, config ) );
         return reporter;
     }
     Ptr<IStreamingReporter> addListeners( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> reporters ) {
@@ -51,15 +51,15 @@ namespace Catch {
             reporters = addReporter(reporters, (*it)->create( ReporterConfig( config ) ) );
         return reporters;
     }
-    
-    
+
+
     Totals runTests( Ptr<Config> const& config ) {
 
         Ptr<IConfig const> iconfig = config.get();
-        
+
         Ptr<IStreamingReporter> reporter = makeReporter( config );
         reporter = addListeners( iconfig, reporter );
-        
+
         RunContext context( iconfig, reporter );
 
         Totals totals;
@@ -83,13 +83,13 @@ namespace Catch {
         context.testGroupEnded( iconfig->name(), totals, 1, 1 );
         return totals;
     }
-    
+
     void applyFilenamesAsTags( IConfig const& config ) {
         std::vector<TestCase> const& tests = getAllTestCasesSorted( config );
         for(std::size_t i = 0; i < tests.size(); ++i ) {
             TestCase& test = const_cast<TestCase&>( tests[i] );
             std::set<std::string> tags = test.tags;
-            
+
             std::string filename = test.lineInfo.file;
             std::string::size_type lastSlash = filename.find_last_of( "\\/" );
             if( lastSlash != std::string::npos )
@@ -98,7 +98,7 @@ namespace Catch {
             std::string::size_type lastDot = filename.find_last_of( "." );
             if( lastDot != std::string::npos )
                 filename = filename.substr( 0, lastDot );
-            
+
             tags.insert( "#" + filename );
             setTags( test, tags );
         }
@@ -173,12 +173,12 @@ namespace Catch {
             try
             {
                 config(); // Force config to be constructed
-                
+
                 seedRng( *m_config );
 
                 if( m_configData.filenamesAsTags )
                     applyFilenamesAsTags( *m_config );
-                
+
                 // Handle list request
                 if( Option<std::size_t> listed = list( config() ) )
                     return static_cast<int>( *listed );

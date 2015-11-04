@@ -34,7 +34,7 @@ namespace Catch {
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
     std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config );
     std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config );
-    
+
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED

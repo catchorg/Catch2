@@ -67,7 +67,7 @@ std::string toString( std::nullptr_t );
     std::string toString( NSObject* const& nsObject );
 #endif
 
-  
+
 namespace Detail {
 
     extern const std::string unprintableString;
@@ -78,7 +78,7 @@ namespace Detail {
 
     struct TrueType { char sizer[1]; };
     struct FalseType { char sizer[2]; };
-    
+
     TrueType& testStreamable( std::ostream& );
     FalseType testStreamable( FalseType );
 

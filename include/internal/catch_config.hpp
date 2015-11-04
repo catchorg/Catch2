@@ -136,7 +136,7 @@ namespace Catch {
         virtual bool forceColour() const { return m_data.forceColour; }
 
     private:
-        
+
         IStream const* openStream() {
             if( m_data.outputFilename.empty() )
                 return new CoutStream();

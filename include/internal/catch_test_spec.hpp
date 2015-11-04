@@ -20,7 +20,7 @@
 #include <vector>
 
 namespace Catch {
-    
+
     class TestSpec {
         struct Pattern : SharedImpl<> {
             virtual ~Pattern();
@@ -38,7 +38,7 @@ namespace Catch {
         private:
             WildcardPattern m_wildcardPattern;
         };
-        
+
         class TagPattern : public Pattern {
         public:
             TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
@@ -49,7 +49,7 @@ namespace Catch {
         private:
             std::string m_tag;
         };
-        
+
         class ExcludedPattern : public Pattern {
         public:
             ExcludedPattern( Ptr<Pattern> const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}

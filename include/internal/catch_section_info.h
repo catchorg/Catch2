@@ -23,17 +23,17 @@ namespace Catch {
         std::string description;
         SourceLineInfo lineInfo;
     };
-    
+
     struct SectionEndInfo {
         SectionEndInfo( SectionInfo const& _sectionInfo, Counts const& _prevAssertions, double _durationInSeconds )
         : sectionInfo( _sectionInfo ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )
         {}
-        
+
         SectionInfo sectionInfo;
         Counts prevAssertions;
         double durationInSeconds;
     };
-    
+
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_SECTION_INFO_H_INCLUDED

@@ -94,7 +94,7 @@ namespace Catch {
             m_reporter->testCaseStarting( testInfo );
 
             m_activeTestCase = &testCase;
-            
+
 
             do {
                 m_trackerContext.startRun();
@@ -157,7 +157,7 @@ namespace Catch {
             if( !sectionTracker.isOpen() )
                 return false;
             m_activeSections.push_back( &sectionTracker );
-            
+
             m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
             m_reporter->sectionStarting( sectionInfo );
@@ -177,16 +177,16 @@ namespace Catch {
             assertions.failed++;
             return true;
         }
-        
+
         virtual void sectionEnded( SectionEndInfo const& endInfo ) {
             Counts assertions = m_totals.assertions - endInfo.prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
-            
+
             if( !m_activeSections.empty() ) {
                 m_activeSections.back()->close();
                 m_activeSections.pop_back();
             }
-            
+
             m_reporter->sectionEnded( SectionStats( endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions ) );
             m_messages.clear();
         }
@@ -197,10 +197,10 @@ namespace Catch {
             else
                 m_activeSections.back()->close();
             m_activeSections.pop_back();
-            
+
             m_unfinishedSections.push_back( endInfo );
         }
-        
+
         virtual void pushScopedMessage( MessageInfo const& message ) {
             m_messages.push_back( message );
         }
@@ -268,7 +268,7 @@ namespace Catch {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
 
                 seedRng( *m_config );
-                
+
                 Timer timer;
                 timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
@@ -318,7 +318,7 @@ namespace Catch {
                                     m_lastAssertionInfo.capturedExpression.c_str(),
                                     m_lastAssertionInfo.resultDisposition );
         }
-        
+
         void handleUnfinishedSections() {
             // If sections ended prematurely due to an exception we stored their
             // infos here so we can tear them down outside the unwind process.
