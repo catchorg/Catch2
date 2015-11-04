@@ -237,7 +237,7 @@ namespace Catch {
         {}
 
         virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& ) CATCH_OVERRIDE {
             return false;
         }
     };
