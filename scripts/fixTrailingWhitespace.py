@@ -11,7 +11,7 @@ def fixAllFilesInDir( dir ):
     for f in os.listdir( dir ):
         path = os.path.join( dir,f )
         if os.path.isfile( path ):
-            if( isSourceFile( path ) ):
+            if isSourceFile( path ):
                 fixFile( path )
         else:
             fixAllFilesInDir( path )
