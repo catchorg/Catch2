@@ -1,6 +1,6 @@
 /*
- *  Catch v1.2.1-develop.16
- *  Generated: 2015-11-03 17:37:18.144715
+ *  Catch v1.3.0-develop.1
+ *  Generated: 2015-11-05 18:47:08.462966
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -831,6 +831,12 @@ namespace Catch {
 namespace Matchers {
     namespace Impl {
 
+    namespace Generic {
+        template<typename ExpressionT> class AllOf;
+        template<typename ExpressionT> class AnyOf;
+        template<typename ExpressionT> class Not;
+    }
+
     template<typename ExpressionT>
     struct Matcher : SharedImpl<IShared>
     {
@@ -840,6 +846,10 @@ namespace Matchers {
         virtual Ptr<Matcher> clone() const = 0;
         virtual bool match( ExpressionT const& expr ) const = 0;
         virtual std::string toString() const = 0;
+
+        Generic::AllOf<ExpressionT> operator && ( Matcher<ExpressionT> const& other ) const;
+        Generic::AnyOf<ExpressionT> operator || ( Matcher<ExpressionT> const& other ) const;
+        Generic::Not<ExpressionT> operator ! () const;
     };
 
     template<typename DerivedT, typename ExpressionT>
@@ -853,7 +863,7 @@ namespace Matchers {
     namespace Generic {
         template<typename ExpressionT>
         struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
-            Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
+            explicit Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
             Not( Not const& other ) : m_matcher( other.m_matcher ) {}
 
             virtual bool match( ExpressionT const& expr ) const CATCH_OVERRIDE {
@@ -897,6 +907,12 @@ namespace Matchers {
                 return oss.str();
             }
 
+            AllOf operator && ( Matcher<ExpressionT> const& other ) const {
+                AllOf allOfExpr( *this );
+                allOfExpr.add( other );
+                return allOfExpr;
+            }
+
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
@@ -931,9 +947,37 @@ namespace Matchers {
                 return oss.str();
             }
 
+            AnyOf operator || ( Matcher<ExpressionT> const& other ) const {
+                AnyOf anyOfExpr( *this );
+                anyOfExpr.add( other );
+                return anyOfExpr;
+            }
+
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
+
+    } // namespace Generic
+
+    template<typename ExpressionT>
+    Generic::AllOf<ExpressionT> Matcher<ExpressionT>::operator && ( Matcher<ExpressionT> const& other ) const {
+        Generic::AllOf<ExpressionT> allOfExpr;
+        allOfExpr.add( *this );
+        allOfExpr.add( other );
+        return allOfExpr;
+    }
+
+    template<typename ExpressionT>
+    Generic::AnyOf<ExpressionT> Matcher<ExpressionT>::operator || ( Matcher<ExpressionT> const& other ) const {
+        Generic::AnyOf<ExpressionT> anyOfExpr;
+        anyOfExpr.add( *this );
+        anyOfExpr.add( other );
+        return anyOfExpr;
+    }
+
+    template<typename ExpressionT>
+    Generic::Not<ExpressionT> Matcher<ExpressionT>::operator ! () const {
+        return Generic::Not<ExpressionT>( *this );
     }
 
     namespace StdString {
@@ -2055,12 +2099,12 @@ namespace Catch {
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg " " #matcher, resultDisposition ); \
         try { \
-            std::string matcherAsString = ::Catch::Matchers::matcher.toString(); \
+            std::string matcherAsString = (matcher).toString(); \
             __catchResult \
                 .setLhs( Catch::toString( arg ) ) \
                 .setRhs( matcherAsString == Catch::Detail::unprintableString ? #matcher : matcherAsString ) \
                 .setOp( "matches" ) \
-                .setResultType( ::Catch::Matchers::matcher.match( arg ) ); \
+                .setResultType( (matcher).match( arg ) ); \
             __catchResult.captureExpression(); \
         } catch( ... ) { \
             __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
@@ -7194,7 +7238,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 2, 1, "develop", 16 );
+    Version libraryVersion( 1, 3, 0, "develop", 1 );
 
 }
 
@@ -8429,7 +8473,7 @@ namespace Catch {
         {}
 
         virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& ) CATCH_OVERRIDE {
             return false;
         }
     };
