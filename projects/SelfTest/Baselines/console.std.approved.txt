@@ -708,6 +708,29 @@ with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
 -------------------------------------------------------------------------------
+Matchers can be composed with both + and | - failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+with expansion:
+  "this string contains 'abc' as a substring" ( ( contains: "string" or
+  contains: "different" ) and contains: "random" )
+
+-------------------------------------------------------------------------------
+Matchers can be negated (Not) with the ! operator - failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching() !Contains( "substring" ) )
+with expansion:
+  "this string contains 'abc' as a substring" not contains: "substring"
+
+-------------------------------------------------------------------------------
 Nice descriptive name
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -797,6 +820,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 159 | 119 passed | 39 failed |  1 failed as expected
-assertions: 905 | 812 passed | 80 failed | 13 failed as expected
+test cases: 165 | 123 passed | 41 failed |  1 failed as expected
+assertions: 912 | 817 passed | 82 failed | 13 failed as expected
 

@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="12" failures="70" tests="907" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="12" failures="72" tests="914" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -438,6 +438,20 @@ MiscTests.cpp:<line number>
     <testcase classname="global" name="AllOf matcher" time="{duration}"/>
     <testcase classname="global" name="AnyOf matcher" time="{duration}"/>
     <testcase classname="global" name="Equals" time="{duration}"/>
+    <testcase classname="global" name="Matchers can be (AllOf) composed with the + operator" time="{duration}"/>
+    <testcase classname="global" name="Matchers can be (AnyOf) composed with the | operator" time="{duration}"/>
+    <testcase classname="global" name="Matchers can be composed with both + and |" time="{duration}"/>
+    <testcase classname="global" name="Matchers can be composed with both + and | - failing" time="{duration}">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; ( ( contains: &quot;string&quot; or contains: &quot;different&quot; ) and contains: &quot;random&quot; )" type="CHECK_THAT">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Matchers can be negated (Not) with the ! operator" time="{duration}"/>
+    <testcase classname="global" name="Matchers can be negated (Not) with the ! operator - failing" time="{duration}">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; not contains: &quot;substring&quot;" type="CHECK_THAT">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="Factorials are computed" time="{duration}"/>
     <testcase classname="global" name="Nice descriptive name" time="{duration}"/>
     <testcase classname="vectors can be sized and resized" name="root" time="{duration}"/>

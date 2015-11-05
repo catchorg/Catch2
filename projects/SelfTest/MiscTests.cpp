@@ -208,6 +208,11 @@ inline const char* testStringForMatching()
 {
     return "this string contains 'abc' as a substring";
 }
+inline const char* testStringForMatching2()
+{
+    return "some completely different text that contains one common word";
+}
+
 using namespace Catch::Matchers;
 
 TEST_CASE("String matchers", "[matchers]" )
@@ -256,6 +261,42 @@ TEST_CASE("Equals", "[matchers]")
 {
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
 }
+
+TEST_CASE("Matchers can be (AllOf) composed with the + operator", "[matchers][operators][operator+]")
+{
+    CHECK_THAT( testStringForMatching(),
+           Contains( "string" ) &&
+           Contains( "abc" ) &&
+           Contains( "substring" ) &&
+           Contains( "contains" ) );
+}
+
+TEST_CASE("Matchers can be (AnyOf) composed with the | operator", "[matchers][operators][operator|]")
+{
+    CHECK_THAT( testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) );
+    CHECK_THAT( testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) );
+}
+
+TEST_CASE("Matchers can be composed with both + and |", "[matchers][operators][operator|][operator+]")
+{
+    CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) );
+}
+
+TEST_CASE("Matchers can be composed with both + and | - failing", "[matchers][operators][operator|][operator+][.failing]")
+{
+    CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) );
+}
+
+TEST_CASE("Matchers can be negated (Not) with the ! operator", "[matchers][operators][not]")
+{
+    CHECK_THAT( testStringForMatching(), !Contains( "different" ) );
+}
+
+TEST_CASE("Matchers can be negated (Not) with the ! operator - failing", "[matchers][operators][not][.failing]")
+{
+    CHECK_THAT( testStringForMatching(), !Contains( "substring" ) );
+}
+
 
 inline unsigned int Factorial( unsigned int number )
 {

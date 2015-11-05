@@ -12,6 +12,12 @@ namespace Catch {
 namespace Matchers {
     namespace Impl {
 
+    namespace Generic {
+        template<typename ExpressionT> class AllOf;
+        template<typename ExpressionT> class AnyOf;
+        template<typename ExpressionT> class Not;
+    }
+        
     template<typename ExpressionT>
     struct Matcher : SharedImpl<IShared>
     {
@@ -21,6 +27,10 @@ namespace Matchers {
         virtual Ptr<Matcher> clone() const = 0;
         virtual bool match( ExpressionT const& expr ) const = 0;
         virtual std::string toString() const = 0;
+        
+        Generic::AllOf<ExpressionT> operator && ( Matcher<ExpressionT> const& other ) const;
+        Generic::AnyOf<ExpressionT> operator || ( Matcher<ExpressionT> const& other ) const;
+        Generic::Not<ExpressionT> operator ! () const;
     };
 
     template<typename DerivedT, typename ExpressionT>
@@ -34,7 +44,7 @@ namespace Matchers {
     namespace Generic {
         template<typename ExpressionT>
         struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
-            Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
+            explicit Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
             Not( Not const& other ) : m_matcher( other.m_matcher ) {}
 
             virtual bool match( ExpressionT const& expr ) const CATCH_OVERRIDE {
@@ -78,6 +88,12 @@ namespace Matchers {
                 return oss.str();
             }
 
+            AllOf operator && ( Matcher<ExpressionT> const& other ) const {
+                AllOf allOfExpr( *this );
+                allOfExpr.add( other );
+                return allOfExpr;
+            }
+
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
@@ -112,10 +128,39 @@ namespace Matchers {
                 return oss.str();
             }
 
+            AnyOf operator || ( Matcher<ExpressionT> const& other ) const {
+                AnyOf anyOfExpr( *this );
+                anyOfExpr.add( other );
+                return anyOfExpr;
+            }
+            
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
+
+    } // namespace Generic
+        
+    template<typename ExpressionT>
+    Generic::AllOf<ExpressionT> Matcher<ExpressionT>::operator && ( Matcher<ExpressionT> const& other ) const {
+        Generic::AllOf<ExpressionT> allOfExpr;
+        allOfExpr.add( *this );
+        allOfExpr.add( other );
+        return allOfExpr;
     }
+
+    template<typename ExpressionT>
+    Generic::AnyOf<ExpressionT> Matcher<ExpressionT>::operator || ( Matcher<ExpressionT> const& other ) const {
+        Generic::AnyOf<ExpressionT> anyOfExpr;
+        anyOfExpr.add( *this );
+        anyOfExpr.add( other );
+        return anyOfExpr;
+    }
+
+    template<typename ExpressionT>
+    Generic::Not<ExpressionT> Matcher<ExpressionT>::operator ! () const {
+        return Generic::Not<ExpressionT>( *this );
+    }
+        
 
     namespace StdString {
 

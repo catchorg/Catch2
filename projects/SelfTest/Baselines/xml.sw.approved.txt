@@ -3590,6 +3590,80 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Matchers can be (AllOf) composed with the + operator">
+      <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          testStringForMatching() Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Matchers can be (AnyOf) composed with the | operator">
+      <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          testStringForMatching() Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          testStringForMatching2() Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+        </Original>
+        <Expanded>
+          "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Matchers can be composed with both + and |">
+      <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Matchers can be composed with both + and | - failing">
+      <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="Matchers can be negated (Not) with the ! operator">
+      <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          testStringForMatching() !Contains( "different" )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" not contains: "different"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Matchers can be negated (Not) with the ! operator - failing">
+      <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
+        <Original>
+          testStringForMatching() !Contains( "substring" )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" not contains: "substring"
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Factorials are computed">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
@@ -9422,7 +9496,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="812" failures="82" expectedFailures="13"/>
+    <OverallResults successes="817" failures="84" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="812" failures="82" expectedFailures="13"/>
+  <OverallResults successes="817" failures="84" expectedFailures="13"/>
 </Catch>

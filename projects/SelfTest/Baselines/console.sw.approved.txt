@@ -3419,6 +3419,87 @@ with expansion:
   'abc' as a substring"
 
 -------------------------------------------------------------------------------
+Matchers can be (AllOf) composed with the + operator
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( testStringForMatching() Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) )
+with expansion:
+  "this string contains 'abc' as a substring" ( contains: "string" and
+  contains: "abc" and contains: "substring" and contains: "contains" )
+
+-------------------------------------------------------------------------------
+Matchers can be (AnyOf) composed with the | operator
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( testStringForMatching() Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
+with expansion:
+  "this string contains 'abc' as a substring" ( contains: "string" or contains:
+  "different" or contains: "random" )
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( testStringForMatching2() Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
+with expansion:
+  "some completely different text that contains one common word" ( contains:
+  "string" or contains: "different" or contains: "random" )
+
+-------------------------------------------------------------------------------
+Matchers can be composed with both + and |
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) )
+with expansion:
+  "this string contains 'abc' as a substring" ( ( contains: "string" or
+  contains: "different" ) and contains: "substring" )
+
+-------------------------------------------------------------------------------
+Matchers can be composed with both + and | - failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+with expansion:
+  "this string contains 'abc' as a substring" ( ( contains: "string" or
+  contains: "different" ) and contains: "random" )
+
+-------------------------------------------------------------------------------
+Matchers can be negated (Not) with the ! operator
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( testStringForMatching() !Contains( "different" ) )
+with expansion:
+  "this string contains 'abc' as a substring" not contains: "different"
+
+-------------------------------------------------------------------------------
+Matchers can be negated (Not) with the ! operator - failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching() !Contains( "substring" ) )
+with expansion:
+  "this string contains 'abc' as a substring" not contains: "substring"
+
+-------------------------------------------------------------------------------
 Factorials are computed
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -8943,6 +9024,6 @@ with expansion:
   1 > 0
 
 ===============================================================================
-test cases: 159 | 118 passed | 40 failed |  1 failed as expected
-assertions: 907 | 812 passed | 82 failed | 13 failed as expected
+test cases: 165 | 122 passed | 42 failed |  1 failed as expected
+assertions: 914 | 817 passed | 84 failed | 13 failed as expected
 
