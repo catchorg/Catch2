@@ -131,12 +131,12 @@
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg " " #matcher, resultDisposition ); \
         try { \
-            std::string matcherAsString = ::Catch::Matchers::matcher.toString(); \
+            std::string matcherAsString = (matcher).toString(); \
             __catchResult \
                 .setLhs( Catch::toString( arg ) ) \
                 .setRhs( matcherAsString == Catch::Detail::unprintableString ? #matcher : matcherAsString ) \
                 .setOp( "matches" ) \
-                .setResultType( ::Catch::Matchers::matcher.match( arg ) ); \
+                .setResultType( (matcher).match( arg ) ); \
             __catchResult.captureExpression(); \
         } catch( ... ) { \
             __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \

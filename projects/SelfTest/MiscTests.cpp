@@ -208,6 +208,7 @@ inline const char* testStringForMatching()
 {
     return "this string contains 'abc' as a substring";
 }
+using namespace Catch::Matchers;
 
 TEST_CASE("String matchers", "[matchers]" )
 {

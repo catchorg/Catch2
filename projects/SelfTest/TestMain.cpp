@@ -44,6 +44,8 @@ inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ 
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 
+    using namespace Catch::Matchers;
+
     Catch::ConfigData config;
 
     SECTION( "default - no arguments", "" ) {
