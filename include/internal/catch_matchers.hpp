@@ -43,7 +43,8 @@ namespace Matchers {
 
     namespace Generic {
         template<typename ExpressionT>
-        struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
+        class Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
+        public:
             explicit Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
             Not( Not const& other ) : m_matcher( other.m_matcher ) {}
 
@@ -54,7 +55,7 @@ namespace Matchers {
             virtual std::string toString() const CATCH_OVERRIDE {
                 return "not " + m_matcher->toString();
             }
-
+        private:
             Ptr< Matcher<ExpressionT> > m_matcher;
         };
 
