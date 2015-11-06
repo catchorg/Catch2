@@ -13,9 +13,9 @@ namespace Matchers {
     namespace Impl {
 
     namespace Generic {
-        template<typename ExpressionT> class AllOf;
-        template<typename ExpressionT> class AnyOf;
-        template<typename ExpressionT> class Not;
+        template<typename ExpressionT> struct AllOf;
+        template<typename ExpressionT> struct AnyOf;
+        template<typename ExpressionT> struct Not;
     }
         
     template<typename ExpressionT>
