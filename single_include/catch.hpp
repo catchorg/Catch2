@@ -1,6 +1,6 @@
 /*
- *  Catch v1.3.0-develop.1
- *  Generated: 2015-11-05 18:47:08.462966
+ *  Catch v1.3.0-develop.2
+ *  Generated: 2015-11-06 18:05:44.676531
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -862,7 +862,8 @@ namespace Matchers {
 
     namespace Generic {
         template<typename ExpressionT>
-        struct Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
+        class Not : public MatcherImpl<Not<ExpressionT>, ExpressionT> {
+        public:
             explicit Not( Matcher<ExpressionT> const& matcher ) : m_matcher(matcher.clone()) {}
             Not( Not const& other ) : m_matcher( other.m_matcher ) {}
 
@@ -873,7 +874,7 @@ namespace Matchers {
             virtual std::string toString() const CATCH_OVERRIDE {
                 return "not " + m_matcher->toString();
             }
-
+        private:
             Ptr< Matcher<ExpressionT> > m_matcher;
         };
 
@@ -7238,7 +7239,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 3, 0, "develop", 1 );
+    Version libraryVersion( 1, 3, 0, "develop", 2 );
 
 }
 
