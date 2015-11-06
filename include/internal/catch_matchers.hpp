@@ -15,7 +15,7 @@ namespace Matchers {
     namespace Generic {
         template<typename ExpressionT> class AllOf;
         template<typename ExpressionT> class AnyOf;
-        template<typename ExpressionT> class Not;
+        template<typename ExpressionT> struct Not;
     }
         
     template<typename ExpressionT>
