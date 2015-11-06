@@ -708,7 +708,7 @@ with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
 -------------------------------------------------------------------------------
-Matchers can be composed with both + and | - failing
+Matchers can be composed with both && and || - failing
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................

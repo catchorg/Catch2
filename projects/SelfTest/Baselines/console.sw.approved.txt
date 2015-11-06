@@ -3419,7 +3419,7 @@ with expansion:
   'abc' as a substring"
 
 -------------------------------------------------------------------------------
-Matchers can be (AllOf) composed with the + operator
+Matchers can be (AllOf) composed with the && operator
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -3432,7 +3432,7 @@ with expansion:
   contains: "abc" and contains: "substring" and contains: "contains" )
 
 -------------------------------------------------------------------------------
-Matchers can be (AnyOf) composed with the | operator
+Matchers can be (AnyOf) composed with the || operator
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -3452,7 +3452,7 @@ with expansion:
   "string" or contains: "different" or contains: "random" )
 
 -------------------------------------------------------------------------------
-Matchers can be composed with both + and |
+Matchers can be composed with both && and ||
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
@@ -3465,7 +3465,7 @@ with expansion:
   contains: "different" ) and contains: "substring" )
 
 -------------------------------------------------------------------------------
-Matchers can be composed with both + and | - failing
+Matchers can be composed with both && and || - failing
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................

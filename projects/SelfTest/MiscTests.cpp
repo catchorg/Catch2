@@ -262,7 +262,7 @@ TEST_CASE("Equals", "[matchers]")
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
 }
 
-TEST_CASE("Matchers can be (AllOf) composed with the + operator", "[matchers][operators][operator+]")
+TEST_CASE("Matchers can be (AllOf) composed with the && operator", "[matchers][operators][operator&&]")
 {
     CHECK_THAT( testStringForMatching(),
            Contains( "string" ) &&
@@ -271,18 +271,18 @@ TEST_CASE("Matchers can be (AllOf) composed with the + operator", "[matchers][op
            Contains( "contains" ) );
 }
 
-TEST_CASE("Matchers can be (AnyOf) composed with the | operator", "[matchers][operators][operator|]")
+TEST_CASE("Matchers can be (AnyOf) composed with the || operator", "[matchers][operators][operator||]")
 {
     CHECK_THAT( testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) );
     CHECK_THAT( testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) );
 }
 
-TEST_CASE("Matchers can be composed with both + and |", "[matchers][operators][operator|][operator+]")
+TEST_CASE("Matchers can be composed with both && and ||", "[matchers][operators][operator||][operator&&]")
 {
     CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) );
 }
 
-TEST_CASE("Matchers can be composed with both + and | - failing", "[matchers][operators][operator|][operator+][.failing]")
+TEST_CASE("Matchers can be composed with both && and || - failing", "[matchers][operators][operator||][operator&&][.failing]")
 {
     CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) );
 }

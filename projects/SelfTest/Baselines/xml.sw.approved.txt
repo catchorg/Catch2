@@ -3590,7 +3590,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AllOf) composed with the + operator">
+    <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
@@ -3601,7 +3601,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AnyOf) composed with the | operator">
+    <TestCase name="Matchers can be (AnyOf) composed with the || operator">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() Contains( "string" ) || Contains( "different" ) || Contains( "random" )
@@ -3620,7 +3620,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both + and |">
+    <TestCase name="Matchers can be composed with both &amp;&amp; and ||">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
@@ -3631,7 +3631,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both + and | - failing">
+    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
           testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
