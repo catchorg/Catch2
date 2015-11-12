@@ -46,11 +46,11 @@ namespace Detail {
 
         friend bool operator == ( double lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
-            auto relativeOK = fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
+            bool relativeOK = fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
             if ( relativeOK ) {
                 return true;
             }
-            auto absoluteOK = fabs( lhs - rhs.m_value ) < rhs.m_margin;
+            bool absoluteOK = fabs( lhs - rhs.m_value ) < rhs.m_margin;
             return absoluteOK;
         }
 
