@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="12" failures="72" tests="914" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="13" failures="72" tests="915" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -226,9 +226,15 @@ expected exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
-    <testcase classname="global" name="Unexpected custom exceptions can be translated" time="{duration}">
+    <testcase classname="global" name="Non-std exceptions can be translated" time="{duration}">
       <error type="TEST_CASE">
 custom exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="Custom std-exceptions can be custom translated" time="{duration}">
+      <error type="TEST_CASE">
+custom std exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>

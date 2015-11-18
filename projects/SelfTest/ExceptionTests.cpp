@@ -106,7 +106,29 @@ private:
     std::string m_msg;
 };
 
+class CustomStdException : public std::exception
+{
+public:
+    CustomStdException( const std::string& msg )
+    : m_msg( msg )
+    {}
+    
+    std::string getMessage() const
+    {
+        return m_msg;
+    }
+    
+private:
+    std::string m_msg;
+};
+
+
 CATCH_TRANSLATE_EXCEPTION( CustomException& ex )
+{
+    return ex.getMessage();
+}
+
+CATCH_TRANSLATE_EXCEPTION( CustomStdException& ex )
 {
     return ex.getMessage();
 }
@@ -116,10 +138,16 @@ CATCH_TRANSLATE_EXCEPTION( double& ex )
     return Catch::toString( ex );
 }
 
-TEST_CASE("Unexpected custom exceptions can be translated", "[.][failing]" )
+TEST_CASE("Non-std exceptions can be translated", "[.][failing]" )
 {
 	if( Catch::alwaysTrue() )
 	    throw CustomException( "custom exception" );
+}
+
+TEST_CASE("Custom std-exceptions can be custom translated", "[.][failing]" )
+{
+    if( Catch::alwaysTrue() )
+        throw CustomException( "custom std exception" );
 }
 
 inline void throwCustom() {

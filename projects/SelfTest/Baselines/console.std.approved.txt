@@ -356,7 +356,7 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
-Unexpected custom exceptions can be translated
+Non-std exceptions can be translated
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -364,6 +364,16 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
   custom exception
+
+-------------------------------------------------------------------------------
+Custom std-exceptions can be custom translated
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  custom std exception
 
 -------------------------------------------------------------------------------
 Custom exceptions can be translated when testing for nothrow
@@ -820,6 +830,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 165 | 123 passed | 41 failed |  1 failed as expected
-assertions: 912 | 817 passed | 82 failed | 13 failed as expected
+test cases: 166 | 123 passed | 42 failed |  1 failed as expected
+assertions: 913 | 817 passed | 83 failed | 13 failed as expected
 

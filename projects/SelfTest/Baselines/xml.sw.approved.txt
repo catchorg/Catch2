@@ -1545,9 +1545,15 @@
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test">
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Unexpected custom exceptions can be translated">
+    <TestCase name="Non-std exceptions can be translated">
       <Exception filename="projects/SelfTest/ExceptionTests.cpp" >
         custom exception
+      </Exception>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="Custom std-exceptions can be custom translated">
+      <Exception filename="projects/SelfTest/ExceptionTests.cpp" >
+        custom std exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
@@ -9496,7 +9502,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="817" failures="84" expectedFailures="13"/>
+    <OverallResults successes="817" failures="85" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="817" failures="84" expectedFailures="13"/>
+  <OverallResults successes="817" failures="85" expectedFailures="13"/>
 </Catch>
