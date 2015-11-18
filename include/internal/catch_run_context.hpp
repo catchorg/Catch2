@@ -96,17 +96,13 @@ namespace Catch {
             m_activeTestCase = &testCase;
 
 
+            m_trackerContext.startRun();
             do {
-                m_trackerContext.startRun();
-                do {
-                    m_trackerContext.startCycle();
-                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
-                    runCurrentTest( redirectedCout, redirectedCerr );
-                }
-                while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
+                m_trackerContext.startCycle();
+                m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
+                runCurrentTest( redirectedCout, redirectedCerr );
             }
-            // !TBD: deprecated - this will be replaced by indexed trackers
-            while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
+            while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
             m_totals.testCases += deltaTotals.testCases;

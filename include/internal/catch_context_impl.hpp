@@ -28,16 +28,6 @@ namespace Catch {
         virtual IRunner* getRunner() {
             return m_runner;
         }
-        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
-            return getGeneratorsForCurrentTest()
-            .getGeneratorInfo( fileInfo, totalSize )
-            .getCurrentIndex();
-        }
-        virtual bool advanceGeneratorsForCurrentTest() {
-            IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
-            return generators && generators->moveNext();
-        }
-
         virtual Ptr<IConfig const> getConfig() const {
             return m_config;
         }
@@ -56,31 +46,9 @@ namespace Catch {
         friend IMutableContext& getCurrentMutableContext();
 
     private:
-        IGeneratorsForTest* findGeneratorsForCurrentTest() {
-            std::string testName = getResultCapture()->getCurrentTestName();
-
-            std::map<std::string, IGeneratorsForTest*>::const_iterator it =
-                m_generatorsByTestName.find( testName );
-            return it != m_generatorsByTestName.end()
-                ? it->second
-                : CATCH_NULL;
-        }
-
-        IGeneratorsForTest& getGeneratorsForCurrentTest() {
-            IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
-            if( !generators ) {
-                std::string testName = getResultCapture()->getCurrentTestName();
-                generators = createGeneratorsForTest();
-                m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
-            }
-            return *generators;
-        }
-
-    private:
         Ptr<IConfig const> m_config;
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
-        std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
 
     namespace {

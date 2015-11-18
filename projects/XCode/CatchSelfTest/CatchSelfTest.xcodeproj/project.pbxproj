@@ -149,8 +149,6 @@
 		4A6D0C4C149B3E3D00DB3EAA /* catch_default_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_default_main.hpp; sourceTree = "<group>"; };
 		4A6D0C4D149B3E3D00DB3EAA /* catch_evaluate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_evaluate.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C4E149B3E3D00DB3EAA /* catch_exception_translator_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_exception_translator_registry.hpp; sourceTree = "<group>"; };
-		4A6D0C4F149B3E3D00DB3EAA /* catch_generators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_generators.hpp; sourceTree = "<group>"; };
-		4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_generators_impl.hpp; sourceTree = "<group>"; };
 		4A6D0C51149B3E3D00DB3EAA /* catch_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_context.h; sourceTree = "<group>"; };
 		4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_context_impl.hpp; sourceTree = "<group>"; };
 		4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_capture.h; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 		4A6D0C68149B3E3D00DB3EAA /* catch_reporter_xml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_xml.hpp; sourceTree = "<group>"; };
 		4A7ADB4314F631E10094FE10 /* catch_totals.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_totals.hpp; sourceTree = "<group>"; };
 		4A7DB2CD1652FE4B00FA6523 /* catch_version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = catch_version.h; path = ../../../../include/internal/catch_version.h; sourceTree = "<group>"; };
-		4A90B59B15D0F61A00EF71BC /* catch_interfaces_generators.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_generators.h; sourceTree = "<group>"; };
 		4A90B59D15D24FE900EF71BC /* catch_assertionresult.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_assertionresult.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4AA7B8B4165428BA003155F6 /* catch_version.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = catch_version.hpp; path = ../../../../include/internal/catch_version.hpp; sourceTree = "<group>"; };
 		4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_console_colour_impl.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -358,7 +355,6 @@
 				263FD06017AF8DF200988A20 /* catch_timer.hpp */,
 				4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */,
 				4A4B0F9715CE6CFB00AE2392 /* catch_registry_hub.hpp */,
-				4A6D0C50149B3E3D00DB3EAA /* catch_generators_impl.hpp */,
 				4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */,
 				4A6D0C5E149B3E3D00DB3EAA /* catch_run_context.hpp */,
 				4A6D0C62149B3E3D00DB3EAA /* catch_test_case_registry_impl.hpp */,
@@ -379,7 +375,6 @@
 				269831E519078C1600BB0CE0 /* catch_tostring.h */,
 				269831E619078CA200BB0CE0 /* catch_tostring.hpp */,
 				4A6D0C4D149B3E3D00DB3EAA /* catch_evaluate.hpp */,
-				4A6D0C4F149B3E3D00DB3EAA /* catch_generators.hpp */,
 				4A6D0C5C149B3E3D00DB3EAA /* catch_result_type.h */,
 				4A6D0C5D149B3E3D00DB3EAA /* catch_assertionresult.h */,
 				261488FE184DC32F0041FBEB /* catch_section.h */,
@@ -443,7 +438,6 @@
 				4A6D0C56149B3E3D00DB3EAA /* catch_interfaces_runner.h */,
 				4A6D0C57149B3E3D00DB3EAA /* catch_interfaces_testcase.h */,
 				4AFC661D157E96A7009D58CF /* catch_interfaces_config.h */,
-				4A90B59B15D0F61A00EF71BC /* catch_interfaces_generators.h */,
 				26711C90195D46CD0033EDA2 /* catch_interfaces_tag_alias_registry.h */,
 			);
 			name = Interfaces;
