@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="13" failures="72" tests="915" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="13" failures="72" tests="769" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -265,8 +265,6 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="global" name="Generators over two ranges" time="{duration}"/>
-    <testcase classname="global" name="Generator over a range of pairs" time="{duration}"/>
     <testcase classname="global" name="INFO and WARN do not abort tests" time="{duration}"/>
     <testcase classname="global" name="SUCCEED counts as a test pass" time="{duration}"/>
     <testcase classname="global" name="INFO gets logged on failure" time="{duration}">
