@@ -1,6 +1,6 @@
 /*
- *  Catch v1.3.0-develop.2
- *  Generated: 2015-11-06 18:05:44.676531
+ *  Catch v1.3.0-develop.3
+ *  Generated: 2015-11-18 08:39:33.879583
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2454,6 +2454,8 @@ using namespace Generators;
 #define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
 
 #include <string>
+#include <vector>
+
 // #included from: catch_interfaces_registry_hub.h
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
@@ -2491,14 +2493,16 @@ namespace Catch {
 
 }
 
-
 namespace Catch {
 
     typedef std::string(*exceptionTranslateFunction)();
 
+    struct IExceptionTranslator;
+    typedef std::vector<const IExceptionTranslator*> ExceptionTranslators;
+
     struct IExceptionTranslator {
         virtual ~IExceptionTranslator();
-        virtual std::string translate() const = 0;
+        virtual std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const = 0;
     };
 
     struct IExceptionTranslatorRegistry {
@@ -2516,9 +2520,12 @@ namespace Catch {
             : m_translateFunction( translateFunction )
             {}
 
-            virtual std::string translate() const {
+            virtual std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const CATCH_OVERRIDE {
                 try {
-                    throw;
+                    if( it == itEnd )
+                        throw;
+                    else
+                        return (*it)->translate( it+1, itEnd );
                 }
                 catch( T& ex ) {
                     return m_translateFunction( ex );
@@ -6059,7 +6066,7 @@ namespace Catch {
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
 
-        int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
+        int applyCommandLine( int argc, char const* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
                 m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );
                 m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
@@ -6086,7 +6093,7 @@ namespace Catch {
             m_config.reset();
         }
 
-        int run( int argc, char* const argv[] ) {
+        int run( int argc, char const* const argv[] ) {
 
             int returnCode = applyCommandLine( argc, argv );
             if( returnCode == 0 )
@@ -6378,13 +6385,13 @@ namespace Catch {
 #ifdef __OBJC__
                 // In Objective-C try objective-c exceptions first
                 @try {
-                    throw;
+                    return tryTranslators();
                 }
                 @catch (NSException *exception) {
                     return Catch::toString( [exception description] );
                 }
 #else
-                throw;
+                return tryTranslators();
 #endif
             }
             catch( TestFailureException& ) {
@@ -6400,20 +6407,15 @@ namespace Catch {
                 return msg;
             }
             catch(...) {
-                return tryTranslators( m_translators.begin() );
+                return "Unknown exception";
             }
         }
 
-        std::string tryTranslators( std::vector<const IExceptionTranslator*>::const_iterator it ) const {
-            if( it == m_translators.end() )
-                return "Unknown exception";
-
-            try {
-                return (*it)->translate();
-            }
-            catch(...) {
-                return tryTranslators( it+1 );
-            }
+        std::string tryTranslators() const {
+            if( m_translators.empty() )
+                throw;
+            else
+                return m_translators[0]->translate( m_translators.begin()+1, m_translators.end() );
         }
 
     private:
@@ -7239,7 +7241,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 3, 0, "develop", 2 );
+    Version libraryVersion( 1, 3, 0, "develop", 3 );
 
 }
 
