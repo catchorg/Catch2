@@ -10,12 +10,14 @@
 
 #include "catch_result_builder.h"
 #include "catch_message.h"
-#include "catch_interfaces_capture.h"
 #include "catch_debugger.h"
 #include "catch_common.h"
 #include "catch_tostring.h"
 #include "catch_compiler_capabilities.h"
 
+namespace Catch {
+    AssertionResult const* getLastResult();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked
@@ -43,12 +45,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( Catch::getCurrentRunContext().getLastResult()->succeeded() )
+    if( Catch::getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( !Catch::getCurrentRunContext().getLastResult()->succeeded() )
+    if( !Catch::getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \

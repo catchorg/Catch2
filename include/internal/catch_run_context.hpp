@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 
+#include "catch_interfaces_capture.h"
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_exception.h"
 #include "catch_config.hpp"
@@ -74,6 +75,9 @@ namespace Catch {
             return &capture->config();
         else
             return CATCH_NULL;
+    }
+    AssertionResult const* getLastResult() {
+        return getCurrentRunContext().getLastResult();
     }
 
     class RunContext : public IRunContext {
@@ -223,7 +227,7 @@ namespace Catch {
                 : "";
         }
 
-        virtual const AssertionResult* getLastResult() const CATCH_OVERRIDE {
+        virtual AssertionResult const* getLastResult() const CATCH_OVERRIDE {
             return &m_lastResult;
         }
         virtual IConfig const& config() const CATCH_OVERRIDE {

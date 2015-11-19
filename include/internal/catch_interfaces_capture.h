@@ -40,7 +40,7 @@ namespace Catch {
         virtual void handleFatalErrorCondition( std::string const& message ) = 0;
         
         virtual std::string getCurrentTestName() const = 0;
-        virtual const AssertionResult* getLastResult() const = 0;
+        virtual AssertionResult const* getLastResult() const = 0;
         virtual bool isAborting() const = 0;
         virtual IConfig const& config() const = 0;
     };
