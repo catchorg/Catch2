@@ -22,7 +22,7 @@ namespace Catch {
         void operator=( Context const& );
 
     public: // IContext
-        virtual IResultCapture* getResultCapture() {
+        virtual IRunContext* getCurrentRunContext() {
             return m_resultCapture;
         }
         virtual IRunner* getRunner() {
@@ -33,7 +33,7 @@ namespace Catch {
         }
 
     public: // IMutableContext
-        virtual void setResultCapture( IResultCapture* resultCapture ) {
+        virtual void setResultCapture( IRunContext* resultCapture ) {
             m_resultCapture = resultCapture;
         }
         virtual void setRunner( IRunner* runner ) {
@@ -48,7 +48,7 @@ namespace Catch {
     private:
         Ptr<IConfig const> m_config;
         IRunner* m_runner;
-        IResultCapture* m_resultCapture;
+        IRunContext* m_resultCapture;
     };
 
     namespace {

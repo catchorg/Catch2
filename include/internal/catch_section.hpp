@@ -26,7 +26,7 @@ namespace Catch {
 
     Section::Section( SectionInfo const& info )
     :   m_info( info ),
-        m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
+        m_sectionIncluded( getCurrentRunContext().sectionStarted( m_info, m_assertions ) )
     {
         m_timer.start();
     }
@@ -35,9 +35,9 @@ namespace Catch {
         if( m_sectionIncluded ) {
             SectionEndInfo endInfo( m_info, m_assertions, m_timer.getElapsedSeconds() );
             if( std::uncaught_exception() )
-                getResultCapture().sectionEndedEarly( endInfo );
+                getCurrentRunContext().sectionEndedEarly( endInfo );
             else
-                getResultCapture().sectionEnded( endInfo );
+                getCurrentRunContext().sectionEnded( endInfo );
         }
     }
 

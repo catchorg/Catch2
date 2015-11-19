@@ -15,8 +15,8 @@ namespace Catch {
     // Report the error condition then exit the process
     inline void fatal( std::string const& message, int exitCode ) {
         IContext& context = Catch::getCurrentContext();
-        IResultCapture* resultCapture = context.getResultCapture();
-        resultCapture->handleFatalErrorCondition( message );
+        IRunContext* runContext = context.getCurrentRunContext();
+        runContext->handleFatalErrorCondition( message );
 
 		if( Catch::alwaysTrue() ) // avoids "no return" warnings
             exit( exitCode );

@@ -52,7 +52,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class RunContext : public IResultCapture, public IRunner {
+    class RunContext : public IRunContext, public IRunner {
 
         RunContext( RunContext const& );
         void operator =( RunContext const& );
@@ -119,7 +119,7 @@ namespace Catch {
             return m_config;
         }
 
-    private: // IResultCapture
+    private: // IRunContext
 
 
         virtual void assertionEnded( AssertionResult const& result ) {
@@ -337,8 +337,8 @@ namespace Catch {
         std::vector<MessageInfo> m_messages;
     };
 
-    IResultCapture& getResultCapture() {
-        if( IResultCapture* capture = getCurrentContext().getResultCapture() )
+    IRunContext& getCurrentRunContext() {
+        if( IRunContext* capture = getCurrentContext().getCurrentRunContext() )
             return *capture;
         else
             throw std::logic_error( "No result capture instance" );

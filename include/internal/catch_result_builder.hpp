@@ -98,7 +98,7 @@ namespace Catch {
     }
     void ResultBuilder::handleResult( AssertionResult const& result )
     {
-        getResultCapture().assertionEnded( result );
+        getCurrentRunContext().assertionEnded( result );
 
         if( !result.isOk() ) {
             if( getCurrentConfig()->shouldDebugBreak() )

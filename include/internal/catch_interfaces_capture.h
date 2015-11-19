@@ -23,9 +23,9 @@ namespace Catch {
     class ScopedMessageBuilder;
     struct Counts;
 
-    struct IResultCapture {
+    struct IRunContext {
 
-        virtual ~IResultCapture();
+        virtual ~IRunContext();
 
         virtual void assertionEnded( AssertionResult const& result ) = 0;
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
@@ -41,7 +41,7 @@ namespace Catch {
         virtual void handleFatalErrorCondition( std::string const& message ) = 0;
     };
 
-    IResultCapture& getResultCapture();
+    IRunContext& getCurrentRunContext();
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED

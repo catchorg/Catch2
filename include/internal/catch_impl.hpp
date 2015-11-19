@@ -53,7 +53,7 @@ namespace Catch {
     DebugOutStream::~DebugOutStream() CATCH_NOEXCEPT {}
     StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
     IContext::~IContext() {}
-    IResultCapture::~IResultCapture() {}
+    IRunContext::~IRunContext() {}
     ITestCase::~ITestCase() {}
     ITestCaseRegistry::~ITestCaseRegistry() {}
     IRegistryHub::~IRegistryHub() {}
