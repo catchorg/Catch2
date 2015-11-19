@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
 
 #include "catch_test_spec_parser.hpp"
-#include "catch_context.h"
 #include "catch_interfaces_config.h"
 #include "catch_stream.h"
 

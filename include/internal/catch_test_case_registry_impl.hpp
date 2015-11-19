@@ -11,7 +11,6 @@
 #include "catch_test_registry.hpp"
 #include "catch_test_case_info.h"
 #include "catch_test_spec.hpp"
-#include "catch_context.h"
 
 #include <vector>
 #include <set>

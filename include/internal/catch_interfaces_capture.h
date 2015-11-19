@@ -16,12 +16,14 @@ namespace Catch {
 
     class TestCase;
     class AssertionResult;
+    class ScopedMessageBuilder;
+
     struct AssertionInfo;
     struct SectionInfo;
     struct SectionEndInfo;
     struct MessageInfo;
-    class ScopedMessageBuilder;
     struct Counts;
+    struct IConfig;
 
     struct IRunContext {
 
@@ -40,9 +42,12 @@ namespace Catch {
         virtual std::string getCurrentTestName() const = 0;
         virtual const AssertionResult* getLastResult() const = 0;
         virtual bool isAborting() const = 0;
+        virtual IConfig const& config() const = 0;
     };
 
+    IRunContext* tryGetCurrentRunContext();
     IRunContext& getCurrentRunContext();
+    IConfig const* getCurrentConfig();
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED

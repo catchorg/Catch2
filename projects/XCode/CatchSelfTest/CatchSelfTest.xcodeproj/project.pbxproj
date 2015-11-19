@@ -147,8 +147,6 @@
 		4A6D0C4C149B3E3D00DB3EAA /* catch_default_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_default_main.hpp; sourceTree = "<group>"; };
 		4A6D0C4D149B3E3D00DB3EAA /* catch_evaluate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_evaluate.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C4E149B3E3D00DB3EAA /* catch_exception_translator_registry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_exception_translator_registry.hpp; sourceTree = "<group>"; };
-		4A6D0C51149B3E3D00DB3EAA /* catch_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_context.h; sourceTree = "<group>"; };
-		4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_context_impl.hpp; sourceTree = "<group>"; };
 		4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_capture.h; sourceTree = "<group>"; };
 		4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = catch_interfaces_exception.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_reporter.h; sourceTree = "<group>"; };
@@ -351,7 +349,6 @@
 				263FD06017AF8DF200988A20 /* catch_timer.hpp */,
 				4A4B0F9C15CEFA8300AE2392 /* catch_impl.hpp */,
 				4A4B0F9715CE6CFB00AE2392 /* catch_registry_hub.hpp */,
-				4A6D0C52149B3E3D00DB3EAA /* catch_context_impl.hpp */,
 				4A6D0C5E149B3E3D00DB3EAA /* catch_run_context.hpp */,
 				4A6D0C62149B3E3D00DB3EAA /* catch_test_case_registry_impl.hpp */,
 				4AB1C73514F97BDA00F31DF7 /* catch_console_colour_impl.hpp */,
@@ -403,7 +400,6 @@
 				261488FA184C81130041FBEB /* catch_test_spec.hpp */,
 				2656C21F1925E5100040DB02 /* catch_test_spec_parser.hpp */,
 				4A6D0C4A149B3E3D00DB3EAA /* catch_config.hpp */,
-				4A6D0C51149B3E3D00DB3EAA /* catch_context.h */,
 				4A6D0C61149B3E3D00DB3EAA /* catch_test_case_info.h */,
 				4A7ADB4314F631E10094FE10 /* catch_totals.hpp */,
 				4AB77CB71553B72B00857BF0 /* catch_section_info.hpp */,

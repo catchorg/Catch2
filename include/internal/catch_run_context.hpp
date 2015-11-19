@@ -51,6 +51,31 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
+    namespace {
+        IRunContext* s_currentRunContext = CATCH_NULL;
+
+        void setCurrentRunContext( IRunContext* context ) {
+            s_currentRunContext = context;
+        }
+    }
+    
+    IRunContext* tryGetCurrentRunContext() {
+        return s_currentRunContext;
+    }
+    
+    IRunContext& getCurrentRunContext() {
+        if( IRunContext* capture = tryGetCurrentRunContext() )
+            return *capture;
+        else
+            throw std::logic_error( "No current test runner" );
+    }
+    IConfig const* getCurrentConfig() {
+        if( IRunContext* capture = tryGetCurrentRunContext() )
+            return &capture->config();
+        else
+            return CATCH_NULL;
+    }
+
     class RunContext : public IRunContext {
 
         RunContext( RunContext const& );
@@ -60,18 +85,17 @@ namespace Catch {
 
         explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( _config->name() ),
-            m_context( getCurrentMutableContext() ),
             m_config( _config ),
             m_reporter( reporter ),
             m_activeTestCaseInfo( CATCH_NULL )
         {
-            m_context.setConfig( m_config );
-            m_context.setResultCapture( this );
+            setCurrentRunContext( this );
             m_reporter->testRunStarting( m_runInfo );
         }
 
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, isAborting() ) );
+            setCurrentRunContext( CATCH_NULL );
         }
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
@@ -113,14 +137,10 @@ namespace Catch {
             return deltaTotals;
         }
 
-        Ptr<IConfig const> config() const {
-            return m_config;
-        }
-
     private: // IRunContext
 
 
-        virtual void assertionEnded( AssertionResult const& result ) {
+        virtual void assertionEnded( AssertionResult const& result ) CATCH_OVERRIDE {
             if( result.getResultType() == ResultWas::Ok )
                 m_totals.assertions.passed++;
             else if( !result.isOk() )
@@ -134,10 +154,9 @@ namespace Catch {
             m_lastResult = result;
         }
 
-        virtual bool sectionStarted (
-            SectionInfo const& sectionInfo,
-            Counts& assertions
-        )
+        virtual bool sectionStarted
+            (   SectionInfo const& sectionInfo,
+                Counts& assertions ) CATCH_OVERRIDE
         {
             std::ostringstream oss;
             oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
@@ -167,7 +186,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded( SectionEndInfo const& endInfo ) {
+        virtual void sectionEnded( SectionEndInfo const& endInfo ) CATCH_OVERRIDE {
             Counts assertions = m_totals.assertions - endInfo.prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
@@ -180,7 +199,7 @@ namespace Catch {
             m_messages.clear();
         }
 
-        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) {
+        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) CATCH_OVERRIDE {
             if( m_unfinishedSections.empty() )
                 m_activeSections.back()->fail();
             else
@@ -190,25 +209,28 @@ namespace Catch {
             m_unfinishedSections.push_back( endInfo );
         }
 
-        virtual void pushScopedMessage( MessageInfo const& message ) {
+        virtual void pushScopedMessage( MessageInfo const& message ) CATCH_OVERRIDE {
             m_messages.push_back( message );
         }
 
-        virtual void popScopedMessage( MessageInfo const& message ) {
+        virtual void popScopedMessage( MessageInfo const& message ) CATCH_OVERRIDE {
             m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), message ), m_messages.end() );
         }
 
-        virtual std::string getCurrentTestName() const {
+        virtual std::string getCurrentTestName() const CATCH_OVERRIDE {
             return m_activeTestCaseInfo
                 ? m_activeTestCaseInfo->name
                 : "";
         }
 
-        virtual const AssertionResult* getLastResult() const {
+        virtual const AssertionResult* getLastResult() const CATCH_OVERRIDE {
             return &m_lastResult;
         }
+        virtual IConfig const& config() const CATCH_OVERRIDE {
+            return *m_config;
+        }
 
-        virtual void handleFatalErrorCondition( std::string const& message ) {
+        virtual void handleFatalErrorCondition( std::string const& message ) CATCH_OVERRIDE {
             ResultBuilder resultBuilder = makeUnexpectedResultBuilder();
             resultBuilder.setResultType( ResultWas::FatalErrorCondition );
             resultBuilder << message;
@@ -319,7 +341,6 @@ namespace Catch {
         }
 
         TestRunInfo m_runInfo;
-        IMutableContext& m_context;
 
         Ptr<IConfig const> m_config;
         Ptr<IStreamingReporter> m_reporter;
@@ -334,13 +355,6 @@ namespace Catch {
         std::vector<ITracker*> m_activeSections;
         std::vector<MessageInfo> m_messages;
     };
-
-    IRunContext& getCurrentRunContext() {
-        if( IRunContext* capture = getCurrentContext().getCurrentRunContext() )
-            return *capture;
-        else
-            throw std::logic_error( "No result capture instance" );
-    }
 
 } // end namespace Catch
 
