@@ -11,7 +11,6 @@
 #include "catch_result_builder.h"
 #include "catch_context.h"
 #include "catch_interfaces_config.h"
-#include "catch_interfaces_runner.h"
 #include "catch_interfaces_capture.h"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_wildcard_pattern.hpp"
@@ -103,7 +102,7 @@ namespace Catch {
         if( !result.isOk() ) {
             if( getCurrentConfig()->shouldDebugBreak() )
                 m_shouldDebugBreak = true;
-            if( getCurrentContext().getRunner()->aborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
+            if( getCurrentContext().getCurrentRunContext()->isAborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
                 m_shouldThrow = true;
         }
     }

@@ -75,7 +75,6 @@ namespace Catch {
     StreamingReporterBase::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     CompactReporter::~CompactReporter() {}
-    IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
     XmlReporter::~XmlReporter() {}

@@ -19,7 +19,6 @@ namespace Catch {
     class TestCase;
     class Stream;
     struct IRunContext;
-    struct IRunner;
     struct IConfig;
 
     struct IContext
@@ -27,7 +26,6 @@ namespace Catch {
         virtual ~IContext();
 
         virtual IRunContext* getCurrentRunContext() = 0;
-        virtual IRunner* getRunner() = 0;
         virtual IConfig const* getConfig() const = 0;
     };
 
@@ -35,7 +33,6 @@ namespace Catch {
     {
         virtual ~IMutableContext();
         virtual void setResultCapture( IRunContext* resultCapture ) = 0;
-        virtual void setRunner( IRunner* runner ) = 0;
         virtual void setConfig( Ptr<IConfig const> const& config ) = 0;
     };
 

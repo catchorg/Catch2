@@ -27,7 +27,6 @@
 		4A45DA2D16161FA2004F8D6B /* catch_interfaces_capture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2C16161FA2004F8D6B /* catch_interfaces_capture.cpp */; };
 		4A45DA3116161FFC004F8D6B /* catch_interfaces_reporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA3016161FFB004F8D6B /* catch_interfaces_reporter.cpp */; };
 		4A45DA3316162047004F8D6B /* catch_interfaces_exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA3216162047004F8D6B /* catch_interfaces_exception.cpp */; };
-		4A45DA3516162071004F8D6B /* catch_interfaces_runner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA3416162071004F8D6B /* catch_interfaces_runner.cpp */; };
 		4A6D0C27149B3D3B00DB3EAA /* CatchSelfTest.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A6D0C26149B3D3B00DB3EAA /* CatchSelfTest.1 */; };
 		4A6D0C37149B3D9E00DB3EAA /* ApproxTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D0C2D149B3D9E00DB3EAA /* ApproxTests.cpp */; };
 		4A6D0C38149B3D9E00DB3EAA /* ClassTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D0C2F149B3D9E00DB3EAA /* ClassTests.cpp */; };
@@ -120,7 +119,6 @@
 		4A45DA2C16161FA2004F8D6B /* catch_interfaces_capture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_interfaces_capture.cpp; path = ../../../SelfTest/SurrogateCpps/catch_interfaces_capture.cpp; sourceTree = "<group>"; };
 		4A45DA3016161FFB004F8D6B /* catch_interfaces_reporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_interfaces_reporter.cpp; path = ../../../SelfTest/SurrogateCpps/catch_interfaces_reporter.cpp; sourceTree = "<group>"; };
 		4A45DA3216162047004F8D6B /* catch_interfaces_exception.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_interfaces_exception.cpp; path = ../../../SelfTest/SurrogateCpps/catch_interfaces_exception.cpp; sourceTree = "<group>"; };
-		4A45DA3416162071004F8D6B /* catch_interfaces_runner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_interfaces_runner.cpp; path = ../../../SelfTest/SurrogateCpps/catch_interfaces_runner.cpp; sourceTree = "<group>"; };
 		4A4B0F9715CE6CFB00AE2392 /* catch_registry_hub.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_registry_hub.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A4B0F9915CE6EC100AE2392 /* catch_interfaces_registry_hub.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = catch_interfaces_registry_hub.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4A4B0F9A15CEF84800AE2392 /* catch_notimplemented_exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_notimplemented_exception.h; sourceTree = "<group>"; };
@@ -154,7 +152,6 @@
 		4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_capture.h; sourceTree = "<group>"; };
 		4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = catch_interfaces_exception.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_reporter.h; sourceTree = "<group>"; };
-		4A6D0C56149B3E3D00DB3EAA /* catch_interfaces_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_runner.h; sourceTree = "<group>"; };
 		4A6D0C57149B3E3D00DB3EAA /* catch_interfaces_testcase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_testcase.h; sourceTree = "<group>"; };
 		4A6D0C58149B3E3D00DB3EAA /* catch_list.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = catch_list.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		4A6D0C59149B3E3D00DB3EAA /* catch_objc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_objc.hpp; sourceTree = "<group>"; };
@@ -337,7 +334,6 @@
 				4A45DA2C16161FA2004F8D6B /* catch_interfaces_capture.cpp */,
 				4A45DA3216162047004F8D6B /* catch_interfaces_exception.cpp */,
 				4A45DA3016161FFB004F8D6B /* catch_interfaces_reporter.cpp */,
-				4A45DA3416162071004F8D6B /* catch_interfaces_runner.cpp */,
 				4AB3D99C1616216500C9A0F8 /* catch_interfaces_testcase.cpp */,
 				4AB3D99F1616219100C9A0F8 /* catch_interfaces_config.cpp */,
 				4AB3D9A1161621B500C9A0F8 /* catch_interfaces_generators.cpp */,
@@ -435,7 +431,6 @@
 				4A6D0C53149B3E3D00DB3EAA /* catch_interfaces_capture.h */,
 				4A6D0C54149B3E3D00DB3EAA /* catch_interfaces_exception.h */,
 				4A6D0C55149B3E3D00DB3EAA /* catch_interfaces_reporter.h */,
-				4A6D0C56149B3E3D00DB3EAA /* catch_interfaces_runner.h */,
 				4A6D0C57149B3E3D00DB3EAA /* catch_interfaces_testcase.h */,
 				4AFC661D157E96A7009D58CF /* catch_interfaces_config.h */,
 				26711C90195D46CD0033EDA2 /* catch_interfaces_tag_alias_registry.h */,
@@ -560,7 +555,6 @@
 				4A45DA3316162047004F8D6B /* catch_interfaces_exception.cpp in Sources */,
 				2691574C1A532A280054F1ED /* ToStringTuple.cpp in Sources */,
 				26711C8F195D465C0033EDA2 /* TagAliasTests.cpp in Sources */,
-				4A45DA3516162071004F8D6B /* catch_interfaces_runner.cpp in Sources */,
 				4AB3D99D1616216500C9A0F8 /* catch_interfaces_testcase.cpp in Sources */,
 				4AB3D9A01616219100C9A0F8 /* catch_interfaces_config.cpp in Sources */,
 				4AB3D9A2161621B500C9A0F8 /* catch_interfaces_generators.cpp in Sources */,

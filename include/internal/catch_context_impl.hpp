@@ -17,16 +17,13 @@ namespace Catch {
 
     class Context : public IMutableContext {
 
-        Context() : m_config( CATCH_NULL ), m_runner( CATCH_NULL ), m_resultCapture( CATCH_NULL ) {}
+        Context() : m_config( CATCH_NULL ), m_resultCapture( CATCH_NULL ) {}
         Context( Context const& );
         void operator=( Context const& );
 
     public: // IContext
         virtual IRunContext* getCurrentRunContext() {
             return m_resultCapture;
-        }
-        virtual IRunner* getRunner() {
-            return m_runner;
         }
         virtual IConfig const* getConfig() const {
             return m_config.get();
@@ -36,9 +33,6 @@ namespace Catch {
         virtual void setResultCapture( IRunContext* resultCapture ) {
             m_resultCapture = resultCapture;
         }
-        virtual void setRunner( IRunner* runner ) {
-            m_runner = runner;
-        }
         virtual void setConfig( Ptr<IConfig const> const& config ) {
             m_config = config;
         }
@@ -47,7 +41,6 @@ namespace Catch {
 
     private:
         Ptr<IConfig const> m_config;
-        IRunner* m_runner;
         IRunContext* m_resultCapture;
     };
 

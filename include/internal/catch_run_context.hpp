@@ -8,7 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 
-#include "catch_interfaces_runner.h"
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_exception.h"
 #include "catch_config.hpp"
@@ -52,7 +51,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class RunContext : public IRunContext, public IRunner {
+    class RunContext : public IRunContext {
 
         RunContext( RunContext const& );
         void operator =( RunContext const& );
@@ -66,21 +65,20 @@ namespace Catch {
             m_reporter( reporter ),
             m_activeTestCaseInfo( CATCH_NULL )
         {
-            m_context.setRunner( this );
             m_context.setConfig( m_config );
             m_context.setResultCapture( this );
             m_reporter->testRunStarting( m_runInfo );
         }
 
         virtual ~RunContext() {
-            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
+            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, isAborting() ) );
         }
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
             m_reporter->testGroupStarting( GroupInfo( testSpec, groupIndex, groupsCount ) );
         }
         void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount ) {
-            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
+            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, isAborting() ) );
         }
 
         Totals runTest( TestCase const& testCase ) {
@@ -99,7 +97,7 @@ namespace Catch {
                 m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testCase.name );
                 runTest( testCase, redirectedCout, redirectedCerr );
             }
-            while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
+            while( !m_testCaseTracker->isSuccessfullyCompleted() && !isAborting() );
 
             
             Totals deltaTotals = m_totals.delta( prevTotals );
@@ -108,7 +106,7 @@ namespace Catch {
                                                         deltaTotals,
                                                         redirectedCout,
                                                         redirectedCerr,
-                                                        aborting() ) );
+                                                        isAborting() ) );
 
             m_activeTestCaseInfo = CATCH_NULL;
 
@@ -243,7 +241,7 @@ namespace Catch {
 
     public:
         // !TBD We need to do this another way!
-        bool aborting() const {
+        bool isAborting() const {
             return m_totals.assertions.failed == static_cast<std::size_t>( m_config->abortAfter() );
         }
 
