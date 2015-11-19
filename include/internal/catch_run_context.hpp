@@ -62,9 +62,9 @@ namespace Catch {
         explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_activeTestCase( CATCH_NULL ),
             m_config( _config ),
-            m_reporter( reporter )
+            m_reporter( reporter ),
+            m_activeTestCaseInfo( CATCH_NULL )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -84,36 +84,33 @@ namespace Catch {
         }
 
         Totals runTest( TestCase const& testCase ) {
+            m_activeTestCaseInfo = &testCase;
+
             Totals prevTotals = m_totals;
+            std::string redirectedCout, redirectedCerr;
 
-            std::string redirectedCout;
-            std::string redirectedCerr;
+            m_reporter->testCaseStarting( testCase );
 
-            TestCaseInfo testInfo = testCase.getTestCaseInfo();
-
-            m_reporter->testCaseStarting( testInfo );
-
-            m_activeTestCase = &testCase;
-
+            ITracker* m_testCaseTracker;
 
             m_trackerContext.startRun();
             do {
                 m_trackerContext.startCycle();
-                m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
-                runCurrentTest( redirectedCout, redirectedCerr );
+                m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testCase.name );
+                runTest( testCase, redirectedCout, redirectedCerr );
             }
             while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
 
+            
             Totals deltaTotals = m_totals.delta( prevTotals );
             m_totals.testCases += deltaTotals.testCases;
-            m_reporter->testCaseEnded( TestCaseStats(   testInfo,
+            m_reporter->testCaseEnded( TestCaseStats(   testCase,
                                                         deltaTotals,
                                                         redirectedCout,
                                                         redirectedCerr,
                                                         aborting() ) );
 
-            m_activeTestCase = CATCH_NULL;
-            m_testCaseTracker = CATCH_NULL;
+            m_activeTestCaseInfo = CATCH_NULL;
 
             return deltaTotals;
         }
@@ -126,12 +123,10 @@ namespace Catch {
 
 
         virtual void assertionEnded( AssertionResult const& result ) {
-            if( result.getResultType() == ResultWas::Ok ) {
+            if( result.getResultType() == ResultWas::Ok )
                 m_totals.assertions.passed++;
-            }
-            else if( !result.isOk() ) {
+            else if( !result.isOk() )
                 m_totals.assertions.failed++;
-            }
 
             if( m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) ) )
                 m_messages.clear();
@@ -206,8 +201,8 @@ namespace Catch {
         }
 
         virtual std::string getCurrentTestName() const {
-            return m_activeTestCase
-                ? m_activeTestCase->getTestCaseInfo().name
+            return m_activeTestCaseInfo
+                ? m_activeTestCaseInfo->name
                 : "";
         }
 
@@ -224,19 +219,19 @@ namespace Catch {
             handleUnfinishedSections();
 
             // Recreate section for test case (as we will lose the one that was in scope)
-            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-            SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );
+            SectionInfo testCaseSection
+                (   m_activeTestCaseInfo->lineInfo,
+                    m_activeTestCaseInfo->name,
+                    m_activeTestCaseInfo->description );
 
             Counts assertions;
             assertions.failed = 1;
             SectionStats testCaseSectionStats( testCaseSection, assertions, 0, false );
             m_reporter->sectionEnded( testCaseSectionStats );
 
-            TestCaseInfo testInfo = m_activeTestCase->getTestCaseInfo();
-
             Totals deltaTotals;
             deltaTotals.testCases.failed = 1;
-            m_reporter->testCaseEnded( TestCaseStats(   testInfo,
+            m_reporter->testCaseEnded( TestCaseStats(   *m_activeTestCaseInfo,
                                                         deltaTotals,
                                                         "",
                                                         "",
@@ -254,14 +249,13 @@ namespace Catch {
 
     private:
 
-        void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
-            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-            SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );
+        void runTest( TestCase const& testCase, std::string& redirectedCout, std::string& redirectedCerr ) {
+            SectionInfo testCaseSection( testCase.lineInfo, testCase.name, testCase.description );
             m_reporter->sectionStarting( testCaseSection );
             Counts prevAssertions = m_totals.assertions;
             double duration = 0;
             try {
-                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCase.lineInfo, "", ResultDisposition::Normal );
 
                 seedRng( *m_config );
 
@@ -270,10 +264,10 @@ namespace Catch {
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( Catch::cout(), redirectedCout );
                     StreamRedirect cerrRedir( Catch::cerr(), redirectedCerr );
-                    invokeActiveTestCase();
+                    invokeTestCase( testCase );
                 }
                 else {
-                    invokeActiveTestCase();
+                    invokeTestCase( testCase );
                 }
                 duration = timer.getElapsedSeconds();
             }
@@ -283,14 +277,15 @@ namespace Catch {
             catch(...) {
                 makeUnexpectedResultBuilder().useActiveException();
             }
-            m_testCaseTracker->close();
+            m_trackerContext.currentTracker().close();
+            
             handleUnfinishedSections();
             m_messages.clear();
 
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
-            if( testCaseInfo.okToFail() ) {
+            if( testCase.okToFail() ) {
                 std::swap( assertions.failedButOk, assertions.failed );
                 m_totals.assertions.failed -= assertions.failedButOk;
                 m_totals.assertions.failedButOk += assertions.failedButOk;
@@ -300,10 +295,9 @@ namespace Catch {
             m_reporter->sectionEnded( testCaseSectionStats );
         }
 
-        void invokeActiveTestCase() {
+        static void invokeTestCase( TestCase const& testCase ) {
             FatalConditionHandler fatalConditionHandler; // Handle signals
-            m_activeTestCase->invoke();
-            fatalConditionHandler.reset();
+            testCase.invoke();
         }
 
     private:
@@ -328,19 +322,19 @@ namespace Catch {
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
-        TestCase const* m_activeTestCase;
-        ITracker* m_testCaseTracker;
-        ITracker* m_currentSectionTracker;
-        AssertionResult m_lastResult;
 
         Ptr<IConfig const> m_config;
-        Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
-        std::vector<MessageInfo> m_messages;
+        TrackerContext m_trackerContext;
+        Totals m_totals;
+        
+        // Transient state
+        TestCaseInfo const* m_activeTestCaseInfo;
+        AssertionResult m_lastResult;
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
-        TrackerContext m_trackerContext;
+        std::vector<MessageInfo> m_messages;
     };
 
     IResultCapture& getResultCapture() {

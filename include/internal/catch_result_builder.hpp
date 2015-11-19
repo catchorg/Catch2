@@ -101,7 +101,7 @@ namespace Catch {
         getResultCapture().assertionEnded( result );
 
         if( !result.isOk() ) {
-            if( getCurrentContext().getConfig()->shouldDebugBreak() )
+            if( getCurrentConfig()->shouldDebugBreak() )
                 m_shouldDebugBreak = true;
             if( getCurrentContext().getRunner()->aborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
                 m_shouldThrow = true;
@@ -113,7 +113,7 @@ namespace Catch {
     }
 
     bool ResultBuilder::shouldDebugBreak() const { return m_shouldDebugBreak; }
-    bool ResultBuilder::allowThrows() const { return getCurrentContext().getConfig()->allowThrows(); }
+    bool ResultBuilder::allowThrows() const { return getCurrentConfig()->allowThrows(); }
 
     AssertionResult ResultBuilder::build() const
     {

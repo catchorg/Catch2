@@ -87,7 +87,9 @@ namespace Catch {
             std::srand( config.rngSeed() );
     }
     unsigned int rngSeed() {
-        return getCurrentContext().getConfig()->rngSeed();
+        return getCurrentConfig()
+            ? getCurrentConfig()->rngSeed()
+            : 0;
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {

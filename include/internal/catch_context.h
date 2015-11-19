@@ -28,7 +28,7 @@ namespace Catch {
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IRunner* getRunner() = 0;
-        virtual Ptr<IConfig const> getConfig() const = 0;
+        virtual IConfig const* getConfig() const = 0;
     };
 
     struct IMutableContext : IContext
@@ -42,8 +42,7 @@ namespace Catch {
     IContext& getCurrentContext();
     IMutableContext& getCurrentMutableContext();
     void cleanUpContext();
-    Stream createStream( std::string const& streamName );
-
+    IConfig const* getCurrentConfig();
 }
 
 #endif // TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED

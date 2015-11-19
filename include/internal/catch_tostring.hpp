@@ -55,7 +55,7 @@ namespace Detail {
 
 std::string toString( std::string const& value ) {
     std::string s = value;
-    if( getCurrentContext().getConfig()->showInvisibles() ) {
+    if( getCurrentConfig() && getCurrentConfig()->showInvisibles() ) {
         for(size_t i = 0; i < s.size(); ++i ) {
             std::string subs;
             switch( s[i] ) {

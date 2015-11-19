@@ -28,8 +28,8 @@ namespace Catch {
         virtual IRunner* getRunner() {
             return m_runner;
         }
-        virtual Ptr<IConfig const> getConfig() const {
-            return m_config;
+        virtual IConfig const* getConfig() const {
+            return m_config.get();
         }
 
     public: // IMutableContext
@@ -67,6 +67,13 @@ namespace Catch {
         delete currentContext;
         currentContext = CATCH_NULL;
     }
+
+    IConfig const* getCurrentConfig() {
+        return currentContext
+            ? currentContext->getConfig()
+            : CATCH_NULL;
+    }
+    
 }
 
 #endif // TWOBLUECUBES_CATCH_CONTEXT_IMPL_HPP_INCLUDED

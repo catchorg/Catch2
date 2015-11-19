@@ -475,6 +475,8 @@ TEST_CASE( "long long" ) {
 
 //TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
 //    int i = 0;
-//    int x = 10/i; // This should cause the signal to fire
-//    CHECK( x == 0 );
+//    SECTION( "s" ) {
+//        int x = 10/i; // This should cause the signal to fire
+//        CHECK( x == 0 );
+//    }
 //}
