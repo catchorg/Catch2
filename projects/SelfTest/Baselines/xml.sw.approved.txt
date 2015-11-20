@@ -5110,6 +5110,9 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="ManuallyRegistered">
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Parsing a std::pair">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
@@ -8328,7 +8331,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="671" failures="85" expectedFailures="13"/>
+    <OverallResults successes="672" failures="85" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="671" failures="85" expectedFailures="13"/>
+  <OverallResults successes="672" failures="85" expectedFailures="13"/>
 </Catch>
