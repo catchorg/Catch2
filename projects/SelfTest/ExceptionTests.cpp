@@ -112,6 +112,7 @@ public:
     CustomStdException( const std::string& msg )
     : m_msg( msg )
     {}
+    ~CustomStdException() CATCH_NOEXCEPT {}
     
     std::string getMessage() const
     {
