@@ -449,3 +449,13 @@ TEST_CASE( "Long text is truncted", "[Text][Truncated]" ) {
     CHECK_THAT( t.toString(), EndsWith( "... message truncated due to excessive size" ) );
 
 }
+
+inline void manuallyRegisteredTestFunction() {
+    SUCCEED( "was called" );
+}
+struct AutoTestReg {
+    AutoTestReg() {
+        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered", "" );
+    }
+};
+AutoTestReg autoTestReg;

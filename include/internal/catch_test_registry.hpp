@@ -42,27 +42,32 @@ struct NameAndDesc {
     const char* description;
 };
 
+void registerTestCase
+    (   ITestCase* testCase,
+        char const* className,
+        NameAndDesc const& nameAndDesc,
+        SourceLineInfo const& lineInfo );
+
 struct AutoReg {
 
-    AutoReg(    TestFunction function,
-                SourceLineInfo const& lineInfo,
-                NameAndDesc const& nameAndDesc );
+    AutoReg
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo,
+            NameAndDesc const& nameAndDesc );
 
     template<typename C>
-    AutoReg(    void (C::*method)(),
-                char const* className,
-                NameAndDesc const& nameAndDesc,
-                SourceLineInfo const& lineInfo ) {
-        registerTestCase(   new MethodTestCase<C>( method ),
-                            className,
-                            nameAndDesc,
-                            lineInfo );
-    }
+    AutoReg
+        (   void (C::*method)(),
+            char const* className,
+            NameAndDesc const& nameAndDesc,
+            SourceLineInfo const& lineInfo ) {
 
-    void registerTestCase(  ITestCase* testCase,
-                            char const* className,
-                            NameAndDesc const& nameAndDesc,
-                            SourceLineInfo const& lineInfo );
+        registerTestCase
+            (   new MethodTestCase<C>( method ),
+                className,
+                nameAndDesc,
+                lineInfo );
+    }
 
     ~AutoReg();
 
@@ -70,6 +75,11 @@ private:
     AutoReg( AutoReg const& );
     void operator= ( AutoReg const& );
 };
+
+void registerTestCaseFunction
+    (   TestFunction function,
+        SourceLineInfo const& lineInfo,
+        NameAndDesc const& nameAndDesc );
 
 } // end namespace Catch
 
@@ -94,6 +104,10 @@ private:
         } \
         void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... ) \
+        Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) );
+
 #else
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
@@ -115,6 +129,9 @@ private:
         } \
         void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, Name, Desc ) \
+        Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) );
 #endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED

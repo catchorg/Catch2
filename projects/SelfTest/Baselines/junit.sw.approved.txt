@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="13" failures="72" tests="915" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="13" failures="72" tests="916" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -547,6 +547,7 @@ hello
     </testcase>
     <testcase classname="global" name="Text can be formatted using the Text class" time="{duration}"/>
     <testcase classname="global" name="Long text is truncted" time="{duration}"/>
+    <testcase classname="global" name="ManuallyRegistered" time="{duration}"/>
     <testcase classname="global" name="Parsing a std::pair" time="{duration}"/>
     <testcase classname="global" name="Where there is more to the expression after the RHS" time="{duration}"/>
     <testcase classname="global" name="Where the LHS is not a simple value" time="{duration}"/>

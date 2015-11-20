@@ -6005,6 +6005,17 @@ with expansion:
 ... message truncated due to excessive size
 
 -------------------------------------------------------------------------------
+ManuallyRegistered
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+with message:
+  was called
+
+-------------------------------------------------------------------------------
 Parsing a std::pair
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -9034,6 +9045,6 @@ with expansion:
   1 > 0
 
 ===============================================================================
-test cases: 166 | 122 passed | 43 failed |  1 failed as expected
-assertions: 915 | 817 passed | 85 failed | 13 failed as expected
+test cases: 167 | 123 passed | 43 failed |  1 failed as expected
+assertions: 916 | 818 passed | 85 failed | 13 failed as expected
 
