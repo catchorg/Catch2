@@ -26,7 +26,8 @@ namespace Catch {
                                     char const* capturedExpression,
                                     ResultDisposition::Flags resultDisposition,
                                     char const* secondArg )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
+    :   m_runContext( getCurrentRunContext() ),
+        m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
         m_shouldDebugBreak( false ),
         m_shouldThrow( false )
     {}
@@ -96,13 +97,12 @@ namespace Catch {
     }
     void ResultBuilder::handleResult( AssertionResult const& result )
     {
-        IRunContext& context = getCurrentRunContext();
-        context.assertionEnded( result );
+        m_runContext.assertionEnded( result );
 
         if( !result.isOk() ) {
-            if( context.config().shouldDebugBreak() )
+            if( m_runContext.config().shouldDebugBreak() )
                 m_shouldDebugBreak = true;
-            if( context.isAborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
+            if( m_runContext.isAborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
                 m_shouldThrow = true;
         }
     }
@@ -112,7 +112,7 @@ namespace Catch {
     }
 
     bool ResultBuilder::shouldDebugBreak() const { return m_shouldDebugBreak; }
-    bool ResultBuilder::allowThrows() const { return getCurrentConfig()->allowThrows(); }
+    bool ResultBuilder::allowThrows() const { return m_runContext.config().allowThrows(); }
 
     AssertionResult ResultBuilder::build() const
     {

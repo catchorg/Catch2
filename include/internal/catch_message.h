@@ -13,6 +13,8 @@
 #include "catch_common.h"
 
 namespace Catch {
+    
+    struct IRunContext;
 
     struct MessageInfo {
         MessageInfo(    std::string const& _macroName,
@@ -58,6 +60,7 @@ namespace Catch {
         ScopedMessage( ScopedMessage const& other );
         ~ScopedMessage();
 
+        IRunContext& m_runContext;
         MessageInfo m_info;
     };
 

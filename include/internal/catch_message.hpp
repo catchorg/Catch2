@@ -28,17 +28,19 @@ namespace Catch {
     ////////////////////////////////////////////////////////////////////////////
 
     ScopedMessage::ScopedMessage( MessageBuilder const& builder )
-    : m_info( builder.m_info )
+    :   m_info( builder.m_info ),
+        m_runContext( getCurrentRunContext() )
     {
         m_info.message = builder.m_stream.str();
-        getCurrentRunContext().pushScopedMessage( m_info );
+        m_runContext.pushScopedMessage( m_info );
     }
     ScopedMessage::ScopedMessage( ScopedMessage const& other )
-    : m_info( other.m_info )
+    :   m_info( other.m_info ),
+        m_runContext( other.m_runContext )
     {}
 
     ScopedMessage::~ScopedMessage() {
-        getCurrentRunContext().popScopedMessage( m_info );
+        m_runContext.popScopedMessage( m_info );
     }
 
 

@@ -15,6 +15,7 @@
 
 namespace Catch {
 
+    struct IRunContext;
     struct TestFailureException{};
 
     template<typename T> class ExpressionLhs;
@@ -77,6 +78,7 @@ namespace Catch {
         bool allowThrows() const;
 
     private:
+        IRunContext& m_runContext;
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
         struct ExprComponents {

@@ -63,7 +63,6 @@ namespace Catch {
     IRunContext* tryGetCurrentRunContext() {
         return s_currentRunContext;
     }
-    
     IRunContext& getCurrentRunContext() {
         if( IRunContext* capture = tryGetCurrentRunContext() )
             return *capture;

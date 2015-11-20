@@ -55,10 +55,13 @@ namespace Detail {
 
 std::string toString( std::string const& value ) {
     std::string s = value;
-    if( getCurrentConfig() && getCurrentConfig()->showInvisibles() ) {
+    IConfig const* config = getCurrentConfig();
+    if( config && config->showInvisibles() ) {
         for(size_t i = 0; i < s.size(); ++i ) {
             std::string subs;
             switch( s[i] ) {
+            case '\r': subs = "\\r"; break;
+            case '\l': subs = "\\l"; break;
             case '\n': subs = "\\n"; break;
             case '\t': subs = "\\t"; break;
             default: break;

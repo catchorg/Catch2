@@ -30,10 +30,12 @@ namespace Catch {
         virtual ~IRunContext();
 
         virtual void assertionEnded( AssertionResult const& result ) = 0;
+        
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
         virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+        
         virtual void pushScopedMessage( MessageInfo const& message ) = 0;
         virtual void popScopedMessage( MessageInfo const& message ) = 0;
 
@@ -42,11 +44,13 @@ namespace Catch {
         virtual std::string getCurrentTestName() const = 0;
         virtual AssertionResult const* getLastResult() const = 0;
         virtual bool isAborting() const = 0;
+        
         virtual IConfig const& config() const = 0;
     };
 
     IRunContext* tryGetCurrentRunContext();
     IRunContext& getCurrentRunContext();
+    
     IConfig const* getCurrentConfig();
 }
 

@@ -16,6 +16,8 @@
 
 namespace Catch {
 
+    struct IRunContext;
+
     class Section : NonCopyable {
     public:
         Section( SectionInfo const& info );
@@ -29,6 +31,7 @@ namespace Catch {
 
         std::string m_name;
         Counts m_assertions;
+        IRunContext& m_runContext;
         bool m_sectionIncluded;
         Timer m_timer;
     };
