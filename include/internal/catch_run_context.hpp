@@ -319,6 +319,7 @@ namespace Catch {
         static void invokeTestCase( TestCase const& testCase ) {
             FatalConditionHandler fatalConditionHandler; // Handle signals
             testCase.invoke();
+            fatalConditionHandler.reset(); // Not strictly needed but avoids warnings
         }
 
     private:

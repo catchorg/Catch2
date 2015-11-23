@@ -61,7 +61,6 @@ std::string toString( std::string const& value ) {
             std::string subs;
             switch( s[i] ) {
             case '\r': subs = "\\r"; break;
-            case '\l': subs = "\\l"; break;
             case '\n': subs = "\\n"; break;
             case '\t': subs = "\\t"; break;
             default: break;
