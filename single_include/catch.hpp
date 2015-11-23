@@ -1,6 +1,6 @@
 /*
  *  Catch v2.0.0-develop.1
- *  Generated: 2015-11-23 10:08:41.422349
+ *  Generated: 2015-11-23 10:29:02.491468
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3090,6 +3090,7 @@ namespace Catch {
 #include <streambuf>
 #include <ostream>
 #include <fstream>
+#include <memory>
 
 namespace Catch {
 
@@ -3121,7 +3122,7 @@ namespace Catch {
     };
 
     class DebugOutStream : public IStream {
-        std::auto_ptr<StreamBufBase> m_streamBuf;
+        CATCH_AUTO_PTR( StreamBufBase ) m_streamBuf;
         mutable std::ostream m_os;
     public:
         DebugOutStream();
