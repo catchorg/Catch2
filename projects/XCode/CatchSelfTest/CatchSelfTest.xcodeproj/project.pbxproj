@@ -84,8 +84,6 @@
 		2656C227192A78410040DB02 /* catch_reenable_warnings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_reenable_warnings.h; sourceTree = "<group>"; };
 		266B06B616F3A60A004ED264 /* VariadicMacrosTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VariadicMacrosTests.cpp; path = ../../../SelfTest/VariadicMacrosTests.cpp; sourceTree = "<group>"; };
 		266ECD73170F3C620030D735 /* BDDTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BDDTests.cpp; path = ../../../SelfTest/BDDTests.cpp; sourceTree = "<group>"; };
-		266ECD8C1713614B0030D735 /* catch_legacy_reporter_adapter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_legacy_reporter_adapter.hpp; sourceTree = "<group>"; };
-		266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_legacy_reporter_adapter.h; sourceTree = "<group>"; };
 		26711C8D195D465C0033EDA2 /* TagAliasTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TagAliasTests.cpp; path = ../../../SelfTest/TagAliasTests.cpp; sourceTree = "<group>"; };
 		26711C90195D46CD0033EDA2 /* catch_interfaces_tag_alias_registry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_tag_alias_registry.h; sourceTree = "<group>"; };
 		26711C91195D47820033EDA2 /* catch_tag_alias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_tag_alias.h; sourceTree = "<group>"; };
@@ -437,8 +435,6 @@
 		4AC91CC2155C388300DC5117 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				266ECD8C1713614B0030D735 /* catch_legacy_reporter_adapter.hpp */,
-				266ECD8D1713614B0030D735 /* catch_legacy_reporter_adapter.h */,
 				4A6D0C49149B3E3D00DB3EAA /* catch_common.h */,
 				262E739A1846759000CAC268 /* catch_common.hpp */,
 				4A6D0C4B149B3E3D00DB3EAA /* catch_debugger.hpp */,

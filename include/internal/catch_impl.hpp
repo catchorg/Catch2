@@ -25,7 +25,6 @@
 #include "catch_test_spec.hpp"
 #include "catch_version.hpp"
 #include "catch_message.hpp"
-#include "catch_legacy_reporter_adapter.hpp"
 #include "catch_timer.hpp"
 #include "catch_common.hpp"
 #include "catch_section.hpp"
@@ -59,7 +58,6 @@ namespace Catch {
     IMutableRegistryHub::~IMutableRegistryHub() {}
     IExceptionTranslator::~IExceptionTranslator() {}
     IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
-    IReporter::~IReporter() {}
     IReporterFactory::~IReporterFactory() {}
     IReporterRegistry::~IReporterRegistry() {}
     IStreamingReporter::~IStreamingReporter() {}
