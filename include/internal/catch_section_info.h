@@ -10,15 +10,18 @@
 
 #include "catch_common.h"
 #include "catch_totals.hpp"
+#include "catch_interfaces_capture.h"
 
 namespace Catch {
 
     struct SectionInfo {
         SectionInfo
-            (   SourceLineInfo const& _lineInfo,
+            (   IRunContext& _runContext,
+                SourceLineInfo const& _lineInfo,
                 std::string const& _name,
                 std::string const& _description = std::string() );
 
+        IRunContext* runContext;
         std::string name;
         std::string description;
         SourceLineInfo lineInfo;

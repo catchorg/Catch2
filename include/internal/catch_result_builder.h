@@ -37,11 +37,13 @@ namespace Catch {
 
     class ResultBuilder {
     public:
-        ResultBuilder(  char const* macroName,
-                        SourceLineInfo const& lineInfo,
-                        char const* capturedExpression,
-                        ResultDisposition::Flags resultDisposition,
-                        char const* secondArg = "" );
+        ResultBuilder
+            (   IRunContext& runContext,
+                char const* macroName,
+                SourceLineInfo const& lineInfo,
+                char const* capturedExpression,
+                ResultDisposition::Flags resultDisposition,
+                char const* secondArg = "" );
 
         template<typename T>
         ExpressionLhs<T const&> operator <= ( T const& operand );

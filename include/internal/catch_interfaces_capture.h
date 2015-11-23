@@ -16,7 +16,6 @@ namespace Catch {
 
     class TestCase;
     class AssertionResult;
-    class ScopedMessageBuilder;
 
     struct AssertionInfo;
     struct SectionInfo;
@@ -48,10 +47,21 @@ namespace Catch {
         virtual IConfig const& config() const = 0;
     };
 
-    IRunContext* tryGetCurrentRunContext();
     IRunContext& getCurrentRunContext();
     
     IConfig const* getCurrentConfig();
+
+    class LocalContext {
+
+    public:
+        IRunContext& operator()() const {
+            return getCurrentRunContext(); // !TBD
+        }
+    };
+}
+
+inline Catch::IRunContext& C_A_T_C_H_Context() {
+    return Catch::getCurrentRunContext();
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED

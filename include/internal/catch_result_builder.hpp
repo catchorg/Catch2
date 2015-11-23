@@ -21,12 +21,14 @@ namespace Catch {
             ? capturedExpression
             : capturedExpression + ", " + secondArg;
     }
-    ResultBuilder::ResultBuilder(   char const* macroName,
-                                    SourceLineInfo const& lineInfo,
-                                    char const* capturedExpression,
-                                    ResultDisposition::Flags resultDisposition,
-                                    char const* secondArg )
-    :   m_runContext( getCurrentRunContext() ),
+    ResultBuilder::ResultBuilder
+        (   IRunContext& runContext,
+            char const* macroName,
+            SourceLineInfo const& lineInfo,
+            char const* capturedExpression,
+            ResultDisposition::Flags resultDisposition,
+            char const* secondArg )
+    :   m_runContext( runContext ),
         m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
         m_shouldDebugBreak( false ),
         m_shouldThrow( false )

@@ -75,9 +75,6 @@ namespace Catch {
         else
             return CATCH_NULL;
     }
-    AssertionResult const* getLastResult() {
-        return getCurrentRunContext().getLastResult();
-    }
 
     class RunContext : public IRunContext {
 
@@ -243,7 +240,8 @@ namespace Catch {
 
             // Recreate section for test case (as we will lose the one that was in scope)
             SectionInfo testCaseSection
-                (   m_activeTestCaseInfo->lineInfo,
+                (   C_A_T_C_H_Context(),
+                    m_activeTestCaseInfo->lineInfo,
                     m_activeTestCaseInfo->name,
                     m_activeTestCaseInfo->description );
 
@@ -273,7 +271,7 @@ namespace Catch {
     private:
 
         void runTest( TestCase const& testCase, std::string& redirectedCout, std::string& redirectedCerr ) {
-            SectionInfo testCaseSection( testCase.lineInfo, testCase.name, testCase.description );
+            SectionInfo testCaseSection( *this, testCase.lineInfo, testCase.name, testCase.description );
             m_reporter->sectionStarting( testCaseSection );
             Counts prevAssertions = m_totals.assertions;
             double duration = 0;
@@ -325,11 +323,13 @@ namespace Catch {
 
     private:
 
-        ResultBuilder makeUnexpectedResultBuilder() const {
-            return ResultBuilder(   m_lastAssertionInfo.macroName.c_str(),
-                                    m_lastAssertionInfo.lineInfo,
-                                    m_lastAssertionInfo.capturedExpression.c_str(),
-                                    m_lastAssertionInfo.resultDisposition );
+        ResultBuilder makeUnexpectedResultBuilder() {
+            return ResultBuilder
+                (   *this,
+                    m_lastAssertionInfo.macroName.c_str(),
+                    m_lastAssertionInfo.lineInfo,
+                    m_lastAssertionInfo.capturedExpression.c_str(),
+                    m_lastAssertionInfo.resultDisposition );
         }
 
         void handleUnfinishedSections() {

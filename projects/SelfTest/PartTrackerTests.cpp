@@ -9,32 +9,9 @@
 #include "internal/catch_test_case_tracker.hpp"
 
 
-namespace Catch
-{
-    class LocalContext {
-
-    public:
-        TrackerContext& operator()() const {
-            return TrackerContext::instance();
-        }
-    };
-
-} // namespace Catch
-
-inline Catch::TrackerContext& C_A_T_C_H_Context() {
-    return Catch::TrackerContext::instance();
-}
-
-// -------------------
-
 #include "catch.hpp"
 
 using namespace Catch;
-
-//inline void testCase( Catch::LocalContext const& C_A_T_C_H_Context ) {
-//
-//    REQUIRE( C_A_T_C_H_Context().i() == 42 );
-//}
 
 TEST_CASE( "Tracker", "" ) {
 

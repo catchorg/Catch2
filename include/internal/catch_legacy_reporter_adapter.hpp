@@ -46,7 +46,7 @@ namespace Catch
                     it != itEnd;
                     ++it ) {
                 if( it->type == ResultWas::Info ) {
-                    ResultBuilder rb( it->macroName.c_str(), it->lineInfo, "", ResultDisposition::Normal );
+                    ResultBuilder rb( getCurrentRunContext(), it->macroName.c_str(), it->lineInfo, "", ResultDisposition::Normal );
                     rb << it->message;
                     rb.setResultType( ResultWas::Info );
                     AssertionResult result = rb.build();

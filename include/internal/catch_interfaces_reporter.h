@@ -91,12 +91,9 @@ namespace Catch
         {
             if( assertionResult.hasMessage() ) {
                 // Copy message into messages list.
-                // !TBD This should have been done earlier, somewhere
-                MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
-                builder << assertionResult.getMessage();
-                builder.m_info.message = builder.m_stream.str();
-
-                infoMessages.push_back( builder.m_info );
+                MessageInfo info( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
+                info.message = assertionResult.getMessage();
+                infoMessages.push_back( info );
             }
         }
         virtual ~AssertionStats();

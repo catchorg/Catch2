@@ -38,10 +38,12 @@ namespace Catch {
     };
 
     struct MessageBuilder {
-        MessageBuilder( std::string const& macroName,
+        MessageBuilder( IRunContext& runContext,
+                        std::string const& macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type )
-        : m_info( macroName, lineInfo, type )
+        :   m_runContext( runContext ),
+            m_info( macroName, lineInfo, type )
         {}
 
         template<typename T>
@@ -50,6 +52,7 @@ namespace Catch {
             return *this;
         }
 
+        IRunContext& m_runContext;
         MessageInfo m_info;
         std::ostringstream m_stream;
     };
