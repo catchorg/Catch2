@@ -1,6 +1,6 @@
 /*
- *  Catch v1.3.0-develop.3
- *  Generated: 2015-11-18 08:39:33.879583
+ *  Catch v2.0.0-develop.1
+ *  Generated: 2015-11-23 10:08:41.422349
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -417,32 +417,11 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define CATCH_NOT_IMPLEMENTED throw Catch::NotImplementedException( CATCH_INTERNAL_LINEINFO )
 
-// #included from: internal/catch_context.h
-#define TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
+// #included from: internal/catch_test_registry.hpp
+#define TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
 
-// #included from: catch_interfaces_generators.h
-#define TWOBLUECUBES_CATCH_INTERFACES_GENERATORS_H_INCLUDED
-
-#include <string>
-
-namespace Catch {
-
-    struct IGeneratorInfo {
-        virtual ~IGeneratorInfo();
-        virtual bool moveNext() = 0;
-        virtual std::size_t getCurrentIndex() const = 0;
-    };
-
-    struct IGeneratorsForTest {
-        virtual ~IGeneratorsForTest();
-
-        virtual IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) = 0;
-        virtual bool moveNext() = 0;
-    };
-
-    IGeneratorsForTest* createGeneratorsForTest();
-
-} // end namespace Catch
+// #included from: catch_interfaces_testcase.h
+#define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 
 // #included from: catch_ptr.hpp
 #define TWOBLUECUBES_CATCH_PTR_HPP_INCLUDED
@@ -527,51 +506,6 @@ namespace Catch {
 #pragma clang diagnostic pop
 #endif
 
-#include <memory>
-#include <vector>
-#include <stdlib.h>
-
-namespace Catch {
-
-    class TestCase;
-    class Stream;
-    struct IResultCapture;
-    struct IRunner;
-    struct IGeneratorsForTest;
-    struct IConfig;
-
-    struct IContext
-    {
-        virtual ~IContext();
-
-        virtual IResultCapture* getResultCapture() = 0;
-        virtual IRunner* getRunner() = 0;
-        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;
-        virtual bool advanceGeneratorsForCurrentTest() = 0;
-        virtual Ptr<IConfig const> getConfig() const = 0;
-    };
-
-    struct IMutableContext : IContext
-    {
-        virtual ~IMutableContext();
-        virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
-        virtual void setRunner( IRunner* runner ) = 0;
-        virtual void setConfig( Ptr<IConfig const> const& config ) = 0;
-    };
-
-    IContext& getCurrentContext();
-    IMutableContext& getCurrentMutableContext();
-    void cleanUpContext();
-    Stream createStream( std::string const& streamName );
-
-}
-
-// #included from: internal/catch_test_registry.hpp
-#define TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
-
-// #included from: catch_interfaces_testcase.h
-#define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
-
 #include <vector>
 
 namespace Catch {
@@ -629,27 +563,32 @@ struct NameAndDesc {
     const char* description;
 };
 
+void registerTestCase
+    (   ITestCase* testCase,
+        char const* className,
+        NameAndDesc const& nameAndDesc,
+        SourceLineInfo const& lineInfo );
+
 struct AutoReg {
 
-    AutoReg(    TestFunction function,
-                SourceLineInfo const& lineInfo,
-                NameAndDesc const& nameAndDesc );
+    AutoReg
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo,
+            NameAndDesc const& nameAndDesc );
 
     template<typename C>
-    AutoReg(    void (C::*method)(),
-                char const* className,
-                NameAndDesc const& nameAndDesc,
-                SourceLineInfo const& lineInfo ) {
-        registerTestCase(   new MethodTestCase<C>( method ),
-                            className,
-                            nameAndDesc,
-                            lineInfo );
-    }
+    AutoReg
+        (   void (C::*method)(),
+            char const* className,
+            NameAndDesc const& nameAndDesc,
+            SourceLineInfo const& lineInfo ) {
 
-    void registerTestCase(  ITestCase* testCase,
-                            char const* className,
-                            NameAndDesc const& nameAndDesc,
-                            SourceLineInfo const& lineInfo );
+        registerTestCase
+            (   new MethodTestCase<C>( method ),
+                className,
+                nameAndDesc,
+                lineInfo );
+    }
 
     ~AutoReg();
 
@@ -657,6 +596,11 @@ private:
     AutoReg( AutoReg const& );
     void operator= ( AutoReg const& );
 };
+
+void registerTestCaseFunction
+    (   TestFunction function,
+        SourceLineInfo const& lineInfo,
+        NameAndDesc const& nameAndDesc );
 
 } // end namespace Catch
 
@@ -681,6 +625,10 @@ private:
         } \
         void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... ) \
+        Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) );
+
 #else
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
@@ -702,6 +650,9 @@ private:
         } \
         void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, Name, Desc ) \
+        Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) );
 #endif
 
 // #included from: internal/catch_capture.hpp
@@ -1143,6 +1094,7 @@ using namespace Matchers;
 
 namespace Catch {
 
+    struct IRunContext;
     struct TestFailureException{};
 
     template<typename T> class ExpressionLhs;
@@ -1205,6 +1157,7 @@ namespace Catch {
         bool allowThrows() const;
 
     private:
+        IRunContext& m_runContext;
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
         struct ExprComponents {
@@ -1842,6 +1795,8 @@ namespace Catch {
 
 namespace Catch {
 
+    struct IRunContext;
+
     struct MessageInfo {
         MessageInfo(    std::string const& _macroName,
                         SourceLineInfo const& _lineInfo,
@@ -1886,47 +1841,11 @@ namespace Catch {
         ScopedMessage( ScopedMessage const& other );
         ~ScopedMessage();
 
+        IRunContext& m_runContext;
         MessageInfo m_info;
     };
 
 } // end namespace Catch
-
-// #included from: catch_interfaces_capture.h
-#define TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED
-
-#include <string>
-
-namespace Catch {
-
-    class TestCase;
-    class AssertionResult;
-    struct AssertionInfo;
-    struct SectionInfo;
-    struct SectionEndInfo;
-    struct MessageInfo;
-    class ScopedMessageBuilder;
-    struct Counts;
-
-    struct IResultCapture {
-
-        virtual ~IResultCapture();
-
-        virtual void assertionEnded( AssertionResult const& result ) = 0;
-        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
-                                        Counts& assertions ) = 0;
-        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
-        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
-        virtual void pushScopedMessage( MessageInfo const& message ) = 0;
-        virtual void popScopedMessage( MessageInfo const& message ) = 0;
-
-        virtual std::string getCurrentTestName() const = 0;
-        virtual const AssertionResult* getLastResult() const = 0;
-
-        virtual void handleFatalErrorCondition( std::string const& message ) = 0;
-    };
-
-    IResultCapture& getResultCapture();
-}
 
 // #included from: catch_debugger.h
 #define TWOBLUECUBES_CATCH_DEBUGGER_H_INCLUDED
@@ -1977,16 +1896,8 @@ namespace Catch{
 #define CATCH_BREAK_INTO_DEBUGGER() Catch::alwaysTrue();
 #endif
 
-// #included from: catch_interfaces_runner.h
-#define TWOBLUECUBES_CATCH_INTERFACES_RUNNER_H_INCLUDED
-
 namespace Catch {
-    class TestCase;
-
-    struct IRunner {
-        virtual ~IRunner();
-        virtual bool aborting() const = 0;
-    };
+    AssertionResult const* getLastResult();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2014,12 +1925,12 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( Catch::getResultCapture().getLastResult()->succeeded() )
+    if( Catch::getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( expr, resultDisposition, macroName ) \
     INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ); \
-    if( !Catch::getResultCapture().getLastResult()->succeeded() )
+    if( !Catch::getLastResult()->succeeded() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( expr, resultDisposition, macroName ) \
@@ -2243,6 +2154,8 @@ namespace Catch {
 
 namespace Catch {
 
+    struct IRunContext;
+
     class Section : NonCopyable {
     public:
         Section( SectionInfo const& info );
@@ -2256,6 +2169,7 @@ namespace Catch {
 
         std::string m_name;
         Counts m_assertions;
+        IRunContext& m_runContext;
         bool m_sectionIncluded;
         Timer m_timer;
     };
@@ -2269,186 +2183,6 @@ namespace Catch {
     #define INTERNAL_CATCH_SECTION( name, desc ) \
         if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, name, desc ) )
 #endif
-
-// #included from: internal/catch_generators.hpp
-#define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
-
-#include <iterator>
-#include <vector>
-#include <string>
-#include <stdlib.h>
-
-namespace Catch {
-
-template<typename T>
-struct IGenerator {
-    virtual ~IGenerator() {}
-    virtual T getValue( std::size_t index ) const = 0;
-    virtual std::size_t size () const = 0;
-};
-
-template<typename T>
-class BetweenGenerator : public IGenerator<T> {
-public:
-    BetweenGenerator( T from, T to ) : m_from( from ), m_to( to ){}
-
-    virtual T getValue( std::size_t index ) const {
-        return m_from+static_cast<int>( index );
-    }
-
-    virtual std::size_t size() const {
-        return static_cast<std::size_t>( 1+m_to-m_from );
-    }
-
-private:
-
-    T m_from;
-    T m_to;
-};
-
-template<typename T>
-class ValuesGenerator : public IGenerator<T> {
-public:
-    ValuesGenerator(){}
-
-    void add( T value ) {
-        m_values.push_back( value );
-    }
-
-    virtual T getValue( std::size_t index ) const {
-        return m_values[index];
-    }
-
-    virtual std::size_t size() const {
-        return m_values.size();
-    }
-
-private:
-    std::vector<T> m_values;
-};
-
-template<typename T>
-class CompositeGenerator {
-public:
-    CompositeGenerator() : m_totalSize( 0 ) {}
-
-    // *** Move semantics, similar to auto_ptr ***
-    CompositeGenerator( CompositeGenerator& other )
-    :   m_fileInfo( other.m_fileInfo ),
-        m_totalSize( 0 )
-    {
-        move( other );
-    }
-
-    CompositeGenerator& setFileInfo( const char* fileInfo ) {
-        m_fileInfo = fileInfo;
-        return *this;
-    }
-
-    ~CompositeGenerator() {
-        deleteAll( m_composed );
-    }
-
-    operator T () const {
-        size_t overallIndex = getCurrentContext().getGeneratorIndex( m_fileInfo, m_totalSize );
-
-        typename std::vector<const IGenerator<T>*>::const_iterator it = m_composed.begin();
-        typename std::vector<const IGenerator<T>*>::const_iterator itEnd = m_composed.end();
-        for( size_t index = 0; it != itEnd; ++it )
-        {
-            const IGenerator<T>* generator = *it;
-            if( overallIndex >= index && overallIndex < index + generator->size() )
-            {
-                return generator->getValue( overallIndex-index );
-            }
-            index += generator->size();
-        }
-        CATCH_INTERNAL_ERROR( "Indexed past end of generated range" );
-        return T(); // Suppress spurious "not all control paths return a value" warning in Visual Studio - if you know how to fix this please do so
-    }
-
-    void add( const IGenerator<T>* generator ) {
-        m_totalSize += generator->size();
-        m_composed.push_back( generator );
-    }
-
-    CompositeGenerator& then( CompositeGenerator& other ) {
-        move( other );
-        return *this;
-    }
-
-    CompositeGenerator& then( T value ) {
-        ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
-        valuesGen->add( value );
-        add( valuesGen );
-        return *this;
-    }
-
-private:
-
-    void move( CompositeGenerator& other ) {
-        std::copy( other.m_composed.begin(), other.m_composed.end(), std::back_inserter( m_composed ) );
-        m_totalSize += other.m_totalSize;
-        other.m_composed.clear();
-    }
-
-    std::vector<const IGenerator<T>*> m_composed;
-    std::string m_fileInfo;
-    size_t m_totalSize;
-};
-
-namespace Generators
-{
-    template<typename T>
-    CompositeGenerator<T> between( T from, T to ) {
-        CompositeGenerator<T> generators;
-        generators.add( new BetweenGenerator<T>( from, to ) );
-        return generators;
-    }
-
-    template<typename T>
-    CompositeGenerator<T> values( T val1, T val2 ) {
-        CompositeGenerator<T> generators;
-        ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
-        valuesGen->add( val1 );
-        valuesGen->add( val2 );
-        generators.add( valuesGen );
-        return generators;
-    }
-
-    template<typename T>
-    CompositeGenerator<T> values( T val1, T val2, T val3 ){
-        CompositeGenerator<T> generators;
-        ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
-        valuesGen->add( val1 );
-        valuesGen->add( val2 );
-        valuesGen->add( val3 );
-        generators.add( valuesGen );
-        return generators;
-    }
-
-    template<typename T>
-    CompositeGenerator<T> values( T val1, T val2, T val3, T val4 ) {
-        CompositeGenerator<T> generators;
-        ValuesGenerator<T>* valuesGen = new ValuesGenerator<T>();
-        valuesGen->add( val1 );
-        valuesGen->add( val2 );
-        valuesGen->add( val3 );
-        valuesGen->add( val4 );
-        generators.add( valuesGen );
-        return generators;
-    }
-
-} // end namespace Generators
-
-using namespace Generators;
-
-} // end namespace Catch
-
-#define INTERNAL_CATCH_LINESTR2( line ) #line
-#define INTERNAL_CATCH_LINESTR( line ) INTERNAL_CATCH_LINESTR2( line )
-
-#define INTERNAL_CATCH_GENERATE( expr ) expr.setFileInfo( __FILE__ "(" INTERNAL_CATCH_LINESTR( __LINE__ ) ")" )
 
 // #included from: internal/catch_interfaces_exception.h
 #define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
@@ -5211,6 +4945,53 @@ namespace Catch {
 // #included from: internal/catch_run_context.hpp
 #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 
+// #included from: catch_interfaces_capture.h
+#define TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED
+
+#include <string>
+
+namespace Catch {
+
+    class TestCase;
+    class AssertionResult;
+    class ScopedMessageBuilder;
+
+    struct AssertionInfo;
+    struct SectionInfo;
+    struct SectionEndInfo;
+    struct MessageInfo;
+    struct Counts;
+    struct IConfig;
+
+    struct IRunContext {
+
+        virtual ~IRunContext();
+
+        virtual void assertionEnded( AssertionResult const& result ) = 0;
+
+        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
+                                        Counts& assertions ) = 0;
+        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
+        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+
+        virtual void pushScopedMessage( MessageInfo const& message ) = 0;
+        virtual void popScopedMessage( MessageInfo const& message ) = 0;
+
+        virtual void handleFatalErrorCondition( std::string const& message ) = 0;
+
+        virtual std::string getCurrentTestName() const = 0;
+        virtual AssertionResult const* getLastResult() const = 0;
+        virtual bool isAborting() const = 0;
+
+        virtual IConfig const& config() const = 0;
+    };
+
+    IRunContext* tryGetCurrentRunContext();
+    IRunContext& getCurrentRunContext();
+
+    IConfig const* getCurrentConfig();
+}
+
 // #included from: catch_test_case_tracker.hpp
 #define TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
@@ -5521,9 +5302,8 @@ namespace Catch {
 
     // Report the error condition then exit the process
     inline void fatal( std::string const& message, int exitCode ) {
-        IContext& context = Catch::getCurrentContext();
-        IResultCapture* resultCapture = context.getResultCapture();
-        resultCapture->handleFatalErrorCondition( message );
+        IRunContext& runContext = getCurrentRunContext();
+        runContext.handleFatalErrorCondition( message );
 
 		if( Catch::alwaysTrue() ) // avoids "no return" warnings
             exit( exitCode );
@@ -5619,7 +5399,34 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class RunContext : public IResultCapture, public IRunner {
+    namespace {
+        IRunContext* s_currentRunContext = CATCH_NULL;
+
+        void setCurrentRunContext( IRunContext* context ) {
+            s_currentRunContext = context;
+        }
+    }
+
+    IRunContext* tryGetCurrentRunContext() {
+        return s_currentRunContext;
+    }
+    IRunContext& getCurrentRunContext() {
+        if( IRunContext* capture = tryGetCurrentRunContext() )
+            return *capture;
+        else
+            throw std::logic_error( "No current test runner" );
+    }
+    IConfig const* getCurrentConfig() {
+        if( IRunContext* capture = tryGetCurrentRunContext() )
+            return &capture->config();
+        else
+            return CATCH_NULL;
+    }
+    AssertionResult const* getLastResult() {
+        return getCurrentRunContext().getLastResult();
+    }
+
+    class RunContext : public IRunContext {
 
         RunContext( RunContext const& );
         void operator =( RunContext const& );
@@ -5628,79 +5435,64 @@ namespace Catch {
 
         explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( _config->name() ),
-            m_context( getCurrentMutableContext() ),
-            m_activeTestCase( CATCH_NULL ),
             m_config( _config ),
-            m_reporter( reporter )
+            m_reporter( reporter ),
+            m_activeTestCaseInfo( CATCH_NULL )
         {
-            m_context.setRunner( this );
-            m_context.setConfig( m_config );
-            m_context.setResultCapture( this );
+            setCurrentRunContext( this );
             m_reporter->testRunStarting( m_runInfo );
         }
 
         virtual ~RunContext() {
-            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
+            m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, isAborting() ) );
+            setCurrentRunContext( CATCH_NULL );
         }
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
             m_reporter->testGroupStarting( GroupInfo( testSpec, groupIndex, groupsCount ) );
         }
         void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount ) {
-            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
+            m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, isAborting() ) );
         }
 
         Totals runTest( TestCase const& testCase ) {
+            m_activeTestCaseInfo = &testCase;
+
             Totals prevTotals = m_totals;
+            std::string redirectedCout, redirectedCerr;
 
-            std::string redirectedCout;
-            std::string redirectedCerr;
+            m_reporter->testCaseStarting( testCase );
 
-            TestCaseInfo testInfo = testCase.getTestCaseInfo();
+            ITracker* m_testCaseTracker;
 
-            m_reporter->testCaseStarting( testInfo );
-
-            m_activeTestCase = &testCase;
-
+            m_trackerContext.startRun();
             do {
-                m_trackerContext.startRun();
-                do {
-                    m_trackerContext.startCycle();
-                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
-                    runCurrentTest( redirectedCout, redirectedCerr );
-                }
-                while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
+                m_trackerContext.startCycle();
+                m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testCase.name );
+                runTest( testCase, redirectedCout, redirectedCerr );
             }
-            // !TBD: deprecated - this will be replaced by indexed trackers
-            while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
+            while( !m_testCaseTracker->isSuccessfullyCompleted() && !isAborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
             m_totals.testCases += deltaTotals.testCases;
-            m_reporter->testCaseEnded( TestCaseStats(   testInfo,
+            m_reporter->testCaseEnded( TestCaseStats(   testCase,
                                                         deltaTotals,
                                                         redirectedCout,
                                                         redirectedCerr,
-                                                        aborting() ) );
+                                                        isAborting() ) );
 
-            m_activeTestCase = CATCH_NULL;
-            m_testCaseTracker = CATCH_NULL;
+            m_activeTestCaseInfo = CATCH_NULL;
 
             return deltaTotals;
         }
 
-        Ptr<IConfig const> config() const {
-            return m_config;
-        }
+    private: // IRunContext
 
-    private: // IResultCapture
-
-        virtual void assertionEnded( AssertionResult const& result ) {
-            if( result.getResultType() == ResultWas::Ok ) {
+        virtual void assertionEnded( AssertionResult const& result ) CATCH_OVERRIDE {
+            if( result.getResultType() == ResultWas::Ok )
                 m_totals.assertions.passed++;
-            }
-            else if( !result.isOk() ) {
+            else if( !result.isOk() )
                 m_totals.assertions.failed++;
-            }
 
             if( m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) ) )
                 m_messages.clear();
@@ -5710,10 +5502,9 @@ namespace Catch {
             m_lastResult = result;
         }
 
-        virtual bool sectionStarted (
-            SectionInfo const& sectionInfo,
-            Counts& assertions
-        )
+        virtual bool sectionStarted
+            (   SectionInfo const& sectionInfo,
+                Counts& assertions ) CATCH_OVERRIDE
         {
             std::ostringstream oss;
             oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
@@ -5743,7 +5534,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded( SectionEndInfo const& endInfo ) {
+        virtual void sectionEnded( SectionEndInfo const& endInfo ) CATCH_OVERRIDE {
             Counts assertions = m_totals.assertions - endInfo.prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
@@ -5756,7 +5547,7 @@ namespace Catch {
             m_messages.clear();
         }
 
-        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) {
+        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) CATCH_OVERRIDE {
             if( m_unfinishedSections.empty() )
                 m_activeSections.back()->fail();
             else
@@ -5766,25 +5557,28 @@ namespace Catch {
             m_unfinishedSections.push_back( endInfo );
         }
 
-        virtual void pushScopedMessage( MessageInfo const& message ) {
+        virtual void pushScopedMessage( MessageInfo const& message ) CATCH_OVERRIDE {
             m_messages.push_back( message );
         }
 
-        virtual void popScopedMessage( MessageInfo const& message ) {
+        virtual void popScopedMessage( MessageInfo const& message ) CATCH_OVERRIDE {
             m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), message ), m_messages.end() );
         }
 
-        virtual std::string getCurrentTestName() const {
-            return m_activeTestCase
-                ? m_activeTestCase->getTestCaseInfo().name
+        virtual std::string getCurrentTestName() const CATCH_OVERRIDE {
+            return m_activeTestCaseInfo
+                ? m_activeTestCaseInfo->name
                 : "";
         }
 
-        virtual const AssertionResult* getLastResult() const {
+        virtual AssertionResult const* getLastResult() const CATCH_OVERRIDE {
             return &m_lastResult;
         }
+        virtual IConfig const& config() const CATCH_OVERRIDE {
+            return *m_config;
+        }
 
-        virtual void handleFatalErrorCondition( std::string const& message ) {
+        virtual void handleFatalErrorCondition( std::string const& message ) CATCH_OVERRIDE {
             ResultBuilder resultBuilder = makeUnexpectedResultBuilder();
             resultBuilder.setResultType( ResultWas::FatalErrorCondition );
             resultBuilder << message;
@@ -5793,19 +5587,19 @@ namespace Catch {
             handleUnfinishedSections();
 
             // Recreate section for test case (as we will lose the one that was in scope)
-            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-            SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );
+            SectionInfo testCaseSection
+                (   m_activeTestCaseInfo->lineInfo,
+                    m_activeTestCaseInfo->name,
+                    m_activeTestCaseInfo->description );
 
             Counts assertions;
             assertions.failed = 1;
             SectionStats testCaseSectionStats( testCaseSection, assertions, 0, false );
             m_reporter->sectionEnded( testCaseSectionStats );
 
-            TestCaseInfo testInfo = m_activeTestCase->getTestCaseInfo();
-
             Totals deltaTotals;
             deltaTotals.testCases.failed = 1;
-            m_reporter->testCaseEnded( TestCaseStats(   testInfo,
+            m_reporter->testCaseEnded( TestCaseStats(   *m_activeTestCaseInfo,
                                                         deltaTotals,
                                                         "",
                                                         "",
@@ -5817,20 +5611,19 @@ namespace Catch {
 
     public:
         // !TBD We need to do this another way!
-        bool aborting() const {
+        bool isAborting() const {
             return m_totals.assertions.failed == static_cast<std::size_t>( m_config->abortAfter() );
         }
 
     private:
 
-        void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr ) {
-            TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-            SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );
+        void runTest( TestCase const& testCase, std::string& redirectedCout, std::string& redirectedCerr ) {
+            SectionInfo testCaseSection( testCase.lineInfo, testCase.name, testCase.description );
             m_reporter->sectionStarting( testCaseSection );
             Counts prevAssertions = m_totals.assertions;
             double duration = 0;
             try {
-                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
+                m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCase.lineInfo, "", ResultDisposition::Normal );
 
                 seedRng( *m_config );
 
@@ -5839,10 +5632,10 @@ namespace Catch {
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( Catch::cout(), redirectedCout );
                     StreamRedirect cerrRedir( Catch::cerr(), redirectedCerr );
-                    invokeActiveTestCase();
+                    invokeTestCase( testCase );
                 }
                 else {
-                    invokeActiveTestCase();
+                    invokeTestCase( testCase );
                 }
                 duration = timer.getElapsedSeconds();
             }
@@ -5852,14 +5645,15 @@ namespace Catch {
             catch(...) {
                 makeUnexpectedResultBuilder().useActiveException();
             }
-            m_testCaseTracker->close();
+            m_trackerContext.currentTracker().close();
+
             handleUnfinishedSections();
             m_messages.clear();
 
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
-            if( testCaseInfo.okToFail() ) {
+            if( testCase.okToFail() ) {
                 std::swap( assertions.failedButOk, assertions.failed );
                 m_totals.assertions.failed -= assertions.failedButOk;
                 m_totals.assertions.failedButOk += assertions.failedButOk;
@@ -5869,10 +5663,9 @@ namespace Catch {
             m_reporter->sectionEnded( testCaseSectionStats );
         }
 
-        void invokeActiveTestCase() {
+        static void invokeTestCase( TestCase const& testCase ) {
             FatalConditionHandler fatalConditionHandler; // Handle signals
-            m_activeTestCase->invoke();
-            fatalConditionHandler.reset();
+            testCase.invoke();
         }
 
     private:
@@ -5896,28 +5689,20 @@ namespace Catch {
         }
 
         TestRunInfo m_runInfo;
-        IMutableContext& m_context;
-        TestCase const* m_activeTestCase;
-        ITracker* m_testCaseTracker;
-        ITracker* m_currentSectionTracker;
-        AssertionResult m_lastResult;
 
         Ptr<IConfig const> m_config;
-        Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
-        std::vector<MessageInfo> m_messages;
+        TrackerContext m_trackerContext;
+        Totals m_totals;
+
+        // Transient state
+        TestCaseInfo const* m_activeTestCaseInfo;
+        AssertionResult m_lastResult;
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
-        TrackerContext m_trackerContext;
+        std::vector<MessageInfo> m_messages;
     };
-
-    IResultCapture& getResultCapture() {
-        if( IResultCapture* capture = getCurrentContext().getResultCapture() )
-            return *capture;
-        else
-            throw std::logic_error( "No result capture instance" );
-    }
 
 } // end namespace Catch
 
@@ -6009,7 +5794,7 @@ namespace Catch {
         for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
                 it != itEnd;
                 ++it ) {
-            if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
+            if( !context.isAborting() && matchTest( *it, testSpec, *iconfig ) )
                 totals += context.runTest( *it );
             else
                 reporter->skipTest( *it );
@@ -6296,28 +6081,37 @@ namespace Catch {
         return className;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    void registerTestCase
+        (   ITestCase* testCase,
+            char const* classOrQualifiedMethodName,
+            NameAndDesc const& nameAndDesc,
+            SourceLineInfo const& lineInfo ) {
 
-    AutoReg::AutoReg(   TestFunction function,
-                        SourceLineInfo const& lineInfo,
-                        NameAndDesc const& nameAndDesc ) {
+        getMutableRegistryHub().registerTest
+            ( makeTestCase
+                (   testCase,
+                    extractClassName( classOrQualifiedMethodName ),
+                    nameAndDesc.name,
+                    nameAndDesc.description,
+                    lineInfo ) );
+    }
+    void registerTestCaseFunction
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo,
+            NameAndDesc const& nameAndDesc ) {
         registerTestCase( new FreeFunctionTestCase( function ), "", nameAndDesc, lineInfo );
     }
 
-    AutoReg::~AutoReg() {}
+    ///////////////////////////////////////////////////////////////////////////
 
-    void AutoReg::registerTestCase( ITestCase* testCase,
-                                    char const* classOrQualifiedMethodName,
-                                    NameAndDesc const& nameAndDesc,
-                                    SourceLineInfo const& lineInfo ) {
-
-        getMutableRegistryHub().registerTest
-            ( makeTestCase( testCase,
-                            extractClassName( classOrQualifiedMethodName ),
-                            nameAndDesc.name,
-                            nameAndDesc.description,
-                            lineInfo ) );
+    AutoReg::AutoReg
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo,
+            NameAndDesc const& nameAndDesc ) {
+        registerTestCaseFunction( function, lineInfo, nameAndDesc );
     }
+
+    AutoReg::~AutoReg() {}
 
 } // end namespace Catch
 
@@ -6483,7 +6277,6 @@ namespace Catch {
     void cleanUp() {
         delete getTheRegistryHub();
         getTheRegistryHub() = CATCH_NULL;
-        cleanUpContext();
     }
     std::string translateActiveException() {
         return getRegistryHub().getExceptionTranslatorRegistry().translateActiveException();
@@ -6511,193 +6304,6 @@ namespace Catch {
     }
 
 } // end namespace Catch
-
-// #included from: catch_context_impl.hpp
-#define TWOBLUECUBES_CATCH_CONTEXT_IMPL_HPP_INCLUDED
-
-// #included from: catch_stream.hpp
-#define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
-
-#include <stdexcept>
-#include <cstdio>
-#include <iostream>
-
-namespace Catch {
-
-    template<typename WriterF, size_t bufferSize=256>
-    class StreamBufImpl : public StreamBufBase {
-        char data[bufferSize];
-        WriterF m_writer;
-
-    public:
-        StreamBufImpl() {
-            setp( data, data + sizeof(data) );
-        }
-
-        ~StreamBufImpl() CATCH_NOEXCEPT {
-            sync();
-        }
-
-    private:
-        int overflow( int c ) {
-            sync();
-
-            if( c != EOF ) {
-                if( pbase() == epptr() )
-                    m_writer( std::string( 1, static_cast<char>( c ) ) );
-                else
-                    sputc( static_cast<char>( c ) );
-            }
-            return 0;
-        }
-
-        int sync() {
-            if( pbase() != pptr() ) {
-                m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
-                setp( pbase(), epptr() );
-            }
-            return 0;
-        }
-    };
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    FileStream::FileStream( std::string const& filename ) {
-        m_ofs.open( filename.c_str() );
-        if( m_ofs.fail() ) {
-            std::ostringstream oss;
-            oss << "Unable to open file: '" << filename << "'";
-            throw std::domain_error( oss.str() );
-        }
-    }
-
-    std::ostream& FileStream::stream() const {
-        return m_ofs;
-    }
-
-    struct OutputDebugWriter {
-
-        void operator()( std::string const&str ) {
-            writeToDebugConsole( str );
-        }
-    };
-
-    DebugOutStream::DebugOutStream()
-    :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
-        m_os( m_streamBuf.get() )
-    {}
-
-    std::ostream& DebugOutStream::stream() const {
-        return m_os;
-    }
-
-    // Store the streambuf from cout up-front because
-    // cout may get redirected when running tests
-    CoutStream::CoutStream()
-    :   m_os( Catch::cout().rdbuf() )
-    {}
-
-    std::ostream& CoutStream::stream() const {
-        return m_os;
-    }
-
-#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement this functions
-    std::ostream& cout() {
-        return std::cout;
-    }
-    std::ostream& cerr() {
-        return std::cerr;
-    }
-#endif
-}
-
-namespace Catch {
-
-    class Context : public IMutableContext {
-
-        Context() : m_config( CATCH_NULL ), m_runner( CATCH_NULL ), m_resultCapture( CATCH_NULL ) {}
-        Context( Context const& );
-        void operator=( Context const& );
-
-    public: // IContext
-        virtual IResultCapture* getResultCapture() {
-            return m_resultCapture;
-        }
-        virtual IRunner* getRunner() {
-            return m_runner;
-        }
-        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
-            return getGeneratorsForCurrentTest()
-            .getGeneratorInfo( fileInfo, totalSize )
-            .getCurrentIndex();
-        }
-        virtual bool advanceGeneratorsForCurrentTest() {
-            IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
-            return generators && generators->moveNext();
-        }
-
-        virtual Ptr<IConfig const> getConfig() const {
-            return m_config;
-        }
-
-    public: // IMutableContext
-        virtual void setResultCapture( IResultCapture* resultCapture ) {
-            m_resultCapture = resultCapture;
-        }
-        virtual void setRunner( IRunner* runner ) {
-            m_runner = runner;
-        }
-        virtual void setConfig( Ptr<IConfig const> const& config ) {
-            m_config = config;
-        }
-
-        friend IMutableContext& getCurrentMutableContext();
-
-    private:
-        IGeneratorsForTest* findGeneratorsForCurrentTest() {
-            std::string testName = getResultCapture()->getCurrentTestName();
-
-            std::map<std::string, IGeneratorsForTest*>::const_iterator it =
-                m_generatorsByTestName.find( testName );
-            return it != m_generatorsByTestName.end()
-                ? it->second
-                : CATCH_NULL;
-        }
-
-        IGeneratorsForTest& getGeneratorsForCurrentTest() {
-            IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
-            if( !generators ) {
-                std::string testName = getResultCapture()->getCurrentTestName();
-                generators = createGeneratorsForTest();
-                m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
-            }
-            return *generators;
-        }
-
-    private:
-        Ptr<IConfig const> m_config;
-        IRunner* m_runner;
-        IResultCapture* m_resultCapture;
-        std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
-    };
-
-    namespace {
-        Context* currentContext = CATCH_NULL;
-    }
-    IMutableContext& getCurrentMutableContext() {
-        if( !currentContext )
-            currentContext = new Context();
-        return *currentContext;
-    }
-    IContext& getCurrentContext() {
-        return getCurrentMutableContext();
-    }
-
-    void cleanUpContext() {
-        delete currentContext;
-        currentContext = CATCH_NULL;
-    }
-}
 
 // #included from: catch_console_colour_impl.hpp
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
@@ -6836,7 +6442,7 @@ namespace {
     };
 
     IColourImpl* platformColourInstance() {
-        Ptr<IConfig const> config = getCurrentContext().getConfig();
+        IConfig const* config = getCurrentConfig();
         return (config && config->forceColour()) || isatty(STDOUT_FILENO)
             ? PosixColourImpl::instance()
             : NoColourImpl::instance();
@@ -6866,80 +6472,6 @@ namespace Catch {
             ? NoColourImpl::instance()
             : platformColourInstance();
         impl->use( _colourCode );
-    }
-
-} // end namespace Catch
-
-// #included from: catch_generators_impl.hpp
-#define TWOBLUECUBES_CATCH_GENERATORS_IMPL_HPP_INCLUDED
-
-#include <vector>
-#include <string>
-#include <map>
-
-namespace Catch {
-
-    struct GeneratorInfo : IGeneratorInfo {
-
-        GeneratorInfo( std::size_t size )
-        :   m_size( size ),
-            m_currentIndex( 0 )
-        {}
-
-        bool moveNext() {
-            if( ++m_currentIndex == m_size ) {
-                m_currentIndex = 0;
-                return false;
-            }
-            return true;
-        }
-
-        std::size_t getCurrentIndex() const {
-            return m_currentIndex;
-        }
-
-        std::size_t m_size;
-        std::size_t m_currentIndex;
-    };
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    class GeneratorsForTest : public IGeneratorsForTest {
-
-    public:
-        ~GeneratorsForTest() {
-            deleteAll( m_generatorsInOrder );
-        }
-
-        IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) {
-            std::map<std::string, IGeneratorInfo*>::const_iterator it = m_generatorsByName.find( fileInfo );
-            if( it == m_generatorsByName.end() ) {
-                IGeneratorInfo* info = new GeneratorInfo( size );
-                m_generatorsByName.insert( std::make_pair( fileInfo, info ) );
-                m_generatorsInOrder.push_back( info );
-                return *info;
-            }
-            return *it->second;
-        }
-
-        bool moveNext() {
-            std::vector<IGeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
-            std::vector<IGeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
-            for(; it != itEnd; ++it ) {
-                if( (*it)->moveNext() )
-                    return true;
-            }
-            return false;
-        }
-
-    private:
-        std::map<std::string, IGeneratorInfo*> m_generatorsByName;
-        std::vector<IGeneratorInfo*> m_generatorsInOrder;
-    };
-
-    IGeneratorsForTest* createGeneratorsForTest()
-    {
-        return new GeneratorsForTest();
     }
 
 } // end namespace Catch
@@ -7241,7 +6773,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 3, 0, "develop", 3 );
+    Version libraryVersion( 2, 0, 0, "develop", 1 );
 
 }
 
@@ -7265,17 +6797,19 @@ namespace Catch {
     ////////////////////////////////////////////////////////////////////////////
 
     ScopedMessage::ScopedMessage( MessageBuilder const& builder )
-    : m_info( builder.m_info )
+    :   m_info( builder.m_info ),
+        m_runContext( getCurrentRunContext() )
     {
         m_info.message = builder.m_stream.str();
-        getResultCapture().pushScopedMessage( m_info );
+        m_runContext.pushScopedMessage( m_info );
     }
     ScopedMessage::ScopedMessage( ScopedMessage const& other )
-    : m_info( other.m_info )
+    :   m_info( other.m_info ),
+        m_runContext( other.m_runContext )
     {}
 
     ScopedMessage::~ScopedMessage() {
-        getResultCapture().popScopedMessage( m_info );
+        m_runContext.popScopedMessage( m_info );
     }
 
 } // end namespace Catch
@@ -7538,7 +7072,9 @@ namespace Catch {
             std::srand( config.rngSeed() );
     }
     unsigned int rngSeed() {
-        return getCurrentContext().getConfig()->rngSeed();
+        return getCurrentConfig()
+            ? getCurrentConfig()->rngSeed()
+            : 0;
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
@@ -7574,7 +7110,8 @@ namespace Catch {
 
     Section::Section( SectionInfo const& info )
     :   m_info( info ),
-        m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
+        m_runContext( getCurrentRunContext() ),
+        m_sectionIncluded( m_runContext.sectionStarted( m_info, m_assertions ) )
     {
         m_timer.start();
     }
@@ -7583,9 +7120,9 @@ namespace Catch {
         if( m_sectionIncluded ) {
             SectionEndInfo endInfo( m_info, m_assertions, m_timer.getElapsedSeconds() );
             if( std::uncaught_exception() )
-                getResultCapture().sectionEndedEarly( endInfo );
+                m_runContext.sectionEndedEarly( endInfo );
             else
-                getResultCapture().sectionEnded( endInfo );
+                m_runContext.sectionEnded( endInfo );
         }
     }
 
@@ -7732,10 +7269,13 @@ namespace Detail {
 
 std::string toString( std::string const& value ) {
     std::string s = value;
-    if( getCurrentContext().getConfig()->showInvisibles() ) {
+    IConfig const* config = getCurrentConfig();
+    if( config && config->showInvisibles() ) {
         for(size_t i = 0; i < s.size(); ++i ) {
             std::string subs;
             switch( s[i] ) {
+            case '\r': subs = "\\r"; break;
+            case '\l': subs = "\\l"; break;
             case '\n': subs = "\\n"; break;
             case '\t': subs = "\\t"; break;
             default: break;
@@ -7892,7 +7432,8 @@ namespace Catch {
                                     char const* capturedExpression,
                                     ResultDisposition::Flags resultDisposition,
                                     char const* secondArg )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
+    :   m_runContext( getCurrentRunContext() ),
+        m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
         m_shouldDebugBreak( false ),
         m_shouldThrow( false )
     {}
@@ -7962,12 +7503,12 @@ namespace Catch {
     }
     void ResultBuilder::handleResult( AssertionResult const& result )
     {
-        getResultCapture().assertionEnded( result );
+        m_runContext.assertionEnded( result );
 
         if( !result.isOk() ) {
-            if( getCurrentContext().getConfig()->shouldDebugBreak() )
+            if( m_runContext.config().shouldDebugBreak() )
                 m_shouldDebugBreak = true;
-            if( getCurrentContext().getRunner()->aborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
+            if( m_runContext.isAborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
                 m_shouldThrow = true;
         }
     }
@@ -7977,7 +7518,7 @@ namespace Catch {
     }
 
     bool ResultBuilder::shouldDebugBreak() const { return m_shouldDebugBreak; }
-    bool ResultBuilder::allowThrows() const { return getCurrentContext().getConfig()->allowThrows(); }
+    bool ResultBuilder::allowThrows() const { return m_runContext.config().allowThrows(); }
 
     AssertionResult ResultBuilder::build() const
     {
@@ -8113,6 +7654,102 @@ namespace Catch {
     }
 
 } // end namespace Catch
+
+// #included from: catch_stream.hpp
+#define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
+
+#include <stdexcept>
+#include <cstdio>
+#include <iostream>
+
+namespace Catch {
+
+    template<typename WriterF, size_t bufferSize=256>
+    class StreamBufImpl : public StreamBufBase {
+        char data[bufferSize];
+        WriterF m_writer;
+
+    public:
+        StreamBufImpl() {
+            setp( data, data + sizeof(data) );
+        }
+
+        ~StreamBufImpl() CATCH_NOEXCEPT {
+            sync();
+        }
+
+    private:
+        int overflow( int c ) {
+            sync();
+
+            if( c != EOF ) {
+                if( pbase() == epptr() )
+                    m_writer( std::string( 1, static_cast<char>( c ) ) );
+                else
+                    sputc( static_cast<char>( c ) );
+            }
+            return 0;
+        }
+
+        int sync() {
+            if( pbase() != pptr() ) {
+                m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
+                setp( pbase(), epptr() );
+            }
+            return 0;
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    FileStream::FileStream( std::string const& filename ) {
+        m_ofs.open( filename.c_str() );
+        if( m_ofs.fail() ) {
+            std::ostringstream oss;
+            oss << "Unable to open file: '" << filename << "'";
+            throw std::domain_error( oss.str() );
+        }
+    }
+
+    std::ostream& FileStream::stream() const {
+        return m_ofs;
+    }
+
+    struct OutputDebugWriter {
+
+        void operator()( std::string const&str ) {
+            writeToDebugConsole( str );
+        }
+    };
+
+    DebugOutStream::DebugOutStream()
+    :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
+        m_os( m_streamBuf.get() )
+    {}
+
+    std::ostream& DebugOutStream::stream() const {
+        return m_os;
+    }
+
+    // Store the streambuf from cout up-front because
+    // cout may get redirected when running tests
+    CoutStream::CoutStream()
+    :   m_os( Catch::cout().rdbuf() )
+    {}
+
+    std::ostream& CoutStream::stream() const {
+        return m_os;
+    }
+
+#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement this functions
+    std::ostream& cout() {
+        return std::cout;
+    }
+    std::ostream& cerr() {
+        return std::cerr;
+    }
+#endif
+}
 
 // #included from: ../reporters/catch_reporter_multi.hpp
 #define TWOBLUECUBES_CATCH_REPORTER_MULTI_HPP_INCLUDED
@@ -9928,8 +9565,7 @@ namespace Catch {
     CoutStream::~CoutStream() CATCH_NOEXCEPT {}
     DebugOutStream::~DebugOutStream() CATCH_NOEXCEPT {}
     StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
-    IContext::~IContext() {}
-    IResultCapture::~IResultCapture() {}
+    IRunContext::~IRunContext() {}
     ITestCase::~ITestCase() {}
     ITestCaseRegistry::~ITestCaseRegistry() {}
     IRegistryHub::~IRegistryHub() {}
@@ -9951,15 +9587,11 @@ namespace Catch {
     StreamingReporterBase::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     CompactReporter::~CompactReporter() {}
-    IRunner::~IRunner() {}
-    IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
     XmlReporter::~XmlReporter() {}
     JunitReporter::~JunitReporter() {}
     TestRegistry::~TestRegistry() {}
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
-    IGeneratorInfo::~IGeneratorInfo() {}
-    IGeneratorsForTest::~IGeneratorsForTest() {}
     WildcardPattern::~WildcardPattern() {}
     TestSpec::Pattern::~Pattern() {}
     TestSpec::NamePattern::~NamePattern() {}
@@ -10061,6 +9693,7 @@ int main (int argc, char * const argv[]) {
     #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
     #define CATCH_TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, __VA_ARGS__ )
     #define CATCH_METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
+    #define CATCH_REGISTER_TEST_CASE( ... ) INTERNAL_CATCH_REGISTER_TESTCASE( __VA_ARGS__ )
     #define CATCH_SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
     #define CATCH_FAIL( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL", __VA_ARGS__ )
     #define CATCH_SUCCEED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED", __VA_ARGS__ )
@@ -10068,6 +9701,7 @@ int main (int argc, char * const argv[]) {
     #define CATCH_TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
     #define CATCH_TEST_CASE_METHOD( className, name, description ) INTERNAL_CATCH_TEST_CASE_METHOD( className, name, description )
     #define CATCH_METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+    #define CATCH_REGISTER_TEST_CASE( function, name, description ) INTERNAL_CATCH_REGISTER_TESTCASE( function, name, description )
     #define CATCH_SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
     #define CATCH_FAIL( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL", msg )
     #define CATCH_SUCCEED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED", msg )
@@ -10076,8 +9710,6 @@ int main (int argc, char * const argv[]) {
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
-
-#define CATCH_GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
 // "BDD-style" convenience wrappers
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
@@ -10128,6 +9760,7 @@ int main (int argc, char * const argv[]) {
     #define TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
     #define TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, __VA_ARGS__ )
     #define METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
+    #define REGISTER_TEST_CASE( ... ) INTERNAL_CATCH_REGISTER_TESTCASE( __VA_ARGS__ )
     #define SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
     #define FAIL( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL", __VA_ARGS__ )
     #define SUCCEED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", __VA_ARGS__ )
@@ -10135,6 +9768,7 @@ int main (int argc, char * const argv[]) {
     #define TEST_CASE( name, description ) INTERNAL_CATCH_TESTCASE( name, description )
     #define TEST_CASE_METHOD( className, name, description ) INTERNAL_CATCH_TEST_CASE_METHOD( className, name, description )
     #define METHOD_AS_TEST_CASE( method, name, description ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, name, description )
+    #define REGISTER_TEST_CASE( ... ) INTERNAL_CATCH_REGISTER_TESTCASE( __VA_ARGS__ )
     #define SECTION( name, description ) INTERNAL_CATCH_SECTION( name, description )
     #define FAIL( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL", msg )
     #define SUCCEED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", msg )
@@ -10143,8 +9777,6 @@ int main (int argc, char * const argv[]) {
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
-
-#define GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
 #endif
 
