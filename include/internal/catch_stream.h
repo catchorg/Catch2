@@ -15,6 +15,7 @@
 #include <streambuf>
 #include <ostream>
 #include <fstream>
+#include <memory>
 
 namespace Catch {
 
@@ -49,7 +50,7 @@ namespace Catch {
 
 
     class DebugOutStream : public IStream {
-        std::auto_ptr<StreamBufBase> m_streamBuf;
+        CATCH_AUTO_PTR( StreamBufBase ) m_streamBuf;
         mutable std::ostream m_os;
     public:
         DebugOutStream();
