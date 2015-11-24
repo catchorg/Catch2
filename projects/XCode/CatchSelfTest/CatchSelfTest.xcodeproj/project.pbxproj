@@ -494,7 +494,7 @@
 		4A6D0C17149B3D3B00DB3EAA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0710;
 			};
 			buildConfigurationList = 4A6D0C1A149B3D3B00DB3EAA /* Build configuration list for PBXProject "CatchSelfTest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -575,6 +575,7 @@
 				CLANG_WARN__EXIT_TIME_DESTRUCTORS = NO;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
