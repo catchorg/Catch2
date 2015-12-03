@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_COMMON_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_COMMON_HPP_INCLUDED
 
+#include <cctype>
+
 #include "catch_common.h"
 
 namespace Catch {
@@ -22,7 +24,7 @@ namespace Catch {
         return s.find( infix ) != std::string::npos;
     }
     void toLowerInPlace( std::string& s ) {
-        std::transform( s.begin(), s.end(), s.begin(), ::tolower );
+        std::transform( s.begin(), s.end(), s.begin(), std::tolower );
     }
     std::string toLower( std::string const& s ) {
         std::string lc = s;
