@@ -233,7 +233,7 @@ namespace Clara {
         }
         inline void convertInto( std::string const& _source, bool& _dest ) {
             std::string sourceLC = _source;
-            std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), std::tolower );
+            std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), static_cast<int(*)(int)>(std::tolower) );
             if( sourceLC == "y" || sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
                 _dest = true;
             else if( sourceLC == "n" || sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
