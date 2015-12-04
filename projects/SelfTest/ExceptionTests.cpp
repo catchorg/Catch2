@@ -113,12 +113,12 @@ public:
     : m_msg( msg )
     {}
     ~CustomStdException() CATCH_NOEXCEPT {}
-    
+
     std::string getMessage() const
     {
         return m_msg;
     }
-    
+
 private:
     std::string m_msg;
 };

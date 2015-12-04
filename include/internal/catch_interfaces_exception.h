@@ -19,7 +19,7 @@ namespace Catch {
 
     struct IExceptionTranslator;
     typedef std::vector<const IExceptionTranslator*> ExceptionTranslators;
-    
+
     struct IExceptionTranslator {
         virtual ~IExceptionTranslator();
         virtual std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const = 0;

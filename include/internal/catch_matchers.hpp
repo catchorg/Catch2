@@ -17,7 +17,7 @@ namespace Matchers {
         template<typename ExpressionT> class AnyOf;
         template<typename ExpressionT> class Not;
     }
-        
+
     template<typename ExpressionT>
     struct Matcher : SharedImpl<IShared>
     {
@@ -27,7 +27,7 @@ namespace Matchers {
         virtual Ptr<Matcher> clone() const = 0;
         virtual bool match( ExpressionT const& expr ) const = 0;
         virtual std::string toString() const = 0;
-        
+
         Generic::AllOf<ExpressionT> operator && ( Matcher<ExpressionT> const& other ) const;
         Generic::AnyOf<ExpressionT> operator || ( Matcher<ExpressionT> const& other ) const;
         Generic::Not<ExpressionT> operator ! () const;
@@ -134,13 +134,13 @@ namespace Matchers {
                 anyOfExpr.add( other );
                 return anyOfExpr;
             }
-            
+
         private:
             std::vector<Ptr<Matcher<ExpressionT> > > m_matchers;
         };
 
     } // namespace Generic
-        
+
     template<typename ExpressionT>
     Generic::AllOf<ExpressionT> Matcher<ExpressionT>::operator && ( Matcher<ExpressionT> const& other ) const {
         Generic::AllOf<ExpressionT> allOfExpr;
@@ -161,7 +161,7 @@ namespace Matchers {
     Generic::Not<ExpressionT> Matcher<ExpressionT>::operator ! () const {
         return Generic::Not<ExpressionT>( *this );
     }
-        
+
 
     namespace StdString {
 

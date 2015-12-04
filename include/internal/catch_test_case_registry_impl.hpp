@@ -157,7 +157,7 @@ namespace Catch {
             char const* classOrQualifiedMethodName,
             NameAndDesc const& nameAndDesc,
             SourceLineInfo const& lineInfo ) {
-        
+
         getMutableRegistryHub().registerTest
             ( makeTestCase
                 (   testCase,
@@ -172,7 +172,7 @@ namespace Catch {
             NameAndDesc const& nameAndDesc ) {
         registerTestCase( new FreeFunctionTestCase( function ), "", nameAndDesc, lineInfo );
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
 
     AutoReg::AutoReg
