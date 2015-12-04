@@ -10,7 +10,6 @@
 #define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
 #include "catch_stream.h"
-#include "catch_streambuf.h"
 #include "catch_debugger.h"
 
 #include <stdexcept>
@@ -57,6 +56,20 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
+
+    FileStream::FileStream( std::string const& filename ) {
+        m_ofs.open( filename.c_str() );
+        if( m_ofs.fail() ) {
+            std::ostringstream oss;
+            oss << "Unable to open file: '" << filename << "'";
+            throw std::domain_error( oss.str() );
+        }
+    }
+
+    std::ostream& FileStream::stream() const {
+        return m_ofs;
+    }
+
     struct OutputDebugWriter {
 
         void operator()( std::string const&str ) {
@@ -64,20 +77,23 @@ namespace Catch {
         }
     };
 
-    Stream::Stream()
-    : streamBuf( NULL ), isOwned( false )
+    DebugOutStream::DebugOutStream()
+    :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
+        m_os( m_streamBuf.get() )
     {}
 
-    Stream::Stream( std::streambuf* _streamBuf, bool _isOwned )
-    : streamBuf( _streamBuf ), isOwned( _isOwned )
+    std::ostream& DebugOutStream::stream() const {
+        return m_os;
+    }
+
+    // Store the streambuf from cout up-front because
+    // cout may get redirected when running tests
+    CoutStream::CoutStream()
+    :   m_os( Catch::cout().rdbuf() )
     {}
 
-    void Stream::release() {
-        if( isOwned ) {
-            delete streamBuf;
-            streamBuf = NULL;
-            isOwned = false;
-        }
+    std::ostream& CoutStream::stream() const {
+        return m_os;
     }
 
 #ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions

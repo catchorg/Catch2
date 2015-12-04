@@ -13,7 +13,7 @@
 
 @protocol iTchRunnerDelegate
 
--(void) testWasRun: (const Catch::AssertionResult*) result;    
+-(void) testWasRun: (const Catch::AssertionResult*) result;
 
 @end
 
@@ -38,14 +38,14 @@ namespace Catch
         {
             return true;
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         static std::string getDescription
         ()
         {
             return "Captures results for iOS runner";
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         size_t getSucceeded
         ()
@@ -53,7 +53,7 @@ namespace Catch
         {
             return m_totals.assertions.passed;
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         size_t getFailed
         ()
@@ -61,20 +61,20 @@ namespace Catch
         {
             return m_totals.assertions.failed;
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         void reset()
         {
             m_totals = Totals();
         }
-        
+
     private: // IReporter
-        
+
         ///////////////////////////////////////////////////////////////////////////
         virtual void StartTesting
         ()
         {}
-        
+
         ///////////////////////////////////////////////////////////////////////////
         virtual void EndTesting
         (
@@ -83,7 +83,7 @@ namespace Catch
         {
             m_totals = totals;
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         virtual void Result
         (
@@ -92,7 +92,7 @@ namespace Catch
         {
             [m_delegate testWasRun: &result];
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////
         // Deliberately unimplemented:
         virtual void StartGroup( const std::string& ){}
@@ -107,7 +107,7 @@ namespace Catch
 
     private:
         Totals m_totals;
-        
+
         id<iTchRunnerDelegate> m_delegate;
     };
 }

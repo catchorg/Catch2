@@ -9,28 +9,55 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 
-#include <streambuf>
+#include "catch_compiler_capabilities.h"
+#include "catch_streambuf.h"
 
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wpadded"
-#endif
+#include <streambuf>
+#include <ostream>
+#include <fstream>
 
 namespace Catch {
 
-    class Stream {
-    public:
-        Stream();
-        Stream( std::streambuf* _streamBuf, bool _isOwned );
-        void release();
-
-        std::streambuf* streamBuf;
-
-    private:
-        bool isOwned;
-    };
-
     std::ostream& cout();
     std::ostream& cerr();
+
+
+    struct IStream {
+        virtual ~IStream() CATCH_NOEXCEPT;
+        virtual std::ostream& stream() const = 0;
+    };
+
+    class FileStream : public IStream {
+        mutable std::ofstream m_ofs;
+    public:
+        FileStream( std::string const& filename );
+        virtual ~FileStream() CATCH_NOEXCEPT;
+    public: // IStream
+        virtual std::ostream& stream() const CATCH_OVERRIDE;
+    };
+
+
+    class CoutStream : public IStream {
+        mutable std::ostream m_os;
+    public:
+        CoutStream();
+        virtual ~CoutStream() CATCH_NOEXCEPT;
+
+    public: // IStream
+        virtual std::ostream& stream() const CATCH_OVERRIDE;
+    };
+
+
+    class DebugOutStream : public IStream {
+        std::auto_ptr<StreamBufBase> m_streamBuf;
+        mutable std::ostream m_os;
+    public:
+        DebugOutStream();
+        virtual ~DebugOutStream() CATCH_NOEXCEPT;
+
+    public: // IStream
+        virtual std::ostream& stream() const CATCH_OVERRIDE;
+    };
 }
 
 #endif // TWOBLUECUBES_CATCH_STREAM_H_INCLUDED

@@ -66,16 +66,16 @@
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS( expr, resultDisposition, macroName ) \
+#define INTERNAL_CATCH_THROWS( expr, resultDisposition, matcher, macroName ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition, #matcher ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 expr; \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
             catch( ... ) { \
-                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+                __catchResult.captureExpectedException( matcher ); \
             } \
         else \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
@@ -131,12 +131,12 @@
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg " " #matcher, resultDisposition ); \
         try { \
-            std::string matcherAsString = ::Catch::Matchers::matcher.toString(); \
+            std::string matcherAsString = (matcher).toString(); \
             __catchResult \
                 .setLhs( Catch::toString( arg ) ) \
                 .setRhs( matcherAsString == Catch::Detail::unprintableString ? #matcher : matcherAsString ) \
                 .setOp( "matches" ) \
-                .setResultType( ::Catch::Matchers::matcher.match( arg ) ); \
+                .setResultType( (matcher).match( arg ) ); \
             __catchResult.captureExpression(); \
         } catch( ... ) { \
             __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \

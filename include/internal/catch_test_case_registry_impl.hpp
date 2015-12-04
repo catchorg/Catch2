@@ -21,14 +21,71 @@
 
 namespace Catch {
 
-    class TestRegistry : public ITestCaseRegistry {
-        struct LexSort {
-            bool operator() (TestCase i,TestCase j) const { return (i<j);}
-        };
-        struct RandomNumberGenerator {
-            int operator()( int n ) const { return std::rand() % n; }
-        };
+    struct LexSort {
+        bool operator() (TestCase i,TestCase j) const { return (i<j);}
+    };
+    struct RandomNumberGenerator {
+        int operator()( int n ) const { return std::rand() % n; }
+    };
 
+    inline std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
+
+        std::vector<TestCase> sorted = unsortedTestCases;
+
+        switch( config.runOrder() ) {
+            case RunTests::InLexicographicalOrder:
+                std::sort( sorted.begin(), sorted.end(), LexSort() );
+                break;
+            case RunTests::InRandomOrder:
+                {
+                    seedRng( config );
+
+                    RandomNumberGenerator rng;
+                    std::random_shuffle( sorted.begin(), sorted.end(), rng );
+                }
+                break;
+            case RunTests::InDeclarationOrder:
+                // already in declaration order
+                break;
+        }
+        return sorted;
+    }
+    bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config ) {
+        return testSpec.matches( testCase ) && ( config.allowThrows() || !testCase.throws() );
+    }
+
+    void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
+        std::set<TestCase> seenFunctions;
+        for( std::vector<TestCase>::const_iterator it = functions.begin(), itEnd = functions.end();
+            it != itEnd;
+            ++it ) {
+            std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( *it );
+            if( !prev.second ){
+                Catch::cerr()
+                << Colour( Colour::Red )
+                << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
+                << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
+                << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
+                exit(1);
+            }
+        }
+    }
+
+    std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
+        std::vector<TestCase> filtered;
+        filtered.reserve( testCases.size() );
+        for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+                it != itEnd;
+                ++it )
+            if( matchTest( *it, testSpec, config ) )
+                filtered.push_back( *it );
+        return filtered;
+    }
+    std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {
+        return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );
+    }
+
+    class TestRegistry : public ITestCaseRegistry {
     public:
         TestRegistry() : m_unnamedCount( 0 ) {}
         virtual ~TestRegistry();
@@ -40,68 +97,27 @@ namespace Catch {
                 oss << "Anonymous test case " << ++m_unnamedCount;
                 return registerTest( testCase.withName( oss.str() ) );
             }
-
-            if( m_functions.find( testCase ) == m_functions.end() ) {
-                m_functions.insert( testCase );
-                m_functionsInOrder.push_back( testCase );
-                if( !testCase.isHidden() )
-                    m_nonHiddenFunctions.push_back( testCase );
-            }
-            else {
-                TestCase const& prev = *m_functions.find( testCase );
-                {
-                    Colour colourGuard( Colour::Red );
-                    Catch::cerr()   << "error: TEST_CASE( \"" << name << "\" ) already defined.\n"
-                                << "\tFirst seen at " << prev.getTestCaseInfo().lineInfo << "\n"
-                                << "\tRedefined at " << testCase.getTestCaseInfo().lineInfo << std::endl;
-                }
-                exit(1);
-            }
+            m_functions.push_back( testCase );
         }
 
         virtual std::vector<TestCase> const& getAllTests() const {
-            return m_functionsInOrder;
+            return m_functions;
         }
+        virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const {
+            if( m_sortedFunctions.empty() )
+                enforceNoDuplicateTestCases( m_functions );
 
-        virtual std::vector<TestCase> const& getAllNonHiddenTests() const {
-            return m_nonHiddenFunctions;
-        }
-
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const {
-
-            for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
-                                                        itEnd = m_functionsInOrder.end();
-                    it != itEnd;
-                    ++it ) {
-                bool includeTest = testSpec.matches( *it ) && ( config.allowThrows() || !it->throws() );
-                if( includeTest != negated )
-                    matchingTestCases.push_back( *it );
+            if(  m_currentSortOrder != config.runOrder() || m_sortedFunctions.empty() ) {
+                m_sortedFunctions = sortTests( config, m_functions );
+                m_currentSortOrder = config.runOrder();
             }
-            sortTests( config, matchingTestCases );
+            return m_sortedFunctions;
         }
 
     private:
-
-        static void sortTests( IConfig const& config, std::vector<TestCase>& matchingTestCases ) {
-            
-            switch( config.runOrder() ) {
-                case RunTests::InLexicographicalOrder:
-                    std::sort( matchingTestCases.begin(), matchingTestCases.end(), LexSort() );
-                    break;
-                case RunTests::InRandomOrder:
-                {
-                    RandomNumberGenerator rng;
-                    std::random_shuffle( matchingTestCases.begin(), matchingTestCases.end(), rng );
-                }
-                    break;
-                case RunTests::InDeclarationOrder:
-                    // already in declaration order
-                    break;
-            }
-        }
-        std::set<TestCase> m_functions;
-        std::vector<TestCase> m_functionsInOrder;
-        std::vector<TestCase> m_nonHiddenFunctions;
+        std::vector<TestCase> m_functions;
+        mutable RunTests::InWhatOrder m_currentSortOrder;
+        mutable std::vector<TestCase> m_sortedFunctions;
         size_t m_unnamedCount;
         std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
@@ -136,28 +152,37 @@ namespace Catch {
         return className;
     }
 
+    void registerTestCase
+        (   ITestCase* testCase,
+            char const* classOrQualifiedMethodName,
+            NameAndDesc const& nameAndDesc,
+            SourceLineInfo const& lineInfo ) {
+        
+        getMutableRegistryHub().registerTest
+            ( makeTestCase
+                (   testCase,
+                    extractClassName( classOrQualifiedMethodName ),
+                    nameAndDesc.name,
+                    nameAndDesc.description,
+                    lineInfo ) );
+    }
+    void registerTestCaseFunction
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo,
+            NameAndDesc const& nameAndDesc ) {
+        registerTestCase( new FreeFunctionTestCase( function ), "", nameAndDesc, lineInfo );
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
 
-    AutoReg::AutoReg(   TestFunction function,
-                        SourceLineInfo const& lineInfo,
-                        NameAndDesc const& nameAndDesc ) {
-        registerTestCase( new FreeFunctionTestCase( function ), "", nameAndDesc, lineInfo );
+    AutoReg::AutoReg
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo,
+            NameAndDesc const& nameAndDesc ) {
+        registerTestCaseFunction( function, lineInfo, nameAndDesc );
     }
 
     AutoReg::~AutoReg() {}
-
-    void AutoReg::registerTestCase( ITestCase* testCase,
-                                    char const* classOrQualifiedMethodName,
-                                    NameAndDesc const& nameAndDesc,
-                                    SourceLineInfo const& lineInfo ) {
-
-        getMutableRegistryHub().registerTest
-            ( makeTestCase( testCase,
-                            extractClassName( classOrQualifiedMethodName ),
-                            nameAndDesc.name,
-                            nameAndDesc.description,
-                            lineInfo ) );
-    }
 
 } // end namespace Catch
 

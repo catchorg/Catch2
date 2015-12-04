@@ -1,19 +1,163 @@
 language: cpp
+sudo: false
 
-compiler:
-  - clang
-  - gcc
+cache:
+  ccache: true
+  directories:
+    - $HOME/.ccache
 
 env:
-  - BUILD_TYPE=Debug
-  - BUILD_TYPE=Release
+  global:
+    - USE_CCACHE=1
+    - CCACHE_COMPRESS=1
+    - CCACHE_MAXSIZE=200M
+    - CCACHE_CPP2=1
+
+
+matrix:
+  include:
+
+    # 1/ Linux Clang Builds
+    - os: linux
+      compiler: clang
+      addons: &clang35
+        apt:
+          sources: ['llvm-toolchain-precise-3.5', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.5']
+      env: COMPILER='ccache clang++-3.5' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang35
+      env: COMPILER='ccache clang++-3.5' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: clang
+      addons: &clang36
+        apt:
+          sources: ['llvm-toolchain-precise-3.6', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.6']
+      env: COMPILER='ccache clang++-3.6' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang36
+      env: COMPILER='ccache clang++-3.6' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: clang
+      addons: &clang37
+        apt:
+          sources: ['llvm-toolchain-precise-3.7', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.7']
+      env: COMPILER='ccache clang++-3.7' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang37
+      env: COMPILER='ccache clang++-3.7' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: clang
+      addons: &clang38
+        apt:
+          sources: ['llvm-toolchain-precise', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.8']
+      env: COMPILER='ccache clang++-3.8' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: clang
+      addons: *clang38
+      env: COMPILER='ccache clang++-3.8' BUILD_TYPE='Debug'
+
+
+    # 2/ Linux GCC Builds
+    - os: linux
+      compiler: gcc
+      addons: &gcc48
+        apt:
+         sources: ['ubuntu-toolchain-r-test']
+         packages: ['g++-4.8']
+      env: COMPILER='ccache g++-4.8' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc48
+      env: COMPILER='ccache g++-4.8' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: gcc
+      addons: &gcc49
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.9']
+      env: COMPILER='ccache g++-4.9' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc49
+      env: COMPILER='ccache g++-4.9' BUILD_TYPE='Debug'
+
+
+    - os: linux
+      compiler: gcc
+      addons: &gcc5
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-5']
+      env: COMPILER='ccache g++-5' BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc5
+      env: COMPILER='ccache g++-5' BUILD_TYPE='Debug'
+
+
+    # 3/ OSX Clang Builds
+    - os: osx
+      osx_image: xcode6.4
+      compiler: clang
+      env: COMPILER='ccache clang++' BUILD_TYPE='Debug'
+
+    - os: osx
+      osx_image: xcode6.4
+      compiler: clang
+      env: COMPILER='ccache clang++' BUILD_TYPE='Release'
+
+
+    - os: osx
+      osx_image: xcode7
+      compiler: clang
+      env: COMPILER='ccache clang++' BUILD_TYPE='Debug'
+
+    - os: osx
+      osx_image: xcode7
+      compiler: clang
+      env: COMPILER='ccache clang++' BUILD_TYPE='Release'
+
 
 install:
-  - cmake -Hprojects/CMake -BBuild -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      CMAKE_URL="http://www.cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz"
+      mkdir cmake && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+    elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew install cmake ccache
+    fi
+
+before_script:
+  - export CXX=${COMPILER}
+  - cd ${TRAVIS_BUILD_DIR}
+  - cmake -Hprojects/CMake -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
   - cd Build
-  - make
-  - cd ..
 
 script:
-  - cd Build
-  - ctest -V
+  - make -j 2
+  - ctest -V -j 2

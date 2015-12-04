@@ -33,7 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 -(id) initWithFrame:(CGRect)frame
 {
-    if ((self = [super initWithFrame:frame])) 
+    if ((self = [super initWithFrame:frame]))
     {
         // Initialization code
         self.backgroundColor = [UIColor blackColor];
@@ -64,7 +64,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 -(void) showAlert
-{    
+{
     UIActionSheet* menu = [[UIActionSheet alloc] initWithTitle:@"Options"
                                                       delegate:self
                                              cancelButtonTitle:nil
@@ -72,7 +72,7 @@
                                              otherButtonTitles:@"Run all tests", nil];
     [menu showInView: self];
     arcSafeRelease( menu );
- 
+
 }
 
 // This is a copy & paste from Catch::Runner2 to get us bootstrapped (this is due to all be
@@ -144,7 +144,7 @@ inline Catch::Totals runTestsForGroup( Catch::RunContext& context, const Catch::
 {
     const Catch::AssertionResult& resultInfo = *pResultInfo;
     std::ostringstream oss;
-    
+
     if( resultInfo.hasExpression() )
     {
         oss << resultInfo.getExpression();
@@ -174,7 +174,7 @@ inline Catch::Totals runTestsForGroup( Catch::RunContext& context, const Catch::
         default:
             break;
     }
-    
+
     if( resultInfo.hasExpression() )
     {
         oss << " for: " << resultInfo.getExpandedExpression();

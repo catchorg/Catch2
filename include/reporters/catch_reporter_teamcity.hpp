@@ -17,18 +17,22 @@
 #include <cstring>
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic push
+#   pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic ignored "-Wc++98-compat"
+#   pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 
 namespace Catch {
-    
+
     struct TeamCityReporter : StreamingReporterBase {
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
             m_headerPrintedForThisSection( false )
-        {}
-        
+        {
+            m_reporterPrefs.shouldRedirectStdOut = true;
+        }
+
         static std::string escape( std::string const& str ) {
             std::string escaped = str;
             replaceInPlace( escaped, "|", "||" );
@@ -39,18 +43,13 @@ namespace Catch {
             replaceInPlace( escaped, "]", "|]" );
             return escaped;
         }
-        virtual ~TeamCityReporter();
+        virtual ~TeamCityReporter() CATCH_OVERRIDE;
 
         static std::string getDescription() {
             return "Reports test results as TeamCity service messages";
         }
-        virtual ReporterPreferences getPreferences() const {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = true;
-            return prefs;
-        }
 
-        virtual void skipTest( TestCaseInfo const& testInfo ) {
+        virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
             stream  << "##teamcity[testIgnored name='"
                     << escape( testInfo.name ) << "'";
             if( testInfo.isHidden() )
@@ -59,35 +58,35 @@ namespace Catch {
                 stream << " message='test skipped because it didn|'t match the test spec'";
             stream << "]\n";
         }
-        
-        virtual void noMatchingTestCases( std::string const& /* spec */ ) {}
-        
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) {
+
+        virtual void noMatchingTestCases( std::string const& /* spec */ ) CATCH_OVERRIDE {}
+
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testGroupStarting( groupInfo );
             stream << "##teamcity[testSuiteStarted name='"
                 << escape( groupInfo.name ) << "']\n";
         }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
             StreamingReporterBase::testGroupEnded( testGroupStats );
             stream << "##teamcity[testSuiteFinished name='"
                 << escape( testGroupStats.groupInfo.name ) << "']\n";
         }
 
-        
-        virtual void assertionStarting( AssertionInfo const& ) {
+
+        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {
         }
-        
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) {
+
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
             AssertionResult const& result = assertionStats.assertionResult;
             if( !result.isOk() ) {
-                
+
                 std::ostringstream msg;
                 if( !m_headerPrintedForThisSection )
                     printSectionHeader( msg );
                 m_headerPrintedForThisSection = true;
-                
+
                 msg << result.getSourceInfo() << "\n";
-                
+
                 switch( result.getResultType() ) {
                     case ResultWas::ExpressionFailed:
                         msg << "expression failed";
@@ -126,15 +125,15 @@ namespace Catch {
                     it != itEnd;
                     ++it )
                     msg << "\n  \"" << it->message << "\"";
-                
-                
+
+
                 if( result.hasExpression() ) {
                     msg <<
                         "\n  " << result.getExpressionInMacro() << "\n"
                         "with expansion:\n" <<
                         "  " << result.getExpandedExpression() << "\n";
                 }
-                
+
                 stream << "##teamcity[testFailed"
                     << " name='" << escape( currentTestCaseInfo->name )<< "'"
                     << " message='" << escape( msg.str() ) << "'"
@@ -142,19 +141,19 @@ namespace Catch {
             }
             return true;
         }
-        
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) {
+
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
             m_headerPrintedForThisSection = false;
             StreamingReporterBase::sectionStarting( sectionInfo );
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) {
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testCaseStarting( testInfo );
             stream << "##teamcity[testStarted name='"
                 << escape( testInfo.name ) << "']\n";
         }
-        
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) {
+
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             if( !testCaseStats.stdOut.empty() )
                 stream << "##teamcity[testStdOut name='"
@@ -182,9 +181,9 @@ namespace Catch {
                     printHeaderString( os, it->name );
                 os << getLineOfChars<'-'>() << "\n";
             }
-            
+
             SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
-            
+
             if( !lineInfo.empty() )
                 os << lineInfo << "\n";
             os << getLineOfChars<'.'>() << "\n\n";
@@ -204,19 +203,19 @@ namespace Catch {
         }
     private:
         bool m_headerPrintedForThisSection;
-        
+
     };
-    
+
 #ifdef CATCH_IMPL
     TeamCityReporter::~TeamCityReporter() {}
 #endif
-    
+
     INTERNAL_CATCH_REGISTER_REPORTER( "teamcity", TeamCityReporter )
-    
+
 } // end namespace Catch
 
 #ifdef __clang__
-#pragma clang diagnostic pop
+#   pragma clang diagnostic pop
 #endif
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED

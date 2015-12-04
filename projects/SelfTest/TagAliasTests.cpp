@@ -11,6 +11,8 @@
 
 TEST_CASE( "Tag alias can be registered against tag patterns", "" ) {
 
+    using namespace Catch::Matchers;
+
     Catch::TagAliasRegistry registry;
 
     registry.add( "[@zzz]", "[one][two]", Catch::SourceLineInfo( "file", 2 ) );

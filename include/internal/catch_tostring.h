@@ -52,6 +52,11 @@ std::string toString( char value );
 std::string toString( signed char value );
 std::string toString( unsigned char value );
 
+#ifdef CATCH_CONFIG_CPP11_LONG_LONG
+std::string toString( long long value );
+std::string toString( unsigned long long value );
+#endif
+
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
 std::string toString( std::nullptr_t );
 #endif
@@ -62,10 +67,10 @@ std::string toString( std::nullptr_t );
     std::string toString( NSObject* const& nsObject );
 #endif
 
-  
+
 namespace Detail {
 
-    extern std::string unprintableString;
+    extern const std::string unprintableString;
 
     struct BorgType {
         template<typename T> BorgType( T const& );
@@ -73,7 +78,7 @@ namespace Detail {
 
     struct TrueType { char sizer[1]; };
     struct FalseType { char sizer[2]; };
-    
+
     TrueType& testStreamable( std::ostream& );
     FalseType testStreamable( FalseType );
 
@@ -148,7 +153,7 @@ struct StringMaker<T*> {
     template<typename U>
     static std::string convert( U* p ) {
         if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+            return "NULL";
         else
             return Detail::rawMemoryToString( p );
     }
@@ -158,7 +163,7 @@ template<typename R, typename C>
 struct StringMaker<R C::*> {
     static std::string convert( R C::* p ) {
         if( !p )
-            return INTERNAL_CATCH_STRINGIFY( NULL );
+            return "NULL";
         else
             return Detail::rawMemoryToString( p );
     }

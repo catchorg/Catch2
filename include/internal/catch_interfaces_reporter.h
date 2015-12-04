@@ -26,18 +26,18 @@
 namespace Catch
 {
     struct ReporterConfig {
-        explicit ReporterConfig( Ptr<IConfig> const& _fullConfig )
+        explicit ReporterConfig( Ptr<IConfig const> const& _fullConfig )
         :   m_stream( &_fullConfig->stream() ), m_fullConfig( _fullConfig ) {}
 
-        ReporterConfig( Ptr<IConfig> const& _fullConfig, std::ostream& _stream )
+        ReporterConfig( Ptr<IConfig const> const& _fullConfig, std::ostream& _stream )
         :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
         std::ostream& stream() const    { return *m_stream; }
-        Ptr<IConfig> fullConfig() const { return m_fullConfig; }
+        Ptr<IConfig const> fullConfig() const { return m_fullConfig; }
 
     private:
         std::ostream* m_stream;
-        Ptr<IConfig> m_fullConfig;
+        Ptr<IConfig const> m_fullConfig;
     };
 
     struct ReporterPreferences {
@@ -240,28 +240,33 @@ namespace Catch
 
         // The return value indicates if the messages buffer should be cleared:
         virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
+
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
-        
+
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
     };
 
 
-    struct IReporterFactory {
+    struct IReporterFactory : IShared {
         virtual ~IReporterFactory();
         virtual IStreamingReporter* create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
 
     struct IReporterRegistry {
-        typedef std::map<std::string, IReporterFactory*> FactoryMap;
+        typedef std::map<std::string, Ptr<IReporterFactory> > FactoryMap;
+        typedef std::vector<Ptr<IReporterFactory> > Listeners;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const = 0;
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig const> const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
+        virtual Listeners const& getListeners() const = 0;
     };
+
+    Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter );
 
 }
 

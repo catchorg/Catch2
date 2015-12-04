@@ -13,6 +13,7 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#include "catch_wildcard_pattern.hpp"
 #include "catch_test_case_info.h"
 
 #include <string>
@@ -26,50 +27,18 @@ namespace Catch {
             virtual bool matches( TestCaseInfo const& testCase ) const = 0;
         };
         class NamePattern : public Pattern {
-            enum WildcardPosition {
-                NoWildcard = 0,
-                WildcardAtStart = 1,
-                WildcardAtEnd = 2,
-                WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
-            };
-
         public:
-            NamePattern( std::string const& name ) : m_name( toLower( name ) ), m_wildcard( NoWildcard ) {
-                if( startsWith( m_name, "*" ) ) {
-                    m_name = m_name.substr( 1 );
-                    m_wildcard = WildcardAtStart;
-                }
-                if( endsWith( m_name, "*" ) ) {
-                    m_name = m_name.substr( 0, m_name.size()-1 );
-                    m_wildcard = static_cast<WildcardPosition>( m_wildcard | WildcardAtEnd );
-                }
-            }
+            NamePattern( std::string const& name )
+            : m_wildcardPattern( toLower( name ), CaseSensitive::No )
+            {}
             virtual ~NamePattern();
             virtual bool matches( TestCaseInfo const& testCase ) const {
-                switch( m_wildcard ) {
-                    case NoWildcard:
-                        return m_name == toLower( testCase.name );
-                    case WildcardAtStart:
-                        return endsWith( toLower( testCase.name ), m_name );
-                    case WildcardAtEnd:
-                        return startsWith( toLower( testCase.name ), m_name );
-                    case WildcardAtBothEnds:
-                        return contains( toLower( testCase.name ), m_name );
-                }
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-#endif
-                throw std::logic_error( "Unknown enum" );
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
+                return m_wildcardPattern.matches( toLower( testCase.name ) );
             }
         private:
-            std::string m_name;
-            WildcardPosition m_wildcard;
+            WildcardPattern m_wildcardPattern;
         };
+
         class TagPattern : public Pattern {
         public:
             TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
@@ -80,6 +49,7 @@ namespace Catch {
         private:
             std::string m_tag;
         };
+
         class ExcludedPattern : public Pattern {
         public:
             ExcludedPattern( Ptr<Pattern> const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}

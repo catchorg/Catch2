@@ -23,7 +23,7 @@ namespace Catch {
     template<typename T>
     class Ptr {
     public:
-        Ptr() : m_p( NULL ){}
+        Ptr() : m_p( CATCH_NULL ){}
         Ptr( T* p ) : m_p( p ){
             if( m_p )
                 m_p->addRef();
@@ -39,7 +39,7 @@ namespace Catch {
         void reset() {
             if( m_p )
                 m_p->release();
-            m_p = NULL;
+            m_p = CATCH_NULL;
         }
         Ptr& operator = ( T* p ){
             Ptr temp( p );
@@ -52,12 +52,11 @@ namespace Catch {
             return *this;
         }
         void swap( Ptr& other ) { std::swap( m_p, other.m_p ); }
-        T* get() { return m_p; }
-        const T* get() const{ return m_p; }
+        T* get() const{ return m_p; }
         T& operator*() const { return *m_p; }
         T* operator->() const { return m_p; }
-        bool operator !() const { return m_p == NULL; }
-        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != NULL ); }
+        bool operator !() const { return m_p == CATCH_NULL; }
+        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != CATCH_NULL ); }
 
     private:
         T* m_p;

@@ -15,9 +15,11 @@ namespace Catch {
 
 namespace Detail {
 
-    std::string unprintableString = "{?}";
+    const std::string unprintableString = "{?}";
 
     namespace {
+        const int hexThreshold = 255;
+
         struct Endianness {
             enum Arch { Big, Little };
 
@@ -99,7 +101,7 @@ std::string toString( wchar_t* const value )
 std::string toString( int value ) {
     std::ostringstream oss;
     oss << value;
-    if( value >= 255 )
+    if( value > Detail::hexThreshold )
         oss << " (0x" << std::hex << value << ")";
     return oss.str();
 }
@@ -107,7 +109,7 @@ std::string toString( int value ) {
 std::string toString( unsigned long value ) {
     std::ostringstream oss;
     oss << value;
-    if( value >= 255 )
+    if( value > Detail::hexThreshold )
         oss << " (0x" << std::hex << value << ")";
     return oss.str();
 }
@@ -156,6 +158,23 @@ std::string toString( signed char value ) {
 std::string toString( unsigned char value ) {
     return toString( static_cast<char>( value ) );
 }
+
+#ifdef CATCH_CONFIG_CPP11_LONG_LONG
+std::string toString( long long value ) {
+    std::ostringstream oss;
+    oss << value;
+    if( value > Detail::hexThreshold )
+        oss << " (0x" << std::hex << value << ")";
+    return oss.str();
+}
+std::string toString( unsigned long long value ) {
+    std::ostringstream oss;
+    oss << value;
+    if( value > Detail::hexThreshold )
+        oss << " (0x" << std::hex << value << ")";
+    return oss.str();
+}
+#endif
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
 std::string toString( std::nullptr_t ) {

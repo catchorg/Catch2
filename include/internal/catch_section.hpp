@@ -32,8 +32,13 @@ namespace Catch {
     }
 
     Section::~Section() {
-        if( m_sectionIncluded )
-            getResultCapture().sectionEnded( m_info, m_assertions, m_timer.getElapsedSeconds() );
+        if( m_sectionIncluded ) {
+            SectionEndInfo endInfo( m_info, m_assertions, m_timer.getElapsedSeconds() );
+            if( std::uncaught_exception() )
+                getResultCapture().sectionEndedEarly( endInfo );
+            else
+                getResultCapture().sectionEnded( endInfo );
+        }
     }
 
     // This indicates whether the section should be executed or not

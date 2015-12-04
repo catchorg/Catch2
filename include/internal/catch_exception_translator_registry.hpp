@@ -32,13 +32,13 @@ namespace Catch {
 #ifdef __OBJC__
                 // In Objective-C try objective-c exceptions first
                 @try {
-                    throw;
+                    return tryTranslators();
                 }
                 @catch (NSException *exception) {
                     return Catch::toString( [exception description] );
                 }
 #else
-                throw;
+                return tryTranslators();
 #endif
             }
             catch( TestFailureException& ) {
@@ -54,20 +54,15 @@ namespace Catch {
                 return msg;
             }
             catch(...) {
-                return tryTranslators( m_translators.begin() );
+                return "Unknown exception";
             }
         }
 
-        std::string tryTranslators( std::vector<const IExceptionTranslator*>::const_iterator it ) const {
-            if( it == m_translators.end() )
-                return "Unknown exception";
-
-            try {
-                return (*it)->translate();
-            }
-            catch(...) {
-                return tryTranslators( it+1 );
-            }
+        std::string tryTranslators() const {
+            if( m_translators.empty() )
+                throw;
+            else
+                return m_translators[0]->translate( m_translators.begin()+1, m_translators.end() );
         }
 
     private:

@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
+#include "catch_ptr.hpp"
+
 #include <string>
 
 namespace Catch {
@@ -29,7 +31,8 @@ namespace Catch {
 
     struct IMutableRegistryHub {
         virtual ~IMutableRegistryHub();
-        virtual void registerReporter( std::string const& name, IReporterFactory* factory ) = 0;
+        virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) = 0;
+        virtual void registerListener( Ptr<IReporterFactory> const& factory ) = 0;
         virtual void registerTest( TestCase const& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
     };

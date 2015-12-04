@@ -14,15 +14,21 @@
 #include "catch_interfaces_runner.h"
 #include "catch_interfaces_capture.h"
 #include "catch_interfaces_registry_hub.h"
-
+#include "catch_wildcard_pattern.hpp"
 
 namespace Catch {
 
+    std::string capturedExpressionWithSecondArgument( std::string const& capturedExpression, std::string const& secondArg ) {
+        return secondArg.empty() || secondArg == "\"\""
+            ? capturedExpression
+            : capturedExpression + ", " + secondArg;
+    }
     ResultBuilder::ResultBuilder(   char const* macroName,
                                     SourceLineInfo const& lineInfo,
                                     char const* capturedExpression,
-                                    ResultDisposition::Flags resultDisposition )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpression, resultDisposition ),
+                                    ResultDisposition::Flags resultDisposition,
+                                    char const* secondArg )
+    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
         m_shouldDebugBreak( false ),
         m_shouldThrow( false )
     {}
@@ -63,9 +69,35 @@ namespace Catch {
         setResultType( resultType );
         captureExpression();
     }
+    void ResultBuilder::captureExpectedException( std::string const& expectedMessage ) {
+        if( expectedMessage.empty() )
+            captureExpectedException( Matchers::Impl::Generic::AllOf<std::string>() );
+        else
+            captureExpectedException( Matchers::Equals( expectedMessage ) );
+    }
+
+    void ResultBuilder::captureExpectedException( Matchers::Impl::Matcher<std::string> const& matcher ) {
+
+        assert( m_exprComponents.testFalse == false );
+        AssertionResultData data = m_data;
+        data.resultType = ResultWas::Ok;
+        data.reconstructedExpression = m_assertionInfo.capturedExpression;
+
+        std::string actualMessage = Catch::translateActiveException();
+        if( !matcher.match( actualMessage ) ) {
+            data.resultType = ResultWas::ExpressionFailed;
+            data.reconstructedExpression = actualMessage;
+        }
+        AssertionResult result( m_assertionInfo, data );
+        handleResult( result );
+    }
 
     void ResultBuilder::captureExpression() {
         AssertionResult result = build();
+        handleResult( result );
+    }
+    void ResultBuilder::handleResult( AssertionResult const& result )
+    {
         getResultCapture().assertionEnded( result );
 
         if( !result.isOk() ) {

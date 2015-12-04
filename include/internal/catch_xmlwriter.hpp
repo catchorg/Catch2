@@ -8,13 +8,71 @@
 #ifndef TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED
 
-#include "../internal/catch_stream.h"
+#include "catch_stream.h"
+#include "catch_compiler_capabilities.h"
+#include "catch_suppress_warnings.h"
 
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iomanip>
 
 namespace Catch {
+
+    class XmlEncode {
+    public:
+        enum ForWhat { ForTextNodes, ForAttributes };
+
+        XmlEncode( std::string const& str, ForWhat forWhat = ForTextNodes )
+        :   m_str( str ),
+            m_forWhat( forWhat )
+        {}
+
+        void encodeTo( std::ostream& os ) const {
+
+            // Apostrophe escaping not necessary if we always use " to write attributes
+            // (see: http://www.w3.org/TR/xml/#syntax)
+
+            for( std::size_t i = 0; i < m_str.size(); ++ i ) {
+                char c = m_str[i];
+                switch( c ) {
+                    case '<':   os << "&lt;"; break;
+                    case '&':   os << "&amp;"; break;
+
+                    case '>':
+                        // See: http://www.w3.org/TR/xml/#syntax
+                        if( i > 2 && m_str[i-1] == ']' && m_str[i-2] == ']' )
+                            os << "&gt;";
+                        else
+                            os << c;
+                        break;
+
+                    case '\"':
+                        if( m_forWhat == ForAttributes )
+                            os << "&quot;";
+                        else
+                            os << c;
+                        break;
+
+                    default:
+                        // Escape control chars - based on contribution by @espenalb in PR #465
+                        if ( ( c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
+                            os << "&#x" << std::uppercase << std::hex << static_cast<int>( c );
+                        else
+                            os << c;
+                }
+            }
+        }
+
+        friend std::ostream& operator << ( std::ostream& os, XmlEncode const& xmlEncode ) {
+            xmlEncode.encodeTo( os );
+            return os;
+        }
+
+    private:
+        std::string m_str;
+        ForWhat m_forWhat;
+    };
 
     class XmlWriter {
     public:
@@ -27,7 +85,7 @@ namespace Catch {
 
             ScopedElement( ScopedElement const& other )
             :   m_writer( other.m_writer ){
-                other.m_writer = NULL;
+                other.m_writer = CATCH_NULL;
             }
 
             ~ScopedElement() {
@@ -98,11 +156,8 @@ namespace Catch {
         }
 
         XmlWriter& writeAttribute( std::string const& name, std::string const& attribute ) {
-            if( !name.empty() && !attribute.empty() ) {
-                stream() << " " << name << "=\"";
-                writeEncodedText( attribute );
-                stream() << "\"";
-            }
+            if( !name.empty() && !attribute.empty() )
+                stream() << " " << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << "\"";
             return *this;
         }
 
@@ -113,9 +168,9 @@ namespace Catch {
 
         template<typename T>
         XmlWriter& writeAttribute( std::string const& name, T const& attribute ) {
-            if( !name.empty() )
-                stream() << " " << name << "=\"" << attribute << "\"";
-            return *this;
+            std::ostringstream oss;
+            oss << attribute;
+            return writeAttribute( name, oss.str() );
         }
 
         XmlWriter& writeText( std::string const& text, bool indent = true ) {
@@ -124,7 +179,7 @@ namespace Catch {
                 ensureTagClosed();
                 if( tagWasOpen && indent )
                     stream() << m_indent;
-                writeEncodedText( text );
+                stream() << XmlEncode( text );
                 m_needsNewline = true;
             }
             return *this;
@@ -169,30 +224,6 @@ namespace Catch {
             }
         }
 
-        void writeEncodedText( std::string const& text ) {
-            static const char* charsToEncode = "<&\"";
-            std::string mtext = text;
-            std::string::size_type pos = mtext.find_first_of( charsToEncode );
-            while( pos != std::string::npos ) {
-                stream() << mtext.substr( 0, pos );
-
-                switch( mtext[pos] ) {
-                    case '<':
-                        stream() << "&lt;";
-                        break;
-                    case '&':
-                        stream() << "&amp;";
-                        break;
-                    case '\"':
-                        stream() << "&quot;";
-                        break;
-                }
-                mtext = mtext.substr( pos+1 );
-                pos = mtext.find_first_of( charsToEncode );
-            }
-            stream() << mtext;
-        }
-
         bool m_tagIsOpen;
         bool m_needsNewline;
         std::vector<std::string> m_tags;
@@ -201,4 +232,6 @@ namespace Catch {
     };
 
 }
+#include "catch_reenable_warnings.h"
+
 #endif // TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED

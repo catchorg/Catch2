@@ -25,7 +25,7 @@ namespace Catch
         std::ostringstream oss;
         oss << "std::pair( " << value.first << ", " << value.second << " )";
         return oss.str();
-        
+
     }
 }
 
@@ -38,7 +38,7 @@ TEST_CASE
 {
     std::pair<int, int> aNicePair( 1, 2 );
 
-    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );    
+    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ TEST_CASE
     /*
     int a = 1;
     int b = 2;
-    
+
     // This only captures part of the expression, but issues a warning about the rest
     REQUIRE( a+1 == b-1 );
     */
@@ -85,38 +85,38 @@ TEST_CASE
     "[Tricky][failing][.]"
 )
 {
-    
+
     Opaque o1, o2;
     o1.val = 7;
     o2.val = 8;
-  
+
     CHECK( &o1 == &o2 );
     CHECK( o1 == o2 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
-(   
+(
     "string literals of different sizes can be compared",
     "[Tricky][failing][.]"
 )
 {
     REQUIRE( std::string( "first" ) == "second" );
-    
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
-(   
+(
     "An expression with side-effects should only be evaluated once",
     "[Tricky]"
 )
 {
     int i = 7;
-    
+
     REQUIRE( i++ == 7 );
     REQUIRE( i++ == 8 );
-    
+
 }
 
 namespace A {
@@ -167,8 +167,8 @@ TEST_CASE
 */
 
 namespace ObjectWithConversions
-{    
-    struct Object 
+{
+    struct Object
     {
         operator unsigned int() {return 0xc0000000;}
     };
@@ -179,31 +179,31 @@ namespace ObjectWithConversions
         "Operators at different namespace levels not hijacked by Koenig lookup",
         "[Tricky]"
     )
-    {        
+    {
         Object o;
         REQUIRE(0xc0000000 == o );
     }
 }
 
-namespace ObjectWithNonConstEqualityOperator 
+namespace ObjectWithNonConstEqualityOperator
 {
     struct Test
     {
         Test( unsigned int v )
-        : m_value(v) 
+        : m_value(v)
         {}
-        
+
         bool operator==( const Test&rhs )
-        { 
+        {
             return (m_value == rhs.m_value);
         }
         bool operator==( const Test&rhs ) const
-        { 
+        {
             return (m_value != rhs.m_value);
         }
         unsigned int m_value;
     };
-    
+
     TEST_CASE("Demonstrate that a non-const == is not used", "[Tricky]" )
     {
         Test t( 1 );
@@ -226,7 +226,7 @@ namespace EnumBitFieldTests
 struct Obj
 {
     Obj():prop(&p){}
-    
+
     int p;
     int* prop;
 };
@@ -234,7 +234,7 @@ struct Obj
 TEST_CASE("boolean member", "[Tricky]")
 {
     Obj obj;
-    REQUIRE( obj.prop != NULL );
+    REQUIRE( obj.prop != CATCH_NULL );
 }
 
 // Tests for a problem submitted by Ralph McArdell
@@ -284,11 +284,11 @@ TEST_CASE( "(unimplemented) static bools can be evaluated", "[Tricky]" )
 /*
 TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
 {
-    
+
 }
 TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
 {
-    
+
 }
 */
 
@@ -317,13 +317,13 @@ TEST_CASE( "Assertions then sections", "[Tricky]" )
 {
     // This was causing a failure due to the way the console reporter was handling
     // the current section
-    
+
     REQUIRE( Catch::alwaysTrue() );
-    
+
     SECTION( "A section", "" )
     {
         REQUIRE( Catch::alwaysTrue() );
-        
+
         SECTION( "Another section", "" )
         {
             REQUIRE( Catch::alwaysTrue() );

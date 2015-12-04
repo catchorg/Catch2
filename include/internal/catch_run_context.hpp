@@ -59,15 +59,12 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> const& reporter )
-        :   m_runInfo( config->name() ),
+        explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
+        :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_activeTestCase( NULL ),
-            m_config( config ),
-            m_reporter( reporter ),
-            m_prevRunner( m_context.getRunner() ),
-            m_prevResultCapture( m_context.getResultCapture() ),
-            m_prevConfig( m_context.getConfig() )
+            m_activeTestCase( CATCH_NULL ),
+            m_config( _config ),
+            m_reporter( reporter )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -77,10 +74,6 @@ namespace Catch {
 
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );
-            m_context.setRunner( m_prevRunner );
-            m_context.setConfig( NULL );
-            m_context.setResultCapture( m_prevResultCapture );
-            m_context.setConfig( m_prevConfig );
         }
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {
@@ -101,14 +94,18 @@ namespace Catch {
             m_reporter->testCaseStarting( testInfo );
 
             m_activeTestCase = &testCase;
-            m_testCaseTracker = TestCaseTracker( testInfo.name );
+
 
             do {
+                m_trackerContext.startRun();
                 do {
+                    m_trackerContext.startCycle();
+                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
-                while( !m_testCaseTracker->isCompleted() && !aborting() );
+                while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
             }
+            // !TBD: deprecated - this will be replaced by indexed trackers
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
@@ -119,8 +116,8 @@ namespace Catch {
                                                         redirectedCerr,
                                                         aborting() ) );
 
-            m_activeTestCase = NULL;
-            m_testCaseTracker.reset();
+            m_activeTestCase = CATCH_NULL;
+            m_testCaseTracker = CATCH_NULL;
 
             return deltaTotals;
         }
@@ -156,8 +153,10 @@ namespace Catch {
             std::ostringstream oss;
             oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
 
-            if( !m_testCaseTracker->enterSection( oss.str() ) )
+            ITracker& sectionTracker = SectionTracker::acquire( m_trackerContext, oss.str() );
+            if( !sectionTracker.isOpen() )
                 return false;
+            m_activeSections.push_back( &sectionTracker );
 
             m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
@@ -168,28 +167,38 @@ namespace Catch {
             return true;
         }
         bool testForMissingAssertions( Counts& assertions ) {
-            if( assertions.total() != 0 ||
-                    !m_config->warnAboutMissingAssertions() ||
-                    m_testCaseTracker->currentSectionHasChildren() )
+            if( assertions.total() != 0 )
+                return false;
+            if( !m_config->warnAboutMissingAssertions() )
+                return false;
+            if( m_trackerContext.currentTracker().hasChildren() )
                 return false;
             m_totals.assertions.failed++;
             assertions.failed++;
             return true;
         }
 
-        virtual void sectionEnded( SectionInfo const& info, Counts const& prevAssertions, double _durationInSeconds ) {
-            if( std::uncaught_exception() ) {
-                m_unfinishedSections.push_back( UnfinishedSections( info, prevAssertions, _durationInSeconds ) );
-                return;
-            }
-
-            Counts assertions = m_totals.assertions - prevAssertions;
+        virtual void sectionEnded( SectionEndInfo const& endInfo ) {
+            Counts assertions = m_totals.assertions - endInfo.prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
 
-            m_testCaseTracker->leaveSection();
+            if( !m_activeSections.empty() ) {
+                m_activeSections.back()->close();
+                m_activeSections.pop_back();
+            }
 
-            m_reporter->sectionEnded( SectionStats( info, assertions, _durationInSeconds, missingAssertions ) );
+            m_reporter->sectionEnded( SectionStats( endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions ) );
             m_messages.clear();
+        }
+
+        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) {
+            if( m_unfinishedSections.empty() )
+                m_activeSections.back()->fail();
+            else
+                m_activeSections.back()->close();
+            m_activeSections.pop_back();
+
+            m_unfinishedSections.push_back( endInfo );
         }
 
         virtual void pushScopedMessage( MessageInfo const& message ) {
@@ -257,7 +266,8 @@ namespace Catch {
             double duration = 0;
             try {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
-                TestCaseTracker::Guard guard( *m_testCaseTracker );
+
+                seedRng( *m_config );
 
                 Timer timer;
                 timer.start();
@@ -277,6 +287,7 @@ namespace Catch {
             catch(...) {
                 makeUnexpectedResultBuilder().useActiveException();
             }
+            m_testCaseTracker->close();
             handleUnfinishedSections();
             m_messages.clear();
 
@@ -311,39 +322,29 @@ namespace Catch {
         void handleUnfinishedSections() {
             // If sections ended prematurely due to an exception we stored their
             // infos here so we can tear them down outside the unwind process.
-            for( std::vector<UnfinishedSections>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
+            for( std::vector<SectionEndInfo>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
                         itEnd = m_unfinishedSections.rend();
                     it != itEnd;
                     ++it )
-                sectionEnded( it->info, it->prevAssertions, it->durationInSeconds );
+                sectionEnded( *it );
             m_unfinishedSections.clear();
         }
-
-        struct UnfinishedSections {
-            UnfinishedSections( SectionInfo const& _info, Counts const& _prevAssertions, double _durationInSeconds )
-            : info( _info ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )
-            {}
-
-            SectionInfo info;
-            Counts prevAssertions;
-            double durationInSeconds;
-        };
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
         TestCase const* m_activeTestCase;
-        Option<TestCaseTracker> m_testCaseTracker;
+        ITracker* m_testCaseTracker;
+        ITracker* m_currentSectionTracker;
         AssertionResult m_lastResult;
 
         Ptr<IConfig const> m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;
-        IRunner* m_prevRunner;
-        IResultCapture* m_prevResultCapture;
-        Ptr<IConfig const> m_prevConfig;
         AssertionInfo m_lastAssertionInfo;
-        std::vector<UnfinishedSections> m_unfinishedSections;
+        std::vector<SectionEndInfo> m_unfinishedSections;
+        std::vector<ITracker*> m_activeSections;
+        TrackerContext m_trackerContext;
     };
 
     IResultCapture& getResultCapture() {

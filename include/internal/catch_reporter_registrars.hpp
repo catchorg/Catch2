@@ -36,7 +36,7 @@ namespace Catch {
     template<typename T>
     class ReporterRegistrar {
 
-        class ReporterFactory : public IReporterFactory {
+        class ReporterFactory : public SharedImpl<IReporterFactory> {
 
             // *** Please Note ***:
             // - If you end up here looking at a compiler error because it's trying to register
@@ -64,11 +64,35 @@ namespace Catch {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
     };
+
+    template<typename T>
+    class ListenerRegistrar {
+
+        class ListenerFactory : public SharedImpl<IReporterFactory> {
+
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
+                return new T( config );
+            }
+            virtual std::string getDescription() const {
+                return "";
+            }
+        };
+
+    public:
+
+        ListenerRegistrar() {
+            getMutableRegistryHub().registerListener( new ListenerFactory() );
+        }
+    };
 }
 
 #define INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) \
     namespace{ Catch::LegacyReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
+
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
     namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
+
+#define INTERNAL_CATCH_REGISTER_LISTENER( listenerType ) \
+    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; }
 
 #endif // TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED

@@ -23,6 +23,7 @@ namespace Catch {
         config.abortAfter = x;
     }
     inline void addTestOrTags( ConfigData& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }
+    inline void addReporterName( ConfigData& config, std::string const& _reporterName ) { config.reporterNames.push_back( _reporterName ); }
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
         if( _warning == "NoAssertions" )
@@ -116,7 +117,7 @@ namespace Catch {
         cli["-r"]["--reporter"]
 //            .placeholder( "name[:filename]" )
             .describe( "reporter to use (defaults to console)" )
-            .bind( &ConfigData::reporterName, "name" );
+            .bind( &addReporterName, "name" );
 
         cli["-n"]["--name"]
             .describe( "suite name" )
@@ -153,12 +154,16 @@ namespace Catch {
             .describe( "load test names to run from a file" )
             .bind( &loadTestNamesFromFile, "filename" );
 
+        cli["-#"]["--filenames-as-tags"]
+            .describe( "adds a tag for the filename" )
+            .bind( &ConfigData::filenamesAsTags );
+
         // Less common commands which don't have a short form
         cli["--list-test-names-only"]
             .describe( "list all/matching test cases names only" )
             .bind( &ConfigData::listTestNamesOnly );
 
-        cli["--list-reporters"] 
+        cli["--list-reporters"]
             .describe( "list all reporters" )
             .bind( &ConfigData::listReporters );
 

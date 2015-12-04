@@ -8,7 +8,7 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "reporters/catch_reporter_teamcity.hpp"
+#include "../include/reporters/catch_reporter_teamcity.hpp"
 
 // Some example tag aliases
 CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
@@ -16,8 +16,9 @@ CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 
 
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wpadded"
-#pragma clang diagnostic ignored "-Wweak-vtables"
+#   pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic ignored "-Wweak-vtables"
+#   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
 
@@ -39,22 +40,24 @@ std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::Co
     return "";
 }
 
-inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( CATCH_NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
+
+    using namespace Catch::Matchers;
 
     Catch::ConfigData config;
 
     SECTION( "default - no arguments", "" ) {
         const char* argv[] = { "test" };
         CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-        
+
         CHECK( config.shouldDebugBreak == false );
         CHECK( config.abortAfter == -1 );
         CHECK( config.noThrow == false );
-        CHECK( config.reporterName.empty() );
+        CHECK( config.reporterNames.empty() );
     }
-    
+
     SECTION( "test lists", "" ) {
         SECTION( "1 test", "Specify one test case using" ) {
             const char* argv[] = { "test", "test1" };
@@ -83,43 +86,51 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         }
 
     }
-    
+
     SECTION( "reporter", "" ) {
         SECTION( "-r/console", "" ) {
             const char* argv[] = { "test", "-r", "console" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
-            REQUIRE( config.reporterName == "console" );
+
+            REQUIRE( config.reporterNames[0] == "console" );
         }
         SECTION( "-r/xml", "" ) {
             const char* argv[] = { "test", "-r", "xml" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
-            REQUIRE( config.reporterName == "xml" );
+
+            REQUIRE( config.reporterNames[0] == "xml" );
+        }
+        SECTION( "-r xml and junit", "" ) {
+            const char* argv[] = { "test", "-r", "xml", "-r", "junit" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.reporterNames.size() == 2 );
+            REQUIRE( config.reporterNames[0] == "xml" );
+            REQUIRE( config.reporterNames[1] == "junit" );
         }
         SECTION( "--reporter/junit", "" ) {
             const char* argv[] = { "test", "--reporter", "junit" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
-            REQUIRE( config.reporterName == "junit" );
+
+            REQUIRE( config.reporterNames[0] == "junit" );
         }
     }
-    
+
     SECTION( "debugger", "" ) {
         SECTION( "-b", "" ) {
             const char* argv[] = { "test", "-b" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
+
             REQUIRE( config.shouldDebugBreak == true );
         }
         SECTION( "--break", "" ) {
             const char* argv[] = { "test", "--break" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
+
             REQUIRE( config.shouldDebugBreak );
         }
     }
-        
+
     SECTION( "abort", "" ) {
         SECTION( "-a aborts after first failure", "" ) {
             const char* argv[] = { "test", "-a" };
@@ -142,7 +153,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "-x" ) );
         }
     }
-    
+
     SECTION( "nothrow", "" ) {
         SECTION( "-e", "" ) {
             const char* argv[] = { "test", "-e" };
@@ -208,7 +219,7 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
     SECTION( "plain string", "" ) {
         // guide:                 123456789012345678
         std::string testString = "one two three four";
-        
+
         SECTION( "No wrapping", "" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
             CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
@@ -252,14 +263,14 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
                                         .setInitialIndent( 1 ) );
             CHECK( text.toString() == " one two\n    three\n    four" );
         }
-        
+
     }
-    
+
     SECTION( "With newlines", "" ) {
-        
+
         // guide:                 1234567890123456789
         std::string testString = "one two\nthree four";
-        
+
         SECTION( "No wrapping" , "" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
             CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
@@ -279,17 +290,17 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" );
         }
     }
-    
+
     SECTION( "With tabs", "" ) {
 
         // guide:                 1234567890123456789
         std::string testString = "one two \tthree four five six";
-        
+
         CHECK( Text( testString, TextAttributes().setWidth( 15 ) ).toString()
             == "one two three\n        four\n        five\n        six" );
     }
-    
-    
+
+
 }
 
 using namespace Catch;
@@ -315,7 +326,7 @@ public:
     ColourString( std::string const& _string, std::vector<ColourIndex> const& _colours )
     : string( _string ), colours( _colours )
     {}
-    
+
     ColourString& addColour( Colour::Code colour, int _index ) {
         colours.push_back( ColourIndex( colour,
                                         resolveRelativeIndex( _index ),
@@ -328,7 +339,7 @@ public:
                                         resolveLastRelativeIndex( _toIndex ) ) );
         return *this;
     }
-    
+
     void writeToStream( std::ostream& _stream ) const {
         std::size_t last = 0;
         for( std::size_t i = 0; i < colours.size(); ++i ) {
@@ -342,7 +353,7 @@ public:
             last = index.toIndex;
         }
         if( last < string.size() )
-            _stream << string.substr( last );        
+            _stream << string.substr( last );
     }
     friend std::ostream& operator << ( std::ostream& _stream, ColourString const& _colourString ) {
         _colourString.writeToStream( _stream );
@@ -399,7 +410,7 @@ TEST_CASE( "replaceInPlace", "" ) {
 
 // !TBD: This will be folded into Text class
 TEST_CASE( "Strings can be rendered with colour", "[.colour]" ) {
-    
+
     {
         ColourString cs( "hello" );
         cs  .addColour( Colour::Red, 0 )
@@ -411,19 +422,19 @@ TEST_CASE( "Strings can be rendered with colour", "[.colour]" ) {
     {
         ColourString cs( "hello" );
         cs  .addColour( Colour::Blue, 1, -2 );
-        
+
         Catch::cout() << cs << std::endl;
     }
-    
+
 }
 
 TEST_CASE( "Text can be formatted using the Text class", "" ) {
-    
+
     CHECK( Text( "hi there" ).toString() == "hi there" );
-    
+
     TextAttributes narrow;
     narrow.setWidth( 6 );
-    
+
     CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" );
 }
 
@@ -436,5 +447,15 @@ TEST_CASE( "Long text is truncted", "[Text][Truncated]" ) {
         oss << longLine << longLine << "\n";
     Text t( oss.str() );
     CHECK_THAT( t.toString(), EndsWith( "... message truncated due to excessive size" ) );
-    
+
 }
+
+inline void manuallyRegisteredTestFunction() {
+    SUCCEED( "was called" );
+}
+struct AutoTestReg {
+    AutoTestReg() {
+        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered", "" );
+    }
+};
+AutoTestReg autoTestReg;

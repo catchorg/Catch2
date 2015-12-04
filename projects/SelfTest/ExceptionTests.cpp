@@ -96,6 +96,23 @@ public:
     CustomException( const std::string& msg )
     : m_msg( msg )
     {}
+
+    std::string getMessage() const
+    {
+        return m_msg;
+    }
+
+private:
+    std::string m_msg;
+};
+
+class CustomStdException : public std::exception
+{
+public:
+    CustomStdException( const std::string& msg )
+    : m_msg( msg )
+    {}
+    ~CustomStdException() CATCH_NOEXCEPT {}
     
     std::string getMessage() const
     {
@@ -106,7 +123,13 @@ private:
     std::string m_msg;
 };
 
+
 CATCH_TRANSLATE_EXCEPTION( CustomException& ex )
+{
+    return ex.getMessage();
+}
+
+CATCH_TRANSLATE_EXCEPTION( CustomStdException& ex )
 {
     return ex.getMessage();
 }
@@ -116,10 +139,16 @@ CATCH_TRANSLATE_EXCEPTION( double& ex )
     return Catch::toString( ex );
 }
 
-TEST_CASE("Unexpected custom exceptions can be translated", "[.][failing]" )
+TEST_CASE("Non-std exceptions can be translated", "[.][failing]" )
 {
 	if( Catch::alwaysTrue() )
 	    throw CustomException( "custom exception" );
+}
+
+TEST_CASE("Custom std-exceptions can be custom translated", "[.][failing]" )
+{
+    if( Catch::alwaysTrue() )
+        throw CustomException( "custom std exception" );
 }
 
 inline void throwCustom() {
@@ -151,4 +180,24 @@ inline int thisFunctionNotImplemented( int ) {
 TEST_CASE( "NotImplemented exception", "" )
 {
     REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
+}
+
+TEST_CASE( "Exception messages can be tested for", "" ) {
+    using namespace Catch::Matchers;
+    SECTION( "exact match" )
+        REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+    SECTION( "different case" )
+    REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) );
+    SECTION( "wildcarded" ) {
+        REQUIRE_THROWS_WITH( thisThrows(), StartsWith( "expected" ) );
+        REQUIRE_THROWS_WITH( thisThrows(), EndsWith( "exception" ) );
+        REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) );
+        REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) );
+    }
+}
+
+TEST_CASE( "Mismatching exception messages failing the test", "[.][failing]" ) {
+    REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+    REQUIRE_THROWS_WITH( thisThrows(), "should fail" );
+    REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
 }

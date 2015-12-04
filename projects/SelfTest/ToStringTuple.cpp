@@ -42,12 +42,14 @@ TEST_CASE( "tuple<tuple<int>,tuple<>,float>", "[toString][tuple]" )
     CHECK( "{ { 42 }, { }, 1.2f }" == Catch::toString(value) );
 }
 
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
 TEST_CASE( "tuple<nullptr,int,const char *>", "[toString][tuple]" )
 {
     typedef std::tuple<std::nullptr_t,int,const char *> type;
     type value { nullptr, 42, "Catch me" };
     CHECK( "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value) );
 }
+#endif
 
 #ifdef __clang__
 #pragma clang diagnostic pop

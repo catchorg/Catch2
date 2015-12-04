@@ -10,7 +10,7 @@
 
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_list.hpp"
-#include "internal/catch_runner_impl.hpp"
+#include "internal/catch_run_context.hpp"
 #include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"
 #include "internal/catch_text.h"
@@ -21,89 +21,88 @@
 
 namespace Catch {
 
-    class Runner {
+    Ptr<IStreamingReporter> createReporter( std::string const& reporterName, Ptr<Config> const& config ) {
+        Ptr<IStreamingReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, config.get() );
+        if( !reporter ) {
+            std::ostringstream oss;
+            oss << "No reporter registered with name: '" << reporterName << "'";
+            throw std::domain_error( oss.str() );
+        }
+        return reporter;
+    }
 
-    public:
-        Runner( Ptr<Config> const& config )
-        :   m_config( config )
-        {
-            openStream();
-            makeReporter();
+    Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
+        std::vector<std::string> reporters = config->getReporterNames();
+        if( reporters.empty() )
+            reporters.push_back( "console" );
+
+        Ptr<IStreamingReporter> reporter;
+        for( std::vector<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
+                it != itEnd;
+                ++it )
+            reporter = addReporter( reporter, createReporter( *it, config ) );
+        return reporter;
+    }
+    Ptr<IStreamingReporter> addListeners( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> reporters ) {
+        IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
+        for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();
+                it != itEnd;
+                ++it )
+            reporters = addReporter(reporters, (*it)->create( ReporterConfig( config ) ) );
+        return reporters;
+    }
+
+
+    Totals runTests( Ptr<Config> const& config ) {
+
+        Ptr<IConfig const> iconfig = config.get();
+
+        Ptr<IStreamingReporter> reporter = makeReporter( config );
+        reporter = addListeners( iconfig, reporter );
+
+        RunContext context( iconfig, reporter );
+
+        Totals totals;
+
+        context.testGroupStarting( config->name(), 1, 1 );
+
+        TestSpec testSpec = config->testSpec();
+        if( !testSpec.hasFilters() )
+            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
+
+        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
+        for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
+                it != itEnd;
+                ++it ) {
+            if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
+                totals += context.runTest( *it );
+            else
+                reporter->skipTest( *it );
         }
 
-        Totals runTests() {
+        context.testGroupEnded( iconfig->name(), totals, 1, 1 );
+        return totals;
+    }
 
-            RunContext context( m_config.get(), m_reporter );
+    void applyFilenamesAsTags( IConfig const& config ) {
+        std::vector<TestCase> const& tests = getAllTestCasesSorted( config );
+        for(std::size_t i = 0; i < tests.size(); ++i ) {
+            TestCase& test = const_cast<TestCase&>( tests[i] );
+            std::set<std::string> tags = test.tags;
 
-            Totals totals;
+            std::string filename = test.lineInfo.file;
+            std::string::size_type lastSlash = filename.find_last_of( "\\/" );
+            if( lastSlash != std::string::npos )
+                filename = filename.substr( lastSlash+1 );
 
-            context.testGroupStarting( "all tests", 1, 1 ); // deprecated?
+            std::string::size_type lastDot = filename.find_last_of( "." );
+            if( lastDot != std::string::npos )
+                filename = filename.substr( 0, lastDot );
 
-            TestSpec testSpec = m_config->testSpec();
-            if( !testSpec.hasFilters() )
-                testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
-
-            std::vector<TestCase> testCases;
-            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, testCases );
-
-            int testsRunForGroup = 0;
-            for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
-                    it != itEnd;
-                    ++it ) {
-                testsRunForGroup++;
-                if( m_testsAlreadyRun.find( *it ) == m_testsAlreadyRun.end() ) {
-
-                    if( context.aborting() )
-                        break;
-
-                    totals += context.runTest( *it );
-                    m_testsAlreadyRun.insert( *it );
-                }
-            }
-            std::vector<TestCase> skippedTestCases;
-            getRegistryHub().getTestCaseRegistry().getFilteredTests( testSpec, *m_config, skippedTestCases, true );
-            
-            for( std::vector<TestCase>::const_iterator it = skippedTestCases.begin(), itEnd = skippedTestCases.end();
-                    it != itEnd;
-                    ++it )
-                m_reporter->skipTest( *it );
-
-            context.testGroupEnded( "all tests", totals, 1, 1 );
-            return totals;
+            tags.insert( "#" + filename );
+            setTags( test, tags );
         }
-
-    private:
-        void openStream() {
-            // Open output file, if specified
-            if( !m_config->getFilename().empty() ) {
-                m_ofs.open( m_config->getFilename().c_str() );
-                if( m_ofs.fail() ) {
-                    std::ostringstream oss;
-                    oss << "Unable to open file: '" << m_config->getFilename() << "'";
-                    throw std::domain_error( oss.str() );
-                }
-                m_config->setStreamBuf( m_ofs.rdbuf() );
-            }
-        }
-        void makeReporter() {
-            std::string reporterName = m_config->getReporterName().empty()
-                ? "console"
-                : m_config->getReporterName();
-
-            m_reporter = getRegistryHub().getReporterRegistry().create( reporterName, m_config.get() );
-            if( !m_reporter ) {
-                std::ostringstream oss;
-                oss << "No reporter registered with name: '" << reporterName << "'";
-                throw std::domain_error( oss.str() );
-            }
-        }
-
-    private:
-        Ptr<Config> m_config;
-        std::ofstream m_ofs;
-        Ptr<IStreamingReporter> m_reporter;
-        std::set<TestCase> m_testsAlreadyRun;
-    };
+    }
 
     class Session : NonCopyable {
         static bool alreadyInstantiated;
@@ -132,7 +131,7 @@ namespace Catch {
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
 
-        int applyCommandLine( int argc, char* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
+        int applyCommandLine( int argc, char const* const argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
                 m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );
                 m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
@@ -159,7 +158,7 @@ namespace Catch {
             m_config.reset();
         }
 
-        int run( int argc, char* const argv[] ) {
+        int run( int argc, char const* const argv[] ) {
 
             int returnCode = applyCommandLine( argc, argv );
             if( returnCode == 0 )
@@ -175,15 +174,16 @@ namespace Catch {
             {
                 config(); // Force config to be constructed
 
-                std::srand( m_configData.rngSeed );
+                seedRng( *m_config );
 
-                Runner runner( m_config );
+                if( m_configData.filenamesAsTags )
+                    applyFilenamesAsTags( *m_config );
 
                 // Handle list request
                 if( Option<std::size_t> listed = list( config() ) )
                     return static_cast<int>( *listed );
 
-                return static_cast<int>( runner.runTests().assertions.failed );
+                return static_cast<int>( runTests( m_config ).assertions.failed );
             }
             catch( std::exception& ex ) {
                 Catch::cerr() << ex.what() << std::endl;
@@ -205,7 +205,6 @@ namespace Catch {
                 m_config = new Config( m_configData );
             return *m_config;
         }
-
     private:
         Clara::CommandLine<ConfigData> m_cli;
         std::vector<Clara::Parser::Token> m_unusedTokens;
