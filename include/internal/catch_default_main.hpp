@@ -8,17 +8,29 @@
 #ifndef TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 
+#include "catch_platform.h"
+
+#ifndef CATCH_PLATFORM_WINDOWS
+  #ifndef CATCH_CONFIG_MAIN_ARGV_TYPE
+    #define CATCH_CONFIG_MAIN_ARGV_TYPE char * const
+  #endif
+#else
+  #ifndef CATCH_CONFIG_MAIN_ARGV_TYPE
+    #define CATCH_CONFIG_MAIN_ARGV_TYPE char *
+  #endif
+#endif
+
 #ifndef __OBJC__
 
 // Standard C/C++ main entry point
-int main (int argc, char * const argv[]) {
+int main (int argc, CATCH_CONFIG_MAIN_ARGV_TYPE argv[]) {
     return Catch::Session().run( argc, argv );
 }
 
 #else // __OBJC__
 
 // Objective-C entry point
-int main (int argc, char * const argv[]) {
+int main (int argc, CATCH_CONFIG_MAIN_ARGV_TYPE argv[]) {
 #if !CATCH_ARC_ENABLED
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 #endif
