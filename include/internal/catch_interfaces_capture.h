@@ -47,21 +47,21 @@ namespace Catch {
         virtual IConfig const& config() const = 0;
     };
 
-    IRunContext& getCurrentRunContext();
-    
-    IConfig const* getCurrentConfig();
+    IRunContext& getGlobalRunContext();
+
+    IConfig const* getGlobalConfig();
 
     class LocalContext {
 
     public:
         IRunContext& operator()() const {
-            return getCurrentRunContext(); // !TBD
+            return getGlobalRunContext(); // !TBD
         }
     };
 }
 
 inline Catch::IRunContext& C_A_T_C_H_Context() {
-    return Catch::getCurrentRunContext();
+    return Catch::getGlobalRunContext();
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED

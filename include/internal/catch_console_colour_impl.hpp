@@ -145,7 +145,7 @@ namespace {
     };
 
     IColourImpl* platformColourInstance() {
-        IConfig const* config = getCurrentConfig();
+        IConfig const* config = getGlobalConfig();
         return (config && config->forceColour()) || isatty(STDOUT_FILENO)
             ? PosixColourImpl::instance()
             : NoColourImpl::instance();

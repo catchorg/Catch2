@@ -8,6 +8,8 @@
 
 #include "catch.hpp"
 
+#include "../include/internal/catch_suppress_warnings.h"
+
 #include <string>
 #include <stdexcept>
 
@@ -112,7 +114,7 @@ public:
     CustomStdException( const std::string& msg )
     : m_msg( msg )
     {}
-    ~CustomStdException() CATCH_NOEXCEPT {}
+    ~CustomStdException() CATCH_NOEXCEPT;
     
     std::string getMessage() const
     {
@@ -122,6 +124,7 @@ public:
 private:
     std::string m_msg;
 };
+CustomStdException::~CustomStdException() CATCH_NOEXCEPT {}
 
 
 CATCH_TRANSLATE_EXCEPTION( CustomException& ex )

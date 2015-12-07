@@ -55,7 +55,7 @@ namespace Detail {
 
 std::string toString( std::string const& value ) {
     std::string s = value;
-    IConfig const* config = getCurrentConfig();
+    IConfig const* config = getGlobalConfig();
     if( config && config->showInvisibles() ) {
         for(size_t i = 0; i < s.size(); ++i ) {
             std::string subs;

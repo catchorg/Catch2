@@ -33,6 +33,7 @@
 #include "catch_result_builder.hpp"
 #include "catch_tag_alias_registry.hpp"
 #include "catch_test_case_tracker.hpp"
+#include "catch_thread_context.hpp"
 #include "catch_stream.hpp"
 
 #include "../reporters/catch_reporter_multi.hpp"
@@ -68,6 +69,7 @@ namespace Catch {
     TestRunStats::~TestRunStats() {}
     CumulativeReporterBase::SectionNode::~SectionNode() {}
     CumulativeReporterBase::~CumulativeReporterBase() {}
+    ThreadContext::~ThreadContext() {}
 
     StreamingReporterBase::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}

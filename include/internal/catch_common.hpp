@@ -87,8 +87,8 @@ namespace Catch {
             std::srand( config.rngSeed() );
     }
     unsigned int rngSeed() {
-        return getCurrentConfig()
-            ? getCurrentConfig()->rngSeed()
+        return getGlobalConfig()
+            ? getGlobalConfig()->rngSeed()
             : 0;
     }
 

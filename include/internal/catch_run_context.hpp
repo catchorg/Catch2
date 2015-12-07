@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 
+#include "catch_thread_context.hpp"
+
 #include "catch_interfaces_capture.h"
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_exception.h"
@@ -53,24 +55,25 @@ namespace Catch {
     ///////////////////////////////////////////////////////////////////////////
 
     namespace {
-        IRunContext* s_currentRunContext = CATCH_NULL;
+        IRunContext* g_globalRunContext = CATCH_NULL;
 
-        void setCurrentRunContext( IRunContext* context ) {
-            s_currentRunContext = context;
+        void setGlobalRunContext( IRunContext* context ) {
+            assert( g_globalRunContext == CATCH_NULL || context == CATCH_NULL );
+            g_globalRunContext = context;
         }
     }
     
-    IRunContext* tryGetCurrentRunContext() {
-        return s_currentRunContext;
+    IRunContext* tryGetGlobalRunContext() {
+        return g_globalRunContext;
     }
-    IRunContext& getCurrentRunContext() {
-        if( IRunContext* capture = tryGetCurrentRunContext() )
+    IRunContext& getGlobalRunContext() {
+        if( IRunContext* capture = tryGetGlobalRunContext() )
             return *capture;
         else
             throw std::logic_error( "No current test runner" );
     }
-    IConfig const* getCurrentConfig() {
-        if( IRunContext* capture = tryGetCurrentRunContext() )
+    IConfig const* getGlobalConfig() {
+        if( IRunContext* capture = tryGetGlobalRunContext() )
             return &capture->config();
         else
             return CATCH_NULL;
@@ -89,13 +92,13 @@ namespace Catch {
             m_reporter( reporter ),
             m_activeTestCaseInfo( CATCH_NULL )
         {
-            setCurrentRunContext( this );
+            setGlobalRunContext( this );
             m_reporter->testRunStarting( m_runInfo );
         }
 
         virtual ~RunContext() {
             m_reporter->testRunEnded( TestRunStats( m_runInfo, m_totals, isAborting() ) );
-            setCurrentRunContext( CATCH_NULL );
+            setGlobalRunContext( CATCH_NULL );
         }
 
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount ) {

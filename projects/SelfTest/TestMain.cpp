@@ -21,6 +21,7 @@ CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 #   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
+namespace {
 
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
@@ -458,4 +459,7 @@ struct AutoTestReg {
         REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered", "" );
     }
 };
+
 AutoTestReg autoTestReg;
+
+} // anon namespace
