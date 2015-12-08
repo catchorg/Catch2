@@ -1,0 +1,78 @@
+# AppVeyor uses this file in preference to their web-based configuration.
+#
+# Reference documents:
+#
+#  * appveyor.yml reference: http://www.appveyor.com/docs/appveyor-yml
+#  * build pipeline described here: http://www.appveyor.com/docs/build-configuration
+#  * environment vars: http://www.appveyor.com/docs/environment-variables
+#  * installed software: http://www.appveyor.com/docs/installed-software
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.3.{build}
+
+branches:
+  # whitelist
+  only:
+    - master
+    - develop
+    - develop-v2
+    - appveyor
+    - appveyor-pr
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Operating system (build VM template)
+os:
+  - Visual Studio 2015
+  - Visual Studio 2013
+# NB: VS2012, VS2010, and VS2008 seem to be not available.
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+
+# clone directory
+clone_folder: c:\projects\catch
+
+# fetch repository as zip archive
+shallow_clone: true
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platforms, i.e. x86, x64, Any CPU. This setting is optional.
+# NB: Use Win32 and x64. These are the CMake-compatible solution platform names.
+# This allows us to pass %PLATFORM% to CMake -A.
+platform:
+  - Win32
+  - x64
+
+# build Configurations, i.e. Debug, Release, etc.
+configuration:
+  - Debug
+  - Release
+
+# scripts to run before build
+# NB: let cmake auto-detect the MSVS version, but specify an arch with -A
+before_build:
+  - echo Running cmake...
+  - cd c:\projects\catch
+  - cmake -Hprojects/CMake -BBuild -A%PLATFORM%
+
+# build with MSBuild
+build:
+  project: Build\Catch.sln      # path to Visual Studio solution or project
+
+  parallel: true                # enable MSBuild parallel builds
+  verbosity: minimal            # MSBuild verbosity level {quiet|minimal|normal|detailed}
+
+test_script:
+  - cd c:\projects\catch\Build
+  - ctest -V -j 1 -C %CONFIGURATION%
