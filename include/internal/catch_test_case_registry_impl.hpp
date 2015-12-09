@@ -86,7 +86,10 @@ namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
     public:
-        TestRegistry() : m_unnamedCount( 0 ) {}
+        TestRegistry()
+        :   m_currentSortOrder( RunTests::InDeclarationOrder ),
+            m_unnamedCount( 0 )        
+        {}
         virtual ~TestRegistry();
 
         virtual void registerTest( TestCase const& testCase ) {
