@@ -11,7 +11,7 @@
 #ifndef __OBJC__
 
 // Standard C/C++ main entry point
-int main (int argc, char * const argv[]) {
+int main (int argc, char * argv[]) {
     return Catch::Session().run( argc, argv );
 }
 
