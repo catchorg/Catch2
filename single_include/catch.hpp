@@ -1,6 +1,6 @@
 /*
- *  Catch v1.3.0
- *  Generated: 2015-12-04 10:18:17.055188
+ *  Catch v1.3.1
+ *  Generated: 2015-12-09 18:10:29.846134
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6248,7 +6248,10 @@ namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
     public:
-        TestRegistry() : m_unnamedCount( 0 ) {}
+        TestRegistry()
+        :   m_currentSortOrder( RunTests::InDeclarationOrder ),
+            m_unnamedCount( 0 )
+        {}
         virtual ~TestRegistry();
 
         virtual void registerTest( TestCase const& testCase ) {
@@ -7267,7 +7270,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 3, 0, "", 0 );
+    Version libraryVersion( 1, 3, 1, "", 0 );
 
 }
 
@@ -10020,7 +10023,7 @@ namespace Catch {
 #ifndef __OBJC__
 
 // Standard C/C++ main entry point
-int main (int argc, char * const argv[]) {
+int main (int argc, char * argv[]) {
     return Catch::Session().run( argc, argv );
 }
 

@@ -89,7 +89,7 @@ namespace Catch {
     public:
         TestRegistry()
         :   m_currentSortOrder( RunTests::InDeclarationOrder ),
-            m_unnamedCount( 0 )        
+            m_unnamedCount( 0 )
         {}
         virtual ~TestRegistry();
 
