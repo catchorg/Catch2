@@ -3304,25 +3304,25 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( testStringForMatching() Contains( "string" ) )
+  REQUIRE_THAT( testStringForMatching(), Contains( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string"
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() Contains( "abc" ) )
+  CHECK_THAT( testStringForMatching(), Contains( "abc" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc"
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() StartsWith( "this" ) )
+  CHECK_THAT( testStringForMatching(), StartsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "this"
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() EndsWith( "substring" ) )
+  CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "substring"
 
@@ -3333,7 +3333,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() Contains( "not there" ) )
+  CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
 
@@ -3344,7 +3344,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() StartsWith( "string" ) )
+  CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
 
@@ -3355,7 +3355,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() EndsWith( "this" ) )
+  CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
 
@@ -3366,7 +3366,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() Equals( "something else" ) )
+  CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
@@ -3378,7 +3378,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( "" Equals(nullptr) )
+  REQUIRE_THAT( "", Equals(nullptr) )
 with expansion:
   "" equals: ""
 
@@ -3390,7 +3390,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
+  CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" and
   contains: "abc" )
@@ -3403,14 +3403,14 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
+  CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "not there" )
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
+  CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "not there" or
   contains: "string" )
@@ -3423,7 +3423,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() Equals( "this string contains 'abc' as a substring" ) )
+  CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
   'abc' as a substring"
@@ -3436,7 +3436,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) )
+  CHECK_THAT( testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" and
   contains: "abc" and contains: "substring" and contains: "contains" )
@@ -3449,14 +3449,14 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "different" or contains: "random" )
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching2() Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
+  CHECK_THAT( testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
   "some completely different text that contains one common word" ( contains:
   "string" or contains: "different" or contains: "random" )
@@ -3469,7 +3469,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "substring" )
@@ -3481,7 +3481,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
@@ -3494,7 +3494,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching() !Contains( "different" ) )
+  CHECK_THAT( testStringForMatching(), !Contains( "different" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "different"
 
@@ -3505,7 +3505,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() !Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 
@@ -4224,7 +4224,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" ) )
+  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" ) )
 with expansion:
   "Value after -x or --abortAfter must be greater than zero
   - while parsing: (-x, --abortx <no. failures>)" contains: "greater than zero"
@@ -4239,7 +4239,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ) Contains( "-x" ) )
+  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "-x" ) )
 with expansion:
   "Unable to convert oops to destination type
   - while parsing: (-x, --abortx <no. failures>)" contains: "-x"
@@ -5000,7 +5000,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_THAT( t.toString() EndsWith( "... message truncated due to excessive size" ) )
+  CHECK_THAT( t.toString(), EndsWith( "... message truncated due to excessive size" ) )
 with expansion:
   "***************************************************************************-
   ***-
@@ -8783,7 +8783,7 @@ TagAliasTests.cpp:<line number>
 
 TagAliasTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( what Contains( "[@zzz]" ) )
+  CHECK_THAT( what, Contains( "[@zzz]" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   First seen at file:2
@@ -8792,7 +8792,7 @@ with expansion:
 
 TagAliasTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( what Contains( "file" ) )
+  CHECK_THAT( what, Contains( "file" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   First seen at file:2
@@ -8801,7 +8801,7 @@ with expansion:
 
 TagAliasTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( what Contains( "2" ) )
+  CHECK_THAT( what, Contains( "2" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   First seen at file:2
@@ -8810,7 +8810,7 @@ with expansion:
 
 TagAliasTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( what Contains( "10" ) )
+  CHECK_THAT( what, Contains( "10" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   First seen at file:2

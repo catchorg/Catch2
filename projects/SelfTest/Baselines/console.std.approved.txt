@@ -680,7 +680,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() Contains( "not there" ) )
+  CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
 
@@ -691,7 +691,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() StartsWith( "string" ) )
+  CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
 
@@ -702,7 +702,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() EndsWith( "this" ) )
+  CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
 
@@ -713,7 +713,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() Equals( "something else" ) )
+  CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
@@ -724,7 +724,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
@@ -736,7 +736,7 @@ MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching() !Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 

@@ -3468,7 +3468,7 @@
     <TestCase name="String matchers">
       <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( "string" )
+          testStringForMatching(), Contains( "string" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "string"
@@ -3476,7 +3476,7 @@
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( "abc" )
+          testStringForMatching(), Contains( "abc" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "abc"
@@ -3484,7 +3484,7 @@
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() StartsWith( "this" )
+          testStringForMatching(), StartsWith( "this" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "this"
@@ -3492,7 +3492,7 @@
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() EndsWith( "substring" )
+          testStringForMatching(), EndsWith( "substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "substring"
@@ -3503,7 +3503,7 @@
     <TestCase name="Contains string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( "not there" )
+          testStringForMatching(), Contains( "not there" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "not there"
@@ -3514,7 +3514,7 @@
     <TestCase name="StartsWith string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() StartsWith( "string" )
+          testStringForMatching(), StartsWith( "string" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "string"
@@ -3525,7 +3525,7 @@
     <TestCase name="EndsWith string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() EndsWith( "this" )
+          testStringForMatching(), EndsWith( "this" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "this"
@@ -3536,7 +3536,7 @@
     <TestCase name="Equals string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Equals( "something else" )
+          testStringForMatching(), Equals( "something else" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "something else"
@@ -3547,7 +3547,7 @@
     <TestCase name="Equals string matcher, with NULL">
       <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          "" Equals(nullptr)
+          "", Equals(nullptr)
         </Original>
         <Expanded>
           "" equals: ""
@@ -3558,7 +3558,7 @@
     <TestCase name="AllOf matcher">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
+          testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
@@ -3569,7 +3569,7 @@
     <TestCase name="AnyOf matcher">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
+          testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
@@ -3577,7 +3577,7 @@
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
+          testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
@@ -3588,7 +3588,7 @@
     <TestCase name="Equals">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Equals( "this string contains 'abc' as a substring" )
+          testStringForMatching(), Equals( "this string contains 'abc' as a substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
@@ -3599,7 +3599,7 @@
     <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
+          testStringForMatching(), Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
@@ -3610,7 +3610,7 @@
     <TestCase name="Matchers can be (AnyOf) composed with the || operator">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+          testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
@@ -3618,7 +3618,7 @@
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching2() Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+          testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
         <Expanded>
           "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
@@ -3629,7 +3629,7 @@
     <TestCase name="Matchers can be composed with both &amp;&amp; and ||">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
+          testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
@@ -3640,7 +3640,7 @@
     <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
+          testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
@@ -3651,7 +3651,7 @@
     <TestCase name="Matchers can be negated (Not) with the ! operator">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() !Contains( "different" )
+          testStringForMatching(), !Contains( "different" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" not contains: "different"
@@ -3662,7 +3662,7 @@
     <TestCase name="Matchers can be negated (Not) with the ! operator - failing">
       <Expression success="false" type="CHECK_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          testStringForMatching() !Contains( "substring" )
+          testStringForMatching(), !Contains( "substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" not contains: "substring"
@@ -4415,7 +4415,7 @@
         <Section name="-x must be greater than zero">
           <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( "greater than zero" )
+              parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" )
             </Original>
             <Expanded>
               "Value after -x or --abortAfter must be greater than zero
@@ -4430,7 +4430,7 @@
         <Section name="-x must be numeric">
           <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              parseIntoConfigAndReturnError( argv, config ) Contains( "-x" )
+              parseIntoConfigAndReturnError( argv, config ), Contains( "-x" )
             </Original>
             <Expanded>
               "Unable to convert oops to destination type
@@ -5276,7 +5276,7 @@ there"
     <TestCase name="Long text is truncted">
       <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TestMain.cpp" >
         <Original>
-          t.toString() EndsWith( "... message truncated due to excessive size" )
+          t.toString(), EndsWith( "... message truncated due to excessive size" )
         </Original>
         <Expanded>
           "******************************************************************************-
@@ -9254,7 +9254,7 @@ there"
       <Section name="The same tag alias can only be registered once">
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( "[@zzz]" )
+            what, Contains( "[@zzz]" )
           </Original>
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
@@ -9264,7 +9264,7 @@ there"
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( "file" )
+            what, Contains( "file" )
           </Original>
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
@@ -9274,7 +9274,7 @@ there"
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( "2" )
+            what, Contains( "2" )
           </Original>
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
@@ -9284,7 +9284,7 @@ there"
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/SelfTest/TagAliasTests.cpp" >
           <Original>
-            what Contains( "10" )
+            what, Contains( "10" )
           </Original>
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
