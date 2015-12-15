@@ -23,7 +23,7 @@
 // CATCH_CONFIG_CPP11_OR_GREATER : Is C++11 supported?
 
 // CATCH_CONFIG_VARIADIC_MACROS : are variadic macros supported?
-
+// CATCH_CONFIG_COUNTER : is the __COUNTER__ macro supported?
 // ****************
 // Note to maintainers: if new toggles are added please document them
 // in configuration.md, too
@@ -111,6 +111,15 @@
 
 #endif
 
+// Use __COUNTER__ if the compiler supports it
+#if ( defined _MSC_VER && _MSC_VER >= 1300 ) || \
+    ( defined __GNUC__  && __GNUC__ >= 4 && __GNUC_MINOR__ >= 3 ) || \
+    ( defined __clang__ && __clang_major__ >= 3 )
+
+#define CATCH_INTERNAL_CONFIG_COUNTER
+
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // C++ language feature support
 
@@ -184,6 +193,9 @@
 #endif
 #if defined(CATCH_INTERNAL_CONFIG_CPP11_UNIQUE_PTR) && !defined(CATCH_CONFIG_NO_UNIQUE_PTR) && !defined(CATCH_CONFIG_CPP11_UNIQUE_PTR) && !defined(CATCH_CONFIG_NO_CPP11)
 #   define CATCH_CONFIG_CPP11_UNIQUE_PTR
+#endif
+#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER)
+#   define CATCH_CONFIG_COUNTER
 #endif
 
 
