@@ -43,7 +43,7 @@ namespace Detail {
 
         friend bool operator == ( double lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
-            return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
+            return rhs.compare(rhs.m_value, lhs);
         }
 
         friend bool operator == ( Approx const& lhs, double rhs ) {
@@ -74,9 +74,15 @@ namespace Detail {
             return oss.str();
         }
 
-    private:
+    protected:
+        bool compare ( double lhs, double rhs ) const {
+            return fabs( rhs - lhs ) < m_epsilon * (m_scale + (std::max)( fabs(rhs), fabs(lhs) ) );
+        }
+
         double m_epsilon;
         double m_scale;
+
+    private:
         double m_value;
     };
 }
