@@ -71,7 +71,7 @@ public:
     void endExpression() {
         bool value = m_lhs ? true : false;
         m_rb
-            .setLhs( Catch::toString( value ) )
+            .setLhs( value )
             .setResultType( value )
             .endExpression();
     }
@@ -90,8 +90,8 @@ private:
     ResultBuilder& captureExpression( RhsT const& rhs ) {
         return m_rb
             .setResultType( Internal::compare<Op>( m_lhs, rhs ) )
-            .setLhs( Catch::toString( m_lhs ) )
-            .setRhs( Catch::toString( rhs ) )
+            .setLhs( m_lhs )
+            .setRhs( rhs )
             .setOp( Internal::OperatorTraits<Op>::getName() );
     }
 

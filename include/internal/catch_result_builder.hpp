@@ -41,12 +41,14 @@ namespace Catch {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    ResultBuilder& ResultBuilder::setLhs( std::string const& lhs ) {
-        m_exprComponents.lhs = lhs;
+    template <typename T>
+    ResultBuilder& ResultBuilder::setLhs( T const& lhs ) {
+        m_exprComponents.lhs = new AnyTypeHolder<T>( lhs );
         return *this;
     }
-    ResultBuilder& ResultBuilder::setRhs( std::string const& rhs ) {
-        m_exprComponents.rhs = rhs;
+    template <typename T>
+    ResultBuilder& ResultBuilder::setRhs( T const& rhs ) {
+        m_exprComponents.rhs = new AnyTypeHolder<T>( rhs );
         return *this;
     }
     ResultBuilder& ResultBuilder::setOp( std::string const& op ) {
@@ -130,27 +132,31 @@ namespace Catch {
         }
 
         data.message = m_stream.oss.str();
-        data.reconstructedExpression = reconstructExpression();
-        if( m_exprComponents.testFalse ) {
-            if( m_exprComponents.op == "" )
-                data.reconstructedExpression = "!" + data.reconstructedExpression;
-            else
-                data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
+        if( data.resultType == ResultWas::ExpressionFailed ) {
+            data.reconstructedExpression = reconstructExpression();
+            if( m_exprComponents.testFalse ) {
+                if( m_exprComponents.op == "" )
+                    data.reconstructedExpression = "!" + data.reconstructedExpression;
+                else
+                    data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
         }
+    }
         return AssertionResult( m_assertionInfo, data );
     }
     std::string ResultBuilder::reconstructExpression() const {
+        std::string lhs = m_exprComponents.lhs->toString(),
+                    rhs = m_exprComponents.rhs->toString();
         if( m_exprComponents.op == "" )
-            return m_exprComponents.lhs.empty() ? m_assertionInfo.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
+            return lhs.empty() ? m_assertionInfo.capturedExpression : m_exprComponents.op + lhs;
         else if( m_exprComponents.op == "matches" )
-            return m_exprComponents.lhs + " " + m_exprComponents.rhs;
+            return lhs + " " + rhs;
         else if( m_exprComponents.op != "!" ) {
-            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 40 &&
-                m_exprComponents.lhs.find("\n") == std::string::npos &&
-                m_exprComponents.rhs.find("\n") == std::string::npos )
-                return m_exprComponents.lhs + " " + m_exprComponents.op + " " + m_exprComponents.rhs;
+            if( lhs.size() + rhs.size() < 40 &&
+                lhs.find("\n") == std::string::npos &&
+                rhs.find("\n") == std::string::npos )
+                return lhs + " " + m_exprComponents.op + " " + rhs;
             else
-                return m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs;
+                return lhs + "\n" + m_exprComponents.op + "\n" + rhs;
         }
         else
             return "{can't expand - use " + m_assertionInfo.macroName + "_FALSE( " + m_assertionInfo.capturedExpression.substr(1) + " ) instead of " + m_assertionInfo.macroName + "( " + m_assertionInfo.capturedExpression + " ) for better diagnostics}";
