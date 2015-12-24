@@ -40,10 +40,19 @@ namespace Catch {
     };
 
     template <typename T>
+    struct Decay { typedef T type; };
+
+    template <typename T>
+    struct Decay<T[]> { typedef T* type; };
+
+    template <typename T, size_t N>
+    struct Decay<T[N]> { typedef T* type; };
+
+    template <typename T>
     struct AnyTypeHolder : AnyTypeHolderBase {
         AnyTypeHolder( const T& value ) : value ( value ) {}
         std::string toString() { return Catch::toString( value ); }
-        T value;
+        const typename Decay<const T>::type value;
     };
 
     class ResultBuilder {
