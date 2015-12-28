@@ -8,8 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_WITH_MAIN_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_WITH_MAIN_HPP_INCLUDED
 
-#include "catch_runner.hpp"
+#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "internal/catch_default_main.hpp"
 
 #endif // TWOBLUECUBES_CATCH_WITH_MAIN_HPP_INCLUDED
