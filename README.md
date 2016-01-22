@@ -4,9 +4,7 @@
 
 Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.png)](https://travis-ci.org/philsquared/Catch)
 
-[Please see this page if you are updating from a version before 1.0](docs/whats-changed.md)
-
-<a href="https://raw.githubusercontent.com/philsquared/Catch/master/single_include/catch.hpp">[The latest, single header, version can be downloaded directly using this link]</a>
+<a href="https://raw.githubusercontent.com/philsquared/Catch/master/single_include/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
 
 ## What's the Catch?
 
@@ -18,8 +16,6 @@ This documentation comprises these three parts:
 * [Why do we need yet another C++ Test Framework?](docs/why-catch.md)
 * [Tutorial](docs/tutorial.md) - getting started
 * [Reference section](docs/Readme.md) - all the details
-
-The documentation will continue until morale improves
 
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
