@@ -234,7 +234,7 @@ namespace Matchers {
             virtual ~StartsWith();
 
             virtual bool match( std::string const& expr ) const {
-                return m_data.adjustString( expr ).find( m_data.m_str ) == 0;
+                return startsWith( m_data.adjustString( expr ), m_data.m_str );
             }
             virtual std::string toString() const {
                 return "starts with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
@@ -251,7 +251,7 @@ namespace Matchers {
             virtual ~EndsWith();
 
             virtual bool match( std::string const& expr ) const {
-                return m_data.adjustString( expr ).find( m_data.m_str ) == expr.size() - m_data.m_str.size();
+                return endsWith( m_data.adjustString( expr ), m_data.m_str );
             }
             virtual std::string toString() const {
                 return "ends with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
