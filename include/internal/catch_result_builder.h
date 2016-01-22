@@ -79,9 +79,15 @@ namespace Catch {
         ResultBuilder& setResultType( ResultWas::OfType result );
         ResultBuilder& setResultType( bool result );
         template <typename T>
-        ResultBuilder& setLhs( T const& lhs );
+        ResultBuilder& setLhs( T const& lhs ) {
+            m_exprComponents.lhs = new AnyTypeHolder<T>( lhs );
+            return *this;
+        }
         template <typename T>
-        ResultBuilder& setRhs( T const& rhs );
+        ResultBuilder& setRhs( T const& rhs ) {
+            m_exprComponents.rhs = new AnyTypeHolder<T>( rhs );
+            return *this;
+        }
         ResultBuilder& setOp( std::string const& op );
 
         void endExpression();

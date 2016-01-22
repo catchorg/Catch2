@@ -41,16 +41,6 @@ namespace Catch {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    template <typename T>
-    ResultBuilder& ResultBuilder::setLhs( T const& lhs ) {
-        m_exprComponents.lhs = new AnyTypeHolder<T>( lhs );
-        return *this;
-    }
-    template <typename T>
-    ResultBuilder& ResultBuilder::setRhs( T const& rhs ) {
-        m_exprComponents.rhs = new AnyTypeHolder<T>( rhs );
-        return *this;
-    }
     ResultBuilder& ResultBuilder::setOp( std::string const& op ) {
         m_exprComponents.op = op;
         return *this;
