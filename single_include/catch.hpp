@@ -1,6 +1,6 @@
 /*
- *  Catch v1.3.2
- *  Generated: 2015-12-28 15:07:07.166291
+ *  Catch v1.3.3
+ *  Generated: 2016-01-22 07:51:36.661106
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1069,7 +1069,7 @@ namespace Matchers {
             virtual ~StartsWith();
 
             virtual bool match( std::string const& expr ) const {
-                return m_data.adjustString( expr ).find( m_data.m_str ) == 0;
+                return startsWith( m_data.adjustString( expr ), m_data.m_str );
             }
             virtual std::string toString() const {
                 return "starts with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
@@ -1086,7 +1086,7 @@ namespace Matchers {
             virtual ~EndsWith();
 
             virtual bool match( std::string const& expr ) const {
-                return m_data.adjustString( expr ).find( m_data.m_str ) == expr.size() - m_data.m_str.size();
+                return endsWith( m_data.adjustString( expr ), m_data.m_str );
             }
             virtual std::string toString() const {
                 return "ends with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
@@ -7270,7 +7270,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 3, 2, "", 0 );
+    Version libraryVersion( 1, 3, 3, "", 0 );
 
 }
 
@@ -10090,7 +10090,7 @@ int main (int argc, char * const argv[]) {
     #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
     #define CATCH_TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, __VA_ARGS__ )
     #define CATCH_METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
-    #define CATCH_REGISTER_TEST_CASE( ... ) INTERNAL_CATCH_REGISTER_TESTCASE( __VA_ARGS__ )
+    #define CATCH_REGISTER_TEST_CASE( Function, ... ) INTERNAL_CATCH_REGISTER_TESTCASE( Function, __VA_ARGS__ )
     #define CATCH_SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
     #define CATCH_FAIL( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "CATCH_FAIL", __VA_ARGS__ )
     #define CATCH_SUCCEED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "CATCH_SUCCEED", __VA_ARGS__ )
@@ -10159,7 +10159,7 @@ int main (int argc, char * const argv[]) {
     #define TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE( __VA_ARGS__ )
     #define TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, __VA_ARGS__ )
     #define METHOD_AS_TEST_CASE( method, ... ) INTERNAL_CATCH_METHOD_AS_TEST_CASE( method, __VA_ARGS__ )
-    #define REGISTER_TEST_CASE( ... ) INTERNAL_CATCH_REGISTER_TESTCASE( __VA_ARGS__ )
+    #define REGISTER_TEST_CASE( Function, ... ) INTERNAL_CATCH_REGISTER_TESTCASE( Function, __VA_ARGS__ )
     #define SECTION( ... ) INTERNAL_CATCH_SECTION( __VA_ARGS__ )
     #define FAIL( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL", __VA_ARGS__ )
     #define SUCCEED( ... ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", __VA_ARGS__ )
