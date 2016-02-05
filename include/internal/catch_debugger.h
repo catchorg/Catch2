@@ -35,6 +35,10 @@ namespace Catch{
         #endif
     #endif
 
+#elif defined(CATCH_PLATFORM_LINUX)
+    #include <signal.h>
+
+    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { raise(SIGTRAP); }
 #elif defined(_MSC_VER)
     #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { __debugbreak(); }
 #elif defined(__MINGW32__)

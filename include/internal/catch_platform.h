@@ -15,6 +15,8 @@
 #define CATCH_PLATFORM_IPHONE
 #elif defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
 #define CATCH_PLATFORM_WINDOWS
+#elif defined(linux) || defined(__linux) || defined(__linux__)
+#define CATCH_PLATFORM_LINUX
 #endif
 
 #endif // TWOBLUECUBES_CATCH_PLATFORM_H_INCLUDED
