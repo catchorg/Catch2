@@ -25,29 +25,29 @@ namespace Catch{
     // http://cocoawithlove.com/2008/03/break-into-debugger.html
     #ifdef DEBUG
         #if defined(__ppc64__) || defined(__ppc__)
-            #define CATCH_BREAK_INTO_DEBUGGER() \
-                if( Catch::isDebuggerActive() ) { \
+            #define CATCH_TRAP() \
                     __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
-                    : : : "memory","r0","r3","r4" ); \
-                }
+                    : : : "memory","r0","r3","r4" )
         #else
-            #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) {__asm__("int $3\n" : : );}
+            #define CATCH_TRAP() _asm__("int $3\n" : : )
         #endif
     #endif
 
 #elif defined(CATCH_PLATFORM_LINUX)
     #include <signal.h>
 
-    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { raise(SIGTRAP); }
+    #define CATCH_TRAP() raise(SIGTRAP)
 #elif defined(_MSC_VER)
-    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { __debugbreak(); }
+    #define CATCH_TRAP() __debugbreak()
 #elif defined(__MINGW32__)
     extern "C" __declspec(dllimport) void __stdcall DebugBreak();
-    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { DebugBreak(); }
+    #define CATCH_TRAP() DebugBreak()
 #endif
 
-#ifndef CATCH_BREAK_INTO_DEBUGGER
-#define CATCH_BREAK_INTO_DEBUGGER() Catch::alwaysTrue();
+#ifdef CATCH_TRAP
+    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { CATCH_TRAP(); }
+#else
+    #define CATCH_BREAK_INTO_DEBUGGER() Catch::alwaysTrue();
 #endif
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_H_INCLUDED
