@@ -463,10 +463,10 @@ TEST_CASE( "XmlEncode" ) {
     SECTION( "string with control char (x7F)" ) {
         REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" );
     }
-    SECTION( "string with control char that is negativ on signed char (xFF)" ) {
+    SECTION( "string with control char that is negative on signed char (xFF)" ) {
         REQUIRE( encode( "[\xFF]" ) == "[&#xFF;]" );
     }
-    SECTION( "string with utf8 multi byte char (german 'ae' umlaut)" ) {
+    SECTION( "string with utf8 multibyte char (german 'ae' umlaut)" ) {
         REQUIRE( encode( "[\xC3\xA4]" ) == "[\xC3\xA4]" );
     }
 }

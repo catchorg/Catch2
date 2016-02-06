@@ -97,7 +97,7 @@ namespace Catch {
 
     class XmlEncode {
     public:
-        enum ForWhat { ForTextNodes, ForAttributes };        
+        enum ForWhat { ForTextNodes, ForAttributes };
 
         XmlEncode( std::string const& str, ForWhat forWhat = ForTextNodes )
         :   m_str( str ),
