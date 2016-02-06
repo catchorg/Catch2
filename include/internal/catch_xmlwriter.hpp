@@ -22,7 +22,7 @@ namespace Catch {
    
     // (see: https://en.wikipedia.org/wiki/UTF-8#Codepage_layout)
     namespace Utf8 {
-        inline bool isSingleByteChar(unsigned char b) {
+        inline bool isSingleByteChar( unsigned char b ) {
             // Plain ASCII chars
             return b <= 0x7F;
         }
@@ -31,23 +31,23 @@ namespace Catch {
             return b >= 0x80 && b <= 0xBF;
         }
         
-        inline bool isFirstInTwoByteChar(unsigned char b) {
+        inline bool isFirstInTwoByteChar( unsigned char b ) {
             return b >= 0xC2 && b <= 0xDF;
         }
         
-        inline bool isFirstInThreeByteChar(unsigned char b) {
+        inline bool isFirstInThreeByteChar( unsigned char b ) {
             return b >= 0xE0 && b <= 0xEF;
         }
         
-        inline bool isFirstInFourByteChar(unsigned char b) {
+        inline bool isFirstInFourByteChar( unsigned char b ) {
             return b >= 0xF0 && b <= 0xF4;
         }
         
-        inline bool isInvalidChar(unsigned char b) {
+        inline bool isInvalidByte( unsigned char b ) {
             return b == 0xC0 || b == 0xC1 || b >= 0xF5;
         }
         
-        inline bool isValid(const char* str, size_t len) {
+        inline bool isValid( char const* str, size_t len ) {
             int outstandingBytesOfCurrentChar = 0;
            
             for( std::size_t i = 0; i < len; ++ i ) {
@@ -83,15 +83,15 @@ namespace Catch {
                         return false;
                 }
                                 
-                // explicit negative check (sould be fully redundant here)
-                assert( isInvalidChar( b ) == false );
+                // explicit negative check (should be fully redundant here)
+                assert( isInvalidByte( b ) == false );
             }
             
             return outstandingBytesOfCurrentChar == 0;
         }
         
-        inline bool isValid(const std::string& str) {
-            return isValid(str.c_str(), str.size());
+        inline bool isValid( std::string const& str ) {
+            return isValid( str.c_str(), str.size() );
         }
     }
 
