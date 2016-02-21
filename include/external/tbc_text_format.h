@@ -77,9 +77,9 @@ namespace Tbc {
                 pos = remainder.find_last_of( _attr.tabChar, width );
                 if( pos != std::string::npos ) {
                     tabPos = pos;
-                    if( remainder[width] == '\n' )
+                    if( width == remainder.size() || remainder[width] == '\n' )
                         width--;
-                    remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
+                    remainder.erase( tabPos, 1 );
                 }
 
                 if( width == remainder.size() ) {
@@ -104,7 +104,7 @@ namespace Tbc {
                     }
                     if( lines.size() == 1 )
                         indent = _attr.indent;
-                    if( tabPos != std::string::npos )
+                    if( tabPos < _attr.width - indent )
                         indent += tabPos;
                 }
             }
