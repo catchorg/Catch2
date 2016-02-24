@@ -95,7 +95,18 @@ namespace {
 
     IColourImpl* platformColourInstance() {
         static Win32ColourImpl s_instance;
-        return &s_instance;
+
+        Ptr<IConfig const> config = getCurrentContext().getConfig();
+        UseColour::YesOrNo colourMode = config
+            ? config->useColour()
+            : UseColour::Auto;
+        if( colourMode == UseColour::Auto )
+            colourMode = !isDebuggerActive()
+                ? UseColour::Yes
+                : UseColour::No;
+        return colourMode == UseColour::Yes
+            ? &s_instance
+            : NoColourImpl::instance();
     }
 
 } // end anon namespace
@@ -146,7 +157,14 @@ namespace {
 
     IColourImpl* platformColourInstance() {
         Ptr<IConfig const> config = getCurrentContext().getConfig();
-        return (config && config->forceColour()) || isatty(STDOUT_FILENO)
+        UseColour::YesOrNo colourMode = config
+            ? config->useColour()
+            : UseColour::Auto;
+        if( colourMode == UseColour::Auto )
+            colourMode = (!isDebuggerActive() && isatty(STDOUT_FILENO) )
+                ? UseColour::Yes
+                : UseColour::No;
+        return colourMode == UseColour::Yes
             ? PosixColourImpl::instance()
             : NoColourImpl::instance();
     }
@@ -171,9 +189,7 @@ namespace Catch {
     Colour::~Colour(){ if( !m_moved ) use( None ); }
 
     void Colour::use( Code _colourCode ) {
-        static IColourImpl* impl = isDebuggerActive()
-            ? NoColourImpl::instance()
-            : platformColourInstance();
+        static IColourImpl* impl = platformColourInstance();
         impl->use( _colourCode );
     }
 

@@ -93,7 +93,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\SelfTest\ApproxTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\BDDTests.cpp" />
-    <ClCompile Include="..\..\..\SelfTest\SectionTrackerTests.cpp" />
+    <ClCompile Include="..\..\..\SelfTest\PartTrackerTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\TestMain.cpp" />
     <ClCompile Include="..\..\..\SelfTest\ClassTests.cpp" />
     <ClCompile Include="..\..\..\SelfTest\ConditionTests.cpp" />
