@@ -36,14 +36,14 @@ namespace Catch {
             noThrow( false ),
             showHelp( false ),
             showInvisibles( false ),
-            forceColour( false ),
             filenamesAsTags( false ),
             abortAfter( -1 ),
             rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
             showDurations( ShowDurations::DefaultForReporter ),
-            runOrder( RunTests::InDeclarationOrder )
+            runOrder( RunTests::InDeclarationOrder ),
+            useColour( UseColour::Auto )
         {}
 
         bool listTests;
@@ -56,7 +56,6 @@ namespace Catch {
         bool noThrow;
         bool showHelp;
         bool showInvisibles;
-        bool forceColour;
         bool filenamesAsTags;
 
         int abortAfter;
@@ -66,6 +65,7 @@ namespace Catch {
         WarnAbout::What warnings;
         ShowDurations::OrNot showDurations;
         RunTests::InWhatOrder runOrder;
+        UseColour::YesOrNo useColour;
 
         std::string outputFilename;
         std::string name;
@@ -132,7 +132,7 @@ namespace Catch {
         virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
         virtual RunTests::InWhatOrder runOrder() const  { return m_data.runOrder; }
         virtual unsigned int rngSeed() const    { return m_data.rngSeed; }
-        virtual bool forceColour() const { return m_data.forceColour; }
+        virtual UseColour::YesOrNo useColour() const { return m_data.useColour; }
 
     private:
 

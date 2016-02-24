@@ -62,6 +62,21 @@ namespace Catch {
             ? ShowDurations::Always
             : ShowDurations::Never;
     }
+    inline void setUseColour( ConfigData& config, std::string const& value ) {
+        std::string mode = toLower( value );
+        
+        if( mode == "yes" )
+            config.useColour = UseColour::Yes;
+        else if( mode == "no" )
+            config.useColour = UseColour::No;
+        else if( mode == "auto" )
+            config.useColour = UseColour::Auto;
+        else
+            throw std::runtime_error( "colour mode must be one of: auto, yes or no" );
+    }
+    inline void forceColour( ConfigData& config ) {
+        config.useColour = UseColour::Yes;
+    }
     inline void loadTestNamesFromFile( ConfigData& config, std::string const& _filename ) {
         std::ifstream f( _filename.c_str() );
         if( !f.is_open() )
@@ -148,7 +163,7 @@ namespace Catch {
 
         cli["-d"]["--durations"]
             .describe( "show test durations" )
-            .bind( &setShowDurations, "yes/no" );
+            .bind( &setShowDurations, "yes|no" );
 
         cli["-f"]["--input-file"]
             .describe( "load test names to run from a file" )
@@ -176,8 +191,12 @@ namespace Catch {
             .bind( &setRngSeed, "'time'|number" );
 
         cli["--force-colour"]
-            .describe( "force colourised output" )
-            .bind( &ConfigData::forceColour );
+            .describe( "force colourised output (deprecated)" )
+            .bind( &forceColour );
+        
+        cli["--use-colour"]
+            .describe( "should output be colourised" )
+            .bind( &setUseColour, "yes|no" );
 
         return cli;
     }

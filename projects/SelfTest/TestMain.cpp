@@ -196,19 +196,41 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         }
     }
 
-    SECTION( "force-colour", "") {
-        SECTION( "--force-colour", "" ) {
-            const char* argv[] = { "test", "--force-colour" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-
-            REQUIRE( config.forceColour );
-        }
-
-        SECTION( "without --force-colour", "" ) {
+    SECTION( "use-colour", "") {
+        
+        using Catch::UseColour;
+        
+        SECTION( "without option", "" ) {
             const char* argv[] = { "test" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.useColour == UseColour::Auto );
+        }
 
-            REQUIRE( !config.forceColour );
+        SECTION( "auto", "" ) {
+            const char* argv[] = { "test", "--use-colour", "auto" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+
+            REQUIRE( config.useColour == UseColour::Auto );
+        }
+
+        SECTION( "yes", "" ) {
+            const char* argv[] = { "test", "--use-colour", "yes" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.useColour == UseColour::Yes );
+        }
+
+        SECTION( "no", "" ) {
+            const char* argv[] = { "test", "--use-colour", "no" };
+            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+            
+            REQUIRE( config.useColour == UseColour::No );
+        }
+
+        SECTION( "error", "" ) {
+            const char* argv[] = { "test", "--use-colour", "wrong" };
+            REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) );
         }
     }
 }
