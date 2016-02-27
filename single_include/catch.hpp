@@ -4576,6 +4576,35 @@ STITCH_CLARA_CLOSE_NAMESPACE
 
 #include <fstream>
 
+#ifdef _WIN32_WCE
+namespace CATCH_WIN_CE
+{
+   time_t time(time_t* p)
+   {
+      SYSTEMTIME systime; 
+      GetSystemTime(&systime); 
+      FILETIME ft; 
+      if(!SystemTimeToFileTime(&systime, &ft)) 
+         throw std::runtime_error("could not convert local time to file time"); 
+      /* convert 
+      1. FILETIME to int64_t 
+      2. 100ns to seconds 
+      3. epoch beginning 1601 to one beginning 1970 
+      4. int64_t to time_t */ 
+      LONGLONG t64 = (static_cast<LONGLONG>(ft.dwHighDateTime) << 32) + ft.dwLowDateTime; 
+      t64 = (t64 + 5000000) / 10000000; 
+      t64 -= 11644473600; 
+      std::time_t res = static_cast<std::time_t>(t64); 
+      // make sure the static cast didn't truncate the result 
+      if(res != t64) 
+         throw std::runtime_error("could not convert t64 to time_t"); 
+      if(p) 
+         *p = res; 
+      return res; 
+   }
+}
+#endif
+
 namespace Catch {
 
     inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
@@ -4605,7 +4634,12 @@ namespace Catch {
     }
     inline void setRngSeed( ConfigData& config, std::string const& seed ) {
         if( seed == "time" ) {
-            config.rngSeed = static_cast<unsigned int>( std::time(0) );
+           //WinCE compatibility
+#ifndef _WIN32_WCE 
+           config.rngSeed = static_cast<unsigned int>( std::time(0) );
+#else
+           config.rngSeed = static_cast<unsigned int>( CATCH_WIN_CE::time(0) );
+#endif
         }
         else {
             std::stringstream ss;
@@ -6929,7 +6963,7 @@ namespace Catch {
 
 namespace Catch {
 namespace {
-
+#ifndef _WIN32_WCE
     class Win32ColourImpl : public IColourImpl {
     public:
         Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
@@ -6973,7 +7007,8 @@ namespace {
         static Win32ColourImpl s_instance;
         return &s_instance;
     }
-
+#else
+#endif
 } // end anon namespace
 } // end namespace Catch
 
@@ -7047,9 +7082,14 @@ namespace Catch {
     Colour::~Colour(){ if( !m_moved ) use( None ); }
 
     void Colour::use( Code _colourCode ) {
-        static IColourImpl* impl = isDebuggerActive()
-            ? NoColourImpl::instance()
-            : platformColourInstance();
+       //WinCE compatibility
+#ifndef _WIN32_WCE
+       static IColourImpl* impl = isDebuggerActive()
+       ? NoColourImpl::instance()
+       : platformColourInstance();
+#else
+        static IColourImpl* impl = NoColourImpl::instance();
+#endif
         impl->use( _colourCode );
     }
 
@@ -7835,7 +7875,10 @@ namespace Catch {
     } // namespace Catch
 
 #elif defined(_MSC_VER)
+#ifndef _WIN32_WCE
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
+#else
+#endif
     namespace Catch {
         bool isDebuggerActive() {
             return IsDebuggerPresent() != 0;
@@ -7855,10 +7898,18 @@ namespace Catch {
 #endif // Platform
 
 #ifdef CATCH_PLATFORM_WINDOWS
-    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
+#ifndef _WIN32_WCE//WinCE compatibility
+    extern "C" __declspec(dlliport) void __stdcall OutputDebugStringA( const char* );
+#else
+#endif
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
+#ifndef _WIN32_WCE
             ::OutputDebugStringA( text.c_str() );
+#else
+           USES_CONVERSION;
+           ::OutputDebugString( A2W(text.c_str()) );
+#endif
         }
     }
 #else
@@ -10356,4 +10407,3 @@ int main (int argc, char * const argv[]) {
 using Catch::Detail::Approx;
 
 #endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
-
