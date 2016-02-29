@@ -31,6 +31,7 @@
     do { \
         Catch::ResultBuilder __catchResult( C_A_T_C_H_Context(), macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
+            CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             ( __catchResult <= expr ).endExpression(); \
         } \
         catch( ... ) { \
