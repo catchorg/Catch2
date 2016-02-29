@@ -36,6 +36,10 @@
 
 // All the C++11 features can be disabled with CATCH_CONFIG_NO_CPP11
 
+#if defined(__cplusplus) && __cplusplus >= 201103L
+#  define CATCH_CPP11_OR_GREATER
+#endif
+
 #ifdef __clang__
 
 #  if __has_feature(cxx_nullptr)
@@ -45,6 +49,10 @@
 #  if __has_feature(cxx_noexcept)
 #    define CATCH_INTERNAL_CONFIG_CPP11_NOEXCEPT
 #  endif
+
+#   if defined(CATCH_CPP11_OR_GREATER)
+#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
+#   endif
 
 #endif // __clang__
 
@@ -73,9 +81,13 @@
 // GCC
 #ifdef __GNUC__
 
-#if __GNUC__ == 4 && __GNUC_MINOR__ >= 6 && defined(__GXX_EXPERIMENTAL_CXX0X__)
-#   define CATCH_INTERNAL_CONFIG_CPP11_NULLPTR
-#endif
+#   if __GNUC__ == 4 && __GNUC_MINOR__ >= 6 && defined(__GXX_EXPERIMENTAL_CXX0X__)
+#       define CATCH_INTERNAL_CONFIG_CPP11_NULLPTR
+#   endif
+
+#   if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS) && defined(CATCH_CPP11_OR_GREATER)
+#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "gcc diagnostic ignored \"-Wparentheses\"" )
+#   endif
 
 // - otherwise more recent versions define __cplusplus >= 201103L
 // and will get picked up below
@@ -111,13 +123,12 @@
 
 #endif
 
+
 ////////////////////////////////////////////////////////////////////////////////
 // C++ language feature support
 
 // catch all support for C++11
-#if defined(__cplusplus) && __cplusplus >= 201103L
-
-#  define CATCH_CPP11_OR_GREATER
+#if defined(CATCH_CPP11_OR_GREATER)
 
 #  if !defined(CATCH_INTERNAL_CONFIG_CPP11_NULLPTR)
 #    define CATCH_INTERNAL_CONFIG_CPP11_NULLPTR
@@ -186,6 +197,9 @@
 #   define CATCH_CONFIG_CPP11_UNIQUE_PTR
 #endif
 
+#if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
+#   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
+#endif
 
 // noexcept support:
 #if defined(CATCH_CONFIG_CPP11_NOEXCEPT) && !defined(CATCH_NOEXCEPT)
