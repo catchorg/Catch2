@@ -4348,8 +4348,8 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
-  force-colour
-  --force-colour
+  use-colour
+  without option
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
 ...............................................................................
@@ -4360,14 +4360,14 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.forceColour )
+  REQUIRE( config.useColour == UseColour::Auto )
 with expansion:
-  true
+  0 == 0
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
-  force-colour
-  without --force-colour
+  use-colour
+  auto
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
 ...............................................................................
@@ -4378,9 +4378,57 @@ PASSED:
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( !config.forceColour )
+  REQUIRE( config.useColour == UseColour::Auto )
 with expansion:
-  true
+  0 == 0
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  use-colour
+  yes
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( config.useColour == UseColour::Yes )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  use-colour
+  no
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE( config.useColour == UseColour::No )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  use-colour
+  error
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) )
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
@@ -9046,5 +9094,5 @@ with expansion:
 
 ===============================================================================
 test cases: 167 | 123 passed | 43 failed |  1 failed as expected
-assertions: 916 | 818 passed | 85 failed | 13 failed as expected
+assertions: 921 | 823 passed | 85 failed | 13 failed as expected
 

@@ -4567,8 +4567,8 @@
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="force-colour">
-        <Section name="--force-colour">
+      <Section name="use-colour">
+        <Section name="without option">
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -4579,18 +4579,18 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.forceColour
+              config.useColour == UseColour::Auto
             </Original>
             <Expanded>
-              true
+              0 == 0
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="force-colour">
-        <Section name="without --force-colour">
+      <Section name="use-colour">
+        <Section name="auto">
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -4601,15 +4601,73 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              !config.forceColour
+              config.useColour == UseColour::Auto
             </Original>
             <Expanded>
-              true
+              0 == 0
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="use-colour">
+        <Section name="yes">
+          <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.useColour == UseColour::Yes
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="use-colour">
+        <Section name="no">
+          <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.useColour == UseColour::No
+            </Original>
+            <Expanded>
+              2 == 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="use-colour">
+        <Section name="error">
+          <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config ), Contains( "colour mode must be one of" )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config ), Contains( "colour mode must be one of" )
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -9505,7 +9563,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="818" failures="85" expectedFailures="13"/>
+    <OverallResults successes="823" failures="85" expectedFailures="13"/>
   </Group>
-  <OverallResults successes="818" failures="85" expectedFailures="13"/>
+  <OverallResults successes="823" failures="85" expectedFailures="13"/>
 </Catch>
