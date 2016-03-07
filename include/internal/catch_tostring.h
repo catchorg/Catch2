@@ -13,8 +13,12 @@
 #include <sstream>
 #include <iomanip>
 #include <limits>
-#include <vector>
 #include <cstddef>
+#include <iterator>
+
+#ifndef CATCH_CPP11_OR_GREATER
+#include <vector>
+#endif
 
 #ifdef __OBJC__
 #include "catch_objc_arc.hpp"
@@ -24,7 +28,7 @@
 #include <tuple>
 #endif
 
-#ifdef CATCH_CONFIG_CPP11_IS_ENUM
+#ifdef CATCH_CPP11_OR_GREATER
 #include <type_traits>
 #endif
 
@@ -76,6 +80,8 @@ namespace Detail {
         template<typename T> BorgType( T const& );
     };
 
+    // Without c++11's `decltype`, rely on function overloading returning
+    // different sized types that can be discriminated with `sizeof`.
     struct TrueType { char sizer[1]; };
     struct FalseType { char sizer[2]; };
 
@@ -174,17 +180,74 @@ namespace Detail {
     std::string rangeToString( InputIterator first, InputIterator last );
 }
 
-//template<typename T, typename Allocator>
-//struct StringMaker<std::vector<T, Allocator> > {
-//    static std::string convert( std::vector<T,Allocator> const& v ) {
-//        return Detail::rangeToString( v.begin(), v.end() );
-//    }
-//};
-
+#ifndef CATCH_CPP11_OR_GREATER
 template<typename T, typename Allocator>
 std::string toString( std::vector<T,Allocator> const& v ) {
     return Detail::rangeToString( v.begin(), v.end() );
 }
+
+#else
+ 
+namespace Detail {
+// Importing c++11 std instead of prefixing call by std:: to allow for user
+// custom overload find through ADL
+using std::begin;
+using std::end;
+
+template<typename T>
+struct HasBasicContainerApi
+{
+    /// This overload will be chosen if all the operations in it's signature
+    /// can be resolved at compile time.
+    template<typename C,
+             // Test const_iterator lvalue supports operator++
+             class = decltype(++std::declval<typename C::const_iterator&>()),
+             // Test that begin and end return comparable values
+             class = decltype(begin(std::declval<const C>())
+                              != end(std::declval<const C>()))>
+    static std::true_type has( typename C::const_iterator*, typename C::value_type*);
+    /// Lower priority overload will be picked if the previous one fails.
+    template<typename C>
+    static std::false_type has( ... );
+    static const bool value = decltype(has<T>(NULL, NULL))::value;
+};
+
+// Compile type function that returns true if a type matches
+// the container concept (http://en.cppreference.com/w/cpp/concept/Container),
+// false otherwise.
+template <class C, bool = HasBasicContainerApi<C>::value>
+struct IsContainer {
+    // C array are containers although not having the standard api.
+    static const bool value = std::is_array<C>::value;
+};
+
+// Specialization for types that have a basic container API
+// that can now be checked for type inconsistency.
+template <class C>
+struct IsContainer<C, true> {
+private:
+    typedef typename C::value_type value_type;
+    typedef typename C::const_iterator const_iterator;
+    static const C& c;
+public:
+    static const bool value =
+        std::is_same<const_iterator, decltype( begin(c) )>::value &&
+        std::is_same<const_iterator, decltype( end(c) )>::value &&
+        std::is_same<const value_type&, decltype( *begin(c) )>::value &&
+        std::is_same<const value_type&, decltype( *end(c) )>::value;
+};
+
+/// Print containers by printing their elements in succession
+template<typename C,
+         class = typename std::enable_if<Detail::IsContainer<C>::value>::type,
+         class = void>
+std::string toStringInternal( C const& c ) {
+    return Detail::rangeToString( begin(c), end(c) );
+}
+
+} // end namespace Detail
+
+#endif // CATCH_CPP11_OR_GREATER
 
 // toString for pairs
 template<typename T1, typename T2>
@@ -247,6 +310,19 @@ namespace Detail {
     std::string makeString( T const& value ) {
         return StringMaker<T>::convert( value );
     }
+
+/// Instead of adding complex template overloading of public toString method,
+/// use an internal dispatcher which template can get as complicated as needed
+/// without impacting the public api.
+template<typename T
+#if defined(CATCH_CPP11_OR_GREATER)
+         , class = typename std::enable_if<!Detail::IsContainer<T>::value>::type
+#endif
+        >
+std::string toStringInternal( T const& value ) {
+    return StringMaker<T>::convert( value );
+}
+
 } // end namespace Detail
 
 /// \brief converts any type to a string
@@ -254,11 +330,11 @@ namespace Detail {
 /// The default template forwards on to ostringstream - except when an
 /// ostringstream overload does not exist - in which case it attempts to detect
 /// that and writes {?}.
-/// Overload (not specialise) this template for custom typs that you don't want
+/// Overload (not specialize) this template for custom types that you don't want
 /// to provide an ostream overload for.
 template<typename T>
 std::string toString( T const& value ) {
-    return StringMaker<T>::convert( value );
+    return Detail::toStringInternal(value);
 }
 
 
