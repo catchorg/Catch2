@@ -11,7 +11,7 @@ SOURCES = ApproxTests.cpp \
           VariadicMacrosTests.cpp \
           EnumToString.cpp \
           ToStringPair.cpp \
-          ToStringVector.cpp \
+          ToStringContainers.cpp \
           ToStringWhich.cpp
 
 
