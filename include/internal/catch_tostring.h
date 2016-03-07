@@ -186,6 +186,19 @@ std::string toString( std::vector<T,Allocator> const& v ) {
     return Detail::rangeToString( v.begin(), v.end() );
 }
 
+// toString for pairs
+template<typename T1, typename T2>
+struct StringMaker<std::pair<T1,T2> > {
+    static std::string convert( const std::pair<T1,T2>& pair ) {
+        std::ostringstream oss;
+        oss << "{ "
+            << toString( pair.first )
+            << ", "
+            << toString( pair.second )
+            << " }";
+        return oss.str();
+    }
+};
 
 #ifdef CATCH_CONFIG_CPP11_TUPLE
 
