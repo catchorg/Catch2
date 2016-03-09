@@ -8,6 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
 
+#ifdef CATCH_CONFIG_CPP11_STD_FUNCTION
+#include <functional>
+#endif
+
 #include "catch_common.h"
 #include "catch_interfaces_testcase.h"
 #include "catch_compiler_capabilities.h"
@@ -31,7 +35,11 @@ private:
     void (C::*m_method)();
 };
 
+#ifdef CATCH_CONFIG_CPP11_STD_FUNCTION
+typedef std::function<void()> TestFunction;
+#else
 typedef void(*TestFunction)();
+#endif
 
 struct NameAndDesc {
     NameAndDesc( const std::string &_name = "", const std::string &_description= "" )
