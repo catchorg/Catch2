@@ -34,12 +34,12 @@ private:
 typedef void(*TestFunction)();
 
 struct NameAndDesc {
-    NameAndDesc( const char* _name = "", const char* _description= "" )
+    NameAndDesc( const std::string &_name = "", const std::string &_description= "" )
     : name( _name ), description( _description )
     {}
 
-    const char* name;
-    const char* description;
+    std::string name;
+    std::string description;
 };
 
 void registerTestCase
