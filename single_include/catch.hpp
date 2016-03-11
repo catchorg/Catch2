@@ -1,6 +1,6 @@
 /*
- *  Catch v1.3.5
- *  Generated: 2016-02-29 08:16:42.342094
+ *  Catch v1.3.6
+ *  Generated: 2016-03-11 18:30:42.852700
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -149,7 +149,7 @@
 #   endif
 
 #   if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS) && defined(CATCH_CPP11_OR_GREATER)
-#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "gcc diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
 #   endif
 
 // - otherwise more recent versions define __cplusplus >= 201103L
@@ -7481,7 +7481,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 3, 5, "", 0 );
+    Version libraryVersion( 1, 3, 6, "", 0 );
 
 }
 
