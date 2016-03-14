@@ -3952,6 +3952,17 @@ with expansion:
   9223372036854775807 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
+This test 'should' fail but doesn't
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+with message:
+  oops!
+
+-------------------------------------------------------------------------------
 Process can be configured on command line
   default - no arguments
 -------------------------------------------------------------------------------
@@ -9093,6 +9104,6 @@ with expansion:
   1 > 0
 
 ===============================================================================
-test cases: 167 | 123 passed | 43 failed |  1 failed as expected
-assertions: 921 | 823 passed | 85 failed | 13 failed as expected
+test cases: 168 | 123 passed | 43 failed |  2 failed as expected
+assertions: 922 | 824 passed | 80 failed | 18 failed as expected
 

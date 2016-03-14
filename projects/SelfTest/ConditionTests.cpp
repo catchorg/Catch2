@@ -101,7 +101,7 @@ TEST_CASE( "Inequality checks that should succeed", "" )
     REQUIRE( data.str_hello.size() != 6 );
 }
 
-TEST_CASE( "Inequality checks that should fail", "[.][failing]" )
+TEST_CASE( "Inequality checks that should fail", "[.][failing][!shouldfail]" )
 {
     TestData data;
 

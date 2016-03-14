@@ -109,6 +109,11 @@ namespace Catch {
             while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
+            if( testInfo.expectedToFail() && deltaTotals.testCases.passed > 0 ) {
+                deltaTotals.assertions.failed++;
+                deltaTotals.testCases.passed--;
+                deltaTotals.testCases.failed++;
+            }
             m_totals.testCases += deltaTotals.testCases;
             m_reporter->testCaseEnded( TestCaseStats(   testInfo,
                                                         deltaTotals,

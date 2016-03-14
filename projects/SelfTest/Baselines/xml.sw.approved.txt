@@ -665,7 +665,7 @@
           5 != 5
         </Expanded>
       </Expression>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Ordering comparison checks that should succeed">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -4084,6 +4084,9 @@
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="This test 'should' fail but doesn't">
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Process can be configured on command line">
       <Section name="default - no arguments">
@@ -9563,7 +9566,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="823" failures="85" expectedFailures="13"/>
+    <OverallResults successes="824" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="823" failures="85" expectedFailures="13"/>
+  <OverallResults successes="824" failures="80" expectedFailures="18"/>
 </Catch>

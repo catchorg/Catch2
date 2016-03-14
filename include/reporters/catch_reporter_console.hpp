@@ -349,7 +349,7 @@ namespace Catch {
             if( totals.testCases.total() == 0 ) {
                 stream << Colour( Colour::Warning ) << "No tests ran\n";
             }
-            else if( totals.assertions.total() > 0 && totals.assertions.allPassed() ) {
+            else if( totals.assertions.total() > 0 && totals.testCases.allPassed() ) {
                 stream << Colour( Colour::ResultSuccess ) << "All tests passed";
                 stream << " ("
                         << pluralise( totals.assertions.passed, "assertion" ) << " in "

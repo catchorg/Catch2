@@ -478,3 +478,8 @@ TEST_CASE( "long long" ) {
 //    int x = 10/i; // This should cause the signal to fire
 //    CHECK( x == 0 );
 //}
+
+TEST_CASE( "This test 'should' fail but doesn't", "[.][failing][!shouldfail]" )
+{
+    SUCCEED( "oops!" );
+}

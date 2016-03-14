@@ -485,7 +485,131 @@ ConditionTests.cpp:<line number>: FAILED:
 with expansion:
   9.1f != Approx( 9.1000003815 )
 
+-------------------------------------------------------------------------------
+Ordering comparison checks that should succeed
+-------------------------------------------------------------------------------
+ConditionTests.cpp:<line number>
+...............................................................................
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven < 8 )
+with expansion:
+  7 < 8
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven > 6 )
+with expansion:
+  7 > 6
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven > 0 )
+with expansion:
+  7 > 0
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven > -1 )
+with expansion:
+  7 > -1
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven >= 7 )
+with expansion:
+  7 >= 7
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven >= 6 )
+with expansion:
+  7 >= 6
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven <= 7 )
+with expansion:
+  7 <= 7
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.int_seven <= 8 )
+with expansion:
+  7 <= 8
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.float_nine_point_one > 9 )
+with expansion:
+  9.1f > 9
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.float_nine_point_one < 10 )
+with expansion:
+  9.1f < 10
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.float_nine_point_one < 9.2 )
+with expansion:
+  9.1f < 9.2
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.str_hello <= "hello" )
+with expansion:
+  "hello" <= "hello"
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.str_hello >= "hello" )
+with expansion:
+  "hello" >= "hello"
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.str_hello < "hellp" )
+with expansion:
+  "hello" < "hellp"
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.str_hello < "zebra" )
+with expansion:
+  "hello" < "zebra"
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.str_hello > "hellm" )
+with expansion:
+  "hello" > "hellm"
+
+ConditionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( data.str_hello > "a" )
+with expansion:
+  "hello" > "a"
+
+-------------------------------------------------------------------------------
+Ordering comparison checks that should fail
+-------------------------------------------------------------------------------
+ConditionTests.cpp:<line number>
+...............................................................................
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK( data.int_seven > 7 )
+with expansion:
+  7 > 7
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK( data.int_seven < 7 )
+with expansion:
+  7 < 7
+
 ===============================================================================
-test cases: 19 | 15 passed | 3 failed | 1 failed as expected
-assertions: 62 | 56 passed | 4 failed | 2 failed as expected
+test cases: 21 | 16 passed | 3 failed | 2 failed as expected
+assertions: 81 | 73 passed | 4 failed | 4 failed as expected
 
