@@ -128,6 +128,11 @@ namespace Catch {
 
             
             Totals deltaTotals = m_totals.delta( prevTotals );
+            if( testCase.expectedToFail() && deltaTotals.testCases.passed > 0 ) {
+                deltaTotals.assertions.failed++;
+                deltaTotals.testCases.passed--;
+                deltaTotals.testCases.failed++;
+            }
             m_totals.testCases += deltaTotals.testCases;
             m_reporter->testCaseEnded( TestCaseStats(   testCase,
                                                         deltaTotals,

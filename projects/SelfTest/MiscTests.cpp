@@ -480,3 +480,8 @@ TEST_CASE( "long long" ) {
 //        CHECK( x == 0 );
 //    }
 //}
+
+TEST_CASE( "This test 'should' fail but doesn't", "[.][failing][!shouldfail]" )
+{
+    SUCCEED( "oops!" );
+}
