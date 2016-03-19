@@ -141,7 +141,7 @@ namespace Catch {
     }
     std::string ResultBuilder::reconstructExpression() const {
         if( m_exprComponents.op == "" )
-            return m_exprComponents.lhs.empty() ? m_assertionInfo.capturedExpression : m_exprComponents.op + m_exprComponents.lhs;
+            return m_exprComponents.lhs.empty() ? m_assertionInfo.capturedExpression : m_exprComponents.lhs;
         else if( m_exprComponents.op == "matches" )
             return m_exprComponents.lhs + " " + m_exprComponents.rhs;
         else if( m_exprComponents.op != "!" ) {
