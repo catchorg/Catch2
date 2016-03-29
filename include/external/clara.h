@@ -373,8 +373,13 @@ namespace Clara {
             }
             virtual void setFlag( C& obj ) const {
                 typename RemoveConstRef<T>::type value;
-                convertInto( true, value );
-                function( obj, value );
+                try {
+                    convertInto(true, value);
+                }
+                catch (std::runtime_error&) {
+                    return;
+                }
+                function(obj, value);
             }
             virtual bool takesArg() const { return !IsBool<T>::value; }
             virtual IArgFunction<C>* clone() const { return new BoundBinaryFunction( *this ); }

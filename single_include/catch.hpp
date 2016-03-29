@@ -1,6 +1,6 @@
 /*
  *  Catch v2.0.0-develop.2
- *  Generated: 2015-12-15 07:54:24.857561
+ *  Generated: 2016-03-29 15:50:47.051000
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3673,8 +3673,13 @@ namespace Clara {
             }
             virtual void setFlag( C& obj ) const {
                 typename RemoveConstRef<T>::type value;
-                convertInto( true, value );
-                function( obj, value );
+                try {
+                    convertInto(true, value);
+                }
+                catch (std::runtime_error&) {
+                    return;
+                }
+                function(obj, value);
             }
             virtual bool takesArg() const { return !IsBool<T>::value; }
             virtual IArgFunction<C>* clone() const { return new BoundBinaryFunction( *this ); }
