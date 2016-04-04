@@ -128,23 +128,18 @@ public: // IStreamingReporter
 };
 
 Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {
-    Ptr<IStreamingReporter> resultingReporter;
+    if( !existingReporter )
+        return additionalReporter;
 
-    if( existingReporter ) {
-        if( !existingReporter->supportsChainedReporters() ) {
-            MultipleReporters* multi = new MultipleReporters;
-            resultingReporter = Ptr<IStreamingReporter>( multi );
-            if( existingReporter )
-                multi->addChainedReporter( existingReporter );
-        }
-        else
-            resultingReporter = existingReporter;
-        resultingReporter->addChainedReporter( additionalReporter );
+    if( existingReporter->supportsChainedReporters() ) {
+        existingReporter->addChainedReporter( additionalReporter );
+        return existingReporter;
     }
-    else
-        resultingReporter = additionalReporter;
 
-    return resultingReporter;
+    Ptr<MultipleReporters> multi = Ptr<MultipleReporters>( new MultipleReporters );
+    multi->addChainedReporter( existingReporter );
+    multi->addChainedReporter( additionalReporter );
+    return Ptr<IStreamingReporter>( multi.get() );
 }
 
 
