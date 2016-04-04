@@ -234,10 +234,8 @@ namespace TestCaseTracking {
             SectionTracker* section = CATCH_NULL;
 
             ITracker& currentTracker = ctx.currentTracker();
-            if( ITracker* childTracker = currentTracker.findChild( name ) ) {
-                section = dynamic_cast<SectionTracker*>( childTracker );
-                assert( section );
-            }
+            if( ITracker* childTracker = currentTracker.findChild( name ) )
+                section = static_cast<SectionTracker*>( childTracker );
             else {
                 section = new SectionTracker( name, ctx, &currentTracker );
                 currentTracker.addChild( section );
@@ -265,10 +263,8 @@ namespace TestCaseTracking {
             IndexTracker* tracker = CATCH_NULL;
 
             ITracker& currentTracker = ctx.currentTracker();
-            if( ITracker* childTracker = currentTracker.findChild( name ) ) {
-                tracker = dynamic_cast<IndexTracker*>( childTracker );
-                assert( tracker );
-            }
+            if( ITracker* childTracker = currentTracker.findChild( name ) )
+                tracker = static_cast<IndexTracker*>( childTracker );
             else {
                 tracker = new IndexTracker( name, ctx, &currentTracker, size );
                 currentTracker.addChild( tracker );
