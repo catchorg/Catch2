@@ -226,6 +226,13 @@ namespace Catch
         // Implementing class must also provide the following static method:
         // static std::string getDescription();
 
+        virtual bool supportsChainedReporters() const {
+            return false;
+        }
+
+        virtual void addChainedReporter( Ptr<IStreamingReporter> const& reporter ) {
+        }
+
         virtual ReporterPreferences getPreferences() const = 0;
 
         virtual void noMatchingTestCases( std::string const& spec ) = 0;
