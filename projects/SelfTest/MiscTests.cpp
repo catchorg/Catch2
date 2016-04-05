@@ -463,8 +463,8 @@ TEST_CASE( "XmlEncode" ) {
     SECTION( "string with control char (x7F)" ) {
         REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" );
     }
-    SECTION( "string with utf-8 characters (русский текст)" ) {
-        REQUIRE( encode( "русский текст" ) == "русский текст" );
+    SECTION( "string with utf-8 characters (СЂСѓСЃСЃРєРёР№ С‚РµРєСЃС‚)" ) {
+        REQUIRE( encode( "СЂСѓСЃСЃРєРёР№ С‚РµРєСЃС‚" ) == "СЂСѓСЃСЃРєРёР№ С‚РµРєСЃС‚" );
     }
 }
 
