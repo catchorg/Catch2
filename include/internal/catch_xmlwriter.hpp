@@ -34,7 +34,7 @@ namespace Catch {
             // (see: http://www.w3.org/TR/xml/#syntax)
 
             for( std::size_t i = 0; i < m_str.size(); ++ i ) {
-                char c = m_str[i];
+                unsigned char c = m_str[i];
                 switch( c ) {
                     case '<':   os << "&lt;"; break;
                     case '&':   os << "&amp;"; break;
@@ -57,7 +57,7 @@ namespace Catch {
                     default:
                         // Escape control chars - based on contribution by @espenalb in PR #465
                         if ( ( c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
-                            os << "&#x" << std::uppercase << std::hex << static_cast<int>( c );
+                            os << "&#x" << std::uppercase << std::hex << static_cast<int>( c ) << ";";
                         else
                             os << c;
                 }
