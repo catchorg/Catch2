@@ -11,7 +11,6 @@
 #include "catch_common.h"
 
 namespace Catch {
-
     bool startsWith( std::string const& s, std::string const& prefix ) {
         return s.size() >= prefix.size() && s.substr( 0, prefix.size() ) == prefix;
     }
@@ -21,8 +20,11 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix ) {
         return s.find( infix ) != std::string::npos;
     }
+    char tolower(char ch) {
+        return (char)::tolower(ch);
+    }
     void toLowerInPlace( std::string& s ) {
-        std::transform( s.begin(), s.end(), s.begin(), ::tolower );
+        std::transform( s.begin(), s.end(), s.begin(), tolower );
     }
     std::string toLower( std::string const& s ) {
         std::string lc = s;
