@@ -146,9 +146,19 @@ std::string toString( bool value ) {
 }
 
 std::string toString( char value ) {
-    return value < ' '
-        ? toString( static_cast<unsigned int>( value ) )
-        : Detail::makeString( value );
+    if ( value == '\r' )
+        return "'\\r'";
+    if ( value == '\l' )
+        return "'\\l'";
+    if ( value == '\n' )
+        return "'\\n'";
+    if ( value == '\t' )
+        return "'\\t'";
+    if ( '\0' <= value && value < ' ' )
+        return toString( static_cast<unsigned int>( value ) );
+    char chstr[] = "' '";
+    chstr[1] = value;
+    return chstr;
 }
 
 std::string toString( signed char value ) {
