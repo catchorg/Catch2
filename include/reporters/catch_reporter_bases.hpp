@@ -166,7 +166,7 @@ namespace Catch {
 
         virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) {
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
             assert( !m_sectionStack.empty() );
             SectionNode& sectionNode = *m_sectionStack.back();
             sectionNode.assertions.push_back( assertionStats );
