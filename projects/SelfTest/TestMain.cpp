@@ -25,7 +25,7 @@ CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 template<size_t size>
 void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
     Catch::Clara::CommandLine<Catch::ConfigData> parser = Catch::makeCommandLineParser();
-    parser.parseInto( size, argv, config );
+    parser.parseInto( Catch::Clara::argsToVector( size, argv ), config );
 }
 
 template<size_t size>
