@@ -22,6 +22,13 @@ public:
     }
 
 public: // IStreamingReporter
+    virtual bool supportsChainedReporters() const CATCH_OVERRIDE {
+        return true;
+    }
+
+    virtual void addChainedReporter( Ptr<IStreamingReporter> const& reporter ) CATCH_OVERRIDE {
+        add( reporter );
+    }
 
     virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
         return m_reporters[0]->getPreferences();
@@ -121,24 +128,18 @@ public: // IStreamingReporter
 };
 
 Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {
-    Ptr<IStreamingReporter> resultingReporter;
+    if( !existingReporter )
+        return additionalReporter;
 
-    if( existingReporter ) {
-        MultipleReporters* multi = dynamic_cast<MultipleReporters*>( existingReporter.get() );
-        if( !multi ) {
-            multi = new MultipleReporters;
-            resultingReporter = Ptr<IStreamingReporter>( multi );
-            if( existingReporter )
-                multi->add( existingReporter );
-        }
-        else
-            resultingReporter = existingReporter;
-        multi->add( additionalReporter );
+    if( existingReporter->supportsChainedReporters() ) {
+        existingReporter->addChainedReporter( additionalReporter );
+        return existingReporter;
     }
-    else
-        resultingReporter = additionalReporter;
 
-    return resultingReporter;
+    Ptr<MultipleReporters> multi = Ptr<MultipleReporters>( new MultipleReporters );
+    multi->addChainedReporter( existingReporter );
+    multi->addChainedReporter( additionalReporter );
+    return Ptr<IStreamingReporter>( multi.get() );
 }
 
 
