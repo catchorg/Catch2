@@ -1,6 +1,6 @@
 /*
- *  Catch v1.5.0
- *  Generated: 2016-04-25 18:56:14.308559
+ *  Catch v1.5.1
+ *  Generated: 2016-04-28 08:12:37.387488
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -5253,6 +5253,8 @@ namespace Catch
         bool aborting;
     };
 
+    class MultipleReporters;
+
     struct IStreamingReporter : IShared {
         virtual ~IStreamingReporter();
 
@@ -5280,6 +5282,8 @@ namespace Catch
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
+
+        virtual MultipleReporters* tryAsMulti() { return CATCH_NULL; }
     };
 
     struct IReporterFactory : IShared {
@@ -5497,6 +5501,10 @@ namespace TestCaseTracking {
         virtual void addChild( Ptr<ITracker> const& child ) = 0;
         virtual ITracker* findChild( std::string const& name ) = 0;
         virtual void openChild() = 0;
+
+        // Debug/ checking
+        virtual bool isSectionTracker() const = 0;
+        virtual bool isIndexTracker() const = 0;
     };
 
     class TrackerContext {
@@ -5621,6 +5629,10 @@ namespace TestCaseTracking {
                     m_parent->openChild();
             }
         }
+
+        virtual bool isSectionTracker() const CATCH_OVERRIDE { return false; }
+        virtual bool isIndexTracker() const CATCH_OVERRIDE { return false; }
+
         void open() {
             m_runState = Executing;
             moveToThis();
@@ -5684,13 +5696,16 @@ namespace TestCaseTracking {
         {}
         virtual ~SectionTracker();
 
+        virtual bool isSectionTracker() const CATCH_OVERRIDE { return true; }
+
         static SectionTracker& acquire( TrackerContext& ctx, std::string const& name ) {
             SectionTracker* section = CATCH_NULL;
 
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( name ) ) {
-                section = dynamic_cast<SectionTracker*>( childTracker );
-                assert( section );
+                assert( childTracker );
+                assert( childTracker->isSectionTracker() );
+                section = static_cast<SectionTracker*>( childTracker );
             }
             else {
                 section = new SectionTracker( name, ctx, &currentTracker );
@@ -5715,13 +5730,16 @@ namespace TestCaseTracking {
         {}
         virtual ~IndexTracker();
 
+        virtual bool isIndexTracker() const CATCH_OVERRIDE { return true; }
+
         static IndexTracker& acquire( TrackerContext& ctx, std::string const& name, int size ) {
             IndexTracker* tracker = CATCH_NULL;
 
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( name ) ) {
-                tracker = dynamic_cast<IndexTracker*>( childTracker );
-                assert( tracker );
+                assert( childTracker );
+                assert( childTracker->isIndexTracker() );
+                tracker = static_cast<IndexTracker*>( childTracker );
             }
             else {
                 tracker = new IndexTracker( name, ctx, &currentTracker, size );
@@ -7527,7 +7545,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 5, 0, "", 0 );
+    Version libraryVersion( 1, 5, 1, "", 0 );
 
 }
 
@@ -8506,13 +8524,18 @@ public: // IStreamingReporter
                 ++it )
             (*it)->skipTest( testInfo );
     }
+
+    virtual MultipleReporters* tryAsMulti() CATCH_OVERRIDE {
+        return this;
+    }
+
 };
 
 Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {
     Ptr<IStreamingReporter> resultingReporter;
 
     if( existingReporter ) {
-        MultipleReporters* multi = dynamic_cast<MultipleReporters*>( existingReporter.get() );
+        MultipleReporters* multi = existingReporter->tryAsMulti();
         if( !multi ) {
             multi = new MultipleReporters;
             resultingReporter = Ptr<IStreamingReporter>( multi );
