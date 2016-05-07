@@ -64,7 +64,7 @@ matrix:
       compiler: clang
       addons: &clang38
         apt:
-          sources: ['llvm-toolchain-precise', 'ubuntu-toolchain-r-test']
+          sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
           packages: ['clang-3.8']
       env: COMPILER='ccache clang++-3.8' BUILD_TYPE='Release'
 
