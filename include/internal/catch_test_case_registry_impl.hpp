@@ -60,13 +60,15 @@ namespace Catch {
             it != itEnd;
             ++it ) {
             std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( *it );
-            if( !prev.second ){
-                Catch::cerr()
-                << Colour( Colour::Red )
-                << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
-                << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
-                << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
-                exit(1);
+            if( !prev.second ) {
+                std::ostringstream ss;
+
+                ss  << Colour( Colour::Red )
+                    << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
+                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
+                    << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
+
+                throw std::runtime_error(ss.str());
             }
         }
     }
