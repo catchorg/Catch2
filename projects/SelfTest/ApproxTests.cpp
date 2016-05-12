@@ -140,3 +140,44 @@ TEST_CASE( "Approximate PI", "[Approx][PI]" )
     REQUIRE( divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) );
     REQUIRE( divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) );
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+#if defined(CATCH_CPP11_OR_GREATER)
+class StrongDoubleTypedef
+{
+  double d_ = 0.0;
+
+  public:
+    explicit StrongDoubleTypedef(double d) : d_(d) {}
+    explicit operator double() const { return d_; }
+};
+
+TEST_CASE
+(
+ "Comparison with explicitly convertible types",
+ "[Approx]"
+)
+{
+  StrongDoubleTypedef td(10.0);
+
+  REQUIRE(td == Approx(10.0));
+  REQUIRE(Approx(10.0) == td);
+
+  REQUIRE(td != Approx(11.0));
+  REQUIRE(Approx(11.0) != td);
+  
+  REQUIRE(td <= Approx(10.0));
+  REQUIRE(td <= Approx(11.0));
+  REQUIRE(Approx(10.0) <= td);
+  REQUIRE(Approx(9.0) <= td);
+  
+  REQUIRE(td >= Approx(9.0));
+  REQUIRE(td >= Approx(10.0));
+  REQUIRE(Approx(10.0) >= td);
+  REQUIRE(Approx(11.0) >= td);
+  
+}
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
