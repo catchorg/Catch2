@@ -40,7 +40,7 @@
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::isTrue( false && static_cast<bool>(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+    } while( Catch::isTrue( false && !!(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
