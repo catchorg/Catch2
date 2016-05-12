@@ -1,6 +1,6 @@
 /*
- *  Catch v1.5.3
- *  Generated: 2016-05-10 19:09:28.805441
+ *  Catch v1.5.4
+ *  Generated: 2016-05-12 19:16:01.957320
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -2065,7 +2065,7 @@ namespace Catch {
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::isTrue( false && static_cast<bool>(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+    } while( Catch::isTrue( false && !!(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
@@ -7547,7 +7547,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 5, 3, "", 0 );
+    Version libraryVersion( 1, 5, 4, "", 0 );
 
 }
 
