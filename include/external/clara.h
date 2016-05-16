@@ -550,7 +550,7 @@ namespace Clara {
         }
 
         void parseIntoTokens( std::string const& arg, std::vector<Token>& tokens ) {
-            for( std::size_t i = 0; i <= arg.size(); ++i ) {
+            for( std::size_t i = 0; i < arg.size(); ++i ) {
                 char c = arg[i];
                 if( c == '"' )
                     inQuotes = !inQuotes;
