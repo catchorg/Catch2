@@ -57,21 +57,23 @@ namespace Catch {
         return matchedTests;
     }
 
-    inline std::size_t listTestsNamesOnly( Config const& config ) {
-        TestSpec testSpec = config.testSpec();
-        if( !config.testSpec().hasFilters() )
-            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
-        std::size_t matchedTests = 0;
-        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
-                it != itEnd;
-                ++it ) {
-            matchedTests++;
-            TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-            Catch::cout() << testCaseInfo.name << std::endl;
-        }
-        return matchedTests;
-    }
+	inline std::size_t listTestsNames( Config const& config , const bool includeSources ) {
+		TestSpec testSpec = config.testSpec();
+		if( !config.testSpec().hasFilters() )
+			testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
+		std::size_t matchedTests = 0;
+		std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
+		for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
+			it != itEnd;
+			++it ) {
+			matchedTests++;
+			TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
+			Catch::cout() << testCaseInfo.name << std::endl;
+			if( includeSources )
+				Catch::cout() << testCaseInfo.lineInfo << std::endl;
+		}
+		return matchedTests;
+	}
 
     struct TagInfo {
         TagInfo() : count ( 0 ) {}
@@ -163,7 +165,9 @@ namespace Catch {
         if( config.listTests() )
             listedCount = listedCount.valueOr(0) + listTests( config );
         if( config.listTestNamesOnly() )
-            listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
+            listedCount = listedCount.valueOr(0) + listTestsNames( config , false );
+		if( config.listTestNamesAndSources() )
+			listedCount = listedCount.valueOr(0) + listTestsNames( config , true );
         if( config.listTags() )
             listedCount = listedCount.valueOr(0) + listTags( config );
         if( config.listReporters() )
