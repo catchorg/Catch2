@@ -134,10 +134,21 @@ namespace Catch {
                         "  " << result.getExpandedExpression() << "\n";
                 }
 
+				// If we're allowing this to fail, report it as an ignored test in team city
+				if (currentTestCaseInfo->okToFail())
+				{
+					stream << "##teamcity[testIgnored"
+						<< " name='" << escape(currentTestCaseInfo->name) << "'"
+						<< " message='" << escape(std::string("[FailedButIgnored] ") + msg.str()) << "'"
+						<< "]\n";
+				}
+				else
+				{
                 stream << "##teamcity[testFailed"
                     << " name='" << escape( currentTestCaseInfo->name )<< "'"
                     << " message='" << escape( msg.str() ) << "'"
                     << "]\n";
+				}
             }
             return true;
         }
