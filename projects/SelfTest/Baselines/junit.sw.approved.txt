@@ -1,5 +1,5 @@
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="13" failures="72" tests="770" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="13" failures="69" tests="778" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -497,6 +497,7 @@ MiscTests.cpp:<line number>
     <testcase classname="XmlEncode" name="string with control char (1)" time="{duration}"/>
     <testcase classname="XmlEncode" name="string with control char (x7F)" time="{duration}"/>
     <testcase classname="global" name="long long" time="{duration}"/>
+    <testcase classname="global" name="This test 'should' fail but doesn't" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="default - no arguments" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/1 test" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using exclude:" time="{duration}"/>
@@ -516,8 +517,11 @@ MiscTests.cpp:<line number>
     <testcase classname="Process can be configured on command line" name="output filename/-o filename" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="output filename/--out" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="combinations/Single character flags can be combined" time="{duration}"/>
-    <testcase classname="Process can be configured on command line" name="force-colour/--force-colour" time="{duration}"/>
-    <testcase classname="Process can be configured on command line" name="force-colour/without --force-colour" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="use-colour/without option" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="use-colour/auto" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="use-colour/yes" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="use-colour/no" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="use-colour/error" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/No wrapping" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/Wrapped once" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="plain string/Wrapped twice" time="{duration}"/>

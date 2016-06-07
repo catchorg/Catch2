@@ -665,7 +665,7 @@
           5 != 5
         </Expanded>
       </Expression>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Ordering comparison checks that should succeed">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -2911,6 +2911,9 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="This test 'should' fail but doesn't">
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Process can be configured on command line">
       <Section name="default - no arguments">
         <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
@@ -3393,8 +3396,8 @@
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="force-colour">
-        <Section name="--force-colour">
+      <Section name="use-colour">
+        <Section name="without option">
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -3405,18 +3408,18 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              config.forceColour
+              config.useColour == UseColour::Auto
             </Original>
             <Expanded>
-              true
+              0 == 0
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="force-colour">
-        <Section name="without --force-colour">
+      <Section name="use-colour">
+        <Section name="auto">
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -3427,15 +3430,73 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
             <Original>
-              !config.forceColour
+              config.useColour == UseColour::Auto
             </Original>
             <Expanded>
-              true
+              0 == 0
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="use-colour">
+        <Section name="yes">
+          <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.useColour == UseColour::Yes
+            </Original>
+            <Expanded>
+              1 == 1
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="use-colour">
+        <Section name="no">
+          <Expression success="true" type="CHECK_NOTHROW" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config )
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              config.useColour == UseColour::No
+            </Original>
+            <Expanded>
+              2 == 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="use-colour">
+        <Section name="error">
+          <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/SelfTest/TestMain.cpp" >
+            <Original>
+              parseIntoConfig( argv, config ), Contains( "colour mode must be one of" )
+            </Original>
+            <Expanded>
+              parseIntoConfig( argv, config ), Contains( "colour mode must be one of" )
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -6812,6 +6873,12 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="multithreaded sections">
+      <Section name="test">
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Parse test names and tags">
       <Section name="Empty test spec should have no filters">
         <Expression success="true" type="CHECK" filename="projects/SelfTest/CmdLineTests.cpp" >
@@ -8331,7 +8398,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="672" failures="85" expectedFailures="13"/>
+    <OverallResults successes="678" failures="82" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="672" failures="85" expectedFailures="13"/>
+  <OverallResults successes="678" failures="81" expectedFailures="18"/>
 </Catch>
