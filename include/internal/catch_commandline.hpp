@@ -74,9 +74,6 @@ namespace Catch {
         else
             throw std::runtime_error( "colour mode must be one of: auto, yes or no" );
     }
-    inline void forceColour( ConfigData& config ) {
-        config.useColour = UseColour::Yes;
-    }
     inline void loadTestNamesFromFile( ConfigData& config, std::string const& _filename ) {
         std::ifstream f( _filename.c_str() );
         if( !f.is_open() )
@@ -189,10 +186,6 @@ namespace Catch {
         cli["--rng-seed"]
             .describe( "set a specific seed for random numbers" )
             .bind( &setRngSeed, "'time'|number" );
-
-        cli["--force-colour"]
-            .describe( "force colourised output (deprecated)" )
-            .bind( &forceColour );
         
         cli["--use-colour"]
             .describe( "should output be colourised" )
