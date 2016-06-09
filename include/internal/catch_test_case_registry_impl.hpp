@@ -19,13 +19,30 @@
 #include <iostream>
 #include <algorithm>
 
-namespace Catch {
+#ifdef CATCH_CPP14_OR_GREATER
+#include <random>
+#endif
 
-    struct LexSort {
-        bool operator() (TestCase i,TestCase j) const { return (i<j);}
-    };
+namespace Catch {
+    
     struct RandomNumberGenerator {
-        int operator()( int n ) const { return std::rand() % n; }
+        typedef int result_type;
+
+        result_type operator()( result_type n ) const { return std::rand() % n; }
+
+#ifdef CATCH_CPP14_OR_GREATER
+        static constexpr result_type min() { return 0; }
+        static constexpr result_type max() { return 1000000; }
+        result_type operator()() const { return std::rand() % max(); }
+#endif
+        template<typename V>
+        static void shuffle( V& vector ) {
+#ifdef CATCH_CPP14_OR_GREATER
+            std::shuffle( vector.begin(), vector.end(), RandomNumberGenerator() );
+#else
+            std::random_shuffle( vector.begin(), vector.end(), RandomNumberGenerator() );
+#endif
+        }
     };
 
     inline std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
@@ -34,14 +51,12 @@ namespace Catch {
 
         switch( config.runOrder() ) {
             case RunTests::InLexicographicalOrder:
-                std::sort( sorted.begin(), sorted.end(), LexSort() );
+                std::sort( sorted.begin(), sorted.end() );
                 break;
             case RunTests::InRandomOrder:
                 {
                     seedRng( config );
-
-                    RandomNumberGenerator rng;
-                    std::random_shuffle( sorted.begin(), sorted.end(), rng );
+                    RandomNumberGenerator::shuffle( sorted );
                 }
                 break;
             case RunTests::InDeclarationOrder:
