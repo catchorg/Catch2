@@ -1,6 +1,6 @@
 /*
  *  Catch v1.5.5
- *  Generated: 2016-06-09 08:17:50.409622
+ *  Generated: 2016-06-09 10:54:50.135878
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
