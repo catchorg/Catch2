@@ -37,10 +37,11 @@ namespace Catch {
 #endif
         template<typename V>
         static void shuffle( V& vector ) {
+            RandomNumberGenerator rng;
 #ifdef CATCH_CPP14_OR_GREATER
-            std::shuffle( vector.begin(), vector.end(), RandomNumberGenerator() );
+            std::shuffle( vector.begin(), vector.end(), rng );
 #else
-            std::random_shuffle( vector.begin(), vector.end(), RandomNumberGenerator() );
+            std::random_shuffle( vector.begin(), vector.end(), rng );
 #endif
         }
     };
