@@ -1,6 +1,6 @@
 /*
- *  Catch v1.5.5
- *  Generated: 2016-06-09 08:17:50.409622
+ *  Catch v1.5.6
+ *  Generated: 2016-06-09 19:20:41.460328
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -4185,7 +4185,7 @@ namespace Clara {
             }
         }
         Mode handleOpt( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
-            if( std::string( ":=\0", 5 ).find( c ) == std::string::npos )
+            if( std::string( ":=\0", 3 ).find( c ) == std::string::npos )
                 return mode;
 
             std::string optName = arg.substr( from, i-from );
@@ -4199,7 +4199,7 @@ namespace Clara {
             return None;
         }
         Mode handlePositional( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
-            if( inQuotes || std::string( "\0", 3 ).find( c ) == std::string::npos )
+            if( inQuotes || std::string( "\0", 1 ).find( c ) == std::string::npos )
                 return mode;
 
             std::string data = arg.substr( from, i-from );
@@ -6465,10 +6465,11 @@ namespace Catch {
 #endif
         template<typename V>
         static void shuffle( V& vector ) {
+            RandomNumberGenerator rng;
 #ifdef CATCH_CPP14_OR_GREATER
-            std::shuffle( vector.begin(), vector.end(), RandomNumberGenerator() );
+            std::shuffle( vector.begin(), vector.end(), rng );
 #else
-            std::random_shuffle( vector.begin(), vector.end(), RandomNumberGenerator() );
+            std::random_shuffle( vector.begin(), vector.end(), rng );
 #endif
         }
     };
@@ -7570,7 +7571,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 5, 5, "", 0 );
+    Version libraryVersion( 1, 5, 6, "", 0 );
 
 }
 
