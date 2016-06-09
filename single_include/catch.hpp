@@ -1,6 +1,6 @@
 /*
  *  Catch v1.5.5
- *  Generated: 2016-06-09 08:17:50.409622
+ *  Generated: 2016-06-09 10:54:50.135878
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3226,7 +3226,7 @@ namespace Catch {
                 for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it )
                     if( !(*it)->matches( testCase ) )
                         return false;
-                    return true;
+                return true;
             }
         };
 
