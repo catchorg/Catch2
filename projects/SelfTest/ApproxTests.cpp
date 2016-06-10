@@ -8,6 +8,15 @@
 
 #include "catch.hpp"
 
+#ifdef __clang__
+#   ifdef __ICC // icpc defines the __clang__ macro
+#   else // __ICC
+#       pragma clang diagnostic ignored "-Wdouble-promotion"
+#    endif
+#endif
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
