@@ -346,9 +346,9 @@ public:
     ColourString( std::string const& _string )
     : string( _string )
     {}
-    ColourString( std::string const& _string, std::vector<ColourIndex> const& _colours )
-    : string( _string ), colours( _colours )
-    {}
+//    ColourString( std::string const& _string, std::vector<ColourIndex> const& _colours )
+//    : string( _string ), colours( _colours )
+//    {}
 
     ColourString& addColour( Colour::Code colour, int _index ) {
         colours.push_back( ColourIndex( colour,
