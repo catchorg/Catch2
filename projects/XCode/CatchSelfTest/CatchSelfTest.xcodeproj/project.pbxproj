@@ -20,6 +20,7 @@
 		2691574C1A532A280054F1ED /* ToStringTuple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2691574B1A532A280054F1ED /* ToStringTuple.cpp */; };
 		2694A1FD16A0000E004816E3 /* catch_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2694A1FB16A0000E004816E3 /* catch_text.cpp */; };
 		269E42321C04E21300133E05 /* ThreadedTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 269E42311C04E21300133E05 /* ThreadedTests.cpp */; };
+		26ADDC0A1D077DB3008F7108 /* StringTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26ADDC091D077DB3008F7108 /* StringTests.cpp */; };
 		26E1B7D319213BC900812682 /* CmdLineTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26E1B7D119213BC900812682 /* CmdLineTests.cpp */; };
 		4A45DA2416161EF9004F8D6B /* catch_console_colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */; };
 		4A45DA2716161F1F004F8D6B /* catch_ptr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A45DA2616161F1F004F8D6B /* catch_ptr.cpp */; };
@@ -106,6 +107,9 @@
 		269831E719121CA500BB0CE0 /* catch_reporter_compact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_reporter_compact.hpp; sourceTree = "<group>"; };
 		269E42311C04E21300133E05 /* ThreadedTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ThreadedTests.cpp; path = ../../../SelfTest/ThreadedTests.cpp; sourceTree = "<group>"; };
 		269E42331C04E33D00133E05 /* catch_thread_context.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_thread_context.hpp; sourceTree = "<group>"; };
+		26ADDC091D077DB3008F7108 /* StringTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringTests.cpp; path = ../../../SelfTest/StringTests.cpp; sourceTree = "<group>"; };
+		26ADDC0B1D0B394D008F7108 /* catch_stringref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_stringref.h; sourceTree = "<group>"; };
+		26ADDC0C1D0B3969008F7108 /* catch_stringref.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch_stringref.hpp; sourceTree = "<group>"; };
 		26AEAF1617BEA18E009E32C9 /* catch_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_platform.h; sourceTree = "<group>"; };
 		26DACF2F17206D3400A21326 /* catch_text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_text.h; sourceTree = "<group>"; };
 		26DFD3B11B53F84700FD6F16 /* catch_wildcard_pattern.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_wildcard_pattern.hpp; sourceTree = "<group>"; };
@@ -208,6 +212,7 @@
 				26059AF11BD4B94C003D575C /* PartTrackerTests.cpp */,
 				26E1B7D119213BC900812682 /* CmdLineTests.cpp */,
 				26711C8D195D465C0033EDA2 /* TagAliasTests.cpp */,
+				26ADDC091D077DB3008F7108 /* StringTests.cpp */,
 			);
 			name = "Introspective Tests";
 			sourceTree = "<group>";
@@ -361,6 +366,7 @@
 				2627F7061935B55F009BCE2D /* catch_result_builder.hpp */,
 				26711C92195D48F60033EDA2 /* catch_tag_alias_registry.hpp */,
 				269E42331C04E33D00133E05 /* catch_thread_context.hpp */,
+				26ADDC0C1D0B3969008F7108 /* catch_stringref.hpp */,
 			);
 			name = impl;
 			sourceTree = "<group>";
@@ -460,6 +466,7 @@
 				2656C227192A78410040DB02 /* catch_reenable_warnings.h */,
 				263F7A4519A66608009474C2 /* catch_fatal_condition.hpp */,
 				26DFD3B11B53F84700FD6F16 /* catch_wildcard_pattern.hpp */,
+				26ADDC0B1D0B394D008F7108 /* catch_stringref.h */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
@@ -541,6 +548,7 @@
 				4AEE032316142FC70071E950 /* catch_debugger.cpp in Sources */,
 				269E42321C04E21300133E05 /* ThreadedTests.cpp in Sources */,
 				4AEE032516142FF10071E950 /* catch_stream.cpp in Sources */,
+				26ADDC0A1D077DB3008F7108 /* StringTests.cpp in Sources */,
 				4AEE0328161434FD0071E950 /* catch_xmlwriter.cpp in Sources */,
 				4A45DA2416161EF9004F8D6B /* catch_console_colour.cpp in Sources */,
 				4A45DA2716161F1F004F8D6B /* catch_ptr.cpp in Sources */,
@@ -548,6 +556,7 @@
 				2656C2211925E7330040DB02 /* catch_test_spec.cpp in Sources */,
 				4A45DA2916161F3D004F8D6B /* catch_streambuf.cpp in Sources */,
 				4A45DA2B16161F79004F8D6B /* catch_interfaces_registry_hub.cpp in Sources */,
+				26ADDC0D1D0B3969008F7108 /* catch_stringref.hpp in Sources */,
 				4A45DA2D16161FA2004F8D6B /* catch_interfaces_capture.cpp in Sources */,
 				4A45DA3116161FFC004F8D6B /* catch_interfaces_reporter.cpp in Sources */,
 				4A45DA3316162047004F8D6B /* catch_interfaces_exception.cpp in Sources */,
@@ -572,7 +581,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
@@ -625,7 +634,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_WARN_CXX0X_EXTENSIONS = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;

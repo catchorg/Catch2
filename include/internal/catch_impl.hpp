@@ -16,6 +16,7 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
+#include "catch_stringref.hpp"
 #include "../catch_session.hpp"
 #include "catch_registry_hub.hpp"
 #include "catch_notimplemented_exception.hpp"
