@@ -7,6 +7,7 @@
  */
 
 #include "catch.hpp"
+#include "internal/catch_suppress_warnings.h"
 
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
 
