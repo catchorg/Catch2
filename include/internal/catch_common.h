@@ -8,7 +8,15 @@
 #ifndef TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
-#define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
+/// @see https://github.com/pfultz2/Cloak/wiki/C-Preprocessor-tricks,-tips,-and-idioms
+#define INTERNAL_CATCH_CAT(a, ...) CATCH_PRIMITIVE_CAT(a, __VA_ARGS__)
+#define INTERNAL_CATCH_PRIMITIVE_CAT(a, ...) a ## __VA_ARGS__
+
+#ifndef CATCH_BRANCH_PREFIX
+#	define CATCH_BRANCH_PREFIX
+#endif 
+
+#define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) INTERNAL_CATCH_CAT(CATCH_BRANCH_PREFIX, name##line)
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
 #ifdef CATCH_CONFIG_COUNTER
 #  define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __COUNTER__ )
