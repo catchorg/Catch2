@@ -458,10 +458,16 @@ TEST_CASE( "XmlEncode" ) {
         REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" );
     }
     SECTION( "string with control char (1)" ) {
-        REQUIRE( encode( "[\x01]" ) == "[&#x1]" );
+        REQUIRE( encode( "[\x01]" ) == "[&#x1;]" );
     }
     SECTION( "string with control char (x7F)" ) {
-        REQUIRE( encode( "[\x7F]" ) == "[&#x7F]" );
+        REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" );
+    }
+    SECTION( "string with control char that is negative on signed char (xFF)" ) {
+        REQUIRE( encode( "[\xFF]" ) == "[&#xFF;]" );
+    }
+    SECTION( "string with utf8 multibyte char (german 'ae' umlaut)" ) {
+        REQUIRE( encode( "[\xC3\xA4]" ) == "[\xC3\xA4]" );
     }
 }
 

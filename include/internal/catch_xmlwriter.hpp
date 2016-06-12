@@ -16,8 +16,84 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <cassert>
 
 namespace Catch {
+   
+    // (see: https://en.wikipedia.org/wiki/UTF-8#Codepage_layout)
+    namespace Utf8 {
+        inline bool isSingleByteChar( unsigned char b ) {
+            // Plain ASCII chars
+            return b <= 0x7F;
+        }
+       
+        inline bool isFollowByteInMultiByteChar(unsigned char b) {
+            return b >= 0x80 && b <= 0xBF;
+        }
+        
+        inline bool isFirstInTwoByteChar( unsigned char b ) {
+            return b >= 0xC2 && b <= 0xDF;
+        }
+        
+        inline bool isFirstInThreeByteChar( unsigned char b ) {
+            return b >= 0xE0 && b <= 0xEF;
+        }
+        
+        inline bool isFirstInFourByteChar( unsigned char b ) {
+            return b >= 0xF0 && b <= 0xF4;
+        }
+        
+        inline bool isInvalidByte( unsigned char b ) {
+            return b == 0xC0 || b == 0xC1 || b >= 0xF5;
+        }
+        
+        inline bool isValid( char const* str, size_t len ) {
+            int outstandingBytesOfCurrentChar = 0;
+           
+            for( std::size_t i = 0; i < len; ++ i ) {
+                unsigned char b = static_cast<unsigned char>( str[i] );
+                
+                switch( outstandingBytesOfCurrentChar )
+                {
+                    case 0:
+                        if( isSingleByteChar( b ) )
+                            outstandingBytesOfCurrentChar = 0;
+                        else if( isFirstInTwoByteChar( b ) )
+                            outstandingBytesOfCurrentChar = 1;
+                        else if( isFirstInThreeByteChar( b ) )
+                            outstandingBytesOfCurrentChar = 2;
+                        else if( isFirstInFourByteChar( b ) )
+                            outstandingBytesOfCurrentChar = 3;
+                        else
+                            return false;
+                        
+                        break;
+                        
+                    case 1:
+                    case 2:
+                    case 3:
+                        if( !isFollowByteInMultiByteChar( b ) )
+                            return false;
+                        
+                        outstandingBytesOfCurrentChar--;
+                        break;
+                        
+                    default:
+                        // outstandingBytesOfCurrentChar is negative: got follow byte when start byte was expected
+                        return false;
+                }
+                                
+                // explicit negative check (should be fully redundant here)
+                assert( isInvalidByte( b ) == false );
+            }
+            
+            return outstandingBytesOfCurrentChar == 0;
+        }
+        
+        inline bool isValid( std::string const& str ) {
+            return isValid( str.c_str(), str.size() );
+        }
+    }
 
     class XmlEncode {
     public:
@@ -32,9 +108,12 @@ namespace Catch {
 
             // Apostrophe escaping not necessary if we always use " to write attributes
             // (see: http://www.w3.org/TR/xml/#syntax)
+           
+            // Preserve utf8 as it is the default on most platforms and in xml
+            bool isValidUtf8 = Utf8::isValid( m_str );
 
             for( std::size_t i = 0; i < m_str.size(); ++ i ) {
-                char c = m_str[i];
+                unsigned char c = static_cast<unsigned char>( m_str[i] );
                 switch( c ) {
                     case '<':   os << "&lt;"; break;
                     case '&':   os << "&amp;"; break;
@@ -56,8 +135,8 @@ namespace Catch {
 
                     default:
                         // Escape control chars - based on contribution by @espenalb in PR #465
-                        if ( ( c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
-                            os << "&#x" << std::uppercase << std::hex << static_cast<int>( c );
+                        if ( ( c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c == '\x7F' || (c > '\x7F' && !isValidUtf8) )
+                            os << "&#x" << std::uppercase << std::hex << static_cast<int>( c ) << ';';
                         else
                             os << c;
                 }
