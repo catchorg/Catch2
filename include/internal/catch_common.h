@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
 /// @see https://github.com/pfultz2/Cloak/wiki/C-Preprocessor-tricks,-tips,-and-idioms
-#define INTERNAL_CATCH_CAT(a, ...) CATCH_PRIMITIVE_CAT(a, __VA_ARGS__)
+#define INTERNAL_CATCH_CAT(a, ...) INTERNAL_CATCH_PRIMITIVE_CAT(a, __VA_ARGS__)
 #define INTERNAL_CATCH_PRIMITIVE_CAT(a, ...) a ## __VA_ARGS__
 
 #ifndef CATCH_BRANCH_PREFIX
