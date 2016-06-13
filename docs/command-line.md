@@ -22,6 +22,7 @@ Click one of the followings links to take you straight to that option - or scrol
 
 <a href="#list-test-names-and-sources">                 `    --list-test-names-and-sources`</a><br />
 <a href="#list-test-names-only">                        `    --list-test-names-only`</a><br />
+<a href="#list-tests-and-sources">                      `    --list-tests-and-sources`</a><br />
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-reporters`</a><br />
 <a href="#order">                                       `    --order`</a><br />
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
@@ -188,6 +189,12 @@ This option lists all available tests in a non-indented form on one line followe
 <pre>--list-test-names-only</pre>
 
 This option lists all available tests in a non-indented form, one on each line. This makes it ideal for saving to a file and feeding back into the <a href="#input-file">```-f``` or ```--input-file```</a> option.
+
+<a id="list-tests-and-sources"></a>
+## Just test names
+<pre>--list-tests-and-sources</pre>
+
+Equivalent to <a href="#listing-available-tests-tags-or-reporters">```-l``` or ```--list-tests```</a> with the source files included.
 
 
 <a id="order"></a>
