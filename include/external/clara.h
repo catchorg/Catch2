@@ -589,7 +589,7 @@ namespace Clara {
             }
         }
         Mode handleOpt( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
-            if( std::string( ":=\0", 5 ).find( c ) == std::string::npos )
+            if( std::string( ":=\0", 3 ).find( c ) == std::string::npos )
                 return mode;
 
             std::string optName = arg.substr( from, i-from );
@@ -603,7 +603,7 @@ namespace Clara {
             return None;
         }
         Mode handlePositional( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
-            if( inQuotes || std::string( "\0", 3 ).find( c ) == std::string::npos )
+            if( inQuotes || std::string( "\0", 1 ).find( c ) == std::string::npos )
                 return mode;
 
             std::string data = arg.substr( from, i-from );
