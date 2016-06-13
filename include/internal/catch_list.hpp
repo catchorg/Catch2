@@ -22,12 +22,12 @@ namespace Catch {
     inline std::size_t listTests( Config const& config, const bool includeSources ) {
 
         TestSpec testSpec = config.testSpec();
-        if( config.testSpec().hasFilters() )
+        if( config.testSpec().hasFilters() ) {
             if( !includeSources )
-            Catch::cout() << "Matching test cases:\n";
-        else {
+                Catch::cout() << "Matching test cases:\n";
+        } else {
             if( !includeSources )
-              Catch::cout() << "All available test cases:\n";
+                Catch::cout() << "All available test cases:\n";
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
