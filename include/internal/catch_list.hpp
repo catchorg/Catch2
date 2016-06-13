@@ -19,13 +19,15 @@
 
 namespace Catch {
 
-    inline std::size_t listTests( Config const& config ) {
+    inline std::size_t listTests( Config const& config, const bool includeSources ) {
 
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
+            if( !includeSources )
             Catch::cout() << "Matching test cases:\n";
         else {
-            Catch::cout() << "All available test cases:\n";
+            if( !includeSources )
+              Catch::cout() << "All available test cases:\n";
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
@@ -48,6 +50,8 @@ namespace Catch {
             Catch::cout() << Text( testCaseInfo.name, nameAttr ) << std::endl;
             if( !testCaseInfo.tags.empty() )
                 Catch::cout() << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
+            if( includeSources )
+                Catch::cout() << testCaseInfo.lineInfo << std::endl;
         }
 
         if( !config.testSpec().hasFilters() )
@@ -163,11 +167,13 @@ namespace Catch {
     inline Option<std::size_t> list( Config const& config ) {
         Option<std::size_t> listedCount;
         if( config.listTests() )
-            listedCount = listedCount.valueOr(0) + listTests( config );
+            listedCount = listedCount.valueOr(0) + listTests( config , false );
         if( config.listTestNamesAndSources() )
-            listedCount = listedCount.valueOr(0) + listTestsNames(config, true);
+            listedCount = listedCount.valueOr(0) + listTestsNames( config, true );
         if( config.listTestNamesOnly() )
-            listedCount = listedCount.valueOr(0) + listTestsNames( config , false );
+            listedCount = listedCount.valueOr(0) + listTestsNames( config, false );
+        if( config.listTestSources() )
+            listedCount = listedCount.valueOr(0) + listTests( config, true );
         if( config.listTags() )
             listedCount = listedCount.valueOr(0) + listTags( config );
         if( config.listReporters() )
