@@ -54,7 +54,7 @@ namespace Catch {
         bool listReporters;
         bool listTestNamesAndSources;
         bool listTestNamesOnly;
-		bool listTestSources;
+        bool listTestSources;
 
         bool showSuccessfulTests;
         bool shouldDebugBreak;
