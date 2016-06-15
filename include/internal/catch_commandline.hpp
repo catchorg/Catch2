@@ -174,9 +174,17 @@ namespace Catch {
             .bind( &ConfigData::filenamesAsTags );
 
         // Less common commands which don't have a short form
+        cli["--list-test-names-and-sources"]
+            .describe("list all/matching test cases names along with their source files")
+            .bind(&ConfigData::listTestNamesAndSources);
+
         cli["--list-test-names-only"]
             .describe( "list all/matching test cases names only" )
             .bind( &ConfigData::listTestNamesOnly );
+
+        cli["--list-tests-and-sources"]
+            .describe( "list all/matching test cases and their source files" )
+            .bind( &ConfigData::listTestSources );
 
         cli["--list-reporters"]
             .describe( "list all reporters" )

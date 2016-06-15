@@ -20,7 +20,9 @@ Click one of the followings links to take you straight to that option - or scrol
 
 </br>
 
+<a href="#list-test-names-and-sources">                 `    --list-test-names-and-sources`</a><br />
 <a href="#list-test-names-only">                        `    --list-test-names-only`</a><br />
+<a href="#list-tests-and-sources">                      `    --list-tests-and-sources`</a><br />
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-reporters`</a><br />
 <a href="#order">                                       `    --order`</a><br />
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
@@ -176,11 +178,23 @@ Provide the name of a file that contains a list of test case names - one per lin
 
 A useful way to generate an initial instance of this file is to use the <a href="#list-test-names-only">list-test-names-only</a> option. This can then be manually curated to specify a specific subset of tests - or in a specific order.
 
+<a id="list-test-names-and-sources"></a>
+## Test names and source files
+<pre>--list-test-names-and-sources</pre>
+
+This option lists all available tests in a non-indented form on one line followed by it's source file and line number on the next line.
+
 <a id="list-test-names-only"></a>
 ## Just test names
 <pre>--list-test-names-only</pre>
 
 This option lists all available tests in a non-indented form, one on each line. This makes it ideal for saving to a file and feeding back into the <a href="#input-file">```-f``` or ```--input-file```</a> option.
+
+<a id="list-tests-and-sources"></a>
+## Just test names
+<pre>--list-tests-and-sources</pre>
+
+Equivalent to <a href="#listing-available-tests-tags-or-reporters">```-l``` or ```--list-tests```</a> with the source files included.
 
 
 <a id="order"></a>

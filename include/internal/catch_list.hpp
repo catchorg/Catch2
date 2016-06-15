@@ -19,13 +19,15 @@
 
 namespace Catch {
 
-    inline std::size_t listTests( Config const& config ) {
+    inline std::size_t listTests( Config const& config, const bool includeSources ) {
 
         TestSpec testSpec = config.testSpec();
-        if( config.testSpec().hasFilters() )
-            Catch::cout() << "Matching test cases:\n";
-        else {
-            Catch::cout() << "All available test cases:\n";
+        if( config.testSpec().hasFilters() ) {
+            if( !includeSources )
+                Catch::cout() << "Matching test cases:\n";
+        } else {
+            if( !includeSources )
+                Catch::cout() << "All available test cases:\n";
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
@@ -48,27 +50,32 @@ namespace Catch {
             Catch::cout() << Text( testCaseInfo.name, nameAttr ) << std::endl;
             if( !testCaseInfo.tags.empty() )
                 Catch::cout() << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
+            if( includeSources )
+                Catch::cout() << testCaseInfo.lineInfo << std::endl;
         }
-
-        if( !config.testSpec().hasFilters() )
-            Catch::cout() << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
-        else
-            Catch::cout() << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+        if ( !includeSources ) {
+            if( !config.testSpec().hasFilters() )
+                Catch::cout() << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
+            else
+                Catch::cout() << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+        }
         return matchedTests;
     }
 
-    inline std::size_t listTestsNamesOnly( Config const& config ) {
+    inline std::size_t listTestsNames( Config const& config , const bool includeSources ) {
         TestSpec testSpec = config.testSpec();
         if( !config.testSpec().hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
         std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
-                it != itEnd;
-                ++it ) {
+            it != itEnd;
+            ++it ) {
             matchedTests++;
             TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
             Catch::cout() << testCaseInfo.name << std::endl;
+            if( includeSources )
+                Catch::cout() << testCaseInfo.lineInfo << std::endl;
         }
         return matchedTests;
     }
@@ -161,9 +168,13 @@ namespace Catch {
     inline Option<std::size_t> list( Config const& config ) {
         Option<std::size_t> listedCount;
         if( config.listTests() )
-            listedCount = listedCount.valueOr(0) + listTests( config );
+            listedCount = listedCount.valueOr(0) + listTests( config , false );
+        if( config.listTestNamesAndSources() )
+            listedCount = listedCount.valueOr(0) + listTestsNames( config, true );
         if( config.listTestNamesOnly() )
-            listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
+            listedCount = listedCount.valueOr(0) + listTestsNames( config, false );
+        if( config.listTestSources() )
+            listedCount = listedCount.valueOr(0) + listTests( config, true );
         if( config.listTags() )
             listedCount = listedCount.valueOr(0) + listTags( config );
         if( config.listReporters() )
