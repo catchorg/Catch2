@@ -53,11 +53,12 @@ namespace Catch {
             if( includeSources )
                 Catch::cout() << testCaseInfo.lineInfo << std::endl;
         }
-
-        if( !config.testSpec().hasFilters() )
-            Catch::cout() << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
-        else
-            Catch::cout() << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+        if ( !includeSources ) {
+            if( !config.testSpec().hasFilters() )
+                Catch::cout() << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
+            else
+                Catch::cout() << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+        }
         return matchedTests;
     }
 
