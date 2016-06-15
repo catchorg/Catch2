@@ -38,7 +38,7 @@ If you still want Catch to process the command line, but you want to programatic
 
 int main( int argc, char* const argv[] )
 {
-  Catch::Session session; // There must be exactly once instance
+  Catch::Session session; // There must be exactly one instance
 
   // writing to session.configData() here sets defaults
   // this is the preferred way to set them
