@@ -406,27 +406,27 @@ TEST_CASE( "Tabs and newlines show in output", "[.][whitespace][failing]" ) {
 
 
 TEST_CASE( "toString on const wchar_t const pointer returns the string contents", "[toString]" ) {
-	const wchar_t * const s = L"wide load";
-	std::string result = Catch::toString( s );
-	CHECK( result == "\"wide load\"" );
+        const wchar_t * const s = L"wide load";
+        std::string result = Catch::toString( s );
+        CHECK( result == "\"wide load\"" );
 }
 
 TEST_CASE( "toString on const wchar_t pointer returns the string contents", "[toString]" ) {
-	const wchar_t * s = L"wide load";
-	std::string result = Catch::toString( s );
-	CHECK( result == "\"wide load\"" );
+        const wchar_t * s = L"wide load";
+        std::string result = Catch::toString( s );
+        CHECK( result == "\"wide load\"" );
 }
 
 TEST_CASE( "toString on wchar_t const pointer returns the string contents", "[toString]" ) {
-	wchar_t * const s = const_cast<wchar_t* const>( L"wide load" );
-	std::string result = Catch::toString( s );
-	CHECK( result == "\"wide load\"" );
+        wchar_t * const s = const_cast<wchar_t* const>( L"wide load" );
+        std::string result = Catch::toString( s );
+        CHECK( result == "\"wide load\"" );
 }
 
 TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
-	wchar_t * s = const_cast<wchar_t*>( L"wide load" );
-	std::string result = Catch::toString( s );
-	CHECK( result == "\"wide load\"" );
+        wchar_t * s = const_cast<wchar_t*>( L"wide load" );
+        std::string result = Catch::toString( s );
+        CHECK( result == "\"wide load\"" );
 }
 
 inline std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
@@ -458,10 +458,10 @@ TEST_CASE( "XmlEncode" ) {
         REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" );
     }
     SECTION( "string with control char (1)" ) {
-        REQUIRE( encode( "[\x01]" ) == "[&#x1]" );
+        REQUIRE( encode( "[\x01]" ) == "[&#x01;]" );
     }
     SECTION( "string with control char (x7F)" ) {
-        REQUIRE( encode( "[\x7F]" ) == "[&#x7F]" );
+        REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" );
     }
 }
 
