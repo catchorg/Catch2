@@ -16,6 +16,7 @@ This documentation comprises these three parts:
 * [Why do we need yet another C++ Test Framework?](docs/why-catch.md)
 * [Tutorial](docs/tutorial.md) - getting started
 * [Reference section](docs/Readme.md) - all the details
+* [Node.js/npm support](docs/nodejs-npm.md) - how to use with Node.js, node-gyp, and npm
 
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
