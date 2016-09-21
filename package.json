@@ -1,6 +1,6 @@
 {
   "name": "@bchociej/catch",
-  "version": "1.5.6-npm.4",
+  "version": "1.5.6-npm.5",
   "description": "catch C++ unit test framework",
   "main": "include_dirs.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bchociej/Catch.git"
+    "url": "https://github.com/philsquared/Catch.git"
   },
   "author": "philsquared",
   "contributors": [
@@ -17,7 +17,7 @@
   ],
   "license": "Boost",
   "bugs": {
-    "url": "https://github.com/bchociej/Catch/issues"
+    "url": "https://github.com/philsquared/Catch/issues"
   },
-  "homepage": "https://github.com/bchociej/Catch"
+  "homepage": "https://github.com/philsquared/Catch"
 }
