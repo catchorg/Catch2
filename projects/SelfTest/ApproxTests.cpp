@@ -42,6 +42,36 @@ TEST_CASE
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
+ "Less-than inequalities with different epsilons",
+ "[Approx]"
+)
+{
+  double d = 1.23;
+
+  REQUIRE( d <= Approx( 1.24 ) );
+  REQUIRE( d <= Approx( 1.23 ) );
+  REQUIRE_FALSE( d <= Approx( 1.22 ) );
+  REQUIRE( d <= Approx( 1.22 ).epsilon(0.1) );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
+ "Greater-than inequalities with different epsilons",
+ "[Approx]"
+)
+{
+  double d = 1.23;
+
+  REQUIRE( d >= Approx( 1.22 ) );
+  REQUIRE( d >= Approx( 1.23 ) );
+  REQUIRE_FALSE( d >= Approx( 1.24 ) );
+  REQUIRE( d >= Approx( 1.24 ).epsilon(0.1) );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+TEST_CASE
+(
     "Approximate comparisons with floats",
     "[Approx]"
 )
