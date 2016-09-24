@@ -148,7 +148,8 @@ install:
       mkdir cmake && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      brew install cmake ccache
+      which cmake || brew install cmake 
+      which ccache || brew install ccache
     fi
 
 before_script:
