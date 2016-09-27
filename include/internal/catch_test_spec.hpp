@@ -67,7 +67,7 @@ namespace Catch {
                 for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it )
                     if( !(*it)->matches( testCase ) )
                         return false;
-                    return true;
+                return true;
             }
         };
 
