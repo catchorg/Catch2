@@ -3920,9 +3920,9 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( encode( "[\x01]" ) == "[&#x1]" )
+  REQUIRE( encode( "[\x01]" ) == "[&#x01;]" )
 with expansion:
-  "[&#x1]" == "[&#x1]"
+  "[&#x01;]" == "[&#x01;]"
 
 -------------------------------------------------------------------------------
 XmlEncode
@@ -3933,9 +3933,9 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( encode( "[\x7F]" ) == "[&#x7F]" )
+  REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" )
 with expansion:
-  "[&#x7F]" == "[&#x7F]"
+  "[&#x7F;]" == "[&#x7F;]"
 
 -------------------------------------------------------------------------------
 long long
@@ -3961,6 +3961,17 @@ MiscTests.cpp:<line number>:
 PASSED:
 with message:
   oops!
+
+-------------------------------------------------------------------------------
+# A test name that starts with a #
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+with message:
+  yay
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9104,6 +9115,6 @@ with expansion:
   1 > 0
 
 ===============================================================================
-test cases: 168 | 123 passed | 43 failed |  2 failed as expected
-assertions: 922 | 824 passed | 80 failed | 18 failed as expected
+test cases: 169 | 124 passed | 43 failed |  2 failed as expected
+assertions: 923 | 825 passed | 80 failed | 18 failed as expected
 
