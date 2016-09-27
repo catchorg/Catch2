@@ -483,3 +483,7 @@ TEST_CASE( "This test 'should' fail but doesn't", "[.][failing][!shouldfail]" )
 {
     SUCCEED( "oops!" );
 }
+
+TEST_CASE( "# A test name that starts with a #" ) {
+    SUCCEED( "yay" );
+}
