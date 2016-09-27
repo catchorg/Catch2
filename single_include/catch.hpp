@@ -1,6 +1,6 @@
 /*
- *  Catch v1.5.6
- *  Generated: 2016-06-09 19:20:41.460328
+ *  Catch v1.5.7
+ *  Generated: 2016-09-27 10:45:46.824849
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -3223,10 +3223,11 @@ namespace Catch {
 
             bool matches( TestCaseInfo const& testCase ) const {
                 // All patterns in a filter must match for the filter to be a match
-                for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it )
+                for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it ) {
                     if( !(*it)->matches( testCase ) )
                         return false;
-                    return true;
+                }
+                return true;
             }
         };
 
@@ -4719,8 +4720,11 @@ namespace Catch {
         std::string line;
         while( std::getline( f, line ) ) {
             line = trim(line);
-            if( !line.empty() && !startsWith( line, "#" ) )
-                addTestOrTags( config, "\"" + line + "\"," );
+            if( !line.empty() && !startsWith( line, "#" ) ) {
+                if( !startsWith( line, "\"" ) )
+                    line = "\"" + line + "\"";
+                addTestOrTags( config, line + "," );
+            }
         }
     }
 
@@ -5368,7 +5372,10 @@ namespace Catch {
                 ++it ) {
             matchedTests++;
             TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-            Catch::cout() << testCaseInfo.name << std::endl;
+            if( startsWith( testCaseInfo.name, "#" ) )
+               Catch::cout() << "\"" << testCaseInfo.name << "\"" << std::endl;
+            else
+               Catch::cout() << testCaseInfo.name << std::endl;
         }
         return matchedTests;
     }
@@ -7571,7 +7578,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 5, 6, "", 0 );
+    Version libraryVersion( 1, 5, 7, "", 0 );
 
 }
 
@@ -8951,9 +8958,10 @@ namespace Catch {
                         break;
 
                     default:
-                        // Escape control chars - based on contribution by @espenalb in PR #465
+                        // Escape control chars - based on contribution by @espenalb in PR #465 and
+                        // by @mrpi PR #588
                         if ( ( c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
-                            os << "&#x" << std::uppercase << std::hex << static_cast<int>( c );
+                            os << "&#x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>( c ) << ';';
                         else
                             os << c;
                 }
@@ -9008,13 +9016,20 @@ namespace Catch {
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
             m_os( &Catch::cout() )
-        {}
+        {
+            // We encode control characters, which requires
+            // XML 1.1
+            // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
+            *m_os << "<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n";
+        }
 
         XmlWriter( std::ostream& os )
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
             m_os( &os )
-        {}
+        {
+            *m_os << "<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n";
+        }
 
         ~XmlWriter() {
             while( !m_tags.empty() )
@@ -9181,7 +9196,7 @@ namespace Catch {
 
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testCaseStarting(testInfo);
-            m_xml.startElement( "TestCase" ).writeAttribute( "name", trim( testInfo.name ) );
+            m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.name );
 
             if ( m_config->showDurations() == ShowDurations::Always )
                 m_testCaseTimer.start();
