@@ -377,6 +377,10 @@ namespace Clara {
             return str.size() >= prefix.size() && str.substr( 0, prefix.size() ) == prefix;
         }
 
+        inline char tolower(char ch) {
+            return (char)::tolower(ch);
+        }
+
         template<typename T> struct RemoveConstRef{ typedef T type; };
         template<typename T> struct RemoveConstRef<T&>{ typedef T type; };
         template<typename T> struct RemoveConstRef<T const&>{ typedef T type; };
@@ -398,7 +402,7 @@ namespace Clara {
         }
         inline void convertInto( std::string const& _source, bool& _dest ) {
             std::string sourceLC = _source;
-            std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), ::tolower );
+            std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), tolower );
             if( sourceLC == "y" || sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
                 _dest = true;
             else if( sourceLC == "n" || sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
