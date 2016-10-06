@@ -45,7 +45,8 @@
 		4AEE032016142F910071E950 /* catch_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE031F16142F910071E950 /* catch_common.cpp */; };
 		4AEE032316142FC70071E950 /* catch_debugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE032216142FC70071E950 /* catch_debugger.cpp */; };
 		4AEE032516142FF10071E950 /* catch_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE032416142FF10071E950 /* catch_stream.cpp */; };
-		4AEE0328161434FD0071E950 /* catch_xmlwriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE0327161434FD0071E950 /* catch_xmlwriter.cpp */; };
+		4AEE0327161434FD0071E950 /* catch_xmlwriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE0327161434FD0071E950 /* catch_xmlwriter.cpp */; };
+		4AEE0328161434FD0071E950 /* catch_tostring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE0327161434FD0071E950 /* catch_tostring.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -195,6 +196,7 @@
 		4AEE032416142FF10071E950 /* catch_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_stream.cpp; path = ../../../SelfTest/SurrogateCpps/catch_stream.cpp; sourceTree = "<group>"; };
 		4AEE0326161431070071E950 /* catch_streambuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = catch_streambuf.h; sourceTree = "<group>"; };
 		4AEE0327161434FD0071E950 /* catch_xmlwriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_xmlwriter.cpp; path = ../../../SelfTest/SurrogateCpps/catch_xmlwriter.cpp; sourceTree = "<group>"; };
+		4AEE0328161434FD0071E950 /* catch_tostring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = catch_tostring.cpp; path = ../../../SelfTest/SurrogateCpps/catch_tostring.cpp; sourceTree = "<group>"; };
 		4AFC661D157E96A7009D58CF /* catch_interfaces_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catch_interfaces_config.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -333,6 +335,7 @@
 				4AEE032216142FC70071E950 /* catch_debugger.cpp */,
 				4AEE032416142FF10071E950 /* catch_stream.cpp */,
 				4AEE0327161434FD0071E950 /* catch_xmlwriter.cpp */,
+				4AEE0328161434FD0071E950 /* catch_tostring.cpp */,
 				4A45DA2316161EF9004F8D6B /* catch_console_colour.cpp */,
 				4A45DA2616161F1F004F8D6B /* catch_ptr.cpp */,
 				4A45DA2816161F3D004F8D6B /* catch_streambuf.cpp */,
@@ -554,6 +557,7 @@
 				263F7A4C19B6FE1E009474C2 /* ToStringContainers.cpp in Sources */,
 				4AEE032316142FC70071E950 /* catch_debugger.cpp in Sources */,
 				4AEE032516142FF10071E950 /* catch_stream.cpp in Sources */,
+				4AEE0327161434FD0071E950 /* catch_xmlwriter.cpp in Sources */,
 				4AEE0328161434FD0071E950 /* catch_xmlwriter.cpp in Sources */,
 				4A45DA2416161EF9004F8D6B /* catch_console_colour.cpp in Sources */,
 				4A45DA2716161F1F004F8D6B /* catch_ptr.cpp in Sources */,
