@@ -39,6 +39,9 @@ namespace Matchers {
         virtual Ptr<Matcher<ExpressionT> > clone() const {
             return Ptr<Matcher<ExpressionT> >( new DerivedT( static_cast<DerivedT const&>( *this ) ) );
         }
+
+        MatcherImpl() {};
+        CATCH_CONFIG_CPP11_NON_MOVABLE(MatcherImpl)
     };
 
     namespace Generic {

@@ -240,6 +240,8 @@ namespace Catch {
         virtual bool assertionEnded( AssertionStats const& ) CATCH_OVERRIDE {
             return false;
         }
+
+        CATCH_CONFIG_CPP11_NON_MOVABLE(TestEventListenerBase)
     };
 
 } // end namespace Catch

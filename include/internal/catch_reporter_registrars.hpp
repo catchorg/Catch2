@@ -56,6 +56,10 @@ namespace Catch {
             virtual std::string getDescription() const {
                 return T::getDescription();
             }
+
+        public:
+            ReporterFactory() {}
+            CATCH_CONFIG_CPP11_NON_MOVABLE(ReporterFactory)
         };
 
     public:
@@ -63,6 +67,8 @@ namespace Catch {
         ReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
         }
+
+        CATCH_CONFIG_CPP11_NON_MOVABLE(ReporterRegistrar)
     };
 
     template<typename T>
