@@ -48,7 +48,7 @@ namespace Catch {
             oss << "error: tag alias, \"" << alias << "\" is not of the form [@alias name].\n" << lineInfo;
             throw std::domain_error( oss.str().c_str() );
         }
-        if( !m_registry.insert( std::make_pair( alias, TagAlias( tag, lineInfo ) ) ).second ) {
+        if( !m_registry.insert( std::make_pair( std::string(alias), TagAlias( tag, lineInfo ) ) ).second ) {
             std::ostringstream oss;
             oss << "error: tag alias, \"" << alias << "\" already registered.\n"
                 << "\tFirst seen at " << find(alias)->lineInfo << "\n"
