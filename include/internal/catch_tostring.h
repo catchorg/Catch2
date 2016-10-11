@@ -262,19 +262,19 @@ std::string toString( T const& value ) {
 }
 
 
-    namespace Detail {
-    template<typename InputIterator>
-    std::string rangeToString( InputIterator first, InputIterator last ) {
-        std::ostringstream oss;
-        oss << "{ ";
-        if( first != last ) {
-            oss << Catch::toString( *first );
-            for( ++first ; first != last ; ++first )
-                oss << ", " << Catch::toString( *first );
-        }
-        oss << " }";
-        return oss.str();
+namespace Detail {
+template<typename InputIterator>
+std::string rangeToString( InputIterator first, InputIterator last ) {
+    std::ostringstream oss;
+    oss << "{ ";
+    if( first != last ) {
+        oss << Catch::toString( *first );
+        while( ++first != last )
+            oss << ", " << Catch::toString( *first );
     }
+    oss << " }";
+    return oss.str();
+}
 }
 
 } // end namespace Catch
