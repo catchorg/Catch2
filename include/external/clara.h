@@ -37,6 +37,7 @@
 #define TBC_TEXT_FORMAT_H_INCLUDED
 #endif
 
+#include <cctype>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -398,7 +399,7 @@ namespace Clara {
         }
         inline void convertInto( std::string const& _source, bool& _dest ) {
             std::string sourceLC = _source;
-            std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), ::tolower );
+            std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), static_cast<int(*)(int)>(std::tolower) );
             if( sourceLC == "y" || sourceLC == "1" || sourceLC == "true" || sourceLC == "yes" || sourceLC == "on" )
                 _dest = true;
             else if( sourceLC == "n" || sourceLC == "0" || sourceLC == "false" || sourceLC == "no" || sourceLC == "off" )
