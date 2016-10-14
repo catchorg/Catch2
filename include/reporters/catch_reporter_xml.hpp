@@ -115,7 +115,7 @@ namespace Catch {
                         .writeText( assertionResult.getMessage() );
                     break;
                 case ResultWas::FatalErrorCondition:
-                    m_xml.scopedElement( "Fatal Error Condition" )
+                    m_xml.scopedElement( "FatalErrorCondition" )
                         .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                         .writeAttribute( "line", assertionResult.getSourceInfo().line )
                         .writeText( assertionResult.getMessage() );
