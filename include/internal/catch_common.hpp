@@ -22,7 +22,8 @@ namespace Catch {
         return s.find( infix ) != std::string::npos;
     }
     void toLowerInPlace( std::string& s ) {
-        std::transform( s.begin(), s.end(), s.begin(), ::tolower );
+        std::transform( s.begin(), s.end(), s.begin(),
+            [](char c) { return static_cast<char>(::tolower(c)); } );
     }
     std::string toLower( std::string const& s ) {
         std::string lc = s;
