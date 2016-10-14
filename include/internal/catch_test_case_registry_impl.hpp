@@ -24,9 +24,9 @@
 #endif
 
 namespace Catch {
-    
+
     struct RandomNumberGenerator {
-        typedef int result_type;
+        typedef std::ptrdiff_t result_type;
 
         result_type operator()( result_type n ) const { return std::rand() % n; }
 
