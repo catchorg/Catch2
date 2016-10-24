@@ -33,7 +33,7 @@ If you don't want to provide an ```operator <<``` overload, or you want to conve
 
 ```
 namespace Catch {
-	std::string toString( T const& value ) {
+	template<> std::string toString( T const& value ) {
 		return convertMyTypeToString( value );
 	}
 }
