@@ -28,7 +28,7 @@ set(SOURCES
     ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
     ${SELF_TEST_DIR}/EnumToString.cpp
     ${SELF_TEST_DIR}/ToStringPair.cpp
-    ${SELF_TEST_DIR}/ToStringVector.cpp
+    ${SELF_TEST_DIR}/ToStringContainers.cpp
     ${SELF_TEST_DIR}/ToStringWhich.cpp
     ${SELF_TEST_DIR}/ToStringTuple.cpp
 )
