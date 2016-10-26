@@ -1,6 +1,6 @@
 /*
- *  Catch v1.5.7
- *  Generated: 2016-09-27 10:45:46.824849
+ *  Catch v1.5.8
+ *  Generated: 2016-10-26 12:07:30.938259
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6461,7 +6461,7 @@ namespace Catch {
 namespace Catch {
 
     struct RandomNumberGenerator {
-        typedef int result_type;
+        typedef std::ptrdiff_t result_type;
 
         result_type operator()( result_type n ) const { return std::rand() % n; }
 
@@ -7578,7 +7578,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 5, 7, "", 0 );
+    Version libraryVersion( 1, 5, 8, "", 0 );
 
 }
 
@@ -7809,8 +7809,11 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix ) {
         return s.find( infix ) != std::string::npos;
     }
+    char toLowerCh(char c) {
+        return static_cast<char>( ::tolower( c ) );
+    }
     void toLowerInPlace( std::string& s ) {
-        std::transform( s.begin(), s.end(), s.begin(), ::tolower );
+        std::transform( s.begin(), s.end(), s.begin(), toLowerCh );
     }
     std::string toLower( std::string const& s ) {
         std::string lc = s;
@@ -9258,7 +9261,7 @@ namespace Catch {
                         .writeText( assertionResult.getMessage() );
                     break;
                 case ResultWas::FatalErrorCondition:
-                    m_xml.scopedElement( "Fatal Error Condition" )
+                    m_xml.scopedElement( "FatalErrorCondition" )
                         .writeAttribute( "filename", assertionResult.getSourceInfo().file )
                         .writeAttribute( "line", assertionResult.getSourceInfo().line )
                         .writeText( assertionResult.getMessage() );
