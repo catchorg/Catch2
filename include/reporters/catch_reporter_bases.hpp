@@ -43,10 +43,14 @@ namespace Catch {
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) CATCH_OVERRIDE {
             m_sectionStack.push_back( _sectionInfo );
+            m_deepestSectionStack.push_back( _sectionInfo );
         }
 
         virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) CATCH_OVERRIDE {
             m_sectionStack.pop_back();
+            if (m_sectionStack.empty()) {
+                m_deepestSectionStack.clear();
+            }
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) CATCH_OVERRIDE {
             currentTestCaseInfo.reset();
@@ -73,6 +77,7 @@ namespace Catch {
         LazyStat<TestCaseInfo> currentTestCaseInfo;
 
         std::vector<SectionInfo> m_sectionStack;
+        std::vector<SectionInfo> m_deepestSectionStack;
         ReporterPreferences m_reporterPrefs;
     };
 
@@ -168,7 +173,7 @@ namespace Catch {
 
         virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
             assert( !m_sectionStack.empty() );
-            SectionNode& sectionNode = *m_sectionStack.back();
+            SectionNode& sectionNode = *m_deepestSection;
             sectionNode.assertions.push_back( assertionStats );
             return true;
         }

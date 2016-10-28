@@ -271,20 +271,20 @@ namespace Catch {
             }
         }
         void printTestCaseAndSectionHeader() {
-            assert( !m_sectionStack.empty() );
+            assert( !m_deepestSectionStack.empty() );
             printOpenHeader( currentTestCaseInfo->name );
 
-            if( m_sectionStack.size() > 1 ) {
+            if( m_deepestSectionStack.size() > 1 ) {
                 Colour colourGuard( Colour::Headers );
 
                 std::vector<SectionInfo>::const_iterator
-                    it = m_sectionStack.begin()+1, // Skip first section (test case)
-                    itEnd = m_sectionStack.end();
+                    it = m_deepestSectionStack.begin()+1, // Skip first section (test case)
+                    itEnd = m_deepestSectionStack.end();
                 for( ; it != itEnd; ++it )
                     printHeaderString( it->name, 2 );
             }
 
-            SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
+            SourceLineInfo lineInfo = m_deepestSectionStack.front().lineInfo;
 
             if( !lineInfo.empty() ){
                 stream << getLineOfChars<'-'>() << "\n";

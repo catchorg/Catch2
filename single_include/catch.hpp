@@ -1,6 +1,6 @@
 /*
  *  Catch v1.5.8
- *  Generated: 2016-10-26 12:07:30.938259
+ *  Generated: 2016-10-28 17:51:17.460625
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -8629,10 +8629,14 @@ namespace Catch {
         }
         virtual void sectionStarting( SectionInfo const& _sectionInfo ) CATCH_OVERRIDE {
             m_sectionStack.push_back( _sectionInfo );
+            m_deepestSectionStack.push_back( _sectionInfo );
         }
 
         virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) CATCH_OVERRIDE {
             m_sectionStack.pop_back();
+            if (m_sectionStack.empty()) {
+                m_deepestSectionStack.clear();
+            }
         }
         virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) CATCH_OVERRIDE {
             currentTestCaseInfo.reset();
@@ -8659,6 +8663,7 @@ namespace Catch {
         LazyStat<TestCaseInfo> currentTestCaseInfo;
 
         std::vector<SectionInfo> m_sectionStack;
+        std::vector<SectionInfo> m_deepestSectionStack;
         ReporterPreferences m_reporterPrefs;
     };
 
@@ -8753,7 +8758,7 @@ namespace Catch {
 
         virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
             assert( !m_sectionStack.empty() );
-            SectionNode& sectionNode = *m_sectionStack.back();
+            SectionNode& sectionNode = *m_deepestSection;
             sectionNode.assertions.push_back( assertionStats );
             return true;
         }
@@ -9812,20 +9817,20 @@ namespace Catch {
             }
         }
         void printTestCaseAndSectionHeader() {
-            assert( !m_sectionStack.empty() );
+            assert( !m_deepestSectionStack.empty() );
             printOpenHeader( currentTestCaseInfo->name );
 
-            if( m_sectionStack.size() > 1 ) {
+            if( m_deepestSectionStack.size() > 1 ) {
                 Colour colourGuard( Colour::Headers );
 
                 std::vector<SectionInfo>::const_iterator
-                    it = m_sectionStack.begin()+1, // Skip first section (test case)
-                    itEnd = m_sectionStack.end();
+                    it = m_deepestSectionStack.begin()+1, // Skip first section (test case)
+                    itEnd = m_deepestSectionStack.end();
                 for( ; it != itEnd; ++it )
                     printHeaderString( it->name, 2 );
             }
 
-            SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
+            SourceLineInfo lineInfo = m_deepestSectionStack.front().lineInfo;
 
             if( !lineInfo.empty() ){
                 stream << getLineOfChars<'-'>() << "\n";

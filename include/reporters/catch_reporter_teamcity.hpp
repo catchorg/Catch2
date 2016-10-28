@@ -169,20 +169,20 @@ namespace Catch {
 
     private:
         void printSectionHeader( std::ostream& os ) {
-            assert( !m_sectionStack.empty() );
+            assert( !m_deepestSectionStack.empty() );
 
-            if( m_sectionStack.size() > 1 ) {
+            if( m_deepestSectionStack.size() > 1 ) {
                 os << getLineOfChars<'-'>() << "\n";
 
                 std::vector<SectionInfo>::const_iterator
-                it = m_sectionStack.begin()+1, // Skip first section (test case)
-                itEnd = m_sectionStack.end();
+                it = m_deepestSectionStack.begin()+1, // Skip first section (test case)
+                itEnd = m_deepestSectionStack.end();
                 for( ; it != itEnd; ++it )
                     printHeaderString( os, it->name );
                 os << getLineOfChars<'-'>() << "\n";
             }
 
-            SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
+            SourceLineInfo lineInfo = m_deepestSectionStack.front().lineInfo;
 
             if( !lineInfo.empty() )
                 os << lineInfo << "\n";
