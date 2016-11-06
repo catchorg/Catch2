@@ -1,18 +1,22 @@
 SOURCES = ApproxTests.cpp \
+          BDDTests.cpp \
           ClassTests.cpp \
+          CmdLineTests.cpp \
           ConditionTests.cpp \
+          EnumToString.cpp \
           ExceptionTests.cpp \
           GeneratorTests.cpp \
           MessageTests.cpp \
           MiscTests.cpp \
+          PartTrackerTests.cpp \
+          TagAliasTests.cpp \
           TestMain.cpp \
-          TrickyTests.cpp \
-          BDDTests.cpp \
-          VariadicMacrosTests.cpp \
-          EnumToString.cpp \
           ToStringPair.cpp \
+          ToStringTuple.cpp \
           ToStringVector.cpp \
-          ToStringWhich.cpp
+          ToStringWhich.cpp \
+          TrickyTests.cpp \
+          VariadicMacrosTests.cpp \
 
 
 OBJECTS    = $(patsubst %.cpp, %.o, $(SOURCES))

@@ -17,20 +17,22 @@ set(SOURCES
     ${SELF_TEST_DIR}/ApproxTests.cpp
     ${SELF_TEST_DIR}/BDDTests.cpp
     ${SELF_TEST_DIR}/ClassTests.cpp
+    ${SELF_TEST_DIR}/CmdLineTests.cpp
     ${SELF_TEST_DIR}/ConditionTests.cpp
+    ${SELF_TEST_DIR}/EnumToString.cpp
     ${SELF_TEST_DIR}/ExceptionTests.cpp
     ${SELF_TEST_DIR}/GeneratorTests.cpp
     ${SELF_TEST_DIR}/MessageTests.cpp
     ${SELF_TEST_DIR}/MiscTests.cpp
     ${SELF_TEST_DIR}/PartTrackerTests.cpp
+    ${SELF_TEST_DIR}/TagAliasTests.cpp
     ${SELF_TEST_DIR}/TestMain.cpp
-    ${SELF_TEST_DIR}/TrickyTests.cpp
-    ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
-    ${SELF_TEST_DIR}/EnumToString.cpp
     ${SELF_TEST_DIR}/ToStringPair.cpp
+    ${SELF_TEST_DIR}/ToStringTuple.cpp
     ${SELF_TEST_DIR}/ToStringVector.cpp
     ${SELF_TEST_DIR}/ToStringWhich.cpp
-    ${SELF_TEST_DIR}/ToStringTuple.cpp
+    ${SELF_TEST_DIR}/TrickyTests.cpp
+    ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
 )
 
 # configure the executable
