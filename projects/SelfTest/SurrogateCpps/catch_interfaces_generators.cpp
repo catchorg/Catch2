@@ -1,1 +1,1 @@
-#include "catch_interfaces_generators.h"
+#include "internal/catch_interfaces_generators.h"
