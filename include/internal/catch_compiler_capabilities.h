@@ -36,8 +36,16 @@
 
 // All the C++11 features can be disabled with CATCH_CONFIG_NO_CPP11
 
-#if defined(__cplusplus) && __cplusplus >= 201103L
-#  define CATCH_CPP11_OR_GREATER
+#ifdef __cplusplus
+
+#  if __cplusplus >= 201103L
+#    define CATCH_CPP11_OR_GREATER
+#  endif
+
+#  if __cplusplus >= 201402L
+#    define CATCH_CPP14_OR_GREATER
+#  endif
+
 #endif
 
 #ifdef __clang__

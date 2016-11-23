@@ -1,5 +1,6 @@
+<?xml version="1.1" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="13" failures="68" tests="923" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="13" failures="68" tests="924" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum class)" time="{duration}"/>
@@ -500,6 +501,7 @@ MiscTests.cpp:<line number>
     <testcase classname="XmlEncode" name="string with control char (x7F)" time="{duration}"/>
     <testcase classname="global" name="long long" time="{duration}"/>
     <testcase classname="global" name="This test 'should' fail but doesn't" time="{duration}"/>
+    <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="default - no arguments" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/1 test" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using exclude:" time="{duration}"/>

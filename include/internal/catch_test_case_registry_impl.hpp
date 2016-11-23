@@ -19,13 +19,31 @@
 #include <iostream>
 #include <algorithm>
 
+#ifdef CATCH_CPP14_OR_GREATER
+#include <random>
+#endif
+
 namespace Catch {
 
-    struct LexSort {
-        bool operator() (TestCase i,TestCase j) const { return (i<j);}
-    };
     struct RandomNumberGenerator {
-        int operator()( int n ) const { return std::rand() % n; }
+        typedef std::ptrdiff_t result_type;
+
+        result_type operator()( result_type n ) const { return std::rand() % n; }
+
+#ifdef CATCH_CPP14_OR_GREATER
+        static constexpr result_type min() { return 0; }
+        static constexpr result_type max() { return 1000000; }
+        result_type operator()() const { return std::rand() % max(); }
+#endif
+        template<typename V>
+        static void shuffle( V& vector ) {
+            RandomNumberGenerator rng;
+#ifdef CATCH_CPP14_OR_GREATER
+            std::shuffle( vector.begin(), vector.end(), rng );
+#else
+            std::random_shuffle( vector.begin(), vector.end(), rng );
+#endif
+        }
     };
 
     inline std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
@@ -34,14 +52,12 @@ namespace Catch {
 
         switch( config.runOrder() ) {
             case RunTests::InLexicographicalOrder:
-                std::sort( sorted.begin(), sorted.end(), LexSort() );
+                std::sort( sorted.begin(), sorted.end() );
                 break;
             case RunTests::InRandomOrder:
                 {
                     seedRng( config );
-
-                    RandomNumberGenerator rng;
-                    std::random_shuffle( sorted.begin(), sorted.end(), rng );
+                    RandomNumberGenerator::shuffle( sorted );
                 }
                 break;
             case RunTests::InDeclarationOrder:
@@ -60,13 +76,15 @@ namespace Catch {
             it != itEnd;
             ++it ) {
             std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( *it );
-            if( !prev.second ){
-                Catch::cerr()
-                << Colour( Colour::Red )
-                << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
-                << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
-                << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
-                exit(1);
+            if( !prev.second ) {
+                std::ostringstream ss;
+
+                ss  << Colour( Colour::Red )
+                    << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
+                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
+                    << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
+
+                throw std::runtime_error(ss.str());
             }
         }
     }

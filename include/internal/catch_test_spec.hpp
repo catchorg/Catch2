@@ -64,10 +64,11 @@ namespace Catch {
 
             bool matches( TestCaseInfo const& testCase ) const {
                 // All patterns in a filter must match for the filter to be a match
-                for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it )
+                for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it ) {
                     if( !(*it)->matches( testCase ) )
                         return false;
-                    return true;
+                }
+                return true;
             }
         };
 

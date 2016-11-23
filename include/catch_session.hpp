@@ -131,10 +131,10 @@ namespace Catch {
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
 
-        int applyCommandLine( int argc, char const* argv[], OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
+        int applyCommandLine( int argc, char const* const* const argv, OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
                 m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );
-                m_unusedTokens = m_cli.parseInto( argc, argv, m_configData );
+                m_unusedTokens = m_cli.parseInto( Clara::argsToVector( argc, argv ), m_configData );
                 if( m_configData.showHelp )
                     showHelp( m_configData.processName );
                 m_config.reset();
@@ -158,15 +158,12 @@ namespace Catch {
             m_config.reset();
         }
 
-        int run( int argc, char const* argv[] ) {
+        int run( int argc, char const* const* const argv ) {
 
             int returnCode = applyCommandLine( argc, argv );
             if( returnCode == 0 )
                 returnCode = run();
             return returnCode;
-        }
-        int run( int argc, char* argv[] ) {
-            return run( argc, const_cast<char const**>( argv ) );
         }
 
         int run() {

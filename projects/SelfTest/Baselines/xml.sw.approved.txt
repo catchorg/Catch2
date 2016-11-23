@@ -1,3 +1,4 @@
+<?xml version="1.1" encoding="UTF-8"?>
 <Catch name="CatchSelfTest">
   <Group name="CatchSelfTest">
     <TestCase name="toString(enum)">
@@ -4051,10 +4052,10 @@
       <Section name="string with control char (1)">
         <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
           <Original>
-            encode( "[\x01]" ) == "[&amp;#x1]"
+            encode( "[\x01]" ) == "[&amp;#x01;]"
           </Original>
           <Expanded>
-            "[&amp;#x1]" == "[&amp;#x1]"
+            "[&amp;#x01;]" == "[&amp;#x01;]"
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -4062,10 +4063,10 @@
       <Section name="string with control char (x7F)">
         <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
           <Original>
-            encode( "[\x7F]" ) == "[&amp;#x7F]"
+            encode( "[\x7F]" ) == "[&amp;#x7F;]"
           </Original>
           <Expanded>
-            "[&amp;#x7F]" == "[&amp;#x7F]"
+            "[&amp;#x7F;]" == "[&amp;#x7F;]"
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -4087,6 +4088,9 @@
     </TestCase>
     <TestCase name="This test 'should' fail but doesn't">
       <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="# A test name that starts with a #">
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Process can be configured on command line">
       <Section name="default - no arguments">
@@ -9566,7 +9570,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="824" failures="81" expectedFailures="18"/>
+    <OverallResults successes="825" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="824" failures="80" expectedFailures="18"/>
+  <OverallResults successes="825" failures="80" expectedFailures="18"/>
 </Catch>

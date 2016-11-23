@@ -41,6 +41,10 @@ namespace TestCaseTracking {
         virtual void addChild( Ptr<ITracker> const& child ) = 0;
         virtual ITracker* findChild( std::string const& name ) = 0;
         virtual void openChild() = 0;
+        
+        // Debug/ checking
+        virtual bool isSectionTracker() const = 0;
+        virtual bool isIndexTracker() const = 0;
     };
 
     class TrackerContext {
@@ -167,6 +171,10 @@ namespace TestCaseTracking {
                     m_parent->openChild();
             }
         }
+
+        virtual bool isSectionTracker() const CATCH_OVERRIDE { return false; }
+        virtual bool isIndexTracker() const CATCH_OVERRIDE { return false; }
+        
         void open() {
             m_runState = Executing;
             moveToThis();
@@ -230,13 +238,16 @@ namespace TestCaseTracking {
         {}
         virtual ~SectionTracker();
 
+        virtual bool isSectionTracker() const CATCH_OVERRIDE { return true; }
+        
         static SectionTracker& acquire( TrackerContext& ctx, std::string const& name ) {
             SectionTracker* section = CATCH_NULL;
 
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( name ) ) {
-                section = dynamic_cast<SectionTracker*>( childTracker );
-                assert( section );
+                assert( childTracker );
+                assert( childTracker->isSectionTracker() );
+                section = static_cast<SectionTracker*>( childTracker );
             }
             else {
                 section = new SectionTracker( name, ctx, &currentTracker );
@@ -261,13 +272,16 @@ namespace TestCaseTracking {
         {}
         virtual ~IndexTracker();
 
+        virtual bool isIndexTracker() const CATCH_OVERRIDE { return true; }
+        
         static IndexTracker& acquire( TrackerContext& ctx, std::string const& name, int size ) {
             IndexTracker* tracker = CATCH_NULL;
 
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( name ) ) {
-                tracker = dynamic_cast<IndexTracker*>( childTracker );
-                assert( tracker );
+                assert( childTracker );
+                assert( childTracker->isIndexTracker() );
+                tracker = static_cast<IndexTracker*>( childTracker );
             }
             else {
                 tracker = new IndexTracker( name, ctx, &currentTracker, size );
