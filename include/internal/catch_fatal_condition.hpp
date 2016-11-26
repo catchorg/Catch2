@@ -37,6 +37,8 @@ namespace Catch {
 #else // Not Windows - assumed to be POSIX compatible //////////////////////////
 
 #include <signal.h>
+#include <memory>
+#include <array>
 
 namespace Catch {
 
@@ -60,22 +62,39 @@ namespace Catch {
             fatal( "<unknown signal>", -sig );
         }
 
-        FatalConditionHandler() : m_isSet( true ) {
-            for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
-                signal( signalDefs[i].id, handleSignal );
+        FatalConditionHandler(): m_isSet(true), m_altStackMem(new char[SIGSTKSZ]) {
+            stack_t sigStack;
+            sigStack.ss_sp = m_altStackMem.get();
+            sigStack.ss_size = SIGSTKSZ;
+            sigStack.ss_flags = 0;
+            sigaltstack(&sigStack, &m_oldSigActions);
+            struct sigaction sa = { 0 };
+
+            sa.sa_handler = handleSignal;
+            sa.sa_flags = SA_ONSTACK;
+            for (std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i) {
+                sigaction(signalDefs[i].id, &sa, &m_oldSigActions[i]);
+            }
         }
         ~FatalConditionHandler() {
             reset();
         }
         void reset() {
             if( m_isSet ) {
-                for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
-                    signal( signalDefs[i].id, SIG_DFL );
+                // Set signals back to previous values -- hopefully nobody overwrote them in the meantime
+                for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i ) {
+                    sigaction(signalDefs[i].id, &m_oldSigActions[i], nullptr);
+                }
+                // Return the old stack
+                sigaltstack(&m_oldSigStack, nullptr);
                 m_isSet = false;
             }
         }
 
         bool m_isSet;
+        std::unique_ptr<char[]> m_altStackMem;
+        std::array<struct sigaction, sizeof(signalDefs)/sizeof(SignalDefs)> m_oldSigActions;
+        stack_t m_oldSigStack;
     };
 
 } // namespace Catch
