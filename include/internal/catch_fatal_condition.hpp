@@ -37,8 +37,6 @@ namespace Catch {
 #else // Not Windows - assumed to be POSIX compatible //////////////////////////
 
 #include <signal.h>
-#include <memory>
-#include <array>
 
 namespace Catch {
 
@@ -64,10 +62,10 @@ namespace Catch {
 
         FatalConditionHandler(): m_isSet(true), m_altStackMem(new char[SIGSTKSZ]) {
             stack_t sigStack;
-            sigStack.ss_sp = m_altStackMem.get();
+            sigStack.ss_sp = m_altStackMem;
             sigStack.ss_size = SIGSTKSZ;
             sigStack.ss_flags = 0;
-            sigaltstack(&sigStack, &m_oldSigActions);
+            sigaltstack(&sigStack, &m_oldSigStack);
             struct sigaction sa = { 0 };
 
             sa.sa_handler = handleSignal;
@@ -78,22 +76,24 @@ namespace Catch {
         }
         ~FatalConditionHandler() {
             reset();
+            delete[] m_altStackMem;
         }
         void reset() {
             if( m_isSet ) {
                 // Set signals back to previous values -- hopefully nobody overwrote them in the meantime
                 for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i ) {
-                    sigaction(signalDefs[i].id, &m_oldSigActions[i], nullptr);
+                    sigaction(signalDefs[i].id, &m_oldSigActions[i], CATCH_NULL);
                 }
                 // Return the old stack
-                sigaltstack(&m_oldSigStack, nullptr);
+                sigaltstack(&m_oldSigStack, CATCH_NULL);
                 m_isSet = false;
             }
         }
 
         bool m_isSet;
-        std::unique_ptr<char[]> m_altStackMem;
-        std::array<struct sigaction, sizeof(signalDefs)/sizeof(SignalDefs)> m_oldSigActions;
+        // C++03 doesn't allow auto_ptr<T[]>, so we have manage the memory ourselves
+        char* m_altStackMem;
+        struct sigaction m_oldSigActions [sizeof(signalDefs)/sizeof(SignalDefs)];
         stack_t m_oldSigStack;
     };
 
