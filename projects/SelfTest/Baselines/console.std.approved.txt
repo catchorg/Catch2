@@ -4,6 +4,46 @@ CatchSelfTest is a <version> host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
+'Not' checks that should fail
+-------------------------------------------------------------------------------
+ConditionTests.cpp:<line number>
+...............................................................................
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK( false != false )
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK( true != true )
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK( !true )
+with expansion:
+  false
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK_FALSE( true )
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK( !trueValue )
+with expansion:
+  false
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK_FALSE( trueValue )
+with expansion:
+  !true
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK( !(1 == 1) )
+with expansion:
+  false
+
+ConditionTests.cpp:<line number>: FAILED:
+  CHECK_FALSE( 1 == 1 )
+with expansion:
+  !(1 == 1)
+
+-------------------------------------------------------------------------------
 A METHOD_AS_TEST_CASE based test run that fails
 -------------------------------------------------------------------------------
 ClassTests.cpp:<line number>
@@ -24,6 +64,97 @@ ClassTests.cpp:<line number>: FAILED:
   REQUIRE( m_a == 2 )
 with expansion:
   1 == 2
+
+-------------------------------------------------------------------------------
+A couple of nested sections followed by a failure
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+explicitly with message:
+  to infinity and beyond
+
+-------------------------------------------------------------------------------
+A failing expression with a non streamable type is still captured
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>: FAILED:
+  CHECK( &o1 == &o2 )
+with expansion:
+  0x<hex digits> == 0x<hex digits>
+
+TrickyTests.cpp:<line number>: FAILED:
+  CHECK( o1 == o2 )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
+An unchecked exception reports the line of the last assertion
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  unexpected exception
+
+-------------------------------------------------------------------------------
+Contains string matcher
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
+with expansion:
+  "this string contains 'abc' as a substring" contains: "not there"
+
+-------------------------------------------------------------------------------
+Custom exceptions can be translated when testing for nothrow
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE_NOTHROW( throwCustom() )
+due to unexpected exception with message:
+  custom exception - not std
+
+-------------------------------------------------------------------------------
+Custom exceptions can be translated when testing for throwing as something else
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_AS( throwCustom() )
+due to unexpected exception with message:
+  custom exception - not std
+
+-------------------------------------------------------------------------------
+Custom std-exceptions can be custom translated
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  custom std exception
+
+-------------------------------------------------------------------------------
+EndsWith string matcher
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
+with expansion:
+  "this string contains 'abc' as a substring" ends with: "this"
 
 -------------------------------------------------------------------------------
 Equality checks that should fail
@@ -97,6 +228,100 @@ with expansion:
   1.3 == Approx( 1.301 )
 
 -------------------------------------------------------------------------------
+Equals string matcher
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
+with expansion:
+  "this string contains 'abc' as a substring" equals: "something else"
+
+-------------------------------------------------------------------------------
+Expected exceptions that don't throw or unexpected exceptions fail the test
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_AS( thisThrows() )
+due to unexpected exception with message:
+  expected exception
+
+ExceptionTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_AS( thisDoesntThrow() )
+because no exception was thrown where one was expected:
+
+ExceptionTests.cpp:<line number>: FAILED:
+  CHECK_NOTHROW( thisThrows() )
+due to unexpected exception with message:
+  expected exception
+
+-------------------------------------------------------------------------------
+FAIL aborts the test
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+explicitly with message:
+  This is a failure
+
+-------------------------------------------------------------------------------
+FAIL does not require an argument
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+INFO and WARN do not abort tests
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+warning:
+  this is a warning
+
+-------------------------------------------------------------------------------
+INFO gets logged on failure
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( a == 1 )
+with expansion:
+  2 == 1
+with messages:
+  this message should be logged
+  so should this
+
+-------------------------------------------------------------------------------
+INFO gets logged on failure, even if captured before successful assertions
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+  CHECK( a == 1 )
+with expansion:
+  2 == 1
+with messages:
+  this message may be logged later
+  this message should be logged
+
+MessageTests.cpp:<line number>: FAILED:
+  CHECK( a == 0 )
+with expansion:
+  2 == 0
+with message:
+  and this, but later
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -126,6 +351,60 @@ ConditionTests.cpp:<line number>: FAILED:
   CHECK( data.str_hello.size() != 5 )
 with expansion:
   5 != 5
+
+-------------------------------------------------------------------------------
+Matchers can be composed with both && and || - failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+with expansion:
+  "this string contains 'abc' as a substring" ( ( contains: "string" or
+  contains: "different" ) and contains: "random" )
+
+-------------------------------------------------------------------------------
+Matchers can be negated (Not) with the ! operator - failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
+with expansion:
+  "this string contains 'abc' as a substring" not contains: "substring"
+
+-------------------------------------------------------------------------------
+Mismatching exception messages failing the test
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
+with expansion:
+  expected exception
+
+-------------------------------------------------------------------------------
+Nice descriptive name
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+warning:
+  This one ran
+
+-------------------------------------------------------------------------------
+Non-std exceptions can be translated
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  custom exception
 
 -------------------------------------------------------------------------------
 Ordering comparison checks that should fail
@@ -229,64 +508,99 @@ with expansion:
   "hello" <= "a"
 
 -------------------------------------------------------------------------------
-'Not' checks that should fail
+Output from all sections is reported
+  one
 -------------------------------------------------------------------------------
-ConditionTests.cpp:<line number>
+MessageTests.cpp:<line number>
 ...............................................................................
 
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK( false != false )
-
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK( true != true )
-
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK( !true )
-with expansion:
-  false
-
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK_FALSE( true )
-
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK( !trueValue )
-with expansion:
-  false
-
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK_FALSE( trueValue )
-with expansion:
-  !true
-
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK( !(1 == 1) )
-with expansion:
-  false
-
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK_FALSE( 1 == 1 )
-with expansion:
-  !(1 == 1)
+MessageTests.cpp:<line number>: FAILED:
+explicitly with message:
+  Message from section one
 
 -------------------------------------------------------------------------------
-Expected exceptions that don't throw or unexpected exceptions fail the test
+Output from all sections is reported
+  two
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+explicitly with message:
+  Message from section two
+
+-------------------------------------------------------------------------------
+Pointers can be converted to strings
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+warning:
+  actual address of p: 0x<hex digits>
+
+MessageTests.cpp:<line number>:
+warning:
+  toString(p): 0x<hex digits>
+
+-------------------------------------------------------------------------------
+SCOPED_INFO is reset for each loop
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( i < 10 )
+with expansion:
+  10 < 10
+with messages:
+  current counter 10
+  i := 10
+
+A string sent directly to stdout
+A string sent directly to stderr
+Message from section one
+Message from section two
+-------------------------------------------------------------------------------
+StartsWith string matcher
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
+with expansion:
+  "this string contains 'abc' as a substring" starts with: "string"
+
+hello
+hello
+-------------------------------------------------------------------------------
+Tabs and newlines show in output
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK( s1 == s2 )
+with expansion:
+  "if ($b == 10) {
+  		$a= 20;
+  }"
+  ==
+  "if ($b == 10) {
+  $a = 20;
+  }
+  "
+
+-------------------------------------------------------------------------------
+Unexpected exceptions can be translated
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
 
 ExceptionTests.cpp:<line number>: FAILED:
-  CHECK_THROWS_AS( thisThrows() )
 due to unexpected exception with message:
-  expected exception
-
-ExceptionTests.cpp:<line number>: FAILED:
-  CHECK_THROWS_AS( thisDoesntThrow() )
-because no exception was thrown where one was expected:
-
-ExceptionTests.cpp:<line number>: FAILED:
-  CHECK_NOTHROW( thisThrows() )
-due to unexpected exception with message:
-  expected exception
+  3.14
 
 -------------------------------------------------------------------------------
 When unchecked exceptions are thrown directly they are always failures
@@ -299,29 +613,8 @@ due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
-An unchecked exception reports the line of the last assertion
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>: FAILED:
-  {Unknown expression after the reported line}
-due to unexpected exception with message:
-  unexpected exception
-
--------------------------------------------------------------------------------
-When unchecked exceptions are thrown from sections they are always failures
-  section name
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>: FAILED:
-due to unexpected exception with message:
-  unexpected exception
-
--------------------------------------------------------------------------------
-When unchecked exceptions are thrown from functions they are always failures
+When unchecked exceptions are thrown during a CHECK the test should abort and
+fail
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -344,8 +637,7 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
-When unchecked exceptions are thrown during a CHECK the test should abort and
-fail
+When unchecked exceptions are thrown from functions they are always failures
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
@@ -356,168 +648,69 @@ due to unexpected exception with message:
   expected exception
 
 -------------------------------------------------------------------------------
-Non-std exceptions can be translated
+When unchecked exceptions are thrown from sections they are always failures
+  section name
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................
 
 ExceptionTests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
-  custom exception
+  unexpected exception
 
 -------------------------------------------------------------------------------
-Custom std-exceptions can be custom translated
+Where the LHS is not a simple value
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+TrickyTests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
-due to unexpected exception with message:
-  custom std exception
-
--------------------------------------------------------------------------------
-Custom exceptions can be translated when testing for nothrow
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>: FAILED:
-  REQUIRE_NOTHROW( throwCustom() )
-due to unexpected exception with message:
-  custom exception - not std
-
--------------------------------------------------------------------------------
-Custom exceptions can be translated when testing for throwing as something else
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_AS( throwCustom() )
-due to unexpected exception with message:
-  custom exception - not std
-
--------------------------------------------------------------------------------
-Unexpected exceptions can be translated
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>: FAILED:
-due to unexpected exception with message:
-  3.14
-
--------------------------------------------------------------------------------
-Mismatching exception messages failing the test
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
-with expansion:
-  expected exception
-
--------------------------------------------------------------------------------
-INFO and WARN do not abort tests
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
+TrickyTests.cpp:<line number>:
 warning:
-  this is a warning
+  Uncomment the code in this test to check that it gives a sensible compiler
+  error
 
 -------------------------------------------------------------------------------
-INFO gets logged on failure
+Where there is more to the expression after the RHS
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+TrickyTests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
-  REQUIRE( a == 1 )
+TrickyTests.cpp:<line number>:
+warning:
+  Uncomment the code in this test to check that it gives a sensible compiler
+  error
+
+-------------------------------------------------------------------------------
+checkedElse, failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECKED_ELSE( flag )
 with expansion:
-  2 == 1
-with messages:
-  this message should be logged
-  so should this
+  false
 
--------------------------------------------------------------------------------
-INFO gets logged on failure, even if captured before successful assertions
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-  CHECK( a == 1 )
+MiscTests.cpp:<line number>: FAILED:
+  REQUIRE( testCheckedElse( false ) )
 with expansion:
-  2 == 1
-with messages:
-  this message may be logged later
-  this message should be logged
+  false
 
-MessageTests.cpp:<line number>: FAILED:
-  CHECK( a == 0 )
+-------------------------------------------------------------------------------
+checkedIf, failing
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECKED_IF( flag )
 with expansion:
-  2 == 0
-with message:
-  and this, but later
+  false
 
--------------------------------------------------------------------------------
-FAIL aborts the test
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-explicitly with message:
-  This is a failure
-
--------------------------------------------------------------------------------
-FAIL does not require an argument
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-
--------------------------------------------------------------------------------
-Output from all sections is reported
-  one
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-explicitly with message:
-  Message from section one
-
--------------------------------------------------------------------------------
-Output from all sections is reported
-  two
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-explicitly with message:
-  Message from section two
-
-Message from section one
-Message from section two
--------------------------------------------------------------------------------
-SCOPED_INFO is reset for each loop
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-  REQUIRE( i < 10 )
+MiscTests.cpp:<line number>: FAILED:
+  REQUIRE( testCheckedIf( false ) )
 with expansion:
-  10 < 10
-with messages:
-  current counter 10
-  i := 10
+  false
 
 -------------------------------------------------------------------------------
 just failure
@@ -528,45 +721,6 @@ MessageTests.cpp:<line number>
 MessageTests.cpp:<line number>: FAILED:
 explicitly with message:
   Previous info should not be seen
-
--------------------------------------------------------------------------------
-sends information to INFO
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-  REQUIRE( false )
-with messages:
-  hi
-  i := 7
-
--------------------------------------------------------------------------------
-Pointers can be converted to strings
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
-warning:
-  actual address of p: 0x<hex digits>
-
-MessageTests.cpp:<line number>:
-warning:
-  toString(p): 0x<hex digits>
-
--------------------------------------------------------------------------------
-more nested SECTION tests
-  s1
-  s2
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  REQUIRE( a == b )
-with expansion:
-  1 == 2
 
 -------------------------------------------------------------------------------
 looped SECTION tests
@@ -628,39 +782,18 @@ with expansion:
 with message:
   Testing if fib[7] (21) is even
 
-A string sent directly to stdout
-A string sent directly to stderr
 -------------------------------------------------------------------------------
-checkedIf, failing
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  CHECKED_IF( flag )
-with expansion:
-  false
-
-MiscTests.cpp:<line number>: FAILED:
-  REQUIRE( testCheckedIf( false ) )
-with expansion:
-  false
-
--------------------------------------------------------------------------------
-checkedElse, failing
+more nested SECTION tests
+  s1
+  s2
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>: FAILED:
-  CHECKED_ELSE( flag )
+  REQUIRE( a == b )
 with expansion:
-  false
-
-MiscTests.cpp:<line number>: FAILED:
-  REQUIRE( testCheckedElse( false ) )
-with expansion:
-  false
+  1 == 2
 
 -------------------------------------------------------------------------------
 send a single char to INFO
@@ -674,149 +807,16 @@ with message:
   3
 
 -------------------------------------------------------------------------------
-Contains string matcher
+sends information to INFO
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MessageTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
-with expansion:
-  "this string contains 'abc' as a substring" contains: "not there"
-
--------------------------------------------------------------------------------
-StartsWith string matcher
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
-with expansion:
-  "this string contains 'abc' as a substring" starts with: "string"
-
--------------------------------------------------------------------------------
-EndsWith string matcher
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
-with expansion:
-  "this string contains 'abc' as a substring" ends with: "this"
-
--------------------------------------------------------------------------------
-Equals string matcher
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
-with expansion:
-  "this string contains 'abc' as a substring" equals: "something else"
-
--------------------------------------------------------------------------------
-Matchers can be composed with both && and || - failing
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
-with expansion:
-  "this string contains 'abc' as a substring" ( ( contains: "string" or
-  contains: "different" ) and contains: "random" )
-
--------------------------------------------------------------------------------
-Matchers can be negated (Not) with the ! operator - failing
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
-with expansion:
-  "this string contains 'abc' as a substring" not contains: "substring"
-
--------------------------------------------------------------------------------
-Nice descriptive name
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-warning:
-  This one ran
-
--------------------------------------------------------------------------------
-A couple of nested sections followed by a failure
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-explicitly with message:
-  to infinity and beyond
-
--------------------------------------------------------------------------------
-Tabs and newlines show in output
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>: FAILED:
-  CHECK( s1 == s2 )
-with expansion:
-  "if ($b == 10) {
-  		$a= 20;
-  }"
-  ==
-  "if ($b == 10) {
-  $a = 20;
-  }
-  "
-
-hello
-hello
--------------------------------------------------------------------------------
-Where there is more to the expression after the RHS
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-warning:
-  Uncomment the code in this test to check that it gives a sensible compiler
-  error
-
--------------------------------------------------------------------------------
-Where the LHS is not a simple value
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-warning:
-  Uncomment the code in this test to check that it gives a sensible compiler
-  error
-
--------------------------------------------------------------------------------
-A failing expression with a non streamable type is still captured
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>: FAILED:
-  CHECK( &o1 == &o2 )
-with expansion:
-  0x<hex digits> == 0x<hex digits>
-
-TrickyTests.cpp:<line number>: FAILED:
-  CHECK( o1 == o2 )
-with expansion:
-  {?} == {?}
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( false )
+with messages:
+  hi
+  i := 7
 
 -------------------------------------------------------------------------------
 string literals of different sizes can be compared

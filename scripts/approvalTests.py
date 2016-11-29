@@ -22,6 +22,7 @@ if len(sys.argv) == 2:
 	cmdPath = sys.argv[1]
 else:
 	cmdPath = os.path.join( catchPath, 'projects/XCode/CatchSelfTest/DerivedData/CatchSelfTest/Build/Products/Debug/CatchSelfTest' )
+#	cmdPath = os.path.join( catchPath, 'projects/CMake/cmake-build-debug/SelfTest' )
 
 overallResult = 0
 
@@ -100,15 +101,15 @@ def approve( baseName, args ):
 			overallResult = 1
 
 # Standard console reporter
-approve( "console.std", ["~_"] )
+approve( "console.std", ["~_", "--order", "lex"] )
 # console reporter, include passes, warn about No Assertions
-approve( "console.sw", ["~_", "-s", "-w", "NoAssertions"] )
+approve( "console.sw", ["~_", "-s", "-w", "NoAssertions", "--order", "lex"] )
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-approve( "console.swa4", ["~_", "-s", "-w", "NoAssertions", "-x", "4"] )
+approve( "console.swa4", ["~_", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"] )
 # junit reporter, include passes, warn about No Assertions
-approve( "junit.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "junit"] )
+approve( "junit.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"] )
 # xml reporter, include passes, warn about No Assertions
-approve( "xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml"] )
+approve( "xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"] )
 
 if overallResult != 0:
 	print( "run approve.py to approve new baselines" )
