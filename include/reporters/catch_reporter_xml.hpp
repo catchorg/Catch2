@@ -20,6 +20,7 @@ namespace Catch {
     public:
         XmlReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
+            m_xml(_config.stream()),
             m_sectionDepth( 0 )
         {
             m_reporterPrefs.shouldRedirectStdOut = true;
