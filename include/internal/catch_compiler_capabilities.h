@@ -123,8 +123,10 @@
 // Oracle Solaris Studio
 #ifdef __SUNPRO_CC
 
+#define CATCH_INTERNAL_CONFIG_VARIADIC_MACROS
+#define CATCH_INTERNAL_SUNPRO_CC_NON_COMPLIANT_STL
+//  OK with __SUNPRO_CC 0x5120
 #   if __SUNPRO_CC == 0x5100  // Oracle Solaris Studio version 12.1
-#       define CATCH_INTERNAL_SUNPRO_CC_NON_COMPLIANT_STL
 #   endif
 
 #endif // __SUNPRO_CC
