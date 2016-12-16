@@ -15,7 +15,19 @@
 #endif
 
 #ifdef CATCH_PLATFORM_WINDOWS
+#  ifdef CATCH_DEFINES_NOMINMAX
+#    define NOMINMAX
+#  endif
+#  ifdef CATCH_DEFINES_WIN32_LEAN_AND_MEAN
+#    define WIN32_LEAN_AND_MEAN
+#  endif
 #include <windows.h>
+#  ifdef CATCH_DEFINES_NOMINMAX
+#    undef NOMINMAX
+#  endif
+#  ifdef CATCH_DEFINES_WIN32_LEAN_AND_MEAN
+#    undef WIN32_LEAN_AND_MEAN
+#  endif
 #else
 #include <sys/time.h>
 #endif

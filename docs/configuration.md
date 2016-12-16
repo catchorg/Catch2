@@ -68,6 +68,13 @@ You may also suppress any of these features by using the `_NO_` form, e.g. `CATC
 
 All C++11 support can be disabled with `CATCH_CONFIG_NO_CPP11`
 
+# Windows header clutter
+
+On Windows Catch includes `windows.h`. To minimize global namespace clutter in the implementation file, it defines `NOMINMAX` and `WIN32_LEAN_AND_MEAN` before including it. You can control this behaviour via two macros:
+
+    CATCH_CONFIG_NO_NOMINMAX            // Stops Catch from using NOMINMAX macro 
+    CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN // Stops Catch from using WIN32_LEAN_AND_MEAN macro
+
 ---
 
 [Home](Readme.md)
