@@ -26,11 +26,65 @@ namespace Catch {
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef WIN32_LEAN_AND_MEAN
+#undef NOMINMAX
+
+
 namespace Catch {
 
+    struct SignalDefs { DWORD id; const char* name; };
+    extern SignalDefs signalDefs[];
+    // There is no 1-1 mapping between signals and windows exceptions.
+    // Windows can easily distinguish between SO and SigSegV,
+    // but SigInt, SigTerm, etc are handled differently.
+    SignalDefs signalDefs[] = {
+        { EXCEPTION_ILLEGAL_INSTRUCTION,  "SIGILL - Illegal instruction signal" },
+        { EXCEPTION_STACK_OVERFLOW, "SIGSEGV - Stack overflow" },
+        { EXCEPTION_ACCESS_VIOLATION, "SIGSEGV - Segmentation violation signal" },
+        { EXCEPTION_INT_DIVIDE_BY_ZERO, "Divide by zero error" },
+    };
+
     struct FatalConditionHandler {
-		void reset() {}
-	};
+
+        static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
+            for (int i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
+                if (ExceptionInfo->ExceptionRecord->ExceptionCode == signalDefs[i].id) {
+                    fatal(signalDefs[i].name, -i);
+                }
+            }
+            // If its not an exception we care about, pass it along.
+            // This stops us from eating debugger breaks etc.
+            return EXCEPTION_CONTINUE_SEARCH;
+        }
+
+        // 32k seems enough for Catch to handle stack overflow,
+        // but the value was found experimentally, so there is no strong guarantee
+        FatalConditionHandler():m_isSet(true), m_guaranteeSize(32 * 1024) {
+            // Register as first handler in current chain
+            AddVectoredExceptionHandler(1, handleVectoredException);
+            // Pass in guarantee size to be filled
+            SetThreadStackGuarantee(&m_guaranteeSize);
+        }
+
+        void reset() {
+            if (m_isSet) {
+                // Unregister handler and restore the old guarantee
+                RemoveVectoredExceptionHandler(handleVectoredException);
+                SetThreadStackGuarantee(&m_guaranteeSize);
+                m_isSet = false;
+            }
+        }
+
+        ~FatalConditionHandler() {
+            reset();
+        }
+    private:
+        bool m_isSet;
+        ULONG m_guaranteeSize;
+    };
 
 } // namespace Catch
 
