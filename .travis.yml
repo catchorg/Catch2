@@ -155,7 +155,7 @@ install:
 before_script:
   - export CXX=${COMPILER}
   - cd ${TRAVIS_BUILD_DIR}
-  - cmake -Hprojects/CMake -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+  - cmake -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
   - cd Build
 
 script:
