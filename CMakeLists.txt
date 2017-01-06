@@ -3,8 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(Catch)
 
 # define some folders
-get_filename_component(CATCH_DIR "${CMAKE_CURRENT_SOURCE_DIR}" PATH)
-get_filename_component(CATCH_DIR "${CATCH_DIR}" PATH)
+set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
 if(USE_CPP11)
     ## We can't turn this on by default, since it breaks on travis

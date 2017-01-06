@@ -22,3 +22,4 @@ projects/XCode/iOSTest/Build
 *.pyc
 DerivedData
 *.xccheckout
+Build
