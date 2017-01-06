@@ -12,6 +12,7 @@
 #include "catch_assertionresult.h"
 #include "catch_common.h"
 #include "catch_matchers.hpp"
+#include "catch_tostring.h"
 
 namespace Catch {
 
@@ -32,6 +33,26 @@ namespace Catch {
             return *this;
         }
         std::ostringstream oss;
+    };
+
+    struct AnyTypeHolderBase {
+        virtual std::string toString() = 0;
+    };
+
+    template <typename T>
+    struct Decay { typedef T type; };
+
+    template <typename T>
+    struct Decay<T[]> { typedef T* type; };
+
+    template <typename T, size_t N>
+    struct Decay<T[N]> { typedef T* type; };
+
+    template <typename T>
+    struct AnyTypeHolder : AnyTypeHolderBase {
+        AnyTypeHolder( const T& value ) : value ( value ) {}
+        std::string toString() { return Catch::toString( value ); }
+        const typename Decay<const T>::type value;
     };
 
     class ResultBuilder {
@@ -57,8 +78,16 @@ namespace Catch {
 
         ResultBuilder& setResultType( ResultWas::OfType result );
         ResultBuilder& setResultType( bool result );
-        ResultBuilder& setLhs( std::string const& lhs );
-        ResultBuilder& setRhs( std::string const& rhs );
+        template <typename T>
+        ResultBuilder& setLhs( T const& lhs ) {
+            m_exprComponents.lhs = new AnyTypeHolder<T>( lhs );
+            return *this;
+        }
+        template <typename T>
+        ResultBuilder& setRhs( T const& rhs ) {
+            m_exprComponents.rhs = new AnyTypeHolder<T>( rhs );
+            return *this;
+        }
         ResultBuilder& setOp( std::string const& op );
 
         void endExpression();
@@ -80,9 +109,11 @@ namespace Catch {
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
         struct ExprComponents {
-            ExprComponents() : testFalse( false ) {}
+            ExprComponents() : testFalse( false ), lhs( NULL ), rhs( NULL ) {}
+            ~ExprComponents() { delete lhs; delete rhs;  }
             bool testFalse;
-            std::string lhs, rhs, op;
+            std::string op;
+            AnyTypeHolderBase* lhs, *rhs;
         } m_exprComponents;
         CopyableStream m_stream;
 

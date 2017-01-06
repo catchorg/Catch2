@@ -134,7 +134,7 @@
         try { \
             std::string matcherAsString = (matcher).toString(); \
             __catchResult \
-                .setLhs( Catch::toString( arg ) ) \
+                .setLhs( arg ) \
                 .setRhs( matcherAsString == Catch::Detail::unprintableString ? #matcher : matcherAsString ) \
                 .setOp( "matches" ) \
                 .setResultType( (matcher).match( arg ) ); \
