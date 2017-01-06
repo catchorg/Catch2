@@ -23,3 +23,6 @@ projects/XCode/iOSTest/Build
 DerivedData
 *.xccheckout
 Build
+.idea
+cmake-build-debug
+cmake-build-release

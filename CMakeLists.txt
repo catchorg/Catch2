@@ -5,6 +5,8 @@ project(Catch)
 # define some folders
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
+set(HEADER_DIR ${CATCH_DIR}/include)
+
 if(USE_CPP11)
     ## We can't turn this on by default, since it breaks on travis
     message(STATUS "Enabling C++11")
@@ -52,9 +54,107 @@ set(SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_xmlwriter.cpp
         )
 
+# Specify the headers, too, so CLion recognises them as project files
+set(HEADERS
+        ${HEADER_DIR}/catch.hpp
+        ${HEADER_DIR}/catch_session.hpp
+        ${HEADER_DIR}/catch_with_main.hpp
+        ${HEADER_DIR}/internal/catch_approx.hpp
+        ${HEADER_DIR}/internal/catch_assertionresult.h
+        ${HEADER_DIR}/internal/catch_assertionresult.hpp
+        ${HEADER_DIR}/internal/catch_capture.hpp
+        ${HEADER_DIR}/internal/catch_clara.h
+        ${HEADER_DIR}/internal/catch_commandline.hpp
+        ${HEADER_DIR}/internal/catch_common.h
+        ${HEADER_DIR}/internal/catch_common.hpp
+        ${HEADER_DIR}/internal/catch_compiler_capabilities.h
+        ${HEADER_DIR}/internal/catch_config.hpp
+        ${HEADER_DIR}/internal/catch_console_colour.hpp
+        ${HEADER_DIR}/internal/catch_console_colour_impl.hpp
+        ${HEADER_DIR}/internal/catch_context.h
+        ${HEADER_DIR}/internal/catch_context_impl.hpp
+        ${HEADER_DIR}/internal/catch_debugger.h
+        ${HEADER_DIR}/internal/catch_debugger.hpp
+        ${HEADER_DIR}/internal/catch_default_main.hpp
+        ${HEADER_DIR}/internal/catch_evaluate.hpp
+        ${HEADER_DIR}/internal/catch_exception_translator_registry.hpp
+        ${HEADER_DIR}/internal/catch_expression_lhs.hpp
+        ${HEADER_DIR}/internal/catch_fatal_condition.hpp
+        ${HEADER_DIR}/internal/catch_generators.hpp
+        ${HEADER_DIR}/internal/catch_generators_impl.hpp
+        ${HEADER_DIR}/internal/catch_impl.hpp
+        ${HEADER_DIR}/internal/catch_interfaces_capture.h
+        ${HEADER_DIR}/internal/catch_interfaces_config.h
+        ${HEADER_DIR}/internal/catch_interfaces_exception.h
+        ${HEADER_DIR}/internal/catch_interfaces_generators.h
+        ${HEADER_DIR}/internal/catch_interfaces_registry_hub.h
+        ${HEADER_DIR}/internal/catch_interfaces_reporter.h
+        ${HEADER_DIR}/internal/catch_interfaces_runner.h
+        ${HEADER_DIR}/internal/catch_interfaces_tag_alias_registry.h
+        ${HEADER_DIR}/internal/catch_interfaces_testcase.h
+        ${HEADER_DIR}/internal/catch_legacy_reporter_adapter.h
+        ${HEADER_DIR}/internal/catch_legacy_reporter_adapter.hpp
+        ${HEADER_DIR}/internal/catch_list.hpp
+        ${HEADER_DIR}/internal/catch_matchers.hpp
+        ${HEADER_DIR}/internal/catch_message.h
+        ${HEADER_DIR}/internal/catch_message.hpp
+        ${HEADER_DIR}/internal/catch_notimplemented_exception.h
+        ${HEADER_DIR}/internal/catch_notimplemented_exception.hpp
+        ${HEADER_DIR}/internal/catch_objc.hpp
+        ${HEADER_DIR}/internal/catch_objc_arc.hpp
+        ${HEADER_DIR}/internal/catch_option.hpp
+        ${HEADER_DIR}/internal/catch_platform.h
+        ${HEADER_DIR}/internal/catch_ptr.hpp
+        ${HEADER_DIR}/internal/catch_reenable_warnings.h
+        ${HEADER_DIR}/internal/catch_registry_hub.hpp
+        ${HEADER_DIR}/internal/catch_reporter_registrars.hpp
+        ${HEADER_DIR}/internal/catch_reporter_registry.hpp
+        ${HEADER_DIR}/internal/catch_result_builder.h
+        ${HEADER_DIR}/internal/catch_result_builder.hpp
+        ${HEADER_DIR}/internal/catch_result_type.h
+        ${HEADER_DIR}/internal/catch_run_context.hpp
+        ${HEADER_DIR}/internal/catch_section.h
+        ${HEADER_DIR}/internal/catch_section.hpp
+        ${HEADER_DIR}/internal/catch_section_info.h
+        ${HEADER_DIR}/internal/catch_section_info.hpp
+        ${HEADER_DIR}/internal/catch_stream.h
+        ${HEADER_DIR}/internal/catch_stream.hpp
+        ${HEADER_DIR}/internal/catch_streambuf.h
+        ${HEADER_DIR}/internal/catch_suppress_warnings.h
+        ${HEADER_DIR}/internal/catch_tag_alias.h
+        ${HEADER_DIR}/internal/catch_tag_alias_registry.h
+        ${HEADER_DIR}/internal/catch_tag_alias_registry.hpp
+        ${HEADER_DIR}/internal/catch_test_case_info.h
+        ${HEADER_DIR}/internal/catch_test_case_info.hpp
+        ${HEADER_DIR}/internal/catch_test_case_registry_impl.hpp
+        ${HEADER_DIR}/internal/catch_test_case_tracker.hpp
+        ${HEADER_DIR}/internal/catch_test_registry.hpp
+        ${HEADER_DIR}/internal/catch_test_spec.hpp
+        ${HEADER_DIR}/internal/catch_test_spec_parser.hpp
+        ${HEADER_DIR}/internal/catch_text.h
+        ${HEADER_DIR}/internal/catch_timer.h
+        ${HEADER_DIR}/internal/catch_timer.hpp
+        ${HEADER_DIR}/internal/catch_tostring.h
+        ${HEADER_DIR}/internal/catch_tostring.hpp
+        ${HEADER_DIR}/internal/catch_totals.hpp
+        ${HEADER_DIR}/internal/catch_version.h
+        ${HEADER_DIR}/internal/catch_version.hpp
+        ${HEADER_DIR}/internal/catch_wildcard_pattern.hpp
+        ${HEADER_DIR}/internal/catch_xmlwriter.hpp
+        ${HEADER_DIR}/external/clara.h
+        ${HEADER_DIR}/external/tbc_text_format.h
+        ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_compact.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_console.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_junit.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_multi.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
+        )
+
 # configure the executable
-include_directories(${CATCH_DIR}/include)
-add_executable(SelfTest ${SOURCES})
+include_directories(${HEADER_DIR})
+add_executable(SelfTest ${SOURCES} ${HEADERS})
 
 # configure unit tests via CTest
 enable_testing()
