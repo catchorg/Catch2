@@ -20,12 +20,14 @@ namespace Detail {
     public:
         explicit Approx ( double value )
         :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
+            m_margin( 0.0 ),
             m_scale( 1.0 ),
             m_value( value )
         {}
 
         Approx( Approx const& other )
         :   m_epsilon( other.m_epsilon ),
+            m_margin( other.m_margin ),
             m_scale( other.m_scale ),
             m_value( other.m_value )
         {}
@@ -37,13 +39,19 @@ namespace Detail {
         Approx operator()( double value ) {
             Approx approx( value );
             approx.epsilon( m_epsilon );
+            approx.margin( m_margin );
             approx.scale( m_scale );
             return approx;
         }
 
         friend bool operator == ( double lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
-            return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
+            bool relativeOK = fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
+            if ( relativeOK ) {
+                return true;
+            }
+            bool absoluteOK = fabs( lhs - rhs.m_value ) < rhs.m_margin;
+            return absoluteOK;
         }
 
         friend bool operator == ( Approx const& lhs, double rhs ) {
@@ -63,6 +71,11 @@ namespace Detail {
             return *this;
         }
 
+        Approx& margin( double newMargin ) {
+            m_margin = newMargin;
+            return *this;
+        }
+
         Approx& scale( double newScale ) {
             m_scale = newScale;
             return *this;
@@ -76,6 +89,7 @@ namespace Detail {
 
     private:
         double m_epsilon;
+        double m_margin;
         double m_scale;
         double m_value;
     };
