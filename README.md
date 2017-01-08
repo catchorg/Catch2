@@ -2,7 +2,7 @@
 
 *v1.5.9*
 
-Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.png)](https://travis-ci.org/philsquared/Catch)
+Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
 
 <a href="https://raw.githubusercontent.com/philsquared/Catch/master/single_include/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
 
