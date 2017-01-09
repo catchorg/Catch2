@@ -57,7 +57,7 @@ namespace Catch {
                     default:
                         // Escape control chars - based on contribution by @espenalb in PR #465 and
                         // by @mrpi PR #588
-                        if ( ( c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
+                        if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
                             os << "&#x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>( c ) << ';';
                         else
                             os << c;
