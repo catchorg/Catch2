@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(Catch)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 # define some folders
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
@@ -14,7 +16,7 @@ if(USE_CPP11)
 endif()
 
 # define the sources of the self test
-set(SOURCES
+set(TEST_SOURCES
         ${SELF_TEST_DIR}/ApproxTests.cpp
         ${SELF_TEST_DIR}/BDDTests.cpp
         ${SELF_TEST_DIR}/ClassTests.cpp
@@ -34,6 +36,8 @@ set(SOURCES
         ${SELF_TEST_DIR}/ToStringTuple.cpp
         ${SELF_TEST_DIR}/CmdLineTests.cpp
         ${SELF_TEST_DIR}/TagAliasTests.cpp
+        )
+set(IMPL_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_common.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_console_colour.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_debugger.cpp
@@ -152,9 +156,12 @@ set(HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )
 
+SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
+SOURCE_GROUP("Surrogates" FILES ${IMPL_SOURCES})
+
 # configure the executable
 include_directories(${HEADER_DIR})
-add_executable(SelfTest ${SOURCES} ${HEADERS})
+add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
 
 # configure unit tests via CTest
 enable_testing()
