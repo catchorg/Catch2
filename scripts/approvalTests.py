@@ -19,6 +19,7 @@ durationsParser = re.compile(r'(.*)time="[0-9]*\.[0-9]*"(.*)')
 versionParser = re.compile(r'(.*?)Catch v[0-9]*\.[0-9]*\.[0-9]*(.*)')
 devVersionParser = re.compile(r'(.*?)Catch v[0-9]*\.[0-9]*\.[0-9]*-develop\.[0-9]*(.*)')
 nullParser = re.compile(r'(.*?)\b(__null|nullptr)\b(.*)')
+exeNameParser = re.compile(r'(.*?)\b(CatchSelfTest|SelfTest)\b(.*)')
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -58,6 +59,10 @@ def filterLine(line):
     m = nullParser.match(line)
     if m:
         line = m.group(1) + "0" + m.group(3)
+
+    m = exeNameParser.match(line)
+    if m:
+        line = m.group(1) + "<exe-name>" + m.group(3)
 
     while True:
         m = hexParser.match(line)
