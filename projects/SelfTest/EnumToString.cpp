@@ -38,7 +38,7 @@ TEST_CASE( "toString(enum w/operator<<)", "[toString][enum]" ) {
 // Enum class without user-provided stream operator
 enum class EnumClass1 { EnumClass1Value0, EnumClass1Value1 };
 
-TEST_CASE( "toString(enum class)", "[toString][enum][enumClass]" ) {
+TEST_CASE( "toString(enum class)", "[toString][enum][enumClass][c++11][.]" ) {
     EnumClass1 e0 = EnumClass1::EnumClass1Value0;
     CHECK( Catch::toString(e0) == "0" );
     EnumClass1 e1 = EnumClass1::EnumClass1Value1;
@@ -59,7 +59,7 @@ inline std::ostream& operator<<( std::ostream& os, EnumClass2 e2 ) {
     }
 }
 
-TEST_CASE( "toString(enum class w/operator<<)", "[toString][enum][enumClass]" ) {
+TEST_CASE( "toString(enum class w/operator<<)", "[toString][enum][enumClass][c++11][.]" ) {
     EnumClass2 e0 = EnumClass2::EnumClass2Value0;
     CHECK( Catch::toString(e0) == "E2/V0" );
     EnumClass2 e1 = EnumClass2::EnumClass2Value1;

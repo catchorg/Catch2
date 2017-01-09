@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="CatchSelfTest" errors="13" failures="68" tests="924" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="CatchSelfTest" errors="13" failures="68" tests="909" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
@@ -567,7 +567,6 @@ Previous info should not be seen
 MessageTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="global" name="long long" time="{duration}"/>
     <testcase classname="looped SECTION tests" name="s1" time="{duration}">
       <failure message="0 > 1" type="CHECK">
 MiscTests.cpp:<line number>
@@ -611,7 +610,6 @@ MiscTests.cpp:<line number>
     <testcase classname="global" name="non streamable - with conv. op" time="{duration}"/>
     <testcase classname="global" name="not allowed" time="{duration}"/>
     <testcase classname="global" name="null strings" time="{duration}"/>
-    <testcase classname="global" name="null_ptr" time="{duration}"/>
     <testcase classname="global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}"/>
     <testcase classname="global" name="pointer to class" time="{duration}"/>
     <testcase classname="random SECTION tests" name="s1" time="{duration}"/>
@@ -654,16 +652,8 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="toString( vectors&lt;has_maker )" time="{duration}"/>
     <testcase classname="global" name="toString( vectors&lt;has_maker_and_toString )" time="{duration}"/>
     <testcase classname="global" name="toString( vectors&lt;has_toString )" time="{duration}"/>
-    <testcase classname="global" name="toString(enum class w/operator&lt;&lt;)" time="{duration}"/>
-    <testcase classname="global" name="toString(enum class)" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
-    <testcase classname="global" name="tuple&lt;>" time="{duration}"/>
-    <testcase classname="global" name="tuple&lt;float,int>" time="{duration}"/>
-    <testcase classname="global" name="tuple&lt;int>" time="{duration}"/>
-    <testcase classname="global" name="tuple&lt;0,int,const char *>" time="{duration}"/>
-    <testcase classname="global" name="tuple&lt;string,string>" time="{duration}"/>
-    <testcase classname="global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
     <testcase classname="global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
     <testcase classname="global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>
     <testcase classname="global" name="vector&lt;int> -> toString" time="{duration}"/>

@@ -387,7 +387,7 @@ TEST_CASE( "pointer to class", "[Tricky]" )
 
 #include <memory>
 
-TEST_CASE( "null_ptr", "[Tricky][c++11]" )
+TEST_CASE( "null_ptr", "[Tricky][c++11][.]" )
 {
     std::unique_ptr<int> ptr;
     REQUIRE(ptr.get() == nullptr);

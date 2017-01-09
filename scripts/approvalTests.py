@@ -114,15 +114,15 @@ print("Running approvals against executable:")
 print("  " + cmdPath)
 
 # Standard console reporter
-approve("console.std", ["~_", "--order", "lex"])
+approve("console.std", ["~[c++11]", "--order", "lex"])
 # console reporter, include passes, warn about No Assertions
-approve("console.sw", ["~_", "-s", "-w", "NoAssertions", "--order", "lex"])
+approve("console.sw", ["~[c++11]", "-s", "-w", "NoAssertions", "--order", "lex"])
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-approve("console.swa4", ["~_", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"])
+approve("console.swa4", ["~[c++11]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"])
 # junit reporter, include passes, warn about No Assertions
-approve("junit.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
+approve("junit.sw", ["~[c++11]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
 # xml reporter, include passes, warn about No Assertions
-approve("xml.sw", ["~_", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
+approve("xml.sw", ["~[c++11]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
 
 if overallResult != 0:
     print("If these differenecs are expected run approve.py to approve new baselines")

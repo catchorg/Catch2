@@ -8061,20 +8061,6 @@ explicitly with message:
   Previous info should not be seen
 
 -------------------------------------------------------------------------------
-long long
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( l == std::numeric_limits<long long>::max() )
-with expansion:
-  9223372036854775807 (0x<hex digits>)
-  ==
-  9223372036854775807 (0x<hex digits>)
-
--------------------------------------------------------------------------------
 looped SECTION tests
   s1
 -------------------------------------------------------------------------------
@@ -8262,18 +8248,6 @@ PASSED:
   REQUIRE( makeString( true ) == static_cast<char*>(0) )
 with expansion:
   {null string} == {null string}
-
--------------------------------------------------------------------------------
-null_ptr
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( ptr.get() == 0 )
-with expansion:
-  NULL == 0
 
 -------------------------------------------------------------------------------
 pair<pair<int,const char *,pair<std::string,int> > -> toString
@@ -8669,50 +8643,6 @@ with expansion:
   "{ {?} }" == "{ {?} }"
 
 -------------------------------------------------------------------------------
-toString(enum class w/operator<<)
--------------------------------------------------------------------------------
-EnumToString.cpp:<line number>
-...............................................................................
-
-EnumToString.cpp:<line number>:
-PASSED:
-  CHECK( Catch::toString(e0) == "E2/V0" )
-with expansion:
-  "E2/V0" == "E2/V0"
-
-EnumToString.cpp:<line number>:
-PASSED:
-  CHECK( Catch::toString(e1) == "E2/V1" )
-with expansion:
-  "E2/V1" == "E2/V1"
-
-EnumToString.cpp:<line number>:
-PASSED:
-  CHECK( Catch::toString(e3) == "Unknown enum value 10" )
-with expansion:
-  "Unknown enum value 10"
-  ==
-  "Unknown enum value 10"
-
--------------------------------------------------------------------------------
-toString(enum class)
--------------------------------------------------------------------------------
-EnumToString.cpp:<line number>
-...............................................................................
-
-EnumToString.cpp:<line number>:
-PASSED:
-  CHECK( Catch::toString(e0) == "0" )
-with expansion:
-  "0" == "0"
-
-EnumToString.cpp:<line number>:
-PASSED:
-  CHECK( Catch::toString(e1) == "1" )
-with expansion:
-  "1" == "1"
-
--------------------------------------------------------------------------------
 toString(enum w/operator<<)
 -------------------------------------------------------------------------------
 EnumToString.cpp:<line number>
@@ -8747,96 +8677,6 @@ PASSED:
   CHECK( Catch::toString(e1) == "1" )
 with expansion:
   "1" == "1"
-
--------------------------------------------------------------------------------
-tuple<>
--------------------------------------------------------------------------------
-ToStringTuple.cpp:<line number>
-...............................................................................
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "{ }" == Catch::toString(type{}) )
-with expansion:
-  "{ }" == "{ }"
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "{ }" == Catch::toString(value) )
-with expansion:
-  "{ }" == "{ }"
-
--------------------------------------------------------------------------------
-tuple<float,int>
--------------------------------------------------------------------------------
-ToStringTuple.cpp:<line number>
-...............................................................................
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "1.2f" == Catch::toString(float(1.2)) )
-with expansion:
-  "1.2f" == "1.2f"
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "{ 1.2f, 0 }" == Catch::toString(type{1.2,0}) )
-with expansion:
-  "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
-
--------------------------------------------------------------------------------
-tuple<int>
--------------------------------------------------------------------------------
-ToStringTuple.cpp:<line number>
-...............................................................................
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "{ 0 }" == Catch::toString(type{0}) )
-with expansion:
-  "{ 0 }" == "{ 0 }"
-
--------------------------------------------------------------------------------
-tuple<0,int,const char *>
--------------------------------------------------------------------------------
-ToStringTuple.cpp:<line number>
-...............................................................................
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "{ 0, 42, \"Catch me\" }" == Catch::toString(value) )
-with expansion:
-  "{ 0, 42, "Catch me" }"
-  ==
-  "{ 0, 42, "Catch me" }"
-
--------------------------------------------------------------------------------
-tuple<string,string>
--------------------------------------------------------------------------------
-ToStringTuple.cpp:<line number>
-...............................................................................
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "{ \"hello\", \"world\" }" == Catch::toString(type{"hello","world"}) )
-with expansion:
-  "{ "hello", "world" }"
-  ==
-  "{ "hello", "world" }"
-
--------------------------------------------------------------------------------
-tuple<tuple<int>,tuple<>,float>
--------------------------------------------------------------------------------
-ToStringTuple.cpp:<line number>
-...............................................................................
-
-ToStringTuple.cpp:<line number>:
-PASSED:
-  CHECK( "{ { 42 }, { }, 1.2f }" == Catch::toString(value) )
-with expansion:
-  "{ { 42 }, { }, 1.2f }"
-  ==
-  "{ { 42 }, { }, 1.2f }"
 
 -------------------------------------------------------------------------------
 vec<vec<string,alloc>> -> toString
@@ -9115,6 +8955,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 169 | 124 passed | 43 failed |  2 failed as expected
-assertions: 923 | 825 passed | 80 failed | 18 failed as expected
+test cases: 159 | 114 passed | 43 failed |  2 failed as expected
+assertions: 908 | 810 passed | 80 failed | 18 failed as expected
 

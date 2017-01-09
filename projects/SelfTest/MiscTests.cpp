@@ -466,7 +466,7 @@ TEST_CASE( "XmlEncode" ) {
 }
 
 #ifdef CATCH_CONFIG_CPP11_LONG_LONG
-TEST_CASE( "long long" ) {
+TEST_CASE( "long long", "[c++11][.]" ) {
     long long l = std::numeric_limits<long long>::max();
 
     REQUIRE( l == std::numeric_limits<long long>::max() );

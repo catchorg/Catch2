@@ -8502,19 +8502,6 @@ there"
     <TestCase name="just info">
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="long long">
-      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
-        <Original>
-          l == std::numeric_limits&lt;long long>::max()
-        </Original>
-        <Expanded>
-          9223372036854775807 (0x<hex digits>)
-==
-9223372036854775807 (0x<hex digits>)
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="looped SECTION tests">
       <Section name="s1" description="b is currently: 0">
         <Expression success="false" type="CHECK" filename="projects/SelfTest/MiscTests.cpp" >
@@ -8721,17 +8708,6 @@ there"
         </Original>
         <Expanded>
           {null string} == {null string}
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="null_ptr">
-      <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
-        <Original>
-          ptr.get() == 0
-        </Original>
-        <Expanded>
-          NULL == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9129,54 +9105,6 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString(enum class w/operator&lt;&lt;)">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
-        <Original>
-          Catch::toString(e0) == "E2/V0"
-        </Original>
-        <Expanded>
-          "E2/V0" == "E2/V0"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
-        <Original>
-          Catch::toString(e1) == "E2/V1"
-        </Original>
-        <Expanded>
-          "E2/V1" == "E2/V1"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
-        <Original>
-          Catch::toString(e3) == "Unknown enum value 10"
-        </Original>
-        <Expanded>
-          "Unknown enum value 10"
-==
-"Unknown enum value 10"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString(enum class)">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
-        <Original>
-          Catch::toString(e0) == "0"
-        </Original>
-        <Expanded>
-          "0" == "0"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
-        <Original>
-          Catch::toString(e1) == "1"
-        </Original>
-        <Expanded>
-          "1" == "1"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="toString(enum w/operator&lt;&lt;)">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/EnumToString.cpp" >
         <Original>
@@ -9211,94 +9139,6 @@ there"
         </Original>
         <Expanded>
           "1" == "1"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="tuple&lt;>">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "{ }" == Catch::toString(type{})
-        </Original>
-        <Expanded>
-          "{ }" == "{ }"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "{ }" == Catch::toString(value)
-        </Original>
-        <Expanded>
-          "{ }" == "{ }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="tuple&lt;float,int>">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "1.2f" == Catch::toString(float(1.2))
-        </Original>
-        <Expanded>
-          "1.2f" == "1.2f"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "{ 1.2f, 0 }" == Catch::toString(type{1.2,0})
-        </Original>
-        <Expanded>
-          "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="tuple&lt;int>">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "{ 0 }" == Catch::toString(type{0})
-        </Original>
-        <Expanded>
-          "{ 0 }" == "{ 0 }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="tuple&lt;0,int,const char *>">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "{ 0, 42, \"Catch me\" }" == Catch::toString(value)
-        </Original>
-        <Expanded>
-          "{ 0, 42, "Catch me" }"
-==
-"{ 0, 42, "Catch me" }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="tuple&lt;string,string>">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "{ \"hello\", \"world\" }" == Catch::toString(type{"hello","world"})
-        </Original>
-        <Expanded>
-          "{ "hello", "world" }"
-==
-"{ "hello", "world" }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>">
-      <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
-        <Original>
-          "{ { 42 }, { }, 1.2f }" == Catch::toString(value)
-        </Original>
-        <Expanded>
-          "{ { 42 }, { }, 1.2f }"
-==
-"{ { 42 }, { }, 1.2f }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9570,7 +9410,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="825" failures="81" expectedFailures="18"/>
+    <OverallResults successes="810" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="825" failures="80" expectedFailures="18"/>
+  <OverallResults successes="810" failures="80" expectedFailures="18"/>
 </Catch>
