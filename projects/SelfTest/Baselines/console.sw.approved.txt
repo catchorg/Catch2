@@ -923,7 +923,7 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( "", Equals(nullptr) )
+  REQUIRE_THAT( "", Equals(0) )
 with expansion:
   "" equals: ""
 
@@ -5446,9 +5446,9 @@ ConditionTests.cpp:<line number>
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( p == nullptr )
+  REQUIRE( p == 0 )
 with expansion:
-  NULL == nullptr
+  NULL == 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
@@ -5458,39 +5458,39 @@ with expansion:
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( p != nullptr )
+  REQUIRE( p != 0 )
 with expansion:
-  0x<hex digits> != nullptr
+  0x<hex digits> != 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( cp != nullptr )
+  REQUIRE( cp != 0 )
 with expansion:
-  0x<hex digits> != nullptr
+  0x<hex digits> != 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( cpc != nullptr )
+  REQUIRE( cpc != 0 )
 with expansion:
-  0x<hex digits> != nullptr
+  0x<hex digits> != 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( returnsNull() == nullptr )
+  REQUIRE( returnsNull() == 0 )
 with expansion:
-  {null string} == nullptr
+  {null string} == 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( returnsConstNull() == nullptr )
+  REQUIRE( returnsConstNull() == 0 )
 with expansion:
-  {null string} == nullptr
+  {null string} == 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( nullptr != p )
+  REQUIRE( 0 != p )
 with expansion:
-  nullptr != 0x<hex digits>
+  0 != 0x<hex digits>
 
 -------------------------------------------------------------------------------
 Pointers can be converted to strings
@@ -7886,9 +7886,9 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( obj.prop != nullptr )
+  REQUIRE( obj.prop != 0 )
 with expansion:
-  0x<hex digits> != nullptr
+  0x<hex digits> != 0
 
 -------------------------------------------------------------------------------
 checkedElse
@@ -8253,13 +8253,13 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( makeString( false ) != static_cast<char*>(nullptr) )
+  REQUIRE( makeString( false ) != static_cast<char*>(0) )
 with expansion:
   "valid string" != {null string}
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( makeString( true ) == static_cast<char*>(nullptr) )
+  REQUIRE( makeString( true ) == static_cast<char*>(0) )
 with expansion:
   {null string} == {null string}
 
@@ -8271,9 +8271,9 @@ TrickyTests.cpp:<line number>
 
 TrickyTests.cpp:<line number>:
 PASSED:
-  REQUIRE( ptr.get() == nullptr )
+  REQUIRE( ptr.get() == 0 )
 with expansion:
-  NULL == nullptr
+  NULL == 0
 
 -------------------------------------------------------------------------------
 pair<pair<int,const char *,pair<std::string,int> > -> toString
@@ -8797,18 +8797,18 @@ with expansion:
   "{ 0 }" == "{ 0 }"
 
 -------------------------------------------------------------------------------
-tuple<nullptr,int,const char *>
+tuple<0,int,const char *>
 -------------------------------------------------------------------------------
 ToStringTuple.cpp:<line number>
 ...............................................................................
 
 ToStringTuple.cpp:<line number>:
 PASSED:
-  CHECK( "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value) )
+  CHECK( "{ 0, 42, \"Catch me\" }" == Catch::toString(value) )
 with expansion:
-  "{ nullptr, 42, "Catch me" }"
+  "{ 0, 42, "Catch me" }"
   ==
-  "{ nullptr, 42, "Catch me" }"
+  "{ 0, 42, "Catch me" }"
 
 -------------------------------------------------------------------------------
 tuple<string,string>

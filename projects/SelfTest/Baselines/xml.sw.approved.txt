@@ -1015,7 +1015,7 @@
     <TestCase name="Equals string matcher, with NULL">
       <Expression success="true" type="REQUIRE_THAT" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          "", Equals(nullptr)
+          "", Equals(0)
         </Original>
         <Expanded>
           "" equals: ""
@@ -5709,10 +5709,10 @@ four"
     <TestCase name="Pointers can be compared to null">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          p == nullptr
+          p == 0
         </Original>
         <Expanded>
-          NULL == nullptr
+          NULL == 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
@@ -5725,50 +5725,50 @@ four"
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          p != nullptr
+          p != 0
         </Original>
         <Expanded>
-          0x<hex digits> != nullptr
+          0x<hex digits> != 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          cp != nullptr
+          cp != 0
         </Original>
         <Expanded>
-          0x<hex digits> != nullptr
+          0x<hex digits> != 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          cpc != nullptr
+          cpc != 0
         </Original>
         <Expanded>
-          0x<hex digits> != nullptr
+          0x<hex digits> != 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          returnsNull() == nullptr
+          returnsNull() == 0
         </Original>
         <Expanded>
-          {null string} == nullptr
+          {null string} == 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          returnsConstNull() == nullptr
+          returnsConstNull() == 0
         </Original>
         <Expanded>
-          {null string} == nullptr
+          {null string} == 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/ConditionTests.cpp" >
         <Original>
-          nullptr != p
+          0 != p
         </Original>
         <Expanded>
-          nullptr != 0x<hex digits>
+          0 != 0x<hex digits>
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8318,10 +8318,10 @@ there"
     <TestCase name="boolean member">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          obj.prop != nullptr
+          obj.prop != 0
         </Original>
         <Expanded>
-          0x<hex digits> != nullptr
+          0x<hex digits> != 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8709,7 +8709,7 @@ there"
     <TestCase name="null strings">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          makeString( false ) != static_cast&lt;char*>(nullptr)
+          makeString( false ) != static_cast&lt;char*>(0)
         </Original>
         <Expanded>
           "valid string" != {null string}
@@ -8717,7 +8717,7 @@ there"
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/MiscTests.cpp" >
         <Original>
-          makeString( true ) == static_cast&lt;char*>(nullptr)
+          makeString( true ) == static_cast&lt;char*>(0)
         </Original>
         <Expanded>
           {null string} == {null string}
@@ -8728,10 +8728,10 @@ there"
     <TestCase name="null_ptr">
       <Expression success="true" type="REQUIRE" filename="projects/SelfTest/TrickyTests.cpp" >
         <Original>
-          ptr.get() == nullptr
+          ptr.get() == 0
         </Original>
         <Expanded>
-          NULL == nullptr
+          NULL == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9264,15 +9264,15 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="tuple&lt;nullptr,int,const char *>">
+    <TestCase name="tuple&lt;0,int,const char *>">
       <Expression success="true" type="CHECK" filename="projects/SelfTest/ToStringTuple.cpp" >
         <Original>
-          "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value)
+          "{ 0, 42, \"Catch me\" }" == Catch::toString(value)
         </Original>
         <Expanded>
-          "{ nullptr, 42, "Catch me" }"
+          "{ 0, 42, "Catch me" }"
 ==
-"{ nullptr, 42, "Catch me" }"
+"{ 0, 42, "Catch me" }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

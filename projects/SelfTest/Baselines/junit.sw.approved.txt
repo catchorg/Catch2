@@ -661,7 +661,7 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="tuple&lt;>" time="{duration}"/>
     <testcase classname="global" name="tuple&lt;float,int>" time="{duration}"/>
     <testcase classname="global" name="tuple&lt;int>" time="{duration}"/>
-    <testcase classname="global" name="tuple&lt;nullptr,int,const char *>" time="{duration}"/>
+    <testcase classname="global" name="tuple&lt;0,int,const char *>" time="{duration}"/>
     <testcase classname="global" name="tuple&lt;string,string>" time="{duration}"/>
     <testcase classname="global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
     <testcase classname="global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
