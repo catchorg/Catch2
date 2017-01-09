@@ -72,7 +72,7 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpandedExpression() const {
-        return m_resultData.reconstructedExpression;
+        return m_resultData.reconstructExpression();
     }
 
     std::string AssertionResult::getMessage() const {
@@ -84,6 +84,14 @@ namespace Catch {
 
     std::string AssertionResult::getTestMacroName() const {
         return m_info.macroName;
+    }
+
+    void AssertionResult::discardDecomposedExpression() const {
+        m_resultData.decomposedExpression = CATCH_NULL;
+    }
+
+    void AssertionResult::expandDecomposedExpression() const {
+        m_resultData.reconstructExpression();
     }
 
 } // end namespace Catch

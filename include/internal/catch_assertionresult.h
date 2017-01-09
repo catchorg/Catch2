@@ -13,6 +13,27 @@
 
 namespace Catch {
 
+    struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
+
+    struct DecomposedExpression
+    {
+        virtual ~DecomposedExpression() {}
+        virtual bool isBinaryExpression() const {
+            return false;
+        }
+        virtual void reconstructExpression( std::string& dest ) const = 0;
+
+        // Only simple binary comparisons can be decomposed.
+        // If more complex check is required then wrap sub-expressions in parentheses.
+        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( T const& );
+        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( T const& );
+        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( T const& );
+        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( T const& );
+        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator % ( T const& );
+        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( T const& );
+        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( T const& );
+    };
+
     struct AssertionInfo
     {
         AssertionInfo() {}
@@ -29,11 +50,41 @@ namespace Catch {
 
     struct AssertionResultData
     {
-        AssertionResultData() : resultType( ResultWas::Unknown ) {}
+        AssertionResultData() : decomposedExpression( CATCH_NULL )
+                              , resultType( ResultWas::Unknown )
+                              , negated( false )
+                              , parenthesized( false ) {}
 
-        std::string reconstructedExpression;
+        void negate( bool parenthesize ) {
+            negated = !negated;
+            parenthesized = parenthesize;
+            if( resultType == ResultWas::Ok )
+                resultType = ResultWas::ExpressionFailed;
+            else if( resultType == ResultWas::ExpressionFailed )
+                resultType = ResultWas::Ok;
+        }
+
+        std::string const& reconstructExpression() const {
+            if( decomposedExpression != CATCH_NULL ) {
+                decomposedExpression->reconstructExpression( reconstructedExpression );
+                if( parenthesized ) {
+                    reconstructedExpression.insert( 0, 1, '(' );
+                    reconstructedExpression.append( 1, ')' );
+                }
+                if( negated ) {
+                    reconstructedExpression.insert( 0, 1, '!' );
+                }
+                decomposedExpression = CATCH_NULL;
+            }
+            return reconstructedExpression;
+        }
+
+        mutable DecomposedExpression const* decomposedExpression;
+        mutable std::string reconstructedExpression;
         std::string message;
         ResultWas::OfType resultType;
+        bool negated;
+        bool parenthesized;
     };
 
     class AssertionResult {
@@ -60,6 +111,8 @@ namespace Catch {
         std::string getMessage() const;
         SourceLineInfo getSourceInfo() const;
         std::string getTestMacroName() const;
+        void discardDecomposedExpression() const;
+        void expandDecomposedExpression() const;
 
     protected:
         AssertionInfo m_info;

@@ -170,6 +170,12 @@ namespace Catch {
             assert( !m_sectionStack.empty() );
             SectionNode& sectionNode = *m_sectionStack.back();
             sectionNode.assertions.push_back( assertionStats );
+            // AssertionResult holds a pointer to a temporary DecomposedExpression,
+            // which getExpandedExpression() calls to build the expression string.
+            // Our section stack copy of the assertionResult will likely outlive the
+            // temporary, so it must be expanded or discarded now to avoid calling
+            // a destroyed object later.
+            prepareExpandedExpression( sectionNode.assertions.back().assertionResult );
             return true;
         }
         virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
@@ -203,6 +209,13 @@ namespace Catch {
         virtual void testRunEndedCumulative() = 0;
 
         virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {}
+
+        virtual void prepareExpandedExpression( AssertionResult& result ) const {
+            if( result.isOk() )
+                result.discardDecomposedExpression();
+            else
+                result.expandDecomposedExpression();
+        }
 
         Ptr<IConfig const> m_config;
         std::ostream& stream;
