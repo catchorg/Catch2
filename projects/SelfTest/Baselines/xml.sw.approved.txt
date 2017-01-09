@@ -2343,6 +2343,41 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Greater-than inequalities with different epsilons">
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          d >= Approx( 1.22 )
+        </Original>
+        <Expanded>
+          1.23 >= Approx( 1.22 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          d >= Approx( 1.23 )
+        </Original>
+        <Expanded>
+          1.23 >= Approx( 1.23 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          !d >= Approx( 1.24 )
+        </Original>
+        <Expanded>
+          !(1.23 >= Approx( 1.24 ))
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          d >= Approx( 1.24 ).epsilon(0.1)
+        </Original>
+        <Expanded>
+          1.23 >= Approx( 1.24 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="INFO and WARN do not abort tests">
       <Info>
         this is a message
@@ -2540,6 +2575,41 @@
         </Original>
         <Expanded>
           5 != 6
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Less-than inequalities with different epsilons">
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          d &lt;= Approx( 1.24 )
+        </Original>
+        <Expanded>
+          1.23 &lt;= Approx( 1.24 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          d &lt;= Approx( 1.23 )
+        </Original>
+        <Expanded>
+          1.23 &lt;= Approx( 1.23 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          !d &lt;= Approx( 1.22 )
+        </Original>
+        <Expanded>
+          !(1.23 &lt;= Approx( 1.22 ))
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          d &lt;= Approx( 1.22 ).epsilon(0.1)
+        </Original>
+        <Expanded>
+          1.23 &lt;= Approx( 1.22 )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9362,7 +9432,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="805" failures="81" expectedFailures="18"/>
+    <OverallResults successes="813" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="805" failures="80" expectedFailures="18"/>
+  <OverallResults successes="813" failures="80" expectedFailures="18"/>
 </Catch>
