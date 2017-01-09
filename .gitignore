@@ -18,7 +18,7 @@ projects/CMake/.idea
 projects/CMake/cmake-build-debug
 UpgradeLog.XML
 Resources/DWARF
-projects/XCode/iOSTest/Build
+projects/Generated
 *.pyc
 DerivedData
 *.xccheckout

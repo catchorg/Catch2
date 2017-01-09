@@ -1,0 +1,13 @@
+The canonical project format is now CMake.
+To generate an XCode or Visual Studio project you'll need CMake, which you can download from https://cmake.org if necessary.
+
+To generate the project files open a terminal/ console within the projects directory (where this file is located), create a directory called "Generated" (using mkdir or md), cd into it, then type:
+
+CMake -G <project format> ../..
+
+Where <project format> is XCode for XCode projects, or "Visual Studio 14" for Visual Studio 2015 (replace 14 with the major version number for any other supported Visual Studio version - or execute CMake -help for the full list)
+
+Remember to re-run CMake any time you pull from GitHub.
+Note that the projects/Generated folder is excluded in .gitignore. So it is recommended to use this.
+
+CMake can also generate make files or projects for other build systems. Run CMake -help for the full set of options.

@@ -1,6 +1,0 @@
-* Select Project -> New Target. Select Cocoa Touch -> Application. Click next and name it something like "Unit Tests"
-* While the target info is displayed, find: 'User Header Search Paths' and add a path to the Catch folder
-* Open the plist file for the target (Unit Test-Info.plist, if you used that name). Delete the entry for "Main nib file base name: MainWindow"
-* From the overview drop-down select the new target.
-* Add the file Catch/Runner/iTchRunnerMain.mm into your project - but only in the new target
-* Write tests (adding files under test into the target as necessary)
