@@ -41,22 +41,10 @@ namespace Catch {
         m_data.resultType = result ? ResultWas::Ok : ResultWas::ExpressionFailed;
         return *this;
     }
-    ResultBuilder& ResultBuilder::setLhs( std::string const& lhs ) {
-        m_exprComponents.lhs = lhs;
-        return *this;
-    }
-    ResultBuilder& ResultBuilder::setRhs( std::string const& rhs ) {
-        m_exprComponents.rhs = rhs;
-        return *this;
-    }
-    ResultBuilder& ResultBuilder::setOp( std::string const& op ) {
-        m_exprComponents.op = op;
-        return *this;
-    }
 
-    void ResultBuilder::endExpression() {
-        m_exprComponents.testFalse = isFalseTest( m_assertionInfo.resultDisposition );
-        captureExpression();
+    void ResultBuilder::endExpression( DecomposedExpression const& expr ) {
+        AssertionResult result = build( expr );
+        handleResult( result );
     }
 
     void ResultBuilder::useActiveException( ResultDisposition::Flags resultDisposition ) {
@@ -69,6 +57,7 @@ namespace Catch {
         setResultType( resultType );
         captureExpression();
     }
+
     void ResultBuilder::captureExpectedException( std::string const& expectedMessage ) {
         if( expectedMessage.empty() )
             captureExpectedException( Matchers::Impl::Generic::AllOf<std::string>() );
@@ -78,7 +67,7 @@ namespace Catch {
 
     void ResultBuilder::captureExpectedException( Matchers::Impl::Matcher<std::string> const& matcher ) {
 
-        assert( m_exprComponents.testFalse == false );
+        assert( !isFalseTest( m_assertionInfo.resultDisposition ) );
         AssertionResultData data = m_data;
         data.resultType = ResultWas::Ok;
         data.reconstructedExpression = m_assertionInfo.capturedExpression;
@@ -96,6 +85,7 @@ namespace Catch {
         AssertionResult result = build();
         handleResult( result );
     }
+
     void ResultBuilder::handleResult( AssertionResult const& result )
     {
         getResultCapture().assertionEnded( result );
@@ -107,6 +97,7 @@ namespace Catch {
                 m_shouldThrow = true;
         }
     }
+
     void ResultBuilder::react() {
         if( m_shouldThrow )
             throw Catch::TestFailureException();
@@ -117,43 +108,32 @@ namespace Catch {
 
     AssertionResult ResultBuilder::build() const
     {
-        assert( m_data.resultType != ResultWas::Unknown );
+        return build( *this );
+    }
 
+    // CAVEAT: The returned AssertionResult stores a pointer to the argument expr,
+    //         a temporary DecomposedExpression, which in turn holds references to
+    //         operands, possibly temporary as well.
+    //         It should immediately be passed to handleResult; if the expression
+    //         needs to be reported, its string expansion must be composed before
+    //         the temporaries are destroyed.
+    AssertionResult ResultBuilder::build( DecomposedExpression const& expr ) const
+    {
+        assert( m_data.resultType != ResultWas::Unknown );
         AssertionResultData data = m_data;
 
-        // Flip bool results if testFalse is set
-        if( m_exprComponents.testFalse ) {
-            if( data.resultType == ResultWas::Ok )
-                data.resultType = ResultWas::ExpressionFailed;
-            else if( data.resultType == ResultWas::ExpressionFailed )
-                data.resultType = ResultWas::Ok;
+        // Flip bool results if FalseTest flag is set
+        if( isFalseTest( m_assertionInfo.resultDisposition ) ) {
+            data.negate( expr.isBinaryExpression() );
         }
 
         data.message = m_stream.oss.str();
-        data.reconstructedExpression = reconstructExpression();
-        if( m_exprComponents.testFalse ) {
-            if( m_exprComponents.op == "" )
-                data.reconstructedExpression = "!" + data.reconstructedExpression;
-            else
-                data.reconstructedExpression = "!(" + data.reconstructedExpression + ")";
-        }
+        data.decomposedExpression = &expr; // for lazy reconstruction
         return AssertionResult( m_assertionInfo, data );
     }
-    std::string ResultBuilder::reconstructExpression() const {
-        if( m_exprComponents.op == "" )
-            return m_exprComponents.lhs.empty() ? m_assertionInfo.capturedExpression : m_exprComponents.lhs;
-        else if( m_exprComponents.op == "matches" )
-            return m_exprComponents.lhs + " " + m_exprComponents.rhs;
-        else if( m_exprComponents.op != "!" ) {
-            if( m_exprComponents.lhs.size() + m_exprComponents.rhs.size() < 40 &&
-                m_exprComponents.lhs.find("\n") == std::string::npos &&
-                m_exprComponents.rhs.find("\n") == std::string::npos )
-                return m_exprComponents.lhs + " " + m_exprComponents.op + " " + m_exprComponents.rhs;
-            else
-                return m_exprComponents.lhs + "\n" + m_exprComponents.op + "\n" + m_exprComponents.rhs;
-        }
-        else
-            return "{can't expand - use " + m_assertionInfo.macroName + "_FALSE( " + m_assertionInfo.capturedExpression.substr(1) + " ) instead of " + m_assertionInfo.macroName + "( " + m_assertionInfo.capturedExpression + " ) for better diagnostics}";
+
+    void ResultBuilder::reconstructExpression( std::string& dest ) const {
+        dest = m_assertionInfo.capturedExpression;
     }
 
 } // end namespace Catch
