@@ -52,7 +52,7 @@ namespace {
     };
 }
 
-TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator]" ) {
+TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator][c++11][.]" ) {
     std::vector<int,minimal_allocator<int> > vv;
     REQUIRE( Catch::toString(vv) == "{  }" );
     vv.push_back( 42 );
@@ -61,7 +61,7 @@ TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator]" )
     REQUIRE( Catch::toString(vv) == "{ 42, 250 }" );
 }
 
-TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator]" ) {
+TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator][c++11][.]" ) {
     typedef std::vector<std::string,minimal_allocator<std::string> > inner;
     typedef std::vector<inner> vector;
     vector v;

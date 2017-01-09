@@ -9143,54 +9143,6 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="vec&lt;vec&lt;string,alloc>> -> toString">
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
-        <Original>
-          Catch::toString(v) == "{  }"
-        </Original>
-        <Expanded>
-          "{  }" == "{  }"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
-        <Original>
-          Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }"
-        </Original>
-        <Expanded>
-          "{ { "hello" }, { "world" } }"
-==
-"{ { "hello" }, { "world" } }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="vector&lt;int,allocator> -> toString">
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
-        <Original>
-          Catch::toString(vv) == "{  }"
-        </Original>
-        <Expanded>
-          "{  }" == "{  }"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
-        <Original>
-          Catch::toString(vv) == "{ 42 }"
-        </Original>
-        <Expanded>
-          "{ 42 }" == "{ 42 }"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
-        <Original>
-          Catch::toString(vv) == "{ 42, 250 }"
-        </Original>
-        <Expanded>
-          "{ 42, 250 }" == "{ 42, 250 }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="vector&lt;int> -> toString">
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
@@ -9410,7 +9362,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="810" failures="81" expectedFailures="18"/>
+    <OverallResults successes="805" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="810" failures="80" expectedFailures="18"/>
+  <OverallResults successes="805" failures="80" expectedFailures="18"/>
 </Catch>

@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="909" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="<exe-name>" errors="13" failures="68" tests="904" hostname="tbd" time="{duration}" timestamp="tbd">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
@@ -654,8 +654,6 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="toString( vectors&lt;has_toString )" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum)" time="{duration}"/>
-    <testcase classname="global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
-    <testcase classname="global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>
     <testcase classname="global" name="vector&lt;int> -> toString" time="{duration}"/>
     <testcase classname="global" name="vector&lt;string> -> toString" time="{duration}"/>
     <testcase classname="vectors can be sized and resized" name="root" time="{duration}"/>

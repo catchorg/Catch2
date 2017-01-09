@@ -8679,50 +8679,6 @@ with expansion:
   "1" == "1"
 
 -------------------------------------------------------------------------------
-vec<vec<string,alloc>> -> toString
--------------------------------------------------------------------------------
-ToStringVector.cpp:<line number>
-...............................................................................
-
-ToStringVector.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString(v) == "{  }" )
-with expansion:
-  "{  }" == "{  }"
-
-ToStringVector.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }" )
-with expansion:
-  "{ { "hello" }, { "world" } }"
-  ==
-  "{ { "hello" }, { "world" } }"
-
--------------------------------------------------------------------------------
-vector<int,allocator> -> toString
--------------------------------------------------------------------------------
-ToStringVector.cpp:<line number>
-...............................................................................
-
-ToStringVector.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString(vv) == "{  }" )
-with expansion:
-  "{  }" == "{  }"
-
-ToStringVector.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42 }" )
-with expansion:
-  "{ 42 }" == "{ 42 }"
-
-ToStringVector.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42, 250 }" )
-with expansion:
-  "{ 42, 250 }" == "{ 42, 250 }"
-
--------------------------------------------------------------------------------
 vector<int> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.cpp:<line number>
@@ -8955,6 +8911,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 159 | 114 passed | 43 failed |  2 failed as expected
-assertions: 908 | 810 passed | 80 failed | 18 failed as expected
+test cases: 157 | 112 passed | 43 failed |  2 failed as expected
+assertions: 903 | 805 passed | 80 failed | 18 failed as expected
 
