@@ -66,6 +66,8 @@ A series of tags form an AND expression wheras a comma-separated sequence forms 
 <pre>[one][two],[three]</pre>
 This matches all tests tagged `[one]` and `[two]`, as well as all tests tagged `[three]`
 
+Test names containing special characters, such as `,` or `[` can specify them on the command line using `\`.
+`\` also escapes itself.
 
 <a id="choosing-a-reporter-to-use"></a>
 ## Choosing a reporter to use

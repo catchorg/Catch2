@@ -12,7 +12,7 @@
 * Blue shell colour
 * Missing argument to `CATCH_CHECK_THROWS`
 * Don't encode extended ASCII in XML
-* use std::shuffle on more compilers (fixes deprecation warning/error)
+* use `std::shuffle` on more compilers (fixes deprecation warning/error)
 * Use `__COUNTER__` more consistently (where available)
 
 ### Other:
