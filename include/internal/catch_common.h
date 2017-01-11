@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
+#include "catch_compiler_capabilities.h"
+
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
 #ifdef CATCH_CONFIG_COUNTER
