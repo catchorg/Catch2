@@ -7028,7 +7028,7 @@ namespace Catch {
 
         struct IColourImpl {
             virtual ~IColourImpl() {}
-            virtual void use( Colour::Code _colourCode ) {};
+            virtual void use( Colour::Code _colourCode ) = 0;
         };
 
         struct NoColourImpl : IColourImpl {
