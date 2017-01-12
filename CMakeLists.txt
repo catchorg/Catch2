@@ -16,27 +16,31 @@ if(USE_CPP11)
 endif()
 
 # define the sources of the self test
+# Please keep these ordered alphabetically
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/ApproxTests.cpp
         ${SELF_TEST_DIR}/BDDTests.cpp
         ${SELF_TEST_DIR}/ClassTests.cpp
+        ${SELF_TEST_DIR}/CmdLineTests.cpp
         ${SELF_TEST_DIR}/ConditionTests.cpp
+        ${SELF_TEST_DIR}/EnumToString.cpp
         ${SELF_TEST_DIR}/ExceptionTests.cpp
         ${SELF_TEST_DIR}/GeneratorTests.cpp
         ${SELF_TEST_DIR}/MessageTests.cpp
         ${SELF_TEST_DIR}/MiscTests.cpp
         ${SELF_TEST_DIR}/PartTrackerTests.cpp
+        ${SELF_TEST_DIR}/TagAliasTests.cpp
         ${SELF_TEST_DIR}/TestMain.cpp
-        ${SELF_TEST_DIR}/TrickyTests.cpp
-        ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
-        ${SELF_TEST_DIR}/EnumToString.cpp
         ${SELF_TEST_DIR}/ToStringPair.cpp
+        ${SELF_TEST_DIR}/ToStringTuple.cpp
         ${SELF_TEST_DIR}/ToStringVector.cpp
         ${SELF_TEST_DIR}/ToStringWhich.cpp
-        ${SELF_TEST_DIR}/ToStringTuple.cpp
-        ${SELF_TEST_DIR}/CmdLineTests.cpp
-        ${SELF_TEST_DIR}/TagAliasTests.cpp
+        ${SELF_TEST_DIR}/TrickyTests.cpp
+        ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
         )
+
+# A set of impl files that just #include a single header
+# Please keep these ordered alphabetically
 set(IMPL_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_common.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_console_colour.cpp
@@ -59,10 +63,13 @@ set(IMPL_SOURCES
         )
 
 # Specify the headers, too, so CLion recognises them as project files
+# Please keep these ordered alphabetically
 set(HEADERS
         ${HEADER_DIR}/catch.hpp
         ${HEADER_DIR}/catch_session.hpp
         ${HEADER_DIR}/catch_with_main.hpp
+        ${HEADER_DIR}/external/clara.h
+        ${HEADER_DIR}/external/tbc_text_format.h
         ${HEADER_DIR}/internal/catch_approx.hpp
         ${HEADER_DIR}/internal/catch_assertionresult.h
         ${HEADER_DIR}/internal/catch_assertionresult.hpp
@@ -145,8 +152,6 @@ set(HEADERS
         ${HEADER_DIR}/internal/catch_version.hpp
         ${HEADER_DIR}/internal/catch_wildcard_pattern.hpp
         ${HEADER_DIR}/internal/catch_xmlwriter.hpp
-        ${HEADER_DIR}/external/clara.h
-        ${HEADER_DIR}/external/tbc_text_format.h
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
         ${HEADER_DIR}/reporters/catch_reporter_compact.hpp
         ${HEADER_DIR}/reporters/catch_reporter_console.hpp
@@ -156,6 +161,7 @@ set(HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )
 
+# Provide some groupings for IDEs
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${IMPL_SOURCES})
 
