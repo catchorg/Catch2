@@ -36,16 +36,21 @@ using namespace Catch;
 //    REQUIRE( C_A_T_C_H_Context().i() == 42 );
 //}
 
+Catch::TestCaseTracking::NameAndLocation makeNAL( std::string const& name ) {
+    return Catch::TestCaseTracking::NameAndLocation( name, Catch::SourceLineInfo() );
+}
+
 TEST_CASE( "Tracker", "" ) {
 
     TrackerContext ctx;
     ctx.startRun();
     ctx.startCycle();
 
-    ITracker& testCase = SectionTracker::acquire( ctx, "Testcase" );
+
+    ITracker& testCase = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
     REQUIRE( testCase.isOpen() );
 
-    ITracker& s1 = SectionTracker::acquire( ctx, "S1" );
+    ITracker& s1 = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
     REQUIRE( s1.isOpen() );
 
     SECTION( "successfully close one section", "" ) {
@@ -70,10 +75,10 @@ TEST_CASE( "Tracker", "" ) {
 
         SECTION( "re-enter after failed section", "" ) {
             ctx.startCycle();
-            ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
             REQUIRE( testCase2.isOpen() );
 
-            ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            ITracker& s1b = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
             REQUIRE( s1b.isOpen() == false );
 
             testCase2.close();
@@ -83,13 +88,13 @@ TEST_CASE( "Tracker", "" ) {
         }
         SECTION( "re-enter after failed section and find next section", "" ) {
             ctx.startCycle();
-            ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
             REQUIRE( testCase2.isOpen() );
 
-            ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            ITracker& s1b = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
             REQUIRE( s1b.isOpen() == false );
 
-            ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
             REQUIRE( s2.isOpen() );
 
             s2.close();
@@ -104,7 +109,7 @@ TEST_CASE( "Tracker", "" ) {
     SECTION( "successfully close one section, then find another", "" ) {
         s1.close();
 
-        ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
+        ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
         REQUIRE( s2.isOpen() == false );
 
         testCase.close();
@@ -112,13 +117,13 @@ TEST_CASE( "Tracker", "" ) {
 
         SECTION( "Re-enter - skips S1 and enters S2", "" ) {
             ctx.startCycle();
-            ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+            ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
             REQUIRE( testCase2.isOpen() );
 
-            ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
+            ITracker& s1b = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
             REQUIRE( s1b.isOpen() == false );
 
-            ITracker& s2b = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2b = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
             REQUIRE( s2b.isOpen() );
 
             REQUIRE( ctx.completedCycle() == false );
@@ -145,13 +150,13 @@ TEST_CASE( "Tracker", "" ) {
 
                 // Need a final cycle
                 ctx.startCycle();
-                ITracker& testCase3 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase3 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase3.isOpen() );
 
-                ITracker& s1c = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1c = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
                 REQUIRE( s1c.isOpen() == false );
 
-                ITracker& s2c = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2c = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
                 REQUIRE( s2c.isOpen() == false );
 
                 testCase3.close();
@@ -161,7 +166,7 @@ TEST_CASE( "Tracker", "" ) {
     }
 
     SECTION( "open a nested section", "" ) {
-        ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
+        ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
         REQUIRE( s2.isOpen() );
 
         s2.close();
@@ -177,7 +182,7 @@ TEST_CASE( "Tracker", "" ) {
     }
 
     SECTION( "start a generator", "" ) {
-        IndexTracker& g1 = IndexTracker::acquire( ctx, "G1", 2 );
+        IndexTracker& g1 = IndexTracker::acquire( ctx, makeNAL( "G1" ), 2 );
         REQUIRE( g1.isOpen() );
         REQUIRE( g1.index() == 0 );
 
@@ -193,14 +198,14 @@ TEST_CASE( "Tracker", "" ) {
 
             SECTION( "Re-enter for second generation", "" ) {
                 ctx.startCycle();
-                ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase2.isOpen() );
 
-                ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1b = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
                 REQUIRE( s1b.isOpen() );
 
 
-                IndexTracker& g1b = IndexTracker::acquire( ctx, "G1", 2 );
+                IndexTracker& g1b = IndexTracker::acquire( ctx, makeNAL( "G1" ), 2 );
                 REQUIRE( g1b.isOpen() );
                 REQUIRE( g1b.index() == 1 );
 
@@ -214,7 +219,7 @@ TEST_CASE( "Tracker", "" ) {
             }
         }
         SECTION( "Start a new inner section", "" ) {
-            ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
             REQUIRE( s2.isOpen() );
 
             s2.close();
@@ -228,19 +233,19 @@ TEST_CASE( "Tracker", "" ) {
 
             SECTION( "Re-enter for second generation", "" ) {
                 ctx.startCycle();
-                ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase2.isOpen() );
 
-                ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1b = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
                 REQUIRE( s1b.isOpen() );
 
                 // generator - next value
-                IndexTracker& g1b = IndexTracker::acquire( ctx, "G1", 2 );
+                IndexTracker& g1b = IndexTracker::acquire( ctx, makeNAL( "G1" ), 2 );
                 REQUIRE( g1b.isOpen() );
                 REQUIRE( g1b.index() == 1 );
 
                 // inner section again
-                ITracker& s2b = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2b = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
                 REQUIRE( s2b.isOpen() );
 
                 s2b.close();
@@ -256,7 +261,7 @@ TEST_CASE( "Tracker", "" ) {
         }
 
         SECTION( "Fail an inner section", "" ) {
-            ITracker& s2 = SectionTracker::acquire( ctx, "S2" );
+            ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
             REQUIRE( s2.isOpen() );
 
             s2.fail();
@@ -271,19 +276,19 @@ TEST_CASE( "Tracker", "" ) {
 
             SECTION( "Re-enter for second generation", "" ) {
                 ctx.startCycle();
-                ITracker& testCase2 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase2.isOpen() );
 
-                ITracker& s1b = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1b = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
                 REQUIRE( s1b.isOpen() );
 
                 // generator - still same value
-                IndexTracker& g1b = IndexTracker::acquire( ctx, "G1", 2 );
+                IndexTracker& g1b = IndexTracker::acquire( ctx, makeNAL( "G1" ), 2 );
                 REQUIRE( g1b.isOpen() );
                 REQUIRE( g1b.index() == 0 );
 
                 // inner section again - this time won't open
-                ITracker& s2b = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2b = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
                 REQUIRE( s2b.isOpen() == false );
 
                 s1b.close();
@@ -295,19 +300,19 @@ TEST_CASE( "Tracker", "" ) {
 
                 // Another cycle - now should complete
                 ctx.startCycle();
-                ITracker& testCase3 = SectionTracker::acquire( ctx, "Testcase" );
+                ITracker& testCase3 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase3.isOpen() );
 
-                ITracker& s1c = SectionTracker::acquire( ctx, "S1" );
+                ITracker& s1c = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
                 REQUIRE( s1c.isOpen() );
 
                 // generator - now next value
-                IndexTracker& g1c = IndexTracker::acquire( ctx, "G1", 2 );
+                IndexTracker& g1c = IndexTracker::acquire( ctx, makeNAL( "G1" ), 2 );
                 REQUIRE( g1c.isOpen() );
                 REQUIRE( g1c.index() == 1 );
 
                 // inner section - now should open again
-                ITracker& s2c = SectionTracker::acquire( ctx, "S2" );
+                ITracker& s2c = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
                 REQUIRE( s2c.isOpen() );
 
                 s2c.close();

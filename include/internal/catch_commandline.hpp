@@ -23,6 +23,7 @@ namespace Catch {
         config.abortAfter = x;
     }
     inline void addTestOrTags( ConfigData& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }
+    inline void addSectionToRun( ConfigData& config, std::string const& sectionName ) { config.sectionsToRun.push_back( sectionName ); }
     inline void addReporterName( ConfigData& config, std::string const& _reporterName ) { config.reporterNames.push_back( _reporterName ); }
 
     inline void addWarning( ConfigData& config, std::string const& _warning ) {
@@ -175,6 +176,10 @@ namespace Catch {
         cli["-#"]["--filenames-as-tags"]
             .describe( "adds a tag for the filename" )
             .bind( &ConfigData::filenamesAsTags );
+
+        cli["-c"]["--section"]
+                .describe( "specify section to run" )
+                .bind( &addSectionToRun, "section name" );
 
         // Less common commands which don't have a short form
         cli["--list-test-names-only"]

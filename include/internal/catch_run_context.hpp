@@ -97,10 +97,11 @@ namespace Catch {
 
 
             do {
-                m_trackerContext.startRun();
+                ITracker& rootTracker = m_trackerContext.startRun();
+                dynamic_cast<SectionTracker&>( rootTracker ).addInitialFilters( m_config->getSectionsToRun() );
                 do {
                     m_trackerContext.startCycle();
-                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, testInfo.name );
+                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( testInfo.name, testInfo.lineInfo ) );
                     runCurrentTest( redirectedCout, redirectedCerr );
                 }
                 while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
@@ -155,10 +156,7 @@ namespace Catch {
             Counts& assertions
         )
         {
-            std::ostringstream oss;
-            oss << sectionInfo.name << "@" << sectionInfo.lineInfo;
-
-            ITracker& sectionTracker = SectionTracker::acquire( m_trackerContext, oss.str() );
+            ITracker& sectionTracker = SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( sectionInfo.name, sectionInfo.lineInfo ) );
             if( !sectionTracker.isOpen() )
                 return false;
             m_activeSections.push_back( &sectionTracker );
