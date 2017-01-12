@@ -12,14 +12,11 @@
 
 namespace Catch {
 
-    // Report the error condition then exit the process
-    inline void fatal( std::string const& message, int exitCode ) {
+    // Report the error condition
+    inline void reportFatal( std::string const& message, int exitCode ) {
         IContext& context = Catch::getCurrentContext();
         IResultCapture* resultCapture = context.getResultCapture();
         resultCapture->handleFatalErrorCondition( message );
-
-		if( Catch::alwaysTrue() ) // avoids "no return" warnings
-            exit( exitCode );
     }
 
 } // namespace Catch
@@ -52,7 +49,7 @@ namespace Catch {
         static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
             for (int i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
                 if (ExceptionInfo->ExceptionRecord->ExceptionCode == signalDefs[i].id) {
-                    fatal(signalDefs[i].name, -i);
+                    reportFatal(signalDefs[i].name, -i);
                 }
             }
             // If its not an exception we care about, pass it along.
@@ -94,7 +91,10 @@ namespace Catch {
 
 namespace Catch {
 
-    struct SignalDefs { int id; const char* name; };
+    struct SignalDefs {
+        int id;
+        const char* name;
+    };
     extern SignalDefs signalDefs[];
     SignalDefs signalDefs[] = {
             { SIGINT,  "SIGINT - Terminal interrupt signal" },
@@ -103,53 +103,69 @@ namespace Catch {
             { SIGSEGV, "SIGSEGV - Segmentation violation signal" },
             { SIGTERM, "SIGTERM - Termination request signal" },
             { SIGABRT, "SIGABRT - Abort (abnormal termination) signal" }
-        };
+    };
 
     struct FatalConditionHandler {
 
+        static bool isSet;
+        static struct sigaction oldSigActions [sizeof(signalDefs)/sizeof(SignalDefs)];
+        static stack_t oldSigStack;
+        static char altStackMem[SIGSTKSZ];
+    
         static void handleSignal( int sig ) {
-            for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
-                if( sig == signalDefs[i].id )
-                    fatal( signalDefs[i].name, -sig );
-            fatal( "<unknown signal>", -sig );
+            std::string name = "<unknown signal>";
+            for (std::size_t i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
+                SignalDefs &def = signalDefs[i];
+                if (sig == def.id) {
+                    name = def.name;
+                    sigaction(def.id, &oldSigActions[i], CATCH_NULL);
+                    break;
+                }
+            }
+            reportFatal(name, -sig);
+            raise( sig );
         }
 
-        FatalConditionHandler(): m_isSet(true), m_altStackMem(new char[SIGSTKSZ]) {
+        FatalConditionHandler() {
+            isSet = true;
             stack_t sigStack;
-            sigStack.ss_sp = m_altStackMem;
+            sigStack.ss_sp = altStackMem;
             sigStack.ss_size = SIGSTKSZ;
             sigStack.ss_flags = 0;
-            sigaltstack(&sigStack, &m_oldSigStack);
+            sigaltstack(&sigStack, &oldSigStack);
             struct sigaction sa = { 0 };
 
             sa.sa_handler = handleSignal;
             sa.sa_flags = SA_ONSTACK;
             for (std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i) {
-                sigaction(signalDefs[i].id, &sa, &m_oldSigActions[i]);
+                sigaction(signalDefs[i].id, &sa, &oldSigActions[i]);
             }
         }
+                
+                
         ~FatalConditionHandler() {
             reset();
-            delete[] m_altStackMem;
         }
         void reset() {
-            if( m_isSet ) {
+            if( isSet ) {
                 // Set signals back to previous values -- hopefully nobody overwrote them in the meantime
                 for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i ) {
-                    sigaction(signalDefs[i].id, &m_oldSigActions[i], CATCH_NULL);
+                    sigaction(signalDefs[i].id, &oldSigActions[i], CATCH_NULL);
                 }
                 // Return the old stack
-                sigaltstack(&m_oldSigStack, CATCH_NULL);
-                m_isSet = false;
+                sigaltstack(&oldSigStack, CATCH_NULL);
+                isSet = false;
             }
         }
 
-        bool m_isSet;
         // C++03 doesn't allow auto_ptr<T[]>, so we have manage the memory ourselves
-        char* m_altStackMem;
-        struct sigaction m_oldSigActions [sizeof(signalDefs)/sizeof(SignalDefs)];
-        stack_t m_oldSigStack;
     };
+    
+    bool FatalConditionHandler::isSet = false;
+    struct sigaction FatalConditionHandler::oldSigActions[sizeof(signalDefs)/sizeof(SignalDefs)] = {} ;//[sizeof(signalDefs)/sizeof(SignalDefs)];
+    stack_t FatalConditionHandler::oldSigStack = {};
+    char FatalConditionHandler::altStackMem[SIGSTKSZ] = {};
+    
 
 } // namespace Catch
 
