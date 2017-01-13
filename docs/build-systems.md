@@ -69,7 +69,7 @@ ExternalProject_Add(
 
 # Expose required variable (CATCH_INCLUDE_DIR) to parent scope
 ExternalProject_Get_Property(catch source_dir)
-set(CATCH_INCLUDE_DIR ${source_dir}/include CACHE INTERNAL "Path to include folder for Catch")
+set(CATCH_INCLUDE_DIR ${source_dir}/single_include CACHE INTERNAL "Path to include folder for Catch")
 ```
 
 If you put it in, e.g., `${PROJECT_SRC_DIR}/${EXT_PROJECTS_DIR}/catch/`, you can use it in your project by adding the following to your root CMake file:
