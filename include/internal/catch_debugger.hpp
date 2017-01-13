@@ -75,6 +75,47 @@
             return IsDebuggerPresent() != 0;
         }
     }
+#elif defined(CATCH_PLATFORM_LINUX)
+
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/ptrace.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+    namespace Catch {
+        bool isDebuggerActive() {
+            // Based on: http://stackoverflow.com/a/3599394/1281937
+
+            pid_t child_pid = fork();
+
+            if (child_pid == -1)
+                return false;           // Don't know; be pessimistic.
+
+            if (!child_pid) {
+                pid_t parent_pid = getppid();
+                
+                errno = 0;
+                if (ptrace(PTRACE_ATTACH, parent_pid, 0, 0) == -1) {
+                    // We can't attach when there's something already there
+                    // (like a debugger) -- EPERM will indicate.
+                    if (errno == EPERM)
+                        _Exit(1);
+                    _Exit(0);
+                }
+                
+                // A successful attach will stop the parent.
+                waitpid(parent_pid, NULL, 0);
+                ptrace(PTRACE_DETACH, parent_pid, 0, 0);
+                
+                _Exit(0);
+            }
+
+            int result;
+            waitpid(child_pid, &result, 0);
+            return WEXITSTATUS(result)? true: false;
+        }
+    }
 #else
     namespace Catch {
        inline bool isDebuggerActive() { return false; }

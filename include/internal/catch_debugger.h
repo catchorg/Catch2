@@ -40,6 +40,17 @@ namespace Catch{
 #elif defined(__MINGW32__)
     extern "C" __declspec(dllimport) void __stdcall DebugBreak();
     #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { DebugBreak(); }
+#elif defined(CATCH_PLATFORM_LINUX)
+
+#if defined(__i386__) || defined(__x86_64__)
+#define CATCH_BREAK_INTO_DEBUGGER() \
+    if ( Catch::isDebuggerActive() ) { __asm__ __volatile__ ("int $3"); }
+#else // __i386__ || __x86_64__
+#include <signal.h>
+#define CATCH_BREAK_INTO_DEBUGGER() \
+    if ( Catch::isDebuggerActive() ) { raise(SIGINT); }
+#endif // __i386__ || __x86_64__
+    
 #endif
 
 #ifndef CATCH_BREAK_INTO_DEBUGGER
