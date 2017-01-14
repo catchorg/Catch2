@@ -118,10 +118,10 @@ namespace Catch {
                 SignalDefs &def = signalDefs[i];
                 if (sig == def.id) {
                     name = def.name;
-                    sigaction(def.id, &oldSigActions[i], CATCH_NULL);
                     break;
                 }
             }
+            reset();
             reportFatal(name, -sig);
             raise( sig );
         }
@@ -146,7 +146,7 @@ namespace Catch {
         ~FatalConditionHandler() {
             reset();
         }
-        void reset() {
+        static void reset() {
             if( isSet ) {
                 // Set signals back to previous values -- hopefully nobody overwrote them in the meantime
                 for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i ) {
