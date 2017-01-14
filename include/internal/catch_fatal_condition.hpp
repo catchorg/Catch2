@@ -157,12 +157,10 @@ namespace Catch {
                 isSet = false;
             }
         }
-
-        // C++03 doesn't allow auto_ptr<T[]>, so we have manage the memory ourselves
     };
     
     bool FatalConditionHandler::isSet = false;
-    struct sigaction FatalConditionHandler::oldSigActions[sizeof(signalDefs)/sizeof(SignalDefs)] = {} ;//[sizeof(signalDefs)/sizeof(SignalDefs)];
+    struct sigaction FatalConditionHandler::oldSigActions[sizeof(signalDefs)/sizeof(SignalDefs)] = {};
     stack_t FatalConditionHandler::oldSigStack = {};
     char FatalConditionHandler::altStackMem[SIGSTKSZ] = {};
     
