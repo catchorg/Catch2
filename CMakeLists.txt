@@ -7,6 +7,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # define some folders
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
+set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
 set(HEADER_DIR ${CATCH_DIR}/include)
 
 if(USE_CPP11)
@@ -161,13 +162,20 @@ set(HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )
 
+set(BENCH_SOURCES
+        ${BENCHMARK_DIR}/BenchMain.cpp
+        ${BENCHMARK_DIR}/StringificationBench.cpp
+        )
+        
 # Provide some groupings for IDEs
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${IMPL_SOURCES})
+SOURCE_GROUP("Benchmarks" FILES ${BENCH_SOURCES})
 
 # configure the executable
 include_directories(${HEADER_DIR})
 add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
+add_executable(Benchmark ${BENCH_SOURCES} ${HEADERS})
 
 # configure unit tests via CTest
 enable_testing()
