@@ -102,7 +102,7 @@ std::string toString( int value ) {
     std::ostringstream oss;
     oss << value;
     if( value > Detail::hexThreshold )
-        oss << " (0x" << std::hex << value << ")";
+        oss << " (0x" << std::hex << value << ')';
     return oss.str();
 }
 
@@ -110,7 +110,7 @@ std::string toString( unsigned long value ) {
     std::ostringstream oss;
     oss << value;
     if( value > Detail::hexThreshold )
-        oss << " (0x" << std::hex << value << ")";
+        oss << " (0x" << std::hex << value << ')';
     return oss.str();
 }
 
@@ -164,14 +164,14 @@ std::string toString( long long value ) {
     std::ostringstream oss;
     oss << value;
     if( value > Detail::hexThreshold )
-        oss << " (0x" << std::hex << value << ")";
+        oss << " (0x" << std::hex << value << ')';
     return oss.str();
 }
 std::string toString( unsigned long long value ) {
     std::ostringstream oss;
     oss << value;
     if( value > Detail::hexThreshold )
-        oss << " (0x" << std::hex << value << ")";
+        oss << " (0x" << std::hex << value << ')';
     return oss.str();
 }
 #endif

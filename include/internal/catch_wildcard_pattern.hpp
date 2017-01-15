@@ -27,11 +27,11 @@ namespace Catch
             m_wildcard( NoWildcard ),
             m_pattern( adjustCase( pattern ) )
         {
-            if( startsWith( m_pattern, "*" ) ) {
+            if( startsWith( m_pattern, '*' ) ) {
                 m_pattern = m_pattern.substr( 1 );
                 m_wildcard = WildcardAtStart;
             }
-            if( endsWith( m_pattern, "*" ) ) {
+            if( endsWith( m_pattern, '*' ) ) {
                 m_pattern = m_pattern.substr( 0, m_pattern.size()-1 );
                 m_wildcard = static_cast<WildcardPosition>( m_wildcard | WildcardAtEnd );
             }

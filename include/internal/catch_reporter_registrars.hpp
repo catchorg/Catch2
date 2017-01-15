@@ -74,7 +74,7 @@ namespace Catch {
                 return new T( config );
             }
             virtual std::string getDescription() const {
-                return "";
+                return std::string();
             }
         };
 

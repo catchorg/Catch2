@@ -25,7 +25,7 @@ namespace Catch {
             oss << other.oss.str();
         }
         CopyableStream& operator=( CopyableStream const& other ) {
-            oss.str("");
+            oss.str(std::string());
             oss << other.oss.str();
             return *this;
         }

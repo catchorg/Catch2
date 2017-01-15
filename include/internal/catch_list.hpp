@@ -51,9 +51,9 @@ namespace Catch {
         }
 
         if( !config.testSpec().hasFilters() )
-            Catch::cout() << pluralise( matchedTests, "test case" ) << "\n" << std::endl;
+            Catch::cout() << pluralise( matchedTests, "test case" ) << '\n' << std::endl;
         else
-            Catch::cout() << pluralise( matchedTests, "matching test case" ) << "\n" << std::endl;
+            Catch::cout() << pluralise( matchedTests, "matching test case" ) << '\n' << std::endl;
         return matchedTests;
     }
 
@@ -68,7 +68,7 @@ namespace Catch {
                 ++it ) {
             matchedTests++;
             TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
-            if( startsWith( testCaseInfo.name, "#" ) )
+            if( startsWith( testCaseInfo.name, '#' ) )
                Catch::cout() << "\"" << testCaseInfo.name << "\"" << std::endl;
             else
                Catch::cout() << testCaseInfo.name << std::endl;
