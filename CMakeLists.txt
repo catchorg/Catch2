@@ -13,7 +13,37 @@ if(USE_CPP11)
     ## We can't turn this on by default, since it breaks on travis
     message(STATUS "Enabling C++11")
     set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+elseif(USE_CPP14)
+    message(STATUS "Enabling C++14")
+    set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
 endif()
+
+#checks that the given hard-coded list contains all headers + sources in the given folder
+function(CheckFileList LIST_VAR FOLDER)
+  set(MESSAGE " should be added to the variable ${LIST_VAR}")
+  set(MESSAGE "${MESSAGE} in ${CMAKE_CURRENT_LIST_FILE}\n")
+  file(GLOB GLOBBED_LIST "${FOLDER}/*.cpp"
+                         "${FOLDER}/*.hpp"
+                         "${FOLDER}/*.h")
+  list(REMOVE_ITEM GLOBBED_LIST ${${LIST_VAR}})
+  foreach(EXTRA_ITEM ${GLOBBED_LIST})
+    string(REPLACE "${CATCH_DIR}/" "" RELATIVE_FILE_NAME "${EXTRA_ITEM}")
+    message(AUTHOR_WARNING "The file \"${RELATIVE_FILE_NAME}\"${MESSAGE}")
+  endforeach()
+endfunction()
+
+function(CheckFileListRec LIST_VAR FOLDER)
+  set(MESSAGE " should be added to the variable ${LIST_VAR}")
+  set(MESSAGE "${MESSAGE} in ${CMAKE_CURRENT_LIST_FILE}\n")
+  file(GLOB_RECURSE GLOBBED_LIST "${FOLDER}/*.cpp"
+                                 "${FOLDER}/*.hpp"
+                                 "${FOLDER}/*.h")
+  list(REMOVE_ITEM GLOBBED_LIST ${${LIST_VAR}})
+  foreach(EXTRA_ITEM ${GLOBBED_LIST})
+    string(REPLACE "${CATCH_DIR}/" "" RELATIVE_FILE_NAME "${EXTRA_ITEM}")
+    message(AUTHOR_WARNING "The file \"${RELATIVE_FILE_NAME}\"${MESSAGE}")
+  endforeach()
+endfunction()
 
 # define the sources of the self test
 # Please keep these ordered alphabetically
@@ -38,6 +68,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/TrickyTests.cpp
         ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
         )
+CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
 # A set of impl files that just #include a single header
 # Please keep these ordered alphabetically
@@ -61,15 +92,27 @@ set(IMPL_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_test_spec.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_xmlwriter.cpp
         )
+CheckFileList(IMPL_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
 
-# Specify the headers, too, so CLion recognises them as project files
+
 # Please keep these ordered alphabetically
-set(HEADERS
+set(TOP_LEVEL_HEADERS
         ${HEADER_DIR}/catch.hpp
         ${HEADER_DIR}/catch_session.hpp
         ${HEADER_DIR}/catch_with_main.hpp
+        )
+CheckFileList(TOP_LEVEL_HEADERS ${HEADER_DIR})
+        
+# Please keep these ordered alphabetically
+set(EXTERNAL_HEADERS
         ${HEADER_DIR}/external/clara.h
         ${HEADER_DIR}/external/tbc_text_format.h
+        )
+CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
+
+        
+# Please keep these ordered alphabetically
+set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_approx.hpp
         ${HEADER_DIR}/internal/catch_assertionresult.h
         ${HEADER_DIR}/internal/catch_assertionresult.hpp
@@ -152,6 +195,11 @@ set(HEADERS
         ${HEADER_DIR}/internal/catch_version.hpp
         ${HEADER_DIR}/internal/catch_wildcard_pattern.hpp
         ${HEADER_DIR}/internal/catch_xmlwriter.hpp
+        )
+CheckFileList(INTERNAL_HEADERS ${HEADER_DIR}/internal)
+
+# Please keep these ordered alphabetically
+set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
         ${HEADER_DIR}/reporters/catch_reporter_compact.hpp
         ${HEADER_DIR}/reporters/catch_reporter_console.hpp
@@ -160,6 +208,16 @@ set(HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
         ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )
+CheckFileList(REPORTER_HEADERS ${HEADER_DIR}/reporters)
+
+# Specify the headers, too, so CLion recognises them as project files
+set(HEADERS
+        ${TOP_LEVEL_HEADERS}
+        ${EXTERNAL_HEADERS}
+        ${INTERNAL_HEADERS}
+        ${REPORTER_HEADERS}
+        )
+
 
 # Provide some groupings for IDEs
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
