@@ -28,7 +28,7 @@ TEST_CASE("Successful tests -- CHECK", "[Success]") {
 
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE("Unsuccessful tests -- CHECK", "[Failure]") {
-    const size_t sz = 128 * 1024;
+    const size_t sz = 1024 * 1024;
 
 
     std::vector<size_t> vec; vec.reserve(sz);

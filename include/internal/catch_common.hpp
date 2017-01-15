@@ -10,21 +10,19 @@
 
 #include "catch_common.h"
 
-#include <algorithm>
-
 namespace Catch {
 
     bool startsWith( std::string const& s, std::string const& prefix ) {
         return s.size() >= prefix.size() && std::equal(prefix.begin(), prefix.end(), s.begin());
     }
     bool startsWith( std::string const& s, char prefix ) {
-        return !s.empty() && s.front() == prefix;
+        return !s.empty() && s[0] == prefix;
     }
     bool endsWith( std::string const& s, std::string const& suffix ) {
         return s.size() >= suffix.size() && std::equal(suffix.rbegin(), suffix.rend(), s.rbegin());
     }
     bool endsWith( std::string const& s, char suffix ) {
-        return !s.empty() && s.back() == suffix;
+        return !s.empty() && s[s.size()-1] == suffix;
     }
     bool contains( std::string const& s, std::string const& infix ) {
         return s.find( infix ) != std::string::npos;
