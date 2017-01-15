@@ -37,7 +37,7 @@
             ( __catchResult <= expr ).endExpression(); \
         } \
         catch( ... ) { \
-            __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
+            __catchResult.useActiveException( resultDisposition ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse( sizeof(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
