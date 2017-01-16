@@ -48,6 +48,7 @@ namespace Catch {
 #ifdef __AFXDLL
 #include <AfxWin.h>
 #else
+struct IUnknown;
 #include <windows.h>
 #endif
 
