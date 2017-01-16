@@ -194,6 +194,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_version.h
         ${HEADER_DIR}/internal/catch_version.hpp
         ${HEADER_DIR}/internal/catch_wildcard_pattern.hpp
+        ${HEADER_DIR}/internal/catch_windows_h_proxy.h
         ${HEADER_DIR}/internal/catch_xmlwriter.hpp
         )
 CheckFileList(INTERNAL_HEADERS ${HEADER_DIR}/internal)
