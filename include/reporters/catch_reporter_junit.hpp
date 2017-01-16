@@ -18,6 +18,35 @@
 
 namespace Catch {
 
+    namespace {
+        std::string getCurrentTimestamp() {
+            // Beware, this is not reentrant because of backward compatibility issues
+            // Also, UTC only, again because of backward compatibility (%z is C++11)
+            time_t rawtime;
+            std::time(&rawtime);
+            const size_t timeStampSize = sizeof("2017-01-16T17:06:45Z");
+
+#ifdef CATCH_PLATFORM_WINDOWS
+            std::tm timeInfo = {};
+            gmtime_s(&timeInfo, &rawtime);
+#else
+            std::tm* timeInfo;
+            timeInfo = std::gmtime(&rawtime);
+#endif
+
+            char timeStamp[timeStampSize];
+            const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
+
+#ifdef CATCH_PLATFORM_WINDOWS
+            std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
+#else
+            std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
+#endif
+            return std::string(timeStamp);
+        }
+
+    }
+
     class JunitReporter : public CumulativeReporterBase {
     public:
         JunitReporter( ReporterConfig const& _config )
@@ -82,7 +111,7 @@ namespace Catch {
                 xml.writeAttribute( "time", "" );
             else
                 xml.writeAttribute( "time", suiteTime );
-            xml.writeAttribute( "timestamp", "tbd" ); // !TBD
+            xml.writeAttribute( "timestamp", getCurrentTimestamp() );
 
             // Write test cases
             for( TestGroupNode::ChildNodes::const_iterator

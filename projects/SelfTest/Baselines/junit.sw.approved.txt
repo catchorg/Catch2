@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="912" hostname="tbd" time="{duration}" timestamp="tbd">
+  <testsuite name="<exe-name>" errors="13" failures="68" tests="912" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">

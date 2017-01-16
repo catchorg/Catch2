@@ -16,6 +16,7 @@ pathParser = re.compile(r'(.*?)/(.*\..pp)(.*)')
 lineNumberParser = re.compile(r'(.*)line="[0-9]*"(.*)')
 hexParser = re.compile(r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)')
 durationsParser = re.compile(r'(.*)time="[0-9]*\.[0-9]*"(.*)')
+timestampsParser = re.compile(r'(.*)timestamp="\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z"(.*)')
 versionParser = re.compile(r'(.*?)Catch v[0-9]*\.[0-9]*\.[0-9]*(.*)')
 devVersionParser = re.compile(r'(.*?)Catch v[0-9]*\.[0-9]*\.[0-9]*-develop\.[0-9]*(.*)')
 nullParser = re.compile(r'(.*?)\b(__null|nullptr)\b(.*)')
@@ -73,6 +74,9 @@ def filterLine(line):
     m = durationsParser.match(line)
     if m:
         line = m.group(1) + 'time="{duration}"' + m.group(2)
+    m = timestampsParser.match(line)
+    if m:
+        line = m.group(1) + 'timestamp="{iso8601-timestamp}"' + m.group(2)
     return line
 
 
