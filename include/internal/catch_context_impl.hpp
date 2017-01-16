@@ -12,6 +12,7 @@
 
 #include "catch_context.h"
 #include "catch_stream.hpp"
+#include "catch_common.h"
 
 namespace Catch {
 
@@ -20,6 +21,11 @@ namespace Catch {
         Context() : m_config( CATCH_NULL ), m_runner( CATCH_NULL ), m_resultCapture( CATCH_NULL ) {}
         Context( Context const& );
         void operator=( Context const& );
+
+    public:
+        virtual ~Context() {
+            deleteAllValues( m_generatorsByTestName );
+        }
 
     public: // IContext
         virtual IResultCapture* getResultCapture() {
