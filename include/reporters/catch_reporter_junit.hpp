@@ -15,6 +15,8 @@
 #include "../internal/catch_xmlwriter.hpp"
 
 #include <assert.h>
+#include <ctime>
+#include <cstring>
 
 namespace Catch {
 
@@ -82,7 +84,30 @@ namespace Catch {
                 xml.writeAttribute( "time", "" );
             else
                 xml.writeAttribute( "time", suiteTime );
-            xml.writeAttribute( "timestamp", "tbd" ); // !TBD
+
+            time_t rawtime;
+            struct tm *timeinfo;
+
+#ifdef CATCH_PLATFORM_WINDOWS
+            // %z does not return the offset from UTC with MSVC's strftime implementation
+            // Timestamps will look like: "2014-01-14T17:22:09"
+            const size_t timestampLength = 20;
+            const char fmt[] = "%Y-%m-%dT%H:%M:%S";
+#else
+            // on posix systems, we can have the full timestamp (tested with gcc and clang)
+            const size_t timestampLength = 26;
+            const char fmt[] = "%Y-%m-%dT%T%z";
+#endif
+            char timestampStr[timestampLength];
+            memset(timestampStr, 0, timestampLength);
+
+            time(&rawtime);
+            timeinfo = localtime(&rawtime);
+
+            size_t ret = strftime(timestampStr,timestampLength, fmt, timeinfo);
+            assert(ret != 0);
+
+            xml.writeAttribute( "timestamp", timestampStr );
 
             // Write test cases
             for( TestGroupNode::ChildNodes::const_iterator
