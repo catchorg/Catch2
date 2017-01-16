@@ -15,7 +15,7 @@
 #endif
 
 #ifdef CATCH_PLATFORM_WINDOWS
-#include <windows.h>
+#include "catch_windows_h_proxy.h"
 #else
 #include <sys/time.h>
 #endif

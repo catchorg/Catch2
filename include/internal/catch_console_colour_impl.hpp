@@ -41,15 +41,7 @@ namespace Catch {
 
 #if defined ( CATCH_CONFIG_COLOUR_WINDOWS ) /////////////////////////////////////////
 
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-
-#ifdef __AFXDLL
-#include <AfxWin.h>
-#else
-#include <windows.h>
-#endif
+#include "catch_windows_h_proxy.h"
 
 namespace Catch {
 namespace {
