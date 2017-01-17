@@ -299,9 +299,10 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString );
         }
         SECTION( "Trailing newline" , "" ) {
-            CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" );
+            CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef" );
             CHECK( Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" );
-            CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" );
+            CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" );
+            CHECK( Text( "abcdef\n", TextAttributes().setWidth( 5 ) ).toString() == "abcd-\nef" );
         }
         SECTION( "Wrapped once", "" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" );
@@ -313,15 +314,22 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
         }
     }
 
-    SECTION( "With tabs", "" ) {
+    SECTION( "With wrap-before/ after characters", "" ) {
+        std::string testString = "one,two(three) <here>";
 
-        // guide:                 1234567890123456789
-        std::string testString = "one two \tthree four five six";
-
-        CHECK( Text( testString, TextAttributes().setWidth( 15 ) ).toString()
-            == "one two three\n        four\n        five\n        six" );
+        SECTION( "No wrapping", "" ) {
+            CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
+            CHECK( Text( testString, TextAttributes().setWidth( 24 ) ).toString() == testString );
+        }
+        SECTION( "Wrap before", "" ) {
+            CHECK( Text( testString, TextAttributes().setWidth( 11 ) ).toString() == "one,two\n(three)\n<here>" );
+        }
+        SECTION( "Wrap after", "" ) {
+            CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one,\ntwo\n(thre-\ne)\n<here>" );
+            CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one,\ntwo\n(thr-\nee)\n<her-\ne>" );
+            CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one,\ntwo\n(th-\nree)\n<he-\nre>" );
+        }
     }
-
 
 }
 

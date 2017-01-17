@@ -584,11 +584,11 @@ MiscTests.cpp:<line number>: FAILED:
   CHECK( s1 == s2 )
 with expansion:
   "if ($b == 10) {
-  		$a= 20;
+  		$a	= 20;
   }"
   ==
   "if ($b == 10) {
-  $a = 20;
+  	$a = 20;
   }
   "
 
@@ -831,5 +831,5 @@ with expansion:
 
 ===============================================================================
 test cases: 159 | 115 passed | 42 failed |  2 failed as expected
-assertions: 909 | 813 passed | 78 failed | 18 failed as expected
+assertions: 915 | 819 passed | 78 failed | 18 failed as expected
 

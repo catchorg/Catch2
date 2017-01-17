@@ -2987,14 +2987,10 @@ three four"
         <Section name="Trailing newline">
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n"
+              Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef"
             </Original>
             <Expanded>
-              "abcdef
-"
-==
-"abcdef
-"
+              "abcdef" == "abcdef"
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
@@ -3007,19 +3003,27 @@ three four"
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n"
+              Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef"
             </Original>
             <Expanded>
-              "abcdef
-"
-==
-"abcdef
-"
+              "abcdef" == "abcdef"
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              Text( "abcdef\n", TextAttributes().setWidth( 5 ) ).toString() == "abcd-\nef"
+            </Original>
+            <Expanded>
+              "abcd-
+ef"
+==
+"abcd-
+ef"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="With newlines">
         <Section name="Wrapped once">
@@ -3091,24 +3095,115 @@ four"
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With tabs">
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-          <Original>
-            Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six"
-          </Original>
-          <Expanded>
-            "one two three
-        four
-        five
-        six"
+      <Section name="With wrap-before/ after characters">
+        <Section name="No wrapping">
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
+            </Original>
+            <Expanded>
+              "one,two(three) &lt;here>"
 ==
-"one two three
-        four
-        five
-        six"
-          </Expanded>
-        </Expression>
+"one,two(three) &lt;here>"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              Text( testString, TextAttributes().setWidth( 24 ) ).toString() == testString
+            </Original>
+            <Expanded>
+              "one,two(three) &lt;here>"
+==
+"one,two(three) &lt;here>"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="With wrap-before/ after characters">
+        <Section name="Wrap before">
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              Text( testString, TextAttributes().setWidth( 11 ) ).toString() == "one,two\n(three)\n&lt;here>"
+            </Original>
+            <Expanded>
+              "one,two
+(three)
+&lt;here>"
+==
+"one,two
+(three)
+&lt;here>"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="With wrap-before/ after characters">
+        <Section name="Wrap after">
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one,\ntwo\n(thre-\ne)\n&lt;here>"
+            </Original>
+            <Expanded>
+              "one,
+two
+(thre-
+e)
+&lt;here>"
+==
+"one,
+two
+(thre-
+e)
+&lt;here>"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one,\ntwo\n(thr-\nee)\n&lt;her-\ne>"
+            </Original>
+            <Expanded>
+              "one,
+two
+(thr-
+ee)
+&lt;her-
+e>"
+==
+"one,
+two
+(thr-
+ee)
+&lt;her-
+e>"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one,\ntwo\n(th-\nree)\n&lt;he-\nre>"
+            </Original>
+            <Expanded>
+              "one,
+two
+(th-
+ree)
+&lt;he-
+re>"
+==
+"one,
+two
+(th-
+ree)
+&lt;he-
+re>"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -9432,7 +9527,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="813" failures="81" expectedFailures="18"/>
+    <OverallResults successes="819" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="813" failures="80" expectedFailures="18"/>
+  <OverallResults successes="819" failures="80" expectedFailures="18"/>
 </Catch>

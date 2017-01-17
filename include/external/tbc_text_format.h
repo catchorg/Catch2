@@ -37,19 +37,16 @@ namespace Tbc {
         TextAttributes()
         :   initialIndent( std::string::npos ),
             indent( 0 ),
-            width( consoleWidth-1 ),
-            tabChar( '\t' )
+            width( consoleWidth-1 )
         {}
 
         TextAttributes& setInitialIndent( std::size_t _value )  { initialIndent = _value; return *this; }
         TextAttributes& setIndent( std::size_t _value )         { indent = _value; return *this; }
         TextAttributes& setWidth( std::size_t _value )          { width = _value; return *this; }
-        TextAttributes& setTabChar( char _value )               { tabChar = _value; return *this; }
 
         std::size_t initialIndent;  // indent of first line, or npos
         std::size_t indent;         // indent of subsequent lines, or all if initialIndent is npos
         std::size_t width;          // maximum width of text, including indent. Longer text will wrap
-        char tabChar;               // If this char is seen the indent is changed to current pos
     };
 
     class Text {
@@ -57,63 +54,74 @@ namespace Tbc {
         Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() )
         : attr( _attr )
         {
-            std::string wrappableChars = " [({.,/|\\-";
-            std::size_t indent = _attr.initialIndent != std::string::npos
-                ? _attr.initialIndent
-                : _attr.indent;
-            std::string remainder = _str;
+            const std::string wrappableBeforeChars = "[({<\t";
+            const std::string wrappableAfterChars = "])}>-,./|\\";
+            const std::string wrappableInsteadOfChars = " \n\r";
+            std::string indent = _attr.initialIndent != std::string::npos
+                ? std::string( _attr.initialIndent, ' ' )
+                : std::string( _attr.indent, ' ' );
 
-            while( !remainder.empty() ) {
+            typedef std::string::const_iterator iterator;
+            iterator it = _str.begin();
+            const iterator strEnd = _str.end();
+
+            while( it != strEnd ) {
+
                 if( lines.size() >= 1000 ) {
                     lines.push_back( "... message truncated due to excessive size" );
                     return;
                 }
-                std::size_t tabPos = std::string::npos;
-                std::size_t width = (std::min)( remainder.size(), _attr.width - indent );
-                std::size_t pos = remainder.find_first_of( '\n' );
-                if( pos <= width ) {
-                    width = pos;
-                }
-                pos = remainder.find_last_of( _attr.tabChar, width );
-                if( pos != std::string::npos ) {
-                    tabPos = pos;
-                    if( remainder[width] == '\n' )
-                        width--;
-                    remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );
-                }
 
-                if( width == remainder.size() ) {
-                    spliceLine( indent, remainder, width );
-                }
-                else if( remainder[width] == '\n' ) {
-                    spliceLine( indent, remainder, width );
-                    if( width <= 1 || remainder.size() != 1 )
-                        remainder = remainder.substr( 1 );
-                    indent = _attr.indent;
-                }
-                else {
-                    pos = remainder.find_last_of( wrappableChars, width );
-                    if( pos != std::string::npos && pos > 0 ) {
-                        spliceLine( indent, remainder, pos );
-                        if( remainder[0] == ' ' )
-                            remainder = remainder.substr( 1 );
+
+                std::string suffix;
+                std::size_t width = (std::min)( static_cast<size_t>( strEnd-it ), _attr.width-static_cast<size_t>( indent.size() ) );
+                iterator itEnd = it+width;
+                iterator itNext = _str.end();
+
+                iterator itNewLine = std::find( it, itEnd, '\n' );
+                if( itNewLine != itEnd )
+                    itEnd = itNewLine;
+
+                if( itEnd != strEnd  ) {
+                    bool foundWrapPoint = false;
+                    for( iterator findIt = itEnd; !foundWrapPoint & findIt >= it; --findIt ) {
+
+                        if( wrappableAfterChars.find( *findIt ) != std::string::npos && findIt != itEnd ) {
+                            itEnd = findIt+1;
+                            itNext = findIt+1;
+                            foundWrapPoint = true;
+                        }
+                        else if( findIt > it && wrappableBeforeChars.find( *findIt ) != std::string::npos ) {
+                            itEnd = findIt;
+                            itNext = findIt;
+                            foundWrapPoint = true;
+                        }
+                        else if( wrappableInsteadOfChars.find( *findIt ) != std::string::npos ) {
+                            itNext = findIt+1;
+                            itEnd = findIt;
+                            foundWrapPoint = true;
+                        }
+                    }
+                    if( !foundWrapPoint ) {
+                        // No good wrap char, so we'll break mid word and add a hyphen
+                        --itEnd;
+                        itNext = itEnd;
+                        suffix = "-";
                     }
                     else {
-                        spliceLine( indent, remainder, width-1 );
-                        lines.back() += "-";
+                        while( itEnd > it && wrappableInsteadOfChars.find( *(itEnd-1) ) != std::string::npos )
+                            --itEnd;
                     }
-                    if( lines.size() == 1 )
-                        indent = _attr.indent;
-                    if( tabPos != std::string::npos )
-                        indent += tabPos;
                 }
+                lines.push_back( indent + std::string( it, itEnd ) + suffix );
+
+                if( indent.size() != _attr.indent )
+                    indent = std::string( _attr.indent, ' ' );
+                it = itNext;
             }
         }
 
-        void spliceLine( std::size_t _indent, std::string& _remainder, std::size_t _pos ) {
-            lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );
-            _remainder = _remainder.substr( _pos );
-        }
+
 
         typedef std::vector<std::string>::const_iterator const_iterator;
 
@@ -137,6 +145,7 @@ namespace Tbc {
             }
             return _stream;
         }
+
 
     private:
         std::string str;

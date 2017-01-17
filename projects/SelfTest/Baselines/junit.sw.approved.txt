@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="912" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="68" tests="918" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
@@ -242,7 +242,9 @@ ConditionTests.cpp:<line number>
     <testcase classname="Long strings can be wrapped" name="With newlines/Trailing newline" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped once" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With newlines/Wrapped twice" time="{duration}"/>
-    <testcase classname="Long strings can be wrapped" name="With tabs" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/No wrapping" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/Wrap before" time="{duration}"/>
+    <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/Wrap after" time="{duration}"/>
     <testcase classname="global" name="Long text is truncted" time="{duration}"/>
     <testcase classname="global" name="ManuallyRegistered" time="{duration}"/>
     <testcase classname="global" name="Matchers can be (AllOf) composed with the &amp;&amp; operator" time="{duration}"/>

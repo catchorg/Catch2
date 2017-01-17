@@ -2932,13 +2932,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef\n" )
+  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef" )
 with expansion:
-  "abcdef
-  "
-  ==
-  "abcdef
-  "
+  "abcdef" == "abcdef"
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -2948,13 +2944,19 @@ with expansion:
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef\n" )
+  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" )
 with expansion:
-  "abcdef
-  "
+  "abcdef" == "abcdef"
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 5 ) ).toString() == "abcd-\nef" )
+with expansion:
+  "abcd-
+  ef"
   ==
-  "abcdef
-  "
+  "abcd-
+  ef"
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
@@ -3024,24 +3026,107 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Long strings can be wrapped
-  With tabs
+  With wrap-before/ after characters
+  No wrapping
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
 ...............................................................................
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 15 ) ).toString() == "one two three\n        four\n        five\n        six" )
+  CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
 with expansion:
-  "one two three
-          four
-          five
-          six"
+  "one,two(three) <here>"
   ==
-  "one two three
-          four
-          five
-          six"
+  "one,two(three) <here>"
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( Text( testString, TextAttributes().setWidth( 24 ) ).toString() == testString )
+with expansion:
+  "one,two(three) <here>"
+  ==
+  "one,two(three) <here>"
+
+-------------------------------------------------------------------------------
+Long strings can be wrapped
+  With wrap-before/ after characters
+  Wrap before
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( Text( testString, TextAttributes().setWidth( 11 ) ).toString() == "one,two\n(three)\n<here>" )
+with expansion:
+  "one,two
+  (three)
+  <here>"
+  ==
+  "one,two
+  (three)
+  <here>"
+
+-------------------------------------------------------------------------------
+Long strings can be wrapped
+  With wrap-before/ after characters
+  Wrap after
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one,\ntwo\n(thre-\ne)\n<here>" )
+with expansion:
+  "one,
+  two
+  (thre-
+  e)
+  <here>"
+  ==
+  "one,
+  two
+  (thre-
+  e)
+  <here>"
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one,\ntwo\n(thr-\nee)\n<her-\ne>" )
+with expansion:
+  "one,
+  two
+  (thr-
+  ee)
+  <her-
+  e>"
+  ==
+  "one,
+  two
+  (thr-
+  ee)
+  <her-
+  e>"
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one,\ntwo\n(th-\nree)\n<he-\nre>" )
+with expansion:
+  "one,
+  two
+  (th-
+  ree)
+  <he-
+  re>"
+  ==
+  "one,
+  two
+  (th-
+  ree)
+  <he-
+  re>"
 
 -------------------------------------------------------------------------------
 Long text is truncted
@@ -6458,11 +6543,11 @@ MiscTests.cpp:<line number>: FAILED:
   CHECK( s1 == s2 )
 with expansion:
   "if ($b == 10) {
-  		$a= 20;
+  		$a	= 20;
   }"
   ==
   "if ($b == 10) {
-  $a = 20;
+  	$a = 20;
   }
   "
 
@@ -6478,36 +6563,32 @@ PASSED:
   CHECK_THAT( what, Contains( "[@zzz]" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
-  First seen at file:2
-  Redefined at file:10" contains: "
-  [@zzz]"
+  	First seen at file:2
+  	Redefined at file:10" contains: "[@zzz]"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "file" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
-  First seen at file:2
-  Redefined at file:10" contains:
-  "file"
+  	First seen at file:2
+  	Redefined at file:10" contains: "file"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "2" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
-  First seen at file:2
-  Redefined at file:10" contains:
-  "2"
+  	First seen at file:2
+  	Redefined at file:10" contains: "2"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "10" ) )
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
-  First seen at file:2
-  Redefined at file:10" contains:
-  "10"
+  	First seen at file:2
+  	Redefined at file:10" contains: "10"
 
 -------------------------------------------------------------------------------
 Tag alias can be registered against tag patterns
@@ -8972,5 +9053,5 @@ PASSED:
 
 ===============================================================================
 test cases: 159 | 114 passed | 43 failed |  2 failed as expected
-assertions: 911 | 813 passed | 80 failed | 18 failed as expected
+assertions: 917 | 819 passed | 80 failed | 18 failed as expected
 
