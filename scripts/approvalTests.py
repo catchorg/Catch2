@@ -10,17 +10,14 @@ from scriptCommon import catchPath
 
 rootPath = os.path.join(catchPath, 'projects/SelfTest/Baselines')
 
-filenameParser = re.compile(r'(.*)/(.*\..pp:)(.*)')
-filelineParser = re.compile(r'(.*\..pp:)([0-9]*)(.*)')
-pathParser = re.compile(r'(.*?)/(.*\..pp)(.*)')
-lineNumberParser = re.compile(r'(.*)line="[0-9]*"(.*)')
-hexParser = re.compile(r'(.*)\b(0[xX][0-9a-fA-F]+)\b(.*)')
-durationsParser = re.compile(r'(.*)time="[0-9]*\.[0-9]*"(.*)')
-timestampsParser = re.compile(r'(.*)timestamp="\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z"(.*)')
-versionParser = re.compile(r'(.*?)Catch v[0-9]*\.[0-9]*\.[0-9]*(.*)')
-devVersionParser = re.compile(r'(.*?)Catch v[0-9]*\.[0-9]*\.[0-9]*-develop\.[0-9]*(.*)')
-nullParser = re.compile(r'(.*?)\b(__null|nullptr)\b(.*)')
-exeNameParser = re.compile(r'(.*?)\b(CatchSelfTest|SelfTest)\b(.*)')
+filelocParser = re.compile(r'.*/(.+\.[ch]pp:)([0-9]*)')
+lineNumberParser = re.compile(r' line="[0-9]*"')
+hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
+durationsParser = re.compile(r' time="[0-9]*\.[0-9]*"')
+timestampsParser = re.compile(r' timestamp="\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z"')
+versionParser = re.compile(r'Catch v[0-9]+\.[0-9]+\.[0-9]+(-develop\.[0-9]+)?')
+nullParser = re.compile(r'\b(__null|nullptr)\b')
+exeNameParser = re.compile(r'\b(CatchSelfTest|SelfTest)\b')
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -33,50 +30,34 @@ if not cmdPath.startswith("/"):
 overallResult = 0
 
 def filterLine(line):
-    m = filenameParser.match(line)
+    # make paths relative to Catch root
+    line = line.replace(catchPath + '/', '')
+
+    # strip source line numbers
+    m = filelocParser.match(line)
     if m:
-        line = m.group(2) + m.group(3)
-        m2 = filelineParser.match(line)
-        if m2:
-            line = m2.group(1) + "<line number>" + m2.group(3)
+        # note that this also strips directories, leaving only the filename
+        filename, lnum = m.groups()
+        lnum = "<line number>" if lnum else ""
+        line = filename + lnum + line[m.end():]
     else:
-        m2 = lineNumberParser.match(line)
-        if m2:
-            line = m2.group(1) + m2.group(2)
-    m = pathParser.match(line)
-    if m:
-        path = "/" + m.group(2)
-        if path.startswith(catchPath):
-            path = path[1 + len(catchPath):]
-        line = m.group(1) + path + m.group(3)
-    m = devVersionParser.match(line)
-    if m:
-        line = m.group(1) + "<version>" + m.group(2)
-    else:
-        m = versionParser.match(line)
-        if m:
-            line = m.group(1) + "<version>" + m.group(2)
+        line = lineNumberParser.sub(" ", line)
 
-    m = nullParser.match(line)
-    if m:
-        line = m.group(1) + "0" + m.group(3)
+    # strip Catch version number
+    line = versionParser.sub("<version>", line)
 
-    m = exeNameParser.match(line)
-    if m:
-        line = m.group(1) + "<exe-name>" + m.group(3)
+    # replace *null* with 0
+    line = nullParser.sub("0", line)
 
-    while True:
-        m = hexParser.match(line)
-        if m:
-            line = m.group(1) + "0x<hex digits>" + m.group(3)
-        else:
-            break
-    m = durationsParser.match(line)
-    if m:
-        line = m.group(1) + 'time="{duration}"' + m.group(2)
-    m = timestampsParser.match(line)
-    if m:
-        line = m.group(1) + 'timestamp="{iso8601-timestamp}"' + m.group(2)
+    # strip executable name
+    line = exeNameParser.sub("<exe-name>", line)
+
+    # strip hexadecimal numbers (presumably pointer values)
+    line = hexParser.sub("0x<hex digits>", line)
+
+    # strip durations and timestamps
+    line = durationsParser.sub(' time="{duration}"', line)
+    line = timestampsParser.sub(' timestamp="{iso8601-timestamp}"', line)
     return line
 
 
