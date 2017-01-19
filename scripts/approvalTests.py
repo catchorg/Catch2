@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+
 from  __future__ import print_function
 
 import os
 import sys
 import subprocess
 import re
+import difflib
 
 import scriptCommon
 from scriptCommon import catchPath
@@ -25,6 +28,19 @@ else:
     cmdPath = os.path.join(catchPath, scriptCommon.getBuildExecutable())
 
 overallResult = 0
+
+def diffFiles(fileA, fileB):
+    with open(fileA, 'r') as file:
+        aLines = file.readlines()
+    with open(fileB, 'r') as file:
+        bLines = file.readlines()
+
+    shortenedFilenameA = fileA.rsplit(os.sep, 1)[-1]
+    shortenedFilenameB = fileB.rsplit(os.sep, 1)[-1]
+
+    diff = difflib.unified_diff(aLines, bLines, fromfile=shortenedFilenameA, tofile=shortenedFilenameB, n=0)
+    return [line for line in diff if line[0] in ('+', '-')]
+
 
 def filterLine(line):
     # make paths relative to Catch root
@@ -82,14 +98,15 @@ def approve(baseName, args):
     print()
     print(baseName + ":")
     if os.path.exists(baselinesPath):
-        diffResult = subprocess.call(["diff", baselinesPath, filteredResultsPath])
-        if diffResult == 0:
+        diffResult = diffFiles(baselinesPath, filteredResultsPath)
+        if diffResult:
+            print(''.join(diffResult))
+            print("  \n****************************\n  \033[91mResults differed")
+            if len(diffResult) > overallResult:
+                overallResult = len(diffResult)
+        else:
             os.remove(filteredResultsPath)
             print("  \033[92mResults matched")
-        else:
-            print("  \n****************************\n  \033[91mResults differed")
-            if diffResult > overallResult:
-                overallResult = diffResult
         print("\033[0m")
     else:
         print("  first approval")
