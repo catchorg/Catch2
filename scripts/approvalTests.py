@@ -22,10 +22,7 @@ exeNameParser = re.compile(r'\b(CatchSelfTest|SelfTest)\b')
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
 else:
-    cmdPath = scriptCommon.getBuildExecutable()
-
-if not cmdPath.startswith("/"):
-    cmdPath = os.path.join(catchPath, cmdPath)
+    cmdPath = os.path.join(catchPath, scriptCommon.getBuildExecutable())
 
 overallResult = 0
 
