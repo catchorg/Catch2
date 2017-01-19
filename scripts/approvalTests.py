@@ -13,14 +13,28 @@ from scriptCommon import catchPath
 
 rootPath = os.path.join(catchPath, 'projects/SelfTest/Baselines')
 
-filelocParser = re.compile(r'.*/(.+\.[ch]pp:)([0-9]*)')
+
+filelocParser = re.compile(r'''
+    .*/
+    (.+\.[ch]pp)  # filename
+    (?::|\()      # : is starting separator between filename and line number on Linux, ( on Windows
+    ([0-9]*)      # line number
+    \)?           # Windows also has an ending separator, )
+''', re.VERBOSE)
 lineNumberParser = re.compile(r' line="[0-9]*"')
 hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
 durationsParser = re.compile(r' time="[0-9]*\.[0-9]*"')
 timestampsParser = re.compile(r' timestamp="\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z"')
 versionParser = re.compile(r'Catch v[0-9]+\.[0-9]+\.[0-9]+(-develop\.[0-9]+)?')
 nullParser = re.compile(r'\b(__null|nullptr)\b')
-exeNameParser = re.compile(r'\b(CatchSelfTest|SelfTest)\b')
+exeNameParser = re.compile(r'''
+    \b
+    (CatchSelfTest|SelfTest)  # Expected executable name
+    (?:.exe)?                 # Executable name contains .exe on Windows.
+    \b
+''', re.VERBOSE)
+# This is a hack until something more reasonable is figured out
+specialCaseParser = re.compile(r'file\((\d+)\)')
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -43,15 +57,19 @@ def diffFiles(fileA, fileB):
 
 
 def filterLine(line):
-    # make paths relative to Catch root
-    line = line.replace(catchPath + '/', '')
+    if catchPath in line:
+        # make paths relative to Catch root
+        line = line.replace(catchPath + os.sep, '')
+        # go from \ in windows paths to /
+        line = line.replace('\\', '/')
+
 
     # strip source line numbers
     m = filelocParser.match(line)
     if m:
         # note that this also strips directories, leaving only the filename
         filename, lnum = m.groups()
-        lnum = "<line number>" if lnum else ""
+        lnum = ":<line number>" if lnum else ""
         line = filename + lnum + line[m.end():]
     else:
         line = lineNumberParser.sub(" ", line)
@@ -71,6 +89,7 @@ def filterLine(line):
     # strip durations and timestamps
     line = durationsParser.sub(' time="{duration}"', line)
     line = timestampsParser.sub(' timestamp="{iso8601-timestamp}"', line)
+    line = specialCaseParser.sub('file:\g<1>', line)
     return line
 
 
