@@ -322,7 +322,13 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
             == "one two three\n        four\n        five\n        six" );
     }
 
+    SECTION( "Wrapping near tab doesn't extract substrings from invalid positions", "" ) {
 
+        CHECK_NOTHROW( Text( "one\ttwo", TextAttributes().setWidth( 2 ) ).toString() );
+        CHECK_NOTHROW( Text( "one\ttwo", TextAttributes().setWidth( 3 ) ).toString() );
+        CHECK_NOTHROW( Text( "one\ttwo", TextAttributes().setWidth( 4 ) ).toString() );
+        CHECK_NOTHROW( Text( "one\ttwo", TextAttributes().setWidth( 5 ) ).toString() );
+    }
 }
 
 using namespace Catch;
