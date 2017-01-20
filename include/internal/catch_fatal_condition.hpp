@@ -18,7 +18,7 @@ namespace Catch {
         IResultCapture* resultCapture = context.getResultCapture();
         resultCapture->handleFatalErrorCondition( message );
 
-		if( Catch::alwaysTrue() ) // avoids "no return" warnings
+    if( Catch::alwaysTrue() ) // avoids "no return" warnings
             exit( exitCode );
     }
 
@@ -29,8 +29,8 @@ namespace Catch {
 namespace Catch {
 
     struct FatalConditionHandler {
-		void reset() {}
-	};
+    void reset() {}
+  };
 
 } // namespace Catch
 
