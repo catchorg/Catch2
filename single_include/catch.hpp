@@ -1,6 +1,6 @@
 /*
- *  Catch v1.6.0
- *  Generated: 2017-01-11 16:38:09.405017
+ *  Catch v1.6.1
+ *  Generated: 2017-01-20 12:33:53.497767
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -266,7 +266,10 @@
 #if defined(CATCH_INTERNAL_CONFIG_CPP11_UNIQUE_PTR) && !defined(CATCH_CONFIG_CPP11_NO_UNIQUE_PTR) && !defined(CATCH_CONFIG_CPP11_UNIQUE_PTR) && !defined(CATCH_CONFIG_NO_CPP11)
 #   define CATCH_CONFIG_CPP11_UNIQUE_PTR
 #endif
-#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER)
+// Use of __COUNTER__ is suppressed if __JETBRAINS_IDE__ is #defined (meaning we're being parsed by a JetBrains IDE for
+// analytics) because, at time of writing, __COUNTER__ is not properly handled by it.
+// This does not affect compilation
+#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER) && !defined(__JETBRAINS_IDE__)
 #   define CATCH_CONFIG_COUNTER
 #endif
 #if defined(CATCH_INTERNAL_CONFIG_CPP11_SHUFFLE) && !defined(CATCH_CONFIG_CPP11_NO_SHUFFLE) && !defined(CATCH_CONFIG_CPP11_SHUFFLE) && !defined(CATCH_CONFIG_NO_CPP11)
@@ -411,9 +414,8 @@ namespace Catch {
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info );
 
     // This is just here to avoid compiler warnings with macro constants and boolean literals
-    inline bool isTrue( bool value ){ return value; }
-    inline bool alwaysTrue() { return true; }
-    inline bool alwaysFalse() { return false; }
+    inline bool alwaysTrue( std::size_t = 0 ) { return true; }
+    inline bool alwaysFalse( std::size_t = 0 ) { return false; }
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
 
@@ -2005,11 +2007,19 @@ namespace Catch {
 #define TWOBLUECUBES_CATCH_PLATFORM_H_INCLUDED
 
 #if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
-#define CATCH_PLATFORM_MAC
+#  define CATCH_PLATFORM_MAC
 #elif  defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-#define CATCH_PLATFORM_IPHONE
+#  define CATCH_PLATFORM_IPHONE
+#elif defined(linux) || defined(__linux) || defined(__linux__)
+#  define CATCH_PLATFORM_LINUX
 #elif defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
-#define CATCH_PLATFORM_WINDOWS
+#  define CATCH_PLATFORM_WINDOWS
+#  if !defined(NOMINMAX) && !defined(CATCH_CONFIG_NO_NOMINMAX)
+#    define CATCH_DEFINES_NOMINMAX
+#  endif
+#  if !defined(WIN32_LEAN_AND_MEAN) && !defined(CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN)
+#    define CATCH_DEFINES_WIN32_LEAN_AND_MEAN
+#  endif
 #endif
 
 #include <string>
@@ -2026,25 +2036,36 @@ namespace Catch{
     // http://cocoawithlove.com/2008/03/break-into-debugger.html
     #ifdef DEBUG
         #if defined(__ppc64__) || defined(__ppc__)
-            #define CATCH_BREAK_INTO_DEBUGGER() \
-                if( Catch::isDebuggerActive() ) { \
+            #define CATCH_TRAP() \
                     __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
-                    : : : "memory","r0","r3","r4" ); \
-                }
+                    : : : "memory","r0","r3","r4" )
         #else
-            #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) {__asm__("int $3\n" : : );}
+            #define CATCH_TRAP() _asm__("int $3\n" : : )
         #endif
     #endif
 
+#elif defined(CATCH_PLATFORM_LINUX)
+    // If we can use inline assembler, do it because this allows us to break
+    // directly at the location of the failing check instead of breaking inside
+    // raise() called from it, i.e. one stack frame below.
+    #if defined(__GNUC__) && (defined(__i386) || defined(__x86_64))
+        #define CATCH_TRAP() asm volatile ("int $3")
+    #else // Fall back to the generic way.
+        #include <signal.h>
+
+        #define CATCH_TRAP() raise(SIGTRAP)
+    #endif
 #elif defined(_MSC_VER)
-    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { __debugbreak(); }
+    #define CATCH_TRAP() __debugbreak()
 #elif defined(__MINGW32__)
     extern "C" __declspec(dllimport) void __stdcall DebugBreak();
-    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { DebugBreak(); }
+    #define CATCH_TRAP() DebugBreak()
 #endif
 
-#ifndef CATCH_BREAK_INTO_DEBUGGER
-#define CATCH_BREAK_INTO_DEBUGGER() Catch::alwaysTrue();
+#ifdef CATCH_TRAP
+    #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { CATCH_TRAP(); }
+#else
+    #define CATCH_BREAK_INTO_DEBUGGER() Catch::alwaysTrue();
 #endif
 
 // #included from: catch_interfaces_runner.h
@@ -2080,7 +2101,7 @@ namespace Catch {
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::isTrue( false && !!(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+    } while( Catch::alwaysFalse( sizeof(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
@@ -6981,6 +7002,11 @@ namespace Catch {
         Context( Context const& );
         void operator=( Context const& );
 
+    public:
+        virtual ~Context() {
+            deleteAllValues( m_generatorsByTestName );
+        }
+
     public: // IContext
         virtual IResultCapture* getResultCapture() {
             return m_resultCapture;
@@ -7094,14 +7120,28 @@ namespace Catch {
 
 #if defined ( CATCH_CONFIG_COLOUR_WINDOWS ) /////////////////////////////////////////
 
-#ifndef NOMINMAX
-#define NOMINMAX
+// #included from: catch_windows_h_proxy.h
+
+#define TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
+
+#ifdef CATCH_DEFINES_NOMINMAX
+#  define NOMINMAX
+#endif
+#ifdef CATCH_DEFINES_WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
 #endif
 
 #ifdef __AFXDLL
 #include <AfxWin.h>
 #else
 #include <windows.h>
+#endif
+
+#ifdef CATCH_DEFINES_NOMINMAX
+#  undef NOMINMAX
+#endif
+#ifdef CATCH_DEFINES_WIN32_LEAN_AND_MEAN
+#  undef WIN32_LEAN_AND_MEAN
 #endif
 
 namespace Catch {
@@ -7619,7 +7659,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 6, 0, "", 0 );
+    Version libraryVersion( 1, 6, 1, "", 0 );
 
 }
 
@@ -7790,7 +7830,6 @@ namespace Catch
 #endif
 
 #ifdef CATCH_PLATFORM_WINDOWS
-#include <windows.h>
 #else
 #include <sys/time.h>
 #endif
@@ -8030,6 +8069,33 @@ namespace Catch {
         }
     } // namespace Catch
 
+#elif defined(CATCH_PLATFORM_LINUX)
+    #include <fstream>
+    #include <string>
+
+    namespace Catch{
+        // The standard POSIX way of detecting a debugger is to attempt to
+        // ptrace() the process, but this needs to be done from a child and not
+        // this process itself to still allow attaching to this process later
+        // if wanted, so is rather heavy. Under Linux we have the PID of the
+        // "debugger" (which doesn't need to be gdb, of course, it could also
+        // be strace, for example) in /proc/$PID/status, so just get it from
+        // there instead.
+        bool isDebuggerActive(){
+            std::ifstream in("/proc/self/status");
+            for( std::string line; std::getline(in, line); ) {
+                static const int PREFIX_LEN = 11;
+                if( line.compare(0, PREFIX_LEN, "TracerPid:\t") == 0 ) {
+                    // We're traced if the PID is not 0 and no other PID starts
+                    // with 0 digit, so it's enough to check for just a single
+                    // character.
+                    return line.length() > PREFIX_LEN && line[PREFIX_LEN] != '0';
+                }
+            }
+
+            return false;
+        }
+    } // namespace Catch
 #elif defined(_MSC_VER)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     namespace Catch {
@@ -9390,6 +9456,35 @@ namespace Catch {
 
 namespace Catch {
 
+    namespace {
+        std::string getCurrentTimestamp() {
+            // Beware, this is not reentrant because of backward compatibility issues
+            // Also, UTC only, again because of backward compatibility (%z is C++11)
+            time_t rawtime;
+            std::time(&rawtime);
+            const size_t timeStampSize = sizeof("2017-01-16T17:06:45Z");
+
+#ifdef CATCH_PLATFORM_WINDOWS
+            std::tm timeInfo = {};
+            gmtime_s(&timeInfo, &rawtime);
+#else
+            std::tm* timeInfo;
+            timeInfo = std::gmtime(&rawtime);
+#endif
+
+            char timeStamp[timeStampSize];
+            const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
+
+#ifdef CATCH_PLATFORM_WINDOWS
+            std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
+#else
+            std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
+#endif
+            return std::string(timeStamp);
+        }
+
+    }
+
     class JunitReporter : public CumulativeReporterBase {
     public:
         JunitReporter( ReporterConfig const& _config )
@@ -9454,7 +9549,7 @@ namespace Catch {
                 xml.writeAttribute( "time", "" );
             else
                 xml.writeAttribute( "time", suiteTime );
-            xml.writeAttribute( "timestamp", "tbd" ); // !TBD
+            xml.writeAttribute( "timestamp", getCurrentTimestamp() );
 
             // Write test cases
             for( TestGroupNode::ChildNodes::const_iterator
@@ -10442,7 +10537,7 @@ int main (int argc, char * const argv[]) {
 #define CATCH_CHECK_THROWS_WITH( expr, matcher ) INTERNAL_CATCH_THROWS( expr, Catch::ResultDisposition::ContinueOnFailure, matcher, "CATCH_CHECK_THROWS_WITH" )
 #define CATCH_CHECK_NOTHROW( expr ) INTERNAL_CATCH_NO_THROW( expr, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_NOTHROW" )
 
-#define CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THAT" )
+#define CATCH_CHECK_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::ContinueOnFailure, "CATCH_CHECK_THAT" )
 #define CATCH_REQUIRE_THAT( arg, matcher ) INTERNAL_CHECK_THAT( arg, matcher, Catch::ResultDisposition::Normal, "CATCH_REQUIRE_THAT" )
 
 #define CATCH_INFO( msg ) INTERNAL_CATCH_INFO( msg, "CATCH_INFO" )
