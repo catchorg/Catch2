@@ -23,14 +23,12 @@ namespace Catch{
 
     // The following code snippet based on:
     // http://cocoawithlove.com/2008/03/break-into-debugger.html
-    #ifdef DEBUG
-        #if defined(__ppc64__) || defined(__ppc__)
-            #define CATCH_TRAP() \
-                    __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
-                    : : : "memory","r0","r3","r4" )
-        #else
-            #define CATCH_TRAP() _asm__("int $3\n" : : )
-        #endif
+    #if defined(__ppc64__) || defined(__ppc__)
+        #define CATCH_TRAP() \
+                __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
+                : : : "memory","r0","r3","r4" )
+    #else
+        #define CATCH_TRAP() __asm__("int $3\n" : : )
     #endif
 
 #elif defined(CATCH_PLATFORM_LINUX)
