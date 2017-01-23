@@ -8758,32 +8758,6 @@ with expansion:
   "{ StringMaker<has_maker> }"
 
 -------------------------------------------------------------------------------
-toString( vectors<has_maker_and_toString )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker_and_toString> }" )
-with expansion:
-  "{ StringMaker<has_maker_and_toString> }"
-  ==
-  "{ StringMaker<has_maker_and_toString> }"
-
--------------------------------------------------------------------------------
-toString( vectors<has_toString )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( v ) == "{ {?} }" )
-with expansion:
-  "{ {?} }" == "{ {?} }"
-
--------------------------------------------------------------------------------
 toString(enum w/operator<<)
 -------------------------------------------------------------------------------
 EnumToString.cpp:<line number>
@@ -9052,6 +9026,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 159 | 114 passed | 43 failed |  2 failed as expected
-assertions: 917 | 819 passed | 80 failed | 18 failed as expected
+test cases: 157 | 112 passed | 43 failed |  2 failed as expected
+assertions: 915 | 817 passed | 80 failed | 18 failed as expected
 

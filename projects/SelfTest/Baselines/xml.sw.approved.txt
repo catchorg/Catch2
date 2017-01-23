@@ -9246,30 +9246,6 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( vectors&lt;has_maker_and_toString )">
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
-        <Original>
-          Catch::toString( v ) == "{ StringMaker&lt;has_maker_and_toString> }"
-        </Original>
-        <Expanded>
-          "{ StringMaker&lt;has_maker_and_toString> }"
-==
-"{ StringMaker&lt;has_maker_and_toString> }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString( vectors&lt;has_toString )">
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
-        <Original>
-          Catch::toString( v ) == "{ {?} }"
-        </Original>
-        <Expanded>
-          "{ {?} }" == "{ {?} }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="toString(enum w/operator&lt;&lt;)">
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
@@ -9527,7 +9503,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="819" failures="81" expectedFailures="18"/>
+    <OverallResults successes="817" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="819" failures="80" expectedFailures="18"/>
+  <OverallResults successes="817" failures="80" expectedFailures="18"/>
 </Catch>

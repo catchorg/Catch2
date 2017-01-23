@@ -37,19 +37,21 @@ TEST_CASE( "toString( has_toString )", "[toString]" ) {
 }
 
 // Call the overload
-TEST_CASE( "toString( has_maker )", "[toString]" ) {
+TEST_CASE( "toString( has_maker )", "toString]" ) {
     has_maker item;
     REQUIRE( Catch::toString( item ) == "StringMaker<has_maker>" );
 }
 
 // Call the overload
-TEST_CASE( "toString( has_maker_and_toString )", "[toString]" ) {
+TEST_CASE( "toString( has_maker_and_toString )", "[.][toString]" ) {
     has_maker_and_toString item;
     REQUIRE( Catch::toString( item ) == "toString( has_maker_and_toString )" );
 }
 
 // Vectors...
-TEST_CASE( "toString( vectors<has_toString )", "[toString]" ) {
+
+// Don't run this in approval tests as it is sensitive to two phase lookup differences
+TEST_CASE( "toString( vectors<has_toString )", "[.][toString][!nonportable]" ) {
     std::vector<has_toString> v(1);
     // This invokes template<T> toString which actually gives us '{ ? }'
     REQUIRE( Catch::toString( v ) == "{ {?} }" );
@@ -61,7 +63,8 @@ TEST_CASE( "toString( vectors<has_maker )", "[toString]" ) {
 }
 
 
-TEST_CASE( "toString( vectors<has_maker_and_toString )", "[toString]" ) {
+// Don't run this in approval tests as it is sensitive to two phase lookup differences
+TEST_CASE( "toString( vectors<has_maker_and_toString )", "[.][toString][!nonportable]" ) {
     std::vector<has_maker_and_toString> v(1);
     // Note: This invokes the template<T> toString -> StringMaker
     REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker_and_toString> }" );
