@@ -84,8 +84,8 @@ namespace Tbc {
 
                 if( itEnd != strEnd  ) {
                     bool foundWrapPoint = false;
-                    for( iterator findIt = itEnd; !foundWrapPoint & findIt >= it; --findIt ) {
-
+                    iterator findIt = itEnd;
+                    do {
                         if( wrappableAfterChars.find( *findIt ) != std::string::npos && findIt != itEnd ) {
                             itEnd = findIt+1;
                             itNext = findIt+1;
@@ -101,7 +101,13 @@ namespace Tbc {
                             itEnd = findIt;
                             foundWrapPoint = true;
                         }
+                        if( findIt == it )
+                            break;
+                        else
+                            --findIt;
                     }
+                    while( !foundWrapPoint );
+
                     if( !foundWrapPoint ) {
                         // No good wrap char, so we'll break mid word and add a hyphen
                         --itEnd;
