@@ -91,6 +91,7 @@ set(IMPL_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_streambuf.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_test_spec.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_xmlwriter.cpp
+        ${SELF_TEST_DIR}/SurrogateCpps/catch_test_case_tracker.cpp
         )
 CheckFileList(IMPL_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
 
