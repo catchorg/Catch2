@@ -8278,7 +8278,7 @@ there"
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown during a CHECK the test should abort and fail">
+    <TestCase name="When unchecked exceptions are thrown during a CHECK the test should continue">
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0

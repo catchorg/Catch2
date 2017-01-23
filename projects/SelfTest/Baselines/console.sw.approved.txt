@@ -7782,8 +7782,7 @@ due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
-When unchecked exceptions are thrown during a CHECK the test should abort and
-fail
+When unchecked exceptions are thrown during a CHECK the test should continue
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
 ...............................................................................

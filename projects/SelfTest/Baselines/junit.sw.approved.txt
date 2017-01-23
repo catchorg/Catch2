@@ -502,7 +502,7 @@ unexpected exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
-    <testcase classname="global" name="When unchecked exceptions are thrown during a CHECK the test should abort and fail" time="{duration}">
+    <testcase classname="global" name="When unchecked exceptions are thrown during a CHECK the test should continue" time="{duration}">
       <error message="thisThrows() == 0" type="CHECK">
 expected exception
 ExceptionTests.cpp:<line number>
