@@ -42,6 +42,8 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 * `[!mayfail]` - doesn't fail the test if any given assertion fails (but still reports it). This can be useful to flag a work-in-progress, or a known issue that you don't want to immediately fix but still want to track in the your tests.
 
+* `[!nonportable]` - Indicates that behaviour may vary between platforms or compilers.
+
 * `[#<filename>]` - running with `-#` or `--filenames-as-tags` causes Catch to add the filename, prefixed with `#` (and with any extension stripped) as a tag. e.g. tests in testfile.cpp would all be tagged `[#testfile]`.
 
 * `[@<alias>]` - tag aliases all begin with `@` (see below).

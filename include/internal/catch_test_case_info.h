@@ -29,7 +29,8 @@ namespace Catch {
             IsHidden = 1 << 1,
             ShouldFail = 1 << 2,
             MayFail = 1 << 3,
-            Throws = 1 << 4
+            Throws = 1 << 4,
+            NonPortable = 1 << 5
         };
 
         TestCaseInfo(   std::string const& _name,

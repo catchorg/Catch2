@@ -26,6 +26,8 @@ namespace Catch {
             return TestCaseInfo::ShouldFail;
         else if( tag == "!mayfail" )
             return TestCaseInfo::MayFail;
+        else if( tag == "!nonportable" )
+            return TestCaseInfo::NonPortable;
         else
             return TestCaseInfo::None;
     }
