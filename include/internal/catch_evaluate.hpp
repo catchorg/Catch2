@@ -94,119 +94,138 @@ namespace Internal {
     // This level of indirection allows us to specialise for integer types
     // to avoid signed/ unsigned warnings
 
+    // prevent from overloading ambiguity: SunStudio 11 can't handle function overloads, but can handle class overloads...
+    template<Operator Op, typename T1, typename T2>
+    struct EvaluatorImpl
+    {
+        bool operator()(T1 const& lhs, T2 const& rhs)
+        {
+            return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
+        }
+    };
+
     // "base" overload
     template<Operator Op, typename T1, typename T2>
     bool compare( T1 const& lhs, T2 const& rhs ) {
-        return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
+        return EvaluatorImpl<Op, T1, T2>() ( lhs, rhs );
     }
+
+#undef CATCH_INTERNAL_COMPARE
+#undef CATCH_INTERNAL_COMPARE_T
+#define CATCH_INTERNAL_COMPARE( LHS, RHS )   template<Operator Op>              struct EvaluatorImpl<Op, LHS, RHS> { bool operator()(LHS lhs, RHS rhs)
+#define CATCH_INTERNAL_COMPARE_T( LHS, RHS ) template<Operator Op, typename T>  struct EvaluatorImpl<Op, LHS, RHS> { bool operator()(LHS lhs, RHS rhs)
 
     // unsigned X to int
-    template<Operator Op> bool compare( unsigned int lhs, int rhs ) {
+    CATCH_INTERNAL_COMPARE( unsigned int , int  ) {
         return applyEvaluator<Op>( lhs, static_cast<unsigned int>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned long lhs, int rhs ) {
+    }};
+
+    CATCH_INTERNAL_COMPARE( unsigned long , int  ) {
         return applyEvaluator<Op>( lhs, static_cast<unsigned int>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned char lhs, int rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( unsigned char , int  ) {
         return applyEvaluator<Op>( lhs, static_cast<unsigned int>( rhs ) );
-    }
+    }};
 
     // unsigned X to long
-    template<Operator Op> bool compare( unsigned int lhs, long rhs ) {
+    CATCH_INTERNAL_COMPARE( unsigned int , long  ) {
         return applyEvaluator<Op>( lhs, static_cast<unsigned long>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned long lhs, long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( unsigned long , long  ) {
         return applyEvaluator<Op>( lhs, static_cast<unsigned long>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned char lhs, long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( unsigned char , long  ) {
         return applyEvaluator<Op>( lhs, static_cast<unsigned long>( rhs ) );
-    }
+    }};
 
     // int to unsigned X
-    template<Operator Op> bool compare( int lhs, unsigned int rhs ) {
+    CATCH_INTERNAL_COMPARE( int , unsigned int  ) {
         return applyEvaluator<Op>( static_cast<unsigned int>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( int lhs, unsigned long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( int , unsigned long  ) {
         return applyEvaluator<Op>( static_cast<unsigned int>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( int lhs, unsigned char rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( int , unsigned char  ) {
         return applyEvaluator<Op>( static_cast<unsigned int>( lhs ), rhs );
-    }
+    }};
 
     // long to unsigned X
-    template<Operator Op> bool compare( long lhs, unsigned int rhs ) {
+    CATCH_INTERNAL_COMPARE( long , unsigned int  ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long lhs, unsigned long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( long , unsigned long  ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long lhs, unsigned char rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( long , unsigned char  ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
+    }};
 
     // pointer to long (when comparing against NULL)
-    template<Operator Op, typename T> bool compare( long lhs, T* rhs ) {
+    CATCH_INTERNAL_COMPARE_T( long , T*  ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
-    }
+    }};
     template<Operator Op, typename T> bool compare( T* lhs, long rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 
     // pointer to int (when comparing against NULL)
-    template<Operator Op, typename T> bool compare( int lhs, T* rhs ) {
+    CATCH_INTERNAL_COMPARE_T( int , T*  ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
-    }
-    template<Operator Op, typename T> bool compare( T* lhs, int rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE_T( T* , int  ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
-    }
+    }};
 
 #ifdef CATCH_CONFIG_CPP11_LONG_LONG
     // long long to unsigned X
-    template<Operator Op> bool compare( long long lhs, unsigned int rhs ) {
+    CATCH_INTERNAL_COMPARE( long long , unsigned int  ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long long lhs, unsigned long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( long long , unsigned long  ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long long lhs, unsigned long long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( long long , unsigned long long  ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long long lhs, unsigned char rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( long long , unsigned char  ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
+    }};
 
     // unsigned long long to X
-    template<Operator Op> bool compare( unsigned long long lhs, int rhs ) {
+    CATCH_INTERNAL_COMPARE( unsigned long long , int  ) {
         return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( unsigned long long lhs, long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( unsigned long long , long  ) {
         return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( unsigned long long lhs, long long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( unsigned long long , long long  ) {
         return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( unsigned long long lhs, char rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE( unsigned long long , char  ) {
         return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
+    }};
 
     // pointer to long long (when comparing against NULL)
-    template<Operator Op, typename T> bool compare( long long lhs, T* rhs ) {
+    CATCH_INTERNAL_COMPARE_T( long long lhs, T*  ) {
         return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
-    }
-    template<Operator Op, typename T> bool compare( T* lhs, long long rhs ) {
+    }};
+    CATCH_INTERNAL_COMPARE_T( T* , long long  ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
-    }
+    }};
 #endif // CATCH_CONFIG_CPP11_LONG_LONG
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
     // pointer to nullptr_t (when comparing against nullptr)
-    template<Operator Op, typename T> bool compare( std::nullptr_t, T* rhs ) {
+    CATCH_INTERNAL_COMPARE_T( std::nullptr_t, T*  ) {
         return Evaluator<T*, T*, Op>::evaluate( nullptr, rhs );
-    }
-    template<Operator Op, typename T> bool compare( T* lhs, std::nullptr_t ) {
+    }};
+    CATCH_INTERNAL_COMPARE_T( T* , std::nullptr_t ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, nullptr );
-    }
+    }};
 #endif // CATCH_CONFIG_CPP11_NULLPTR
+
+#undef CATCH_INTERNAL_COMPARE
+#undef CATCH_INTERNAL_COMPARE_T
 
 } // end of namespace Internal
 } // end of namespace Catch

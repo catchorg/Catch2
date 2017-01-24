@@ -30,7 +30,7 @@ TEST_CASE( "std::pair<int,const std::string> -> toString", "[toString][pair]" ) 
 
 TEST_CASE( "std::vector<std::pair<std::string,int> > -> toString", "[toString][pair]" ) {
     std::vector<std::pair<std::string,int> > pr;
-    pr.push_back( std::make_pair("green", 55 ) );
+    pr.push_back( std::make_pair(std::string("green"), 55 ) );
     REQUIRE( Catch::toString( pr ) == "{ { \"green\", 55 } }" );
 }
 

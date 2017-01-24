@@ -38,6 +38,13 @@ namespace Catch {
 
 #include <signal.h>
 
+#ifdef CATCH_INTERNAL_EXTERNAL_C_SIGNAL_HANDLER
+extern "C"
+{
+    void catch_c_signal_handler (int sig);
+}
+#endif // CATCH_INTERNAL_EXTERNAL_C_SIGNAL_HANDLER
+
 namespace Catch {
 
     struct SignalDefs { int id; const char* name; };
@@ -62,7 +69,13 @@ namespace Catch {
 
         FatalConditionHandler() : m_isSet( true ) {
             for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i )
+            {
+#ifdef CATCH_INTERNAL_EXTERNAL_C_SIGNAL_HANDLER
+                signal( signalDefs[i].id, catch_c_signal_handler );
+#else
                 signal( signalDefs[i].id, handleSignal );
+#endif // CATCH_INTERNAL_EXTERNAL_C_SIGNAL_HANDLER
+            }
         }
         ~FatalConditionHandler() {
             reset();
@@ -80,6 +93,15 @@ namespace Catch {
 
 } // namespace Catch
 
+#ifdef CATCH_INTERNAL_EXTERNAL_C_SIGNAL_HANDLER
+extern "C"
+{
+    void catch_c_signal_handler (int sig)
+    {
+        Catch::FatalConditionHandler::handleSignal(sig);
+    }
+}
+#endif // CATCH_INTERNAL_EXTERNAL_C_SIGNAL_HANDLER
 #endif // not Windows
 
 #endif // TWOBLUECUBES_CATCH_FATAL_CONDITION_H_INCLUDED
