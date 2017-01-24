@@ -73,7 +73,7 @@ TEST_CASE( "When unchecked exceptions are thrown during a REQUIRE the test shoul
     FAIL( "This should never happen" );
 }
 
-TEST_CASE( "When unchecked exceptions are thrown during a CHECK the test should continue", "[!throws]" )
+TEST_CASE( "When unchecked exceptions are thrown during a CHECK the test should continue", "[.][failing][!throws]" )
 {
     try {
         CHECK(thisThrows() == 0);
