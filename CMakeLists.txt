@@ -104,7 +104,7 @@ set(TOP_LEVEL_HEADERS
         ${HEADER_DIR}/catch_with_main.hpp
         )
 CheckFileList(TOP_LEVEL_HEADERS ${HEADER_DIR})
-        
+
 # Please keep these ordered alphabetically
 set(EXTERNAL_HEADERS
         ${HEADER_DIR}/external/clara.h
@@ -112,7 +112,7 @@ set(EXTERNAL_HEADERS
         )
 CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
 
-        
+
 # Please keep these ordered alphabetically
 set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_approx.hpp
@@ -226,7 +226,8 @@ set(BENCH_SOURCES
         ${BENCHMARK_DIR}/BenchMain.cpp
         ${BENCHMARK_DIR}/StringificationBench.cpp
         )
-        
+CheckFileList(BENCH_SOURCES ${BENCHMARK_DIR})
+
 # Provide some groupings for IDEs
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${IMPL_SOURCES})
