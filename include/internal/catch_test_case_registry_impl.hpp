@@ -78,7 +78,7 @@ namespace Catch {
 
                 ss  << Colour( Colour::Red )
                     << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
-                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
+                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << '\n'
                     << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
 
                 throw std::runtime_error(ss.str());
@@ -110,7 +110,7 @@ namespace Catch {
 
         virtual void registerTest( TestCase const& testCase ) {
             std::string name = testCase.getTestCaseInfo().name;
-            if( name == "" ) {
+            if( name.empty() ) {
                 std::ostringstream oss;
                 oss << "Anonymous test case " << ++m_unnamedCount;
                 return registerTest( testCase.withName( oss.str() ) );
@@ -159,7 +159,7 @@ namespace Catch {
 
     inline std::string extractClassName( std::string const& classOrQualifiedMethodName ) {
         std::string className = classOrQualifiedMethodName;
-        if( startsWith( className, "&" ) )
+        if( startsWith( className, '&' ) )
         {
             std::size_t lastColons = className.rfind( "::" );
             std::size_t penultimateColons = className.rfind( "::", lastColons-1 );

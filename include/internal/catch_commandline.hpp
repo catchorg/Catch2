@@ -86,10 +86,10 @@ namespace Catch {
         std::string line;
         while( std::getline( f, line ) ) {
             line = trim(line);
-            if( !line.empty() && !startsWith( line, "#" ) ) {
-                if( !startsWith( line, "\"" ) )
+            if( !line.empty() && !startsWith( line, '#' ) ) {
+                if( !startsWith( line, '"' ) )
                     line = "\"" + line + "\"";
-                addTestOrTags( config, line + "," );
+                addTestOrTags( config, line + ',' );
             }
         }
     }

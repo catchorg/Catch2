@@ -202,7 +202,7 @@ namespace Catch {
 
         XmlWriter& writeBlankLine() {
             ensureTagClosed();
-            stream() << "\n";
+            stream() << '\n';
             return *this;
         }
 

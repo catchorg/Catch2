@@ -184,7 +184,7 @@ namespace Matchers {
             {
                 return m_caseSensitivity == CaseSensitive::No
                     ? " (case insensitive)"
-                    : "";
+                    : std::string();
             }
             CaseSensitive::Choice m_caseSensitivity;
             std::string m_str;

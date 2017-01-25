@@ -19,22 +19,20 @@ namespace Catch {
 
     template<typename T> class ExpressionLhs;
 
-    struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
-
     struct CopyableStream {
         CopyableStream() {}
         CopyableStream( CopyableStream const& other ) {
             oss << other.oss.str();
         }
         CopyableStream& operator=( CopyableStream const& other ) {
-            oss.str("");
+            oss.str(std::string());
             oss << other.oss.str();
             return *this;
         }
         std::ostringstream oss;
     };
 
-    class ResultBuilder {
+    class ResultBuilder : public DecomposedExpression {
     public:
         ResultBuilder(  char const* macroName,
                         SourceLineInfo const& lineInfo,
@@ -52,19 +50,15 @@ namespace Catch {
             return *this;
         }
 
-        template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( RhsT const& );
-        template<typename RhsT> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( RhsT const& );
-
         ResultBuilder& setResultType( ResultWas::OfType result );
         ResultBuilder& setResultType( bool result );
-        ResultBuilder& setLhs( std::string const& lhs );
-        ResultBuilder& setRhs( std::string const& rhs );
-        ResultBuilder& setOp( std::string const& op );
 
-        void endExpression();
+        void endExpression( DecomposedExpression const& expr );
 
-        std::string reconstructExpression() const;
+        virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE;
+
         AssertionResult build() const;
+        AssertionResult build( DecomposedExpression const& expr ) const;
 
         void useActiveException( ResultDisposition::Flags resultDisposition = ResultDisposition::Normal );
         void captureResult( ResultWas::OfType resultType );
@@ -76,14 +70,12 @@ namespace Catch {
         bool shouldDebugBreak() const;
         bool allowThrows() const;
 
+        template<typename ArgT, typename MatcherT>
+        void captureMatch( ArgT const& arg, MatcherT const& matcher, char const* matcherString );
+
     private:
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
-        struct ExprComponents {
-            ExprComponents() : testFalse( false ) {}
-            bool testFalse;
-            std::string lhs, rhs, op;
-        } m_exprComponents;
         CopyableStream m_stream;
 
         bool m_shouldDebugBreak;
@@ -104,6 +96,14 @@ namespace Catch {
 
     inline ExpressionLhs<bool> ResultBuilder::operator <= ( bool value ) {
         return ExpressionLhs<bool>( *this, value );
+    }
+
+    template<typename ArgT, typename MatcherT>
+    inline void ResultBuilder::captureMatch( ArgT const& arg, MatcherT const& matcher,
+                                             char const* matcherString ) {
+        MatchExpression<ArgT const&, MatcherT const&> expr( arg, matcher, matcherString );
+        setResultType( matcher.match( arg ) );
+        endExpression( expr );
     }
 
 } // namespace Catch

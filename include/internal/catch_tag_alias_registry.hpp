@@ -43,7 +43,7 @@ namespace Catch {
 
     void TagAliasRegistry::add( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
 
-        if( !startsWith( alias, "[@" ) || !endsWith( alias, "]" ) ) {
+        if( !startsWith( alias, "[@" ) || !endsWith( alias, ']' ) ) {
             std::ostringstream oss;
             oss << "error: tag alias, \"" << alias << "\" is not of the form [@alias name].\n" << lineInfo;
             throw std::domain_error( oss.str().c_str() );
@@ -51,7 +51,7 @@ namespace Catch {
         if( !m_registry.insert( std::make_pair( alias, TagAlias( tag, lineInfo ) ) ).second ) {
             std::ostringstream oss;
             oss << "error: tag alias, \"" << alias << "\" already registered.\n"
-                << "\tFirst seen at " << find(alias)->lineInfo << "\n"
+                << "\tFirst seen at " << find(alias)->lineInfo << '\n'
                 << "\tRedefined at " << lineInfo;
             throw std::domain_error( oss.str().c_str() );
         }
