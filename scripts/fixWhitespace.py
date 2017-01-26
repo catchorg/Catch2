@@ -24,6 +24,7 @@ def fixFile( path ):
     changed = 0
     for line in f:
         trimmed = line.rstrip() + "\n"
+        trimmed = trimmed.replace('\t', '    ')
         if trimmed != line:
             changed = changed +1
         lines.append( trimmed )

@@ -170,17 +170,17 @@ TEST_CASE
 
   REQUIRE(td != Approx(11.0));
   REQUIRE(Approx(11.0) != td);
-  
+
   REQUIRE(td <= Approx(10.0));
   REQUIRE(td <= Approx(11.0));
   REQUIRE(Approx(10.0) <= td);
   REQUIRE(Approx(9.0) <= td);
-  
+
   REQUIRE(td >= Approx(9.0));
   REQUIRE(td >= Approx(10.0));
   REQUIRE(Approx(10.0) >= td);
   REQUIRE(Approx(11.0) >= td);
-  
+
 }
 #endif
 

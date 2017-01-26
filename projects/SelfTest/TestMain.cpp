@@ -196,13 +196,13 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
     }
 
     SECTION( "use-colour", "") {
-        
+
         using Catch::UseColour;
-        
+
         SECTION( "without option", "" ) {
             const char* argv[] = { "test" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
+
             REQUIRE( config.useColour == UseColour::Auto );
         }
 
@@ -216,14 +216,14 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         SECTION( "yes", "" ) {
             const char* argv[] = { "test", "--use-colour", "yes" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
+
             REQUIRE( config.useColour == UseColour::Yes );
         }
 
         SECTION( "no", "" ) {
             const char* argv[] = { "test", "--use-colour", "no" };
             CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-            
+
             REQUIRE( config.useColour == UseColour::No );
         }
 

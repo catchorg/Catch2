@@ -118,11 +118,11 @@ public: // IStreamingReporter
                 ++it )
             (*it)->skipTest( testInfo );
     }
-    
+
     virtual MultipleReporters* tryAsMulti() CATCH_OVERRIDE {
         return this;
     }
-    
+
 };
 
 Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {

@@ -210,29 +210,29 @@ TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigne
 
 TEST_CASE( "comparisons between int variables", "" )
 {
-	long            long_var = 1L;
-	unsigned char	unsigned_char_var = 1;
-	unsigned short	unsigned_short_var = 1;
-	unsigned int	unsigned_int_var = 1;
-	unsigned long	unsigned_long_var = 1L;
+    long            long_var = 1L;
+    unsigned char    unsigned_char_var = 1;
+    unsigned short    unsigned_short_var = 1;
+    unsigned int    unsigned_int_var = 1;
+    unsigned long    unsigned_long_var = 1L;
 
-	REQUIRE( long_var == unsigned_char_var );
-	REQUIRE( long_var == unsigned_short_var );
-	REQUIRE( long_var == unsigned_int_var );
-	REQUIRE( long_var == unsigned_long_var );
+    REQUIRE( long_var == unsigned_char_var );
+    REQUIRE( long_var == unsigned_short_var );
+    REQUIRE( long_var == unsigned_int_var );
+    REQUIRE( long_var == unsigned_long_var );
 }
 
 TEST_CASE( "comparisons between const int variables", "" )
 {
-	const unsigned char     unsigned_char_var = 1;
-	const unsigned short    unsigned_short_var = 1;
-	const unsigned int      unsigned_int_var = 1;
-	const unsigned long     unsigned_long_var = 1L;
+    const unsigned char     unsigned_char_var = 1;
+    const unsigned short    unsigned_short_var = 1;
+    const unsigned int      unsigned_int_var = 1;
+    const unsigned long     unsigned_long_var = 1L;
 
-	REQUIRE( unsigned_char_var == 1 );
-	REQUIRE( unsigned_short_var == 1 );
-	REQUIRE( unsigned_int_var == 1 );
-	REQUIRE( unsigned_long_var == 1 );
+    REQUIRE( unsigned_char_var == 1 );
+    REQUIRE( unsigned_short_var == 1 );
+    REQUIRE( unsigned_int_var == 1 );
+    REQUIRE( unsigned_long_var == 1 );
 }
 
 TEST_CASE( "Comparisons between unsigned ints and negative signed ints match c++ standard behaviour", "" )

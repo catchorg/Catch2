@@ -88,10 +88,10 @@ struct Fixture
 }
 
 SCENARIO_METHOD(Fixture,
-	"BDD tests requiring Fixtures to provide commonly-accessed data or methods",
-	"[bdd][fixtures]") {
+    "BDD tests requiring Fixtures to provide commonly-accessed data or methods",
+    "[bdd][fixtures]") {
     const int before(counter());
-	GIVEN("No operations precede me") {
+    GIVEN("No operations precede me") {
         REQUIRE(before == 0);
         WHEN("We get the count") {
             const int after(counter());

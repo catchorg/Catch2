@@ -41,7 +41,7 @@ namespace Catch {
         Auto,
         Yes,
         No
-    }; };    
+    }; };
 
     class TestSpec;
 

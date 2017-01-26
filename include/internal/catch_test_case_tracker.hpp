@@ -52,7 +52,7 @@ namespace TestCaseTracking {
         virtual void addChild( Ptr<ITracker> const& child ) = 0;
         virtual ITracker* findChild( NameAndLocation const& nameAndLocation ) = 0;
         virtual void openChild() = 0;
-        
+
         // Debug/ checking
         virtual bool isSectionTracker() const = 0;
         virtual bool isIndexTracker() const = 0;
@@ -187,7 +187,7 @@ namespace TestCaseTracking {
 
         virtual bool isSectionTracker() const CATCH_OVERRIDE { return false; }
         virtual bool isIndexTracker() const CATCH_OVERRIDE { return false; }
-        
+
         void open() {
             m_runState = Executing;
             moveToThis();
@@ -261,7 +261,7 @@ namespace TestCaseTracking {
         virtual ~SectionTracker();
 
         virtual bool isSectionTracker() const CATCH_OVERRIDE { return true; }
-        
+
         static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation ) {
             SectionTracker* section = CATCH_NULL;
 
@@ -310,7 +310,7 @@ namespace TestCaseTracking {
         virtual ~IndexTracker();
 
         virtual bool isIndexTracker() const CATCH_OVERRIDE { return true; }
-        
+
         static IndexTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation, int size ) {
             IndexTracker* tracker = CATCH_NULL;
 

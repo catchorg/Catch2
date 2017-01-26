@@ -15,9 +15,9 @@ namespace
 {
     inline int thisThrows()
     {
-		if( Catch::alwaysTrue() )
-		    throw std::domain_error( "expected exception" );
-		return 1;
+        if( Catch::alwaysTrue() )
+            throw std::domain_error( "expected exception" );
+        return 1;
     }
 
     int thisDoesntThrow()
@@ -42,23 +42,23 @@ TEST_CASE( "Expected exceptions that don't throw or unexpected exceptions fail t
 
 TEST_CASE( "When unchecked exceptions are thrown directly they are always failures", "[.][failing][!throws]" )
 {
-	if( Catch::alwaysTrue() )
-	    throw std::domain_error( "unexpected exception" );
+    if( Catch::alwaysTrue() )
+        throw std::domain_error( "unexpected exception" );
 }
 
 TEST_CASE( "An unchecked exception reports the line of the last assertion", "[.][failing][!throws]" )
 {
     CHECK( 1 == 1 );
-	if( Catch::alwaysTrue() )
-	    throw std::domain_error( "unexpected exception" );
+    if( Catch::alwaysTrue() )
+        throw std::domain_error( "unexpected exception" );
 }
 
 TEST_CASE( "When unchecked exceptions are thrown from sections they are always failures", "[.][failing][!throws]" )
 {
     SECTION( "section name", "" )
     {
-		if( Catch::alwaysTrue() )
-			throw std::domain_error( "unexpected exception" );
+        if( Catch::alwaysTrue() )
+            throw std::domain_error( "unexpected exception" );
     }
 }
 
@@ -145,8 +145,8 @@ CATCH_TRANSLATE_EXCEPTION( double& ex )
 
 TEST_CASE("Non-std exceptions can be translated", "[.][failing][!throws]" )
 {
-	if( Catch::alwaysTrue() )
-	    throw CustomException( "custom exception" );
+    if( Catch::alwaysTrue() )
+        throw CustomException( "custom exception" );
 }
 
 TEST_CASE("Custom std-exceptions can be custom translated", "[.][failing][!throws]" )
@@ -156,8 +156,8 @@ TEST_CASE("Custom std-exceptions can be custom translated", "[.][failing][!throw
 }
 
 inline void throwCustom() {
-	if( Catch::alwaysTrue() )
-		throw CustomException( "custom exception - not std" );
+    if( Catch::alwaysTrue() )
+        throw CustomException( "custom exception - not std" );
 }
 
 TEST_CASE( "Custom exceptions can be translated when testing for nothrow", "[.][failing][!throws]" )
@@ -173,8 +173,8 @@ TEST_CASE( "Custom exceptions can be translated when testing for throwing as som
 
 TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  )
 {
-	if( Catch::alwaysTrue() )
-	    throw double( 3.14 );
+    if( Catch::alwaysTrue() )
+        throw double( 3.14 );
 }
 
 inline int thisFunctionNotImplemented( int ) {

@@ -65,7 +65,7 @@ namespace Catch {
     }
     inline void setUseColour( ConfigData& config, std::string const& value ) {
         std::string mode = toLower( value );
-        
+
         if( mode == "yes" )
             config.useColour = UseColour::Yes;
         else if( mode == "no" )
@@ -201,7 +201,7 @@ namespace Catch {
         cli["--force-colour"]
             .describe( "force colourised output (deprecated)" )
             .bind( &forceColour );
-        
+
         cli["--use-colour"]
             .describe( "should output be colourised" )
             .bind( &setUseColour, "yes|no" );
