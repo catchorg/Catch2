@@ -82,6 +82,8 @@ namespace Catch {
         }
 
         mutable unsigned int m_rc;
+
+        CATCH_CONFIG_CPP11_NON_MOVABLE(SharedImpl)
     };
 
 } // end namespace Catch

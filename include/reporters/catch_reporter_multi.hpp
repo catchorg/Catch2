@@ -123,6 +123,8 @@ public: // IStreamingReporter
         return this;
     }
     
+    MultipleReporters() {}
+    CATCH_CONFIG_CPP11_NON_MOVABLE(MultipleReporters)
 };
 
 Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {

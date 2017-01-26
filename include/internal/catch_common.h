@@ -36,6 +36,14 @@ namespace Catch {
         No
     }; };
 
+#ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
+#define CATCH_CONFIG_CPP11_NON_MOVABLE(name) \
+    name(name&&) = delete; \
+    name& operator=(name&&) = delete;
+#else
+#define CATCH_CONFIG_CPP11_NON_MOVABLE(name)
+#endif
+
     class NonCopyable {
 #ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         NonCopyable( NonCopyable const& )              = delete;
