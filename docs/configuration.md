@@ -62,6 +62,7 @@ This can be useful on certain platforms that do not provide ```std::cout``` and 
 	CATCH_CONFIG_CPP11_OVERRIDE				// CATCH_OVERRIDE expands to override (for virtual function implementations)
 	CATCH_CONFIG_CPP11_UNIQUE_PTR			// Use std::unique_ptr instead of std::auto_ptr
     CATCH_CONFIG_CPP11_SHUFFLE              // Use std::shuffle instead of std::random_shuffle
+    CATCH_CONFIG_CPP11_TYPE_TRAITS          // Use std::enable_if and <type_traits>
 
 Catch has some basic compiler detection that will attempt to select the appropriate mix of these macros. However being incomplete - and often without access to the respective compilers - this detection tends to be conservative.
 So overriding control is given to the user. If a compiler supports a feature (and Catch does not already detect it) then one or more of these may be defined to enable it (or suppress it, in some cases). If you do do this please raise an issue, specifying your compiler version (ideally with an idea of how to detect it) and stating that it has such support.

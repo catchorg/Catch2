@@ -13,7 +13,7 @@
 #include <cmath>
 #include <limits>
 
-#if defined(CATCH_CPP11_OR_GREATER)
+#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
 #include <type_traits>
 #endif
 
@@ -45,7 +45,7 @@ namespace Detail {
             return approx;
         }
 
-#if defined(CATCH_CPP11_OR_GREATER)
+#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula

@@ -143,7 +143,7 @@ TEST_CASE( "Approximate PI", "[Approx][PI]" )
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#if defined(CATCH_CPP11_OR_GREATER)
+#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
 class StrongDoubleTypedef
 {
   double d_ = 0.0;
@@ -152,6 +152,10 @@ class StrongDoubleTypedef
     explicit StrongDoubleTypedef(double d) : d_(d) {}
     explicit operator double() const { return d_; }
 };
+
+inline std::ostream& operator<<( std::ostream& os, StrongDoubleTypedef td ) {
+    return os << "StrongDoubleTypedef(" << static_cast<double>(td) << ")";
+}
 
 TEST_CASE
 (
