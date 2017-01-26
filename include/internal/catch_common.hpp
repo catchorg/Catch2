@@ -33,7 +33,7 @@ namespace Catch {
         return s.find(infix) != std::string::npos;
     }
     char toLowerCh(char c) {
-        return static_cast<char>( ::tolower( c ) );
+        return static_cast<char>( std::tolower( c ) );
     }
     void toLowerInPlace( std::string& s ) {
         std::transform( s.begin(), s.end(), s.begin(), toLowerCh );
