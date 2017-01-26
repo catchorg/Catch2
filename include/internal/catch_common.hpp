@@ -28,7 +28,7 @@ namespace Catch {
         return s.find( infix ) != std::string::npos;
     }
     bool contains( std::string const& s, char infix ) {
-        return s.find(infix);
+        return s.find(infix) != std::string::npos;
     }
     char toLowerCh(char c) {
         return static_cast<char>( ::tolower( c ) );

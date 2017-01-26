@@ -13,7 +13,7 @@
 namespace Catch {
 
     // Report the error condition
-    inline void reportFatal( std::string const& message, int exitCode ) {
+    inline void reportFatal( std::string const& message, int /*exitCode*/ ) {
         IContext& context = Catch::getCurrentContext();
         IResultCapture* resultCapture = context.getResultCapture();
         resultCapture->handleFatalErrorCondition( message );
