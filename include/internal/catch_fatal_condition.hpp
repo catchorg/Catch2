@@ -13,7 +13,7 @@
 namespace Catch {
 
     // Report the error condition
-    inline void reportFatal( std::string const& message, int exitCode ) {
+    inline void reportFatal( std::string const& message ) {
         IContext& context = Catch::getCurrentContext();
         IResultCapture* resultCapture = context.getResultCapture();
         resultCapture->handleFatalErrorCondition( message );
@@ -49,7 +49,7 @@ namespace Catch {
         static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
             for (int i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
                 if (ExceptionInfo->ExceptionRecord->ExceptionCode == signalDefs[i].id) {
-                    reportFatal(signalDefs[i].name, -i);
+                    reportFatal(signalDefs[i].name);
                 }
             }
             // If its not an exception we care about, pass it along.
@@ -122,7 +122,7 @@ namespace Catch {
                 }
             }
             reset();
-            reportFatal(name, -sig);
+            reportFatal(name);
             raise( sig );
         }
 
