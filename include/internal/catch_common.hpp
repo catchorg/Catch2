@@ -71,9 +71,9 @@ namespace Catch {
     {}
 
     std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser ) {
-        os << pluraliser.m_count << " " << pluraliser.m_label;
+        os << pluraliser.m_count << ' ' << pluraliser.m_label;
         if( pluraliser.m_count != 1 )
-            os << "s";
+            os << 's';
         return os;
     }
 
@@ -111,7 +111,7 @@ namespace Catch {
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo ) {
         std::ostringstream oss;
-        oss << locationInfo << ": Internal Catch error: '" << message << "'";
+        oss << locationInfo << ": Internal Catch error: '" << message << '\'';
         if( alwaysTrue() )
             throw std::logic_error( oss.str() );
     }

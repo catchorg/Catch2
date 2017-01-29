@@ -30,7 +30,7 @@ namespace Catch {
         if( _warning == "NoAssertions" )
             config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
         else
-            throw std::runtime_error( "Unrecognised warning: '" + _warning + "'" );
+            throw std::runtime_error( "Unrecognised warning: '" + _warning + '\'' );
     }
     inline void setOrder( ConfigData& config, std::string const& order ) {
         if( startsWith( "declared", order ) )
@@ -40,7 +40,7 @@ namespace Catch {
         else if( startsWith( "random", order ) )
             config.runOrder = RunTests::InRandomOrder;
         else
-            throw std::runtime_error( "Unrecognised ordering: '" + order + "'" );
+            throw std::runtime_error( "Unrecognised ordering: '" + order + '\'' );
     }
     inline void setRngSeed( ConfigData& config, std::string const& seed ) {
         if( seed == "time" ) {
@@ -88,7 +88,7 @@ namespace Catch {
             line = trim(line);
             if( !line.empty() && !startsWith( line, '#' ) ) {
                 if( !startsWith( line, '"' ) )
-                    line = "\"" + line + "\"";
+                    line = '"' + line + '"';
                 addTestOrTags( config, line + ',' );
             }
         }

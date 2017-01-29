@@ -61,7 +61,7 @@ namespace Catch {
         m_ofs.open( filename.c_str() );
         if( m_ofs.fail() ) {
             std::ostringstream oss;
-            oss << "Unable to open file: '" << filename << "'";
+            oss << "Unable to open file: '" << filename << '\'';
             throw std::domain_error( oss.str() );
         }
     }

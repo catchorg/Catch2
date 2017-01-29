@@ -136,7 +136,7 @@ namespace Catch {
         XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
             newlineIfNecessary();
-            stream() << m_indent << "<" << name;
+            stream() << m_indent << '<' << name;
             m_tags.push_back( name );
             m_indent += "  ";
             m_tagIsOpen = true;
@@ -165,12 +165,12 @@ namespace Catch {
 
         XmlWriter& writeAttribute( std::string const& name, std::string const& attribute ) {
             if( !name.empty() && !attribute.empty() )
-                stream() << " " << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << "\"";
+                stream() << ' ' << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << '"';
             return *this;
         }
 
         XmlWriter& writeAttribute( std::string const& name, bool attribute ) {
-            stream() << " " << name << "=\"" << ( attribute ? "true" : "false" ) << "\"";
+            stream() << ' ' << name << "=\"" << ( attribute ? "true" : "false" ) << '"';
             return *this;
         }
 
@@ -227,7 +227,7 @@ namespace Catch {
 
         void newlineIfNecessary() {
             if( m_needsNewline ) {
-                stream() << "\n";
+                stream() << '\n';
                 m_needsNewline = false;
             }
         }
