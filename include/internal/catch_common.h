@@ -102,8 +102,8 @@ namespace Catch {
 
         SourceLineInfo();
         SourceLineInfo( char const* _file, std::size_t _line );
-        SourceLineInfo( SourceLineInfo const& other );
 #  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
+        SourceLineInfo(SourceLineInfo const& other)          = default;
         SourceLineInfo( SourceLineInfo && )                  = default;
         SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
         SourceLineInfo& operator = ( SourceLineInfo && )     = default;
@@ -112,7 +112,7 @@ namespace Catch {
         bool operator == ( SourceLineInfo const& other ) const;
         bool operator < ( SourceLineInfo const& other ) const;
 
-        std::string file;
+        char const* file;
         std::size_t line;
     };
 
