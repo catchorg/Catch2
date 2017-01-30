@@ -59,9 +59,9 @@ namespace Catch {
 
         // 32k seems enough for Catch to handle stack overflow,
         // but the value was found experimentally, so there is no strong guarantee
-        FatalConditionHandler():m_isSet(true), m_guaranteeSize(32 * 1024) {
+        FatalConditionHandler():m_isSet(true), m_guaranteeSize(32 * 1024), m_exceptionHandlerHandle(CATCH_NULL) {
             // Register as first handler in current chain
-            AddVectoredExceptionHandler(1, handleVectoredException);
+            m_exceptionHandlerHandle = AddVectoredExceptionHandler(1, handleVectoredException);
             // Pass in guarantee size to be filled
             SetThreadStackGuarantee(&m_guaranteeSize);
         }
@@ -69,8 +69,9 @@ namespace Catch {
         void reset() {
             if (m_isSet) {
                 // Unregister handler and restore the old guarantee
-                RemoveVectoredExceptionHandler(handleVectoredException);
+                RemoveVectoredExceptionHandler(m_exceptionHandlerHandle);
                 SetThreadStackGuarantee(&m_guaranteeSize);
+                m_exceptionHandlerHandle = CATCH_NULL;
                 m_isSet = false;
             }
         }
@@ -81,6 +82,7 @@ namespace Catch {
     private:
         bool m_isSet;
         ULONG m_guaranteeSize;
+        PVOID m_exceptionHandlerHandle;
     };
 
 } // namespace Catch
