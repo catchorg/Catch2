@@ -40,7 +40,8 @@
             __catchResult.useActiveException( resultDisposition ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::alwaysFalse( sizeof(expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+    } while( Catch::isTrue( false && static_cast<bool>( !!(expr) ) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+    // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
