@@ -34,6 +34,15 @@ Example:
 REQUIRE_FALSE( thisReturnsFalse() );
 ```
 
+Do note that "overly complex" expressions cannot be decomposed and thus will not compile. This is done partly for practical reasons (to keep the underlying expression template machinery to minimum) and partly for philosophical reasons (assertions should be simple and deterministic).
+
+Examples:
+* `CHECK(a == 1 && b == 2);`
+This expression is too complex because of the `&&` operator. If you want to check that 2 or more properties hold, you can either put the expression into parenthesis, which stops decomposition from working, or you need to decompose the expression into two assertions: `CHECK( a == 1 ); CHECK( b == 2);`
+* `CHECK( a == 2 || b == 1 );`
+This expression is too complex because of the `||` operator. If you want to check that one of several properties hold, you can put the expression into parenthesis (unlike with `&&`, expression decomposition into several `CHECK`s is not possible).
+
+
 ### Floating point comparisons
 
 When comparing floating point numbers - especially if at least one of them has been computed - great care must be taken to allow for rounding errors and inexact representations.
