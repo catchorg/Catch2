@@ -12,7 +12,8 @@
 
 // Standard C/C++ main entry point
 int main (int argc, char * argv[]) {
-    return Catch::Session().run( argc, argv );
+    int result = Catch::Session().run( argc, argv );
+    return ( result < 0xff ? result : 0xff );
 }
 
 #else // __OBJC__
@@ -30,7 +31,7 @@ int main (int argc, char * const argv[]) {
     [pool drain];
 #endif
 
-    return result;
+    return ( result < 0xff ? result : 0xff );
 }
 
 #endif // __OBJC__
