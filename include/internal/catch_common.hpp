@@ -10,6 +10,8 @@
 
 #include "catch_common.h"
 
+#include <cstring>
+
 namespace Catch {
 
     bool startsWith( std::string const& s, std::string const& prefix ) {
@@ -69,29 +71,25 @@ namespace Catch {
     {}
 
     std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser ) {
-        os << pluraliser.m_count << " " << pluraliser.m_label;
+        os << pluraliser.m_count << ' ' << pluraliser.m_label;
         if( pluraliser.m_count != 1 )
-            os << "s";
+            os << 's';
         return os;
     }
 
-    SourceLineInfo::SourceLineInfo() : line( 0 ){}
+    SourceLineInfo::SourceLineInfo() : file(""), line( 0 ){}
     SourceLineInfo::SourceLineInfo( char const* _file, std::size_t _line )
     :   file( _file ),
         line( _line )
     {}
-    SourceLineInfo::SourceLineInfo( SourceLineInfo const& other )
-    :   file( other.file ),
-        line( other.line )
-    {}
     bool SourceLineInfo::empty() const {
-        return file.empty();
+        return file[0] == '\0';
     }
     bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const {
-        return line == other.line && file == other.file;
+        return line == other.line && (file == other.file || std::strcmp(file, other.file) == 0);
     }
     bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const {
-        return line < other.line || ( line == other.line  && file < other.file );
+        return line < other.line || ( line == other.line && (std::strcmp(file, other.file) < 0));
     }
 
     void seedRng( IConfig const& config ) {
@@ -113,7 +111,7 @@ namespace Catch {
 
     void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo ) {
         std::ostringstream oss;
-        oss << locationInfo << ": Internal Catch error: '" << message << "'";
+        oss << locationInfo << ": Internal Catch error: '" << message << '\'';
         if( alwaysTrue() )
             throw std::logic_error( oss.str() );
     }

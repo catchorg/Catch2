@@ -146,7 +146,7 @@ namespace Catch {
                             SectionNode const& sectionNode ) {
             std::string name = trim( sectionNode.stats.sectionInfo.name );
             if( !rootName.empty() )
-                name = rootName + "/" + name;
+                name = rootName + '/' + name;
 
             if( !sectionNode.assertions.empty() ||
                 !sectionNode.stdOut.empty() ||
@@ -224,14 +224,14 @@ namespace Catch {
 
                 std::ostringstream oss;
                 if( !result.getMessage().empty() )
-                    oss << result.getMessage() << "\n";
+                    oss << result.getMessage() << '\n';
                 for( std::vector<MessageInfo>::const_iterator
                         it = stats.infoMessages.begin(),
                         itEnd = stats.infoMessages.end();
                             it != itEnd;
                             ++it )
                     if( it->type == ResultWas::Info )
-                        oss << it->message << "\n";
+                        oss << it->message << '\n';
 
                 oss << "at " << result.getSourceInfo();
                 xml.writeText( oss.str(), false );

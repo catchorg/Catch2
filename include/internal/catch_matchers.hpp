@@ -202,7 +202,7 @@ namespace Matchers {
                 return m_data.m_str == m_data.adjustString( expr );;
             }
             virtual std::string toString() const {
-                return "equals: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
+                return "equals: \"" + m_data.m_str + '"' + m_data.toStringSuffix();
             }
 
             CasedString m_data;
@@ -219,7 +219,7 @@ namespace Matchers {
                 return m_data.adjustString( expr ).find( m_data.m_str ) != std::string::npos;
             }
             virtual std::string toString() const {
-                return "contains: \"" + m_data.m_str  + "\"" + m_data.toStringSuffix();
+                return "contains: \"" + m_data.m_str  + '"' + m_data.toStringSuffix();
             }
 
             CasedString m_data;
@@ -237,7 +237,7 @@ namespace Matchers {
                 return startsWith( m_data.adjustString( expr ), m_data.m_str );
             }
             virtual std::string toString() const {
-                return "starts with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
+                return "starts with: \"" + m_data.m_str + '"' + m_data.toStringSuffix();
             }
 
             CasedString m_data;
@@ -254,7 +254,7 @@ namespace Matchers {
                 return endsWith( m_data.adjustString( expr ), m_data.m_str );
             }
             virtual std::string toString() const {
-                return "ends with: \"" + m_data.m_str + "\"" + m_data.toStringSuffix();
+                return "ends with: \"" + m_data.m_str + '"' + m_data.toStringSuffix();
             }
 
             CasedString m_data;

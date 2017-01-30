@@ -56,7 +56,7 @@ namespace Catch {
 
     std::string AssertionResult::getExpression() const {
         if( isFalseTest( m_info.resultDisposition ) )
-            return "!" + m_info.capturedExpression;
+            return '!' + m_info.capturedExpression;
         else
             return m_info.capturedExpression;
     }

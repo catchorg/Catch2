@@ -69,7 +69,7 @@ std::string toString( std::string const& value ) {
             }
         }
     }
-    return "\"" + s + "\"";
+    return '"' + s + '"';
 }
 std::string toString( std::wstring const& value ) {
 
@@ -138,7 +138,7 @@ std::string toString( const double value ) {
     return fpToString( value, 10 );
 }
 std::string toString( const float value ) {
-    return fpToString( value, 5 ) + "f";
+    return fpToString( value, 5 ) + 'f';
 }
 
 std::string toString( bool value ) {
