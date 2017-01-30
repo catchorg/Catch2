@@ -24,7 +24,7 @@ int main( int argc, char* argv[] )
 
   // global clean-up...
 
-  return result;
+  return ( result < 0xff ? result : 0xff );
 }
 ```
 
@@ -45,13 +45,14 @@ int main( int argc, char* argv[] )
 
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
-  	return returnCode;
+  	return ( returnCode < 0xff ? returnCode : 0xff );
 
   // writing to session.configData() or session.Config() here 
   // overrides command line args
   // only do this if you know you need to
 
-  return session.run();
+  int numFailed = session.run();
+  return ( numFailed < 0xff ? numFailed : 0xff );
 }
 ```
 
