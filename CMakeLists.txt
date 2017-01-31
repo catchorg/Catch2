@@ -238,6 +238,17 @@ include_directories(${HEADER_DIR})
 add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
 add_executable(Benchmark ${BENCH_SOURCES} ${HEADERS})
 
+# Add desired warnings
+if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
+    target_compile_options( SelfTest PRIVATE -Wall -Wextra )
+    target_compile_options( Benchmark PRIVATE -Wall -Wextra )
+endif()
+if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+    target_compile_options( SelfTest PRIVATE /W4 )
+    target_compile_options( Benchmark PRIVATE /W4 )
+endif()
+
+
 # configure unit tests via CTest
 enable_testing()
 add_test(NAME RunTests COMMAND SelfTest)
