@@ -258,3 +258,5 @@ set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test c
 
 add_test(NAME ListTags COMMAND SelfTest --list-tags)
 set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
+
+install(DIRECTORY "single_include/" DESTINATION "include/catch/")
