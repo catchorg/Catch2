@@ -45,13 +45,16 @@ int main( int argc, char* argv[] )
 
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
-  	return ( returnCode < 0xff ? returnCode : 0xff );
+  	return returnCode;
 
   // writing to session.configData() or session.Config() here 
   // overrides command line args
   // only do this if you know you need to
 
   int numFailed = session.run();
+  // Note that on unices only the lower 8 bits are usually used, clamping
+  // the return value to 255 prevents false negative when some multiple
+  // of 256 tests has failed
   return ( numFailed < 0xff ? numFailed : 0xff );
 }
 ```
