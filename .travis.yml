@@ -119,12 +119,12 @@ matrix:
 
     # 3/ OSX Clang Builds
     - os: osx
-      osx_image: xcode7
+      osx_image: xcode7.3
       compiler: clang
       env: COMPILER='ccache clang++' BUILD_TYPE='Debug'
 
     - os: osx
-      osx_image: xcode7
+      osx_image: xcode7.3
       compiler: clang
       env: COMPILER='ccache clang++' BUILD_TYPE='Release'
 
@@ -145,7 +145,7 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       CMAKE_URL="http://www.cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz"
-      mkdir cmake && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       which cmake || brew install cmake 
