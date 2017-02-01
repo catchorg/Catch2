@@ -225,7 +225,7 @@ Prints the command line arguments to stdout
 ## Specify the section to run
 <pre>-s, --section &lt;section name&gt;</pre>
 
-To limit exection to a specific section within a test case, use this option one or more times.
+To limit execution to a specific section within a test case, use this option one or more times.
 To narrow to sub-sections use multiple instances, where each subsequent instance specifies a deeper nesting level.
 
 E.g. if you have:
