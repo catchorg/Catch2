@@ -87,6 +87,8 @@ namespace Catch {
             m_start = start;
         }
         void escape() {
+            if( m_mode == None )
+                m_start = m_pos;
             m_mode = EscapedName;
             m_escapeChars.push_back( m_pos );
         }
@@ -95,7 +97,7 @@ namespace Catch {
         void addPattern() {
             std::string token = subString();
             for( size_t i = 0; i < m_escapeChars.size(); ++i )
-                token = token.substr( 0, m_escapeChars[i] ) + token.substr( m_escapeChars[i]+1 );
+                token = token.substr( 0, m_escapeChars[i]-i ) + token.substr( m_escapeChars[i]+1-i );
             m_escapeChars.clear();
             if( startsWith( token, "exclude:" ) ) {
                 m_exclusion = true;
