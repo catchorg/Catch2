@@ -148,8 +148,8 @@ std::string toString( bool value ) {
 std::string toString( char value ) {
     if ( value == '\r' )
         return "'\\r'";
-    if ( value == '\l' )
-        return "'\\l'";
+    if ( value == '\f' )
+        return "'\\f'";
     if ( value == '\n' )
         return "'\\n'";
     if ( value == '\t' )
