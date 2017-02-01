@@ -1,4 +1,37 @@
-# 1.6.1
+# 1.7.0
+
+### Features/ Changes:
+* Catch now runs significantly faster for passing tests
+  * Microbenchmark focused on Catch's overhead went from ~3.4s to ~0.7s.
+  * Real world test using [JSON for Modern C++](https://github.com/nlohmann/json)'s test suite went from ~6m 25s to ~4m 14s.
+* Catch can now run specific sections within test cases.
+  * For now the support is only basic (no wildcards or tags), for details see the [documentation](docs/command-line.md).
+* Catch now supports SEH on Windows as well as signals on Linux.
+  * After receiving a signal, Catch reports failing assertion and then passes the signal onto the previous handler.
+* Approx can be used to compare values against strong typedefs (available in C++11 mode only).
+  * Strong typedefs mean types that are explicitly convertible to double.
+* CHECK macro no longer stops executing section if an exception happens.
+* Certain characters (space, tab, etc) are now pretty printed.
+  * This means that a `char c = ' '; REQUIRE(c == '\t');` would be printed as `' ' == '\t'`, instead of ` == 9`.
+
+### Fixes:
+* Text formatting no longer attempts to access out-of-bounds characters under certain conditions.
+* THROW family of assertions no longer trigger `-Wunused-value` on expressions containing explicit cast.
+* Breaking into debugger under OS X works again and no longer required `DEBUG` to be defined.
+* Compilation no longer breaks under certain compiler if a lambda is used inside assertion macro.
+
+### Other:
+* Catch's CMakeLists now defines install command.
+* Catch's CMakeLists now generates projects with warnings enabled.
+
+
+
+
+
+# Older versions
+Release notes were not maintained prior to v1.6.0, but you should be able to work them out from the Git history
+
+## 1.6.1
 
 ### Features/ Changes:
 * Catch now supports breaking into debugger on Linux
@@ -17,10 +50,6 @@
 * Catch now defines `NOMINMAX` and `WIN32_LEAN_AND_MEAN` before including `windows.h`
   * This can be disabled if needed, see [documentation](docs/configuration.md) for details.
 
-
-
-# Older versions
-Release notes were not maintained prior to v1.6.0, but you should be able to work them out from the Git history
 
 ## 1.6.0
 
