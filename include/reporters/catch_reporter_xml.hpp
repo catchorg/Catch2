@@ -164,6 +164,11 @@ namespace Catch {
             if ( m_config->showDurations() == ShowDurations::Always )
                 e.writeAttribute( "durationInSeconds", m_testCaseTimer.getElapsedSeconds() );
 
+            if( !testCaseStats.stdOut.empty() )
+                m_xml.scopedElement( "StdOut" ).writeText( trim( testCaseStats.stdOut ), false );
+            if( !testCaseStats.stdErr.empty() )
+                m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), false );
+
             m_xml.endElement();
         }
 

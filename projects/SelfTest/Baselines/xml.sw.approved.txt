@@ -6799,7 +6799,14 @@ re>"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Sends stuff to stdout and stderr">
-      <OverallResult success="true"/>
+      <OverallResult success="true">
+        <StdOut>
+A string sent directly to stdout
+        </StdOut>
+        <StdErr>
+A string sent directly to stderr
+        </StdErr>
+      </OverallResult>
     </TestCase>
     <TestCase name="Some simple comparisons between doubles">
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
@@ -6859,7 +6866,12 @@ re>"
       <Section name="two">
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <OverallResult success="false"/>
+      <OverallResult success="false">
+        <StdOut>
+Message from section one
+Message from section two
+        </StdOut>
+      </OverallResult>
     </TestCase>
     <TestCase name="StartsWith string matcher">
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -6908,7 +6920,12 @@ re>"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Strings can be rendered with colour">
-      <OverallResult success="true"/>
+      <OverallResult success="true">
+        <StdOut>
+hello
+hello
+        </StdOut>
+      </OverallResult>
     </TestCase>
     <TestCase name="Tabs and newlines show in output">
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
