@@ -78,8 +78,8 @@ public:
             .endExpression( *this );
     }
 
-    virtual std::string reconstructExpression() const CATCH_OVERRIDE {
-        return Catch::toString( m_truthy );
+    virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE {
+        dest = Catch::toString( m_truthy );
     }
 
 private:
@@ -115,11 +115,22 @@ public:
         return true;
     }
 
-    virtual std::string reconstructExpression() const CATCH_OVERRIDE {
-        return reconstructExpressionImpl
-                (Catch::toString( m_lhs ),
-                 Catch::toString( m_rhs ),
-                 Internal::OperatorTraits<Op>::getName() );
+    virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE {
+        std::string lhs = Catch::toString( m_lhs );
+        std::string rhs = Catch::toString( m_rhs );
+        char delim = lhs.size() + rhs.size() < 40 &&
+                     lhs.find('\n') == std::string::npos &&
+                     rhs.find('\n') == std::string::npos ? ' ' : '\n';
+        dest.reserve( 7 + lhs.size() + rhs.size() );
+                   // 2 for spaces around operator
+                   // 2 for operator
+                   // 2 for parentheses (conditionally added later)
+                   // 1 for negation (conditionally added later)
+        dest = lhs;
+        dest += delim;
+        dest += Internal::OperatorTraits<Op>::getName();
+        dest += delim;
+        dest += rhs;
     }
 
 private:
@@ -138,14 +149,14 @@ public:
         return true;
     }
 
-    virtual std::string reconstructExpression() const CATCH_OVERRIDE {
+    virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE {
         std::string matcherAsString = m_matcher.toString();
-        std::string dest = Catch::toString( m_arg ) + " ";
+        dest = Catch::toString( m_arg );
+        dest += ' ';
         if( matcherAsString == Detail::unprintableString )
             dest += m_matcherString;
         else
             dest += matcherAsString;
-        return dest;
     }
 
 private:

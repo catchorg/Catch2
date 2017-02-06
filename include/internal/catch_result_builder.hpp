@@ -132,8 +132,8 @@ namespace Catch {
         return AssertionResult( m_assertionInfo, data );
     }
 
-    std::string ResultBuilder::reconstructExpression() const {
-        return m_assertionInfo.capturedExpression;
+    void ResultBuilder::reconstructExpression( std::string& dest ) const {
+        dest = m_assertionInfo.capturedExpression;
     }
 
 } // end namespace Catch
