@@ -29,45 +29,45 @@ public:
 
     template<typename RhsT>
     BinaryExpression<T, Internal::IsEqualTo, RhsT const&>
-    operator == ( RhsT const& rhs ) const {
+    operator == ( RhsT const& rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
     template<typename RhsT>
     BinaryExpression<T, Internal::IsNotEqualTo, RhsT const&>
-    operator != ( RhsT const& rhs ) const {
+    operator != ( RhsT const& rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
     template<typename RhsT>
     BinaryExpression<T, Internal::IsLessThan, RhsT const&>
-    operator < ( RhsT const& rhs ) const {
+    operator < ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThan>( rhs );
     }
 
     template<typename RhsT>
     BinaryExpression<T, Internal::IsGreaterThan, RhsT const&>
-    operator > ( RhsT const& rhs ) const {
+    operator > ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThan>( rhs );
     }
 
     template<typename RhsT>
     BinaryExpression<T, Internal::IsLessThanOrEqualTo, RhsT const&>
-    operator <= ( RhsT const& rhs ) const {
+    operator <= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsLessThanOrEqualTo>( rhs );
     }
 
     template<typename RhsT>
     BinaryExpression<T, Internal::IsGreaterThanOrEqualTo, RhsT const&>
-    operator >= ( RhsT const& rhs ) const {
+    operator >= ( RhsT const& rhs ) {
         return captureExpression<Internal::IsGreaterThanOrEqualTo>( rhs );
     }
 
-    BinaryExpression<T, Internal::IsEqualTo, bool> operator == ( bool rhs ) const {
+    BinaryExpression<T, Internal::IsEqualTo, bool> operator == ( bool rhs ) {
         return captureExpression<Internal::IsEqualTo>( rhs );
     }
 
-    BinaryExpression<T, Internal::IsNotEqualTo, bool> operator != ( bool rhs ) const {
+    BinaryExpression<T, Internal::IsNotEqualTo, bool> operator != ( bool rhs ) {
         return captureExpression<Internal::IsNotEqualTo>( rhs );
     }
 
