@@ -78,6 +78,20 @@ Expects that an exception of the _specified type_ is thrown during evaluation of
 
 Expects that no exception is thrown during evaluation of the expression.
 
+
+Please note that the `THROW` family of assertions expects to be passed a single expression, not a statement or series of statements. If you want to check a more complicated sequence of operations, you can use a C++11 lambda function.
+
+```cpp
+REQUIRE_NOTHROW([&](){
+    int i = 1;
+    int j = 2;
+    auto k = i + j;
+    if (k == 3) {
+        throw 1;
+    }
+}());
+```
+
 ## Matcher expressions
 
 To support Matchers a slightly different form is used. Matchers will be more fully documented elsewhere. *Note that Matchers are still at early stage development and are subject to change.*
