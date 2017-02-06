@@ -21,7 +21,25 @@ namespace Catch {
         virtual bool isBinaryExpression() const {
             return false;
         }
-        virtual void reconstructExpression( std::string& dest ) const = 0;
+        virtual std::string reconstructExpression() const = 0;
+
+        std::string reconstructExpressionImpl( std::string const& lhs, std::string const& rhs, std::string const& op ) const {
+            std::string dest;
+            char delim = lhs.size() + rhs.size() < 40 &&
+                         lhs.find('\n') == std::string::npos &&
+                         rhs.find('\n') == std::string::npos ? ' ' : '\n';
+            dest.reserve( 7 + lhs.size() + rhs.size() );
+            // 2 for spaces around operator
+            // 2 for operator
+            // 2 for parentheses (conditionally added later)
+            // 1 for negation (conditionally added later)
+            dest = lhs;
+            dest += delim;
+            dest += op;
+            dest += delim;
+            dest += rhs;
+            return dest;
+        }
 
         // Only simple binary comparisons can be decomposed.
         // If more complex check is required then wrap sub-expressions in parentheses.
@@ -66,7 +84,7 @@ namespace Catch {
 
         std::string const& reconstructExpression() const {
             if( decomposedExpression != CATCH_NULL ) {
-                decomposedExpression->reconstructExpression( reconstructedExpression );
+                reconstructedExpression = decomposedExpression->reconstructExpression();
                 if( parenthesized ) {
                     reconstructedExpression.insert( 0, 1, '(' );
                     reconstructedExpression.append( 1, ')' );

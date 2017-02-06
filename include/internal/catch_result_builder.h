@@ -55,7 +55,7 @@ namespace Catch {
 
         void endExpression( DecomposedExpression const& expr );
 
-        virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE;
+        virtual std::string reconstructExpression() const CATCH_OVERRIDE;
 
         AssertionResult build() const;
         AssertionResult build( DecomposedExpression const& expr ) const;
