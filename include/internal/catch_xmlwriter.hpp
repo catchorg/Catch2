@@ -34,7 +34,7 @@ namespace Catch {
             // (see: http://www.w3.org/TR/xml/#syntax)
 
             for( std::size_t i = 0; i < m_str.size(); ++ i ) {
-                char c = m_str[i];
+                unsigned char c = m_str[i];
                 switch( c ) {
                     case '<':   os << "&lt;"; break;
                     case '&':   os << "&amp;"; break;
