@@ -7982,53 +7982,27 @@ with expansion:
 
 -------------------------------------------------------------------------------
 XmlEncode
-  string with control char (1) (XML 1.0)
+  string with control char (1)
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( encode( "[\x01]" ) == "[\\x01]" )
-with expansion:
-  "[\x01]" == "[\x01]"
-
--------------------------------------------------------------------------------
-XmlEncode
-  string with control char (1) (XMl 1.1)
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( encode( "[\x01]", Catch::XmlEncode::ForTextNodes, Catch::XmlEncode::_1_1 ) == "[&#x01;]" )
+  REQUIRE( encode( "[\x01]" ) == "[&#x01;]" )
 with expansion:
   "[&#x01;]" == "[&#x01;]"
 
 -------------------------------------------------------------------------------
 XmlEncode
-  string with control char (x7F) (XML 1.0)
+  string with control char (x7F)
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
 ...............................................................................
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( encode( "[\x7F]" ) == "[\\x7F]" )
-with expansion:
-  "[\x7F]" == "[\x7F]"
-
--------------------------------------------------------------------------------
-XmlEncode
-  string with control char (x7F) (XML 1.1)
--------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
-...............................................................................
-
-MiscTests.cpp:<line number>:
-PASSED:
-  REQUIRE( encode( "[\x7F]", Catch::XmlEncode::ForTextNodes, Catch::XmlEncode::_1_1 ) == "[&#x7F;]" )
+  REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" )
 with expansion:
   "[&#x7F;]" == "[&#x7F;]"
 
@@ -9052,5 +9026,5 @@ PASSED:
 
 ===============================================================================
 test cases: 157 | 112 passed | 43 failed |  2 failed as expected
-assertions: 917 | 819 passed | 80 failed | 18 failed as expected
+assertions: 915 | 817 passed | 80 failed | 18 failed as expected
 
