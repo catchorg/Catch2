@@ -1,6 +1,6 @@
 Catch is designed to "just work" as much as possible. For most people the only configuration needed is telling Catch which source file should host all the implementation code (```CATCH_CONFIG_MAIN```).
 
-Nonetheless there are still some occasions where finer control is needed. For these occasions Catch exposes a small set of macros for configuring how it is built.
+Nonetheless there are still some occasions where finer control is needed. For these occasions Catch exposes a set of macros for configuring how it is built.
 
 #  main()/ implementation
 
@@ -69,6 +69,15 @@ So overriding control is given to the user. If a compiler supports a feature (an
 You may also suppress any of these features by using the `_NO_` form, e.g. `CATCH_CONFIG_CPP11_NO_NULLPTR`.
 
 All C++11 support can be disabled with `CATCH_CONFIG_NO_CPP11`
+
+# Other toggles
+
+    CATCH_CONFIG_COUNTER                    // Use __COUNTER__ to generate unique names for test cases
+    CATCH_CONFIG_WINDOWS_SEH                // Enable SEH handling on Windows
+
+Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API supports.
+
+Just as with the C++11 conformance toggles, these toggles can be disabled by using `_NO_` form of the toggle, e.g. `CATCH_CONFIG_NO_WINDOWS_SEH`.
 
 # Windows header clutter
 

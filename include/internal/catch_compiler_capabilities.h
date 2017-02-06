@@ -26,6 +26,7 @@
 
 // CATCH_CONFIG_VARIADIC_MACROS : are variadic macros supported?
 // CATCH_CONFIG_COUNTER : is the __COUNTER__ macro supported?
+// CATCH_CONFIG_WINDOWS_SEH : is Windows SEH supported?
 // ****************
 // Note to maintainers: if new toggles are added please document them
 // in configuration.md, too
@@ -108,6 +109,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Visual C++
 #ifdef _MSC_VER
+
+#define CATCH_INTERNAL_CONFIG_WINDOWS_SEH
 
 #if (_MSC_VER >= 1600)
 #   define CATCH_INTERNAL_CONFIG_CPP11_NULLPTR
@@ -233,6 +236,9 @@
 # if defined(CATCH_INTERNAL_CONFIG_CPP11_TYPE_TRAITS) && !defined(CATCH_CONFIG_CPP11_NO_TYPE_TRAITS) && !defined(CATCH_CONFIG_CPP11_TYPE_TRAITS) && !defined(CATCH_CONFIG_NO_CPP11)
 #  define CATCH_CONFIG_CPP11_TYPE_TRAITS
 # endif
+#if defined(CATCH_INTERNAL_CONFIG_WINDOWS_SEH) && !defined(CATCH_CONFIG_NO_WINDOWS_SEH) && !defined(CATCH_CONFIG_WINDOWS_SEH)
+#   define CATCH_CONFIG_WINDOWS_SEH
+#endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS

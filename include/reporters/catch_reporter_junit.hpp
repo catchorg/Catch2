@@ -26,7 +26,7 @@ namespace Catch {
             std::time(&rawtime);
             const size_t timeStampSize = sizeof("2017-01-16T17:06:45Z");
 
-#ifdef CATCH_PLATFORM_WINDOWS
+#ifdef _MSC_VER
             std::tm timeInfo = {};
             gmtime_s(&timeInfo, &rawtime);
 #else
@@ -37,7 +37,7 @@ namespace Catch {
             char timeStamp[timeStampSize];
             const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
 
-#ifdef CATCH_PLATFORM_WINDOWS
+#ifdef _MSC_VER
             std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
 #else
             std::strftime(timeStamp, timeStampSize, fmt, timeInfo);

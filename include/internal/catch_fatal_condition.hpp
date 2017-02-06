@@ -22,10 +22,17 @@ namespace Catch {
 } // namespace Catch
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
-
-
 #include "catch_windows_h_proxy.h"
 
+#  if !defined ( CATCH_CONFIG_WINDOWS_SEH )
+
+namespace Catch {
+    struct FatalConditionHandler {
+        void reset() {}        
+    };
+}
+
+#  else // CATCH_CONFIG_WINDOWS_SEH is defined
 
 namespace Catch {
 
@@ -83,6 +90,8 @@ namespace Catch {
     };
 
 } // namespace Catch
+
+#  endif // CATCH_CONFIG_WINDOWS_SEH
 
 #else // Not Windows - assumed to be POSIX compatible //////////////////////////
 
