@@ -153,12 +153,13 @@ namespace Catch {
             newlineIfNecessary();
             m_indent = m_indent.substr( 0, m_indent.size()-2 );
             if( m_tagIsOpen ) {
-                stream() << "/>\n";
+                stream() << "/>";
                 m_tagIsOpen = false;
             }
             else {
-                stream() << m_indent << "</" << m_tags.back() << ">\n";
+                stream() << m_indent << "</" << m_tags.back() << ">";
             }
+            stream() << std::endl;
             m_tags.pop_back();
             return *this;
         }
