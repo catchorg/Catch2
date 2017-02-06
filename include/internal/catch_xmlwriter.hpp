@@ -22,10 +22,12 @@ namespace Catch {
     class XmlEncode {
     public:
         enum ForWhat { ForTextNodes, ForAttributes };
+        enum XmlVersion { _1_0, _1_1 };
 
-        XmlEncode( std::string const& str, ForWhat forWhat = ForTextNodes )
+        XmlEncode( XmlVersion xmlVersion, std::string const& str, ForWhat forWhat = ForTextNodes )
         :   m_str( str ),
-            m_forWhat( forWhat )
+            m_forWhat( forWhat ),
+            m_xmlVersion( xmlVersion )
         {}
 
         void encodeTo( std::ostream& os ) const {
@@ -57,8 +59,15 @@ namespace Catch {
                     default:
                         // Escape control chars - based on contribution by @espenalb in PR #465 and
                         // by @mrpi PR #588
-                        if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
-                            os << "&#x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>( c ) << ';';
+                        if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' ) {
+                            if( m_xmlVersion == _1_0 )
+                                // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
+                                os << "\\x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
+                                   << static_cast<int>( c );
+                            else
+                                os << "&#x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
+                                   << static_cast<int>( c ) << ';';
+                        }
                         else
                             os << c;
                 }
@@ -73,6 +82,7 @@ namespace Catch {
     private:
         std::string m_str;
         ForWhat m_forWhat;
+        XmlVersion m_xmlVersion;
     };
 
     class XmlWriter {
@@ -112,20 +122,19 @@ namespace Catch {
         XmlWriter()
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
-            m_os( &Catch::cout() )
+            m_os( Catch::cout() ),
+            m_xmlVersion( XmlEncode::_1_0 )
         {
-            // We encode control characters, which requires
-            // XML 1.1
-            // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
-            *m_os << "<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n";
+            writeDeclaration();
         }
 
         XmlWriter( std::ostream& os )
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
-            m_os( &os )
+            m_os( os ),
+            m_xmlVersion( XmlEncode::_1_0 )
         {
-            *m_os << "<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n";
+            writeDeclaration();
         }
 
         ~XmlWriter() {
@@ -136,7 +145,7 @@ namespace Catch {
         XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
             newlineIfNecessary();
-            stream() << m_indent << '<' << name;
+            m_os << m_indent << '<' << name;
             m_tags.push_back( name );
             m_indent += "  ";
             m_tagIsOpen = true;
@@ -153,11 +162,11 @@ namespace Catch {
             newlineIfNecessary();
             m_indent = m_indent.substr( 0, m_indent.size()-2 );
             if( m_tagIsOpen ) {
-                stream() << "/>\n";
+                m_os << "/>\n";
                 m_tagIsOpen = false;
             }
             else {
-                stream() << m_indent << "</" << m_tags.back() << ">\n";
+                m_os << m_indent << "</" << m_tags.back() << ">\n";
             }
             m_tags.pop_back();
             return *this;
@@ -165,12 +174,12 @@ namespace Catch {
 
         XmlWriter& writeAttribute( std::string const& name, std::string const& attribute ) {
             if( !name.empty() && !attribute.empty() )
-                stream() << ' ' << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << '"';
+                m_os << ' ' << name << "=\"" << XmlEncode( m_xmlVersion, attribute, XmlEncode::ForAttributes ) << '"';
             return *this;
         }
 
         XmlWriter& writeAttribute( std::string const& name, bool attribute ) {
-            stream() << ' ' << name << "=\"" << ( attribute ? "true" : "false" ) << '"';
+            m_os << ' ' << name << "=\"" << ( attribute ? "true" : "false" ) << '"';
             return *this;
         }
 
@@ -186,8 +195,8 @@ namespace Catch {
                 bool tagWasOpen = m_tagIsOpen;
                 ensureTagClosed();
                 if( tagWasOpen && indent )
-                    stream() << m_indent;
-                stream() << XmlEncode( text );
+                    m_os << m_indent;
+                m_os << XmlEncode( m_xmlVersion, text );
                 m_needsNewline = true;
             }
             return *this;
@@ -195,39 +204,42 @@ namespace Catch {
 
         XmlWriter& writeComment( std::string const& text ) {
             ensureTagClosed();
-            stream() << m_indent << "<!--" << text << "-->";
+            m_os << m_indent << "<!--" << text << "-->";
             m_needsNewline = true;
             return *this;
         }
 
         XmlWriter& writeBlankLine() {
             ensureTagClosed();
-            stream() << '\n';
+            m_os << '\n';
             return *this;
-        }
-
-        void setStream( std::ostream& os ) {
-            m_os = &os;
         }
 
     private:
         XmlWriter( XmlWriter const& );
         void operator=( XmlWriter const& );
 
-        std::ostream& stream() {
-            return *m_os;
+        void writeDeclaration() {
+            switch( m_xmlVersion ) {
+                case XmlEncode::_1_0:
+                    m_os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+                    break;
+                case XmlEncode::_1_1:
+                    m_os << "<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n";
+                    break;
+            }
         }
 
         void ensureTagClosed() {
             if( m_tagIsOpen ) {
-                stream() << ">\n";
+                m_os << ">\n";
                 m_tagIsOpen = false;
             }
         }
 
         void newlineIfNecessary() {
             if( m_needsNewline ) {
-                stream() << '\n';
+                m_os << '\n';
                 m_needsNewline = false;
             }
         }
@@ -236,7 +248,8 @@ namespace Catch {
         bool m_needsNewline;
         std::vector<std::string> m_tags;
         std::string m_indent;
-        std::ostream* m_os;
+        std::ostream& m_os;
+        XmlEncode::XmlVersion m_xmlVersion;
     };
 
 }

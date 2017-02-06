@@ -1,6 +1,6 @@
-<?xml version="1.1" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="916" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="68" tests="918" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
@@ -538,8 +538,10 @@ ExceptionTests.cpp:<line number>
     <testcase classname="XmlEncode" name="string with less-than" time="{duration}"/>
     <testcase classname="XmlEncode" name="string with greater-than" time="{duration}"/>
     <testcase classname="XmlEncode" name="string with quotes" time="{duration}"/>
-    <testcase classname="XmlEncode" name="string with control char (1)" time="{duration}"/>
-    <testcase classname="XmlEncode" name="string with control char (x7F)" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with control char (1) (XML 1.0)" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with control char (1) (XMl 1.1)" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with control char (x7F) (XML 1.0)" time="{duration}"/>
+    <testcase classname="XmlEncode" name="string with control char (x7F) (XML 1.1)" time="{duration}"/>
     <testcase classname="global" name="atomic if" time="{duration}"/>
     <testcase classname="global" name="boolean member" time="{duration}"/>
     <testcase classname="global" name="checkedElse" time="{duration}"/>

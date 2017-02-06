@@ -429,9 +429,9 @@ TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
         CHECK( result == "\"wide load\"" );
 }
 
-inline std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
+inline std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes, Catch::XmlEncode::XmlVersion version = Catch::XmlEncode::_1_0 ) {
     std::ostringstream oss;
-    oss << Catch::XmlEncode( str, forWhat );
+    oss << Catch::XmlEncode( version, str, forWhat );
     return oss.str();
 }
 
@@ -457,11 +457,17 @@ TEST_CASE( "XmlEncode" ) {
         REQUIRE( encode( stringWithQuotes ) == stringWithQuotes );
         REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" );
     }
-    SECTION( "string with control char (1)" ) {
-        REQUIRE( encode( "[\x01]" ) == "[&#x01;]" );
+    SECTION( "string with control char (1) (XML 1.0)" ) {
+        REQUIRE( encode( "[\x01]" ) == "[\\x01]" );
     }
-    SECTION( "string with control char (x7F)" ) {
-        REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" );
+    SECTION( "string with control char (1) (XMl 1.1)" ) {
+        REQUIRE( encode( "[\x01]", Catch::XmlEncode::ForTextNodes, Catch::XmlEncode::_1_1 ) == "[&#x01;]" );
+    }
+    SECTION( "string with control char (x7F) (XML 1.0)" ) {
+        REQUIRE( encode( "[\x7F]" ) == "[\\x7F]" );
+    }
+    SECTION( "string with control char (x7F) (XML 1.1)" ) {
+        REQUIRE( encode( "[\x7F]", Catch::XmlEncode::ForTextNodes, Catch::XmlEncode::_1_1 ) == "[&#x7F;]" );
     }
 }
 
