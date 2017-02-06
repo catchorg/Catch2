@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Catch name="<exe-name>">
   <Group name="<exe-name>">
     <TestCase name="# A test name that starts with a #">
@@ -8462,10 +8462,21 @@ there"
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with control char (1)">
+      <Section name="string with control char (1) (XML 1.0)">
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
-            encode( "[\x01]" ) == "[&amp;#x01;]"
+            encode( "[\x01]" ) == "[\\x01]"
+          </Original>
+          <Expanded>
+            "[\x01]" == "[\x01]"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with control char (1) (XMl 1.1)">
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
+          <Original>
+            encode( "[\x01]", Catch::XmlEncode::ForTextNodes, Catch::XmlEncode::_1_1 ) == "[&amp;#x01;]"
           </Original>
           <Expanded>
             "[&amp;#x01;]" == "[&amp;#x01;]"
@@ -8473,10 +8484,21 @@ there"
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with control char (x7F)">
+      <Section name="string with control char (x7F) (XML 1.0)">
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
-            encode( "[\x7F]" ) == "[&amp;#x7F;]"
+            encode( "[\x7F]" ) == "[\\x7F]"
+          </Original>
+          <Expanded>
+            "[\x7F]" == "[\x7F]"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="string with control char (x7F) (XML 1.1)">
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
+          <Original>
+            encode( "[\x7F]", Catch::XmlEncode::ForTextNodes, Catch::XmlEncode::_1_1 ) == "[&amp;#x7F;]"
           </Original>
           <Expanded>
             "[&amp;#x7F;]" == "[&amp;#x7F;]"
@@ -9520,7 +9542,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="817" failures="81" expectedFailures="18"/>
+    <OverallResults successes="819" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="817" failures="80" expectedFailures="18"/>
+  <OverallResults successes="819" failures="80" expectedFailures="18"/>
 </Catch>
