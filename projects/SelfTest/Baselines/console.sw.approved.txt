@@ -8106,9 +8106,9 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( encode( "[\x01]" ) == "[&#x01;]" )
+  REQUIRE( encode( "[\x01]" ) == "[\\x01]" )
 with expansion:
-  "[&#x01;]" == "[&#x01;]"
+  "[\x01]" == "[\x01]"
 
 -------------------------------------------------------------------------------
 XmlEncode
@@ -8119,9 +8119,9 @@ MiscTests.cpp:<line number>
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" )
+  REQUIRE( encode( "[\x7F]" ) == "[\\x7F]" )
 with expansion:
-  "[&#x7F;]" == "[&#x7F;]"
+  "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
 atomic if

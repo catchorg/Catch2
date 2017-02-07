@@ -458,10 +458,10 @@ TEST_CASE( "XmlEncode" ) {
         REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" );
     }
     SECTION( "string with control char (1)" ) {
-        REQUIRE( encode( "[\x01]" ) == "[&#x01;]" );
+        REQUIRE( encode( "[\x01]" ) == "[\\x01]" );
     }
     SECTION( "string with control char (x7F)" ) {
-        REQUIRE( encode( "[\x7F]" ) == "[&#x7F;]" );
+        REQUIRE( encode( "[\x7F]" ) == "[\\x7F]" );
     }
 }
 
