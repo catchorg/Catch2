@@ -201,6 +201,10 @@ namespace Catch {
             return *this;
         }
 
+        void writeStylesheetRef( std::string const& url ) {
+            m_os << "<?xml-stylesheet type=\"text/xsl\" href=\"" << url << "\"?>\n";
+        }
+
         XmlWriter& writeBlankLine() {
             ensureTagClosed();
             m_os << '\n';
@@ -217,14 +221,14 @@ namespace Catch {
 
         void ensureTagClosed() {
             if( m_tagIsOpen ) {
-                m_os << ">\n";
+                m_os << ">" << std::endl;
                 m_tagIsOpen = false;
             }
         }
 
         void newlineIfNecessary() {
             if( m_needsNewline ) {
-                m_os << '\n';
+                m_os << std::endl;
                 m_needsNewline = false;
             }
         }
