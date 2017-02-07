@@ -1,4 +1,19 @@
-# 1.7.0
+# 1.7.1
+
+### Fixes:
+* Fixed inconsistency in defining `NOMINMAX` and `WIN32_LEAN_AND_MEAN` inside `catch.hpp`.
+* Fixed SEH-related compilation error under older MinGW compilers, by making Windows SEH handling opt-in for compilers other than MSVC.
+  * For specifics, look into the [documentation](docs/configuration.md).
+* Fixed compilation error under MinGW caused by improper compiler detection.
+* Fixed XML reporter sometimes leaving an empty output file when a test ends with signal/structured exception.
+* Fixed XML reporter not reporting captured stdout/stderr.
+* Fixed possible infinite recursion in Windows SEH.
+* Fixed possible compilation error caused by Catch's operator overloads being ambiguous in regards to user-defined templated operators.
+
+# Older versions
+Release notes were not maintained prior to v1.6.0, but you should be able to work them out from the Git history
+
+## 1.7.0
 
 ### Features/ Changes:
 * Catch now runs significantly faster for passing tests
@@ -24,12 +39,6 @@
 * Catch's CMakeLists now defines install command.
 * Catch's CMakeLists now generates projects with warnings enabled.
 
-
-
-
-
-# Older versions
-Release notes were not maintained prior to v1.6.0, but you should be able to work them out from the Git history
 
 ## 1.6.1
 
