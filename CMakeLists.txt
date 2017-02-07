@@ -53,6 +53,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/BDDTests.cpp
         ${SELF_TEST_DIR}/ClassTests.cpp
         ${SELF_TEST_DIR}/CmdLineTests.cpp
+        ${SELF_TEST_DIR}/CompilationTests.cpp
         ${SELF_TEST_DIR}/ConditionTests.cpp
         ${SELF_TEST_DIR}/EnumToString.cpp
         ${SELF_TEST_DIR}/ExceptionTests.cpp
@@ -62,6 +63,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/PartTrackerTests.cpp
         ${SELF_TEST_DIR}/TagAliasTests.cpp
         ${SELF_TEST_DIR}/TestMain.cpp
+        ${SELF_TEST_DIR}/ToStringGeneralTests.cpp
         ${SELF_TEST_DIR}/ToStringPair.cpp
         ${SELF_TEST_DIR}/ToStringTuple.cpp
         ${SELF_TEST_DIR}/ToStringVector.cpp

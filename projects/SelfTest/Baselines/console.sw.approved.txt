@@ -15,6 +15,18 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
+#809
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 42 == f )
+with expansion:
+  42 == {?}
+
+-------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -532,6 +544,111 @@ PASSED:
   REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
+
+-------------------------------------------------------------------------------
+Character pretty printing
+  Specifically escaped
+-------------------------------------------------------------------------------
+ToStringGeneralTests.cpp:<line number>
+...............................................................................
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  CHECK( tab == '\t' )
+with expansion:
+  '\t' == '\t'
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  CHECK( newline == '\n' )
+with expansion:
+  '\n' == '\n'
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  CHECK( carr_return == '\r' )
+with expansion:
+  '\r' == '\r'
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  CHECK( form_feed == '\f' )
+with expansion:
+  '\f' == '\f'
+
+-------------------------------------------------------------------------------
+Character pretty printing
+  General chars
+-------------------------------------------------------------------------------
+ToStringGeneralTests.cpp:<line number>
+...............................................................................
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  CHECK( space == ' ' )
+with expansion:
+  ' ' == ' '
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == chars[i] )
+with expansion:
+  'a' == 'a'
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == chars[i] )
+with expansion:
+  'z' == 'z'
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == chars[i] )
+with expansion:
+  'A' == 'A'
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == chars[i] )
+with expansion:
+  'Z' == 'Z'
+
+-------------------------------------------------------------------------------
+Character pretty printing
+  Low ASCII
+-------------------------------------------------------------------------------
+ToStringGeneralTests.cpp:<line number>
+...............................................................................
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  CHECK( null_terminator == '\0' )
+with expansion:
+  0 == 0
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == i )
+with expansion:
+  2 == 2
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == i )
+with expansion:
+  3 == 3
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == i )
+with expansion:
+  4 == 4
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( c == i )
+with expansion:
+  5 == 5
 
 -------------------------------------------------------------------------------
 Comparing function pointers
@@ -9025,6 +9142,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 157 | 112 passed | 43 failed |  2 failed as expected
-assertions: 915 | 817 passed | 80 failed | 18 failed as expected
+test cases: 159 | 114 passed | 43 failed |  2 failed as expected
+assertions: 930 | 832 passed | 80 failed | 18 failed as expected
 

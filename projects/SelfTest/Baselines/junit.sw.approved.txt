@@ -1,7 +1,8 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="916" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="68" tests="931" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
+    <testcase classname="global" name="#809" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
 ConditionTests.cpp:<line number>
@@ -80,6 +81,9 @@ ExceptionTests.cpp:<line number>
     <testcase classname="Assertions then sections" name="A section" time="{duration}"/>
     <testcase classname="Assertions then sections" name="A section/Another section" time="{duration}"/>
     <testcase classname="Assertions then sections" name="A section/Another other section" time="{duration}"/>
+    <testcase classname="Character pretty printing" name="Specifically escaped" time="{duration}"/>
+    <testcase classname="Character pretty printing" name="General chars" time="{duration}"/>
+    <testcase classname="Character pretty printing" name="Low ASCII" time="{duration}"/>
     <testcase classname="global" name="Comparing function pointers" time="{duration}"/>
     <testcase classname="global" name="Comparing member function pointers" time="{duration}"/>
     <testcase classname="global" name="Comparisons between ints where one side is computed" time="{duration}"/>

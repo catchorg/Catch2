@@ -15,6 +15,18 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
+#809
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 42 == f )
+with expansion:
+  42 == {?}
+
+-------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -35,6 +47,6 @@ ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
 
 ===============================================================================
-test cases: 2 | 1 passed | 1 failed
-assertions: 5 | 1 passed | 4 failed
+test cases: 3 | 2 passed | 1 failed
+assertions: 6 | 2 passed | 4 failed
 

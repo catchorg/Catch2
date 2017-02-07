@@ -4,6 +4,17 @@
     <TestCase name="# A test name that starts with a #">
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#809">
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          42 == f
+        </Original>
+        <Expanded>
+          42 == {?}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="'Not' checks that should fail">
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
@@ -551,6 +562,130 @@
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Character pretty printing">
+      <Section name="Specifically escaped">
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            tab == '\t'
+          </Original>
+          <Expanded>
+            '\t' == '\t'
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            newline == '\n'
+          </Original>
+          <Expanded>
+            '\n' == '\n'
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            carr_return == '\r'
+          </Original>
+          <Expanded>
+            '\r' == '\r'
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            form_feed == '\f'
+          </Original>
+          <Expanded>
+            '\f' == '\f'
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="General chars">
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            space == ' '
+          </Original>
+          <Expanded>
+            ' ' == ' '
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == chars[i]
+          </Original>
+          <Expanded>
+            'a' == 'a'
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == chars[i]
+          </Original>
+          <Expanded>
+            'z' == 'z'
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == chars[i]
+          </Original>
+          <Expanded>
+            'A' == 'A'
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == chars[i]
+          </Original>
+          <Expanded>
+            'Z' == 'Z'
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Low ASCII">
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            null_terminator == '\0'
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == i
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == i
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == i
+          </Original>
+          <Expanded>
+            4 == 4
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            c == i
+          </Original>
+          <Expanded>
+            5 == 5
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -9520,7 +9655,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="817" failures="81" expectedFailures="18"/>
+    <OverallResults successes="832" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="817" failures="80" expectedFailures="18"/>
+  <OverallResults successes="832" failures="80" expectedFailures="18"/>
 </Catch>
