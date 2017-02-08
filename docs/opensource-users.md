@@ -20,10 +20,10 @@ A, single-header, JSON parsing library that takes advantage of what C++ has to o
 ### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
 A library of algorithms for values-distributed-in-time
 
-## [ChakraCore](https://github.com/Microsoft/ChakraCore/tree/403d19c90bc261fd029c29325b72a283dfce4ed7)
+### [ChakraCore](https://github.com/Microsoft/ChakraCore/tree/403d19c90bc261fd029c29325b72a283dfce4ed7)
 The core part of the Chakra Javascript engine that powers Microsoft Edge
 
-## [Couchbase-lite-core](https://github.com/couchbase/couchbase-lite-core)
+### [Couchbase-lite-core](https://github.com/couchbase/couchbase-lite-core)
 The next-generation core storage and query engine for Couchbase Lite/
 
 ## Applications & Tools
