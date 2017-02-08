@@ -91,11 +91,6 @@ namespace Catch {
     TestSpec::TagPattern::~TagPattern() {}
     TestSpec::ExcludedPattern::~ExcludedPattern() {}
 
-    Matchers::Impl::StdString::Equals::~Equals() {}
-    Matchers::Impl::StdString::Contains::~Contains() {}
-    Matchers::Impl::StdString::StartsWith::~StartsWith() {}
-    Matchers::Impl::StdString::EndsWith::~EndsWith() {}
-
     void Config::dummy() {}
 
     namespace TestCaseTracking {

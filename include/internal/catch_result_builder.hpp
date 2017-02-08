@@ -60,12 +60,13 @@ namespace Catch {
 
     void ResultBuilder::captureExpectedException( std::string const& expectedMessage ) {
         if( expectedMessage.empty() )
-            captureExpectedException( Matchers::Impl::Generic::AllOf<std::string>() );
+            captureExpectedException( Matchers::Impl::MatchAllOf<std::string>() );
         else
             captureExpectedException( Matchers::Equals( expectedMessage ) );
     }
 
-    void ResultBuilder::captureExpectedException( Matchers::Impl::Matcher<std::string> const& matcher ) {
+
+    void ResultBuilder::captureExpectedException( Matchers::Impl::MatcherBase<std::string> const& matcher ) {
 
         assert( !isFalseTest( m_assertionInfo.resultDisposition ) );
         AssertionResultData data = m_data;
