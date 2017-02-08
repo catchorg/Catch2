@@ -243,10 +243,7 @@ TEST_CASE("Equals string matcher", "[.][failing][matchers]")
 {
     CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
 }
-TEST_CASE("Equals string matcher, with NULL", "[matchers]")
-{
-    REQUIRE_THAT("", Equals(CATCH_NULL));
-}
+
 TEST_CASE("AllOf matcher", "[matchers]")
 {
     CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) );

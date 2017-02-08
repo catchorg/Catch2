@@ -1182,17 +1182,6 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Equals string matcher, with NULL" tags="[matchers]">
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
-        <Original>
-          "", Equals(0)
-        </Original>
-        <Expanded>
-          "" equals: ""
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Exception messages can be tested for" tags="[!throws]">
       <Section name="exact match">
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -9693,7 +9682,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="836" failures="81" expectedFailures="18"/>
+    <OverallResults successes="835" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="836" failures="80" expectedFailures="18"/>
+  <OverallResults successes="835" failures="80" expectedFailures="18"/>
 </Catch>
