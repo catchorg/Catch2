@@ -63,6 +63,11 @@ When dealing with very large or very small numbers it can be useful to specify a
 
 ## Exceptions
 
+* **REQUIRE_NOTHROW(** _expression_ **)** and  
+* **CHECK_NOTHROW(** _expression_ **)**
+
+Expects that no exception is thrown during evaluation of the expression.
+
 * **REQUIRE_THROWS(** _expression_ **)** and  
 * **CHECK_THROWS(** _expression_ **)**
 
@@ -73,10 +78,16 @@ Expects that an exception (of any type) is be thrown during evaluation of the ex
 
 Expects that an exception of the _specified type_ is thrown during evaluation of the expression.
 
-* **REQUIRE_NOTHROW(** _expression_ **)** and  
-* **CHECK_NOTHROW(** _expression_ **)**
+* **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and  
+* **CHECK_THROWS_WITH(** _expression_, _string or string matcher_ **)**
 
-Expects that no exception is thrown during evaluation of the expression.
+Expects that an exception is thrown that, when converted to a string, matches the _string_ or _string matcher_ provided (see next section for Matchers).
+
+e.g.
+```cpp
+REQUIRE_THROWS_WITH( openThePodBayDoors(), Contains( "afraid" ) && Contains( "can't do that" ) );
+REQUIRE_THROWS_WITH( dismantleHal(), "My mind is going" );
+```
 
 
 Please note that the `THROW` family of assertions expects to be passed a single expression, not a statement or series of statements. If you want to check a more complicated sequence of operations, you can use a C++11 lambda function.
@@ -96,9 +107,12 @@ REQUIRE_NOTHROW([&](){
 
 To support Matchers a slightly different form is used. Matchers will be more fully documented elsewhere. *Note that Matchers are still at early stage development and are subject to change.*
 
-* **REQUIRE_THAT(** _lhs_, _matcher call_ **)** and  
-* **CHECK_THAT(** _lhs_, _matcher call_ **)**  
+* **REQUIRE_THAT(** _lhs_, _matcher expression_ **)** and  
+* **CHECK_THAT(** _lhs_, _matcher expression_ **)**  
 
+Currently only string matchers are implemented and consist of: `Contains`, `Equals`, `StartsWith` and `EndsWith`.
+
+Matchers can be composed using `&&`, `||` and `!` operators.
 
 ---
 
