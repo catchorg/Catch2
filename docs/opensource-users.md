@@ -12,27 +12,44 @@ Of course users of those projects might want to update this page too. That's fin
 If you're an Open Source project maintainer and see your project listed here but would rather it wasn't - 
 just let us know via any of the previously mentioned means - although I'm sure there won't be many who feel that way.
  
+Listing a project here does not imply endorsement and the plan is to keep these ordered alphabetically to avoid an implication of relative importance.
+
 ## Libraries & Frameworks
 
-### [JSON for Modern C++](https://github.com/nlohmann/json)
-A, single-header, JSON parsing library that takes advantage of what C++ has to offer.
+### [Azmq](https://github.com/zeromq/azmq)
+Boost Asio style bindings for ZeroMQ
 
-### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
-A library of algorithms for values-distributed-in-time
-
-### [ChakraCore](https://github.com/Microsoft/ChakraCore/tree/403d19c90bc261fd029c29325b72a283dfce4ed7)
+### [ChakraCore](https://github.com/Microsoft/ChakraCore)
 The core part of the Chakra Javascript engine that powers Microsoft Edge
+
+### [ChaiScript](https://github.com/ChaiScript/ChaiScript)
+A, header-only, embedded scripting language designed from the ground up to directly target C++ and take advantage of modern C++ development techniques
 
 ### [Couchbase-lite-core](https://github.com/couchbase/couchbase-lite-core)
 The next-generation core storage and query engine for Couchbase Lite/
 
-## Applications & Tools
+### [JSON for Modern C++](https://github.com/nlohmann/json)
+A, single-header, JSON parsing library that takes advantage of what C++ has to offer.
 
-### [Standardese](https://github.com/foonathan/standardese)
-Standardese aims to be a nextgen Doxygen
+### [MNMLSTC Core](https://github.com/mnmlstc/core)
+a small and easy to use C++11 library that adds a functionality set that will be available in C++14 and later, as well as some useful additions
+
+### [Ppconsul](https://github.com/oliora/ppconsul)
+A C++ client library for Consul. Consul is a distributed tool for discovering and configuring services in your infrastructure
+
+### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
+A library of algorithms for values-distributed-in-time
+
+### [Trompeloeil](https://github.com/rollbear/trompeloeil)
+A thread safe header only mocking framework for C++14
+
+## Applications & Tools
 
 ### [MAME](https://github.com/mamedev/mame)
 MAME originally stood for Multiple Arcade Machine Emulator
+
+### [Standardese](https://github.com/foonathan/standardese)
+Standardese aims to be a nextgen Doxygen
 
 ---
 
