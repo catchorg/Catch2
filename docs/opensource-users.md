@@ -1,4 +1,4 @@
-# A selection of Open Source projects using Catch
+# Open Source projects using Catch
 
 Catch is great for open source. With it's [liberal license](../LICENSE_1_0.txt) and single-header, dependency-free, distribution 
 it's easy to just drop the header into your project and start writing tests - what's not to like?
@@ -16,6 +16,9 @@ just let us know via any of the previously mentioned means - although I'm sure t
 
 ### [JSON for Modern C++](https://github.com/nlohmann/json)
 A, single-header, JSON parsing library that takes advantage of what C++ has to offer.
+
+### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
+A library of algorithms for values-distributed-in-time
 
 ## Applications & Tools
 
