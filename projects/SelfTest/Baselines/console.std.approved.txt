@@ -131,7 +131,7 @@ ExceptionTests.cpp:<line number>
 ...............................................................................
 
 ExceptionTests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_AS( throwCustom() )
+  REQUIRE_THROWS_AS( throwCustom(), std::exception )
 due to unexpected exception with message:
   custom exception - not std
 
@@ -245,12 +245,12 @@ ExceptionTests.cpp:<line number>
 ...............................................................................
 
 ExceptionTests.cpp:<line number>: FAILED:
-  CHECK_THROWS_AS( thisThrows() )
+  CHECK_THROWS_AS( thisThrows(), std::string )
 due to unexpected exception with message:
   expected exception
 
 ExceptionTests.cpp:<line number>: FAILED:
-  CHECK_THROWS_AS( thisDoesntThrow() )
+  CHECK_THROWS_AS( thisDoesntThrow(), std::domain_error )
 because no exception was thrown where one was expected:
 
 ExceptionTests.cpp:<line number>: FAILED:

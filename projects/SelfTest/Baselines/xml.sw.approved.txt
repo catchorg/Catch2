@@ -920,10 +920,10 @@
     <TestCase name="Custom exceptions can be translated when testing for throwing as something else" tags="[!throws][.][failing][hide]">
       <Expression success="false" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
-          throwCustom()
+          throwCustom(), std::exception
         </Original>
         <Expanded>
-          throwCustom()
+          throwCustom(), std::exception
         </Expanded>
         <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
           custom exception - not std
@@ -1221,10 +1221,10 @@
     <TestCase name="Expected exceptions that don't throw or unexpected exceptions fail the test" tags="[!throws][.][failing][hide]">
       <Expression success="false" type="CHECK_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
-          thisThrows()
+          thisThrows(), std::string
         </Original>
         <Expanded>
-          thisThrows()
+          thisThrows(), std::string
         </Expanded>
         <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
           expected exception
@@ -1232,10 +1232,10 @@
       </Expression>
       <Expression success="false" type="CHECK_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
-          thisDoesntThrow()
+          thisDoesntThrow(), std::domain_error
         </Original>
         <Expanded>
-          thisDoesntThrow()
+          thisDoesntThrow(), std::domain_error
         </Expanded>
       </Expression>
       <Expression success="false" type="CHECK_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -8400,10 +8400,10 @@ there"
     <TestCase name="When checked exceptions are thrown they can be expected or unexpected" tags="[!throws]">
       <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
-          thisThrows()
+          thisThrows(), std::domain_error
         </Original>
         <Expanded>
-          thisThrows()
+          thisThrows(), std::domain_error
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >

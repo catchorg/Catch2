@@ -101,7 +101,7 @@ ExceptionTests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="global" name="Custom exceptions can be translated when testing for throwing as something else" time="{duration}">
-      <error message="throwCustom()" type="REQUIRE_THROWS_AS">
+      <error message="throwCustom(), std::exception" type="REQUIRE_THROWS_AS">
 custom exception - not std
 ExceptionTests.cpp:<line number>
       </error>
@@ -171,11 +171,11 @@ MiscTests.cpp:<line number>
     <testcase classname="Exception messages can be tested for" name="different case" time="{duration}"/>
     <testcase classname="Exception messages can be tested for" name="wildcarded" time="{duration}"/>
     <testcase classname="global" name="Expected exceptions that don't throw or unexpected exceptions fail the test" time="{duration}">
-      <error message="thisThrows()" type="CHECK_THROWS_AS">
+      <error message="thisThrows(), std::string" type="CHECK_THROWS_AS">
 expected exception
 ExceptionTests.cpp:<line number>
       </error>
-      <failure message="thisDoesntThrow()" type="CHECK_THROWS_AS">
+      <failure message="thisDoesntThrow(), std::domain_error" type="CHECK_THROWS_AS">
 ExceptionTests.cpp:<line number>
       </failure>
       <error message="thisThrows()" type="CHECK_NOTHROW">
