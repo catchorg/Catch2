@@ -22,3 +22,21 @@ TEST_CASE("#809") {
     foo f; f.i = 42;
     REQUIRE(42 == f);
 }
+
+// ------------------------------------------------------------------
+// REQUIRE_THROWS_AS was changed to catch exceptions by const&
+// using type traits. This means that this should compile cleanly
+
+// Provides indirection to prevent unreachable-code warnings
+void throws_int(bool b) {
+    if (b) {
+        throw 1;
+    }
+}
+
+TEST_CASE("#542") {
+    CHECK_THROWS_AS(throws_int(true), int);
+    CHECK_THROWS_AS(throws_int(true), int&);
+    CHECK_THROWS_AS(throws_int(true), const int);
+    CHECK_THROWS_AS(throws_int(true), const int&);
+}

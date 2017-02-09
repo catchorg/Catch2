@@ -16,6 +16,7 @@
 #include "catch_tostring.h"
 #include "catch_interfaces_runner.h"
 #include "catch_compiler_capabilities.h"
+#include "catch_type_traits.hpp"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -93,7 +94,7 @@
                 static_cast<void>(expr); \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
-            catch( exceptionType ) { \
+            catch( Catch::add_const<Catch::add_lvalue_reference<exceptionType>::type>::type ) { \
                 __catchResult.captureResult( Catch::ResultWas::Ok ); \
             } \
             catch( ... ) { \
