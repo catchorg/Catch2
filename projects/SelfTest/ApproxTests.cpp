@@ -160,7 +160,7 @@ inline std::ostream& operator<<( std::ostream& os, StrongDoubleTypedef td ) {
 TEST_CASE
 (
  "Comparison with explicitly convertible types",
- "[Approx]"
+ "[Approx][c++11]"
 )
 {
   StrongDoubleTypedef td(10.0);
