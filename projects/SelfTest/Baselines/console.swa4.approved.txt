@@ -15,6 +15,28 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
+#542
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS_AS( throws_int(true), int )
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS_AS( throws_int(true), int& )
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS_AS( throws_int(true), const int )
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS_AS( throws_int(true), const int& )
+
+-------------------------------------------------------------------------------
 #809
 -------------------------------------------------------------------------------
 CompilationTests.cpp:<line number>
@@ -47,6 +69,6 @@ ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
 
 ===============================================================================
-test cases: 3 | 2 passed | 1 failed
-assertions: 6 | 2 passed | 4 failed
+test cases:  4 | 3 passed | 1 failed
+assertions: 10 | 6 passed | 4 failed
 

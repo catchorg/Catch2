@@ -4,6 +4,41 @@
     <TestCase name="# A test name that starts with a #">
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#542">
+      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true), int
+        </Original>
+        <Expanded>
+          throws_int(true), int
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true), int&amp;
+        </Original>
+        <Expanded>
+          throws_int(true), int&amp;
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true), const int
+        </Original>
+        <Expanded>
+          throws_int(true), const int
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true), const int&amp;
+        </Original>
+        <Expanded>
+          throws_int(true), const int&amp;
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#809">
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
         <Original>
@@ -9655,7 +9690,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="832" failures="81" expectedFailures="18"/>
+    <OverallResults successes="836" failures="81" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="832" failures="80" expectedFailures="18"/>
+  <OverallResults successes="836" failures="80" expectedFailures="18"/>
 </Catch>
