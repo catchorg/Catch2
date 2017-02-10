@@ -109,7 +109,12 @@
 #endif // Platform
 
 #ifdef CATCH_PLATFORM_WINDOWS
-    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
+    #if defined(_MSC_VER) && _MSC_VER >= 1700 
+    #define CATCH_INTERNAL_WINDOWS_SAL_IN_OPT _In_opt_
+    #else
+    #define CATCH_INTERNAL_WINDOWS_SAL_IN_OPT
+    #endif
+    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( CATCH_INTERNAL_WINDOWS_SAL_IN_OPT const char* );
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
             ::OutputDebugStringA( text.c_str() );
