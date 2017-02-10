@@ -20,3 +20,4 @@ This documentation comprises these three parts:
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
 * For discussion or questions please use [the dedicated Google Groups forum](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)
+* See [who else is using Catch](docs/opensource-users.md)

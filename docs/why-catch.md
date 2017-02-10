@@ -35,6 +35,10 @@ So what does Catch bring to the party that differentiates it from these? Apart f
 * Implement test fixtures using Obj-C classes too (like OCUnit)
 * Additional built in matchers that work with Obj-C types (e.g. string matchers)
 
+## Who else is using Catch?
+
+See the list of [open source projects using Catch](opensource-users.md).
+
 See the [tutorial](tutorial.md) to get more of a taste of using CATCH in practice 
 
 ---

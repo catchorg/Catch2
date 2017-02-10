@@ -17,5 +17,6 @@ Before looking at this material be sure to read the [tutorial](tutorial.md)
 Other
 
 * [Why Catch?](why-catch.md)
+* [Open Source Projects using Catch](opensource-users.md)
 * [Contributing](contributing.md)
 * [Release Notes](release-notes.md)
