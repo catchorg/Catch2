@@ -93,7 +93,6 @@ The JUnit reporter is an xml format that follows the structure of the JUnit XML 
 <pre>-b, --break</pre>
 
 In some IDEs (currently XCode and Visual Studio) it is possible for Catch to break into the debugger on a test failure. This can be very helpful during debug sessions - especially when there is more than one path through a particular test.
-In addition to the command line option, ensure you have built your code with the DEBUG preprocessor symbol
 
 <a id="showing-results-for-successful-tests"></a>
 ## Showing results for successful tests
