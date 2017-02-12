@@ -16,6 +16,7 @@
 #include <assert.h>
 #include <vector>
 #include <iterator>
+#include <stdexcept>
 
 namespace Catch {
 namespace TestCaseTracking {

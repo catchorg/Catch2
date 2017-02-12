@@ -11,6 +11,7 @@
 #include "catch_common.h"
 
 #include <cstring>
+#include <cctype>
 
 namespace Catch {
 

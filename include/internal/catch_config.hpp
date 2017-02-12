@@ -18,6 +18,7 @@
 #include <string>
 #include <iostream>
 #include <ctime>
+#include <stdexcept>
 
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
 #define CATCH_CONFIG_CONSOLE_WIDTH 80

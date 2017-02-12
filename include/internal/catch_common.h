@@ -22,9 +22,7 @@
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
 
 #include <sstream>
-#include <stdexcept>
 #include <algorithm>
-#include <cctype>
 
 #include "catch_compiler_capabilities.h"
 

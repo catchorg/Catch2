@@ -13,6 +13,8 @@
 #include "catch_interfaces_testcase.h"
 #include "catch_common.h"
 
+#include <cctype>
+
 namespace Catch {
 
     inline TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
