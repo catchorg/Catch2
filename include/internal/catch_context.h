@@ -11,9 +11,6 @@
 #include "catch_interfaces_generators.h"
 #include "catch_ptr.hpp"
 
-#include <memory>
-#include <vector>
-#include <stdlib.h>
 
 namespace Catch {
 
