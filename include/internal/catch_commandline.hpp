@@ -13,6 +13,7 @@
 #include "catch_clara.h"
 
 #include <fstream>
+#include <ctime>
 
 namespace Catch {
 

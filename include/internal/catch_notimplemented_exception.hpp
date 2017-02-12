@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_HPP_INCLUDED
 
 #include "catch_notimplemented_exception.h"
-#include <ostream>
+#include <sstream>
 
 namespace Catch {
 

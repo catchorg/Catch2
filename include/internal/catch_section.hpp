@@ -11,7 +11,6 @@
 #include "catch_section.h"
 #include "catch_capture.hpp"
 #include "catch_compiler_capabilities.h"
-#include "catch_timer.h"
 
 namespace Catch {
 

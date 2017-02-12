@@ -11,6 +11,8 @@
 #include "catch_common.h"
 #include "catch_totals.hpp"
 
+#include <string>
+
 namespace Catch {
 
     struct SectionInfo {

@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_H_INCLUDED
 
 #include "catch_common.h"
-#include <ostream>
 
 namespace Catch {
 

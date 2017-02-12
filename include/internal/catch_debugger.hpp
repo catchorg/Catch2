@@ -11,8 +11,6 @@
 
 #include "catch_debugger.h"
 
-#include <iostream>
-
 #ifdef CATCH_PLATFORM_MAC
 
     #include <assert.h>
