@@ -1,8 +1,17 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
+from __future__ import print_function
 
 import time, subprocess, sys, os, shutil, glob, random
 import argparse
-from statistics import median, stdev
+
+def median(lst):
+    lst = sorted(lst)
+    mid, odd = divmod(len(lst), 2)
+    if odd:
+        return lst[mid]
+    else:
+        return (lst[mid - 1] + lst[mid]) / 2.0
 
 compiler_path = ''
 
@@ -40,23 +49,23 @@ def create_catch_main():
         f.write(main_file)
 
 def compile_main():
-    start_t = time.perf_counter()
+    start_t = time.time()
     subprocess.check_call([compiler_path, main_name, '-c'])
-    end_t = time.perf_counter()
+    end_t = time.time()
     return end_t - start_t
 
 def compile_files():
     cpp_files = glob.glob('*.cpp')
-    start_t = time.perf_counter()
+    start_t = time.time()
     subprocess.check_call([compiler_path] + cpp_files + ['-c'])
-    end_t = time.perf_counter()
+    end_t = time.time()
     return end_t - start_t
 
 def link_files():
     obj_files = glob.glob('*.o')
-    start_t = time.perf_counter()
+    start_t = time.time()
     subprocess.check_call([compiler_path] + obj_files)
-    end_t = time.perf_counter()
+    end_t = time.time()
     return end_t - start_t
 
 def benchmark(func):
@@ -101,20 +110,20 @@ parser.add_argument('-I', '--catch-header', default='catch.hpp', help = 'Path to
 parser.add_argument('-c', '--compiler', default='g++', help = 'Compiler to use, default: g++')
 
 # Allow creating files only, without running the whole thing
-parser.add_argument('-g', '--generate-only', action='store_true', help='Generate test files and quit')
+parser.add_argument('-g', '--generate-files', action='store_true', help='Generate test files and quit')
 
 args = parser.parse_args()
 
 compiler_path = args.compiler
 catch_path = args.catch_header
 
-create_temp_dir()
-copy_catch(catch_path)
 os.chdir(dir_name)
-# now create the fake test files
-generate_files()
-# Early exit
-if args.generate_only:
+if args.generate_files:
+    create_temp_dir()
+    copy_catch(catch_path)
+    # now create the fake test files
+    generate_files()
+    # Early exit
     print('Finished generating files')
     exit(1)
 
