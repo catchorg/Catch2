@@ -98,7 +98,8 @@ namespace Catch {
 
             do {
                 ITracker& rootTracker = m_trackerContext.startRun();
-                dynamic_cast<SectionTracker&>( rootTracker ).addInitialFilters( m_config->getSectionsToRun() );
+                assert( rootTracker.isSectionTracker() );
+                static_cast<SectionTracker&>( rootTracker ).addInitialFilters( m_config->getSectionsToRun() );
                 do {
                     m_trackerContext.startCycle();
                     m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( testInfo.name, testInfo.lineInfo ) );
