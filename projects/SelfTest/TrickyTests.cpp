@@ -10,6 +10,8 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#include <stdio.h>
+
 #include "catch.hpp"
 
 #ifdef __clang__
