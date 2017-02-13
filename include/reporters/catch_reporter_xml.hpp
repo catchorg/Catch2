@@ -67,6 +67,7 @@ namespace Catch {
 
             if ( m_config->showDurations() == ShowDurations::Always )
                 m_testCaseTimer.start();
+            m_xml.ensureTagClosed();
         }
 
         virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
@@ -75,6 +76,7 @@ namespace Catch {
                 m_xml.startElement( "Section" )
                     .writeAttribute( "name", trim( sectionInfo.name ) )
                     .writeAttribute( "description", sectionInfo.description );
+                m_xml.ensureTagClosed();
             }
         }
 

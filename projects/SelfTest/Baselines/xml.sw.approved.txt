@@ -8845,6 +8845,9 @@ there"
     <TestCase name="first tag" tags="[tag1]">
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="has printf">
+spanner      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="just failure" tags="[.][fail][hide][isolated info][messages]">
       <Failure>
         Previous info should not be seen

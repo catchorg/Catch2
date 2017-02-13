@@ -211,19 +211,19 @@ namespace Catch {
             return *this;
         }
 
+        void ensureTagClosed() {
+            if( m_tagIsOpen ) {
+                m_os << ">" << std::endl;
+                m_tagIsOpen = false;
+            }
+        }
+
     private:
         XmlWriter( XmlWriter const& );
         void operator=( XmlWriter const& );
 
         void writeDeclaration() {
             m_os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        }
-
-        void ensureTagClosed() {
-            if( m_tagIsOpen ) {
-                m_os << ">" << std::endl;
-                m_tagIsOpen = false;
-            }
         }
 
         void newlineIfNecessary() {
