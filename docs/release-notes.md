@@ -1,3 +1,24 @@
+# 1.7.2
+
+### Fixes and minor improvements
+Xml:
+
+(technically the first two are breaking changes but are also fixes and arguably break few if any people)
+* C-escape control characters instead of XML encoding them (which requires XML 1.1)
+* Revert XML output to XML 1.0
+* Can provide stylesheet references by extending the XML reporter
+* Added description and tags attribites to XML Reporter
+* Tags are closed and the stream flushed more eagerly to avoid stdout interpolation
+
+
+Other:
+* `REQUIRE_THROWS_AS` now catches exception by `const&` and reports expected type
+* In `SECTION`s the file/ line is now of the `SECTION`. not the `TEST_CASE`
+* Added std:: qualification to some functions from C stdlib
+* Removed use of RTTI (`dynamic_cast`) that had crept back in
+* Silenced a few more warnings in different circumstances
+* Travis improvements
+
 # 1.7.1
 
 ### Fixes:

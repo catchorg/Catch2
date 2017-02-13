@@ -1,6 +1,6 @@
 /*
- *  Catch v1.7.1
- *  Generated: 2017-02-07 09:44:56.263047
+ *  Catch v1.7.2
+ *  Generated: 2017-02-13 15:57:33.350226
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -337,7 +337,6 @@
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
 
 #include <sstream>
-#include <stdexcept>
 #include <algorithm>
 
 namespace Catch {
@@ -395,7 +394,6 @@ namespace Catch {
     bool startsWith( std::string const& s, char prefix );
     bool endsWith( std::string const& s, std::string const& suffix );
     bool endsWith( std::string const& s, char suffix );
-    bool contains( std::string const& s, std::string const& infix );
     bool contains( std::string const& s, std::string const& infix );
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
@@ -458,8 +456,6 @@ namespace Catch {
 
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
 #define CATCH_INTERNAL_ERROR( msg ) ::Catch::throwLogicError( msg, CATCH_INTERNAL_LINEINFO );
-
-#include <ostream>
 
 namespace Catch {
 
@@ -592,10 +588,6 @@ namespace Catch {
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
-
-#include <memory>
-#include <vector>
-#include <stdlib.h>
 
 namespace Catch {
 
@@ -2215,6 +2207,45 @@ namespace Catch {
     };
 }
 
+// #included from: catch_type_traits.hpp
+#define TWOBLUECUBES_CATCH_TYPE_TRAITS_HPP_INCLUDED
+
+#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
+#include <type_traits>
+#endif
+
+namespace Catch {
+
+#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
+
+     template <typename T>
+     using add_lvalue_reference = std::add_lvalue_reference<T>;
+
+     template <typename T>
+     using add_const = std::add_const<T>;
+
+#else
+
+    template <typename T>
+    struct add_const {
+        typedef const T type;
+    };
+
+    template <typename T>
+    struct add_lvalue_reference {
+        typedef T& type;
+    };
+    template <typename T>
+    struct add_lvalue_reference<T&> {
+        typedef T& type;
+    };
+    // No && overload, because that is C++11, in which case we have
+    // proper type_traits implementation from the standard library
+
+#endif
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked
 // and/or an exception thrown and takes appropriate action.
@@ -2283,13 +2314,13 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType, resultDisposition ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
-            catch( exceptionType ) { \
+            catch( Catch::add_const<Catch::add_lvalue_reference<exceptionType>::type>::type ) { \
                 __catchResult.captureResult( Catch::ResultWas::Ok ); \
             } \
             catch( ... ) { \
@@ -2410,6 +2441,8 @@ namespace Catch {
         Counts testCases;
     };
 }
+
+#include <string>
 
 namespace Catch {
 
@@ -2818,7 +2851,7 @@ namespace Detail {
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
             auto lhs_v = double(lhs);
-            return fabs( lhs_v - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs_v), fabs(rhs.m_value) ) );
+            return std::fabs( lhs_v - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( std::fabs(lhs_v), std::fabs(rhs.m_value) ) );
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
@@ -2862,7 +2895,7 @@ namespace Detail {
 #else
         friend bool operator == ( double lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
-            return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
+            return std::fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( std::fabs(lhs), std::fabs(rhs.m_value) ) );
         }
 
         friend bool operator == ( Approx const& lhs, double rhs ) {
@@ -3348,6 +3381,8 @@ return @ desc; \
 // #included from: catch_wildcard_pattern.hpp
 #define TWOBLUECUBES_CATCH_WILDCARD_PATTERN_HPP_INCLUDED
 
+#include <stdexcept>
+
 namespace Catch
 {
     class WildcardPattern {
@@ -3601,7 +3636,7 @@ namespace Catch {
 // #included from: catch_interfaces_config.h
 #define TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 
-#include <iostream>
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -3723,8 +3758,7 @@ namespace Catch {
 #include <memory>
 #include <vector>
 #include <string>
-#include <iostream>
-#include <ctime>
+#include <stdexcept>
 
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
 #define CATCH_CONFIG_CONSOLE_WIDTH 80
@@ -3806,8 +3840,7 @@ namespace Catch {
             }
         }
 
-        virtual ~Config() {
-        }
+        virtual ~Config() {}
 
         std::string const& getFilename() const {
             return m_data.outputFilename ;
@@ -3820,28 +3853,26 @@ namespace Catch {
 
         std::string getProcessName() const { return m_data.processName; }
 
-        bool shouldDebugBreak() const { return m_data.shouldDebugBreak; }
-
         std::vector<std::string> const& getReporterNames() const { return m_data.reporterNames; }
         std::vector<std::string> const& getSectionsToRun() const CATCH_OVERRIDE { return m_data.sectionsToRun; }
 
-        int abortAfter() const { return m_data.abortAfter; }
-
-        TestSpec const& testSpec() const { return m_testSpec; }
+        virtual TestSpec const& testSpec() const CATCH_OVERRIDE { return m_testSpec; }
 
         bool showHelp() const { return m_data.showHelp; }
-        bool showInvisibles() const { return m_data.showInvisibles; }
 
         // IConfig interface
-        virtual bool allowThrows() const        { return !m_data.noThrow; }
-        virtual std::ostream& stream() const    { return m_stream->stream(); }
-        virtual std::string name() const        { return m_data.name.empty() ? m_data.processName : m_data.name; }
-        virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
-        virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
-        virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
-        virtual RunTests::InWhatOrder runOrder() const  { return m_data.runOrder; }
-        virtual unsigned int rngSeed() const    { return m_data.rngSeed; }
-        virtual UseColour::YesOrNo useColour() const { return m_data.useColour; }
+        virtual bool allowThrows() const CATCH_OVERRIDE                 { return !m_data.noThrow; }
+        virtual std::ostream& stream() const CATCH_OVERRIDE             { return m_stream->stream(); }
+        virtual std::string name() const CATCH_OVERRIDE                 { return m_data.name.empty() ? m_data.processName : m_data.name; }
+        virtual bool includeSuccessfulResults() const CATCH_OVERRIDE    { return m_data.showSuccessfulTests; }
+        virtual bool warnAboutMissingAssertions() const CATCH_OVERRIDE  { return m_data.warnings & WarnAbout::NoAssertions; }
+        virtual ShowDurations::OrNot showDurations() const CATCH_OVERRIDE { return m_data.showDurations; }
+        virtual RunTests::InWhatOrder runOrder() const CATCH_OVERRIDE   { return m_data.runOrder; }
+        virtual unsigned int rngSeed() const CATCH_OVERRIDE             { return m_data.rngSeed; }
+        virtual UseColour::YesOrNo useColour() const CATCH_OVERRIDE     { return m_data.useColour; }
+        virtual bool shouldDebugBreak() const CATCH_OVERRIDE { return m_data.shouldDebugBreak; }
+        virtual int abortAfter() const CATCH_OVERRIDE { return m_data.abortAfter; }
+        virtual bool showInvisibles() const CATCH_OVERRIDE { return m_data.showInvisibles; }
 
     private:
 
@@ -4903,6 +4934,7 @@ STITCH_CLARA_CLOSE_NAMESPACE
 #endif
 
 #include <fstream>
+#include <ctime>
 
 namespace Catch {
 
@@ -4941,7 +4973,7 @@ namespace Catch {
             ss << seed;
             ss >> config.rngSeed;
             if( ss.fail() )
-                throw std::runtime_error( "Argment to --rng-seed should be the word 'time' or a number" );
+                throw std::runtime_error( "Argument to --rng-seed should be the word 'time' or a number" );
         }
     }
     inline void setVerbosity( ConfigData& config, int level ) {
@@ -5338,7 +5370,6 @@ namespace Catch {
 #include <string>
 #include <ostream>
 #include <map>
-#include <assert.h>
 
 namespace Catch
 {
@@ -5762,6 +5793,7 @@ namespace Catch {
 #include <assert.h>
 #include <vector>
 #include <iterator>
+#include <stdexcept>
 
 namespace Catch {
 namespace TestCaseTracking {
@@ -6382,7 +6414,8 @@ namespace Catch {
 
             do {
                 ITracker& rootTracker = m_trackerContext.startRun();
-                dynamic_cast<SectionTracker&>( rootTracker ).addInitialFilters( m_config->getSectionsToRun() );
+                assert( rootTracker.isSectionTracker() );
+                static_cast<SectionTracker&>( rootTracker ).addInitialFilters( m_config->getSectionsToRun() );
                 do {
                     m_trackerContext.startCycle();
                     m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( testInfo.name, testInfo.lineInfo ) );
@@ -6881,7 +6914,6 @@ namespace Catch {
 #include <vector>
 #include <set>
 #include <sstream>
-#include <iostream>
 #include <algorithm>
 
 namespace Catch {
@@ -7241,7 +7273,7 @@ namespace Catch {
 // #included from: catch_notimplemented_exception.hpp
 #define TWOBLUECUBES_CATCH_NOTIMPLEMENTED_EXCEPTION_HPP_INCLUDED
 
-#include <ostream>
+#include <sstream>
 
 namespace Catch {
 
@@ -7793,6 +7825,8 @@ namespace Catch {
 // #included from: catch_test_case_info.hpp
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
+#include <cctype>
+
 namespace Catch {
 
     inline TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
@@ -7812,7 +7846,7 @@ namespace Catch {
             return TestCaseInfo::None;
     }
     inline bool isReservedTag( std::string const& tag ) {
-        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !isalnum( tag[0] );
+        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !std::isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
         if( isReservedTag( tag ) ) {
@@ -8009,7 +8043,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 7, 1, "", 0 );
+    Version libraryVersion( 1, 7, 2, "", 0 );
 
 }
 
@@ -8229,6 +8263,7 @@ namespace Catch {
 #define TWOBLUECUBES_CATCH_COMMON_HPP_INCLUDED
 
 #include <cstring>
+#include <cctype>
 
 namespace Catch {
 
@@ -8247,11 +8282,8 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix ) {
         return s.find( infix ) != std::string::npos;
     }
-    bool contains( std::string const& s, char infix ) {
-        return s.find(infix) != std::string::npos;
-    }
     char toLowerCh(char c) {
-        return static_cast<char>( ::tolower( c ) );
+        return static_cast<char>( std::tolower( c ) );
     }
     void toLowerInPlace( std::string& s ) {
         std::transform( s.begin(), s.end(), s.begin(), toLowerCh );
@@ -8376,8 +8408,6 @@ namespace Catch {
 // #included from: catch_debugger.hpp
 #define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 
-#include <iostream>
-
 #ifdef CATCH_PLATFORM_MAC
 
     #include <assert.h>
@@ -8474,7 +8504,7 @@ namespace Catch {
 #endif // Platform
 
 #ifdef CATCH_PLATFORM_WINDOWS
-    extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char* );
+
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
             ::OutputDebugStringA( text.c_str() );
@@ -8839,9 +8869,6 @@ namespace Catch {
     };
 
 } // end namespace Catch
-
-#include <map>
-#include <iostream>
 
 namespace Catch {
 
@@ -9276,7 +9303,7 @@ namespace Catch {
     char const* getLineOfChars() {
         static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
         if( !*line ) {
-            memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
+            std::memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
             line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
         }
         return line;
@@ -9430,8 +9457,11 @@ namespace Catch {
                     default:
                         // Escape control chars - based on contribution by @espenalb in PR #465 and
                         // by @mrpi PR #588
-                        if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' )
-                            os << "&#x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>( c ) << ';';
+                        if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' ) {
+                            // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
+                            os << "\\x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
+                               << static_cast<int>( c );
+                        }
                         else
                             os << c;
                 }
@@ -9485,20 +9515,17 @@ namespace Catch {
         XmlWriter()
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
-            m_os( &Catch::cout() )
+            m_os( Catch::cout() )
         {
-            // We encode control characters, which requires
-            // XML 1.1
-            // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
-            *m_os << "<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n";
+            writeDeclaration();
         }
 
         XmlWriter( std::ostream& os )
         :   m_tagIsOpen( false ),
             m_needsNewline( false ),
-            m_os( &os )
+            m_os( os )
         {
-            *m_os << "<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n";
+            writeDeclaration();
         }
 
         ~XmlWriter() {
@@ -9509,7 +9536,7 @@ namespace Catch {
         XmlWriter& startElement( std::string const& name ) {
             ensureTagClosed();
             newlineIfNecessary();
-            stream() << m_indent << '<' << name;
+            m_os << m_indent << '<' << name;
             m_tags.push_back( name );
             m_indent += "  ";
             m_tagIsOpen = true;
@@ -9526,25 +9553,25 @@ namespace Catch {
             newlineIfNecessary();
             m_indent = m_indent.substr( 0, m_indent.size()-2 );
             if( m_tagIsOpen ) {
-                stream() << "/>";
+                m_os << "/>";
                 m_tagIsOpen = false;
             }
             else {
-                stream() << m_indent << "</" << m_tags.back() << ">";
+                m_os << m_indent << "</" << m_tags.back() << ">";
             }
-            stream() << std::endl;
+            m_os << std::endl;
             m_tags.pop_back();
             return *this;
         }
 
         XmlWriter& writeAttribute( std::string const& name, std::string const& attribute ) {
             if( !name.empty() && !attribute.empty() )
-                stream() << ' ' << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << '"';
+                m_os << ' ' << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << '"';
             return *this;
         }
 
         XmlWriter& writeAttribute( std::string const& name, bool attribute ) {
-            stream() << ' ' << name << "=\"" << ( attribute ? "true" : "false" ) << '"';
+            m_os << ' ' << name << "=\"" << ( attribute ? "true" : "false" ) << '"';
             return *this;
         }
 
@@ -9560,8 +9587,8 @@ namespace Catch {
                 bool tagWasOpen = m_tagIsOpen;
                 ensureTagClosed();
                 if( tagWasOpen && indent )
-                    stream() << m_indent;
-                stream() << XmlEncode( text );
+                    m_os << m_indent;
+                m_os << XmlEncode( text );
                 m_needsNewline = true;
             }
             return *this;
@@ -9569,39 +9596,39 @@ namespace Catch {
 
         XmlWriter& writeComment( std::string const& text ) {
             ensureTagClosed();
-            stream() << m_indent << "<!--" << text << "-->";
+            m_os << m_indent << "<!--" << text << "-->";
             m_needsNewline = true;
             return *this;
         }
 
+        void writeStylesheetRef( std::string const& url ) {
+            m_os << "<?xml-stylesheet type=\"text/xsl\" href=\"" << url << "\"?>\n";
+        }
+
         XmlWriter& writeBlankLine() {
             ensureTagClosed();
-            stream() << '\n';
+            m_os << '\n';
             return *this;
         }
 
-        void setStream( std::ostream& os ) {
-            m_os = &os;
+        void ensureTagClosed() {
+            if( m_tagIsOpen ) {
+                m_os << ">" << std::endl;
+                m_tagIsOpen = false;
+            }
         }
 
     private:
         XmlWriter( XmlWriter const& );
         void operator=( XmlWriter const& );
 
-        std::ostream& stream() {
-            return *m_os;
-        }
-
-        void ensureTagClosed() {
-            if( m_tagIsOpen ) {
-                stream() << ">\n";
-                m_tagIsOpen = false;
-            }
+        void writeDeclaration() {
+            m_os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         }
 
         void newlineIfNecessary() {
             if( m_needsNewline ) {
-                stream() << '\n';
+                m_os << std::endl;
                 m_needsNewline = false;
             }
         }
@@ -9610,7 +9637,7 @@ namespace Catch {
         bool m_needsNewline;
         std::vector<std::string> m_tags;
         std::string m_indent;
-        std::ostream* m_os;
+        std::ostream& m_os;
     };
 
 }
@@ -9646,6 +9673,10 @@ namespace Catch {
             return "Reports test results as an XML document";
         }
 
+        virtual std::string getStylesheetRef() const {
+            return std::string();
+        }
+
     public: // StreamingReporterBase
 
         virtual void noMatchingTestCases( std::string const& s ) CATCH_OVERRIDE {
@@ -9654,6 +9685,9 @@ namespace Catch {
 
         virtual void testRunStarting( TestRunInfo const& testInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testRunStarting( testInfo );
+            std::string stylesheetRef = getStylesheetRef();
+            if( !stylesheetRef.empty() )
+                m_xml.writeStylesheetRef( stylesheetRef );
             m_xml.startElement( "Catch" );
             if( !m_config->name().empty() )
                 m_xml.writeAttribute( "name", m_config->name() );
@@ -9667,10 +9701,14 @@ namespace Catch {
 
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testCaseStarting(testInfo);
-            m_xml.startElement( "TestCase" ).writeAttribute( "name", testInfo.name );
+            m_xml.startElement( "TestCase" )
+                .writeAttribute( "name", trim( testInfo.name ) )
+                .writeAttribute( "description", testInfo.description )
+                .writeAttribute( "tags", testInfo.tagsAsString );
 
             if ( m_config->showDurations() == ShowDurations::Always )
                 m_testCaseTimer.start();
+            m_xml.ensureTagClosed();
         }
 
         virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
@@ -9679,6 +9717,7 @@ namespace Catch {
                 m_xml.startElement( "Section" )
                     .writeAttribute( "name", trim( sectionInfo.name ) )
                     .writeAttribute( "description", sectionInfo.description );
+                m_xml.ensureTagClosed();
             }
         }
 
@@ -10327,7 +10366,7 @@ namespace Catch {
                     printHeaderString( it->name, 2 );
             }
 
-            SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
+            SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
 
             if( !lineInfo.empty() ){
                 stream << getLineOfChars<'-'>() << '\n';
