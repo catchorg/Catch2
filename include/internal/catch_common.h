@@ -82,7 +82,6 @@ namespace Catch {
     bool endsWith( std::string const& s, std::string const& suffix );
     bool endsWith( std::string const& s, char suffix );
     bool contains( std::string const& s, std::string const& infix );
-    bool contains( std::string const& s, std::string const& infix );
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
     std::string trim( std::string const& str );
