@@ -159,6 +159,7 @@ namespace Matchers {
 } // namespace Matchers
 
 using namespace Matchers;
+using Matchers::Impl::MatcherBase;
 
 } // namespace Catch
 
