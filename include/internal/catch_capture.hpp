@@ -18,6 +18,14 @@
 #include "catch_compiler_capabilities.h"
 
 
+#if defined(CATCH_CONFIG_FAST_COMPILE)
+///////////////////////////////////////////////////////////////////////////////
+// We can speedup compilation significantly by breaking into debugger lower in
+// the callstack, because then we don't have to expand CATCH_BREAK_INTO_DEBUGGER
+// macro in each assertion
+#define INTERNAL_CATCH_REACT( resultBuilder ) \
+    resultBuilder.react();
+#else
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked
 // and/or an exception thrown and takes appropriate action.
@@ -25,7 +33,8 @@
 // source code rather than in Catch library code
 #define INTERNAL_CATCH_REACT( resultBuilder ) \
     if( resultBuilder.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
-    resultBuilder.react();
+    resultBuilder.react(); 
+#endif
 
 
 ///////////////////////////////////////////////////////////////////////////////
