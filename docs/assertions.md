@@ -105,12 +105,10 @@ REQUIRE_NOTHROW([&](){
 
 ## Matcher expressions
 
-To support Matchers a slightly different form is used. Matchers will be more fully documented elsewhere. *Note that Matchers are still at early stage development and are subject to change.*
+To support Matchers a slightly different form is used. Matchers have [their own documentation](matchers.md).
 
 * **REQUIRE_THAT(** _lhs_, _matcher expression_ **)** and  
 * **CHECK_THAT(** _lhs_, _matcher expression_ **)**  
-
-Currently only string matchers are implemented and consist of: `Contains`, `Equals`, `StartsWith` and `EndsWith`.
 
 Matchers can be composed using `&&`, `||` and `!` operators.
 
