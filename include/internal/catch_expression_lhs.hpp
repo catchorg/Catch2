@@ -27,6 +27,8 @@ class ExpressionLhs : public DecomposedExpression {
 public:
     ExpressionLhs( ResultBuilder& rb, T lhs ) : m_rb( rb ), m_lhs( lhs ), m_truthy(false) {}
 
+    ExpressionLhs& operator = ( const ExpressionLhs& );
+
     template<typename RhsT>
     BinaryExpression<T, Internal::IsEqualTo, RhsT const&>
     operator == ( RhsT const& rhs ) {
@@ -104,6 +106,8 @@ class BinaryExpression : public DecomposedExpression {
 public:
     BinaryExpression( ResultBuilder& rb, LhsT lhs, RhsT rhs )
         : m_rb( rb ), m_lhs( lhs ), m_rhs( rhs ) {}
+
+    BinaryExpression& operator = ( BinaryExpression& );
 
     void endExpression() const {
         m_rb
