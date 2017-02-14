@@ -1,0 +1,45 @@
+# version string format -- This will be overwritten later anyway
+version: "{build}"
+
+# Disable the dead branch for v2 development
+branches:
+    except:
+        - develop-v2
+
+os:
+  - Visual Studio 2013
+  - Visual Studio 2015
+
+init:
+  - git config --global core.autocrlf input
+  # Set build version to git commit-hash
+  - ps: Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_BRANCH) - $($env:APPVEYOR_REPO_COMMIT)"
+
+# fetch repository as zip archive
+shallow_clone: true
+
+# Win32 and x64 are CMake-compatible solution platform names.
+# This allows us to pass %PLATFORM% to CMake -A.
+platform:
+  - Win32
+  - x64
+
+# build Configurations, i.e. Debug, Release, etc.
+configuration:
+  - Debug
+  - Release
+
+#Cmake will autodetect the compiler, but we set the arch
+before_build:
+  - echo Running cmake...
+  - cmake -H. -BBuild -A%PLATFORM%
+
+# build with MSBuild
+build:
+  project: Build\CatchSelfTest.sln      # path to Visual Studio solution or project
+  parallel: true                        # enable MSBuild parallel builds
+  verbosity: normal                     # MSBuild verbosity level {quiet|minimal|normal|detailed}
+
+test_script:
+  - cd Build
+  - ctest -V -j 2 -C %CONFIGURATION%
