@@ -27,7 +27,7 @@ namespace Matchers {
 
         struct StringMatcherBase : Impl::MatcherBase<std::string> {
             StringMatcherBase( std::string operation, CasedString const& comparator );
-            virtual std::string toStringUncached() const CATCH_OVERRIDE;
+            virtual std::string describe() const CATCH_OVERRIDE;
 
             CasedString m_comparator;
             std::string m_operation;

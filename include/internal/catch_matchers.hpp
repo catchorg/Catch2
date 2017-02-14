@@ -22,12 +22,12 @@ namespace Matchers {
         public:
             std::string toString() const {
                 if( m_cachedToString.empty() )
-                    m_cachedToString = toStringUncached();
+                    m_cachedToString = describe();
                 return m_cachedToString;
             }
 
         protected:
-            virtual std::string toStringUncached() const = 0;
+            virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
         };
 
@@ -50,7 +50,7 @@ namespace Matchers {
                 }
                 return true;
             }
-            virtual std::string toStringUncached() const CATCH_OVERRIDE {
+            virtual std::string describe() const CATCH_OVERRIDE {
                 std::string description;
                 description.reserve( 4 + m_matchers.size()*32 );
                 description += "( ";
@@ -80,7 +80,7 @@ namespace Matchers {
                 }
                 return false;
             }
-            virtual std::string toStringUncached() const CATCH_OVERRIDE {
+            virtual std::string describe() const CATCH_OVERRIDE {
                 std::string description;
                 description.reserve( 4 + m_matchers.size()*32 );
                 description += "( ";
@@ -110,7 +110,7 @@ namespace Matchers {
                 return !m_underlyingMatcher.match( arg );
             }
 
-            virtual std::string toStringUncached() const CATCH_OVERRIDE {
+            virtual std::string describe() const CATCH_OVERRIDE {
                 return "not " + m_underlyingMatcher.toString();
             }
             MatcherBase<ArgT> const& m_underlyingMatcher;

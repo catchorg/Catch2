@@ -34,7 +34,7 @@ namespace Matchers {
           m_operation( operation ) {
         }
 
-        std::string StringMatcherBase::toStringUncached() const {
+        std::string StringMatcherBase::describe() const {
             std::string description;
             description.reserve(5 + m_operation.size() + m_comparator.m_str.size() +
                                         m_comparator.caseSensitivitySuffix().size());
