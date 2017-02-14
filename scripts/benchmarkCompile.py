@@ -13,6 +13,9 @@ def median(lst):
     else:
         return (lst[mid - 1] + lst[mid]) / 2.0
 
+def mean(lst):
+    return float(sum(lst)) / max(len(lst), 1)
+
 compiler_path = ''
 
 main_file = r'''
@@ -69,7 +72,8 @@ def link_files():
     return end_t - start_t
 
 def benchmark(func):
-    return median([func() for i in range(10)])
+    results = [func() for i in range(10)]
+    return mean(results), median(results)
 
 def char_range(start, end):
     for c in range(ord(start), ord(end)):
@@ -130,8 +134,8 @@ if args.generate_files:
 
 print('Time needed for ...')
 if args.benchmark_kind in ('all', 'main'):
-    print('        ... compiling main: {:.2f} s'.format(benchmark(compile_main)))
+    print('        ... compiling main, mean: {:.2f}, median: {:.2f} s'.format(*benchmark(compile_main)))
 if args.benchmark_kind in ('all', 'files'):
-    print('        ... compiling test files: {:.2f} s'.format(benchmark(compile_files)))
+    print('        ... compiling test files, mean: {:.2f}, median: {:.2f} s'.format(*benchmark(compile_files)))
 if args.benchmark_kind in ('all', 'link'):
-    print('        ... linking everything: {:.2f} s'.format(benchmark(link_files)))
+    print('        ... linking everything, mean: {:.2f}, median: {:.2f} s'.format(*benchmark(link_files)))
