@@ -17,6 +17,7 @@ def mean(lst):
     return float(sum(lst)) / max(len(lst), 1)
 
 compiler_path = ''
+flags = []
 
 main_file = r'''
 #define CATCH_CONFIG_MAIN
@@ -53,21 +54,21 @@ def create_catch_main():
 
 def compile_main():
     start_t = time.time()
-    subprocess.check_call([compiler_path, main_name, '-c'])
+    subprocess.check_call([compiler_path, main_name, '-c'] + flags)
     end_t = time.time()
     return end_t - start_t
 
 def compile_files():
     cpp_files = glob.glob('*.cpp')
     start_t = time.time()
-    subprocess.check_call([compiler_path] + cpp_files + ['-c'])
+    subprocess.check_call([compiler_path, '-c'] + flags + cpp_files)
     end_t = time.time()
     return end_t - start_t
 
 def link_files():
     obj_files = glob.glob('*.o')
     start_t = time.time()
-    subprocess.check_call([compiler_path] + obj_files)
+    subprocess.check_call([compiler_path] + flags + obj_files)
     end_t = time.time()
     return end_t - start_t
 
@@ -113,6 +114,8 @@ parser.add_argument('benchmark_kind', nargs='?', default='all', choices=options,
 parser.add_argument('-I', '--catch-header', default='catch.hpp', help = 'Path to catch.hpp, default: catch.hpp')
 parser.add_argument('-c', '--compiler', default='g++', help = 'Compiler to use, default: g++')
 
+parser.add_argument('-f', '--flags', nargs='*', help = 'Flags to be passed to the compiler')
+
 # Allow creating files only, without running the whole thing
 parser.add_argument('-g', '--generate-files', action='store_true', help='Generate test files and quit')
 
@@ -131,6 +134,8 @@ if args.generate_files:
     print('Finished generating files')
     exit(1)
 
+if args.flags:
+    flags = args.flags
 
 print('Time needed for ...')
 if args.benchmark_kind in ('all', 'main'):
