@@ -34,6 +34,9 @@ A, single-header, JSON parsing library that takes advantage of what C++ has to o
 ### [MNMLSTC Core](https://github.com/mnmlstc/core)
 a small and easy to use C++11 library that adds a functionality set that will be available in C++14 and later, as well as some useful additions
 
+### [SOCI](https://github.com/SOCI/soci)
+The C++ Database Access Library
+
 ### [Ppconsul](https://github.com/oliora/ppconsul)
 A C++ client library for Consul. Consul is a distributed tool for discovering and configuring services in your infrastructure
 
