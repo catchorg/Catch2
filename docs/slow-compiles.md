@@ -56,6 +56,8 @@ tests-factorial.cpp:11: failed: Factorial(0) == 1 for: 0 == 1
 Failed 1 test case, failed 1 assertion.
 ```
 
+## Other possible solutions
+You can also opt to sacrifice some features in order to speed-up Catch's compilation times. For details see the [documentation on Catch's compile-time configuration](configuration.md#other-toggles).
 
 ---
 
