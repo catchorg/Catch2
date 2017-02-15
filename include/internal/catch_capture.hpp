@@ -45,6 +45,7 @@
         try { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             ( __catchResult <= expr ).endExpression(); \
+            CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( resultDisposition ); \

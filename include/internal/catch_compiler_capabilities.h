@@ -62,7 +62,11 @@
 #  endif
 
 #   if defined(CATCH_CPP11_OR_GREATER)
-#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "clang diagnostic push" ) \
+            _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "clang diagnostic pop" )
 #   endif
 
 #endif // __clang__
@@ -97,8 +101,14 @@
 #   endif
 
 #   if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS) && defined(CATCH_CPP11_OR_GREATER)
-#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "GCC diagnostic push" ) \
+            _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "GCC diagnostic pop" )
 #   endif
+
+
 
 // - otherwise more recent versions define __cplusplus >= 201103L
 // and will get picked up below
@@ -242,6 +252,7 @@
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
+#   define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
 #endif
 
 // noexcept support:
