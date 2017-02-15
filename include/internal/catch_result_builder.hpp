@@ -100,6 +100,15 @@ namespace Catch {
     }
 
     void ResultBuilder::react() {
+#if defined(CATCH_CONFIG_FAST_COMPILE)
+        if (m_shouldDebugBreak) {
+            ///////////////////////////////////////////////////////////////////
+            // To inspect the state during test, you need to go one level up the callstack
+            // To go back to the test and change execution, jump over the throw statement
+            ///////////////////////////////////////////////////////////////////
+            CATCH_BREAK_INTO_DEBUGGER();
+        }
+#endif
         if( m_shouldThrow )
             throw Catch::TestFailureException();
     }
