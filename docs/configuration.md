@@ -84,7 +84,7 @@ At this moment, `CATCH_CONFIG_FAST_COMPILE` changes only the behaviour of the `-
 
 `CATCH_CONFIG_POSIX_SIGNALS` is on by default, except when Catch is compiled under `Cygwin`, where it is disabled by default (but can be force-enabled by defining `CATCH_CONFIG_POSIX_SIGNALS`).
 
-`CATCH_CONFIG_WINDOWS_CRTDBG` is off by default. If enabled, it sets Windows's CRT to check for memory leaks, and displays them after the tests finish running.
+`CATCH_CONFIG_WINDOWS_CRTDBG` is off by default. If enabled, Windows's CRT is used to check for memory leaks, and displays them after the tests finish running. _Note that this instrumentation is only done when Catch supplies its own main._
 
 Just as with the C++11 conformance toggles, these toggles can be disabled by using `_NO_` form of the toggle, e.g. `CATCH_CONFIG_NO_WINDOWS_SEH`.
 
