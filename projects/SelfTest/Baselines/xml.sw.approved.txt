@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Catch name="<exe-name>">
   <Group name="<exe-name>">
-    <TestCase name="# A test name that starts with a #">
+    <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#542">
+    <TestCase name="#542" filename="projects/<exe-name>/CompilationTests.cpp" >
       <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
         <Original>
           throws_int(true), int
@@ -39,7 +39,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#809">
+    <TestCase name="#809" filename="projects/<exe-name>/CompilationTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
         <Original>
           42 == f
@@ -50,7 +50,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="'Not' checks that should fail" tags="[.][failing][hide]">
+    <TestCase name="'Not' checks that should fail" tags="[.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           false != false
@@ -117,7 +117,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="'Not' checks that should succeed">
+    <TestCase name="'Not' checks that should succeed" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           false == false
@@ -184,8 +184,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="(unimplemented) static bools can be evaluated" tags="[Tricky]">
-      <Section name="compare to true">
+    <TestCase name="(unimplemented) static bools can be evaluated" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
+      <Section name="compare to true" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
             is_true&lt;true>::value == true
@@ -204,7 +204,7 @@
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="compare to false">
+      <Section name="compare to false" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
             is_true&lt;false>::value == false
@@ -223,7 +223,7 @@
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="negation">
+      <Section name="negation" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
             !is_true&lt;false>::value
@@ -234,7 +234,7 @@
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="double negation">
+      <Section name="double negation" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
             !!is_true&lt;true>::value
@@ -245,7 +245,7 @@
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="direct">
+      <Section name="direct" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
             is_true&lt;true>::value
@@ -266,7 +266,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A METHOD_AS_TEST_CASE based test run that fails" tags="[.][class][failing][hide]">
+    <TestCase name="A METHOD_AS_TEST_CASE based test run that fails" tags="[.][class][failing][hide]" filename="projects/<exe-name>/ClassTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/ClassTests.cpp" >
         <Original>
           s == "world"
@@ -277,7 +277,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A METHOD_AS_TEST_CASE based test run that succeeds" tags="[class]">
+    <TestCase name="A METHOD_AS_TEST_CASE based test run that succeeds" tags="[class]" filename="projects/<exe-name>/ClassTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ClassTests.cpp" >
         <Original>
           s == "hello"
@@ -288,7 +288,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A TEST_CASE_METHOD based test run that fails" tags="[.][class][failing][hide]">
+    <TestCase name="A TEST_CASE_METHOD based test run that fails" tags="[.][class][failing][hide]" filename="projects/<exe-name>/ClassTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/ClassTests.cpp" >
         <Original>
           m_a == 2
@@ -299,7 +299,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A TEST_CASE_METHOD based test run that succeeds" tags="[class]">
+    <TestCase name="A TEST_CASE_METHOD based test run that succeeds" tags="[class]" filename="projects/<exe-name>/ClassTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ClassTests.cpp" >
         <Original>
           m_a == 1
@@ -310,19 +310,19 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A couple of nested sections followed by a failure" tags="[.][failing][hide]">
-      <Section name="Outer">
-        <Section name="Inner">
+    <TestCase name="A couple of nested sections followed by a failure" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="Outer" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Section name="Inner" filename="projects/<exe-name>/MiscTests.cpp" >
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Failure>
+      <Failure filename="projects/<exe-name>/MiscTests.cpp" >
         to infinity and beyond
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A failing expression with a non streamable type is still captured" tags="[.][Tricky][failing][hide]">
+    <TestCase name="A failing expression with a non streamable type is still captured" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           &amp;o1 == &amp;o2
@@ -341,7 +341,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="AllOf matcher" tags="[matchers]">
+    <TestCase name="AllOf matcher" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
@@ -352,10 +352,10 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="An empty test with no assertions" tags="[empty]">
+    <TestCase name="An empty test with no assertions" tags="[empty]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="An expression with side-effects should only be evaluated once" tags="[Tricky]">
+    <TestCase name="An expression with side-effects should only be evaluated once" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           i++ == 7
@@ -374,7 +374,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="An unchecked exception reports the line of the last assertion" tags="[!throws][.][failing][hide]">
+    <TestCase name="An unchecked exception reports the line of the last assertion" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           1 == 1
@@ -396,10 +396,10 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Anonymous test case 1">
+    <TestCase name="Anonymous test case 1" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="AnyOf matcher" tags="[matchers]">
+    <TestCase name="AnyOf matcher" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
@@ -418,7 +418,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Approximate PI" tags="[Approx][PI]">
+    <TestCase name="Approximate PI" tags="[Approx][PI]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 )
@@ -437,7 +437,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Approximate comparisons with different epsilons" tags="[Approx]">
+    <TestCase name="Approximate comparisons with different epsilons" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           d != Approx( 1.231 )
@@ -456,7 +456,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Approximate comparisons with floats" tags="[Approx]">
+    <TestCase name="Approximate comparisons with floats" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           1.23f == Approx( 1.23f )
@@ -475,7 +475,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Approximate comparisons with ints" tags="[Approx]">
+    <TestCase name="Approximate comparisons with ints" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           1 == Approx( 1 )
@@ -494,7 +494,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Approximate comparisons with mixed numeric types" tags="[Approx]">
+    <TestCase name="Approximate comparisons with mixed numeric types" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           1.0f == Approx( 1 )
@@ -537,7 +537,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Assertions then sections" tags="[Tricky]">
+    <TestCase name="Assertions then sections" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           Catch::alwaysTrue()
@@ -546,7 +546,7 @@
           true
         </Expanded>
       </Expression>
-      <Section name="A section">
+      <Section name="A section" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
             Catch::alwaysTrue()
@@ -555,7 +555,7 @@
             true
           </Expanded>
         </Expression>
-        <Section name="Another section">
+        <Section name="Another section" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
             <Original>
               Catch::alwaysTrue()
@@ -576,7 +576,7 @@
           true
         </Expanded>
       </Expression>
-      <Section name="A section">
+      <Section name="A section" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
             Catch::alwaysTrue()
@@ -585,7 +585,7 @@
             true
           </Expanded>
         </Expression>
-        <Section name="Another other section">
+        <Section name="Another other section" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
             <Original>
               Catch::alwaysTrue()
@@ -600,8 +600,8 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Character pretty printing">
-      <Section name="Specifically escaped">
+    <TestCase name="Character pretty printing" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+      <Section name="Specifically escaped" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
           <Original>
             tab == '\t'
@@ -636,7 +636,7 @@
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="General chars">
+      <Section name="General chars" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
           <Original>
             space == ' '
@@ -679,7 +679,7 @@
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Low ASCII">
+      <Section name="Low ASCII" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
           <Original>
             null_terminator == '\0'
@@ -724,7 +724,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Comparing function pointers" tags="[Tricky][function pointer]">
+    <TestCase name="Comparing function pointers" tags="[Tricky][function pointer]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           a
@@ -743,7 +743,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Comparing member function pointers" tags="[Tricky][member function pointer]">
+    <TestCase name="Comparing member function pointers" tags="[Tricky][member function pointer]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           m == &amp;S::f
@@ -756,7 +756,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Comparisons between ints where one side is computed">
+    <TestCase name="Comparisons between ints where one side is computed" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           54 == 6*9
@@ -767,7 +767,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour">
+    <TestCase name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           ( -1 > 2u )
@@ -818,7 +818,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Comparisons with int literals don't warn when mixing signed/ unsigned">
+    <TestCase name="Comparisons with int literals don't warn when mixing signed/ unsigned" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           i == 1
@@ -927,7 +927,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Contains string matcher" tags="[.][failing][hide][matchers]">
+    <TestCase name="Contains string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "not there" )
@@ -938,7 +938,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Custom exceptions can be translated when testing for nothrow" tags="[!throws][.][failing][hide]">
+    <TestCase name="Custom exceptions can be translated when testing for nothrow" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           throwCustom()
@@ -952,7 +952,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Custom exceptions can be translated when testing for throwing as something else" tags="[!throws][.][failing][hide]">
+    <TestCase name="Custom exceptions can be translated when testing for throwing as something else" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           throwCustom(), std::exception
@@ -966,13 +966,13 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Custom std-exceptions can be custom translated" tags="[!throws][.][failing][hide]">
+    <TestCase name="Custom std-exceptions can be custom translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         custom std exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Demonstrate that a non-const == is not used" tags="[Tricky]">
+    <TestCase name="Demonstrate that a non-const == is not used" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           t == 1u
@@ -983,7 +983,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="EndsWith string matcher" tags="[.][failing][hide][matchers]">
+    <TestCase name="EndsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), EndsWith( "this" )
@@ -994,7 +994,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Equality checks that should fail" tags="[!mayfail][.][failing][hide]">
+    <TestCase name="Equality checks that should fail" tags="[!mayfail][.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven == 6
@@ -1101,7 +1101,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equality checks that should succeed">
+    <TestCase name="Equality checks that should succeed" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven == 7
@@ -1160,7 +1160,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equals" tags="[matchers]">
+    <TestCase name="Equals" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), Equals( "this string contains 'abc' as a substring" )
@@ -1171,7 +1171,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equals string matcher" tags="[.][failing][hide][matchers]">
+    <TestCase name="Equals string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), Equals( "something else" )
@@ -1182,8 +1182,8 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Exception messages can be tested for" tags="[!throws]">
-      <Section name="exact match">
+    <TestCase name="Exception messages can be tested for" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+      <Section name="exact match" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
           <Original>
             thisThrows(), "expected exception"
@@ -1194,7 +1194,7 @@
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="different case">
+      <Section name="different case" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
           <Original>
             thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No )
@@ -1205,7 +1205,7 @@
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="wildcarded">
+      <Section name="wildcarded" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
           <Original>
             thisThrows(), StartsWith( "expected" )
@@ -1242,7 +1242,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Expected exceptions that don't throw or unexpected exceptions fail the test" tags="[!throws][.][failing][hide]">
+    <TestCase name="Expected exceptions that don't throw or unexpected exceptions fail the test" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows(), std::string
@@ -1275,17 +1275,17 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="FAIL aborts the test" tags="[.][failing][hide][messages]">
-      <Failure>
+    <TestCase name="FAIL aborts the test" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Failure filename="projects/<exe-name>/MessageTests.cpp" >
         This is a failure
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="FAIL does not require an argument" tags="[.][failing][hide][messages]">
-      <Failure/>
+    <TestCase name="FAIL does not require an argument" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Failure filename="projects/<exe-name>/MessageTests.cpp" />
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Factorials are computed" tags="[factorial]">
+    <TestCase name="Factorials are computed" tags="[factorial]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           Factorial(0) == 1
@@ -1328,7 +1328,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Generator over a range of pairs" tags="[generators]">
+    <TestCase name="Generator over a range of pairs" tags="[generators]" filename="projects/<exe-name>/GeneratorTests.cpp" >
       <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
         <Original>
           i->first == i->second-1
@@ -1347,7 +1347,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Generators over two ranges" tags="[generators]">
+    <TestCase name="Generators over two ranges" tags="[generators]" filename="projects/<exe-name>/GeneratorTests.cpp" >
       <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
         <Original>
           multiply( i, 2 ) == i*2
@@ -2502,7 +2502,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Greater-than inequalities with different epsilons" tags="[Approx]">
+    <TestCase name="Greater-than inequalities with different epsilons" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           d >= Approx( 1.22 )
@@ -2537,7 +2537,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="INFO and WARN do not abort tests" tags="[.][hide][messages]">
+    <TestCase name="INFO and WARN do not abort tests" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         this is a message
       </Info>
@@ -2546,7 +2546,7 @@
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="INFO gets logged on failure" tags="[.][failing][hide][messages]">
+    <TestCase name="INFO gets logged on failure" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         this message should be logged
       </Info>
@@ -2563,7 +2563,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="INFO gets logged on failure, even if captured before successful assertions" tags="[.][failing][hide][messages]">
+    <TestCase name="INFO gets logged on failure, even if captured before successful assertions" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           a == 2
@@ -2604,7 +2604,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing][hide]">
+    <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven != 7
@@ -2647,7 +2647,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Inequality checks that should succeed">
+    <TestCase name="Inequality checks that should succeed" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven != 6
@@ -2738,7 +2738,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Less-than inequalities with different epsilons" tags="[Approx]">
+    <TestCase name="Less-than inequalities with different epsilons" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           d &lt;= Approx( 1.24 )
@@ -2773,9 +2773,9 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Long strings can be wrapped" tags="[wrap]">
-      <Section name="plain string">
-        <Section name="No wrapping">
+    <TestCase name="Long strings can be wrapped" tags="[wrap]" filename="projects/<exe-name>/TestMain.cpp" >
+      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="No wrapping" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
@@ -2800,8 +2800,8 @@
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="plain string">
-        <Section name="Wrapped once">
+      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Wrapped once" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour"
@@ -2866,8 +2866,8 @@ three four"
         </Section>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="plain string">
-        <Section name="Wrapped twice">
+      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Wrapped twice" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour"
@@ -2914,8 +2914,8 @@ four"
         </Section>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="plain string">
-        <Section name="Wrapped three times">
+      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Wrapped three times" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour"
@@ -2952,8 +2952,8 @@ four"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="plain string">
-        <Section name="Short wrap">
+      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Short wrap" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef"
@@ -3034,8 +3034,8 @@ ur"
         </Section>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="plain string">
-        <Section name="As container">
+      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="As container" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               text.size() == 4
@@ -3080,8 +3080,8 @@ ur"
         </Section>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="plain string">
-        <Section name="Indent first line differently">
+      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Indent first line differently" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               text.toString() == " one two\n    three\n    four"
@@ -3100,8 +3100,8 @@ ur"
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With newlines">
-        <Section name="No wrapping">
+      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="No wrapping" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
@@ -3142,8 +3142,8 @@ three four"
         </Section>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With newlines">
-        <Section name="Trailing newline">
+      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Trailing newline" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef"
@@ -3184,8 +3184,8 @@ ef"
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With newlines">
-        <Section name="Wrapped once">
+      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Wrapped once" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour"
@@ -3232,8 +3232,8 @@ four"
         </Section>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With newlines">
-        <Section name="Wrapped twice">
+      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Wrapped twice" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour"
@@ -3254,8 +3254,8 @@ four"
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With wrap-before/ after characters">
-        <Section name="No wrapping">
+      <Section name="With wrap-before/ after characters" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="No wrapping" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
@@ -3280,8 +3280,8 @@ four"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With wrap-before/ after characters">
-        <Section name="Wrap before">
+      <Section name="With wrap-before/ after characters" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Wrap before" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 11 ) ).toString() == "one,two\n(three)\n&lt;here>"
@@ -3300,8 +3300,8 @@ four"
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="With wrap-before/ after characters">
-        <Section name="Wrap after">
+      <Section name="With wrap-before/ after characters" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Wrap after" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one,\ntwo\n(thre-\ne)\n&lt;here>"
@@ -3366,7 +3366,7 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Long text is truncted" tags="[Text][Truncated]">
+    <TestCase name="Long text is truncted" tags="[Text][Truncated]" filename="projects/<exe-name>/TestMain.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TestMain.cpp" >
         <Original>
           t.toString(), EndsWith( "... message truncated due to excessive size" )
@@ -4377,10 +4377,10 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="ManuallyRegistered">
+    <TestCase name="ManuallyRegistered" filename="projects/<exe-name>/TestMain.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]">
+    <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
@@ -4391,7 +4391,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]">
+    <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
@@ -4410,7 +4410,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]">
+    <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
@@ -4421,7 +4421,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][hide][matchers][operator&amp;&amp;][operators][operator||]">
+    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][hide][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
@@ -4432,7 +4432,7 @@ re>"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]">
+    <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), !Contains( "different" )
@@ -4443,7 +4443,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][hide][matchers][not][operators]">
+    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][hide][matchers][not][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), !Contains( "substring" )
@@ -4454,7 +4454,7 @@ re>"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Mismatching exception messages failing the test" tags="[!throws][.][failing][hide]">
+    <TestCase name="Mismatching exception messages failing the test" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows(), "expected exception"
@@ -4473,19 +4473,19 @@ re>"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Nice descriptive name" tags="[.][hide][tag1][tag2][tag3]">
+    <TestCase name="Nice descriptive name" tags="[.][hide][tag1][tag2][tag3]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Warning>
         This one ran
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Non-std exceptions can be translated" tags="[!throws][.][failing][hide]">
+    <TestCase name="Non-std exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         custom exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="NotImplemented exception" tags="[!throws]">
+    <TestCase name="NotImplemented exception" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisFunctionNotImplemented( 7 )
@@ -4496,7 +4496,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Objects that evaluated in boolean contexts can be checked" tags="[SafeBool][Tricky]">
+    <TestCase name="Objects that evaluated in boolean contexts can be checked" tags="[SafeBool][Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           True
@@ -4523,7 +4523,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Operators at different namespace levels not hijacked by Koenig lookup" tags="[Tricky]">
+    <TestCase name="Operators at different namespace levels not hijacked by Koenig lookup" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           0x<hex digits> == o
@@ -4534,7 +4534,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Ordering comparison checks that should fail" tags="[.][failing][hide]">
+    <TestCase name="Ordering comparison checks that should fail" tags="[.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven > 7
@@ -4689,7 +4689,7 @@ re>"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Ordering comparison checks that should succeed">
+    <TestCase name="Ordering comparison checks that should succeed" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven &lt; 8
@@ -4828,23 +4828,23 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Output from all sections is reported" tags="[.][failing][hide][messages]">
-      <Section name="one">
-        <Failure>
+    <TestCase name="Output from all sections is reported" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Section name="one" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Failure filename="projects/<exe-name>/MessageTests.cpp" >
           Message from section one
         </Failure>
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <Section name="two">
-        <Failure>
+      <Section name="two" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Failure filename="projects/<exe-name>/MessageTests.cpp" >
           Message from section two
         </Failure>
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Parse test names and tags">
-      <Section name="Empty test spec should have no filters">
+    <TestCase name="Parse test names and tags" filename="projects/<exe-name>/CmdLineTests.cpp" >
+      <Section name="Empty test spec should have no filters" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == false
@@ -4871,7 +4871,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Test spec from empty string should have no filters">
+      <Section name="Test spec from empty string should have no filters" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == false
@@ -4898,7 +4898,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Test spec from just a comma should have no filters">
+      <Section name="Test spec from just a comma should have no filters" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == false
@@ -4925,7 +4925,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Test spec from name should have one filter">
+      <Section name="Test spec from name should have one filter" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -4952,7 +4952,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Test spec from quoted name should have one filter">
+      <Section name="Test spec from quoted name should have one filter" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -4979,7 +4979,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Test spec from name should have one filter">
+      <Section name="Test spec from name should have one filter" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5014,7 +5014,7 @@ re>"
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Wildcard at the start">
+      <Section name="Wildcard at the start" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5065,7 +5065,7 @@ re>"
         </Expression>
         <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Wildcard at the end">
+      <Section name="Wildcard at the end" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5116,7 +5116,7 @@ re>"
         </Expression>
         <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Wildcard at both ends">
+      <Section name="Wildcard at both ends" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5167,7 +5167,7 @@ re>"
         </Expression>
         <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Redundant wildcard at the start">
+      <Section name="Redundant wildcard at the start" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5194,7 +5194,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Redundant wildcard at the end">
+      <Section name="Redundant wildcard at the end" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5221,7 +5221,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Redundant wildcard at both ends">
+      <Section name="Redundant wildcard at both ends" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5248,7 +5248,7 @@ re>"
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Wildcard at both ends, redundant at start">
+      <Section name="Wildcard at both ends, redundant at start" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5291,7 +5291,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Just wildcard">
+      <Section name="Just wildcard" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5334,7 +5334,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Single tag">
+      <Section name="Single tag" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5369,7 +5369,7 @@ re>"
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Single tag, two matches">
+      <Section name="Single tag, two matches" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5404,7 +5404,7 @@ re>"
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Two tags">
+      <Section name="Two tags" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5439,7 +5439,7 @@ re>"
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Two tags, spare separated">
+      <Section name="Two tags, spare separated" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5474,7 +5474,7 @@ re>"
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Wildcarded name and tag">
+      <Section name="Wildcarded name and tag" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5517,7 +5517,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Single tag exclusion">
+      <Section name="Single tag exclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5552,7 +5552,7 @@ re>"
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="One tag exclusion and one tag inclusion">
+      <Section name="One tag exclusion and one tag inclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5587,50 +5587,7 @@ re>"
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="One tag exclusion and one wldcarded name inclusion">
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
-          <Original>
-            spec.hasFilters() == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
-          <Original>
-            spec.matches( tcA ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
-          <Original>
-            spec.matches( tcB ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
-          <Original>
-            spec.matches( tcC ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
-          <Original>
-            spec.matches( tcD ) == true
-          </Original>
-          <Expanded>
-            true == true
-          </Expanded>
-        </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="One tag exclusion, using exclude:, and one wldcarded name inclusion">
+      <Section name="One tag exclusion and one wldcarded name inclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5673,7 +5630,50 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="name exclusion">
+      <Section name="One tag exclusion, using exclude:, and one wldcarded name inclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
+          <Original>
+            spec.hasFilters() == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcA ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcB ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcC ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
+          <Original>
+            spec.matches( tcD ) == true
+          </Original>
+          <Expanded>
+            true == true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="name exclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5716,7 +5716,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="wildcarded name exclusion">
+      <Section name="wildcarded name exclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5759,7 +5759,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="wildcarded name exclusion with tag inclusion">
+      <Section name="wildcarded name exclusion with tag inclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5802,7 +5802,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="wildcarded name exclusion, using exclude:, with tag inclusion">
+      <Section name="wildcarded name exclusion, using exclude:, with tag inclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5845,7 +5845,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="two wildcarded names">
+      <Section name="two wildcarded names" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -5888,7 +5888,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="empty tag">
+      <Section name="empty tag" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == false
@@ -5931,7 +5931,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="empty quoted name">
+      <Section name="empty quoted name" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == false
@@ -5974,7 +5974,7 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="quoted string followed by tag exclusion">
+      <Section name="quoted string followed by tag exclusion" filename="projects/<exe-name>/CmdLineTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/CmdLineTests.cpp" >
           <Original>
             spec.hasFilters() == true
@@ -6019,7 +6019,7 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Parsing a std::pair" tags="[Tricky][std::pair]">
+    <TestCase name="Parsing a std::pair" tags="[Tricky][std::pair]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           (std::pair&lt;int, int>( 1, 2 )) == aNicePair
@@ -6030,7 +6030,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Pointers can be compared to null">
+    <TestCase name="Pointers can be compared to null" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           p == 0
@@ -6097,7 +6097,7 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Pointers can be converted to strings" tags="[.][hide][messages]">
+    <TestCase name="Pointers can be converted to strings" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Warning>
         actual address of p: 0x<hex digits>
       </Warning>
@@ -6106,8 +6106,8 @@ re>"
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Process can be configured on command line" tags="[command-line][config]">
-      <Section name="default - no arguments">
+    <TestCase name="Process can be configured on command line" tags="[command-line][config]" filename="projects/<exe-name>/TestMain.cpp" >
+      <Section name="default - no arguments" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             parseIntoConfig( argv, config )
@@ -6150,8 +6150,8 @@ re>"
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="test lists">
-        <Section name="1 test" description="Specify one test case using">
+      <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="1 test" description="Specify one test case using" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6180,8 +6180,8 @@ re>"
         </Section>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="test lists">
-        <Section name="Specify one test case exclusion using exclude:">
+      <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Specify one test case exclusion using exclude:" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6210,8 +6210,8 @@ re>"
         </Section>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="test lists">
-        <Section name="Specify one test case exclusion using ~">
+      <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Specify one test case exclusion using ~" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6240,8 +6240,8 @@ re>"
         </Section>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="reporter">
-        <Section name="-r/console">
+      <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-r/console" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6262,8 +6262,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="reporter">
-        <Section name="-r/xml">
+      <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-r/xml" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6284,8 +6284,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="reporter">
-        <Section name="-r xml and junit">
+      <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-r xml and junit" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6322,8 +6322,8 @@ re>"
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="reporter">
-        <Section name="--reporter/junit">
+      <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="--reporter/junit" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6344,8 +6344,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="debugger">
-        <Section name="-b">
+      <Section name="debugger" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-b" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6366,8 +6366,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="debugger">
-        <Section name="--break">
+      <Section name="debugger" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="--break" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6388,8 +6388,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="abort">
-        <Section name="-a aborts after first failure">
+      <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-a aborts after first failure" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6410,8 +6410,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="abort">
-        <Section name="-x 2 aborts after two failures">
+      <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-x 2 aborts after two failures" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6432,8 +6432,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="abort">
-        <Section name="-x must be greater than zero">
+      <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-x must be greater than zero" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" )
@@ -6447,8 +6447,8 @@ re>"
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="abort">
-        <Section name="-x must be numeric">
+      <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-x must be numeric" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfigAndReturnError( argv, config ), Contains( "-x" )
@@ -6462,8 +6462,8 @@ re>"
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="nothrow">
-        <Section name="-e">
+      <Section name="nothrow" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-e" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6484,8 +6484,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="nothrow">
-        <Section name="--nothrow">
+      <Section name="nothrow" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="--nothrow" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6506,8 +6506,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="output filename">
-        <Section name="-o filename">
+      <Section name="output filename" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="-o filename" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6528,8 +6528,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="output filename">
-        <Section name="--out">
+      <Section name="output filename" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="--out" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6550,8 +6550,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="combinations">
-        <Section name="Single character flags can be combined">
+      <Section name="combinations" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="Single character flags can be combined" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6588,8 +6588,8 @@ re>"
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="use-colour">
-        <Section name="without option">
+      <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="without option" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6610,8 +6610,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="use-colour">
-        <Section name="auto">
+      <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="auto" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6632,8 +6632,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="use-colour">
-        <Section name="yes">
+      <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="yes" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6654,8 +6654,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="use-colour">
-        <Section name="no">
+      <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="no" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config )
@@ -6676,8 +6676,8 @@ re>"
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="use-colour">
-        <Section name="error">
+      <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
+        <Section name="error" filename="projects/<exe-name>/TestMain.cpp" >
           <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
               parseIntoConfig( argv, config ), Contains( "colour mode must be one of" )
@@ -6692,7 +6692,7 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="SCOPED_INFO is reset for each loop" tags="[.][failing][hide][messages]">
+    <TestCase name="SCOPED_INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6789,14 +6789,14 @@ re>"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="SUCCEED counts as a test pass" tags="[messages]">
+    <TestCase name="SUCCEED counts as a test pass" tags="[messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="SUCCESS does not require an argument" tags="[.][hide][messages]">
+    <TestCase name="SUCCESS does not require an argument" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods" tags="[bdd][fixtures]">
-      <Section name="Given: No operations precede me">
+    <TestCase name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods" tags="[bdd][fixtures]" filename="projects/<exe-name>/BDDTests.cpp" >
+      <Section name="Given: No operations precede me" filename="projects/<exe-name>/BDDTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
           <Original>
             before == 0
@@ -6805,8 +6805,8 @@ re>"
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="When: We get the count">
-          <Section name="Then: Subsequently values are higher">
+        <Section name="When: We get the count" filename="projects/<exe-name>/BDDTests.cpp" >
+          <Section name="Then: Subsequently values are higher" filename="projects/<exe-name>/BDDTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
               <Original>
                 after > before
@@ -6823,10 +6823,10 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Scenario: Do that thing with the thing" tags="[Tags]">
-      <Section name="Given: This stuff exists">
-        <Section name="When: I do this">
-          <Section name="Then: it should do this">
+    <TestCase name="Scenario: Do that thing with the thing" tags="[Tags]" filename="projects/<exe-name>/BDDTests.cpp" >
+      <Section name="Given: This stuff exists" filename="projects/<exe-name>/BDDTests.cpp" >
+        <Section name="When: I do this" filename="projects/<exe-name>/BDDTests.cpp" >
+          <Section name="Then: it should do this" filename="projects/<exe-name>/BDDTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
               <Original>
                 itDoesThis()
@@ -6835,7 +6835,7 @@ re>"
                 true
               </Expanded>
             </Expression>
-            <Section name="And: do that">
+            <Section name="And: do that" filename="projects/<exe-name>/BDDTests.cpp" >
               <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
                 <Original>
                   itDoesThat()
@@ -6854,10 +6854,10 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" tags="[anotherReallyLongTagNameButThisOneHasNoObviousWrapPointsSoShouldSplitWithinAWordUsingADashCharacter][long][lots][one very long tag name that should cause line wrapping writing out using the list command][tags][verbose][very long tags]">
-      <Section name="Given: A section name that is so long that it cannot fit in a single console width">
-        <Section name="When: The test headers are printed as part of the normal running of the scenario">
-          <Section name="Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent">
+    <TestCase name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" tags="[anotherReallyLongTagNameButThisOneHasNoObviousWrapPointsSoShouldSplitWithinAWordUsingADashCharacter][long][lots][one very long tag name that should cause line wrapping writing out using the list command][tags][verbose][very long tags]" filename="projects/<exe-name>/BDDTests.cpp" >
+      <Section name="Given: A section name that is so long that it cannot fit in a single console width" filename="projects/<exe-name>/BDDTests.cpp" >
+        <Section name="When: The test headers are printed as part of the normal running of the scenario" filename="projects/<exe-name>/BDDTests.cpp" >
+          <Section name="Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" filename="projects/<exe-name>/BDDTests.cpp" >
             <OverallResults successes="1" failures="0" expectedFailures="0"/>
           </Section>
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -6866,8 +6866,8 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Scenario: Vector resizing affects size and capacity" tags="[bdd][capacity][size][vector]">
-      <Section name="Given: an empty vector">
+    <TestCase name="Scenario: Vector resizing affects size and capacity" tags="[bdd][capacity][size][vector]" filename="projects/<exe-name>/BDDTests.cpp" >
+      <Section name="Given: an empty vector" filename="projects/<exe-name>/BDDTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6876,8 +6876,8 @@ re>"
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="When: it is made larger">
-          <Section name="Then: the size and capacity go up">
+        <Section name="When: it is made larger" filename="projects/<exe-name>/BDDTests.cpp" >
+          <Section name="Then: the size and capacity go up" filename="projects/<exe-name>/BDDTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
               <Original>
                 v.size() == 10
@@ -6894,8 +6894,8 @@ re>"
                 10 >= 10
               </Expanded>
             </Expression>
-            <Section name="And when: it is made smaller again">
-              <Section name="Then: the size goes down but the capacity stays the same">
+            <Section name="And when: it is made smaller again" filename="projects/<exe-name>/BDDTests.cpp" >
+              <Section name="Then: the size goes down but the capacity stays the same" filename="projects/<exe-name>/BDDTests.cpp" >
                 <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
                   <Original>
                     v.size() == 5
@@ -6922,7 +6922,7 @@ re>"
         </Section>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Given: an empty vector">
+      <Section name="Given: an empty vector" filename="projects/<exe-name>/BDDTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
           <Original>
             v.size() == 0
@@ -6931,8 +6931,8 @@ re>"
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="When: we reserve more space">
-          <Section name="Then: The capacity is increased but the size remains the same">
+        <Section name="When: we reserve more space" filename="projects/<exe-name>/BDDTests.cpp" >
+          <Section name="Then: The capacity is increased but the size remains the same" filename="projects/<exe-name>/BDDTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/BDDTests.cpp" >
               <Original>
                 v.capacity() >= 10
@@ -6957,7 +6957,7 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Sends stuff to stdout and stderr" tags="[.][hide]">
+    <TestCase name="Sends stuff to stdout and stderr" tags="[.][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true">
         <StdOut>
 A string sent directly to stdout
@@ -6967,7 +6967,7 @@ A string sent directly to stderr
         </StdErr>
       </OverallResult>
     </TestCase>
-    <TestCase name="Some simple comparisons between doubles" tags="[Approx]">
+    <TestCase name="Some simple comparisons between doubles" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           d == Approx( 1.23 )
@@ -7018,11 +7018,11 @@ A string sent directly to stderr
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Standard output from all sections is reported" tags="[.][hide][messages]">
-      <Section name="one">
+    <TestCase name="Standard output from all sections is reported" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Section name="one" filename="projects/<exe-name>/MessageTests.cpp" >
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <Section name="two">
+      <Section name="two" filename="projects/<exe-name>/MessageTests.cpp" >
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="false">
@@ -7032,7 +7032,7 @@ Message from section two
         </StdOut>
       </OverallResult>
     </TestCase>
-    <TestCase name="StartsWith string matcher" tags="[.][failing][hide][matchers]">
+    <TestCase name="StartsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), StartsWith( "string" )
@@ -7043,7 +7043,7 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="String matchers" tags="[matchers]">
+    <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" )
@@ -7078,7 +7078,7 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Strings can be rendered with colour" tags="[.][.colour][hide]">
+    <TestCase name="Strings can be rendered with colour" tags="[.][.colour][hide]" filename="projects/<exe-name>/TestMain.cpp" >
       <OverallResult success="true">
         <StdOut>
 hello
@@ -7086,7 +7086,7 @@ hello
         </StdOut>
       </OverallResult>
     </TestCase>
-    <TestCase name="Tabs and newlines show in output" tags="[.][failing][hide][whitespace]">
+    <TestCase name="Tabs and newlines show in output" tags="[.][failing][hide][whitespace]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           s1 == s2
@@ -7104,8 +7104,8 @@ hello
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Tag alias can be registered against tag patterns">
-      <Section name="The same tag alias can only be registered once">
+    <TestCase name="Tag alias can be registered against tag patterns" filename="projects/<exe-name>/TagAliasTests.cpp" >
+      <Section name="The same tag alias can only be registered once" filename="projects/<exe-name>/TagAliasTests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
           <Original>
             what, Contains( "[@zzz]" )
@@ -7148,7 +7148,7 @@ hello
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Tag aliases must be of the form [@name]">
+      <Section name="Tag aliases must be of the form [@name]" filename="projects/<exe-name>/TagAliasTests.cpp" >
         <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/TagAliasTests.cpp" >
           <Original>
             registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
@@ -7185,10 +7185,10 @@ hello
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Test case with one argument">
+    <TestCase name="Test case with one argument" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Test enum bit values" tags="[Tricky]">
+    <TestCase name="Test enum bit values" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           0x<hex digits> == bit30and31
@@ -7199,7 +7199,7 @@ hello
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Text can be formatted using the Text class">
+    <TestCase name="Text can be formatted using the Text class" filename="projects/<exe-name>/TestMain.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
         <Original>
           Text( "hi there" ).toString() == "hi there"
@@ -7222,7 +7222,7 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="The NO_FAIL macro reports a failure but does not fail the test" tags="[messages]">
+    <TestCase name="The NO_FAIL macro reports a failure but does not fail the test" tags="[messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Expression success="false" type="CHECK_NOFAIL" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           1 == 2
@@ -7233,10 +7233,10 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="This test 'should' fail but doesn't" tags="[!shouldfail][.][failing][hide]">
+    <TestCase name="This test 'should' fail but doesn't" tags="[!shouldfail][.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Tracker">
+    <TestCase name="Tracker" filename="projects/<exe-name>/PartTrackerTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Original>
           testCase.isOpen()
@@ -7253,7 +7253,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="successfully close one section">
+      <Section name="successfully close one section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             s1.isSuccessfullyCompleted()
@@ -7304,7 +7304,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="fail one section">
+      <Section name="fail one section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             s1.isComplete()
@@ -7345,7 +7345,7 @@ there"
             false == false
           </Expanded>
         </Expression>
-        <Section name="re-enter after failed section">
+        <Section name="re-enter after failed section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Original>
               testCase2.isOpen()
@@ -7406,7 +7406,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="fail one section">
+      <Section name="fail one section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             s1.isComplete()
@@ -7447,7 +7447,7 @@ there"
             false == false
           </Expanded>
         </Expression>
-        <Section name="re-enter after failed section and find next section">
+        <Section name="re-enter after failed section and find next section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Original>
               testCase2.isOpen()
@@ -7516,7 +7516,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="successfully close one section, then find another">
+      <Section name="successfully close one section, then find another" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             s2.isOpen() == false
@@ -7533,7 +7533,7 @@ there"
             false == false
           </Expanded>
         </Expression>
-        <Section name="Re-enter - skips S1 and enters S2">
+        <Section name="Re-enter - skips S1 and enters S2" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Original>
               testCase2.isOpen()
@@ -7566,7 +7566,7 @@ there"
               false == false
             </Expanded>
           </Expression>
-          <Section name="Successfully close S2">
+          <Section name="Successfully close S2" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
               <Original>
                 ctx.completedCycle()
@@ -7621,7 +7621,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="successfully close one section, then find another">
+      <Section name="successfully close one section, then find another" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             s2.isOpen() == false
@@ -7638,7 +7638,7 @@ there"
             false == false
           </Expanded>
         </Expression>
-        <Section name="Re-enter - skips S1 and enters S2">
+        <Section name="Re-enter - skips S1 and enters S2" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Original>
               testCase2.isOpen()
@@ -7671,7 +7671,7 @@ there"
               false == false
             </Expanded>
           </Expression>
-          <Section name="fail S2">
+          <Section name="fail S2" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
               <Original>
                 ctx.completedCycle()
@@ -7758,7 +7758,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="open a nested section">
+      <Section name="open a nested section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             s2.isOpen()
@@ -7825,7 +7825,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="start a generator">
+      <Section name="start a generator" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             g1.isOpen()
@@ -7858,7 +7858,7 @@ there"
             false == false
           </Expanded>
         </Expression>
-        <Section name="close outer section">
+        <Section name="close outer section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Original>
               s1.isComplete() == false
@@ -7875,7 +7875,7 @@ there"
               false == false
             </Expanded>
           </Expression>
-          <Section name="Re-enter for second generation">
+          <Section name="Re-enter for second generation" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
               <Original>
                 testCase2.isOpen()
@@ -7962,7 +7962,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="start a generator">
+      <Section name="start a generator" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             g1.isOpen()
@@ -7995,7 +7995,7 @@ there"
             false == false
           </Expanded>
         </Expression>
-        <Section name="Start a new inner section">
+        <Section name="Start a new inner section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Original>
               s2.isOpen()
@@ -8028,7 +8028,7 @@ there"
               false == false
             </Expanded>
           </Expression>
-          <Section name="Re-enter for second generation">
+          <Section name="Re-enter for second generation" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
               <Original>
                 testCase2.isOpen()
@@ -8123,7 +8123,7 @@ there"
           true
         </Expanded>
       </Expression>
-      <Section name="start a generator">
+      <Section name="start a generator" filename="projects/<exe-name>/PartTrackerTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Original>
             g1.isOpen()
@@ -8156,7 +8156,7 @@ there"
             false == false
           </Expanded>
         </Expression>
-        <Section name="Fail an inner section">
+        <Section name="Fail an inner section" filename="projects/<exe-name>/PartTrackerTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Original>
               s2.isOpen()
@@ -8197,7 +8197,7 @@ there"
               false == false
             </Expanded>
           </Expression>
-          <Section name="Re-enter for second generation">
+          <Section name="Re-enter for second generation" filename="projects/<exe-name>/PartTrackerTests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/PartTrackerTests.cpp" >
               <Original>
                 testCase2.isOpen()
@@ -8342,13 +8342,13 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing][hide]">
+    <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         3.14
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Use a custom approx" tags="[Approx][custom]">
+    <TestCase name="Use a custom approx" tags="[Approx][custom]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
           d == approx( 1.23 )
@@ -8415,13 +8415,13 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Variadic macros" tags="[sections][variadic]">
-      <Section name="Section with one argument">
+    <TestCase name="Variadic macros" tags="[sections][variadic]" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
+      <Section name="Section with one argument" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="When checked exceptions are thrown they can be expected or unexpected" tags="[!throws]">
+    <TestCase name="When checked exceptions are thrown they can be expected or unexpected" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows(), std::domain_error
@@ -8448,13 +8448,13 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown directly they are always failures" tags="[!throws][.][failing][hide]">
+    <TestCase name="When unchecked exceptions are thrown directly they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         unexpected exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown during a CHECK the test should continue" tags="[!throws][.][failing][hide]">
+    <TestCase name="When unchecked exceptions are thrown during a CHECK the test should continue" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0
@@ -8468,7 +8468,7 @@ there"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown during a REQUIRE the test should abort fail" tags="[!throws][.][failing][hide]">
+    <TestCase name="When unchecked exceptions are thrown during a REQUIRE the test should abort fail" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0
@@ -8482,7 +8482,7 @@ there"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown from functions they are always failures" tags="[!throws][.][failing][hide]">
+    <TestCase name="When unchecked exceptions are thrown from functions they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0
@@ -8496,8 +8496,8 @@ there"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown from sections they are always failures" tags="[!throws][.][failing][hide]">
-      <Section name="section name">
+    <TestCase name="When unchecked exceptions are thrown from sections they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+      <Section name="section name" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
           unexpected exception
         </Exception>
@@ -8505,35 +8505,35 @@ there"
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]">
+    <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Where the LHS is not a simple value" tags="[.][Tricky][failing][hide]">
+    <TestCase name="Where the LHS is not a simple value" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Where there is more to the expression after the RHS" tags="[.][Tricky][failing][hide]">
+    <TestCase name="Where there is more to the expression after the RHS" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="X/level/0/a" tags="[Tricky]">
+    <TestCase name="X/level/0/a" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="X/level/0/b" tags="[Tricky][fizz]">
+    <TestCase name="X/level/0/b" tags="[Tricky][fizz]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="X/level/1/a" tags="[Tricky]">
+    <TestCase name="X/level/1/a" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="X/level/1/b" tags="[Tricky]">
+    <TestCase name="X/level/1/b" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="XmlEncode">
-      <Section name="normal string">
+    <TestCase name="XmlEncode" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="normal string" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( "normal string" ) == "normal string"
@@ -8544,7 +8544,7 @@ there"
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="empty string">
+      <Section name="empty string" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( "" ) == ""
@@ -8555,7 +8555,7 @@ there"
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with ampersand">
+      <Section name="string with ampersand" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( "smith &amp; jones" ) == "smith &amp;amp; jones"
@@ -8566,7 +8566,7 @@ there"
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with less-than">
+      <Section name="string with less-than" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( "smith &lt; jones" ) == "smith &amp;lt; jones"
@@ -8577,7 +8577,7 @@ there"
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with greater-than">
+      <Section name="string with greater-than" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( "smith > jones" ) == "smith > jones"
@@ -8598,7 +8598,7 @@ there"
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with quotes">
+      <Section name="string with quotes" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( stringWithQuotes ) == stringWithQuotes
@@ -8621,7 +8621,7 @@ there"
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with control char (1)">
+      <Section name="string with control char (1)" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( "[\x01]" ) == "[\\x01]"
@@ -8632,7 +8632,7 @@ there"
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="string with control char (x7F)">
+      <Section name="string with control char (x7F)" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             encode( "[\x7F]" ) == "[\\x7F]"
@@ -8645,7 +8645,7 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="atomic if" tags="[0][failing]">
+    <TestCase name="atomic if" tags="[0][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           x == 0
@@ -8656,7 +8656,7 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="boolean member" tags="[Tricky]">
+    <TestCase name="boolean member" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           obj.prop != 0
@@ -8667,7 +8667,7 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="checkedElse">
+    <TestCase name="checkedElse" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECKED_ELSE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           flag
@@ -8686,7 +8686,7 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="checkedElse, failing" tags="[.][failing][hide]">
+    <TestCase name="checkedElse, failing" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECKED_ELSE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           flag
@@ -8705,7 +8705,7 @@ there"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="checkedIf">
+    <TestCase name="checkedIf" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECKED_IF" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           flag
@@ -8724,7 +8724,7 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="checkedIf, failing" tags="[.][failing][hide]">
+    <TestCase name="checkedIf, failing" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECKED_IF" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           flag
@@ -8743,7 +8743,7 @@ there"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="comparisons between const int variables">
+    <TestCase name="comparisons between const int variables" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           unsigned_char_var == 1
@@ -8778,7 +8778,7 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="comparisons between int variables">
+    <TestCase name="comparisons between int variables" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           long_var == unsigned_char_var
@@ -8813,41 +8813,41 @@ there"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="even more nested SECTION tests" tags="[sections]">
-      <Section name="c">
-        <Section name="d (leaf)">
+    <TestCase name="even more nested SECTION tests" tags="[sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="c" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Section name="d (leaf)" filename="projects/<exe-name>/MiscTests.cpp" >
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="c">
-        <Section name="e (leaf)">
+      <Section name="c" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Section name="e (leaf)" filename="projects/<exe-name>/MiscTests.cpp" >
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="f (leaf)">
+      <Section name="f (leaf)" filename="projects/<exe-name>/MiscTests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="first tag" tags="[tag1]">
+    <TestCase name="first tag" tags="[tag1]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="has printf">
+    <TestCase name="has printf" filename="projects/<exe-name>/TrickyTests.cpp" >
 spanner      <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="just failure" tags="[.][fail][hide][isolated info][messages]">
-      <Failure>
+    <TestCase name="just failure" tags="[.][fail][hide][isolated info][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Failure filename="projects/<exe-name>/MessageTests.cpp" >
         Previous info should not be seen
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="just info" tags="[info][isolated info][messages]">
+    <TestCase name="just info" tags="[info][isolated info][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="looped SECTION tests" tags="[.][failing][hide][sections]">
-      <Section name="s1" description="b is currently: 0">
+    <TestCase name="looped SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="s1" description="b is currently: 0" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             b > a
@@ -8860,7 +8860,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="looped tests" tags="[.][failing][hide]">
+    <TestCase name="looped tests" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Info>
         Testing if fib[0] (1) is even
       </Info>
@@ -8945,9 +8945,9 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="more nested SECTION tests" tags="[.][failing][hide][sections]">
-      <Section name="s1" description="doesn't equal">
-        <Section name="s2" description="equal">
+    <TestCase name="more nested SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Section name="s2" description="equal" filename="projects/<exe-name>/MiscTests.cpp" >
           <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
             <Original>
               a == b
@@ -8960,8 +8960,8 @@ spanner      <OverallResult success="true"/>
         </Section>
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <Section name="s1" description="doesn't equal">
-        <Section name="s3" description="not equal">
+      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Section name="s3" description="not equal" filename="projects/<exe-name>/MiscTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
             <Original>
               a != b
@@ -8974,8 +8974,8 @@ spanner      <OverallResult success="true"/>
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="s1" description="doesn't equal">
-        <Section name="s4" description="less than">
+      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Section name="s4" description="less than" filename="projects/<exe-name>/MiscTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
             <Original>
               a &lt; b
@@ -8990,8 +8990,8 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="nested SECTION tests" tags="[.][failing][hide][sections]">
-      <Section name="s1" description="doesn't equal">
+    <TestCase name="nested SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             a != b
@@ -9008,7 +9008,7 @@ spanner      <OverallResult success="true"/>
             2 != 1
           </Expanded>
         </Expression>
-        <Section name="s2" description="not equal">
+        <Section name="s2" description="not equal" filename="projects/<exe-name>/MiscTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
             <Original>
               a != b
@@ -9023,7 +9023,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="non streamable - with conv. op" tags="[Tricky]">
+    <TestCase name="non streamable - with conv. op" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           s == "7"
@@ -9034,10 +9034,10 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="not allowed" tags="[!throws]">
+    <TestCase name="not allowed" tags="[!throws]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="null strings">
+    <TestCase name="null strings" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           makeString( false ) != static_cast&lt;char*>(0)
@@ -9056,7 +9056,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" tags="[pair][toString]">
+    <TestCase name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
           Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }"
@@ -9069,7 +9069,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="pointer to class" tags="[Tricky]">
+    <TestCase name="pointer to class" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           p == 0
@@ -9080,8 +9080,8 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="random SECTION tests" tags="[.][failing][hide][sections]">
-      <Section name="s1" description="doesn't equal">
+    <TestCase name="random SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             a != b
@@ -9100,7 +9100,7 @@ spanner      <OverallResult success="true"/>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="s2" description="not equal">
+      <Section name="s2" description="not equal" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             a != b
@@ -9113,8 +9113,8 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="replaceInPlace">
-      <Section name="replace single char">
+    <TestCase name="replaceInPlace" filename="projects/<exe-name>/TestMain.cpp" >
+      <Section name="replace single char" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             replaceInPlace( letters, "b", "z" )
@@ -9133,7 +9133,7 @@ spanner      <OverallResult success="true"/>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace two chars">
+      <Section name="replace two chars" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             replaceInPlace( letters, "c", "z" )
@@ -9152,7 +9152,7 @@ spanner      <OverallResult success="true"/>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace first char">
+      <Section name="replace first char" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             replaceInPlace( letters, "a", "z" )
@@ -9171,7 +9171,7 @@ spanner      <OverallResult success="true"/>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace last char">
+      <Section name="replace last char" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             replaceInPlace( letters, "g", "z" )
@@ -9190,7 +9190,7 @@ spanner      <OverallResult success="true"/>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace all chars">
+      <Section name="replace all chars" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             replaceInPlace( letters, letters, "replaced" )
@@ -9209,7 +9209,7 @@ spanner      <OverallResult success="true"/>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace no chars">
+      <Section name="replace no chars" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             !replaceInPlace( letters, "x", "z" )
@@ -9228,7 +9228,7 @@ spanner      <OverallResult success="true"/>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="escape '">
+      <Section name="escape '" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
             replaceInPlace( s, "'", "|'" )
@@ -9249,10 +9249,10 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="second tag" tags="[tag2]">
+    <TestCase name="second tag" tags="[tag2]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="send a single char to INFO" tags="[.][failing][hide]">
+    <TestCase name="send a single char to INFO" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Info>
         3
       </Info>
@@ -9266,7 +9266,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="sends information to INFO" tags="[.][failing][hide]">
+    <TestCase name="sends information to INFO" tags="[.][failing][hide]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         hi
       </Info>
@@ -9283,7 +9283,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="std::pair&lt;int,const std::string> -> toString" tags="[pair][toString]">
+    <TestCase name="std::pair&lt;int,const std::string> -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
           Catch::toString(value) == "{ 34, \"xyzzy\" }"
@@ -9294,7 +9294,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="std::pair&lt;int,std::string> -> toString" tags="[pair][toString]">
+    <TestCase name="std::pair&lt;int,std::string> -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
           Catch::toString( value ) == "{ 34, \"xyzzy\" }"
@@ -9305,7 +9305,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" tags="[pair][toString]">
+    <TestCase name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
           Catch::toString( pr ) == "{ { \"green\", 55 } }"
@@ -9318,7 +9318,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="string literals of different sizes can be compared" tags="[.][Tricky][failing][hide]">
+    <TestCase name="string literals of different sizes can be compared" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           std::string( "first" ) == "second"
@@ -9329,7 +9329,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="toString on const wchar_t const pointer returns the string contents" tags="[toString]">
+    <TestCase name="toString on const wchar_t const pointer returns the string contents" tags="[toString]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           result == "\"wide load\""
@@ -9340,7 +9340,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString on const wchar_t pointer returns the string contents" tags="[toString]">
+    <TestCase name="toString on const wchar_t pointer returns the string contents" tags="[toString]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           result == "\"wide load\""
@@ -9351,7 +9351,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString on wchar_t const pointer returns the string contents" tags="[toString]">
+    <TestCase name="toString on wchar_t const pointer returns the string contents" tags="[toString]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           result == "\"wide load\""
@@ -9362,7 +9362,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString on wchar_t returns the string contents" tags="[toString]">
+    <TestCase name="toString on wchar_t returns the string contents" tags="[toString]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           result == "\"wide load\""
@@ -9373,7 +9373,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( has_maker )" description="toString]">
+    <TestCase name="toString( has_maker )" description="toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
         <Original>
           Catch::toString( item ) == "StringMaker&lt;has_maker>"
@@ -9386,7 +9386,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( has_maker_and_toString )" tags="[.][hide][toString]">
+    <TestCase name="toString( has_maker_and_toString )" tags="[.][hide][toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
         <Original>
           Catch::toString( item ) == "toString( has_maker_and_toString )"
@@ -9399,7 +9399,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( has_toString )" tags="[toString]">
+    <TestCase name="toString( has_toString )" tags="[toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
         <Original>
           Catch::toString( item ) == "toString( has_toString )"
@@ -9412,7 +9412,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( vectors&lt;has_maker )" tags="[toString]">
+    <TestCase name="toString( vectors&lt;has_maker )" tags="[toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
         <Original>
           Catch::toString( v ) == "{ StringMaker&lt;has_maker> }"
@@ -9425,7 +9425,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString(enum w/operator&lt;&lt;)" tags="[enum][toString]">
+    <TestCase name="toString(enum w/operator&lt;&lt;)" tags="[enum][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
           Catch::toString(e0) == "E2{0}"
@@ -9444,7 +9444,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString(enum)" tags="[enum][toString]">
+    <TestCase name="toString(enum)" tags="[enum][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
           Catch::toString(e0) == "0"
@@ -9463,7 +9463,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="vector&lt;int> -> toString" tags="[toString][vector]">
+    <TestCase name="vector&lt;int> -> toString" tags="[toString][vector]" filename="projects/<exe-name>/ToStringVector.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
           Catch::toString(vv) == "{  }"
@@ -9490,7 +9490,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="vector&lt;string> -> toString" tags="[toString][vector]">
+    <TestCase name="vector&lt;string> -> toString" tags="[toString][vector]" filename="projects/<exe-name>/ToStringVector.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
           Catch::toString(vv) == "{  }"
@@ -9519,7 +9519,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="vectors can be sized and resized" tags="[vector]">
+    <TestCase name="vectors can be sized and resized" tags="[vector]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           v.size() == 5
@@ -9536,7 +9536,7 @@ spanner      <OverallResult success="true"/>
           5 >= 5
         </Expanded>
       </Expression>
-      <Section name="resizing bigger changes size and capacity">
+      <Section name="resizing bigger changes size and capacity" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             v.size() == 10
@@ -9571,7 +9571,7 @@ spanner      <OverallResult success="true"/>
           5 >= 5
         </Expanded>
       </Expression>
-      <Section name="resizing smaller changes size but not capacity">
+      <Section name="resizing smaller changes size but not capacity" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             v.size() == 0
@@ -9588,7 +9588,7 @@ spanner      <OverallResult success="true"/>
             5 >= 5
           </Expanded>
         </Expression>
-        <Section name="We can use the 'swap trick' to reset the capacity">
+        <Section name="We can use the 'swap trick' to reset the capacity" filename="projects/<exe-name>/MiscTests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
             <Original>
               v.capacity() == 0
@@ -9617,7 +9617,7 @@ spanner      <OverallResult success="true"/>
           5 >= 5
         </Expanded>
       </Expression>
-      <Section name="reserving bigger changes capacity but not size">
+      <Section name="reserving bigger changes capacity but not size" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             v.size() == 5
@@ -9652,7 +9652,7 @@ spanner      <OverallResult success="true"/>
           5 >= 5
         </Expanded>
       </Expression>
-      <Section name="reserving smaller does not change size or capacity">
+      <Section name="reserving smaller does not change size or capacity" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
             v.size() == 5
@@ -9673,11 +9673,11 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="xmlentitycheck">
-      <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>">
+    <TestCase name="xmlentitycheck" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" filename="projects/<exe-name>/MiscTests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;">
+      <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" filename="projects/<exe-name>/MiscTests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
