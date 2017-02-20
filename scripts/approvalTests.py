@@ -146,7 +146,9 @@ approve("console.swa4", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", 
 approve("junit.sw", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
 # xml reporter, include passes, warn about No Assertions
 approve("xml.sw", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
+# Automake console reporter
+approve("automake.std", ["~[c++11]~[!nonportable]", "-r", "automake", "--order", "lex"])
 
 if overallResult != 0:
-    print("If these differenecs are expected run approve.py to approve new baselines")
+    print("If these differences are expected run approve.py to approve new baselines")
 exit(overallResult)

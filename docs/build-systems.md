@@ -43,6 +43,11 @@ e.g.:
 
 Being specific to TeamCity this is the best reporter to use with it - but it is completely unsuitable for any other purpose. It is a streaming format (it writes as it goes) - although test results don't appear in the TeamCity interface until the completion of a suite (usually the whole test run).
 
+## Automake Reporter
+```-r automake```
+
+The Automake Reporter writes out the [meta tags](https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html#Log-files-generation-and-test-results-recording) expected by automake via `make check`.
+
 # Low-level tools
 
 ## CMake
