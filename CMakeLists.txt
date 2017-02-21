@@ -213,6 +213,7 @@ set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_console.hpp
         ${HEADER_DIR}/reporters/catch_reporter_junit.hpp
         ${HEADER_DIR}/reporters/catch_reporter_multi.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_slim.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
         ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )

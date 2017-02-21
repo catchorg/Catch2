@@ -43,6 +43,7 @@
 #include "../reporters/catch_reporter_junit.hpp"
 #include "../reporters/catch_reporter_console.hpp"
 #include "../reporters/catch_reporter_compact.hpp"
+#include "../reporters/catch_reporter_slim.hpp"
 
 namespace Catch {
     // These are all here to avoid warnings about not having any out of line
@@ -77,6 +78,7 @@ namespace Catch {
     StreamingReporterBase::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     CompactReporter::~CompactReporter() {}
+    SlimReporter::~SlimReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
