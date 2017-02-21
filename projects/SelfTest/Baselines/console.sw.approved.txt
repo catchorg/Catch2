@@ -7881,6 +7881,142 @@ with message:
   no assertions
 
 -------------------------------------------------------------------------------
+Vector matchers
+  Contains (element)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, VectorContains( 1 ) )
+with expansion:
+  { 1, 2, 3 } Contains: 1
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, VectorContains( 2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: 2
+
+-------------------------------------------------------------------------------
+Vector matchers
+  Contains (vector)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Contains( v2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2 }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Contains( v2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Contains( empty) )
+with expansion:
+  { 1, 2, 3 } Contains: {  }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( empty, Contains( empty) )
+with expansion:
+  {  } Contains: {  }
+
+-------------------------------------------------------------------------------
+Vector matchers
+  Equals
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Equals( v ) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( empty, Equals( empty ) )
+with expansion:
+  {  } Equals: {  }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Equals( v2 ) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Contains (element)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, VectorContains( -1 ) )
+with expansion:
+  { 1, 2, 3 } Contains: -1
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, VectorContains( 1 ) )
+with expansion:
+  {  } Contains: 1
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Contains (vector)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, Contains( v) )
+with expansion:
+  {  } Contains: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Contains( v2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2, 4 }
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Equals
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Equals( v2 ) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v2, Equals( v ) )
+with expansion:
+  { 1, 2 } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, Equals( v ) )
+with expansion:
+  {  } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Equals( empty ) )
+with expansion:
+  { 1, 2, 3 } Equals: {  }
+
+-------------------------------------------------------------------------------
 When checked exceptions are thrown they can be expected or unexpected
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -9152,6 +9288,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 160 | 115 passed | 43 failed |  2 failed as expected
-assertions: 933 | 835 passed | 80 failed | 18 failed as expected
+test cases: 162 | 116 passed | 44 failed |  2 failed as expected
+assertions: 950 | 844 passed | 88 failed | 18 failed as expected
 

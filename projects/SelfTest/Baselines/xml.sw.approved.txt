@@ -8421,6 +8421,166 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Vector matchers" tags="[matchers][vector]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Section name="Contains (element)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, VectorContains( 1 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, VectorContains( 2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: 2
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Contains (vector)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( empty)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: {  }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Contains( empty)
+          </Original>
+          <Expanded>
+            {  } Contains: {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Equals" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( v )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Equals( empty )
+          </Original>
+          <Expanded>
+            {  } Equals: {  }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Vector matchers that fail" tags="[.][failing][hide][matchers][vector]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Section name="Contains (element)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, VectorContains( -1 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: -1
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, VectorContains( 1 )
+          </Original>
+          <Expanded>
+            {  } Contains: 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="2" expectedFailures="0"/>
+      </Section>
+      <Section name="Contains (vector)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Contains( v)
+          </Original>
+          <Expanded>
+            {  } Contains: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2, 4 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="2" expectedFailures="0"/>
+      </Section>
+      <Section name="Equals" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v2, Equals( v )
+          </Original>
+          <Expanded>
+            { 1, 2 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Equals( v )
+          </Original>
+          <Expanded>
+            {  } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( empty )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="4" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="When checked exceptions are thrown they can be expected or unexpected" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
@@ -9682,7 +9842,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="835" failures="81" expectedFailures="18"/>
+    <OverallResults successes="844" failures="89" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="835" failures="80" expectedFailures="18"/>
+  <OverallResults successes="844" failures="88" expectedFailures="18"/>
 </Catch>

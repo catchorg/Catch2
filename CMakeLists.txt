@@ -157,6 +157,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_matchers.hpp
         ${HEADER_DIR}/internal/catch_matchers_string.h
         ${HEADER_DIR}/internal/catch_matchers_string.hpp
+        ${HEADER_DIR}/internal/catch_matchers_vector.h
         ${HEADER_DIR}/internal/catch_message.h
         ${HEADER_DIR}/internal/catch_message.hpp
         ${HEADER_DIR}/internal/catch_notimplemented_exception.h

@@ -37,6 +37,7 @@
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
 #include "internal/catch_matchers_string.h"
+#include "internal/catch_matchers_vector.h"
 #include "internal/catch_compiler_capabilities.h"
 #include "internal/catch_interfaces_tag_alias_registry.h"
 

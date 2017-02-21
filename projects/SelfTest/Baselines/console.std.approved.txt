@@ -603,6 +603,67 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
+Vector matchers that fail
+  Contains (element)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, VectorContains( -1 ) )
+with expansion:
+  { 1, 2, 3 } Contains: -1
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, VectorContains( 1 ) )
+with expansion:
+  {  } Contains: 1
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Contains (vector)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, Contains( v) )
+with expansion:
+  {  } Contains: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Contains( v2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2, 4 }
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Equals
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Equals( v2 ) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v2, Equals( v ) )
+with expansion:
+  { 1, 2 } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, Equals( v ) )
+with expansion:
+  {  } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Equals( empty ) )
+with expansion:
+  { 1, 2, 3 } Equals: {  }
+
+-------------------------------------------------------------------------------
 When unchecked exceptions are thrown directly they are always failures
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -829,6 +890,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 160 | 116 passed | 42 failed |  2 failed as expected
-assertions: 931 | 835 passed | 78 failed | 18 failed as expected
+test cases: 162 | 117 passed | 43 failed |  2 failed as expected
+assertions: 948 | 844 passed | 86 failed | 18 failed as expected
 

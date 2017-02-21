@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="934" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="76" tests="951" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="#542" time="{duration}"/>
     <testcase classname="global" name="#809" time="{duration}"/>
@@ -499,6 +499,39 @@ ExceptionTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="Use a custom approx" time="{duration}"/>
     <testcase classname="Variadic macros" name="Section with one argument" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Contains (element)" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Contains (vector)" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Equals" time="{duration}"/>
+    <testcase classname="Vector matchers that fail" name="Contains (element)" time="{duration}">
+      <failure message="{ 1, 2, 3 } Contains: -1" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{  } Contains: 1" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Vector matchers that fail" name="Contains (vector)" time="{duration}">
+      <failure message="{  } Contains: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2, 3 } Contains: { 1, 2, 4 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Vector matchers that fail" name="Equals" time="{duration}">
+      <failure message="{ 1, 2, 3 } Equals: { 1, 2 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2 } Equals: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{  } Equals: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2, 3 } Equals: {  }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="When checked exceptions are thrown they can be expected or unexpected" time="{duration}"/>
     <testcase classname="global" name="When unchecked exceptions are thrown directly they are always failures" time="{duration}">
       <error type="TEST_CASE">

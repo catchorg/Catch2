@@ -97,3 +97,72 @@ TEST_CASE("Matchers can be negated (Not) with the ! operator - failing", "[match
 {
     CHECK_THAT( testStringForMatching(), !Contains( "substring" ) );
 }
+
+TEST_CASE( "Vector matchers", "[matchers][vector]" ) {
+    std::vector<int> v;
+    v.push_back( 1 );
+    v.push_back( 2 );
+    v.push_back( 3 );
+
+    std::vector<int> v2;
+    v2.push_back( 1 );
+    v2.push_back( 2 );
+
+    std::vector<int> empty;
+
+    SECTION( "Contains (element)" ) {
+        CHECK_THAT( v, VectorContains( 1 ) );
+        CHECK_THAT( v, VectorContains( 2 ) );
+    }
+    SECTION( "Contains (vector)" ) {
+        CHECK_THAT( v, Contains( v2 ) );
+        v2.push_back( 3 ); // now exactly matches
+        CHECK_THAT( v, Contains( v2 ) );
+
+        CHECK_THAT( v, Contains( empty) );
+        CHECK_THAT( empty, Contains( empty) );
+    }
+
+    SECTION( "Equals" ) {
+
+        // Same vector
+        CHECK_THAT( v, Equals( v ) );
+
+        CHECK_THAT( empty, Equals( empty ) );
+
+        // Different vector with same elements
+        v2.push_back( 3 );
+        CHECK_THAT( v, Equals( v2 ) );
+    }
+}
+
+TEST_CASE( "Vector matchers that fail", "[matchers][vector][.][failing]" ) {
+    std::vector<int> v;
+    v.push_back( 1 );
+    v.push_back( 2 );
+    v.push_back( 3 );
+
+    std::vector<int> v2;
+    v2.push_back( 1 );
+    v2.push_back( 2 );
+
+    std::vector<int> empty;
+
+    SECTION( "Contains (element)" ) {
+        CHECK_THAT( v, VectorContains( -1 ) );
+        CHECK_THAT( empty, VectorContains( 1 ) );
+    }
+    SECTION( "Contains (vector)" ) {
+        CHECK_THAT( empty, Contains( v) );
+        v2.push_back( 4 );
+        CHECK_THAT( v, Contains( v2 ) );
+    }
+
+    SECTION( "Equals" ) {
+
+        CHECK_THAT( v, Equals( v2 ) );
+        CHECK_THAT( v2, Equals( v ) );
+        CHECK_THAT( empty, Equals( v ) );
+        CHECK_THAT( v, Equals( empty ) );
+    }
+}
