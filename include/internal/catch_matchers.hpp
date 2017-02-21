@@ -29,6 +29,8 @@ namespace Matchers {
         protected:
             virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
+		private:
+			MatcherUntypedBase& operator = (MatcherUntypedBase const&);
         };
 
         template<typename ArgT>
