@@ -5,8 +5,8 @@
  * Distributed under the Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_MATCHERS_STRING_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_MATCHERS_STRING_HPP_INCLUDED
+#ifndef TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
+#define TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 
 #include "catch_matchers.hpp"
 
@@ -64,4 +64,4 @@ namespace Matchers {
 } // namespace Matchers
 } // namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_MATCHERS_STRING_HPP_INCLUDED
+#endif // TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED

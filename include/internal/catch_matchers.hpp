@@ -33,14 +33,14 @@ namespace Matchers {
 			MatcherUntypedBase& operator = (MatcherUntypedBase const&);
         };
 
-        template<typename ArgT>
+        template<typename ObjectT, typename ComparatorT = ObjectT>
         struct MatcherBase : MatcherUntypedBase {
 
-            virtual bool match( ArgT const& arg ) const = 0;
+            virtual bool match( ObjectT const& arg ) const = 0;
 
-            MatchAllOf<ArgT> operator && ( MatcherBase const& other ) const;
-            MatchAnyOf<ArgT> operator || ( MatcherBase const& other ) const;
-            MatchNotOf<ArgT> operator ! () const;
+            MatchAllOf<ComparatorT> operator && ( MatcherBase const& other ) const;
+            MatchAnyOf<ComparatorT> operator || ( MatcherBase const& other ) const;
+            MatchNotOf<ComparatorT> operator ! () const;
         };
 
         template<typename ArgT>
@@ -118,17 +118,17 @@ namespace Matchers {
             MatcherBase<ArgT> const& m_underlyingMatcher;
         };
 
-        template<typename ArgT>
-        MatchAllOf<ArgT> MatcherBase<ArgT>::operator && ( MatcherBase const& other ) const {
-            return MatchAllOf<ArgT>() && *this && other;
+        template<typename ObjectT, typename ComparatorT>
+        MatchAllOf<ComparatorT> MatcherBase<ObjectT, ComparatorT>::operator && ( MatcherBase const& other ) const {
+            return MatchAllOf<ComparatorT>() && *this && other;
         }
-        template<typename ArgT>
-        MatchAnyOf<ArgT> MatcherBase<ArgT>::operator || ( MatcherBase const& other ) const {
-            return MatchAnyOf<ArgT>() || *this || other;
+        template<typename ObjectT, typename ComparatorT>
+        MatchAnyOf<ComparatorT> MatcherBase<ObjectT, ComparatorT>::operator || ( MatcherBase const& other ) const {
+            return MatchAnyOf<ComparatorT>() || *this || other;
         }
-        template<typename ArgT>
-        MatchNotOf<ArgT> MatcherBase<ArgT>::operator ! () const {
-            return MatchNotOf<ArgT>( *this );
+        template<typename ObjectT, typename ComparatorT>
+        MatchNotOf<ComparatorT> MatcherBase<ObjectT, ComparatorT>::operator ! () const {
+            return MatchNotOf<ComparatorT>( *this );
         }
 
     } // namespace Impl
