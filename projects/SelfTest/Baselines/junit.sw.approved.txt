@@ -92,7 +92,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}"/>
     <testcase classname="global" name="Contains string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Custom exceptions can be translated when testing for nothrow" time="{duration}">
@@ -116,7 +116,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="Demonstrate that a non-const == is not used" time="{duration}"/>
     <testcase classname="global" name="EndsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Equality checks that should fail" time="{duration}">
@@ -164,7 +164,7 @@ ConditionTests.cpp:<line number>
     <testcase classname="global" name="Equals" time="{duration}"/>
     <testcase classname="global" name="Equals string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="Exception messages can be tested for" name="exact match" time="{duration}"/>
@@ -256,13 +256,13 @@ ConditionTests.cpp:<line number>
     <testcase classname="global" name="Matchers can be composed with both &amp;&amp; and ||" time="{duration}"/>
     <testcase classname="global" name="Matchers can be composed with both &amp;&amp; and || - failing" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ( ( contains: &quot;string&quot; or contains: &quot;different&quot; ) and contains: &quot;random&quot; )" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Matchers can be negated (Not) with the ! operator" time="{duration}"/>
     <testcase classname="global" name="Matchers can be negated (Not) with the ! operator - failing" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; not contains: &quot;substring&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Mismatching exception messages failing the test" time="{duration}">
@@ -445,7 +445,7 @@ Message from section two
     </testcase>
     <testcase classname="global" name="StartsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="String matchers" time="{duration}"/>

@@ -307,10 +307,10 @@ with expansion:
 -------------------------------------------------------------------------------
 AllOf matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
 with expansion:
@@ -364,17 +364,17 @@ with message:
 -------------------------------------------------------------------------------
 AnyOf matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "not there" )
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
 with expansion:
@@ -848,10 +848,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Contains string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
@@ -903,10 +903,10 @@ with expansion:
 -------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
@@ -1033,10 +1033,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Equals
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) )
 with expansion:
@@ -1046,10 +1046,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Equals string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
@@ -4281,10 +4281,10 @@ with message:
 -------------------------------------------------------------------------------
 Matchers can be (AllOf) composed with the && operator
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) )
 with expansion:
@@ -4294,17 +4294,17 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be (AnyOf) composed with the || operator
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "different" or contains: "random" )
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
@@ -4314,10 +4314,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be composed with both && and ||
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) )
 with expansion:
@@ -4327,10 +4327,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be composed with both && and || - failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
@@ -4339,10 +4339,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be negated (Not) with the ! operator
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), !Contains( "different" ) )
 with expansion:
@@ -4351,10 +4351,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be negated (Not) with the ! operator - failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
@@ -6620,10 +6620,10 @@ No assertions in section 'two'
 -------------------------------------------------------------------------------
 StartsWith string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
@@ -6631,28 +6631,28 @@ with expansion:
 -------------------------------------------------------------------------------
 String matchers
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   REQUIRE_THAT( testStringForMatching(), Contains( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string"
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Contains( "abc" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc"
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), StartsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "this"
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) )
 with expansion:

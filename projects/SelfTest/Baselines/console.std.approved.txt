@@ -105,10 +105,10 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 Contains string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
@@ -148,10 +148,10 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
@@ -230,10 +230,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Equals string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
@@ -355,10 +355,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be composed with both && and || - failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
@@ -367,10 +367,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be negated (Not) with the ! operator - failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
@@ -564,10 +564,10 @@ Message from section two
 -------------------------------------------------------------------------------
 StartsWith string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"

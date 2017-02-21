@@ -341,8 +341,8 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="AllOf matcher" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="AllOf matcher" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
         </Original>
@@ -399,8 +399,8 @@
     <TestCase name="Anonymous test case 1" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="AnyOf matcher" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="AnyOf matcher" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
         </Original>
@@ -408,7 +408,7 @@
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
         </Original>
@@ -927,8 +927,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Contains string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Contains string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "not there" )
         </Original>
@@ -983,8 +983,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="EndsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="EndsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), EndsWith( "this" )
         </Original>
@@ -1160,8 +1160,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equals" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Equals" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Equals( "this string contains 'abc' as a substring" )
         </Original>
@@ -1171,8 +1171,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equals string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Equals string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Equals( "something else" )
         </Original>
@@ -4380,8 +4380,8 @@ re>"
     <TestCase name="ManuallyRegistered" filename="projects/<exe-name>/TestMain.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
         </Original>
@@ -4391,8 +4391,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
@@ -4400,7 +4400,7 @@ re>"
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
@@ -4410,8 +4410,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
         </Original>
@@ -4421,8 +4421,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][hide][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][hide][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
         </Original>
@@ -4432,8 +4432,8 @@ re>"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), !Contains( "different" )
         </Original>
@@ -4443,8 +4443,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][hide][matchers][not][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][hide][matchers][not][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), !Contains( "substring" )
         </Original>
@@ -7032,8 +7032,8 @@ Message from section two
         </StdOut>
       </OverallResult>
     </TestCase>
-    <TestCase name="StartsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="StartsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), StartsWith( "string" )
         </Original>
@@ -7043,8 +7043,8 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" )
         </Original>
@@ -7052,7 +7052,7 @@ Message from section two
           "this string contains 'abc' as a substring" contains: "string"
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "abc" )
         </Original>
@@ -7060,7 +7060,7 @@ Message from section two
           "this string contains 'abc' as a substring" contains: "abc"
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), StartsWith( "this" )
         </Original>
@@ -7068,7 +7068,7 @@ Message from section two
           "this string contains 'abc' as a substring" starts with: "this"
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), EndsWith( "substring" )
         </Original>

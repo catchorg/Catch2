@@ -70,6 +70,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/ToStringWhich.cpp
         ${SELF_TEST_DIR}/TrickyTests.cpp
         ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
+        ${SELF_TEST_DIR}/MatchersTests.cpp
         )
 CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
