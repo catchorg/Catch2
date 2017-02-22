@@ -210,6 +210,7 @@ CheckFileList(INTERNAL_HEADERS ${HEADER_DIR}/internal)
 
 # Please keep these ordered alphabetically
 set(REPORTER_HEADERS
+        ${HEADER_DIR}/reporters/catch_reporter_automake.hpp
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
         ${HEADER_DIR}/reporters/catch_reporter_compact.hpp
         ${HEADER_DIR}/reporters/catch_reporter_console.hpp
