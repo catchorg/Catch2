@@ -9,6 +9,9 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "../include/reporters/catch_reporter_teamcity.hpp"
+#include "../include/reporters/catch_reporter_tap.hpp"
+#include "../include/reporters/catch_reporter_automake.hpp"
+
 
 // Some example tag aliases
 CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
