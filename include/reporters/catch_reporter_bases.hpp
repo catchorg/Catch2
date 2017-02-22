@@ -11,6 +11,7 @@
 #include "../internal/catch_interfaces_reporter.h"
 
 #include <cstring>
+#include <assert.h>
 
 namespace Catch {
 
