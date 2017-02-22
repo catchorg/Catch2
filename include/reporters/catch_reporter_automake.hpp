@@ -21,13 +21,15 @@ namespace Catch {
           :   StreamingReporterBase( _config )
         {}
 
+        virtual ~AutomakeReporter();
+
         static std::string getDescription() {
             return "Reports test results in the format of Automake .trs files";
         }
 
         virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
 
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE { return true; }
+        virtual bool assertionEnded( AssertionStats const& /*_assertionStats*/ ) CATCH_OVERRIDE { return true; }
 
         virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) CATCH_OVERRIDE {
             // Possible values to emit are PASS, XFAIL, SKIP, FAIL, XPASS and ERROR.
