@@ -1,6 +1,6 @@
 /*
- *  Created by Martin Moene on 2013-12-05.
- *  Copyright 2012 Martin Moene. All rights reserved.
+ *  Created by Colton Wolkins on 2015-08-15.
+ *  Copyright 2015 Martin Moene. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,11 +8,14 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_TAP_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_TAP_HPP_INCLUDED
 
-#include "catch_reporter_bases.hpp"
-#include <algorithm>
 
-#include "../internal/catch_reporter_registrars.hpp"
-#include "../internal/catch_console_colour.hpp"
+// Don't #include any Catch headers here - we can assume they are already
+// included before this header.
+// This is not good practice in general but is necessary in this case so this
+// file can be distributed as a single header that works with the main
+// Catch single header.
+
+#include <algorithm>
 
 namespace Catch {
 
@@ -38,8 +41,7 @@ namespace Catch {
             stream << "# No test cases matched '" << spec << "'" << std::endl;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) {
-        }
+        virtual void assertionStarting( AssertionInfo const& ) {}
 
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
@@ -47,15 +49,15 @@ namespace Catch {
             bool printInfoMessages = true;
 
             // Drop out if result was successful and we're not printing those
-            if( !m_config->includeSuccessfulResults() && result.isOk() ) {
-                if( result.getResultType() != ResultWas::Warning )
+            if ( !m_config->includeSuccessfulResults() && result.isOk() ) {
+                if ( result.getResultType() != ResultWas::Warning )
                     return false;
                 printInfoMessages = false;
             }
 
             AssertionPrinter printer( stream, _assertionStats, printInfoMessages, ++counter );
             printer.print();
-						stream << " # " << currentTestCaseInfo->name ;
+            stream << " # " << currentTestCaseInfo->name ;
 
             stream << std::endl;
             return true;
@@ -68,7 +70,7 @@ namespace Catch {
         }
 
     private:
-				size_t counter = 0;
+        size_t counter = 0;
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:
@@ -79,67 +81,67 @@ namespace Catch {
             , messages( _stats.infoMessages )
             , itMessage( _stats.infoMessages.begin() )
             , printInfoMessages( _printInfoMessages )
-						, counter(counter)
+            , counter(counter)
             {}
 
             void print() {
-                //printSourceInfo();
-
                 itMessage = messages.begin();
 
                 switch( result.getResultType() ) {
                     case ResultWas::Ok:
-                        printResultType( Colour::ResultSuccess, passedString() );
+                        printResultType( passedString() );
                         printOriginalExpression();
-                        //printReconstructedExpression();
+                        printReconstructedExpression();
                         if ( ! result.hasExpression() )
                             printRemainingMessages( Colour::None );
                         else
                             printRemainingMessages();
                         break;
                     case ResultWas::ExpressionFailed:
-                        //if( result.isOk() )
-                        //    printResultType( Colour::ResultSuccess, failedString() + std::string( " # TODO" ) );
-                        //else
-												printResultType( Colour::Error, failedString() );
+                        if (result.isOk()) {
+                            printResultType(passedString());
+                        } else {
+                            printResultType(failedString());
+                        }
                         printOriginalExpression();
-                        //printReconstructedExpression();
-                        if( result.isOk() )
-													printIssue( " # TODO" );
+                        printReconstructedExpression();
+                        if (result.isOk()) {
+                            printIssue(" # TODO");
+                        }
                         printRemainingMessages();
                         break;
                     case ResultWas::ThrewException:
-                        printResultType( Colour::Error, failedString() );
+                        printResultType( failedString() );
                         printIssue( "unexpected exception with message:" );
                         printMessage();
                         printExpressionWas();
                         printRemainingMessages();
                         break;
                     case ResultWas::FatalErrorCondition:
-                        printResultType( Colour::Error, failedString() );
+                        printResultType( failedString() );
                         printIssue( "fatal error condition with message:" );
                         printMessage();
                         printExpressionWas();
                         printRemainingMessages();
                         break;
                     case ResultWas::DidntThrowException:
-                        printResultType( Colour::Error, failedString() );
+                        printResultType( failedString() );
                         printIssue( "expected exception, got none" );
                         printExpressionWas();
                         printRemainingMessages();
                         break;
                     case ResultWas::Info:
-                        printResultType( Colour::None, "info" );
+                        printResultType( "info" );
                         printMessage();
                         printRemainingMessages();
                         break;
                     case ResultWas::Warning:
-                        printResultType( Colour::None, "warning" );
+                        printResultType( "warning" );
                         printMessage();
                         printRemainingMessages();
                         break;
                     case ResultWas::ExplicitFailure:
-                        printResultType( Colour::Error, failedString() );
+                        printResultType( failedString() );
                         printIssue( "explicitly" );
                         printRemainingMessages( Colour::None );
                         break;
@@ -147,13 +149,12 @@ namespace Catch {
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
-                        printResultType( Colour::Error, "** internal error **" );
+                        printResultType( "** internal error **" );
                         break;
                 }
             }
 
         private:
-            // Colour::LightGrey
 
             static Colour::Code dimColour() { return Colour::FileName; }
 
@@ -165,7 +166,7 @@ namespace Catch {
                 stream << result.getSourceInfo() << ":";
             }
 
-            void printResultType( Colour::Code colour, std::string passOrFail ) const {
+            void printResultType( std::string passOrFail ) const {
                 if( !passOrFail.empty() ) {
                     {
                         //Colour colourGuard( colour );
@@ -202,8 +203,8 @@ namespace Catch {
                         Colour colour( dimColour() );
                         stream << " for: ";
                     }
-										std::string expr = result.getExpandedExpression();
-										std::replace( expr.begin(), expr.end(), '\n', ' ');
+                    std::string expr = result.getExpandedExpression();
+                    std::replace( expr.begin(), expr.end(), '\n', ' ');
                     stream << expr;
                 }
             }
@@ -247,7 +248,7 @@ namespace Catch {
             std::vector<MessageInfo> messages;
             std::vector<MessageInfo>::const_iterator itMessage;
             bool printInfoMessages;
-						size_t counter;
+            size_t counter;
         };
 
         // Colour, message variants:
@@ -264,43 +265,15 @@ namespace Catch {
         void printTotals( const Totals& totals ) const {
             if( totals.testCases.total() == 0 ) {
                 stream << "1..0 # Skipped: No tests ran.";
-                //stream << "No tests ran.";
-            }
-						else {
+            } else {
                 stream << "1.." << counter;
-						}
-            //else if( totals.testCases.failed == totals.testCases.total() ) {
-            //    Colour colour( Colour::ResultError );
-            //    const std::string qualify_assertions_failed =
-            //        totals.assertions.failed == totals.assertions.total() ?
-            //            bothOrAll( totals.assertions.failed ) : "";
-            //    stream <<
-            //        "Failed " << bothOrAll( totals.testCases.failed )
-            //                  << pluralise( totals.testCases.failed, "test case"  ) << ", "
-            //        "failed " << qualify_assertions_failed <<
-            //                     pluralise( totals.assertions.failed, "assertion" ) << ".";
-            //}
-            //else if( totals.assertions.total() == 0 ) {
-            //    stream <<
-            //        "Passed " << bothOrAll( totals.testCases.total() )
-            //                  << pluralise( totals.testCases.total(), "test case" )
-            //                  << " (no assertions).";
-            //}
-            //else if( totals.assertions.failed ) {
-            //    Colour colour( Colour::ResultError );
-            //    stream <<
-            //        "Failed " << pluralise( totals.testCases.failed, "test case"  ) << ", "
-            //        "failed " << pluralise( totals.assertions.failed, "assertion" ) << ".";
-            //}
-            //else {
-            //    Colour colour( Colour::ResultSuccess );
-            //    stream <<
-            //        "Passed " << bothOrAll( totals.testCases.passed )
-            //                  << pluralise( totals.testCases.passed, "test case"  ) <<
-            //        " with "  << pluralise( totals.assertions.passed, "assertion" ) << ".";
-            //}
+            }
         }
     };
+
+#ifdef CATCH_IMPL
+    TAPReporter::~TAPReporter() {}
+#endif
 
     INTERNAL_CATCH_REGISTER_REPORTER( "tap", TAPReporter )
 
