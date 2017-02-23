@@ -25,13 +25,13 @@ issues = {}
 def getIssueTitle( issueNumber ):
     try:
         s = urllib2.urlopen("https://api.github.com/repos/philsquared/catch/issues/" + issueNumber ).read()        
-    except e:
+    except:
         return "#HTTP Error#"
 
     try:
         j = json.loads( s )
         return j["title"]
-    except e:
+    except:
         return "#JSON Error#"
 
 for line in lines:
