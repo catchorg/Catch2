@@ -52,7 +52,7 @@ namespace Catch {
                 printInfoMessages = false;
             }
 
-            AssertionPrinter printer( stream, _assertionStats, printInfoMessages );
+            AssertionPrinter printer( stream, fullTestName(), _assertionStats, printInfoMessages );
             printer.print();
 
             stream << std::endl;
@@ -69,8 +69,9 @@ namespace Catch {
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:
-            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages )
+            AssertionPrinter( std::ostream& _stream, const std::string &_testName, AssertionStats const& _stats, bool _printInfoMessages )
             : stream( _stream )
+            , testName( _testName)
             , stats( _stats )
             , result( _stats.assertionResult )
             , messages( _stats.infoMessages )
@@ -86,6 +87,7 @@ namespace Catch {
                 switch( result.getResultType() ) {
                     case ResultWas::Ok:
                         printResultType( Colour::ResultSuccess, passedString() );
+                        printTestName();
                         printOriginalExpression();
                         printReconstructedExpression();
                         if ( ! result.hasExpression() )
@@ -98,12 +100,14 @@ namespace Catch {
                             printResultType( Colour::ResultSuccess, failedString() + std::string( " - but was ok" ) );
                         else
                             printResultType( Colour::Error, failedString() );
+                        printTestName();
                         printOriginalExpression();
                         printReconstructedExpression();
                         printRemainingMessages();
                         break;
                     case ResultWas::ThrewException:
                         printResultType( Colour::Error, failedString() );
+                        printTestName();
                         printIssue( "unexpected exception with message:" );
                         printMessage();
                         printExpressionWas();
@@ -111,6 +115,7 @@ namespace Catch {
                         break;
                     case ResultWas::FatalErrorCondition:
                         printResultType( Colour::Error, failedString() );
+                        printTestName();
                         printIssue( "fatal error condition with message:" );
                         printMessage();
                         printExpressionWas();
@@ -118,22 +123,26 @@ namespace Catch {
                         break;
                     case ResultWas::DidntThrowException:
                         printResultType( Colour::Error, failedString() );
+                        printTestName();
                         printIssue( "expected exception, got none" );
                         printExpressionWas();
                         printRemainingMessages();
                         break;
                     case ResultWas::Info:
                         printResultType( Colour::None, "info" );
+                        printTestName();
                         printMessage();
                         printRemainingMessages();
                         break;
                     case ResultWas::Warning:
                         printResultType( Colour::None, "warning" );
+                        printTestName();
                         printMessage();
                         printRemainingMessages();
                         break;
                     case ResultWas::ExplicitFailure:
                         printResultType( Colour::Error, failedString() );
+                        printTestName();
                         printIssue( "explicitly" );
                         printRemainingMessages( Colour::None );
                         break;
@@ -142,6 +151,7 @@ namespace Catch {
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
                         printResultType( Colour::Error, "** internal error **" );
+                        printTestName();
                         break;
                 }
             }
@@ -162,6 +172,11 @@ namespace Catch {
             void printSourceInfo() const {
                 Colour colourGuard( Colour::FileName );
                 stream << result.getSourceInfo() << ':';
+            }
+
+            void printTestName() const {
+                Colour colourGuard( Colour::TestName );
+                stream << " " << testName << ":";
             }
 
             void printResultType( Colour::Code colour, std::string passOrFail ) const {
@@ -239,12 +254,21 @@ namespace Catch {
 
         private:
             std::ostream& stream;
+            const std::string testName;
             AssertionStats const& stats;
             AssertionResult const& result;
             std::vector<MessageInfo> messages;
             std::vector<MessageInfo>::const_iterator itMessage;
             bool printInfoMessages;
         };
+
+        std::string fullTestName() const {
+            std::string name = currentTestCaseInfo->name;
+            for (std::vector<SectionInfo>::const_iterator it = m_sectionStack.begin()+1; it != m_sectionStack.end(); ++it) {
+                name += "|" + it->name;
+            }
+            return name;
+        }
 
         // Colour, message variants:
         // - white: No tests ran.

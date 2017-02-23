@@ -33,6 +33,7 @@ namespace Catch {
 
             // By intention
             FileName = LightGrey,
+            TestName = Blue,
             Warning = Yellow,
             ResultError = BrightRed,
             ResultSuccess = BrightGreen,
