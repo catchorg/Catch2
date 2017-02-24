@@ -148,5 +148,5 @@ approve("junit.sw", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "-r"
 approve("xml.sw", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
 
 if overallResult != 0:
-    print("If these differenecs are expected run approve.py to approve new baselines")
+    print("If these differences are expected, run approve.py to approve new baselines.")
 exit(overallResult)
