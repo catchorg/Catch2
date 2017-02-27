@@ -11,6 +11,7 @@
 #include <string>
 #include "catch_result_type.h"
 #include "catch_common.h"
+#include "catch_tostring.h"
 
 namespace Catch {
 
@@ -44,7 +45,7 @@ namespace Catch {
 
         template<typename T>
         MessageBuilder& operator << ( T const& value ) {
-            m_stream << value;
+            m_stream << toString(value);
             return *this;
         }
 
