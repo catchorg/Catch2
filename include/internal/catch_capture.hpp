@@ -104,7 +104,7 @@
                 static_cast<void>(expr); \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
-            catch( Catch::add_const<Catch::add_lvalue_reference<exceptionType>::type>::type ) { \
+            catch( typename Catch::add_const<typename Catch::add_lvalue_reference<exceptionType>::type>::type ) { \
                 __catchResult.captureResult( Catch::ResultWas::Ok ); \
             } \
             catch( ... ) { \
