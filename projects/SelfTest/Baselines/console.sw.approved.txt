@@ -305,6 +305,42 @@ with expansion:
   {?} == {?}
 
 -------------------------------------------------------------------------------
+Absolute margin
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 104.0 != Approx(100.0) )
+with expansion:
+  104.0 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 104.0 == Approx(100.0).margin(5) )
+with expansion:
+  104.0 == Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 104.0 != Approx(100.0).margin(3) )
+with expansion:
+  104.0 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 100.3 != Approx(100.0) )
+with expansion:
+  100.3 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 100.3 == Approx(100.0).margin(0.5) )
+with expansion:
+  100.3 == Approx( 100.0 )
+
+-------------------------------------------------------------------------------
 AllOf matcher
 -------------------------------------------------------------------------------
 MatchersTests.cpp:<line number>
@@ -9288,6 +9324,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 162 | 116 passed | 44 failed |  2 failed as expected
-assertions: 950 | 844 passed | 88 failed | 18 failed as expected
+test cases: 163 | 117 passed | 44 failed |  2 failed as expected
+assertions: 955 | 849 passed | 88 failed | 18 failed as expected
 

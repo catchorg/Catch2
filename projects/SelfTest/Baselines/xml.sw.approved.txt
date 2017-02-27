@@ -341,6 +341,49 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Absolute margin" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          104.0 != Approx(100.0)
+        </Original>
+        <Expanded>
+          104.0 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          104.0 == Approx(100.0).margin(5)
+        </Original>
+        <Expanded>
+          104.0 == Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          104.0 != Approx(100.0).margin(3)
+        </Original>
+        <Expanded>
+          104.0 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          100.3 != Approx(100.0)
+        </Original>
+        <Expanded>
+          100.3 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          100.3 == Approx(100.0).margin(0.5)
+        </Original>
+        <Expanded>
+          100.3 == Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="AllOf matcher" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
@@ -9842,7 +9885,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="844" failures="89" expectedFailures="18"/>
+    <OverallResults successes="849" failures="89" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="844" failures="88" expectedFailures="18"/>
+  <OverallResults successes="849" failures="88" expectedFailures="18"/>
 </Catch>

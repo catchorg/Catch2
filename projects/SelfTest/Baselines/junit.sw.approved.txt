@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="76" tests="951" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="76" tests="956" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="#542" time="{duration}"/>
     <testcase classname="global" name="#809" time="{duration}"/>
@@ -63,6 +63,7 @@ TrickyTests.cpp:<line number>
 TrickyTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="Absolute margin" time="{duration}"/>
     <testcase classname="global" name="AllOf matcher" time="{duration}"/>
     <testcase classname="global" name="An expression with side-effects should only be evaluated once" time="{duration}"/>
     <testcase classname="global" name="An unchecked exception reports the line of the last assertion" time="{duration}">
