@@ -1,3 +1,40 @@
+# 1.8.0
+
+### New features/ minor changes
+
+* Matchers have new, simpler (and documented) interface.
+  * Catch provides string and vector matchers.
+  * For details see [Matchers documentation](docs/matchers.md).
+* Changed console reporter test duration reporting format (#322)
+  * Old format: `Some simple comparisons between doubles completed in 0.000123s`
+  * New format: `xxx.123s: Some simple comparisons between doubles` _(There will always be exactly 3 decimal places)_
+* Added opt-in leak detection under MSVC + Windows (#439)
+  * Enable it by compiling Catch's main with `CATCH_CONFIG_WINDOWS_CRTDBG`
+* Introduced new compile-time flag, `CATCH_CONFIG_FAST_COMPILE`, trading features for compilation speed.
+  * Moves debug breaks out of tests and into implementation, speeding up compilation time by ~XX%
+  * _More changes are coming_
+* Added [TAP (Test Anything Protocol)](https://testanything.org/) and [Automake](https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html#Log-files-generation-and-test-results-recording) reporters.
+  * These are not present in the default single-include header and need to be downloaded from GitHub separately.
+  * For details see [documentation about integrating with build systems](docs/build-systems.md).
+*  XML reporter now reports filename as part of the `Section` and `TestCase` tags.
+* `Approx` now supports an optional margin of absolute error
+  * It has also received [new documentation]().
+
+### Fixes
+* Silenced C4312 ("conversion from int to 'ClassName *") warnings in the evaluate layer.
+* Fixed C4512 ("assignment operator could not be generated") warnings under VS2013.
+* Cygwin compatibility fixes
+  * Signal handling is no longer compiled by default.
+  * Usage of `gettimeofday` inside Catch should no longer cause compilation errors.
+* Improved `-Wparentheses` supression for gcc (#674)
+  * When compiled with gcc 4.8 or newer, the supression is localized to assertions only
+  * Otherwise it is supressed for the whole TU
+* Fixed test spec parser issue (with escapes in multiple names)
+
+### Other
+* Various documentation fixes and improvements
+
+
 # 1.7.2
 
 ### Fixes and minor improvements
@@ -30,9 +67,6 @@ Other:
 * Fixed XML reporter not reporting captured stdout/stderr.
 * Fixed possible infinite recursion in Windows SEH.
 * Fixed possible compilation error caused by Catch's operator overloads being ambiguous in regards to user-defined templated operators.
-
-# Older versions
-Release notes were not maintained prior to v1.6.0, but you should be able to work them out from the Git history
 
 ## 1.7.0
 
@@ -101,6 +135,9 @@ Release notes were not maintained prior to v1.6.0, but you should be able to wor
 ### Other:
 * Tweaks and changes to scripts - particularly for Approval test - to make them more portable
 
+
+# Older versions
+Release notes were not maintained prior to v1.6.0, but you should be able to work them out from the Git history
 
 ---
 
