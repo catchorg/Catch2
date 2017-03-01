@@ -471,7 +471,7 @@ TEST_CASE( "Text can be formatted using the Text class", "" ) {
     CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" );
 }
 
-TEST_CASE( "Long text is truncted", "[Text][Truncated]" ) {
+TEST_CASE( "Long text is truncated", "[Text][Truncated]" ) {
 
     std::string longLine( 90, '*' );
 
