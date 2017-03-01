@@ -81,6 +81,10 @@
 #       define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
 #   endif
 
+// Required for some versions of Cygwin to declare gettimeofday
+// see: http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
+#   define _BSD_SOURCE
+
 #endif // __CYGWIN__
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -20,13 +20,8 @@
 
 #else
 
-// Required for some versions of Cygwin to declare gettimeofday
-// see: http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
-#   ifdef __CYGWIN__
-#       define _BSD_SOURCE
-#   endif
-
 #include <sys/time.h>
+
 #endif
 
 namespace Catch {
