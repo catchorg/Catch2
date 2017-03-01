@@ -15,8 +15,17 @@
 #endif
 
 #ifdef CATCH_PLATFORM_WINDOWS
-#include "catch_windows_h_proxy.h"
+
+#  include "catch_windows_h_proxy.h"
+
 #else
+
+// Required for some versions of Cygwin to declare gettimeofday
+// see: http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
+#   ifdef __CYGWIN__
+#       define _BSD_SOURCE
+#   endif
+
 #include <sys/time.h>
 #endif
 

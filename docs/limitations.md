@@ -73,6 +73,11 @@ TEST_CASE("No longer a syntax error with VC12") {
 }
 ```
 
+### Visual Studio 2003 -- Syntax error caused by improperly expanded `__LINE__` macro
+Older version of Visual Studio can have trouble compiling Catch, not expanding the `__LINE__` macro properly when recompiling the test binary. This is caused by Edit and Continue being on.
+
+A workaround is to turn off Edit and Continue when compiling the test binary.
+
 ### Clang/G++ -- skipping leaf sections after an exception
 Some versions of `libc++` and `libstdc++` (or their runtimes) have a bug with `std::uncaught_exception()` getting stuck returning `true` after rethrow, even if there are no active exceptions. One such case is this snippet, which skipped the sections "a" and "b", when compiled against `libcxxrt` from master
 ```cpp

@@ -11,6 +11,7 @@
 #include "catch_common.h"
 
 #include <cstring>
+#include <cctype>
 
 namespace Catch {
 
@@ -29,11 +30,8 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix ) {
         return s.find( infix ) != std::string::npos;
     }
-    bool contains( std::string const& s, char infix ) {
-        return s.find(infix) != std::string::npos;
-    }
     char toLowerCh(char c) {
-        return static_cast<char>( ::tolower( c ) );
+        return static_cast<char>( std::tolower( c ) );
     }
     void toLowerInPlace( std::string& s ) {
         std::transform( s.begin(), s.end(), s.begin(), toLowerCh );

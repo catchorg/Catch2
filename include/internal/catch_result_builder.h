@@ -64,7 +64,7 @@ namespace Catch {
         void captureResult( ResultWas::OfType resultType );
         void captureExpression();
         void captureExpectedException( std::string const& expectedMessage );
-        void captureExpectedException( Matchers::Impl::Matcher<std::string> const& matcher );
+        void captureExpectedException( Matchers::Impl::MatcherBase<std::string> const& matcher );
         void handleResult( AssertionResult const& result );
         void react();
         bool shouldDebugBreak() const;
@@ -105,6 +105,7 @@ namespace Catch {
         setResultType( matcher.match( arg ) );
         endExpression( expr );
     }
+
 
 } // namespace Catch
 

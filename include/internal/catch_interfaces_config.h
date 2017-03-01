@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 
-#include <iostream>
+#include <iosfwd>
 #include <string>
 #include <vector>
 

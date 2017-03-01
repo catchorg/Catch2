@@ -11,6 +11,7 @@
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
+#pragma warning(disable:4312) // Converting int to T* using reinterpret_cast (issue on x64 platform)
 #endif
 
 #include <cstddef>

@@ -103,6 +103,17 @@ namespace Catch {
 
 #else // Not Windows - assumed to be POSIX compatible //////////////////////////
 
+#  if !defined(CATCH_CONFIG_POSIX_SIGNALS)
+
+namespace Catch {
+    struct FatalConditionHandler {
+        void reset() {}        
+    };
+}
+
+
+#  else // CATCH_CONFIG_POSIX_SIGNALS is defined
+
 #include <signal.h>
 
 namespace Catch {
@@ -182,6 +193,8 @@ namespace Catch {
 
 
 } // namespace Catch
+
+#  endif // CATCH_CONFIG_POSIX_SIGNALS
 
 #endif // not Windows
 

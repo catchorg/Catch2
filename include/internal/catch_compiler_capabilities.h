@@ -27,6 +27,7 @@
 // CATCH_CONFIG_VARIADIC_MACROS : are variadic macros supported?
 // CATCH_CONFIG_COUNTER : is the __COUNTER__ macro supported?
 // CATCH_CONFIG_WINDOWS_SEH : is Windows SEH supported?
+// CATCH_CONFIG_POSIX_SIGNALS : are POSIX signals supported?
 // ****************
 // Note to maintainers: if new toggles are added please document them
 // in configuration.md, too
@@ -62,10 +63,25 @@
 #  endif
 
 #   if defined(CATCH_CPP11_OR_GREATER)
-#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "clang diagnostic push" ) \
+            _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "clang diagnostic pop" )
 #   endif
 
 #endif // __clang__
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Cygwin
+#ifdef __CYGWIN__
+
+#   if !defined(CATCH_CONFIG_POSIX_SIGNALS)
+#       define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
+#   endif
+
+#endif // __CYGWIN__
 
 ////////////////////////////////////////////////////////////////////////////////
 // Borland
@@ -92,13 +108,23 @@
 // GCC
 #ifdef __GNUC__
 
+#   if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
+#       define CATCH_GCC_HAS_NEW_PRAGMA
+#   endif
+
 #   if __GNUC__ == 4 && __GNUC_MINOR__ >= 6 && defined(__GXX_EXPERIMENTAL_CXX0X__)
 #       define CATCH_INTERNAL_CONFIG_CPP11_NULLPTR
 #   endif
 
-#   if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS) && defined(CATCH_CPP11_OR_GREATER)
-#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
+#   if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS) && defined(CATCH_GCC_HAS_NEW_PRAGMA)
+#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "GCC diagnostic push" ) \
+            _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
+#       define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
+            _Pragma( "GCC diagnostic pop" )
 #   endif
+
+
 
 // - otherwise more recent versions define __cplusplus >= 201103L
 // and will get picked up below
@@ -239,9 +265,14 @@
 #if defined(CATCH_INTERNAL_CONFIG_WINDOWS_SEH) && !defined(CATCH_CONFIG_NO_WINDOWS_SEH) && !defined(CATCH_CONFIG_WINDOWS_SEH)
 #   define CATCH_CONFIG_WINDOWS_SEH
 #endif
+// This is set by default, because we assume that unix compilers are posix-signal-compatible by default.
+#if !defined(CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_POSIX_SIGNALS) 
+#   define CATCH_CONFIG_POSIX_SIGNALS
+#endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
+#   define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
 #endif
 
 // noexcept support:

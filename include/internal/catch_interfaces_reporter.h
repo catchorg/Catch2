@@ -21,7 +21,6 @@
 #include <string>
 #include <ostream>
 #include <map>
-#include <assert.h>
 
 namespace Catch
 {

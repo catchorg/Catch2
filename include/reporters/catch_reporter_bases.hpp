@@ -11,6 +11,7 @@
 #include "../internal/catch_interfaces_reporter.h"
 
 #include <cstring>
+#include <assert.h>
 
 namespace Catch {
 
@@ -237,7 +238,7 @@ namespace Catch {
     char const* getLineOfChars() {
         static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
         if( !*line ) {
-            memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
+            std::memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
             line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
         }
         return line;

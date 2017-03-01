@@ -201,10 +201,21 @@ namespace Catch {
             return *this;
         }
 
+        void writeStylesheetRef( std::string const& url ) {
+            m_os << "<?xml-stylesheet type=\"text/xsl\" href=\"" << url << "\"?>\n";
+        }
+
         XmlWriter& writeBlankLine() {
             ensureTagClosed();
             m_os << '\n';
             return *this;
+        }
+
+        void ensureTagClosed() {
+            if( m_tagIsOpen ) {
+                m_os << ">" << std::endl;
+                m_tagIsOpen = false;
+            }
         }
 
     private:
@@ -215,16 +226,9 @@ namespace Catch {
             m_os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         }
 
-        void ensureTagClosed() {
-            if( m_tagIsOpen ) {
-                m_os << ">\n";
-                m_tagIsOpen = false;
-            }
-        }
-
         void newlineIfNecessary() {
             if( m_needsNewline ) {
-                m_os << '\n';
+                m_os << std::endl;
                 m_needsNewline = false;
             }
         }

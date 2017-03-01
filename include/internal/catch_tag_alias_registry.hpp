@@ -11,9 +11,6 @@
 #include "catch_tag_alias_registry.h"
 #include "catch_console_colour.hpp"
 
-#include <map>
-#include <iostream>
-
 namespace Catch {
 
     TagAliasRegistry::~TagAliasRegistry() {}

@@ -32,6 +32,9 @@ namespace Catch {
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator % ( T const& );
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( T const& );
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( T const& );
+
+	private:
+		DecomposedExpression& operator = (DecomposedExpression const&);
     };
 
     struct AssertionInfo

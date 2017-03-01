@@ -1,10 +1,10 @@
 ![catch logo](catch-logo-small.png)
 
-*v1.7.1*
+*v1.8.0*
 
 Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
 
-<a href="https://github.com/philsquared/Catch/releases/download/v1.7.1/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
+<a href="https://github.com/philsquared/Catch/releases/download/v1.8.0/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
 
 ## What's the Catch?
 
@@ -20,3 +20,4 @@ This documentation comprises these three parts:
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
 * For discussion or questions please use [the dedicated Google Groups forum](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)
+* See [who else is using Catch](docs/opensource-users.md)

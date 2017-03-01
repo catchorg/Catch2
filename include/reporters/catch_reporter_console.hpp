@@ -13,7 +13,30 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 
+#include <cfloat>
+#include <cstdio>
+
 namespace Catch {
+
+    namespace {
+        // Because formatting using c++ streams is stateful, drop down to C is required
+        // Alternatively we could use stringstream, but its performance is... not good.
+        std::string getFormattedDuration( double duration ) {
+            // Max exponent + 1 is required to represent the whole part
+            // + 1 for decimal point
+            // + 3 for the 3 decimal places
+            // + 1 for null terminator
+            const size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
+            char buffer[maxDoubleSize];
+#ifdef _MSC_VER
+            sprintf_s(buffer, "%.3f", duration);
+#else
+            sprintf(buffer, "%.3f", duration);
+#endif
+            return std::string(buffer);
+        }
+    }
+
 
     struct ConsoleReporter : StreamingReporterBase {
         ConsoleReporter( ReporterConfig const& _config )
@@ -67,14 +90,11 @@ namespace Catch {
                     stream << "\nNo assertions in test case";
                 stream << " '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
             }
-            if( m_headerPrinted ) {
-                if( m_config->showDurations() == ShowDurations::Always )
-                    stream << "Completed in " << _sectionStats.durationInSeconds << 's' << std::endl;
-                m_headerPrinted = false;
+            if( m_config->showDurations() == ShowDurations::Always ) {
+                stream << getFormattedDuration(_sectionStats.durationInSeconds) << " s: " << _sectionStats.sectionInfo.name << std::endl;
             }
-            else {
-                if( m_config->showDurations() == ShowDurations::Always )
-                    stream << _sectionStats.sectionInfo.name << " completed in " << _sectionStats.durationInSeconds << 's' << std::endl;
+            if( m_headerPrinted ) {
+                m_headerPrinted = false;
             }
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
@@ -284,7 +304,7 @@ namespace Catch {
                     printHeaderString( it->name, 2 );
             }
 
-            SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
+            SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
 
             if( !lineInfo.empty() ){
                 stream << getLineOfChars<'-'>() << '\n';

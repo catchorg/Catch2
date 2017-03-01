@@ -8,10 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED
 
-#include "catch_common.h"
-
-#include <map>
-#include <string>
+#include "catch_section_info.h"
 
 namespace Catch {
 

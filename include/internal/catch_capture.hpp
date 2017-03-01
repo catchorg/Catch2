@@ -16,8 +16,17 @@
 #include "catch_tostring.h"
 #include "catch_interfaces_runner.h"
 #include "catch_compiler_capabilities.h"
+#include "catch_type_traits.hpp"
 
 
+#if defined(CATCH_CONFIG_FAST_COMPILE)
+///////////////////////////////////////////////////////////////////////////////
+// We can speedup compilation significantly by breaking into debugger lower in
+// the callstack, because then we don't have to expand CATCH_BREAK_INTO_DEBUGGER
+// macro in each assertion
+#define INTERNAL_CATCH_REACT( resultBuilder ) \
+    resultBuilder.react();
+#else
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked
 // and/or an exception thrown and takes appropriate action.
@@ -25,7 +34,8 @@
 // source code rather than in Catch library code
 #define INTERNAL_CATCH_REACT( resultBuilder ) \
     if( resultBuilder.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
-    resultBuilder.react();
+    resultBuilder.react(); 
+#endif
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -35,6 +45,7 @@
         try { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             ( __catchResult <= expr ).endExpression(); \
+            CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( resultDisposition ); \
@@ -87,13 +98,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( expr, exceptionType, resultDisposition, macroName ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType, resultDisposition ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
-            catch( exceptionType ) { \
+            catch( Catch::add_const<Catch::add_lvalue_reference<exceptionType>::type>::type ) { \
                 __catchResult.captureResult( Catch::ResultWas::Ok ); \
             } \
             catch( ... ) { \

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from  __future__ import  print_function
+from __future__ import print_function
 
 import os
 import sys
@@ -12,7 +12,7 @@ from scriptCommon import catchPath
 from releaseCommon import Version
 
 
-includesParser = re.compile( r'\s*#include\s*"(.*)"' )
+includesParser = re.compile( r'\s*#\s*include\s*"(.*)"' )
 guardParser = re.compile( r'\s*#.*TWOBLUECUBES_CATCH_.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')
 ifParser = re.compile( r'\s*#ifndef TWOBLUECUBES_CATCH_.*_INCLUDED')
@@ -65,7 +65,7 @@ def parseFile( path, filename ):
                 if headerFile != "tbc_text_format.h" and headerFile != "clara.h":
                     seenHeaders.add( headerFile )
                 write( "// #included from: {0}\n".format( header ) )
-                if( headerPath == "internal" and path.endswith( "internal/" ) ):
+                if headerPath == "internal" and path.endswith("internal/"):
                     headerPath = ""
                     sep = ""
                 if os.path.exists( path + headerPath + sep + headerFile ):

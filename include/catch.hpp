@@ -36,7 +36,8 @@
 #include "internal/catch_generators.hpp"
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
-#include "internal/catch_matchers.hpp"
+#include "internal/catch_matchers_string.h"
+#include "internal/catch_matchers_vector.h"
 #include "internal/catch_compiler_capabilities.h"
 #include "internal/catch_interfaces_tag_alias_registry.h"
 
@@ -50,6 +51,29 @@
 #endif
 
 #ifdef CATCH_IMPL
+
+// !TBD: Move the leak detector code into a separate header
+#ifdef CATCH_CONFIG_WINDOWS_CRTDBG
+#include <crtdbg.h>
+class LeakDetector {
+public:
+	LeakDetector() {
+		int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+		flag |= _CRTDBG_LEAK_CHECK_DF;
+		flag |= _CRTDBG_ALLOC_MEM_DF;
+		_CrtSetDbgFlag(flag);
+		_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+		_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
+		// Change this to leaking allocation's number to break there
+		_CrtSetBreakAlloc(-1);
+	}
+};
+#else
+class LeakDetector {};
+#endif
+
+LeakDetector leakDetector;
+
 #include "internal/catch_impl.hpp"
 #endif
 

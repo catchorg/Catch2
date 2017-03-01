@@ -32,6 +32,16 @@ namespace Catch {
             return "Reports test results as an XML document";
         }
 
+        virtual std::string getStylesheetRef() const {
+            return std::string();
+        }
+
+        void writeSourceInfo( SourceLineInfo const& sourceInfo ) {
+            m_xml
+                .writeAttribute( "filename", sourceInfo.file )
+                .writeAttribute( "line", sourceInfo.line );
+        }
+
     public: // StreamingReporterBase
 
         virtual void noMatchingTestCases( std::string const& s ) CATCH_OVERRIDE {
@@ -40,6 +50,9 @@ namespace Catch {
 
         virtual void testRunStarting( TestRunInfo const& testInfo ) CATCH_OVERRIDE {
             StreamingReporterBase::testRunStarting( testInfo );
+            std::string stylesheetRef = getStylesheetRef();
+            if( !stylesheetRef.empty() )
+                m_xml.writeStylesheetRef( stylesheetRef );
             m_xml.startElement( "Catch" );
             if( !m_config->name().empty() )
                 m_xml.writeAttribute( "name", m_config->name() );
@@ -58,8 +71,11 @@ namespace Catch {
                 .writeAttribute( "description", testInfo.description )
                 .writeAttribute( "tags", testInfo.tagsAsString );
 
+            writeSourceInfo( testInfo.lineInfo );
+
             if ( m_config->showDurations() == ShowDurations::Always )
                 m_testCaseTimer.start();
+            m_xml.ensureTagClosed();
         }
 
         virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
@@ -68,6 +84,8 @@ namespace Catch {
                 m_xml.startElement( "Section" )
                     .writeAttribute( "name", trim( sectionInfo.name ) )
                     .writeAttribute( "description", sectionInfo.description );
+                writeSourceInfo( sectionInfo.lineInfo );
+                m_xml.ensureTagClosed();
             }
         }
 
@@ -99,9 +117,9 @@ namespace Catch {
             if( assertionResult.hasExpression() ) {
                 m_xml.startElement( "Expression" )
                     .writeAttribute( "success", assertionResult.succeeded() )
-                    .writeAttribute( "type", assertionResult.getTestMacroName() )
-                    .writeAttribute( "filename", assertionResult.getSourceInfo().file )
-                    .writeAttribute( "line", assertionResult.getSourceInfo().line );
+                    .writeAttribute( "type", assertionResult.getTestMacroName() );
+
+                writeSourceInfo( assertionResult.getSourceInfo() );
 
                 m_xml.scopedElement( "Original" )
                     .writeText( assertionResult.getExpression() );
@@ -112,16 +130,16 @@ namespace Catch {
             // And... Print a result applicable to each result type.
             switch( assertionResult.getResultType() ) {
                 case ResultWas::ThrewException:
-                    m_xml.scopedElement( "Exception" )
-                        .writeAttribute( "filename", assertionResult.getSourceInfo().file )
-                        .writeAttribute( "line", assertionResult.getSourceInfo().line )
-                        .writeText( assertionResult.getMessage() );
+                    m_xml.startElement( "Exception" );
+                    writeSourceInfo( assertionResult.getSourceInfo() );
+                    m_xml.writeText( assertionResult.getMessage() );
+                    m_xml.endElement();
                     break;
                 case ResultWas::FatalErrorCondition:
-                    m_xml.scopedElement( "FatalErrorCondition" )
-                        .writeAttribute( "filename", assertionResult.getSourceInfo().file )
-                        .writeAttribute( "line", assertionResult.getSourceInfo().line )
-                        .writeText( assertionResult.getMessage() );
+                    m_xml.startElement( "FatalErrorCondition" );
+                    writeSourceInfo( assertionResult.getSourceInfo() );
+                    m_xml.writeText( assertionResult.getMessage() );
+                    m_xml.endElement();
                     break;
                 case ResultWas::Info:
                     m_xml.scopedElement( "Info" )
@@ -131,8 +149,10 @@ namespace Catch {
                     // Warning will already have been written
                     break;
                 case ResultWas::ExplicitFailure:
-                    m_xml.scopedElement( "Failure" )
-                        .writeText( assertionResult.getMessage() );
+                    m_xml.startElement( "Failure" );
+                    writeSourceInfo( assertionResult.getSourceInfo() );
+                    m_xml.writeText( assertionResult.getMessage() );
+                    m_xml.endElement();
                     break;
                 default:
                     break;

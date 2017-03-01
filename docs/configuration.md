@@ -74,8 +74,17 @@ All C++11 support can be disabled with `CATCH_CONFIG_NO_CPP11`
 
     CATCH_CONFIG_COUNTER                    // Use __COUNTER__ to generate unique names for test cases
     CATCH_CONFIG_WINDOWS_SEH                // Enable SEH handling on Windows
+    CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (extremely minor) features for compilation speed
+    CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
+    CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
 
-Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API supports.
+Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
+
+At this moment, `CATCH_CONFIG_FAST_COMPILE` changes only the behaviour of the `-b` (`--break`) flag, making it break into debugger in a stack frame *below* the actual test, unlike the default behaviour, where the break into debugger occurs in the same stack frame as the actual test. `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag will be unpredictable.
+
+`CATCH_CONFIG_POSIX_SIGNALS` is on by default, except when Catch is compiled under `Cygwin`, where it is disabled by default (but can be force-enabled by defining `CATCH_CONFIG_POSIX_SIGNALS`).
+
+`CATCH_CONFIG_WINDOWS_CRTDBG` is off by default. If enabled, Windows's CRT is used to check for memory leaks, and displays them after the tests finish running.
 
 Just as with the C++11 conformance toggles, these toggles can be disabled by using `_NO_` form of the toggle, e.g. `CATCH_CONFIG_NO_WINDOWS_SEH`.
 

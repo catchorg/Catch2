@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="931" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+<testsuitesspanner>
+  <testsuite name="<exe-name>" errors="13" failures="76" tests="956" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
+    <testcase classname="global" name="#542" time="{duration}"/>
     <testcase classname="global" name="#809" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
@@ -62,6 +63,7 @@ TrickyTests.cpp:<line number>
 TrickyTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="Absolute margin" time="{duration}"/>
     <testcase classname="global" name="AllOf matcher" time="{duration}"/>
     <testcase classname="global" name="An expression with side-effects should only be evaluated once" time="{duration}"/>
     <testcase classname="global" name="An unchecked exception reports the line of the last assertion" time="{duration}">
@@ -91,7 +93,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}"/>
     <testcase classname="global" name="Contains string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Custom exceptions can be translated when testing for nothrow" time="{duration}">
@@ -101,7 +103,7 @@ ExceptionTests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="global" name="Custom exceptions can be translated when testing for throwing as something else" time="{duration}">
-      <error message="throwCustom()" type="REQUIRE_THROWS_AS">
+      <error message="throwCustom(), std::exception" type="REQUIRE_THROWS_AS">
 custom exception - not std
 ExceptionTests.cpp:<line number>
       </error>
@@ -115,7 +117,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="Demonstrate that a non-const == is not used" time="{duration}"/>
     <testcase classname="global" name="EndsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Equality checks that should fail" time="{duration}">
@@ -163,19 +165,18 @@ ConditionTests.cpp:<line number>
     <testcase classname="global" name="Equals" time="{duration}"/>
     <testcase classname="global" name="Equals string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="global" name="Equals string matcher, with NULL" time="{duration}"/>
     <testcase classname="Exception messages can be tested for" name="exact match" time="{duration}"/>
     <testcase classname="Exception messages can be tested for" name="different case" time="{duration}"/>
     <testcase classname="Exception messages can be tested for" name="wildcarded" time="{duration}"/>
     <testcase classname="global" name="Expected exceptions that don't throw or unexpected exceptions fail the test" time="{duration}">
-      <error message="thisThrows()" type="CHECK_THROWS_AS">
+      <error message="thisThrows(), std::string" type="CHECK_THROWS_AS">
 expected exception
 ExceptionTests.cpp:<line number>
       </error>
-      <failure message="thisDoesntThrow()" type="CHECK_THROWS_AS">
+      <failure message="thisDoesntThrow(), std::domain_error" type="CHECK_THROWS_AS">
 ExceptionTests.cpp:<line number>
       </failure>
       <error message="thisThrows()" type="CHECK_NOTHROW">
@@ -256,13 +257,13 @@ ConditionTests.cpp:<line number>
     <testcase classname="global" name="Matchers can be composed with both &amp;&amp; and ||" time="{duration}"/>
     <testcase classname="global" name="Matchers can be composed with both &amp;&amp; and || - failing" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ( ( contains: &quot;string&quot; or contains: &quot;different&quot; ) and contains: &quot;random&quot; )" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Matchers can be negated (Not) with the ! operator" time="{duration}"/>
     <testcase classname="global" name="Matchers can be negated (Not) with the ! operator - failing" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; not contains: &quot;substring&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Mismatching exception messages failing the test" time="{duration}">
@@ -445,7 +446,7 @@ Message from section two
     </testcase>
     <testcase classname="global" name="StartsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="String matchers" time="{duration}"/>
@@ -499,6 +500,39 @@ ExceptionTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="Use a custom approx" time="{duration}"/>
     <testcase classname="Variadic macros" name="Section with one argument" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Contains (element)" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Contains (vector)" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Equals" time="{duration}"/>
+    <testcase classname="Vector matchers that fail" name="Contains (element)" time="{duration}">
+      <failure message="{ 1, 2, 3 } Contains: -1" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{  } Contains: 1" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Vector matchers that fail" name="Contains (vector)" time="{duration}">
+      <failure message="{  } Contains: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2, 3 } Contains: { 1, 2, 4 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Vector matchers that fail" name="Equals" time="{duration}">
+      <failure message="{ 1, 2, 3 } Equals: { 1, 2 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2 } Equals: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{  } Equals: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2, 3 } Equals: {  }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="When checked exceptions are thrown they can be expected or unexpected" time="{duration}"/>
     <testcase classname="global" name="When unchecked exceptions are thrown directly they are always failures" time="{duration}">
       <error type="TEST_CASE">

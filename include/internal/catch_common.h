@@ -22,10 +22,7 @@
 #define INTERNAL_CATCH_STRINGIFY( expr ) INTERNAL_CATCH_STRINGIFY2( expr )
 
 #include <sstream>
-#include <stdexcept>
 #include <algorithm>
-
-#include "catch_compiler_capabilities.h"
 
 namespace Catch {
 
@@ -82,7 +79,6 @@ namespace Catch {
     bool startsWith( std::string const& s, char prefix );
     bool endsWith( std::string const& s, std::string const& suffix );
     bool endsWith( std::string const& s, char suffix );
-    bool contains( std::string const& s, std::string const& infix );
     bool contains( std::string const& s, std::string const& infix );
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );

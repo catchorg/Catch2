@@ -36,6 +36,7 @@
 #include "catch_result_builder.hpp"
 #include "catch_tag_alias_registry.hpp"
 #include "catch_test_case_tracker.hpp"
+#include "catch_matchers_string.hpp"
 
 #include "../reporters/catch_reporter_multi.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
@@ -90,11 +91,6 @@ namespace Catch {
     TestSpec::NamePattern::~NamePattern() {}
     TestSpec::TagPattern::~TagPattern() {}
     TestSpec::ExcludedPattern::~ExcludedPattern() {}
-
-    Matchers::Impl::StdString::Equals::~Equals() {}
-    Matchers::Impl::StdString::Contains::~Contains() {}
-    Matchers::Impl::StdString::StartsWith::~StartsWith() {}
-    Matchers::Impl::StdString::EndsWith::~EndsWith() {}
 
     void Config::dummy() {}
 
