@@ -1,6 +1,6 @@
 /*
- *  Catch v1.8.0
- *  Generated: 2017-02-28 14:16:45.289179
+ *  Catch v1.8.1
+ *  Generated: 2017-03-01 16:04:19.016511
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -140,6 +140,10 @@
 #   if !defined(CATCH_CONFIG_POSIX_SIGNALS)
 #       define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
 #   endif
+
+// Required for some versions of Cygwin to declare gettimeofday
+// see: http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
+#   define _BSD_SOURCE
 
 #endif // __CYGWIN__
 
@@ -8134,7 +8138,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 8, 0, "", 0 );
+    Version libraryVersion( 1, 8, 1, "", 0 );
 
 }
 
@@ -8308,13 +8312,8 @@ namespace Catch
 
 #else
 
-// Required for some versions of Cygwin to declare gettimeofday
-// see: http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
-#   ifdef __CYGWIN__
-#       define _BSD_SOURCE
-#   endif
-
 #include <sys/time.h>
+
 #endif
 
 namespace Catch {
