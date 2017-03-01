@@ -33,6 +33,8 @@ namespace Catch {
             NonPortable = 1 << 5
         };
 
+        TestCaseInfo( );
+
         TestCaseInfo(   std::string const& _name,
                         std::string const& _className,
                         std::string const& _description,
@@ -61,12 +63,15 @@ namespace Catch {
     class TestCase : public TestCaseInfo {
     public:
 
+        TestCase();
         TestCase( ITestCase* testCase, TestCaseInfo const& info );
         TestCase( TestCase const& other );
 
         TestCase withName( std::string const& _newName ) const;
 
         void invoke() const;
+
+        bool hasTest() const;
 
         TestCaseInfo const& getTestCaseInfo() const;
 

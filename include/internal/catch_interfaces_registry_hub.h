@@ -34,6 +34,8 @@ namespace Catch {
         virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) = 0;
         virtual void registerListener( Ptr<IReporterFactory> const& factory ) = 0;
         virtual void registerTest( TestCase const& testInfo ) = 0;
+        virtual void registerSetUp( TestCase const& testInfo ) = 0;
+        virtual void registerTearDown( TestCase const& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
     };
 

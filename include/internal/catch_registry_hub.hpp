@@ -46,6 +46,12 @@ namespace Catch {
             virtual void registerTest( TestCase const& testInfo ) CATCH_OVERRIDE {
                 m_testCaseRegistry.registerTest( testInfo );
             }
+            virtual void registerSetUp( TestCase const& testInfo ) CATCH_OVERRIDE {
+                m_testCaseRegistry.registerSetUp( testInfo );
+            }
+            virtual void registerTearDown( TestCase const& testInfo ) CATCH_OVERRIDE {
+                m_testCaseRegistry.registerTearDown( testInfo );
+            }
             virtual void registerTranslator( const IExceptionTranslator* translator ) CATCH_OVERRIDE {
                 m_exceptionTranslatorRegistry.registerTranslator( translator );
             }

@@ -83,6 +83,29 @@ namespace Catch {
             m_reporter->testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );
         }
 
+        bool runSetUp() {
+            TestCase setUpInfo = getRegistryHub().getTestCaseRegistry().getSetUp();
+            if (!setUpInfo.hasTest())
+                return true;
+
+            Totals prevTotals = m_totals;
+            runTest(setUpInfo);
+
+            Totals deltaTotals = m_totals.delta(prevTotals);
+            if (deltaTotals.assertions.failed > 0)
+                return false;
+
+            return true;
+        }
+
+        void runTearDown() {
+            TestCase tearDownInfo = getRegistryHub().getTestCaseRegistry().getTearDown();
+            if (!tearDownInfo.hasTest())
+                return;
+
+            runTest(tearDownInfo);
+        }
+
         Totals runTest( TestCase const& testCase ) {
             Totals prevTotals = m_totals;
 

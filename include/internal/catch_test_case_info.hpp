@@ -112,6 +112,10 @@ namespace Catch {
         testCaseInfo.tagsAsString = oss.str();
     }
 
+    TestCaseInfo::TestCaseInfo( )
+    :   properties( None )
+    {}
+
     TestCaseInfo::TestCaseInfo( std::string const& _name,
                                 std::string const& _className,
                                 std::string const& _description,
@@ -151,6 +155,10 @@ namespace Catch {
     }
 
 
+    TestCase::TestCase()
+	:	TestCaseInfo(), test( nullptr )
+	{}
+
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
 
     TestCase::TestCase( TestCase const& other )
@@ -177,7 +185,11 @@ namespace Catch {
     }
 
     void TestCase::invoke() const {
-        test->invoke();
+        if (test) test->invoke();
+    }
+
+    bool TestCase::hasTest() const {
+        return (!!test);
     }
 
     bool TestCase::operator == ( TestCase const& other ) const {

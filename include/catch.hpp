@@ -138,6 +138,9 @@ LeakDetector leakDetector;
 #endif
 #define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
+#define CATCH_SET_UP() INTERNAL_CATCH_SETUP()
+#define CATCH_TEAR_DOWN() INTERNAL_CATCH_TEARDOWN()
+
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
 
@@ -206,6 +209,9 @@ LeakDetector leakDetector;
     #define SUCCEED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", msg )
 #endif
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
+
+#define SET_UP() INTERNAL_CATCH_SETUP()
+#define TEAR_DOWN() INTERNAL_CATCH_TEARDOWN()
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )

@@ -117,6 +117,30 @@ namespace Catch {
             m_functions.push_back( testCase );
         }
 
+        virtual void registerSetUp(TestCase const& testCase) {
+            if (m_setUp.getTestCaseInfo().name.empty()) {
+                m_setUp = testCase;
+            }
+            else {
+                std::cerr << "error: SET_UP() already defined.\n"
+                    << "\tFirst seen at " << SourceLineInfo(m_setUp.getTestCaseInfo().lineInfo) << "\n"
+                    << "\tRedefined at " << SourceLineInfo(testCase.getTestCaseInfo().lineInfo) << std::endl;
+                exit(1);
+            }
+        }
+
+        virtual void registerTearDown(TestCase const& testCase) {
+            if (m_tearDown.getTestCaseInfo().name.empty()) {
+                m_tearDown = testCase;
+            }
+            else {
+                std::cerr << "error: TEAR_DOWN() already defined.\n"
+                    << "\tFirst seen at " << SourceLineInfo(m_tearDown.getTestCaseInfo().lineInfo) << "\n"
+                    << "\tRedefined at " << SourceLineInfo(testCase.getTestCaseInfo().lineInfo) << std::endl;
+                exit(1);
+            }
+        }
+
         virtual std::vector<TestCase> const& getAllTests() const {
             return m_functions;
         }
@@ -131,12 +155,23 @@ namespace Catch {
             return m_sortedFunctions;
         }
 
+        virtual TestCase const& getSetUp() const {
+            return m_setUp;
+        }
+
+        virtual TestCase const& getTearDown() const {
+            return m_tearDown;
+        }
+
     private:
         std::vector<TestCase> m_functions;
         mutable RunTests::InWhatOrder m_currentSortOrder;
         mutable std::vector<TestCase> m_sortedFunctions;
         size_t m_unnamedCount;
         std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
+
+        TestCase m_setUp;
+        TestCase m_tearDown;
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -200,6 +235,38 @@ namespace Catch {
     }
 
     AutoReg::~AutoReg() {}
+    
+    ///////////////////////////////////////////////////////////////////////////
+
+    AutoRegSetUp::AutoRegSetUp
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo ) {
+        getMutableRegistryHub().registerSetUp
+            ( makeTestCase
+                (   new FreeFunctionTestCase( function ),
+                    "",
+                    "SetUp",
+                    "[SetUp]",
+                    lineInfo ) );
+    }
+
+    AutoRegSetUp::~AutoRegSetUp() {}
+    
+    ///////////////////////////////////////////////////////////////////////////
+
+    AutoRegTearDown::AutoRegTearDown
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo ) {
+        getMutableRegistryHub().registerTearDown
+            ( makeTestCase
+                (   new FreeFunctionTestCase( function ),
+                    "",
+                    "TearDown",
+                    "[TearDown]",
+                    lineInfo ) );
+    }
+
+    AutoRegTearDown::~AutoRegTearDown() {}
 
 } // end namespace Catch
 

@@ -27,8 +27,12 @@ namespace Catch {
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
+        virtual void registerSetUp( TestCase const& testInfo ) = 0;
+        virtual void registerTearDown( TestCase const& testInfo ) = 0;
         virtual std::vector<TestCase> const& getAllTests() const = 0;
         virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const = 0;
+        virtual TestCase const& getSetUp() const = 0;
+        virtual TestCase const& getTearDown() const = 0;
     };
 
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );

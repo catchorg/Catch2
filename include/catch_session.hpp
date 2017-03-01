@@ -71,13 +71,21 @@ namespace Catch {
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
         std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
-        for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
-                it != itEnd;
-                ++it ) {
-            if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
-                totals += context.runTest( *it );
-            else
-                reporter->skipTest( *it );
+        if (!allTestCases.empty())
+        {
+            bool setUpSuccessfull = context.runSetUp();
+            if (setUpSuccessfull)
+            {
+                for (std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
+                    it != itEnd;
+                    ++it) {
+                    if (!context.aborting() && matchTest(*it, testSpec, *iconfig))
+                        totals += context.runTest(*it);
+                    else
+                        reporter->skipTest(*it);
+                }
+            }
+            context.runTearDown();
         }
 
         context.testGroupEnded( iconfig->name(), totals, 1, 1 );

@@ -76,6 +76,32 @@ private:
     void operator= ( AutoReg const& );
 };
 
+struct AutoRegSetUp
+{
+    AutoRegSetUp
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo );
+
+    ~AutoRegSetUp();
+
+private:
+    AutoRegSetUp(AutoRegSetUp const&);
+    void operator= (AutoRegSetUp const&);
+};
+
+struct AutoRegTearDown
+{
+    AutoRegTearDown
+        (   TestFunction function,
+            SourceLineInfo const& lineInfo );
+
+    ~AutoRegTearDown();
+
+private:
+    AutoRegTearDown(AutoRegTearDown const&);
+    void operator= (AutoRegTearDown const&);
+};
+
 void registerTestCaseFunction
     (   TestFunction function,
         SourceLineInfo const& lineInfo,
@@ -141,5 +167,21 @@ void registerTestCaseFunction
     #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, Name, Desc ) \
         Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) );
 #endif
+
+    ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_SETUP2( TestName ) \
+    static void TestName(); \
+    namespace{ Catch::AutoRegSetUp INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &TestName, CATCH_INTERNAL_LINEINFO ); }\
+    static void TestName()
+#define INTERNAL_CATCH_SETUP( ) \
+        INTERNAL_CATCH_SETUP2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ) )
+
+    ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_TEARDOWN2( TestName ) \
+    static void TestName(); \
+    namespace{ Catch::AutoRegTearDown INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &TestName, CATCH_INTERNAL_LINEINFO ); }\
+    static void TestName()
+#define INTERNAL_CATCH_TEARDOWN( ) \
+        INTERNAL_CATCH_TEARDOWN2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ) )
 
 #endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
