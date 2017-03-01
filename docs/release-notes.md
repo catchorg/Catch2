@@ -4,7 +4,7 @@
 
 * Matchers have new, simpler (and documented) interface.
   * Catch provides string and vector matchers.
-  * For details see [Matchers documentation](docs/matchers.md).
+  * For details see [Matchers documentation](matchers.md).
 * Changed console reporter test duration reporting format (#322)
   * Old format: `Some simple comparisons between doubles completed in 0.000123s`
   * New format: `xxx.123s: Some simple comparisons between doubles` _(There will always be exactly 3 decimal places)_
@@ -15,7 +15,7 @@
   * _More changes are coming_
 * Added [TAP (Test Anything Protocol)](https://testanything.org/) and [Automake](https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html#Log-files-generation-and-test-results-recording) reporters.
   * These are not present in the default single-include header and need to be downloaded from GitHub separately.
-  * For details see [documentation about integrating with build systems](docs/build-systems.md).
+  * For details see [documentation about integrating with build systems](build-systems.md).
 *  XML reporter now reports filename as part of the `Section` and `TestCase` tags.
 * `Approx` now supports an optional margin of absolute error
   * It has also received [new documentation]().
