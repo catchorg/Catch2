@@ -11,7 +11,7 @@
 * Added opt-in leak detection under MSVC + Windows (#439)
   * Enable it by compiling Catch's main with `CATCH_CONFIG_WINDOWS_CRTDBG`
 * Introduced new compile-time flag, `CATCH_CONFIG_FAST_COMPILE`, trading features for compilation speed.
-  * Moves debug breaks out of tests and into implementation, speeding up compilation time by ~XX%
+  * Moves debug breaks out of tests and into implementation, speeding up compilation time
   * _More changes are coming_
 * Added [TAP (Test Anything Protocol)](https://testanything.org/) and [Automake](https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html#Log-files-generation-and-test-results-recording) reporters.
   * These are not present in the default single-include header and need to be downloaded from GitHub separately.
