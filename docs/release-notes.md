@@ -1,3 +1,9 @@
+# 1.8.1
+
+### Fixes
+
+Cygwin issue with `gettimeofday` - `#define` was not early enough
+
 # 1.8.0
 
 ### New features/ minor changes
