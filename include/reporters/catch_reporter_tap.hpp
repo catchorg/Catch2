@@ -45,19 +45,9 @@ namespace Catch {
         virtual void assertionStarting( AssertionInfo const& ) {}
 
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
-            AssertionResult const& result = _assertionStats.assertionResult;
             ++counter;
 
-            bool printInfoMessages = true;
-
-            // Drop out if result was successful and we're not printing those
-            if ( !m_config->includeSuccessfulResults() && result.isOk() ) {
-                if ( result.getResultType() != ResultWas::Warning )
-                    return false;
-                printInfoMessages = false;
-            }
-
-            AssertionPrinter printer( stream, _assertionStats, printInfoMessages, counter );
+            AssertionPrinter printer( stream, _assertionStats, counter );
             printer.print();
             stream << " # " << currentTestCaseInfo->name ;
 
@@ -76,13 +66,13 @@ namespace Catch {
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:
-            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages, size_t counter )
+            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, size_t counter )
             : stream( _stream )
             , stats( _stats )
             , result( _stats.assertionResult )
             , messages( _stats.infoMessages )
             , itMessage( _stats.infoMessages.begin() )
-            , printInfoMessages( _printInfoMessages )
+            , printInfoMessages( true )
             , counter(counter)
             {}
 
@@ -157,24 +147,19 @@ namespace Catch {
             }
 
         private:
-
             static Colour::Code dimColour() { return Colour::FileName; }
 
             static const char* failedString() { return "not ok"; }
             static const char* passedString() { return "ok"; }
 
             void printSourceInfo() const {
-                Colour colourGuard( Colour::FileName );
+                Colour colourGuard( dimColour() );
                 stream << result.getSourceInfo() << ":";
             }
 
             void printResultType( std::string passOrFail ) const {
                 if( !passOrFail.empty() ) {
-                    {
-                        //Colour colourGuard( colour );
-                        stream << passOrFail << " " << counter;
-                    }
-                    stream << " -";
+                    stream << passOrFail << ' ' << counter << " -";
                 }
             }
 
@@ -219,8 +204,9 @@ namespace Catch {
             }
 
             void printRemainingMessages( Colour::Code colour = dimColour() ) {
-                if ( itMessage == messages.end() )
+                if (itMessage == messages.end()) {
                     return;
+                }
 
                 // using messages.end() directly yields compilation error:
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
@@ -252,17 +238,6 @@ namespace Catch {
             bool printInfoMessages;
             size_t counter;
         };
-
-        // Colour, message variants:
-        // - white: No tests ran.
-        // -   red: Failed [both/all] N test cases, failed [both/all] M assertions.
-        // - white: Passed [both/all] N test cases (no assertions).
-        // -   red: Failed N tests cases, failed M assertions.
-        // - green: Passed [both/all] N tests cases with M assertions.
-
-        std::string bothOrAll( std::size_t count ) const {
-            return count == 1 ? "" : count == 2 ? "both " : "all " ;
-        }
 
         void printTotals( const Totals& totals ) const {
             if( totals.testCases.total() == 0 ) {
