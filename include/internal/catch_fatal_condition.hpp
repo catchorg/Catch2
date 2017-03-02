@@ -53,7 +53,6 @@ namespace Catch {
         static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
             for (int i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
                 if (ExceptionInfo->ExceptionRecord->ExceptionCode == signalDefs[i].id) {
-                    reset();
                     reportFatal(signalDefs[i].name);
                 }
             }
