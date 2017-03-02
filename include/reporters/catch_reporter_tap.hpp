@@ -46,6 +46,7 @@ namespace Catch {
 
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
+            ++counter;
 
             bool printInfoMessages = true;
 
@@ -56,7 +57,7 @@ namespace Catch {
                 printInfoMessages = false;
             }
 
-            AssertionPrinter printer( stream, _assertionStats, printInfoMessages, ++counter );
+            AssertionPrinter printer( stream, _assertionStats, printInfoMessages, counter );
             printer.print();
             stream << " # " << currentTestCaseInfo->name ;
 
@@ -75,7 +76,7 @@ namespace Catch {
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:
-            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages, size_t counter = 0 )
+            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages, size_t counter )
             : stream( _stream )
             , stats( _stats )
             , result( _stats.assertionResult )
