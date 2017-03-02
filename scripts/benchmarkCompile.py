@@ -124,15 +124,17 @@ args = parser.parse_args()
 compiler_path = args.compiler
 catch_path = args.catch_header
 
-os.chdir(dir_name)
 if args.generate_files:
     create_temp_dir()
+    os.chdir(dir_name)
     copy_catch(catch_path)
     # now create the fake test files
     generate_files()
     # Early exit
     print('Finished generating files')
     exit(1)
+
+os.chdir(dir_name)
 
 if args.flags:
     flags = args.flags
