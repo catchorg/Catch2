@@ -75,7 +75,6 @@ class Version:
             f.write( line + "\n" )
 
     def updateReadmeFile(self):
-        versionParser = re.compile( r'\*v\d+\.\d+\.\d+\*' )
         downloadParser = re.compile( r'<a href=\"https://github.com/philsquared/Catch/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
         f = open( readmePath, 'r' )
         lines = []
@@ -84,7 +83,6 @@ class Version:
         f.close()
         f = open( readmePath, 'w' )
         for line in lines:
-            line = versionParser.sub( '*v{0}*'.format(self.getVersionString()), line)
             line = downloadParser.sub( r'<a href="https://github.com/philsquared/Catch/releases/download/v{0}/catch.hpp">'.format(self.getVersionString()) , line)
             f.write( line + "\n" )
 

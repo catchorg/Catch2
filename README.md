@@ -1,7 +1,5 @@
 ![catch logo](catch-logo-small.png)
 
-*v1.8.1*
-
 [![Github Releases](https://img.shields.io/github/release/philsquared/catch.svg)](https://github.com/philsquared/catch/releases)
 [![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
 [![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght/branch/master?svg=true)](https://ci.appveyor.com/project/philsquared/catch/branch/master)
