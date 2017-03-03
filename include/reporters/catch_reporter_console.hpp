@@ -40,18 +40,15 @@ namespace Catch {
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
             AssertionResult const& result = _assertionStats.assertionResult;
 
-            bool printInfoMessages = true;
+            bool includeResults = m_config->includeSuccessfulResults() || !result.isOk();
 
-            // Drop out if result was successful and we're not printing those
-            if( !m_config->includeSuccessfulResults() && result.isOk() ) {
-                if( result.getResultType() != ResultWas::Warning )
-                    return false;
-                printInfoMessages = false;
-            }
+            // Drop out if result was successful but we're not printing them.
+            if( !includeResults && result.getResultType() != ResultWas::Warning )
+                return false;
 
             lazyPrint();
 
-            AssertionPrinter printer( stream, _assertionStats, printInfoMessages );
+            AssertionPrinter printer( stream, _assertionStats, includeResults );
             printer.print();
             stream << std::endl;
             return true;

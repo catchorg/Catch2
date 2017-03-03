@@ -95,7 +95,7 @@ namespace Catch {
 
             AssertionResult const& result = assertionStats.assertionResult;
 
-            bool includeResults = m_config->includeSuccessfulResults() || result.isOk();
+            bool includeResults = m_config->includeSuccessfulResults() || !result.isOk();
 
             if( includeResults ) {
                 // Print any info messages in <Info> tags.
