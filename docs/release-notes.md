@@ -10,21 +10,21 @@ Cygwin issue with `gettimeofday` - `#define` was not early enough
 
 * Matchers have new, simpler (and documented) interface.
   * Catch provides string and vector matchers.
-  * For details see [Matchers documentation](matchers.md).
+  * For details see [Matchers documentation](docs/matchers.md).
 * Changed console reporter test duration reporting format (#322)
   * Old format: `Some simple comparisons between doubles completed in 0.000123s`
   * New format: `xxx.123s: Some simple comparisons between doubles` _(There will always be exactly 3 decimal places)_
 * Added opt-in leak detection under MSVC + Windows (#439)
   * Enable it by compiling Catch's main with `CATCH_CONFIG_WINDOWS_CRTDBG`
 * Introduced new compile-time flag, `CATCH_CONFIG_FAST_COMPILE`, trading features for compilation speed.
-  * Moves debug breaks out of tests and into implementation, speeding up compilation time
+  * Moves debug breaks out of tests and into implementation, speeding up test compilation time (~10% on linux).
   * _More changes are coming_
 * Added [TAP (Test Anything Protocol)](https://testanything.org/) and [Automake](https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html#Log-files-generation-and-test-results-recording) reporters.
   * These are not present in the default single-include header and need to be downloaded from GitHub separately.
   * For details see [documentation about integrating with build systems](build-systems.md).
 *  XML reporter now reports filename as part of the `Section` and `TestCase` tags.
 * `Approx` now supports an optional margin of absolute error
-  * It has also received [new documentation]().
+  * It has also received [new documentation](docs/assertions.md).
 
 ### Fixes
 * Silenced C4312 ("conversion from int to 'ClassName *") warnings in the evaluate layer.
