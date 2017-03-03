@@ -604,6 +604,32 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Capture and info messages
+  Capture should stringify like assertions
+-------------------------------------------------------------------------------
+ToStringGeneralTests.cpp:<line number>
+...............................................................................
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( true )
+with message:
+  i := 2
+
+-------------------------------------------------------------------------------
+Capture and info messages
+  Info should NOT stringify the way assertions do
+-------------------------------------------------------------------------------
+ToStringGeneralTests.cpp:<line number>
+...............................................................................
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( true )
+with message:
+  3
+
+-------------------------------------------------------------------------------
 Character pretty printing
   Specifically escaped
 -------------------------------------------------------------------------------
@@ -3292,7 +3318,7 @@ with expansion:
   re>"
 
 -------------------------------------------------------------------------------
-Long text is truncted
+Long text is truncated
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
 ...............................................................................
@@ -9324,6 +9350,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 163 | 117 passed | 44 failed |  2 failed as expected
-assertions: 955 | 849 passed | 88 failed | 18 failed as expected
+test cases: 164 | 118 passed | 44 failed |  2 failed as expected
+assertions: 957 | 851 passed | 88 failed | 18 failed as expected
 

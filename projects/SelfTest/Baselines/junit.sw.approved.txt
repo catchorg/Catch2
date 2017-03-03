@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="76" tests="956" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="76" tests="958" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="global" name="#542" time="{duration}"/>
     <testcase classname="global" name="#809" time="{duration}"/>
@@ -83,6 +83,8 @@ ExceptionTests.cpp:<line number>
     <testcase classname="Assertions then sections" name="A section" time="{duration}"/>
     <testcase classname="Assertions then sections" name="A section/Another section" time="{duration}"/>
     <testcase classname="Assertions then sections" name="A section/Another other section" time="{duration}"/>
+    <testcase classname="Capture and info messages" name="Capture should stringify like assertions" time="{duration}"/>
+    <testcase classname="Capture and info messages" name="Info should NOT stringify the way assertions do" time="{duration}"/>
     <testcase classname="Character pretty printing" name="Specifically escaped" time="{duration}"/>
     <testcase classname="Character pretty printing" name="General chars" time="{duration}"/>
     <testcase classname="Character pretty printing" name="Low ASCII" time="{duration}"/>
@@ -250,7 +252,7 @@ ConditionTests.cpp:<line number>
     <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/No wrapping" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/Wrap before" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/Wrap after" time="{duration}"/>
-    <testcase classname="global" name="Long text is truncted" time="{duration}"/>
+    <testcase classname="global" name="Long text is truncated" time="{duration}"/>
     <testcase classname="global" name="ManuallyRegistered" time="{duration}"/>
     <testcase classname="global" name="Matchers can be (AllOf) composed with the &amp;&amp; operator" time="{duration}"/>
     <testcase classname="global" name="Matchers can be (AnyOf) composed with the || operator" time="{duration}"/>

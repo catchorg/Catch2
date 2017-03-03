@@ -643,6 +643,31 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Capture and info messages" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+      <Section name="Capture should stringify like assertions" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            true
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Info should NOT stringify the way assertions do" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            true
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Character pretty printing" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
       <Section name="Specifically escaped" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
@@ -3409,7 +3434,7 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Long text is truncted" tags="[Text][Truncated]" filename="projects/<exe-name>/TestMain.cpp" >
+    <TestCase name="Long text is truncated" tags="[Text][Truncated]" filename="projects/<exe-name>/TestMain.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TestMain.cpp" >
         <Original>
           t.toString(), EndsWith( "... message truncated due to excessive size" )
@@ -9885,7 +9910,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="849" failures="89" expectedFailures="18"/>
+    <OverallResults successes="851" failures="89" expectedFailures="18"/>
   </Group>
-  <OverallResults successes="849" failures="88" expectedFailures="18"/>
+  <OverallResults successes="851" failures="88" expectedFailures="18"/>
 </Catch>
