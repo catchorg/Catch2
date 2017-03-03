@@ -645,6 +645,9 @@
     </TestCase>
     <TestCase name="Capture and info messages" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
       <Section name="Capture should stringify like assertions" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+        <Info>
+          i := 2
+        </Info>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
           <Original>
             true
@@ -656,6 +659,9 @@
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Info should NOT stringify the way assertions do" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+        <Info>
+          3
+        </Info>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
           <Original>
             true
@@ -2632,6 +2638,9 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="INFO gets logged on failure, even if captured before successful assertions" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Info>
+        this message may be logged later
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           a == 2
@@ -2662,6 +2671,9 @@
           2 == 0
         </Expanded>
       </Expression>
+      <Info>
+        but not this
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           a == 2
@@ -6761,6 +6773,12 @@ re>"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="SCOPED_INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Info>
+        current counter 0
+      </Info>
+      <Info>
+        i := 0
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6769,6 +6787,12 @@ re>"
           0 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 1
+      </Info>
+      <Info>
+        i := 1
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6777,6 +6801,12 @@ re>"
           1 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 2
+      </Info>
+      <Info>
+        i := 2
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6785,6 +6815,12 @@ re>"
           2 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 3
+      </Info>
+      <Info>
+        i := 3
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6793,6 +6829,12 @@ re>"
           3 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 4
+      </Info>
+      <Info>
+        i := 4
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6801,6 +6843,12 @@ re>"
           4 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 5
+      </Info>
+      <Info>
+        i := 5
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6809,6 +6857,12 @@ re>"
           5 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 6
+      </Info>
+      <Info>
+        i := 6
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6817,6 +6871,12 @@ re>"
           6 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 7
+      </Info>
+      <Info>
+        i := 7
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6825,6 +6885,12 @@ re>"
           7 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 8
+      </Info>
+      <Info>
+        i := 8
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6833,6 +6899,12 @@ re>"
           8 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 9
+      </Info>
+      <Info>
+        i := 9
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -9111,6 +9183,9 @@ spanner      <OverallResult success="true"/>
           1 == 0
         </Expanded>
       </Expression>
+      <Info>
+        Testing if fib[2] (2) is even
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           ( fib[i] % 2 ) == 0
@@ -9141,6 +9216,9 @@ spanner      <OverallResult success="true"/>
           1 == 0
         </Expanded>
       </Expression>
+      <Info>
+        Testing if fib[5] (8) is even
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           ( fib[i] % 2 ) == 0
