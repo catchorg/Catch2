@@ -135,6 +135,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_debugger.h
         ${HEADER_DIR}/internal/catch_debugger.hpp
         ${HEADER_DIR}/internal/catch_default_main.hpp
+        ${HEADER_DIR}/internal/catch_errno_guard.hpp
         ${HEADER_DIR}/internal/catch_evaluate.hpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.hpp
         ${HEADER_DIR}/internal/catch_expression_lhs.hpp
