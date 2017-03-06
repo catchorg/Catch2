@@ -16,6 +16,7 @@
 #include "../include/internal/catch_xmlwriter.hpp"
 
 #include <iostream>
+#include <cerrno>
 
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" )
 {
@@ -392,4 +393,15 @@ TEST_CASE( "This test 'should' fail but doesn't", "[.][failing][!shouldfail]" )
 
 TEST_CASE( "# A test name that starts with a #" ) {
     SUCCEED( "yay" );
+}
+
+
+static int f() {
+    return 1;
+}
+
+TEST_CASE( "#835 -- errno should not be touched by Catch" ) {
+  errno = 1;
+  CHECK(f() == 0);
+  REQUIRE(errno == 1); // Check that f() doesn't touch errno.    
 }

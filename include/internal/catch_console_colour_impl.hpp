@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
 
 #include "catch_console_colour.hpp"
+#include "catch_errno_guard.hpp"
 
 namespace Catch {
     namespace {
@@ -148,6 +149,7 @@ namespace {
     };
 
     IColourImpl* platformColourInstance() {
+        ErrnoGuard guard;
         Ptr<IConfig const> config = getCurrentContext().getConfig();
         UseColour::YesOrNo colourMode = config
             ? config->useColour()

@@ -4,6 +4,17 @@
 Run with -? for options
 
 -------------------------------------------------------------------------------
+#835 -- errno should not be touched by Catch
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK( f() == 0 )
+with expansion:
+  1 == 0
+
+-------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -890,6 +901,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 164 | 119 passed | 43 failed |  2 failed as expected
-assertions: 955 | 851 passed | 86 failed | 18 failed as expected
+test cases: 165 | 119 passed | 44 failed |  2 failed as expected
+assertions: 957 | 852 passed | 87 failed | 18 failed as expected
 

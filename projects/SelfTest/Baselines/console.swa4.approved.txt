@@ -49,6 +49,23 @@ with expansion:
   42 == {?}
 
 -------------------------------------------------------------------------------
+#835 -- errno should not be touched by Catch
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK( f() == 0 )
+with expansion:
+  1 == 0
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( (*__errno_location ()) == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -65,10 +82,7 @@ ConditionTests.cpp:<line number>: FAILED:
 with expansion:
   false
 
-ConditionTests.cpp:<line number>: FAILED:
-  CHECK_FALSE( true )
-
 ===============================================================================
-test cases:  4 | 3 passed | 1 failed
-assertions: 10 | 6 passed | 4 failed
+test cases:  5 | 3 passed | 2 failed
+assertions: 11 | 7 passed | 4 failed
 
