@@ -253,7 +253,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
     target_compile_options( Benchmark PRIVATE -Wall -Wextra )
 endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-    target_compile_options( SelfTest PRIVATE /W4 /w44265 )
+    target_compile_options( SelfTest PRIVATE /W4 /w44265 /Wx )
     target_compile_options( Benchmark PRIVATE /W4 )
 endif()
 
