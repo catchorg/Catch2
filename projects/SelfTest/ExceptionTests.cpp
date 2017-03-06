@@ -11,6 +11,10 @@
 #include <string>
 #include <stdexcept>
 
+#ifdef _MSC_VER
+#pragma warning(disable:4702) // Unreachable code -- MSVC 19 (VS 2015) sees right through the indirection
+#endif
+
 namespace
 {
     inline int thisThrows()
