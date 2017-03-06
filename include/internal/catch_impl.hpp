@@ -91,7 +91,7 @@ namespace Catch {
     TestSpec::NamePattern::~NamePattern() {}
     TestSpec::TagPattern::~TagPattern() {}
     TestSpec::ExcludedPattern::~ExcludedPattern() {}
-	Matchers::Impl::MatcherUntypedBase::~MatcherUntypedBase() {}
+    Matchers::Impl::MatcherUntypedBase::~MatcherUntypedBase() {}
 
     void Config::dummy() {}
 

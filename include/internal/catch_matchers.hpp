@@ -27,7 +27,7 @@ namespace Matchers {
             }
 
         protected:
-			virtual ~MatcherUntypedBase();
+            virtual ~MatcherUntypedBase();
             virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
         private:
