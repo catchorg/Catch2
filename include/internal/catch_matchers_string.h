@@ -26,7 +26,7 @@ namespace Matchers {
         };
 
         struct StringMatcherBase : MatcherBase<std::string> {
-            StringMatcherBase( std::string operation, CasedString const& comparator );
+            StringMatcherBase( std::string const& operation, CasedString const& comparator );
             virtual std::string describe() const CATCH_OVERRIDE;
 
             CasedString m_comparator;

@@ -15,7 +15,7 @@
 namespace Catch {
 
     struct TagAlias {
-        TagAlias( std::string _tag, SourceLineInfo _lineInfo ) : tag( _tag ), lineInfo( _lineInfo ) {}
+        TagAlias( std::string const& _tag, SourceLineInfo _lineInfo ) : tag( _tag ), lineInfo( _lineInfo ) {}
 
         std::string tag;
         SourceLineInfo lineInfo;

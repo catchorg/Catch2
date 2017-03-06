@@ -169,7 +169,7 @@ namespace Catch {
                 stream << result.getSourceInfo() << ':';
             }
 
-            void printResultType( Colour::Code colour, std::string passOrFail ) const {
+            void printResultType( Colour::Code colour, std::string const& passOrFail ) const {
                 if( !passOrFail.empty() ) {
                     {
                         Colour colourGuard( colour );
@@ -179,7 +179,7 @@ namespace Catch {
                 }
             }
 
-            void printIssue( std::string issue ) const {
+            void printIssue( std::string const& issue ) const {
                 stream << ' ' << issue;
             }
 

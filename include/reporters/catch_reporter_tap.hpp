@@ -157,13 +157,13 @@ namespace Catch {
                 stream << result.getSourceInfo() << ":";
             }
 
-            void printResultType( std::string passOrFail ) const {
+            void printResultType( std::string const& passOrFail ) const {
                 if( !passOrFail.empty() ) {
                     stream << passOrFail << ' ' << counter << " -";
                 }
             }
 
-            void printIssue( std::string issue ) const {
+            void printIssue( std::string const& issue ) const {
                 stream << " " << issue;
             }
 
