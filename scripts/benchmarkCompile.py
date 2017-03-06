@@ -126,8 +126,8 @@ catch_path = args.catch_header
 
 if args.generate_files:
     create_temp_dir()
-    os.chdir(dir_name)
     copy_catch(catch_path)
+    os.chdir(dir_name)
     # now create the fake test files
     generate_files()
     # Early exit
