@@ -48,6 +48,9 @@ A thread safe header only mocking framework for C++14
 
 ## Applications & Tools
 
+### [ArangoDB](https://github.com/arangodb/arangodb)
+ArangoDB is a native multi-model database with flexible data models for documents, graphs, and key-values.
+
 ### [MAME](https://github.com/mamedev/mame)
 MAME originally stood for Multiple Arcade Machine Emulator
 
