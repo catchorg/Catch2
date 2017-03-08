@@ -50,7 +50,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#835 -- errno should not be touched by Catch" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="#835 -- errno should not be touched by Catch" tags="[!shouldfail]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           f() == 0
@@ -61,13 +61,13 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
-          (*__errno_location ()) == 1
+          (*__error()) == 1
         </Original>
         <Expanded>
           1 == 1
         </Expanded>
       </Expression>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="'Not' checks that should fail" tags="[.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
@@ -1376,6 +1376,15 @@
     </TestCase>
     <TestCase name="FAIL does not require an argument" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Failure filename="projects/<exe-name>/MessageTests.cpp" />
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="FAIL_CHECK does not abort the test" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Failure filename="projects/<exe-name>/MessageTests.cpp" >
+        This is a failure
+      </Failure>
+      <Warning>
+        This message appears in the output
+      </Warning>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Factorials are computed" tags="[factorial]" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -10007,7 +10016,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="852" failures="90" expectedFailures="18"/>
+    <OverallResults successes="852" failures="90" expectedFailures="19"/>
   </Group>
-  <OverallResults successes="852" failures="89" expectedFailures="18"/>
+  <OverallResults successes="852" failures="89" expectedFailures="19"/>
 </Catch>

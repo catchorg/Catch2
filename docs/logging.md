@@ -26,6 +26,10 @@ The message is always reported but does not fail the test.
 
 The message is reported and the test case fails.
 
+**FAIL_CHECK(** _message expression_ **)**
+
+AS `FAIL`, but does not abort the test
+
 ## Quickly capture a variable value
 
 **CAPTURE(** _expression_ **)**
