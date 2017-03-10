@@ -397,7 +397,7 @@ namespace Clara {
             _dest = _source;
         }
         char toLowerCh(char c) {
-            return static_cast<char>( ::tolower( c ) );
+            return static_cast<char>( std::tolower( c ) );
         }
         inline void convertInto( std::string const& _source, bool& _dest ) {
             std::string sourceLC = _source;
