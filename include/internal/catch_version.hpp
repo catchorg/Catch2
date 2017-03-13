@@ -37,7 +37,7 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 8, 1, "", 0 );
+    Version libraryVersion( 1, 8, 2, "", 0 );
 
 }
 
