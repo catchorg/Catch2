@@ -38,9 +38,9 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 * `[!throws]`	- lets Catch know that this test is likely to throw an exception even if successful. This causes the test to be excluded when running with `-e` or `--nothrow`.
 
-* `[!shouldfail]` - reverse the failing logic of the test: if the test is successful if it fails, and vice-versa.
-
 * `[!mayfail]` - doesn't fail the test if any given assertion fails (but still reports it). This can be useful to flag a work-in-progress, or a known issue that you don't want to immediately fix but still want to track in the your tests.
+
+* `[!shouldfail]` - like `[!mayfail]` but *fails* the test if it *passes*. This can be useful if you want to be notified of accidental, or third-party, fixes.
 
 * `[!nonportable]` - Indicates that behaviour may vary between platforms or compilers.
 
