@@ -49,7 +49,7 @@ Cygwin issue with `gettimeofday` - `#define` was not early enough
 
 * Matchers have new, simpler (and documented) interface.
   * Catch provides string and vector matchers.
-  * For details see [Matchers documentation](docs/matchers.md).
+  * For details see [Matchers documentation](matchers.md).
 * Changed console reporter test duration reporting format (#322)
   * Old format: `Some simple comparisons between doubles completed in 0.000123s`
   * New format: `xxx.123s: Some simple comparisons between doubles` _(There will always be exactly 3 decimal places)_
@@ -63,7 +63,7 @@ Cygwin issue with `gettimeofday` - `#define` was not early enough
   * For details see [documentation about integrating with build systems](build-systems.md).
 *  XML reporter now reports filename as part of the `Section` and `TestCase` tags.
 * `Approx` now supports an optional margin of absolute error
-  * It has also received [new documentation](docs/assertions.md).
+  * It has also received [new documentation](assertions.md).
 
 ### Fixes
 * Silenced C4312 ("conversion from int to 'ClassName *") warnings in the evaluate layer.
@@ -106,7 +106,7 @@ Other:
 ### Fixes:
 * Fixed inconsistency in defining `NOMINMAX` and `WIN32_LEAN_AND_MEAN` inside `catch.hpp`.
 * Fixed SEH-related compilation error under older MinGW compilers, by making Windows SEH handling opt-in for compilers other than MSVC.
-  * For specifics, look into the [documentation](docs/configuration.md).
+  * For specifics, look into the [documentation](configuration.md).
 * Fixed compilation error under MinGW caused by improper compiler detection.
 * Fixed XML reporter sometimes leaving an empty output file when a test ends with signal/structured exception.
 * Fixed XML reporter not reporting captured stdout/stderr.
@@ -120,7 +120,7 @@ Other:
   * Microbenchmark focused on Catch's overhead went from ~3.4s to ~0.7s.
   * Real world test using [JSON for Modern C++](https://github.com/nlohmann/json)'s test suite went from ~6m 25s to ~4m 14s.
 * Catch can now run specific sections within test cases.
-  * For now the support is only basic (no wildcards or tags), for details see the [documentation](docs/command-line.md).
+  * For now the support is only basic (no wildcards or tags), for details see the [documentation](command-line.md).
 * Catch now supports SEH on Windows as well as signals on Linux.
   * After receiving a signal, Catch reports failing assertion and then passes the signal onto the previous handler.
 * Approx can be used to compare values against strong typedefs (available in C++11 mode only).
@@ -157,7 +157,7 @@ Other:
 * Approval tests can now be run on Windows
 * CMake will now warn if a file is present in the `include` folder but not is not enumerated as part of the project
 * Catch now defines `NOMINMAX` and `WIN32_LEAN_AND_MEAN` before including `windows.h`
-  * This can be disabled if needed, see [documentation](docs/configuration.md) for details.
+  * This can be disabled if needed, see [documentation](configuration.md) for details.
 
 
 ## 1.6.0
