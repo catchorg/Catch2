@@ -104,65 +104,68 @@ namespace Catch {
     namespace Matchers {
         namespace Impl {
         namespace NSStringMatchers {
-
-            template<typename MatcherT>
-            struct StringHolder : MatcherImpl<MatcherT, NSString*>{
+           
+            struct StringHolder : MatcherBase<NSString*>{
                 StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
                 StringHolder( StringHolder const& other ) : m_substr( [other.m_substr copy] ){}
                 StringHolder() {
                     arcSafeRelease( m_substr );
                 }
 
+                virtual bool match( NSString* arg ) const CATCH_OVERRIDE {
+                    return false;
+                }
+
                 NSString* m_substr;
             };
 
-            struct Equals : StringHolder<Equals> {
+            struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( ExpressionType const& str ) const {
+                virtual bool match( NSString* str ) const CATCH_OVERRIDE {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
 
-                virtual std::string toString() const {
+                virtual std::string describe() const CATCH_OVERRIDE {
                     return "equals string: " + Catch::toString( m_substr );
                 }
             };
 
-            struct Contains : StringHolder<Contains> {
+            struct Contains : StringHolder {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( ExpressionType const& str ) const {
+                virtual bool match( NSString* str ) const {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
-                virtual std::string toString() const {
+                virtual std::string describe() const CATCH_OVERRIDE {
                     return "contains string: " + Catch::toString( m_substr );
                 }
             };
 
-            struct StartsWith : StringHolder<StartsWith> {
+            struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( ExpressionType const& str ) const {
+                virtual bool match( NSString* str ) const {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == 0;
                 }
 
-                virtual std::string toString() const {
+                virtual std::string describe() const CATCH_OVERRIDE {
                     return "starts with: " + Catch::toString( m_substr );
                 }
             };
-            struct EndsWith : StringHolder<EndsWith> {
+            struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( ExpressionType const& str ) const {
+                virtual bool match( NSString* str ) const {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
-                virtual std::string toString() const {
+                virtual std::string describe() const CATCH_OVERRIDE {
                     return "ends with: " + Catch::toString( m_substr );
                 }
             };
