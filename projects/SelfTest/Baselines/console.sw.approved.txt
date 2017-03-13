@@ -5873,6 +5873,23 @@ warning:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
+  empty args don't cause a crash
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parser.parseInto( std::vector<std::string>(), config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( config.processName == "" )
+with expansion:
+  "" == ""
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
   default - no arguments
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
@@ -5881,6 +5898,12 @@ TestMain.cpp:<line number>
 TestMain.cpp:<line number>:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( config.processName == "test" )
+with expansion:
+  "test" == "test"
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -9382,5 +9405,5 @@ PASSED:
 
 ===============================================================================
 test cases: 166 | 118 passed | 45 failed |  3 failed as expected
-assertions: 960 | 852 passed | 89 failed | 19 failed as expected
+assertions: 963 | 855 passed | 89 failed | 19 failed as expected
 

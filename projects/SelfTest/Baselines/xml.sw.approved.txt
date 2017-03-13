@@ -6215,6 +6215,25 @@ re>"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Process can be configured on command line" tags="[command-line][config]" filename="projects/<exe-name>/TestMain.cpp" >
+      <Section name="empty args don't cause a crash" filename="projects/<exe-name>/TestMain.cpp" >
+        <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Original>
+            parser.parseInto( std::vector&lt;std::string>(), config )
+          </Original>
+          <Expanded>
+            parser.parseInto( std::vector&lt;std::string>(), config )
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+          <Original>
+            config.processName == ""
+          </Original>
+          <Expanded>
+            "" == ""
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="default - no arguments" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
@@ -6222,6 +6241,14 @@ re>"
           </Original>
           <Expanded>
             parseIntoConfig( argv, config )
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+          <Original>
+            config.processName == "test"
+          </Original>
+          <Expanded>
+            "test" == "test"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
@@ -6256,7 +6283,7 @@ re>"
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="1 test" description="Specify one test case using" filename="projects/<exe-name>/TestMain.cpp" >
@@ -10016,7 +10043,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="852" failures="90" expectedFailures="19"/>
+    <OverallResults successes="855" failures="90" expectedFailures="19"/>
   </Group>
-  <OverallResults successes="852" failures="89" expectedFailures="19"/>
+  <OverallResults successes="855" failures="89" expectedFailures="19"/>
 </Catch>

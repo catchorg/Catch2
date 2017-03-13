@@ -51,10 +51,18 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
     Catch::ConfigData config;
 
+    SECTION( "empty args don't cause a crash" ) {
+        Catch::Clara::CommandLine<Catch::ConfigData> parser = Catch::makeCommandLineParser();
+        CHECK_NOTHROW( parser.parseInto( std::vector<std::string>(), config ) );
+
+        CHECK( config.processName == "" );
+    }
+
     SECTION( "default - no arguments", "" ) {
         const char* argv[] = { "test" };
         CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
+        CHECK( config.processName == "test" );
         CHECK( config.shouldDebugBreak == false );
         CHECK( config.abortAfter == -1 );
         CHECK( config.noThrow == false );
