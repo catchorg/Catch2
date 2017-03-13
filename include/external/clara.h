@@ -554,12 +554,13 @@ namespace Clara {
         }
 
         void parseIntoTokens( std::string const& arg, std::vector<Token>& tokens ) {
-            for( std::size_t i = 0; i <= arg.size(); ++i ) {
+            for( std::size_t i = 0; i < arg.size(); ++i ) {
                 char c = arg[i];
                 if( c == '"' )
                     inQuotes = !inQuotes;
                 mode = handleMode( i, c, arg, tokens );
             }
+            mode = handleMode( arg.size(), '\0', arg, tokens );
         }
         Mode handleMode( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
             switch( mode ) {
@@ -592,6 +593,7 @@ namespace Clara {
                 default: from = i; return ShortOpt;
             }
         }
+
         Mode handleOpt( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
             if( std::string( ":=\0", 3 ).find( c ) == std::string::npos )
                 return mode;
