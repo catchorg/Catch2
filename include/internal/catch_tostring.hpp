@@ -198,7 +198,7 @@ std::string toString( std::nullptr_t ) {
             return "nil";
         return "@" + toString([nsstring UTF8String]);
     }
-    std::string toString( NSString * CATCH_ARC_STRONG const& nsstring ) {
+    std::string toString( NSString * CATCH_ARC_STRONG & nsstring ) {
         if( !nsstring )
             return "nil";
         return "@" + toString([nsstring UTF8String]);
