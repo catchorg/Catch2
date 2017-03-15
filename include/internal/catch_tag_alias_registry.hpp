@@ -10,6 +10,8 @@
 
 #include "catch_tag_alias_registry.h"
 #include "catch_console_colour.hpp"
+#include "catch_interfaces_registry_hub.h"
+#include "catch_stream.h"
 
 namespace Catch {
 
@@ -38,7 +40,7 @@ namespace Catch {
         return expandedTestSpec;
     }
 
-    void TagAliasRegistry::add( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
+    void TagAliasRegistry::add( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) {
 
         if( !startsWith( alias, "[@" ) || !endsWith( alias, ']' ) ) {
             std::ostringstream oss;
@@ -54,19 +56,15 @@ namespace Catch {
         }
     }
 
-    TagAliasRegistry& TagAliasRegistry::get() {
-        static TagAliasRegistry instance;
-        return instance;
-
-    }
-
     ITagAliasRegistry::~ITagAliasRegistry() {}
-    ITagAliasRegistry const& ITagAliasRegistry::get() { return TagAliasRegistry::get(); }
 
+    ITagAliasRegistry const& ITagAliasRegistry::get() {
+        return getRegistryHub().getTagAliasRegistry();
+    }
 
     RegistrarForTagAliases::RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
         try {
-            TagAliasRegistry::get().add( alias, tag, lineInfo );
+            getMutableRegistryHub().registerTagAlias( alias, tag, lineInfo );
         }
         catch( std::exception& ex ) {
             Colour colourGuard( Colour::Red );

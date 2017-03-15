@@ -13,6 +13,7 @@
 #include "catch_test_case_registry_impl.hpp"
 #include "catch_reporter_registry.hpp"
 #include "catch_exception_translator_registry.hpp"
+#include "catch_tag_alias_registry.h"
 
 namespace Catch {
 
@@ -35,6 +36,10 @@ namespace Catch {
             virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() CATCH_OVERRIDE {
                 return m_exceptionTranslatorRegistry;
             }
+            virtual ITagAliasRegistry const& getTagAliasRegistry() const CATCH_OVERRIDE {
+                return m_tagAliasRegistry;
+            }
+
 
         public: // IMutableRegistryHub
             virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) CATCH_OVERRIDE {
@@ -49,11 +54,15 @@ namespace Catch {
             virtual void registerTranslator( const IExceptionTranslator* translator ) CATCH_OVERRIDE {
                 m_exceptionTranslatorRegistry.registerTranslator( translator );
             }
+            virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) CATCH_OVERRIDE {
+                m_tagAliasRegistry.add( alias, tag, lineInfo );
+            }
 
         private:
             TestRegistry m_testCaseRegistry;
             ReporterRegistry m_reporterRegistry;
             ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
+            TagAliasRegistry m_tagAliasRegistry;
         };
 
         // Single, global, instance
