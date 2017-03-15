@@ -11,11 +11,10 @@
 #include "catch_compiler_capabilities.h"
 #include "catch_ptr.hpp"
 
-#include <map>
+#include <algorithm>
 #include <string>
 #include <assert.h>
 #include <vector>
-#include <iterator>
 #include <stdexcept>
 
 namespace Catch {
@@ -290,12 +289,12 @@ namespace TestCaseTracking {
             if( !filters.empty() ) {
                 m_filters.push_back(""); // Root - should never be consulted
                 m_filters.push_back(""); // Test Case - not a section filter
-                std::copy( filters.begin(), filters.end(), std::back_inserter( m_filters ) );
+                m_filters.insert( m_filters.end(), filters.begin(), filters.end() );
             }
         }
         void addNextFilters( std::vector<std::string> const& filters ) {
             if( filters.size() > 1 )
-                std::copy( filters.begin()+1, filters.end(), std::back_inserter( m_filters ) );
+                m_filters.insert( m_filters.end(), ++filters.begin(), filters.end() );
         }
     };
 
