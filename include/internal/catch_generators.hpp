@@ -10,7 +10,6 @@
 
 #include "catch_context.h"
 
-#include <iterator>
 #include <vector>
 #include <string>
 #include <stdlib.h>
@@ -124,7 +123,7 @@ public:
 private:
 
     void move( CompositeGenerator& other ) {
-        std::copy( other.m_composed.begin(), other.m_composed.end(), std::back_inserter( m_composed ) );
+        m_composed.insert( m_composed.end(), other.m_composed.begin(), other.m_composed.end() );
         m_totalSize += other.m_totalSize;
         other.m_composed.clear();
     }
