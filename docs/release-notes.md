@@ -29,6 +29,7 @@
 * Clara no longer assumes first argument (binary name) is always present (#729)
   * If it is missing, empty string is used as default.
 * Clara no longer reads 1 character past argument string (#830)
+* Regression in Objective-C bindings (Matchers) fixed (#854)
 
 
 ### Other notes:
