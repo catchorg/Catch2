@@ -32,7 +32,7 @@ namespace Catch {
         void operator=( Version const& );
     };
 
-    extern Version libraryVersion;
+    inline Version libraryVersion();
 }
 
 #endif // TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
