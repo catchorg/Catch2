@@ -125,7 +125,7 @@ namespace Catch {
         }
 
         void showHelp( std::string const& processName ) {
-            Catch::cout() << "\nCatch v" << libraryVersion << "\n";
+            Catch::cout() << "\nCatch v" << libraryVersion() << "\n";
 
             m_cli.usage( Catch::cout(), processName );
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;

@@ -7,7 +7,7 @@ import string
 
 from scriptCommon import catchPath
 
-versionParser = re.compile( r'(\s*Version\slibraryVersion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
+versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
 readmePath = os.path.join( catchPath, "README.md" )

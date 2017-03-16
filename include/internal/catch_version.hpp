@@ -37,7 +37,10 @@ namespace Catch {
         return os;
     }
 
-    Version libraryVersion( 1, 8, 2, "", 0 );
+    inline Version libraryVersion() {
+        static Version version(1, 8, 2, "", 0);
+        return version;
+    }
 
 }
 
