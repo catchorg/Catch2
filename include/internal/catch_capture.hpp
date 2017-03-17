@@ -26,6 +26,33 @@
 // macro in each assertion
 #define INTERNAL_CATCH_REACT( resultBuilder ) \
     resultBuilder.react();
+
+///////////////////////////////////////////////////////////////////////////////
+// Another way to speed-up compilation is to omit local try-catch for REQUIRE*
+// macros.
+// This can potentially cause false negative, if the test code catches
+// the exception before it propagates back up to the runner.
+#define INTERNAL_CATCH_TEST_NO_TRY( expr, resultDisposition, macroName ) \
+    do { \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
+        ( __catchResult <= expr ).endExpression(); \
+        CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::isTrue( false && static_cast<bool>( !!(expr) ) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+// The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
+
+#define INTERNAL_CHECK_THAT_NO_TRY( arg, matcher, resultDisposition, macroName ) \
+    do { \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
+         __catchResult.captureMatch( arg, matcher, #matcher ); \
+         __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::alwaysFalse() )
+
+
+#define INTERNAL_CATCH_
+
 #else
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked
