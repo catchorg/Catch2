@@ -50,9 +50,6 @@
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 
-
-#define INTERNAL_CATCH_
-
 #else
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked
