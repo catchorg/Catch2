@@ -37,6 +37,9 @@ a small and easy to use C++11 library that adds a functionality set that will be
 ### [SOCI](https://github.com/SOCI/soci)
 The C++ Database Access Library
 
+### [polymorphic_value](https://github.com/jbcoe/polymorphic_value)
+A polymorphic value-type for C++
+
 ### [Ppconsul](https://github.com/oliora/ppconsul)
 A C++ client library for Consul. Consul is a distributed tool for discovering and configuring services in your infrastructure
 
