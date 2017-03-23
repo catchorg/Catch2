@@ -95,7 +95,7 @@ Expects that an exception (of any type) is be thrown during evaluation of the ex
 * **REQUIRE_THROWS_AS(** _expression_, _exception type_ **)** and  
 * **CHECK_THROWS_AS(** _expression_, _exception type_ **)**
 
-Expects that an exception of the _specified type_ is thrown during evaluation of the expression.
+Expects that an exception of the _specified type_ is thrown during evaluation of the expression. Note that the _exception type_ is used verbatim and you should include (const) reference.
 
 * **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and  
 * **CHECK_THROWS_WITH(** _expression_, _string or string matcher_ **)**
