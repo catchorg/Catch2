@@ -89,15 +89,7 @@ Just as with the C++11 conformance toggles, these toggles can be disabled by usi
 ## `CATCH_CONFIG_FAST_COMPILE`
 Defining this flag speeds up compilation of test files by ~20%, by making 2 changes:
 * The `-b` (`--break`) flag no longer makes Catch break into debugger in the same stack frame as the failed test, but rather in a stack frame *below*.
-* The `REQUIRE` family of macros (`REQUIRE`, `REQUIRE_FALSE` and `REQUIRE_THAT`) no longer uses local try-catch block. This creates minor chance for false negative under certain conditions, when expression tested inside `REQUIRE` throws exception, that is then caught by user's code before it gets to the test runner. Example:
-```cpp
-TEST_CASE("False negative") {
-    try {
-        REQUIRE(throws() == "");
-    } catch (...) {}
-}
-```
-This test case will succeed, reporting no assertions checked, instead of failing as it would without `CATCH_CONFIG_FAST_COMPILE`.
+* The `REQUIRE` family of macros (`REQUIRE`, `REQUIRE_FALSE` and `REQUIRE_THAT`) no longer uses local try-catch block.
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag will be unpredictable.
 
