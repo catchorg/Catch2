@@ -17,6 +17,8 @@
 #include <vector>
 #include <stdexcept>
 
+CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
+
 namespace Catch {
 namespace TestCaseTracking {
 
@@ -363,5 +365,7 @@ using TestCaseTracking::SectionTracker;
 using TestCaseTracking::IndexTracker;
 
 } // namespace Catch
+
+CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
 
 #endif // TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED

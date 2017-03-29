@@ -63,6 +63,12 @@
 #  endif
 
 #   if defined(CATCH_CPP11_OR_GREATER)
+#       define CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
+            _Pragma( "clang diagnostic push" ) \
+            _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" )
+#       define CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS \
+            _Pragma( "clang diagnostic pop" )
+
 #       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             _Pragma( "clang diagnostic push" ) \
             _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
@@ -270,13 +276,17 @@
 #   define CATCH_CONFIG_WINDOWS_SEH
 #endif
 // This is set by default, because we assume that unix compilers are posix-signal-compatible by default.
-#if !defined(CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_POSIX_SIGNALS) 
+#if !defined(CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_POSIX_SIGNALS)
 #   define CATCH_CONFIG_POSIX_SIGNALS
 #endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
 #   define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
+#endif
+#if !defined(CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS)
+#   define CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
+#   define CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
 #endif
 
 // noexcept support:
