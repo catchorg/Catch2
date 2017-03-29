@@ -30,8 +30,17 @@ namespace Catch {
                                     char const* secondArg )
     :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
         m_shouldDebugBreak( false ),
-        m_shouldThrow( false )
+        m_shouldThrow( false ),
+        m_guardException( false )
     {}
+
+    ResultBuilder::~ResultBuilder() {
+#if defined(CATCH_CONFIG_FAST_COMPILE)
+        if ( m_guardException ) {
+            useActiveException( m_assertionInfo.resultDisposition );
+        }
+#endif
+    }
 
     ResultBuilder& ResultBuilder::setResultType( ResultWas::OfType result ) {
         m_data.resultType = result;
@@ -144,6 +153,13 @@ namespace Catch {
 
     void ResultBuilder::reconstructExpression( std::string& dest ) const {
         dest = m_assertionInfo.capturedExpression;
+    }
+
+    void ResultBuilder::setExceptionGuard() {
+        m_guardException = true;
+    }
+    void ResultBuilder::unsetExceptionGuard() {
+        m_guardException = false;
     }
 
 } // end namespace Catch

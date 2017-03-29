@@ -39,6 +39,7 @@ namespace Catch {
                         char const* capturedExpression,
                         ResultDisposition::Flags resultDisposition,
                         char const* secondArg = "" );
+        ~ResultBuilder();
 
         template<typename T>
         ExpressionLhs<T const&> operator <= ( T const& operand );
@@ -73,6 +74,9 @@ namespace Catch {
         template<typename ArgT, typename MatcherT>
         void captureMatch( ArgT const& arg, MatcherT const& matcher, char const* matcherString );
 
+        void setExceptionGuard();
+        void unsetExceptionGuard();
+
     private:
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
@@ -80,6 +84,7 @@ namespace Catch {
 
         bool m_shouldDebugBreak;
         bool m_shouldThrow;
+        bool m_guardException;
     };
 
 } // namespace Catch

@@ -34,9 +34,11 @@
 #define INTERNAL_CATCH_TEST_NO_TRY( macroName, resultDisposition, expr ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        __catchResult.setExceptionGuard(); \
         CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
         ( __catchResult <= expr ).endExpression(); \
         CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
+        __catchResult.unsetExceptionGuard(); \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::isTrue( false && static_cast<bool>( !!(expr) ) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
 // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
@@ -44,8 +46,9 @@
 #define INTERNAL_CHECK_THAT_NO_TRY( macroName, matcher, resultDisposition, arg ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
-         __catchResult.captureMatch( arg, matcher, #matcher ); \
-         __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
+        __catchResult.setExceptionGuard(); \
+        __catchResult.captureMatch( arg, matcher, #matcher ); \
+        __catchResult.unsetExceptionGuard(); \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 
