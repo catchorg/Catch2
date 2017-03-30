@@ -138,7 +138,11 @@ namespace Catch {
                     case ResultWas::ThrewException:
                         colour = Colour::Error;
                         passOrFail = "FAILED";
-                        messageLabel = "due to unexpected exception with message";
+                        messageLabel = "due to unexpected exception with ";
+                        if (_stats.infoMessages.size() == 1)
+                            messageLabel += "message";
+                        if (_stats.infoMessages.size() > 1)
+                            messageLabel += "messages";
                         break;
                     case ResultWas::FatalErrorCondition:
                         colour = Colour::Error;
