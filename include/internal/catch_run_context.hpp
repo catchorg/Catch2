@@ -64,7 +64,8 @@ namespace Catch {
             m_context( getCurrentMutableContext() ),
             m_activeTestCase( CATCH_NULL ),
             m_config( _config ),
-            m_reporter( reporter )
+            m_reporter( reporter ),
+            m_shouldReportUnexpected ( true )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -223,6 +224,10 @@ namespace Catch {
             return &m_lastResult;
         }
 
+        virtual void exceptionEarlyReported() {
+            m_shouldReportUnexpected = false;
+        }
+
         virtual void handleFatalErrorCondition( std::string const& message ) {
             // Don't rebuild the result -- the stringification itself can cause more fatal errors
             // Instead, fake a result data.
@@ -293,7 +298,13 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                makeUnexpectedResultBuilder().useActiveException();
+                // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions 
+                // are reported without translation at the point of origin.
+#ifdef CATCH_CONFIG_FAST_COMPILE
+                if (m_shouldReportUnexpected) {
+                    makeUnexpectedResultBuilder().useActiveException();
+                }
+#endif
             }
             m_testCaseTracker->close();
             handleUnfinishedSections();
@@ -353,6 +364,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
+        bool m_shouldReportUnexpected;
     };
 
     IResultCapture& getResultCapture() {

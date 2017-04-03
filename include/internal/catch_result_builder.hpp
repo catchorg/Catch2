@@ -37,7 +37,9 @@ namespace Catch {
     ResultBuilder::~ResultBuilder() {
 #if defined(CATCH_CONFIG_FAST_COMPILE)
         if ( m_guardException ) {
-            useActiveException( m_assertionInfo.resultDisposition );
+            m_stream.oss << "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
+            captureResult( ResultWas::ThrewException );
+            getCurrentContext().getResultCapture()->exceptionEarlyReported();
         }
 #endif
     }
