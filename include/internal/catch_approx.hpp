@@ -49,6 +49,12 @@ namespace Detail {
         }
 
 #if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
+
+        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        explicit Approx( T value ): Approx(static_cast<double>(value))
+        {}
+
+
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
@@ -76,27 +82,23 @@ namespace Detail {
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator <= ( T lhs, Approx const& rhs )
-        {
-          return double(lhs) < rhs.m_value || lhs == rhs;
+        friend bool operator <= ( T lhs, Approx const& rhs ) {
+            return double(lhs) < rhs.m_value || lhs == rhs;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator <= ( Approx const& lhs, T rhs )
-        {
-          return lhs.m_value < double(rhs) || lhs == rhs;
+        friend bool operator <= ( Approx const& lhs, T rhs ) {
+            return lhs.m_value < double(rhs) || lhs == rhs;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator >= ( T lhs, Approx const& rhs )
-        {
-          return double(lhs) > rhs.m_value || lhs == rhs;
+        friend bool operator >= ( T lhs, Approx const& rhs ) {
+            return double(lhs) > rhs.m_value || lhs == rhs;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator >= ( Approx const& lhs, T rhs )
-        {
-          return lhs.m_value > double(rhs) || lhs == rhs;
+        friend bool operator >= ( Approx const& lhs, T rhs ) {
+            return lhs.m_value > double(rhs) || lhs == rhs;
         }
 #else
         friend bool operator == ( double lhs, Approx const& rhs ) {
@@ -120,24 +122,20 @@ namespace Detail {
             return !operator==( rhs, lhs );
         }
 
-        friend bool operator <= ( double lhs, Approx const& rhs )
-        {
-          return lhs < rhs.m_value || lhs == rhs;
+        friend bool operator <= ( double lhs, Approx const& rhs ) {
+            return lhs < rhs.m_value || lhs == rhs;
         }
 
-        friend bool operator <= ( Approx const& lhs, double rhs )
-        {
-          return lhs.m_value < rhs || lhs == rhs;
+        friend bool operator <= ( Approx const& lhs, double rhs ) {
+            return lhs.m_value < rhs || lhs == rhs;
         }
 
-        friend bool operator >= ( double lhs, Approx const& rhs )
-        {
-          return lhs > rhs.m_value || lhs == rhs;
+        friend bool operator >= ( double lhs, Approx const& rhs ) {
+            return lhs > rhs.m_value || lhs == rhs;
         }
 
-        friend bool operator >= ( Approx const& lhs, double rhs )
-        {
-          return lhs.m_value > rhs || lhs == rhs;
+        friend bool operator >= ( Approx const& lhs, double rhs ) {
+            return lhs.m_value > rhs || lhs == rhs;
         }
 #endif
 
