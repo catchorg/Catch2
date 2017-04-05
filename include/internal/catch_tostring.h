@@ -92,19 +92,18 @@ namespace Detail {
         enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
     };
 #else
-  template<typename T>
-  class IsStreamInsertable
-  {
-      template<typename SS, typename TT>
-      static auto test(int)
-      -> decltype( std::declval<SS&>() << std::declval<TT>(), std::true_type() );
+    template<typename T>
+    class IsStreamInsertable {
+        template<typename SS, typename TT>
+        static auto test(int)
+        -> decltype( std::declval<SS&>() << std::declval<TT>(), std::true_type() );
 
-      template<typename, typename>
-      static auto test(...) -> std::false_type;
+        template<typename, typename>
+        static auto test(...) -> std::false_type;
 
-  public:
-      static const bool value = decltype(test<std::ostream,const T&>(0))::value;
-  };
+    public:
+        static const bool value = decltype(test<std::ostream,const T&>(0))::value;
+    };
 #endif
 
 #if defined(CATCH_CONFIG_CPP11_IS_ENUM)
