@@ -101,7 +101,7 @@ function(ParseFile SourceFile TestTarget)
         # Add the test and set its properties
         add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
         set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
-                                                LABELS "${CamelCaseProjectName};${Tags}")
+                                                LABELS "${Tags}")
 
     endforeach()
 endfunction()
