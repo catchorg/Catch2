@@ -51,3 +51,22 @@ TEST_CASE("#833") {
     REQUIRE(templated_tests<int>(3));
 }
 
+// Test containing example where original stream insertable check breaks compilation
+#if defined (CATCH_CONFIG_CPP11_STREAM_INSERTABLE_CHECK)
+namespace {
+    struct A {};
+    std::ostream& operator<< (std::ostream &o, const A &) { return o << 0; }
+
+    struct B : private A {
+        bool operator== (int) const { return true; }
+    };
+
+    B f ();
+    std::ostream g ();
+}
+
+TEST_CASE( "#872" ) {
+    B x;
+    REQUIRE (x == 4);
+}
+#endif

@@ -72,6 +72,7 @@ namespace Detail {
 
     extern const std::string unprintableString;
 
+ #if !defined(CATCH_CONFIG_CPP11_STREAM_INSERTABLE_CHECK)
     struct BorgType {
         template<typename T> BorgType( T const& );
     };
@@ -90,6 +91,20 @@ namespace Detail {
         static T  const&t;
         enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
     };
+#else
+    template<typename T>
+    class IsStreamInsertable {
+        template<typename SS, typename TT>
+        static auto test(int)
+        -> decltype( std::declval<SS&>() << std::declval<TT>(), std::true_type() );
+
+        template<typename, typename>
+        static auto test(...) -> std::false_type;
+
+    public:
+        static const bool value = decltype(test<std::ostream,const T&>(0))::value;
+    };
+#endif
 
 #if defined(CATCH_CONFIG_CPP11_IS_ENUM)
     template<typename T,
