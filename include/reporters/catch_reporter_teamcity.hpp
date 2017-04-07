@@ -49,14 +49,7 @@ namespace Catch {
             return "Reports test results as TeamCity service messages";
         }
 
-        virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
-            stream  << "##teamcity[testIgnored name='"
-                    << escape( testInfo.name ) << "'";
-            if( testInfo.isHidden() )
-                stream << " message='hidden test'";
-            else
-                stream << " message='test skipped because it didn|'t match the test spec'";
-            stream << "]\n";
+        virtual void skipTest( TestCaseInfo const& /* testInfo */ ) CATCH_OVERRIDE {
         }
 
         virtual void noMatchingTestCases( std::string const& /* spec */ ) CATCH_OVERRIDE {}
@@ -134,10 +127,19 @@ namespace Catch {
                         "  " << result.getExpandedExpression() << "\n";
                 }
 
-                stream << "##teamcity[testFailed"
-                    << " name='" << escape( currentTestCaseInfo->name )<< "'"
-                    << " message='" << escape( msg.str() ) << "'"
-                    << "]\n";
+                if( currentTestCaseInfo->okToFail() ) {
+                    msg << "- failure ignore as test marked as 'ok to fail'\n";
+                    stream << "##teamcity[testIgnored"
+                           << " name='" << escape( currentTestCaseInfo->name )<< "'"
+                           << " message='" << escape( msg.str() ) << "'"
+                           << "]\n";
+                }
+                else {
+                    stream << "##teamcity[testFailed"
+                           << " name='" << escape( currentTestCaseInfo->name )<< "'"
+                           << " message='" << escape( msg.str() ) << "'"
+                           << "]\n";
+                }
             }
             return true;
         }
@@ -203,7 +205,6 @@ namespace Catch {
         }
     private:
         bool m_headerPrintedForThisSection;
-
     };
 
 #ifdef CATCH_IMPL

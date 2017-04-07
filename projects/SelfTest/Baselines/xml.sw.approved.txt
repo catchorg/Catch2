@@ -4,39 +4,41 @@
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#542" filename="projects/<exe-name>/CompilationTests.cpp" >
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), int
-        </Original>
-        <Expanded>
-          throws_int(true), int
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), int&amp;
-        </Original>
-        <Expanded>
-          throws_int(true), int&amp;
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), const int
-        </Original>
-        <Expanded>
-          throws_int(true), const int
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), const int&amp;
-        </Original>
-        <Expanded>
-          throws_int(true), const int&amp;
-        </Expanded>
-      </Expression>
+    <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+      <Section name="outside assertions" filename="projects/<exe-name>/ExceptionTests.cpp" >
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="inside REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
+        <Info>
+          answer := 42
+        </Info>
+        <Expression success="false" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
+          <Original>
+            thisThrows()
+          </Original>
+          <Expanded>
+            thisThrows()
+          </Expanded>
+          <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+            expected exception
+          </Exception>
+        </Expression>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="inside REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
+        <Info>
+          answer := 42
+        </Info>
+        <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
+          <Original>
+            thisThrows()
+          </Original>
+          <Expanded>
+            thisThrows()
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="#809" filename="projects/<exe-name>/CompilationTests.cpp" >
@@ -46,6 +48,65 @@
         </Original>
         <Expanded>
           42 == {?}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="#833" filename="projects/<exe-name>/CompilationTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          a == t
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          a == t
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true)
+        </Original>
+        <Expanded>
+          throws_int(true)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true), const int&amp;
+        </Original>
+        <Expanded>
+          throws_int(true), const int&amp;
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(false)
+        </Original>
+        <Expanded>
+          throws_int(false)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          "aaa", Catch::EndsWith("aaa")
+        </Original>
+        <Expanded>
+          "aaa" ends with: "aaa"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          templated_tests&lt;int>(3)
+        </Original>
+        <Expanded>
+          true
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -445,18 +506,7 @@
           1 == 1
         </Expanded>
       </Expression>
-      <Expression success="false" filename="projects/<exe-name>/ExceptionTests.cpp" >
-        <Original>
-          {Unknown expression after the reported line}
-        </Original>
-        <Expanded>
-          {Unknown expression after the reported line}
-        </Expanded>
-        <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
-          unexpected exception
-        </Exception>
-      </Expression>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Anonymous test case 1" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
       <OverallResult success="true"/>
@@ -1060,10 +1110,7 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Custom std-exceptions can be custom translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
-        custom std exception
-      </Exception>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Demonstrate that a non-const == is not used" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -4588,10 +4635,7 @@ re>"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Non-std exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
-        custom exception
-      </Exception>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="NotImplemented exception" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -7308,7 +7352,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "[@zzz]"
+	Redefined at file:10
+" contains: "[@zzz]"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7318,7 +7363,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "file"
+	Redefined at file:10
+" contains: "file"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7328,7 +7374,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "2"
+	Redefined at file:10
+" contains: "2"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7338,7 +7385,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "10"
+	Redefined at file:10
+" contains: "10"
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -8538,10 +8586,7 @@ there"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
-        3.14
-      </Exception>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Use a custom approx" tags="[Approx][custom]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
@@ -8804,10 +8849,7 @@ there"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown directly they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
-        unexpected exception
-      </Exception>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown during a CHECK the test should continue" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -8853,12 +8895,9 @@ there"
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown from sections they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="section name" filename="projects/<exe-name>/ExceptionTests.cpp" >
-        <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
-          unexpected exception
-        </Exception>
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
       </Section>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <OverallResult success="true"/>
@@ -10043,7 +10082,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="855" failures="90" expectedFailures="19"/>
+    <OverallResults successes="859" failures="84" expectedFailures="20"/>
   </Group>
-  <OverallResults successes="855" failures="89" expectedFailures="19"/>
+  <OverallResults successes="859" failures="83" expectedFailures="20"/>
 </Catch>
