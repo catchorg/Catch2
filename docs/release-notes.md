@@ -1,3 +1,35 @@
+# 1.9.0
+
+
+### Improvements and minor changes
+* Catch no longer attempts to ensure the exception type passed by user in `REQUIRE_THROWS_AS` is a constant reference.
+  * It was causing trouble when `REQUIRE_THROWS_AS` was used inside templated functions
+  * This actually reverts changes made in v1.7.2
+* Catch's `Version` struct should no longer be double freed when multiple instances of Catch tests are loaded into single program (#858)
+  * It is now a static variable in an inline function instead of being an `extern`ed struct.
+* Attempt to register invalid tag or tag alias now throws instead of calling `exit()`.
+  * Because this happen before entering main, it still aborts execution
+  * Further improvements to this are coming
+* `CATCH_CONFIG_FAST_COMPILE` now speeds-up compilation of `REQUIRE*` assertions by further ~15%.
+  * The trade-off is disabling translation of unexpected exceptions into text.
+* When Catch is compiled using C++11, `Approx` is now constructible with anything that can be explicitly converted to `double`.
+* Captured messages are now printed on unexpected exceptions
+
+### Fixes:
+* Clang's `-Wexit-time-destructors` should be suppressed for Catch's internals
+* GCC's `-Wparentheses` is now suppressed for all TU's that include `catch.hpp`.
+  * This is functionally a revert of changes made in 1.8.0, where we tried using `_Pragma` based suppression. This should have kept the suppression local to Catch's assertions, but bugs in GCC's handling of `_Pragma`s in C++ mode meant that it did not always work.
+* You can now tell Catch to use C++11-based check when checking whether a type can be streamed to output.
+  * This fixes cases when an unstreamable type has streamable private base (#877)
+  * [Details can be found in documentation](configuration.md#catch_config_cpp11_stream_insertable_check)
+
+
+### Other notes:
+* We have added VS 2017 to our CI
+* Work on Catch 2 should start soon
+
+
+
 # 1.8.2
 
 
