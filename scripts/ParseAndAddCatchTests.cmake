@@ -70,16 +70,13 @@ function(ParseFile SourceFile TestTarget)
         # Get string parts of test definition
         string(REGEX MATCHALL "\"+([^\\^\"]|\\\\\")+\"+" TestStrings "${TestName}")
 
-        # Get timeout comment if it exists
-        string(REGEX REPLACE "(.*//[^\n]*[Tt][Ii][Mm][Ee][Oo][Uu][Tt][ \t]*)([0-9]+)" "\\2" ExplicitTimeout "${TestName}")
-
         # Strip wrapping quotation marks
         string(REGEX REPLACE "^\"(.*)\"$" "\\1" TestStrings "${TestStrings}")
         string(REPLACE "\";\"" ";" TestStrings "${TestStrings}")
 
         # Validate that a test name and tags have been provided
         list(LENGTH TestStrings TestStringsLength)
-        if(NOT TestStringsLength EQUAL 2)
+        if(TestStringsLength GREATER 2 OR TestStringsLength LESS 1)
             message(FATAL_ERROR "You must provide a valid test name and tags for all tests in ${SourceFile}")
         endif()
 
@@ -93,10 +90,12 @@ function(ParseFile SourceFile TestTarget)
         else()
             set(CTestName "${Name}")
         endif()
-        list(GET TestStrings 1 Tags)
-        string(TOLOWER "${Tags}" Tags)
-        string(REPLACE "]" ";" Tags "${Tags}")
-        string(REPLACE "[" "" Tags "${Tags}")
+        if(TestStringsLength EQUAL 2)
+            list(GET TestStrings 1 Tags)
+            string(TOLOWER "${Tags}" Tags)
+            string(REPLACE "]" ";" Tags "${Tags}")
+            string(REPLACE "[" "" Tags "${Tags}")
+        endif()
 
         # Add the test and set its properties
         add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
