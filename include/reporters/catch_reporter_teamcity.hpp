@@ -49,7 +49,7 @@ namespace Catch {
             return "Reports test results as TeamCity service messages";
         }
 
-        virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+        virtual void skipTest( TestCaseInfo const& /* testInfo */ ) CATCH_OVERRIDE {
         }
 
         virtual void noMatchingTestCases( std::string const& /* spec */ ) CATCH_OVERRIDE {}
