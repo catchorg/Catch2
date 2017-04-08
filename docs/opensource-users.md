@@ -37,6 +37,9 @@ a small and easy to use C++11 library that adds a functionality set that will be
 ### [nanodbc](https://github.com/lexicalunit/nanodbc/)
 A small C++ library wrapper for the native C ODBC API.
 
+### [Nonius](https://github.com/libnonius/nonius)
+A header-only framework for benchmarking small snippets of C++ code.
+
 ### [SOCI](https://github.com/SOCI/soci)
 The C++ Database Access Library
 
