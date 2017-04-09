@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="8" failures="76" tests="963" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="75" tests="970" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
+    <testcase classname="#748 - captures with unexpected exceptions" name="outside assertions" time="{duration}">
+      <error type="TEST_CASE">
+expected exception
+answer := 42
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="#748 - captures with unexpected exceptions" name="inside REQUIRE_NOTHROW" time="{duration}">
       <error message="thisThrows()" type="REQUIRE_NOTHROW">
 expected exception
@@ -79,7 +86,12 @@ TrickyTests.cpp:<line number>
     <testcase classname="global" name="Absolute margin" time="{duration}"/>
     <testcase classname="global" name="AllOf matcher" time="{duration}"/>
     <testcase classname="global" name="An expression with side-effects should only be evaluated once" time="{duration}"/>
-    <testcase classname="global" name="An unchecked exception reports the line of the last assertion" time="{duration}"/>
+    <testcase classname="global" name="An unchecked exception reports the line of the last assertion" time="{duration}">
+      <error message="{Unknown expression after the reported line}">
+unexpected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="global" name="Anonymous test case 1" time="{duration}"/>
     <testcase classname="global" name="AnyOf matcher" time="{duration}"/>
     <testcase classname="global" name="Approximate PI" time="{duration}"/>
@@ -115,6 +127,12 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="Custom exceptions can be translated when testing for throwing as something else" time="{duration}">
       <error message="throwCustom(), std::exception" type="REQUIRE_THROWS_AS">
 custom exception - not std
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="global" name="Custom std-exceptions can be custom translated" time="{duration}">
+      <error type="TEST_CASE">
+custom std exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
@@ -282,6 +300,12 @@ ExceptionTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Nice descriptive name" time="{duration}"/>
+    <testcase classname="global" name="Non-std exceptions can be translated" time="{duration}">
+      <error type="TEST_CASE">
+custom exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="global" name="NotImplemented exception" time="{duration}"/>
     <testcase classname="global" name="Objects that evaluated in boolean contexts can be checked" time="{duration}"/>
     <testcase classname="global" name="Operators at different namespace levels not hijacked by Koenig lookup" time="{duration}"/>
@@ -497,6 +521,12 @@ MiscTests.cpp:<line number>
     <testcase classname="Tracker" name="start a generator/Start a new inner section/Re-enter for second generation" time="{duration}"/>
     <testcase classname="Tracker" name="start a generator/Fail an inner section" time="{duration}"/>
     <testcase classname="Tracker" name="start a generator/Fail an inner section/Re-enter for second generation" time="{duration}"/>
+    <testcase classname="global" name="Unexpected exceptions can be translated" time="{duration}">
+      <error type="TEST_CASE">
+3.14
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="global" name="Use a custom approx" time="{duration}"/>
     <testcase classname="Variadic macros" name="Section with one argument" time="{duration}"/>
     <testcase classname="Vector matchers" name="Contains (element)" time="{duration}"/>
@@ -533,6 +563,12 @@ MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="When checked exceptions are thrown they can be expected or unexpected" time="{duration}"/>
+    <testcase classname="global" name="When unchecked exceptions are thrown directly they are always failures" time="{duration}">
+      <error type="TEST_CASE">
+unexpected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="global" name="When unchecked exceptions are thrown during a CHECK the test should continue" time="{duration}">
       <error message="thisThrows() == 0" type="CHECK">
 expected exception
@@ -548,6 +584,12 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="When unchecked exceptions are thrown from functions they are always failures" time="{duration}">
       <error message="thisThrows() == 0" type="CHECK">
 expected exception
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="When unchecked exceptions are thrown from sections they are always failures" name="section name" time="{duration}">
+      <error type="TEST_CASE">
+unexpected exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>

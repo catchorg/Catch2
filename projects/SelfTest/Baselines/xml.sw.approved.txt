@@ -6,7 +6,13 @@
     </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/ExceptionTests.cpp" >
-        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+        <Info>
+          answer := 42
+        </Info>
+        <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+          expected exception
+        </Exception>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <Section name="inside REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Info>
@@ -506,7 +512,18 @@
           1 == 1
         </Expanded>
       </Expression>
-      <OverallResult success="true"/>
+      <Expression success="false" filename="projects/<exe-name>/ExceptionTests.cpp" >
+        <Original>
+          {Unknown expression after the reported line}
+        </Original>
+        <Expanded>
+          {Unknown expression after the reported line}
+        </Expanded>
+        <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+          unexpected exception
+        </Exception>
+      </Expression>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Anonymous test case 1" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
       <OverallResult success="true"/>
@@ -1110,7 +1127,10 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Custom std-exceptions can be custom translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <OverallResult success="true"/>
+      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+        custom std exception
+      </Exception>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Demonstrate that a non-const == is not used" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -4635,7 +4655,10 @@ re>"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Non-std exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <OverallResult success="true"/>
+      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+        custom exception
+      </Exception>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="NotImplemented exception" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -8586,7 +8609,10 @@ there"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <OverallResult success="true"/>
+      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+        3.14
+      </Exception>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Use a custom approx" tags="[Approx][custom]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
@@ -8849,7 +8875,10 @@ there"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown directly they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <OverallResult success="true"/>
+      <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+        unexpected exception
+      </Exception>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown during a CHECK the test should continue" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -8895,9 +8924,12 @@ there"
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown from sections they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="section name" filename="projects/<exe-name>/ExceptionTests.cpp" >
-        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+        <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+          unexpected exception
+        </Exception>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <OverallResult success="true"/>
@@ -10082,7 +10114,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="859" failures="84" expectedFailures="20"/>
+    <OverallResults successes="859" failures="90" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="859" failures="83" expectedFailures="20"/>
+  <OverallResults successes="859" failures="89" expectedFailures="21"/>
 </Catch>

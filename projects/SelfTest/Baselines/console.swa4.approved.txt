@@ -16,6 +16,18 @@ with message:
 
 -------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
+  outside assertions
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with messages:
+  answer := 42
+  expected exception
+
+-------------------------------------------------------------------------------
+#748 - captures with unexpected exceptions
   inside REQUIRE_NOTHROW
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -133,5 +145,5 @@ ConditionTests.cpp:<line number>: FAILED:
 
 ===============================================================================
 test cases:  6 |  3 passed | 1 failed | 2 failed as expected
-assertions: 17 | 11 passed | 4 failed | 2 failed as expected
+assertions: 18 | 11 passed | 4 failed | 3 failed as expected
 

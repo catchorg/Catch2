@@ -16,6 +16,18 @@ with message:
 
 -------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
+  outside assertions
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with messages:
+  answer := 42
+  expected exception
+
+-------------------------------------------------------------------------------
+#748 - captures with unexpected exceptions
   inside REQUIRE_NOTHROW
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -443,6 +455,11 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   CHECK( 1 == 1 )
+
+ExceptionTests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  unexpected exception
 
 -------------------------------------------------------------------------------
 Anonymous test case 1
@@ -997,6 +1014,16 @@ ExceptionTests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_AS( throwCustom(), std::exception )
 due to unexpected exception with message:
   custom exception - not std
+
+-------------------------------------------------------------------------------
+Custom std-exceptions can be custom translated
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  custom std exception
 
 -------------------------------------------------------------------------------
 Demonstrate that a non-const == is not used
@@ -4509,6 +4536,16 @@ warning:
   This one ran
 
 -------------------------------------------------------------------------------
+Non-std exceptions can be translated
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  custom exception
+
+-------------------------------------------------------------------------------
 NotImplemented exception
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -7946,6 +7983,16 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Unexpected exceptions can be translated
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  3.14
+
+-------------------------------------------------------------------------------
 Use a custom approx
 -------------------------------------------------------------------------------
 ApproxTests.cpp:<line number>
@@ -8166,6 +8213,16 @@ PASSED:
   REQUIRE_THROWS( thisThrows() )
 
 -------------------------------------------------------------------------------
+When unchecked exceptions are thrown directly they are always failures
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  unexpected exception
+
+-------------------------------------------------------------------------------
 When unchecked exceptions are thrown during a CHECK the test should continue
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -8198,6 +8255,17 @@ ExceptionTests.cpp:<line number>: FAILED:
   CHECK( thisThrows() == 0 )
 due to unexpected exception with message:
   expected exception
+
+-------------------------------------------------------------------------------
+When unchecked exceptions are thrown from sections they are always failures
+  section name
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  unexpected exception
 
 -------------------------------------------------------------------------------
 Where the LHS is not a simple value
@@ -9398,6 +9466,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 167 | 124 passed | 39 failed |  4 failed as expected
-assertions: 962 | 859 passed | 83 failed | 20 failed as expected
+test cases: 167 | 118 passed | 45 failed |  4 failed as expected
+assertions: 969 | 859 passed | 89 failed | 21 failed as expected
 
