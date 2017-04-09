@@ -1,6 +1,6 @@
 /*
- *  Catch v1.9.0
- *  Generated: 2017-04-07 22:51:48.249456
+ *  Catch v1.9.1
+ *  Generated: 2017-04-09 21:21:06.285364
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -6748,11 +6748,9 @@ namespace Catch {
             catch(...) {
                 // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
                 // are reported without translation at the point of origin.
-#ifdef CATCH_CONFIG_FAST_COMPILE
                 if (m_shouldReportUnexpected) {
                     makeUnexpectedResultBuilder().useActiveException();
                 }
-#endif
             }
             m_testCaseTracker->close();
             handleUnfinishedSections();
@@ -8234,7 +8232,7 @@ namespace Catch {
     }
 
     inline Version libraryVersion() {
-        static Version version( 1, 9, 0, "", 0 );
+        static Version version( 1, 9, 1, "", 0 );
         return version;
     }
 

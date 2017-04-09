@@ -1,3 +1,9 @@
+# 1.9.1
+
+### Fixes
+* Unexpected exceptions are no longer ignored by default (#885, #887)
+
+
 # 1.9.0
 
 
