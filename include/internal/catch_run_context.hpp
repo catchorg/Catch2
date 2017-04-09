@@ -301,11 +301,9 @@ namespace Catch {
             catch(...) {
                 // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions 
                 // are reported without translation at the point of origin.
-#ifdef CATCH_CONFIG_FAST_COMPILE
                 if (m_shouldReportUnexpected) {
                     makeUnexpectedResultBuilder().useActiveException();
                 }
-#endif
             }
             m_testCaseTracker->close();
             handleUnfinishedSections();
