@@ -131,6 +131,11 @@ To support Matchers a slightly different form is used. Matchers have [their own 
 
 Matchers can be composed using `&&`, `||` and `!` operators.
 
+## Thread Safety
+
+Currently assertions in Catch are not thread safe.
+For more details, along with workarounds, see the section on [the limitations page](limitations.md#thread-safe-assertions).
+
 ---
 
 [Home](Readme.md)
