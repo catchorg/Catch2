@@ -10,13 +10,14 @@
 
 #include "catch_platform.h"
 
-#ifdef CATCH_PLATFORM_WINDOWS
-typedef unsigned long long uint64_t;
-#else
 #include <stdint.h>
-#endif
 
 namespace Catch {
+#ifdef _MSC_VER
+    typedef unsigned long long UInt64;
+#else
+    typedef uint64_t UInt64;
+#endif
 
     class Timer {
     public:
@@ -27,7 +28,7 @@ namespace Catch {
         double getElapsedSeconds() const;
 
     private:
-        uint64_t m_ticks;
+        UInt64 m_ticks;
     };
 
 } // namespace Catch
