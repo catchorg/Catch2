@@ -121,8 +121,10 @@ namespace Catch {
             return m_functions;
         }
         virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const {
-            if( m_sortedFunctions.empty() )
+            if( m_sortedFunctions.empty() ) {
                 enforceNoDuplicateTestCases( m_functions );
+                m_currentSortOrder = config.runOrder();
+            }
 
             if(  m_currentSortOrder != config.runOrder() || m_sortedFunctions.empty() ) {
                 m_sortedFunctions = sortTests( config, m_functions );
