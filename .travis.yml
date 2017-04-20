@@ -162,9 +162,6 @@ matrix:
     - os: linux
       compiler: gcc
       addons: *gcc48
-        apt:
-         sources: ['ubuntu-toolchain-r-test']
-         packages: ['g++-4.8']
       env: COMPILER='g++-4.8' BUILD_TYPE='Release' CPP11=1
 
     - os: linux
