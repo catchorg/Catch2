@@ -227,6 +227,26 @@ matrix:
       compiler: clang
       env: COMPILER='clang++' BUILD_TYPE='Release'
 
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Debug' USE_CPP11=1
+
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Release' USE_CPP11=1
+
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Debug' USE_CPP14=1
+
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Release' USE_CPP14=1
+
 
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
