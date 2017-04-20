@@ -186,8 +186,36 @@ matrix:
       addons: *clang38
       env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP11=1
 
+    # 4a/ Linux C++14 GCC builds
+    - os: linux
+      compiler: gcc
+      addons: &gcc6
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-6']
+      env: COMPILER='g++-6' BUILD_TYPE='Release' CPP14=1
 
-    # 4/ OSX Clang Builds
+    - os: linux
+      compiler: gcc
+      addons: *gcc6
+      env: COMPILER='g++-6' BUILD_TYPE='Debug' CPP14=1
+
+    # 4b/ Linux C++14 Clang builds
+    - os: linux
+      compiler: clang
+      addons: &clang38
+        apt:
+          sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
+          packages: ['clang-3.8']
+      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP14=1
+
+    - os: linux
+      compiler: clang
+      addons: *clang38
+      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP14=1
+
+
+    # 5/ OSX Clang Builds
     - os: osx
       osx_image: xcode7.3
       compiler: clang
@@ -224,7 +252,7 @@ install:
 before_script:
   - export CXX=${COMPILER}
   - cd ${TRAVIS_BUILD_DIR}
-  - cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -Wdev -DUSE_CPP11=${CPP11}
+  - cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -Wdev -DUSE_CPP11=${CPP11} -DUSE_CPP14=${CPP14}
   - cd Build
 
 script:
