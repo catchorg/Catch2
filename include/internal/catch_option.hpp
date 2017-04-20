@@ -66,7 +66,10 @@ namespace Catch {
         }
 
     private:
-        T* nullableValue;
+        union {
+            T *nullableValue;
+            long double _; // Forces alignment for the storage, following
+        };
         char storage[sizeof(T)];
     };
 
