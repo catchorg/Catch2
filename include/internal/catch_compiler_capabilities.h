@@ -80,12 +80,19 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Cygwin
-#ifdef __CYGWIN__
+// We know some environments not to support full POSIX signals
+#if defined(__CYGWIN__) || defined(__QNX__)
 
 #   if !defined(CATCH_CONFIG_POSIX_SIGNALS)
 #       define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
 #   endif
+
+#endif
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Cygwin
+#ifdef __CYGWIN__
 
 // Required for some versions of Cygwin to declare gettimeofday
 // see: http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
