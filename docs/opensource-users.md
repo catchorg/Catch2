@@ -63,6 +63,9 @@ ArangoDB is a native multi-model database with flexible data models for document
 ### [MAME](https://github.com/mamedev/mame)
 MAME originally stood for Multiple Arcade Machine Emulator
 
+### [Newsbeuter](https://github.com/akrennmair/newsbeuter)
+Newsbeuter is an open-source RSS/Atom feed reader for text terminals.
+
 ### [Standardese](https://github.com/foonathan/standardese)
 Standardese aims to be a nextgen Doxygen
 
