@@ -29,12 +29,6 @@ TEST_CASE( "toString(enum w/operator<<)", "[toString][enum]" ) {
     CHECK( Catch::toString(e1) == "E2{1}" );
 }
 
-#if defined(CATCH_CPP11_OR_GREATER)
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++98-compat"
-#endif
-
 // Enum class without user-provided stream operator
 enum class EnumClass1 { EnumClass1Value0, EnumClass1Value1 };
 
@@ -68,9 +62,4 @@ TEST_CASE( "toString(enum class w/operator<<)", "[toString][enum][enumClass][c++
     EnumClass2 e3 = static_cast<EnumClass2>(10);
     CHECK( Catch::toString(e3) == "Unknown enum value 10" );
 }
-
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-#endif // CATCH_CPP11_OR_GREATER
 

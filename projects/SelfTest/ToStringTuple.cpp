@@ -1,11 +1,6 @@
 #include "catch.hpp"
 
-#ifdef CATCH_CPP11_OR_GREATER
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++98-compat"
-#endif
+#include <tuple>
 
 TEST_CASE( "tuple<>", "[toString][tuple][c++11][.]" )
 {
@@ -42,18 +37,10 @@ TEST_CASE( "tuple<tuple<int>,tuple<>,float>", "[toString][tuple][c++11][.]" )
     CHECK( "{ { 42 }, { }, 1.2f }" == Catch::toString(value) );
 }
 
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
 TEST_CASE( "tuple<nullptr,int,const char *>", "[toString][tuple][c++11][.]" )
 {
     typedef std::tuple<std::nullptr_t,int,const char *> type;
     type value { nullptr, 42, "Catch me" };
     CHECK( "{ nullptr, 42, \"Catch me\" }" == Catch::toString(value) );
 }
-#endif
-
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-
-#endif /* #ifdef CATCH_CPP11_OR_GREATER */
 

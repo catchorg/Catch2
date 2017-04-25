@@ -7,7 +7,6 @@
  */
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wpadded"
-#   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
 #include "catch.hpp"

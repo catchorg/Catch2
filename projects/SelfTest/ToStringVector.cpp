@@ -23,16 +23,6 @@ TEST_CASE( "vector<string> -> toString", "[toString][vector]" )
     REQUIRE( Catch::toString(vv) == "{ \"hello\", \"world\" }" );
 }
 
-#if defined(CATCH_CPP11_OR_GREATER)
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++98-compat"
-#endif
-
-/*
-  Note: These tests *can* be made to work with C++ < 11, but the
-  allocator is a lot more work...
-*/
 namespace {
     /* Minimal Allocator */
     template<typename T>
@@ -70,8 +60,3 @@ TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator][c
     v.push_back( inner { "world" } );
     REQUIRE( Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }" );
 }
-
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-#endif // CATCH_CPP11_OR_GREATER

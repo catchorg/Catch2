@@ -14,11 +14,6 @@
 
 #include "catch.hpp"
 
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wc++98-compat"
-#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#endif
-
 namespace Catch
 {
     template<>
@@ -385,8 +380,6 @@ TEST_CASE( "pointer to class", "[Tricky]" )
    REQUIRE( p == 0 );
 }
 
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
-
 #include <memory>
 
 TEST_CASE( "null_ptr", "[Tricky][c++11][.]" )
@@ -394,8 +387,6 @@ TEST_CASE( "null_ptr", "[Tricky][c++11][.]" )
     std::unique_ptr<int> ptr;
     REQUIRE(ptr.get() == nullptr);
 }
-
-#endif
 
 TEST_CASE( "X/level/0/a", "[Tricky]" )      { SUCCEED(""); }
 TEST_CASE( "X/level/0/b", "[Tricky][fizz]" ){ SUCCEED(""); }
