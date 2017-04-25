@@ -32,7 +32,11 @@ namespace TestCaseTracking {
         {}
     };
 
-    struct ITracker : SharedImpl<> {
+    struct ITracker;
+
+    using ITrackerPtr = std::shared_ptr<ITracker>;
+
+    struct ITracker {
         virtual ~ITracker();
 
         // static queries
@@ -51,8 +55,8 @@ namespace TestCaseTracking {
         virtual void fail() = 0;
         virtual void markAsNeedingAnotherRun() = 0;
 
-        virtual void addChild( Ptr<ITracker> const& child ) = 0;
-        virtual ITracker* findChild( NameAndLocation const& nameAndLocation ) = 0;
+        virtual void addChild( ITrackerPtr const& child ) = 0;
+        virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) = 0;
         virtual void openChild() = 0;
 
         // Debug/ checking
@@ -68,7 +72,7 @@ namespace TestCaseTracking {
             CompletedCycle
         };
 
-        Ptr<ITracker> m_rootTracker;
+        ITrackerPtr m_rootTracker;
         ITracker* m_currentTracker = nullptr;
         RunState m_runState = NotStarted;
 
@@ -120,13 +124,13 @@ namespace TestCaseTracking {
             NameAndLocation m_nameAndLocation;
         public:
             TrackerHasName( NameAndLocation const& nameAndLocation ) : m_nameAndLocation( nameAndLocation ) {}
-            bool operator ()( Ptr<ITracker> const& tracker ) {
+            bool operator ()( ITrackerPtr const& tracker ) {
                 return
                     tracker->nameAndLocation().name == m_nameAndLocation.name &&
                     tracker->nameAndLocation().location == m_nameAndLocation.location;
             }
         };
-        typedef std::vector<Ptr<ITracker> > Children;
+        typedef std::vector<ITrackerPtr> Children;
         NameAndLocation m_nameAndLocation;
         TrackerContext& m_ctx;
         ITracker* m_parent;
@@ -157,14 +161,14 @@ namespace TestCaseTracking {
         }
 
 
-        virtual void addChild( Ptr<ITracker> const& child ) override {
+        virtual void addChild( ITrackerPtr const& child ) override {
             m_children.push_back( child );
         }
 
-        virtual ITracker* findChild( NameAndLocation const& nameAndLocation ) override {
+        virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) override {
             Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( nameAndLocation ) );
             return( it != m_children.end() )
-                ? it->get()
+                ? *it
                 : nullptr;
         }
         virtual ITracker& parent() override {
@@ -258,16 +262,16 @@ namespace TestCaseTracking {
         virtual bool isSectionTracker() const override { return true; }
 
         static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation ) {
-            SectionTracker* section = nullptr;
+            std::shared_ptr<SectionTracker> section;
 
             ITracker& currentTracker = ctx.currentTracker();
-            if( ITracker* childTracker = currentTracker.findChild( nameAndLocation ) ) {
+            if( ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
                 assert( childTracker );
                 assert( childTracker->isSectionTracker() );
-                section = static_cast<SectionTracker*>( childTracker );
+                section = std::dynamic_pointer_cast<SectionTracker>( childTracker );
             }
             else {
-                section = new SectionTracker( nameAndLocation, ctx, &currentTracker );
+                section = std::make_shared<SectionTracker>( nameAndLocation, ctx, &currentTracker );
                 currentTracker.addChild( section );
             }
             if( !ctx.completedCycle() )
@@ -306,16 +310,16 @@ namespace TestCaseTracking {
         virtual bool isIndexTracker() const override { return true; }
 
         static IndexTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation, int size ) {
-            IndexTracker* tracker = nullptr;
+            std::shared_ptr<IndexTracker> tracker;
 
             ITracker& currentTracker = ctx.currentTracker();
-            if( ITracker* childTracker = currentTracker.findChild( nameAndLocation ) ) {
+            if( ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
                 assert( childTracker );
                 assert( childTracker->isIndexTracker() );
-                tracker = static_cast<IndexTracker*>( childTracker );
+                tracker = std::dynamic_pointer_cast<IndexTracker>( childTracker );
             }
             else {
-                tracker = new IndexTracker( nameAndLocation, ctx, &currentTracker, size );
+                tracker = std::make_shared<IndexTracker>( nameAndLocation, ctx, &currentTracker, size );
                 currentTracker.addChild( tracker );
             }
 
@@ -343,7 +347,7 @@ namespace TestCaseTracking {
     };
 
     inline ITracker& TrackerContext::startRun() {
-        m_rootTracker = new SectionTracker( NameAndLocation( "{root}", CATCH_INTERNAL_LINEINFO ), *this, nullptr );
+        m_rootTracker = std::make_shared<SectionTracker>( NameAndLocation( "{root}", CATCH_INTERNAL_LINEINFO ), *this, nullptr );
         m_currentTracker = nullptr;
         m_runState = Executing;
         return *m_rootTracker;
