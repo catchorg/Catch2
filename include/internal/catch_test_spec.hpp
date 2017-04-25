@@ -22,10 +22,12 @@
 namespace Catch {
 
     class TestSpec {
-        struct Pattern : SharedImpl<> {
+        struct Pattern {
             virtual ~Pattern();
             virtual bool matches( TestCaseInfo const& testCase ) const = 0;
         };
+        using PatternPtr = std::shared_ptr<Pattern>;
+
         class NamePattern : public Pattern {
         public:
             NamePattern( std::string const& name )
@@ -52,15 +54,15 @@ namespace Catch {
 
         class ExcludedPattern : public Pattern {
         public:
-            ExcludedPattern( Ptr<Pattern> const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
+            ExcludedPattern( PatternPtr const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
             virtual ~ExcludedPattern();
             virtual bool matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
         private:
-            Ptr<Pattern> m_underlyingPattern;
+            PatternPtr m_underlyingPattern;
         };
 
         struct Filter {
-            std::vector<Ptr<Pattern> > m_patterns;
+            std::vector<PatternPtr> m_patterns;
 
             bool matches( TestCaseInfo const& testCase ) const {
                 // All patterns in a filter must match for the filter to be a match

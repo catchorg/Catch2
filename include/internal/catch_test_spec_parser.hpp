@@ -104,9 +104,9 @@ namespace Catch {
                 token = token.substr( 8 );
             }
             if( !token.empty() ) {
-                Ptr<TestSpec::Pattern> pattern = new T( token );
+                TestSpec::PatternPtr pattern = std::make_shared<T>( token );
                 if( m_exclusion )
-                    pattern = new TestSpec::ExcludedPattern( pattern );
+                    pattern = std::make_shared<TestSpec::ExcludedPattern>( pattern );
                 m_currentFilter.m_patterns.push_back( pattern );
             }
             m_exclusion = false;
