@@ -8,11 +8,12 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 
+#include "catch_common.h"
+
 #include <iosfwd>
 #include <string>
 #include <vector>
-
-#include "catch_ptr.hpp"
+#include <memory>
 
 namespace Catch {
 

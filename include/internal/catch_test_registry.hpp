@@ -15,7 +15,7 @@
 namespace Catch {
 
 template<typename C>
-class MethodTestCase : public SharedImpl<ITestCase> {
+class MethodTestCase : public ITestCase {
 
 public:
     MethodTestCase( void (C::*method)() ) : m_method( method ) {}

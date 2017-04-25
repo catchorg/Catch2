@@ -11,7 +11,6 @@
 #include "catch_section_info.h"
 #include "catch_common.h"
 #include "catch_totals.hpp"
-#include "catch_ptr.hpp"
 #include "catch_config.hpp"
 #include "catch_test_case_info.h"
 #include "catch_assertionresult.h"

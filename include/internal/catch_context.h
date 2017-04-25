@@ -9,8 +9,8 @@
 #define TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 
 #include "catch_interfaces_generators.h"
-#include "catch_ptr.hpp"
 
+#include <memory>
 
 namespace Catch {
 

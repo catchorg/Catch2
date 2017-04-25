@@ -12,7 +12,7 @@
 
 namespace Catch {
 
-class MultipleReporters : public SharedImpl<IStreamingReporter> {
+class MultipleReporters : public IStreamingReporter {
     typedef std::vector<IStreamingReporterPtr > Reporters;
     Reporters m_reporters;
 

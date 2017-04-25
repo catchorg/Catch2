@@ -8,9 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
-#include "catch_ptr.hpp"
+#include "catch_common.h"
 
 #include <string>
+#include <memory>
 
 namespace Catch {
 

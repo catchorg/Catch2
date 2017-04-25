@@ -41,7 +41,7 @@ namespace Catch {
     }
 
 
-    struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
+    struct StreamingReporterBase : IStreamingReporter {
 
         StreamingReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
@@ -103,7 +103,7 @@ namespace Catch {
         ReporterPreferences m_reporterPrefs;
     };
 
-    struct CumulativeReporterBase : SharedImpl<IStreamingReporter> {
+    struct CumulativeReporterBase : IStreamingReporter {
         template<typename T, typename ChildNodeT>
         struct Node {
             explicit Node( T const& _value ) : value( _value ) {}

@@ -127,7 +127,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class FreeFunctionTestCase : public SharedImpl<ITestCase> {
+    class FreeFunctionTestCase : public ITestCase {
     public:
 
         FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}

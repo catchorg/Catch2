@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
 #include "catch_compiler_capabilities.h"
-#include "catch_ptr.hpp"
+#include "catch_common.h"
 
 #include <algorithm>
 #include <string>

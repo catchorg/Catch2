@@ -90,7 +90,6 @@ set(IMPL_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_testcase.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_message.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_option.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_ptr.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_stream.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_streambuf.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_test_spec.cpp
@@ -152,8 +151,6 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_interfaces_runner.h
         ${HEADER_DIR}/internal/catch_interfaces_tag_alias_registry.h
         ${HEADER_DIR}/internal/catch_interfaces_testcase.h
-        ${HEADER_DIR}/internal/catch_legacy_reporter_adapter.h
-        ${HEADER_DIR}/internal/catch_legacy_reporter_adapter.hpp
         ${HEADER_DIR}/internal/catch_list.hpp
         ${HEADER_DIR}/internal/catch_matchers.hpp
         ${HEADER_DIR}/internal/catch_matchers_string.h
@@ -167,7 +164,6 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_objc_arc.hpp
         ${HEADER_DIR}/internal/catch_option.hpp
         ${HEADER_DIR}/internal/catch_platform.h
-        ${HEADER_DIR}/internal/catch_ptr.hpp
         ${HEADER_DIR}/internal/catch_reenable_warnings.h
         ${HEADER_DIR}/internal/catch_registry_hub.hpp
         ${HEADER_DIR}/internal/catch_reporter_registrars.hpp

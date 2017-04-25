@@ -47,7 +47,6 @@ namespace Catch {
     // These are all here to avoid warnings about not having any out of line
     // virtual methods
     NonCopyable::~NonCopyable() {}
-    IShared::~IShared() {}
     IStream::~IStream() noexcept {}
     FileStream::~FileStream() noexcept {}
     CoutStream::~CoutStream() noexcept {}
