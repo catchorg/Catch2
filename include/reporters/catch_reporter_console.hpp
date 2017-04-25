@@ -218,12 +218,10 @@ namespace Catch {
             void printMessage() const {
                 if( !messageLabel.empty() )
                     stream << messageLabel << ':' << '\n';
-                for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
-                        it != itEnd;
-                        ++it ) {
+                for( auto const& message : messages ) {
                     // If this assertion is a warning ignore any INFO messages
-                    if( printInfoMessages || it->type != ResultWas::Info )
-                        stream << Text( it->message, TextAttributes().setIndent(2) ) << '\n';
+                    if( printInfoMessages || message.type != ResultWas::Info )
+                        stream << Text( message.message, TextAttributes().setIndent(2) ) << '\n';
                 }
             }
             void printSourceInfo() const {
@@ -331,10 +329,10 @@ namespace Catch {
                 std::ostringstream oss;
                 oss << count;
                 std::string row = oss.str();
-                for( std::vector<std::string>::iterator it = rows.begin(); it != rows.end(); ++it ) {
-                    while( it->size() < row.size() )
-                        *it = ' ' + *it;
-                    while( it->size() > row.size() )
+                for( auto& oldRow : rows ) {
+                    while( oldRow.size() < row.size() )
+                        oldRow = ' ' + oldRow;
+                    while( oldRow.size() > row.size() )
                         row = ' ' + row;
                 }
                 rows.push_back( row );
@@ -379,9 +377,9 @@ namespace Catch {
             }
         }
         void printSummaryRow( std::string const& label, std::vector<SummaryColumn> const& cols, std::size_t row ) {
-            for( std::vector<SummaryColumn>::const_iterator it = cols.begin(); it != cols.end(); ++it ) {
-                std::string value = it->rows[row];
-                if( it->label.empty() ) {
+            for( auto col : cols ) {
+                std::string value = col.rows[row];
+                if( col.label.empty() ) {
                     stream << label << ": ";
                     if( value != "0" )
                         stream << value;
@@ -390,8 +388,8 @@ namespace Catch {
                 }
                 else if( value != "0" ) {
                     stream  << Colour( Colour::LightGrey ) << " | ";
-                    stream  << Colour( it->colour )
-                            << value << ' ' << it->label;
+                    stream  << Colour( col.colour )
+                            << value << ' ' << col.label;
                 }
             }
             stream << '\n';

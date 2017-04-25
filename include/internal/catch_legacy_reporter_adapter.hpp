@@ -42,12 +42,10 @@ namespace Catch
 
     bool LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
         if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
-            for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
-                    it != itEnd;
-                    ++it ) {
-                if( it->type == ResultWas::Info ) {
-                    ResultBuilder rb( it->macroName.c_str(), it->lineInfo, "", ResultDisposition::Normal );
-                    rb << it->message;
+            for( auto const& messageInfo : assertionStats.infoMessages ) {
+                if( messageInfo.type == ResultWas::Info ) {
+                    ResultBuilder rb( messageInfo.macroName.c_str(), messageInfo.lineInfo, "", ResultDisposition::Normal );
+                    rb << messageInfo.message;
                     rb.setResultType( ResultWas::Info );
                     AssertionResult result = rb.build();
                     m_legacyReporter->Result( result );

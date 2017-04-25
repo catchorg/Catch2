@@ -99,9 +99,9 @@ namespace Catch {
         testCaseInfo.lcaseTags.clear();
 
         std::ostringstream oss;
-        for( std::set<std::string>::const_iterator it = tags.begin(), itEnd = tags.end(); it != itEnd; ++it ) {
-            oss << '[' << *it << ']';
-            std::string lcaseTag = toLower( *it );
+        for( auto const& tag : tags ) {
+            oss << '[' << tag << ']';
+            std::string lcaseTag = toLower( tag );
             testCaseInfo.properties = static_cast<TestCaseInfo::SpecialProperties>( testCaseInfo.properties | parseSpecialTag( lcaseTag ) );
             testCaseInfo.lcaseTags.insert( lcaseTag );
         }

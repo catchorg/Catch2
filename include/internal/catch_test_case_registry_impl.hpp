@@ -68,17 +68,15 @@ namespace Catch {
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
         std::set<TestCase> seenFunctions;
-        for( std::vector<TestCase>::const_iterator it = functions.begin(), itEnd = functions.end();
-            it != itEnd;
-            ++it ) {
-            std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( *it );
+        for( auto const function : functions ) {
+            std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( function );
             if( !prev.second ) {
                 std::ostringstream ss;
 
                 ss  << Colour( Colour::Red )
-                    << "error: TEST_CASE( \"" << it->name << "\" ) already defined.\n"
+                    << "error: TEST_CASE( \"" << function.name << "\" ) already defined.\n"
                     << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << '\n'
-                    << "\tRedefined at " << it->getTestCaseInfo().lineInfo << std::endl;
+                    << "\tRedefined at " << function.getTestCaseInfo().lineInfo << std::endl;
 
                 throw std::runtime_error(ss.str());
             }
@@ -88,11 +86,9 @@ namespace Catch {
     std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
         std::vector<TestCase> filtered;
         filtered.reserve( testCases.size() );
-        for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
-                it != itEnd;
-                ++it )
-            if( matchTest( *it, testSpec, config ) )
-                filtered.push_back( *it );
+        for( auto const& testCase : testCases )
+            if( matchTest( testCase, testSpec, config ) )
+                filtered.push_back( testCase );
         return filtered;
     }
     std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {

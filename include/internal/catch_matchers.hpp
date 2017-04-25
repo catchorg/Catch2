@@ -55,8 +55,8 @@ namespace Matchers {
         template<typename ArgT>
         struct MatchAllOf : MatcherBase<ArgT> {
             virtual bool match( ArgT const& arg ) const CATCH_OVERRIDE {
-                for( std::size_t i = 0; i < m_matchers.size(); ++i ) {
-                    if (!m_matchers[i]->match(arg))
+                for( auto matcher : m_matchers ) {
+                    if (!matcher->match(arg))
                         return false;
                 }
                 return true;
@@ -65,10 +65,13 @@ namespace Matchers {
                 std::string description;
                 description.reserve( 4 + m_matchers.size()*32 );
                 description += "( ";
-                for( std::size_t i = 0; i < m_matchers.size(); ++i ) {
-                    if( i != 0 )
+                bool first = true;
+                for( auto matcher : m_matchers ) {
+                    if( first )
+                        first = false;
+                    else
                         description += " and ";
-                    description += m_matchers[i]->toString();
+                    description += matcher->toString();
                 }
                 description += " )";
                 return description;
@@ -85,8 +88,8 @@ namespace Matchers {
         struct MatchAnyOf : MatcherBase<ArgT> {
 
             virtual bool match( ArgT const& arg ) const CATCH_OVERRIDE {
-                for( std::size_t i = 0; i < m_matchers.size(); ++i ) {
-                    if (m_matchers[i]->match(arg))
+                for( auto matcher : m_matchers ) {
+                    if (matcher->match(arg))
                         return true;
                 }
                 return false;
@@ -95,10 +98,13 @@ namespace Matchers {
                 std::string description;
                 description.reserve( 4 + m_matchers.size()*32 );
                 description += "( ";
-                for( std::size_t i = 0; i < m_matchers.size(); ++i ) {
-                    if( i != 0 )
+                bool first = true;
+                for( auto matcher : m_matchers ) {
+                    if( first )
+                        first = false;
+                    else
                         description += " or ";
-                    description += m_matchers[i]->toString();
+                    description += matcher->toString();
                 }
                 description += " )";
                 return description;

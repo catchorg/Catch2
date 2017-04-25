@@ -62,17 +62,13 @@ namespace Catch {
 
     template<typename ContainerT>
     inline void deleteAll( ContainerT& container ) {
-        typename ContainerT::const_iterator it = container.begin();
-        typename ContainerT::const_iterator itEnd = container.end();
-        for(; it != itEnd; ++it )
-            delete *it;
+        for( auto p : container )
+            delete p;
     }
     template<typename AssociativeContainerT>
     inline void deleteAllValues( AssociativeContainerT& container ) {
-        typename AssociativeContainerT::const_iterator it = container.begin();
-        typename AssociativeContainerT::const_iterator itEnd = container.end();
-        for(; it != itEnd; ++it )
-            delete it->second;
+        for( auto const& kvp : container )
+            delete kvp.second;
     }
 
     bool startsWith( std::string const& s, std::string const& prefix );

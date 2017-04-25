@@ -28,95 +28,71 @@ public: // IStreamingReporter
     }
 
     virtual void noMatchingTestCases( std::string const& spec ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->noMatchingTestCases( spec );
+        for( auto const& reporter : m_reporters )
+            reporter->noMatchingTestCases( spec );
     }
 
 
     virtual void testRunStarting( TestRunInfo const& testRunInfo ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->testRunStarting( testRunInfo );
+        for( auto const& reporter : m_reporters )
+            reporter->testRunStarting( testRunInfo );
     }
 
     virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->testGroupStarting( groupInfo );
+        for( auto const& reporter : m_reporters )
+            reporter->testGroupStarting( groupInfo );
     }
 
 
     virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->testCaseStarting( testInfo );
+        for( auto const& reporter : m_reporters )
+            reporter->testCaseStarting( testInfo );
     }
 
     virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->sectionStarting( sectionInfo );
+        for( auto const& reporter : m_reporters )
+            reporter->sectionStarting( sectionInfo );
     }
 
 
     virtual void assertionStarting( AssertionInfo const& assertionInfo ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->assertionStarting( assertionInfo );
+        for( auto const& reporter : m_reporters )
+            reporter->assertionStarting( assertionInfo );
     }
 
 
     // The return value indicates if the messages buffer should be cleared:
     virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
         bool clearBuffer = false;
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            clearBuffer |= (*it)->assertionEnded( assertionStats );
+        for( auto const& reporter : m_reporters )
+            clearBuffer |= reporter->assertionEnded( assertionStats );
         return clearBuffer;
     }
 
     virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->sectionEnded( sectionStats );
+        for( auto const& reporter : m_reporters )
+            reporter->sectionEnded( sectionStats );
     }
 
     virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->testCaseEnded( testCaseStats );
+        for( auto const& reporter : m_reporters )
+            reporter->testCaseEnded( testCaseStats );
     }
 
     virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->testGroupEnded( testGroupStats );
+        for( auto const& reporter : m_reporters )
+            reporter->testGroupEnded( testGroupStats );
     }
 
     virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->testRunEnded( testRunStats );
+        for( auto const& reporter : m_reporters )
+            reporter->testRunEnded( testRunStats );
     }
 
 
     virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
-        for( Reporters::const_iterator it = m_reporters.begin(), itEnd = m_reporters.end();
-                it != itEnd;
-                ++it )
-            (*it)->skipTest( testInfo );
+        for( auto const& reporter : m_reporters )
+            reporter->skipTest( testInfo );
     }
 
     virtual MultipleReporters* tryAsMulti() CATCH_OVERRIDE {

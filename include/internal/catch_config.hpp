@@ -93,8 +93,8 @@ namespace Catch {
         {
             if( !data.testsOrTags.empty() ) {
                 TestSpecParser parser( ITagAliasRegistry::get() );
-                for( std::size_t i = 0; i < data.testsOrTags.size(); ++i )
-                    parser.parse( data.testsOrTags[i] );
+                for( auto const& testOrTags : data.testsOrTags )
+                    parser.parse( testOrTags );
                 m_testSpec = parser.testSpec();
             }
         }

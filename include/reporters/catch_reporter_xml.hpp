@@ -99,15 +99,13 @@ namespace Catch {
 
             if( includeResults ) {
                 // Print any info messages in <Info> tags.
-                for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
-                     it != itEnd;
-                     ++it ) {
-                    if( it->type == ResultWas::Info ) {
+                for( auto const& msg : assertionStats.infoMessages ) {
+                    if( msg.type == ResultWas::Info ) {
                         m_xml.scopedElement( "Info" )
-                                .writeText( it->message );
-                    } else if ( it->type == ResultWas::Warning ) {
+                                .writeText( msg.message );
+                    } else if ( msg.type == ResultWas::Warning ) {
                         m_xml.scopedElement( "Warning" )
-                                .writeText( it->message );
+                                .writeText( msg.message );
                     }
                 }
             }

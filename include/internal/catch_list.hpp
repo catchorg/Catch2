@@ -35,11 +35,8 @@ namespace Catch {
         tagsAttr.setIndent( 6 );
 
         std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
-                it != itEnd;
-                ++it ) {
+        for( auto const& testCaseInfo : matchedTestCases ) {
             matchedTests++;
-            TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
@@ -63,11 +60,8 @@ namespace Catch {
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
         std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
-                it != itEnd;
-                ++it ) {
+        for( auto const& testCaseInfo : matchedTestCases ) {
             matchedTests++;
-            TestCaseInfo const& testCaseInfo = it->getTestCaseInfo();
             if( startsWith( testCaseInfo.name, '#' ) )
                Catch::cout() << '"' << testCaseInfo.name << '"' << std::endl;
             else
@@ -84,10 +78,8 @@ namespace Catch {
         }
         std::string all() const {
             std::string out;
-            for( std::set<std::string>::const_iterator it = spellings.begin(), itEnd = spellings.end();
-                        it != itEnd;
-                        ++it )
-                out += "[" + *it + "]";
+            for( auto const& spelling : spellings )
+                out += "[" + spelling + "]";
             return out;
         }
         std::set<std::string> spellings;
@@ -106,29 +98,20 @@ namespace Catch {
         std::map<std::string, TagInfo> tagCounts;
 
         std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
-                it != itEnd;
-                ++it ) {
-            for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
-                                                        tagItEnd = it->getTestCaseInfo().tags.end();
-                    tagIt != tagItEnd;
-                    ++tagIt ) {
-                std::string tagName = *tagIt;
+        for( auto const& testCase : matchedTestCases ) {
+            for( auto const& tagName : testCase.getTestCaseInfo().tags ) {
                 std::string lcaseTagName = toLower( tagName );
-                std::map<std::string, TagInfo>::iterator countIt = tagCounts.find( lcaseTagName );
+                auto countIt = tagCounts.find( lcaseTagName );
                 if( countIt == tagCounts.end() )
                     countIt = tagCounts.insert( std::make_pair( lcaseTagName, TagInfo() ) ).first;
                 countIt->second.add( tagName );
             }
         }
 
-        for( std::map<std::string, TagInfo>::const_iterator countIt = tagCounts.begin(),
-                                                            countItEnd = tagCounts.end();
-                countIt != countItEnd;
-                ++countIt ) {
+        for( auto const& tagCount : tagCounts ) {
             std::ostringstream oss;
-            oss << "  " << std::setw(2) << countIt->second.count << "  ";
-            Text wrapper( countIt->second.all(), TextAttributes()
+            oss << "  " << std::setw(2) << tagCount.second.count << "  ";
+            Text wrapper( tagCount.second.all(), TextAttributes()
                                                     .setInitialIndent( 0 )
                                                     .setIndent( oss.str().size() )
                                                     .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
@@ -143,18 +126,18 @@ namespace Catch {
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         IReporterRegistry::FactoryMap::const_iterator itBegin = factories.begin(), itEnd = factories.end(), it;
         std::size_t maxNameLen = 0;
-        for(it = itBegin; it != itEnd; ++it )
-            maxNameLen = (std::max)( maxNameLen, it->first.size() );
+        for( auto const factoryKvp : getRegistryHub().getReporterRegistry().getFactories() )
+            maxNameLen = (std::max)( maxNameLen, factoryKvp.first.size() );
 
-        for(it = itBegin; it != itEnd; ++it ) {
-            Text wrapper( it->second->getDescription(), TextAttributes()
+        for( auto const factoryKvp : getRegistryHub().getReporterRegistry().getFactories() ) {
+            Text wrapper( factoryKvp.second->getDescription(), TextAttributes()
                                                         .setInitialIndent( 0 )
                                                         .setIndent( 7+maxNameLen )
                                                         .setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 ) );
             Catch::cout() << "  "
-                    << it->first
+                    << factoryKvp.first
                     << ':'
-                    << std::string( maxNameLen - it->first.size() + 2, ' ' )
+                    << std::string( maxNameLen - factoryKvp.first.size() + 2, ' ' )
                     << wrapper << '\n';
         }
         Catch::cout() << std::endl;

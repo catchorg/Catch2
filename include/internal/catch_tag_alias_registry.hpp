@@ -27,14 +27,12 @@ namespace Catch {
 
     std::string TagAliasRegistry::expandAliases( std::string const& unexpandedTestSpec ) const {
         std::string expandedTestSpec = unexpandedTestSpec;
-        for( std::map<std::string, TagAlias>::const_iterator it = m_registry.begin(), itEnd = m_registry.end();
-                it != itEnd;
-                ++it ) {
-            std::size_t pos = expandedTestSpec.find( it->first );
+        for( auto const& registryKvp : m_registry ) {
+            std::size_t pos = expandedTestSpec.find( registryKvp.first );
             if( pos != std::string::npos ) {
                 expandedTestSpec =  expandedTestSpec.substr( 0, pos ) +
-                                    it->second.tag +
-                                    expandedTestSpec.substr( pos + it->first.size() );
+                                    registryKvp.second.tag +
+                                    expandedTestSpec.substr( pos + registryKvp.first.size() );
             }
         }
         return expandedTestSpec;

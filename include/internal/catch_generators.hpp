@@ -88,11 +88,9 @@ public:
     operator T () const {
         size_t overallIndex = getCurrentContext().getGeneratorIndex( m_fileInfo, m_totalSize );
 
-        typename std::vector<const IGenerator<T>*>::const_iterator it = m_composed.begin();
-        typename std::vector<const IGenerator<T>*>::const_iterator itEnd = m_composed.end();
-        for( size_t index = 0; it != itEnd; ++it )
+        size_t index = 0;
+        for( auto generator : m_composed )
         {
-            const IGenerator<T>* generator = *it;
             if( overallIndex >= index && overallIndex < index + generator->size() )
             {
                 return generator->getValue( overallIndex-index );

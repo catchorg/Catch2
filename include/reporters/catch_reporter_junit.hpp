@@ -118,11 +118,8 @@ namespace Catch {
             xml.writeAttribute( "timestamp", getCurrentTimestamp() );
 
             // Write test cases
-            for( TestGroupNode::ChildNodes::const_iterator
-                    it = groupNode.children.begin(), itEnd = groupNode.children.end();
-                    it != itEnd;
-                    ++it )
-                writeTestCase( **it );
+            for( auto const& child : groupNode.children )
+                writeTestCase( *child );
 
             xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite.str() ), false );
             xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite.str() ), false );
@@ -173,23 +170,16 @@ namespace Catch {
                 if( !sectionNode.stdErr.empty() )
                     xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), false );
             }
-            for( SectionNode::ChildSections::const_iterator
-                    it = sectionNode.childSections.begin(),
-                    itEnd = sectionNode.childSections.end();
-                    it != itEnd;
-                    ++it )
+            for( auto const& childNode : sectionNode.childSections )
                 if( className.empty() )
-                    writeSection( name, "", **it );
+                    writeSection( name, "", *childNode );
                 else
-                    writeSection( className, name, **it );
+                    writeSection( className, name, *childNode );
         }
 
         void writeAssertions( SectionNode const& sectionNode ) {
-            for( SectionNode::Assertions::const_iterator
-                    it = sectionNode.assertions.begin(), itEnd = sectionNode.assertions.end();
-                    it != itEnd;
-                    ++it )
-                writeAssertion( *it );
+            for( auto const& assertion : sectionNode.assertions )
+                writeAssertion( assertion );
         }
         void writeAssertion( AssertionStats const& stats ) {
             AssertionResult const& result = stats.assertionResult;
@@ -229,13 +219,9 @@ namespace Catch {
                 std::ostringstream oss;
                 if( !result.getMessage().empty() )
                     oss << result.getMessage() << '\n';
-                for( std::vector<MessageInfo>::const_iterator
-                        it = stats.infoMessages.begin(),
-                        itEnd = stats.infoMessages.end();
-                            it != itEnd;
-                            ++it )
-                    if( it->type == ResultWas::Info )
-                        oss << it->message << '\n';
+                for( auto const& msg : stats.infoMessages )
+                    if( msg.type == ResultWas::Info )
+                        oss << msg.message << '\n';
 
                 oss << "at " << result.getSourceInfo();
                 xml.writeText( oss.str(), false );

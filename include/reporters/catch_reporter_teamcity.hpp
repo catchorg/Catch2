@@ -112,12 +112,8 @@ namespace Catch {
                     msg << " with message:";
                 if( assertionStats.infoMessages.size() > 1 )
                     msg << " with messages:";
-                for( std::vector<MessageInfo>::const_iterator
-                        it = assertionStats.infoMessages.begin(),
-                        itEnd = assertionStats.infoMessages.end();
-                    it != itEnd;
-                    ++it )
-                    msg << "\n  \"" << it->message << "\"";
+                for( auto const& messageInfo : assertionStats.infoMessages )
+                    msg << "\n  \"" << messageInfo.message << "\"";
 
 
                 if( result.hasExpression() ) {

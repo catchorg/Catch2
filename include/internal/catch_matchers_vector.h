@@ -40,8 +40,8 @@ namespace Matchers {
                 // !TBD: see note in EqualsMatcher
                 if (m_comparator.size() > v.size())
                     return false;
-                for (size_t i = 0; i < m_comparator.size(); ++i)
-                    if (std::find(v.begin(), v.end(), m_comparator[i]) == v.end())
+                for ( auto const& comparator : m_comparator )
+                    if (std::find(v.begin(), v.end(), comparator) == v.end())
                         return false;
                 return true;
             }

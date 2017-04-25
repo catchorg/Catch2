@@ -60,10 +60,8 @@ namespace Catch {
         bool hasUntestedSections() const {
             if( m_state == Unknown )
                 return true;
-            for(    SubSections::const_iterator it = m_subSections.begin();
-                    it != m_subSections.end();
-                    ++it)
-                if( (*it)->hasUntestedSections() )
+            for( auto subSection : m_subSections )
+                if( subSection->hasUntestedSections() )
                     return true;
             return false;
         }
@@ -75,10 +73,8 @@ namespace Catch {
         }
 
         RunningSection* findOrAddSubSection( std::string const& name, bool& changed ) {
-            for(    SubSections::const_iterator it = m_subSections.begin();
-                    it != m_subSections.end();
-                    ++it)
-                if( (*it)->getName() == name )
+            for( auto subSection : m_subSections )
+                if( subSection->getName() == name )
                     return *it;
             RunningSection* subSection = new RunningSection( this, name );
             m_subSections.push_back( subSection );

@@ -62,10 +62,8 @@ namespace Catch {
         }
 
         bool moveNext() {
-            std::vector<IGeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
-            std::vector<IGeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
-            for(; it != itEnd; ++it ) {
-                if( (*it)->moveNext() )
+            for( auto generator : m_generatorsInOrder ) {
+                if( generator->moveNext() )
                     return true;
             }
             return false;

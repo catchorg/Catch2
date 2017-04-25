@@ -37,18 +37,14 @@ namespace Catch {
             reporters.push_back( "console" );
 
         Ptr<IStreamingReporter> reporter;
-        for( std::vector<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
-                it != itEnd;
-                ++it )
-            reporter = addReporter( reporter, createReporter( *it, config ) );
+        for( auto const& name : reporters )
+            reporter = addReporter( reporter, createReporter( name, config ) );
         return reporter;
     }
     Ptr<IStreamingReporter> addListeners( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> reporters ) {
         IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
-        for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();
-                it != itEnd;
-                ++it )
-            reporters = addReporter(reporters, (*it)->create( ReporterConfig( config ) ) );
+        for( auto const& listener : listeners )
+            reporters = addReporter(reporters, listener->create( ReporterConfig( config ) ) );
         return reporters;
     }
 
@@ -71,13 +67,11 @@ namespace Catch {
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
         std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
-        for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
-                it != itEnd;
-                ++it ) {
-            if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
-                totals += context.runTest( *it );
+        for( auto const& testCase : allTestCases ) {
+            if( !context.aborting() && matchTest( testCase, testSpec, *iconfig ) )
+                totals += context.runTest( testCase );
             else
-                reporter->skipTest( *it );
+                reporter->skipTest( testCase );
         }
 
         context.testGroupEnded( iconfig->name(), totals, 1, 1 );
@@ -85,12 +79,11 @@ namespace Catch {
     }
 
     void applyFilenamesAsTags( IConfig const& config ) {
-        std::vector<TestCase> const& tests = getAllTestCasesSorted( config );
-        for(std::size_t i = 0; i < tests.size(); ++i ) {
-            TestCase& test = const_cast<TestCase&>( tests[i] );
-            std::set<std::string> tags = test.tags;
+        auto& tests = const_cast<std::vector<TestCase>&>( getAllTestCasesSorted( config ) );
+        for( auto& testCase : tests ) {
+            std::set<std::string> tags = testCase.tags;
 
-            std::string filename = test.lineInfo.file;
+            std::string filename = testCase.lineInfo.file;
             std::string::size_type lastSlash = filename.find_last_of( "\\/" );
             if( lastSlash != std::string::npos )
                 filename = filename.substr( lastSlash+1 );
@@ -100,7 +93,7 @@ namespace Catch {
                 filename = filename.substr( 0, lastDot );
 
             tags.insert( "#" + filename );
-            setTags( test, tags );
+            setTags( testCase, tags );
         }
     }
 
