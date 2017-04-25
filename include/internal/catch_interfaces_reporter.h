@@ -25,18 +25,18 @@
 namespace Catch
 {
     struct ReporterConfig {
-        explicit ReporterConfig( Ptr<IConfig const> const& _fullConfig )
+        explicit ReporterConfig( IConfigPtr const& _fullConfig )
         :   m_stream( &_fullConfig->stream() ), m_fullConfig( _fullConfig ) {}
 
-        ReporterConfig( Ptr<IConfig const> const& _fullConfig, std::ostream& _stream )
+        ReporterConfig( IConfigPtr const& _fullConfig, std::ostream& _stream )
         :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
         std::ostream& stream() const    { return *m_stream; }
-        Ptr<IConfig const> fullConfig() const { return m_fullConfig; }
+        IConfigPtr fullConfig() const { return m_fullConfig; }
 
     private:
         std::ostream* m_stream;
-        Ptr<IConfig const> m_fullConfig;
+        IConfigPtr m_fullConfig;
     };
 
     struct ReporterPreferences {
@@ -247,7 +247,7 @@ namespace Catch
         typedef std::vector<Ptr<IReporterFactory> > Listeners;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig const> const& config ) const = 0;
+        virtual IStreamingReporter* create( std::string const& name, IConfigPtr const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;
     };

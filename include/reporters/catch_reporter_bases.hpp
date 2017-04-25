@@ -92,7 +92,7 @@ namespace Catch {
             // It can optionally be overridden in the derived class.
         }
 
-        Ptr<IConfig const> m_config;
+        IConfigPtr m_config;
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;
@@ -244,7 +244,7 @@ namespace Catch {
                 result.expandDecomposedExpression();
         }
 
-        Ptr<IConfig const> m_config;
+        IConfigPtr m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
         std::vector<std::vector<Ptr<SectionNode> > > m_sections;

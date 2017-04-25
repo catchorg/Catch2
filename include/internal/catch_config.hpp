@@ -56,10 +56,7 @@ namespace Catch {
     };
 
 
-    class Config : public SharedImpl<IConfig> {
-    private:
-        Config( Config const& other );
-        Config& operator = ( Config const& other );
+    class Config : public IConfig {
         virtual void dummy();
     public:
 

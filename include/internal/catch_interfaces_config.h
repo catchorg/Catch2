@@ -45,7 +45,7 @@ namespace Catch {
 
     class TestSpec;
 
-    struct IConfig : IShared {
+    struct IConfig : NonCopyable {
 
         virtual ~IConfig();
 
@@ -63,8 +63,9 @@ namespace Catch {
         virtual unsigned int rngSeed() const = 0;
         virtual UseColour::YesOrNo useColour() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
-
     };
+
+    using IConfigPtr = std::shared_ptr<IConfig const>;
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED

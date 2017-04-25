@@ -20,7 +20,7 @@ namespace Catch {
 
         virtual ~ReporterRegistry() override {}
 
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig const> const& config ) const override {
+        virtual IStreamingReporter* create( std::string const& name, IConfigPtr const& config ) const override {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return nullptr;

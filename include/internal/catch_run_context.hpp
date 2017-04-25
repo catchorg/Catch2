@@ -59,7 +59,7 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
+        explicit RunContext( IConfigPtr const& _config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
             m_config( _config ),
@@ -128,7 +128,7 @@ namespace Catch {
             return deltaTotals;
         }
 
-        Ptr<IConfig const> config() const {
+        IConfigPtr config() const {
             return m_config;
         }
 
@@ -353,7 +353,7 @@ namespace Catch {
         ITracker* m_currentSectionTracker;
         AssertionResult m_lastResult;
 
-        Ptr<IConfig const> m_config;
+        IConfigPtr m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
         std::vector<MessageInfo> m_messages;

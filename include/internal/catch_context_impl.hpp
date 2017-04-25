@@ -40,7 +40,7 @@ namespace Catch {
             return generators && generators->moveNext();
         }
 
-        virtual Ptr<IConfig const> getConfig() const {
+        virtual IConfigPtr getConfig() const {
             return m_config;
         }
 
@@ -51,7 +51,7 @@ namespace Catch {
         virtual void setRunner( IRunner* runner ) {
             m_runner = runner;
         }
-        virtual void setConfig( Ptr<IConfig const> const& config ) {
+        virtual void setConfig( IConfigPtr const& config ) {
             m_config = config;
         }
 
@@ -79,7 +79,7 @@ namespace Catch {
         }
 
     private:
-        Ptr<IConfig const> m_config;
+        IConfigPtr m_config;
         IRunner* m_runner = nullptr;
         IResultCapture* m_resultCapture = nullptr;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;

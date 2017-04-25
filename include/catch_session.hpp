@@ -21,8 +21,8 @@
 
 namespace Catch {
 
-    Ptr<IStreamingReporter> createReporter( std::string const& reporterName, Ptr<Config> const& config ) {
-        Ptr<IStreamingReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, config.get() );
+    Ptr<IStreamingReporter> createReporter( std::string const& reporterName, IConfigPtr const& config ) {
+        Ptr<IStreamingReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, config );
         if( !reporter ) {
             std::ostringstream oss;
             oss << "No reporter registered with name: '" << reporterName << "'";
@@ -31,7 +31,7 @@ namespace Catch {
         return reporter;
     }
 
-    Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
+    Ptr<IStreamingReporter> makeReporter( std::shared_ptr<Config> const& config ) {
         std::vector<std::string> reporters = config->getReporterNames();
         if( reporters.empty() )
             reporters.push_back( "console" );
@@ -41,7 +41,7 @@ namespace Catch {
             reporter = addReporter( reporter, createReporter( name, config ) );
         return reporter;
     }
-    Ptr<IStreamingReporter> addListeners( Ptr<IConfig const> const& config, Ptr<IStreamingReporter> reporters ) {
+    Ptr<IStreamingReporter> addListeners( IConfigPtr const& config, Ptr<IStreamingReporter> reporters ) {
         IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
         for( auto const& listener : listeners )
             reporters = addReporter(reporters, listener->create( ReporterConfig( config ) ) );
@@ -49,9 +49,9 @@ namespace Catch {
     }
 
 
-    Totals runTests( Ptr<Config> const& config ) {
+    Totals runTests( std::shared_ptr<Config> const& config ) {
 
-        Ptr<IConfig const> iconfig = config.get();
+        IConfigPtr iconfig = config;
 
         Ptr<IStreamingReporter> reporter = makeReporter( config );
         reporter = addListeners( iconfig, reporter );
@@ -195,14 +195,14 @@ namespace Catch {
         }
         Config& config() {
             if( !m_config )
-                m_config = new Config( m_configData );
+                m_config = std::make_shared<Config>( m_configData );
             return *m_config;
         }
     private:
         Clara::CommandLine<ConfigData> m_cli;
         std::vector<Clara::Parser::Token> m_unusedTokens;
         ConfigData m_configData;
-        Ptr<Config> m_config;
+        std::shared_ptr<Config> m_config;
     };
 
     bool Session::alreadyInstantiated = false;
