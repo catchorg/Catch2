@@ -21,15 +21,7 @@ namespace Catch{
 
 #ifdef CATCH_PLATFORM_MAC
 
-    // The following code snippet based on:
-    // http://cocoawithlove.com/2008/03/break-into-debugger.html
-    #if defined(__ppc64__) || defined(__ppc__)
-        #define CATCH_TRAP() \
-                __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
-                : : : "memory","r0","r3","r4" )
-    #else
-        #define CATCH_TRAP() __asm__("int $3\n" : : )
-    #endif
+    #define CATCH_TRAP() __asm__("int $3\n" : : )
 
 #elif defined(CATCH_PLATFORM_LINUX)
     // If we can use inline assembler, do it because this allows us to break
