@@ -39,10 +39,8 @@ namespace Internal {
     template<typename T>
     inline T& opCast(T const& t) { return const_cast<T&>(t); }
 
-// nullptr_t support based on pull request #154 from Konstantin Baumann
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    // nullptr_t support based on pull request #154 from Konstantin Baumann
     inline std::nullptr_t opCast(std::nullptr_t) { return nullptr; }
-#endif // CATCH_CONFIG_CPP11_NULLPTR
 
 
     // So the compare overloads can be operator agnostic we convey the operator as a template
@@ -161,7 +159,6 @@ namespace Internal {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
 
-#ifdef CATCH_CONFIG_CPP11_LONG_LONG
     // long long to unsigned X
     template<Operator Op> bool compare( long long lhs, unsigned int rhs ) {
         return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
@@ -197,9 +194,7 @@ namespace Internal {
     template<Operator Op, typename T> bool compare( T* lhs, long long rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
     }
-#endif // CATCH_CONFIG_CPP11_LONG_LONG
 
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
     // pointer to nullptr_t (when comparing against nullptr)
     template<Operator Op, typename T> bool compare( std::nullptr_t, T* rhs ) {
         return Evaluator<T*, T*, Op>::evaluate( nullptr, rhs );
@@ -207,7 +202,6 @@ namespace Internal {
     template<Operator Op, typename T> bool compare( T* lhs, std::nullptr_t ) {
         return Evaluator<T*, T*, Op>::evaluate( lhs, nullptr );
     }
-#endif // CATCH_CONFIG_CPP11_NULLPTR
 
 } // end of namespace Internal
 } // end of namespace Catch
