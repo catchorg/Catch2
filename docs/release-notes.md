@@ -1,3 +1,24 @@
+# 1.9.2
+
+### Improvements and minor changes
+* All of `Approx`'s member functions now accept strong typedefs in C++11 mode (#888)
+  * Previously `Approx::scale`, `Approx::epsilon`, `Approx::margin` and `Approx::operator()` didn't.
+
+
+### Fixes
+* POSIX signals are now disabled by default under QNX (#889)
+  * QNX does not support current enough (2001) POSIX specification
+* JUnit no longer counts exceptions as failures if given test case is marked as ok to fail.
+* `Catch::Option` should now have its storage properly aligned.
+* Catch no longer attempts to define `uint64_t` on windows (#862)
+  * This was causing trouble when compiled under Cygwin
+
+### Other
+* Catch is now compiled under MSVC 2017 using `std:c++latest` (C++17 mode) in CI
+* We now provide cmake script that autoregisters Catch tests into ctest.
+  * See `contrib` folder.
+
+
 # 1.9.1
 
 ### Fixes
