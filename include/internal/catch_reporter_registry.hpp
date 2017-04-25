@@ -27,10 +27,10 @@ namespace Catch {
             return it->second->create( ReporterConfig( config ) );
         }
 
-        void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) {
+        void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) {
             m_factories.insert( std::make_pair( name, factory ) );
         }
-        void registerListener( Ptr<IReporterFactory> const& factory ) {
+        void registerListener( IReporterFactoryPtr const& factory ) {
             m_listeners.push_back( factory );
         }
 

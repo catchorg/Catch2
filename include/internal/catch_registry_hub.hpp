@@ -42,10 +42,10 @@ namespace Catch {
 
 
         public: // IMutableRegistryHub
-            virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) override {
+            virtual void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) override {
                 m_reporterRegistry.registerReporter( name, factory );
             }
-            virtual void registerListener( Ptr<IReporterFactory> const& factory ) override {
+            virtual void registerListener( IReporterFactoryPtr const& factory ) override {
                 m_reporterRegistry.registerListener( factory );
             }
             virtual void registerTest( TestCase const& testInfo ) override {

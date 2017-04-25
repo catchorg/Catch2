@@ -15,7 +15,7 @@ namespace Catch {
     template<typename T>
     class ReporterRegistrar {
 
-        class ReporterFactory : public SharedImpl<IReporterFactory> {
+        class ReporterFactory : public IReporterFactory {
 
             virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new T( config );
@@ -29,14 +29,14 @@ namespace Catch {
     public:
 
         ReporterRegistrar( std::string const& name ) {
-            getMutableRegistryHub().registerReporter( name, new ReporterFactory() );
+            getMutableRegistryHub().registerReporter( name, std::make_shared<ReporterFactory>() );
         }
     };
 
     template<typename T>
     class ListenerRegistrar {
 
-        class ListenerFactory : public SharedImpl<IReporterFactory> {
+        class ListenerFactory : public IReporterFactory {
 
             virtual IStreamingReporter* create( ReporterConfig const& config ) const {
                 return new T( config );
@@ -49,7 +49,7 @@ namespace Catch {
     public:
 
         ListenerRegistrar() {
-            getMutableRegistryHub().registerListener( new ListenerFactory() );
+            getMutableRegistryHub().registerListener( std::make_shared<ListenerFactory>() );
         }
     };
 }

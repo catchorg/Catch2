@@ -236,15 +236,16 @@ namespace Catch
     };
 
 
-    struct IReporterFactory : IShared {
+    struct IReporterFactory {
         virtual ~IReporterFactory();
         virtual IStreamingReporter* create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
+    using IReporterFactoryPtr = std::shared_ptr<IReporterFactory>;
 
     struct IReporterRegistry {
-        typedef std::map<std::string, Ptr<IReporterFactory> > FactoryMap;
-        typedef std::vector<Ptr<IReporterFactory> > Listeners;
+        using FactoryMap = std::map<std::string, IReporterFactoryPtr>;
+        using Listeners = std::vector<IReporterFactoryPtr>;
 
         virtual ~IReporterRegistry();
         virtual IStreamingReporter* create( std::string const& name, IConfigPtr const& config ) const = 0;
