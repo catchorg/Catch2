@@ -13,9 +13,7 @@
 #include <cmath>
 #include <limits>
 
-#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
 #include <type_traits>
-#endif
 
 namespace Catch {
 namespace Detail {
@@ -39,8 +37,6 @@ namespace Detail {
         static Approx custom() {
             return Approx( 0 );
         }
-
-#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx operator()( T value ) {
@@ -120,69 +116,6 @@ namespace Detail {
             return *this;
         }
 
-#else
-
-        Approx operator()( double value ) {
-            Approx approx( value );
-            approx.epsilon( m_epsilon );
-            approx.margin( m_margin );
-            approx.scale( m_scale );
-            return approx;
-        }
-
-
-        friend bool operator == ( double lhs, Approx const& rhs ) {
-            // Thanks to Richard Harris for his help refining this formula
-            bool relativeOK = std::fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( std::fabs(lhs), std::fabs(rhs.m_value) ) );
-            if (relativeOK) {
-                return true;
-            }
-            return std::fabs(lhs - rhs.m_value) < rhs.m_margin;
-        }
-
-        friend bool operator == ( Approx const& lhs, double rhs ) {
-            return operator==( rhs, lhs );
-        }
-
-        friend bool operator != ( double lhs, Approx const& rhs ) {
-            return !operator==( lhs, rhs );
-        }
-
-        friend bool operator != ( Approx const& lhs, double rhs ) {
-            return !operator==( rhs, lhs );
-        }
-
-        friend bool operator <= ( double lhs, Approx const& rhs ) {
-            return lhs < rhs.m_value || lhs == rhs;
-        }
-
-        friend bool operator <= ( Approx const& lhs, double rhs ) {
-            return lhs.m_value < rhs || lhs == rhs;
-        }
-
-        friend bool operator >= ( double lhs, Approx const& rhs ) {
-            return lhs > rhs.m_value || lhs == rhs;
-        }
-
-        friend bool operator >= ( Approx const& lhs, double rhs ) {
-            return lhs.m_value > rhs || lhs == rhs;
-        }
-
-        Approx& epsilon( double newEpsilon ) {
-            m_epsilon = newEpsilon;
-            return *this;
-        }
-
-        Approx& margin( double newMargin ) {
-            m_margin = newMargin;
-            return *this;
-        }
-
-        Approx& scale( double newScale ) {
-            m_scale = newScale;
-            return *this;
-        }
-#endif
 
         std::string toString() const {
             std::ostringstream oss;
