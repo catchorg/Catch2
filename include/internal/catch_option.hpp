@@ -72,7 +72,11 @@ namespace Catch {
     
             // These are here to force alignment for the storage
             long double dummy1;
-            long long dummy2;
+            void (*dummy2)();
+            long double dummy3;
+#ifdef CATCH_CONFIG_CPP11_LONG_LONG
+            long long dummy4;
+#endif
         };
     };
 
