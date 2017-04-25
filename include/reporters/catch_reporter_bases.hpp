@@ -50,44 +50,44 @@ namespace Catch {
             m_reporterPrefs.shouldRedirectStdOut = false;
         }
 
-        virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+        virtual ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
         }
 
-        virtual ~StreamingReporterBase() CATCH_OVERRIDE;
+        virtual ~StreamingReporterBase() override;
 
-        virtual void noMatchingTestCases( std::string const& ) CATCH_OVERRIDE {}
+        virtual void noMatchingTestCases( std::string const& ) override {}
 
-        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) CATCH_OVERRIDE {
+        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) override {
             currentTestRunInfo = _testRunInfo;
         }
-        virtual void testGroupStarting( GroupInfo const& _groupInfo ) CATCH_OVERRIDE {
+        virtual void testGroupStarting( GroupInfo const& _groupInfo ) override {
             currentGroupInfo = _groupInfo;
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) CATCH_OVERRIDE {
+        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) override {
             currentTestCaseInfo = _testInfo;
         }
-        virtual void sectionStarting( SectionInfo const& _sectionInfo ) CATCH_OVERRIDE {
+        virtual void sectionStarting( SectionInfo const& _sectionInfo ) override {
             m_sectionStack.push_back( _sectionInfo );
         }
 
-        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) CATCH_OVERRIDE {
+        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) override {
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) CATCH_OVERRIDE {
+        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) override {
             currentTestCaseInfo.reset();
         }
-        virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) CATCH_OVERRIDE {
+        virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) override {
             currentGroupInfo.reset();
         }
-        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) CATCH_OVERRIDE {
+        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) override {
             currentTestCaseInfo.reset();
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
         }
 
-        virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {
+        virtual void skipTest( TestCaseInfo const& ) override {
             // Don't do anything with this by default.
             // It can optionally be overridden in the derived class.
         }
@@ -157,16 +157,16 @@ namespace Catch {
         }
         ~CumulativeReporterBase();
 
-        virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+        virtual ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
         }
 
-        virtual void testRunStarting( TestRunInfo const& ) CATCH_OVERRIDE {}
-        virtual void testGroupStarting( GroupInfo const& ) CATCH_OVERRIDE {}
+        virtual void testRunStarting( TestRunInfo const& ) override {}
+        virtual void testGroupStarting( GroupInfo const& ) override {}
 
-        virtual void testCaseStarting( TestCaseInfo const& ) CATCH_OVERRIDE {}
+        virtual void testCaseStarting( TestCaseInfo const& ) override {}
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
             SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
             Ptr<SectionNode> node;
             if( m_sectionStack.empty() ) {
@@ -191,9 +191,9 @@ namespace Catch {
             m_deepestSection = node;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
+        virtual void assertionStarting( AssertionInfo const& ) override {}
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
             assert( !m_sectionStack.empty() );
             SectionNode& sectionNode = *m_sectionStack.back();
             sectionNode.assertions.push_back( assertionStats );
@@ -205,13 +205,13 @@ namespace Catch {
             prepareExpandedExpression( sectionNode.assertions.back().assertionResult );
             return true;
         }
-        virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
+        virtual void sectionEnded( SectionStats const& sectionStats ) override {
             assert( !m_sectionStack.empty() );
             SectionNode& node = *m_sectionStack.back();
             node.stats = sectionStats;
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
             Ptr<TestCaseNode> node = new TestCaseNode( testCaseStats );
             assert( m_sectionStack.size() == 0 );
             node->children.push_back( m_rootSection );
@@ -222,12 +222,12 @@ namespace Catch {
             m_deepestSection->stdOut = testCaseStats.stdOut;
             m_deepestSection->stdErr = testCaseStats.stdErr;
         }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
             Ptr<TestGroupNode> node = new TestGroupNode( testGroupStats );
             node->children.swap( m_testCases );
             m_testGroups.push_back( node );
         }
-        virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
+        virtual void testRunEnded( TestRunStats const& testRunStats ) override {
             Ptr<TestRunNode> node = new TestRunNode( testRunStats );
             node->children.swap( m_testGroups );
             m_testRuns.push_back( node );
@@ -235,7 +235,7 @@ namespace Catch {
         }
         virtual void testRunEndedCumulative() = 0;
 
-        virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {}
+        virtual void skipTest( TestCaseInfo const& ) override {}
 
         virtual void prepareExpandedExpression( AssertionResult& result ) const {
             if( result.isOk() )
@@ -276,8 +276,8 @@ namespace Catch {
         :   StreamingReporterBase( _config )
         {}
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
-        virtual bool assertionEnded( AssertionStats const& ) CATCH_OVERRIDE {
+        virtual void assertionStarting( AssertionInfo const& ) override {}
+        virtual bool assertionEnded( AssertionStats const& ) override {
             return false;
         }
     };

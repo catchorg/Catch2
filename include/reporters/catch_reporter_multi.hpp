@@ -23,79 +23,79 @@ public:
 
 public: // IStreamingReporter
 
-    virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+    virtual ReporterPreferences getPreferences() const override {
         return m_reporters[0]->getPreferences();
     }
 
-    virtual void noMatchingTestCases( std::string const& spec ) CATCH_OVERRIDE {
+    virtual void noMatchingTestCases( std::string const& spec ) override {
         for( auto const& reporter : m_reporters )
             reporter->noMatchingTestCases( spec );
     }
 
 
-    virtual void testRunStarting( TestRunInfo const& testRunInfo ) CATCH_OVERRIDE {
+    virtual void testRunStarting( TestRunInfo const& testRunInfo ) override {
         for( auto const& reporter : m_reporters )
             reporter->testRunStarting( testRunInfo );
     }
 
-    virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
+    virtual void testGroupStarting( GroupInfo const& groupInfo ) override {
         for( auto const& reporter : m_reporters )
             reporter->testGroupStarting( groupInfo );
     }
 
 
-    virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+    virtual void testCaseStarting( TestCaseInfo const& testInfo ) override {
         for( auto const& reporter : m_reporters )
             reporter->testCaseStarting( testInfo );
     }
 
-    virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
+    virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
         for( auto const& reporter : m_reporters )
             reporter->sectionStarting( sectionInfo );
     }
 
 
-    virtual void assertionStarting( AssertionInfo const& assertionInfo ) CATCH_OVERRIDE {
+    virtual void assertionStarting( AssertionInfo const& assertionInfo ) override {
         for( auto const& reporter : m_reporters )
             reporter->assertionStarting( assertionInfo );
     }
 
 
     // The return value indicates if the messages buffer should be cleared:
-    virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
+    virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
         bool clearBuffer = false;
         for( auto const& reporter : m_reporters )
             clearBuffer |= reporter->assertionEnded( assertionStats );
         return clearBuffer;
     }
 
-    virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
+    virtual void sectionEnded( SectionStats const& sectionStats ) override {
         for( auto const& reporter : m_reporters )
             reporter->sectionEnded( sectionStats );
     }
 
-    virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
+    virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
         for( auto const& reporter : m_reporters )
             reporter->testCaseEnded( testCaseStats );
     }
 
-    virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
+    virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
         for( auto const& reporter : m_reporters )
             reporter->testGroupEnded( testGroupStats );
     }
 
-    virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
+    virtual void testRunEnded( TestRunStats const& testRunStats ) override {
         for( auto const& reporter : m_reporters )
             reporter->testRunEnded( testRunStats );
     }
 
 
-    virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+    virtual void skipTest( TestCaseInfo const& testInfo ) override {
         for( auto const& reporter : m_reporters )
             reporter->skipTest( testInfo );
     }
 
-    virtual MultipleReporters* tryAsMulti() CATCH_OVERRIDE {
+    virtual MultipleReporters* tryAsMulti() override {
         return this;
     }
 

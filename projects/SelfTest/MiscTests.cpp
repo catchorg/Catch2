@@ -131,13 +131,13 @@ TEST_CASE( "Sends stuff to stdout and stderr", "[.]" )
 
 inline const char* makeString( bool makeNull )
 {
-    return makeNull ? CATCH_NULL : "valid string";
+    return makeNull ? nullptr : "valid string";
 }
 
 TEST_CASE( "null strings", "" )
 {
-    REQUIRE( makeString( false ) != static_cast<char*>(CATCH_NULL));
-    REQUIRE( makeString( true ) == static_cast<char*>(CATCH_NULL));
+    REQUIRE( makeString( false ) != static_cast<char*>(nullptr));
+    REQUIRE( makeString( true ) == static_cast<char*>(nullptr));
 }
 
 
@@ -372,13 +372,11 @@ TEST_CASE( "XmlEncode" ) {
     }
 }
 
-#ifdef CATCH_CONFIG_CPP11_LONG_LONG
 TEST_CASE( "long long", "[c++11][.]" ) {
     long long l = std::numeric_limits<long long>::max();
 
     REQUIRE( l == std::numeric_limits<long long>::max() );
 }
-#endif
 
 //TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
 //    int i = 0;

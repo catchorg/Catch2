@@ -62,7 +62,6 @@ TEST_CASE( "FAIL_CHECK does not abort the test", "[failing][messages][.]" )
     WARN( "This message appears in the output");
 }
 
-#ifdef CATCH_CONFIG_VARIADIC_MACROS
 TEST_CASE( "FAIL does not require an argument", "[failing][messages][.]" )
 {
     FAIL();
@@ -71,7 +70,6 @@ TEST_CASE( "SUCCESS does not require an argument", "[messages][.]" )
 {
    SUCCEED();
 }
-#endif
 
 TEST_CASE( "Output from all sections is reported", "[failing][messages][.]" )
 {

@@ -87,7 +87,7 @@ namespace Catch {
     }
 
     void AssertionResult::discardDecomposedExpression() const {
-        m_resultData.decomposedExpression = CATCH_NULL;
+        m_resultData.decomposedExpression = nullptr;
     }
 
     void AssertionResult::expandDecomposedExpression() const {

@@ -26,19 +26,13 @@ namespace Catch {
 
         result_type operator()( result_type n ) const { return std::rand() % n; }
 
-#ifdef CATCH_CONFIG_CPP11_SHUFFLE
         static constexpr result_type min() { return 0; }
         static constexpr result_type max() { return 1000000; }
         result_type operator()() const { return std::rand() % max(); }
-#endif
         template<typename V>
         static void shuffle( V& vector ) {
             RandomNumberGenerator rng;
-#ifdef CATCH_CONFIG_CPP11_SHUFFLE
             std::shuffle( vector.begin(), vector.end(), rng );
-#else
-            std::random_shuffle( vector.begin(), vector.end(), rng );
-#endif
         }
     };
 

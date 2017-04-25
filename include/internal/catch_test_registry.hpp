@@ -83,7 +83,6 @@ void registerTestCaseFunction
 
 } // end namespace Catch
 
-#ifdef CATCH_CONFIG_VARIADIC_MACROS
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE2( TestName, ... ) \
         static void TestName(); \
@@ -120,43 +119,5 @@ void registerTestCaseFunction
         Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); \
         CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
 
-#else
-    ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TESTCASE2( TestName, Name, Desc ) \
-        static void TestName(); \
-        CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &TestName, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); }\
-        CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS \
-        static void TestName()
-    #define INTERNAL_CATCH_TESTCASE( Name, Desc ) \
-        INTERNAL_CATCH_TESTCASE2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), Name, Desc )
-
-    ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, Name, Desc ) \
-        CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( Name, Desc ), CATCH_INTERNAL_LINEINFO ); } \
-        CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
-
-    ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TEST_CASE_METHOD2( TestCaseName, ClassName, TestName, Desc )\
-        CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
-        namespace{ \
-            struct TestCaseName : ClassName{ \
-                void test(); \
-            }; \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &TestCaseName::test, #ClassName, Catch::NameAndDesc( TestName, Desc ), CATCH_INTERNAL_LINEINFO ); \
-        } \
-        CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS \
-        void TestCaseName::test()
-    #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, TestName, Desc )\
-        INTERNAL_CATCH_TEST_CASE_METHOD2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), ClassName, TestName, Desc )
-
-    ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, Name, Desc ) \
-        CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
-        Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( Name, Desc ) ); \
-        CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
-
-#endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED

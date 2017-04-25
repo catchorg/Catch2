@@ -72,7 +72,7 @@ namespace Catch {
 
     inline size_t registerTestMethods() {
         size_t noTestMethods = 0;
-        int noClasses = objc_getClassList( CATCH_NULL, 0 );
+        int noClasses = objc_getClassList( nullptr, 0 );
 
         Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
         objc_getClassList( classes, noClasses );
@@ -112,7 +112,7 @@ namespace Catch {
                     arcSafeRelease( m_substr );
                 }
 
-                virtual bool match( NSString* arg ) const CATCH_OVERRIDE {
+                virtual bool match( NSString* arg ) const override {
                     return false;
                 }
 
@@ -122,12 +122,12 @@ namespace Catch {
             struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const CATCH_OVERRIDE {
+                virtual bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
+                virtual std::string describe() const override {
                     return "equals string: " + Catch::toString( m_substr );
                 }
             };
@@ -140,7 +140,7 @@ namespace Catch {
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
+                virtual std::string describe() const override {
                     return "contains string: " + Catch::toString( m_substr );
                 }
             };
@@ -153,7 +153,7 @@ namespace Catch {
                             [str rangeOfString:m_substr].location == 0;
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
+                virtual std::string describe() const override {
                     return "starts with: " + Catch::toString( m_substr );
                 }
             };
@@ -165,7 +165,7 @@ namespace Catch {
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
+                virtual std::string describe() const override {
                     return "ends with: " + Catch::toString( m_substr );
                 }
             };

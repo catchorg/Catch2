@@ -43,7 +43,7 @@ std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::Co
     return "";
 }
 
-inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( CATCH_NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( nullptr, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 

@@ -28,7 +28,7 @@ namespace Catch {
             setp( data, data + sizeof(data) );
         }
 
-        ~StreamBufImpl() CATCH_NOEXCEPT {
+        ~StreamBufImpl() noexcept {
             sync();
         }
 

@@ -34,15 +34,10 @@ namespace Catch {
     }; };
 
     class NonCopyable {
-#ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         NonCopyable( NonCopyable const& )              = delete;
         NonCopyable( NonCopyable && )                  = delete;
         NonCopyable& operator = ( NonCopyable const& ) = delete;
         NonCopyable& operator = ( NonCopyable && )     = delete;
-#else
-        NonCopyable( NonCopyable const& info );
-        NonCopyable& operator = ( NonCopyable const& );
-#endif
 
     protected:
         NonCopyable() {}
@@ -94,12 +89,12 @@ namespace Catch {
 
         SourceLineInfo();
         SourceLineInfo( char const* _file, std::size_t _line );
-#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
+
         SourceLineInfo(SourceLineInfo const& other)          = default;
         SourceLineInfo( SourceLineInfo && )                  = default;
         SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
         SourceLineInfo& operator = ( SourceLineInfo && )     = default;
-#  endif
+
         bool empty() const;
         bool operator == ( SourceLineInfo const& other ) const;
         bool operator < ( SourceLineInfo const& other ) const;

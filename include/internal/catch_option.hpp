@@ -16,12 +16,12 @@ namespace Catch {
     template<typename T>
     class Option {
     public:
-        Option() : nullableValue( CATCH_NULL ) {}
+        Option() : nullableValue( nullptr ) {}
         Option( T const& _value )
         : nullableValue( new( storage ) T( _value ) )
         {}
         Option( Option const& _other )
-        : nullableValue( _other ? new( storage ) T( *_other ) : CATCH_NULL )
+        : nullableValue( _other ? new( storage ) T( *_other ) : nullptr )
         {}
 
         ~Option() {
@@ -45,7 +45,7 @@ namespace Catch {
         void reset() {
             if( nullableValue )
                 nullableValue->~T();
-            nullableValue = CATCH_NULL;
+            nullableValue = nullptr;
         }
 
         T& operator*() { return *nullableValue; }
@@ -57,10 +57,10 @@ namespace Catch {
             return nullableValue ? *nullableValue : defaultValue;
         }
 
-        bool some() const { return nullableValue != CATCH_NULL; }
-        bool none() const { return nullableValue == CATCH_NULL; }
+        bool some() const { return nullableValue != nullptr; }
+        bool none() const { return nullableValue == nullptr; }
 
-        bool operator !() const { return nullableValue == CATCH_NULL; }
+        bool operator !() const { return nullableValue == nullptr; }
         operator SafeBool::type() const {
             return SafeBool::makeSafe( some() );
         }
@@ -74,9 +74,7 @@ namespace Catch {
             long double dummy1;
             void (*dummy2)();
             long double dummy3;
-#ifdef CATCH_CONFIG_CPP11_LONG_LONG
             long long dummy4;
-#endif
         };
     };
 

@@ -49,11 +49,11 @@ namespace Catch {
     // virtual methods
     NonCopyable::~NonCopyable() {}
     IShared::~IShared() {}
-    IStream::~IStream() CATCH_NOEXCEPT {}
-    FileStream::~FileStream() CATCH_NOEXCEPT {}
-    CoutStream::~CoutStream() CATCH_NOEXCEPT {}
-    DebugOutStream::~DebugOutStream() CATCH_NOEXCEPT {}
-    StreamBufBase::~StreamBufBase() CATCH_NOEXCEPT {}
+    IStream::~IStream() noexcept {}
+    FileStream::~FileStream() noexcept {}
+    CoutStream::~CoutStream() noexcept {}
+    DebugOutStream::~DebugOutStream() noexcept {}
+    StreamBufBase::~StreamBufBase() noexcept {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestCase::~ITestCase() {}

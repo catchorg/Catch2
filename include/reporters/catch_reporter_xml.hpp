@@ -26,7 +26,7 @@ namespace Catch {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
 
-        virtual ~XmlReporter() CATCH_OVERRIDE;
+        virtual ~XmlReporter() override;
 
         static std::string getDescription() {
             return "Reports test results as an XML document";
@@ -44,11 +44,11 @@ namespace Catch {
 
     public: // StreamingReporterBase
 
-        virtual void noMatchingTestCases( std::string const& s ) CATCH_OVERRIDE {
+        virtual void noMatchingTestCases( std::string const& s ) override {
             StreamingReporterBase::noMatchingTestCases( s );
         }
 
-        virtual void testRunStarting( TestRunInfo const& testInfo ) CATCH_OVERRIDE {
+        virtual void testRunStarting( TestRunInfo const& testInfo ) override {
             StreamingReporterBase::testRunStarting( testInfo );
             std::string stylesheetRef = getStylesheetRef();
             if( !stylesheetRef.empty() )
@@ -58,13 +58,13 @@ namespace Catch {
                 m_xml.writeAttribute( "name", m_config->name() );
         }
 
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) override {
             StreamingReporterBase::testGroupStarting( groupInfo );
             m_xml.startElement( "Group" )
                 .writeAttribute( "name", groupInfo.name );
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) override {
             StreamingReporterBase::testCaseStarting(testInfo);
             m_xml.startElement( "TestCase" )
                 .writeAttribute( "name", trim( testInfo.name ) )
@@ -78,7 +78,7 @@ namespace Catch {
             m_xml.ensureTagClosed();
         }
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
             StreamingReporterBase::sectionStarting( sectionInfo );
             if( m_sectionDepth++ > 0 ) {
                 m_xml.startElement( "Section" )
@@ -89,9 +89,9 @@ namespace Catch {
             }
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE { }
+        virtual void assertionStarting( AssertionInfo const& ) override { }
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
 
             AssertionResult const& result = assertionStats.assertionResult;
 
@@ -166,7 +166,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
+        virtual void sectionEnded( SectionStats const& sectionStats ) override {
             StreamingReporterBase::sectionEnded( sectionStats );
             if( --m_sectionDepth > 0 ) {
                 XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResults" );
@@ -181,7 +181,7 @@ namespace Catch {
             }
         }
 
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResult" );
             e.writeAttribute( "success", testCaseStats.totals.assertions.allOk() );
@@ -197,7 +197,7 @@ namespace Catch {
             m_xml.endElement();
         }
 
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
             StreamingReporterBase::testGroupEnded( testGroupStats );
             // TODO: Check testGroupStats.aborting and act accordingly.
             m_xml.scopedElement( "OverallResults" )
@@ -207,7 +207,7 @@ namespace Catch {
             m_xml.endElement();
         }
 
-        virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
+        virtual void testRunEnded( TestRunStats const& testRunStats ) override {
             StreamingReporterBase::testRunEnded( testRunStats );
             m_xml.scopedElement( "OverallResults" )
                 .writeAttribute( "successes", testRunStats.totals.assertions.passed )

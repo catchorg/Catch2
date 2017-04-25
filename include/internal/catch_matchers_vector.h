@@ -20,11 +20,11 @@ namespace Matchers {
 
             ContainsElementMatcher(T const &comparator) : m_comparator( comparator) {}
 
-            bool match(std::vector<T> const &v) const CATCH_OVERRIDE {
+            bool match(std::vector<T> const &v) const override {
                 return std::find(v.begin(), v.end(), m_comparator) != v.end();
             }
 
-            virtual std::string describe() const CATCH_OVERRIDE {
+            virtual std::string describe() const override {
                 return "Contains: " + Catch::toString( m_comparator );
             }
 
@@ -36,7 +36,7 @@ namespace Matchers {
 
             ContainsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const CATCH_OVERRIDE {
+            bool match(std::vector<T> const &v) const override {
                 // !TBD: see note in EqualsMatcher
                 if (m_comparator.size() > v.size())
                     return false;
@@ -45,7 +45,7 @@ namespace Matchers {
                         return false;
                 return true;
             }
-            virtual std::string describe() const CATCH_OVERRIDE {
+            virtual std::string describe() const override {
                 return "Contains: " + Catch::toString( m_comparator );
             }
 
@@ -57,7 +57,7 @@ namespace Matchers {
 
             EqualsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const CATCH_OVERRIDE {
+            bool match(std::vector<T> const &v) const override {
                 // !TBD: This currently works if all elements can be compared using !=
                 // - a more general approach would be via a compare template that defaults
                 // to using !=. but could be specialised for, e.g. std::vector<T> etc
@@ -69,7 +69,7 @@ namespace Matchers {
                         return false;
                 return true;
             }
-            virtual std::string describe() const CATCH_OVERRIDE {
+            virtual std::string describe() const override {
                 return "Equals: " + Catch::toString( m_comparator );
             }
             std::vector<T> const& m_comparator;

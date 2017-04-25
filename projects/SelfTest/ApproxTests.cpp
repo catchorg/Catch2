@@ -153,7 +153,6 @@ TEST_CASE( "Absolute margin", "[Approx]" ) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
 class StrongDoubleTypedef
 {
   double d_ = 0.0;
@@ -192,6 +191,5 @@ TEST_CASE
   REQUIRE(Approx(11.0) >= td);
 
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////

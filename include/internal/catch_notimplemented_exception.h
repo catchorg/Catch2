@@ -18,9 +18,9 @@ namespace Catch {
         NotImplementedException( SourceLineInfo const& lineInfo );
         NotImplementedException( NotImplementedException const& ) {}
 
-        virtual ~NotImplementedException() CATCH_NOEXCEPT {}
+        virtual ~NotImplementedException() noexcept {}
 
-        virtual const char* what() const CATCH_NOEXCEPT;
+        virtual const char* what() const noexcept;
 
     private:
         std::string m_what;

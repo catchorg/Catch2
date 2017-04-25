@@ -80,7 +80,7 @@ public:
             .endExpression( *this );
     }
 
-    virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE {
+    virtual void reconstructExpression( std::string& dest ) const override {
         dest = Catch::toString( m_truthy );
     }
 
@@ -115,11 +115,11 @@ public:
             .endExpression( *this );
     }
 
-    virtual bool isBinaryExpression() const CATCH_OVERRIDE {
+    virtual bool isBinaryExpression() const override {
         return true;
     }
 
-    virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE {
+    virtual void reconstructExpression( std::string& dest ) const override {
         std::string lhs = Catch::toString( m_lhs );
         std::string rhs = Catch::toString( m_rhs );
         char delim = lhs.size() + rhs.size() < 40 &&
@@ -149,11 +149,11 @@ public:
     MatchExpression( ArgT arg, MatcherT matcher, char const* matcherString )
         : m_arg( arg ), m_matcher( matcher ), m_matcherString( matcherString ) {}
 
-    virtual bool isBinaryExpression() const CATCH_OVERRIDE {
+    virtual bool isBinaryExpression() const override {
         return true;
     }
 
-    virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE {
+    virtual void reconstructExpression( std::string& dest ) const override {
         std::string matcherAsString = m_matcher.toString();
         dest = Catch::toString( m_arg );
         dest += ' ';

@@ -257,32 +257,32 @@ TEST_CASE( "Comparisons between ints where one side is computed", "" )
 #pragma GCC diagnostic pop
 #endif
 
-inline const char* returnsConstNull(){ return CATCH_NULL; }
-inline char* returnsNull(){ return CATCH_NULL; }
+inline const char* returnsConstNull(){ return nullptr; }
+inline char* returnsNull(){ return nullptr; }
 
 TEST_CASE( "Pointers can be compared to null", "" )
 {
-    TestData* p = CATCH_NULL;
-    TestData* pNULL = CATCH_NULL;
+    TestData* p = nullptr;
+    TestData* pNULL = nullptr;
 
-    REQUIRE( p == CATCH_NULL );
+    REQUIRE( p == nullptr );
     REQUIRE( p == pNULL );
 
     TestData data;
     p = &data;
 
-    REQUIRE( p != CATCH_NULL );
+    REQUIRE( p != nullptr );
 
     const TestData* cp = p;
-    REQUIRE( cp != CATCH_NULL );
+    REQUIRE( cp != nullptr );
 
     const TestData* const cpc = p;
-    REQUIRE( cpc != CATCH_NULL );
+    REQUIRE( cpc != nullptr );
 
-    REQUIRE( returnsNull() == CATCH_NULL );
-    REQUIRE( returnsConstNull() == CATCH_NULL );
+    REQUIRE( returnsNull() == nullptr );
+    REQUIRE( returnsConstNull() == nullptr );
 
-    REQUIRE( CATCH_NULL != p );
+    REQUIRE( nullptr != p );
 }
 
 // Not (!) tests

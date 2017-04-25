@@ -57,20 +57,20 @@ namespace Catch {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
 
-        virtual ~JunitReporter() CATCH_OVERRIDE;
+        virtual ~JunitReporter() override;
 
         static std::string getDescription() {
             return "Reports test results in an XML format that looks like Ant's junitreport target";
         }
 
-        virtual void noMatchingTestCases( std::string const& /*spec*/ ) CATCH_OVERRIDE {}
+        virtual void noMatchingTestCases( std::string const& /*spec*/ ) override {}
 
-        virtual void testRunStarting( TestRunInfo const& runInfo ) CATCH_OVERRIDE {
+        virtual void testRunStarting( TestRunInfo const& runInfo ) override {
             CumulativeReporterBase::testRunStarting( runInfo );
             xml.startElement( "testsuites" );
         }
 
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) override {
             suiteTimer.start();
             stdOutForSuite.str("");
             stdErrForSuite.str("");
@@ -78,28 +78,28 @@ namespace Catch {
             CumulativeReporterBase::testGroupStarting( groupInfo );
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& testCaseInfo ) CATCH_OVERRIDE {
+        virtual void testCaseStarting( TestCaseInfo const& testCaseInfo ) override {
             m_okToFail = testCaseInfo.okToFail();
         }
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
             if( assertionStats.assertionResult.getResultType() == ResultWas::ThrewException && !m_okToFail )
                 unexpectedExceptions++;
             return CumulativeReporterBase::assertionEnded( assertionStats );
         }
 
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
             stdOutForSuite << testCaseStats.stdOut;
             stdErrForSuite << testCaseStats.stdErr;
             CumulativeReporterBase::testCaseEnded( testCaseStats );
         }
 
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
             double suiteTime = suiteTimer.getElapsedSeconds();
             CumulativeReporterBase::testGroupEnded( testGroupStats );
             writeGroup( *m_testGroups.back(), suiteTime );
         }
 
-        virtual void testRunEndedCumulative() CATCH_OVERRIDE {
+        virtual void testRunEndedCumulative() override {
             xml.endElement();
         }
 

@@ -89,7 +89,7 @@ namespace Catch {
 
             ScopedElement( ScopedElement const& other )
             :   m_writer( other.m_writer ){
-                other.m_writer = CATCH_NULL;
+                other.m_writer = nullptr;
             }
 
             ~ScopedElement() {

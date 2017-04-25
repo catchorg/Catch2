@@ -13,7 +13,7 @@
 #   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
-inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( CATCH_NULL, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( nullptr, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Parse test names and tags", "" ) {
 

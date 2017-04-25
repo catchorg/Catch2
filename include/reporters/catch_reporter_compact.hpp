@@ -58,7 +58,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded(SectionStats const& _sectionStats) CATCH_OVERRIDE {
+        virtual void sectionEnded(SectionStats const& _sectionStats) override {
             if (m_config->showDurations() == ShowDurations::Always) {
                 stream << getFormattedDuration(_sectionStats.durationInSeconds) << " s: " << _sectionStats.sectionInfo.name << std::endl;
             }

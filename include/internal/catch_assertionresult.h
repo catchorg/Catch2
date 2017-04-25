@@ -53,7 +53,7 @@ namespace Catch {
 
     struct AssertionResultData
     {
-        AssertionResultData() : decomposedExpression( CATCH_NULL )
+        AssertionResultData() : decomposedExpression( nullptr )
                               , resultType( ResultWas::Unknown )
                               , negated( false )
                               , parenthesized( false ) {}
@@ -68,7 +68,7 @@ namespace Catch {
         }
 
         std::string const& reconstructExpression() const {
-            if( decomposedExpression != CATCH_NULL ) {
+            if( decomposedExpression != nullptr ) {
                 decomposedExpression->reconstructExpression( reconstructedExpression );
                 if( parenthesized ) {
                     reconstructedExpression.insert( 0, 1, '(' );
@@ -77,7 +77,7 @@ namespace Catch {
                 if( negated ) {
                     reconstructedExpression.insert( 0, 1, '!' );
                 }
-                decomposedExpression = CATCH_NULL;
+                decomposedExpression = nullptr;
             }
             return reconstructedExpression;
         }
@@ -95,12 +95,11 @@ namespace Catch {
         AssertionResult();
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
-#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
-         AssertionResult( AssertionResult const& )              = default;
-         AssertionResult( AssertionResult && )                  = default;
-         AssertionResult& operator = ( AssertionResult const& ) = default;
-         AssertionResult& operator = ( AssertionResult && )     = default;
-#  endif
+
+        AssertionResult( AssertionResult const& )              = default;
+        AssertionResult( AssertionResult && )                  = default;
+        AssertionResult& operator = ( AssertionResult const& ) = default;
+        AssertionResult& operator = ( AssertionResult && )     = default;
 
         bool isOk() const;
         bool succeeded() const;

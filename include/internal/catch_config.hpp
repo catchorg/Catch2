@@ -113,25 +113,25 @@ namespace Catch {
         std::string getProcessName() const { return m_data.processName; }
 
         std::vector<std::string> const& getReporterNames() const { return m_data.reporterNames; }
-        std::vector<std::string> const& getSectionsToRun() const CATCH_OVERRIDE { return m_data.sectionsToRun; }
+        std::vector<std::string> const& getSectionsToRun() const override { return m_data.sectionsToRun; }
 
-        virtual TestSpec const& testSpec() const CATCH_OVERRIDE { return m_testSpec; }
+        virtual TestSpec const& testSpec() const override { return m_testSpec; }
 
         bool showHelp() const { return m_data.showHelp; }
 
         // IConfig interface
-        virtual bool allowThrows() const CATCH_OVERRIDE                 { return !m_data.noThrow; }
-        virtual std::ostream& stream() const CATCH_OVERRIDE             { return m_stream->stream(); }
-        virtual std::string name() const CATCH_OVERRIDE                 { return m_data.name.empty() ? m_data.processName : m_data.name; }
-        virtual bool includeSuccessfulResults() const CATCH_OVERRIDE    { return m_data.showSuccessfulTests; }
-        virtual bool warnAboutMissingAssertions() const CATCH_OVERRIDE  { return m_data.warnings & WarnAbout::NoAssertions; }
-        virtual ShowDurations::OrNot showDurations() const CATCH_OVERRIDE { return m_data.showDurations; }
-        virtual RunTests::InWhatOrder runOrder() const CATCH_OVERRIDE   { return m_data.runOrder; }
-        virtual unsigned int rngSeed() const CATCH_OVERRIDE             { return m_data.rngSeed; }
-        virtual UseColour::YesOrNo useColour() const CATCH_OVERRIDE     { return m_data.useColour; }
-        virtual bool shouldDebugBreak() const CATCH_OVERRIDE { return m_data.shouldDebugBreak; }
-        virtual int abortAfter() const CATCH_OVERRIDE { return m_data.abortAfter; }
-        virtual bool showInvisibles() const CATCH_OVERRIDE { return m_data.showInvisibles; }
+        virtual bool allowThrows() const override                 { return !m_data.noThrow; }
+        virtual std::ostream& stream() const override             { return m_stream->stream(); }
+        virtual std::string name() const override                 { return m_data.name.empty() ? m_data.processName : m_data.name; }
+        virtual bool includeSuccessfulResults() const override    { return m_data.showSuccessfulTests; }
+        virtual bool warnAboutMissingAssertions() const override  { return m_data.warnings & WarnAbout::NoAssertions; }
+        virtual ShowDurations::OrNot showDurations() const override { return m_data.showDurations; }
+        virtual RunTests::InWhatOrder runOrder() const override   { return m_data.runOrder; }
+        virtual unsigned int rngSeed() const override             { return m_data.rngSeed; }
+        virtual UseColour::YesOrNo useColour() const override     { return m_data.useColour; }
+        virtual bool shouldDebugBreak() const override { return m_data.shouldDebugBreak; }
+        virtual int abortAfter() const override { return m_data.abortAfter; }
+        virtual bool showInvisibles() const override { return m_data.showInvisibles; }
 
     private:
 
@@ -149,7 +149,7 @@ namespace Catch {
         }
         ConfigData m_data;
 
-        CATCH_AUTO_PTR( IStream const ) m_stream;
+        std::unique_ptr<IStream const> m_stream;
         TestSpec m_testSpec;
     };
 

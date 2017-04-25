@@ -66,7 +66,7 @@ namespace Catch {
             // 32k seems enough for Catch to handle stack overflow,
             // but the value was found experimentally, so there is no strong guarantee
             guaranteeSize = 32 * 1024;
-            exceptionHandlerHandle = CATCH_NULL;
+            exceptionHandlerHandle = nullptr;
             // Register as first handler in current chain
             exceptionHandlerHandle = AddVectoredExceptionHandler(1, handleVectoredException);
             // Pass in guarantee size to be filled
@@ -78,7 +78,7 @@ namespace Catch {
                 // Unregister handler and restore the old guarantee
                 RemoveVectoredExceptionHandler(exceptionHandlerHandle);
                 SetThreadStackGuarantee(&guaranteeSize);
-                exceptionHandlerHandle = CATCH_NULL;
+                exceptionHandlerHandle = nullptr;
                 isSet = false;
             }
         }
@@ -94,7 +94,7 @@ namespace Catch {
 
     bool FatalConditionHandler::isSet = false;
     ULONG FatalConditionHandler::guaranteeSize = 0;
-    PVOID FatalConditionHandler::exceptionHandlerHandle = CATCH_NULL;
+    PVOID FatalConditionHandler::exceptionHandlerHandle = nullptr;
 
 } // namespace Catch
 
@@ -176,10 +176,10 @@ namespace Catch {
             if( isSet ) {
                 // Set signals back to previous values -- hopefully nobody overwrote them in the meantime
                 for( std::size_t i = 0; i < sizeof(signalDefs)/sizeof(SignalDefs); ++i ) {
-                    sigaction(signalDefs[i].id, &oldSigActions[i], CATCH_NULL);
+                    sigaction(signalDefs[i].id, &oldSigActions[i], nullptr);
                 }
                 // Return the old stack
-                sigaltstack(&oldSigStack, CATCH_NULL);
+                sigaltstack(&oldSigStack, nullptr);
                 isSet = false;
             }
         }

@@ -16,7 +16,7 @@ namespace Catch {
 
     class StreamBufBase : public std::streambuf {
     public:
-        virtual ~StreamBufBase() CATCH_NOEXCEPT;
+        virtual ~StreamBufBase() noexcept;
     };
 }
 

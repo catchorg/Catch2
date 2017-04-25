@@ -27,11 +27,11 @@ namespace Catch {
             return "Reports test results in the format of Automake .trs files";
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
+        virtual void assertionStarting( AssertionInfo const& ) override {}
 
-        virtual bool assertionEnded( AssertionStats const& /*_assertionStats*/ ) CATCH_OVERRIDE { return true; }
+        virtual bool assertionEnded( AssertionStats const& /*_assertionStats*/ ) override { return true; }
 
-        virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) CATCH_OVERRIDE {
+        virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) override {
             // Possible values to emit are PASS, XFAIL, SKIP, FAIL, XPASS and ERROR.
             stream << ":test-result: ";
             if (_testCaseStats.totals.assertions.allPassed()) {
@@ -45,7 +45,7 @@ namespace Catch {
             StreamingReporterBase::testCaseEnded( _testCaseStats );
         }
 
-        virtual void skipTest( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+        virtual void skipTest( TestCaseInfo const& testInfo ) override {
             stream << ":test-result: SKIP " << testInfo.name << '\n';
         }
 

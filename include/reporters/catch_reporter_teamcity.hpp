@@ -43,33 +43,33 @@ namespace Catch {
             replaceInPlace( escaped, "]", "|]" );
             return escaped;
         }
-        virtual ~TeamCityReporter() CATCH_OVERRIDE;
+        virtual ~TeamCityReporter() override;
 
         static std::string getDescription() {
             return "Reports test results as TeamCity service messages";
         }
 
-        virtual void skipTest( TestCaseInfo const& /* testInfo */ ) CATCH_OVERRIDE {
+        virtual void skipTest( TestCaseInfo const& /* testInfo */ ) override {
         }
 
-        virtual void noMatchingTestCases( std::string const& /* spec */ ) CATCH_OVERRIDE {}
+        virtual void noMatchingTestCases( std::string const& /* spec */ ) override {}
 
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) CATCH_OVERRIDE {
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) override {
             StreamingReporterBase::testGroupStarting( groupInfo );
             stream << "##teamcity[testSuiteStarted name='"
                 << escape( groupInfo.name ) << "']\n";
         }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
             StreamingReporterBase::testGroupEnded( testGroupStats );
             stream << "##teamcity[testSuiteFinished name='"
                 << escape( testGroupStats.groupInfo.name ) << "']\n";
         }
 
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {
+        virtual void assertionStarting( AssertionInfo const& ) override {
         }
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
             AssertionResult const& result = assertionStats.assertionResult;
             if( !result.isOk() ) {
 
@@ -140,18 +140,18 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
             m_headerPrintedForThisSection = false;
             StreamingReporterBase::sectionStarting( sectionInfo );
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) CATCH_OVERRIDE {
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) override {
             StreamingReporterBase::testCaseStarting( testInfo );
             stream << "##teamcity[testStarted name='"
                 << escape( testInfo.name ) << "']\n";
         }
 
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             if( !testCaseStats.stdOut.empty() )
                 stream << "##teamcity[testStdOut name='"

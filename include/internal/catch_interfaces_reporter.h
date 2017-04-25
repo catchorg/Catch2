@@ -100,12 +100,10 @@ namespace Catch
         }
         virtual ~AssertionStats();
 
-#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         AssertionStats( AssertionStats const& )              = default;
         AssertionStats( AssertionStats && )                  = default;
         AssertionStats& operator = ( AssertionStats const& ) = default;
         AssertionStats& operator = ( AssertionStats && )     = default;
-#  endif
 
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
@@ -123,12 +121,10 @@ namespace Catch
             missingAssertions( _missingAssertions )
         {}
         virtual ~SectionStats();
-#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         SectionStats( SectionStats const& )              = default;
         SectionStats( SectionStats && )                  = default;
         SectionStats& operator = ( SectionStats const& ) = default;
         SectionStats& operator = ( SectionStats && )     = default;
-#  endif
 
         SectionInfo sectionInfo;
         Counts assertions;
@@ -150,12 +146,10 @@ namespace Catch
         {}
         virtual ~TestCaseStats();
 
-#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         TestCaseStats( TestCaseStats const& )              = default;
         TestCaseStats( TestCaseStats && )                  = default;
         TestCaseStats& operator = ( TestCaseStats const& ) = default;
         TestCaseStats& operator = ( TestCaseStats && )     = default;
-#  endif
 
         TestCaseInfo testInfo;
         Totals totals;
@@ -178,12 +172,10 @@ namespace Catch
         {}
         virtual ~TestGroupStats();
 
-#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
         TestGroupStats( TestGroupStats const& )              = default;
         TestGroupStats( TestGroupStats && )                  = default;
         TestGroupStats& operator = ( TestGroupStats const& ) = default;
         TestGroupStats& operator = ( TestGroupStats && )     = default;
-#  endif
 
         GroupInfo groupInfo;
         Totals totals;
@@ -200,18 +192,10 @@ namespace Catch
         {}
         virtual ~TestRunStats();
 
-#  ifndef CATCH_CONFIG_CPP11_GENERATED_METHODS
-        TestRunStats( TestRunStats const& _other )
-        :   runInfo( _other.runInfo ),
-            totals( _other.totals ),
-            aborting( _other.aborting )
-        {}
-#  else
         TestRunStats( TestRunStats const& )              = default;
         TestRunStats( TestRunStats && )                  = default;
         TestRunStats& operator = ( TestRunStats const& ) = default;
         TestRunStats& operator = ( TestRunStats && )     = default;
-#  endif
 
         TestRunInfo runInfo;
         Totals totals;
@@ -248,7 +232,7 @@ namespace Catch
 
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
-        virtual MultipleReporters* tryAsMulti() { return CATCH_NULL; }
+        virtual MultipleReporters* tryAsMulti() { return nullptr; }
     };
 
 

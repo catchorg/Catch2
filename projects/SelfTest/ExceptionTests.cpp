@@ -120,7 +120,7 @@ public:
     CustomStdException( const std::string& msg )
     : m_msg( msg )
     {}
-    ~CustomStdException() CATCH_NOEXCEPT {}
+    ~CustomStdException() noexcept {}
 
     std::string getMessage() const
     {

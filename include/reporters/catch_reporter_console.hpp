@@ -25,19 +25,19 @@ namespace Catch {
             m_headerPrinted( false )
         {}
 
-        virtual ~ConsoleReporter() CATCH_OVERRIDE;
+        virtual ~ConsoleReporter() override;
         static std::string getDescription() {
             return "Reports test results as plain lines of text";
         }
 
-        virtual void noMatchingTestCases( std::string const& spec ) CATCH_OVERRIDE {
+        virtual void noMatchingTestCases( std::string const& spec ) override {
             stream << "No test cases matched '" << spec << '\'' << std::endl;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {
+        virtual void assertionStarting( AssertionInfo const& ) override {
         }
 
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) CATCH_OVERRIDE {
+        virtual bool assertionEnded( AssertionStats const& _assertionStats ) override {
             AssertionResult const& result = _assertionStats.assertionResult;
 
             bool includeResults = m_config->includeSuccessfulResults() || !result.isOk();
@@ -54,11 +54,11 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionStarting( SectionInfo const& _sectionInfo ) CATCH_OVERRIDE {
+        virtual void sectionStarting( SectionInfo const& _sectionInfo ) override {
             m_headerPrinted = false;
             StreamingReporterBase::sectionStarting( _sectionInfo );
         }
-        virtual void sectionEnded( SectionStats const& _sectionStats ) CATCH_OVERRIDE {
+        virtual void sectionEnded( SectionStats const& _sectionStats ) override {
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 Colour colour( Colour::ResultError );
@@ -77,11 +77,11 @@ namespace Catch {
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
-        virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) CATCH_OVERRIDE {
+        virtual void testCaseEnded( TestCaseStats const& _testCaseStats ) override {
             StreamingReporterBase::testCaseEnded( _testCaseStats );
             m_headerPrinted = false;
         }
-        virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) CATCH_OVERRIDE {
+        virtual void testGroupEnded( TestGroupStats const& _testGroupStats ) override {
             if( currentGroupInfo.used ) {
                 printSummaryDivider();
                 stream << "Summary for group '" << _testGroupStats.groupInfo.name << "':\n";
@@ -90,7 +90,7 @@ namespace Catch {
             }
             StreamingReporterBase::testGroupEnded( _testGroupStats );
         }
-        virtual void testRunEnded( TestRunStats const& _testRunStats ) CATCH_OVERRIDE {
+        virtual void testRunEnded( TestRunStats const& _testRunStats ) override {
             printTotalsDivider( _testRunStats.totals );
             printTotals( _testRunStats.totals );
             stream << std::endl;
@@ -218,10 +218,10 @@ namespace Catch {
             void printMessage() const {
                 if( !messageLabel.empty() )
                     stream << messageLabel << ':' << '\n';
-                for( auto const& message : messages ) {
+                for( auto const& msg : messages ) {
                     // If this assertion is a warning ignore any INFO messages
-                    if( printInfoMessages || message.type != ResultWas::Info )
-                        stream << Text( message.message, TextAttributes().setIndent(2) ) << '\n';
+                    if( printInfoMessages || msg.type != ResultWas::Info )
+                        stream << Text( msg.message, TextAttributes().setIndent(2) ) << '\n';
                 }
             }
             void printSourceInfo() const {

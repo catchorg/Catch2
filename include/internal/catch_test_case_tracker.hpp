@@ -80,7 +80,7 @@ namespace TestCaseTracking {
         }
 
         TrackerContext()
-        :   m_currentTracker( CATCH_NULL ),
+        :   m_currentTracker( nullptr ),
             m_runState( NotStarted )
         {}
 
@@ -89,7 +89,7 @@ namespace TestCaseTracking {
 
         void endRun() {
             m_rootTracker.reset();
-            m_currentTracker = CATCH_NULL;
+            m_currentTracker = nullptr;
             m_runState = NotStarted;
         }
 
@@ -147,39 +147,39 @@ namespace TestCaseTracking {
         {}
         virtual ~TrackerBase();
 
-        virtual NameAndLocation const& nameAndLocation() const CATCH_OVERRIDE {
+        virtual NameAndLocation const& nameAndLocation() const override {
             return m_nameAndLocation;
         }
-        virtual bool isComplete() const CATCH_OVERRIDE {
+        virtual bool isComplete() const override {
             return m_runState == CompletedSuccessfully || m_runState == Failed;
         }
-        virtual bool isSuccessfullyCompleted() const CATCH_OVERRIDE {
+        virtual bool isSuccessfullyCompleted() const override {
             return m_runState == CompletedSuccessfully;
         }
-        virtual bool isOpen() const CATCH_OVERRIDE {
+        virtual bool isOpen() const override {
             return m_runState != NotStarted && !isComplete();
         }
-        virtual bool hasChildren() const CATCH_OVERRIDE {
+        virtual bool hasChildren() const override {
             return !m_children.empty();
         }
 
 
-        virtual void addChild( Ptr<ITracker> const& child ) CATCH_OVERRIDE {
+        virtual void addChild( Ptr<ITracker> const& child ) override {
             m_children.push_back( child );
         }
 
-        virtual ITracker* findChild( NameAndLocation const& nameAndLocation ) CATCH_OVERRIDE {
+        virtual ITracker* findChild( NameAndLocation const& nameAndLocation ) override {
             Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( nameAndLocation ) );
             return( it != m_children.end() )
                 ? it->get()
-                : CATCH_NULL;
+                : nullptr;
         }
-        virtual ITracker& parent() CATCH_OVERRIDE {
+        virtual ITracker& parent() override {
             assert( m_parent ); // Should always be non-null except for root
             return *m_parent;
         }
 
-        virtual void openChild() CATCH_OVERRIDE {
+        virtual void openChild() override {
             if( m_runState != ExecutingChildren ) {
                 m_runState = ExecutingChildren;
                 if( m_parent )
@@ -187,8 +187,8 @@ namespace TestCaseTracking {
             }
         }
 
-        virtual bool isSectionTracker() const CATCH_OVERRIDE { return false; }
-        virtual bool isIndexTracker() const CATCH_OVERRIDE { return false; }
+        virtual bool isSectionTracker() const override { return false; }
+        virtual bool isIndexTracker() const override { return false; }
 
         void open() {
             m_runState = Executing;
@@ -197,7 +197,7 @@ namespace TestCaseTracking {
                 m_parent->openChild();
         }
 
-        virtual void close() CATCH_OVERRIDE {
+        virtual void close() override {
 
             // Close any still open children (e.g. generators)
             while( &m_ctx.currentTracker() != this )
@@ -226,14 +226,14 @@ namespace TestCaseTracking {
             moveToParent();
             m_ctx.completeCycle();
         }
-        virtual void fail() CATCH_OVERRIDE {
+        virtual void fail() override {
             m_runState = Failed;
             if( m_parent )
                 m_parent->markAsNeedingAnotherRun();
             moveToParent();
             m_ctx.completeCycle();
         }
-        virtual void markAsNeedingAnotherRun() CATCH_OVERRIDE {
+        virtual void markAsNeedingAnotherRun() override {
             m_runState = NeedsAnotherRun;
         }
     private:
@@ -262,10 +262,10 @@ namespace TestCaseTracking {
         }
         virtual ~SectionTracker();
 
-        virtual bool isSectionTracker() const CATCH_OVERRIDE { return true; }
+        virtual bool isSectionTracker() const override { return true; }
 
         static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation ) {
-            SectionTracker* section = CATCH_NULL;
+            SectionTracker* section = nullptr;
 
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( nameAndLocation ) ) {
@@ -311,10 +311,10 @@ namespace TestCaseTracking {
         {}
         virtual ~IndexTracker();
 
-        virtual bool isIndexTracker() const CATCH_OVERRIDE { return true; }
+        virtual bool isIndexTracker() const override { return true; }
 
         static IndexTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation, int size ) {
-            IndexTracker* tracker = CATCH_NULL;
+            IndexTracker* tracker = nullptr;
 
             ITracker& currentTracker = ctx.currentTracker();
             if( ITracker* childTracker = currentTracker.findChild( nameAndLocation ) ) {
@@ -343,7 +343,7 @@ namespace TestCaseTracking {
             m_children.clear();
         }
 
-        virtual void close() CATCH_OVERRIDE {
+        virtual void close() override {
             TrackerBase::close();
             if( m_runState == CompletedSuccessfully && m_index < m_size-1 )
                 m_runState = Executing;
@@ -351,8 +351,8 @@ namespace TestCaseTracking {
     };
 
     inline ITracker& TrackerContext::startRun() {
-        m_rootTracker = new SectionTracker( NameAndLocation( "{root}", CATCH_INTERNAL_LINEINFO ), *this, CATCH_NULL );
-        m_currentTracker = CATCH_NULL;
+        m_rootTracker = new SectionTracker( NameAndLocation( "{root}", CATCH_INTERNAL_LINEINFO ), *this, nullptr );
+        m_currentTracker = nullptr;
         m_runState = Executing;
         return *m_rootTracker;
     }

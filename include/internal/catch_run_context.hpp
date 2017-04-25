@@ -62,7 +62,7 @@ namespace Catch {
         explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_activeTestCase( CATCH_NULL ),
+            m_activeTestCase( nullptr ),
             m_config( _config ),
             m_reporter( reporter ),
             m_shouldReportUnexpected ( true )
@@ -124,8 +124,8 @@ namespace Catch {
                                                         redirectedCerr,
                                                         aborting() ) );
 
-            m_activeTestCase = CATCH_NULL;
-            m_testCaseTracker = CATCH_NULL;
+            m_activeTestCase = nullptr;
+            m_testCaseTracker = nullptr;
 
             return deltaTotals;
         }

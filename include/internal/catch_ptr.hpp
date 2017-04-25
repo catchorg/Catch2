@@ -23,7 +23,7 @@ namespace Catch {
     template<typename T>
     class Ptr {
     public:
-        Ptr() : m_p( CATCH_NULL ){}
+        Ptr() : m_p( nullptr ){}
         Ptr( T* p ) : m_p( p ){
             if( m_p )
                 m_p->addRef();
@@ -39,7 +39,7 @@ namespace Catch {
         void reset() {
             if( m_p )
                 m_p->release();
-            m_p = CATCH_NULL;
+            m_p = nullptr;
         }
         Ptr& operator = ( T* p ){
             Ptr temp( p );
@@ -55,8 +55,8 @@ namespace Catch {
         T* get() const{ return m_p; }
         T& operator*() const { return *m_p; }
         T* operator->() const { return m_p; }
-        bool operator !() const { return m_p == CATCH_NULL; }
-        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != CATCH_NULL ); }
+        bool operator !() const { return m_p == nullptr; }
+        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != nullptr ); }
 
     private:
         T* m_p;
