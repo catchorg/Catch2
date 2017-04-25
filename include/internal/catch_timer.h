@@ -8,10 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 
-#include "catch_platform.h"
-
 #include <stdint.h>
-
 
 namespace Catch {
     class Timer {

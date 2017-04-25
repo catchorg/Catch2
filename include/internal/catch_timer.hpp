@@ -9,11 +9,6 @@
 #include "catch_timer.h"
 #include "catch_platform.h"
 
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++11-long-long"
-#endif
-
 #ifdef CATCH_PLATFORM_WINDOWS
 
 #  include "catch_windows_h_proxy.h"
@@ -61,7 +56,3 @@ namespace Catch {
     }
 
 } // namespace Catch
-
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
