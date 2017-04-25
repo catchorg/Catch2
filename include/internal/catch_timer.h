@@ -13,14 +13,14 @@
 namespace Catch {
     class Timer {
     public:
-        Timer() : m_ticks( 0 ) {}
+        Timer() : m_microSeconds( 0 ) {}
         void start();
         unsigned int getElapsedMicroseconds() const;
         unsigned int getElapsedMilliseconds() const;
         double getElapsedSeconds() const;
 
     private:
-        uint64_t m_ticks;
+        uint64_t m_microSeconds;
     };
 
 } // namespace Catch

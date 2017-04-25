@@ -7,46 +7,22 @@
  */
 
 #include "catch_timer.h"
-#include "catch_platform.h"
 
-#ifdef CATCH_PLATFORM_WINDOWS
-
-#  include "catch_windows_h_proxy.h"
-
-#else
-
-#include <sys/time.h>
-
-#endif
+#include <chrono>
 
 namespace Catch {
 
     namespace {
-#ifdef CATCH_PLATFORM_WINDOWS
-        uint64_t getCurrentTicks() {
-            static uint64_t hz=0, hzo=0;
-            if (!hz) {
-                QueryPerformanceFrequency( reinterpret_cast<LARGE_INTEGER*>( &hz ) );
-                QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &hzo ) );
-            }
-            uint64_t t;
-            QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &t ) );
-            return ((t-hzo)*1000000)/hz;
+        uint64_t getCurrentMicrosecondsSinceEpoch() {
+            return std::chrono::duration_cast<std::chrono::microseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
         }
-#else
-        uint64_t getCurrentTicks() {
-            timeval t;
-            gettimeofday(&t,nullptr);
-            return static_cast<uint64_t>( t.tv_sec ) * 1000000ull + static_cast<uint64_t>( t.tv_usec );
-        }
-#endif
     }
 
     void Timer::start() {
-        m_ticks = getCurrentTicks();
+        m_microSeconds = getCurrentMicrosecondsSinceEpoch();
     }
     unsigned int Timer::getElapsedMicroseconds() const {
-        return static_cast<unsigned int>(getCurrentTicks() - m_ticks);
+        return static_cast<unsigned int>(getCurrentMicrosecondsSinceEpoch() - m_microSeconds);
     }
     unsigned int Timer::getElapsedMilliseconds() const {
         return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
