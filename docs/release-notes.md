@@ -1,3 +1,8 @@
+# 1.9.3
+
+### Fixes
+* Completed the fix for (lack of) uint64_t in earlier Visual Studios
+
 # 1.9.2
 
 ### Improvements and minor changes

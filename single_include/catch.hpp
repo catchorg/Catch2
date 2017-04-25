@@ -1,6 +1,6 @@
 /*
- *  Catch v1.9.2
- *  Generated: 2017-04-25 10:41:53.040184
+ *  Catch v1.9.3
+ *  Generated: 2017-04-25 14:16:29.434734
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -8282,7 +8282,7 @@ namespace Catch {
     }
 
     inline Version libraryVersion() {
-        static Version version( 1, 9, 2, "", 0 );
+        static Version version( 1, 9, 3, "", 0 );
         return version;
     }
 
@@ -8468,21 +8468,21 @@ namespace Catch {
 
     namespace {
 #ifdef CATCH_PLATFORM_WINDOWS
-        uint64_t getCurrentTicks() {
-            static uint64_t hz=0, hzo=0;
+        UInt64 getCurrentTicks() {
+            static UInt64 hz=0, hzo=0;
             if (!hz) {
                 QueryPerformanceFrequency( reinterpret_cast<LARGE_INTEGER*>( &hz ) );
                 QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &hzo ) );
             }
-            uint64_t t;
+            UInt64 t;
             QueryPerformanceCounter( reinterpret_cast<LARGE_INTEGER*>( &t ) );
             return ((t-hzo)*1000000)/hz;
         }
 #else
-        uint64_t getCurrentTicks() {
+        UInt64 getCurrentTicks() {
             timeval t;
             gettimeofday(&t,CATCH_NULL);
-            return static_cast<uint64_t>( t.tv_sec ) * 1000000ull + static_cast<uint64_t>( t.tv_usec );
+            return static_cast<UInt64>( t.tv_sec ) * 1000000ull + static_cast<UInt64>( t.tv_usec );
         }
 #endif
     }
