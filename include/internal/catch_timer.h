@@ -10,17 +10,7 @@
 
 #include "catch_platform.h"
 
-#ifdef _MSC_VER
-
-namespace Catch {
-    typedef unsigned long long UInt64;
-}
-#else
 #include <stdint.h>
-namespace Catch {
-    typedef uint64_t UInt64;
-}
-#endif
 
 
 namespace Catch {
@@ -33,7 +23,7 @@ namespace Catch {
         double getElapsedSeconds() const;
 
     private:
-        UInt64 m_ticks;
+        uint64_t m_ticks;
     };
 
 } // namespace Catch
