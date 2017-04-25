@@ -64,20 +64,6 @@ matrix:
     # 2/ Linux GCC Builds
     - os: linux
       compiler: gcc
-      addons: &gcc47
-        apt:
-         sources: ['ubuntu-toolchain-r-test']
-         packages: ['g++-4.7']
-      env: COMPILER='g++-4.7' BUILD_TYPE='Release'
-
-    - os: linux
-      compiler: gcc
-      addons: *gcc47
-      env: COMPILER='g++-4.7' BUILD_TYPE='Debug'
-
-
-    - os: linux
-      compiler: gcc
       addons: &gcc48
         apt:
          sources: ['ubuntu-toolchain-r-test']
