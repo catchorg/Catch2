@@ -20,8 +20,7 @@ namespace Catch {
     public:
         XmlReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),
-            m_xml(_config.stream()),
-            m_sectionDepth( 0 )
+            m_xml(_config.stream())
         {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
@@ -219,7 +218,7 @@ namespace Catch {
     private:
         Timer m_testCaseTimer;
         XmlWriter m_xml;
-        int m_sectionDepth;
+        int m_sectionDepth = 0;
     };
 
      INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )

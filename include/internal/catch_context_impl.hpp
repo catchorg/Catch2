@@ -16,11 +16,7 @@
 
 namespace Catch {
 
-    class Context : public IMutableContext {
-
-        Context() : m_config( nullptr ), m_runner( nullptr ), m_resultCapture( nullptr ) {}
-        Context( Context const& );
-        void operator=( Context const& );
+    class Context : public IMutableContext, NonCopyable {
 
     public:
         virtual ~Context() {
@@ -84,8 +80,8 @@ namespace Catch {
 
     private:
         Ptr<IConfig const> m_config;
-        IRunner* m_runner;
-        IResultCapture* m_resultCapture;
+        IRunner* m_runner = nullptr;
+        IResultCapture* m_resultCapture = nullptr;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
 

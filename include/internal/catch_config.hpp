@@ -25,47 +25,26 @@
 namespace Catch {
 
     struct ConfigData {
+        bool listTests = false;
+        bool listTags = false;
+        bool listReporters = false;
+        bool listTestNamesOnly = false;
 
-        ConfigData()
-        :   listTests( false ),
-            listTags( false ),
-            listReporters( false ),
-            listTestNamesOnly( false ),
-            showSuccessfulTests( false ),
-            shouldDebugBreak( false ),
-            noThrow( false ),
-            showHelp( false ),
-            showInvisibles( false ),
-            filenamesAsTags( false ),
-            abortAfter( -1 ),
-            rngSeed( 0 ),
-            verbosity( Verbosity::Normal ),
-            warnings( WarnAbout::Nothing ),
-            showDurations( ShowDurations::DefaultForReporter ),
-            runOrder( RunTests::InDeclarationOrder ),
-            useColour( UseColour::Auto )
-        {}
+        bool showSuccessfulTests = false;
+        bool shouldDebugBreak = false;
+        bool noThrow = false;
+        bool showHelp = false;
+        bool showInvisibles = false;
+        bool filenamesAsTags = false;
 
-        bool listTests;
-        bool listTags;
-        bool listReporters;
-        bool listTestNamesOnly;
+        int abortAfter = -1;
+        unsigned int rngSeed = 0;
 
-        bool showSuccessfulTests;
-        bool shouldDebugBreak;
-        bool noThrow;
-        bool showHelp;
-        bool showInvisibles;
-        bool filenamesAsTags;
-
-        int abortAfter;
-        unsigned int rngSeed;
-
-        Verbosity::Level verbosity;
-        WarnAbout::What warnings;
-        ShowDurations::OrNot showDurations;
-        RunTests::InWhatOrder runOrder;
-        UseColour::YesOrNo useColour;
+        Verbosity::Level verbosity = Verbosity::Normal;
+        WarnAbout::What warnings = WarnAbout::Nothing;
+        ShowDurations::OrNot showDurations = ShowDurations::DefaultForReporter;
+        RunTests::InWhatOrder runOrder = RunTests::InDeclarationOrder;
+        UseColour::YesOrNo useColour = UseColour::Auto;
 
         std::string outputFilename;
         std::string name;

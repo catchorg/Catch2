@@ -69,8 +69,8 @@ namespace TestCaseTracking {
         };
 
         Ptr<ITracker> m_rootTracker;
-        ITracker* m_currentTracker;
-        RunState m_runState;
+        ITracker* m_currentTracker = nullptr;
+        RunState m_runState = NotStarted;
 
     public:
 
@@ -78,12 +78,6 @@ namespace TestCaseTracking {
             static TrackerContext s_instance;
             return s_instance;
         }
-
-        TrackerContext()
-        :   m_currentTracker( nullptr ),
-            m_runState( NotStarted )
-        {}
-
 
         ITracker& startRun();
 
@@ -137,13 +131,12 @@ namespace TestCaseTracking {
         TrackerContext& m_ctx;
         ITracker* m_parent;
         Children m_children;
-        CycleState m_runState;
+        CycleState m_runState = NotStarted;
     public:
         TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
         :   m_nameAndLocation( nameAndLocation ),
             m_ctx( ctx ),
-            m_parent( parent ),
-            m_runState( NotStarted )
+            m_parent( parent )
         {}
         virtual ~TrackerBase();
 
@@ -302,12 +295,11 @@ namespace TestCaseTracking {
 
     class IndexTracker : public TrackerBase {
         int m_size;
-        int m_index;
+        int m_index = -1;
     public:
         IndexTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent, int size )
         :   TrackerBase( nameAndLocation, ctx, parent ),
-            m_size( size ),
-            m_index( -1 )
+            m_size( size )
         {}
         virtual ~IndexTracker();
 

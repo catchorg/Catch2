@@ -91,10 +91,6 @@ namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
     public:
-        TestRegistry()
-        :   m_currentSortOrder( RunTests::InDeclarationOrder ),
-            m_unnamedCount( 0 )
-        {}
         virtual ~TestRegistry();
 
         virtual void registerTest( TestCase const& testCase ) {
@@ -123,9 +119,9 @@ namespace Catch {
 
     private:
         std::vector<TestCase> m_functions;
-        mutable RunTests::InWhatOrder m_currentSortOrder;
+        mutable RunTests::InWhatOrder m_currentSortOrder = RunTests::InDeclarationOrder;
         mutable std::vector<TestCase> m_sortedFunctions;
-        size_t m_unnamedCount;
+        size_t m_unnamedCount = 0;
         std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
 

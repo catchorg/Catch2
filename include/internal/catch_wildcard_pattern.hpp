@@ -27,7 +27,6 @@ namespace Catch
 
         WildcardPattern( std::string const& pattern, CaseSensitive::Choice caseSensitivity )
         :   m_caseSensitivity( caseSensitivity ),
-            m_wildcard( NoWildcard ),
             m_pattern( adjustCase( pattern ) )
         {
             if( startsWith( m_pattern, '*' ) ) {
@@ -66,7 +65,7 @@ namespace Catch
             return m_caseSensitivity == CaseSensitive::No ? toLower( str ) : str;
         }
         CaseSensitive::Choice m_caseSensitivity;
-        WildcardPosition m_wildcard;
+        WildcardPosition m_wildcard = NoWildcard;
         std::string m_pattern;
     };
 }

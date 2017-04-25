@@ -53,11 +53,6 @@ namespace Catch {
 
     struct AssertionResultData
     {
-        AssertionResultData() : decomposedExpression( nullptr )
-                              , resultType( ResultWas::Unknown )
-                              , negated( false )
-                              , parenthesized( false ) {}
-
         void negate( bool parenthesize ) {
             negated = !negated;
             parenthesized = parenthesize;
@@ -82,12 +77,12 @@ namespace Catch {
             return reconstructedExpression;
         }
 
-        mutable DecomposedExpression const* decomposedExpression;
+        mutable DecomposedExpression const* decomposedExpression = nullptr;
         mutable std::string reconstructedExpression;
         std::string message;
-        ResultWas::OfType resultType;
-        bool negated;
-        bool parenthesized;
+        ResultWas::OfType resultType = ResultWas::Unknown;
+        bool negated = false;
+        bool parenthesized = false;
     };
 
     class AssertionResult {

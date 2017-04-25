@@ -25,7 +25,7 @@ class MatchExpression;
 template<typename T>
 class ExpressionLhs : public DecomposedExpression {
 public:
-    ExpressionLhs( ResultBuilder& rb, T lhs ) : m_rb( rb ), m_lhs( lhs ), m_truthy(false) {}
+    ExpressionLhs( ResultBuilder& rb, T lhs ) : m_rb( rb ), m_lhs( lhs ) {}
 
     ExpressionLhs& operator = ( const ExpressionLhs& );
 
@@ -98,7 +98,7 @@ private:
 private:
     ResultBuilder& m_rb;
     T m_lhs;
-    bool m_truthy;
+    bool m_truthy = false;
 };
 
 template<typename LhsT, Internal::Operator Op, typename RhsT>

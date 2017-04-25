@@ -20,10 +20,7 @@ namespace Catch {
 
 
     struct ConsoleReporter : StreamingReporterBase {
-        ConsoleReporter( ReporterConfig const& _config )
-        :   StreamingReporterBase( _config ),
-            m_headerPrinted( false )
-        {}
+        using StreamingReporterBase::StreamingReporterBase;
 
         virtual ~ConsoleReporter() override;
         static std::string getDescription() {
@@ -435,7 +432,7 @@ namespace Catch {
         }
 
     private:
-        bool m_headerPrinted;
+        bool m_headerPrinted = false;
     };
 
     INTERNAL_CATCH_REGISTER_REPORTER( "console", ConsoleReporter )

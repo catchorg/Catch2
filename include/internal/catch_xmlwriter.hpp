@@ -112,18 +112,7 @@ namespace Catch {
             mutable XmlWriter* m_writer;
         };
 
-        XmlWriter()
-        :   m_tagIsOpen( false ),
-            m_needsNewline( false ),
-            m_os( Catch::cout() )
-        {
-            writeDeclaration();
-        }
-
-        XmlWriter( std::ostream& os )
-        :   m_tagIsOpen( false ),
-            m_needsNewline( false ),
-            m_os( os )
+        XmlWriter( std::ostream& os = Catch::cout() ) : m_os( os )
         {
             writeDeclaration();
         }
@@ -233,8 +222,8 @@ namespace Catch {
             }
         }
 
-        bool m_tagIsOpen;
-        bool m_needsNewline;
+        bool m_tagIsOpen = false;
+        bool m_needsNewline = false;
         std::vector<std::string> m_tags;
         std::string m_indent;
         std::ostream& m_os;

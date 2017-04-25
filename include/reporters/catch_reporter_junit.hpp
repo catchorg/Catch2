@@ -51,8 +51,7 @@ namespace Catch {
     public:
         JunitReporter( ReporterConfig const& _config )
         :   CumulativeReporterBase( _config ),
-            xml( _config.stream() ),
-            m_okToFail( false )
+            xml( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
@@ -233,7 +232,7 @@ namespace Catch {
         std::ostringstream stdOutForSuite;
         std::ostringstream stdErrForSuite;
         unsigned int unexpectedExceptions;
-        bool m_okToFail;
+        bool m_okToFail = false;
     };
 
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )

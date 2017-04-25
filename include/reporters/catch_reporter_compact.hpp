@@ -17,9 +17,7 @@ namespace Catch {
 
     struct CompactReporter : StreamingReporterBase {
 
-        CompactReporter( ReporterConfig const& _config )
-        : StreamingReporterBase( _config )
-        {}
+        using StreamingReporterBase::StreamingReporterBase;
 
         virtual ~CompactReporter();
 

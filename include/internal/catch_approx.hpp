@@ -27,12 +27,7 @@ namespace Detail {
             m_value( value )
         {}
 
-        Approx( Approx const& other )
-        :   m_epsilon( other.m_epsilon ),
-            m_margin( other.m_margin ),
-            m_scale( other.m_scale ),
-            m_value( other.m_value )
-        {}
+        Approx( Approx const& other ) = default;
 
         static Approx custom() {
             return Approx( 0 );

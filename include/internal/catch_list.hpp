@@ -71,7 +71,6 @@ namespace Catch {
     }
 
     struct TagInfo {
-        TagInfo() : count ( 0 ) {}
         void add( std::string const& spelling ) {
             ++count;
             spellings.insert( spelling );
@@ -83,7 +82,7 @@ namespace Catch {
             return out;
         }
         std::set<std::string> spellings;
-        std::size_t count;
+        std::size_t count = 0;
     };
 
     inline std::size_t listTags( Config const& config ) {

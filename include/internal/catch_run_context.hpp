@@ -62,10 +62,8 @@ namespace Catch {
         explicit RunContext( Ptr<IConfig const> const& _config, Ptr<IStreamingReporter> const& reporter )
         :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
-            m_activeTestCase( nullptr ),
             m_config( _config ),
-            m_reporter( reporter ),
-            m_shouldReportUnexpected ( true )
+            m_reporter( reporter )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -350,7 +348,7 @@ namespace Catch {
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
-        TestCase const* m_activeTestCase;
+        TestCase const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker;
         ITracker* m_currentSectionTracker;
         AssertionResult m_lastResult;
@@ -363,7 +361,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
-        bool m_shouldReportUnexpected;
+        bool m_shouldReportUnexpected = true;
     };
 
     IResultCapture& getResultCapture() {

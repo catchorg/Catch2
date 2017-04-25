@@ -28,10 +28,7 @@ namespace Catch {
                                     char const* capturedExpression,
                                     ResultDisposition::Flags resultDisposition,
                                     char const* secondArg )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
-        m_shouldDebugBreak( false ),
-        m_shouldThrow( false ),
-        m_guardException( false )
+    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition )
     {}
 
     ResultBuilder::~ResultBuilder() {

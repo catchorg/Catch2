@@ -25,8 +25,7 @@ namespace Catch {
 
     struct TeamCityReporter : StreamingReporterBase {
         TeamCityReporter( ReporterConfig const& _config )
-        :   StreamingReporterBase( _config ),
-            m_headerPrintedForThisSection( false )
+        :   StreamingReporterBase( _config )
         {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
@@ -198,7 +197,7 @@ namespace Catch {
                            .setInitialIndent( indent ) ) << "\n";
         }
     private:
-        bool m_headerPrintedForThisSection;
+        bool m_headerPrintedForThisSection = false;
     };
 
 #ifdef CATCH_IMPL

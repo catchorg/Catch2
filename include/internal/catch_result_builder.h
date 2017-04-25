@@ -20,7 +20,7 @@ namespace Catch {
     template<typename T> class ExpressionLhs;
 
     struct CopyableStream {
-        CopyableStream() {}
+        CopyableStream() = default;
         CopyableStream( CopyableStream const& other ) {
             oss << other.oss.str();
         }
@@ -82,9 +82,9 @@ namespace Catch {
         AssertionResultData m_data;
         CopyableStream m_stream;
 
-        bool m_shouldDebugBreak;
-        bool m_shouldThrow;
-        bool m_guardException;
+        bool m_shouldDebugBreak = false;
+        bool m_shouldThrow = false;
+        bool m_guardException = false;
     };
 
 } // namespace Catch

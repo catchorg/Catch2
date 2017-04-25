@@ -21,10 +21,7 @@ namespace Catch {
 
     struct TAPReporter : StreamingReporterBase {
 
-        TAPReporter( ReporterConfig const& _config )
-        : StreamingReporterBase( _config ),
-          counter(0)
-        {}
+        using StreamingReporterBase::StreamingReporterBase;
 
         virtual ~TAPReporter();
 
@@ -62,7 +59,7 @@ namespace Catch {
         }
 
     private:
-        size_t counter;
+        size_t counter = 0;
         class AssertionPrinter {
             void operator= ( AssertionPrinter const& );
         public:

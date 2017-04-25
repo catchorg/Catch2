@@ -22,7 +22,7 @@ namespace Catch {
         ~Section();
 
         // This indicates whether the section should be executed or not
-        operator bool() const;
+        explicit operator bool() const;
 
     private:
         SectionInfo m_info;
