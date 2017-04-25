@@ -204,7 +204,7 @@ namespace Catch
 
     class MultipleReporters;
 
-    struct IStreamingReporter : IShared {
+    struct IStreamingReporter {
         virtual ~IStreamingReporter();
 
         // Implementing class must also provide the following static method:
@@ -234,11 +234,11 @@ namespace Catch
 
         virtual MultipleReporters* tryAsMulti() { return nullptr; }
     };
-
+    using IStreamingReporterPtr = std::shared_ptr<IStreamingReporter>;
 
     struct IReporterFactory {
         virtual ~IReporterFactory();
-        virtual IStreamingReporter* create( ReporterConfig const& config ) const = 0;
+        virtual IStreamingReporterPtr create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
     using IReporterFactoryPtr = std::shared_ptr<IReporterFactory>;
@@ -248,12 +248,12 @@ namespace Catch
         using Listeners = std::vector<IReporterFactoryPtr>;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporter* create( std::string const& name, IConfigPtr const& config ) const = 0;
+        virtual IStreamingReporterPtr create( std::string const& name, IConfigPtr const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;
     };
 
-    Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter );
+    IStreamingReporterPtr addReporter( IStreamingReporterPtr const& existingReporter, IStreamingReporterPtr const& additionalReporter );
 
 }
 

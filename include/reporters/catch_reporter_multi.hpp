@@ -13,11 +13,11 @@
 namespace Catch {
 
 class MultipleReporters : public SharedImpl<IStreamingReporter> {
-    typedef std::vector<Ptr<IStreamingReporter> > Reporters;
+    typedef std::vector<IStreamingReporterPtr > Reporters;
     Reporters m_reporters;
 
 public:
-    void add( Ptr<IStreamingReporter> const& reporter ) {
+    void add( IStreamingReporterPtr const& reporter ) {
         m_reporters.push_back( reporter );
     }
 
@@ -101,14 +101,14 @@ public: // IStreamingReporter
 
 };
 
-Ptr<IStreamingReporter> addReporter( Ptr<IStreamingReporter> const& existingReporter, Ptr<IStreamingReporter> const& additionalReporter ) {
-    Ptr<IStreamingReporter> resultingReporter;
+IStreamingReporterPtr addReporter( IStreamingReporterPtr const& existingReporter, IStreamingReporterPtr const& additionalReporter ) {
+    IStreamingReporterPtr resultingReporter;
 
     if( existingReporter ) {
         MultipleReporters* multi = existingReporter->tryAsMulti();
         if( !multi ) {
             multi = new MultipleReporters;
-            resultingReporter = Ptr<IStreamingReporter>( multi );
+            resultingReporter = IStreamingReporterPtr( multi );
             if( existingReporter )
                 multi->add( existingReporter );
         }

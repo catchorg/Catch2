@@ -59,7 +59,7 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( IConfigPtr const& _config, Ptr<IStreamingReporter> const& reporter )
+        explicit RunContext( IConfigPtr const& _config, IStreamingReporterPtr const& reporter )
         :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
             m_config( _config ),
@@ -355,7 +355,7 @@ namespace Catch {
 
         IConfigPtr m_config;
         Totals m_totals;
-        Ptr<IStreamingReporter> m_reporter;
+        IStreamingReporterPtr m_reporter;
         std::vector<MessageInfo> m_messages;
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;

@@ -17,8 +17,8 @@ namespace Catch {
 
         class ReporterFactory : public IReporterFactory {
 
-            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
-                return new T( config );
+            virtual IStreamingReporterPtr create( ReporterConfig const& config ) const {
+                return std::make_shared<T>( config );
             }
 
             virtual std::string getDescription() const {
@@ -38,8 +38,8 @@ namespace Catch {
 
         class ListenerFactory : public IReporterFactory {
 
-            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
-                return new T( config );
+            virtual IStreamingReporterPtr create( ReporterConfig const& config ) const {
+                return std::make_shared<T>( config );
             }
             virtual std::string getDescription() const {
                 return std::string();

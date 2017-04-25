@@ -21,8 +21,8 @@
 
 namespace Catch {
 
-    Ptr<IStreamingReporter> createReporter( std::string const& reporterName, IConfigPtr const& config ) {
-        Ptr<IStreamingReporter> reporter = getRegistryHub().getReporterRegistry().create( reporterName, config );
+    IStreamingReporterPtr createReporter( std::string const& reporterName, IConfigPtr const& config ) {
+        IStreamingReporterPtr reporter = getRegistryHub().getReporterRegistry().create( reporterName, config );
         if( !reporter ) {
             std::ostringstream oss;
             oss << "No reporter registered with name: '" << reporterName << "'";
@@ -31,17 +31,17 @@ namespace Catch {
         return reporter;
     }
 
-    Ptr<IStreamingReporter> makeReporter( std::shared_ptr<Config> const& config ) {
+    IStreamingReporterPtr makeReporter( std::shared_ptr<Config> const& config ) {
         std::vector<std::string> reporters = config->getReporterNames();
         if( reporters.empty() )
             reporters.push_back( "console" );
 
-        Ptr<IStreamingReporter> reporter;
+        IStreamingReporterPtr reporter;
         for( auto const& name : reporters )
             reporter = addReporter( reporter, createReporter( name, config ) );
         return reporter;
     }
-    Ptr<IStreamingReporter> addListeners( IConfigPtr const& config, Ptr<IStreamingReporter> reporters ) {
+    IStreamingReporterPtr addListeners( IConfigPtr const& config, IStreamingReporterPtr reporters ) {
         auto const& listeners = getRegistryHub().getReporterRegistry().getListeners();
         for( auto const& listener : listeners )
             reporters = addReporter(reporters, listener->create( ReporterConfig( config ) ) );
@@ -53,7 +53,7 @@ namespace Catch {
 
         IConfigPtr iconfig = config;
 
-        Ptr<IStreamingReporter> reporter = makeReporter( config );
+        IStreamingReporterPtr reporter = makeReporter( config );
         reporter = addListeners( iconfig, reporter );
 
         RunContext context( iconfig, reporter );
