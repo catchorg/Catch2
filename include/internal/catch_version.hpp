@@ -38,7 +38,7 @@ namespace Catch {
     }
 
     inline Version libraryVersion() {
-        static Version version( 1, 9, 2, "", 0 );
+        static Version version( 2, 0, 0, "develop", 1 );
         return version;
     }
 
