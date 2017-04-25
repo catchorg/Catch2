@@ -16,11 +16,12 @@ namespace Catch {
 
     class TestSpec;
 
-    struct ITestCase : IShared {
+    struct ITestCase {
         virtual void invoke () const = 0;
-    protected:
         virtual ~ITestCase();
     };
+
+    using ITestCasePtr = std::shared_ptr<ITestCase>;
 
     class TestCase;
     struct IConfig;

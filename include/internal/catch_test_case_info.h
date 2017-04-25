@@ -71,7 +71,7 @@ namespace Catch {
         bool operator < ( TestCase const& other ) const;
 
     private:
-        Ptr<ITestCase> test;
+        std::shared_ptr<ITestCase> test;
     };
 
     TestCase makeTestCase(  ITestCase* testCase,
