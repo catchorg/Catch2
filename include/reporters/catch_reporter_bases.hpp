@@ -105,28 +105,28 @@ namespace Catch {
 
     struct CumulativeReporterBase : SharedImpl<IStreamingReporter> {
         template<typename T, typename ChildNodeT>
-        struct Node : SharedImpl<> {
+        struct Node {
             explicit Node( T const& _value ) : value( _value ) {}
             virtual ~Node() {}
 
-            typedef std::vector<Ptr<ChildNodeT> > ChildNodes;
+            using ChildNodes = std::vector<std::shared_ptr<ChildNodeT>>;
             T value;
             ChildNodes children;
         };
-        struct SectionNode : SharedImpl<> {
+        struct SectionNode {
             explicit SectionNode( SectionStats const& _stats ) : stats( _stats ) {}
             virtual ~SectionNode();
 
             bool operator == ( SectionNode const& other ) const {
                 return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
             }
-            bool operator == ( Ptr<SectionNode> const& other ) const {
+            bool operator == ( std::shared_ptr<SectionNode> const& other ) const {
                 return operator==( *other );
             }
 
             SectionStats stats;
-            typedef std::vector<Ptr<SectionNode> > ChildSections;
-            typedef std::vector<AssertionStats> Assertions;
+            using ChildSections = std::vector<std::shared_ptr<SectionNode>>;
+            using Assertions = std::vector<AssertionStats>;
             ChildSections childSections;
             Assertions assertions;
             std::string stdOut;
@@ -136,7 +136,7 @@ namespace Catch {
         struct BySectionInfo {
             BySectionInfo( SectionInfo const& other ) : m_other( other ) {}
             BySectionInfo( BySectionInfo const& other ) : m_other( other.m_other ) {}
-            bool operator() ( Ptr<SectionNode> const& node ) const {
+            bool operator() ( std::shared_ptr<SectionNode> const& node ) const {
                 return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
             }
         private:
@@ -145,9 +145,9 @@ namespace Catch {
         };
 
 
-        typedef Node<TestCaseStats, SectionNode> TestCaseNode;
-        typedef Node<TestGroupStats, TestCaseNode> TestGroupNode;
-        typedef Node<TestRunStats, TestGroupNode> TestRunNode;
+        using TestCaseNode = Node<TestCaseStats, SectionNode>;
+        using TestGroupNode = Node<TestGroupStats, TestCaseNode>;
+        using TestRunNode = Node<TestRunStats, TestGroupNode>;
 
         CumulativeReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
@@ -168,10 +168,10 @@ namespace Catch {
 
         virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
             SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
-            Ptr<SectionNode> node;
+            std::shared_ptr<SectionNode> node;
             if( m_sectionStack.empty() ) {
                 if( !m_rootSection )
-                    m_rootSection = new SectionNode( incompleteStats );
+                    m_rootSection = std::make_shared<SectionNode>( incompleteStats );
                 node = m_rootSection;
             }
             else {
@@ -181,7 +181,7 @@ namespace Catch {
                                     parentNode.childSections.end(),
                                     BySectionInfo( sectionInfo ) );
                 if( it == parentNode.childSections.end() ) {
-                    node = new SectionNode( incompleteStats );
+                    node = std::make_shared<SectionNode>( incompleteStats );
                     parentNode.childSections.push_back( node );
                 }
                 else
@@ -212,7 +212,7 @@ namespace Catch {
             m_sectionStack.pop_back();
         }
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
-            Ptr<TestCaseNode> node = new TestCaseNode( testCaseStats );
+            auto node = std::make_shared<TestCaseNode>( testCaseStats );
             assert( m_sectionStack.size() == 0 );
             node->children.push_back( m_rootSection );
             m_testCases.push_back( node );
@@ -223,12 +223,12 @@ namespace Catch {
             m_deepestSection->stdErr = testCaseStats.stdErr;
         }
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
-            Ptr<TestGroupNode> node = new TestGroupNode( testGroupStats );
+            auto node = std::make_shared<TestGroupNode>( testGroupStats );
             node->children.swap( m_testCases );
             m_testGroups.push_back( node );
         }
         virtual void testRunEnded( TestRunStats const& testRunStats ) override {
-            Ptr<TestRunNode> node = new TestRunNode( testRunStats );
+            auto node = std::make_shared<TestRunNode>( testRunStats );
             node->children.swap( m_testGroups );
             m_testRuns.push_back( node );
             testRunEndedCumulative();
@@ -247,15 +247,15 @@ namespace Catch {
         IConfigPtr m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
-        std::vector<std::vector<Ptr<SectionNode> > > m_sections;
-        std::vector<Ptr<TestCaseNode> > m_testCases;
-        std::vector<Ptr<TestGroupNode> > m_testGroups;
+        std::vector<std::vector<std::shared_ptr<SectionNode>>> m_sections;
+        std::vector<std::shared_ptr<TestCaseNode>> m_testCases;
+        std::vector<std::shared_ptr<TestGroupNode>> m_testGroups;
 
-        std::vector<Ptr<TestRunNode> > m_testRuns;
+        std::vector<std::shared_ptr<TestRunNode>> m_testRuns;
 
-        Ptr<SectionNode> m_rootSection;
-        Ptr<SectionNode> m_deepestSection;
-        std::vector<Ptr<SectionNode> > m_sectionStack;
+        std::shared_ptr<SectionNode> m_rootSection;
+        std::shared_ptr<SectionNode> m_deepestSection;
+        std::vector<std::shared_ptr<SectionNode>> m_sectionStack;
         ReporterPreferences m_reporterPrefs;
 
     };
