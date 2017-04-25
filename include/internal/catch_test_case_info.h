@@ -39,8 +39,6 @@ namespace Catch {
                         std::set<std::string> const& _tags,
                         SourceLineInfo const& _lineInfo );
 
-        TestCaseInfo( TestCaseInfo const& other );
-
         friend void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags );
 
         bool isHidden() const;
@@ -62,7 +60,6 @@ namespace Catch {
     public:
 
         TestCase( ITestCase* testCase, TestCaseInfo const& info );
-        TestCase( TestCase const& other );
 
         TestCase withName( std::string const& _newName ) const;
 
@@ -70,10 +67,8 @@ namespace Catch {
 
         TestCaseInfo const& getTestCaseInfo() const;
 
-        void swap( TestCase& other );
         bool operator == ( TestCase const& other ) const;
         bool operator < ( TestCase const& other ) const;
-        TestCase& operator = ( TestCase const& other );
 
     private:
         Ptr<ITestCase> test;

@@ -122,17 +122,6 @@ namespace Catch {
         setTags( *this, _tags );
     }
 
-    TestCaseInfo::TestCaseInfo( TestCaseInfo const& other )
-    :   name( other.name ),
-        className( other.className ),
-        description( other.description ),
-        tags( other.tags ),
-        lcaseTags( other.lcaseTags ),
-        tagsAsString( other.tagsAsString ),
-        lineInfo( other.lineInfo ),
-        properties( other.properties )
-    {}
-
     bool TestCaseInfo::isHidden() const {
         return ( properties & IsHidden ) != 0;
     }
@@ -149,27 +138,11 @@ namespace Catch {
 
     TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
 
-    TestCase::TestCase( TestCase const& other )
-    :   TestCaseInfo( other ),
-        test( other.test )
-    {}
 
     TestCase TestCase::withName( std::string const& _newName ) const {
         TestCase other( *this );
         other.name = _newName;
         return other;
-    }
-
-    void TestCase::swap( TestCase& other ) {
-        test.swap( other.test );
-        name.swap( other.name );
-        className.swap( other.className );
-        description.swap( other.description );
-        tags.swap( other.tags );
-        lcaseTags.swap( other.lcaseTags );
-        tagsAsString.swap( other.tagsAsString );
-        std::swap( TestCaseInfo::properties, static_cast<TestCaseInfo&>( other ).properties );
-        std::swap( lineInfo, other.lineInfo );
     }
 
     void TestCase::invoke() const {
@@ -184,11 +157,6 @@ namespace Catch {
 
     bool TestCase::operator < ( TestCase const& other ) const {
         return name < other.name;
-    }
-    TestCase& TestCase::operator = ( TestCase const& other ) {
-        TestCase temp( other );
-        swap( temp );
-        return *this;
     }
 
     TestCaseInfo const& TestCase::getTestCaseInfo() const
