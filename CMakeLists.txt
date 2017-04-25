@@ -10,13 +10,13 @@ set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
 set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
 set(HEADER_DIR ${CATCH_DIR}/include)
 
-if(USE_CPP11)
-    ## We can't turn this on by default, since it breaks on travis
-    message(STATUS "Enabling C++11")
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-elseif(USE_CPP14)
+if(USE_CPP14)
     message(STATUS "Enabling C++14")
     set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
+else()
+    message(STATUS "Enabling C++11")
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+
 endif()
 
 #checks that the given hard-coded list contains all headers + sources in the given folder
