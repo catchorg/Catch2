@@ -142,7 +142,6 @@ LeakDetector leakDetector;
 #define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
-#define CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
 
 #define CATCH_GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
@@ -209,7 +208,6 @@ LeakDetector leakDetector;
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
-#define REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
 
 #define GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
