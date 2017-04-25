@@ -21,7 +21,7 @@ TEST_CASE( "tuple<float,int>", "[toString][tuple][c++11][.]" )
 {
     typedef std::tuple<float,int> type;
     CHECK( "1.2f" == Catch::toString(float(1.2)) );
-    CHECK( "{ 1.2f, 0 }" == Catch::toString(type{1.2,0}) );
+    CHECK( "{ 1.2f, 0 }" == Catch::toString(type{1.2f,0}) );
 }
 
 TEST_CASE( "tuple<string,string>", "[toString][tuple][c++11][.]" )
