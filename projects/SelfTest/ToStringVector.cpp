@@ -27,8 +27,14 @@ namespace {
     /* Minimal Allocator */
     template<typename T>
     struct minimal_allocator {
-        typedef T value_type;
-        typedef std::size_t size_type;
+        using value_type = T;
+        using size_type = std::size_t;
+
+        minimal_allocator() = default;
+        template <typename U>
+        minimal_allocator(const minimal_allocator<U>&) {}
+
+
         T *allocate( size_type n ) {
             return static_cast<T *>( ::operator new( n * sizeof(T) ) );
         }
@@ -52,8 +58,8 @@ TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator][c+
 }
 
 TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator][c++11][.]" ) {
-    typedef std::vector<std::string,minimal_allocator<std::string> > inner;
-    typedef std::vector<inner> vector;
+    using inner = std::vector<std::string, minimal_allocator<std::string>>;
+    using vector = std::vector<inner>;
     vector v;
     REQUIRE( Catch::toString(v) == "{  }" );
     v.push_back( inner { "hello" } );
