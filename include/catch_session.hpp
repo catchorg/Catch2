@@ -42,7 +42,7 @@ namespace Catch {
         return reporter;
     }
     Ptr<IStreamingReporter> addListeners( IConfigPtr const& config, Ptr<IStreamingReporter> reporters ) {
-        IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();
+        auto const& listeners = getRegistryHub().getReporterRegistry().getListeners();
         for( auto const& listener : listeners )
             reporters = addReporter(reporters, listener->create( ReporterConfig( config ) ) );
         return reporters;

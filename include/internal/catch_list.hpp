@@ -123,12 +123,11 @@ namespace Catch {
     inline std::size_t listReporters( Config const& /*config*/ ) {
         Catch::cout() << "Available reporters:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
-        IReporterRegistry::FactoryMap::const_iterator itBegin = factories.begin(), itEnd = factories.end(), it;
         std::size_t maxNameLen = 0;
-        for( auto const factoryKvp : getRegistryHub().getReporterRegistry().getFactories() )
+        for( auto const& factoryKvp : getRegistryHub().getReporterRegistry().getFactories() )
             maxNameLen = (std::max)( maxNameLen, factoryKvp.first.size() );
 
-        for( auto const factoryKvp : getRegistryHub().getReporterRegistry().getFactories() ) {
+        for( auto const& factoryKvp : getRegistryHub().getReporterRegistry().getFactories() ) {
             Text wrapper( factoryKvp.second->getDescription(), TextAttributes()
                                                         .setInitialIndent( 0 )
                                                         .setIndent( 7+maxNameLen )

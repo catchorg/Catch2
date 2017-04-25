@@ -28,7 +28,7 @@ namespace Catch {
         }
 
         void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) {
-            m_factories.insert( std::make_pair( name, factory ) );
+            m_factories.insert( { name, factory } );
         }
         void registerListener( IReporterFactoryPtr const& factory ) {
             m_listeners.push_back( factory );
