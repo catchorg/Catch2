@@ -293,8 +293,8 @@ struct Boolable
 {
     explicit Boolable( bool value ) : m_value( value ) {}
 
-    operator Catch::SafeBool::type() const {
-        return Catch::SafeBool::makeSafe( m_value );
+    explicit operator bool() const {
+        return m_value;
     }
 
     bool m_value;

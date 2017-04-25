@@ -61,8 +61,8 @@ namespace Catch {
         bool none() const { return nullableValue == nullptr; }
 
         bool operator !() const { return nullableValue == nullptr; }
-        operator SafeBool::type() const {
-            return SafeBool::makeSafe( some() );
+        explicit operator bool() const {
+            return some();
         }
 
     private:

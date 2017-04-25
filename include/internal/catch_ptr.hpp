@@ -56,7 +56,7 @@ namespace Catch {
         T& operator*() const { return *m_p; }
         T* operator->() const { return m_p; }
         bool operator !() const { return m_p == nullptr; }
-        operator SafeBool::type() const { return SafeBool::makeSafe( m_p != nullptr ); }
+        explicit operator bool() const { return m_p != nullptr; }
 
     private:
         T* m_p;
