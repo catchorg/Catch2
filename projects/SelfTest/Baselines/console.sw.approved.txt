@@ -124,6 +124,20 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+#872
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( x == 4 )
+with expansion:
+  {?} == 4
+with message:
+  dummy := 0
+
+-------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -9466,6 +9480,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 167 | 118 passed | 45 failed |  4 failed as expected
-assertions: 969 | 859 passed | 89 failed | 21 failed as expected
+test cases: 168 | 119 passed | 45 failed |  4 failed as expected
+assertions: 970 | 860 passed | 89 failed | 21 failed as expected
 

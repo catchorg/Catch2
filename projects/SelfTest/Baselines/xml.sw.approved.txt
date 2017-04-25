@@ -136,6 +136,20 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#872" filename="projects/<exe-name>/CompilationTests.cpp" >
+      <Info>
+        dummy := 0
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          x == 4
+        </Original>
+        <Expanded>
+          {?} == 4
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="'Not' checks that should fail" tags="[.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
@@ -10114,7 +10128,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="859" failures="90" expectedFailures="21"/>
+    <OverallResults successes="860" failures="90" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="859" failures="89" expectedFailures="21"/>
+  <OverallResults successes="860" failures="89" expectedFailures="21"/>
 </Catch>

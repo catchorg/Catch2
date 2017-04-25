@@ -51,8 +51,12 @@ TEST_CASE("#833") {
     REQUIRE(templated_tests<int>(3));
 }
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
+
 // Test containing example where original stream insertable check breaks compilation
-#if defined (CATCH_CONFIG_CPP11_STREAM_INSERTABLE_CHECK)
 namespace {
     struct A {};
     std::ostream& operator<< (std::ostream &o, const A &) { return o << 0; }
@@ -64,9 +68,13 @@ namespace {
     B f ();
     std::ostream g ();
 }
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 TEST_CASE( "#872" ) {
+    A dummy;
+    CAPTURE( dummy );
     B x;
     REQUIRE (x == 4);
 }
-#endif
