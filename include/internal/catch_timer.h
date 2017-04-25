@@ -10,15 +10,20 @@
 
 #include "catch_platform.h"
 
-#include <stdint.h>
+#ifdef _MSC_VER
 
 namespace Catch {
-#ifdef _MSC_VER
     typedef unsigned long long UInt64;
+}
 #else
+#include <stdint.h>
+namespace Catch {
     typedef uint64_t UInt64;
+}
 #endif
 
+
+namespace Catch {
     class Timer {
     public:
         Timer() : m_ticks( 0 ) {}
