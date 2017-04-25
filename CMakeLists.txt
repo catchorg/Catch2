@@ -200,7 +200,6 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_tostring.h
         ${HEADER_DIR}/internal/catch_tostring.hpp
         ${HEADER_DIR}/internal/catch_totals.hpp
-        ${HEADER_DIR}/internal/catch_type_traits.hpp
         ${HEADER_DIR}/internal/catch_version.h
         ${HEADER_DIR}/internal/catch_version.hpp
         ${HEADER_DIR}/internal/catch_wildcard_pattern.hpp
