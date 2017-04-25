@@ -169,7 +169,6 @@ std::string toString( unsigned char value ) {
     return toString( static_cast<char>( value ) );
 }
 
-#ifdef CATCH_CONFIG_CPP11_LONG_LONG
 std::string toString( long long value ) {
     std::ostringstream oss;
     oss << value;
@@ -184,13 +183,10 @@ std::string toString( unsigned long long value ) {
         oss << " (0x" << std::hex << value << ')';
     return oss.str();
 }
-#endif
 
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
 std::string toString( std::nullptr_t ) {
     return "nullptr";
 }
-#endif
 
 #ifdef __OBJC__
     std::string toString( NSString const * const& nsstring ) {

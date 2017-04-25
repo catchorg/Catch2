@@ -20,13 +20,9 @@
 #include "catch_objc_arc.hpp"
 #endif
 
-#ifdef CATCH_CONFIG_CPP11_TUPLE
 #include <tuple>
-#endif
 
-#ifdef CATCH_CONFIG_CPP11_IS_ENUM
 #include <type_traits>
-#endif
 
 namespace Catch {
 
@@ -52,14 +48,10 @@ std::string toString( char value );
 std::string toString( signed char value );
 std::string toString( unsigned char value );
 
-#ifdef CATCH_CONFIG_CPP11_LONG_LONG
 std::string toString( long long value );
 std::string toString( unsigned long long value );
-#endif
 
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
 std::string toString( std::nullptr_t );
-#endif
 
 #ifdef __OBJC__
     std::string toString( NSString const * const& nsstring );
@@ -72,26 +64,6 @@ namespace Detail {
 
     extern const std::string unprintableString;
 
- #if !defined(CATCH_CONFIG_CPP11_STREAM_INSERTABLE_CHECK)
-    struct BorgType {
-        template<typename T> BorgType( T const& );
-    };
-
-    struct TrueType { char sizer[1]; };
-    struct FalseType { char sizer[2]; };
-
-    TrueType& testStreamable( std::ostream& );
-    FalseType testStreamable( FalseType );
-
-    FalseType operator<<( std::ostream const&, BorgType const& );
-
-    template<typename T>
-    struct IsStreamInsertable {
-        static std::ostream &s;
-        static T  const&t;
-        enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
-    };
-#else
     template<typename T>
     class IsStreamInsertable {
         template<typename SS, typename TT>
@@ -104,9 +76,8 @@ namespace Detail {
     public:
         static const bool value = decltype(test<std::ostream,const T&>(0))::value;
     };
-#endif
 
-#if defined(CATCH_CONFIG_CPP11_IS_ENUM)
+
     template<typename T,
              bool IsEnum = std::is_enum<T>::value
              >
@@ -125,19 +96,14 @@ namespace Detail {
                 );
         }
     };
-#endif
+
     template<bool C>
     struct StringMakerBase {
-#if defined(CATCH_CONFIG_CPP11_IS_ENUM)
         template<typename T>
         static std::string convert( T const& v )
         {
             return EnumStringMaker<T>::convert( v );
         }
-#else
-        template<typename T>
-        static std::string convert( T const& ) { return unprintableString; }
-#endif
     };
 
     template<>
@@ -202,7 +168,6 @@ std::string toString( std::vector<T,Allocator> const& v ) {
 }
 
 
-#ifdef CATCH_CONFIG_CPP11_TUPLE
 
 // toString for tuples
 namespace TupleDetail {
@@ -242,7 +207,7 @@ struct StringMaker<std::tuple<Types...>> {
         return os.str();
     }
 };
-#endif // CATCH_CONFIG_CPP11_TUPLE
+
 
 namespace Detail {
     template<typename T>
