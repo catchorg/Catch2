@@ -65,19 +65,19 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( macroName, resultDisposition, expr ) \
+#define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition ); \
         try { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
-            ( __catchResult <= expr ).endExpression(); \
+            ( __catchResult <= __VA_ARGS__ ).endExpression(); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( resultDisposition ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::isTrue( false && static_cast<bool>( !!(expr) ) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+    } while( Catch::isTrue( false && static_cast<bool>( !!(__VA_ARGS__) ) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
     // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
 
 ///////////////////////////////////////////////////////////////////////////////
