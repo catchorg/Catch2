@@ -16,6 +16,7 @@
 #include <assert.h>
 #include <vector>
 #include <stdexcept>
+#include <memory>
 
 CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
 

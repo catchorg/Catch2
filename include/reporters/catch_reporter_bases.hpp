@@ -15,6 +15,7 @@
 #include <cfloat>
 #include <cstdio>
 #include <assert.h>
+#include <memory>
 
 namespace Catch {
 

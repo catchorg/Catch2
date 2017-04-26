@@ -20,6 +20,7 @@
 #include <string>
 #include <ostream>
 #include <map>
+#include <memory>
 
 namespace Catch
 {

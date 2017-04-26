@@ -14,6 +14,7 @@
 #include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"
 #include "internal/catch_text.h"
+#include "internal/catch_interfaces_reporter.h"
 
 #include <fstream>
 #include <stdlib.h>
