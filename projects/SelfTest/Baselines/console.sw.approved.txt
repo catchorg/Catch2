@@ -8462,6 +8462,18 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+assertions with commas are allowed
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+-------------------------------------------------------------------------------
 atomic if
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -9480,6 +9492,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 168 | 119 passed | 45 failed |  4 failed as expected
-assertions: 970 | 860 passed | 89 failed | 21 failed as expected
+test cases: 169 | 120 passed | 45 failed |  4 failed as expected
+assertions: 971 | 861 passed | 89 failed | 21 failed as expected
 

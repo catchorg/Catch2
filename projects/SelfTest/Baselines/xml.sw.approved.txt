@@ -9085,6 +9085,17 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="assertions with commas are allowed" filename="projects/<exe-name>/TrickyTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2}
+        </Original>
+        <Expanded>
+          { 1, 2 } == { 1, 2 }
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="atomic if" tags="[0][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
@@ -10128,7 +10139,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="860" failures="90" expectedFailures="21"/>
+    <OverallResults successes="861" failures="90" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="860" failures="89" expectedFailures="21"/>
+  <OverallResults successes="861" failures="89" expectedFailures="21"/>
 </Catch>

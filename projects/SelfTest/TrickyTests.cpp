@@ -398,3 +398,8 @@ TEST_CASE( "has printf", "" ) {
     // This can cause problems as, currently, stdout itself is not redirect - only the cout (and cerr) buffer
     printf( "spanner" );
 }
+
+TEST_CASE( "assertions with commas are allowed" ) {
+
+    REQUIRE( std::vector<int>{1, 2} == std::vector<int>{1, 2} );
+}
