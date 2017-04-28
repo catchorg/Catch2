@@ -245,28 +245,35 @@ SOURCE_GROUP("Benchmarks" FILES ${BENCH_SOURCES})
 
 # configure the executable
 include_directories(${HEADER_DIR})
-add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
-add_executable(Benchmark ${BENCH_SOURCES} ${HEADERS})
 
-# Add desired warnings
-if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-    target_compile_options( SelfTest PRIVATE -Wall -Wextra )
-    target_compile_options( Benchmark PRIVATE -Wall -Wextra )
-endif()
-if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-    target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX )
-    target_compile_options( Benchmark PRIVATE /W4 )
-endif()
+# Projects consuming Catch via ExternalProject_Add might want to use install step
+# without building all of our selftests.
+if (NOT NO_SELFTEST)
+    add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
+    add_executable(Benchmark ${BENCH_SOURCES} ${HEADERS})
+
+    # Add desired warnings
+    if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra )
+        target_compile_options( Benchmark PRIVATE -Wall -Wextra )
+    endif()
+    if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+        target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX )
+        target_compile_options( Benchmark PRIVATE /W4 )
+    endif()
 
 
-# configure unit tests via CTest
-enable_testing()
-add_test(NAME RunTests COMMAND SelfTest)
+    # configure unit tests via CTest
+    enable_testing()
+    add_test(NAME RunTests COMMAND SelfTest)
 
-add_test(NAME ListTests COMMAND SelfTest --list-tests)
-set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test cases")
+    add_test(NAME ListTests COMMAND SelfTest --list-tests)
+    set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test cases")
 
-add_test(NAME ListTags COMMAND SelfTest --list-tags)
-set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
+    add_test(NAME ListTags COMMAND SelfTest --list-tags)
+    set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
+
+endif() # !NO_SELFTEST
+
 
 install(DIRECTORY "single_include/" DESTINATION "include/catch")
