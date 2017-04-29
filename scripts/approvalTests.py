@@ -52,9 +52,9 @@ overallResult = 0
 
 def diffFiles(fileA, fileB):
     with open(fileA, 'r') as file:
-        aLines = file.readlines()
+        aLines = [line.rstrip() for line in file.readlines()]
     with open(fileB, 'r') as file:
-        bLines = file.readlines()
+        bLines = [line.rstrip() for line in file.readlines()]
 
     shortenedFilenameA = fileA.rsplit(os.sep, 1)[-1]
     shortenedFilenameB = fileB.rsplit(os.sep, 1)[-1]
@@ -127,7 +127,7 @@ def approve(baseName, args):
     if os.path.exists(baselinesPath):
         diffResult = diffFiles(baselinesPath, filteredResultsPath)
         if diffResult:
-            print(''.join(diffResult))
+            print('\n'.join(diffResult))
             print("  \n****************************\n  \033[91mResults differed")
             if len(diffResult) > overallResult:
                 overallResult = len(diffResult)
