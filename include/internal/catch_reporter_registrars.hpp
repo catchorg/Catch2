@@ -18,7 +18,7 @@ namespace Catch {
         class ReporterFactory : public IReporterFactory {
 
             virtual IStreamingReporterPtr create( ReporterConfig const& config ) const {
-                return std::make_shared<T>( config );
+                return std::unique_ptr<T>( new T( config ) );
             }
 
             virtual std::string getDescription() const {

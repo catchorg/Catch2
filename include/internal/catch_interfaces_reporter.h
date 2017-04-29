@@ -232,9 +232,9 @@ namespace Catch
 
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
-        virtual MultipleReporters* tryAsMulti() { return nullptr; }
+        virtual bool isMulti() const { return false; }
     };
-    using IStreamingReporterPtr = std::shared_ptr<IStreamingReporter>;
+    using IStreamingReporterPtr = std::unique_ptr<IStreamingReporter>;
 
     struct IReporterFactory {
         virtual ~IReporterFactory();
@@ -253,8 +253,7 @@ namespace Catch
         virtual Listeners const& getListeners() const = 0;
     };
 
-    IStreamingReporterPtr addReporter( IStreamingReporterPtr const& existingReporter, IStreamingReporterPtr const& additionalReporter );
-
+    void addReporter( IStreamingReporterPtr& existingReporter, IStreamingReporterPtr&& additionalReporter );
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED

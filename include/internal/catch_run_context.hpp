@@ -59,11 +59,11 @@ namespace Catch {
 
     public:
 
-        explicit RunContext( IConfigPtr const& _config, IStreamingReporterPtr const& reporter )
+        explicit RunContext( IConfigPtr const& _config, IStreamingReporterPtr&& reporter )
         :   m_runInfo( _config->name() ),
             m_context( getCurrentMutableContext() ),
             m_config( _config ),
-            m_reporter( reporter )
+            m_reporter( std::move( reporter ) )
         {
             m_context.setRunner( this );
             m_context.setConfig( m_config );
@@ -130,6 +130,9 @@ namespace Catch {
 
         IConfigPtr config() const {
             return m_config;
+        }
+        IStreamingReporter& reporter() const {
+            return *m_reporter;
         }
 
     private: // IResultCapture

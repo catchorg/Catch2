@@ -13,12 +13,12 @@
 namespace Catch {
 
 class MultipleReporters : public IStreamingReporter {
-    typedef std::vector<IStreamingReporterPtr > Reporters;
+    typedef std::vector<IStreamingReporterPtr> Reporters;
     Reporters m_reporters;
 
 public:
-    void add( IStreamingReporterPtr const& reporter ) {
-        m_reporters.push_back( reporter );
+    void add( IStreamingReporterPtr&& reporter ) {
+        m_reporters.push_back( std::move( reporter ) );
     }
 
 public: // IStreamingReporter
@@ -95,31 +95,31 @@ public: // IStreamingReporter
             reporter->skipTest( testInfo );
     }
 
-    virtual MultipleReporters* tryAsMulti() override {
-        return this;
+    virtual bool isMulti() const override {
+        return true;
     }
 
 };
 
-IStreamingReporterPtr addReporter( IStreamingReporterPtr const& existingReporter, IStreamingReporterPtr const& additionalReporter ) {
-    IStreamingReporterPtr resultingReporter;
+void addReporter( IStreamingReporterPtr& existingReporter, IStreamingReporterPtr&& additionalReporter ) {
 
-    if( existingReporter ) {
-        MultipleReporters* multi = existingReporter->tryAsMulti();
-        if( !multi ) {
-            multi = new MultipleReporters;
-            resultingReporter = IStreamingReporterPtr( multi );
-            if( existingReporter )
-                multi->add( existingReporter );
-        }
-        else
-            resultingReporter = existingReporter;
-        multi->add( additionalReporter );
+    if( !existingReporter ) {
+        existingReporter = std::move( additionalReporter );
+        return;
     }
-    else
-        resultingReporter = additionalReporter;
 
-    return resultingReporter;
+    MultipleReporters* multi = nullptr;
+
+    if( existingReporter->isMulti() ) {
+        multi = static_cast<MultipleReporters*>( existingReporter.get() );
+    }
+    else {
+        auto newMulti = std::unique_ptr<MultipleReporters>( new MultipleReporters );
+        newMulti->add( std::move( existingReporter ) );
+        multi = newMulti.get();
+        existingReporter = std::move( newMulti );
+    }
+    multi->add( std::move( additionalReporter ) );
 }
 
 
