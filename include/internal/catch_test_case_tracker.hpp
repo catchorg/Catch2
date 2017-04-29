@@ -269,7 +269,7 @@ namespace TestCaseTracking {
             if( ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
                 assert( childTracker );
                 assert( childTracker->isSectionTracker() );
-                section = std::dynamic_pointer_cast<SectionTracker>( childTracker );
+                section = std::static_pointer_cast<SectionTracker>( childTracker );
             }
             else {
                 section = std::make_shared<SectionTracker>( nameAndLocation, ctx, &currentTracker );
@@ -317,7 +317,7 @@ namespace TestCaseTracking {
             if( ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
                 assert( childTracker );
                 assert( childTracker->isIndexTracker() );
-                tracker = std::dynamic_pointer_cast<IndexTracker>( childTracker );
+                tracker = std::static_pointer_cast<IndexTracker>( childTracker );
             }
             else {
                 tracker = std::make_shared<IndexTracker>( nameAndLocation, ctx, &currentTracker, size );
