@@ -237,10 +237,13 @@ MessageTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="INFO gets logged on failure, even if captured before successful assertions" time="{duration}">
       <failure message="2 == 1" type="CHECK">
+this message may be logged later
 this message should be logged
 MessageTests.cpp:<line number>
       </failure>
       <failure message="2 == 0" type="CHECK">
+this message may be logged later
+this message should be logged
 and this, but later
 MessageTests.cpp:<line number>
       </failure>

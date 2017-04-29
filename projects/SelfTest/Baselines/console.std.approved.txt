@@ -368,7 +368,9 @@ MessageTests.cpp:<line number>: FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
-with message:
+with messages:
+  this message may be logged later
+  this message should be logged
   and this, but later
 
 -------------------------------------------------------------------------------

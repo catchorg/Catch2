@@ -128,7 +128,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
-          (*__error()) == 1
+          errno == 1
         </Original>
         <Expanded>
           1 == 1
@@ -2745,6 +2745,9 @@
         </Expanded>
       </Expression>
       <Info>
+        this message may be logged later
+      </Info>
+      <Info>
         this message should be logged
       </Info>
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
@@ -2756,6 +2759,12 @@
         </Expanded>
       </Expression>
       <Info>
+        this message may be logged later
+      </Info>
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
         and this, but later
       </Info>
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
@@ -2766,6 +2775,15 @@
           2 == 0
         </Expanded>
       </Expression>
+      <Info>
+        this message may be logged later
+      </Info>
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
+        and this, but later
+      </Info>
       <Info>
         but not this
       </Info>
