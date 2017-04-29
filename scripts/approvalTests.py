@@ -36,6 +36,13 @@ exeNameParser = re.compile(r'''
 # This is a hack until something more reasonable is figured out
 specialCaseParser = re.compile(r'file\((\d+)\)')
 
+# errno macro expands into various names depending on platform, so we need to fix them up as well
+errnoParser = re.compile(r'''
+    \(\*__errno_location\ \(\)\)
+    |
+    \(\*__error\(\)\)
+''', re.VERBOSE)
+
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
 else:
@@ -90,6 +97,7 @@ def filterLine(line):
     line = durationsParser.sub(' time="{duration}"', line)
     line = timestampsParser.sub(' timestamp="{iso8601-timestamp}"', line)
     line = specialCaseParser.sub('file:\g<1>', line)
+    line = errnoParser.sub('errno', line)
     return line
 
 
