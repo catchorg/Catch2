@@ -48,6 +48,7 @@ endfunction()
 # Worker function
 function(ParseFile SourceFile TestTarget)
     if(NOT EXISTS ${SourceFile})
+        message(WARNING "Cannot find source file: ${SourceFile}")
         return()
     endif()
     file(STRINGS ${SourceFile} Contents NEWLINE_CONSUME)
