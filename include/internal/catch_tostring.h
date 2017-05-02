@@ -180,7 +180,7 @@ namespace Catch {
     };
 
     template<>
-    struct StringMaker<nullptr_t> {
+    struct StringMaker<std::nullptr_t> {
         std::string operator()(std::nullptr_t);
     };
 

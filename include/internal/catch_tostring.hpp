@@ -197,7 +197,7 @@ std::string StringMaker<unsigned char>::operator()(unsigned char c) {
     return ::Catch::Detail::stringify(static_cast<char>(c));
 }
 
-std::string StringMaker<nullptr_t>::operator()(std::nullptr_t) {
+std::string StringMaker<std::nullptr_t>::operator()(std::nullptr_t) {
     return "nullptr";
 }
 
