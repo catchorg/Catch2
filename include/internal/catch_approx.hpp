@@ -114,7 +114,7 @@ namespace Detail {
 
         std::string toString() const {
             std::ostringstream oss;
-            oss << "Approx( " << Catch::toString( m_value ) << " )";
+            oss << "Approx( " << ::Catch::Detail::stringify( m_value ) << " )";
             return oss.str();
         }
 
@@ -127,9 +127,11 @@ namespace Detail {
 }
 
 template<>
-inline std::string toString<Detail::Approx>( Detail::Approx const& value ) {
-    return value.toString();
-}
+struct StringMaker<Catch::Detail::Approx> {
+    std::string operator()(Catch::Detail::Approx const& value) {
+        return value.toString();
+    }
+};
 
 } // end namespace Catch
 

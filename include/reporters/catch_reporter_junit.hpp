@@ -160,7 +160,7 @@ namespace Catch {
                     xml.writeAttribute( "classname", className );
                     xml.writeAttribute( "name", name );
                 }
-                xml.writeAttribute( "time", Catch::toString( sectionNode.stats.durationInSeconds ) );
+                xml.writeAttribute( "time", ::Catch::Detail::stringify( sectionNode.stats.durationInSeconds ) );
 
                 writeAssertions( sectionNode );
 

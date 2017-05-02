@@ -715,13 +715,13 @@ MessageTests.cpp:<line number>
 TrickyTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="stringify( has_maker )" time="{duration}"/>
+    <testcase classname="global" name="stringify( has_maker_and_toString )" time="{duration}"/>
+    <testcase classname="global" name="stringify( has_operator )" time="{duration}"/>
     <testcase classname="global" name="toString on const wchar_t const pointer returns the string contents" time="{duration}"/>
     <testcase classname="global" name="toString on const wchar_t pointer returns the string contents" time="{duration}"/>
     <testcase classname="global" name="toString on wchar_t const pointer returns the string contents" time="{duration}"/>
     <testcase classname="global" name="toString on wchar_t returns the string contents" time="{duration}"/>
-    <testcase classname="global" name="toString( has_maker )" time="{duration}"/>
-    <testcase classname="global" name="toString( has_maker_and_toString )" time="{duration}"/>
-    <testcase classname="global" name="toString( has_toString )" time="{duration}"/>
     <testcase classname="global" name="toString( vectors&lt;has_maker )" time="{duration}"/>
     <testcase classname="global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="global" name="toString(enum)" time="{duration}"/>

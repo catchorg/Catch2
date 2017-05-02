@@ -144,7 +144,7 @@ CATCH_TRANSLATE_EXCEPTION( CustomStdException& ex )
 
 CATCH_TRANSLATE_EXCEPTION( double& ex )
 {
-    return Catch::toString( ex );
+    return Catch::Detail::stringify( ex );
 }
 
 TEST_CASE("Non-std exceptions can be translated", "[.][failing][!throws]" )

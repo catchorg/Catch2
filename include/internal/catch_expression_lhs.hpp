@@ -81,7 +81,7 @@ public:
     }
 
     virtual void reconstructExpression( std::string& dest ) const override {
-        dest = Catch::toString( m_truthy );
+        dest = ::Catch::Detail::stringify( m_truthy );
     }
 
 private:
@@ -120,8 +120,8 @@ public:
     }
 
     virtual void reconstructExpression( std::string& dest ) const override {
-        std::string lhs = Catch::toString( m_lhs );
-        std::string rhs = Catch::toString( m_rhs );
+        std::string lhs = ::Catch::Detail::stringify( m_lhs );
+        std::string rhs = ::Catch::Detail::stringify( m_rhs );
         char delim = lhs.size() + rhs.size() < 40 &&
                      lhs.find('\n') == std::string::npos &&
                      rhs.find('\n') == std::string::npos ? ' ' : '\n';
@@ -155,7 +155,7 @@ public:
 
     virtual void reconstructExpression( std::string& dest ) const override {
         std::string matcherAsString = m_matcher.toString();
-        dest = Catch::toString( m_arg );
+        dest = ::Catch::Detail::stringify( m_arg );
         dest += ' ';
         if( matcherAsString == Detail::unprintableString )
             dest += m_matcherString;

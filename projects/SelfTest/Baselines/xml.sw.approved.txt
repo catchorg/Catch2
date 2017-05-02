@@ -128,7 +128,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
-          (*__error()) == 1
+          (*__errno_location ()) == 1
         </Original>
         <Expanded>
           1 == 1
@@ -6214,7 +6214,7 @@ re>"
           (std::pair&lt;int, int>( 1, 2 )) == aNicePair
         </Original>
         <Expanded>
-          std::pair( 1, 2 ) == std::pair( 1, 2 )
+          { 1, 2 } == { 1, 2 }
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6225,7 +6225,7 @@ re>"
           p == 0
         </Original>
         <Expanded>
-          NULL == 0
+          0 == 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
@@ -6233,7 +6233,7 @@ re>"
           p == pNULL
         </Original>
         <Expanded>
-          NULL == NULL
+          0 == 0
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
@@ -9516,7 +9516,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
-          Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }"
+          ::Catch::Detail::stringify( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }"
         </Original>
         <Expanded>
           "{ { 42, "Arthur" }, { "Ford", 24 } }"
@@ -9532,7 +9532,7 @@ spanner      <OverallResult success="true"/>
           p == 0
         </Original>
         <Expanded>
-          NULL == 0
+          0 == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9743,7 +9743,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="std::pair&lt;int,const std::string> -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
-          Catch::toString(value) == "{ 34, \"xyzzy\" }"
+          ::Catch::Detail::stringify(value) == "{ 34, \"xyzzy\" }"
         </Original>
         <Expanded>
           "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
@@ -9754,7 +9754,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="std::pair&lt;int,std::string> -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
-          Catch::toString( value ) == "{ 34, \"xyzzy\" }"
+          ::Catch::Detail::stringify( value ) == "{ 34, \"xyzzy\" }"
         </Original>
         <Expanded>
           "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
@@ -9765,7 +9765,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" tags="[pair][toString]" filename="projects/<exe-name>/ToStringPair.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringPair.cpp" >
         <Original>
-          Catch::toString( pr ) == "{ { \"green\", 55 } }"
+          ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }"
         </Original>
         <Expanded>
           "{ { "green", 55 } }"
@@ -9785,6 +9785,45 @@ spanner      <OverallResult success="true"/>
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="stringify( has_maker )" tags="[toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( item ) == "StringMaker&lt;has_maker>"
+        </Original>
+        <Expanded>
+          "StringMaker&lt;has_maker>"
+==
+"StringMaker&lt;has_maker>"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="stringify( has_maker_and_toString )" tags="[.][hide][toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( item ) == "StringMaker&lt;has_maker_and_operator>"
+        </Original>
+        <Expanded>
+          "StringMaker&lt;has_maker_and_operator>"
+==
+"StringMaker&lt;has_maker_and_operator>"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="stringify( has_operator )" tags="[toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( item ) == "operator&lt;&lt;( has_operator )"
+        </Original>
+        <Expanded>
+          "operator&lt;&lt;( has_operator )"
+==
+"operator&lt;&lt;( has_operator )"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="toString on const wchar_t const pointer returns the string contents" tags="[toString]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -9830,49 +9869,10 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( has_maker )" description="toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
-        <Original>
-          Catch::toString( item ) == "StringMaker&lt;has_maker>"
-        </Original>
-        <Expanded>
-          "StringMaker&lt;has_maker>"
-==
-"StringMaker&lt;has_maker>"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString( has_maker_and_toString )" tags="[.][hide][toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
-        <Original>
-          Catch::toString( item ) == "toString( has_maker_and_toString )"
-        </Original>
-        <Expanded>
-          "toString( has_maker_and_toString )"
-==
-"toString( has_maker_and_toString )"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString( has_toString )" tags="[toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
-        <Original>
-          Catch::toString( item ) == "toString( has_toString )"
-        </Original>
-        <Expanded>
-          "toString( has_toString )"
-==
-"toString( has_toString )"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="toString( vectors&lt;has_maker )" tags="[toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
         <Original>
-          Catch::toString( v ) == "{ StringMaker&lt;has_maker> }"
+          ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker> }"
         </Original>
         <Expanded>
           "{ StringMaker&lt;has_maker> }"
@@ -9885,7 +9885,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="toString(enum w/operator&lt;&lt;)" tags="[enum][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
-          Catch::toString(e0) == "E2{0}"
+          ::Catch::Detail::stringify(e0) == "E2{0}"
         </Original>
         <Expanded>
           "E2{0}" == "E2{0}"
@@ -9893,7 +9893,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
-          Catch::toString(e1) == "E2{1}"
+          ::Catch::Detail::stringify(e1) == "E2{1}"
         </Original>
         <Expanded>
           "E2{1}" == "E2{1}"
@@ -9904,7 +9904,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="toString(enum)" tags="[enum][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
-          Catch::toString(e0) == "0"
+          ::Catch::Detail::stringify(e0) == "0"
         </Original>
         <Expanded>
           "0" == "0"
@@ -9912,7 +9912,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
-          Catch::toString(e1) == "1"
+          ::Catch::Detail::stringify(e1) == "1"
         </Original>
         <Expanded>
           "1" == "1"
@@ -9923,7 +9923,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="vector&lt;int> -> toString" tags="[toString][vector]" filename="projects/<exe-name>/ToStringVector.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == "{  }"
+          ::Catch::Detail::stringify(vv) == "{  }"
         </Original>
         <Expanded>
           "{  }" == "{  }"
@@ -9931,7 +9931,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == "{ 42 }"
+          ::Catch::Detail::stringify(vv) == "{ 42 }"
         </Original>
         <Expanded>
           "{ 42 }" == "{ 42 }"
@@ -9939,7 +9939,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == "{ 42, 250 }"
+          ::Catch::Detail::stringify(vv) == "{ 42, 250 }"
         </Original>
         <Expanded>
           "{ 42, 250 }" == "{ 42, 250 }"
@@ -9950,7 +9950,7 @@ spanner      <OverallResult success="true"/>
     <TestCase name="vector&lt;string> -> toString" tags="[toString][vector]" filename="projects/<exe-name>/ToStringVector.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == "{  }"
+          ::Catch::Detail::stringify(vv) == "{  }"
         </Original>
         <Expanded>
           "{  }" == "{  }"
@@ -9958,7 +9958,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == "{ \"hello\" }"
+          ::Catch::Detail::stringify(vv) == "{ \"hello\" }"
         </Original>
         <Expanded>
           "{ "hello" }" == "{ "hello" }"
@@ -9966,7 +9966,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
         <Original>
-          Catch::toString(vv) == "{ \"hello\", \"world\" }"
+          ::Catch::Detail::stringify(vv) == "{ \"hello\", \"world\" }"
         </Original>
         <Expanded>
           "{ "hello", "world" }"

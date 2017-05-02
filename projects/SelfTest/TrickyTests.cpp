@@ -14,15 +14,11 @@
 
 #include "catch.hpp"
 
-namespace Catch
-{
-    template<>
-    std::string toString<std::pair<int, int> >( const std::pair<int, int>& value )
-    {
+namespace Catch {
+    std::string toString( const std::pair<int, int>& value ) {
         std::ostringstream oss;
         oss << "std::pair( " << value.first << ", " << value.second << " )";
         return oss.str();
-
     }
 }
 
@@ -340,7 +336,7 @@ struct Awkward
 TEST_CASE( "non streamable - with conv. op", "[Tricky]" )
 {
     Awkward awkward;
-    std::string s = Catch::toString( awkward );
+    std::string s = ::Catch::Detail::stringify( awkward );
     REQUIRE( s == "7" );
 }
 

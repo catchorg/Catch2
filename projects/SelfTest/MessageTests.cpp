@@ -134,5 +134,5 @@ TEST_CASE( "Pointers can be converted to strings", "[messages][.]" )
 {
     int p;
     WARN( "actual address of p: " << &p );
-    WARN( "toString(p): " << Catch::toString( &p ) );
+    WARN( "toString(p): " << ::Catch::Detail::stringify( &p ) );
 }

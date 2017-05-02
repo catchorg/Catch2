@@ -119,7 +119,7 @@ with expansion:
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( (*__error()) == 1 )
+  REQUIRE( (*__errno_location ()) == 1 )
 with expansion:
   1 == 1
 
@@ -5873,7 +5873,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair )
 with expansion:
-  std::pair( 1, 2 ) == std::pair( 1, 2 )
+  { 1, 2 } == { 1, 2 }
 
 -------------------------------------------------------------------------------
 Pointers can be compared to null
@@ -5885,13 +5885,13 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == 0 )
 with expansion:
-  NULL == 0
+  0 == 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == pNULL )
 with expansion:
-  NULL == NULL
+  0 == 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
@@ -8864,7 +8864,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" )
+  REQUIRE( ::Catch::Detail::stringify( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" )
 with expansion:
   "{ { 42, "Arthur" }, { "Ford", 24 } }"
   ==
@@ -8880,7 +8880,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == 0 )
 with expansion:
-  NULL == 0
+  0 == 0
 
 -------------------------------------------------------------------------------
 random SECTION tests
@@ -9078,7 +9078,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(value) == "{ 34, \"xyzzy\" }" )
+  REQUIRE( ::Catch::Detail::stringify(value) == "{ 34, \"xyzzy\" }" )
 with expansion:
   "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
 
@@ -9090,7 +9090,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( value ) == "{ 34, \"xyzzy\" }" )
+  REQUIRE( ::Catch::Detail::stringify( value ) == "{ 34, \"xyzzy\" }" )
 with expansion:
   "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
 
@@ -9102,7 +9102,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( pr ) == "{ { \"green\", 55 } }" )
+  REQUIRE( ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" )
 with expansion:
   "{ { "green", 55 } }"
   ==
@@ -9118,6 +9118,48 @@ TrickyTests.cpp:<line number>: FAILED:
   REQUIRE( std::string( "first" ) == "second" )
 with expansion:
   "first" == "second"
+
+-------------------------------------------------------------------------------
+stringify( has_maker )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker>" )
+with expansion:
+  "StringMaker<has_maker>"
+  ==
+  "StringMaker<has_maker>"
+
+-------------------------------------------------------------------------------
+stringify( has_maker_and_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker_and_operator>" )
+with expansion:
+  "StringMaker<has_maker_and_operator>"
+  ==
+  "StringMaker<has_maker_and_operator>"
+
+-------------------------------------------------------------------------------
+stringify( has_operator )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" )
+with expansion:
+  "operator<<( has_operator )"
+  ==
+  "operator<<( has_operator )"
 
 -------------------------------------------------------------------------------
 toString on const wchar_t const pointer returns the string contents
@@ -9168,48 +9210,6 @@ with expansion:
   ""wide load"" == ""wide load""
 
 -------------------------------------------------------------------------------
-toString( has_maker )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( item ) == "StringMaker<has_maker>" )
-with expansion:
-  "StringMaker<has_maker>"
-  ==
-  "StringMaker<has_maker>"
-
--------------------------------------------------------------------------------
-toString( has_maker_and_toString )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( item ) == "toString( has_maker_and_toString )" )
-with expansion:
-  "toString( has_maker_and_toString )"
-  ==
-  "toString( has_maker_and_toString )"
-
--------------------------------------------------------------------------------
-toString( has_toString )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( item ) == "toString( has_toString )" )
-with expansion:
-  "toString( has_toString )"
-  ==
-  "toString( has_toString )"
-
--------------------------------------------------------------------------------
 toString( vectors<has_maker )
 -------------------------------------------------------------------------------
 ToStringWhich.cpp:<line number>
@@ -9217,7 +9217,7 @@ ToStringWhich.cpp:<line number>
 
 ToStringWhich.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker> }" )
+  REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" )
 with expansion:
   "{ StringMaker<has_maker> }"
   ==
@@ -9231,13 +9231,13 @@ EnumToString.cpp:<line number>
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e0) == "E2{0}" )
+  CHECK( ::Catch::Detail::stringify(e0) == "E2{0}" )
 with expansion:
   "E2{0}" == "E2{0}"
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e1) == "E2{1}" )
+  CHECK( ::Catch::Detail::stringify(e1) == "E2{1}" )
 with expansion:
   "E2{1}" == "E2{1}"
 
@@ -9249,13 +9249,13 @@ EnumToString.cpp:<line number>
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e0) == "0" )
+  CHECK( ::Catch::Detail::stringify(e0) == "0" )
 with expansion:
   "0" == "0"
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e1) == "1" )
+  CHECK( ::Catch::Detail::stringify(e1) == "1" )
 with expansion:
   "1" == "1"
 
@@ -9267,19 +9267,19 @@ ToStringVector.cpp:<line number>
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{  }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" )
 with expansion:
   "{  }" == "{  }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42 }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42 }" )
 with expansion:
   "{ 42 }" == "{ 42 }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42, 250 }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42, 250 }" )
 with expansion:
   "{ 42, 250 }" == "{ 42, 250 }"
 
@@ -9291,19 +9291,19 @@ ToStringVector.cpp:<line number>
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{  }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" )
 with expansion:
   "{  }" == "{  }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ \"hello\" }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\" }" )
 with expansion:
   "{ "hello" }" == "{ "hello" }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ \"hello\", \"world\" }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\", \"world\" }" )
 with expansion:
   "{ "hello", "world" }"
   ==

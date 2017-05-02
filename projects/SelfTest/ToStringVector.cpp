@@ -6,21 +6,21 @@
 TEST_CASE( "vector<int> -> toString", "[toString][vector]" )
 {
     std::vector<int> vv;
-    REQUIRE( Catch::toString(vv) == "{  }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" );
     vv.push_back( 42 );
-    REQUIRE( Catch::toString(vv) == "{ 42 }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42 }" );
     vv.push_back( 250 );
-    REQUIRE( Catch::toString(vv) == "{ 42, 250 }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42, 250 }" );
 }
 
 TEST_CASE( "vector<string> -> toString", "[toString][vector]" )
 {
     std::vector<std::string> vv;
-    REQUIRE( Catch::toString(vv) == "{  }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" );
     vv.push_back( "hello" );
-    REQUIRE( Catch::toString(vv) == "{ \"hello\" }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\" }" );
     vv.push_back( "world" );
-    REQUIRE( Catch::toString(vv) == "{ \"hello\", \"world\" }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\", \"world\" }" );
 }
 
 namespace {
@@ -50,19 +50,19 @@ namespace {
 
 TEST_CASE( "vector<int,allocator> -> toString", "[toString][vector,allocator][c++11][.]" ) {
     std::vector<int,minimal_allocator<int> > vv;
-    REQUIRE( Catch::toString(vv) == "{  }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" );
     vv.push_back( 42 );
-    REQUIRE( Catch::toString(vv) == "{ 42 }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42 }" );
     vv.push_back( 250 );
-    REQUIRE( Catch::toString(vv) == "{ 42, 250 }" );
+    REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42, 250 }" );
 }
 
 TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator][c++11][.]" ) {
     using inner = std::vector<std::string, minimal_allocator<std::string>>;
     using vector = std::vector<inner>;
     vector v;
-    REQUIRE( Catch::toString(v) == "{  }" );
+    REQUIRE( ::Catch::Detail::stringify(v) == "{  }" );
     v.push_back( inner { "hello" } );
     v.push_back( inner { "world" } );
-    REQUIRE( Catch::toString(v) == "{ { \"hello\" }, { \"world\" } }" );
+    REQUIRE( ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" );
 }
