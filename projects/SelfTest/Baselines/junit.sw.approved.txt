@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="77" tests="972" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="77" tests="983" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="#748 - captures with unexpected exceptions" name="outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -109,6 +109,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="Character pretty printing" name="Specifically escaped" time="{duration}"/>
     <testcase classname="Character pretty printing" name="General chars" time="{duration}"/>
     <testcase classname="Character pretty printing" name="Low ASCII" time="{duration}"/>
+    <testcase classname="global" name="Commas in various macros are allowed" time="{duration}"/>
     <testcase classname="global" name="Comparing function pointers" time="{duration}"/>
     <testcase classname="global" name="Comparing member function pointers" time="{duration}"/>
     <testcase classname="global" name="Comparisons between ints where one side is computed" time="{duration}"/>
@@ -608,7 +609,6 @@ ExceptionTests.cpp:<line number>
     <testcase classname="XmlEncode" name="string with quotes" time="{duration}"/>
     <testcase classname="XmlEncode" name="string with control char (1)" time="{duration}"/>
     <testcase classname="XmlEncode" name="string with control char (x7F)" time="{duration}"/>
-    <testcase classname="global" name="assertions with commas are allowed" time="{duration}"/>
     <testcase classname="global" name="atomic if" time="{duration}"/>
     <testcase classname="global" name="boolean member" time="{duration}"/>
     <testcase classname="global" name="checkedElse" time="{duration}"/>

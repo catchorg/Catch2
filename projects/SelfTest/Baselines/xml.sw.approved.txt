@@ -898,6 +898,105 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Commas in various macros are allowed" filename="projects/<exe-name>/TrickyTests.cpp" >
+      <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;constructor_throws>{constructor_throws{}, constructor_throws{}}
+        </Original>
+        <Expanded>
+          std::vector&lt;constructor_throws>{constructor_throws{}, constructor_throws{}}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;constructor_throws>{constructor_throws{}, constructor_throws{}}
+        </Original>
+        <Expanded>
+          std::vector&lt;constructor_throws>{constructor_throws{}, constructor_throws{}}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2, 3} == std::vector&lt;int>{1, 2, 3}
+        </Original>
+        <Expanded>
+          std::vector&lt;int>{1, 2, 3} == std::vector&lt;int>{1, 2, 3}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2, 3} == std::vector&lt;int>{1, 2, 3}
+        </Original>
+        <Expanded>
+          std::vector&lt;int>{1, 2, 3} == std::vector&lt;int>{1, 2, 3}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2}
+        </Original>
+        <Expanded>
+          { 1, 2 } == { 1, 2 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2}
+        </Original>
+        <Expanded>
+          { 1, 2 } == { 1, 2 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          !std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2, 3}
+        </Original>
+        <Expanded>
+          !({ 1, 2 } == { 1, 2, 3 })
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          !std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2, 3}
+        </Original>
+        <Expanded>
+          !({ 1, 2 } == { 1, 2, 3 })
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_NOFAIL" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2}
+        </Original>
+        <Expanded>
+          { 1, 2 } == { 1, 2 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECKED_IF" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2}
+        </Original>
+        <Expanded>
+          { 1, 2 } == { 1, 2 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          true
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECKED_ELSE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2}
+        </Original>
+        <Expanded>
+          { 1, 2 } == { 1, 2 }
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Comparing function pointers" tags="[Tricky][function pointer]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
@@ -9086,14 +9185,6 @@ there"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="assertions with commas are allowed" filename="projects/<exe-name>/TrickyTests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
-        <Original>
-          std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2}
-        </Original>
-        <Expanded>
-          { 1, 2 } == { 1, 2 }
-        </Expanded>
-      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="atomic if" tags="[0][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -10139,7 +10230,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="861" failures="90" expectedFailures="21"/>
+    <OverallResults successes="872" failures="90" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="861" failures="89" expectedFailures="21"/>
+  <OverallResults successes="872" failures="89" expectedFailures="21"/>
 </Catch>

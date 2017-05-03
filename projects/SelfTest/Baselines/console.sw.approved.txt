@@ -824,6 +824,74 @@ with expansion:
   5 == 5
 
 -------------------------------------------------------------------------------
+Commas in various macros are allowed
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE_FALSE( std::vector<int>{1, 2} == std::vector<int>{1, 2, 3} )
+with expansion:
+  !({ 1, 2 } == { 1, 2, 3 })
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_FALSE( std::vector<int>{1, 2} == std::vector<int>{1, 2, 3} )
+with expansion:
+  !({ 1, 2 } == { 1, 2, 3 })
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_NOFAIL( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECKED_IF( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( true )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECKED_ELSE( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+-------------------------------------------------------------------------------
 Comparing function pointers
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -8462,18 +8530,6 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
-assertions with commas are allowed
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
-with expansion:
-  { 1, 2 } == { 1, 2 }
-
--------------------------------------------------------------------------------
 atomic if
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -9492,6 +9548,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 169 | 120 passed | 45 failed |  4 failed as expected
-assertions: 971 | 861 passed | 89 failed | 21 failed as expected
+test cases: 170 | 121 passed | 45 failed |  4 failed as expected
+assertions: 982 | 872 passed | 89 failed | 21 failed as expected
 
