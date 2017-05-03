@@ -16,16 +16,7 @@ std::ostream& operator << ( std::ostream& os, T const& value ) {
 
 (where ```T``` is your type and ```convertMyTypeToString``` is where you'll write whatever code is necessary to make your type printable - it doesn't have to be in another function).
 
-You should put this function in the same namespace as your type.
-
-Alternatively you may prefer to write it as a member function:
-
-```
-std::ostream& T::operator << ( std::ostream& os ) const {
-	os << convertMyTypeToString( *this );
-	return os;
-}
-```
+You should put this function in the same namespace as your type and it has to be declared before including Catch's header.
 
 ## Catch::toString overload
 
@@ -39,11 +30,12 @@ namespace Catch {
 }
 ```
 
-Again ```T``` is your type and ```convertMyTypeToString``` is where you'll write whatever code is necessary to make your type printable. Note that the function must be in the Catch namespace, which itself must be in the global namespace.
+Again ```T``` is your type and ```convertMyTypeToString``` is where you'll write whatever code is necessary to make your type printable. Note that the function must be in the Catch namespace, which itself must be in the global namespace and must be declared _before_ Catch's header is included.
+
+**Please note that overloading `Catch::toString` is currently considered legacy and will not be supported in the next major version of Catch.**
 
 ## Catch::StringMaker<T> specialisation
-
-There are some cases where overloading toString does not work as expected. Specialising StringMaker<T> gives you more precise, and reliable, control - but at the cost of slightly more code and complexity:
+Another way of telling Catch how to convert a type to string is specialising `Catch::StringMaker` template. This allows you to have separate way of stringifying types for Catch, than you have for writing it to a stream and also doesn't require you to declare it before including Catch's header.
 
 ```
 namespace Catch {
