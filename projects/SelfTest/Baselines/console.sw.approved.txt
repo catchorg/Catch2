@@ -119,7 +119,7 @@ with expansion:
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( (*__errno_location ()) == 1 )
+  REQUIRE( (*__error()) == 1 )
 with expansion:
   1 == 1
 
@@ -6945,37 +6945,33 @@ TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "[@zzz]" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "[@zzz]"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "[@zzz]"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "file" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "file"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "file"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "2" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "2"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "2"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "10" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "10"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "10"
 
 -------------------------------------------------------------------------------
 Tag alias can be registered against tag patterns

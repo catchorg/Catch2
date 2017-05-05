@@ -128,7 +128,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
-          (*__errno_location ()) == 1
+          (*__error()) == 1
         </Original>
         <Expanded>
           1 == 1
@@ -7486,10 +7486,9 @@ hello
             what, Contains( "[@zzz]" )
           </Original>
           <Expanded>
-            "error: tag alias, "[@zzz]" already registered.
-	First seen at file:2
-	Redefined at file:10
-" contains: "[@zzz]"
+            "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "[@zzz]"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7497,10 +7496,9 @@ hello
             what, Contains( "file" )
           </Original>
           <Expanded>
-            "error: tag alias, "[@zzz]" already registered.
-	First seen at file:2
-	Redefined at file:10
-" contains: "file"
+            "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "file"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7508,10 +7506,9 @@ hello
             what, Contains( "2" )
           </Original>
           <Expanded>
-            "error: tag alias, "[@zzz]" already registered.
-	First seen at file:2
-	Redefined at file:10
-" contains: "2"
+            "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "2"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7519,10 +7516,9 @@ hello
             what, Contains( "10" )
           </Original>
           <Expanded>
-            "error: tag alias, "[@zzz]" already registered.
-	First seen at file:2
-	Redefined at file:10
-" contains: "10"
+            "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "10"
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>

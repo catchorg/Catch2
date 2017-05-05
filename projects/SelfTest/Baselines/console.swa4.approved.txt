@@ -119,7 +119,7 @@ with expansion:
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( (*__errno_location ()) == 1 )
+  REQUIRE( (*__error()) == 1 )
 with expansion:
   1 == 1
 
