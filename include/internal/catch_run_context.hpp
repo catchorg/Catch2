@@ -371,7 +371,7 @@ namespace Catch {
         if( IResultCapture* capture = getCurrentContext().getResultCapture() )
             return *capture;
         else
-            throw std::logic_error( "No result capture instance" );
+            CATCH_INTERNAL_ERROR( "No result capture instance" );
     }
 
 } // end namespace Catch

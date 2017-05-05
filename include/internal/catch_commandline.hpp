@@ -19,19 +19,16 @@ namespace Catch {
 
     inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
     inline void abortAfterX( ConfigData& config, int x ) {
-        if( x < 1 )
-            throw std::runtime_error( "Value after -x or --abortAfter must be greater than zero" );
+        CATCH_ENFORCE( x >=1, "Value after -x or --abortAfter must be greater than zero" );
         config.abortAfter = x;
     }
-    inline void addTestOrTags( ConfigData& config, std::string const& _testSpec ) { config.testsOrTags.push_back( _testSpec ); }
+    inline void addTestOrTags( ConfigData& config, std::string const& testSpec ) { config.testsOrTags.push_back( testSpec ); }
     inline void addSectionToRun( ConfigData& config, std::string const& sectionName ) { config.sectionsToRun.push_back( sectionName ); }
-    inline void addReporterName( ConfigData& config, std::string const& _reporterName ) { config.reporterNames.push_back( _reporterName ); }
+    inline void addReporterName( ConfigData& config, std::string const& reporterName ) { config.reporterNames.push_back( reporterName ); }
 
-    inline void addWarning( ConfigData& config, std::string const& _warning ) {
-        if( _warning == "NoAssertions" )
-            config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
-        else
-            throw std::runtime_error( "Unrecognised warning: '" + _warning + '\'' );
+    inline void addWarning( ConfigData& config, std::string const& warning ) {
+        CATCH_ENFORCE( warning == "NoAssertions", "Unrecognised warning: '" << warning << "'" );
+        config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
     }
     inline void setOrder( ConfigData& config, std::string const& order ) {
         if( startsWith( "declared", order ) )
@@ -41,7 +38,7 @@ namespace Catch {
         else if( startsWith( "random", order ) )
             config.runOrder = RunTests::InRandomOrder;
         else
-            throw std::runtime_error( "Unrecognised ordering: '" + order + '\'' );
+            CATCH_ENFORCE( false, "Unrecognised ordering: '" << order << '\'' );
     }
     inline void setRngSeed( ConfigData& config, std::string const& seed ) {
         if( seed == "time" ) {
@@ -51,8 +48,7 @@ namespace Catch {
             std::stringstream ss;
             ss << seed;
             ss >> config.rngSeed;
-            if( ss.fail() )
-                throw std::runtime_error( "Argument to --rng-seed should be the word 'time' or a number" );
+            CATCH_ENFORCE( !ss.fail(), "Argument to --rng-seed should be the word 'time' or a number" );
         }
     }
     inline void setVerbosity( ConfigData& config, int level ) {
@@ -74,15 +70,14 @@ namespace Catch {
         else if( mode == "auto" )
             config.useColour = UseColour::Auto;
         else
-            throw std::runtime_error( "colour mode must be one of: auto, yes or no" );
+            CATCH_ENFORCE( false, "colour mode must be one of: auto, yes or no" );
     }
     inline void forceColour( ConfigData& config ) {
         config.useColour = UseColour::Yes;
     }
     inline void loadTestNamesFromFile( ConfigData& config, std::string const& _filename ) {
         std::ifstream f( _filename.c_str() );
-        if( !f.is_open() )
-            throw std::domain_error( "Unable to load input file: " + _filename );
+        CATCH_ENFORCE( f.is_open(), "Unable to load input file: '" << _filename << "'" );
 
         std::string line;
         while( std::getline( f, line ) ) {

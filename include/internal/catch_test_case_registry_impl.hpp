@@ -62,18 +62,12 @@ namespace Catch {
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
         std::set<TestCase> seenFunctions;
-        for( auto const function : functions ) {
-            std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( function );
-            if( !prev.second ) {
-                std::ostringstream ss;
-
-                ss  << Colour( Colour::Red )
-                    << "error: TEST_CASE( \"" << function.name << "\" ) already defined.\n"
-                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << '\n'
-                    << "\tRedefined at " << function.getTestCaseInfo().lineInfo << std::endl;
-
-                throw std::runtime_error(ss.str());
-            }
+        for( auto const& function : functions ) {
+            auto prev = seenFunctions.insert( function );
+            CATCH_ENFORCE( prev.second,
+                    "error: TEST_CASE( \"" << function.name << "\" ) already defined.\n"
+                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
+                    << "\tRedefined at " << function.getTestCaseInfo().lineInfo );
         }
     }
 

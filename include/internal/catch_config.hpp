@@ -118,7 +118,7 @@ namespace Catch {
                 if( m_data.outputFilename == "%debug" )
                     return new DebugOutStream();
                 else
-                    throw std::domain_error( "Unrecognised stream: " + m_data.outputFilename );
+                    CATCH_ERROR( "Unrecognised stream: '" << m_data.outputFilename << "'" );
             }
             else
                 return new FileStream( m_data.outputFilename );

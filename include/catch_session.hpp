@@ -23,12 +23,10 @@
 namespace Catch {
 
     IStreamingReporterPtr createReporter( std::string const& reporterName, IConfigPtr const& config ) {
-        if( auto reporter = getRegistryHub().getReporterRegistry().create( reporterName, config ) )
-            return reporter;
+        auto reporter = getRegistryHub().getReporterRegistry().create( reporterName, config );
+        CATCH_ENFORCE( reporter, "No reporter registered with name: '" << reporterName << "'" );
 
-        std::ostringstream oss;
-        oss << "No reporter registered with name: '" << reporterName << "'";
-        throw std::domain_error( oss.str() );
+        return reporter;
     }
 
     IStreamingReporterPtr makeReporter( std::shared_ptr<Config> const& config ) {
@@ -105,11 +103,8 @@ namespace Catch {
 
         Session()
         : m_cli( makeCommandLineParser() ) {
-            if( alreadyInstantiated ) {
-                std::string msg = "Only one instance of Catch::Session can ever be used";
-                Catch::cerr() << msg << std::endl;
-                throw std::logic_error( msg );
-            }
+            if( alreadyInstantiated )
+                CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" );
             alreadyInstantiated = true;
         }
         ~Session() {

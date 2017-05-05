@@ -37,15 +37,10 @@ namespace Catch {
         return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !std::isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
-        if( isReservedTag( tag ) ) {
-            std::ostringstream ss;
-            ss << Colour(Colour::Red)
-               << "Tag name [" << tag << "] not allowed.\n"
+        CATCH_ENFORCE( !isReservedTag( tag ),
+               "Tag name: [" << tag << "] is not allowed.\n"
                << "Tag names starting with non alpha-numeric characters are reserved\n"
-               << Colour(Colour::FileName)
-               << _lineInfo << '\n';
-            throw std::runtime_error(ss.str());
-        }
+               << _lineInfo );
     }
 
     TestCase makeTestCase(  ITestCase* _testCase,

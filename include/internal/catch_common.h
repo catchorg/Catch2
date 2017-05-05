@@ -23,6 +23,7 @@
 
 #include <sstream>
 #include <algorithm>
+#include <exception>
 
 namespace Catch {
 
@@ -99,8 +100,6 @@ namespace Catch {
     inline bool alwaysTrue() { return true; }
     inline bool alwaysFalse() { return false; }
 
-    void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
-
     void seedRng( IConfig const& config );
     unsigned int rngSeed();
 
@@ -117,10 +116,29 @@ namespace Catch {
     T const& operator + ( T const& value, StreamEndStop ) {
         return value;
     }
+
+    template<typename ExceptionT = std::domain_error>
+    class Error {
+        std::ostringstream m_oss;
+
+    public:
+        template<typename T>
+        auto operator <<( T const& value ) -> Error& {
+            m_oss << value;
+            return *this;
+        }
+
+        [[noreturn]]
+        void raise() {
+            throw ExceptionT( m_oss.str() );
+        }
+    };
 }
 
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
-#define CATCH_INTERNAL_ERROR( msg ) ::Catch::throwLogicError( msg, CATCH_INTERNAL_LINEINFO );
+#define CATCH_INTERNAL_ERROR( msg ) do{ ( ::Catch::Error<std::logic_error>() << CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg ).raise(); } while(false)
+#define CATCH_ERROR( msg ) ( ::Catch::Error<>() << msg ).raise()
+#define CATCH_ENFORCE( condition, msg ) do{ if( !(condition) ) CATCH_ERROR( msg ); } while(false)
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 

@@ -202,11 +202,6 @@ namespace TestCaseTracking {
                 m_ctx.currentTracker().close();
 
             switch( m_runState ) {
-                case NotStarted:
-                case CompletedSuccessfully:
-                case Failed:
-                    throw std::logic_error( "Illogical state" );
-
                 case NeedsAnotherRun:
                     break;;
 
@@ -218,8 +213,13 @@ namespace TestCaseTracking {
                         m_runState = CompletedSuccessfully;
                     break;
 
+                case NotStarted:
+                case CompletedSuccessfully:
+                case Failed:
+                    CATCH_INTERNAL_ERROR( "Illogical state: " << m_runState );
+
                 default:
-                    throw std::logic_error( "Unexpected state" );
+                    CATCH_INTERNAL_ERROR( "Unknown state: " << m_runState );
             }
             moveToParent();
             m_ctx.completeCycle();

@@ -49,16 +49,9 @@ namespace Catch
                     return startsWith( adjustCase( str ), m_pattern );
                 case WildcardAtBothEnds:
                     return contains( adjustCase( str ), m_pattern );
+                default:
+                    CATCH_INTERNAL_ERROR( "Unknown enum" );
             }
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-#endif
-            throw std::logic_error( "Unknown enum" );
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
         }
     private:
         std::string adjustCase( std::string const& str ) const {

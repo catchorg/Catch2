@@ -59,11 +59,7 @@ namespace Catch {
 
     FileStream::FileStream( std::string const& filename ) {
         m_ofs.open( filename.c_str() );
-        if( m_ofs.fail() ) {
-            std::ostringstream oss;
-            oss << "Unable to open file: '" << filename << '\'';
-            throw std::domain_error( oss.str() );
-        }
+        CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << "'" );
     }
 
     std::ostream& FileStream::stream() const {

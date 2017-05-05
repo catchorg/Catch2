@@ -73,7 +73,7 @@ namespace {
                 case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
                 case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
 
-                case Colour::Bright: throw std::logic_error( "not a colour" );
+                case Colour::Bright: CATCH_INTERNAL_ERROR( "not a colour" );
             }
         }
 
@@ -134,7 +134,7 @@ namespace {
                 case Colour::BrightGreen:   return setColour( "[1;32m" );
                 case Colour::BrightWhite:   return setColour( "[1;37m" );
 
-                case Colour::Bright: throw std::logic_error( "not a colour" );
+                case Colour::Bright: CATCH_INTERNAL_ERROR( "not a colour" );
             }
         }
         static IColourImpl* instance() {
