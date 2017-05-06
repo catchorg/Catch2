@@ -166,10 +166,10 @@ namespace Catch {
             return returnCode;
         }
 
-#if defined(WIN32) && defined(UNICODE)
+    #if defined(WIN32) && defined(UNICODE)
         int run( int argc, wchar_t const* const* const argv ) {
 
-            char *utf8Argv[] = new char *[ argc ];
+            char **utf8Argv = new char *[ argc ];
 
             for ( int i = 0; i < argc; ++i ) {
                 int bufSize = WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, NULL, 0, NULL, NULL );
@@ -190,7 +190,7 @@ namespace Catch {
 
             return returnCode;
         }
-#endif
+    #endif
 
         int run() {
             if( m_configData.showHelp )
