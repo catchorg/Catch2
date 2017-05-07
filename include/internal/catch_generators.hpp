@@ -98,7 +98,6 @@ public:
             index += generator->size();
         }
         CATCH_INTERNAL_ERROR( "Indexed past end of generated range" );
-        return T(); // Suppress spurious "not all control paths return a value" warning in Visual Studio - if you know how to fix this please do so
     }
 
     void add( const IGenerator<T>* generator ) {
