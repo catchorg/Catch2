@@ -121,9 +121,9 @@ namespace Catch {
 #define CATCH_INTERNAL_LINEINFO \
     ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
 #define CATCH_INTERNAL_ERROR( msg ) \
-    throw std::logic_error( static_cast<std::ostringstream&>( std::ostringstream() << CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg ).str() )
+    throw std::logic_error( static_cast<std::ostringstream&&>( std::ostringstream() << CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg ).str() )
 #define CATCH_ERROR( msg ) \
-    throw std::domain_error( static_cast<std::ostringstream&>( std::ostringstream() << msg ).str() )
+    throw std::domain_error( static_cast<std::ostringstream&&>( std::ostringstream() << msg ).str() )
 #define CATCH_ENFORCE( condition, msg ) \
     do{ if( !(condition) ) CATCH_ERROR( msg ); } while(false)
 
