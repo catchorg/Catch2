@@ -10,6 +10,7 @@ environment:
     matrix:
         - additional_flags: "/permissive- /std:c++latest"
         - additional_flags: ""
+        - additional_flags: "/D _UNICODE /D UNICODE /ENTRY:wmainCRTStartup"
 
 matrix:
     exclude:
