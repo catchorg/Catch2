@@ -9,8 +9,13 @@ os:
 environment:
     matrix:
         - additional_flags: "/permissive- /std:c++latest"
+          additional_linker_flags: ""
+
         - additional_flags: ""
-        - additional_flags: "/D _UNICODE /D UNICODE /ENTRY:wmainCRTStartup"
+          additional_linker_flags: ""
+
+        - additional_flags: "/D_UNICODE /DUNICODE"
+          additional_linker_flags: "/ENTRY:wmainCRTStartup"
 
 matrix:
     exclude:
@@ -43,6 +48,7 @@ configuration:
 #Cmake will autodetect the compiler, but we set the arch
 before_build:
   - set CXXFLAGS=%additional_flags%
+  - set LDFLAGS=%additional_linker_flags"
   - cmake -H. -BBuild -A%PLATFORM%
 
 # build with MSBuild
