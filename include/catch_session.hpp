@@ -166,6 +166,32 @@ namespace Catch {
             return returnCode;
         }
 
+    #if defined(WIN32) && defined(UNICODE)
+        int run( int argc, wchar_t const* const* const argv ) {
+
+            char **utf8Argv = new char *[ argc ];
+
+            for ( int i = 0; i < argc; ++i ) {
+                int bufSize = WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, NULL, 0, NULL, NULL );
+
+                utf8Argv[ i ] = new char[ bufSize ];
+
+                WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, NULL, NULL );
+            }
+
+            int returnCode = applyCommandLine( argc, utf8Argv );
+            if( returnCode == 0 )
+                returnCode = run();
+
+            for ( int i = 0; i < argc; ++i )
+                delete [] utf8Argv[ i ];
+
+            delete [] utf8Argv;
+
+            return returnCode;
+        }
+    #endif
+
         int run() {
             if( m_configData.showHelp )
                 return 0;
