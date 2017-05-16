@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
 [![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght/branch/master?svg=true)](https://ci.appveyor.com/project/philsquared/catch/branch/master)
 
-<a href="https://github.com/philsquared/Catch/releases/download/v1.9.3/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
+<a href="https://github.com/philsquared/Catch/releases/download/v1.9.4/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
 
 ## What's the Catch?
 

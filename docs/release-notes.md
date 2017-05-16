@@ -1,3 +1,13 @@
+# 1.9.4
+
+### Fixes
+* `CATCH_FAIL` macro no longer causes compilation error without variadic macro support
+* `INFO` messages are no longer cleared after being reported once
+
+### Improvements and minor changes
+* Catch now uses `wmain` when compiled under Windows and `UNICODE` is defined.
+  * Note that Catch still officially supports only ASCII
+
 # 1.9.3
 
 ### Fixes
