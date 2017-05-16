@@ -31,7 +31,7 @@ struct MyListener : Catch::TestEventListenerBase {
         // Perform some setup before a test case is run
     }
     
-    virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
+    virtual void testCaseEnded( Catch::TestCaseStats const& testCaseStats ) override {
         // Tear-down after a test case is run
     }    
 };
