@@ -108,19 +108,31 @@ function(ParseFile SourceFile TestTarget)
         else()
             set(CTestName "${Name}")
         endif()
+        set(CTestName "${TestTarget}:${CTestName}")
+        # add target to labels to enable running all tests added from this target
+        set(Labels ${TestTarget})
         if(TestStringsLength EQUAL 2)
             list(GET TestStrings 1 Tags)
             string(TOLOWER "${Tags}" Tags)
+            # remove target from labels if the test is hidden
+            if("${Tags}" MATCHES ".*\\[!?(hide|\\.)\\].*")
+                list(REMOVE_ITEM Labels ${TestTarget})
+            endif()
             string(REPLACE "]" ";" Tags "${Tags}")
             string(REPLACE "[" "" Tags "${Tags}")
         endif()
         
+        list(APPEND Labels ${Tags})
+        
         PrintDebugMessage("Adding test \"${CTestName}\"")
+        if(Labels)
+            PrintDebugMessage("Setting labels to ${Labels}")
+        endif()
 
         # Add the test and set its properties
         add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
         set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
-                                                LABELS "${Tags}")
+                                                LABELS "${Labels}")
 
     endforeach()
 endfunction()
