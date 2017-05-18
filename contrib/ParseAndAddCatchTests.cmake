@@ -47,6 +47,8 @@ endfunction()
 
 # Worker function
 function(ParseFile SourceFile TestTarget)
+    # accroding to CMake docs EXISTS behavior is well-defined only for full paths.
+    get_filename_component(SourceFile ${SourceFile} ABSOLUTE)
     if(NOT EXISTS ${SourceFile})
         message(WARNING "Cannot find source file: ${SourceFile}")
         return()
