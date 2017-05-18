@@ -25,9 +25,23 @@
 #                                                                                                  #
 #        include(ParseAndAddCatchTests)                                                            #
 #        ParseAndAddCatchTests(${PROJECT_NAME})                                                    #
+#                                                                                                  #  
+# The following variables affect the behavior of the script:                                       #
+#                                                                                                  #
+#    PARSE_CATCH_TESTS_VERBOSE (Default OFF)                                                       #
+#    -- enabels debug messages                                                                     #
+#                                                                                                  #
 #==================================================================================================#
 
 cmake_minimum_required(VERSION 2.8.8)
+
+option(PARSE_CATCH_TESTS_VERBOSE "Print Catch to CTest parser debug messages" OFF)
+
+function(PrintDebugMessage)
+    if(PARSE_CATCH_TESTS_VERBOSE)
+            message(STATUS "ParseAndAddCatchTests: ${ARGV}")
+    endif()
+endfunction()
 
 # This removes the contents between
 #  - block comments (i.e. /* ... */) 
@@ -53,6 +67,7 @@ function(ParseFile SourceFile TestTarget)
         message(WARNING "Cannot find source file: ${SourceFile}")
         return()
     endif()
+    PrintDebugMessage("parsing ${SourceFile}")
     file(STRINGS ${SourceFile} Contents NEWLINE_CONSUME)
 
     # Remove block and fullline comments
@@ -99,6 +114,8 @@ function(ParseFile SourceFile TestTarget)
             string(REPLACE "]" ";" Tags "${Tags}")
             string(REPLACE "[" "" Tags "${Tags}")
         endif()
+        
+        PrintDebugMessage("Adding test \"${CTestName}\"")
 
         # Add the test and set its properties
         add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
@@ -110,8 +127,11 @@ endfunction()
 
 # entry point
 function(ParseAndAddCatchTests TestTarget)
+    PrintDebugMessage("Started parsing ${TestTarget}")
     get_target_property(SourceFiles ${TestTarget} SOURCES)
+    PrintDebugMessage("Found the following sources: ${SourceFiles}")
     foreach(SourceFile ${SourceFiles})
         ParseFile(${SourceFile} ${TestTarget})
     endforeach()
+    PrintDebugMessage("Finished parsing ${TestTarget}")
 endfunction()
