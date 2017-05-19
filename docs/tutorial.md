@@ -7,7 +7,7 @@ The full source for Catch, including test projects, documentation, and other thi
 
 ## Where to put it?
 
-Catch is header only. All you need to do is drop the file(s) somewhere reachable from your project - either in some central location you can set your header search path to find, or directly into your project tree itself! This is a particularly good option for other Open-Source projects that want to use Catch for their test suite. See [this blog entry for more on that](http://www.levelofindirection.com/journal/2011/5/27/unit-testing-in-c-and-objective-c-just-got-ridiculously-easi.html). 
+Catch is header only. All you need to do is drop the file(s) somewhere reachable from your project - either in some central location you can set your header search path to find, or directly into your project tree itself! This is a particularly good option for other Open-Source projects that want to use Catch for their test suite. 
 
 The rest of this tutorial will assume that the Catch single-include header (or the include folder) is available unqualified - but you may need to prefix it with a folder name if necessary.
 
