@@ -94,9 +94,7 @@ namespace {
             ? config->useColour()
             : UseColour::Auto;
         if( colourMode == UseColour::Auto )
-            colourMode = !isDebuggerActive()
-                ? UseColour::Yes
-                : UseColour::No;
+            colourMode = UseColour::Yes;
         return colourMode == UseColour::Yes
             ? &s_instance
             : NoColourImpl::instance();
@@ -155,7 +153,7 @@ namespace {
             ? config->useColour()
             : UseColour::Auto;
         if( colourMode == UseColour::Auto )
-            colourMode = (!isDebuggerActive() && isatty(STDOUT_FILENO) )
+            colourMode = isatty(STDOUT_FILENO)
                 ? UseColour::Yes
                 : UseColour::No;
         return colourMode == UseColour::Yes
