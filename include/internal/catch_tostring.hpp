@@ -76,7 +76,7 @@ std::string fpToString( T value, int precision ) {
 //
 //// ======================================================= ////
 
-std::string StringMaker<std::string>::operator()(const std::string& str) {
+std::string StringMaker<std::string>::convert(const std::string& str) {
     if (!getCurrentContext().getConfig()->showInvisibles()) {
         return '"' + str + '"';
     }
@@ -99,7 +99,7 @@ std::string StringMaker<std::string>::operator()(const std::string& str) {
     return s;
 }
 
-std::string StringMaker<std::wstring>::operator()(const std::wstring& wstr) {
+std::string StringMaker<std::wstring>::convert(const std::wstring& wstr) {
     std::string s;
     s.reserve(wstr.size());
     for (auto c : wstr) {
@@ -108,28 +108,28 @@ std::string StringMaker<std::wstring>::operator()(const std::wstring& wstr) {
     return ::Catch::Detail::stringify(s);
 }
 
-std::string StringMaker<char const*>::operator()(char const* str) {
+std::string StringMaker<char const*>::convert(char const* str) {
     if (str) {
         return ::Catch::Detail::stringify(std::string{ str });
     } else {
         return{ "{null string}" };
     }
 }
-std::string StringMaker<char*>::operator()(char* str) {
+std::string StringMaker<char*>::convert(char* str) {
     if (str) {
         return ::Catch::Detail::stringify(std::string{ str });
     } else {
         return{ "{null string}" };
     }
 }
-std::string StringMaker<wchar_t const*>::operator()(wchar_t const * str) {
+std::string StringMaker<wchar_t const*>::convert(wchar_t const * str) {
     if (str) {
         return ::Catch::Detail::stringify(std::wstring{ str });
     } else {
         return{ "{null string}" };
     }
 }
-std::string StringMaker<wchar_t *>::operator()(wchar_t * str) {
+std::string StringMaker<wchar_t *>::convert(wchar_t * str) {
     if (str) {
         return ::Catch::Detail::stringify(std::wstring{ str });
     } else {
@@ -138,13 +138,13 @@ std::string StringMaker<wchar_t *>::operator()(wchar_t * str) {
 }
 
 
-std::string StringMaker<int>::operator()(int value) {
+std::string StringMaker<int>::convert(int value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));
 }
-std::string StringMaker<long>::operator()(long value) {
+std::string StringMaker<long>::convert(long value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));
 }
-std::string StringMaker<long long>::operator()(long long value) {
+std::string StringMaker<long long>::convert(long long value) {
     std::ostringstream oss;
     oss << value;
     if (value > Detail::hexThreshold) {
@@ -153,13 +153,13 @@ std::string StringMaker<long long>::operator()(long long value) {
     return oss.str();
 }
 
-std::string StringMaker<unsigned int>::operator()(unsigned int value) {
+std::string StringMaker<unsigned int>::convert(unsigned int value) {
     return ::Catch::Detail::stringify(static_cast<unsigned long long>(value));
 }
-std::string StringMaker<unsigned long>::operator()(unsigned long value) {
+std::string StringMaker<unsigned long>::convert(unsigned long value) {
     return ::Catch::Detail::stringify(static_cast<unsigned long long>(value));
 }
-std::string StringMaker<unsigned long long>::operator()(unsigned long long value) {
+std::string StringMaker<unsigned long long>::convert(unsigned long long value) {
     std::ostringstream oss;
     oss << value;
     if (value > Detail::hexThreshold) {
@@ -169,11 +169,11 @@ std::string StringMaker<unsigned long long>::operator()(unsigned long long value
 }
 
 
-std::string StringMaker<bool>::operator()(bool b) {
+std::string StringMaker<bool>::convert(bool b) {
     return b ? "true" : "false";
 }
 
-std::string StringMaker<char>::operator()(char value) {
+std::string StringMaker<char>::convert(char value) {
     if (value == '\r') {
         return "'\\r'";
     } else if (value == '\f') {
@@ -190,37 +190,37 @@ std::string StringMaker<char>::operator()(char value) {
         return chstr;
     }
 }
-std::string StringMaker<signed char>::operator()(signed char c) {
+std::string StringMaker<signed char>::convert(signed char c) {
     return ::Catch::Detail::stringify(static_cast<char>(c));
 }
-std::string StringMaker<unsigned char>::operator()(unsigned char c) {
+std::string StringMaker<unsigned char>::convert(unsigned char c) {
     return ::Catch::Detail::stringify(static_cast<char>(c));
 }
 
-std::string StringMaker<std::nullptr_t>::operator()(std::nullptr_t) {
+std::string StringMaker<std::nullptr_t>::convert(std::nullptr_t) {
     return "nullptr";
 }
 
-std::string StringMaker<float>::operator()(float value) {
+std::string StringMaker<float>::convert(float value) {
     return fpToString(value, 5) + 'f';
 }
-std::string StringMaker<double>::operator()(double value) {
+std::string StringMaker<double>::convert(double value) {
     return fpToString(value, 10);
 }
 
 
 #ifdef __OBJC__
-std::string StringMaker<NSString const *>::operator()(NSString const * const& nsstring) {
+std::string StringMaker<NSString const *>::convert(NSString const * const& nsstring) {
     if (!nsstring)
         return "nil";
     return "@" + toString([nsstring UTF8String]);
 }
-std::string StringMaker<NSString * CATCH_ARC_STRONG>::operator()(NSString * CATCH_ARC_STRONG const& nsstring) {
+std::string StringMaker<NSString * CATCH_ARC_STRONG>::convert(NSString * CATCH_ARC_STRONG const& nsstring) {
     if (!nsstring)
         return "nil";
     return "@" + toString([nsstring UTF8String]);
 }
-std::string StringMaker<NSObject *>::operator()(NSObject * const& nsObject) {
+std::string StringMaker<NSObject *>::convert(NSObject * const& nsObject) {
     return ::Catch::Detail::stringify([nsObject description]);
 }
 #endif

@@ -128,7 +128,7 @@ namespace Detail {
 
 template<>
 struct StringMaker<Catch::Detail::Approx> {
-    std::string operator()(Catch::Detail::Approx const& value) {
+    static std::string convert(Catch::Detail::Approx const& value) {
         return value.toString();
     }
 };

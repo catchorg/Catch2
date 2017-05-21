@@ -25,7 +25,7 @@ If you don't want to provide an ```operator <<``` overload, or you want to conve
 namespace Catch {
 	template<>
     struct StringMaker<T> {
-    	std::string operator()( T const& value ) {
+    	static std::string convert( T const& value ) {
         	return convertMyTypeToString( value );
         }
     };

@@ -22,13 +22,13 @@ std::ostream& operator<<(std::ostream& os, const has_maker_and_operator&) {
 namespace Catch {
     template<>
     struct StringMaker<has_maker> {
-        std::string operator()( const has_maker& ) {
+        static std::string convert( const has_maker& ) {
             return "StringMaker<has_maker>";
         }
     };
     template<>
     struct StringMaker<has_maker_and_operator> {
-        std::string operator()( const has_maker_and_operator& ) {
+        static std::string convert( const has_maker_and_operator& ) {
             return "StringMaker<has_maker_and_operator>";
         }
     };

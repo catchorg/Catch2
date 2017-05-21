@@ -61,17 +61,19 @@ namespace Catch {
     template <typename T>
     struct StringMaker {
         template <typename Fake = T>
+        static
         typename std::enable_if<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
-            operator()(const Fake& t) {
-            std::stringstream sstr;
-            sstr << t;
-            return sstr.str();
+            convert(const Fake& t) {
+                std::stringstream sstr;
+                sstr << t;
+                return sstr.str();
         }
 
         template <typename Fake = T>
+        static
         typename std::enable_if<!::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
-            operator()(const Fake&) {
-            return "{?}";
+            convert(const Fake&) {
+                return "{?}";
         }
     };
 
@@ -83,7 +85,7 @@ namespace Catch {
         // Should be preferably called fully qualified, like ::Catch::Detail::stringify
         template <typename T>
         std::string stringify(const T& e) {
-            return ::Catch::StringMaker<typename std::remove_cv<typename std::remove_reference<T>::type>::type>{}(e);
+            return ::Catch::StringMaker<typename std::remove_cv<typename std::remove_reference<T>::type>::type>::convert(e);
         }
 
     } // namespace Detail
@@ -93,110 +95,110 @@ namespace Catch {
 
     template<>
     struct StringMaker<std::string> {
-        std::string operator()(const std::string& str);
+        static std::string convert(const std::string& str);
     };
     template<>
     struct StringMaker<std::wstring> {
-        std::string operator()(const std::wstring& wstr);
+        static std::string convert(const std::wstring& wstr);
     };
 
     template<>
     struct StringMaker<char const *> {
-        std::string operator()(char const * str);
+        static std::string convert(char const * str);
     };
     template<>
     struct StringMaker<char *> {
-        std::string operator()(char * str);
+        static std::string convert(char * str);
     };
     template<>
     struct StringMaker<wchar_t const *> {
-        std::string operator()(wchar_t const * str);
+        static std::string convert(wchar_t const * str);
     };
     template<>
     struct StringMaker<wchar_t *> {
-        std::string operator()(wchar_t * str);
+        static std::string convert(wchar_t * str);
     };
 
     template<int SZ>
     struct StringMaker<char[SZ]> {
-        std::string operator()(const char* str) {
+        static std::string convert(const char* str) {
             return ::Catch::Detail::stringify(std::string{ str });
         }
     };
     template<int SZ>
     struct StringMaker<signed char[SZ]> {
-        std::string operator()(const char* str) {
+        static std::string convert(const char* str) {
             return ::Catch::Detail::stringify(std::string{ str });
         }
     };
     template<int SZ>
     struct StringMaker<unsigned char[SZ]> {
-        std::string operator()(const char* str) {
+        static std::string convert(const char* str) {
             return ::Catch::Detail::stringify(std::string{ str });
         }
     };
 
     template<>
     struct StringMaker<int> {
-        std::string operator()(int value);
+        static std::string convert(int value);
     };
     template<>
     struct StringMaker<long> {
-        std::string operator()(long value);
+        static std::string convert(long value);
     };
     template<>
     struct StringMaker<long long> {
-        std::string operator()(long long value);
+        static std::string convert(long long value);
     };
     template<>
     struct StringMaker<unsigned int> {
-        std::string operator()(unsigned int value);
+        static std::string convert(unsigned int value);
     };
     template<>
     struct StringMaker<unsigned long> {
-        std::string operator()(unsigned long value);
+        static std::string convert(unsigned long value);
     };
     template<>
     struct StringMaker<unsigned long long> {
-        std::string operator()(unsigned long long value);
+        static std::string convert(unsigned long long value);
     };
 
     template<>
     struct StringMaker<bool> {
-        std::string operator()(bool b);
+        static std::string convert(bool b);
     };
 
     template<>
     struct StringMaker<char> {
-        std::string operator()(char c);
+        static std::string convert(char c);
     };
     template<>
     struct StringMaker<signed char> {
-        std::string operator()(signed char c);
+        static std::string convert(signed char c);
     };
     template<>
     struct StringMaker<unsigned char> {
-        std::string operator()(unsigned char c);
+        static std::string convert(unsigned char c);
     };
 
     template<>
     struct StringMaker<std::nullptr_t> {
-        std::string operator()(std::nullptr_t);
+        static std::string convert(std::nullptr_t);
     };
 
     template<>
     struct StringMaker<float> {
-        std::string operator()(float value);
+        static std::string convert(float value);
     };
     template<>
     struct StringMaker<double> {
-        std::string operator()(double value);
+        static std::string convert(double value);
     };
 
     template <typename T>
     struct StringMaker<T*> {
         template <typename U>
-        std::string operator()(U* p) {
+        static std::string convert(U* p) {
             if (p) {
                 return ::Catch::Detail::rawMemoryToString(p);
             } else {
@@ -207,7 +209,7 @@ namespace Catch {
 
     template <typename R, typename C>
     struct StringMaker<R C::*> {
-        std::string operator()(R C::* p) {
+        static std::string convert(R C::* p) {
             if (p) {
                 return ::Catch::Detail::rawMemoryToString(p);
             } else {
@@ -233,7 +235,7 @@ namespace Catch {
 
     template<typename T, typename Allocator>
     struct StringMaker<std::vector<T, Allocator> > {
-        std::string operator()( std::vector<T,Allocator> const& v ) {
+        static std::string convert( std::vector<T,Allocator> const& v ) {
             return ::Catch::Detail::rangeToString( v.begin(), v.end() );
         }
     };
@@ -241,7 +243,7 @@ namespace Catch {
     // === Pair ===
     template<typename T1, typename T2>
     struct StringMaker<std::pair<T1, T2> > {
-        std::string operator()(const std::pair<T1, T2>& pair) {
+        static std::string convert(const std::pair<T1, T2>& pair) {
             std::ostringstream oss;
             oss << "{ "
                 << ::Catch::Detail::stringify(pair.first)
@@ -281,7 +283,7 @@ namespace Catch {
 
     template<typename ...Types>
     struct StringMaker<std::tuple<Types...>> {
-        std::string operator()(const std::tuple<Types...>& tuple) {
+        static std::string convert(const std::tuple<Types...>& tuple) {
             std::ostringstream os;
             os << '{';
             Detail::TupleElementPrinter<std::tuple<Types...>>::print(tuple, os);
@@ -293,7 +295,7 @@ namespace Catch {
 
     template<typename T>
     struct EnumStringMaker {
-        std::string operator()(const T& t) {
+        static std::string convert(const T& t) {
             return ::Catch::Detail::stringify(static_cast<typename std::underlying_type<T>::type>(t));
         }
     };
@@ -301,15 +303,15 @@ namespace Catch {
 #ifdef __OBJC__
     template<>
     struct StringMaker<NSString const *> {
-        std::string operator()(NSString const* const& nsstring);
+        static std::string convert(NSString const* const& nsstring);
     };
     template<>
     struct StringMaker<NSString * CATCH_ARC_STRONG> {
-        std::string operator()(NSString * CATCH_ARC_STRONG const& nsstring);
+        static std::string convert(NSString * CATCH_ARC_STRONG const& nsstring);
     };
     template<>
     struct StringMaker<NSObject *> {
-        std::string operator()(NSObject* const& nsObject);
+        static std::string convert(NSObject* const& nsObject);
     };
 #endif
 
