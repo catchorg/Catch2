@@ -51,7 +51,7 @@ SCENARIO( "Vector resizing affects size and capacity", "[vector][bdd][size][capa
             v.reserve( 10 );
             THEN( "The capacity is increased but the size remains the same" ) {
                 REQUIRE( v.capacity() >= 10 );
-                REQUIRE( v.size() == 0 );
+                REQUIRE( v.size() == 5 );
             }
         }
     }
