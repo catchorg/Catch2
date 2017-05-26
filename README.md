@@ -21,7 +21,7 @@ This documentation comprises these three parts:
 
 Get some inspiration how to integrate Catch with build environment, code coverage analysis, etc.
 
-* [Integration of Catch with CMake and CMake CodeCoverage module (gcov, lcov, etc.)](https://github.com/fkromer/cmake_catch_coverage)
+* [Integration of Catch with CMake and CMake CodeCoverage module (gcov, lcov, etc.)](https://github.com/fkromer/catch_cmake_coverage)
 
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
