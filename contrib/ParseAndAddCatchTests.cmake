@@ -25,9 +25,23 @@
 #                                                                                                  #
 #        include(ParseAndAddCatchTests)                                                            #
 #        ParseAndAddCatchTests(${PROJECT_NAME})                                                    #
+#                                                                                                  #  
+# The following variables affect the behavior of the script:                                       #
+#                                                                                                  #
+#    PARSE_CATCH_TESTS_VERBOSE (Default OFF)                                                       #
+#    -- enabels debug messages                                                                     #
+#                                                                                                  #
 #==================================================================================================#
 
 cmake_minimum_required(VERSION 2.8.8)
+
+option(PARSE_CATCH_TESTS_VERBOSE "Print Catch to CTest parser debug messages" OFF)
+
+function(PrintDebugMessage)
+    if(PARSE_CATCH_TESTS_VERBOSE)
+            message(STATUS "ParseAndAddCatchTests: ${ARGV}")
+    endif()
+endfunction()
 
 # This removes the contents between
 #  - block comments (i.e. /* ... */) 
@@ -47,10 +61,13 @@ endfunction()
 
 # Worker function
 function(ParseFile SourceFile TestTarget)
+    # accroding to CMake docs EXISTS behavior is well-defined only for full paths.
+    get_filename_component(SourceFile ${SourceFile} ABSOLUTE)
     if(NOT EXISTS ${SourceFile})
         message(WARNING "Cannot find source file: ${SourceFile}")
         return()
     endif()
+    PrintDebugMessage("parsing ${SourceFile}")
     file(STRINGS ${SourceFile} Contents NEWLINE_CONSUME)
 
     # Remove block and fullline comments
@@ -91,25 +108,42 @@ function(ParseFile SourceFile TestTarget)
         else()
             set(CTestName "${Name}")
         endif()
+        set(CTestName "${TestTarget}:${CTestName}")
+        # add target to labels to enable running all tests added from this target
+        set(Labels ${TestTarget})
         if(TestStringsLength EQUAL 2)
             list(GET TestStrings 1 Tags)
             string(TOLOWER "${Tags}" Tags)
+            # remove target from labels if the test is hidden
+            if("${Tags}" MATCHES ".*\\[!?(hide|\\.)\\].*")
+                list(REMOVE_ITEM Labels ${TestTarget})
+            endif()
             string(REPLACE "]" ";" Tags "${Tags}")
             string(REPLACE "[" "" Tags "${Tags}")
+        endif()
+        
+        list(APPEND Labels ${Tags})
+        
+        PrintDebugMessage("Adding test \"${CTestName}\"")
+        if(Labels)
+            PrintDebugMessage("Setting labels to ${Labels}")
         endif()
 
         # Add the test and set its properties
         add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
         set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
-                                                LABELS "${Tags}")
+                                                LABELS "${Labels}")
 
     endforeach()
 endfunction()
 
 # entry point
 function(ParseAndAddCatchTests TestTarget)
+    PrintDebugMessage("Started parsing ${TestTarget}")
     get_target_property(SourceFiles ${TestTarget} SOURCES)
+    PrintDebugMessage("Found the following sources: ${SourceFiles}")
     foreach(SourceFile ${SourceFiles})
         ParseFile(${SourceFile} ${TestTarget})
     endforeach()
+    PrintDebugMessage("Finished parsing ${TestTarget}")
 endfunction()
