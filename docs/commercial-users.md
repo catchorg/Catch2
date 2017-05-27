@@ -13,4 +13,4 @@ fact then please let us know - either directly, via a PR or
  
  - Bloomberg
  - NASA
- 
+ - [Inscopix Inc.](https://www.inscopix.com/)
