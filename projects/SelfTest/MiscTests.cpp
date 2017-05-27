@@ -403,5 +403,5 @@ static int f() {
 TEST_CASE( "#835 -- errno should not be touched by Catch", "[!shouldfail]" ) {
     errno = 1;
     CHECK(f() == 0);
-    REQUIRE(errno == 1); // Check that f() doesn't touch errno.    
+    REQUIRE(errno == 1); // Check that f() doesn't touch errno.
 }

@@ -25,11 +25,11 @@
 #                                                                                                  #
 #        include(ParseAndAddCatchTests)                                                            #
 #        ParseAndAddCatchTests(${PROJECT_NAME})                                                    #
-#                                                                                                  #  
+#                                                                                                  #
 # The following variables affect the behavior of the script:                                       #
 #                                                                                                  #
 #    PARSE_CATCH_TESTS_VERBOSE (Default OFF)                                                       #
-#    -- enabels debug messages                                                                     #
+#    -- enables debug messages                                                                     #
 #                                                                                                  #
 #==================================================================================================#
 
@@ -44,8 +44,8 @@ function(PrintDebugMessage)
 endfunction()
 
 # This removes the contents between
-#  - block comments (i.e. /* ... */) 
-#  - full line comments (i.e. // ... ) 
+#  - block comments (i.e. /* ... */)
+#  - full line comments (i.e. // ... )
 # contents have been read into '${CppCode}'.
 # !keep partial line comments
 function(RemoveComments CppCode)
@@ -61,7 +61,7 @@ endfunction()
 
 # Worker function
 function(ParseFile SourceFile TestTarget)
-    # accroding to CMake docs EXISTS behavior is well-defined only for full paths.
+    # According to CMake docs EXISTS behavior is well-defined only for full paths.
     get_filename_component(SourceFile ${SourceFile} ABSOLUTE)
     if(NOT EXISTS ${SourceFile})
         message(WARNING "Cannot find source file: ${SourceFile}")
@@ -121,9 +121,9 @@ function(ParseFile SourceFile TestTarget)
             string(REPLACE "]" ";" Tags "${Tags}")
             string(REPLACE "[" "" Tags "${Tags}")
         endif()
-        
+
         list(APPEND Labels ${Tags})
-        
+
         PrintDebugMessage("Adding test \"${CTestName}\"")
         if(Labels)
             PrintDebugMessage("Setting labels to ${Labels}")

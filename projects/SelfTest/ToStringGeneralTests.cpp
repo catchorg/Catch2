@@ -9,7 +9,6 @@
 
 
 TEST_CASE( "Character pretty printing" ){
-    // 
     SECTION("Specifically escaped"){
         char tab = '\t';
         char newline = '\n';
@@ -36,7 +35,7 @@ TEST_CASE( "Character pretty printing" ){
             char c = static_cast<char>(i);
             REQUIRE(c == i);
         }
-    }    
+    }
 }
 
 

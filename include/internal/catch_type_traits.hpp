@@ -25,7 +25,7 @@ namespace Catch {
 #else
 
     template <typename T>
-    struct add_const { 
+    struct add_const {
         typedef const T type;
     };
 

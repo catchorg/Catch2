@@ -69,7 +69,7 @@ namespace Catch {
         T *nullableValue;
         union {
             char storage[sizeof(T)];
-    
+
             // These are here to force alignment for the storage
             long double dummy1;
             void (*dummy2)();

@@ -60,7 +60,7 @@
 // source code rather than in Catch library code
 #define INTERNAL_CATCH_REACT( resultBuilder ) \
     if( resultBuilder.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
-    resultBuilder.react(); 
+    resultBuilder.react();
 #endif
 
 

@@ -300,7 +300,7 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions 
+                // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
                 // are reported without translation at the point of origin.
                 if (m_shouldReportUnexpected) {
                     makeUnexpectedResultBuilder().useActiveException();

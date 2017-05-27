@@ -18,7 +18,7 @@ extern "C" int wmain (int argc, wchar_t * argv[], wchar_t * []) {
 int main (int argc, char * argv[]) {
 #endif
 
-	int result = Catch::Session().run( argc, argv );
+    int result = Catch::Session().run( argc, argv );
     return ( result < 0xff ? result : 0xff );
 }
 
