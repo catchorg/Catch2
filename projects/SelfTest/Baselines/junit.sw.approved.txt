@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="77" tests="970" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="78" tests="971" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="#748 - captures with unexpected exceptions" name="outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -443,6 +443,11 @@ MessageTests.cpp:<line number>
     <testcase classname="Process can be configured on command line" name="use-colour/yes" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="use-colour/no" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="use-colour/error" time="{duration}"/>
+    <testcase classname="global" name="Reconstruction should be based on stringification: #914" time="{duration}">
+      <failure message="Hey, its truthy!" type="CHECK">
+DecompositionTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="SCOPED_INFO is reset for each loop" time="{duration}">
       <failure message="10 &lt; 10" type="REQUIRE">
 current counter 10

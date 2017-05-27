@@ -819,7 +819,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( a )
 with expansion:
-  true
+  0x<hex digits>
 
 TrickyTests.cpp:<line number>:
 PASSED:
@@ -4571,7 +4571,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK( True )
 with expansion:
-  true
+  1
 
 TrickyTests.cpp:<line number>:
 PASSED:
@@ -4583,7 +4583,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK_FALSE( False )
 with expansion:
-  !false
+  !0
 
 -------------------------------------------------------------------------------
 Operators at different namespace levels not hijacked by Koenig lookup
@@ -6436,6 +6436,17 @@ TestMain.cpp:<line number>
 TestMain.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) )
+
+-------------------------------------------------------------------------------
+Reconstruction should be based on stringification: #914
+-------------------------------------------------------------------------------
+DecompositionTests.cpp:<line number>
+...............................................................................
+
+DecompositionTests.cpp:<line number>: FAILED:
+  CHECK( truthy(false) )
+with expansion:
+  Hey, its truthy!
 
 -------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
@@ -9472,6 +9483,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 167 | 118 passed | 45 failed |  4 failed as expected
-assertions: 969 | 859 passed | 89 failed | 21 failed as expected
+test cases: 168 | 118 passed | 46 failed |  4 failed as expected
+assertions: 970 | 859 passed | 90 failed | 21 failed as expected
 

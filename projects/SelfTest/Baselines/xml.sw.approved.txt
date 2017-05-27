@@ -890,7 +890,7 @@
           a
         </Original>
         <Expanded>
-          true
+          0x<hex digits>
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -4695,7 +4695,7 @@ re>"
           True
         </Original>
         <Expanded>
-          true
+          1
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -4711,7 +4711,7 @@ re>"
           !False
         </Original>
         <Expanded>
-          !false
+          !0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6911,6 +6911,17 @@ re>"
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Reconstruction should be based on stringification: #914" tags="[.][Decomposition][failing][hide]" filename="projects/<exe-name>/DecompositionTests.cpp" >
+      <Expression success="false" type="CHECK" filename="projects/<exe-name>/DecompositionTests.cpp" >
+        <Original>
+          truthy(false)
+        </Original>
+        <Expanded>
+          Hey, its truthy!
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="SCOPED_INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
@@ -10132,7 +10143,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="859" failures="90" expectedFailures="21"/>
+    <OverallResults successes="859" failures="91" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="859" failures="89" expectedFailures="21"/>
+  <OverallResults successes="859" failures="90" expectedFailures="21"/>
 </Catch>

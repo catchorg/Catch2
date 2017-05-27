@@ -596,6 +596,17 @@ warning:
   toString(p): 0x<hex digits>
 
 -------------------------------------------------------------------------------
+Reconstruction should be based on stringification: #914
+-------------------------------------------------------------------------------
+DecompositionTests.cpp:<line number>
+...............................................................................
+
+DecompositionTests.cpp:<line number>: FAILED:
+  CHECK( truthy(false) )
+with expansion:
+  Hey, its truthy!
+
+-------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -942,6 +953,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 167 | 119 passed | 44 failed |  4 failed as expected
-assertions: 967 | 859 passed | 87 failed | 21 failed as expected
+test cases: 168 | 119 passed | 45 failed |  4 failed as expected
+assertions: 968 | 859 passed | 88 failed | 21 failed as expected
 

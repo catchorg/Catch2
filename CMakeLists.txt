@@ -59,6 +59,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/CmdLineTests.cpp
         ${SELF_TEST_DIR}/CompilationTests.cpp
         ${SELF_TEST_DIR}/ConditionTests.cpp
+        ${SELF_TEST_DIR}/DecompositionTests.cpp
         ${SELF_TEST_DIR}/EnumToString.cpp
         ${SELF_TEST_DIR}/ExceptionTests.cpp
         ${SELF_TEST_DIR}/GeneratorTests.cpp
