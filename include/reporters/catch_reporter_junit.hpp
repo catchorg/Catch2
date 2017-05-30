@@ -139,8 +139,7 @@ namespace Catch {
             std::string className = stats.testInfo.className;
 
             if( className.empty() ) {
-                if( rootSection.childSections.empty() )
-                    className = "global";
+                className = "global";
             }
             writeSection( className, "", rootSection );
         }
