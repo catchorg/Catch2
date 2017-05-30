@@ -150,6 +150,10 @@ namespace Catch {
                 if ( className.empty() )
                     className = "global";
             }
+
+            if ( !m_config->name().empty() )
+                className = m_config->name() + "." + className;
+
             writeSection( className, "", rootSection );
         }
 
