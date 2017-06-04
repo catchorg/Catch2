@@ -20,10 +20,8 @@ namespace Catch {
 
     namespace {
 
-        class RegistryHub : public IRegistryHub, public IMutableRegistryHub {
-
-            RegistryHub( RegistryHub const& );
-            void operator=( RegistryHub const& );
+        class RegistryHub : public IRegistryHub, public IMutableRegistryHub,
+                            private NonCopyable {
 
         public: // IRegistryHub
             RegistryHub() {
