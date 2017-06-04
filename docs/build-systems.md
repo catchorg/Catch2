@@ -1,4 +1,4 @@
-# Integration with build systems
+# CI and build system integration
 
 Build Systems may refer to low-level tools, like CMake, or larger systems that run on servers, like Jenkins or TeamCity. This page will talk about both.
 
@@ -133,6 +133,10 @@ TEST_CASE("Test3", "[a][b][c]") {
 }
 ```
 would be registered as 3 tests, `Test1`, `Test2` and `Test3`, and ctest 4 labels would be created, `a`, `b`, `c` and `unit`.
+
+### CodeCoverage module (GCOV, LCOV...)
+
+If you are using GCOV tool to get testing coverage of your code, and are not sure how to integrate it with CMake and Catch, there should be an external example over at https://github.com/fkromer/catch_cmake_coverage
 
 ---
 
