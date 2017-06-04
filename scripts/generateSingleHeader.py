@@ -36,6 +36,8 @@ for arg in sys.argv[1:]:
         print( "\n** Unrecognised argument: " + arg + " **\n" )
         exit(1)
 
+# ensure that the output directory exists
+os.makedirs(os.path.dirname(outputPath), exist_ok = True)
 out = open( outputPath, 'w' )
 ifdefs = 0
 implIfDefs = -1
