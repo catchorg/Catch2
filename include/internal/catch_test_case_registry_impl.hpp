@@ -154,14 +154,18 @@ namespace Catch {
             char const* classOrQualifiedMethodName,
             NameAndDesc const& nameAndDesc,
             SourceLineInfo const& lineInfo ) {
-
-        getMutableRegistryHub().registerTest
-            ( makeTestCase
-                (   testCase,
-                    extractClassName( classOrQualifiedMethodName ),
-                    nameAndDesc.name,
-                    nameAndDesc.description,
-                    lineInfo ) );
+        try {
+            getMutableRegistryHub().registerTest
+            (makeTestCase
+            (testCase,
+             extractClassName(classOrQualifiedMethodName),
+             nameAndDesc.name,
+             nameAndDesc.description,
+             lineInfo));
+        } catch (...) {
+            // Do not throw when constructing global objects, instead register the exception to be processed later
+            getMutableRegistryHub().registerStartupException( std::current_exception() );
+        }
     }
     void registerTestCaseFunction
         (   TestFunction function,

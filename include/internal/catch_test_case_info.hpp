@@ -38,16 +38,10 @@ namespace Catch {
         return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !std::isalnum( tag[0] );
     }
     inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
-        // Do not throw when constructing global objects, instead register the exception to be processed later
-        if (isReservedTag(tag)) {
-            getMutableRegistryHub().registerStartupException(
-                std::make_exception_ptr(
-                    CATCH_PREPARE_EXCEPTION(std::domain_error, "Tag name: [" << tag << "] is not allowed.\n"
-                                << "Tag names starting with non alpha-numeric characters are reserved\n"
-                                << _lineInfo)
-                )
-            );
-        }
+        CATCH_ENFORCE( !isReservedTag(tag),
+                      "Tag name: [" << tag << "] is not allowed.\n"
+                      << "Tag names starting with non alpha-numeric characters are reserved\n"
+                      << _lineInfo );
     }
 
     TestCase makeTestCase(  ITestCase* _testCase,
