@@ -22,6 +22,7 @@ namespace Catch {
     struct IReporterRegistry;
     struct IReporterFactory;
     struct ITagAliasRegistry;
+    class StartupExceptionRegistry;
 
     using IReporterFactoryPtr = std::shared_ptr<IReporterFactory>;
 
@@ -33,6 +34,9 @@ namespace Catch {
         virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
 
         virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
+
+
+        virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
     };
 
     struct IMutableRegistryHub {
@@ -42,6 +46,7 @@ namespace Catch {
         virtual void registerTest( TestCase const& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
+        virtual void registerStartupException( std::exception_ptr const& exception ) = 0;
     };
 
     IRegistryHub& getRegistryHub();

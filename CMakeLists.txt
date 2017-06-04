@@ -176,6 +176,8 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_section.hpp
         ${HEADER_DIR}/internal/catch_section_info.h
         ${HEADER_DIR}/internal/catch_section_info.hpp
+        ${HEADER_DIR}/internal/catch_startup_exception_registry.h
+        ${HEADER_DIR}/internal/catch_startup_exception_registry.hpp
         ${HEADER_DIR}/internal/catch_stream.h
         ${HEADER_DIR}/internal/catch_stream.hpp
         ${HEADER_DIR}/internal/catch_streambuf.h

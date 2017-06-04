@@ -16,8 +16,7 @@ If you just need to have code that executes before and/ or after Catch this is t
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
-int main( int argc, char* argv[] )
-{
+int main( int argc, char* argv[] ) {
   // global setup...
 
   int result = Catch::Session().run( argc, argv );
@@ -42,7 +41,22 @@ int main( int argc, char* argv[] )
 
   // writing to session.configData() here sets defaults
   // this is the preferred way to set them
-
+  
+  // Verify that all tests, aliases, etc registered properly
+  const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
+  if ( !exceptions.empty() ) {
+    // iterate over all exceptions and notify user
+    for ( const auto& ex_ptr : exceptions ) {
+        try {
+            std::rethrow_exception(ex_ptr);
+        } catch (std::exception const& ex) {
+            Catch::cerr() << ex.what();
+        }
+    }
+    // Indicate that an error occured before main
+    return 1;
+  }
+  
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
   	return returnCode;

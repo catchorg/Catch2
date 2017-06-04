@@ -39,14 +39,29 @@ namespace Catch {
     }
 
     void TagAliasRegistry::add( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) {
+        // Do not throw when constructing global objects, instead register the exception to be processed later
+        if (!(startsWith( alias, "[@") && endsWith(alias, ']'))) {
+            getMutableRegistryHub().registerStartupException(
+                std::make_exception_ptr(
+                    CATCH_PREPARE_EXCEPTION( std::domain_error,
+                        "error: tag alias, '"
+                        << alias
+                        << "' is not of the form [@alias name].\n"
+                        << lineInfo)
+                )
+            );
+        }
 
-        CATCH_ENFORCE( startsWith( alias, "[@" ) && endsWith( alias, ']' ),
-                "error: tag alias, '" << alias << "' is not of the form [@alias name].\n" << lineInfo );
-
-        CATCH_ENFORCE( m_registry.insert( std::make_pair( alias, TagAlias( tag, lineInfo ) ) ).second,
-                "error: tag alias, '" << alias << "' already registered.\n"
-                << "\tFirst seen at: " << find(alias)->lineInfo << "\n"
-                << "\tRedefined at: " << lineInfo );
+        if (!m_registry.insert(std::make_pair(alias, TagAlias(tag, lineInfo))).second) {
+            getMutableRegistryHub().registerStartupException(
+                std::make_exception_ptr(
+                    CATCH_PREPARE_EXCEPTION(std::domain_error,
+                        "error: tag alias, '" << alias << "' already registered.\n"
+                        << "\tFirst seen at: " << find(alias)->lineInfo << "\n"
+                        << "\tRedefined at: " << lineInfo)
+                )
+            );
+        }
     }
 
     ITagAliasRegistry::~ITagAliasRegistry() {}

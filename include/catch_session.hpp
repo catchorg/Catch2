@@ -15,6 +15,7 @@
 #include "internal/catch_version.h"
 #include "internal/catch_text.h"
 #include "internal/catch_interfaces_reporter.h"
+#include "internal/catch_startup_exception_registry.h"
 
 #include <fstream>
 #include <stdlib.h>
@@ -146,7 +147,19 @@ namespace Catch {
         }
 
         int run( int argc, char const* const* const argv ) {
-
+            const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
+            if ( !exceptions.empty() ) {
+                Catch::cerr() << "Errors occured during startup!" << '\n';
+                // iterate over all exceptions and notify user
+                for ( const auto& ex_ptr : exceptions ) {
+                    try {
+                        std::rethrow_exception(ex_ptr);
+                    } catch ( std::exception const& ex ) {
+                        Catch::cerr() << ex.what() << '\n';
+                    }
+                }
+                return 1;
+            }
             int returnCode = applyCommandLine( argc, argv );
             if( returnCode == 0 )
                 returnCode = run();
