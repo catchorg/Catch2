@@ -142,8 +142,9 @@ namespace Catch {
                 m_totals.assertions.failed++;
             }
 
-            if( m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) ) )
-                m_messages.clear();
+            // We have no use for the return value (whether messages should be cleared), because messages were made scoped
+            // and should be let to clear themselves out.
+            static_cast<void>(m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals)));
 
             // Reset working state
             m_lastAssertionInfo = AssertionInfo( std::string(), m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
@@ -296,7 +297,7 @@ namespace Catch {
                 // This just means the test was aborted due to failure
             }
             catch(...) {
-                // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions 
+                // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
                 // are reported without translation at the point of origin.
                 if (m_shouldReportUnexpected) {
                     makeUnexpectedResultBuilder().useActiveException();

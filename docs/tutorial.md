@@ -68,7 +68,7 @@ with expansion:
   0 == 1
 ```
 
-Note that we get the actual return value of Factorial(0) printed for us (0) - even though we used a natural expression with the == operator. That let's us immediately see what the problem is.
+Note that we get the actual return value of Factorial(0) printed for us (0) - even though we used a natural expression with the == operator. That lets us immediately see what the problem is.
 
 Let's change the factorial function to:
 

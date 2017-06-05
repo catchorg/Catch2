@@ -96,6 +96,7 @@ def git_push(path_to_repo):
     
     # Update repo to current master, so we don't work off old version of the portsfile 
     subprocess.call('git pull Microsoft master', shell=True)
+    subprocess.call('git push', shell=True)
 
     # Create a new branch for the update
     subprocess.call('git checkout -b catch-{}'.format(ver_string), shell=True)

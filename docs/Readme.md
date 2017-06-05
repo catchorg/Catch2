@@ -17,7 +17,7 @@ Fine tuning:
 
 Running:
 * [Command line](command-line.md)
-* [Build systems](build-systems.md)
+* [CI and Build system integration](build-systems.md)
 
 FAQ:
 * [Why are my tests slow to compile?](slow-compiles.md)

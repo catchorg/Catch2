@@ -104,7 +104,7 @@ namespace Catch {
     namespace Matchers {
         namespace Impl {
         namespace NSStringMatchers {
-           
+
             struct StringHolder : MatcherBase<NSString*>{
                 StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
                 StringHolder( StringHolder const& other ) : m_substr( [other.m_substr copy] ){}

@@ -143,6 +143,7 @@ namespace Catch {
         }
 
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) override {
+            m_testTimer.start();
             StreamingReporterBase::testCaseStarting( testInfo );
             stream << "##teamcity[testStarted name='"
                 << escape( testInfo.name ) << "']\n";
@@ -159,7 +160,8 @@ namespace Catch {
                     << escape( testCaseStats.testInfo.name )
                     << "' out='" << escape( testCaseStats.stdErr ) << "']\n";
             stream << "##teamcity[testFinished name='"
-                << escape( testCaseStats.testInfo.name ) << "']\n";
+                    << escape( testCaseStats.testInfo.name ) << "' duration='"
+                    << m_testTimer.getElapsedMilliseconds() << "']\n";
         }
 
     private:
@@ -198,6 +200,7 @@ namespace Catch {
         }
     private:
         bool m_headerPrintedForThisSection = false;
+        Timer m_testTimer;
     };
 
 #ifdef CATCH_IMPL

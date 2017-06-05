@@ -36,6 +36,13 @@ exeNameParser = re.compile(r'''
 # This is a hack until something more reasonable is figured out
 specialCaseParser = re.compile(r'file\((\d+)\)')
 
+# errno macro expands into various names depending on platform, so we need to fix them up as well
+errnoParser = re.compile(r'''
+    \(\*__errno_location\ \(\)\)
+    |
+    \(\*__error\(\)\)
+''', re.VERBOSE)
+
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
 else:
@@ -45,9 +52,9 @@ overallResult = 0
 
 def diffFiles(fileA, fileB):
     with open(fileA, 'r') as file:
-        aLines = file.readlines()
+        aLines = [line.rstrip() for line in file.readlines()]
     with open(fileB, 'r') as file:
-        bLines = file.readlines()
+        bLines = [line.rstrip() for line in file.readlines()]
 
     shortenedFilenameA = fileA.rsplit(os.sep, 1)[-1]
     shortenedFilenameB = fileB.rsplit(os.sep, 1)[-1]
@@ -90,6 +97,7 @@ def filterLine(line):
     line = durationsParser.sub(' time="{duration}"', line)
     line = timestampsParser.sub(' timestamp="{iso8601-timestamp}"', line)
     line = specialCaseParser.sub('file:\g<1>', line)
+    line = errnoParser.sub('errno', line)
     return line
 
 
@@ -119,7 +127,7 @@ def approve(baseName, args):
     if os.path.exists(baselinesPath):
         diffResult = diffFiles(baselinesPath, filteredResultsPath)
         if diffResult:
-            print(''.join(diffResult))
+            print('\n'.join(diffResult))
             print("  \n****************************\n  \033[91mResults differed")
             if len(diffResult) > overallResult:
                 overallResult = len(diffResult)

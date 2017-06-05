@@ -28,7 +28,7 @@ The tag expression, ```"[widget]"``` selects A, B & D. ```"[gadget]"``` selects 
 
 For more detail on command line selection see [the command line docs](command-line.md#specifying-which-tests-to-run)
 
-Tag names are not case sensitive.
+Tag names are not case sensitive and can contain any ASCII characters. This means that tags `[tag with spaces]` and `[I said "good day"]` are both allowed tags and can be filtered on. Escapes are not supported however and `[\]]` is not a valid tag.
 
 ### Special Tags
 
