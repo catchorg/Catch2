@@ -55,6 +55,11 @@ TEST_CASE("#833") {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-function"
 #endif
+#ifdef __GNUC__
+// Note that because -~GCC~-, this warning cannot be silenced temporarily, by pushing diagnostic stack...
+// Luckily it is firing in test files and thus can be silenced for the whole file, without losing much.
+#pragma GCC diagnostic ignored "-Wunused-function"
+#endif
 
 // Test containing example where original stream insertable check breaks compilation
 namespace {
