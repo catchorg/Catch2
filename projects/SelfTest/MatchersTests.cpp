@@ -166,3 +166,60 @@ TEST_CASE( "Vector matchers that fail", "[matchers][vector][.][failing]" ) {
         CHECK_THAT( v, Equals( empty ) );
     }
 }
+
+#ifdef _MSC_VER
+#pragma warning(disable:4702) // Unreachable code -- MSVC 19 (VS 2015) sees right through the indirection
+#endif
+
+#include <exception>
+
+struct SpecialException : std::exception {
+    SpecialException(int i):i(i) {}
+    int i;
+};
+
+void doesNotThrow() {}
+
+void throws(int i) {
+    throw SpecialException{ i };
+}
+
+void throwsAsInt(int i) {
+    throw i;
+}
+
+class ExceptionMatcher : public Catch::MatcherBase<SpecialException> {
+    int m_expected;
+public:
+    ExceptionMatcher(int i):m_expected(i) {}
+    virtual bool match(SpecialException const& se) const override {
+        return se.i == m_expected;
+    }
+
+    virtual std::string describe() const override {
+        std::ostringstream ss;
+        ss << "special exception has value of " << m_expected;
+        return ss.str();
+    }
+};
+
+
+TEST_CASE( "Exception matchers that succeed", "[matchers][exceptions][!throws]" ) {
+    CHECK_THROWS_MATCHES(throws(1), SpecialException const&, ExceptionMatcher{ 1 });
+    REQUIRE_THROWS_MATCHES(throws(2), SpecialException const&, ExceptionMatcher{ 2 });
+}
+
+TEST_CASE("Exception matchers that fail", "[matchers][exceptions][!throws][.failing]") {
+    SECTION("No exception") {
+        CHECK_THROWS_MATCHES(doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 });
+    }
+    SECTION("Type mismatch") {
+        CHECK_THROWS_MATCHES(throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 });
+    }
+    SECTION("Contents are wrong") {
+        CHECK_THROWS_MATCHES(throws(3), SpecialException const&, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(throws(4), SpecialException const&, ExceptionMatcher{ 1 });
+    }
+}
