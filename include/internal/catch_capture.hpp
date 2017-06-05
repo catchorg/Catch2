@@ -167,4 +167,26 @@
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_THROWS_MATCHES( macroName, exceptionType, resultDisposition, matcher, expr ) \
+    do { \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType, resultDisposition, #matcher ); \
+        if( __catchResult.allowThrows() ) \
+            try { \
+                static_cast<void>(expr); \
+                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+            } \
+            catch( exceptionType ex ) { \
+                __catchResult.captureMatch( ex, matcher, #matcher ); \
+            } \
+            catch( ... ) { \
+                __catchResult.useActiveException( resultDisposition ); \
+            } \
+        else \
+            __catchResult.captureResult( Catch::ResultWas::Ok ); \
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::alwaysFalse() )
+
+
+
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
