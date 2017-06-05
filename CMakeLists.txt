@@ -57,7 +57,6 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/ConditionTests.cpp
         ${SELF_TEST_DIR}/EnumToString.cpp
         ${SELF_TEST_DIR}/ExceptionTests.cpp
-        ${SELF_TEST_DIR}/GeneratorTests.cpp
         ${SELF_TEST_DIR}/MessageTests.cpp
         ${SELF_TEST_DIR}/MiscTests.cpp
         ${SELF_TEST_DIR}/PartTrackerTests.cpp
@@ -83,7 +82,6 @@ set(IMPL_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_capture.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_config.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_exception.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_generators.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_registry_hub.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_reporter.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_runner.cpp
@@ -139,13 +137,10 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_exception_translator_registry.hpp
         ${HEADER_DIR}/internal/catch_expression_lhs.hpp
         ${HEADER_DIR}/internal/catch_fatal_condition.hpp
-        ${HEADER_DIR}/internal/catch_generators.hpp
-        ${HEADER_DIR}/internal/catch_generators_impl.hpp
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
         ${HEADER_DIR}/internal/catch_interfaces_config.h
         ${HEADER_DIR}/internal/catch_interfaces_exception.h
-        ${HEADER_DIR}/internal/catch_interfaces_generators.h
         ${HEADER_DIR}/internal/catch_interfaces_registry_hub.h
         ${HEADER_DIR}/internal/catch_interfaces_reporter.h
         ${HEADER_DIR}/internal/catch_interfaces_runner.h

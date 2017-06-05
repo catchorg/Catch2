@@ -33,7 +33,6 @@
 #include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.h"
-#include "internal/catch_generators.hpp"
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
 #include "internal/catch_matchers_string.h"

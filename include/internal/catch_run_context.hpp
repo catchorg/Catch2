@@ -95,19 +95,15 @@ namespace Catch {
             m_activeTestCase = &testCase;
 
 
+            ITracker& rootTracker = m_trackerContext.startRun();
+            assert( rootTracker.isSectionTracker() );
+            static_cast<SectionTracker&>( rootTracker ).addInitialFilters( m_config->getSectionsToRun() );
             do {
-                ITracker& rootTracker = m_trackerContext.startRun();
-                assert( rootTracker.isSectionTracker() );
-                static_cast<SectionTracker&>( rootTracker ).addInitialFilters( m_config->getSectionsToRun() );
-                do {
-                    m_trackerContext.startCycle();
-                    m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( testInfo.name, testInfo.lineInfo ) );
-                    runCurrentTest( redirectedCout, redirectedCerr );
-                }
-                while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
+                m_trackerContext.startCycle();
+                m_testCaseTracker = &SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( testInfo.name, testInfo.lineInfo ) );
+                runCurrentTest( redirectedCout, redirectedCerr );
             }
-            // !TBD: deprecated - this will be replaced by indexed trackers
-            while( getCurrentContext().advanceGeneratorsForCurrentTest() && !aborting() );
+            while( !m_testCaseTracker->isSuccessfullyCompleted() && !aborting() );
 
             Totals deltaTotals = m_totals.delta( prevTotals );
             if( testInfo.expectedToFail() && deltaTotals.testCases.passed > 0 ) {

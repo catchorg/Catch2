@@ -18,26 +18,12 @@ namespace Catch {
 
     class Context : public IMutableContext, NonCopyable {
 
-    public:
-        virtual ~Context() {
-            deleteAllValues( m_generatorsByTestName );
-        }
-
     public: // IContext
         virtual IResultCapture* getResultCapture() {
             return m_resultCapture;
         }
         virtual IRunner* getRunner() {
             return m_runner;
-        }
-        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
-            return getGeneratorsForCurrentTest()
-            .getGeneratorInfo( fileInfo, totalSize )
-            .getCurrentIndex();
-        }
-        virtual bool advanceGeneratorsForCurrentTest() {
-            IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
-            return generators && generators->moveNext();
         }
 
         virtual IConfigPtr getConfig() const {
@@ -58,31 +44,11 @@ namespace Catch {
         friend IMutableContext& getCurrentMutableContext();
 
     private:
-        IGeneratorsForTest* findGeneratorsForCurrentTest() {
-            std::string testName = getResultCapture()->getCurrentTestName();
-
-            std::map<std::string, IGeneratorsForTest*>::const_iterator it =
-                m_generatorsByTestName.find( testName );
-            return it != m_generatorsByTestName.end()
-                ? it->second
-                : nullptr;
-        }
-
-        IGeneratorsForTest& getGeneratorsForCurrentTest() {
-            IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
-            if( !generators ) {
-                std::string testName = getResultCapture()->getCurrentTestName();
-                generators = createGeneratorsForTest();
-                m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
-            }
-            return *generators;
-        }
 
     private:
         IConfigPtr m_config;
         IRunner* m_runner = nullptr;
         IResultCapture* m_resultCapture = nullptr;
-        std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
     };
 
     namespace {

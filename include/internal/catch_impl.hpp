@@ -21,7 +21,6 @@
 #include "catch_notimplemented_exception.hpp"
 #include "catch_context_impl.hpp"
 #include "catch_console_colour_impl.hpp"
-#include "catch_generators_impl.hpp"
 #include "catch_assertionresult.hpp"
 #include "catch_test_case_info.hpp"
 #include "catch_test_spec.hpp"
@@ -82,8 +81,6 @@ namespace Catch {
     JunitReporter::~JunitReporter() {}
     TestRegistry::~TestRegistry() {}
     FreeFunctionTestCase::~FreeFunctionTestCase() {}
-    IGeneratorInfo::~IGeneratorInfo() {}
-    IGeneratorsForTest::~IGeneratorsForTest() {}
     WildcardPattern::~WildcardPattern() {}
     TestSpec::Pattern::~Pattern() {}
     TestSpec::NamePattern::~NamePattern() {}
