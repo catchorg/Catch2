@@ -6,7 +6,7 @@ Instead Catch provides a powerful mechanism for nesting test case sections withi
 
 Test cases and sections are very easy to use in practice:
 
-* **TEST_CASE(** _test name_ \[, _tags_ \] **)**
+* **TEST_CASE(** _test name_, \[ _tags_ \] **)**
 * **SECTION(** _section name_ **)**
 
 _test name_ and _section name_ are free form, quoted, strings. The optional _tags_ argument is a quoted string containing one or more tags enclosed in square brackets. Tags are discussed below. Test names must be unique within the Catch executable.
