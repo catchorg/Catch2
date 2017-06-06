@@ -124,6 +124,13 @@ namespace Catch {
             xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite.str() ), false );
         }
 
+        static std::string fileNameTag( const std::set<std::string> &tags ) {
+            std::set<std::string>::const_iterator it = tags.lower_bound("#");
+            if( it != tags.end() && !it->empty() && it->front() == '#' )
+                return it->substr(1);
+            return std::string();
+        }
+
         void writeTestCase( TestCaseNode const& testCaseNode ) {
             TestCaseStats const& stats = testCaseNode.value;
 
@@ -135,9 +142,14 @@ namespace Catch {
             std::string className = stats.testInfo.className;
 
             if( className.empty() ) {
-                if( rootSection.childSections.empty() )
+                className = fileNameTag(stats.testInfo.tags);
+                if ( className.empty() )
                     className = "global";
             }
+
+            if ( !m_config->name().empty() )
+                className = m_config->name() + "." + className;
+
             writeSection( className, "", rootSection );
         }
 
