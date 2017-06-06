@@ -162,7 +162,7 @@
         try { \
             __catchResult.captureMatch( arg, matcher, #matcher ); \
         } catch( ... ) { \
-            __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
+            __catchResult.useActiveException( resultDisposition ); \
         } \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
