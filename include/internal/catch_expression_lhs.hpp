@@ -81,7 +81,7 @@ public:
     }
 
     virtual void reconstructExpression( std::string& dest ) const override {
-        dest = ::Catch::Detail::stringify( m_truthy );
+        dest = ::Catch::Detail::stringify( m_lhs );
     }
 
 private:
