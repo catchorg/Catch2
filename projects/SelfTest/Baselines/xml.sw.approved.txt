@@ -128,7 +128,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
-          (*__error()) == 1
+          errno == 1
         </Original>
         <Expanded>
           1 == 1
@@ -1003,7 +1003,7 @@
           a
         </Original>
         <Expanded>
-          true
+          0x<hex digits>
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -1455,6 +1455,91 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Exception matchers that fail" tags="[!throws][.][.failing][exceptions][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Section name="No exception" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Original>
+          <Expanded>
+            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Original>
+          <Expanded>
+            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="2" expectedFailures="0"/>
+      </Section>
+      <Section name="Type mismatch" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Original>
+          <Expanded>
+            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Expanded>
+          <Exception filename="projects/<exe-name>/MatchersTests.cpp" >
+            Unknown exception
+          </Exception>
+        </Expression>
+        <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Original>
+          <Expanded>
+            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Expanded>
+          <Exception filename="projects/<exe-name>/MatchersTests.cpp" >
+            Unknown exception
+          </Exception>
+        </Expression>
+        <OverallResults successes="0" failures="2" expectedFailures="0"/>
+      </Section>
+      <Section name="Contents are wrong" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            throws(3), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Original>
+          <Expanded>
+            {?} special exception has value of 1
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            throws(4), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          </Original>
+          <Expanded>
+            {?} special exception has value of 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="2" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="Exception matchers that succeed" tags="[!throws][exceptions][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          throws(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+        </Original>
+        <Expanded>
+          {?} special exception has value of 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          throws(2), SpecialException const&amp;, ExceptionMatcher{ 2 }
+        </Original>
+        <Expanded>
+          {?} special exception has value of 2
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Exception messages can be tested for" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="exact match" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -1610,1180 +1695,6 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Generator over a range of pairs" tags="[generators]" filename="projects/<exe-name>/GeneratorTests.cpp" >
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          i->first == i->second-1
-        </Original>
-        <Expanded>
-          0 == 0
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          i->first == i->second-1
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Generators over two ranges" tags="[generators]" filename="projects/<exe-name>/GeneratorTests.cpp" >
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          200 == 200
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          202 == 202
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          204 == 204
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          206 == 206
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          208 == 208
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          210 == 210
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          212 == 212
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          2 == 2
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          6 == 6
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          8 == 8
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          10 == 10
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          30 == 30
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          40 == 40
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          42 == 42
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( i, 2 ) == i*2
-        </Original>
-        <Expanded>
-          72 == 72
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CATCH_REQUIRE" filename="projects/<exe-name>/GeneratorTests.cpp" >
-        <Original>
-          multiply( j, 2 ) == j*2
-        </Original>
-        <Expanded>
-          214 == 214
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Greater-than inequalities with different epsilons" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
@@ -2858,6 +1769,9 @@
         </Expanded>
       </Expression>
       <Info>
+        this message may be logged later
+      </Info>
+      <Info>
         this message should be logged
       </Info>
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
@@ -2869,6 +1783,12 @@
         </Expanded>
       </Expression>
       <Info>
+        this message may be logged later
+      </Info>
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
         and this, but later
       </Info>
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
@@ -2879,6 +1799,15 @@
           2 == 0
         </Expanded>
       </Expression>
+      <Info>
+        this message may be logged later
+      </Info>
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
+        and this, but later
+      </Info>
       <Info>
         but not this
       </Info>
@@ -4790,7 +3719,7 @@ re>"
           True
         </Original>
         <Expanded>
-          true
+          {?}
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -4806,7 +3735,7 @@ re>"
           !False
         </Original>
         <Expanded>
-          !false
+          !{?}
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7006,6 +5935,17 @@ re>"
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Reconstruction should be based on stringification: #914" tags="[.][Decomposition][failing][hide]" filename="projects/<exe-name>/DecompositionTests.cpp" >
+      <Expression success="false" type="CHECK" filename="projects/<exe-name>/DecompositionTests.cpp" >
+        <Original>
+          truthy(false)
+        </Original>
+        <Expanded>
+          Hey, its truthy!
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="SCOPED_INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
@@ -10226,7 +9166,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="872" failures="90" expectedFailures="21"/>
+    <OverallResults successes="728" failures="97" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="872" failures="89" expectedFailures="21"/>
+  <OverallResults successes="728" failures="96" expectedFailures="21"/>
 </Catch>

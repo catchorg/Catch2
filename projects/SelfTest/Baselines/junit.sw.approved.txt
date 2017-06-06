@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="77" tests="983" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="82" tests="846" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="#748 - captures with unexpected exceptions" name="outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -192,6 +192,33 @@ ConditionTests.cpp:<line number>
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="Exception matchers that fail" name="No exception" time="{duration}">
+      <failure message="doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="CHECK_THROWS_MATCHES">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Exception matchers that fail" name="Type mismatch" time="{duration}">
+      <error message="throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="CHECK_THROWS_MATCHES">
+Unknown exception
+MatchersTests.cpp:<line number>
+      </error>
+      <error message="throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
+Unknown exception
+MatchersTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="Exception matchers that fail" name="Contents are wrong" time="{duration}">
+      <failure message="{?} special exception has value of 1" type="CHECK_THROWS_MATCHES">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{?} special exception has value of 1" type="REQUIRE_THROWS_MATCHES">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="global" name="Exception matchers that succeed" time="{duration}"/>
     <testcase classname="Exception messages can be tested for" name="exact match" time="{duration}"/>
     <testcase classname="Exception messages can be tested for" name="different case" time="{duration}"/>
     <testcase classname="Exception messages can be tested for" name="wildcarded" time="{duration}"/>
@@ -226,8 +253,6 @@ MessageTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Factorials are computed" time="{duration}"/>
-    <testcase classname="global" name="Generator over a range of pairs" time="{duration}"/>
-    <testcase classname="global" name="Generators over two ranges" time="{duration}"/>
     <testcase classname="global" name="Greater-than inequalities with different epsilons" time="{duration}"/>
     <testcase classname="global" name="INFO and WARN do not abort tests" time="{duration}"/>
     <testcase classname="global" name="INFO gets logged on failure" time="{duration}">
@@ -239,10 +264,13 @@ MessageTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="INFO gets logged on failure, even if captured before successful assertions" time="{duration}">
       <failure message="2 == 1" type="CHECK">
+this message may be logged later
 this message should be logged
 MessageTests.cpp:<line number>
       </failure>
       <failure message="2 == 0" type="CHECK">
+this message may be logged later
+this message should be logged
 and this, but later
 MessageTests.cpp:<line number>
       </failure>
@@ -442,6 +470,11 @@ MessageTests.cpp:<line number>
     <testcase classname="Process can be configured on command line" name="use-colour/yes" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="use-colour/no" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="use-colour/error" time="{duration}"/>
+    <testcase classname="global" name="Reconstruction should be based on stringification: #914" time="{duration}">
+      <failure message="Hey, its truthy!" type="CHECK">
+DecompositionTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="SCOPED_INFO is reset for each loop" time="{duration}">
       <failure message="10 &lt; 10" type="REQUIRE">
 current counter 10

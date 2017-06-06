@@ -275,6 +275,55 @@ with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
 -------------------------------------------------------------------------------
+Exception matchers that fail
+  No exception
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Type mismatch
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Contents are wrong
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throws(3), SpecialException const&, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throws(4), SpecialException const&, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+-------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -368,7 +417,9 @@ MessageTests.cpp:<line number>: FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
-with message:
+with messages:
+  this message may be logged later
+  this message should be logged
   and this, but later
 
 -------------------------------------------------------------------------------
@@ -592,6 +643,17 @@ warning:
 MessageTests.cpp:<line number>:
 warning:
   toString(p): 0x<hex digits>
+
+-------------------------------------------------------------------------------
+Reconstruction should be based on stringification: #914
+-------------------------------------------------------------------------------
+DecompositionTests.cpp:<line number>
+...............................................................................
+
+DecompositionTests.cpp:<line number>: FAILED:
+  CHECK( truthy(false) )
+with expansion:
+  Hey, its truthy!
 
 -------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
@@ -940,6 +1002,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 170 | 122 passed | 44 failed |  4 failed as expected
-assertions: 980 | 872 passed | 87 failed | 21 failed as expected
+test cases: 171 | 121 passed | 46 failed |  4 failed as expected
+assertions: 843 | 728 passed | 94 failed | 21 failed as expected
 

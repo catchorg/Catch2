@@ -119,7 +119,7 @@ with expansion:
 
 MiscTests.cpp:<line number>:
 PASSED:
-  REQUIRE( (*__error()) == 1 )
+  REQUIRE( errno == 1 )
 with expansion:
   1 == 1
 
@@ -901,7 +901,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( a )
 with expansion:
-  true
+  0x<hex digits>
 
 TrickyTests.cpp:<line number>:
 PASSED:
@@ -1274,6 +1274,73 @@ with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
 -------------------------------------------------------------------------------
+Exception matchers that fail
+  No exception
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Type mismatch
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Contents are wrong
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throws(3), SpecialException const&, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throws(4), SpecialException const&, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+-------------------------------------------------------------------------------
+Exception matchers that succeed
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS_MATCHES( throws(1), SpecialException const&, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_MATCHES( throws(2), SpecialException const&, ExceptionMatcher{ 2 } )
+with expansion:
+  {?} special exception has value of 2
+
+-------------------------------------------------------------------------------
 Exception messages can be tested for
   exact match
 -------------------------------------------------------------------------------
@@ -1407,1326 +1474,6 @@ with expansion:
   3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
-Generator over a range of pairs
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( i->first == i->second-1 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Generator over a range of pairs
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( i->first == i->second-1 )
-with expansion:
-  2 == 2
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
 Greater-than inequalities with different epsilons
 -------------------------------------------------------------------------------
 ApproxTests.cpp:<line number>
@@ -2799,14 +1546,17 @@ MessageTests.cpp:<line number>: FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
-with message:
+with messages:
+  this message may be logged later
   this message should be logged
 
 MessageTests.cpp:<line number>: FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
-with message:
+with messages:
+  this message may be logged later
+  this message should be logged
   and this, but later
 
 MessageTests.cpp:<line number>:
@@ -2814,7 +1564,10 @@ PASSED:
   CHECK( a == 2 )
 with expansion:
   2 == 2
-with message:
+with messages:
+  this message may be logged later
+  this message should be logged
+  and this, but later
   but not this
 
 -------------------------------------------------------------------------------
@@ -4647,7 +3400,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK( True )
 with expansion:
-  true
+  {?}
 
 TrickyTests.cpp:<line number>:
 PASSED:
@@ -4659,7 +3412,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK_FALSE( False )
 with expansion:
-  !false
+  !{?}
 
 -------------------------------------------------------------------------------
 Operators at different namespace levels not hijacked by Koenig lookup
@@ -6512,6 +5265,17 @@ TestMain.cpp:<line number>
 TestMain.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) )
+
+-------------------------------------------------------------------------------
+Reconstruction should be based on stringification: #914
+-------------------------------------------------------------------------------
+DecompositionTests.cpp:<line number>
+...............................................................................
+
+DecompositionTests.cpp:<line number>: FAILED:
+  CHECK( truthy(false) )
+with expansion:
+  Hey, its truthy!
 
 -------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
@@ -9544,6 +8308,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 170 | 121 passed | 45 failed |  4 failed as expected
-assertions: 982 | 872 passed | 89 failed | 21 failed as expected
+test cases: 171 | 120 passed | 47 failed |  4 failed as expected
+assertions: 845 | 728 passed | 96 failed | 21 failed as expected
 
