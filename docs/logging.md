@@ -28,6 +28,8 @@ The number is 1
 When the last `CHECK` fails in the "Bar" test case, then only one message will be printed: `Test case start`.
 
 
+Note that these macros do not log anything unless they are *directly* inside a catch test scope macro (i.e. TEST_CASE, SECTION, GIVEN/WHEN/THEN/...). In particular they cannot be used inside loops or ```if``` statements.
+
 ## Streaming macros
 
 All these macros allow heterogenous sequences of values to be streaming using the insertion operator (```<<```) in the same way that std::ostream, std::cout, etc support it.
