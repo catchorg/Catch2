@@ -63,7 +63,7 @@ std::string toString( std::nullptr_t );
 
 #ifdef __OBJC__
     std::string toString( NSString const * const& nsstring );
-    std::string toString( NSString * CATCH_ARC_STRONG const& nsstring );
+    std::string toString( NSString * CATCH_ARC_STRONG & nsstring );
     std::string toString( NSObject* const& nsObject );
 #endif
 
