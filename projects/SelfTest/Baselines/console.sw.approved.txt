@@ -4773,7 +4773,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parser.parseInto( std::vector<std::string>(), config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -4790,7 +4792,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -4832,17 +4836,19 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "notIncluded" ) ) == false )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("notIncluded")) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) )
 with expansion:
   true
 
@@ -4856,17 +4862,19 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) )
 with expansion:
   true
 
@@ -4880,17 +4888,19 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) )
 with expansion:
   true
 
@@ -4904,7 +4914,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-r", "console"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -4922,7 +4934,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-r", "xml"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -4940,7 +4954,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-r", "xml", "-r", "junit"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -4970,7 +4986,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--reporter", "junit"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -4988,7 +5006,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-b"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5006,7 +5026,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--break"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5024,7 +5046,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-a"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5042,28 +5066,15 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-x", "2"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
   REQUIRE( config.abortAfter == 2 )
 with expansion:
   2 == 2
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  abort
-  -x must be greater than zero
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" ) )
-with expansion:
-  "Value after -x or --abortAfter must be greater than zero
-  - while parsing: (-x, --abortx <no. failures>)" contains: "greater than zero"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -5075,10 +5086,16 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "-x" ) )
+  CHECK( !result )
 with expansion:
-  "Unable to convert oops to destination type
-  - while parsing: (-x, --abortx <no. failures>)" contains: "-x"
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( result.errorMessage(), Contains("convert") && Contains("oops") )
+with expansion:
+  "Unable to convert 'oops' to destination type" ( contains: "convert" and
+  contains: "oops" )
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -5090,13 +5107,15 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-e"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.noThrow == true )
+  REQUIRE( config.noThrow )
 with expansion:
-  true == true
+  true
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -5108,13 +5127,15 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--nothrow"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.noThrow == true )
+  REQUIRE( config.noThrow )
 with expansion:
-  true == true
+  true
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -5126,7 +5147,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-o", "filename.ext"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5144,7 +5167,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--out", "filename.ext"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5162,7 +5187,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-abe"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5192,7 +5219,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5210,7 +5239,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--use-colour", "auto"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5228,7 +5259,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--use-colour", "yes"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5246,7 +5279,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--use-colour", "no"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -5264,7 +5299,16 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) )
+  CHECK( !result )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_THAT( result.errorMessage(), Contains( "colour mode must be one of" ) )
+with expansion:
+  "colour mode must be one of: auto, yes or no. 'wrong' not recognised"
+  contains: "colour mode must be one of"
 
 -------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914
@@ -8309,5 +8353,5 @@ PASSED:
 
 ===============================================================================
 test cases: 171 | 120 passed | 47 failed |  4 failed as expected
-assertions: 845 | 728 passed | 96 failed | 21 failed as expected
+assertions: 846 | 729 passed | 96 failed | 21 failed as expected
 

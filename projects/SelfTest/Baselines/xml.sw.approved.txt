@@ -5325,12 +5325,12 @@ re>"
     </TestCase>
     <TestCase name="Process can be configured on command line" tags="[command-line][config]" filename="projects/<exe-name>/TestMain.cpp" >
       <Section name="empty args don't cause a crash" filename="projects/<exe-name>/TestMain.cpp" >
-        <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            parser.parseInto( std::vector&lt;std::string>(), config )
+            result
           </Original>
           <Expanded>
-            parser.parseInto( std::vector&lt;std::string>(), config )
+            {?}
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5344,12 +5344,12 @@ re>"
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="default - no arguments" filename="projects/<exe-name>/TestMain.cpp" >
-        <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            parseIntoConfig( argv, config )
+            result
           </Original>
           <Expanded>
-            parseIntoConfig( argv, config )
+            {?}
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5396,17 +5396,17 @@ re>"
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="1 test" description="Specify one test case using" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              result
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( "notIncluded" ) ) == false
+              cfg.testSpec().matches(fakeTestCase("notIncluded")) == false
             </Original>
             <Expanded>
               false == false
@@ -5414,7 +5414,7 @@ re>"
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( "test1" ) )
+              cfg.testSpec().matches(fakeTestCase("test1"))
             </Original>
             <Expanded>
               true
@@ -5426,17 +5426,17 @@ re>"
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="Specify one test case exclusion using exclude:" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              result
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false
+              cfg.testSpec().matches(fakeTestCase("test1")) == false
             </Original>
             <Expanded>
               false == false
@@ -5444,7 +5444,7 @@ re>"
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) )
+              cfg.testSpec().matches(fakeTestCase("alwaysIncluded"))
             </Original>
             <Expanded>
               true
@@ -5456,17 +5456,17 @@ re>"
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="Specify one test case exclusion using ~" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              result
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false
+              cfg.testSpec().matches(fakeTestCase("test1")) == false
             </Original>
             <Expanded>
               false == false
@@ -5474,7 +5474,7 @@ re>"
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) )
+              cfg.testSpec().matches(fakeTestCase("alwaysIncluded"))
             </Original>
             <Expanded>
               true
@@ -5486,12 +5486,12 @@ re>"
       </Section>
       <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-r/console" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-r", "console"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5508,12 +5508,12 @@ re>"
       </Section>
       <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-r/xml" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-r", "xml"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5530,12 +5530,12 @@ re>"
       </Section>
       <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-r xml and junit" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-r", "xml", "-r", "junit"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5568,12 +5568,12 @@ re>"
       </Section>
       <Section name="reporter" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="--reporter/junit" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "--reporter", "junit"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5590,12 +5590,12 @@ re>"
       </Section>
       <Section name="debugger" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-b" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-b"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5612,12 +5612,12 @@ re>"
       </Section>
       <Section name="debugger" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="--break" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "--break"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5634,12 +5634,12 @@ re>"
       </Section>
       <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-a aborts after first failure" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-a"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5656,12 +5656,12 @@ re>"
       </Section>
       <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-x 2 aborts after two failures" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-x", "2"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5677,51 +5677,43 @@ re>"
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="-x must be greater than zero" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" )
-            </Original>
-            <Expanded>
-              "Value after -x or --abortAfter must be greater than zero
-- while parsing: (-x, --abortx &lt;no. failures>)" contains: "greater than zero"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="abort" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-x must be numeric" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfigAndReturnError( argv, config ), Contains( "-x" )
+              !result
             </Original>
             <Expanded>
-              "Unable to convert oops to destination type
-- while parsing: (-x, --abortx &lt;no. failures>)" contains: "-x"
+              true
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              result.errorMessage(), Contains("convert") &amp;&amp; Contains("oops")
+            </Original>
+            <Expanded>
+              "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="nothrow" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-e" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-e"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              config.noThrow == true
+              config.noThrow
             </Original>
             <Expanded>
-              true == true
+              true
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -5730,20 +5722,20 @@ re>"
       </Section>
       <Section name="nothrow" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="--nothrow" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "--nothrow"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              config.noThrow == true
+              config.noThrow
             </Original>
             <Expanded>
-              true == true
+              true
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -5752,12 +5744,12 @@ re>"
       </Section>
       <Section name="output filename" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="-o filename" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-o", "filename.ext"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5774,12 +5766,12 @@ re>"
       </Section>
       <Section name="output filename" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="--out" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "--out", "filename.ext"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5796,12 +5788,12 @@ re>"
       </Section>
       <Section name="combinations" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="Single character flags can be combined" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "-abe"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5834,12 +5826,12 @@ re>"
       </Section>
       <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="without option" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5856,12 +5848,12 @@ re>"
       </Section>
       <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="auto" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "--use-colour", "auto"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5878,12 +5870,12 @@ re>"
       </Section>
       <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="yes" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "--use-colour", "yes"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5900,12 +5892,12 @@ re>"
       </Section>
       <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="no" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config )
+              cli.parse({"test", "--use-colour", "no"})
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config )
+              {?}
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
@@ -5922,17 +5914,25 @@ re>"
       </Section>
       <Section name="use-colour" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="error" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/TestMain.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
             <Original>
-              parseIntoConfig( argv, config ), Contains( "colour mode must be one of" )
+              !result
             </Original>
             <Expanded>
-              parseIntoConfig( argv, config ), Contains( "colour mode must be one of" )
+              true
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+          <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TestMain.cpp" >
+            <Original>
+              result.errorMessage(), Contains( "colour mode must be one of" )
+            </Original>
+            <Expanded>
+              "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -9166,7 +9166,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="728" failures="97" expectedFailures="21"/>
+    <OverallResults successes="729" failures="97" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="728" failures="96" expectedFailures="21"/>
+  <OverallResults successes="729" failures="96" expectedFailures="21"/>
 </Catch>

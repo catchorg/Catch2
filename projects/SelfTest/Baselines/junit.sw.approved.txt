@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="15" failures="82" tests="846" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="82" tests="847" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -458,7 +458,6 @@ MessageTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/debugger/--break" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-a aborts after first failure" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x 2 aborts after two failures" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x must be greater than zero" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x must be numeric" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/-e" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/--nothrow" time="{duration}"/>
