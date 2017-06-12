@@ -96,17 +96,14 @@ namespace Catch {
     }
 
     class Session : NonCopyable {
-        static bool alreadyInstantiated;
-
     public:
 
-        struct OnUnusedOptions { enum DoWhat { Ignore, Fail }; };
-
-        Session()
-        : m_cli( makeCommandLineParser() ) {
+        Session() {
+            static bool alreadyInstantiated = false;
             if( alreadyInstantiated )
                 CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" );
             alreadyInstantiated = true;
+            m_cli = makeCommandLineParser( m_configData );
         }
         ~Session() {
             Catch::cleanUp();
@@ -115,29 +112,27 @@ namespace Catch {
         void showHelp( std::string const& processName ) {
             Catch::cout() << "\nCatch v" << libraryVersion() << "\n";
 
-            m_cli.usage( Catch::cout(), processName );
+            Catch::cout() << m_cli << std::endl;
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
 
-        int applyCommandLine( int argc, char const* const* const argv, OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
-            try {
-                m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );
-                m_unusedTokens = m_cli.parseInto( Clara::argsToVector( argc, argv ), m_configData );
-                if( m_configData.showHelp )
-                    showHelp( m_configData.processName );
-                m_config.reset();
-            }
-            catch( std::exception& ex ) {
+        int applyCommandLine( int argc, char* argv[] ) {
+            auto result = m_cli.parse( clara::Args( argc, argv ) );
+            if( !result ) {
                 {
                     Colour colourGuard( Colour::Red );
                     Catch::cerr()
                         << "\nError(s) in input:\n"
-                        << Text( ex.what(), TextAttributes().setIndent(2) )
+                        << Text( result.errorMessage(), TextAttributes().setIndent(2) )
                         << "\n\n";
                 }
-                m_cli.usage( Catch::cout(), m_configData.processName );
+                Catch::cerr() << m_cli << std::endl;
                 return (std::numeric_limits<int>::max)();
             }
+
+            if( m_configData.showHelp )
+                showHelp( m_configData.processName );
+            m_config.reset();
             return 0;
         }
 
@@ -146,7 +141,7 @@ namespace Catch {
             m_config.reset();
         }
 
-        int run( int argc, char const* const* const argv ) {
+        int run( int argc, char* argv[] ) {
             const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
             if ( !exceptions.empty() ) {
                 Catch::cerr() << "Errors occured during startup!" << '\n';
@@ -167,7 +162,7 @@ namespace Catch {
         }
 
     #if defined(WIN32) && defined(UNICODE)
-        int run( int argc, wchar_t const* const* const argv ) {
+        int run( int argc, wchar_t* const argv[] ) {
 
             char **utf8Argv = new char *[ argc ];
 
@@ -217,11 +212,11 @@ namespace Catch {
             }
         }
 
-        Clara::CommandLine<ConfigData> const& cli() const {
+        clara::Parser const& cli() const {
             return m_cli;
         }
-        std::vector<Clara::Parser::Token> const& unusedTokens() const {
-            return m_unusedTokens;
+        void cli( clara::Parser const& newParser ) {
+            m_cli = newParser;
         }
         ConfigData& configData() {
             return m_configData;
@@ -232,13 +227,10 @@ namespace Catch {
             return *m_config;
         }
     private:
-        Clara::CommandLine<ConfigData> m_cli;
-        std::vector<Clara::Parser::Token> m_unusedTokens;
+        clara::Parser m_cli;
         ConfigData m_configData;
         std::shared_ptr<Config> m_config;
     };
-
-    bool Session::alreadyInstantiated = false;
 
 } // end namespace Catch
 

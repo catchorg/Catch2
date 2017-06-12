@@ -17,190 +17,128 @@
 
 namespace Catch {
 
-    inline void abortAfterFirst( ConfigData& config ) { config.abortAfter = 1; }
-    inline void abortAfterX( ConfigData& config, int x ) {
-        CATCH_ENFORCE( x >=1, "Value after -x or --abortAfter must be greater than zero" );
-        config.abortAfter = x;
-    }
-    inline void addTestOrTags( ConfigData& config, std::string const& testSpec ) { config.testsOrTags.push_back( testSpec ); }
-    inline void addSectionToRun( ConfigData& config, std::string const& sectionName ) { config.sectionsToRun.push_back( sectionName ); }
-    inline void addReporterName( ConfigData& config, std::string const& reporterName ) { config.reporterNames.push_back( reporterName ); }
+    inline clara::Parser makeCommandLineParser( ConfigData& config ) {
 
-    inline void addWarning( ConfigData& config, std::string const& warning ) {
-        CATCH_ENFORCE( warning == "NoAssertions", "Unrecognised warning: '" << warning << "'" );
-        config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
-    }
-    inline void setOrder( ConfigData& config, std::string const& order ) {
-        if( startsWith( "declared", order ) )
-            config.runOrder = RunTests::InDeclarationOrder;
-        else if( startsWith( "lexical", order ) )
-            config.runOrder = RunTests::InLexicographicalOrder;
-        else if( startsWith( "random", order ) )
-            config.runOrder = RunTests::InRandomOrder;
-        else
-            CATCH_ENFORCE( false, "Unrecognised ordering: '" << order << '\'' );
-    }
-    inline void setRngSeed( ConfigData& config, std::string const& seed ) {
-        if( seed == "time" ) {
-            config.rngSeed = static_cast<unsigned int>( std::time(0) );
-        }
-        else {
-            std::stringstream ss;
-            ss << seed;
-            ss >> config.rngSeed;
-            CATCH_ENFORCE( !ss.fail(), "Argument to --rng-seed should be the word 'time' or a number" );
-        }
-    }
-    inline void setVerbosity( ConfigData& config, int level ) {
-        // !TBD: accept strings?
-        config.verbosity = static_cast<Verbosity::Level>( level );
-    }
-    inline void setShowDurations( ConfigData& config, bool _showDurations ) {
-        config.showDurations = _showDurations
-            ? ShowDurations::Always
-            : ShowDurations::Never;
-    }
-    inline void setUseColour( ConfigData& config, std::string const& value ) {
-        std::string mode = toLower( value );
+        auto const loadTestNamesFromFile = [&]( std::string const& filename ) {
+                std::ifstream f( filename.c_str() );
+                if( !f.is_open() )
+                    return clara::ParserResult::runtimeError( "Unable to load input file: '" + filename + "'" );
 
-        if( mode == "yes" )
-            config.useColour = UseColour::Yes;
-        else if( mode == "no" )
-            config.useColour = UseColour::No;
-        else if( mode == "auto" )
-            config.useColour = UseColour::Auto;
-        else
-            CATCH_ENFORCE( false, "colour mode must be one of: auto, yes or no" );
-    }
-    inline void forceColour( ConfigData& config ) {
-        config.useColour = UseColour::Yes;
-    }
-    inline void loadTestNamesFromFile( ConfigData& config, std::string const& _filename ) {
-        std::ifstream f( _filename.c_str() );
-        CATCH_ENFORCE( f.is_open(), "Unable to load input file: '" << _filename << "'" );
+                std::string line;
+                while( std::getline( f, line ) ) {
+                    line = trim(line);
+                    if( !line.empty() && !startsWith( line, '#' ) ) {
+                        if( !startsWith( line, '"' ) )
+                            line = '"' + line + '"';
+                        config.testsOrTags.push_back( line + ',' );
+                    }
+                }
+                return clara::ParserResult::ok( clara::ParseResultType::Matched );
+            };
 
-        std::string line;
-        while( std::getline( f, line ) ) {
-            line = trim(line);
-            if( !line.empty() && !startsWith( line, '#' ) ) {
-                if( !startsWith( line, '"' ) )
-                    line = '"' + line + '"';
-                addTestOrTags( config, line + ',' );
-            }
-        }
-    }
 
-    inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
+        using namespace clara;
+        auto cli
+            = ExeName( config.processName )
+            + Help( config.showHelp )
+            + Opt( config.listTests )
+                ["-l"]["--list-tests"]
+                ( "list all/matching test cases" )
+            + Opt( config.listTags )
+                ["-t"]["--list-tags"]
+                ( "list all/matching tags" )
+            + Opt( config.showSuccessfulTests )
+                ["-s"]["--success"]
+                ( "include successful tests in output" )
+            + Opt( config.shouldDebugBreak )
+                ["-b"]["--break"]
+                ( "break into debugger on failure" )
+            + Opt( config.noThrow )
+                ["-e"]["--nothrow"]
+                ( "skip exception tests" )
+            + Opt( config.showInvisibles )
+                ["-i"]["--invisibles"]
+                ( "show invisibles (tabs, newlines)" )
+            + Opt( config.outputFilename, "filename" )
+                ["-o"]["--out"]
+                ( "output filename" )
+            + Opt( config.reporterNames, "name" )
+                ["-r"]["--reporter"]
+                ( "reporter to use (defaults to console)" )
+            + Opt( config.name, "name" )
+                ["-n"]["--name"]
+                ( "suite name" )
+            + Opt( [&]( bool ){ config.abortAfter = 1; } )
+                ["-a"]["--abort"]
+                ( "abort at first failure" )
+            + Opt( [&]( int x ){ config.abortAfter = x; }, "no. failures" )
+                ["-x"]["--abortx"]
+                ( "abort after x failures" )
+            + Opt( [&]( std::string const& warning ) {
+                        if( warning != "NoAssertions" )
+                            return clara::ParserResult::runtimeError( "Unrecognised warning: '" + warning + "'" );
+                        config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
+                        return clara::ParserResult::ok( ParseResultType::Matched );
+                    }, "warning name" )
+                ["-w"]["--warn"]
+                ( "enable warnings" )
+            + Opt( [&]( bool ) { config.showDurations = ShowDurations::Always; } )
+                ["-d"]["--durations"]
+                ( "show test durations" )
+            + Opt( loadTestNamesFromFile, "filename" )
+                ["-f"]["--input-file"]
+                ( "load test names to run from a file" )
+            + Opt( config.filenamesAsTags )
+                ["-#"]["--filenames-as-tags"]
+                ( "adds a tag for the filename" )
+            + Opt( config.sectionsToRun, "section name" )
+                ["-c"]["--section"]
+                ( "specify section to run" )
+            + Opt( config.listTestNamesOnly )
+                ["--list-test-names-only"]
+                ( "list all/matching test cases names only" )
+            + Opt( config.listReporters )
+                ["--list-reporters"]
+                ( "list all reporters" )
+            + Opt( [&]( std::string const& order ) {
+                        if( startsWith( "declared", order ) )
+                            config.runOrder = RunTests::InDeclarationOrder;
+                        else if( startsWith( "lexical", order ) )
+                            config.runOrder = RunTests::InLexicographicalOrder;
+                        else if( startsWith( "random", order ) )
+                            config.runOrder = RunTests::InRandomOrder;
+                        else
+                            return clara::ParserResult::runtimeError( "Unrecognised ordering: '" + order + "'" );
+                        return clara::ParserResult::ok( ParseResultType::Matched );
+                    }, "decl|lex|rand" )
+                ["--order"]
+                ( "test case order (defaults to decl)" )
+            + Opt( [&]( std::string const& seed ) {
+                        if( seed != "time" )
+                            return clara::detail::convertInto( seed, config.rngSeed );
+                        config.rngSeed = static_cast<unsigned int>( std::time(0) );
+                        return clara::ParserResult::ok( ParseResultType::Matched );
+                    }, "'time'|number" )
+                ["--rng-seed"]
+                ( "set a specific seed for random numbers" )
+            + Opt( [&]( std::string const& useColour ) {
+                            auto mode = toLower( useColour );
 
-        using namespace Clara;
-        CommandLine<ConfigData> cli;
+                            if( mode == "yes" )
+                                config.useColour = UseColour::Yes;
+                            else if( mode == "no" )
+                                config.useColour = UseColour::No;
+                            else if( mode == "auto" )
+                                config.useColour = UseColour::Auto;
+                            else
+                                return clara::ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
+                        return clara::ParserResult::ok( ParseResultType::Matched );
+                    }, "yes|no" )
+                ["--use-colour"]
+                ( "should output be colourised" )
 
-        cli.bindProcessName( &ConfigData::processName );
-
-        cli["-?"]["-h"]["--help"]
-            .describe( "display usage information" )
-            .bind( &ConfigData::showHelp );
-
-        cli["-l"]["--list-tests"]
-            .describe( "list all/matching test cases" )
-            .bind( &ConfigData::listTests );
-
-        cli["-t"]["--list-tags"]
-            .describe( "list all/matching tags" )
-            .bind( &ConfigData::listTags );
-
-        cli["-s"]["--success"]
-            .describe( "include successful tests in output" )
-            .bind( &ConfigData::showSuccessfulTests );
-
-        cli["-b"]["--break"]
-            .describe( "break into debugger on failure" )
-            .bind( &ConfigData::shouldDebugBreak );
-
-        cli["-e"]["--nothrow"]
-            .describe( "skip exception tests" )
-            .bind( &ConfigData::noThrow );
-
-        cli["-i"]["--invisibles"]
-            .describe( "show invisibles (tabs, newlines)" )
-            .bind( &ConfigData::showInvisibles );
-
-        cli["-o"]["--out"]
-            .describe( "output filename" )
-            .bind( &ConfigData::outputFilename, "filename" );
-
-        cli["-r"]["--reporter"]
-//            .placeholder( "name[:filename]" )
-            .describe( "reporter to use (defaults to console)" )
-            .bind( &addReporterName, "name" );
-
-        cli["-n"]["--name"]
-            .describe( "suite name" )
-            .bind( &ConfigData::name, "name" );
-
-        cli["-a"]["--abort"]
-            .describe( "abort at first failure" )
-            .bind( &abortAfterFirst );
-
-        cli["-x"]["--abortx"]
-            .describe( "abort after x failures" )
-            .bind( &abortAfterX, "no. failures" );
-
-        cli["-w"]["--warn"]
-            .describe( "enable warnings" )
-            .bind( &addWarning, "warning name" );
-
-// - needs updating if reinstated
-//        cli.into( &setVerbosity )
-//            .describe( "level of verbosity (0=no output)" )
-//            .shortOpt( "v")
-//            .longOpt( "verbosity" )
-//            .placeholder( "level" );
-
-        cli[_]
-            .describe( "which test or tests to use" )
-            .bind( &addTestOrTags, "test name, pattern or tags" );
-
-        cli["-d"]["--durations"]
-            .describe( "show test durations" )
-            .bind( &setShowDurations, "yes|no" );
-
-        cli["-f"]["--input-file"]
-            .describe( "load test names to run from a file" )
-            .bind( &loadTestNamesFromFile, "filename" );
-
-        cli["-#"]["--filenames-as-tags"]
-            .describe( "adds a tag for the filename" )
-            .bind( &ConfigData::filenamesAsTags );
-
-        cli["-c"]["--section"]
-                .describe( "specify section to run" )
-                .bind( &addSectionToRun, "section name" );
-
-        // Less common commands which don't have a short form
-        cli["--list-test-names-only"]
-            .describe( "list all/matching test cases names only" )
-            .bind( &ConfigData::listTestNamesOnly );
-
-        cli["--list-reporters"]
-            .describe( "list all reporters" )
-            .bind( &ConfigData::listReporters );
-
-        cli["--order"]
-            .describe( "test case order (defaults to decl)" )
-            .bind( &setOrder, "decl|lex|rand" );
-
-        cli["--rng-seed"]
-            .describe( "set a specific seed for random numbers" )
-            .bind( &setRngSeed, "'time'|number" );
-
-        cli["--force-colour"]
-            .describe( "force colourised output (deprecated)" )
-            .bind( &forceColour );
-
-        cli["--use-colour"]
-            .describe( "should output be colourised" )
-            .bind( &setUseColour, "yes|no" );
+            + Arg( config.testsOrTags, "test name|pattern|tags" )
+                ( "which test or tests to use" );
 
         return cli;
     }

@@ -25,24 +25,24 @@ CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 #endif
 
 
-template<size_t size>
-void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
-    Catch::Clara::CommandLine<Catch::ConfigData> parser = Catch::makeCommandLineParser();
-    parser.parseInto( Catch::Clara::argsToVector( size, argv ), config );
-}
-
-template<size_t size>
-std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::ConfigData& config ) {
-    try {
-        parseIntoConfig( argv, config );
-        FAIL( "expected exception" );
-    }
-    catch( std::exception& ex ) {
-        return ex.what();
-    }
-    return "";
-}
-
+//template<size_t size>
+//void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
+//    auto parser = Catch::makeCommandLineParser();
+//    parser.parseInto( Catch::Clara::argsToVector( size, argv ), config );
+//}
+//
+//template<size_t size>
+//std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::ConfigData& config ) {
+//    try {
+//        parseIntoConfig( argv, config );
+//        FAIL( "expected exception" );
+//    }
+//    catch( std::exception& ex ) {
+//        return ex.what();
+//    }
+//    return "";
+//}
+//
 inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( nullptr, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
@@ -50,197 +50,182 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
     using namespace Catch::Matchers;
 
     Catch::ConfigData config;
+    auto cli = Catch::makeCommandLineParser(config);
 
-    SECTION( "empty args don't cause a crash" ) {
-        Catch::Clara::CommandLine<Catch::ConfigData> parser = Catch::makeCommandLineParser();
-        CHECK_NOTHROW( parser.parseInto( std::vector<std::string>(), config ) );
-
-        CHECK( config.processName == "" );
+    SECTION("empty args don't cause a crash") {
+        auto result = cli.parse({""});
+        CHECK(result);
+        CHECK(config.processName == "");
     }
 
-    SECTION( "default - no arguments", "" ) {
-        const char* argv[] = { "test" };
-        CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-        CHECK( config.processName == "test" );
-        CHECK( config.shouldDebugBreak == false );
-        CHECK( config.abortAfter == -1 );
-        CHECK( config.noThrow == false );
-        CHECK( config.reporterNames.empty() );
+    SECTION("default - no arguments") {
+        auto result = cli.parse({"test"});
+        CHECK(result);
+        CHECK(config.processName == "test");
+        CHECK(config.shouldDebugBreak == false);
+        CHECK(config.abortAfter == -1);
+        CHECK(config.noThrow == false);
+        CHECK(config.reporterNames.empty());
     }
 
-    SECTION( "test lists", "" ) {
-        SECTION( "1 test", "Specify one test case using" ) {
-            const char* argv[] = { "test", "test1" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+    SECTION("test lists") {
+        SECTION("1 test", "Specify one test case using") {
+            auto result = cli.parse({"test", "test1"});
+            CHECK(result);
 
-            Catch::Config cfg( config );
-            REQUIRE( cfg.testSpec().matches( fakeTestCase( "notIncluded" ) ) == false );
-            REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) );
+            Catch::Config cfg(config);
+            REQUIRE(cfg.testSpec().matches(fakeTestCase("notIncluded")) == false);
+            REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")));
         }
-        SECTION( "Specify one test case exclusion using exclude:", "" ) {
-            const char* argv[] = { "test", "exclude:test1" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION("Specify one test case exclusion using exclude:") {
+            auto result = cli.parse({"test", "exclude:test1"});
+            CHECK(result);
 
-            Catch::Config cfg( config );
-            REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false );
-            REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) );
+            Catch::Config cfg(config);
+            REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")) == false);
+            REQUIRE(cfg.testSpec().matches(fakeTestCase("alwaysIncluded")));
         }
 
-        SECTION( "Specify one test case exclusion using ~", "" ) {
-            const char* argv[] = { "test", "~test1" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION("Specify one test case exclusion using ~") {
+            auto result = cli.parse({"test", "~test1"});
+            CHECK(result);
 
-            Catch::Config cfg( config );
-            REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false );
-            REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) );
+            Catch::Config cfg(config);
+            REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")) == false);
+            REQUIRE(cfg.testSpec().matches(fakeTestCase("alwaysIncluded")));
         }
 
     }
 
-    SECTION( "reporter", "" ) {
-        SECTION( "-r/console", "" ) {
-            const char* argv[] = { "test", "-r", "console" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+    SECTION("reporter") {
+        SECTION("-r/console") {
+            CHECK(cli.parse({"test", "-r", "console"}));
 
-            REQUIRE( config.reporterNames[0] == "console" );
+            REQUIRE(config.reporterNames[0] == "console");
         }
-        SECTION( "-r/xml", "" ) {
-            const char* argv[] = { "test", "-r", "xml" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION("-r/xml") {
+            CHECK(cli.parse({"test", "-r", "xml"}));
 
-            REQUIRE( config.reporterNames[0] == "xml" );
+            REQUIRE(config.reporterNames[0] == "xml");
         }
-        SECTION( "-r xml and junit", "" ) {
-            const char* argv[] = { "test", "-r", "xml", "-r", "junit" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION("-r xml and junit") {
+            CHECK(cli.parse({"test", "-r", "xml", "-r", "junit"}));
 
-            REQUIRE( config.reporterNames.size() == 2 );
-            REQUIRE( config.reporterNames[0] == "xml" );
-            REQUIRE( config.reporterNames[1] == "junit" );
+            REQUIRE(config.reporterNames.size() == 2);
+            REQUIRE(config.reporterNames[0] == "xml");
+            REQUIRE(config.reporterNames[1] == "junit");
         }
-        SECTION( "--reporter/junit", "" ) {
-            const char* argv[] = { "test", "--reporter", "junit" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION("--reporter/junit") {
+            CHECK(cli.parse({"test", "--reporter", "junit"}));
 
-            REQUIRE( config.reporterNames[0] == "junit" );
+            REQUIRE(config.reporterNames[0] == "junit");
         }
     }
 
-    SECTION( "debugger", "" ) {
-        SECTION( "-b", "" ) {
-            const char* argv[] = { "test", "-b" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.shouldDebugBreak == true );
-        }
-        SECTION( "--break", "" ) {
-            const char* argv[] = { "test", "--break" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+    SECTION("debugger") {
+        SECTION("-b") {
+            CHECK(cli.parse({"test", "-b"}));
 
-            REQUIRE( config.shouldDebugBreak );
+            REQUIRE(config.shouldDebugBreak == true);
         }
-    }
+        SECTION("--break") {
+            CHECK(cli.parse({"test", "--break"}));
 
-    SECTION( "abort", "" ) {
-        SECTION( "-a aborts after first failure", "" ) {
-            const char* argv[] = { "test", "-a" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-
-            REQUIRE( config.abortAfter == 1 );
-        }
-        SECTION( "-x 2 aborts after two failures", "" ) {
-            const char* argv[] = { "test", "-x", "2" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-
-            REQUIRE( config.abortAfter == 2 );
-        }
-        SECTION( "-x must be greater than zero", "" ) {
-            const char* argv[] = { "test", "-x", "0" };
-            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" ) );
-        }
-        SECTION( "-x must be numeric", "" ) {
-            const char* argv[] = { "test", "-x", "oops" };
-            REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "-x" ) );
+            REQUIRE(config.shouldDebugBreak);
         }
     }
 
-    SECTION( "nothrow", "" ) {
-        SECTION( "-e", "" ) {
-            const char* argv[] = { "test", "-e" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
-            REQUIRE( config.noThrow == true );
+    SECTION("abort") {
+        SECTION("-a aborts after first failure") {
+            CHECK(cli.parse({"test", "-a"}));
+
+            REQUIRE(config.abortAfter == 1);
         }
-        SECTION( "--nothrow", "" ) {
-            const char* argv[] = { "test", "--nothrow" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION("-x 2 aborts after two failures") {
+            CHECK(cli.parse({"test", "-x", "2"}));
 
-            REQUIRE( config.noThrow == true );
+            REQUIRE(config.abortAfter == 2);
         }
-    }
+        SECTION("-x must be numeric") {
+            auto result = cli.parse({"test", "-x", "oops"});
+            CHECK(!result);
 
-    SECTION( "output filename", "" ) {
-        SECTION( "-o filename", "" ) {
-            const char* argv[] = { "test", "-o", "filename.ext" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-
-            REQUIRE( config.outputFilename == "filename.ext" );
-        }
-        SECTION( "--out", "" ) {
-            const char* argv[] = { "test", "--out", "filename.ext" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
-
-            REQUIRE( config.outputFilename == "filename.ext" );
+            REQUIRE_THAT(result.errorMessage(), Contains("convert") && Contains("oops"));
         }
     }
 
-    SECTION( "combinations", "" ) {
-        SECTION( "Single character flags can be combined", "" ) {
-            const char* argv[] = { "test", "-abe" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+    SECTION("nothrow") {
+        SECTION("-e") {
+            CHECK(cli.parse({"test", "-e"}));
 
-            CHECK( config.abortAfter == 1 );
-            CHECK( config.shouldDebugBreak );
-            CHECK( config.noThrow == true );
+            REQUIRE(config.noThrow);
+        }
+        SECTION("--nothrow") {
+            CHECK(cli.parse({"test", "--nothrow"}));
+
+            REQUIRE(config.noThrow);
         }
     }
 
-    SECTION( "use-colour", "") {
+    SECTION("output filename") {
+        SECTION("-o filename") {
+            CHECK(cli.parse({"test", "-o", "filename.ext"}));
+
+            REQUIRE(config.outputFilename == "filename.ext");
+        }
+        SECTION("--out") {
+            CHECK(cli.parse({"test", "--out", "filename.ext"}));
+
+            REQUIRE(config.outputFilename == "filename.ext");
+        }
+    }
+
+    SECTION("combinations") {
+        SECTION("Single character flags can be combined") {
+            CHECK(cli.parse({"test", "-abe"}));
+
+            CHECK(config.abortAfter == 1);
+            CHECK(config.shouldDebugBreak);
+            CHECK(config.noThrow == true);
+        }
+    }
+
+
+    SECTION( "use-colour") {
 
         using Catch::UseColour;
 
-        SECTION( "without option", "" ) {
-            const char* argv[] = { "test" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION( "without option" ) {
+            CHECK(cli.parse({"test"}));
 
             REQUIRE( config.useColour == UseColour::Auto );
         }
 
-        SECTION( "auto", "" ) {
-            const char* argv[] = { "test", "--use-colour", "auto" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION( "auto" ) {
+            CHECK(cli.parse({"test", "--use-colour", "auto"}));
 
             REQUIRE( config.useColour == UseColour::Auto );
         }
 
-        SECTION( "yes", "" ) {
-            const char* argv[] = { "test", "--use-colour", "yes" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION( "yes" ) {
+            CHECK(cli.parse({"test", "--use-colour", "yes"}));
 
             REQUIRE( config.useColour == UseColour::Yes );
         }
 
-        SECTION( "no", "" ) {
-            const char* argv[] = { "test", "--use-colour", "no" };
-            CHECK_NOTHROW( parseIntoConfig( argv, config ) );
+        SECTION( "no" ) {
+            CHECK(cli.parse({"test", "--use-colour", "no"}));
 
             REQUIRE( config.useColour == UseColour::No );
         }
 
-        SECTION( "error", "" ) {
-            const char* argv[] = { "test", "--use-colour", "wrong" };
-            REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) );
+        SECTION( "error" ) {
+            auto result = cli.parse({"test", "--use-colour", "wrong"});
+            CHECK( !result );
+            CHECK_THAT( result.errorMessage(), Contains( "colour mode must be one of" ) );
         }
     }
 }
@@ -249,31 +234,31 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
 
     using namespace Catch;
-    SECTION( "plain string", "" ) {
+    SECTION( "plain string" ) {
         // guide:                 123456789012345678
         std::string testString = "one two three four";
 
-        SECTION( "No wrapping", "" ) {
+        SECTION( "No wrapping" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
             CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
         }
-        SECTION( "Wrapped once", "" ) {
+        SECTION( "Wrapped once" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" );
         }
-        SECTION( "Wrapped twice", "" ) {
+        SECTION( "Wrapped twice" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" );
         }
-        SECTION( "Wrapped three times", "" ) {
+        SECTION( "Wrapped three times" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" );
         }
-        SECTION( "Short wrap", "" ) {
+        SECTION( "Short wrap" ) {
             CHECK( Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" );
             CHECK( Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" );
             CHECK( Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" );
@@ -281,7 +266,7 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" );
         }
-        SECTION( "As container", "" ) {
+        SECTION( "As container" ) {
             Text text( testString, TextAttributes().setWidth( 6 ) );
             REQUIRE( text.size() == 4 );
             CHECK( text[0] == "one" );
@@ -289,7 +274,7 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
             CHECK( text[2] == "three" );
             CHECK( text[3] == "four" );
         }
-        SECTION( "Indent first line differently", "" ) {
+        SECTION( "Indent first line differently" ) {
             Text text( testString, TextAttributes()
                                         .setWidth( 10 )
                                         .setIndent( 4 )
@@ -299,43 +284,43 @@ TEST_CASE( "Long strings can be wrapped", "[wrap]" ) {
 
     }
 
-    SECTION( "With newlines", "" ) {
+    SECTION( "With newlines" ) {
 
         // guide:                 1234567890123456789
         std::string testString = "one two\nthree four";
 
-        SECTION( "No wrapping" , "" ) {
+        SECTION( "No wrapping" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
             CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString );
             CHECK( Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString );
         }
-        SECTION( "Trailing newline" , "" ) {
+        SECTION( "Trailing newline" ) {
             CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef" );
             CHECK( Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" );
             CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" );
             CHECK( Text( "abcdef\n", TextAttributes().setWidth( 5 ) ).toString() == "abcd-\nef" );
         }
-        SECTION( "Wrapped once", "" ) {
+        SECTION( "Wrapped once" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" );
             CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" );
         }
-        SECTION( "Wrapped twice", "" ) {
+        SECTION( "Wrapped twice" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" );
         }
     }
 
-    SECTION( "With wrap-before/ after characters", "" ) {
+    SECTION( "With wrap-before/ after characters" ) {
         std::string testString = "one,two(three) <here>";
 
-        SECTION( "No wrapping", "" ) {
+        SECTION( "No wrapping" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString );
             CHECK( Text( testString, TextAttributes().setWidth( 24 ) ).toString() == testString );
         }
-        SECTION( "Wrap before", "" ) {
+        SECTION( "Wrap before" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 11 ) ).toString() == "one,two\n(three)\n<here>" );
         }
-        SECTION( "Wrap after", "" ) {
+        SECTION( "Wrap after" ) {
             CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one,\ntwo\n(thre-\ne)\n<here>" );
             CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one,\ntwo\n(thr-\nee)\n<her-\ne>" );
             CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one,\ntwo\n(th-\nree)\n<he-\nre>" );
@@ -416,7 +401,7 @@ private:
     std::vector<ColourIndex> colours;
 };
 
-TEST_CASE( "replaceInPlace", "" ) {
+TEST_CASE( "replaceInPlace" ) {
     std::string letters = "abcdefcg";
     SECTION( "replace single char" ) {
         CHECK( replaceInPlace( letters, "b", "z" ) );
@@ -469,7 +454,7 @@ TEST_CASE( "Strings can be rendered with colour", "[.colour]" ) {
 
 }
 
-TEST_CASE( "Text can be formatted using the Text class", "" ) {
+TEST_CASE( "Text can be formatted using the Text class" ) {
 
     CHECK( Text( "hi there" ).toString() == "hi there" );
 

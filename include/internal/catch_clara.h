@@ -17,10 +17,7 @@
 #define CLARA_CONFIG_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
 
 
-// Declare Clara inside the Catch namespace
-#define STITCH_CLARA_OPEN_NAMESPACE namespace Catch {
-#include "../external/clara.h"
-#undef STITCH_CLARA_OPEN_NAMESPACE
+#include "../external/clara.hpp"
 
 
 // Restore Clara's value for console width, if present
