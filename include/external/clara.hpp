@@ -870,16 +870,16 @@ namespace detail {
         using ParserRefImpl::ParserRefImpl;
 
         auto parse( std::string const&, TokenStream const &tokens ) const -> InternalParseResult override {
-            auto result = validate();
-            if (!result)
-                return InternalParseResult(result);
+            auto validationResult = validate();
+            if (!validationResult)
+                return InternalParseResult(validationResult);
 
             auto remainingTokens = tokens;
             auto const &token = *remainingTokens;
             if (token.type != TokenType::Argument)
                 return InternalParseResult::ok(ParseState(ParseResultType::NoMatch, remainingTokens));
 
-            result = m_ref->setValue(remainingTokens->token);
+            auto result = m_ref->setValue(remainingTokens->token);
             if (!result)
                 return InternalParseResult(result);
             else
