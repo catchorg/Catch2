@@ -30,6 +30,10 @@ namespace Catch {
         m_timer.start();
     }
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4996) // std::uncaught_exception is deprecated in C++17
+#endif
     Section::~Section() {
         if( m_sectionIncluded ) {
             SectionEndInfo endInfo( m_info, m_assertions, m_timer.getElapsedSeconds() );
@@ -39,6 +43,9 @@ namespace Catch {
                 getResultCapture().sectionEnded( endInfo );
         }
     }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
     // This indicates whether the section should be executed or not
     Section::operator bool() const {
