@@ -73,6 +73,18 @@ namespace Catch {
                         return ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
                 return ParserResult::ok( ParseResultType::Matched );
             };
+        auto const setVerbosity = [&]( std::string const& verbosity ) {
+            auto lcVerbosity = toLower( verbosity );
+            if( lcVerbosity == "quiet" )
+                config.verbosity = Verbosity::Quiet;
+            else if( lcVerbosity == "normal" )
+                config.verbosity = Verbosity::Normal;
+            else if( lcVerbosity == "high" )
+                config.verbosity = Verbosity::High;
+            else
+                return ParserResult::runtimeError( "Unrecognised verbosity, '" + verbosity + "'" );
+            return ParserResult::ok( ParseResultType::Matched );
+        };
 
         auto cli
             = ExeName( config.processName )
@@ -125,6 +137,9 @@ namespace Catch {
             + Opt( config.sectionsToRun, "section name" )
                 ["-c"]["--section"]
                 ( "specify section to run" )
+            + Opt( setVerbosity, "quiet|normal|high" )
+                ["-v"]["--verbosity"]
+                ( "set output verbosity" )
             + Opt( config.listTestNamesOnly )
                 ["--list-test-names-only"]
                 ( "list all/matching test cases names only" )

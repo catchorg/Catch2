@@ -40,7 +40,7 @@ namespace Catch {
         int abortAfter = -1;
         unsigned int rngSeed = 0;
 
-        Verbosity::Level verbosity = Verbosity::Normal;
+        Verbosity verbosity = Verbosity::Normal;
         WarnAbout::What warnings = WarnAbout::Nothing;
         ShowDurations::OrNot showDurations = ShowDurations::DefaultForReporter;
         RunTests::InWhatOrder runOrder = RunTests::InDeclarationOrder;
@@ -81,10 +81,12 @@ namespace Catch {
             return m_data.outputFilename ;
         }
 
-        bool listTests() const { return m_data.listTests; }
-        bool listTestNamesOnly() const { return m_data.listTestNamesOnly; }
-        bool listTags() const { return m_data.listTags; }
-        bool listReporters() const { return m_data.listReporters; }
+        bool listTests() const          { return m_data.listTests; }
+        bool listTestNamesOnly() const  { return m_data.listTestNamesOnly; }
+        bool listTags() const           { return m_data.listTags; }
+        bool listReporters() const      { return m_data.listReporters; }
+
+        Verbosity verbosity() const     { return m_data.verbosity; }
 
         std::string getProcessName() const { return m_data.processName; }
 
@@ -96,18 +98,18 @@ namespace Catch {
         bool showHelp() const { return m_data.showHelp; }
 
         // IConfig interface
-        virtual bool allowThrows() const override                 { return !m_data.noThrow; }
-        virtual std::ostream& stream() const override             { return m_stream->stream(); }
-        virtual std::string name() const override                 { return m_data.name.empty() ? m_data.processName : m_data.name; }
-        virtual bool includeSuccessfulResults() const override    { return m_data.showSuccessfulTests; }
-        virtual bool warnAboutMissingAssertions() const override  { return m_data.warnings & WarnAbout::NoAssertions; }
+        virtual bool allowThrows() const override                   { return !m_data.noThrow; }
+        virtual std::ostream& stream() const override               { return m_stream->stream(); }
+        virtual std::string name() const override                   { return m_data.name.empty() ? m_data.processName : m_data.name; }
+        virtual bool includeSuccessfulResults() const override      { return m_data.showSuccessfulTests; }
+        virtual bool warnAboutMissingAssertions() const override    { return m_data.warnings & WarnAbout::NoAssertions; }
         virtual ShowDurations::OrNot showDurations() const override { return m_data.showDurations; }
-        virtual RunTests::InWhatOrder runOrder() const override   { return m_data.runOrder; }
-        virtual unsigned int rngSeed() const override             { return m_data.rngSeed; }
-        virtual UseColour::YesOrNo useColour() const override     { return m_data.useColour; }
-        virtual bool shouldDebugBreak() const override { return m_data.shouldDebugBreak; }
-        virtual int abortAfter() const override { return m_data.abortAfter; }
-        virtual bool showInvisibles() const override { return m_data.showInvisibles; }
+        virtual RunTests::InWhatOrder runOrder() const override     { return m_data.runOrder; }
+        virtual unsigned int rngSeed() const override               { return m_data.rngSeed; }
+        virtual UseColour::YesOrNo useColour() const override       { return m_data.useColour; }
+        virtual bool shouldDebugBreak() const override              { return m_data.shouldDebugBreak; }
+        virtual int abortAfter() const override                     { return m_data.abortAfter; }
+        virtual bool showInvisibles() const override                { return m_data.showInvisibles; }
 
     private:
 

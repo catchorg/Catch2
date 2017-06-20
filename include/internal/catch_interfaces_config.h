@@ -17,11 +17,11 @@
 
 namespace Catch {
 
-    struct Verbosity { enum Level {
-        NoOutput = 0,
-        Quiet,
-        Normal
-    }; };
+    enum class Verbosity {
+        Quiet = 0,
+        Normal,
+        High
+    };
 
     struct WarnAbout { enum What {
         Nothing = 0x00,
