@@ -1,12 +1,11 @@
 // v1.0
 // See https://github.com/philsquared/Clara
 
-#ifndef CATCH_CLARA_HPP_INCLUDED
-#define CATCH_CLARA_HPP_INCLUDED
+#ifndef CLARA_HPP_INCLUDED
+#define CLARA_HPP_INCLUDED
 
-
-#ifndef CATCH_CLARA_CONFIG_CONSOLE_WIDTH
-#define CATCH_CLARA_CONFIG_CONSOLE_WIDTH 80
+#ifndef CLARA_CONFIG_CONSOLE_WIDTH
+#define CLARA_CONFIG_CONSOLE_WIDTH 80
 #endif
 
 
@@ -21,22 +20,20 @@
 //
 // This project is hosted at https://github.com/philsquared/textflowcpp
 
-#ifndef CATCH_CLARA_TEXTFLOW_HPP_INCLUDED
-#define CATCH_CLARA_TEXTFLOW_HPP_INCLUDED
-
+#ifndef CLARA_TEXTFLOW_HPP_INCLUDED
+#define CLARA_TEXTFLOW_HPP_INCLUDED
 
 #include <cassert>
 #include <ostream>
 #include <sstream>
 #include <vector>
 
-#ifndef CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
-#define CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
-
+#ifndef CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
+#define CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
 #endif
 
 
-namespace Catch { namespace clara { namespace TextFlow
+namespace clara { namespace TextFlow
 {
 
     inline auto isWhitespace( char c ) -> bool {
@@ -56,7 +53,7 @@ namespace Catch { namespace clara { namespace TextFlow
 
     class Column {
         std::vector<std::string> m_strings;
-        size_t m_width = CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH;
+        size_t m_width = TEXTFLOW_CONFIG_CONSOLE_WIDTH;
         size_t m_indent = 0;
         size_t m_initialIndent = std::string::npos;
 
@@ -332,9 +329,9 @@ namespace Catch { namespace clara { namespace TextFlow
         cols += other;
         return cols;
     }
-}}} // namespace Catch::clara::TextFlow
+}} // namespace clara::TextFlow
 
-#endif // CATCH_CLARA_TEXTFLOW_HPP_INCLUDED
+#endif // CLARA_TEXTFLOW_HPP_INCLUDED
 
 // ----------- end of #include from clara_textflow.hpp -----------
 // ........... back in clara.hpp
@@ -344,7 +341,7 @@ namespace Catch { namespace clara { namespace TextFlow
 #include <set>
 #include <algorithm>
 
-namespace Catch { namespace clara {
+namespace clara {
 namespace detail {
 
     // Traits for extracting arg and return type of lambdas (for single argument lambdas)
@@ -1094,7 +1091,7 @@ namespace detail {
             }
 
             auto rows = getHelpColumns();
-            size_t consoleWidth = CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH;
+            size_t consoleWidth = CLARA_CONFIG_CONSOLE_WIDTH;
             size_t optWidth = 0;
             for (auto const &cols : rows)
                 optWidth = std::max(optWidth, cols.left.size() + 2);
@@ -1209,7 +1206,6 @@ using detail::ParseResultType;
 using detail::ParserResult;
 
 
-}} // namespace Catch::clara
+} // namespace clara
 
-
-#endif // CATCH_CLARA_HPP_INCLUDED
+#endif // CLARA_HPP_INCLUDED
