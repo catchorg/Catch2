@@ -74,7 +74,7 @@ namespace Catch {
                 return ParserResult::ok( ParseResultType::Matched );
             };
 
-        auto cli
+        auto cli1
             = ExeName( config.processName )
             + Help( config.showHelp )
             + Opt( config.listTests )
@@ -94,8 +94,10 @@ namespace Catch {
                 ( "skip exception tests" )
             + Opt( config.showInvisibles )
                 ["-i"]["--invisibles"]
-                ( "show invisibles (tabs, newlines)" )
-            + Opt( config.outputFilename, "filename" )
+                ( "show invisibles (tabs, newlines)" );
+
+        auto cli2
+            = Opt( config.outputFilename, "filename" )
                 ["-o"]["--out"]
                 ( "output filename" )
             + Opt( config.reporterNames, "name" )
@@ -118,8 +120,10 @@ namespace Catch {
                 ( "show test durations" )
             + Opt( loadTestNamesFromFile, "filename" )
                 ["-f"]["--input-file"]
-                ( "load test names to run from a file" )
-            + Opt( config.filenamesAsTags )
+                ( "load test names to run from a file" );
+
+        auto cli3
+            = Opt( config.filenamesAsTags )
                 ["-#"]["--filenames-as-tags"]
                 ( "adds a tag for the filename" )
             + Opt( config.sectionsToRun, "section name" )
@@ -144,7 +148,8 @@ namespace Catch {
             + Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
 
-        return cli;
+        // Assemble from smaller parsers because some VS versions give ICEs otherwise
+        return cli1 + cli2 + cli3;
     }
 
 } // end namespace Catch
