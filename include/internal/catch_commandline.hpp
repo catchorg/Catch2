@@ -19,10 +19,18 @@ namespace Catch {
 
     inline clara::Parser makeCommandLineParser( ConfigData& config ) {
 
+        using namespace clara;
+
+        auto const setWarning = [&]( std::string const& warning ) {
+                if( warning != "NoAssertions" )
+                    return ParserResult::runtimeError( "Unrecognised warning: '" + warning + "'" );
+                config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
+                return ParserResult::ok( ParseResultType::Matched );
+            };
         auto const loadTestNamesFromFile = [&]( std::string const& filename ) {
                 std::ifstream f( filename.c_str() );
                 if( !f.is_open() )
-                    return clara::ParserResult::runtimeError( "Unable to load input file: '" + filename + "'" );
+                    return ParserResult::runtimeError( "Unable to load input file: '" + filename + "'" );
 
                 std::string line;
                 while( std::getline( f, line ) ) {
@@ -33,11 +41,39 @@ namespace Catch {
                         config.testsOrTags.push_back( line + ',' );
                     }
                 }
-                return clara::ParserResult::ok( clara::ParseResultType::Matched );
+                return ParserResult::ok( ParseResultType::Matched );
+            };
+        auto const setTestOrder = [&]( std::string const& order ) {
+                if( startsWith( "declared", order ) )
+                    config.runOrder = RunTests::InDeclarationOrder;
+                else if( startsWith( "lexical", order ) )
+                    config.runOrder = RunTests::InLexicographicalOrder;
+                else if( startsWith( "random", order ) )
+                    config.runOrder = RunTests::InRandomOrder;
+                else
+                    return clara::ParserResult::runtimeError( "Unrecognised ordering: '" + order + "'" );
+                return ParserResult::ok( ParseResultType::Matched );
+            };
+        auto const setRngSeed = [&]( std::string const& seed ) {
+                if( seed != "time" )
+                    return clara::detail::convertInto( seed, config.rngSeed );
+                config.rngSeed = static_cast<unsigned int>( std::time(0) );
+                return ParserResult::ok( ParseResultType::Matched );
+            };
+        auto const setColourUsage = [&]( std::string const& useColour ) {
+                    auto mode = toLower( useColour );
+
+                    if( mode == "yes" )
+                        config.useColour = UseColour::Yes;
+                    else if( mode == "no" )
+                        config.useColour = UseColour::No;
+                    else if( mode == "auto" )
+                        config.useColour = UseColour::Auto;
+                    else
+                        return ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
+                return ParserResult::ok( ParseResultType::Matched );
             };
 
-
-        using namespace clara;
         auto cli
             = ExeName( config.processName )
             + Help( config.showHelp )
@@ -74,12 +110,7 @@ namespace Catch {
             + Opt( [&]( int x ){ config.abortAfter = x; }, "no. failures" )
                 ["-x"]["--abortx"]
                 ( "abort after x failures" )
-            + Opt( [&]( std::string const& warning ) {
-                        if( warning != "NoAssertions" )
-                            return clara::ParserResult::runtimeError( "Unrecognised warning: '" + warning + "'" );
-                        config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
-                        return clara::ParserResult::ok( ParseResultType::Matched );
-                    }, "warning name" )
+            + Opt( setWarning, "warning name" )
                 ["-w"]["--warn"]
                 ( "enable warnings" )
             + Opt( [&]( bool ) { config.showDurations = ShowDurations::Always; } )
@@ -100,40 +131,13 @@ namespace Catch {
             + Opt( config.listReporters )
                 ["--list-reporters"]
                 ( "list all reporters" )
-            + Opt( [&]( std::string const& order ) {
-                        if( startsWith( "declared", order ) )
-                            config.runOrder = RunTests::InDeclarationOrder;
-                        else if( startsWith( "lexical", order ) )
-                            config.runOrder = RunTests::InLexicographicalOrder;
-                        else if( startsWith( "random", order ) )
-                            config.runOrder = RunTests::InRandomOrder;
-                        else
-                            return clara::ParserResult::runtimeError( "Unrecognised ordering: '" + order + "'" );
-                        return clara::ParserResult::ok( ParseResultType::Matched );
-                    }, "decl|lex|rand" )
+            + Opt( setTestOrder, "decl|lex|rand" )
                 ["--order"]
                 ( "test case order (defaults to decl)" )
-            + Opt( [&]( std::string const& seed ) {
-                        if( seed != "time" )
-                            return clara::detail::convertInto( seed, config.rngSeed );
-                        config.rngSeed = static_cast<unsigned int>( std::time(0) );
-                        return clara::ParserResult::ok( ParseResultType::Matched );
-                    }, "'time'|number" )
+            + Opt( setRngSeed, "'time'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            + Opt( [&]( std::string const& useColour ) {
-                            auto mode = toLower( useColour );
-
-                            if( mode == "yes" )
-                                config.useColour = UseColour::Yes;
-                            else if( mode == "no" )
-                                config.useColour = UseColour::No;
-                            else if( mode == "auto" )
-                                config.useColour = UseColour::Auto;
-                            else
-                                return clara::ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
-                        return clara::ParserResult::ok( ParseResultType::Matched );
-                    }, "yes|no" )
+            + Opt( setColourUsage, "yes|no" )
                 ["--use-colour"]
                 ( "should output be colourised" )
 
