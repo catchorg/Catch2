@@ -2,6 +2,9 @@
 Please do not submit pull requests changing the `version.hpp`
 or the single-include `catch.hpp` file, these are changed
 only when a new release is made.
+
+Before submitting a PR you should probably read the contributor documentation
+at docs/contributing.md. It will tell you how to properly test your changes.
 -->
 
 
