@@ -31,8 +31,7 @@
 #include <vector>
 
 #ifndef CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
-#define CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
-
+#define CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH 80
 #endif
 
 
@@ -785,9 +784,7 @@ namespace detail {
     public:
         virtual ~ParserBase() = default;
         virtual auto validate() const -> Result { return Result::ok(); }
-
         virtual auto parse( std::string const& exeName, TokenStream const &tokens) const -> InternalParseResult  = 0;
-
         virtual auto cardinality() const -> size_t { return 1; }
 
         auto parse(Args const &args) const -> InternalParseResult {
@@ -926,12 +923,16 @@ namespace detail {
         std::vector<std::string> m_optNames;
 
     public:
-        using ParserRefImpl::ParserRefImpl;
-
         template<typename LambdaT>
         explicit Opt( LambdaT const &ref ) : ParserRefImpl(std::make_shared<BoundFlagLambda<LambdaT>>(ref)) {}
 
         explicit Opt( bool &ref ) : ParserRefImpl(std::make_shared<BoundFlagRef>(ref)) {}
+
+        template<typename LambdaT>
+        Opt( LambdaT const &ref, std::string const &hint ) : ParserRefImpl( ref, hint ) {}
+
+        template<typename T>
+        Opt( T &ref, std::string const &hint ) : ParserRefImpl( ref, hint ) {}
 
         auto operator[](std::string const &optName) -> Opt & {
             m_optNames.push_back(optName);
@@ -1096,7 +1097,7 @@ namespace detail {
             }
 
             auto rows = getHelpColumns();
-            size_t consoleWidth = CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH;
+            size_t consoleWidth = CATCH_CLARA_CONFIG_CONSOLE_WIDTH;
             size_t optWidth = 0;
             for (auto const &cols : rows)
                 optWidth = std::max(optWidth, cols.left.size() + 2);
