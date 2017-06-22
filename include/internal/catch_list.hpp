@@ -47,10 +47,10 @@ namespace Catch {
             Colour colourGuard( colour );
 
             Catch::cout() << Text( testCaseInfo.name, nameAttr ) << std::endl;
-            if( config.extraInfo() ) {
+            if( config.listExtraInfo() ) {
                 Catch::cout() << "    " << testCaseInfo.lineInfo << std::endl;
                 std::string description = testCaseInfo.description;
-                if( description == "" )
+                if( description.empty() )
                     description = "(NO DESCRIPTION)";
                 Catch::cout() << Text( description, descAttr ) << std::endl;
             }
@@ -80,7 +80,7 @@ namespace Catch {
                Catch::cout() << '"' << testCaseInfo.name << '"';
             else
                Catch::cout() << testCaseInfo.name;
-            if ( config.extraInfo() )
+            if ( config.listExtraInfo() )
                 Catch::cout() << "\t@" << testCaseInfo.lineInfo;
             Catch::cout() << std::endl;
         }
@@ -174,7 +174,7 @@ namespace Catch {
 
     inline Option<std::size_t> list( Config const& config ) {
         Option<std::size_t> listedCount;
-        if( config.listTests() )
+        if( config.listTests() || config.listExtraInfo() )
             listedCount = listedCount.valueOr(0) + listTests( config );
         if( config.listTestNamesOnly() )
             listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
