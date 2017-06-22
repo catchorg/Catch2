@@ -174,7 +174,7 @@ namespace Catch {
 
     inline Option<std::size_t> list( Config const& config ) {
         Option<std::size_t> listedCount;
-        if( config.listTests() || config.listExtraInfo() )
+        if( config.listTests() || ( config.listExtraInfo() && !config.listTestNamesOnly() ) )
             listedCount = listedCount.valueOr(0) + listTests( config );
         if( config.listTestNamesOnly() )
             listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
