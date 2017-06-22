@@ -37,8 +37,7 @@ namespace Catch {
         ResultBuilder(  char const* macroName,
                         SourceLineInfo const& lineInfo,
                         char const* capturedExpression,
-                        ResultDisposition::Flags resultDisposition,
-                        char const* secondArg = "" );
+                        ResultDisposition::Flags resultDisposition);
         ~ResultBuilder();
 
         template<typename T>

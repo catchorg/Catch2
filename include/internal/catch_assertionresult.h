@@ -43,14 +43,12 @@ namespace Catch {
         AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         char const * _capturedExpression,
-                        ResultDisposition::Flags _resultDisposition,
-                        char const * _secondArg = "");
+                        ResultDisposition::Flags _resultDisposition);
 
         char const * macroName;
         SourceLineInfo lineInfo;
         char const * capturedExpression;
         ResultDisposition::Flags resultDisposition;
-        char const * secondArg;
     };
 
     struct AssertionResultData
