@@ -76,72 +76,72 @@ namespace Catch {
 
         auto cli
             = ExeName( config.processName )
-            + Help( config.showHelp );
-
-        cli += Opt( config.listTests )
+            + Help( config.showHelp )
+            + Opt( config.listTests )
                 ["-l"]["--list-tests"]
-                ( "list all/matching test cases" );
-        cli += Opt( config.listTags )
+                ( "list all/matching test cases" )
+            + Opt( config.listTags )
                 ["-t"]["--list-tags"]
-                ( "list all/matching tags" );
-        cli += Opt( config.showSuccessfulTests )
+                ( "list all/matching tags" )
+            + Opt( config.showSuccessfulTests )
                 ["-s"]["--success"]
-                ( "include successful tests in output" );
-        cli += Opt( config.shouldDebugBreak )
+                ( "include successful tests in output" )
+            + Opt( config.shouldDebugBreak )
                 ["-b"]["--break"]
-                ( "break into debugger on failure" );
-        cli += Opt( config.noThrow )
+                ( "break into debugger on failure" )
+            + Opt( config.noThrow )
                 ["-e"]["--nothrow"]
-                ( "skip exception tests" );
-        cli += Opt( config.showInvisibles )
+                ( "skip exception tests" )
+            + Opt( config.showInvisibles )
                 ["-i"]["--invisibles"]
-                ( "show invisibles (tabs, newlines)" );
-        cli += Opt( config.outputFilename, "filename" )
+                ( "show invisibles (tabs, newlines)" )
+            + Opt( config.outputFilename, "filename" )
                 ["-o"]["--out"]
-                ( "output filename" );
-        cli += Opt( config.reporterNames, "name" )
+                ( "output filename" )
+            + Opt( config.reporterNames, "name" )
                 ["-r"]["--reporter"]
-                ( "reporter to use (defaults to console)" );
-        cli += Opt( config.name, "name" )
+                ( "reporter to use (defaults to console)" )
+            + Opt( config.name, "name" )
                 ["-n"]["--name"]
-                ( "suite name" );
-        cli += Opt( [&]( bool ){ config.abortAfter = 1; } )
+                ( "suite name" )
+            + Opt( [&]( bool ){ config.abortAfter = 1; } )
                 ["-a"]["--abort"]
-                ( "abort at first failure" );
-        cli += Opt( [&]( int x ){ config.abortAfter = x; }, "no. failures" )
+                ( "abort at first failure" )
+            + Opt( [&]( int x ){ config.abortAfter = x; }, "no. failures" )
                 ["-x"]["--abortx"]
-                ( "abort after x failures" );
-        cli += Opt( setWarning, "warning name" )
+                ( "abort after x failures" )
+            + Opt( setWarning, "warning name" )
                 ["-w"]["--warn"]
-                ( "enable warnings" );
-        cli += Opt( [&]( bool ) { config.showDurations = ShowDurations::Always; } )
+                ( "enable warnings" )
+            + Opt( [&]( bool ) { config.showDurations = ShowDurations::Always; } )
                 ["-d"]["--durations"]
-                ( "show test durations" );
-        cli += Opt( loadTestNamesFromFile, "filename" )
+                ( "show test durations" )
+            + Opt( loadTestNamesFromFile, "filename" )
                 ["-f"]["--input-file"]
-                ( "load test names to run from a file" );
-        cli += Opt( config.filenamesAsTags )
+                ( "load test names to run from a file" )
+            + Opt( config.filenamesAsTags )
                 ["-#"]["--filenames-as-tags"]
-                ( "adds a tag for the filename" );
-        cli += Opt( config.sectionsToRun, "section name" )
+                ( "adds a tag for the filename" )
+            + Opt( config.sectionsToRun, "section name" )
                 ["-c"]["--section"]
-                ( "specify section to run" );
-        cli += Opt( config.listTestNamesOnly )
+                ( "specify section to run" )
+            + Opt( config.listTestNamesOnly )
                 ["--list-test-names-only"]
-                ( "list all/matching test cases names only" );
-        cli += Opt( config.listReporters )
+                ( "list all/matching test cases names only" )
+            + Opt( config.listReporters )
                 ["--list-reporters"]
-                ( "list all reporters" );
-        cli += Opt( setTestOrder, "decl|lex|rand" )
+                ( "list all reporters" )
+            + Opt( setTestOrder, "decl|lex|rand" )
                 ["--order"]
-                ( "test case order (defaults to decl)" );
-        cli += Opt( setRngSeed, "'time'|number" )
+                ( "test case order (defaults to decl)" )
+            + Opt( setRngSeed, "'time'|number" )
                 ["--rng-seed"]
-                ( "set a specific seed for random numbers" );
-        cli += Opt( setColourUsage, "yes|no" )
+                ( "set a specific seed for random numbers" )
+            + Opt( setColourUsage, "yes|no" )
                 ["--use-colour"]
-                ( "should output be colourised" );
-        cli += Arg( config.testsOrTags, "test name|pattern|tags" )
+                ( "should output be colourised" )
+
+            + Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
 
         return cli;
