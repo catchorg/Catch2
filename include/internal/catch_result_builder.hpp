@@ -27,12 +27,14 @@ namespace Catch {
         m_shouldDebugBreak( false ),
         m_shouldThrow( false ),
         m_guardException( false )
-    {}
+    {
+        m_stream().oss.str("");
+    }
 
     ResultBuilder::~ResultBuilder() {
 #if defined(CATCH_CONFIG_FAST_COMPILE)
         if ( m_guardException ) {
-            m_stream.oss << "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
+            m_stream().oss << "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
             captureResult( ResultWas::ThrewException );
             getCurrentContext().getResultCapture()->exceptionEarlyReported();
         }
@@ -55,7 +57,7 @@ namespace Catch {
 
     void ResultBuilder::useActiveException( ResultDisposition::Flags resultDisposition ) {
         m_assertionInfo.resultDisposition = resultDisposition;
-        m_stream.oss << Catch::translateActiveException();
+        m_stream().oss << Catch::translateActiveException();
         captureResult( ResultWas::ThrewException );
     }
 
@@ -143,7 +145,7 @@ namespace Catch {
             data.negate( expr.isBinaryExpression() );
         }
 
-        data.message = m_stream.oss.str();
+        data.message = m_stream().oss.str();
         data.decomposedExpression = &expr; // for lazy reconstruction
         return AssertionResult( m_assertionInfo, data );
     }
