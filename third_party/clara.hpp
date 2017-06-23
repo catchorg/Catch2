@@ -341,6 +341,10 @@ namespace clara { namespace TextFlow
 #include <set>
 #include <algorithm>
 
+#if !defined(CLARA_PLATFORM_WINDOWS) && ( defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER) )
+#define CLARA_PLATFORM_WINDOWS
+#endif
+
 namespace clara {
 namespace detail {
 
