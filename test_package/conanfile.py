@@ -1,24 +1,16 @@
 #!/usr/bin/env python
 from os import getenv
+from os import path
 from conans import ConanFile
 from conans import CMake
 
 
 class CatchConanTest(ConanFile):
-    """Build test using target package and execute all tests
-    """
-    target = "Catch"
-    name = "%s-test" % target
-    version = "1.9.5"
-    description = "A modern, C++-native, header-only, framework for unit-tests, TDD and BDD"
-    author = "philsquared"
     generators = "cmake"
     settings = "os", "compiler", "arch", "build_type"
-    url = "https://github.com/philsquared/Catch"
-    license = "BSL-1.0"
-    username = getenv("CONAN_USERNAME", author)
+    username = getenv("CONAN_USERNAME", "philsquared")
     channel = getenv("CONAN_CHANNEL", "testing")
-    requires = "%s/%s@%s/%s" % (target, version, username, channel)
+    requires = "Catch/1.9.5@%s/%s" % (username, channel)
 
     def build(self):
         cmake = CMake(self)
@@ -26,6 +18,4 @@ class CatchConanTest(ConanFile):
         cmake.build()
 
     def test(self):
-        cmake = CMake(self)
-        cmake.configure(build_dir="./")
-        cmake.test()
+        self.run(path.join("bin", "CatchTest"))

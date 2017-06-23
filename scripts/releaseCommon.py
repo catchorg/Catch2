@@ -11,6 +11,7 @@ versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.
 rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
 readmePath = os.path.join( catchPath, "README.md" )
+conanPath = os.path.join(catchPath, 'conanfile.py')
 
 class Version:
     def __init__(self):
@@ -86,3 +87,17 @@ class Version:
             line = downloadParser.sub( r'<a href="https://github.com/philsquared/Catch/releases/download/v{0}/catch.hpp">'.format(self.getVersionString()) , line)
             f.write( line + "\n" )
 
+    def updateConanFile(self):
+        conanParser = re.compile( r'    version = "\d+\.\d+\.\d+.*"')
+        f = open( conanPath, 'r' )
+        lines = []
+        for line in f:
+            m = conanParser.match( line )
+            if m:
+                lines.append( '    version = "{0}"'.format(format(self.getVersionString())) )
+            else:
+                lines.append( line.rstrip() )
+        f.close()
+        f = open( conanPath, 'w' )
+        for line in lines:
+            f.write( line + "\n" )

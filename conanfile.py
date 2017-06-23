@@ -12,8 +12,5 @@ class CatchConan(ConanFile):
     url = "https://github.com/philsquared/Catch"
     license = "BSL-1.0"
 
-    def build(self):
-        pass
-
     def package(self):
         self.copy(pattern="catch.hpp", src="single_include", dst="include")
