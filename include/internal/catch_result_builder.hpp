@@ -18,17 +18,12 @@
 
 namespace Catch {
 
-    std::string capturedExpressionWithSecondArgument( std::string const& capturedExpression, std::string const& secondArg ) {
-        return secondArg.empty() || secondArg == "\"\""
-            ? capturedExpression
-            : capturedExpression + ", " + secondArg;
-    }
     ResultBuilder::ResultBuilder(   char const* macroName,
                                     SourceLineInfo const& lineInfo,
                                     char const* capturedExpression,
                                     ResultDisposition::Flags resultDisposition,
                                     char const* secondArg )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpressionWithSecondArgument( capturedExpression, secondArg ), resultDisposition ),
+    :   m_assertionInfo( macroName, lineInfo, capturedExpression, resultDisposition, secondArg ),
         m_shouldDebugBreak( false ),
         m_shouldThrow( false ),
         m_guardException( false )
@@ -82,7 +77,7 @@ namespace Catch {
         assert( !isFalseTest( m_assertionInfo.resultDisposition ) );
         AssertionResultData data = m_data;
         data.resultType = ResultWas::Ok;
-        data.reconstructedExpression = m_assertionInfo.capturedExpression;
+        data.reconstructedExpression = capturedExpressionWithSecondArgument(m_assertionInfo.capturedExpression, m_assertionInfo.secondArg);
 
         std::string actualMessage = Catch::translateActiveException();
         if( !matcher.match( actualMessage ) ) {
@@ -154,7 +149,7 @@ namespace Catch {
     }
 
     void ResultBuilder::reconstructExpression( std::string& dest ) const {
-        dest = m_assertionInfo.capturedExpression;
+        dest = capturedExpressionWithSecondArgument(m_assertionInfo.capturedExpression, m_assertionInfo.secondArg);
     }
 
     void ResultBuilder::setExceptionGuard() {
