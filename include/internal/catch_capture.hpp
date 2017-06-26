@@ -143,13 +143,13 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_MSG( macroName, messageType, resultDisposition, ... ) \
-        do { \
-            Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
-            __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop(); \
-            __catchResult.captureResult( messageType ); \
-            INTERNAL_CATCH_REACT( __catchResult ) \
-        } while( Catch::alwaysFalse() )
+#define INTERNAL_CATCH_MSG( macroName, messageType, resultDisposition, ... ) \
+    do { \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
+        __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop(); \
+        __catchResult.captureResult( messageType ); \
+        INTERNAL_CATCH_REACT( __catchResult ) \
+    } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( macroName, log ) \
