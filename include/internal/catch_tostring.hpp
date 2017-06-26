@@ -210,17 +210,17 @@ std::string StringMaker<double>::convert(double value) {
 
 
 #ifdef __OBJC__
-std::string StringMaker<NSString const *>::convert(NSString const * const& nsstring) {
+std::string StringMaker<NSString*>::convert(NSString* nsstring) {
     if (!nsstring)
         return "nil";
     return "@" + toString([nsstring UTF8String]);
 }
-std::string StringMaker<NSString * CATCH_ARC_STRONG>::convert(NSString * CATCH_ARC_STRONG const& nsstring) {
+std::string StringMaker<NSString * CATCH_ARC_STRONG>::convert(NSString* CATCH_ARC_STRONG nsstring) {
     if (!nsstring)
         return "nil";
     return "@" + toString([nsstring UTF8String]);
 }
-std::string StringMaker<NSObject *>::convert(NSObject * const& nsObject) {
+std::string StringMaker<NSObject*>::convert(NSObject* nsObject) {
     return ::Catch::Detail::stringify([nsObject description]);
 }
 #endif

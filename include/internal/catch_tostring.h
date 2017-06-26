@@ -302,16 +302,16 @@ namespace Catch {
 
 #ifdef __OBJC__
     template<>
-    struct StringMaker<NSString const *> {
-        static std::string convert(NSString const* const& nsstring);
+    struct StringMaker<NSString*> {
+        static std::string convert(NSString* nsstring);
     };
     template<>
-    struct StringMaker<NSString * CATCH_ARC_STRONG> {
-        static std::string convert(NSString * CATCH_ARC_STRONG const& nsstring);
+    struct StringMaker<NSString* CATCH_ARC_STRONG> {
+        static std::string convert(NSString * CATCH_ARC_STRONG nsstring);
     };
     template<>
     struct StringMaker<NSObject *> {
-        static std::string convert(NSObject* const& nsObject);
+        static std::string convert(NSObject* nsObject);
     };
 #endif
 
