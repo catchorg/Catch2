@@ -41,6 +41,10 @@ namespace Catch {
         virtual void exceptionEarlyReported() = 0;
 
         virtual void handleFatalErrorCondition( std::string const& message ) = 0;
+
+        virtual bool lastAssertionPassed() = 0;
+        virtual void assertionPassed() = 0;
+        virtual void assertionRun() = 0;
     };
 
     IResultCapture& getResultCapture();
