@@ -47,7 +47,7 @@ namespace Catch {
 
         template<typename T>
         ResultBuilder& operator << ( T const& value ) {
-            m_stream.oss << value;
+            m_stream().oss << value;
             return *this;
         }
 
@@ -80,7 +80,12 @@ namespace Catch {
     private:
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
-        CopyableStream m_stream;
+
+        static CopyableStream &m_stream()
+        {
+            static CopyableStream s;
+            return s;
+        }
 
         bool m_shouldDebugBreak = false;
         bool m_shouldThrow = false;

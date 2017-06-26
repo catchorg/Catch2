@@ -17,7 +17,7 @@ There are four reporters built in to the single include:
 
 * `console` writes as lines of text, formatted to a typical terminal width, with colours if a capable terminal is detected.
 * `compact` similar to `console` but optimised for minimal output - each entry on one line
-* `junit` writes xml that corresponds to Ant's [junitreport](http://help.catchsoftware.com/display/ET/JUnit+Format) target. Useful for build systems that understand Junit. 
+* `junit` writes xml that corresponds to Ant's [junitreport](http://help.catchsoftware.com/display/ET/JUnit+Format) target. Useful for build systems that understand Junit. If you are using Jenkins with Catch 1.x, you can improve quality of output by applying changes in [#923](https://github.com/philsquared/Catch/pull/923).
 Because of the way the junit format is structured the run must complete before anything is written. 
 * `xml` writes an xml format tailored to Catch. Unlike `junit` this is a streaming format so results are delivered progressively.
 

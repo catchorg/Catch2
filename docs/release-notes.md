@@ -1,3 +1,19 @@
+# 1.9.5
+
+### Fixes
+* Truthy expressions are now reconstructed properly, not as booleans (#914)
+* Various warnings are no longer erroneously suppressed in test files (files that include `catch.hpp`, but do not define `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`) (#871)
+* Catch no longer fails to link when main is compiled as C++, but linked against Objective-C (#855)
+* Fixed incorrect gcc version detection when deciding to use `__COUNTER__` (#928)
+  * Previously any GCC with minor version less than 3 would be incorrectly classified as not supporting `__COUNTER__`.
+* Suppressed C4996 warning caused by upcoming updated to MSVC 2017, marking `std::uncaught_exception` as deprecated. (#927)
+
+### Improvements
+* CMake integration script now incorporates debug messages and registers tests in an improved way (#911)
+* Various documentation improvements
+
+
+
 # 1.9.4
 
 ### Fixes
