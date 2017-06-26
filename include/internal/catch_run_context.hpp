@@ -154,6 +154,23 @@ namespace Catch {
             m_lastResult = result;
         }
 
+        virtual bool lastAssertionPassed()
+        {
+            return m_totals.assertions.passed == (m_prevPassed + 1);
+        }
+
+        virtual void assertionPassed()
+        {
+            m_totals.assertions.passed++;
+            m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}";
+            m_lastAssertionInfo.macroName = "";
+        }
+
+        virtual void assertionRun()
+        {
+            m_prevPassed = m_totals.assertions.passed;
+        }
+
         virtual bool sectionStarted (
             SectionInfo const& sectionInfo,
             Counts& assertions
@@ -364,6 +381,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
+        size_t m_prevPassed;
         bool m_shouldReportUnexpected;
     };
 

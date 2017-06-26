@@ -83,12 +83,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, expr ) \
     INTERNAL_CATCH_TEST( macroName, resultDisposition, expr ); \
-    if( Catch::getResultCapture().getLastResult()->succeeded() )
+    if( Catch::getResultCapture().lastAssertionPassed() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( macroName, resultDisposition, expr ) \
     INTERNAL_CATCH_TEST( macroName, resultDisposition, expr ); \
-    if( !Catch::getResultCapture().getLastResult()->succeeded() )
+    if( !Catch::getResultCapture().lastAssertionPassed() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( macroName, resultDisposition, expr ) \
