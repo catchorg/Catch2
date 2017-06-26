@@ -34,14 +34,12 @@ namespace Catch {
                                     char const* capturedExpression,
                                     ResultDisposition::Flags resultDisposition )
     :   m_assertionInfo( macroName, lineInfo, capturedExpression, resultDisposition)
-    {
-        m_stream().oss.str("");
-    }
+    {}
 
     ResultBuilder::~ResultBuilder() {
 #if defined(CATCH_CONFIG_FAST_COMPILE)
         if ( m_guardException ) {
-            m_stream().oss << "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
+            stream().oss << "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
             captureResult( ResultWas::ThrewException );
             getCurrentContext().getResultCapture()->exceptionEarlyReported();
         }
@@ -58,13 +56,25 @@ namespace Catch {
     }
 
     void ResultBuilder::endExpression( DecomposedExpression const& expr ) {
-        AssertionResult result = build( expr );
-        handleResult( result );
+        // Flip bool results if FalseTest flag is set
+        if( isFalseTest( m_assertionInfo.resultDisposition ) ) {
+            m_data.negate( expr.isBinaryExpression() );
+        }
+
+        getResultCapture().assertionRun();
+
+        if(getCurrentContext().getConfig()->includeSuccessfulResults()
+            || m_data.resultType != ResultWas::Ok) {
+            AssertionResult result = build( expr );
+            handleResult( result );
+        }
+        else
+            getResultCapture().assertionPassed();
     }
 
     void ResultBuilder::useActiveException( ResultDisposition::Flags resultDisposition ) {
         m_assertionInfo.resultDisposition = resultDisposition;
-        m_stream().oss << Catch::translateActiveException();
+        stream().oss << Catch::translateActiveException();
         captureResult( ResultWas::ThrewException );
     }
 
@@ -142,17 +152,12 @@ namespace Catch {
     //         It should immediately be passed to handleResult; if the expression
     //         needs to be reported, its string expansion must be composed before
     //         the temporaries are destroyed.
-    AssertionResult ResultBuilder::build( DecomposedExpression const& expr ) const
-    {
+    AssertionResult ResultBuilder::build( DecomposedExpression const& expr ) const {
         assert( m_data.resultType != ResultWas::Unknown );
         AssertionResultData data = m_data;
 
-        // Flip bool results if FalseTest flag is set
-        if( isFalseTest( m_assertionInfo.resultDisposition ) ) {
-            data.negate( expr.isBinaryExpression() );
-        }
-
-        data.message = m_stream().oss.str();
+        if(m_usedStream)
+            data.message = m_stream().oss.str();
         data.decomposedExpression = &expr; // for lazy reconstruction
         return AssertionResult( m_assertionInfo, data );
     }
@@ -168,7 +173,15 @@ namespace Catch {
         m_guardException = false;
     }
 
-    CopyableStream& ResultBuilder::m_stream() {
+    CopyableStream& ResultBuilder::stream() {
+        if( !m_usedStream ) {
+            m_usedStream = true;
+            s_stream().oss.str("");
+        }
+        return s_stream();
+    }
+
+    CopyableStream& ResultBuilder::s_stream() {
         static CopyableStream s;
         return s;
     }

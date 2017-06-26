@@ -213,6 +213,20 @@ namespace Catch {
         m_reporter->testRunEnded(TestRunStats(m_runInfo, m_totals, false));
     }
 
+    bool RunContext::lastAssertionPassed() {
+         return m_totals.assertions.passed == (m_prevPassed + 1);
+    }
+
+    void RunContext::assertionPassed() {
+        ++m_totals.assertions.passed;
+        m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}";
+        m_lastAssertionInfo.macroName = "";
+    }
+
+    void RunContext::assertionRun() {
+        m_prevPassed = m_totals.assertions.passed;
+    }
+
     bool RunContext::aborting() const {
         return m_totals.assertions.failed == static_cast<std::size_t>(m_config->abortAfter());
     }

@@ -84,6 +84,12 @@ namespace Catch {
 
         virtual void handleFatalErrorCondition(std::string const& message) override;
 
+        virtual bool lastAssertionPassed() override;
+
+        virtual void assertionPassed();
+
+        virtual void assertionRun();
+
     public:
         // !TBD We need to do this another way!
         bool aborting() const override;
@@ -113,6 +119,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
+        size_t m_prevPassed = 0;
         bool m_shouldReportUnexpected = true;
     };
 
