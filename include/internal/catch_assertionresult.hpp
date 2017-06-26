@@ -16,13 +16,11 @@ namespace Catch {
     AssertionInfo::AssertionInfo(   char const * _macroName,
                                     SourceLineInfo const& _lineInfo,
                                     char const * _capturedExpression,
-                                    ResultDisposition::Flags _resultDisposition,
-                                    char const * _secondArg)
+                                    ResultDisposition::Flags _resultDisposition)
     :   macroName( _macroName ),
         lineInfo( _lineInfo ),
         capturedExpression( _capturedExpression ),
-        resultDisposition( _resultDisposition ),
-        secondArg( _secondArg )
+        resultDisposition( _resultDisposition )
     {}
 
     AssertionResult::AssertionResult() {}
@@ -63,16 +61,17 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpression() const {
-        if( isFalseTest( m_info.resultDisposition ) )
-            return '!' + capturedExpressionWithSecondArgument(m_info.capturedExpression, m_info.secondArg);
+        if (isFalseTest(m_info.resultDisposition))
+            return '!' + std::string(m_info.capturedExpression);
         else
-            return capturedExpressionWithSecondArgument(m_info.capturedExpression, m_info.secondArg);
+            return std::string(m_info.capturedExpression);
     }
+
     std::string AssertionResult::getExpressionInMacro() const {
         if( m_info.macroName[0] == 0 )
-            return capturedExpressionWithSecondArgument(m_info.capturedExpression, m_info.secondArg);
+            return std::string(m_info.capturedExpression);
         else
-            return std::string(m_info.macroName) + "( " + capturedExpressionWithSecondArgument(m_info.capturedExpression, m_info.secondArg) + " )";
+            return std::string(m_info.macroName) + "( " + m_info.capturedExpression + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {
