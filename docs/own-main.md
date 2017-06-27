@@ -23,7 +23,7 @@ int main( int argc, char* argv[] ) {
 
   // global clean-up...
 
-  return ( result < 0xff ? result : 0xff );
+  return result;
 }
 ```
 
@@ -66,10 +66,10 @@ int main( int argc, char* argv[] )
   // only do this if you know you need to
 
   int numFailed = session.run();
-  // Note that on unices only the lower 8 bits are usually used, clamping
-  // the return value to 255 prevents false negative when some multiple
-  // of 256 tests has failed
-  return ( numFailed < 0xff ? numFailed : 0xff );
+  // numFailed is clamped to 255 as some unices only use the lower 8 bits.
+  // This clamping has already been applied, so just return it here
+  // You can also do any post run clean-up here
+  return numFailed;
 }
 ```
 

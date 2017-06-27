@@ -96,6 +96,7 @@ namespace Catch {
     }
 
     class Session : NonCopyable {
+        static const int MaxExitCode;
     public:
 
         Session() {
@@ -113,7 +114,7 @@ namespace Catch {
             Catch::cout() << "\nCatch v" << libraryVersion() << "\n";
 
             Catch::cout() << m_cli << std::endl;
-            Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
+            Catch::cout() << "For more detailed usage please see the project docs\n" << std::endl;
         }
 
         int applyCommandLine( int argc, char* argv[] ) {
@@ -127,7 +128,7 @@ namespace Catch {
                         << "\n\n";
                 }
                 Catch::cerr() << m_cli << std::endl;
-                return (std::numeric_limits<int>::max)();
+                return MaxExitCode;
             }
 
             if( m_configData.showHelp )
@@ -174,9 +175,7 @@ namespace Catch {
                 WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, NULL, NULL );
             }
 
-            int returnCode = applyCommandLine( argc, utf8Argv );
-            if( returnCode == 0 )
-                returnCode = run();
+            int returnCode = run( argc, utf8Argv );
 
             for ( int i = 0; i < argc; ++i )
                 delete [] utf8Argv[ i ];
@@ -204,11 +203,11 @@ namespace Catch {
                 if( Option<std::size_t> listed = list( config() ) )
                     return static_cast<int>( *listed );
 
-                return static_cast<int>( runTests( m_config ).assertions.failed );
+                return (std::min)( MaxExitCode, static_cast<int>( runTests( m_config ).assertions.failed ) );
             }
             catch( std::exception& ex ) {
                 Catch::cerr() << ex.what() << std::endl;
-                return (std::numeric_limits<int>::max)();
+                return MaxExitCode;
             }
         }
 
@@ -231,6 +230,8 @@ namespace Catch {
         ConfigData m_configData;
         std::shared_ptr<Config> m_config;
     };
+
+    const int Session::MaxExitCode = 255;
 
 } // end namespace Catch
 
