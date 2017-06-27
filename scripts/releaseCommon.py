@@ -12,6 +12,7 @@ rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
 readmePath = os.path.join( catchPath, "README.md" )
 conanPath = os.path.join(catchPath, 'conanfile.py')
+conanTestPath = os.path.join(catchPath, 'test_package', 'conanfile.py')
 
 class Version:
     def __init__(self):
@@ -99,5 +100,20 @@ class Version:
                 lines.append( line.rstrip() )
         f.close()
         f = open( conanPath, 'w' )
+        for line in lines:
+            f.write( line + "\n" )
+
+    def updateConanTestFile(self):
+        conanParser = re.compile( r'    requires = \"Catch\/\d+\.\d+\.\d+.*@%s\/%s\" % \(username, channel\)')
+        f = open( conanTestPath, 'r' )
+        lines = []
+        for line in f:
+            m = conanParser.match( line )
+            if m:
+                lines.append( '    requires = "Catch/{0}@%s/%s" % (username, channel)'.format(format(self.getVersionString())) )
+            else:
+                lines.append( line.rstrip() )
+        f.close()
+        f = open( conanTestPath, 'w' )
         for line in lines:
             f.write( line + "\n" )
