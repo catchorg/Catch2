@@ -80,7 +80,7 @@ unsigned int Factorial( unsigned int number ) {
 
 Now all the tests pass.
 
-Of course there are still more issues to do deal with. For example we'll hit problems when the return value starts to exceed the range of an unsigned int. With factorials that can happen quite quickly. You might want to add tests for such cases and decide how to handle them. We'll stop short of doing that here.
+Of course there are still more issues to deal with. For example we'll hit problems when the return value starts to exceed the range of an unsigned int. With factorials that can happen quite quickly. You might want to add tests for such cases and decide how to handle them. We'll stop short of doing that here.
 
 ## What did we do here?
 
