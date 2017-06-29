@@ -1002,6 +1002,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 171 | 121 passed | 46 failed |  4 failed as expected
-assertions: 844 | 729 passed | 94 failed | 21 failed as expected
+test cases: 174 | 124 passed | 46 failed |  4 failed as expected
+assertions: 908 | 793 passed | 94 failed | 21 failed as expected
 

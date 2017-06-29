@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="15" failures="82" tests="847" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="82" tests="911" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -512,7 +512,28 @@ Message from section two
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="String/empty string" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="String/from literal" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="String matchers" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringBuilder/basic" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringBuilder/concatenation" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringBuilder/concat &amp; move" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringBuilder/reserved" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringBuilder/from String/copy" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringBuilder/from String/move from uniquely owned string" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringBuilder/from String/move from shared string (copies)" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Empty string" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/From string literal" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/From string literal/c_str() does not cause copy" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/From sub-string" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings/zero-based substring" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings/c_str() causes copy" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings/non-zero-based substring" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of full refs should match" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of substring refs should not match" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Comparisons" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/From string/Copied" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/From string/Moved" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Strings can be rendered with colour" time="{duration}">
       <system-out>
 hello

@@ -6358,6 +6358,55 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="String" tags="[Strings]" filename="projects/<exe-name>/String.tests.cpp" >
+      <Section name="empty string" filename="projects/<exe-name>/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+          <Original>
+            empty.empty()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+          <Original>
+            empty.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+          <Original>
+            std::strcmp( empty.c_str(), "" ) == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="from literal" filename="projects/<exe-name>/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+          <Original>
+            s.empty() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+          <Original>
+            s.size() == 5
+          </Original>
+          <Expanded>
+            5 == 5
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
@@ -6391,6 +6440,571 @@ Message from section two
           "this string contains 'abc' as a substring" ends with: "substring"
         </Expanded>
       </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="StringBuilder" tags="[Strings]" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+      <Section name="basic" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb.capacity() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb.capacity() == 32
+          </Original>
+          <Expanded>
+            32 == 32
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb.capacity() == 32
+          </Original>
+          <Expanded>
+            32 == 32
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb.size() == 5
+          </Original>
+          <Expanded>
+            5 == 5
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            s == "hello"
+          </Original>
+          <Expanded>
+            {?} == "hello"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            s.size() == 5
+          </Original>
+          <Expanded>
+            5 == 5
+          </Expanded>
+        </Expression>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="concatenation" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            s == "hello world"
+          </Original>
+          <Expanded>
+            {?} == "hello world"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="concat &amp; move" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            s == "hello world"
+          </Original>
+          <Expanded>
+            {?} == "hello world"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="reserved" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb16.capacity() == 16
+          </Original>
+          <Expanded>
+            16 == 16
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            sb16.capacity() == 16
+          </Original>
+          <Expanded>
+            16 == 16
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Original>
+            s == "hello world"
+          </Original>
+          <Expanded>
+            {?} == "hello world"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="from String" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+        <Section name="copy" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+            <Original>
+              s2 == s
+            </Original>
+            <Expanded>
+              {?} == {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+            <Original>
+              s2.c_str() != s.c_str()
+            </Original>
+            <Expanded>
+              "hello" != "hello"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="from String" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+        <Section name="move from uniquely owned string" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+            <Original>
+              s2 == "hello"
+            </Original>
+            <Expanded>
+              {?} == "hello"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+            <Original>
+              s2.c_str() == originalPointer
+            </Original>
+            <Expanded>
+              "hello" == "hello"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="from String" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+        <Section name="move from shared string (copies)" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+            <Original>
+              s2 == "hello"
+            </Original>
+            <Expanded>
+              {?} == "hello"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
+            <Original>
+              s2.c_str() != originalPointer
+            </Original>
+            <Expanded>
+              "hello" != "hello"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="StringRef" tags="[Strings]" filename="projects/<exe-name>/StringRef.tests.cpp" >
+      <Section name="Empty string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            empty.empty()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            empty.size() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            std::strcmp( empty.c_str(), "" ) == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="From string literal" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            s.empty() == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            s.size() == 5
+          </Original>
+          <Expanded>
+            5 == 5
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            isSubstring( s ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            std::strcmp( rawChars, "hello" ) == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Section name="c_str() does not cause copy" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isOwned( s ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              s.c_str() == rawChars
+            </Original>
+            <Expanded>
+              "hello" == "hello"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isOwned( s ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="From sub-string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            original == "original"
+          </Original>
+          <Expanded>
+            {?} == "original"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            isSubstring( original )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            isOwned( original ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            isSubstring( original ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            isOwned( original )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Substrings" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="zero-based substring" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              ss.empty() == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              ss.size() == 5
+            </Original>
+            <Expanded>
+              5 == 5
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              std::strcmp( ss.c_str(), "hello" ) == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              ss == "hello"
+            </Original>
+            <Expanded>
+              {?} == "hello"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Substrings" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="c_str() causes copy" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isSubstring( ss )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isOwned( ss ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              rawChars == data( s )
+            </Original>
+            <Expanded>
+              "hello world!" == "hello world!"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              ss.c_str() != rawChars
+            </Original>
+            <Expanded>
+              "hello" != "hello world!"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isSubstring( ss ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isOwned( ss )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              data( ss ) != data( s )
+            </Original>
+            <Expanded>
+              "hello" != "hello world!"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="7" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Substrings" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="non-zero-based substring" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              ss.size() == 6
+            </Original>
+            <Expanded>
+              6 == 6
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              std::strcmp( ss.c_str(), "world!" ) == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Substrings" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="Pointer values of full refs should match" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              s.c_str() == s2.c_str()
+            </Original>
+            <Expanded>
+              "hello world!" == "hello world!"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Substrings" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="Pointer values of substring refs should not match" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              s.c_str() != ss.c_str()
+            </Original>
+            <Expanded>
+              "hello world!" != "hello"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Comparisons" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            StringRef("hello") == StringRef("hello")
+          </Original>
+          <Expanded>
+            {?} == {?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Original>
+            StringRef("hello") != StringRef("cello")
+          </Original>
+          <Expanded>
+            {?} != {?}
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="From string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="Copied" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              copied == "hot potato"
+            </Original>
+            <Expanded>
+              {?} == "hot potato"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              str == "hot potato"
+            </Original>
+            <Expanded>
+              {?} == "hot potato"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isOwned( copied ) == false
+            </Original>
+            <Expanded>
+              false == false
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              data( copied ) == originalPointer
+            </Original>
+            <Expanded>
+              "hot potato" == "hot potato"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="From string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="Moved" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              copied == "hot potato"
+            </Original>
+            <Expanded>
+              {?} == "hot potato"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              isOwned( copied )
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              str.empty()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              data( copied ) == originalPointer
+            </Original>
+            <Expanded>
+              "hot potato" == "hot potato"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Strings can be rendered with colour" tags="[.][.colour][hide]" filename="projects/<exe-name>/TestMain.cpp" >
@@ -9166,7 +9780,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="729" failures="97" expectedFailures="21"/>
+    <OverallResults successes="793" failures="97" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="729" failures="96" expectedFailures="21"/>
+  <OverallResults successes="793" failures="96" expectedFailures="21"/>
 </Catch>

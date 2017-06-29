@@ -5693,6 +5693,50 @@ with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
 
 -------------------------------------------------------------------------------
+String
+  empty string
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( empty.empty() )
+with expansion:
+  true
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( empty.size() == 0 )
+with expansion:
+  0 == 0
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+String
+  from literal
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.empty() == false )
+with expansion:
+  false == false
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.size() == 5 )
+with expansion:
+  5 == 5
+
+-------------------------------------------------------------------------------
 String matchers
 -------------------------------------------------------------------------------
 MatchersTests.cpp:<line number>
@@ -5721,6 +5765,504 @@ PASSED:
   CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "substring"
+
+-------------------------------------------------------------------------------
+StringBuilder
+  basic
+-------------------------------------------------------------------------------
+StringBuilder.tests.cpp:<line number>
+...............................................................................
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb.capacity() == 0 )
+with expansion:
+  0 == 0
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb.size() == 0 )
+with expansion:
+  0 == 0
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb.capacity() == 32 )
+with expansion:
+  32 == 32
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb.size() == 0 )
+with expansion:
+  0 == 0
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb.capacity() == 32 )
+with expansion:
+  32 == 32
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb.size() == 5 )
+with expansion:
+  5 == 5
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s == "hello" )
+with expansion:
+  {?} == "hello"
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.size() == 5 )
+with expansion:
+  5 == 5
+
+-------------------------------------------------------------------------------
+StringBuilder
+  concatenation
+-------------------------------------------------------------------------------
+StringBuilder.tests.cpp:<line number>
+...............................................................................
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s == "hello world" )
+with expansion:
+  {?} == "hello world"
+
+-------------------------------------------------------------------------------
+StringBuilder
+  concat & move
+-------------------------------------------------------------------------------
+StringBuilder.tests.cpp:<line number>
+...............................................................................
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s == "hello world" )
+with expansion:
+  {?} == "hello world"
+
+-------------------------------------------------------------------------------
+StringBuilder
+  reserved
+-------------------------------------------------------------------------------
+StringBuilder.tests.cpp:<line number>
+...............................................................................
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb16.capacity() == 16 )
+with expansion:
+  16 == 16
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sb16.capacity() == 16 )
+with expansion:
+  16 == 16
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s == "hello world" )
+with expansion:
+  {?} == "hello world"
+
+-------------------------------------------------------------------------------
+StringBuilder
+  from String
+  copy
+-------------------------------------------------------------------------------
+StringBuilder.tests.cpp:<line number>
+...............................................................................
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2 == s )
+with expansion:
+  {?} == {?}
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.c_str() != s.c_str() )
+with expansion:
+  "hello" != "hello"
+
+-------------------------------------------------------------------------------
+StringBuilder
+  from String
+  move from uniquely owned string
+-------------------------------------------------------------------------------
+StringBuilder.tests.cpp:<line number>
+...............................................................................
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2 == "hello" )
+with expansion:
+  {?} == "hello"
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.c_str() == originalPointer )
+with expansion:
+  "hello" == "hello"
+
+-------------------------------------------------------------------------------
+StringBuilder
+  from String
+  move from shared string (copies)
+-------------------------------------------------------------------------------
+StringBuilder.tests.cpp:<line number>
+...............................................................................
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2 == "hello" )
+with expansion:
+  {?} == "hello"
+
+StringBuilder.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s2.c_str() != originalPointer )
+with expansion:
+  "hello" != "hello"
+
+-------------------------------------------------------------------------------
+StringRef
+  Empty string
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( empty.empty() )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( empty.size() == 0 )
+with expansion:
+  0 == 0
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+StringRef
+  From string literal
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.empty() == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.size() == 5 )
+with expansion:
+  5 == 5
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( s ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( rawChars, "hello" ) == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+StringRef
+  From string literal
+  c_str() does not cause copy
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( s ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.c_str() == rawChars )
+with expansion:
+  "hello" == "hello"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( s ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+StringRef
+  From sub-string
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( original == "original" )
+with expansion:
+  {?} == "original"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( original ) )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( original ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( original ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( original ) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  zero-based substring
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.empty() == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.size() == 5 )
+with expansion:
+  5 == 5
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( ss.c_str(), "hello" ) == 0 )
+with expansion:
+  0 == 0
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss == "hello" )
+with expansion:
+  {?} == "hello"
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  c_str() causes copy
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( ss ) )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( ss ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( rawChars == data( s ) )
+with expansion:
+  "hello world!" == "hello world!"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.c_str() != rawChars )
+with expansion:
+  "hello" != "hello world!"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( ss ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( ss ) )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( data( ss ) != data( s ) )
+with expansion:
+  "hello" != "hello world!"
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  non-zero-based substring
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.size() == 6 )
+with expansion:
+  6 == 6
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( ss.c_str(), "world!" ) == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  Pointer values of full refs should match
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.c_str() == s2.c_str() )
+with expansion:
+  "hello world!" == "hello world!"
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  Pointer values of substring refs should not match
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.c_str() != ss.c_str() )
+with expansion:
+  "hello world!" != "hello"
+
+-------------------------------------------------------------------------------
+StringRef
+  Comparisons
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( StringRef("hello") == StringRef("hello") )
+with expansion:
+  {?} == {?}
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( StringRef("hello") != StringRef("cello") )
+with expansion:
+  {?} != {?}
+
+-------------------------------------------------------------------------------
+StringRef
+  From string
+  Copied
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( copied == "hot potato" )
+with expansion:
+  {?} == "hot potato"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( str == "hot potato" )
+with expansion:
+  {?} == "hot potato"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( copied ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( data( copied ) == originalPointer )
+with expansion:
+  "hot potato" == "hot potato"
+
+-------------------------------------------------------------------------------
+StringRef
+  From string
+  Moved
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( copied == "hot potato" )
+with expansion:
+  {?} == "hot potato"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( copied ) )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( str.empty() )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( data( copied ) == originalPointer )
+with expansion:
+  "hot potato" == "hot potato"
 
 hello
 hello
@@ -8352,6 +8894,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 171 | 120 passed | 47 failed |  4 failed as expected
-assertions: 846 | 729 passed | 96 failed | 21 failed as expected
+test cases: 174 | 123 passed | 47 failed |  4 failed as expected
+assertions: 910 | 793 passed | 96 failed | 21 failed as expected
 
