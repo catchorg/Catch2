@@ -2,6 +2,8 @@
 
 #include "catch.hpp"
 
+#include <cstring>
+
 TEST_CASE( "String", "[Strings]" ) {
     using Catch::String;
     

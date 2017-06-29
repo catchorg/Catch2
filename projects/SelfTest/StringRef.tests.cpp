@@ -3,6 +3,8 @@
 
 #include "catch.hpp"
 
+#include <cstring>
+
 namespace Catch {
 
     // Implementation of test accessors
