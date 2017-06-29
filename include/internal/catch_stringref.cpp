@@ -40,14 +40,14 @@ namespace Catch {
     
     StringRef::StringRef( char const* rawChars ) noexcept
     :   m_start( rawChars ),
-        m_size( std::strlen( rawChars ) )
+        m_size( static_cast<size_type>( std::strlen( rawChars ) ) )
     {}
     
     StringRef::StringRef( char const* rawChars, size_type size ) noexcept
     :   m_start( rawChars ),
         m_size( size )
     {
-        size_type rawSize = rawChars == nullptr ? 0 : std::strlen( rawChars );
+        size_type rawSize = rawChars == nullptr ? 0 : static_cast<size_type>( std::strlen( rawChars ) );
         if( rawSize < size )
             size = rawSize;
     }
