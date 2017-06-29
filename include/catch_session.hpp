@@ -18,7 +18,7 @@
 #include "internal/catch_startup_exception_registry.h"
 
 #include <fstream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <limits>
 
 namespace Catch {
@@ -86,7 +86,7 @@ namespace Catch {
             if( lastSlash != std::string::npos )
                 filename = filename.substr( lastSlash+1 );
 
-            std::string::size_type lastDot = filename.find_last_of( "." );
+            std::string::size_type lastDot = filename.find_last_of( '.' );
             if( lastDot != std::string::npos )
                 filename = filename.substr( 0, lastDot );
 
@@ -106,11 +106,11 @@ namespace Catch {
             alreadyInstantiated = true;
             m_cli = makeCommandLineParser( m_configData );
         }
-        ~Session() {
+        ~Session() override {
             Catch::cleanUp();
         }
 
-        void showHelp( std::string const& ) {
+        void showHelp() {
             Catch::cout() << "\nCatch v" << libraryVersion() << "\n";
 
             Catch::cout() << m_cli << std::endl;
@@ -132,7 +132,7 @@ namespace Catch {
             }
 
             if( m_configData.showHelp )
-                showHelp( m_configData.processName );
+                showHelp();
             m_config.reset();
             return 0;
         }
