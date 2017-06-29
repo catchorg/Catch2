@@ -17,11 +17,11 @@ namespace Catch {
     
     StringRef StringRef::s_emptyStringRef = "";
     
-    StringRef::StringRef()
+    StringRef::StringRef() noexcept
     :   StringRef( s_emptyStringRef )
     {}
     
-    StringRef::StringRef( StringRef const& other )
+    StringRef::StringRef( StringRef const& other ) noexcept
     :   m_start( other.m_start ),
         m_size( other.m_size ),
         m_data( other.m_data )
@@ -38,12 +38,12 @@ namespace Catch {
         other.m_data = nullptr;
     }
     
-    StringRef::StringRef( char const* rawChars )
+    StringRef::StringRef( char const* rawChars ) noexcept
     :   m_start( rawChars ),
         m_size( std::strlen( rawChars ) )
     {}
     
-    StringRef::StringRef( char const* rawChars, size_type size )
+    StringRef::StringRef( char const* rawChars, size_type size ) noexcept
     :   m_start( rawChars ),
         m_size( size )
     {
@@ -52,7 +52,7 @@ namespace Catch {
             size = rawSize;
     }
     
-    StringRef::StringRef( String const& other )
+    StringRef::StringRef( String const& other ) noexcept
     :   m_start( other.c_str() ),
         m_size( other.size() ),
         m_data( nullptr )
@@ -71,7 +71,7 @@ namespace Catch {
             m_data->release();
     }
     
-    auto StringRef::operator = ( StringRef other ) -> StringRef& {
+    auto StringRef::operator = ( StringRef other ) noexcept -> StringRef& {
         swap( other );
         return *this;
     }

@@ -36,16 +36,16 @@ namespace Catch {
         void takeOwnership();
         
     public: // construction/ assignment
-        StringRef();
-        StringRef( StringRef const& other );
+        StringRef() noexcept;
+        StringRef( StringRef const& other ) noexcept;
         StringRef( StringRef&& other ) noexcept;
-        StringRef( char const* rawChars );
-        StringRef( char const* rawChars, size_type size );
-        StringRef( String const& other );
+        StringRef( char const* rawChars ) noexcept;
+        StringRef( char const* rawChars, size_type size ) noexcept;
+        StringRef( String const& other ) noexcept;
         StringRef( String&& other ) noexcept;
         ~StringRef() noexcept;
         
-        auto operator = ( StringRef other ) -> StringRef&;
+        auto operator = ( StringRef other ) noexcept -> StringRef&;
 
         void swap( StringRef& other ) noexcept;
         
