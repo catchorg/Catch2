@@ -37,6 +37,15 @@
 #include "catch_matchers_string.hpp"
 #include "catch_startup_exception_registry.hpp"
 
+// These files are not included in the full (not single include) project
+// as they are compiled as proper cpp files
+#ifndef CATCH_CONFIG_FULL_PROJECT
+#   include "catch_stringref.cpp"
+#   include "catch_string.cpp"
+#   include "catch_stringbuilder.cpp"
+#   include "catch_stringdata.cpp"
+#endif
+
 #include "../reporters/catch_reporter_multi.hpp"
 #include "../reporters/catch_reporter_xml.hpp"
 #include "../reporters/catch_reporter_junit.hpp"

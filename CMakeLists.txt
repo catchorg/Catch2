@@ -75,6 +75,9 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/TrickyTests.cpp
         ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
         ${SELF_TEST_DIR}/MatchersTests.cpp
+        ${SELF_TEST_DIR}/String.tests.cpp
+        ${SELF_TEST_DIR}/StringBuilder.tests.cpp
+        ${SELF_TEST_DIR}/StringRef.tests.cpp
         )
 CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
@@ -181,6 +184,14 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_stream.h
         ${HEADER_DIR}/internal/catch_stream.hpp
         ${HEADER_DIR}/internal/catch_streambuf.h
+        ${HEADER_DIR}/internal/catch_string.cpp
+        ${HEADER_DIR}/internal/catch_string.h
+        ${HEADER_DIR}/internal/catch_stringbuilder.cpp
+        ${HEADER_DIR}/internal/catch_stringbuilder.h
+        ${HEADER_DIR}/internal/catch_stringdata.cpp
+        ${HEADER_DIR}/internal/catch_stringdata.h
+        ${HEADER_DIR}/internal/catch_stringref.cpp
+        ${HEADER_DIR}/internal/catch_stringref.h
         ${HEADER_DIR}/internal/catch_suppress_warnings.h
         ${HEADER_DIR}/internal/catch_tag_alias.h
         ${HEADER_DIR}/internal/catch_tag_alias_registry.h
@@ -242,6 +253,8 @@ SOURCE_GROUP("Benchmarks" FILES ${BENCH_SOURCES})
 
 # configure the executable
 include_directories(${HEADER_DIR})
+
+add_definitions( -DCATCH_CONFIG_FULL_PROJECT )
 
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
