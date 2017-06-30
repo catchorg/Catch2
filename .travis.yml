@@ -244,6 +244,26 @@ matrix:
       compiler: clang
       env: COMPILER='clang++' BUILD_TYPE='Release' USE_CPP14=1
 
+    #6/ Conan package tools
+    - os: linux
+      language: python
+      python: "3.6"
+      sudo: required
+      services:
+        - docker
+      env:
+         CONAN_GCC_VERSIONS: "6.3"
+         CONAN_DOCKER_IMAGE: "lasote/conangcc63"
+         CONAN_REFERENCE: "Catch/1.9.6"
+         CONAN_CHANNEL: "ci"
+         CONAN_STABLE_BRANCH_PATTERN: 'v\d+\.\d+\.\d+.*'
+      install:
+        - chmod +x .travis/install.sh
+        - ./.travis/install.sh
+      before_script:
+        - chmod +x .travis/run.sh
+      script:
+        - ./.travis/run.sh
 
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
