@@ -252,11 +252,11 @@ matrix:
       services:
         - docker
       env:
-         CONAN_GCC_VERSIONS: "6.3"
-         CONAN_DOCKER_IMAGE: "lasote/conangcc63"
-         CONAN_REFERENCE: "Catch/1.9.6"
-         CONAN_CHANNEL: "ci"
-         CONAN_STABLE_BRANCH_PATTERN: 'v\d+\.\d+\.\d+.*'
+         CONAN_GCC_VERSIONS: 6.3
+         CONAN_DOCKER_IMAGE: lasote/conangcc63
+         CONAN_REFERENCE: Catch/1.9.6
+         CONAN_CHANNEL: ci
+         CONAN_STABLE_BRANCH_PATTERN: v\\d+\\.\\d+\\.\\d+.*
       install:
         - chmod +x .travis/install.sh
         - ./.travis/install.sh

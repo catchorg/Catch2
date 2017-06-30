@@ -13,6 +13,7 @@ versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
 readmePath = os.path.join( catchPath, "README.md" )
 conanPath = os.path.join(catchPath, 'conanfile.py')
 conanTestPath = os.path.join(catchPath, 'test_package', 'conanfile.py')
+travisPath = os.path.join(catchPath, '.travis.yml')
 
 class Version:
     def __init__(self):
@@ -115,5 +116,20 @@ class Version:
                 lines.append( line.rstrip() )
         f.close()
         f = open( conanTestPath, 'w' )
+        for line in lines:
+            f.write( line + "\n" )
+
+    def updateTravisFile(self):
+        conanParser = re.compile( r'         CONAN_REFERENCE: \"Catch\/\d+\.\d+\.\d+.*\"')
+        f = open( travisPath, 'r' )
+        lines = []
+        for line in f:
+            m = conanParser.match( line )
+            if m:
+                lines.append( '         CONAN_REFERENCE: "Catch/{0}"'.format(format(self.getVersionString())) )
+            else:
+                lines.append( line.rstrip() )
+        f.close()
+        f = open( travisPath, 'w' )
         for line in lines:
             f.write( line + "\n" )
