@@ -54,12 +54,54 @@ namespace Tbc {
         Text( std::string const& _str, TextAttributes const& _attr = TextAttributes() )
         : attr( _attr )
         {
+            init( _str );
+        }
+
+        template<typename T>
+        Text( T const& _val, TextAttributes const& _attr = TextAttributes() )
+        : attr( _attr )
+        {
+            std::ostringstream oss;
+            oss << _val;
+            init( oss.str() );
+        }
+
+        typedef std::vector<std::string>::const_iterator const_iterator;
+
+        const_iterator begin() const { return lines.begin(); }
+        const_iterator end() const { return lines.end(); }
+        std::string const& last() const { return lines.back(); }
+        std::size_t size() const { return lines.size(); }
+        std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
+        std::string toString() const {
+            std::ostringstream oss;
+            oss << *this;
+            return oss.str();
+        }
+
+        inline friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+            for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
+                it != itEnd; ++it ) {
+                if( it != _text.begin() )
+                    _stream << "\n";
+                _stream << *it;
+            }
+            return _stream;
+        }
+
+
+    private:
+        TextAttributes attr;
+        std::vector<std::string> lines;
+
+        void init( std::string const& _str )
+        {
             const std::string wrappableBeforeChars = "[({<\t";
             const std::string wrappableAfterChars = "])}>-,./|\\";
             const std::string wrappableInsteadOfChars = " \n\r";
-            std::string indent = _attr.initialIndent != std::string::npos
-                ? std::string( _attr.initialIndent, ' ' )
-                : std::string( _attr.indent, ' ' );
+            std::string indent = attr.initialIndent != std::string::npos
+                ? std::string( attr.initialIndent, ' ' )
+                : std::string( attr.indent, ' ' );
 
             typedef std::string::const_iterator iterator;
             iterator it = _str.begin();
@@ -74,7 +116,7 @@ namespace Tbc {
 
 
                 std::string suffix;
-                std::size_t width = (std::min)( static_cast<size_t>( strEnd-it ), _attr.width-static_cast<size_t>( indent.size() ) );
+                std::size_t width = (std::min)( static_cast<size_t>( strEnd-it ), attr.width-static_cast<size_t>( indent.size() ) );
                 iterator itEnd = it+width;
                 iterator itNext = _str.end();
 
@@ -121,42 +163,11 @@ namespace Tbc {
                 }
                 lines.push_back( indent + std::string( it, itEnd ) + suffix );
 
-                if( indent.size() != _attr.indent )
-                    indent = std::string( _attr.indent, ' ' );
+                if( indent.size() != attr.indent )
+                    indent = std::string( attr.indent, ' ' );
                 it = itNext;
             }
         }
-
-
-
-        typedef std::vector<std::string>::const_iterator const_iterator;
-
-        const_iterator begin() const { return lines.begin(); }
-        const_iterator end() const { return lines.end(); }
-        std::string const& last() const { return lines.back(); }
-        std::size_t size() const { return lines.size(); }
-        std::string const& operator[]( std::size_t _index ) const { return lines[_index]; }
-        std::string toString() const {
-            std::ostringstream oss;
-            oss << *this;
-            return oss.str();
-        }
-
-        inline friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
-            for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
-                it != itEnd; ++it ) {
-                if( it != _text.begin() )
-                    _stream << "\n";
-                _stream << *it;
-            }
-            return _stream;
-        }
-
-
-    private:
-        std::string str;
-        TextAttributes attr;
-        std::vector<std::string> lines;
     };
 
 } // end namespace Tbc
