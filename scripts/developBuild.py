@@ -9,6 +9,5 @@ v.updateVersionFile()
 v.updateReadmeFile()
 v.updateConanFile()
 v.updateConanTestFile()
-v.updateTravisFile()
 
 print( "Updated Version.hpp, README and Conan to v{0}".format( v.getVersionString() ) )

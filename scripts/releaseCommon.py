@@ -90,7 +90,7 @@ class Version:
             f.write( line + "\n" )
 
     def updateConanFile(self):
-        conanParser = re.compile( r'    version = "\d+\.\d+\.\d+.*"')
+        conanParser = re.compile( r'    version = "\d+\.\d+\.\d+"')
         f = open( conanPath, 'r' )
         lines = []
         for line in f:
@@ -105,7 +105,7 @@ class Version:
             f.write( line + "\n" )
 
     def updateConanTestFile(self):
-        conanParser = re.compile( r'    requires = \"Catch\/\d+\.\d+\.\d+.*@%s\/%s\" % \(username, channel\)')
+        conanParser = re.compile( r'    requires = \"Catch\/\d+\.\d+\.\d+@%s\/%s\" % \(username, channel\)')
         f = open( conanTestPath, 'r' )
         lines = []
         for line in f:
@@ -120,16 +120,15 @@ class Version:
             f.write( line + "\n" )
 
     def updateTravisFile(self):
-        conanParser = re.compile( r'         CONAN_REFERENCE: \"Catch\/\d+\.\d+\.\d+.*\"')
-        f = open( travisPath, 'r' )
-        lines = []
-        for line in f:
-            m = conanParser.match( line )
-            if m:
-                lines.append( '         CONAN_REFERENCE: "Catch/{0}"'.format(format(self.getVersionString())) )
-            else:
-                lines.append( line.rstrip() )
-        f.close()
-        f = open( travisPath, 'w' )
-        for line in lines:
-            f.write( line + "\n" )
+        conanParser = re.compile( r'         CONAN_REFERENCE: Catch\/\d+\.\d+\.\d+')
+        with open(travisPath, "r") as f:
+            lines = []
+            for line in f:
+                m = conanParser.match( line )
+                if m:
+                    lines.append( '         CONAN_REFERENCE: Catch/{0}'.format(format(self.getVersionString())) )
+                else:
+                    lines.append( line.rstrip() )
+        with open(travisPath, "w") as f:
+            for line in lines:
+                f.write( line + "\n" )
