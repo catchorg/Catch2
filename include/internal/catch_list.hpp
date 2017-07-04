@@ -45,7 +45,7 @@ namespace Catch {
 
             Catch::cout() << Text( testCaseInfo.name, nameAttr ) << std::endl;
             if( config.verbosity() >= Verbosity::High ) {
-                Catch::cout() << "    " << testCaseInfo.lineInfo << std::endl;
+                Catch::cout() << Text( testCaseInfo.lineInfo, descAttr ) << std::endl;
                 std::string description = testCaseInfo.description;
                 if( description == "" )
                     description = "(NO DESCRIPTION)";
