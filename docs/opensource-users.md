@@ -55,6 +55,9 @@ A library of algorithms for values-distributed-in-time
 ### [Trompeloeil](https://github.com/rollbear/trompeloeil)
 A thread safe header only mocking framework for C++14
 
+### [args](https://github.com/Taywee/args)
+A simple header-only C++ argument parser library.
+
 ## Applications & Tools
 
 ### [ArangoDB](https://github.com/arangodb/arangodb)
