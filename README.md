@@ -21,3 +21,7 @@ This documentation comprises these three parts:
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
 * For discussion or questions please use [the dedicated Google Groups forum](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)
 * See [who else is using Catch](docs/opensource-users.md)
+
+## Help us out
+We're currently running <a href="https://www.surveymonkey.co.uk/r/TLLYQJW">a survey</a> to help us shape the future of Catch.
+Please take a few moments to full it out (there's only ten questions):
