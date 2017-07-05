@@ -23,5 +23,5 @@ This documentation comprises these three parts:
 * See [who else is using Catch](docs/opensource-users.md)
 
 ## Help us out
-We're currently running <a href="https://www.surveymonkey.co.uk/r/TLLYQJW">a survey</a> to help us shape the future of Catch.
-Please take a few moments to full it out (there's only ten questions):
+We're currently running [a survey](https://www.surveymonkey.co.uk/r/TLLYQJW) to help us shape the future of Catch.
+Please take a few moments to fill it out (there's only ten questions).
