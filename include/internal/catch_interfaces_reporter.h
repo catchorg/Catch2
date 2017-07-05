@@ -20,6 +20,7 @@
 #include <string>
 #include <ostream>
 #include <map>
+#include <set>
 #include <memory>
 
 namespace Catch
@@ -211,6 +212,8 @@ namespace Catch
         // static std::string getDescription();
 
         virtual ReporterPreferences getPreferences() const = 0;
+
+        virtual std::set<Verbosity> const& getSupportedVerbosities() const = 0;
 
         virtual void noMatchingTestCases( std::string const& spec ) = 0;
 

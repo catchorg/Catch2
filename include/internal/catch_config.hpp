@@ -86,8 +86,6 @@ namespace Catch {
         bool listTags() const           { return m_data.listTags; }
         bool listReporters() const      { return m_data.listReporters; }
 
-        Verbosity verbosity() const     { return m_data.verbosity; }
-
         std::string getProcessName() const { return m_data.processName; }
 
         std::vector<std::string> const& getReporterNames() const { return m_data.reporterNames; }
@@ -110,6 +108,7 @@ namespace Catch {
         virtual bool shouldDebugBreak() const override              { return m_data.shouldDebugBreak; }
         virtual int abortAfter() const override                     { return m_data.abortAfter; }
         virtual bool showInvisibles() const override                { return m_data.showInvisibles; }
+        virtual Verbosity verbosity() const override                { return m_data.verbosity; }
 
     private:
 

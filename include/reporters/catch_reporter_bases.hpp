@@ -49,10 +49,16 @@ namespace Catch {
             stream( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
+            CATCH_ENFORCE( getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
 
         virtual ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
+        }
+
+        virtual std::set<Verbosity> const& getSupportedVerbosities() const override {
+            static std::set<Verbosity> supported{ Verbosity::Normal };
+            return supported;
         }
 
         virtual ~StreamingReporterBase() override;
@@ -155,11 +161,17 @@ namespace Catch {
             stream( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
+            CATCH_ENFORCE( getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
         ~CumulativeReporterBase();
 
         virtual ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
+        }
+
+        virtual std::set<Verbosity> const& getSupportedVerbosities() const override {
+            static std::set<Verbosity> supported{ Verbosity::Normal };
+            return supported;
         }
 
         virtual void testRunStarting( TestRunInfo const& ) override {}

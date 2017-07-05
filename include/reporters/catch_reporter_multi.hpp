@@ -15,9 +15,23 @@ namespace Catch {
 class MultipleReporters : public IStreamingReporter {
     typedef std::vector<IStreamingReporterPtr> Reporters;
     Reporters m_reporters;
+    std::set<Verbosity> m_verbosities;
 
 public:
     void add( IStreamingReporterPtr&& reporter ) {
+        if( m_reporters.empty() ) {
+            m_verbosities = reporter->getSupportedVerbosities();
+        }
+        else {
+            for( auto it = m_verbosities.cbegin(); it != m_verbosities.cend(); ) {
+                if( reporter->getSupportedVerbosities().count( *it ) == 0 ) {
+                    it = m_verbosities.erase(it);
+                }
+                else {
+                    ++it;
+                }
+            }
+        }
         m_reporters.push_back( std::move( reporter ) );
     }
 
@@ -25,6 +39,10 @@ public: // IStreamingReporter
 
     virtual ReporterPreferences getPreferences() const override {
         return m_reporters[0]->getPreferences();
+    }
+
+    virtual std::set<Verbosity> const& getSupportedVerbosities() const override {
+        return m_verbosities;
     }
 
     virtual void noMatchingTestCases( std::string const& spec ) override {
