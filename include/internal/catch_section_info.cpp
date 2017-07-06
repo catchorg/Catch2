@@ -5,10 +5,10 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED
 
 #include "catch_section_info.h"
+
+#include <vector>
 
 namespace Catch {
 
@@ -75,7 +75,7 @@ namespace Catch {
         RunningSection* findOrAddSubSection( std::string const& name, bool& changed ) {
             for( auto subSection : m_subSections )
                 if( subSection->getName() == name )
-                    return *it;
+                    return subSection;
             RunningSection* subSection = new RunningSection( this, name );
             m_subSections.push_back( subSection );
             m_state = Branch;
@@ -102,5 +102,3 @@ namespace Catch {
         SubSections m_subSections;
     };
 }
-
-#endif // TWOBLUECUBES_CATCH_SECTION_INFO_HPP_INCLUDED

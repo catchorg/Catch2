@@ -9,6 +9,7 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
+#include "catch_common.h"
 #include "catch_stream.h"
 #include "catch_debugger.h"
 

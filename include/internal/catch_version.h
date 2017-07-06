@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
 #define TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
 
+#include <iosfwd>
+
 namespace Catch {
 
     // Versioning information
@@ -32,7 +34,7 @@ namespace Catch {
         void operator=( Version const& );
     };
 
-    inline Version libraryVersion();
+    Version libraryVersion();
 }
 
 #endif // TWOBLUECUBES_CATCH_VERSION_H_INCLUDED

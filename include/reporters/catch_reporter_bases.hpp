@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
 #include "../internal/catch_interfaces_reporter.h"
-#include "../internal/catch_errno_guard.hpp"
+#include "../internal/catch_errno_guard.h"
 
 #include <cstring>
 #include <cfloat>

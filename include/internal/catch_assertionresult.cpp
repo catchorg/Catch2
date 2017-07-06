@@ -5,8 +5,6 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_ASSERTIONRESULT_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_ASSERTIONRESULT_HPP_INCLUDED
 
 #include "catch_assertionresult.h"
 
@@ -54,12 +52,6 @@ namespace Catch {
         return !m_resultData.message.empty();
     }
 
-    std::string capturedExpressionWithSecondArgument( char const * capturedExpression, char const * secondArg ) {
-        return (secondArg[0] == 0 || secondArg[0] == '"' && secondArg[1] == '"')
-            ? capturedExpression
-            : std::string(capturedExpression) + ", " + secondArg;
-    }
-
     std::string AssertionResult::getExpression() const {
         if (isFalseTest(m_info.resultDisposition))
             return '!' + std::string(m_info.capturedExpression);
@@ -102,5 +94,3 @@ namespace Catch {
     }
 
 } // end namespace Catch
-
-#endif // TWOBLUECUBES_CATCH_ASSERTIONRESULT_HPP_INCLUDED

@@ -5,11 +5,13 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
 
 #include "catch_console_colour.hpp"
-#include "catch_errno_guard.hpp"
+#include "catch_errno_guard.h"
+#include "catch_interfaces_config.h"
+#include "catch_stream.h"
+#include "catch_context.h"
+#include "catch_platform.h"
 
 namespace Catch {
     namespace {
@@ -186,5 +188,3 @@ namespace Catch {
     }
 
 } // end namespace Catch
-
-#endif // TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED

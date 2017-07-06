@@ -5,10 +5,9 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED
 
 #include "catch_version.h"
+#include <ostream>
 
 namespace Catch {
 
@@ -37,11 +36,9 @@ namespace Catch {
         return os;
     }
 
-    inline Version libraryVersion() {
+    Version libraryVersion() {
         static Version version( 2, 0, 0, "develop", 1 );
         return version;
     }
 
 }
-
-#endif // TWOBLUECUBES_CATCH_VERSION_HPP_INCLUDED

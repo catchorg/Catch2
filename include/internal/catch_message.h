@@ -25,12 +25,8 @@ namespace Catch {
         std::string message;
         unsigned int sequence;
 
-        bool operator == ( MessageInfo const& other ) const {
-            return sequence == other.sequence;
-        }
-        bool operator < ( MessageInfo const& other ) const {
-            return sequence < other.sequence;
-        }
+        bool operator == ( MessageInfo const& other ) const;
+        bool operator < ( MessageInfo const& other ) const;
     private:
         static unsigned int globalCount;
     };
@@ -38,9 +34,7 @@ namespace Catch {
     struct MessageBuilder {
         MessageBuilder( std::string const& macroName,
                         SourceLineInfo const& lineInfo,
-                        ResultWas::OfType type )
-        : m_info( macroName, lineInfo, type )
-        {}
+                        ResultWas::OfType type );
 
         template<typename T>
         MessageBuilder& operator << ( T const& value ) {
