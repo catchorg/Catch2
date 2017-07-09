@@ -17,33 +17,34 @@
 #endif
 
 #include "../catch_session.hpp"
-#include "catch_registry_hub.hpp"
-#include "catch_notimplemented_exception.hpp"
-#include "catch_context_impl.hpp"
-#include "catch_console_colour_impl.hpp"
-#include "catch_assertionresult.hpp"
-#include "catch_test_case_info.hpp"
+#include "catch_stream.hpp"
 #include "catch_test_spec.hpp"
-#include "catch_version.hpp"
-#include "catch_message.hpp"
-#include "catch_timer.hpp"
-#include "catch_common.hpp"
-#include "catch_section.hpp"
-#include "catch_debugger.hpp"
-#include "catch_tostring.hpp"
-#include "catch_result_builder.hpp"
-#include "catch_tag_alias_registry.hpp"
 #include "catch_test_case_tracker.hpp"
-#include "catch_matchers_string.hpp"
-#include "catch_startup_exception_registry.hpp"
 
 // These files are not included in the full (not single include) project
 // as they are compiled as proper cpp files
 #ifndef CATCH_CONFIG_FULL_PROJECT
+#   include "catch_assertionresult.cpp"
+#   include "catch_common.cpp"
+#   include "catch_console_colour.cpp"
+#   include "catch_context.cpp"
+#   include "catch_debugger.cpp"
+#   include "catch_matchers_string.cpp"
+#   include "catch_message.cpp"
+#   include "catch_notimplemented_exception.cpp"
+#   include "catch_registry_hub.cpp"
+#   include "catch_result_builder.hpp"
+#   include "catch_section.cpp"
+#   include "catch_startup_exception_registry.cpp"
 #   include "catch_stringref.cpp"
 #   include "catch_string.cpp"
 #   include "catch_stringbuilder.cpp"
 #   include "catch_stringdata.cpp"
+#   include "catch_tag_alias_registry.cpp"
+#   include "catch_test_case_info.cpp"
+#   include "catch_timer.cpp"
+#   include "catch_tostring.cpp"
+#   include "catch_version.cpp"
 #endif
 
 #include "../reporters/catch_reporter_multi.hpp"
@@ -90,8 +91,6 @@ namespace Catch {
     IConfig::~IConfig() {}
     XmlReporter::~XmlReporter() {}
     JunitReporter::~JunitReporter() {}
-    TestRegistry::~TestRegistry() {}
-    FreeFunctionTestCase::~FreeFunctionTestCase() {}
     WildcardPattern::~WildcardPattern() {}
     TestSpec::Pattern::~Pattern() {}
     TestSpec::NamePattern::~NamePattern() {}

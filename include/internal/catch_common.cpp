@@ -5,10 +5,10 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_COMMON_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_COMMON_HPP_INCLUDED
 
 #include "catch_common.h"
+#include "catch_context.h"
+#include "catch_interfaces_config.h"
 
 #include <cstring>
 #include <cctype>
@@ -107,6 +107,3 @@ namespace Catch {
         return os;
     }
 }
-
-#endif // TWOBLUECUBES_CATCH_COMMON_HPP_INCLUDED
-

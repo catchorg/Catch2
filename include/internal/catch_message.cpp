@@ -5,10 +5,9 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_MESSAGE_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_MESSAGE_HPP_INCLUDED
 
 #include "catch_message.h"
+#include "catch_interfaces_capture.h"
 
 namespace Catch {
 
@@ -21,11 +20,27 @@ namespace Catch {
         sequence( ++globalCount )
     {}
 
+    bool MessageInfo::operator==( MessageInfo const& other ) const {
+        return sequence == other.sequence;
+    }
+
+    bool MessageInfo::operator<( MessageInfo const& other ) const {
+        return sequence < other.sequence;
+    }
+
     // This may need protecting if threading support is added
     unsigned int MessageInfo::globalCount = 0;
 
 
     ////////////////////////////////////////////////////////////////////////////
+
+    Catch::MessageBuilder::MessageBuilder( std::string const& macroName,
+                                           SourceLineInfo const& lineInfo,
+                                           ResultWas::OfType type )
+        :m_info(macroName, lineInfo, type) {}
+
+    ////////////////////////////////////////////////////////////////////////////
+
 
     ScopedMessage::ScopedMessage( MessageBuilder const& builder )
     : m_info( builder.m_info )
@@ -45,5 +60,3 @@ namespace Catch {
 
 
 } // end namespace Catch
-
-#endif // TWOBLUECUBES_CATCH_MESSAGE_HPP_INCLUDED

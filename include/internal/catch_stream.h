@@ -9,7 +9,6 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 
-#include "catch_compiler_capabilities.h"
 #include "catch_streambuf.h"
 
 #include <streambuf>

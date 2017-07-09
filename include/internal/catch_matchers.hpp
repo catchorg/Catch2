@@ -10,6 +10,8 @@
 
 #include "catch_common.h"
 
+#include <vector>
+
 namespace Catch {
 namespace Matchers {
     namespace Impl {

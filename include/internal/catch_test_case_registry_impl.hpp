@@ -12,6 +12,7 @@
 #include "catch_test_case_info.h"
 #include "catch_test_spec.hpp"
 #include "catch_context.h"
+#include "catch_interfaces_config.h"
 
 #include <vector>
 #include <set>
@@ -119,6 +120,9 @@ namespace Catch {
         std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
 
+    TestRegistry::~TestRegistry() {}
+
+
     ///////////////////////////////////////////////////////////////////////////
 
     class FreeFunctionTestCase : public ITestCase {
@@ -135,6 +139,9 @@ namespace Catch {
 
         TestFunction m_fun;
     };
+
+    FreeFunctionTestCase::~FreeFunctionTestCase() {}
+
 
     inline std::string extractClassName( std::string const& classOrQualifiedMethodName ) {
         std::string className = classOrQualifiedMethodName;

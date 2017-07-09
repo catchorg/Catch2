@@ -20,7 +20,7 @@
 #include "catch_test_case_tracker.hpp"
 #include "catch_timer.h"
 #include "catch_result_builder.h"
-#include "catch_fatal_condition.hpp"
+#include "catch_fatal_condition.h"
 
 #include <set>
 #include <string>

@@ -10,6 +10,7 @@
 
 #include "catch_interfaces_exception.h"
 #include "catch_tostring.h"
+#include "catch_result_builder.h"
 
 #ifdef __OBJC__
 #import "Foundation/Foundation.h"

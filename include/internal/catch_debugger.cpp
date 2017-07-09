@@ -6,11 +6,10 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
-#ifndef TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 
 #include "catch_debugger.h"
-#include "catch_errno_guard.hpp"
+#include "catch_errno_guard.h"
+#include "catch_stream.h"
 
 #ifdef CATCH_PLATFORM_MAC
 
@@ -127,5 +126,3 @@
         }
     }
 #endif // Platform
-
-#endif // TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED

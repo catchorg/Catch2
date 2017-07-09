@@ -10,6 +10,7 @@
 
 #include <string>
 #include "catch_result_type.h"
+#include "catch_common.h"
 
 namespace Catch {
 
