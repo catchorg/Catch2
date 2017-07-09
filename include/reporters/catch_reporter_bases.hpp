@@ -41,7 +41,7 @@ namespace Catch {
         }
     }
 
-
+    template<typename DerivedT>
     struct StreamingReporterBase : IStreamingReporter {
 
         StreamingReporterBase( ReporterConfig const& _config )
@@ -49,16 +49,15 @@ namespace Catch {
             stream( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
-            CATCH_ENFORCE( getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
+            CATCH_ENFORCE( DerivedT::getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
 
         virtual ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
         }
 
-        virtual std::set<Verbosity> const& getSupportedVerbosities() const override {
-            static std::set<Verbosity> supported{ Verbosity::Normal };
-            return supported;
+        static std::set<Verbosity> getSupportedVerbosities() {
+            return { Verbosity::Normal };
         }
 
         virtual ~StreamingReporterBase() override;
@@ -110,6 +109,7 @@ namespace Catch {
         ReporterPreferences m_reporterPrefs;
     };
 
+    template<typename DerivedT>
     struct CumulativeReporterBase : IStreamingReporter {
         template<typename T, typename ChildNodeT>
         struct Node {
@@ -161,7 +161,7 @@ namespace Catch {
             stream( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
-            CATCH_ENFORCE( getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
+            CATCH_ENFORCE( DerivedT::getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
         ~CumulativeReporterBase();
 
@@ -169,9 +169,8 @@ namespace Catch {
             return m_reporterPrefs;
         }
 
-        virtual std::set<Verbosity> const& getSupportedVerbosities() const override {
-            static std::set<Verbosity> supported{ Verbosity::Normal };
-            return supported;
+        static std::set<Verbosity> getSupportedVerbosities() {
+            return { Verbosity::Normal };
         }
 
         virtual void testRunStarting( TestRunInfo const& ) override {}
@@ -189,7 +188,7 @@ namespace Catch {
             }
             else {
                 SectionNode& parentNode = *m_sectionStack.back();
-                SectionNode::ChildSections::const_iterator it =
+                typename SectionNode::ChildSections::const_iterator it =
                     std::find_if(   parentNode.childSections.begin(),
                                     parentNode.childSections.end(),
                                     BySectionInfo( sectionInfo ) );
@@ -284,7 +283,7 @@ namespace Catch {
     }
 
 
-    struct TestEventListenerBase : StreamingReporterBase {
+    struct TestEventListenerBase : StreamingReporterBase<TestEventListenerBase> {
         TestEventListenerBase( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
         {}

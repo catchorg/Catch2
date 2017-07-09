@@ -208,12 +208,11 @@ namespace Catch
     struct IStreamingReporter {
         virtual ~IStreamingReporter();
 
-        // Implementing class must also provide the following static method:
+        // Implementing class must also provide the following static methods:
         // static std::string getDescription();
+        // static std::set<Verbosity> getSupportedVerbosities()
 
         virtual ReporterPreferences getPreferences() const = 0;
-
-        virtual std::set<Verbosity> const& getSupportedVerbosities() const = 0;
 
         virtual void noMatchingTestCases( std::string const& spec ) = 0;
 

@@ -77,10 +77,12 @@ namespace Catch {
     TestCaseStats::~TestCaseStats() {}
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
-    CumulativeReporterBase::SectionNode::~SectionNode() {}
-    CumulativeReporterBase::~CumulativeReporterBase() {}
-
-    StreamingReporterBase::~StreamingReporterBase() {}
+    template<typename DerivedT>
+    CumulativeReporterBase<DerivedT>::SectionNode::~SectionNode() {}
+    template<typename DerivedT>
+    CumulativeReporterBase<DerivedT>::~CumulativeReporterBase() {}
+    template<typename DerivedT>
+    StreamingReporterBase<DerivedT>::~StreamingReporterBase() {}
     ConsoleReporter::~ConsoleReporter() {}
     CompactReporter::~CompactReporter() {}
     IRunner::~IRunner() {}

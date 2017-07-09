@@ -15,7 +15,7 @@
 
 namespace Catch {
 
-    struct CompactReporter : StreamingReporterBase {
+    struct CompactReporter : StreamingReporterBase<CompactReporter> {
 
         using StreamingReporterBase::StreamingReporterBase;
 

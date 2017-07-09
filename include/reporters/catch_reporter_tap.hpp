@@ -19,7 +19,7 @@
 
 namespace Catch {
 
-    struct TAPReporter : StreamingReporterBase {
+    struct TAPReporter : StreamingReporterBase<TAPReporter> {
 
         using StreamingReporterBase::StreamingReporterBase;
 
