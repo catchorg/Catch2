@@ -7,6 +7,7 @@ import sys
 import re
 import datetime
 import string
+from glob import glob
 
 from scriptCommon import catchPath
 from releaseCommon import Version
@@ -21,6 +22,7 @@ ifImplParser = re.compile( r'\s*#ifdef CATCH_CONFIG_RUNNER' )
 commentParser1 = re.compile( r'^\s*/\*')
 commentParser2 = re.compile( r'^ \*')
 blankParser = re.compile( r'^\s*$')
+
 seenHeaders = set([])
 rootPath = os.path.join( catchPath, 'include/' )
 outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
@@ -49,13 +51,25 @@ def write( line ):
     if includeImpl or implIfDefs == -1:
         out.write( line )
 
+def insertCpps():
+    dirs = [os.path.join( rootPath, s) for s in ['', 'internal', 'reporters']]
+    cppFiles = []
+    for dir in dirs:
+        cppFiles += glob(os.path.join(dir, '*.cpp'))
+    for fname in cppFiles:
+        dir, name = fname.rsplit(os.path.sep, 1)
+        dir += os.path.sep
+        parseFile(dir, name)
+
 def parseFile( path, filename ):
     global ifdefs
     global implIfDefs
 
-    f = open( path + filename, 'r' )
+    f = open( os.path.join(path, filename), 'r' )
     blanks = 0
     for line in f:
+        if '// ~*~* CATCH_CPP_STITCH_PLACE *~*~' in line:
+            insertCpps()
         if ifParser.match( line ):
             ifdefs = ifdefs + 1
         elif endIfParser.match( line ):

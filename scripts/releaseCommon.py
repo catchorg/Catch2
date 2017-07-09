@@ -9,7 +9,7 @@ from scriptCommon import catchPath
 
 versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'include/' )
-versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
+versionPath = os.path.join( rootPath, "internal/catch_version.cpp" )
 readmePath = os.path.join( catchPath, "README.md" )
 
 class Version:
