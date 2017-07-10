@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
 #include "../internal/catch_interfaces_reporter.h"
-#include "../internal/catch_errno_guard.h"
 
 #include <cstring>
 #include <cfloat>
@@ -19,79 +18,31 @@
 
 namespace Catch {
 
-    namespace {
-        // Because formatting using c++ streams is stateful, drop down to C is required
-        // Alternatively we could use stringstream, but its performance is... not good.
-        std::string getFormattedDuration( double duration ) {
-            // Max exponent + 1 is required to represent the whole part
-            // + 1 for decimal point
-            // + 3 for the 3 decimal places
-            // + 1 for null terminator
-            const size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
-            char buffer[maxDoubleSize];
-
-            // Save previous errno, to prevent sprintf from overwriting it
-            ErrnoGuard guard;
-#ifdef _MSC_VER
-            sprintf_s(buffer, "%.3f", duration);
-#else
-            sprintf(buffer, "%.3f", duration);
-#endif
-            return std::string(buffer);
-        }
-    }
-
+    // Returns double formatted as %.3f (format expected on output)
+    std::string getFormattedDuration( double duration );
 
     struct StreamingReporterBase : IStreamingReporter {
 
-        StreamingReporterBase( ReporterConfig const& _config )
-        :   m_config( _config.fullConfig() ),
-            stream( _config.stream() )
-        {
-            m_reporterPrefs.shouldRedirectStdOut = false;
-        }
+        StreamingReporterBase(ReporterConfig const& _config);
 
-        virtual ReporterPreferences getPreferences() const override {
-            return m_reporterPrefs;
-        }
+        virtual ReporterPreferences getPreferences() const override;
 
         virtual ~StreamingReporterBase() override;
 
-        virtual void noMatchingTestCases( std::string const& ) override {}
+        virtual void noMatchingTestCases(std::string const&) override;
 
-        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) override {
-            currentTestRunInfo = _testRunInfo;
-        }
-        virtual void testGroupStarting( GroupInfo const& _groupInfo ) override {
-            currentGroupInfo = _groupInfo;
-        }
+        virtual void testRunStarting(TestRunInfo const& _testRunInfo) override;
+        virtual void testGroupStarting(GroupInfo const& _groupInfo) override;
 
-        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) override {
-            currentTestCaseInfo = _testInfo;
-        }
-        virtual void sectionStarting( SectionInfo const& _sectionInfo ) override {
-            m_sectionStack.push_back( _sectionInfo );
-        }
+        virtual void testCaseStarting(TestCaseInfo const& _testInfo) override;
+        virtual void sectionStarting(SectionInfo const& _sectionInfo) override;
 
-        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) override {
-            m_sectionStack.pop_back();
-        }
-        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) override {
-            currentTestCaseInfo.reset();
-        }
-        virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) override {
-            currentGroupInfo.reset();
-        }
-        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) override {
-            currentTestCaseInfo.reset();
-            currentGroupInfo.reset();
-            currentTestRunInfo.reset();
-        }
+        virtual void sectionEnded(SectionStats const& /* _sectionStats */) override;
+        virtual void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override;
+        virtual void testGroupEnded(TestGroupStats const& /* _testGroupStats */) override;
+        virtual void testRunEnded(TestRunStats const& /* _testRunStats */) override;
 
-        virtual void skipTest( TestCaseInfo const& ) override {
-            // Don't do anything with this by default.
-            // It can optionally be overridden in the derived class.
-        }
+        virtual void skipTest(TestCaseInfo const&) override;
 
         IConfigPtr m_config;
         std::ostream& stream;
@@ -115,15 +66,11 @@ namespace Catch {
             ChildNodes children;
         };
         struct SectionNode {
-            explicit SectionNode( SectionStats const& _stats ) : stats( _stats ) {}
+            explicit SectionNode(SectionStats const& _stats);
             virtual ~SectionNode();
 
-            bool operator == ( SectionNode const& other ) const {
-                return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
-            }
-            bool operator == ( std::shared_ptr<SectionNode> const& other ) const {
-                return operator==( *other );
-            }
+            bool operator == (SectionNode const& other) const;
+            bool operator == (std::shared_ptr<SectionNode> const& other) const;
 
             SectionStats stats;
             using ChildSections = std::vector<std::shared_ptr<SectionNode>>;
@@ -135,13 +82,12 @@ namespace Catch {
         };
 
         struct BySectionInfo {
-            BySectionInfo( SectionInfo const& other ) : m_other( other ) {}
-            BySectionInfo( BySectionInfo const& other ) : m_other( other.m_other ) {}
-            bool operator() ( std::shared_ptr<SectionNode> const& node ) const {
-                return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
-            }
+            BySectionInfo(SectionInfo const& other);
+            BySectionInfo(BySectionInfo const& other);
+            bool operator() (std::shared_ptr<SectionNode> const& node) const;
+            void operator=(BySectionInfo const&) = delete;
+
         private:
-            void operator=( BySectionInfo const& );
             SectionInfo const& m_other;
         };
 
@@ -150,100 +96,30 @@ namespace Catch {
         using TestGroupNode = Node<TestGroupStats, TestCaseNode>;
         using TestRunNode = Node<TestRunStats, TestGroupNode>;
 
-        CumulativeReporterBase( ReporterConfig const& _config )
-        :   m_config( _config.fullConfig() ),
-            stream( _config.stream() )
-        {
-            m_reporterPrefs.shouldRedirectStdOut = false;
-        }
+        CumulativeReporterBase(ReporterConfig const& _config);
         ~CumulativeReporterBase();
 
-        virtual ReporterPreferences getPreferences() const override {
-            return m_reporterPrefs;
-        }
+        virtual ReporterPreferences getPreferences() const override;
 
-        virtual void testRunStarting( TestRunInfo const& ) override {}
-        virtual void testGroupStarting( GroupInfo const& ) override {}
+        virtual void testRunStarting(TestRunInfo const&) override;
+        virtual void testGroupStarting(GroupInfo const&) override;
 
-        virtual void testCaseStarting( TestCaseInfo const& ) override {}
+        virtual void testCaseStarting(TestCaseInfo const&) override;
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
-            SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
-            std::shared_ptr<SectionNode> node;
-            if( m_sectionStack.empty() ) {
-                if( !m_rootSection )
-                    m_rootSection = std::make_shared<SectionNode>( incompleteStats );
-                node = m_rootSection;
-            }
-            else {
-                SectionNode& parentNode = *m_sectionStack.back();
-                SectionNode::ChildSections::const_iterator it =
-                    std::find_if(   parentNode.childSections.begin(),
-                                    parentNode.childSections.end(),
-                                    BySectionInfo( sectionInfo ) );
-                if( it == parentNode.childSections.end() ) {
-                    node = std::make_shared<SectionNode>( incompleteStats );
-                    parentNode.childSections.push_back( node );
-                }
-                else
-                    node = *it;
-            }
-            m_sectionStack.push_back( node );
-            m_deepestSection = node;
-        }
+        virtual void sectionStarting(SectionInfo const& sectionInfo) override;
 
-        virtual void assertionStarting( AssertionInfo const& ) override {}
+        virtual void assertionStarting(AssertionInfo const&) override;
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
-            assert( !m_sectionStack.empty() );
-            SectionNode& sectionNode = *m_sectionStack.back();
-            sectionNode.assertions.push_back( assertionStats );
-            // AssertionResult holds a pointer to a temporary DecomposedExpression,
-            // which getExpandedExpression() calls to build the expression string.
-            // Our section stack copy of the assertionResult will likely outlive the
-            // temporary, so it must be expanded or discarded now to avoid calling
-            // a destroyed object later.
-            prepareExpandedExpression( sectionNode.assertions.back().assertionResult );
-            return true;
-        }
-        virtual void sectionEnded( SectionStats const& sectionStats ) override {
-            assert( !m_sectionStack.empty() );
-            SectionNode& node = *m_sectionStack.back();
-            node.stats = sectionStats;
-            m_sectionStack.pop_back();
-        }
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
-            auto node = std::make_shared<TestCaseNode>( testCaseStats );
-            assert( m_sectionStack.size() == 0 );
-            node->children.push_back( m_rootSection );
-            m_testCases.push_back( node );
-            m_rootSection.reset();
-
-            assert( m_deepestSection );
-            m_deepestSection->stdOut = testCaseStats.stdOut;
-            m_deepestSection->stdErr = testCaseStats.stdErr;
-        }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
-            auto node = std::make_shared<TestGroupNode>( testGroupStats );
-            node->children.swap( m_testCases );
-            m_testGroups.push_back( node );
-        }
-        virtual void testRunEnded( TestRunStats const& testRunStats ) override {
-            auto node = std::make_shared<TestRunNode>( testRunStats );
-            node->children.swap( m_testGroups );
-            m_testRuns.push_back( node );
-            testRunEndedCumulative();
-        }
+        virtual bool assertionEnded(AssertionStats const& assertionStats) override;
+        virtual void sectionEnded(SectionStats const& sectionStats) override;
+        virtual void testCaseEnded(TestCaseStats const& testCaseStats) override;
+        virtual void testGroupEnded(TestGroupStats const& testGroupStats) override;
+        virtual void testRunEnded(TestRunStats const& testRunStats) override;
         virtual void testRunEndedCumulative() = 0;
 
-        virtual void skipTest( TestCaseInfo const& ) override {}
+        virtual void skipTest(TestCaseInfo const&) override;
 
-        virtual void prepareExpandedExpression( AssertionResult& result ) const {
-            if( result.isOk() )
-                result.discardDecomposedExpression();
-            else
-                result.expandDecomposedExpression();
-        }
+        virtual void prepareExpandedExpression(AssertionResult& result) const;
 
         IConfigPtr m_config;
         std::ostream& stream;
@@ -258,7 +134,6 @@ namespace Catch {
         std::shared_ptr<SectionNode> m_deepestSection;
         std::vector<std::shared_ptr<SectionNode>> m_sectionStack;
         ReporterPreferences m_reporterPrefs;
-
     };
 
     template<char C>
@@ -273,14 +148,10 @@ namespace Catch {
 
 
     struct TestEventListenerBase : StreamingReporterBase {
-        TestEventListenerBase( ReporterConfig const& _config )
-        :   StreamingReporterBase( _config )
-        {}
+        TestEventListenerBase(ReporterConfig const& _config);
 
-        virtual void assertionStarting( AssertionInfo const& ) override {}
-        virtual bool assertionEnded( AssertionStats const& ) override {
-            return false;
-        }
+        virtual void assertionStarting(AssertionInfo const&) override;
+        virtual bool assertionEnded(AssertionStats const&) override;
     };
 
 } // end namespace Catch

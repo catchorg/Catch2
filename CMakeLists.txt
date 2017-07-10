@@ -224,15 +224,19 @@ CheckFileList(INTERNAL_FILES ${HEADER_DIR}/internal)
 set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_automake.hpp
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_compact.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_console.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_junit.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_multi.hpp
         ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )
-CheckFileList(REPORTER_HEADERS ${HEADER_DIR}/reporters)
+set(REPORTER_SOURCES
+        ${HEADER_DIR}/reporters/catch_reporter_bases.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_compact.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_console.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_junit.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_multi.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_xml.cpp
+        )
+set(REPORTER_FILES ${REPORTER_HEADERS} ${REPORTER_SOURCES})
+CheckFileList(REPORTER_FILES ${HEADER_DIR}/reporters)
 
 # Specify the headers, too, so CLion recognises them as project files
 set(HEADERS
@@ -262,8 +266,8 @@ add_definitions( -DCATCH_CONFIG_FULL_PROJECT )
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
 if (NOT NO_SELFTEST)
-    add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
-    add_executable(Benchmark ${BENCH_SOURCES} ${IMPL_SOURCES} ${HEADERS})
+    add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
+    add_executable(Benchmark ${BENCH_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${HEADERS})
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )

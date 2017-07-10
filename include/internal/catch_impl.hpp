@@ -16,6 +16,12 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
+// Temporary hack to fix separately provided reporters
+#include "../reporters/catch_reporter_bases.hpp"
+#include "catch_reporter_registrars.hpp"
+//
+
+
 #include "../catch_session.hpp"
 #include "catch_stream.hpp"
 #include "catch_test_spec.hpp"
@@ -23,13 +29,6 @@
 
 // Cpp files will be included in the single-header file here
 // ~*~* CATCH_CPP_STITCH_PLACE *~*~
-
-
-#include "../reporters/catch_reporter_multi.hpp"
-#include "../reporters/catch_reporter_xml.hpp"
-#include "../reporters/catch_reporter_junit.hpp"
-#include "../reporters/catch_reporter_console.hpp"
-#include "../reporters/catch_reporter_compact.hpp"
 
 namespace Catch {
     // These are all here to avoid warnings about not having any out of line
@@ -56,17 +55,10 @@ namespace Catch {
     TestCaseStats::~TestCaseStats() {}
     TestGroupStats::~TestGroupStats() {}
     TestRunStats::~TestRunStats() {}
-    CumulativeReporterBase::SectionNode::~SectionNode() {}
-    CumulativeReporterBase::~CumulativeReporterBase() {}
 
-    StreamingReporterBase::~StreamingReporterBase() {}
-    ConsoleReporter::~ConsoleReporter() {}
-    CompactReporter::~CompactReporter() {}
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
-    XmlReporter::~XmlReporter() {}
-    JunitReporter::~JunitReporter() {}
     WildcardPattern::~WildcardPattern() {}
     TestSpec::Pattern::~Pattern() {}
     TestSpec::NamePattern::~NamePattern() {}

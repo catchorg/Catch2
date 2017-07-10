@@ -5,14 +5,13 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED
 
 #include "catch_reporter_bases.hpp"
 
 #include "../internal/catch_tostring.h"
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_xmlwriter.hpp"
+#include "../internal/catch_timer.h"
 
 #include <assert.h>
 
@@ -247,8 +246,7 @@ namespace Catch {
         bool m_okToFail = false;
     };
 
+    JunitReporter::~JunitReporter() {}
     INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
 } // end namespace Catch
-
-#endif // TWOBLUECUBES_CATCH_REPORTER_JUNIT_HPP_INCLUDED

@@ -5,22 +5,25 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
 
 #include "catch_reporter_bases.hpp"
 
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
+#include "../internal/catch_version.h"
+#include "../external/tbc_text_format.h"
 
 #include <cfloat>
 #include <cstdio>
 
 namespace Catch {
 
+    using Tbc::Text;
+    using Tbc::TextAttributes;
 
     struct ConsoleReporter : StreamingReporterBase {
         using StreamingReporterBase::StreamingReporterBase;
+
 
         virtual ~ConsoleReporter() override;
         static std::string getDescription() {
@@ -437,6 +440,6 @@ namespace Catch {
 
     INTERNAL_CATCH_REGISTER_REPORTER( "console", ConsoleReporter )
 
-} // end namespace Catch
+    ConsoleReporter::~ConsoleReporter() {}
 
-#endif // TWOBLUECUBES_CATCH_REPORTER_CONSOLE_HPP_INCLUDED
+} // end namespace Catch
