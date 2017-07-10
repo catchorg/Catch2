@@ -5,22 +5,24 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#ifndef TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED
 
-#include "catch_commandline.hpp"
+#include "catch_list.h"
+
+#include "catch_interfaces_registry_hub.h"
+#include "catch_interfaces_reporter.h"
+#include "catch_interfaces_testcase.h"
+
 #include "catch_text.h"
 #include "catch_console_colour.hpp"
-#include "catch_interfaces_reporter.h"
 #include "catch_test_spec_parser.hpp"
 
 #include <limits>
 #include <algorithm>
+#include <iomanip>
 
 namespace Catch {
 
-    inline std::size_t listTests( Config const& config ) {
-
+    std::size_t listTests( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
             Catch::cout() << "Matching test cases:\n";
@@ -62,7 +64,7 @@ namespace Catch {
         return matchedTests;
     }
 
-    inline std::size_t listTestsNamesOnly( Config const& config ) {
+    std::size_t listTestsNamesOnly( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( !config.testSpec().hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
@@ -81,22 +83,19 @@ namespace Catch {
         return matchedTests;
     }
 
-    struct TagInfo {
-        void add( std::string const& spelling ) {
-            ++count;
-            spellings.insert( spelling );
-        }
-        std::string all() const {
-            std::string out;
-            for( auto const& spelling : spellings )
-                out += "[" + spelling + "]";
-            return out;
-        }
-        std::set<std::string> spellings;
-        std::size_t count = 0;
-    };
+    void TagInfo::add( std::string const& spelling ) {
+        ++count;
+        spellings.insert( spelling );
+    }
 
-    inline std::size_t listTags( Config const& config ) {
+    std::string TagInfo::all() const {
+        std::string out;
+        for( auto const& spelling : spellings )
+            out += "[" + spelling + "]";
+        return out;
+    }
+
+    std::size_t listTags( Config const& config ) {
         TestSpec testSpec = config.testSpec();
         if( config.testSpec().hasFilters() )
             Catch::cout() << "Tags for matching test cases:\n";
@@ -131,7 +130,7 @@ namespace Catch {
         return tagCounts.size();
     }
 
-    inline std::size_t listReporters( Config const& /*config*/ ) {
+    std::size_t listReporters( Config const& /*config*/ ) {
         Catch::cout() << "Available reporters:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         std::size_t maxNameLen = 0;
@@ -153,7 +152,7 @@ namespace Catch {
         return factories.size();
     }
 
-    inline Option<std::size_t> list( Config const& config ) {
+    Option<std::size_t> list( Config const& config ) {
         Option<std::size_t> listedCount;
         if( config.listTests() )
             listedCount = listedCount.valueOr(0) + listTests( config );
@@ -167,5 +166,3 @@ namespace Catch {
     }
 
 } // end namespace Catch
-
-#endif // TWOBLUECUBES_CATCH_LIST_HPP_INCLUDED

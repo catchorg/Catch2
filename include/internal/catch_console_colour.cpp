@@ -187,4 +187,8 @@ namespace Catch {
         impl->use( _colourCode );
     }
 
+    std::ostream& operator << ( std::ostream& os, Colour const& ) {
+        return os;
+    }
+
 } // end namespace Catch

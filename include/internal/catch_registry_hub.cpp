@@ -10,7 +10,7 @@
 
 #include "catch_test_case_registry_impl.hpp"
 #include "catch_reporter_registry.hpp"
-#include "catch_exception_translator_registry.hpp"
+#include "catch_exception_translator_registry.h"
 #include "catch_tag_alias_registry.h"
 #include "catch_startup_exception_registry.h"
 

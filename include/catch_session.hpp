@@ -9,7 +9,8 @@
 #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
 
 #include "internal/catch_commandline.hpp"
-#include "internal/catch_list.hpp"
+#include "internal/catch_console_colour.hpp"
+#include "internal/catch_list.h"
 #include "internal/catch_run_context.hpp"
 #include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"

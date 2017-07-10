@@ -60,7 +60,7 @@ namespace Catch {
         bool m_moved;
     };
 
-    inline std::ostream& operator << ( std::ostream& os, Colour const& ) { return os; }
+    std::ostream& operator << ( std::ostream& os, Colour const& );
 
 } // end namespace Catch
 

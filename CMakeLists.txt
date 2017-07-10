@@ -135,7 +135,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_default_main.hpp
         ${HEADER_DIR}/internal/catch_errno_guard.h
         ${HEADER_DIR}/internal/catch_evaluate.hpp
-        ${HEADER_DIR}/internal/catch_exception_translator_registry.hpp
+        ${HEADER_DIR}/internal/catch_exception_translator_registry.h
         ${HEADER_DIR}/internal/catch_expression_lhs.hpp
         ${HEADER_DIR}/internal/catch_fatal_condition.h
         ${HEADER_DIR}/internal/catch_impl.hpp
@@ -147,7 +147,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_interfaces_runner.h
         ${HEADER_DIR}/internal/catch_interfaces_tag_alias_registry.h
         ${HEADER_DIR}/internal/catch_interfaces_testcase.h
-        ${HEADER_DIR}/internal/catch_list.hpp
+        ${HEADER_DIR}/internal/catch_list.h
         ${HEADER_DIR}/internal/catch_matchers.hpp
         ${HEADER_DIR}/internal/catch_matchers_string.h
         ${HEADER_DIR}/internal/catch_matchers_vector.h
@@ -193,12 +193,15 @@ set(INTERNAL_HEADERS
         )
 set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_assertionresult.cpp
+        ${HEADER_DIR}/internal/catch_commandline.cpp
         ${HEADER_DIR}/internal/catch_common.cpp
         ${HEADER_DIR}/internal/catch_console_colour.cpp
         ${HEADER_DIR}/internal/catch_context.cpp
         ${HEADER_DIR}/internal/catch_debugger.cpp
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
+        ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp
+        ${HEADER_DIR}/internal/catch_list.cpp
         ${HEADER_DIR}/internal/catch_matchers_string.cpp
         ${HEADER_DIR}/internal/catch_message.cpp
         ${HEADER_DIR}/internal/catch_notimplemented_exception.cpp
