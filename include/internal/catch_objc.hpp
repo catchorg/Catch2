@@ -33,7 +33,7 @@
 
 namespace Catch {
 
-    class OcMethod : public SharedImpl<ITestInvoker> {
+    class OcMethod : public ITestInvoker {
 
     public:
         OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel ) {}
