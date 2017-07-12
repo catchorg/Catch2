@@ -40,8 +40,6 @@ namespace Catch {
     IContext& getCurrentContext();
     IMutableContext& getCurrentMutableContext();
     void cleanUpContext();
-    Stream createStream( std::string const& streamName );
-
 }
 
 #endif // TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
