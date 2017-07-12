@@ -106,4 +106,9 @@ namespace Catch {
 #endif
         return os;
     }
+
+    bool isTrue( bool value ){ return value; }
+    bool alwaysTrue() { return true; }
+    bool alwaysFalse() { return false; }
+
 }

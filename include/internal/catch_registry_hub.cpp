@@ -69,7 +69,7 @@ namespace Catch {
         };
 
         // Single, global, instance
-        inline RegistryHub*& getTheRegistryHub() {
+        RegistryHub*& getTheRegistryHub() {
             static RegistryHub* theRegistryHub = nullptr;
             if( !theRegistryHub )
                 theRegistryHub = new RegistryHub();

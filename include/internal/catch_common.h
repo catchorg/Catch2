@@ -46,12 +46,12 @@ namespace Catch {
     };
 
     template<typename ContainerT>
-    inline void deleteAll( ContainerT& container ) {
+    void deleteAll( ContainerT& container ) {
         for( auto p : container )
             delete p;
     }
     template<typename AssociativeContainerT>
-    inline void deleteAllValues( AssociativeContainerT& container ) {
+    void deleteAllValues( AssociativeContainerT& container ) {
         for( auto const& kvp : container )
             delete kvp.second;
     }
@@ -96,9 +96,9 @@ namespace Catch {
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info );
 
     // This is just here to avoid compiler warnings with macro constants and boolean literals
-    inline bool isTrue( bool value ){ return value; }
-    inline bool alwaysTrue() { return true; }
-    inline bool alwaysFalse() { return false; }
+    bool isTrue( bool value );
+    bool alwaysTrue();
+    bool alwaysFalse();
 
     void seedRng( IConfig const& config );
     unsigned int rngSeed();

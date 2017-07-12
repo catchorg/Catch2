@@ -105,7 +105,7 @@
     }
 #else
     namespace Catch {
-       inline bool isDebuggerActive() { return false; }
+       bool isDebuggerActive() { return false; }
     }
 #endif // Platform
 
