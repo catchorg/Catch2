@@ -71,9 +71,8 @@ struct AutoReg {
 
     ~AutoReg();
 
-private:
-    AutoReg( AutoReg const& );
-    void operator= ( AutoReg const& );
+    AutoReg( AutoReg const& ) = delete;
+    AutoReg& operator = (AutoReg const& ) = delete;
 };
 
 void registerTestCaseFunction
