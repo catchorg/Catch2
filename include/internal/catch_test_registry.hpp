@@ -11,6 +11,7 @@
 #include "catch_common.h"
 #include "catch_interfaces_testcase.h"
 #include "catch_compiler_capabilities.h"
+#include "catch_stringref.h"
 
 namespace Catch {
 
@@ -26,54 +27,25 @@ public:
     }
 };
 
-typedef void(*TestFunction)();
+auto makeTestInvoker( void(*testAsFunction)() ) -> ITestInvoker*;
 
-struct NameAndDesc {
-    NameAndDesc( const char* _name = "", const char* _description= "" )
-    : name( _name ), description( _description )
-    {}
+template<typename C>
+auto makeTestInvoker( void (C::*testAsMethod)() ) -> ITestInvoker* {
+    return new TestInvokerAsMethod<C>( testAsMethod );
+}
 
-    const char* name;
-    const char* description;
+struct NameAndTags {
+
+    NameAndTags( StringRef name_ = "", StringRef tags_ = "" ) : name( name_ ), tags( tags_ ) {}
+
+    StringRef name;
+    StringRef tags;
 };
 
-void registerTestCase
-    (   ITestInvoker* testCase,
-        char const* className,
-        NameAndDesc const& nameAndDesc,
-        SourceLineInfo const& lineInfo );
-
-struct AutoReg {
-
-    AutoReg
-        (   TestFunction function,
-            SourceLineInfo const& lineInfo,
-            NameAndDesc const& nameAndDesc );
-
-    template<typename C>
-    AutoReg
-        (   void (C::*method)(),
-            char const* className,
-            NameAndDesc const& nameAndDesc,
-            SourceLineInfo const& lineInfo ) {
-
-        registerTestCase
-            (   new TestInvokerAsMethod<C>( method ),
-                className,
-                nameAndDesc,
-                lineInfo );
-    }
-
+struct AutoReg : NonCopyable {
+    AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags );
     ~AutoReg();
-
-    AutoReg( AutoReg const& ) = delete;
-    AutoReg& operator = (AutoReg const& ) = delete;
 };
-
-void registerTestCaseFunction
-    (   TestFunction function,
-        SourceLineInfo const& lineInfo,
-        NameAndDesc const& nameAndDesc );
 
 } // end namespace Catch
 
@@ -81,7 +53,7 @@ void registerTestCaseFunction
     #define INTERNAL_CATCH_TESTCASE2( TestName, ... ) \
         static void TestName(); \
         CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &TestName, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); } \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, "", Catch::NameAndTags{ __VA_ARGS__ } ); } \
         CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS \
         static void TestName()
     #define INTERNAL_CATCH_TESTCASE( ... ) \
@@ -90,7 +62,7 @@ void registerTestCaseFunction
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, ... ) \
         CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &QualifiedMethod, "&" #QualifiedMethod, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); } \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &QualifiedMethod ), CATCH_INTERNAL_LINEINFO, "&" #QualifiedMethod, Catch::NameAndTags{ __VA_ARGS__ } ); } \
         CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -100,7 +72,7 @@ void registerTestCaseFunction
             struct TestName : ClassName{ \
                 void test(); \
             }; \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( &TestName::test, #ClassName, Catch::NameAndDesc( __VA_ARGS__ ), CATCH_INTERNAL_LINEINFO ); \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( Catch::makeTestInvoker( &TestName::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ __VA_ARGS__ } ); \
         } \
         CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS \
         void TestName::test()
@@ -110,7 +82,7 @@ void registerTestCaseFunction
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... ) \
         CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
-        Catch::AutoReg( Function, CATCH_INTERNAL_LINEINFO, Catch::NameAndDesc( __VA_ARGS__ ) ); \
+        Catch::AutoReg( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, "", Catch::NameAndTags{ __VA_ARGS__ } ); \
         CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
 
 

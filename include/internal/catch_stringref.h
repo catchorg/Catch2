@@ -31,8 +31,6 @@ namespace Catch {
         
         StringData const* m_data = nullptr;
         
-        static StringRef s_emptyStringRef;
-        
         void takeOwnership();
         
     public: // construction/ assignment

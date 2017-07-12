@@ -12,13 +12,17 @@
 
 #include <cstring>
 #include <ostream>
+#include <cassert>
 
 namespace Catch {
-    
-    StringRef StringRef::s_emptyStringRef = "";
+
+    auto getEmptyStringRef() -> StringRef {
+        static StringRef s_emptyStringRef("");
+        return s_emptyStringRef;
+    }
     
     StringRef::StringRef() noexcept
-    :   StringRef( s_emptyStringRef )
+    :   StringRef( getEmptyStringRef() )
     {}
     
     StringRef::StringRef( StringRef const& other ) noexcept
@@ -41,7 +45,9 @@ namespace Catch {
     StringRef::StringRef( char const* rawChars ) noexcept
     :   m_start( rawChars ),
         m_size( static_cast<size_type>( std::strlen( rawChars ) ) )
-    {}
+    {
+        assert( rawChars != nullptr );
+    }
     
     StringRef::StringRef( char const* rawChars, size_type size ) noexcept
     :   m_start( rawChars ),

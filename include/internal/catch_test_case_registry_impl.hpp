@@ -134,6 +134,10 @@ namespace Catch {
             m_testAsFunction();
         }
     };
+    auto makeTestInvoker( void(*testAsFunction)() ) -> ITestInvoker* {
+        return new TestInvokerAsFunction( testAsFunction );
+    }
+
 
     inline std::string extractClassName( std::string const& classOrQualifiedMethodName ) {
         std::string className = classOrQualifiedMethodName;
@@ -148,40 +152,24 @@ namespace Catch {
         return className;
     }
 
-    void registerTestCase
-        (   ITestInvoker* testCase,
-            char const* classOrQualifiedMethodName,
-            NameAndDesc const& nameAndDesc,
-            SourceLineInfo const& lineInfo ) {
+    ///////////////////////////////////////////////////////////////////////////
+
+    AutoReg::AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags )
+    {
         try {
-            getMutableRegistryHub().registerTest
-            (makeTestCase
-            (testCase,
-             extractClassName(classOrQualifiedMethodName),
-             nameAndDesc.name,
-             nameAndDesc.description,
-             lineInfo));
+            getMutableRegistryHub()
+                    .registerTest(
+                        makeTestCase(
+                            invoker,
+                            extractClassName( classOrMethod.c_str() ),
+                            nameAndTags.name.c_str(),
+                            nameAndTags.tags.c_str(),
+                            lineInfo));
         } catch (...) {
             // Do not throw when constructing global objects, instead register the exception to be processed later
             getMutableRegistryHub().registerStartupException( std::current_exception() );
         }
     }
-    void registerTestCaseFunction
-        (   TestFunction function,
-            SourceLineInfo const& lineInfo,
-            NameAndDesc const& nameAndDesc ) {
-        registerTestCase( new TestInvokerAsFunction( function ), "", nameAndDesc, lineInfo );
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    AutoReg::AutoReg
-        (   TestFunction function,
-            SourceLineInfo const& lineInfo,
-            NameAndDesc const& nameAndDesc ) {
-        registerTestCaseFunction( function, lineInfo, nameAndDesc );
-    }
-
     AutoReg::~AutoReg() {}
 
 } // end namespace Catch
