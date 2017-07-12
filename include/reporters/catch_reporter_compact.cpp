@@ -23,19 +23,19 @@ namespace Catch {
             return "Reports test results on a single line, suitable for IDEs";
         }
 
-        virtual ReporterPreferences getPreferences() const {
+        ReporterPreferences getPreferences() const override {
             ReporterPreferences prefs;
             prefs.shouldRedirectStdOut = false;
             return prefs;
         }
 
-        virtual void noMatchingTestCases( std::string const& spec ) {
+        void noMatchingTestCases( std::string const& spec ) override {
             stream << "No test cases matched '" << spec << '\'' << std::endl;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) {}
+        void assertionStarting( AssertionInfo const& ) override {}
 
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
+        bool assertionEnded( AssertionStats const& _assertionStats ) override {
             AssertionResult const& result = _assertionStats.assertionResult;
 
             bool printInfoMessages = true;
@@ -60,7 +60,7 @@ namespace Catch {
             }
         }
 
-        virtual void testRunEnded( TestRunStats const& _testRunStats ) {
+        void testRunEnded( TestRunStats const& _testRunStats ) override {
             printTotals( _testRunStats.totals );
             stream << '\n' << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
