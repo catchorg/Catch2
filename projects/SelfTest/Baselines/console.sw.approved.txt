@@ -3381,16 +3381,6 @@ due to unexpected exception with message:
   custom exception
 
 -------------------------------------------------------------------------------
-NotImplemented exception
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>:
-PASSED:
-  REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) )
-
--------------------------------------------------------------------------------
 Objects that evaluated in boolean contexts can be checked
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -8894,6 +8884,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 174 | 123 passed | 47 failed |  4 failed as expected
-assertions: 910 | 793 passed | 96 failed | 21 failed as expected
+test cases: 173 | 122 passed | 47 failed |  4 failed as expected
+assertions: 909 | 792 passed | 96 failed | 21 failed as expected
 

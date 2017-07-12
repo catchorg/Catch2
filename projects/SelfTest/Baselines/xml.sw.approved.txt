@@ -3702,17 +3702,6 @@ re>"
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="NotImplemented exception" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
-      <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
-        <Original>
-          thisFunctionNotImplemented( 7 )
-        </Original>
-        <Expanded>
-          thisFunctionNotImplemented( 7 )
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Objects that evaluated in boolean contexts can be checked" tags="[SafeBool][Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
@@ -9780,7 +9769,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="793" failures="97" expectedFailures="21"/>
+    <OverallResults successes="792" failures="97" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="793" failures="96" expectedFailures="21"/>
+  <OverallResults successes="792" failures="96" expectedFailures="21"/>
 </Catch>

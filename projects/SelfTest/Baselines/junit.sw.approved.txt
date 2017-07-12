@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="15" failures="82" tests="911" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="82" tests="910" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -336,7 +336,6 @@ custom exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
-    <testcase classname="<exe-name>.global" name="NotImplemented exception" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Objects that evaluated in boolean contexts can be checked" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Operators at different namespace levels not hijacked by Koenig lookup" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Ordering comparison checks that should fail" time="{duration}">
