@@ -21,6 +21,8 @@
 #include "catch_reporter_registrars.hpp"
 //
 
+#include "internal/catch_leak_detector.h"
+
 
 #include "../catch_session.hpp"
 #include "catch_stream.hpp"
@@ -31,6 +33,8 @@
 // ~*~* CATCH_CPP_STITCH_PLACE *~*~
 
 namespace Catch {
+    LeakDetector leakDetector;
+
     // These are all here to avoid warnings about not having any out of line
     // virtual methods
     NonCopyable::~NonCopyable() {}

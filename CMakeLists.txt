@@ -147,6 +147,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_interfaces_runner.h
         ${HEADER_DIR}/internal/catch_interfaces_tag_alias_registry.h
         ${HEADER_DIR}/internal/catch_interfaces_testcase.h
+        ${HEADER_DIR}/internal/catch_leak_detector.h
         ${HEADER_DIR}/internal/catch_list.h
         ${HEADER_DIR}/internal/catch_matchers.hpp
         ${HEADER_DIR}/internal/catch_matchers_string.h
@@ -202,6 +203,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp
         ${HEADER_DIR}/internal/catch_list.cpp
+        ${HEADER_DIR}/internal/catch_leak_detector.cpp
         ${HEADER_DIR}/internal/catch_matchers_string.cpp
         ${HEADER_DIR}/internal/catch_message.cpp
         ${HEADER_DIR}/internal/catch_notimplemented_exception.cpp
