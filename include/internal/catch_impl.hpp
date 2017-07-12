@@ -16,6 +16,10 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
+
+#include "internal/catch_notimplemented_exception.h"
+
+
 // Temporary hack to fix separately provided reporters
 #include "../reporters/catch_reporter_bases.hpp"
 #include "catch_reporter_registrars.hpp"

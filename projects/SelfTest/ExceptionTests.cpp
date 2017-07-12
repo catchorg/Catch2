@@ -181,15 +181,6 @@ TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  )
         throw double( 3.14 );
 }
 
-inline int thisFunctionNotImplemented( int ) {
-    CATCH_NOT_IMPLEMENTED;
-}
-
-TEST_CASE( "NotImplemented exception", "[!throws]" )
-{
-    REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
-}
-
 TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
     using namespace Catch::Matchers;
     SECTION( "exact match" )

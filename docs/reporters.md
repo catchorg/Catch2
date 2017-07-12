@@ -22,7 +22,7 @@ Because of the way the junit format is structured the run must complete before a
 * `xml` writes an xml format tailored to Catch. Unlike `junit` this is a streaming format so results are delivered progressively.
 
 There are a few additional reporters, for specific build systems, in the Catch repository (in `include\reporters`) which you can `#include` in your project if you would like to make use of them.
-Do this in one source file - typically the same one you have `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`.
+Do this in one source file - the same one you have `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`.
 
 * `teamcity` writes the native, streaming, format that [TeamCity](https://www.jetbrains.com/teamcity/) understands.
 Use this when building as part of a TeamCity build to see results as they happen.
