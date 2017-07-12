@@ -42,7 +42,7 @@ namespace Catch {
                       << _lineInfo );
     }
 
-    TestCase makeTestCase(  ITestCase* _testCase,
+    TestCase makeTestCase(  ITestInvoker* _testCase,
                             std::string const& _className,
                             std::string const& _name,
                             std::string const& _descOrTags,
@@ -130,7 +130,7 @@ namespace Catch {
     }
 
 
-    TestCase::TestCase( ITestCase* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
+    TestCase::TestCase( ITestInvoker* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
 
 
     TestCase TestCase::withName( std::string const& _newName ) const {

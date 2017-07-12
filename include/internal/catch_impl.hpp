@@ -49,7 +49,7 @@ namespace Catch {
     StreamBufBase::~StreamBufBase() noexcept {}
     IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
-    ITestCase::~ITestCase() {}
+    ITestInvoker::~ITestInvoker() {}
     ITestCaseRegistry::~ITestCaseRegistry() {}
     IRegistryHub::~IRegistryHub() {}
     IMutableRegistryHub::~IMutableRegistryHub() {}

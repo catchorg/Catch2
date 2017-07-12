@@ -21,7 +21,7 @@
 
 namespace Catch {
 
-    struct ITestCase;
+    struct ITestInvoker;
 
     struct TestCaseInfo {
         enum SpecialProperties{
@@ -59,7 +59,7 @@ namespace Catch {
     class TestCase : public TestCaseInfo {
     public:
 
-        TestCase( ITestCase* testCase, TestCaseInfo const& info );
+        TestCase( ITestInvoker* testCase, TestCaseInfo const& info );
 
         TestCase withName( std::string const& _newName ) const;
 
@@ -71,10 +71,10 @@ namespace Catch {
         bool operator < ( TestCase const& other ) const;
 
     private:
-        std::shared_ptr<ITestCase> test;
+        std::shared_ptr<ITestInvoker> test;
     };
 
-    TestCase makeTestCase(  ITestCase* testCase,
+    TestCase makeTestCase(  ITestInvoker* testCase,
                             std::string const& className,
                             std::string const& name,
                             std::string const& description,

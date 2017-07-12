@@ -125,23 +125,15 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class FreeFunctionTestCase : public ITestCase {
+    class TestInvokerAsFunction : public ITestInvoker {
+        void(*m_testAsFunction)();
     public:
+        TestInvokerAsFunction( void(*testAsFunction)() ) : m_testAsFunction( testAsFunction ) {}
 
-        FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}
-
-        virtual void invoke() const {
-            m_fun();
+        void invoke() const override {
+            m_testAsFunction();
         }
-
-    private:
-        virtual ~FreeFunctionTestCase();
-
-        TestFunction m_fun;
     };
-
-    FreeFunctionTestCase::~FreeFunctionTestCase() {}
-
 
     inline std::string extractClassName( std::string const& classOrQualifiedMethodName ) {
         std::string className = classOrQualifiedMethodName;
@@ -157,7 +149,7 @@ namespace Catch {
     }
 
     void registerTestCase
-        (   ITestCase* testCase,
+        (   ITestInvoker* testCase,
             char const* classOrQualifiedMethodName,
             NameAndDesc const& nameAndDesc,
             SourceLineInfo const& lineInfo ) {
@@ -178,7 +170,7 @@ namespace Catch {
         (   TestFunction function,
             SourceLineInfo const& lineInfo,
             NameAndDesc const& nameAndDesc ) {
-        registerTestCase( new FreeFunctionTestCase( function ), "", nameAndDesc, lineInfo );
+        registerTestCase( new TestInvokerAsFunction( function ), "", nameAndDesc, lineInfo );
     }
 
     ///////////////////////////////////////////////////////////////////////////

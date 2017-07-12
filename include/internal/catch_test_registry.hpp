@@ -15,20 +15,15 @@
 namespace Catch {
 
 template<typename C>
-class MethodTestCase : public ITestCase {
-
+class TestInvokerAsMethod : public ITestInvoker {
+    void (C::*m_testAsMethod)();
 public:
-    MethodTestCase( void (C::*method)() ) : m_method( method ) {}
+    TestInvokerAsMethod( void (C::*testAsMethod)() ) : m_testAsMethod( testAsMethod ) {}
 
-    virtual void invoke() const {
+    void invoke() const override {
         C obj;
-        (obj.*m_method)();
+        (obj.*m_testAsMethod)();
     }
-
-private:
-    virtual ~MethodTestCase() {}
-
-    void (C::*m_method)();
 };
 
 typedef void(*TestFunction)();
@@ -43,7 +38,7 @@ struct NameAndDesc {
 };
 
 void registerTestCase
-    (   ITestCase* testCase,
+    (   ITestInvoker* testCase,
         char const* className,
         NameAndDesc const& nameAndDesc,
         SourceLineInfo const& lineInfo );
@@ -63,7 +58,7 @@ struct AutoReg {
             SourceLineInfo const& lineInfo ) {
 
         registerTestCase
-            (   new MethodTestCase<C>( method ),
+            (   new TestInvokerAsMethod<C>( method ),
                 className,
                 nameAndDesc,
                 lineInfo );

@@ -15,12 +15,12 @@ namespace Catch {
 
     class TestSpec;
 
-    struct ITestCase {
+    struct ITestInvoker {
         virtual void invoke () const = 0;
-        virtual ~ITestCase();
+        virtual ~ITestInvoker();
     };
 
-    using ITestCasePtr = std::shared_ptr<ITestCase>;
+    using ITestCasePtr = std::shared_ptr<ITestInvoker>;
 
     class TestCase;
     struct IConfig;
