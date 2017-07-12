@@ -142,8 +142,6 @@ LeakDetector leakDetector;
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 
-#define CATCH_GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
-
 // "BDD-style" convenience wrappers
 #define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
 #define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
@@ -209,8 +207,6 @@ LeakDetector leakDetector;
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
-
-#define GENERATE( expr) INTERNAL_CATCH_GENERATE( expr )
 
 #endif
 
