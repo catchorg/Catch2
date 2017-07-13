@@ -9664,7 +9664,7 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString(enum class)" tags="[enum][enumClass][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
+    <TestCase name="toString(enum class)" tags="[.][enum][enumClass][hide][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
           ::Catch::Detail::stringify(e0) == "0"
