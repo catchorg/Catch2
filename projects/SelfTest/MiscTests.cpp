@@ -372,7 +372,7 @@ TEST_CASE( "XmlEncode" ) {
     }
 }
 
-TEST_CASE( "long long", "[c++11][.]" ) {
+TEST_CASE( "long long" ) {
     long long l = std::numeric_limits<long long>::max();
 
     REQUIRE( l == std::numeric_limits<long long>::max() );

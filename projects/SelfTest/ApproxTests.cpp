@@ -166,11 +166,7 @@ inline std::ostream& operator<<( std::ostream& os, StrongDoubleTypedef td ) {
     return os << "StrongDoubleTypedef(" << static_cast<double>(td) << ")";
 }
 
-TEST_CASE
-(
- "Comparison with explicitly convertible types",
- "[Approx][c++11]"
-)
+TEST_CASE( "Comparison with explicitly convertible types", "[Approx]" )
 {
   StrongDoubleTypedef td(10.0);
 

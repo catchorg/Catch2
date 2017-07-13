@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="15" failures="82" tests="910" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="84" tests="942" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -112,6 +112,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Commas in various macros are allowed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparing function pointers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparing member function pointers" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Comparison with explicitly convertible types" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons between ints where one side is computed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}"/>
@@ -692,6 +693,7 @@ Previous info should not be seen
 MessageTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="long long" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="looped SECTION tests/s1" time="{duration}">
       <failure message="0 > 1" type="CHECK">
 MiscTests.cpp:<line number>
@@ -735,6 +737,7 @@ MiscTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="not allowed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="null strings" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="null_ptr" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pointer to class" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="random SECTION tests/s1" time="{duration}"/>
@@ -775,8 +778,25 @@ TrickyTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="toString on wchar_t const pointer returns the string contents" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString on wchar_t returns the string contents" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString( vectors&lt;has_maker )" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="toString(enum class w/operator&lt;&lt;)" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="toString(enum class)" time="{duration}">
+      <failure message="&quot;{?}&quot; == &quot;0&quot;" type="CHECK">
+EnumToString.cpp:<line number>
+      </failure>
+      <failure message="&quot;{?}&quot; == &quot;1&quot;" type="CHECK">
+EnumToString.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString(enum)" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="tuple&lt;>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="tuple&lt;float,int>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="tuple&lt;int>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="tuple&lt;0,int,const char *>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="tuple&lt;string,string>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;int> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;string> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vectors can be sized and resized" time="{duration}"/>

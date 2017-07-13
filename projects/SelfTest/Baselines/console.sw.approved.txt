@@ -924,6 +924,84 @@ with expansion:
   0x<hex digits>
 
 -------------------------------------------------------------------------------
+Comparison with explicitly convertible types
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td == Approx(10.0) )
+with expansion:
+  StrongDoubleTypedef(10) == Approx( 10.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(10.0) == td )
+with expansion:
+  Approx( 10.0 ) == StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td != Approx(11.0) )
+with expansion:
+  StrongDoubleTypedef(10) != Approx( 11.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(11.0) != td )
+with expansion:
+  Approx( 11.0 ) != StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td <= Approx(10.0) )
+with expansion:
+  StrongDoubleTypedef(10) <= Approx( 10.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td <= Approx(11.0) )
+with expansion:
+  StrongDoubleTypedef(10) <= Approx( 11.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(10.0) <= td )
+with expansion:
+  Approx( 10.0 ) <= StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(9.0) <= td )
+with expansion:
+  Approx( 9.0 ) <= StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td >= Approx(9.0) )
+with expansion:
+  StrongDoubleTypedef(10) >= Approx( 9.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td >= Approx(10.0) )
+with expansion:
+  StrongDoubleTypedef(10) >= Approx( 10.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(10.0) >= td )
+with expansion:
+  Approx( 10.0 ) >= StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(11.0) >= td )
+with expansion:
+  Approx( 11.0 ) >= StrongDoubleTypedef(10)
+
+-------------------------------------------------------------------------------
 Comparisons between ints where one side is computed
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -8060,6 +8138,20 @@ explicitly with message:
   Previous info should not be seen
 
 -------------------------------------------------------------------------------
+long long
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( l == std::numeric_limits<long long>::max() )
+with expansion:
+  9223372036854775807 (0x<hex digits>)
+  ==
+  9223372036854775807 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
 looped SECTION tests
   s1
 -------------------------------------------------------------------------------
@@ -8247,6 +8339,18 @@ PASSED:
   REQUIRE( makeString( true ) == static_cast<char*>(0) )
 with expansion:
   {null string} == {null string}
+
+-------------------------------------------------------------------------------
+null_ptr
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ptr.get() == 0 )
+with expansion:
+  0 == 0
 
 -------------------------------------------------------------------------------
 pair<pair<int,const char *,pair<std::string,int> > -> toString
@@ -8616,6 +8720,48 @@ with expansion:
   "{ StringMaker<has_maker> }"
 
 -------------------------------------------------------------------------------
+toString(enum class w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( ::Catch::Detail::stringify(e0) == "E2/V0" )
+with expansion:
+  "E2/V0" == "E2/V0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( ::Catch::Detail::stringify(e1) == "E2/V1" )
+with expansion:
+  "E2/V1" == "E2/V1"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( ::Catch::Detail::stringify(e3) == "Unknown enum value 10" )
+with expansion:
+  "Unknown enum value 10"
+  ==
+  "Unknown enum value 10"
+
+-------------------------------------------------------------------------------
+toString(enum class)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e0) == "0" )
+with expansion:
+  "{?}" == "0"
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e1) == "1" )
+with expansion:
+  "{?}" == "1"
+
+-------------------------------------------------------------------------------
 toString(enum w/operator<<)
 -------------------------------------------------------------------------------
 EnumToString.cpp:<line number>
@@ -8650,6 +8796,140 @@ PASSED:
   CHECK( ::Catch::Detail::stringify(e1) == "1" )
 with expansion:
   "1" == "1"
+
+-------------------------------------------------------------------------------
+tuple<>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == ::Catch::Detail::stringify(type{}) )
+with expansion:
+  "{ }" == "{ }"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == ::Catch::Detail::stringify(value) )
+with expansion:
+  "{ }" == "{ }"
+
+-------------------------------------------------------------------------------
+tuple<float,int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "1.2f" == ::Catch::Detail::stringify(float(1.2)) )
+with expansion:
+  "1.2f" == "1.2f"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0}) )
+with expansion:
+  "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+
+-------------------------------------------------------------------------------
+tuple<int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 0 }" == ::Catch::Detail::stringify(type{0}) )
+with expansion:
+  "{ 0 }" == "{ 0 }"
+
+-------------------------------------------------------------------------------
+tuple<0,int,const char *>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 0, 42, \"Catch me\" }" == ::Catch::Detail::stringify(value) )
+with expansion:
+  "{ 0, 42, "Catch me" }"
+  ==
+  "{ 0, 42, "Catch me" }"
+
+-------------------------------------------------------------------------------
+tuple<string,string>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ \"hello\", \"world\" }" == ::Catch::Detail::stringify(type{"hello","world"}) )
+with expansion:
+  "{ "hello", "world" }"
+  ==
+  "{ "hello", "world" }"
+
+-------------------------------------------------------------------------------
+tuple<tuple<int>,tuple<>,float>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value) )
+with expansion:
+  "{ { 42 }, { }, 1.2f }"
+  ==
+  "{ { 42 }, { }, 1.2f }"
+
+-------------------------------------------------------------------------------
+vec<vec<string,alloc>> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(v) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" )
+with expansion:
+  "{ { "hello" }, { "world" } }"
+  ==
+  "{ { "hello" }, { "world" } }"
+
+-------------------------------------------------------------------------------
+vector<int,allocator> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42, 250 }" )
+with expansion:
+  "{ 42, 250 }" == "{ 42, 250 }"
 
 -------------------------------------------------------------------------------
 vector<int> -> toString
@@ -8884,6 +9164,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 173 | 122 passed | 47 failed |  4 failed as expected
-assertions: 909 | 792 passed | 96 failed | 21 failed as expected
+test cases: 186 | 134 passed | 48 failed |  4 failed as expected
+assertions: 941 | 822 passed | 98 failed | 21 failed as expected
 

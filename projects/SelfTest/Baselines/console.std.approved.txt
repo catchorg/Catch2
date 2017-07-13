@@ -1001,7 +1001,23 @@ TrickyTests.cpp:<line number>: FAILED:
 with expansion:
   "first" == "second"
 
+-------------------------------------------------------------------------------
+toString(enum class)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e0) == "0" )
+with expansion:
+  "{?}" == "0"
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e1) == "1" )
+with expansion:
+  "{?}" == "1"
+
 ===============================================================================
-test cases: 173 | 123 passed | 46 failed |  4 failed as expected
-assertions: 907 | 792 passed | 94 failed | 21 failed as expected
+test cases: 186 | 135 passed | 47 failed |  4 failed as expected
+assertions: 939 | 822 passed | 96 failed | 21 failed as expected
 

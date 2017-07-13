@@ -1029,6 +1029,105 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Comparison with explicitly convertible types" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          td == Approx(10.0)
+        </Original>
+        <Expanded>
+          StrongDoubleTypedef(10) == Approx( 10.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(10.0) == td
+        </Original>
+        <Expanded>
+          Approx( 10.0 ) == StrongDoubleTypedef(10)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          td != Approx(11.0)
+        </Original>
+        <Expanded>
+          StrongDoubleTypedef(10) != Approx( 11.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(11.0) != td
+        </Original>
+        <Expanded>
+          Approx( 11.0 ) != StrongDoubleTypedef(10)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          td &lt;= Approx(10.0)
+        </Original>
+        <Expanded>
+          StrongDoubleTypedef(10) &lt;= Approx( 10.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          td &lt;= Approx(11.0)
+        </Original>
+        <Expanded>
+          StrongDoubleTypedef(10) &lt;= Approx( 11.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(10.0) &lt;= td
+        </Original>
+        <Expanded>
+          Approx( 10.0 ) &lt;= StrongDoubleTypedef(10)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(9.0) &lt;= td
+        </Original>
+        <Expanded>
+          Approx( 9.0 ) &lt;= StrongDoubleTypedef(10)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          td >= Approx(9.0)
+        </Original>
+        <Expanded>
+          StrongDoubleTypedef(10) >= Approx( 9.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          td >= Approx(10.0)
+        </Original>
+        <Expanded>
+          StrongDoubleTypedef(10) >= Approx( 10.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(10.0) >= td
+        </Original>
+        <Expanded>
+          Approx( 10.0 ) >= StrongDoubleTypedef(10)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(11.0) >= td
+        </Original>
+        <Expanded>
+          Approx( 11.0 ) >= StrongDoubleTypedef(10)
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Comparisons between ints where one side is computed" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
@@ -8927,6 +9026,19 @@ spanner      <OverallResult success="true"/>
     <TestCase name="just info" tags="[info][isolated info][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="long long" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Original>
+          l == std::numeric_limits&lt;long long>::max()
+        </Original>
+        <Expanded>
+          9223372036854775807 (0x<hex digits>)
+==
+9223372036854775807 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="looped SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="s1" description="b is currently: 0" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -9139,6 +9251,17 @@ spanner      <OverallResult success="true"/>
         </Original>
         <Expanded>
           {null string} == {null string}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="null_ptr" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          ptr.get() == 0
+        </Original>
+        <Expanded>
+          0 == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9512,6 +9635,54 @@ spanner      <OverallResult success="true"/>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="toString(enum class w/operator&lt;&lt;)" tags="[enum][enumClass][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(e0) == "E2/V0"
+        </Original>
+        <Expanded>
+          "E2/V0" == "E2/V0"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(e1) == "E2/V1"
+        </Original>
+        <Expanded>
+          "E2/V1" == "E2/V1"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(e3) == "Unknown enum value 10"
+        </Original>
+        <Expanded>
+          "Unknown enum value 10"
+==
+"Unknown enum value 10"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString(enum class)" tags="[enum][enumClass][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
+      <Expression success="false" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(e0) == "0"
+        </Original>
+        <Expanded>
+          "{?}" == "0"
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(e1) == "1"
+        </Original>
+        <Expanded>
+          "{?}" == "1"
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="toString(enum w/operator&lt;&lt;)" tags="[enum][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
@@ -9546,6 +9717,142 @@ spanner      <OverallResult success="true"/>
         </Original>
         <Expanded>
           "1" == "1"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;>" tags="[toString][tuple]" filename="projects/<exe-name>/ToStringTuple.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "{ }" == ::Catch::Detail::stringify(type{})
+        </Original>
+        <Expanded>
+          "{ }" == "{ }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "{ }" == ::Catch::Detail::stringify(value)
+        </Original>
+        <Expanded>
+          "{ }" == "{ }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;float,int>" tags="[toString][tuple]" filename="projects/<exe-name>/ToStringTuple.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "1.2f" == ::Catch::Detail::stringify(float(1.2))
+        </Original>
+        <Expanded>
+          "1.2f" == "1.2f"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0})
+        </Original>
+        <Expanded>
+          "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;int>" tags="[toString][tuple]" filename="projects/<exe-name>/ToStringTuple.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "{ 0 }" == ::Catch::Detail::stringify(type{0})
+        </Original>
+        <Expanded>
+          "{ 0 }" == "{ 0 }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;0,int,const char *>" tags="[toString][tuple]" filename="projects/<exe-name>/ToStringTuple.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "{ 0, 42, \"Catch me\" }" == ::Catch::Detail::stringify(value)
+        </Original>
+        <Expanded>
+          "{ 0, 42, "Catch me" }"
+==
+"{ 0, 42, "Catch me" }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;string,string>" tags="[toString][tuple]" filename="projects/<exe-name>/ToStringTuple.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "{ \"hello\", \"world\" }" == ::Catch::Detail::stringify(type{"hello","world"})
+        </Original>
+        <Expanded>
+          "{ "hello", "world" }"
+==
+"{ "hello", "world" }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" tags="[toString][tuple]" filename="projects/<exe-name>/ToStringTuple.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringTuple.cpp" >
+        <Original>
+          "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value)
+        </Original>
+        <Expanded>
+          "{ { 42 }, { }, 1.2f }"
+==
+"{ { 42 }, { }, 1.2f }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="vec&lt;vec&lt;string,alloc>> -> toString" tags="[toString][vector,allocator]" filename="projects/<exe-name>/ToStringVector.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(v) == "{  }"
+        </Original>
+        <Expanded>
+          "{  }" == "{  }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }"
+        </Original>
+        <Expanded>
+          "{ { "hello" }, { "world" } }"
+==
+"{ { "hello" }, { "world" } }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="vector&lt;int,allocator> -> toString" tags="[toString][vector,allocator]" filename="projects/<exe-name>/ToStringVector.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(vv) == "{  }"
+        </Original>
+        <Expanded>
+          "{  }" == "{  }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(vv) == "{ 42 }"
+        </Original>
+        <Expanded>
+          "{ 42 }" == "{ 42 }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringVector.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(vv) == "{ 42, 250 }"
+        </Original>
+        <Expanded>
+          "{ 42, 250 }" == "{ 42, 250 }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9769,7 +10076,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="792" failures="97" expectedFailures="21"/>
+    <OverallResults successes="822" failures="99" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="792" failures="96" expectedFailures="21"/>
+  <OverallResults successes="822" failures="98" expectedFailures="21"/>
 </Catch>
