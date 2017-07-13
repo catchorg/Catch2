@@ -9,7 +9,7 @@
 #include "catch.hpp"
 #include "internal/catch_tag_alias_registry.h"
 
-TEST_CASE( "Tag alias can be registered against tag patterns", "" ) {
+TEST_CASE( "Tag alias can be registered against tag patterns" ) {
 
     using namespace Catch::Matchers;
 
@@ -17,7 +17,7 @@ TEST_CASE( "Tag alias can be registered against tag patterns", "" ) {
 
     registry.add( "[@zzz]", "[one][two]", Catch::SourceLineInfo( "file", 2 ) );
 
-    SECTION( "The same tag alias can only be registered once", "" ) {
+    SECTION( "The same tag alias can only be registered once" ) {
 
         try {
             registry.add( "[@zzz]", "[one][two]", Catch::SourceLineInfo( "file", 10 ) );
@@ -32,7 +32,7 @@ TEST_CASE( "Tag alias can be registered against tag patterns", "" ) {
         }
     }
 
-    SECTION( "Tag aliases must be of the form [@name]", "" ) {
+    SECTION( "Tag aliases must be of the form [@name]" ) {
         CHECK_THROWS( registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) ) );
         CHECK_THROWS( registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) ) );
         CHECK_THROWS( registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) ) );

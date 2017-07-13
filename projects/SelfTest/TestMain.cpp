@@ -481,7 +481,7 @@ inline void manuallyRegisteredTestFunction() {
 }
 struct AutoTestReg {
     AutoTestReg() {
-        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered", "" );
+        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
     }
 };
 AutoTestReg autoTestReg;

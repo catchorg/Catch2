@@ -114,18 +114,18 @@
 #define CATCH_FAIL_CHECK( ... ) INTERNAL_CATCH_MSG( "CATCH_FAIL_CHECK", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define CATCH_SUCCEED( ... ) INTERNAL_CATCH_MSG( "CATCH_SUCCEED", Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 
-#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
+#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE()
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 
 // "BDD-style" convenience wrappers
 #define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
 #define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
-#define CATCH_GIVEN( desc )    CATCH_SECTION( std::string( "Given: ") + desc, "" )
-#define CATCH_WHEN( desc )     CATCH_SECTION( std::string( " When: ") + desc, "" )
-#define CATCH_AND_WHEN( desc ) CATCH_SECTION( std::string( "  And: ") + desc, "" )
-#define CATCH_THEN( desc )     CATCH_SECTION( std::string( " Then: ") + desc, "" )
-#define CATCH_AND_THEN( desc ) CATCH_SECTION( std::string( "  And: ") + desc, "" )
+#define CATCH_GIVEN( desc )    CATCH_SECTION( std::string( "Given: ") + desc )
+#define CATCH_WHEN( desc )     CATCH_SECTION( std::string( " When: ") + desc )
+#define CATCH_AND_WHEN( desc ) CATCH_SECTION( std::string( "  And: ") + desc )
+#define CATCH_THEN( desc )     CATCH_SECTION( std::string( " Then: ") + desc )
+#define CATCH_AND_THEN( desc ) CATCH_SECTION( std::string( "  And: ") + desc )
 
 // If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
 #else
@@ -180,7 +180,7 @@
 #define FAIL( ... ) INTERNAL_CATCH_MSG( "FAIL", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, __VA_ARGS__ )
 #define FAIL_CHECK( ... ) INTERNAL_CATCH_MSG( "FAIL_CHECK", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define SUCCEED( ... ) INTERNAL_CATCH_MSG( "SUCCEED", Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
-#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
+#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE()
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 
@@ -192,11 +192,11 @@
 #define SCENARIO( ... ) TEST_CASE( "Scenario: " __VA_ARGS__ )
 #define SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
 
-#define GIVEN( desc )    SECTION( std::string("   Given: ") + desc, "" )
-#define WHEN( desc )     SECTION( std::string("    When: ") + desc, "" )
-#define AND_WHEN( desc ) SECTION( std::string("And when: ") + desc, "" )
-#define THEN( desc )     SECTION( std::string("    Then: ") + desc, "" )
-#define AND_THEN( desc ) SECTION( std::string("     And: ") + desc, "" )
+#define GIVEN( desc )    SECTION( std::string("   Given: ") + desc )
+#define WHEN( desc )     SECTION( std::string("    When: ") + desc )
+#define AND_WHEN( desc ) SECTION( std::string("And when: ") + desc )
+#define THEN( desc )     SECTION( std::string("    Then: ") + desc )
+#define AND_THEN( desc ) SECTION( std::string("     And: ") + desc )
 
 using Catch::Detail::Approx;
 
