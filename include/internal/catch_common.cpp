@@ -75,18 +75,18 @@ namespace Catch {
         return os;
     }
 
-    SourceLineInfo::SourceLineInfo() : file(""), line( 0 ){}
-    SourceLineInfo::SourceLineInfo( char const* _file, std::size_t _line )
+    SourceLineInfo::SourceLineInfo() noexcept : file(""), line( 0 ){}
+    SourceLineInfo::SourceLineInfo( char const* _file, std::size_t _line ) noexcept
     :   file( _file ),
         line( _line )
     {}
-    bool SourceLineInfo::empty() const {
+    bool SourceLineInfo::empty() const noexcept {
         return file[0] == '\0';
     }
-    bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const {
+    bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const noexcept {
         return line == other.line && (file == other.file || std::strcmp(file, other.file) == 0);
     }
-    bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const {
+    bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const noexcept {
         return line < other.line || ( line == other.line && (std::strcmp(file, other.file) < 0));
     }
 

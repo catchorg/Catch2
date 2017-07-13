@@ -56,7 +56,7 @@ namespace Catch {
             virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) override {
                 m_tagAliasRegistry.add( alias, tag, lineInfo );
             }
-            virtual void registerStartupException( std::exception_ptr const& exception ) override {
+            virtual void registerStartupException( std::exception_ptr const& exception ) noexcept override {
                 m_exceptionRegistry.add(exception);
             }
 

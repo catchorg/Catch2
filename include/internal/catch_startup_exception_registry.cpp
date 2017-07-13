@@ -9,11 +9,17 @@
 #include "catch_startup_exception_registry.h"
 
 namespace Catch {
-    void StartupExceptionRegistry::add( std::exception_ptr const& exception ) {
-        m_exceptions.push_back(exception);
+    void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexcept {
+        try {
+            m_exceptions.push_back(exception);
+        }
+        catch(...) {
+            // If we run out of memory during start-up there's really not a lot more we can do about it
+            std::terminate();
+        }
     }
 
-    std::vector<std::exception_ptr> const& StartupExceptionRegistry::getExceptions() const {
+    std::vector<std::exception_ptr> const& StartupExceptionRegistry::getExceptions() const noexcept {
         return m_exceptions;
     }
 

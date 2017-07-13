@@ -19,7 +19,7 @@ template<typename C>
 class TestInvokerAsMethod : public ITestInvoker {
     void (C::*m_testAsMethod)();
 public:
-    TestInvokerAsMethod( void (C::*testAsMethod)() ) : m_testAsMethod( testAsMethod ) {}
+    TestInvokerAsMethod( void (C::*testAsMethod)() ) noexcept : m_testAsMethod( testAsMethod ) {}
 
     void invoke() const override {
         C obj;
@@ -27,23 +27,23 @@ public:
     }
 };
 
-auto makeTestInvoker( void(*testAsFunction)() ) -> ITestInvoker*;
+auto makeTestInvoker( void(*testAsFunction)() ) noexcept -> ITestInvoker*;
 
 template<typename C>
-auto makeTestInvoker( void (C::*testAsMethod)() ) -> ITestInvoker* {
-    return new TestInvokerAsMethod<C>( testAsMethod );
+auto makeTestInvoker( void (C::*testAsMethod)() ) noexcept -> ITestInvoker* {
+    return new(std::nothrow) TestInvokerAsMethod<C>( testAsMethod );
 }
 
 struct NameAndTags {
 
-    NameAndTags( StringRef name_ = "", StringRef tags_ = "" ) : name( name_ ), tags( tags_ ) {}
+    NameAndTags( StringRef name_ = "", StringRef tags_ = "" ) noexcept : name( name_ ), tags( tags_ ) {}
 
     StringRef name;
     StringRef tags;
 };
 
 struct AutoReg : NonCopyable {
-    AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags );
+    AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept;
     ~AutoReg();
 };
 

@@ -46,10 +46,8 @@ namespace Catch {
                 std::sort( sorted.begin(), sorted.end() );
                 break;
             case RunTests::InRandomOrder:
-                {
-                    seedRng( config );
-                    RandomNumberGenerator::shuffle( sorted );
-                }
+                seedRng( config );
+                RandomNumberGenerator::shuffle( sorted );
                 break;
             case RunTests::InDeclarationOrder:
                 // already in declaration order
@@ -128,14 +126,14 @@ namespace Catch {
     class TestInvokerAsFunction : public ITestInvoker {
         void(*m_testAsFunction)();
     public:
-        TestInvokerAsFunction( void(*testAsFunction)() ) : m_testAsFunction( testAsFunction ) {}
+        TestInvokerAsFunction( void(*testAsFunction)() ) noexcept : m_testAsFunction( testAsFunction ) {}
 
         void invoke() const override {
             m_testAsFunction();
         }
     };
-    auto makeTestInvoker( void(*testAsFunction)() ) -> ITestInvoker* {
-        return new TestInvokerAsFunction( testAsFunction );
+    auto makeTestInvoker( void(*testAsFunction)() ) noexcept -> ITestInvoker* {
+        return new(std::nothrow) TestInvokerAsFunction( testAsFunction );
     }
 
 
@@ -154,7 +152,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    AutoReg::AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags )
+    AutoReg::AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept
     {
         try {
             getMutableRegistryHub()
