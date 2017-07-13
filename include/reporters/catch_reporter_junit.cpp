@@ -242,7 +242,7 @@ namespace Catch {
         Timer suiteTimer;
         std::ostringstream stdOutForSuite;
         std::ostringstream stdErrForSuite;
-        unsigned int unexpectedExceptions;
+        unsigned int unexpectedExceptions = 0;
         bool m_okToFail = false;
     };
 
